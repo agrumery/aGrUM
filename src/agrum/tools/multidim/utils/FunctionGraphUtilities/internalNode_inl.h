@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Inline implementation of the InternalNode class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
@@ -78,24 +78,24 @@ namespace gum {
   }
 
   INLINE
-  const DiscreteVariable* InternalNode::nodeVar() const { return __nodeVar; }
+  const DiscreteVariable* InternalNode::nodeVar() const { return nodeVar__; }
 
   INLINE
   void InternalNode::setSon(Idx modality, NodeId son) {
-    __nodeSons[modality] = son;
+    nodeSons__[modality] = son;
   }
 
   INLINE
-  NodeId InternalNode::son(Idx modality) const { return __nodeSons[modality]; }
+  NodeId InternalNode::son(Idx modality) const { return nodeSons__[modality]; }
 
   INLINE
-  Idx InternalNode::nbSons() const { return __nodeVar->domainSize(); }
+  Idx InternalNode::nbSons() const { return nodeVar__->domainSize(); }
 
   INLINE
-  Link< Parent >* InternalNode::parents() { return __nodeParents.list(); }
+  Link< Parent >* InternalNode::parents() { return nodeParents__.list(); }
 
   INLINE
   const Link< Parent >* InternalNode::parents() const {
-    return __nodeParents.list();
+    return nodeParents__.list();
   }
 }   // namespace gum

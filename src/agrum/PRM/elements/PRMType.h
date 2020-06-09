@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of Class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_RANDOM_VARIABLE_TYPE_H
@@ -266,21 +266,21 @@ namespace gum {
       /// @{
 
       /// Returns true if this is a valid type or subtype.
-      bool __isValid() const;
+      bool isValid__() const;
 
       /// Used at construction to set a unique name to this class underlying
       /// DiscreteVariable.
-      void __updateName();
+      void updateName__();
 
       /// The discrete variable
-      DiscreteVariable* __var;
+      DiscreteVariable* var__;
 
       /// The super type of this, if any.
-      PRMType* __superType;
+      PRMType* superType__;
 
       /// A vector in which the i-th element is the Idx of the super
       /// type's label for the i-th label of this.
-      std::vector< Idx >* __label_map;
+      std::vector< Idx >* label_map__;
 
       /// @}
     };

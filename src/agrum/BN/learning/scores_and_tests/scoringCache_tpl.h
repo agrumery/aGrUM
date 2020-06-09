@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a cache for caching scores and independence tests results
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -55,7 +55,7 @@ namespace gum {
        const ScoringCache< ALLOC >&                          from,
        const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __scores(from.__scores) {
+        scores__(from.scores__) {
       GUM_CONS_CPY(ScoringCache);
     }
 
@@ -72,7 +72,7 @@ namespace gum {
        ScoringCache< ALLOC >&&                               from,
        const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __scores(std::move(from.__scores)) {
+        scores__(std::move(from.scores__)) {
       GUM_CONS_MOV(ScoringCache);
     }
 
@@ -117,7 +117,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >&
        ScoringCache< ALLOC >::operator=(const ScoringCache< ALLOC >& from) {
-      if (&from != this) { __scores = from.__scores; }
+      if (&from != this) { scores__ = from.scores__; }
       return *this;
     }
 
@@ -126,7 +126,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >&
        ScoringCache< ALLOC >::operator=(ScoringCache< ALLOC >&& from) {
-      if (&from != this) { __scores = std::move(from.__scores); }
+      if (&from != this) { scores__ = std::move(from.scores__); }
       return *this;
     }
 
@@ -134,51 +134,51 @@ namespace gum {
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::insert(const IdCondSet< ALLOC >& idset,
-                                              double                score) {
-      __scores.insert(idset, score);
+                                              double                    score) {
+      scores__.insert(idset, score);
     }
 
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::insert(IdCondSet< ALLOC >&& idset,
-                                              double           score) {
-      __scores.insert(std::move(idset), std::move(score));
+                                              double               score) {
+      scores__.insert(std::move(idset), std::move(score));
     }
 
 
     /// removes a score (if it exists)
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::erase(const IdCondSet< ALLOC >& idset) {
-      __scores.erase(idset);
+      scores__.erase(idset);
     }
 
 
     /// indicates whether a given score exists
     template < template < typename > class ALLOC >
     INLINE bool ScoringCache< ALLOC >::exists(const IdCondSet< ALLOC >& idset) {
-      return __scores.exists(idset);
+      return scores__.exists(idset);
     }
 
 
     /// returns a given score
     template < template < typename > class ALLOC >
     INLINE double ScoringCache< ALLOC >::score(const IdCondSet< ALLOC >& idset) {
-      return __scores[idset];
+      return scores__[idset];
     }
 
 
     /// removes all the stored scores
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::clear() {
-      __scores.clear();
+      scores__.clear();
     }
 
 
     /// returns the number of scores saved in the cache
     template < template < typename > class ALLOC >
     INLINE std::size_t ScoringCache< ALLOC >::size() const {
-      return __scores.size();
+      return scores__.size();
     }
 
 

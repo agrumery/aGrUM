@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of O3prmReader<double>.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
+ * @author Pierre-Henri WUILLEMIN(@LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
 #include <agrum/agrum.h>
@@ -147,7 +147,7 @@ namespace gum {
         m_results.clear();
 
         try {
-          std::string file_content = __readFile(filename);
+          std::string file_content = readFile__(filename);
 
           delete m_context;
           m_context = new O3prmrContext< double >(filename);
@@ -185,7 +185,7 @@ namespace gum {
         } catch (gum::Exception&) { return false; }
       }
 
-      std::string O3prmrInterpreter::__readFile(const std::string& file) {
+      std::string O3prmrInterpreter::readFile__(const std::string& file) {
         // read entire file into string
         std::ifstream istream(file, std::ifstream::binary);
         if (istream) {

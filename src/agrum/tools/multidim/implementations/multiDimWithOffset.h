@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MultiDimWithOffset class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MULTI_DIM_WITH_OFFSET_H
@@ -161,13 +161,13 @@ namespace gum {
      * no exception thrown
      * but 0 is assumed for dimensions not present in the instantiation.
      *
-     * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M._getOffs(i) give the
+     * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.getOffs_(i) give the
      * offset of a:0|b:1|c:2.
      *
      * @param i An instantiation for which the offset is computed.
      * @return The offset of i.
      */
-    Size _getOffs(const Instantiation& i) const;
+    Size getOffs_(const Instantiation& i) const;
 
     /**
      * @brief The gaps between consecutive values of a given variable.
@@ -177,10 +177,10 @@ namespace gum {
      * to the next one is equivalent to incrementing/decrementing by gaps the
      * current offset w.r.t. vector values.
      */
-    HashTable< const DiscreteVariable*, Size > _gaps;
+    HashTable< const DiscreteVariable*, Size > gaps_;
 
     /// The position in the array of each slave Instantiation.
-    HashTable< const Instantiation*, Size > _offsets;
+    HashTable< const Instantiation*, Size > offsets_;
 
     /**
      * @brief For a given index of a value in the vector values, this method
@@ -192,9 +192,9 @@ namespace gum {
      * subset of variables in result or the exact set)
      * @param indice The index in the vector values
      */
-    void _computeInstantiationValue(Instantiation& result, Size indice) const;
+    void computeInstantiationValue_(Instantiation& result, Size indice) const;
 
-    virtual GUM_SCALAR& _get(const Instantiation& i) const = 0;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const = 0;
   };
 } /* namespace gum */
 

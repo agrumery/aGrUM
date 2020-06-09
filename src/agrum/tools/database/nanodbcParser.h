@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,10 +21,10 @@
  * @file
  * @brief Class for parsing SQL results using Nanodbc.
  *
- * @author Lionel TORTI, Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI, Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifdef _ODBC
+#ifdef ODBC_
 
 #ifndef GUM_NANODBC_PARSER_H
 #define GUM_NANODBC_PARSER_H
@@ -115,13 +115,13 @@ namespace gum {
     private:
 
       // the result of the last SQL query performed
-      nanodbc::result __result;
+      nanodbc::result result__;
 
       // the line number within the current query
-      std::size_t __nb_line { std::size_t(0) };
+      std::size_t nb_line__ { std::size_t(0) };
 
       // a vector that will contain the content of the current line of result
-      std::vector<std::string,ALLOC<std::string>> __data;
+      std::vector<std::string,ALLOC<std::string>> data__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -135,4 +135,4 @@ namespace gum {
 
 #endif  // GUM_NANODBC_PARSER_H
 
-#endif  // _ODBC
+#endif  // ODBC_

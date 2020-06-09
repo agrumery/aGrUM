@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief count aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/multidim/aggregators/count.h>
@@ -35,14 +35,14 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Count< GUM_SCALAR >::Count(Idx value) :
-        MultiDimAggregator< GUM_SCALAR >(), __value(value) {
+        MultiDimAggregator< GUM_SCALAR >(), value__(value) {
       GUM_CONSTRUCTOR(Count);
     }
 
     template < typename GUM_SCALAR >
     INLINE Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
-      __value = from.__value;
+      value__ = from.value__;
       GUM_CONS_CPY(Count);
     }
 
@@ -52,29 +52,29 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Count< GUM_SCALAR >::_neutralElt() const {
+    INLINE Idx Count< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Count< GUM_SCALAR >::_fold(const DiscreteVariable& v,
+    INLINE Idx Count< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                           Idx                     i1,
                                           Idx                     i2,
                                           bool& stop_iteration) const {
-      return (i1 == __value) ? 1 + i2 : i2;
+      return (i1 == value__) ? 1 + i2 : i2;
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string Count< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
-      ss << "count[" << __value << "]";
+      ss << "count[" << value__ << "]";
       return ss.str();
     }
 
     template < typename GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >*
            Count< GUM_SCALAR >::newFactory() const {
-      return new Count< GUM_SCALAR >(__value);
+      return new Count< GUM_SCALAR >(value__);
     }
 
   }   // namespace aggregator

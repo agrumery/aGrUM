@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Observation class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // #define  TRACE_ALGO
@@ -92,10 +92,10 @@ namespace gum {
      */
     // ###################################################################
     INLINE Idx modality(const DiscreteVariable* var) const {
-      return __varInst[var];
+      return varInst__[var];
     }
     INLINE Idx rModality(const DiscreteVariable* var) const {
-      return __rInst[var];
+      return rInst__[var];
     }
 
     // ###################################################################
@@ -107,21 +107,21 @@ namespace gum {
      */
     // ###################################################################
     INLINE void setModality(const DiscreteVariable* var, Idx modality) {
-      __varInst.insert(var, modality);
+      varInst__.insert(var, modality);
     }
     INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
-      __rInst.insert(var, modality);
+      rInst__.insert(var, modality);
     }
 
     // ###################################################################
     // Returns the reward obtained during this observation
     // ###################################################################
-    double reward() const { return __reward; }
+    double reward() const { return reward__; }
 
     // ###################################################################
     // Sets the reward obtained during this observation
     // ###################################################################
-    void setReward(double reward) { __reward = reward; }
+    void setReward(double reward) { reward__ = reward; }
 
     /// @}
     ///
@@ -138,7 +138,7 @@ namespace gum {
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
        cbeginVariablesSafe() const {
-      return __varInst.cbeginSafe();
+      return varInst__.cbeginSafe();
     }
 
     // ###################################################################
@@ -147,18 +147,18 @@ namespace gum {
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
        cendVariablesSafe() const {
-      return __varInst.cendSafe();
+      return varInst__.cendSafe();
     }
 
     /// @}
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable< const DiscreteVariable*, Idx > __varInst;
-    HashTable< const DiscreteVariable*, Idx > __rInst;
+    HashTable< const DiscreteVariable*, Idx > varInst__;
+    HashTable< const DiscreteVariable*, Idx > rInst__;
 
     /// The reward associated to this transition
-    double __reward;
+    double reward__;
   };
 
 } /* namespace gum */

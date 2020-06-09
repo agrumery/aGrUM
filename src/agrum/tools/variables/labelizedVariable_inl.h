@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base class for labelized discrete random variables
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #include <ostream>
 #include <sstream>
@@ -43,32 +43,32 @@ namespace gum {
 
   // erase all the labels
 
-  INLINE void LabelizedVariable::eraseLabels() { __labels.clear(); }
+  INLINE void LabelizedVariable::eraseLabels() { labels__.clear(); }
 
   // copies the content of aLDRV
 
-  INLINE void LabelizedVariable::_copy(const LabelizedVariable& aLDRV) {
-    DiscreteVariable::_copy(aLDRV);
-    __labels.clear();
-    __labels = aLDRV.__labels;
+  INLINE void LabelizedVariable::copy_(const LabelizedVariable& aLDRV) {
+    DiscreteVariable::copy_(aLDRV);
+    labels__.clear();
+    labels__ = aLDRV.labels__;
   }
 
   // add a label with a new index (we assume that we will NEVER remove a label)
   INLINE LabelizedVariable&
          LabelizedVariable::addLabel(const std::string& aLabel) {
-    __labels.insert(aLabel);
+    labels__.insert(aLabel);
 
     return *this;
   }
 
   INLINE void LabelizedVariable::changeLabel(Idx                pos,
                                              const std::string& aLabel) const {
-    if (__labels[pos] == aLabel) return;
+    if (labels__[pos] == aLabel) return;
 
     if (isLabel(aLabel))
       GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists");
 
-    __labels.setAtPos(pos, aLabel);
+    labels__.setAtPos(pos, aLabel);
   }
 
   // Default constructor
@@ -93,20 +93,20 @@ namespace gum {
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
-    __labels.clear();
+    labels__.clear();
     for (Idx i = 0; i < labels.size(); ++i)
-      __labels.insert(labels[i]);
+      labels__.insert(labels[i]);
   }
 
   INLINE Idx LabelizedVariable::posLabel(const std::string& label) const {
-    return __labels.pos(label);
+    return labels__.pos(label);
   }
 
   // Copy constructor
 
   INLINE
   LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV) :
-      DiscreteVariable(aLDRV), __labels(aLDRV.__labels) {
+      DiscreteVariable(aLDRV), labels__(aLDRV.labels__) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
   }
@@ -127,19 +127,19 @@ namespace gum {
   INLINE LabelizedVariable&
      LabelizedVariable::operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
-    if (&aLDRV != this) { _copy(aLDRV); }
+    if (&aLDRV != this) { copy_(aLDRV); }
 
     return *this;
   }
 
   // indicates whether the variable already has the label passed in argument
   INLINE bool LabelizedVariable::isLabel(const std::string& aLabel) const {
-    return __labels.exists(aLabel);
+    return labels__.exists(aLabel);
   }
 
   // returns the ith label
   INLINE std::string LabelizedVariable::label(Idx i) const {
-    return __labels.atPos(i);
+    return labels__.atPos(i);
   }
 
   // get a numerical representation of the indice-th value.
@@ -150,7 +150,7 @@ namespace gum {
 
   INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {
-      return __labels.pos(aLabel);
+      return labels__.pos(aLabel);
     } catch (...) {
       GUM_ERROR(OutOfBounds,
                 "label '" << aLabel << "' is unknown in " << this->toString());
@@ -158,7 +158,7 @@ namespace gum {
   }
 
   // returns the size of the random discrete variable domain
-  INLINE Size LabelizedVariable::domainSize() const { return __labels.size(); }
+  INLINE Size LabelizedVariable::domainSize() const { return labels__.size(); }
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
 

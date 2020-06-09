@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ namespace gum_tests {
   class DBInitializerFromSQLTestSuite: public CxxTest::TestSuite {
     public:
     void test_init1() {
-#ifdef _ODBC
+#ifdef ODBC_
       try {
         const std::string dataSource = "PostgreSQL";
         const std::string login = "gonzales";
@@ -248,16 +248,16 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[PostgreSQL error]";
       }
-#endif   // _ODBC
+#endif   // ODBC_
     }
 
 
     void test_init_sqlite() {
-#ifdef _ODBC
+#ifdef ODBC_
       const std::string driver_name = "SQLite3";
-#  ifdef _WIN32
+#  ifdef WIN32_
       driver_name += " ODBC Driver";
-#  endif   // _WIN32
+#  endif   // WIN32_
 
       try {
         const std::string connection_string =
@@ -317,7 +317,7 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[SQLite error]";
       }
-#endif   // _ODBC
+#endif   // ODBC_
     }
   };
 

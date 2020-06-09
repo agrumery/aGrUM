@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf(NodeId leafId) : __leafId(leafId) {
+    AbstractLeaf(NodeId leafId) : leafId__(leafId) {
       GUM_CONSTRUCTOR(AbstractLeaf);
     }
 
@@ -90,16 +90,16 @@ namespace gum {
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains(NodeId testedId) const { return __leafId == testedId; }
+    virtual bool contains(NodeId testedId) const { return leafId__ == testedId; }
 
-    NodeId id() { return __leafId; }
+    NodeId id() { return leafId__; }
 
     virtual Idx nbModa() const = 0;
 
     virtual std::string toString() = 0;
 
     private:
-    NodeId __leafId;
+    NodeId leafId__;
   };
 
 

@@ -1,5 +1,5 @@
 /**************************************************************************
-*   Copyright (C) 2005-2020 by Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)   *
+*   Copyright (C) 2005-2020 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)   *
 *   info_at_agrum_dot_org                                               *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
  * @file
  * @brief Data structures documetnation.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 

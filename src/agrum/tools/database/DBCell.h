@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The class representing the original values of the cells of databases
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_CELL_H
 #define GUM_LEARNING_DB_CELL_H
@@ -260,13 +260,13 @@ namespace gum {
 
       private:
       // the real type of the last element read from the database
-      EltType __type{EltType::MISSING};
+      EltType type__{EltType::MISSING};
 
       // the element read from the database
       union {
-        int   __val_index;     // stores string indices. Basically, it should have
-        int   __val_integer;   // been an Idx, but int are shorter than Idx.
-        float __val_real;
+        int   val_index__;     // stores string indices. Basically, it should have
+        int   val_integer__;   // been an Idx, but int are shorter than Idx.
+        float val_real__;
       };
 
 
@@ -276,14 +276,14 @@ namespace gum {
          conditional< sizeof(int) < sizeof(float), float, int >::type;
 
       // raises an appropriate exception when encountering a type error
-      std::string __typeErrorMsg(const std::string& real_type) const;
+      std::string typeErrorMsg__(const std::string& real_type) const;
 
 
       // a bijection assigning to each string index its corresponding string
-      static Bijection< std::string, int >& __strings();
+      static Bijection< std::string, int >& strings__();
 
       // the last index used so far
-      static int __string_max_index;
+      static int string_max_index__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -206,8 +206,8 @@ class Scanner {
     void* heapTop;
     void** heapEnd;
 
-    std::wstring __filenamne;
-    bool __trace;
+    std::wstring filenamne__;
+    bool trace__;
 
     unsigned char EOL;
     int eofSym;
@@ -257,14 +257,14 @@ class Scanner {
     Scanner( FILE* s,bool trace=false );
     ~Scanner();
 
-    void setTrace( bool b ) { __trace=b;}
+    void setTrace( bool b ) { trace__=b;}
 
     void Load( const wchar_t* fileName );
     Token* Scan();
     Token* Peek();
     void ResetPeek();
 
-    const std::wstring& filename() const {return __filenamne;}
+    const std::wstring& filename() const {return filenamne__;}
     Buffer* getBuffer() {return buffer;}
 
 }; // end Scanner

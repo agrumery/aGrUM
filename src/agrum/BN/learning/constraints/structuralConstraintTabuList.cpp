@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class imposing a N-sized tabu list as a structural constraints for
  * learning algorithms
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
@@ -40,12 +40,12 @@ namespace gum {
 
     /// default constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList() :
-        _TabuList__changes(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+        TabuList__changes_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
       for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
            ++i) {
-        _TabuList__changes.insert(
+        TabuList__changes_.insert(
            ArcAddition(std::numeric_limits< NodeId >::max() - i,
                        std::numeric_limits< NodeId >::max()),
            i);
@@ -57,12 +57,12 @@ namespace gum {
     /// constructor starting with a given graph
     StructuralConstraintTabuList::StructuralConstraintTabuList(
        const DiGraph& graph) :
-        _TabuList__changes(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+        TabuList__changes_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
       for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
            ++i) {
-        _TabuList__changes.insert(
+        TabuList__changes_.insert(
            ArcAddition(std::numeric_limits< NodeId >::max() - i,
                        std::numeric_limits< NodeId >::max()),
            i);
@@ -74,16 +74,16 @@ namespace gum {
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
        const StructuralConstraintTabuList& from) :
-        _TabuList__changes(from._TabuList__changes),
-        _TabuList__offset(from._TabuList__offset) {
+        TabuList__changes_(from.TabuList__changes_),
+        TabuList__offset_(from.TabuList__offset_) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
     }
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
        StructuralConstraintTabuList&& from) :
-        _TabuList__changes(std::move(from._TabuList__changes)),
-        _TabuList__offset(std::move(from._TabuList__offset)) {
+        TabuList__changes_(std::move(from.TabuList__changes_)),
+        TabuList__offset_(std::move(from.TabuList__offset_)) {
       GUM_CONS_MOV(StructuralConstraintTabuList);
     }
 
@@ -96,8 +96,8 @@ namespace gum {
     StructuralConstraintTabuList& StructuralConstraintTabuList::operator=(
        const StructuralConstraintTabuList& from) {
       if (this != &from) {
-        _TabuList__changes = from._TabuList__changes;
-        _TabuList__offset = from._TabuList__offset;
+        TabuList__changes_ = from.TabuList__changes_;
+        TabuList__offset_ = from.TabuList__offset_;
       }
       return *this;
     }
@@ -106,8 +106,8 @@ namespace gum {
     StructuralConstraintTabuList& StructuralConstraintTabuList::operator=(
        StructuralConstraintTabuList&& from) {
       if (this != &from) {
-        _TabuList__changes = std::move(from._TabuList__changes);
-        _TabuList__offset = std::move(from._TabuList__offset);
+        TabuList__changes_ = std::move(from.TabuList__changes_);
+        TabuList__offset_ = std::move(from.TabuList__offset_);
       }
       return *this;
     }

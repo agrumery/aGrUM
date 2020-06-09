@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the RMax planer class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -152,12 +152,12 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    virtual void _initVFunction();
+    virtual void initVFunction_();
 
     // ==========================================================================
     /// Performs a single step of value iteration
     // ==========================================================================
-    virtual MultiDimFunctionGraph< double >* _valueIteration();
+    virtual MultiDimFunctionGraph< double >* valueIteration_();
 
     /// @}
 
@@ -171,26 +171,26 @@ namespace gum {
     // ==========================================================================
     /// Perform the required tasks to extract an optimal policy
     // ==========================================================================
-    virtual void _evalPolicy();
+    virtual void evalPolicy_();
 
     /// @}
 
     private:
-    void __makeRMaxFunctionGraphs();
+    void makeRMaxFunctionGraphs__();
 
-    std::pair< NodeId, NodeId > __visitLearner(const IVisitableGraphLearner*,
+    std::pair< NodeId, NodeId > visitLearner__(const IVisitableGraphLearner*,
                                                NodeId currentNodeId,
                                                MultiDimFunctionGraph< double >*,
                                                MultiDimFunctionGraph< double >*);
-    void                        __clearTables();
+    void                        clearTables__();
 
     private:
-    HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsRMaxTable;
-    HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsBoolTable;
-    const ILearningStrategy*                           __fmdpLearner;
+    HashTable< Idx, MultiDimFunctionGraph< double >* > actionsRMaxTable__;
+    HashTable< Idx, MultiDimFunctionGraph< double >* > actionsBoolTable__;
+    const ILearningStrategy*                           fmdpLearner__;
 
-    double __rThreshold;
-    double __rmax;
+    double rThreshold__;
+    double rmax__;
 
 
     // ###################################################################
@@ -199,18 +199,18 @@ namespace gum {
     /// @{
     public:
     void checkState(const Instantiation& newState, Idx actionId) {
-      if (!__initializedTable[actionId]) {
-        __counterTable[actionId]->reset(newState);
-        __initializedTable[actionId] = true;
+      if (!initializedTable__[actionId]) {
+        counterTable__[actionId]->reset(newState);
+        initializedTable__[actionId] = true;
       } else
-        __counterTable[actionId]->incState(newState);
+        counterTable__[actionId]->incState(newState);
     }
 
     private:
-    HashTable< Idx, StatesCounter* > __counterTable;
-    HashTable< Idx, bool >           __initializedTable;
+    HashTable< Idx, StatesCounter* > counterTable__;
+    HashTable< Idx, bool >           initializedTable__;
 
-    bool __initialized;
+    bool initialized__;
     /// @}
   };
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *
  * Writes an bayes net in XML files with BIF format
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BIF_XML_BN_WRITER_H
@@ -101,23 +101,23 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string __heading(const IBayesNet< GUM_SCALAR >& bn);
+    std::string heading__(const IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Returns the end of the BIF file.
      */
-    std::string __documentend();
+    std::string documentend__();
 
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string __variableBloc(const DiscreteVariable& var);
+    std::string variableBloc__(const DiscreteVariable& var);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string __variableDefinition(const NodeId&                  varNodeId,
+    std::string variableDefinition__(const NodeId&                  varNodeId,
                                      const IBayesNet< GUM_SCALAR >& bn);
   };
 

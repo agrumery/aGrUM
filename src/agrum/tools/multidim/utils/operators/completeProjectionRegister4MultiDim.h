@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief A container for registering complete projection functions on
  * multiDimImplementations, i.e., projections over all variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
@@ -200,7 +200,7 @@ namespace gum {
      * MultiDimImplementation is associated a function to project this subtype
      * of hypermatrix (the CompleteProjectionPtr)
      */
-    HashTable< std::string, CompleteProjectionSet* > __set;
+    HashTable< std::string, CompleteProjectionSet* > set__;
   };
 
   /// A function to more easily register new projection functions in MultiDims

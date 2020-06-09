@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the MultiDimContainer class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/agrum.h>
@@ -90,7 +90,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimContainer< GUM_SCALAR >::set(const Instantiation& i,
                                                    const GUM_SCALAR& value) const {
-    _get(i) = value;
+    get_(i) = value;
   }
 
   // an [] operator using a Instantiation as argument
@@ -98,7 +98,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
      MultiDimContainer< GUM_SCALAR >::get(const Instantiation& i) const {
-    return _get(i);
+    return get_(i);
   }
 
   // display the content of an array

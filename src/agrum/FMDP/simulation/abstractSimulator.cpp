@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Sources of
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 // =====================================================================
@@ -58,12 +58,12 @@ namespace gum {
   void AbstractSimulator::setInitialStateRandomly() {
     bool hre = true;
     while (hre) {
-      _currentState = _randomState();
+      currentState_ = randomState_();
       hre = hasReachEnd();
     }
   }
 
-  Instantiation AbstractSimulator::_randomState() {
+  Instantiation AbstractSimulator::randomState_() {
     Instantiation retState;
     for (auto varIter = this->beginVariables(); varIter != this->endVariables();
          ++varIter) {
@@ -77,12 +77,12 @@ namespace gum {
 
   ///
   bool AbstractSimulator::hasReachEnd() {
-    if (_endState.empty()) return false;
+    if (endState_.empty()) return false;
 
-    for (auto varIter = _endState.variablesSequence().beginSafe();
-         varIter != _endState.variablesSequence().endSafe();
+    for (auto varIter = endState_.variablesSequence().beginSafe();
+         varIter != endState_.variablesSequence().endSafe();
          ++varIter)
-      if (_endState.val(**varIter) != _currentState.val(**varIter)) return false;
+      if (endState_.val(**varIter) != currentState_.val(**varIter)) return false;
     return true;
   }
 

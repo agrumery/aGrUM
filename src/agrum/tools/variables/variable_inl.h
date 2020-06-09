@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,15 +26,15 @@ namespace gum {
 
   /// protected copy
 
-  INLINE void Variable::_copy(const Variable& aRV) {
-    __name = aRV.__name;
-    __description = aRV.__description;
+  INLINE void Variable::copy_(const Variable& aRV) {
+    name__ = aRV.name__;
+    description__ = aRV.description__;
   }
 
   /// constructor
 
   INLINE Variable::Variable(const std::string& aName, const std::string& aDesc) :
-      __name(aName), __description(aDesc) {
+      name__(aName), description__(aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
   }
@@ -42,7 +42,7 @@ namespace gum {
   /// copy constructor
 
   INLINE Variable::Variable(const Variable& aRV) :
-      __name(aRV.__name), __description(aRV.__description) {
+      name__(aRV.name__), description__(aRV.description__) {
     // for debugging purposes
     GUM_CONS_CPY(Variable);
   }
@@ -58,33 +58,33 @@ namespace gum {
 
   INLINE Variable& Variable::operator=(const Variable& aRV) {
     // avoid self assignment
-    if (this != &aRV) _copy(aRV);
+    if (this != &aRV) copy_(aRV);
 
     return *this;
   }
 
-  /// sets the __name of the variable
+  /// sets the name__ of the variable
 
-  INLINE void Variable::setName(const std::string& theValue) { __name = theValue; }
+  INLINE void Variable::setName(const std::string& theValue) { name__ = theValue; }
 
-  /// returns the __name of the variable
+  /// returns the name__ of the variable
 
-  INLINE const std::string& Variable::name() const { return __name; }
+  INLINE const std::string& Variable::name() const { return name__; }
 
-  /// sets the __description of the variable
+  /// sets the description__ of the variable
 
   INLINE void Variable::setDescription(const std::string& theValue) const {
-    __description = theValue;
+    description__ = theValue;
   }
 
-  /// returns the __description of the variable
+  /// returns the description__ of the variable
 
-  INLINE const std::string& Variable::description() const { return __description; }
+  INLINE const std::string& Variable::description() const { return description__; }
 
   /// equality operator
 
   INLINE bool Variable::operator==(const Variable& aRV) const {
-    return (__name == aRV.__name);
+    return (name__ == aRV.name__);
   }
 
   /// inequality operator

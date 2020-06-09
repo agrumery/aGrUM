@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of MaxParentsMCBayesNetGenerator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Ariele Maesano
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Ariele Maesano
  *
  */
 
@@ -58,7 +58,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph");
 
-    _maxParents = maxParents;
+    maxParents_ = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
@@ -75,7 +75,7 @@ namespace gum {
                                       Idx                    p,
                                       Idx                    q) :
       MCBG(bayesNet, iteration, p, q) {
-    _maxParents = maxParents;
+    maxParents_ = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
@@ -97,11 +97,11 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-     __checkConditions() {
-    for (auto node: this->_bayesNet.nodes())
-      if (this->_bayesNet.parents(node).size() > _maxParents) return false;
+     checkConditions__() {
+    for (auto node: this->bayesNet_.nodes())
+      if (this->bayesNet_.parents(node).size() > maxParents_) return false;
 
-    return MCBG::__checkConditions();
+    return MCBG::checkConditions__();
   }
 
   template < typename GUM_SCALAR,
@@ -112,7 +112,7 @@ namespace gum {
   INLINE Size MaxParentsMCBayesNetGenerator< GUM_SCALAR,
                                              ICPTGenerator,
                                              ICPTDisturber >::maxParents() const {
-    return _maxParents;
+    return maxParents_;
   }
   template < typename GUM_SCALAR,
              template < class >
@@ -126,6 +126,6 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph");
 
-    _maxParents = maxParents;
+    maxParents_ = maxParents;
   }
 } /* namespace gum */

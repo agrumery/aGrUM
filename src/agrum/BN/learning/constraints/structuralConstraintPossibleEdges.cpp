@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
@@ -53,15 +53,15 @@ namespace gum {
     /// copy constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
        const StructuralConstraintPossibleEdges& from) :
-        _PossibleEdges__possible_edges(from._PossibleEdges__possible_edges) {
+        PossibleEdges__possible_edges_(from.PossibleEdges__possible_edges_) {
       GUM_CONS_CPY(StructuralConstraintPossibleEdges);
     }
 
     /// move constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
        StructuralConstraintPossibleEdges&& from) :
-        _PossibleEdges__possible_edges(
-           std::move(from._PossibleEdges__possible_edges)) {
+        PossibleEdges__possible_edges_(
+           std::move(from.PossibleEdges__possible_edges_)) {
       GUM_CONS_MOV(StructuralConstraintPossibleEdges);
     }
 
@@ -75,7 +75,7 @@ namespace gum {
        StructuralConstraintPossibleEdges::operator=(
           const StructuralConstraintPossibleEdges& from) {
       if (this != &from) {
-        _PossibleEdges__possible_edges = from._PossibleEdges__possible_edges;
+        PossibleEdges__possible_edges_ = from.PossibleEdges__possible_edges_;
       }
       return *this;
     }
@@ -85,8 +85,8 @@ namespace gum {
        StructuralConstraintPossibleEdges::operator=(
           StructuralConstraintPossibleEdges&& from) {
       if (this != &from) {
-        _PossibleEdges__possible_edges =
-           std::move(from._PossibleEdges__possible_edges);
+        PossibleEdges__possible_edges_ =
+           std::move(from.PossibleEdges__possible_edges_);
       }
       return *this;
     }

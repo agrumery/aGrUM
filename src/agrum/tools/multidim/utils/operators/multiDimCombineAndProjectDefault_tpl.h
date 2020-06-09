@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief An efficient class for combining and projecting MultiDim tables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,8 +46,8 @@ namespace gum {
         TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
                                         const Set< const DiscreteVariable* >&)) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      __combination(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
-      __projection(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
+      combination__(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
+      projection__(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombineAndProjectDefault);
   }
@@ -58,8 +58,8 @@ namespace gum {
      MultiDimCombineAndProjectDefault(
         const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      __combination(from.__combination->newFactory()),
-      __projection(from.__projection->newFactory()) {
+      combination__(from.combination__->newFactory()),
+      projection__(from.projection__->newFactory()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }
@@ -70,8 +70,8 @@ namespace gum {
                                     TABLE >::~MultiDimCombineAndProjectDefault() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimCombineAndProjectDefault);
-    delete __combination;
-    delete __projection;
+    delete combination__;
+    delete projection__;
   }
 
   // virtual constructor
@@ -99,8 +99,8 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set< const DiscreteVariable* > all_vars;
 
-      for ( const auto ptrTab : table_set) {
-        for (const auto ptrVar : ptrTab->variablesSequence()) {
+      for (const auto ptrTab: table_set) {
+        for (const auto ptrVar: ptrTab->variablesSequence()) {
           all_vars.insert(ptrVar);
         }
       }
@@ -111,7 +111,7 @@ namespace gum {
     // the tables containing a given variable to be deleted
     HashTable< const DiscreteVariable*, Set< const TABLE< GUM_SCALAR >* > >
        tables_per_var(nb_vars);
-    
+
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we also count the number of tables
     // containing the variable. This is more efficient for computing and
@@ -126,26 +126,26 @@ namespace gum {
       Set< const TABLE< GUM_SCALAR >* > empty_set(table_set.size());
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
-      for (const auto ptrVar : del_vars) {
+      for (const auto ptrVar: del_vars) {
         tables_per_var.insert(ptrVar, empty_set);
         tables_vars_per_var.insert(ptrVar, empty_hash);
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for (const auto ptrTab : table_set) {
+      for (const auto ptrTab: table_set) {
         const Sequence< const DiscreteVariable* >& vars =
-          ptrTab->variablesSequence();
+           ptrTab->variablesSequence();
 
-        for (const auto ptrVar : vars) {
+        for (const auto ptrVar: vars) {
           if (del_vars.contains(ptrVar)) {
             // add the table to the set of tables related to vars[i]
             tables_per_var[ptrVar].insert(ptrTab);
-            
+
             // add the variables of the table to tables_vars_per_var[vars[i]]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
                tables_vars_per_var[ptrVar];
 
-            for (const auto xptrVar : vars) {
+            for (const auto xptrVar: vars) {
               try {
                 ++iter_vars[xptrVar];
               } catch (const NotFound&) { iter_vars.insert(xptrVar, 1); }
@@ -159,14 +159,14 @@ namespace gum {
     PriorityQueue< const DiscreteVariable*, double > product_size;
 
     // initialize properly product_size
-    for (const auto& elt : tables_vars_per_var) {
-      double      size     = 1.0;
-      const auto  ptrVar   = elt.first;
-      const auto& hashvars = elt.second; // HashTable<DiscreteVariable*, int>
+    for (const auto& elt: tables_vars_per_var) {
+      double      size = 1.0;
+      const auto  ptrVar = elt.first;
+      const auto& hashvars = elt.second;   // HashTable<DiscreteVariable*, int>
 
       if (hashvars.size()) {
-        for (const auto& xelt : hashvars) {
-          size *= (double) xelt.first->domainSize();
+        for (const auto& xelt: hashvars) {
+          size *= (double)xelt.first->domainSize();
         }
 
         product_size.insert(ptrVar, size);
@@ -199,12 +199,10 @@ namespace gum {
       bool joint_to_delete = false;
 
       if (tables_to_combine.size() == 1) {
-        joint =
-           const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.begin()));
+        joint = const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.begin()));
         joint_to_delete = false;
-      }
-      else {
-        joint = __combination->combine(tables_to_combine);
+      } else {
+        joint = combination__->combine(tables_to_combine);
         joint_to_delete = true;
       }
 
@@ -212,7 +210,7 @@ namespace gum {
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      TABLE< GUM_SCALAR >* marginal = __projection->project(*joint, del_one_var);
+      TABLE< GUM_SCALAR >* marginal = projection__->project(*joint, del_one_var);
 
       // remove the temporary joint if needed
       if (joint_to_delete) delete joint;
@@ -223,7 +221,7 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for (const auto ptrTab : tables_to_combine) {
+      for (const auto ptrTab: tables_to_combine) {
         const Sequence< const DiscreteVariable* >& table_vars =
            ptrTab->variablesSequence();
         const Size tab_vars_size = table_vars.size();
@@ -234,7 +232,7 @@ namespace gum {
             // product_size, tables_per_var and tables_vars_per_var: here,
             // the update corresponds to removing table PtrTab
             HashTable< const DiscreteVariable*, unsigned int >&
-                  table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
+                   table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
             double div_size = 1.0;
 
             for (Size j = 0; j < tab_vars_size; ++j) {
@@ -269,23 +267,22 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& marginal_vars =
          marginal->variablesSequence();
 
-      for (const auto mvar : marginal_vars) {
+      for (const auto mvar: marginal_vars) {
         if (del_vars.contains(mvar)) {
           // add the new marginal table to the set of tables of mvar
           tables_per_var[mvar].insert(marginal);
 
           // add the variables of the table to tables_vars_per_var[mvar]
           HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-            tables_vars_per_var[mvar];
+             tables_vars_per_var[mvar];
           double mult_size = 1.0;
 
-          for (const auto var : marginal_vars) {
+          for (const auto var: marginal_vars) {
             try {
               ++iter_vars[var];
-            }
-            catch (const NotFound&) {
+            } catch (const NotFound&) {
               iter_vars.insert(var, 1);
-              mult_size *= (double) var->domainSize();
+              mult_size *= (double)var->domainSize();
             }
           }
 
@@ -314,7 +311,7 @@ namespace gum {
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
         TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
                                         const TABLE< GUM_SCALAR >&)) {
-    __combination->setCombineFunction(combine);
+    combination__->setCombineFunction(combine);
   }
 
   // returns the current combination function
@@ -322,7 +319,7 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* (
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
      const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&) {
-    return __combination->combineFunction();
+    return combination__->combineFunction();
   }
 
   // changes the class that performs the combinations
@@ -330,8 +327,8 @@ namespace gum {
   INLINE void
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
         const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
-    delete __combination;
-    __combination = comb_class.newFactory();
+    delete combination__;
+    combination__ = comb_class.newFactory();
   }
 
   // changes the function used for projecting TABLES
@@ -340,7 +337,7 @@ namespace gum {
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
         TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
                                      const Set< const DiscreteVariable* >&)) {
-    __projection->setProjectFunction(proj);
+    projection__->setProjectFunction(proj);
   }
 
   // returns the current projection function
@@ -348,7 +345,7 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* (
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
      const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) {
-    return __projection->projectFunction();
+    return projection__->projectFunction();
   }
 
   // changes the class that performs the projections
@@ -356,8 +353,8 @@ namespace gum {
   INLINE void
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
         const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
-    delete __projection;
-    __projection = proj_class.newFactory();
+    delete projection__;
+    projection__ = proj_class.newFactory();
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -382,8 +379,8 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set< const DiscreteVariable* > all_vars;
 
-      for ( const auto ptrSeq : table_set) {
-        for (const auto ptrVar : *ptrSeq) {
+      for (const auto ptrSeq: table_set) {
+        for (const auto ptrVar: *ptrSeq) {
           all_vars.insert(ptrVar);
         }
       }
@@ -396,7 +393,7 @@ namespace gum {
     HashTable< const DiscreteVariable*,
                Set< const Sequence< const DiscreteVariable* >* > >
        tables_per_var(nb_vars);
-    
+
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we count the number of tables
     // containing the variable. This is more efficient for computing and
@@ -412,25 +409,25 @@ namespace gum {
          table_set.size());
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
-      for (const auto ptrVar : del_vars) {
+      for (const auto ptrVar: del_vars) {
         tables_per_var.insert(ptrVar, empty_set);
         tables_vars_per_var.insert(ptrVar, empty_hash);
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for (const auto ptrSeq : table_set) {
+      for (const auto ptrSeq: table_set) {
         const Sequence< const DiscreteVariable* >& vars = *ptrSeq;
 
-        for (const auto ptrVar : vars) {
+        for (const auto ptrVar: vars) {
           if (del_vars.contains(ptrVar)) {
             // add the table's variables to the set of those related to ptrVar
             tables_per_var[ptrVar].insert(ptrSeq);
-            
+
             // add the variables of the table to tables_vars_per_var[ptrVar]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
                tables_vars_per_var[ptrVar];
 
-            for (const auto xptrVar : vars) {
+            for (const auto xptrVar: vars) {
               try {
                 ++iter_vars[xptrVar];
               } catch (const NotFound&) { iter_vars.insert(xptrVar, 1); }
@@ -444,14 +441,14 @@ namespace gum {
     PriorityQueue< const DiscreteVariable*, double > product_size;
 
     // initialize properly product_size
-    for (const auto& elt : tables_vars_per_var) {
-      double     size     = 1.0;
-      const auto ptrVar   = elt.first;
-      const auto hashvars = elt.second; // HashTable<DiscreteVariable*, int>
+    for (const auto& elt: tables_vars_per_var) {
+      double     size = 1.0;
+      const auto ptrVar = elt.first;
+      const auto hashvars = elt.second;   // HashTable<DiscreteVariable*, int>
 
       if (hashvars.size()) {
-        for (const auto& xelt : hashvars) {
-          size *= (double) xelt.first->domainSize();
+        for (const auto& xelt: hashvars) {
+          size *= (double)xelt.first->domainSize();
         }
 
         product_size.insert(ptrVar, size);
@@ -495,8 +492,8 @@ namespace gum {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence< const DiscreteVariable* >;
 
-        for (const auto ptrSeq : tables_to_combine) {
-          for (const auto ptrVar : *ptrSeq) {
+        for (const auto ptrSeq: tables_to_combine) {
+          for (const auto ptrVar: *ptrSeq) {
             if (!joint->exists(ptrVar)) { joint->insert(ptrVar); }
           }
         }
@@ -504,14 +501,14 @@ namespace gum {
         joint_to_delete = true;
 
         // update the number of operations performed
-        nb_operations += __combination->nbOperations(tables_to_combine);
+        nb_operations += combination__->nbOperations(tables_to_combine);
       }
 
       // update the number of operations performed by marginalizing out del_var
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      nb_operations += __projection->nbOperations(*joint, del_one_var);
+      nb_operations += projection__->nbOperations(*joint, del_one_var);
 
       // compute the table resulting from marginalizing out del_var from joint
       Sequence< const DiscreteVariable* >* marginal;
@@ -530,16 +527,16 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for (const auto ptrSeq : tables_to_combine) {
+      for (const auto ptrSeq: tables_to_combine) {
         const Sequence< const DiscreteVariable* >& table_vars = *ptrSeq;
         const Size tab_vars_size = table_vars.size();
- 
+
         for (Size i = 0; i < tab_vars_size; ++i) {
           if (del_vars.contains(table_vars[i])) {
             // ok, here we have a variable that needed to be removed => update
             // product_size, tables_per_var and tables_vars_per_var
             HashTable< const DiscreteVariable*, unsigned int >&
-                  table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
+                   table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
             double div_size = 1.0;
 
             for (Size j = 0; j < tab_vars_size; ++j) {
@@ -569,7 +566,7 @@ namespace gum {
       tables_per_var.erase(del_var);
 
       // add the new projected marginal to the list of TABLES
-      for (const auto mvar : *marginal) {
+      for (const auto mvar: *marginal) {
         if (del_vars.contains(mvar)) {
           // add the new marginal table to the set of tables of var i
           tables_per_var[mvar].insert(marginal);
@@ -579,12 +576,12 @@ namespace gum {
              tables_vars_per_var[mvar];
           double mult_size = 1.0;
 
-          for (const auto var : *marginal) {
+          for (const auto var: *marginal) {
             try {
               ++iter_vars[var];
             } catch (const NotFound&) {
               iter_vars.insert(var, 1);
-              mult_size *= (double) var->domainSize();
+              mult_size *= (double)var->domainSize();
             }
           }
 
@@ -599,8 +596,7 @@ namespace gum {
     }
 
     // here, tmp_marginals contains all the newly created tables
-    for (auto iter = tmp_marginals.beginSafe();
-         iter != tmp_marginals.endSafe();
+    for (auto iter = tmp_marginals.beginSafe(); iter != tmp_marginals.endSafe();
          ++iter) {
       delete *iter;
     }
@@ -617,7 +613,7 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
-    for (const auto ptrTab : set) {
+    for (const auto ptrTab: set) {
       var_set << &(ptrTab->variablesSequence());
     }
 
@@ -647,8 +643,8 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set< const DiscreteVariable* > all_vars;
 
-      for ( const auto ptrSeq : table_set) {
-        for (const auto ptrVar : *ptrSeq) {
+      for (const auto ptrSeq: table_set) {
+        for (const auto ptrVar: *ptrSeq) {
           all_vars.insert(ptrVar);
         }
       }
@@ -675,25 +671,25 @@ namespace gum {
          table_set.size());
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
-      for (const auto ptrVar : del_vars) {
+      for (const auto ptrVar: del_vars) {
         tables_per_var.insert(ptrVar, empty_set);
         tables_vars_per_var.insert(ptrVar, empty_hash);
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for (const auto ptrSeq : table_set) {
+      for (const auto ptrSeq: table_set) {
         const Sequence< const DiscreteVariable* >& vars = *ptrSeq;
 
-        for (const auto ptrVar : vars) {
+        for (const auto ptrVar: vars) {
           if (del_vars.contains(ptrVar)) {
             // add the table's variables to the set of those related to ptrVar
             tables_per_var[ptrVar].insert(ptrSeq);
-            
+
             // add the variables of the table to tables_vars_per_var[ptrVar]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
                tables_vars_per_var[ptrVar];
 
-            for (const auto xptrVar : vars) {
+            for (const auto xptrVar: vars) {
               try {
                 ++iter_vars[xptrVar];
               } catch (const NotFound&) { iter_vars.insert(xptrVar, 1); }
@@ -707,14 +703,14 @@ namespace gum {
     PriorityQueue< const DiscreteVariable*, double > product_size;
 
     // initialize properly product_size
-    for (const auto& elt : tables_vars_per_var) {
-      double     size     = 1.0;
-      const auto ptrVar   = elt.first;
-      const auto hashvars = elt.second; // HashTable<DiscreteVariable*, int>
-      
+    for (const auto& elt: tables_vars_per_var) {
+      double     size = 1.0;
+      const auto ptrVar = elt.first;
+      const auto hashvars = elt.second;   // HashTable<DiscreteVariable*, int>
+
       if (hashvars.size()) {
-        for (const auto& xelt : hashvars) {
-          size *= (double) xelt.first->domainSize();
+        for (const auto& xelt: hashvars) {
+          size *= (double)xelt.first->domainSize();
         }
 
         product_size.insert(ptrVar, size);
@@ -760,8 +756,8 @@ namespace gum {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence< const DiscreteVariable* >;
 
-        for (const auto ptrSeq : tables_to_combine) {
-          for (const auto ptrVar : *ptrSeq) {
+        for (const auto ptrSeq: tables_to_combine) {
+          for (const auto ptrVar: *ptrSeq) {
             if (!joint->exists(ptrVar)) { joint->insert(ptrVar); }
           }
         }
@@ -770,7 +766,7 @@ namespace gum {
 
         // update the number of operations performed
         std::pair< long, long > comb_memory =
-           __combination->memoryUsage(tables_to_combine);
+           combination__->memoryUsage(tables_to_combine);
 
         if ((std::numeric_limits< long >::max() - current_memory
              < comb_memory.first)
@@ -791,7 +787,7 @@ namespace gum {
       del_one_var << del_var;
 
       std::pair< long, long > comb_memory =
-         __projection->memoryUsage(*joint, del_one_var);
+         projection__->memoryUsage(*joint, del_one_var);
 
       if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
           || (std::numeric_limits< long >::max() - current_memory
@@ -822,16 +818,16 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for (const auto ptrSeq : tables_to_combine) {
+      for (const auto ptrSeq: tables_to_combine) {
         const Sequence< const DiscreteVariable* >& table_vars = *ptrSeq;
         const Size tab_vars_size = table_vars.size();
- 
+
         for (Size i = 0; i < tab_vars_size; ++i) {
           if (del_vars.contains(table_vars[i])) {
             // ok, here we have a variable that needed to be removed => update
             // product_size, tables_per_var and tables_vars_per_var
             HashTable< const DiscreteVariable*, unsigned int >&
-                  table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
+                   table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
             double div_size = 1.0;
 
             for (Size j = 0; j < tab_vars_size; ++j) {
@@ -855,7 +851,7 @@ namespace gum {
         if (tmp_marginals.contains(ptrSeq)) {
           Size del_size = 1;
 
-          for (const auto ptrVar : *ptrSeq) {
+          for (const auto ptrVar: *ptrSeq) {
             del_size *= ptrVar->domainSize();
           }
 
@@ -869,7 +865,7 @@ namespace gum {
       tables_per_var.erase(del_var);
 
       // add the new projected marginal to the list of TABLES
-      for (const auto mvar : *marginal) {
+      for (const auto mvar: *marginal) {
         if (del_vars.contains(mvar)) {
           // add the new marginal table to the set of tables of var i
           tables_per_var[mvar].insert(marginal);
@@ -879,12 +875,12 @@ namespace gum {
              tables_vars_per_var[mvar];
           double mult_size = 1.0;
 
-          for (const auto var : *marginal) {
+          for (const auto var: *marginal) {
             try {
               ++iter_vars[var];
             } catch (const NotFound&) {
               iter_vars.insert(var, 1);
-              mult_size *= (double) var->domainSize();
+              mult_size *= (double)var->domainSize();
             }
           }
 
@@ -899,8 +895,7 @@ namespace gum {
     }
 
     // here, tmp_marginals contains all the newly created tables
-    for (auto iter = tmp_marginals.beginSafe();
-         iter != tmp_marginals.endSafe();
+    for (auto iter = tmp_marginals.beginSafe(); iter != tmp_marginals.endSafe();
          ++iter) {
       delete *iter;
     }
@@ -918,7 +913,7 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
-    for (const auto ptrTab : set) {
+    for (const auto ptrTab: set) {
       var_set << &(ptrTab->variablesSequence());
     }
 

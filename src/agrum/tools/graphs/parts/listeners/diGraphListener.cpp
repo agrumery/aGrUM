@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief source file for virtual Base classes for oriented graphs listener
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
@@ -50,13 +50,13 @@ namespace gum {
     }
 
     GUM_CONSTRUCTOR(DiGraphListener);
-    _graph = const_cast< DiGraph* >(g);
+    graph_ = const_cast< DiGraph* >(g);
 
-    GUM_CONNECT((*_graph), onNodeAdded, (*this), DiGraphListener::whenNodeAdded);
+    GUM_CONNECT((*graph_), onNodeAdded, (*this), DiGraphListener::whenNodeAdded);
     GUM_CONNECT(
-       (*_graph), onNodeDeleted, (*this), DiGraphListener::whenNodeDeleted);
-    GUM_CONNECT((*_graph), onArcAdded, (*this), DiGraphListener::whenArcAdded);
-    GUM_CONNECT((*_graph), onArcDeleted, (*this), DiGraphListener::whenArcDeleted);
+       (*graph_), onNodeDeleted, (*this), DiGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onArcAdded, (*this), DiGraphListener::whenArcAdded);
+    GUM_CONNECT((*graph_), onArcDeleted, (*this), DiGraphListener::whenArcDeleted);
   }
 
   DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR(DiGraphListener); }

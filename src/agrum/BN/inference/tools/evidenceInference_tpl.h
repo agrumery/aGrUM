@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -36,8 +36,8 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
-    if (this->__bn == nullptr) {
-      BayesNetInference< GUM_SCALAR >::__setBayesNetDuringConstruction(bn);
+    if (this->bn__ == nullptr) {
+      BayesNetInference< GUM_SCALAR >::setBayesNetDuringConstruction__(bn);
     }
 
     GUM_CONSTRUCTOR(EvidenceInference);

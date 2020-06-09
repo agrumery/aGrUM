@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a Combination operator class used for scheduling inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SCHEDULE_COMBINE_H
 #define GUM_SCHEDULE_COMBINE_H
@@ -130,23 +130,23 @@ namespace gum {
 
     private:
     /// the first table to combine
-    ScheduleMultiDim< GUM_SCALAR > __table1;
+    ScheduleMultiDim< GUM_SCALAR > table1__;
 
     /// the second table to combine with
-    ScheduleMultiDim< GUM_SCALAR > __table2;
+    ScheduleMultiDim< GUM_SCALAR > table2__;
 
     /// the result of the operation
     /** the result is allocated and deallocated by ScheduleCombine */
-    ScheduleMultiDim< GUM_SCALAR >* __result;
+    ScheduleMultiDim< GUM_SCALAR >* result__;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __args;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __results;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* results__;
 
     /// the function actually used to perform the combination
-    MultiDimImplementation< GUM_SCALAR >* (*__combine)(
+    MultiDimImplementation< GUM_SCALAR >* (*combine__)(
        const MultiDimImplementation< GUM_SCALAR >&,
        const MultiDimImplementation< GUM_SCALAR >&);
   };

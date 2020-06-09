@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A class to combine efficiently several ScheduleMultiDims
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -42,7 +42,7 @@ namespace gum {
         const MultiDimImplementation< GUM_SCALAR >&,
         const MultiDimImplementation< GUM_SCALAR >&)) :
       ScheduleCombination< GUM_SCALAR >(),
-      _combine(combine) {
+      combine_(combine) {
     /// for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCombinationBasic);
   }
@@ -52,7 +52,7 @@ namespace gum {
   ScheduleCombinationBasic< GUM_SCALAR >::ScheduleCombinationBasic(
      const ScheduleCombinationBasic< GUM_SCALAR >& from) :
       ScheduleCombination< GUM_SCALAR >(from),
-      _combine(from._combine) {
+      combine_(from.combine_) {
     /// for debugging purposes
     GUM_CONS_CPY(ScheduleCombinationBasic);
   }
@@ -77,7 +77,7 @@ namespace gum {
      MultiDimImplementation< GUM_SCALAR >* (*combine)(
         const MultiDimImplementation< GUM_SCALAR >&,
         const MultiDimImplementation< GUM_SCALAR >&)) {
-    _combine = combine;
+    combine_ = combine;
   }
 
   /// returns the combination function currently used by the combinator
@@ -86,13 +86,13 @@ namespace gum {
      *ScheduleCombinationBasic< GUM_SCALAR >::combineFunction())(
      const MultiDimImplementation< GUM_SCALAR >&,
      const MultiDimImplementation< GUM_SCALAR >&) {
-    return _combine;
+    return combine_;
   }
 
   /// returns the domain size of the Cartesian product of the union of all the
   /// variables in seq1 and seq2
   template < typename GUM_SCALAR >
-  Size ScheduleCombinationBasic< GUM_SCALAR >::_combinedSize(
+  Size ScheduleCombinationBasic< GUM_SCALAR >::combinedSize_(
      const Sequence< const DiscreteVariable* >& seq1,
      const Sequence< const DiscreteVariable* >& seq2) const {
     if (seq1.empty() && seq2.empty()) return 0;
@@ -152,7 +152,7 @@ namespace gum {
 
       for (Idx j = i + 1; j < tables.size(); ++j) {
         pair.second = j;
-        queue.insert(pair, _combinedSize(seq1, tables[j]->variablesSequence()));
+        queue.insert(pair, combinedSize_(seq1, tables[j]->variablesSequence()));
       }
     }
 
@@ -170,7 +170,7 @@ namespace gum {
 
       // create the combination that will be performed later on and put it into
       // the schedule
-      ScheduleCombine< GUM_SCALAR > comb(*(tables[ti]), *(tables[tj]), _combine);
+      ScheduleCombine< GUM_SCALAR > comb(*(tables[ti]), *(tables[tj]), combine_);
       NodeId                        comb_id = schedule.insert(comb);
 
       // substitute tables[pair.first] by the result and delete the temporary
@@ -225,7 +225,7 @@ namespace gum {
         for (Idx ind = 0; ind < ti; ++ind) {
           if (tables[ind]) {
             pair.first = ind;
-            newsize = _combinedSize(seq1, tables[ind]->variablesSequence());
+            newsize = combinedSize_(seq1, tables[ind]->variablesSequence());
             queue.setPriority(pair, newsize);
           }
         }
@@ -235,7 +235,7 @@ namespace gum {
         for (Idx ind = ti + 1; ind < tables.size(); ++ind) {
           if (tables[ind]) {
             pair.second = ind;
-            newsize = _combinedSize(seq1, tables[ind]->variablesSequence());
+            newsize = combinedSize_(seq1, tables[ind]->variablesSequence());
             queue.setPriority(pair, newsize);
           }
         }
@@ -311,7 +311,7 @@ namespace gum {
 
       for (Idx j = i + 1; j < tables.size(); ++j) {
         pair.second = j;
-        queue.insert(pair, _combinedSize(*(tables[i]), *(tables[j])));
+        queue.insert(pair, combinedSize_(*(tables[i]), *(tables[j])));
       }
     }
 
@@ -384,7 +384,7 @@ namespace gum {
         for (Idx ind = 0; ind < ti; ++ind) {
           if (tables[ind]) {
             pair.first = ind;
-            newsize = _combinedSize(*new_seq, *(tables[ind]));
+            newsize = combinedSize_(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
           }
         }
@@ -394,7 +394,7 @@ namespace gum {
         for (Idx ind = ti + 1; ind < tables.size(); ++ind) {
           if (tables[ind]) {
             pair.second = ind;
-            newsize = _combinedSize(*new_seq, *(tables[ind]));
+            newsize = combinedSize_(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
           }
         }
@@ -479,7 +479,7 @@ namespace gum {
 
       for (Idx j = i + 1; j < tables.size(); ++j) {
         pair.second = j;
-        queue.insert(pair, _combinedSize(*(tables[i]), *(tables[j])));
+        queue.insert(pair, combinedSize_(*(tables[i]), *(tables[j])));
       }
     }
 
@@ -573,7 +573,7 @@ namespace gum {
         for (Idx ind = 0; ind < ti; ++ind) {
           if (tables[ind]) {
             pair.first = ind;
-            newsize = _combinedSize(*new_seq, *(tables[ind]));
+            newsize = combinedSize_(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
           }
         }
@@ -583,7 +583,7 @@ namespace gum {
         for (Idx ind = ti + 1; ind < tables.size(); ++ind) {
           if (tables[ind]) {
             pair.second = ind;
-            newsize = _combinedSize(*new_seq, *(tables[ind]));
+            newsize = combinedSize_(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
           }
         }

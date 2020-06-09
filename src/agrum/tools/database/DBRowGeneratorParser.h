@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,7 @@
 /** @file
  * @brief The class for parsing DatabaseTable rows and generating output rows
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_ROW_GENERATOR_PARSER_H
 #define GUM_LEARNING_DB_ROW_GENERATOR_PARSER_H
@@ -277,13 +277,13 @@ namespace gum {
     private:
       
       /// the handler that is really used to parse the database
-      typename DatabaseTable<ALLOC>::Handler __handler;
+      typename DatabaseTable<ALLOC>::Handler handler__;
 
       /// the set of DBRow generators (might be empty)
-      DBRowGeneratorSet<ALLOC> __generator_set;
+      DBRowGeneratorSet<ALLOC> generator_set__;
 
       /// the size of the generator set
-      std::size_t __generator_size;
+      std::size_t generator_size__;
 
     };
 

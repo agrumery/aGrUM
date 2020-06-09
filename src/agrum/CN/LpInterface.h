@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * @file
  * @brief Class representing a polytope ( credal set ) by a set of linear
  * constraints
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <iostream>
@@ -56,7 +56,7 @@ namespace gum {
        * i.e. a
        * dimension of the problem.
        * @ingroup cn_group
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
        */
       class LpCol {
         public:
@@ -160,7 +160,7 @@ namespace gum {
         protected:
         private:
         /** @brief %Variable id. */
-        unsigned int __id;
+        unsigned int id__;
       };
 
     }   // end of namespace lp
@@ -205,7 +205,7 @@ namespace gum {
        * @class LpExpr
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a linear expression.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
        */
       class LpExpr {
         friend class LpRow;
@@ -412,35 +412,35 @@ namespace gum {
         /** @brief \c True if this expression has a non-empty left side L : L <=
          * M <=
          * R . \c False otherwise. */
-        bool __ileft;
+        bool ileft__;
         /** @brief \c True if this expression has a non-empty middle side M (
          * the
          * default ) : L <= M <= R . \c False otherwise. */
-        bool __imiddle;
+        bool imiddle__;
         /** @brief \c True if this expression has a non-empty right side R : L
          * <= M
          * <= R . \c False otherwise. */
-        bool __iright;
+        bool iright__;
 
         /** @brief The constant on the left side L : L <= M <= R */
-        double __lValue;
+        double lValue__;
         /** @brief The constant on the middle side L : L <= M <= R */
-        double __mValue;
+        double mValue__;
         /** @brief The constant on the right side L : L <= M <= R */
-        double __rValue;
+        double rValue__;
 
         /** @brief The coefficients of each variable on the left side L : L <= M
          * <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* __lCoeffs;
+        HashTable< LpCol, double >* lCoeffs__;
         /** @brief The coefficients of each variable on the middle side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* __mCoeffs;
+        HashTable< LpCol, double >* mCoeffs__;
         /** @brief The coefficients of each variable on the right side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* __rCoeffs;
+        HashTable< LpCol, double >* rCoeffs__;
 
         /// @name Used by static method LpExpr::LessThan<T1,T2> and by operator
         /// <=
@@ -454,7 +454,7 @@ namespace gum {
          * on
          * the first empty side met, starting at left.
          */
-        inline void __addSide(const LpCol& from);
+        inline void addSide__(const LpCol& from);
 
         /**
          * @brief Copy an expression to a side of the calling expression, from
@@ -464,7 +464,7 @@ namespace gum {
          * copy
          * on the first empty side met, starting at left.
          */
-        inline void __addSide(const LpExpr& from);
+        inline void addSide__(const LpExpr& from);
 
         /**
          * @brief Move an expression to a side of the calling expression, from
@@ -474,7 +474,7 @@ namespace gum {
          * side
          * met, starting at left.
          */
-        inline void __addSide(LpExpr&& from);
+        inline void addSide__(LpExpr&& from);
 
         /**
          * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L
@@ -486,7 +486,7 @@ namespace gum {
          * first empty side met, starting at left.
          */
         template < typename SCALAR >
-        inline void __addSide(const SCALAR& from);
+        inline void addSide__(const SCALAR& from);
 
         /// @}
       };
@@ -496,7 +496,7 @@ namespace gum {
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a row of the linear program, i.e. an
        * inequality.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
        */
       class LpRow {
         template < typename GUM_SCALAR >
@@ -586,11 +586,11 @@ namespace gum {
         protected:
         private:
         /** @brief The constant of the linear inequality. */
-        double __cste;
+        double cste__;
 
         /** @brief The coefficients of the variables of the linear inequality.
          */
-        HashTable< LpCol, double >* __coeffs;
+        HashTable< LpCol, double >* coeffs__;
 
       };   // end of class LpRow
 
@@ -598,7 +598,7 @@ namespace gum {
        * @class LpInterface
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a linear program.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
        */
       template < typename GUM_SCALAR >
       class LpInterface {
@@ -749,16 +749,16 @@ namespace gum {
         protected:
         private:
         /** @brief Rows of the problem. */
-        std::vector< LpRow* > __rows;
+        std::vector< LpRow* > rows__;
         /** @brief %Variables of the problem. */
-        std::vector< LpCol > __cols;
+        std::vector< LpCol > cols__;
 
         /** @brief \c true if addPositivity() has been called, \c false
          * otherwise. */
-        bool __positivity;
+        bool positivity__;
         /** @brief \c true if addSumIsOne() has been called, \c false otherwise.
          */
-        bool __sumIsOne;
+        bool sumIsOne__;
 
       };   // end of class LpInterface
 

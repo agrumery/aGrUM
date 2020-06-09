@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Source implementation of the class building the Markov Blanket from a
  * DAGmodel and a node (id or name)
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -35,33 +35,33 @@
 
 namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) :
-      __model(m), __node(id) {
+      model__(m), node__(id) {
     if (level < 1)
       GUM_ERROR(InvalidArgument, "Argument level(=" << level << ") must be >0.")
 
     NodeSet done;
-    __buildMarkovBlanket(__node);
-    done.insert(__node);
+    buildMarkovBlanket__(node__);
+    done.insert(node__);
 
     while (level > 1) {
       level--;
-      auto todo = __mb.nodes().asNodeSet() - done;
+      auto todo = mb__.nodes().asNodeSet() - done;
       bool anythingnew = false;
       for (NodeId n: todo) {
         done.insert(n);
-        if (__buildMarkovBlanket(n)) anythingnew = true;
+        if (buildMarkovBlanket__(n)) anythingnew = true;
       }
       if (!anythingnew) break;
     }
 
-    // we add now some arcs that are between the nodes in __mb but are not part of
+    // we add now some arcs that are between the nodes in mb__ but are not part of
     // the last ones.
     // For instance, an arc between a parent and a parent of children
-    for (const auto node: __mb.nodes()) {
-      for (const auto child: __model.children(node)) {
-        if (__mb.existsNode(child) && !__mb.existsArc(Arc(node, child))) {
-          __mb.addArc(node, child);
-          __specialArcs.insert(Arc(node, child));
+    for (const auto node: mb__.nodes()) {
+      for (const auto child: model__.children(node)) {
+        if (mb__.existsNode(child) && !mb__.existsArc(Arc(node, child))) {
+          mb__.addArc(node, child);
+          specialArcs__.insert(Arc(node, child));
         }
       }
     }
@@ -74,37 +74,37 @@ namespace gum {
 
   MarkovBlanket::~MarkovBlanket() {}
 
-  bool MarkovBlanket::__buildMarkovBlanket(const NodeId node) {
+  bool MarkovBlanket::buildMarkovBlanket__(const NodeId node) {
     bool change = false;
-    if (!__model.nodes().exists(node))
+    if (!model__.nodes().exists(node))
       GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.");
 
-    if (!__mb.nodes().exists(node)) {
-      __mb.addNodeWithId(node);
+    if (!mb__.nodes().exists(node)) {
+      mb__.addNodeWithId(node);
       change = true;
     }
 
-    for (const auto& parent: __model.parents(node)) {
-      if (!__mb.nodes().exists(parent)) {
-        __mb.addNodeWithId(parent);
+    for (const auto& parent: model__.parents(node)) {
+      if (!mb__.nodes().exists(parent)) {
+        mb__.addNodeWithId(parent);
         change = true;
       }
-      __mb.addArc(parent, node);
+      mb__.addArc(parent, node);
     }
 
-    for (const auto& child: __model.children(node)) {
-      if (!__mb.nodes().exists(child)) {
-        __mb.addNodeWithId(child);
+    for (const auto& child: model__.children(node)) {
+      if (!mb__.nodes().exists(child)) {
+        mb__.addNodeWithId(child);
         change = true;
       }
-      __mb.addArc(node, child);
-      for (const auto& opar: __model.parents(child)) {
+      mb__.addArc(node, child);
+      for (const auto& opar: model__.parents(child)) {
         if (opar != node) {
-          if (!__mb.nodes().exists(opar)) {
-            __mb.addNodeWithId(opar);
+          if (!mb__.nodes().exists(opar)) {
+            mb__.addNodeWithId(opar);
             change = true;
           }
-          __mb.addArc(opar, child);
+          mb__.addArc(opar, child);
         }
       }
     }
@@ -119,14 +119,14 @@ namespace gum {
 
     for (const auto& nid: nodes()) {
       try {
-        other.idFromName(__model.variable(nid).name());
+        other.idFromName(model__.variable(nid).name());
       } catch (NotFound) { return false; }
     }
 
     for (const auto& arc: arcs()) {
       if (!other.arcs().exists(
-             Arc(other.idFromName(__model.variable(arc.tail()).name()),
-                 other.idFromName(__model.variable(arc.head()).name()))))
+             Arc(other.idFromName(model__.variable(arc.tail()).name()),
+                 other.idFromName(model__.variable(arc.head()).name()))))
         return false;
     }
 
@@ -143,15 +143,15 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node: __mb.nodes()) {
-      nodeStream << tab << node << "[label=\"" << __model.variable(node).name()
+    for (const auto node: mb__.nodes()) {
+      nodeStream << tab << node << "[label=\"" << model__.variable(node).name()
                  << "\"";
-      if (node == __node) { nodeStream << ", color=red"; }
+      if (node == node__) { nodeStream << ", color=red"; }
       nodeStream << "];" << std::endl;
 
-      for (const auto chi: __mb.children(node)) {
+      for (const auto chi: mb__.children(node)) {
         arcStream << tab << node << " -> " << chi;
-        if (__specialArcs.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
+        if (specialArcs__.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
         arcStream << ";" << std::endl;
       }
     }

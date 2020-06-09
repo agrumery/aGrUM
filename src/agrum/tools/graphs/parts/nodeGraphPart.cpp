@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of nodes sets
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
@@ -36,69 +36,69 @@ namespace gum {
 
   ///////////////////// NodeGraphPart
   NodeGraphPart::NodeGraphPart(Size holes_size, bool holes_resize_policy) :
-      __holes_size(holes_size), __holes_resize_policy(holes_resize_policy),
-      __endIteratorSafe(*this), __boundVal(0) {
-    __holes = nullptr;
+      holes_size__(holes_size), holes_resize_policy__(holes_resize_policy),
+      endIteratorSafe__(*this), boundVal__(0) {
+    holes__ = nullptr;
     GUM_CONSTRUCTOR(NodeGraphPart);
-    __updateEndIteratorSafe();
+    updateEndIteratorSafe__();
   }
 
   NodeGraphPart::NodeGraphPart(const NodeGraphPart& s) :
-      __holes_size(s.__holes_size), __holes_resize_policy(s.__holes_resize_policy),
-      __endIteratorSafe(*this), __boundVal(s.__boundVal) {
-    __holes = nullptr;
+      holes_size__(s.holes_size__), holes_resize_policy__(s.holes_resize_policy__),
+      endIteratorSafe__(*this), boundVal__(s.boundVal__) {
+    holes__ = nullptr;
 
-    if (s.__holes) __holes = new NodeSet(*s.__holes);
+    if (s.holes__) holes__ = new NodeSet(*s.holes__);
 
-    __updateEndIteratorSafe();
+    updateEndIteratorSafe__();
 
     GUM_CONS_CPY(NodeGraphPart);
   }
 
   NodeGraphPart::~NodeGraphPart() {
-    if (__holes) delete __holes;
+    if (holes__) delete holes__;
 
     GUM_DESTRUCTOR(NodeGraphPart);
   }
 
   void NodeGraphPart::populateNodes(const NodeGraphPart& s) {
     clear();   // "virtual" flush of the nodes set
-    __holes_size = s.__holes_size;
-    __holes_resize_policy = s.__holes_resize_policy;
+    holes_size__ = s.holes_size__;
+    holes_resize_policy__ = s.holes_resize_policy__;
 
-    if (s.__holes) __holes = new NodeSet(*s.__holes);
+    if (s.holes__) holes__ = new NodeSet(*s.holes__);
 
-    __boundVal = s.__boundVal;
+    boundVal__ = s.boundVal__;
 
-    __updateEndIteratorSafe();
+    updateEndIteratorSafe__();
   }
 
   // id is assumed to belong to NodeGraphPart
-  void NodeGraphPart::__addHole(NodeId node) {
+  void NodeGraphPart::addHole__(NodeId node) {
     // we assume that the node exists
-    if (node + 1 == __boundVal) {
+    if (node + 1 == boundVal__) {
       // we remove the max : no new hole and maybe a bunch of holes to remove
-      --__boundVal;
+      --boundVal__;
 
-      if (__holes) {
-        while (__holes->contains(__boundVal - 1)) {
+      if (holes__) {
+        while (holes__->contains(boundVal__ - 1)) {
           // a bunch of holes to remove. We do not use inHoles for optimisation
           // :
-          // not to repeat the test if (__holes) each time
-          __holes->erase(--__boundVal);
+          // not to repeat the test if (holes__) each time
+          holes__->erase(--boundVal__);
         }
 
-        if (__holes->empty()) {
-          delete __holes;
-          __holes = nullptr;
+        if (holes__->empty()) {
+          delete holes__;
+          holes__ = nullptr;
         }
       }
 
-      __updateEndIteratorSafe();
+      updateEndIteratorSafe__();
     } else {
-      if (!__holes) __holes = new NodeSet(__holes_size, __holes_resize_policy);
+      if (!holes__) holes__ = new NodeSet(holes_size__, holes_resize_policy__);
 
-      __holes->insert(node);
+      holes__->insert(node);
     }
   }
 
@@ -107,8 +107,8 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (NodeId id = 0; id < __boundVal; ++id) {
-      if (__inHoles(id)) continue;
+    for (NodeId id = 0; id < boundVal__; ++id) {
+      if (inHoles__(id)) continue;
 
       if (first) {
         first = false;
@@ -130,20 +130,20 @@ namespace gum {
   }
 
   void NodeGraphPart::addNodeWithId(const NodeId id) {
-    if (id >= __boundVal) {
-      if (id > __boundVal) {   // we have to add holes
-        if (!__holes) __holes = new NodeSet(__holes_size, __holes_resize_policy);
+    if (id >= boundVal__) {
+      if (id > boundVal__) {   // we have to add holes
+        if (!holes__) holes__ = new NodeSet(holes_size__, holes_resize_policy__);
 
-        for (NodeId i = __boundVal; i < id; ++i)
-          __holes->insert(i);
+        for (NodeId i = boundVal__; i < id; ++i)
+          holes__->insert(i);
       }
 
-      __boundVal = id + 1;
+      boundVal__ = id + 1;
 
-      __updateEndIteratorSafe();
+      updateEndIteratorSafe__();
     } else {
-      if (__inHoles(id)) {   // we fill a hole
-        __eraseHole(id);
+      if (inHoles__(id)) {   // we fill a hole
+        eraseHole__(id);
       } else {
         GUM_ERROR(DuplicateElement, "Id " << id << " is already used");
       }
@@ -152,30 +152,30 @@ namespace gum {
     GUM_EMIT1(onNodeAdded, id);
   }
 
-  void NodeGraphPart::__clearNodes() {
-    NodeId bound = __boundVal;
-    __boundVal = 0;
+  void NodeGraphPart::clearNodes__() {
+    NodeId bound = boundVal__;
+    boundVal__ = 0;
 
     if (onNodeDeleted.hasListener()) {
       for (NodeId n = 0; n < bound; ++n) {
-        if (!__inHoles(n)) GUM_EMIT1(onNodeDeleted, n);
+        if (!inHoles__(n)) GUM_EMIT1(onNodeDeleted, n);
       }
     }
 
-    __updateEndIteratorSafe();
+    updateEndIteratorSafe__();
 
-    delete (__holes);
-    __holes = nullptr;
+    delete (holes__);
+    holes__ = nullptr;
   }
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {
-    if (id == _pos) {   // we just deleted the _pos in NodeGraphPart
-      _valid = false;
+    if (id == pos_) {   // we just deleted the pos_ in NodeGraphPart
+      valid_ = false;
     }
 
-    if (_pos >= _nodes->bound()) {   // moreover, it was the last position
-      _pos = _nodes->bound();
-      _valid = false;
+    if (pos_ >= nodes_->bound()) {   // moreover, it was the last position
+      pos_ = nodes_->bound();
+      valid_ = false;
     }
   }
 

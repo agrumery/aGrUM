@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of gumRangeVariable.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/variables/rangeVariable.h>
@@ -43,14 +43,14 @@ namespace gum {
                                long               minVal,
                                long               maxVal) :
       DiscreteVariable(aName, aDesc),
-      __minBound(minVal), __maxBound(maxVal) {
+      minBound__(minVal), maxBound__(maxVal) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
   RangeVariable::RangeVariable(const std::string& aName,
                                const std::string& aDesc) :
       DiscreteVariable(aName, aDesc),
-      __minBound(0), __maxBound(1) {
+      minBound__(0), maxBound__(1) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
@@ -60,8 +60,8 @@ namespace gum {
   // @param aDRV the variable we copy
   // ==========================================================================
   RangeVariable::RangeVariable(const RangeVariable& aDRV) :
-      DiscreteVariable(aDRV), __minBound(aDRV.__minBound),
-      __maxBound(aDRV.__maxBound) {
+      DiscreteVariable(aDRV), minBound__(aDRV.minBound__),
+      maxBound__(aDRV.maxBound__) {
     GUM_CONS_CPY(RangeVariable);
   }
 

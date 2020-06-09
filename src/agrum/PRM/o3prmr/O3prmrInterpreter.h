@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of O3prmInterpreter
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
+ * @author Pierre-Henri WUILLEMIN(@LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
 #ifndef SKOORINTERPRETER_H
@@ -163,7 +163,7 @@ namespace gum {
         void addError(std::string msg);
         void addWarning(std::string msg);
 
-        std::string __readFile(const std::string& file);
+        std::string readFile__(const std::string& file);
 
         O3prmrContext< double >*                m_context;
         gum::prm::o3prm::O3prmReader< double >* m_reader;

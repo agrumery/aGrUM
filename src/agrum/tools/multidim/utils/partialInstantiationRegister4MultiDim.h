@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for PartialInstantiationRegister4MultiDim.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_PARTIAL_INSTANTIATION_REGISTER_4_MULTI_DIM_H
@@ -206,7 +206,7 @@ namespace gum {
      * MultiDimImplementation is associated a function to partially instantiate
      * this subtype of hypermatrix (the PartialInstantiationPtr).
      */
-    HashTable< std::string, PartialInstantiationSet* > __set;
+    HashTable< std::string, PartialInstantiationSet* > set__;
   };
 
   /// A function to more easily register new instantiation functions in

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief class for packing sets of generators
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_SET_H
 #define GUM_LEARNING_DBROW_GENERATOR_SET_H
@@ -291,13 +291,13 @@ namespace gum {
       private:
       // the vector of all the generators
       std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > >
-         __generators;
+         generators__;
 
       // the number of generators
-      std::size_t __nb_generators{std::size_t(0)};
+      std::size_t nb_generators__{std::size_t(0)};
 
       // the next output row to return when method generate is called
-      const DBRow< DBTranslatedValue, ALLOC >* __output_row{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* output_row__{nullptr};
 
       // the generation of output rows can be viewed as the traversal of a
       // tree: each node of the tree correspond to the input row received by
@@ -318,7 +318,7 @@ namespace gum {
       // discrimination: when its cells equal 0, we need to call setInputDBrow()
       // first, else when they equal 1, we just need to call the generate()
       // method.
-      std::vector< int, ALLOC< int > > __setInputRow_performed;
+      std::vector< int, ALLOC< int > > setInputRow_performed__;
 
 
       /// parse the row generation tree to produce a new row
@@ -327,7 +327,7 @@ namespace gum {
        * we call this method, passing in argument the input_row
        * @param i indicate the generator from which we start the traversal
        */
-      bool __produceNextRow(const DBRow< DBTranslatedValue, ALLOC >* input_row,
+      bool produceNextRow__(const DBRow< DBTranslatedValue, ALLOC >* input_row,
                             std::size_t                              i);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

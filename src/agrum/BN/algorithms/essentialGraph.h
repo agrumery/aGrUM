@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class building the essential Graph from a DAGmodel
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_ESSENTIALGRAPH_H
@@ -103,11 +103,11 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     private:
-    void __buildEssentialGraph();
-    bool __strongly_protected(NodeId a, NodeId b);
+    void buildEssentialGraph__();
+    bool strongly_protected__(NodeId a, NodeId b);
 
-    const DAGmodel* __dagmodel;
-    MixedGraph      __mg;
+    const DAGmodel* dagmodel__;
+    MixedGraph      mg__;
   };
 }   // namespace gum
 

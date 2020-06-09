@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ between 0 and 100
  * @endcode
  *
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_BIF_XML_BN_READER_H
 #define GUM_BIF_XML_BN_READER_H
@@ -132,23 +132,23 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void __parsingVariables(ticpp::Element* parentNetwork);
+    void parsingVariables__(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void __fillingBN(ticpp::Element* parentNetwork);
+    void fillingBN__(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the bayes net in which will be load the content of the xml
      * filePath
      */
-    BayesNet< GUM_SCALAR >* __bn;
+    BayesNet< GUM_SCALAR >* bn__;
 
     /**
      * the path to the xml filePath
      */
-    std::string __filePath;
+    std::string filePath__;
   };
 
 

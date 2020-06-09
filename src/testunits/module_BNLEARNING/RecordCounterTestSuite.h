@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ namespace gum_tests {
 
   class RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
-    gum::Potential< double > __infer(
+    gum::Potential< double > infer__(
        const gum::BayesNet< double >&                                  bn,
        const std::vector< std::size_t >&                               targets,
        const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
@@ -103,7 +103,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter(parser);
 
       gum::learning::IdCondSet<> ids(0, std::vector< gum::NodeId >{2, 1}, true);
-      std::vector< double >  counts = counter.counts(ids);
+      std::vector< double >      counts = counter.counts(ids);
 
       TS_ASSERT(counts.size() == std::size_t(27));
       TS_ASSERT(counts[0] == double(200));    // A=0, C=0, B=0
@@ -323,7 +323,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter(parser, ranges, nodeId2columns);
 
       gum::learning::IdCondSet<> ids(5, std::vector< gum::NodeId >{0, 3}, true);
-      std::vector< double >  counts = counter.counts(ids);
+      std::vector< double >      counts = counter.counts(ids);
       TS_ASSERT(counts.size() == std::size_t(27));
       TS_ASSERT(counts[0] == double(200));    // A=0, C=0, B=0
       TS_ASSERT(counts[1] == double(75));     // A=1, C=0, B=0
@@ -562,7 +562,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter(parser, ranges, nodeId2columns);
 
       gum::learning::IdCondSet<> ids(4, std::vector< gum::NodeId >{0, 3}, true);
-      std::vector< double >  counts = counter.counts(ids);
+      std::vector< double >      counts = counter.counts(ids);
       TS_ASSERT(counts.size() == std::size_t(27));
       TS_ASSERT(counts[0] == double(200));    // A=0, C=0, B=0
       TS_ASSERT(counts[1] == double(75));     // A=1, C=0, B=0
@@ -639,7 +639,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter(parser, ranges);
 
       gum::learning::IdCondSet<> ids(0, std::vector< gum::NodeId >{2, 1}, true);
-      std::vector< double >  counts = counter.counts(ids);
+      std::vector< double >      counts = counter.counts(ids);
 
       TS_ASSERT(counts.size() == std::size_t(27));
       TS_ASSERT(counts[9] == double(200));   // A=0, C=1, B=0
@@ -854,7 +854,7 @@ namespace gum_tests {
         counter.setMaxNbThreads(i);
 
         gum::learning::IdCondSet<> ids(0, std::vector< gum::NodeId >{2, 1}, true);
-        std::vector< double >  counts = counter.counts(ids);
+        std::vector< double >      counts = counter.counts(ids);
 
         TS_ASSERT(counts.size() == std::size_t(27));
         TS_ASSERT(counts[9] == double(200));   // A=0, C=1, B=0
@@ -1101,7 +1101,7 @@ namespace gum_tests {
       int                   nb_row = 0;
       for (const auto& row: database) {
         gum::Potential< double > proba =
-           __infer(bn, {std::size_t(0), std::size_t(1)}, row);
+           infer__(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

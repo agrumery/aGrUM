@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -82,9 +82,11 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
-      gum::learning::IdCondSet<> idset1(node0, cond_empty);                 // #3,#0
-      gum::learning::IdCondSet<> idset2(node0, node1, cond_empty, true);    // #12,#0
-      gum::learning::IdCondSet<> idset3(node1, node0, cond1, true, true);   // #576,#48
+      gum::learning::IdCondSet<> idset1(node0, cond_empty);   // #3,#0
+      gum::learning::IdCondSet<> idset2(
+         node0, node1, cond_empty, true);   // #12,#0
+      gum::learning::IdCondSet<> idset3(
+         node1, node0, cond1, true, true);   // #576,#48
 
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
@@ -385,9 +387,11 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
-      gum::learning::IdCondSet<> idset1(node0, cond_empty);                 // #4,#0
-      gum::learning::IdCondSet<> idset2(node0, node1, cond_empty, true);    // #16,#0
-      gum::learning::IdCondSet<> idset3(node1, node0, cond1, true, true);   // #576,#36
+      gum::learning::IdCondSet<> idset1(node0, cond_empty);   // #4,#0
+      gum::learning::IdCondSet<> idset2(
+         node0, node1, cond_empty, true);   // #16,#0
+      gum::learning::IdCondSet<> idset3(
+         node1, node0, cond1, true, true);   // #576,#36
 
       std::vector< double > vect(4, 1.0);
       apriori.addAllApriori(idset1, vect);

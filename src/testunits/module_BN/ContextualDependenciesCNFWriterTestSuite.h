@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -110,8 +110,8 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter< double > writer;
-      std::string                                    file =
-         GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
+      std::string                                    file = GET_RESSOURCES_PATH(
+         "outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 

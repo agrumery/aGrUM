@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@
  * @brief The class for initializing DatabaseTable and RawDatabaseTable
  * instances from SQL databases
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifdef _ODBC
+#ifdef ODBC_
 #  include <clocale>
 
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -42,7 +42,7 @@ namespace gum {
 
     /// perform a connection from a connection string
     template < template < typename > class ALLOC >
-    void DBInitializerFromSQL< ALLOC >::__connect(
+    void DBInitializerFromSQL< ALLOC >::connect__(
        const std::string& connection_string, long timeout) {
       // analyze the connection string: either this is a user-defined connection
       // string or this is an aGrUM-constructed one derived from a datasource,
@@ -52,7 +52,7 @@ namespace gum {
 
       // perform the connection to the database
       if (!agrum_connection) {
-        __connection.connect(connection_string, timeout);
+        connection__.connect(connection_string, timeout);
       } else {
         std::size_t       deb_index, end_index;
         const std::string delimiter = "|";
@@ -99,7 +99,7 @@ namespace gum {
         std::string password =
            connection_string.substr(deb_index, end_index - deb_index);
 
-        __connection.connect(dataSource, login, password, timeout);
+        connection__.connect(dataSource, login, password, timeout);
       }
     }
 
@@ -112,25 +112,25 @@ namespace gum {
        long               timeout,
        const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         IDBInitializer< ALLOC >(IDBInitializer< ALLOC >::InputType::STRING, alloc),
-        __connection_string(connection_string), __query(query), __timeout(timeout),
-        __var_names(alloc), __parser(alloc) {
+        connection_string__(connection_string), query__(query), timeout__(timeout),
+        var_names__(alloc), parser__(alloc) {
       // save the current locale because the connection to the database
       // will change it
       const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);
 
       // perform the connection
-      __connect(connection_string, timeout);
+      connect__(connection_string, timeout);
 
       // restore the locale
       std::setlocale(LC_NUMERIC, current_locale.c_str());
 
       // ask the parser to execute the query
-      __parser.useNewQuery(__connection, __query);
+      parser__.useNewQuery(connection__, query__);
 
       // store the names of the columns into the intializer
-      const std::size_t nb_cols = std::size_t(__parser.nbColumns());
+      const std::size_t nb_cols = std::size_t(parser__.nbColumns());
       for (std::size_t i = 0; i < nb_cols; ++i) {
-        __var_names.push_back(__parser.columnName(i));
+        var_names__.push_back(parser__.columnName(i));
       }
 
       GUM_CONSTRUCTOR(DBInitializerFromSQL);
@@ -160,7 +160,7 @@ namespace gum {
        const DBInitializerFromSQL< ALLOC >&                          from,
        const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
-           from.__connection_string, from.__query, from.__timeout, alloc) {}
+           from.connection_string__, from.query__, from.timeout__, alloc) {}
 
 
     /// copy constructor
@@ -176,7 +176,7 @@ namespace gum {
        DBInitializerFromSQL< ALLOC >&&                               from,
        const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
-           from.__connection_string, from.__query, from.__timeout, alloc) {}
+           from.connection_string__, from.query__, from.timeout__, alloc) {}
 
     /// move constructor
     template < template < typename > class ALLOC >
@@ -224,27 +224,27 @@ namespace gum {
         IDBInitializer< ALLOC >::operator=(from);
         // check if the connection parameters have changed
         const bool connexion_changed =
-           (__connection_string != from.__connection_string);
+           (connection_string__ != from.connection_string__);
 
         // save the new connection parameters
-        __connection_string = from.__connection_string;
-        __query = from.__query;
-        __timeout = from.__timeout;
+        connection_string__ = from.connection_string__;
+        query__ = from.query__;
+        timeout__ = from.timeout__;
 
         // recreate the connection if needed
         if (connexion_changed) {
-          if (__connection.connected()) __connection.disconnect();
-          __connect(__connection_string, __timeout);
+          if (connection__.connected()) connection__.disconnect();
+          connect__(connection_string__, timeout__);
         }
 
         // initiate the SQL parser
-        __parser.useNewQuery(__connection, __query);
+        parser__.useNewQuery(connection__, query__);
 
         // store the names of the columns into the intializer
-        __var_names.clear();
-        const std::size_t nb_cols = std::size_t(__parser.nbColumns());
+        var_names__.clear();
+        const std::size_t nb_cols = std::size_t(parser__.nbColumns());
         for (std::size_t i = 0; i < nb_cols; ++i) {
-          __var_names.push_back(__parser.columnName(i));
+          var_names__.push_back(parser__.columnName(i));
         }
       }
 
@@ -263,23 +263,23 @@ namespace gum {
     /// returns the names of the variables
     template < template < typename > class ALLOC >
     INLINE std::vector< std::string, ALLOC< std::string > >
-           DBInitializerFromSQL< ALLOC >::_variableNames() {
-      return __var_names;
+           DBInitializerFromSQL< ALLOC >::variableNames_() {
+      return var_names__;
     }
 
 
     /// returns the content of the current row using strings
     template < template < typename > class ALLOC >
     INLINE const std::vector< std::string, ALLOC< std::string > >&
-                 DBInitializerFromSQL< ALLOC >::_currentStringRow() {
-      return __parser.current();
+                 DBInitializerFromSQL< ALLOC >::currentStringRow_() {
+      return parser__.current();
     }
 
 
     /// indicates whether there is a next row to read (and point on it)
     template < template < typename > class ALLOC >
-    INLINE bool DBInitializerFromSQL< ALLOC >::_nextRow() {
-      return __parser.next();
+    INLINE bool DBInitializerFromSQL< ALLOC >::nextRow_() {
+      return parser__.next();
     }
 
 
@@ -289,4 +289,4 @@ namespace gum {
 
 #  endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif /* _ODBC */
+#endif /* ODBC_ */

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to compute the projection of a function graph
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H
@@ -88,19 +88,19 @@ namespace gum {
 
     private:
     /// One of the two function graphs used for the Projection
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __src;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src__;
 
     /// The list of variables on which the projection is performed
-    const Set< const DiscreteVariable* >& __delVars;
+    const Set< const DiscreteVariable* >& delVars__;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* rd__;
 
     /// The function to be performed on the leaves
-    const FUNCTOR< GUM_SCALAR > __function;
+    const FUNCTOR< GUM_SCALAR > function__;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR __neutral;
+    const GUM_SCALAR neutral__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *
  * Reads a bayes net in UAI format
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 
@@ -129,24 +129,24 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*        __bn;
-    BayesNetFactory< GUM_SCALAR >* __factory;
-    UAIBN::Scanner*                  __scanner;
-    UAIBN::Parser*                   __parser;
+    BayesNet< GUM_SCALAR >*        bn__;
+    BayesNetFactory< GUM_SCALAR >* factory__;
+    UAIBN::Scanner*                scanner__;
+    UAIBN::Parser*                 parser__;
 
-    std::string __streamName;
-    bool        __traceScanning;
-    bool        __parseDone;
+    std::string streamName__;
+    bool        traceScanning__;
+    bool        parseDone__;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool __ioerror;
+    bool ioerror__;
 
-    void __addFatalError(Idx                lig,
+    void addFatalError__(Idx                lig,
                          Idx                col,
                          const std::string& s);   // throw an exception
-    void __addError(Idx lig, Idx col, const std::string& s);
-    void __addWarning(Idx lig, Idx col, const std::string& s);
+    void addError__(Idx lig, Idx col, const std::string& s);
+    void addWarning__(Idx lig, Idx col, const std::string& s);
   };
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMSlotChain.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SLOT_CHAIN_H
@@ -187,10 +187,10 @@ namespace gum {
       /// PRMSlotChain.
       const Sequence< PRMClassElement< GUM_SCALAR >* >& chain() const;
 
-      /// See gum::PRMClassElement<GUM_SCALAR>::_addParent().
+      /// See gum::PRMClassElement<GUM_SCALAR>::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
-      /// See gum::PRMClassElement<GUM_SCALAR>::_addChild().
+      /// See gum::PRMClassElement<GUM_SCALAR>::addChild_().
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// @brief Raise a gum::OperationNotAllowed exception
@@ -207,14 +207,14 @@ namespace gum {
       /// @{
 
       /// The sequence of PRMClassElement<GUM_SCALAR> composing the slot chain
-      Sequence< PRMClassElement< GUM_SCALAR >* >* __chain;
+      Sequence< PRMClassElement< GUM_SCALAR >* >* chain__;
 
       /// Flag indicating if this slot chain is multiple or not.
-      bool __isMultiple;
+      bool isMultiple__;
 
       /// Copy the last element, this prevents unwanted DuplicateElement
       /// exceptions.
-      void __copyLastElt();
+      void copyLastElt__();
 
       /// @}
     };

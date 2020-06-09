@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@
  *
  * @endcode
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SCHEDULE_COMBINATION_BASIC_H
@@ -179,13 +179,13 @@ namespace gum {
 
     protected:
     /// the function used to combine two tables
-    MultiDimImplementation< GUM_SCALAR >* (*_combine)(
+    MultiDimImplementation< GUM_SCALAR >* (*combine_)(
        const MultiDimImplementation< GUM_SCALAR >& t1,
        const MultiDimImplementation< GUM_SCALAR >& t2);
 
     /** @brief returns the domain size of the Cartesian product of the union of
      * all the variables in seq1 and seq2 */
-    Size _combinedSize(const Sequence< const DiscreteVariable* >& seq1,
+    Size combinedSize_(const Sequence< const DiscreteVariable* >& seq1,
                        const Sequence< const DiscreteVariable* >& seq2) const;
   };
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Headers of MultiDimFunctionGraphManager.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
@@ -149,7 +149,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns the added node id.
      */
-    NodeId _addInternalNode(const DiscreteVariable* var, NodeId* sons);
+    NodeId addInternalNode_(const DiscreteVariable* var, NodeId* sons);
 
     public:
     /**
@@ -228,7 +228,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    void __adjacentSwap(const DiscreteVariable* x, const DiscreteVariable* y);
+    void adjacentSwap__(const DiscreteVariable* x, const DiscreteVariable* y);
 
     protected:
     /**
@@ -238,7 +238,7 @@ namespace gum {
      * @param x The variable from which all arcs are removed.
      * @param y The variable for which all of x arcs are added.
      */
-    void _migrateNode(const NodeId& x, const NodeId& y);
+    void migrateNode_(const NodeId& x, const NodeId& y);
 
     /// @}
     // =========================================================================
@@ -260,7 +260,7 @@ namespace gum {
      * @param sonsMap The node sons.
      * @return Returns the nodes id in the graph.
      */
-    NodeId _nodeRedundancyCheck(const DiscreteVariable* var, NodeId* sonsMap);
+    NodeId nodeRedundancyCheck_(const DiscreteVariable* var, NodeId* sonsMap);
 
     private:
     /**
@@ -275,7 +275,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns the node id if found, 0 otherwhise.
      */
-    NodeId __checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
+    NodeId checkIsomorphism__(const DiscreteVariable* var, NodeId* sons);
 
     /**
      * @brief Checks if node has the same child for every variable value.
@@ -286,7 +286,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns true if the node is redundant.
      */
-    bool __isRedundant(const DiscreteVariable* var, NodeId* sons);
+    bool isRedundant__(const DiscreteVariable* var, NodeId* sons);
 
     public:
     /**
@@ -298,7 +298,7 @@ namespace gum {
     /**
      * @brief Ensures that every isomorphic subgraphs are merged together.
      */
-    void _reduce();
+    void reduce_();
 
     /// @}
 
@@ -310,7 +310,7 @@ namespace gum {
 
     private:
     /// The multidimdecisiongraph supposed to be edited.
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __functionGraph;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* functionGraph__;
   };
 
   // ===========================================================================

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief min aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MIN_AGGREGATOR_H
@@ -78,8 +78,8 @@ namespace gum {
       virtual std::string aggregatorName() const;
 
       protected:
-      virtual Idx _neutralElt() const;
-      virtual Idx _fold(const DiscreteVariable& v,
+      virtual Idx neutralElt_() const;
+      virtual Idx fold_(const DiscreteVariable& v,
                         Idx                     i1,
                         Idx                     i2,
                         bool&                   stop_iteration) const;

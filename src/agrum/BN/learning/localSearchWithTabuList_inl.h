@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The local search learning algorithm (for directed graphs)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -44,7 +44,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
        const LocalSearchWithTabuList& from) :
         ApproximationScheme(from),
-        __MaxNbDecreasing(from.__MaxNbDecreasing) {
+        MaxNbDecreasing__(from.MaxNbDecreasing__) {
       GUM_CONS_CPY(LocalSearchWithTabuList);
     }
 
@@ -53,7 +53,7 @@ namespace gum {
     LocalSearchWithTabuList::LocalSearchWithTabuList(
        LocalSearchWithTabuList&& from) :
         ApproximationScheme(std::move(from)),
-        __MaxNbDecreasing(std::move(from.__MaxNbDecreasing)) {
+        MaxNbDecreasing__(std::move(from.MaxNbDecreasing__)) {
       GUM_CONS_MOV(LocalSearchWithTabuList);
     }
 
@@ -66,7 +66,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
-      __MaxNbDecreasing = from.__MaxNbDecreasing;
+      MaxNbDecreasing__ = from.MaxNbDecreasing__;
       return *this;
     }
 
@@ -74,14 +74,14 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
-      __MaxNbDecreasing = std::move(from.__MaxNbDecreasing);
+      MaxNbDecreasing__ = std::move(from.MaxNbDecreasing__);
       return *this;
     }
 
     /// set the max number of changes decreasing the score that we allow to
     /// apply
     INLINE void LocalSearchWithTabuList::setMaxNbDecreasingChanges(Size nb) {
-      __MaxNbDecreasing = nb;
+      MaxNbDecreasing__ = nb;
     }
 
     /// returns the approximation policy of the learning algorithm

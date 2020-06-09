@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -51,20 +51,20 @@ namespace gum {
    * @warning If a variable contains less than 3 ticks, it is considered as
    * empty(). A variable with 3 ticks is binary and contains 2 ranges :
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
-   * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
    */
   template < typename T_TICKS >
   class DiscretizedVariable: public IDiscretizedVariable {
     private:
-    std::vector< T_TICKS > __ticks;   // Array from 0 to domainSize-2
-    Size                   __ticks_size;
+    std::vector< T_TICKS > ticks__;   // Array from 0 to domainSize-2
+    Size                   ticks_size__;
 
     protected:
     /**
      * make a copy
      * @param aDRV  the copied object
      */
-    void _copy(const DiscretizedVariable< T_TICKS >& aDRV);
+    void copy_(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      * perform a dichotomy on ticks
@@ -75,14 +75,14 @@ namespace gum {
      of
      target in ticks
     */
-    Idx _dichotomy(const T_TICKS& target, Idx min, Idx max) const;
+    Idx dichotomy_(const T_TICKS& target, Idx min, Idx max) const;
 
     /**
-     * seach the class of target (internally use _dichotomy)
+     * seach the class of target (internally use dichotomy_)
      * @param target
      * @return the class of target
      */
-    Idx _pos(const T_TICKS& target) const;
+    Idx pos_(const T_TICKS& target) const;
 
     public:
     /** @name constructors & destructors

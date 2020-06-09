@@ -1,6 +1,6 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)   *
+*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)   *
 *   info_at_agrum_dot_org                                               *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,7 @@
  * @file
  * @brief Class to include at least once this header
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/database/DBRowGeneratorParser.h>

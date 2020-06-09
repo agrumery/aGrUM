@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief This file contains the abstract inference class definition for
  * computing (incrementally) marginal posteriors.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
@@ -212,42 +212,42 @@ namespace gum {
     protected:
     /// fired after a new marginal target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(const NodeId id) = 0;
+    virtual void onMarginalTargetAdded_(const NodeId id) = 0;
 
     /// fired before a marginal target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(const NodeId id) = 0;
+    virtual void onMarginalTargetErased_(const NodeId id) = 0;
 
     /// fired after all the nodes of the BN are added as marginal targets
-    virtual void _onAllMarginalTargetsAdded() = 0;
+    virtual void onAllMarginalTargetsAdded_() = 0;
 
     /// fired before a all marginal targets are removed
-    virtual void _onAllMarginalTargetsErased() = 0;
+    virtual void onAllMarginalTargetsErased_() = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn);
+    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn);
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(NodeId id) = 0;
+    virtual const Potential< GUM_SCALAR >& posterior_(NodeId id) = 0;
 
     protected:
-    void _setTargetedMode();
-    bool _isTargetedMode() const;
+    void setTargetedMode_();
+    bool isTargetedMode_() const;
 
     private:
     /// whether the actual targets are default
-    bool __targeted_mode;
+    bool targeted_mode__;
 
     /// the set of marginal targets
-    NodeSet __targets;
+    NodeSet targets__;
 
 
     /*/// remove all the marginal posteriors computed
-    void __invalidatePosteriors() noexcept;*/
+    void invalidatePosteriors__() noexcept;*/
 
     /// sets all the nodes of the Bayes net as targets
-    void __setAllMarginalTargets();
+    void setAllMarginalTargets__();
   };
 
 

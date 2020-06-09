@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class providing aGrUM's "smart" pointers
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -335,16 +335,16 @@ namespace gum {
     friend class HashFunc;
 
     /// The dumb pointer encapsulated into the "smart" pointer.
-    Val* __val;
+    Val* val__;
 
     /// A reference counter on *val.
-    unsigned int* __refcount;
+    unsigned int* refcount__;
 
     /// A function to remove the content of the smart pointer, if any.
-    void __destroy(unsigned int*, Val*);
+    void destroy__(unsigned int*, Val*);
 
     /// A function to return the refcount pointer.
-    unsigned int* __refCountPtr() const;
+    unsigned int* refCountPtr__() const;
   };
 
 } /* namespace gum */
@@ -374,7 +374,7 @@ extern template class gum::RefPtr< double >;
 #endif
 
 
-// always include the _tpl.h as it contains only templates
+// always include the tpl_.h as it contains only templates
 #include <agrum/tools/core/refPtr_tpl.h>
 
 #endif /* GUM_REFPTR_H */

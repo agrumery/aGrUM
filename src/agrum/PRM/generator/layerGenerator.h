@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of LayerGenerator.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_LAYER_GENERATOR_H
@@ -124,9 +124,9 @@ namespace gum {
 
       /// @}
       private:
-      std::vector< LayerData > __layers;
-      Size                     __domain_size;
-      Size                     __max_parents;
+      std::vector< LayerData > layers__;
+      Size                     domain_size__;
+      Size                     max_parents__;
 
       struct MyData {
         // interface name
@@ -137,22 +137,22 @@ namespace gum {
         std::vector< std::string > c;
       };
 
-      std::string __generateType(PRMFactory< GUM_SCALAR >& f);
+      std::string generateType__(PRMFactory< GUM_SCALAR >& f);
 
-      void __generateInterfaces(PRMFactory< GUM_SCALAR >& f,
+      void generateInterfaces__(PRMFactory< GUM_SCALAR >& f,
                                 const std::string&        type,
                                 std::vector< MyData >&    l);
 
-      void __generateClasses(PRMFactory< GUM_SCALAR >&                       f,
+      void generateClasses__(PRMFactory< GUM_SCALAR >&                       f,
                              const std::string&                              type,
                              std::vector< typename LayerGenerator::MyData >& l);
 
-      void __generateClassDag(Size                              lvl,
+      void generateClassDag__(Size                              lvl,
                               DAG&                              dag,
                               Bijection< std::string, NodeId >& names,
                               std::vector< typename LayerGenerator::MyData >& l);
 
-      void __generateSystem(PRMFactory< GUM_SCALAR >& factory,
+      void generateSystem__(PRMFactory< GUM_SCALAR >& factory,
                             std::vector< typename LayerGenerator::MyData >& l);
     };
 

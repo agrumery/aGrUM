@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the Set.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/set.h>
@@ -46,8 +46,8 @@ namespace gum {
   template < typename Alloc >
   INLINE SetIteratorSafe< Key >::SetIteratorSafe(const Set< Key, Alloc >& set,
                                                  Position                 pos) :
-      __ht_iter{pos == SetIteratorSafe< Key >::END ? set.__inside.cendSafe()
-                                                   : set.__inside.cbeginSafe()} {
+      ht_iter__{pos == SetIteratorSafe< Key >::END ? set.inside__.cendSafe()
+                                                   : set.inside__.cbeginSafe()} {
     GUM_CONSTRUCTOR(SetIteratorSafe);
   }
 
@@ -55,21 +55,21 @@ namespace gum {
   template < typename Key >
   INLINE
      SetIteratorSafe< Key >::SetIteratorSafe(const SetIteratorSafe< Key >& iter) :
-      __ht_iter{iter.__ht_iter} {
+      ht_iter__{iter.ht_iter__} {
     GUM_CONS_CPY(SetIteratorSafe);
   }
 
   // copy constructor
   template < typename Key >
   INLINE SetIteratorSafe< Key >::SetIteratorSafe(const SetIterator< Key >& iter) :
-      __ht_iter{iter.__ht_iter} {
+      ht_iter__{iter.ht_iter__} {
     GUM_CONS_CPY(SetIteratorSafe);
   }
 
   // move constructor
   template < typename Key >
   INLINE SetIteratorSafe< Key >::SetIteratorSafe(SetIteratorSafe< Key >&& from) :
-      __ht_iter{std::move(from.__ht_iter)} {
+      ht_iter__{std::move(from.ht_iter__)} {
     GUM_CONS_MOV(SetIteratorSafe);
   }
 
@@ -83,7 +83,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
      SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from) {
-    __ht_iter = from.__ht_iter;
+    ht_iter__ = from.ht_iter__;
     return *this;
   }
 
@@ -91,7 +91,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
      SetIteratorSafe< Key >::operator=(const SetIterator< Key >& from) {
-    __ht_iter = from.__ht_iter;
+    ht_iter__ = from.ht_iter__;
     return *this;
   }
 
@@ -99,7 +99,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
      SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
-    __ht_iter = std::move(from.__ht_iter);
+    ht_iter__ = std::move(from.ht_iter__);
     return *this;
   }
 
@@ -109,7 +109,7 @@ namespace gum {
     // note that, if the hashtable's iterator points toward nothing, the
     // hashtable's iterator incrementation will do nothing. In particular, it
     // will not segfault.
-    ++__ht_iter;
+    ++ht_iter__;
     return *this;
   }
 
@@ -117,7 +117,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
      SetIteratorSafe< Key >::operator+=(Size nb) noexcept {
-    __ht_iter += nb;
+    ht_iter__ += nb;
     return *this;
   }
 
@@ -129,19 +129,17 @@ namespace gum {
 
   // indicates whether two iterators point to different elements or sets
   template < typename Key >
-  INLINE bool
-     SetIteratorSafe< Key >::operator!=(const SetIteratorSafe< Key >& from) const
-     noexcept {
-    return __ht_iter != from.__ht_iter;
+  INLINE bool SetIteratorSafe< Key >::operator!=(
+     const SetIteratorSafe< Key >& from) const noexcept {
+    return ht_iter__ != from.ht_iter__;
   }
 
   // indicates whether two iterators point toward the same element of a same
   // set
   template < typename Key >
-  INLINE bool
-     SetIteratorSafe< Key >::operator==(const SetIteratorSafe< Key >& from) const
-     noexcept {
-    return __ht_iter == from.__ht_iter;
+  INLINE bool SetIteratorSafe< Key >::operator==(
+     const SetIteratorSafe< Key >& from) const noexcept {
+    return ht_iter__ == from.ht_iter__;
   }
 
   // returns the element pointed to by the iterator
@@ -149,7 +147,7 @@ namespace gum {
   INLINE const Key& SetIteratorSafe< Key >::operator*() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
-    return __ht_iter.key();
+    return ht_iter__.key();
   }
 
   // returns aointer to the element pointed to by the iterator
@@ -157,14 +155,14 @@ namespace gum {
   INLINE const Key* SetIteratorSafe< Key >::operator->() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
-    return &(__ht_iter.key());
+    return &(ht_iter__.key());
   }
 
   // @brief makes the iterator point toward nothing (in particular, it is not
   // related anymore to its current set) */
   template < typename Key >
   INLINE void SetIteratorSafe< Key >::clear() noexcept {
-    __ht_iter.clear();
+    ht_iter__.clear();
   }
 
   // ===========================================================================
@@ -182,22 +180,22 @@ namespace gum {
   template < typename Alloc >
   INLINE SetIterator< Key >::SetIterator(const Set< Key, Alloc >& set,
                                          Position                 pos) :
-      __ht_iter{pos == SetIterator< Key >::END ? set.__inside.cend()
-                                               : set.__inside.cbegin()} {
+      ht_iter__{pos == SetIterator< Key >::END ? set.inside__.cend()
+                                               : set.inside__.cbegin()} {
     GUM_CONSTRUCTOR(SetIterator);
   }
 
   // copy constructor
   template < typename Key >
   INLINE SetIterator< Key >::SetIterator(const SetIterator< Key >& iter) noexcept :
-      __ht_iter{iter.__ht_iter} {
+      ht_iter__{iter.ht_iter__} {
     GUM_CONS_CPY(SetIterator);
   }
 
   // move constructor
   template < typename Key >
   INLINE SetIterator< Key >::SetIterator(SetIterator< Key >&& from) noexcept :
-      __ht_iter{std::move(from.__ht_iter)} {
+      ht_iter__{std::move(from.ht_iter__)} {
     GUM_CONS_MOV(SetIterator);
   }
 
@@ -211,7 +209,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIterator< Key >&
      SetIterator< Key >::operator=(const SetIterator< Key >& from) noexcept {
-    __ht_iter = from.__ht_iter;
+    ht_iter__ = from.ht_iter__;
     return *this;
   }
 
@@ -219,7 +217,7 @@ namespace gum {
   template < typename Key >
   INLINE SetIterator< Key >&
      SetIterator< Key >::operator=(SetIterator< Key >&& from) noexcept {
-    __ht_iter = std::move(from.__ht_iter);
+    ht_iter__ = std::move(from.ht_iter__);
     return *this;
   }
 
@@ -229,14 +227,14 @@ namespace gum {
     // note that, if the hashtable's iterator points toward nothing, the
     // hashtable's iterator incrementation will do nothing. In particular, it
     // will not segfault.
-    ++__ht_iter;
+    ++ht_iter__;
     return *this;
   }
 
   // makes the iterator point to i elements further in the set
   template < typename Key >
   INLINE SetIterator< Key >& SetIterator< Key >::operator+=(Size nb) noexcept {
-    __ht_iter += nb;
+    ht_iter__ += nb;
     return *this;
   }
 
@@ -248,17 +246,17 @@ namespace gum {
 
   // indicates whether two iterators point to different elements or sets
   template < typename Key >
-  INLINE bool SetIterator< Key >::operator!=(const SetIterator< Key >& from) const
-     noexcept {
-    return __ht_iter != from.__ht_iter;
+  INLINE bool SetIterator< Key >::operator!=(
+     const SetIterator< Key >& from) const noexcept {
+    return ht_iter__ != from.ht_iter__;
   }
 
   // indicates whether two iterators point toward the same element of a same
   // set
   template < typename Key >
-  INLINE bool SetIterator< Key >::operator==(const SetIterator< Key >& from) const
-     noexcept {
-    return __ht_iter == from.__ht_iter;
+  INLINE bool SetIterator< Key >::operator==(
+     const SetIterator< Key >& from) const noexcept {
+    return ht_iter__ == from.ht_iter__;
   }
 
   // returns the element pointed to by the iterator
@@ -266,7 +264,7 @@ namespace gum {
   INLINE const Key& SetIterator< Key >::operator*() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
-    return __ht_iter.key();
+    return ht_iter__.key();
   }
 
   // returns aointer to the element pointed to by the iterator
@@ -274,14 +272,14 @@ namespace gum {
   INLINE const Key* SetIterator< Key >::operator->() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
-    return &(__ht_iter.key());
+    return &(ht_iter__.key());
   }
 
   // @brief makes the iterator point toward nothing (in particular, it is not
   // related anymore to its current set) */
   template < typename Key >
   INLINE void SetIterator< Key >::clear() noexcept {
-    __ht_iter.clear();
+    ht_iter__.clear();
   }
 
   // ===========================================================================
@@ -322,7 +320,7 @@ namespace gum {
       // create the hash table without key uniqueness policy (as we will
       // check
       // ourselves the uniqueness of Keys before inserting new elements)
-      __inside(capacity, resize_policy, false) {
+      inside__(capacity, resize_policy, false) {
     GUM_CONSTRUCTOR(Set);
 
     // make sure the end() iterator is constructed properly
@@ -333,7 +331,7 @@ namespace gum {
   // initializer list constructor
   template < typename Key, typename Alloc >
   INLINE Set< Key, Alloc >::Set(std::initializer_list< Key > list) :
-      __inside(Size(list.size()) / 2, true, false) {
+      inside__(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(Set);
     for (const auto& elt: list) {
       insert(elt);
@@ -347,7 +345,7 @@ namespace gum {
   // copy constructor
   template < typename Key, typename Alloc >
   INLINE Set< Key, Alloc >::Set(const Set< Key, Alloc >& s) :
-      __inside(s.__inside) {
+      inside__(s.inside__) {
     GUM_CONS_CPY(Set);
   }
 
@@ -355,14 +353,14 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   INLINE Set< Key, Alloc >::Set(const Set< Key, OtherAlloc >& s) :
-      __inside(s.__inside) {
+      inside__(s.inside__) {
     GUM_CONS_CPY(Set);
   }
 
   // move constructor
   template < typename Key, typename Alloc >
   INLINE Set< Key, Alloc >::Set(Set< Key, Alloc >&& s) :
-      __inside(std::move(s.__inside)) {
+      inside__(std::move(s.inside__)) {
     GUM_CONS_MOV(Set);
   }
 
@@ -380,7 +378,7 @@ namespace gum {
     // will be updated as well. In turn, this will imply that, whenever an
     // operation will be performed on a SetIteratorSafe, this will raise an
     // exception.
-    __inside.clear();
+    inside__.clear();
 
     // Note that actually there is no need to update the end iterator as this
     // one
@@ -406,7 +404,7 @@ namespace gum {
       setResizePolicy(s.resizePolicy());
 
       // copy the set
-      __inside = s.__inside;
+      inside__ = s.inside__;
 
       // Note that actually there is no need to update the end iterator as this
       // one
@@ -438,7 +436,7 @@ namespace gum {
       setResizePolicy(s.resizePolicy());
 
       // copy the set
-      __inside = s.__inside;
+      inside__ = s.inside__;
 
       // Note that actually there is no need to update the end iterator as this
       // one
@@ -453,7 +451,7 @@ namespace gum {
   // move operator
   template < typename Key, typename Alloc >
   Set< Key, Alloc >& Set< Key, Alloc >::operator=(Set< Key, Alloc >&& from) {
-    __inside = std::move(from.__inside);
+    inside__ = std::move(from.inside__);
     return *this;
   }
 
@@ -461,14 +459,14 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   bool Set< Key, Alloc >::operator==(const Set< Key, OtherAlloc >& s2) const {
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
+    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
 
     // check whether both sets have the same number of elements
     if (size() != h2.size()) return false;
 
     // check the content of the sets
-    for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-         iter != __inside.cend();
+    for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+         iter != inside__.cend();
          ++iter) {
       if (!h2.exists(iter.key())) return false;
     }
@@ -503,7 +501,7 @@ namespace gum {
   INLINE const typename Set< Key, Alloc >::iterator_safe&
      Set< Key, Alloc >::endSafe() const noexcept {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-       SetIteratorStaticEnd::__SetIterEndSafe));
+       SetIteratorStaticEnd::SetIterEndSafe__));
   }
 
   // the usual end iterator to parse the set
@@ -511,7 +509,7 @@ namespace gum {
   INLINE const typename Set< Key, Alloc >::const_iterator_safe&
      Set< Key, Alloc >::cendSafe() const noexcept {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-       SetIteratorStaticEnd::__SetIterEndSafe));
+       SetIteratorStaticEnd::SetIterEndSafe__));
   }
 
   // the usual begin iterator to parse the set
@@ -529,10 +527,10 @@ namespace gum {
 
   // the usual end iterator to parse the set
   template < typename Key, typename Alloc >
-  INLINE const typename Set< Key, Alloc >::iterator& Set< Key, Alloc >::end() const
-     noexcept {
+  INLINE const typename Set< Key, Alloc >::iterator&
+     Set< Key, Alloc >::end() const noexcept {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-       SetIteratorStaticEnd::__SetIterEnd));
+       SetIteratorStaticEnd::SetIterEnd__));
   }
 
   // the usual end iterator to parse the set
@@ -540,19 +538,19 @@ namespace gum {
   INLINE const typename Set< Key, Alloc >::const_iterator&
      Set< Key, Alloc >::cend() const noexcept {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-       SetIteratorStaticEnd::__SetIterEnd));
+       SetIteratorStaticEnd::SetIterEnd__));
   }
 
   // returns the size of the underlying hashtable containing the set
   template < typename Key, typename Alloc >
   INLINE Size Set< Key, Alloc >::capacity() const {
-    return __inside.capacity();
+    return inside__.capacity();
   }
 
   // changes the size of the underlying hashtable
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::resize(Size new_size) {
-    __inside.resize(new_size);
+    inside__.resize(new_size);
 
     // Note that actually there is no need to update the end iterator as this
     // one
@@ -564,7 +562,7 @@ namespace gum {
   // underlying hashtable
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::setResizePolicy(const bool new_policy) {
-    __inside.setResizePolicy(new_policy);
+    inside__.setResizePolicy(new_policy);
 
     // Note that actually there is no need to update the end iterator as this
     // one
@@ -575,13 +573,13 @@ namespace gum {
   // returns the current resizing policy of the underlying hashtable
   template < typename Key, typename Alloc >
   INLINE bool Set< Key, Alloc >::resizePolicy() const {
-    return __inside.resizePolicy();
+    return inside__.resizePolicy();
   }
 
   // indicates whether a given elements belong to the set
   template < typename Key, typename Alloc >
   INLINE bool Set< Key, Alloc >::contains(const Key& k) const {
-    return __inside.exists(k);
+    return inside__.exists(k);
   }
 
 
@@ -607,18 +605,18 @@ namespace gum {
   // indicates whether a given elements belong to the set
   template < typename Key, typename Alloc >
   INLINE bool Set< Key, Alloc >::exists(const Key& k) const {
-    return __inside.exists(k);
+    return inside__.exists(k);
   }
 
   // inserts a new element in the set
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::insert(const Key& k) {
     // WARNING: we shall always test whether k already belongs to the set before
-    // trying to insert it because we set __inside's key uniqueness policy to
+    // trying to insert it because we set inside__'s key uniqueness policy to
     // false
     if (!contains(k)) {
       // insert the element
-      __inside.insert(k, true);
+      inside__.insert(k, true);
 
       // Note that actually there is no need to update the end iterator as this
       // one
@@ -632,11 +630,11 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::insert(Key&& k) {
     // WARNING: we shall always test whether k already belongs to the set before
-    // trying to insert it because we set __inside's key uniqueness policy to
+    // trying to insert it because we set inside__'s key uniqueness policy to
     // false
     if (!contains(k)) {
       // insert the element
-      __inside.insert(std::move(k), true);
+      inside__.insert(std::move(k), true);
 
       // Note that actually there is no need to update the end iterator as this
       // one
@@ -657,7 +655,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::erase(const Key& k) {
     // erase the element (if it exists)
-    __inside.erase(k);
+    inside__.erase(k);
 
     // Note that actually there is no need to update the end iterator as this
     // one
@@ -669,7 +667,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE void Set< Key, Alloc >::erase(const SetIteratorSafe< Key >& iter) {
     // erase the element
-    __inside.erase(iter.__ht_iter);
+    inside__.erase(iter.ht_iter__);
 
     // Note that actually there is no need to update the end iterator as this
     // one
@@ -701,13 +699,13 @@ namespace gum {
   // returns the number of elements in the set
   template < typename Key, typename Alloc >
   INLINE Size Set< Key, Alloc >::size() const noexcept {
-    return __inside.size();
+    return inside__.size();
   }
 
   // indicates whether the set is the empty set
   template < typename Key, typename Alloc >
   INLINE bool Set< Key, Alloc >::empty() const noexcept {
-    return __inside.empty();
+    return inside__.empty();
   }
 
   // Intersection operator
@@ -716,12 +714,12 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator*(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
-    HashTable< Key, bool, Alloc >&            h_r = res.__inside;
+    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
     if (size() < h2.size()) {
-      for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-           iter != __inside.cend();
+      for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+           iter != inside__.cend();
            ++iter) {
         if (h2.exists(iter.key())) h_r.insert(iter.key(), true);
       }
@@ -729,7 +727,7 @@ namespace gum {
       for (HashTableConstIterator< Key, bool > iter = h2.cbegin();
            iter != h2.cend();
            ++iter) {
-        if (__inside.exists(iter.key())) h_r.insert(iter.key(), true);
+        if (inside__.exists(iter.key())) h_r.insert(iter.key(), true);
       }
     }
 
@@ -743,9 +741,9 @@ namespace gum {
   const Set< Key, Alloc >&
      Set< Key, Alloc >::operator*=(const Set< Key, OtherAlloc >& s2) {
     if (&s2 != this) {
-      const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
-      for (auto iter = __inside.beginSafe(); iter != __inside.endSafe(); ++iter) {
-        if (!h2.exists(iter.key())) __inside.erase(iter);
+      const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+      for (auto iter = inside__.beginSafe(); iter != inside__.endSafe(); ++iter) {
+        if (!h2.exists(iter.key())) inside__.erase(iter);
       }
     }
 
@@ -759,8 +757,8 @@ namespace gum {
   const Set< Key, Alloc >&
      Set< Key, Alloc >::operator+=(const Set< Key, OtherAlloc >& s2) {
     if (&s2 != this) {
-      for (auto pair: s2.__inside) {
-        if (!__inside.exists(pair.first)) __inside.insert(pair.first, true);
+      for (auto pair: s2.inside__) {
+        if (!inside__.exists(pair.first)) inside__.insert(pair.first, true);
       }
     }
 
@@ -774,8 +772,8 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator+(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res = *this;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
-    HashTable< Key, bool, Alloc >&            h_r = res.__inside;
+    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
     for (HashTableConstIterator< Key, bool > iter = h2.cbegin(); iter != h2.cend();
          ++iter) {
@@ -792,11 +790,11 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator-(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
-    HashTable< Key, bool, Alloc >&            h_r = res.__inside;
+    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
-    for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-         iter != __inside.cend();
+    for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+         iter != inside__.cend();
          ++iter)
       if (!h2.exists(iter.key())) h_r.insert(iter.key(), true);
 
@@ -841,14 +839,14 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if (size == 0) size = std::max(Size(2), __inside.size() / 2);
+    if (size == 0) size = std::max(Size(2), inside__.size() / 2);
 
     // create a new table
     HashTable< Key, NewKey, NewAlloc > table(size);
 
     // fill the new hash table
-    for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-         iter != __inside.cend();
+    for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+         iter != inside__.cend();
          ++iter) {
       table.insert(iter.key(), f(iter.key()));
     }
@@ -864,14 +862,14 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if (size == 0) size = std::max(Size(2), __inside.size() / 2);
+    if (size == 0) size = std::max(Size(2), inside__.size() / 2);
 
     // create a new table
     HashTable< Key, NewKey, NewAlloc > table(size);
 
     // fill the new hash table
-    for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-         iter != __inside.cend();
+    for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+         iter != inside__.cend();
          ++iter) {
       table.insert(iter.key(), val);
     }
@@ -888,8 +886,8 @@ namespace gum {
     List< NewKey, NewAlloc > list;
 
     // fill the new list
-    for (HashTableConstIterator< Key, bool > iter = __inside.cbegin();
-         iter != __inside.cend();
+    for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();
+         iter != inside__.cend();
          ++iter) {
       list.pushBack(f(iter.key()));
     }
@@ -902,8 +900,8 @@ namespace gum {
   INLINE Size HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
     Size h = Size(0);
     for (const auto& k: key) {
-      const auto hs=HashFunc< T >::castToSize(k);
-      h +=  hs * (hs ^ HashFuncConst::gold) ;
+      const auto hs = HashFunc< T >::castToSize(k);
+      h += hs * (hs ^ HashFuncConst::gold);
     }
 
     return h;
@@ -914,7 +912,7 @@ namespace gum {
   template < typename T, typename Alloc >
   INLINE Size
      HashFunc< Set< T, Alloc > >::operator()(const Set< T, Alloc >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
 } /* namespace gum */

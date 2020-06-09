@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -43,24 +43,24 @@ namespace gum_tests {
     typedef gum::prm::PRMReferenceSlot< double >   Reference;
     typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
 
-    PRMType* __boolean;
-    PRMType* __state;
+    PRMType* boolean__;
+    PRMType* state__;
 
     public:
     void setUp() {
-      __boolean = gum::prm::PRMType::boolean();
+      boolean__ = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
-      __state = new PRMType(*__boolean, map, state);
+      state__ = new PRMType(*boolean__, map, state);
     }
 
     void tearDown() {
-      delete __boolean;
-      delete __state;
+      delete boolean__;
+      delete state__;
     }
 
     /// Constructor & Destructor
@@ -76,13 +76,13 @@ namespace gum_tests {
     void testConstructorInheritance() {
       // Arrange
       PRMInterface toRef("toRef");
-      auto         a = new PRMAttribute("a", *__boolean);
+      auto         a = new PRMAttribute("a", *boolean__);
       toRef.add(a);
       auto         ref = new Reference("rho", toRef);
       PRMInterface super("super");
-      auto         b = new PRMAttribute("b", *__boolean);
+      auto         b = new PRMAttribute("b", *boolean__);
       auto         b_id = super.add(b);
-      auto         c = new PRMAttribute("c", *__boolean);
+      auto         c = new PRMAttribute("c", *boolean__);
       auto         c_id = super.add(c);
       super.add(ref);
       PRMInterface* subclass = nullptr;
@@ -103,7 +103,7 @@ namespace gum_tests {
     void testBelongsTo() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       bool actual = false;
       // Act
@@ -115,7 +115,7 @@ namespace gum_tests {
     void testBelongsToNot() {
       // Arrange
       PRMInterface c("class");
-      PRMAttribute attr("attr", *__boolean);
+      PRMAttribute attr("attr", *boolean__);
       bool         actual = false;
       // Act
       TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(attr));
@@ -126,7 +126,7 @@ namespace gum_tests {
     void testExists() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       bool actual = false;
       // Act
@@ -148,7 +148,7 @@ namespace gum_tests {
     void testGet() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       // Act
       auto& actual = c.get(attr->name());
@@ -159,7 +159,7 @@ namespace gum_tests {
     void testGetConst() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       const auto& const_c = c;
       // Act
@@ -171,7 +171,7 @@ namespace gum_tests {
     void testGetNotFound() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       // Act & Assert
       TS_ASSERT_THROWS(c.get("foo"), gum::NotFound);
@@ -180,7 +180,7 @@ namespace gum_tests {
     void testGetConstNotFound() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       const auto& const_c = c;
       // Act & Assert
@@ -190,7 +190,7 @@ namespace gum_tests {
     void testAdd() {
       // Arra,ge
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       gum::NodeId   id = 100;   // Id generation starts at 0
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(id = c.add(attr));
@@ -203,7 +203,7 @@ namespace gum_tests {
     void testAddDuplicate() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(c.add(attr));
       TS_ASSERT_THROWS(c.add(attr), gum::DuplicateElement);
@@ -217,7 +217,7 @@ namespace gum_tests {
     void testOverloadOperationNotAllowed() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       // Act & assert
       TS_ASSERT_THROWS(c.overload(attr), gum::OperationNotAllowed);
       // Cleanup
@@ -227,7 +227,7 @@ namespace gum_tests {
     void testOverloadWrongInterface() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       PRMInterface sub_c("sub c", c);
       Reference*   ref = new Reference("attr", c);
@@ -240,7 +240,7 @@ namespace gum_tests {
     void testOverloadTypeError() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       PRMInterface           sub_c("sub_c", c);
       gum::LabelizedVariable var("foo", "bar", 2);
@@ -255,10 +255,10 @@ namespace gum_tests {
     void testOverloadAttribute() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       PRMInterface  sub_c("sub_c", c);
-      PRMAttribute* sub_attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* sub_attr = new PRMAttribute("attr", *boolean__);
       // Act
       TS_ASSERT_THROWS_NOTHING(sub_c.overload(sub_attr));
       // Assert
@@ -272,10 +272,10 @@ namespace gum_tests {
     void testOverloadAttributeWithSubtype() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       PRMInterface  sub_c("sub_c", c);
-      PRMAttribute* state = new PRMAttribute("attr", *__state);
+      PRMAttribute* state = new PRMAttribute("attr", *state__);
       // Act
       TS_ASSERT_THROWS_NOTHING(sub_c.overload(state));
       // Assert
@@ -290,7 +290,7 @@ namespace gum_tests {
       // Arrange
       int                     size = 10;
       std::vector< PRMType* > types;
-      types.push_back(__boolean);
+      types.push_back(boolean__);
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
@@ -331,10 +331,10 @@ namespace gum_tests {
     void testOverloadAttributeDuplicateElement() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
       c.add(attr);
       PRMInterface  sub_c("sub_c", c);
-      PRMAttribute* state = new PRMAttribute("attr", *__state);
+      PRMAttribute* state = new PRMAttribute("attr", *state__);
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
@@ -350,7 +350,7 @@ namespace gum_tests {
       // Arrange
       int                     size = 10;
       std::vector< PRMType* > types;
-      types.push_back(__boolean);
+      types.push_back(boolean__);
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
@@ -435,7 +435,7 @@ namespace gum_tests {
     void testIsInputNode() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool actual = false;
       // Act
@@ -447,7 +447,7 @@ namespace gum_tests {
     void testSetInputNode() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isInputNode(*a);
       bool after = false;
@@ -462,7 +462,7 @@ namespace gum_tests {
     void testIsOutputNode() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool actual = false;
       // Act
@@ -474,7 +474,7 @@ namespace gum_tests {
     void testSetOutputNode() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isOutputNode(*a);
       bool after = false;
@@ -489,7 +489,7 @@ namespace gum_tests {
     void testIsInnerNode() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool actual = false;
       // Act
@@ -501,7 +501,7 @@ namespace gum_tests {
     void testInnerNodeConsistency() {
       // Arrange
       PRMInterface  c("class");
-      PRMAttribute* a = new PRMAttribute("attr", *__boolean);
+      PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       // Act & Assert
       TS_ASSERT(c.isInnerNode(*a));

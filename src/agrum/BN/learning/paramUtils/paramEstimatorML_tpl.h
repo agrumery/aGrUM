@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief the class for estimating parameters of CPTs using Maximum Likelihood
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -169,15 +169,15 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the external and
       // score internal aprioris
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
+         this->counter_.counts(idset, true));
       const bool informative_external_apriori =
-         this->_external_apriori->isInformative();
+         this->external_apriori_->isInformative();
       const bool informative_score_internal_apriori =
-         this->_score_internal_apriori->isInformative();
+         this->score_internal_apriori_->isInformative();
       if (informative_external_apriori)
-        this->_external_apriori->addAllApriori(idset, N_ijk);
+        this->external_apriori_->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
-        this->_score_internal_apriori->addAllApriori(idset, N_ijk);
+        this->score_internal_apriori_->addAllApriori(idset, N_ijk);
 
 
       // now, normalize N_ijk
@@ -188,11 +188,11 @@ namespace gum {
         // get the counts for all the conditioning nodes, and add them the
         // external and score internal aprioris
         std::vector< double, ALLOC< double > > N_ij(
-           this->_counter.counts(idset.conditionalIdCondSet(), false));
+           this->counter_.counts(idset.conditionalIdCondSet(), false));
         if (informative_external_apriori)
-          this->_external_apriori->addConditioningApriori(idset, N_ij);
+          this->external_apriori_->addConditioningApriori(idset, N_ij);
         if (informative_score_internal_apriori)
-          this->_score_internal_apriori->addConditioningApriori(idset, N_ij);
+          this->score_internal_apriori_->addConditioningApriori(idset, N_ij);
 
         const std::size_t conditioning_domsize = N_ij.size();
         const std::size_t target_domsize = N_ijk.size() / conditioning_domsize;
@@ -205,8 +205,8 @@ namespace gum {
             const std::size_t  cond_nb = conditioning_nodes.size();
             std::vector< Idx > cond_domsize(cond_nb);
 
-            const auto& node2cols = this->_counter.nodeId2Columns();
-            const auto& database = this->_counter.database();
+            const auto& node2cols = this->counter_.nodeId2Columns();
+            const auto& database = this->counter_.database();
             if (node2cols.empty()) {
               for (std::size_t i = std::size_t(0); i < cond_nb; ++i) {
                 cond_domsize[i] = database.domainSize(conditioning_nodes[i]);
@@ -293,8 +293,8 @@ namespace gum {
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           std::stringstream str;
 
-          const auto& node2cols = this->_counter.nodeId2Columns();
-          const auto& database = this->_counter.database();
+          const auto& node2cols = this->counter_.nodeId2Columns();
+          const auto& database = this->counter_.database();
           auto        target_col =
              node2cols.empty() ? target_node : node2cols.second(target_node);
           const Variable& var = database.variable(target_col);

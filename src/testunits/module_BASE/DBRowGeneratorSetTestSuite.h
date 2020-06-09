@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class DBRowGeneratorSetTestSuite: public CxxTest::TestSuite {
     private:
-    gum::Potential< double > __infer(
+    gum::Potential< double > infer__(
        const gum::BayesNet< double >&                                  bn,
        const std::vector< std::size_t >&                               targets,
        const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
@@ -493,7 +493,7 @@ namespace gum_tests {
 
       genset.setColumnsOfInterest(cols_of_interest2);
       {
-        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row2);
+        gum::Potential< double > proba = infer__(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row2);
@@ -519,7 +519,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[0] == std::size_t(0));
         TS_ASSERT(xcols[1] == std::size_t(1));
 
-        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row3);
+        gum::Potential< double > proba = infer__(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row3);
@@ -546,7 +546,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           infer__(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         genset.setInputRow(input_row4);
@@ -574,7 +574,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           infer__(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         genset.setInputRow(input_row5);
@@ -596,7 +596,7 @@ namespace gum_tests {
       }
 
       {
-        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row2);
+        gum::Potential< double > proba = infer__(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row2);

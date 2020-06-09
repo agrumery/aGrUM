@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Base Class for all the algorithms producing a junction given a set
  * of cliques/subcliques resulting from a triangulation
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_JUNCTION_TREE_STRATEGY_H
@@ -115,7 +115,7 @@ namespace gum {
 
     protected:
     /// the triangulation to which the junction tree is associated
-    StaticTriangulation* _triangulation{nullptr};
+    StaticTriangulation* triangulation_{nullptr};
 
 
     // ############################################################################

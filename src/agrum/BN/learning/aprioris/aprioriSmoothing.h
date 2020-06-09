@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the smooth a priori: adds a weight w to all the countings
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_A_PRIORI_SMOOTHING_H
 #define GUM_LEARNING_A_PRIORI_SMOOTHING_H
@@ -144,7 +144,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-         addAllApriori(const IdCondSet< ALLOC >&                   idset,
+         addAllApriori(const IdCondSet< ALLOC >&               idset,
                        std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -153,7 +153,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-         const IdCondSet< ALLOC >&                   idset,
+         const IdCondSet< ALLOC >&               idset,
          std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}

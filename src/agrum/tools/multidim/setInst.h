@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of SetInst.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  * @author Ariele MAESANO
  */
 
@@ -839,38 +839,38 @@ namespace gum {
     /// @}
 
     protected:
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
     /// The tuple of variables to be instantiated.
-    Sequence< const DiscreteVariable* > __vars;
+    Sequence< const DiscreteVariable* > vars__;
 
     /// The current SetInst: the value of the tuple.
-    std::vector< Size > __vals;
+    std::vector< Size > vals__;
 
     /// The overflow flag.
-    bool __overflow;
+    bool overflow__;
 
     /**
      * @brief Swap 2 vars in the SetInst.
      * @param i The first variable to swap.
      * @param j The second variable to swap.
      */
-    void __swap(Idx i, Idx j);
+    void swap__(Idx i, Idx j);
 
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
      * @param newVal The new value.
      */
-    void __chgVal(Idx varPos, Idx newVal);
+    void chgVal__(Idx varPos, Idx newVal);
 
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
      * @param newVal The new value.
      */
-    void __chgVals(Idx varPos, const Size newVal);
+    void chgVals__(Idx varPos, const Size newVal);
 
     /**
      *  @brief Adds a new var to the sequence of vars.
@@ -883,7 +883,7 @@ namespace gum {
      *  instead.
      *
      *  @warning this function does not notify the master MultiDimAdressable,
-     *  if any. Use in addition function chgVal or __chgVal if need be.
+     *  if any. Use in addition function chgVal or chgVal__ if need be.
      *
      *  @warning variable v is known to the SetInst only by a pointer to it.
      *  As a result, this is not a copy of v that is used by SetInst but rather
@@ -893,7 +893,7 @@ namespace gum {
      *  @param v The new var.
      *  @throw DuplicateElement Raised if v is already in the SetInst.
      */
-    void __add(const DiscreteVariable& v);
+    void add__(const DiscreteVariable& v);
 
     /**
      *  @brief Removes a variable from the sequence of vars.
@@ -910,13 +910,13 @@ namespace gum {
      *
      *  @param v The variable to remove.
      */
-    void __erase(const DiscreteVariable& v);
+    void erase__(const DiscreteVariable& v);
 
     /**
      * @brief Intialize the SetInst.
      * @param master The master of this SetInst.
      */
-    void __init(MultiDimAdressable* master);
+    void init__(MultiDimAdressable* master);
   };
 
   /// Print information of the SetInst in the stream.

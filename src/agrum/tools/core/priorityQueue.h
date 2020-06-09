@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief priority queues (in which an element cannot appear more than once)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -457,17 +457,17 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, const Val* >, HeapAllocator > __heap;
+    std::vector< std::pair< Priority, const Val* >, HeapAllocator > heap__;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > __indices{
+    HashTable< Val, Size, IndexAllocator > indices__{
        HashTableConst::default_size, true, true};
 
     /// The number of elements in the heap.
-    Size __nb_elements{0};
+    Size nb_elements__{0};
 
     /// Comparison function.
-    Cmp __cmp;
+    Cmp cmp__;
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -872,17 +872,17 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, Val >, HeapAllocator > __heap;
+    std::vector< std::pair< Priority, Val >, HeapAllocator > heap__;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > __indices{
+    HashTable< Val, Size, IndexAllocator > indices__{
        HashTableConst::default_size, true, true};
 
     /// The number of elements in the heap.
-    Size __nb_elements{0};
+    Size nb_elements__{0};
 
     /// Comparison function.
-    Cmp __cmp;
+    Cmp cmp__;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

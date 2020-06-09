@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Abstract base class for computing triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_TRIANGULATION_H
 #define GUM_TRIANGULATION_H
@@ -149,7 +149,7 @@ namespace gum {
 
     protected:
     /// the domain sizes of the variables/nodes of the graph
-    const NodeProperty< Size >* _domain_sizes{nullptr};
+    const NodeProperty< Size >* domain_sizes_{nullptr};
 
 
     /// default constructor

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -21,7 +21,8 @@
 
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2012  Pierre-Henri WUILLEMIN (@LIP6) <pierre-henri.wuillemin@lip6.fr>
+    Copyright (C) 2012  Pierre-Henri WUILLEMIN(@LIP6)
+<pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,7 +46,7 @@ namespace gum {
     BNLearnerListener::BNLearnerListener(genericBNLearner*    bnl,
                                          ApproximationScheme& sch) :
         ApproximationSchemeListener(sch),
-        __bnlearner(bnl) {
+        bnlearner__(bnl) {
       bnl->setCurrentApproximationScheme(&sch);
       GUM_CONSTRUCTOR(BNLearnerListener);
     }
@@ -68,11 +69,11 @@ namespace gum {
                                          Size        pourcent,
                                          double      error,
                                          double      time) {
-      __bnlearner->distributeProgress(
+      bnlearner__->distributeProgress(
          static_cast< const ApproximationScheme* >(src), pourcent, error, time);
     }
     void BNLearnerListener::whenStop(const void* src, std::string message) {
-      __bnlearner->distributeStop(static_cast< const ApproximationScheme* >(src),
+      bnlearner__->distributeStop(static_cast< const ApproximationScheme* >(src),
                                   message);
     }
   }   // namespace learning

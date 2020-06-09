@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the SDyna abstract class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -234,7 +234,7 @@ namespace gum {
      */
     // ==========================================================================
     void addAction(const Idx actionId, const std::string& actionName) {
-      _fmdp->addAction(actionId, actionName);
+      fmdp_->addAction(actionId, actionName);
     }
 
     // ==========================================================================
@@ -247,7 +247,7 @@ namespace gum {
      * process
      */
     // ==========================================================================
-    void addVariable(const DiscreteVariable* var) { _fmdp->addVariable(var); }
+    void addVariable(const DiscreteVariable* var) { fmdp_->addVariable(var); }
 
     /// @}
 
@@ -290,7 +290,7 @@ namespace gum {
      */
     // ==========================================================================
     void setCurrentState(const Instantiation& currentState) {
-      _lastState = currentState;
+      lastState_ = currentState;
     }
 
     // ==========================================================================
@@ -330,7 +330,7 @@ namespace gum {
      * In extenso, learn from the transition.
      * @param reachedState : the state reached after the transition
      * @param obtainedReward : the reward obtained during the transition
-     * @warning Uses the __originalState and __performedAction stored in cache
+     * @warning Uses the originalState__ and performedAction__ stored in cache
      * If you want to specify the original state and the performed action, see
      * below
      */
@@ -360,7 +360,7 @@ namespace gum {
     // ==========================================================================
     std::string toString();
 
-    std::string optimalPolicy2String() { return __planer->optimalPolicy2String(); }
+    std::string optimalPolicy2String() { return planer__->optimalPolicy2String(); }
 
 
     // ###################################################################
@@ -376,7 +376,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size learnerSize() { return __learner->size(); }
+    Size learnerSize() { return learner__->size(); }
 
     // ==========================================================================
     /**
@@ -384,7 +384,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size modelSize() { return _fmdp->size(); }
+    Size modelSize() { return fmdp_->size(); }
 
     // ==========================================================================
     /**
@@ -392,7 +392,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size valueFunctionSize() { return __planer->vFunctionSize(); }
+    Size valueFunctionSize() { return planer__->vFunctionSize(); }
 
     // ==========================================================================
     /**
@@ -400,47 +400,47 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size optimalPolicySize() { return __planer->optimalPolicySize(); }
+    Size optimalPolicySize() { return planer__->optimalPolicySize(); }
 
     /// @}
 
 
     protected:
     /// The learnt Markovian Decision Process
-    FMDP< double >* _fmdp;
+    FMDP< double >* fmdp_;
 
     /// The state in which the system is before we perform a new action
-    Instantiation _lastState;
+    Instantiation lastState_;
 
     private:
     /// The learner used to learn the FMDP
-    ILearningStrategy* __learner;
+    ILearningStrategy* learner__;
 
     /// The planer used to plan an optimal strategy
-    IPlanningStrategy< double >* __planer;
+    IPlanningStrategy< double >* planer__;
 
     /// The decider
-    IDecisionStrategy* __decider;
+    IDecisionStrategy* decider__;
 
 
     /// The number of observation we make before using again the planer
-    Idx __observationPhaseLenght;
+    Idx observationPhaseLenght__;
 
     /// The total number of observation made so far
-    Idx __nbObservation;
+    Idx nbObservation__;
 
     /// The number of Value Iteration step we perform
-    Idx __nbValueIterationStep;
+    Idx nbValueIterationStep__;
 
     /// The last performed action
-    Idx __lastAction;
+    Idx lastAction__;
 
     /// Since SDYNA made these observation, it has to delete them on quitting
-    Set< Observation* > __bin;
+    Set< Observation* > bin__;
 
-    bool __actionReward;
+    bool actionReward__;
 
-    bool _verbose;
+    bool verbose_;
   };
 
 

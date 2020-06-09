@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of Base classes for oriented graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/tools/graphs/diGraph.h>
@@ -40,22 +40,22 @@ namespace gum {
                    bool arcs_resize_policy) :
       NodeGraphPart(nodes_size, nodes_resize_policy),
       ArcGraphPart(arcs_size, arcs_resize_policy),
-      __mutableTopologicalOrder(nullptr) {
+      mutableTopologicalOrder__(nullptr) {
     GUM_CONSTRUCTOR(DiGraph);
   }
 
   DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g), ArcGraphPart(g), __mutableTopologicalOrder(nullptr) {
+      NodeGraphPart(g), ArcGraphPart(g), mutableTopologicalOrder__(nullptr) {
     GUM_CONS_CPY(DiGraph);
-    if (g.__mutableTopologicalOrder != nullptr) {
-      __mutableTopologicalOrder =
-         new Sequence< NodeId >(*(g.__mutableTopologicalOrder));
+    if (g.mutableTopologicalOrder__ != nullptr) {
+      mutableTopologicalOrder__ =
+         new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
     }
   }
 
   DiGraph::~DiGraph() {
     GUM_DESTRUCTOR(DiGraph);
-    if (__mutableTopologicalOrder != nullptr) { delete __mutableTopologicalOrder; }
+    if (mutableTopologicalOrder__ != nullptr) { delete mutableTopologicalOrder__; }
   }
 
   const std::string DiGraph::toString() const {
@@ -90,22 +90,22 @@ namespace gum {
 
   const Sequence< NodeId >& DiGraph::topologicalOrder(bool clear) const {
     if (clear
-        || (__mutableTopologicalOrder
-            == nullptr)) {   // we have to call _topologicalOrder
-      if (__mutableTopologicalOrder == nullptr) {
-        __mutableTopologicalOrder = new Sequence< NodeId >();
+        || (mutableTopologicalOrder__
+            == nullptr)) {   // we have to call topologicalOrder_
+      if (mutableTopologicalOrder__ == nullptr) {
+        mutableTopologicalOrder__ = new Sequence< NodeId >();
       } else {
         // clear is True
-        __mutableTopologicalOrder->clear();
+        mutableTopologicalOrder__->clear();
       }
 
-      __topologicalOrder();
+      topologicalOrder__();
     }
 
-    return *__mutableTopologicalOrder;
+    return *mutableTopologicalOrder__;
   }
 
-  void DiGraph::__topologicalOrder() const {
+  void DiGraph::topologicalOrder__() const {
     auto dag = *this;
     auto roots = std::vector< NodeId >();
 
@@ -114,15 +114,15 @@ namespace gum {
     }
 
     while (roots.size()) {
-      if (__mutableTopologicalOrder->exists(roots.back())) {
+      if (mutableTopologicalOrder__->exists(roots.back())) {
         GUM_ERROR(InvalidDirectedCycle,
                   "cycles prevent the creation of a topological ordering.");
       }
-      __mutableTopologicalOrder->insert(roots.back());
+      mutableTopologicalOrder__->insert(roots.back());
       roots.pop_back();
 
-      while (dag.children(__mutableTopologicalOrder->back()).size()) {
-        auto back = __mutableTopologicalOrder->back();
+      while (dag.children(mutableTopologicalOrder__->back()).size()) {
+        auto back = mutableTopologicalOrder__->back();
         auto child = *(dag.children(back).begin());
         dag.eraseArc(Arc(back, child));
 
@@ -131,7 +131,7 @@ namespace gum {
     }
 
     GUM_ASSERT(dag.sizeArcs() == (gum::Size)(0));
-    GUM_ASSERT(__mutableTopologicalOrder->size() == dag.size());
+    GUM_ASSERT(mutableTopologicalOrder__->size() == dag.size());
   }
 
   bool DiGraph::hasDirectedPath(const NodeId from, const NodeId to) {

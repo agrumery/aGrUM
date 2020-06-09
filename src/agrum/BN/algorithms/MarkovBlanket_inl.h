@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inline implementation of the class building the essential Graph from a
  * DAGmodel
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -32,23 +32,23 @@
 
 namespace gum {
 
-  INLINE DAG MarkovBlanket::dag() { return __mb; }
+  INLINE DAG MarkovBlanket::dag() { return mb__; }
 
   INLINE const NodeSet& MarkovBlanket::parents(const NodeId id) const {
-    return __mb.parents(id);
+    return mb__.parents(id);
   }
 
   INLINE const NodeSet& MarkovBlanket::children(const NodeId id) const {
-    return __mb.children(id);
+    return mb__.children(id);
   }
 
-  INLINE Size MarkovBlanket::sizeArcs() const { return __mb.sizeArcs(); }
+  INLINE Size MarkovBlanket::sizeArcs() const { return mb__.sizeArcs(); }
 
-  INLINE const ArcSet& MarkovBlanket::arcs() const { return __mb.arcs(); }
+  INLINE const ArcSet& MarkovBlanket::arcs() const { return mb__.arcs(); }
 
-  INLINE Size MarkovBlanket::sizeNodes() const { return __mb.sizeNodes(); }
+  INLINE Size MarkovBlanket::sizeNodes() const { return mb__.sizeNodes(); }
 
-  INLINE Size MarkovBlanket::size() const { return __mb.size(); }
+  INLINE Size MarkovBlanket::size() const { return mb__.size(); }
 
-  INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return __mb.nodes(); }
+  INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return mb__.nodes(); }
 }   // namespace gum

@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -52,10 +52,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return __errors;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -110,39 +110,39 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::o3prmr() {
-		std::string s, alias; __currentSession = 0; 
+		std::string s, alias; currentSession__ = 0;
 		if (StartOf(1)) {
-			if (la->kind == _package) {
+			if (la->kind == package_) {
 				Get();
 				Ident(s);
-				__context->setPackage( s ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(29); Get();}
+				context__->setPackage( s );
+				while (!(la->kind == EOF_ || la->kind == 15 /* ";" */)) {SynErr(29); Get();}
 				Expect(15 /* ";" */);
 			}
-			while (la->kind == _import) {
+			while (la->kind == import_) {
 				Get();
 				Ident(s);
 				alias = ""; 
-				if (la->kind == _as) {
+				if (la->kind == as_) {
 					Get();
-					if (la->kind == _default) {
+					if (la->kind == default_) {
 						Get();
 						alias = "default"; 
-					} else if (la->kind == _word) {
+					} else if (la->kind == word_) {
 						Get();
 						alias = gum::narrow(t->val); 
 					} else SynErr(30);
 				}
-				__context->addImport( t->line, s, alias ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(31); Get();}
+				context__->addImport( t->line, s, alias );
+				while (!(la->kind == EOF_ || la->kind == 15 /* ";" */)) {SynErr(31); Get();}
 				Expect(15 /* ";" */);
 			}
-			while (la->kind == _request) {
+			while (la->kind == request_) {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
-			__currentSession = new O3prmrSession<double>("default");
-			__context->addSession( *__currentSession );
+			currentSession__ = new O3prmrSession<double>("default");
+			context__->addSession( *currentSession__ );
 			
 			Command();
 		} else SynErr(32);
@@ -150,39 +150,39 @@ void Parser::o3prmr() {
 
 void Parser::Ident(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(word_);
 		sBuff << narrow(t->val); 
 		while (la->kind == 25 /* "." */) {
 			Get();
-			Expect(_word);
+			Expect(word_);
 			sBuff << "." << narrow(t->val); 
 		}
 		s = sBuff.str(); 
 }
 
 void Parser::RequestBloc() {
-		Expect(_request);
-		Expect(_word);
-		__currentSession = new O3prmrSession<double>(gum::narrow(t->val)); 
+		Expect(request_);
+		Expect(word_);
+		currentSession__ = new O3prmrSession<double>(gum::narrow(t->val));
 		Expect(16 /* "{" */);
 		while (StartOf(2)) {
 			Command();
 		}
-		while (!(la->kind == _EOF || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
+		while (!(la->kind == EOF_ || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
 		Expect(17 /* "}" */);
-		__context->addSession( *__currentSession ); __currentSession = nullptr; 
+		context__->addSession( *currentSession__ ); currentSession__ = nullptr;
 }
 
 void Parser::Command() {
-		if (la->kind == _word) {
+		if (la->kind == word_) {
 			Observe();
-		} else if (la->kind == _unobserve) {
+		} else if (la->kind == unobserve_) {
 			Unobserve();
-		} else if (la->kind == _query) {
+		} else if (la->kind == query_) {
 			Query();
-		} else if (la->kind == _engine) {
+		} else if (la->kind == engine_) {
 			SetEngine();
-		} else if (la->kind == _grd_engine) {
+		} else if (la->kind == grd_engine_) {
 			SetGrdEngine();
 		} else SynErr(34);
 }
@@ -191,43 +191,43 @@ void Parser::Observe() {
 		std::string left_value, right_value; 
 		IdentArray(left_value);
 		Expect(18 /* "=" */);
-		if (la->kind == _word) {
+		if (la->kind == word_) {
 			Get();
 			right_value = gum::narrow(t->val); 
-		} else if (la->kind == _float) {
+		} else if (la->kind == float_) {
 			Get();
 			right_value = std::to_string(coco_atof(t->val)); 
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
 			right_value = std::to_string(coco_atoi(t->val)); 
 		} else SynErr(35);
 		Expect(15 /* ";" */);
-		__currentSession->addObserve(t->line, left_value, right_value); 
+		currentSession__->addObserve(t->line, left_value, right_value);
 }
 
 void Parser::Unobserve() {
-		Expect(_unobserve);
+		Expect(unobserve_);
 		std::string s; 
 		IdentArray(s);
-		__currentSession->addUnobserve( t->line, s ); 
+		currentSession__->addUnobserve( t->line, s );
 		Expect(15 /* ";" */);
 }
 
 void Parser::Query() {
-		Expect(_query);
+		Expect(query_);
 		std::string s; 
 		IdentArray(s);
-		__currentSession->addQuery( t->line, s ); 
-		while (la->kind == _and) {
+		currentSession__->addQuery( t->line, s );
+		while (la->kind == and_) {
 			Get();
 			IdentArray(s);
-			__currentSession->addQuery( t->line, s ); 
+			currentSession__->addQuery( t->line, s );
 		}
 		Expect(15 /* ";" */);
 }
 
 void Parser::SetEngine() {
-		Expect(_engine);
+		Expect(engine_);
 		if (la->kind == 19 /* "SVED" */) {
 			Get();
 		} else if (la->kind == 20 /* "SVE" */) {
@@ -235,12 +235,12 @@ void Parser::SetEngine() {
 		} else if (la->kind == 21 /* "GRD" */) {
 			Get();
 		} else SynErr(36);
-		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
+		currentSession__->addSetEngine( t->line, gum::narrow(t->val) );
 		Expect(15 /* ";" */);
 }
 
 void Parser::SetGrdEngine() {
-		Expect(_grd_engine);
+		Expect(grd_engine_);
 		if (la->kind == 22 /* "VE" */) {
 			Get();
 		} else if (la->kind == 23 /* "VEBB" */) {
@@ -248,27 +248,27 @@ void Parser::SetGrdEngine() {
 		} else if (la->kind == 24 /* "lazy" */) {
 			Get();
 		} else SynErr(37);
-		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
+		currentSession__->addSetGndEngine( t->line, gum::narrow(t->val) );
 		Expect(15 /* ";" */);
 }
 
 void Parser::IdentArray(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(word_);
 		sBuff << narrow(t->val); 
 		if (la->kind == 26 /* "[" */) {
 			Get();
-			Expect(_integer);
+			Expect(integer_);
 			sBuff << '[' << narrow(t->val) << ']'; 
 			Expect(27 /* "]" */);
 		}
 		while (la->kind == 25 /* "." */) {
 			Get();
-			Expect(_word);
+			Expect(word_);
 			sBuff << "." << narrow(t->val); 
 			if (la->kind == 26 /* "[" */) {
 				Get();
-				Expect(_integer);
+				Expect(integer_);
 				sBuff << '[' << narrow(t->val) << ']'; 
 				Expect(27 /* "]" */);
 			}
@@ -405,13 +405,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -468,7 +468,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

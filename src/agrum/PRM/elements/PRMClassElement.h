@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMClassElement.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_CLASS_ELEMENT_H
@@ -257,11 +257,11 @@ namespace gum {
       /// @}
       protected:
       /// The safe name of this PRMClassElement.
-      std::string _safeName;
+      std::string safeName_;
 
       private:
       /// The node's id of this element
-      NodeId __id;
+      NodeId id__;
     };
 
 

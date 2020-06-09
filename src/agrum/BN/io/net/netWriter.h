@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * This class servers to write the content of a Bayesian Network in
  * the BN format.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_NET_WRITER_H
@@ -98,13 +98,13 @@ namespace gum {
 
     private:
     // Returns the header of the BN file.
-    std::string __header(const IBayesNet< GUM_SCALAR >& bn);
+    std::string header__(const IBayesNet< GUM_SCALAR >& bn);
 
     // Returns a bloc defining a variable in the BN format.
-    std::string __variableBloc(const DiscreteVariable& var);
+    std::string variableBloc__(const DiscreteVariable& var);
 
     // Returns a bloc defining a variable's CPT in the BN format.
-    std::string __variableCPT(const Potential< GUM_SCALAR >& cpt);
+    std::string variableCPT__(const Potential< GUM_SCALAR >& cpt);
 
     // Returns the modalities labels of the variables in varsSeq
   };

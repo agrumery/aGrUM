@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -40,40 +40,40 @@ namespace gum_tests {
   class SlotChainTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMSlotChain< double >               PRMSlotChain;
-    ClassElementTestSuiteAbstract*                         __classEltTestSuite;
-    gum::prm::PRMClass< double >*                          __A;
-    gum::prm::PRMClass< double >*                          __B;
-    gum::prm::PRMClass< double >*                          __C;
-    gum::prm::PRMType*                                     __boolean;
-    gum::prm::PRMType*                                     __state;
-    gum::Sequence< gum::prm::PRMClassElement< double >* >* __booleanChain;
-    gum::Sequence< gum::prm::PRMClassElement< double >* >* __stateChain;
+    ClassElementTestSuiteAbstract*                         classEltTestSuite__;
+    gum::prm::PRMClass< double >*                          A__;
+    gum::prm::PRMClass< double >*                          B__;
+    gum::prm::PRMClass< double >*                          C__;
+    gum::prm::PRMType*                                     boolean__;
+    gum::prm::PRMType*                                     state__;
+    gum::Sequence< gum::prm::PRMClassElement< double >* >* booleanChain__;
+    gum::Sequence< gum::prm::PRMClassElement< double >* >* stateChain__;
 
     // these will be dispodes by their repsective class
-    gum::prm::PRMReferenceSlot< double >* __refI;
-    gum::prm::PRMReferenceSlot< double >* __refJ;
-    gum::prm::PRMReferenceSlot< double >* __refK;
-    gum::prm::PRMAttribute< double >*     __boolAttr;
-    gum::prm::PRMAttribute< double >*     __stateAttr;
+    gum::prm::PRMReferenceSlot< double >* refI__;
+    gum::prm::PRMReferenceSlot< double >* refJ__;
+    gum::prm::PRMReferenceSlot< double >* refK__;
+    gum::prm::PRMAttribute< double >*     boolAttr__;
+    gum::prm::PRMAttribute< double >*     stateAttr__;
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A = new gum::prm::PRMClass< double >("A");
-      __B = new gum::prm::PRMClass< double >("B");
-      __C = new gum::prm::PRMClass< double >("C");
+      classEltTestSuite__ = new ClassElementTestSuiteAbstract();
+      A__ = new gum::prm::PRMClass< double >("A");
+      B__ = new gum::prm::PRMClass< double >("B");
+      C__ = new gum::prm::PRMClass< double >("C");
 
-      __refI = new gum::prm::PRMReferenceSlot< double >("refA", *__B);
-      __A->add(__refI);
-      __refJ = new gum::prm::PRMReferenceSlot< double >("refB", *__C);
-      __B->add(__refJ);
-      __refK = new gum::prm::PRMReferenceSlot< double >("refK", *__C, true);
-      __B->add(__refK);
+      refI__ = new gum::prm::PRMReferenceSlot< double >("refA", *B__);
+      A__->add(refI__);
+      refJ__ = new gum::prm::PRMReferenceSlot< double >("refB", *C__);
+      B__->add(refJ__);
+      refK__ = new gum::prm::PRMReferenceSlot< double >("refK", *C__, true);
+      B__->add(refK__);
 
-      __boolean = gum::prm::PRMType::boolean();
-      __boolAttr =
-         new gum::prm::PRMScalarAttribute< double >("myBool", *__boolean);
-      __C->add(__boolAttr);
+      boolean__ = gum::prm::PRMType::boolean();
+      boolAttr__ =
+         new gum::prm::PRMScalarAttribute< double >("myBool", *boolean__);
+      C__->add(boolAttr__);
 
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
@@ -81,92 +81,92 @@ namespace gum_tests {
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
-      __state = new gum::prm::PRMType(*__boolean, map, state);
-      __stateAttr =
-         new gum::prm::PRMScalarAttribute< double >("myState", *__state);
-      __C->add(__stateAttr);
+      state__ = new gum::prm::PRMType(*boolean__, map, state);
+      stateAttr__ =
+         new gum::prm::PRMScalarAttribute< double >("myState", *state__);
+      C__->add(stateAttr__);
 
-      __booleanChain = new gum::Sequence< gum::prm::PRMClassElement< double >* >();
-      __booleanChain->insert(__refI);
-      __booleanChain->insert(__refJ);
-      __booleanChain->insert(__boolAttr);
+      booleanChain__ = new gum::Sequence< gum::prm::PRMClassElement< double >* >();
+      booleanChain__->insert(refI__);
+      booleanChain__->insert(refJ__);
+      booleanChain__->insert(boolAttr__);
 
-      __stateChain = new gum::Sequence< gum::prm::PRMClassElement< double >* >();
-      __stateChain->insert(__refI);
-      __stateChain->insert(__refK);
-      __stateChain->insert(__stateAttr);
+      stateChain__ = new gum::Sequence< gum::prm::PRMClassElement< double >* >();
+      stateChain__->insert(refI__);
+      stateChain__->insert(refK__);
+      stateChain__->insert(stateAttr__);
     }
 
     void tearDown() {
-      delete __classEltTestSuite;
-      delete __A;
-      delete __B;
-      delete __C;
-      delete __boolean;
-      delete __state;
-      delete __booleanChain;
-      delete __stateChain;
+      delete classEltTestSuite__;
+      delete A__;
+      delete B__;
+      delete C__;
+      delete boolean__;
+      delete state__;
+      delete booleanChain__;
+      delete stateChain__;
     }
 
     /// PRMClassElement Tests
     /// @{
     void testIsReferenceSlot() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       bool         expected = false;
       // Act & Assert
-      __classEltTestSuite->testIsReferenceSlot(slot, expected);
+      classEltTestSuite__->testIsReferenceSlot(slot, expected);
     }
 
     void testIsAttribute() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       bool         expected = false;
       // Act & Assert
-      __classEltTestSuite->testIsAttribute(slot, expected);
+      classEltTestSuite__->testIsAttribute(slot, expected);
     }
 
     void testIsSlotChain() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       bool         expected = true;
       // Act & Assert
-      __classEltTestSuite->testIsSlotChain(slot, expected);
+      classEltTestSuite__->testIsSlotChain(slot, expected);
     }
 
     void testSetNodeId() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       // Act & Assert
-      __classEltTestSuite->testSetNodeId(slot);
+      classEltTestSuite__->testSetNodeId(slot);
     }
 
     void testObjType() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       // Act & Assert
-      __classEltTestSuite->test_obj_type(slot);
+      classEltTestSuite__->test_obj_type(slot);
     }
 
     void testSafeName() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       // Act & Assert
-      __classEltTestSuite->testSafeName(slot);
+      classEltTestSuite__->testSafeName(slot);
     }
 
     void testCast_NotAllowed() {
       // Arrange
-      PRMSlotChain slot("slot", *__booleanChain);
+      PRMSlotChain slot("slot", *booleanChain__);
       // Act & Assert
-      __classEltTestSuite->testCast_NotAllowed(slot);
+      classEltTestSuite__->testCast_NotAllowed(slot);
     }
 
     void testCast() {
       // Arrange
-      PRMSlotChain slot("slot", *__stateChain);
+      PRMSlotChain slot("slot", *stateChain__);
       // Act & Assert
-      __classEltTestSuite->testCast(slot, *__boolean);
+      classEltTestSuite__->testCast(slot, *boolean__);
     }
     /// @}
 
@@ -176,7 +176,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *__booleanChain));
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *booleanChain__));
       TS_ASSERT_THROWS_NOTHING(delete slot);
     }
 
@@ -184,7 +184,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(__booleanChain, "slot"));
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(booleanChain__, "slot"));
       TS_ASSERT_THROWS_NOTHING(delete slot);
     }
 
@@ -192,7 +192,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *__stateChain));
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *stateChain__));
       TS_ASSERT_THROWS_NOTHING(delete slot);
     }
 
@@ -200,7 +200,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(__stateChain, "slot"));
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(stateChain__, "slot"));
       TS_ASSERT_THROWS_NOTHING(delete slot);
     }
     /// @}
@@ -209,8 +209,8 @@ namespace gum_tests {
     /// @{
     void testIsMultiple() {
       // Arrange
-      PRMSlotChain simple("simple", *__booleanChain);
-      PRMSlotChain multiple("multiple", *__stateChain);
+      PRMSlotChain simple("simple", *booleanChain__);
+      PRMSlotChain multiple("multiple", *stateChain__);
       // Act & Assert
       TS_ASSERT(!simple.isMultiple());
       TS_ASSERT(multiple.isMultiple());
@@ -218,41 +218,41 @@ namespace gum_tests {
 
     void testLastEltSimple() {
       // Arrange
-      PRMSlotChain                         simple("simple", *__booleanChain);
+      PRMSlotChain                         simple("simple", *booleanChain__);
       gum::prm::PRMClassElement< double >* elt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(elt = &(simple.lastElt()));
       // Assert
-      TS_ASSERT_EQUALS(__boolAttr->safeName(), elt->safeName());
+      TS_ASSERT_EQUALS(boolAttr__->safeName(), elt->safeName());
     }
 
     void testLastEltSimpleConst() {
       // Arrange
-      PRMSlotChain                               simple("simple", *__booleanChain);
+      PRMSlotChain                               simple("simple", *booleanChain__);
       const auto&                                const_simple = simple;
       gum::prm::PRMClassElement< double > const* elt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(elt = &(const_simple.lastElt()));
       // Assert
-      TS_ASSERT_EQUALS(__boolAttr->safeName(), elt->safeName());
+      TS_ASSERT_EQUALS(boolAttr__->safeName(), elt->safeName());
     }
 
     void testChain() {
       // Arrange
-      PRMSlotChain simple("simple", *__booleanChain);
+      PRMSlotChain simple("simple", *booleanChain__);
       gum::Sequence< gum::prm::PRMClassElement< double >* > const* chain = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(chain = &(simple.chain()));
       // ASSERT
-      TS_ASSERT_EQUALS(chain->size(), __booleanChain->size());
-      TS_ASSERT_EQUALS(chain->atPos(0), __booleanChain->atPos(0));
-      TS_ASSERT_EQUALS(chain->atPos(1), __booleanChain->atPos(1));
-      TS_ASSERT_DIFFERS(chain->atPos(2), __booleanChain->atPos(2));
+      TS_ASSERT_EQUALS(chain->size(), booleanChain__->size());
+      TS_ASSERT_EQUALS(chain->atPos(0), booleanChain__->atPos(0));
+      TS_ASSERT_EQUALS(chain->atPos(1), booleanChain__->atPos(1));
+      TS_ASSERT_DIFFERS(chain->atPos(2), booleanChain__->atPos(2));
     }
 
     void testCpf() {
       // Arrange
-      PRMSlotChain             slot("simple", *__booleanChain);
+      PRMSlotChain             slot("simple", *booleanChain__);
       gum::Potential< double > expected;
       expected << slot.type().variable();
       // Act
@@ -269,7 +269,7 @@ namespace gum_tests {
 
     void testCpfConst() {
       // Arrange
-      PRMSlotChain             slot("simple", *__booleanChain);
+      PRMSlotChain             slot("simple", *booleanChain__);
       const auto&              slot_const = slot;
       gum::Potential< double > expected;
       expected << slot.type().variable();
@@ -291,8 +291,8 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      gum::prm::PRMScalarAttribute< double > parent("attr", *__boolean);
-      PRMSlotChain                           child("child", *__booleanChain);
+      gum::prm::PRMScalarAttribute< double > parent("attr", *boolean__);
+      PRMSlotChain                           child("child", *booleanChain__);
       auto before = child.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
@@ -304,8 +304,8 @@ namespace gum_tests {
 
     void testAddParentDupplicateError() {
       // Arrange
-      gum::prm::PRMScalarAttribute< double > parent("attr", *__boolean);
-      PRMSlotChain                           child("child", *__booleanChain);
+      gum::prm::PRMScalarAttribute< double > parent("attr", *boolean__);
+      PRMSlotChain                           child("child", *booleanChain__);
       child.addParent(parent);
       auto before = child.cpf().variablesSequence().size();
       // Act
@@ -318,8 +318,8 @@ namespace gum_tests {
 
     void testAddChild() {
       // Arrange
-      PRMSlotChain                           parent("simple", *__booleanChain);
-      gum::prm::PRMScalarAttribute< double > child("attr", *__boolean);
+      PRMSlotChain                           parent("simple", *booleanChain__);
+      gum::prm::PRMScalarAttribute< double > child("attr", *boolean__);
       auto before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING(parent.addChild(child));

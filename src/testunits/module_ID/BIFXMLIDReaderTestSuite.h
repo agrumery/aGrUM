@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -54,17 +54,17 @@ namespace gum_tests {
 
   class aSimpleListener: public gum::Listener {
     private:
-    int __nbr;
+    int nbr__;
 
     public:
-    aSimpleListener() : __nbr(0){};
+    aSimpleListener() : nbr__(0){};
     void whenProceeding(const void* buffer, int percent, std::string status) {
-      __nbr = percent;
+      nbr__ = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status
       // <<
       // std::endl;
     }
-    int getNbr() { return __nbr; };
+    int getNbr() { return nbr__; };
   };
 
   class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {

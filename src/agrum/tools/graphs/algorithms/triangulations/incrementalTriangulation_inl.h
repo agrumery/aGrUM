@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inline implementations for computing default triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -47,7 +47,7 @@ namespace gum {
   INLINE
   const CliqueGraph& IncrementalTriangulation::junctionTree() {
     updateTriangulation();
-    return __junction_tree;
+    return junction_tree__;
   }
 
   /// returns the junction tree of the maximal prime subgraphs
@@ -55,20 +55,20 @@ namespace gum {
   INLINE
   const CliqueGraph& IncrementalTriangulation::maxPrimeSubgraphTree() {
     updateTriangulation();
-    return __T_mpd;
+    return T_mpd__;
   }
 
   /// returns the triangulation algorithm (useful for fine tuning it)
 
   INLINE const UnconstrainedTriangulation&
                IncrementalTriangulation::triangulationAlgo() const {
-    return *__triangulation;
+    return *triangulation__;
   }
 
   /// returns the current graph (that which is incrementally triangulated)
 
   INLINE const UndiGraph& IncrementalTriangulation::graph() const {
-    return __graph;
+    return graph__;
   }
 
 } /* namespace gum */

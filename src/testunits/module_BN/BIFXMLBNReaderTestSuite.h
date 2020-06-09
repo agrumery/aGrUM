@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -121,8 +121,8 @@ namespace gum_tests {
 
     void testRead_dog_double() {
       // from Charniak, Bayesian Networks Without Tears, AI Magazine, 1991
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/dog.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/dog.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       gum::Size isOK = gum::Size(0);
@@ -549,8 +549,8 @@ namespace gum_tests {
     }
 
     void testAlarm() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/alarm.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/alarm.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       gum::Size isOK = gum::Size(0);
@@ -700,8 +700,8 @@ namespace gum_tests {
     }
 
     void Carpo() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/carpo.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/carpo.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -710,7 +710,7 @@ namespace gum_tests {
     }
 
     void testDiabetes() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
+      std::string file = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
       gum::BayesNet< double >*      net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
@@ -720,8 +720,8 @@ namespace gum_tests {
     }
 
     void testHailfinder() {
-      std::string              file = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string file = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
+      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -730,7 +730,7 @@ namespace gum_tests {
     }
 
     void testInsurance() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/insurance.bifxml");
+      std::string file = GET_RESSOURCES_PATH("bifxml/insurance.bifxml");
       gum::BayesNet< double >*      net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
@@ -740,8 +740,8 @@ namespace gum_tests {
     }
 
     void testLink() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Link.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/Link.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -750,8 +750,8 @@ namespace gum_tests {
     }
 
     void testMildew() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Mildew.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/Mildew.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -760,8 +760,8 @@ namespace gum_tests {
     }
 
     void testMunin1() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Munin1.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/Munin1.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -770,8 +770,8 @@ namespace gum_tests {
     }
 
     void testPigs() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Pigs.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/Pigs.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -780,8 +780,8 @@ namespace gum_tests {
     }
 
     void testWater() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/Water.bifxml");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bifxml/Water.bifxml");
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());

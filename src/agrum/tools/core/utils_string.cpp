@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Utilities for manipulating strings.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <iterator>
@@ -36,15 +36,15 @@ namespace gum {
 
   std::string getUniqueFileName() {
 #ifdef HAVE_MKSTEMP
-    char _tmpFileName[] = "fileXXXXXX";
-    int  fd = mkstemp(_tmpFileName);
+    char tmpFileName_[] = "fileXXXXXX";
+    int  fd = mkstemp(tmpFileName_);
     close(fd);
 #else   // mainly Windows
-    char _tmpFileName[] = "fileXXXXXX";
-    _mktemp_s(_tmpFileName, strlen(_tmpFileName));
+    char tmpFileName_[] = "fileXXXXXX";
+    _mktemp_s(tmpFileName_, strlen(tmpFileName_));
 #endif
 
-    return std::string(_tmpFileName);
+    return std::string(tmpFileName_);
   }
 
   bool endsWith(std::string const& value, std::string const& ending) {

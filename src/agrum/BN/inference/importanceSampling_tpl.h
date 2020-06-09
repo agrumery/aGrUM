@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of Importance Sampling for inference in Bayesian Networks.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -50,13 +50,13 @@ namespace gum {
 
   /// no burn in needed for Importance sampling
   template < typename GUM_SCALAR >
-  Instantiation ImportanceSampling< GUM_SCALAR >::_burnIn() {
+  Instantiation ImportanceSampling< GUM_SCALAR >::burnIn_() {
     Instantiation I;
     return I;
   }
 
   template < typename GUM_SCALAR >
-  Instantiation ImportanceSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
+  Instantiation ImportanceSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
                                                         Instantiation prev) {
     GUM_SCALAR pSurQ;
 
@@ -69,7 +69,7 @@ namespace gum {
       }
 
       for (const auto nod: this->BN().topologicalOrder()) {
-        if (!this->hasHardEvidence(nod)) { this->_addVarSample(nod, &prev); }
+        if (!this->hasHardEvidence(nod)) { this->addVarSample_(nod, &prev); }
         auto probaP = this->BN().cpt(nod).get(prev);
         auto probaQ = this->samplingBN().cpt(nod).get(prev);
         if ((probaP == 0) || (probaQ == 0)) {
@@ -91,7 +91,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
+  void ImportanceSampling< GUM_SCALAR >::unsharpenBN_(
      BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
     for (const auto nod: bn->nodes().asNodeSet()) {
       auto p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
@@ -101,7 +101,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ImportanceSampling< GUM_SCALAR >::_onContextualize(
+  void ImportanceSampling< GUM_SCALAR >::onContextualize_(
      BayesNetFragment< GUM_SCALAR >* bn) {
     for (const auto ev: this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);
@@ -111,6 +111,6 @@ namespace gum {
     }
     GUM_SCALAR minParam = bn->minNonZeroParam();
     GUM_SCALAR minAccepted = GUM_SCALAR(this->epsilon() / bn->maxVarDomainSize());
-    if (minParam < minAccepted) this->_unsharpenBN(bn, float(minAccepted));
+    if (minParam < minAccepted) this->unsharpenBN_(bn, float(minAccepted));
   }
 }   // namespace gum

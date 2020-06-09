@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
  * @brief Class for fast parsing of CSV file (never more than one line in
  * application memory)
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/tools/database/CSVParser.h>
@@ -40,16 +40,16 @@ namespace gum {
       const char         commentmarker,
       const char         quoteMarker,
       const typename CSVParser<ALLOC>::allocator_type& alloc )
-      : __line()
-      , __delimiter( delimiter )
-      , __spaces( " \t\r" )
-      , __delimiterPlusSpaces( __delimiter + __spaces )
-      , __nbLine( std::size_t(0) )
-      , __commentMarker( commentmarker )
-      , __quoteMarker( quoteMarker )
-      , __emptyData( true )
-      , __instream( &instream )
-      , __data( alloc ) {
+      : line__()
+      , delimiter__( delimiter )
+      , spaces__( " \t\r" )
+      , delimiterPlusSpaces__( delimiter__ + spaces__ )
+      , nbLine__( std::size_t(0) )
+      , commentMarker__( commentmarker )
+      , quoteMarker__( quoteMarker )
+      , emptyData__( true )
+      , instream__( &instream )
+      , data__( alloc ) {
       GUM_CONSTRUCTOR( CSVParser );
     }
 
@@ -70,98 +70,98 @@ namespace gum {
 
     
     template <template<typename> class ALLOC>
-    void CSVParser<ALLOC>::__getNextTriplet( const std::string& str,
+    void CSVParser<ALLOC>::getNextTriplet__( const std::string& str,
                                              std::size_t& first_letter_token,
                                              std::size_t& next_token,
                                              std::size_t& last_letter_token,
                                              std::size_t  from ) const {
-      first_letter_token = str.find_first_not_of( __spaces, from );
+      first_letter_token = str.find_first_not_of( spaces__, from );
 
       if ( first_letter_token == std::string::npos ) {
         next_token = last_letter_token = first_letter_token;
         return;
       }
 
-      if ( str.at( first_letter_token ) == __quoteMarker ) {
-        last_letter_token = __correspondingQuoteMarker( str, first_letter_token );
+      if ( str.at( first_letter_token ) == quoteMarker__ ) {
+        last_letter_token = correspondingQuoteMarker__( str, first_letter_token );
 
         if ( last_letter_token == std::string::npos )
           GUM_SYNTAX_ERROR( "String quote missing", (Size) nbLine(), first_letter_token );
 
-        next_token = str.find_first_of( __delimiter, last_letter_token + 1 );
+        next_token = str.find_first_of( delimiter__, last_letter_token + 1 );
         std::size_t next_char =
-          str.find_first_not_of( __spaces, last_letter_token + 1 );
+          str.find_first_not_of( spaces__, last_letter_token + 1 );
 
         if ( next_char < next_token ) {
           GUM_SYNTAX_ERROR( "Delimiter missing at line", (Size) nbLine(), next_char );
         }
       }
       else {
-        next_token = str.find_first_of( __delimiter, first_letter_token );
+        next_token = str.find_first_of( delimiter__, first_letter_token );
 
         if ( next_token == std::string::npos ) {
-          last_letter_token = str.find_last_not_of( __spaces, next_token );
+          last_letter_token = str.find_last_not_of( spaces__, next_token );
         }
         else if ( next_token == first_letter_token ) {
           last_letter_token = first_letter_token;
         }
         else {
           last_letter_token = 
-              str.find_last_not_of( __delimiterPlusSpaces, next_token - 1 );
+              str.find_last_not_of( delimiterPlusSpaces__, next_token - 1 );
         }
       }
     }
 
     
     template <template<typename> class ALLOC>
-    void CSVParser<ALLOC>::__tokenize( const std::string& s ) {
+    void CSVParser<ALLOC>::tokenize__( const std::string& s ) {
       // looking for first commentMarker not in a string
-      std::size_t commentMarker = s.find_first_of( __commentMarker, 0 );
-      std::size_t quoteMarker = s.find_first_of( __quoteMarker, 0 );
+      std::size_t commentMarker = s.find_first_of( commentMarker__, 0 );
+      std::size_t quoteMarker = s.find_first_of( quoteMarker__, 0 );
       std::size_t quoteMarkerEnd;
 
       while ( quoteMarker < commentMarker ) {
-        quoteMarkerEnd = __correspondingQuoteMarker( s, quoteMarker );
+        quoteMarkerEnd = correspondingQuoteMarker__( s, quoteMarker );
 
         if ( quoteMarkerEnd == std::string::npos )
           GUM_SYNTAX_ERROR( "String quote missing", (Size) nbLine(), quoteMarker );
 
         while ( commentMarker < quoteMarkerEnd ) {  // the comment was in the quote
-          commentMarker = s.find_first_of( __commentMarker, commentMarker + 1 );
+          commentMarker = s.find_first_of( commentMarker__, commentMarker + 1 );
         }
 
-        quoteMarker = s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 );
+        quoteMarker = s.find_first_of( quoteMarker__, quoteMarkerEnd + 1 );
       }
 
       std::string str = s.substr( 0, commentMarker );
 
       std::size_t counter = 0, first_letter_token, next_token, last_letter_token;
 
-      __getNextTriplet(
+      getNextTriplet__(
           str, first_letter_token, next_token, last_letter_token, 0 );
 
       while ( ( std::string::npos != first_letter_token ) &&
               ( std::string::npos != last_letter_token ) ) {
-        if ( __data.size() <= counter ) __data.resize( counter + 1 );
+        if ( data__.size() <= counter ) data__.resize( counter + 1 );
 
         if ( first_letter_token == next_token ) {
-          __data[counter] = "";
+          data__[counter] = "";
         }
         else if ( last_letter_token >= first_letter_token ) {
           const std::size_t fieldlength =
             last_letter_token + 1 - first_letter_token;
-          __data[counter].resize( fieldlength );
-          __data[counter].assign( str, first_letter_token, fieldlength );
+          data__[counter].resize( fieldlength );
+          data__[counter].assign( str, first_letter_token, fieldlength );
         }
         else {
-          __data[counter] = "";
+          data__[counter] = "";
         }
 
         counter++;
 
         if ( next_token == std::string::npos ) break;
 
-        __getNextTriplet( str,
+        getNextTriplet__( str,
                           first_letter_token,
                           next_token,
                           last_letter_token,
@@ -173,14 +173,14 @@ namespace gum {
            ( last_letter_token == first_letter_token ) &&
            ( next_token == first_letter_token ) ) {
         counter++;
-        __data.resize( counter );
-        __data[counter - 1] = "";
+        data__.resize( counter );
+        data__[counter - 1] = "";
       }
       else {
-        __data.resize( counter );
+        data__.resize( counter );
       }
 
-      __emptyData = false;
+      emptyData__ = false;
     }
 
 
@@ -190,36 +190,36 @@ namespace gum {
                                          const std::string& delimiter,
                                          const char         commentmarker,
                                          const char         quoteMarker ) {
-      __line.clear ();
-      __delimiter = delimiter;
-      __spaces =  " \t\r";
-      __delimiterPlusSpaces = __delimiter + __spaces;
-      __nbLine = std::size_t(0);
-      __commentMarker = commentmarker;
-      __quoteMarker = quoteMarker;
-      __emptyData = true;
-      __instream = &instream;
-      __data.clear ();
+      line__.clear ();
+      delimiter__ = delimiter;
+      spaces__ =  " \t\r";
+      delimiterPlusSpaces__ = delimiter__ + spaces__;
+      nbLine__ = std::size_t(0);
+      commentMarker__ = commentmarker;
+      quoteMarker__ = quoteMarker;
+      emptyData__ = true;
+      instream__ = &instream;
+      data__.clear ();
     }
 
     
     // gets the next line of the csv stream and parses it
     template <template<typename> class ALLOC>
     INLINE bool CSVParser<ALLOC>::next () {
-      while ( getline( *__instream, __line ) ) {
-        __nbLine++;
+      while ( getline( *instream__, line__ ) ) {
+        nbLine__++;
 
-        if ( __line.size() == std::size_t (0) ) continue;
+        if ( line__.size() == std::size_t (0) ) continue;
 
         // fast recognition of commented or empty lines lines
         std::size_t lastPos =
-          __line.find_first_not_of( __spaces, std::size_t(0) );
+          line__.find_first_not_of( spaces__, std::size_t(0) );
         
         if ( lastPos == std::string::npos ) continue;
 
-        if ( __line.at( lastPos ) == __commentMarker ) continue;
+        if ( line__.at( lastPos ) == commentMarker__ ) continue;
 
-        __tokenize( __line );
+        tokenize__( line__ );
         return true;
       }
 
@@ -230,12 +230,12 @@ namespace gum {
     // search for quote taking into account the '\'...
     template <template<typename> class ALLOC>
     INLINE std::size_t
-    CSVParser<ALLOC>::__correspondingQuoteMarker( const std::string& str,
+    CSVParser<ALLOC>::correspondingQuoteMarker__( const std::string& str,
                                                   std::size_t pos ) const {
       std::size_t res = pos, before;
 
       while ( true ) {
-        res = str.find_first_of( __quoteMarker, res + 1 );
+        res = str.find_first_of( quoteMarker__, res + 1 );
 
         if ( res == std::string::npos ) return res;  // no quote found
 
@@ -255,20 +255,20 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE const std::vector<std::string,ALLOC<std::string>>&
     CSVParser<ALLOC>::current () const {
-      if ( __emptyData )
+      if ( emptyData__ )
         GUM_ERROR( NullElement, "No parsed data" );
 
-      return __data;
+      return data__;
     }
     
 
     // returns the current nbLine of parser line
     template <template<typename> class ALLOC>
     INLINE const std::size_t CSVParser<ALLOC>::nbLine() const {
-      if ( __nbLine == 0 )
+      if ( nbLine__ == 0 )
         GUM_ERROR( NullElement, "No parsed data" );
 
-      return __nbLine;
+      return nbLine__;
     }
 
   }  // namespace learning

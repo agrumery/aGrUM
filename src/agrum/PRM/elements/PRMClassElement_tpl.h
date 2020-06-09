@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of gum::PRMClassElement
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMType.h>
@@ -42,7 +42,7 @@ namespace gum {
     PRMClassElement< GUM_SCALAR >::PRMClassElement(
        const PRMClassElement< GUM_SCALAR >& source) :
         PRMObject(source.name()),
-        __id(source.id()) {
+        id__(source.id()) {
       GUM_CONS_CPY(PRMClassElement);
     }
 
@@ -53,7 +53,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE NodeId PRMClassElement< GUM_SCALAR >::id() const {
-      return __id;
+      return id__;
     }
 
     template < typename GUM_SCALAR >
@@ -63,12 +63,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElement< GUM_SCALAR >::setId(NodeId id) {
-      __id = id;
+      id__ = id;
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::string& PRMClassElement< GUM_SCALAR >::safeName() const {
-      return _safeName;
+      return safeName_;
     }
 
     template < typename GUM_SCALAR >

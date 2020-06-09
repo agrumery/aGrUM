@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,35 +27,35 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  GraphicalModel::GraphicalModel() : __propertiesMap(nullptr) {
+  GraphicalModel::GraphicalModel() : propertiesMap__(nullptr) {
     GUM_CONSTRUCTOR(GraphicalModel);
   }
 
   GraphicalModel::GraphicalModel(const GraphicalModel& from) :
-      __propertiesMap(nullptr) {
+      propertiesMap__(nullptr) {
     GUM_CONS_CPY(GraphicalModel);
 
-    if (from.__propertiesMap) {
-      __propertiesMap =
-         new HashTable< std::string, std::string >(*(from.__propertiesMap));
+    if (from.propertiesMap__) {
+      propertiesMap__ =
+         new HashTable< std::string, std::string >(*(from.propertiesMap__));
     }
   }
 
   GraphicalModel::~GraphicalModel() {
     GUM_DESTRUCTOR(GraphicalModel);
-    if (__propertiesMap) { delete __propertiesMap; }
+    if (propertiesMap__) { delete propertiesMap__; }
   }
 
   GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
     if (this != &source) {
-      if (__propertiesMap) {
-        delete __propertiesMap;
-        __propertiesMap = nullptr;
+      if (propertiesMap__) {
+        delete propertiesMap__;
+        propertiesMap__ = nullptr;
       }
 
-      if (source.__propertiesMap != 0) {
-        __propertiesMap =
-           new HashTable< std::string, std::string >(*(source.__propertiesMap));
+      if (source.propertiesMap__ != 0) {
+        propertiesMap__ =
+           new HashTable< std::string, std::string >(*(source.propertiesMap__));
       }
     }
     return *this;

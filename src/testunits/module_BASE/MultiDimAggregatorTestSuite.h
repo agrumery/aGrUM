@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ namespace gum_tests {
 
   class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
     private:
-    float __is_min(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_min__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = b;
 
       if (tmp > c) tmp = c;
@@ -56,7 +56,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_max(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_max__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = b;
 
@@ -67,7 +67,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_median3(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_median3__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = 0;
 
       if (b <= c) {
@@ -96,7 +96,7 @@ namespace gum_tests {
     }
 
     float
-       __is_median4(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+       is_median4__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2, m1, m2;
       // gum::Idx hh, ll;
@@ -145,7 +145,7 @@ namespace gum_tests {
     }
 
     float
-       __is_amplitude(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+       is_amplitude__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2;
       // gum::Idx m1, m2;
@@ -189,7 +189,7 @@ namespace gum_tests {
     }
 
 
-    float __is_count_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_count_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = (gum::Idx)0;
 
@@ -202,7 +202,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_forall_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_forall_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) && (c == (gum::Idx)2) && (d == (gum::Idx)2))
@@ -212,7 +212,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_exists_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_exists_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) || (c == (gum::Idx)2) || (d == (gum::Idx)2))
@@ -222,7 +222,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_or(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_or__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) || (c == (gum::Idx)1) || (d == (gum::Idx)1))
@@ -232,7 +232,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_and(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float is_and__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) && (c == (gum::Idx)1) && (d == (gum::Idx)1))
@@ -242,11 +242,9 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_sum(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
+    float is_sum__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
       gum::Idx tmp = b + c + d;
-      if(tmp > maxA){
-        tmp = maxA;
-      }
+      if (tmp > maxA) { tmp = maxA; }
       return (tmp == a) ? (float)1 : (float)0;
     }
 
@@ -261,7 +259,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i], is_min__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -275,7 +273,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_max(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i], is_max__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -290,7 +288,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         __is_count_2(i.val(a), i.val(b), i.val(c), i.val(d)));
+                         is_count_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -305,7 +303,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         __is_forall_2(i.val(a), i.val(b), i.val(c), i.val(d)));
+                         is_forall_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -320,7 +318,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         __is_exists_2(i.val(a), i.val(b), i.val(c), i.val(d)));
+                         is_exists_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -334,7 +332,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_or(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i], is_or__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -348,7 +346,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_and(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i], is_and__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -363,7 +361,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(__is_median3(i.val(a), i.val(b), i.val(c), i.val(d)),
+        TS_ASSERT_EQUALS(is_median3__(i.val(a), i.val(b), i.val(c), i.val(d)),
                          p[i]);
       }
     }
@@ -381,7 +379,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           __is_median4(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
+           is_median4__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
@@ -398,7 +396,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           __is_amplitude(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
+           is_amplitude__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
@@ -412,7 +410,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i], is_min__(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
 
       // it is not allowed to change a value but can only be detected at the
@@ -428,23 +426,22 @@ namespace gum_tests {
     void testCreationSum() {
       try {
         gum::RangeVariable a("a", "", 0, 8), b("b", "", 0, 3), c("c", "", 0, 3),
-                d("d", "", 0, 3);
-        gum::aggregator::Sum<double> p;
+           d("d", "", 0, 3);
+        gum::aggregator::Sum< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
         TS_ASSERT_EQUALS(p.toString(), "a[0,8]=sum(b[0,3],c[0,3],d[0,3])");
 
         gum::Instantiation i(p);
 
         for (i.setFirst(); !i.end(); ++i) {
-          TS_ASSERT_EQUALS(p[i], __is_sum(i.val(a), i.val(b), i.val(c), i.val(d),(gum::Idx)8));
+          TS_ASSERT_EQUALS(
+             p[i], is_sum__(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8));
         }
-      }catch (gum::Exception &e){
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     private:
-    std::string _pot2arr(const gum::aggregator::MultiDimAggregator< double >& p) {
+    std::string pot2arr_(const gum::aggregator::MultiDimAggregator< double >& p) {
       std::stringstream v;
       bool              first = true;
 
@@ -475,12 +472,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -497,12 +494,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -519,12 +516,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -541,12 +538,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -563,12 +560,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -585,12 +582,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -607,12 +604,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -629,12 +626,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
 
@@ -651,12 +648,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res0);
 
       p << b;
       TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
       TS_ASSERT_EQUALS(s, res1);
     }
   };

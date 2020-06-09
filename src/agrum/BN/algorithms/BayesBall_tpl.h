@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@ namespace gum {
       nodes_to_visit.insert(std::pair< NodeId, bool >(node, true));
     }
 
-    // perform the bouncing ball until __node2potentials becomes empty (which
+    // perform the bouncing ball until node2potentials__ becomes empty (which
     // means that we have reached all the potentials and, therefore, those
     // are d-connected to query) or until there is no node in the graph to send
     // the ball to
@@ -78,7 +78,7 @@ namespace gum {
       // if the marks of the node do not exist, create them
       if (!marks.exists(node)) marks.insert(node, empty_mark);
 
-      // if the node belongs to the query, update __node2potentials: remove all
+      // if the node belongs to the query, update node2potentials__: remove all
       // the potentials containing the node
       if (node2potentials.exists(node)) {
         auto& pot_set = node2potentials[node];
@@ -94,7 +94,7 @@ namespace gum {
         }
         node2potentials.erase(node);
 
-        // if __node2potentials is empty, no need to go on: all the potentials
+        // if node2potentials__ is empty, no need to go on: all the potentials
         // are d-connected to the query
         if (node2potentials.empty()) return;
       }
@@ -144,7 +144,7 @@ namespace gum {
     }
 
 
-    // here, all the potentials that belong to __node2potentials are d-separated
+    // here, all the potentials that belong to node2potentials__ are d-separated
     // from the query
     for (const auto elt: node2potentials) {
       for (const auto pot: elt.second) {

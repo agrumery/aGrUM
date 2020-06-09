@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -669,7 +669,7 @@ namespace gum_tests {
         std::vector< int >          nb(num_threads);
 
         for (unsigned int i = 0; i < num_threads; ++i) {
-          threads[i] = new std::thread(&DatabaseTableTestSuite::__create_handler,
+          threads[i] = new std::thread(&DatabaseTableTestSuite::create_handler__,
                                        this,
                                        &database,
                                        &(handlers[i]),
@@ -741,7 +741,7 @@ namespace gum_tests {
 
         for (unsigned int i = 0; i < num_threads; ++i) {
           threads[i] =
-             new std::thread(&DatabaseTableTestSuite::__create_handler_safe,
+             new std::thread(&DatabaseTableTestSuite::create_handler_safe__,
                              this,
                              &database,
                              &(handlers[i]),
@@ -1298,7 +1298,7 @@ namespace gum_tests {
 
 
     private:
-    void __create_handler(gum::learning::DatabaseTable<>*           database,
+    void create_handler__(gum::learning::DatabaseTable<>*           database,
                           gum::learning::DatabaseTable<>::Handler** handler,
                           int*                                      nb) {
       *handler = new gum::learning::DatabaseTable<>::Handler(*database);
@@ -1313,7 +1313,7 @@ namespace gum_tests {
     }
 
     void
-       __create_handler_safe(gum::learning::DatabaseTable<>* database,
+       create_handler_safe__(gum::learning::DatabaseTable<>* database,
                              gum::learning::DatabaseTable<>::HandlerSafe** handler,
                              int*                                          nb) {
       *handler = new gum::learning::DatabaseTable<>::HandlerSafe(*database);

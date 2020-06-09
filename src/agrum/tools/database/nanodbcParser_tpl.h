@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,10 +21,10 @@
  * @file
  * @brief Class for parsing SQL results using Nanodbc.
  *
- * @author Lionel TORTI, Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI, Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifdef _ODBC
+#ifdef ODBC_
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -38,7 +38,7 @@ namespace gum {
     /// Default constructor
     template <template<typename> class ALLOC>
     NanodbcParser<ALLOC>::NanodbcParser( const ALLOC<std::string>& alloc )
-      : __data( alloc ) {
+      : data__( alloc ) {
       GUM_CONSTRUCTOR( NanodbcParser );
     }
     
@@ -48,11 +48,11 @@ namespace gum {
     NanodbcParser<ALLOC>::NanodbcParser( nanodbc::connection& connexion,
                                          const std::string& query,
                                          const ALLOC<std::string>& alloc )
-      : __data( alloc ) {
+      : data__( alloc ) {
       // check if there is a connection. If so, execute the query
       if ( connexion.connected () ) {
-        __result =  nanodbc::execute( connexion, query );
-        __data.resize ( std::size_t ( __result.columns() ) );
+        result__ =  nanodbc::execute( connexion, query );
+        data__.resize ( std::size_t ( result__.columns() ) );
       }
       GUM_CONSTRUCTOR( NanodbcParser );
     }
@@ -84,36 +84,36 @@ namespace gum {
          #endif
          #define SQL_VARCHAR        12 */
       try {
-        if ( __result.next() ) {
-          const std::size_t nb_cols = std::size_t ( __result.columns() );
+        if ( result__.next() ) {
+          const std::size_t nb_cols = std::size_t ( result__.columns() );
           char str[100]; // buffer for retrieving floats
           for ( std::size_t i = 0; i < nb_cols; ++i ) {
             const short pos ( i );
             try {
-              const int type = __result.column_datatype ( pos );
+              const int type = result__.column_datatype ( pos );
 
               // if the column contains a numeric field, we should use
               // method get<float>, otherwise a get<string> should be ok
               // WARNING: using a get<string> to get the content of a
               // real-valued field will provide incorrect results
               if ( ( type >= SQL_NUMERIC ) && ( type <= SQL_DOUBLE ) ) {
-                sprintf ( str, "%g", __result.get<float>( pos ) );
-                __data[i] = str;
+                sprintf ( str, "%g", result__.get<float>( pos ) );
+                data__[i] = str;
               }
               else {
-                __data[i] = __result.get<std::string>( pos );
+                data__[i] = result__.get<std::string>( pos );
               }
             } catch ( nanodbc::null_access_error& e ) {
-              __data[i] = "NULL";
+              data__[i] = "NULL";
             }
           }
-          ++__nb_line;
+          ++nb_line__;
           return true;
         }
       } catch ( std::runtime_error& e ) {
         GUM_ERROR( DatabaseError, std::string( e.what() ) );
       }
-      __data.clear();
+      data__.clear();
       return false;
     }
 
@@ -121,7 +121,7 @@ namespace gum {
     // return the current number line
     template <template<typename> class ALLOC>
     INLINE std::size_t NanodbcParser<ALLOC>::nbLine() const {
-      return __nb_line >= 1 ? __nb_line - 1 : std::size_t(0);
+      return nb_line__ >= 1 ? nb_line__ - 1 : std::size_t(0);
     }
 
     
@@ -130,8 +130,8 @@ namespace gum {
     INLINE
     const std::vector<std::string,ALLOC<std::string>>&
     NanodbcParser<ALLOC>::current() const {
-      if ( ! __data.empty () ) {
-        return __data;
+      if ( ! data__.empty () ) {
+        return data__;
       }
 
       GUM_ERROR( NullElement, "No parsed data" );
@@ -142,16 +142,16 @@ namespace gum {
     template <template<typename> class ALLOC>
     void NanodbcParser<ALLOC>::useNewQuery ( nanodbc::connection& connexion,
                                              const std::string& query ) {
-      __result = nanodbc::execute( connexion, query );
-      __data.resize ( std::size_t ( __result.columns() ) );
-      __nb_line = std::size_t(0);
+      result__ = nanodbc::execute( connexion, query );
+      data__.resize ( std::size_t ( result__.columns() ) );
+      nb_line__ = std::size_t(0);
     }
 
     
     /// returns the number of columns in the query result
     template <template<typename> class ALLOC>
     INLINE std::size_t NanodbcParser<ALLOC>::nbColumns () const {
-      return std::size_t ( __result.columns () );
+      return std::size_t ( result__.columns () );
     }
 
     
@@ -159,7 +159,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE std::string
     NanodbcParser<ALLOC>::columnName ( const std::size_t i ) const {
-      return __result.column_name( i );
+      return result__.column_name( i );
     }
 
 
@@ -169,4 +169,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif  // _ODBC
+#endif  // ODBC_

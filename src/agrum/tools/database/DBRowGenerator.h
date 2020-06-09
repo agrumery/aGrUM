@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The base class for all DBRow generators
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_H
 #define GUM_LEARNING_DBROW_GENERATOR_H
@@ -132,14 +132,14 @@ namespace gum {
      *                       const std::size_t nb_duplicates,
      *                       const allocator_type& alloc  = allocator_type () )
      *     : DBRowGenerator<ALLOC> ( column_types, alloc )
-     *     , __nb_duplicates ( nb_duplicates ) {}
+     *     , nb_duplicates__ ( nb_duplicates ) {}
      *
      *   /// copy constructor with a given allocator
      *   DuplicateGenerator( const DuplicateGenerator<ALLOC>& from,
      *                       const allocator_type& alloc )
      *     : DBRowGenerator<ALLOC>( from, alloc )
-     *     , __input_row( from.__input_row )
-     *     , __nb_duplicates ( from.__nb_duplicates ) {}
+     *     , input_row__( from.input_row__ )
+     *     , nb_duplicates__ ( from.nb_duplicates__ ) {}
      *
      *   /// copy constructor
      *   DuplicateGenerator( const DuplicateGenerator<ALLOC>& from )
@@ -149,8 +149,8 @@ namespace gum {
      *   DuplicateGenerator( DuplicateGenerator<ALLOC>&& from,
      *                       const allocator_type& alloc )
      *     : DBRowGenerator<ALLOC> ( std::move( from ), alloc )
-     *     , __input_row( from.__input_row )
-     *     , __nb_duplicates ( from.__nb_duplicates ) {}
+     *     , input_row__( from.input_row__ )
+     *     , nb_duplicates__ ( from.nb_duplicates__ ) {}
      *
      *   /// move constructor
      *   DuplicateGenerator( DuplicateGenerator<ALLOC>&& from )
@@ -187,16 +187,16 @@ namespace gum {
      *   DuplicateGenerator<ALLOC>&
      *   operator=( const DuplicateGenerator<ALLOC>& from ) {
      *     DBRowGenerator<ALLOC>::operator=( from );
-     *     __input_row = from.__input_row;
-     *     __nb_duplicates = from.__nb_duplicates;
+     *     input_row__ = from.input_row__;
+     *     nb_duplicates__ = from.nb_duplicates__;
      *     return *this;
      *   }
      *
      *   /// move operator
      *   DuplicateGenerator<ALLOC>& operator=( DuplicateGenerator<ALLOC>&& from ) {
      *     DBRowGenerator<ALLOC>::operator=( std::move( from ) );
-     *     __input_row = from.__input_row;
-     *     __nb_duplicates = from.__nb_duplicates;
+     *     input_row__ = from.input_row__;
+     *     nb_duplicates__ = from.nb_duplicates__;
      *     return *this;
      *   }
      *
@@ -208,7 +208,7 @@ namespace gum {
      *   /// generates new lines from those the generator gets in input
      *   virtual const DBRow<DBTranslatedValue,ALLOC>& generate() final {
      *     this->decreaseRemainingRows();
-     *     return *__input_row;
+     *     return *input_row__;
      *   }
      *
      *
@@ -216,18 +216,18 @@ namespace gum {
      *
      *   /// computes the rows it will provide in output
      *   virtual std::size_t
-     *     _computeRows( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
-     *     __input_row = &row;
-     *     return __nb_duplicates;
+     *     computeRows_( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
+     *     input_row__ = &row;
+     *     return nb_duplicates__;
      *   }
      *
      *
      * private:
      *   /// the row used as input to generate the output DBRows
-     *   const DBRow<DBTranslatedValue,ALLOC>* __input_row { nullptr };
+     *   const DBRow<DBTranslatedValue,ALLOC>* input_row__ { nullptr };
      *
      *   /// the number of times we return each input row
-     *   std::size_t __nb_duplicates { std::size_t(1) };
+     *   std::size_t nb_duplicates__ { std::size_t(1) };
      * };
      * @endcode
      */
@@ -357,19 +357,19 @@ namespace gum {
 
       protected:
       /// the number of output rows still to retrieve through the generate method
-      std::size_t _nb_remaining_output_rows{std::size_t(0)};
+      std::size_t nb_remaining_output_rows_{std::size_t(0)};
 
       /// the types of the columns in the DatabaseTable
       /** This is useful to determine whether we need to use the .discr_val
        * field or the .cont_val field in DBTranslatedValue instances. */
       std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-         _column_types;
+         column_types_;
 
       /// the set of columns of interest
-      std::vector< std::size_t, ALLOC< std::size_t > > _columns_of_interest;
+      std::vector< std::size_t, ALLOC< std::size_t > > columns_of_interest_;
 
       /// the goal of the DBRowGenerator (just remove missing values or not)
-      DBRowGeneratorGoal _goal{
+      DBRowGeneratorGoal goal_{
          DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES};
 
 
@@ -382,7 +382,7 @@ namespace gum {
       /** @brief the method that computes the set of DBRow instances to output
        * after method setInputRow has been called */
       virtual std::size_t
-         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) = 0;
+         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) = 0;
     };
 
   } /* namespace learning */

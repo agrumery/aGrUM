@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief source implementations for computing default triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -46,7 +46,7 @@ namespace gum {
                                  DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      __quasi_ratio(theRatio), __threshold(theThreshold) {
+      quasi_ratio__(theRatio), threshold__(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
@@ -58,15 +58,15 @@ namespace gum {
       UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      __quasi_ratio(theRatio), __threshold(theThreshold) {
+      quasi_ratio__(theRatio), threshold__(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
   /// copy constructor
   DefaultTriangulation::DefaultTriangulation(const DefaultTriangulation& from) :
-      UnconstrainedTriangulation(from), __quasi_ratio(from.__quasi_ratio),
-      __threshold(from.__threshold) {
+      UnconstrainedTriangulation(from), quasi_ratio__(from.quasi_ratio__),
+      threshold__(from.threshold__) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultTriangulation);
   }
@@ -74,7 +74,7 @@ namespace gum {
   /// move constructor
   DefaultTriangulation::DefaultTriangulation(DefaultTriangulation&& from) :
       UnconstrainedTriangulation(std::move(from)),
-      __quasi_ratio(from.__quasi_ratio), __threshold(from.__threshold) {
+      quasi_ratio__(from.quasi_ratio__), threshold__(from.threshold__) {
     // for debugging purposes
     GUM_CONS_MOV(DefaultTriangulation);
   }
@@ -88,7 +88,7 @@ namespace gum {
   /// virtual clone constructor
   DefaultTriangulation* DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation(
-       isMinimalityRequired(), __quasi_ratio, __threshold);
+       isMinimalityRequired(), quasi_ratio__, threshold__);
   }
 
   /// virtual copy constructor

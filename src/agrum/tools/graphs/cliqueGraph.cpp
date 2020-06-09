@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief source of basic clique graphs (join trees, etc)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <sstream>
@@ -59,7 +59,7 @@ namespace gum {
   CliqueGraph::CliqueGraph(const CliqueGraph& from) :
       NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
       UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
-      __cliques(from.__cliques), __separators(from.__separators) {
+      cliques__(from.cliques__), separators__(from.separators__) {
     // for debugging purposes
     GUM_CONS_CPY(CliqueGraph);
   }
@@ -75,7 +75,7 @@ namespace gum {
 
   std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1,
                                                    const NodeId node2) const {
-    // get a path from a __clique containing node1 to a __clique containing
+    // get a path from a clique__ containing node1 to a clique__ containing
     // node2
     std::vector< NodeId > path =
        undirectedPath(container(node1), container(node2));
@@ -97,7 +97,7 @@ namespace gum {
 
   void CliqueGraph::addToClique(const NodeId clique_id, const NodeId node_id) {
     // get the current clique set
-    NodeSet& clique = __cliques[clique_id];
+    NodeSet& clique = cliques__[clique_id];
 
     // check if the node already exists, in which case throw an exception
     if (clique.contains(node_id)) {
@@ -107,41 +107,41 @@ namespace gum {
 
     clique.insert(node_id);
 
-    // update the __separators adjacent to clique 'id'
+    // update the separators__ adjacent to clique 'id'
     for (const auto nei: neighbours(clique_id))
-      if (__cliques[nei].contains(node_id))
-        __separators[Edge(nei, clique_id)].insert(node_id);
+      if (cliques__[nei].contains(node_id))
+        separators__[Edge(nei, clique_id)].insert(node_id);
   }
 
-  /// remove a node from a __clique
+  /// remove a node from a clique__
 
   void CliqueGraph::eraseFromClique(const NodeId clique_id, const NodeId node_id) {
-    // get the current __clique set
-    NodeSet& clique = __cliques[clique_id];
+    // get the current clique__ set
+    NodeSet& clique = cliques__[clique_id];
 
     // check if the node does not exist, in which case throw an exception
     if (clique.contains(node_id)) {
       clique.erase(node_id);
 
-      // update the __separators adjacent to __clique 'id'
+      // update the separators__ adjacent to clique__ 'id'
       for (const auto nei: neighbours(clique_id)) {
         Edge edge(nei, clique_id);
 
-        if (__separators[edge].contains(node_id))
-          __separators[edge].erase(node_id);
+        if (separators__[edge].contains(node_id))
+          separators__[edge].erase(node_id);
       }
     }
   }
 
   /// DFS function for computing whether the running intersection property holds
 
-  bool CliqueGraph::__runningIntersectionDFS(
+  bool CliqueGraph::runningIntersectionDFS__(
      const NodeId                     clique,
      const NodeId                     from,
-     CliqueGraph::__RunningIntersect& infos_DFS) const {
+     CliqueGraph::RunningIntersect__& infos_DFS) const {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
-    const NodeSet& nodes_clique = __cliques[clique];
+    const NodeSet& nodes_clique = cliques__[clique];
 
     for (const auto node: nodes_clique)
       if (infos_DFS.nodes_other_components.contains(node)) return false;
@@ -172,7 +172,7 @@ namespace gum {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
         const Edge     edge(otherID, clique);
-        const NodeSet& from_separ = __separators[edge];
+        const NodeSet& from_separ = separators__[edge];
 
         for (const auto node: nodes_clique) {
           if (!from_separ.contains(node))
@@ -180,7 +180,7 @@ namespace gum {
         }
 
         // check the neighbour
-        if (!__runningIntersectionDFS(otherID, clique, infos_DFS)) return false;
+        if (!runningIntersectionDFS__(otherID, clique, infos_DFS)) return false;
 
         // remove from the forbidden list the nodes that belong to clique
         for (const auto node: nodes_clique)
@@ -213,8 +213,8 @@ namespace gum {
 
   bool CliqueGraph::hasRunningIntersection() const {
     // create a RunningIntersect structure and initialize it
-    __RunningIntersect infos_DFS;
-    infos_DFS.cliques_DFS_chain = __cliques;
+    RunningIntersect__ infos_DFS;
+    infos_DFS.cliques_DFS_chain = cliques__;
 
     // while there exist unvisited cliques, perform a DFS on them
     for (const auto DFSnode: nodes())
@@ -227,7 +227,7 @@ namespace gum {
 
         // here iter_DFS points on a clique that has not been visited yet
         // visit the clique graph from this clique
-        if (!__runningIntersectionDFS(DFSnode, DFSnode, infos_DFS)) return false;
+        if (!runningIntersectionDFS__(DFSnode, DFSnode, infos_DFS)) return false;
 
         // the nodes that were seen during the DFS belong to a connected
         // component
@@ -245,15 +245,15 @@ namespace gum {
     return true;
   }
 
-  /// checks whether two __clique graphs are equal
+  /// checks whether two clique__ graphs are equal
 
   bool CliqueGraph::operator==(const CliqueGraph& from) const {
     // check if both graphical structures are identical
     if (UndiGraph::operator!=(from)) return false;
 
-    // check if the __cliques are identical
-    for (const auto& elt: __cliques)
-      if (elt.second != from.__cliques[elt.first]) return false;
+    // check if the cliques__ are identical
+    for (const auto& elt: cliques__)
+      if (elt.second != from.cliques__[elt.first]) return false;
 
     return true;
   }

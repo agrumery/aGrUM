@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of gum::PRMSlotChain<GUM_SCALAR>
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/elements/PRMSlotChain.h>
 
@@ -36,30 +36,30 @@ namespace gum {
        const std::string&                                name,
        const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
         PRMClassElement< GUM_SCALAR >(name),
-        __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain)),
-        __isMultiple(false) {
+        chain__(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain)),
+        isMultiple__(false) {
       GUM_CONSTRUCTOR(PRMSlotChain);
 
-      if (__chain->size() < 2) {
+      if (chain__->size() < 2) {
         GUM_ERROR(OperationNotAllowed,
                   "chain must contain at least two ClassElement");
       }
 
-      for (Size i = 0; i < __chain->size() - 1; ++i) {
-        if (__chain->atPos(i)->elt_type()
+      for (Size i = 0; i < chain__->size() - 1; ++i) {
+        if (chain__->atPos(i)->elt_type()
             != PRMClassElement< GUM_SCALAR >::prm_refslot) {
           GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
-          __isMultiple =
-             __isMultiple
-             || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(__chain->atPos(i))
+          isMultiple__ =
+             isMultiple__
+             || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(chain__->atPos(i))
                    ->isArray();
         }
       }
 
-      __copyLastElt();
+      copyLastElt__();
 
-      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name()
+      this->safeName_ = PRMObject::LEFT_CAST() + lastElt().type().name()
                         + PRMObject::RIGHT_CAST() + name;
       this->lastElt().type().variable().setName(name);
     }
@@ -74,36 +74,36 @@ namespace gum {
       // No need to
       // GUM_CONSTRUCTOR(PRMSlotChain);
 
-      // if (__chain->size() < 2) {
+      // if (chain__->size() < 2) {
       //  GUM_ERROR(OperationNotAllowed,
       //            "chain must containt at least two PRMClassElement");
       //}
 
-      // for (Size i = 0; i < __chain->size() - 1; ++i) {
-      //  if (not(__chain->atPos(i)->elt_type() !=
+      // for (Size i = 0; i < chain__->size() - 1; ++i) {
+      //  if (not(chain__->atPos(i)->elt_type() !=
       //          PRMClassElement<GUM_SCALAR>::prm_refslot)) {
       //    GUM_ERROR(WrongClassElement, "illegal PRMClassElement in chain");
       //  } else {
-      //    __isMultiple =
-      //        __isMultiple or
+      //    isMultiple__ =
+      //        isMultiple__ or
       //        static_cast<PRMReferenceSlot<GUM_SCALAR>
-      //        *>(__chain->atPos(i))->isArray();
+      //        *>(chain__->atPos(i))->isArray();
       //  }
       //}
 
       //__copyLastElt();
-      // this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() +
+      // this->safeName_ = PRMObject::LEFT_CAST() + lastElt().type().name() +
       // PRMObject::RIGHT_CAST() + name;
     }
 
     template < typename GUM_SCALAR >
-    void PRMSlotChain< GUM_SCALAR >::__copyLastElt() {
+    void PRMSlotChain< GUM_SCALAR >::copyLastElt__() {
       PRMClassElement< GUM_SCALAR >* new_elt = nullptr;
 
-      switch (__chain->back()->elt_type()) {
+      switch (chain__->back()->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
           auto old_attr =
-             static_cast< const PRMAttribute< GUM_SCALAR >* >(__chain->back());
+             static_cast< const PRMAttribute< GUM_SCALAR >* >(chain__->back());
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
           for (auto var: old_attr->cpf().variablesSequence()) {
@@ -116,7 +116,7 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
           const PRMAggregate< GUM_SCALAR >* c_agg =
-             static_cast< const PRMAggregate< GUM_SCALAR >* >(__chain->back());
+             static_cast< const PRMAggregate< GUM_SCALAR >* >(chain__->back());
           PRMAggregate< GUM_SCALAR >* agg = new PRMAggregate< GUM_SCALAR >(
              c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id());
           new_elt = agg;
@@ -128,25 +128,25 @@ namespace gum {
         }
       }
 
-      new_elt->setId(__chain->back()->id());
-      __chain->setAtPos(__chain->size() - 1, new_elt);
+      new_elt->setId(chain__->back()->id());
+      chain__->setAtPos(chain__->size() - 1, new_elt);
     }
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::~PRMSlotChain() {
       GUM_DESTRUCTOR(PRMSlotChain);
-      delete __chain->back();
-      delete __chain;
+      delete chain__->back();
+      delete chain__;
     }
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
        const PRMSlotChain< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
-        __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain())),
-        __isMultiple(source.isMultiple()) {
+        chain__(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain())),
+        isMultiple__(source.isMultiple()) {
       GUM_CONS_CPY(PRMSlotChain);
-      __copyLastElt();
+      copyLastElt__();
     }
 
     template < typename GUM_SCALAR >
@@ -164,24 +164,24 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMType& PRMSlotChain< GUM_SCALAR >::type() {
-      return __chain->back()->type();
+      return chain__->back()->type();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMType& PRMSlotChain< GUM_SCALAR >::type() const {
-      return __chain->back()->type();
+      return chain__->back()->type();
     }
 
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::cpf() const {
-      return __chain->back()->cpf();
+      return chain__->back()->cpf();
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMSlotChain< GUM_SCALAR >::end() {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(
-                __chain->atPos(__chain->size() - 2))
+                chain__->atPos(chain__->size() - 2))
          ->slotType();
     }
 
@@ -189,31 +189,31 @@ namespace gum {
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMSlotChain< GUM_SCALAR >::end() const {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(
-                __chain->atPos(__chain->size() - 2))
+                chain__->atPos(chain__->size() - 2))
          ->slotType();
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::lastElt() {
-      return *(__chain->back());
+      return *(chain__->back());
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMSlotChain< GUM_SCALAR >::lastElt() const {
-      return *(__chain->back());
+      return *(chain__->back());
     }
 
     template < typename GUM_SCALAR >
     INLINE Sequence< PRMClassElement< GUM_SCALAR >* >&
            PRMSlotChain< GUM_SCALAR >::chain() {
-      return *__chain;
+      return *chain__;
     }
 
     template < typename GUM_SCALAR >
     INLINE const Sequence< PRMClassElement< GUM_SCALAR >* >&
                  PRMSlotChain< GUM_SCALAR >::chain() const {
-      return *__chain;
+      return *chain__;
     }
 
     template < typename GUM_SCALAR >
@@ -226,7 +226,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMSlotChain< GUM_SCALAR >::isMultiple() const {
-      return __isMultiple;
+      return isMultiple__;
     }
 
     template < typename GUM_SCALAR >

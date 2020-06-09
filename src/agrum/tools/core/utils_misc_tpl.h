@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation for utilities for aGrUM.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // to help IDE parser
@@ -62,7 +62,7 @@ namespace std {
   }
 
   template < size_t N >
-  struct __auxiliary_print_tuple {
+  struct auxiliary_print_tuple__ {
     template < typename... T >
     static typename std::enable_if< (N < sizeof...(T)) >::type
        print(std::ostream& os, const std::tuple< T... >& t) {
@@ -71,7 +71,7 @@ namespace std {
             ? '"'
             : 0;
       os << ", " << quote << std::get< N >(t) << quote;
-      __auxiliary_print_tuple< N + 1 >::print(os, t);
+      auxiliary_print_tuple__< N + 1 >::print(os, t);
     }
     template < typename... T >
     static typename std::enable_if< !(N < sizeof...(T)) >::type
@@ -82,7 +82,7 @@ namespace std {
   std::ostream& operator<<(std::ostream& os, const std::tuple< T0, T... >& t) {
     char quote = (std::is_convertible< T0, std::string >::value) ? '"' : 0;
     os << '(' << quote << std::get< 0 >(t) << quote;
-    __auxiliary_print_tuple< 1 >::print(os, t);
+    auxiliary_print_tuple__< 1 >::print(os, t);
     return os << ')';
   }
 

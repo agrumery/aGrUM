@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * This class shall be used by learning algorithms to notify scores, structural
  * constraints, etc, that the learnt graph has been modified.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -38,20 +38,20 @@ namespace gum {
     INLINE GraphChange::GraphChange(GraphChangeType type,
                                     NodeId          node1,
                                     NodeId          node2) noexcept :
-        __type{type},
-        __node1{node1}, __node2{node2} {
+        type__{type},
+        node1__{node1}, node2__{node2} {
       GUM_CONSTRUCTOR(GraphChange);
     }
 
     /// copy constructor
     INLINE GraphChange::GraphChange(const GraphChange& from) noexcept :
-        __type{from.__type}, __node1{from.__node1}, __node2{from.__node2} {
+        type__{from.type__}, node1__{from.node1__}, node2__{from.node2__} {
       GUM_CONS_CPY(GraphChange);
     }
 
     /// move constructor
     INLINE GraphChange::GraphChange(GraphChange&& from) noexcept :
-        __type{from.__type}, __node1{from.__node1}, __node2{from.__node2} {
+        type__{from.type__}, node1__{from.node1__}, node2__{from.node2__} {
       GUM_CONS_MOV(GraphChange);
     }
 
@@ -60,33 +60,33 @@ namespace gum {
 
     /// copy constructor
     INLINE GraphChange& GraphChange::operator=(const GraphChange& from) noexcept {
-      __type = from.__type;
-      __node1 = from.__node1;
-      __node2 = from.__node2;
+      type__ = from.type__;
+      node1__ = from.node1__;
+      node2__ = from.node2__;
       return *this;
     }
 
     /// move operator
     INLINE GraphChange& GraphChange::operator=(GraphChange&& from) noexcept {
-      __type = from.__type;
-      __node1 = from.__node1;
-      __node2 = from.__node2;
+      type__ = from.type__;
+      node1__ = from.node1__;
+      node2__ = from.node2__;
       return *this;
     }
 
     /// returns the type of the operation
-    INLINE GraphChangeType GraphChange::type() const noexcept { return __type; }
+    INLINE GraphChangeType GraphChange::type() const noexcept { return type__; }
 
     /// returns the first node involved in the modification
-    INLINE NodeId GraphChange::node1() const noexcept { return __node1; }
+    INLINE NodeId GraphChange::node1() const noexcept { return node1__; }
 
     /// returns the second node involved in the modification
-    INLINE NodeId GraphChange::node2() const noexcept { return __node2; }
+    INLINE NodeId GraphChange::node2() const noexcept { return node2__; }
 
     /// returns whether two graph changes are identical or not
     INLINE bool GraphChange::operator==(const GraphChange& from) const noexcept {
-      return ((__node1 == from.__node1) && (__node2 == from.__node2)
-              && (__type == from.__type));
+      return ((node1__ == from.node1__) && (node2__ == from.node2__)
+              && (type__ == from.type__));
     }
 
     /// returns whether two graph changes are different or not
@@ -369,7 +369,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::GraphChange >::operator()(
      const learning::GraphChange& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 
@@ -383,7 +383,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::ArcAddition >::operator()(
      const learning::ArcAddition& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 
@@ -397,7 +397,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::ArcDeletion >::operator()(
      const learning::ArcDeletion& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 
@@ -411,7 +411,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::ArcReversal >::operator()(
      const learning::ArcReversal& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 
@@ -425,7 +425,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::EdgeAddition >::operator()(
      const learning::EdgeAddition& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 
@@ -439,7 +439,7 @@ namespace gum {
   /// computes the hashed value of a key
   INLINE Size HashFunc< learning::EdgeDeletion >::operator()(
      const learning::EdgeDeletion& key) const {
-    return castToSize(key) >> this->_right_shift;
+    return castToSize(key) >> this->right_shift_;
   }
 
 } /* namespace gum */

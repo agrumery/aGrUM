@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the base class for structural constraints used by learning algorithms
  * that learn a directed graph structure
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H
@@ -191,7 +191,7 @@ namespace gum {
 
       protected:
       /// the DiGraph on which we perform checks
-      DiGraph _DiGraph__graph;
+      DiGraph DiGraph__graph_;
     };
 
   } /* namespace learning */

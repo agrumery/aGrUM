@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ namespace gum_tests {
   class UAIMNWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::MarkovNet< double >* mn;
-    gum::NodeId              i1, i2, i3, i4, i5;
+    gum::NodeId               i1, i2, i3, i4, i5;
 
     void setUp() {
       mn = new gum::MarkovNet< double >();
@@ -59,10 +59,10 @@ namespace gum_tests {
       i4 = mn->add(n4);
       i5 = mn->add(n5);
 
-      mn->addFactor({i1,i3});
-      mn->addFactor({i1,i4});
-      mn->addFactor({i3,i5});
-      mn->addFactor({i2,i4,i5});
+      mn->addFactor({i1, i3});
+      mn->addFactor({i1, i4});
+      mn->addFactor({i3, i5});
+      mn->addFactor({i2, i4, i5});
 
       __fill(*mn);
     }
@@ -80,13 +80,13 @@ namespace gum_tests {
       std::string file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
       writer.write(file, *mn);
 
-      gum::MarkovNet< double >  net;
+      gum::MarkovNet< double >   net;
       gum::UAIMNReader< double > reader(&net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
       TS_ASSERT_EQUALS(nbErr, gum::Size(0));
-      TS_ASSERT(*mn==net);
+      TS_ASSERT(*mn == net);
     }
 
     private:
@@ -95,12 +95,10 @@ namespace gum_tests {
       try {
         mn.factor({"0", "2"}).fillWith({1, 2, 3, 4});
         mn.factor({"0", "3"}).fillWith({11, 12, 13, 14});
-        mn.factor({"2", "4"}).fillWith({21, 22, 23, 24,25,26});
+        mn.factor({"2", "4"}).fillWith({21, 22, 23, 24, 25, 26});
         mn.factor({"4", "1", "3"})
            .fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };
 }   // namespace gum_tests

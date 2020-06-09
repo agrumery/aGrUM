@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class for simulating a markov decision process.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_FACTORY_SIMULATOR_H
 #define GUM_FACTORY_SIMULATOR_H
@@ -106,7 +106,7 @@ namespace gum {
 
     protected:
     /// Choses a random state as the first test for a run
-    Instantiation _randomState();
+    Instantiation randomState_();
 
     public:
     bool hasReachEnd();
@@ -122,15 +122,15 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return __primeMap.second(mainVar);
+      return primeMap__.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return __FactoryVars.beginSafe();
+      return FactoryVars__.beginSafe();
     }
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return __FactoryVars.endSafe();
+      return FactoryVars__.endSafe();
     }
 
     /// @}
@@ -140,41 +140,41 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return *__actionMap[actionId]; }
+    const std::string& actionName(Idx actionId) { return *actionMap__[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() {
-      return __FactoryActions.beginSafe();
+      return FactoryActions__.beginSafe();
     }
-    SequenceIteratorSafe< Idx > endActions() { return __FactoryActions.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() { return FactoryActions__.endSafe(); }
 
 
     /// @}
 
 
     private:
-    void __goNorth();
-    void __goEast();
-    void __goSouth();
-    void __goWest();
-    void __pickUp();
-    void __putDown();
-    void __fillUp();
+    void goNorth__();
+    void goEast__();
+    void goSouth__();
+    void goWest__();
+    void pickUp__();
+    void putDown__();
+    void fillUp__();
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* >                           __FactoryVars;
-    Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
-    DiscreteVariable*                                             __xPos;
-    DiscreteVariable*                                             __yPos;
-    DiscreteVariable*                                             __passengerPos;
-    DiscreteVariable*                                             __passengerDest;
-    DiscreteVariable*                                             __fuelLevel;
+    Sequence< const DiscreteVariable* >                           FactoryVars__;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > primeMap__;
+    DiscreteVariable*                                             xPos__;
+    DiscreteVariable*                                             yPos__;
+    DiscreteVariable*                                             passengerPos__;
+    DiscreteVariable*                                             passengerDest__;
+    DiscreteVariable*                                             fuelLevel__;
 
     /// Actions
-    Sequence< Idx >                __FactoryActions;
-    HashTable< Idx, std::string* > __actionMap;   //__actionMap.insert ( actionId,
+    Sequence< Idx >                FactoryActions__;
+    HashTable< Idx, std::string* > actionMap__;   //__actionMap.insert ( actionId,
     // new std::string ( action ) );
-    FactorySimulationAction __lastAction;
+    FactorySimulationAction lastAction__;
   };
 
 } /* namespace gum */

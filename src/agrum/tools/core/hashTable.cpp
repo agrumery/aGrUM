@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Outlined implementation of hash tables.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/hashTable.h>
@@ -42,14 +42,14 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __HashTableIterEnd = new HashTableIterator< int, int >;
+      HashTableIterEnd__ = new HashTableIterator< int, int >;
 #  ifdef GUM_DEBUG_MODE
-      __debug__::__dec_creation("HashTableIterator",
+      __debug__::dec_creation__("HashTableIterator",
                                 "__hash_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-      __debug__::__dec_creation("HashTableConstIterator",
+      __debug__::dec_creation__("HashTableConstIterator",
                                 "__hash_static_end",
                                 0,
                                 "static variable correction",
@@ -57,7 +57,7 @@ namespace gum {
 #  endif
     }
 
-    return __HashTableIterEnd;
+    return HashTableIterEnd__;
   }
 
   const HashTableConstIterator< int, int >*
@@ -72,14 +72,14 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __HashTableIterEndSafe = new HashTableIteratorSafe< int, int >;
+      HashTableIterEndSafe__ = new HashTableIteratorSafe< int, int >;
 #  ifdef GUM_DEBUG_MODE
-      __debug__::__dec_creation("HashTableIteratorSafe",
+      __debug__::dec_creation__("HashTableIteratorSafe",
                                 "__hash_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-      __debug__::__dec_creation("HashTableConstIteratorSafe",
+      __debug__::dec_creation__("HashTableConstIteratorSafe",
                                 "__hash_static_end",
                                 0,
                                 "static variable correction",
@@ -87,7 +87,7 @@ namespace gum {
 #  endif
     }
 
-    return __HashTableIterEndSafe;
+    return HashTableIterEndSafe__;
   }
 
   const HashTableConstIteratorSafe< int, int >*
@@ -97,11 +97,11 @@ namespace gum {
   }
 
   const HashTableIterator< int, int >*
-     HashTableIteratorStaticEnd::__HashTableIterEnd =
+     HashTableIteratorStaticEnd::HashTableIterEnd__ =
         HashTableIteratorStaticEnd::end4Statics();
 
   const HashTableIteratorSafe< int, int >*
-     HashTableIteratorStaticEnd::__HashTableIterEndSafe =
+     HashTableIteratorStaticEnd::HashTableIterEndSafe__ =
         HashTableIteratorStaticEnd::endSafe4Statics();
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

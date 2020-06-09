@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_INF_DIAG_H
@@ -99,7 +99,7 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
-    virtual const Potential< GUM_SCALAR >& cpt(std::string name) const final{
+    virtual const Potential< GUM_SCALAR >& cpt(std::string name) const final {
       return cpt(idFromName(name));
     };
 
@@ -382,39 +382,39 @@ namespace gum {
 
     protected:
     /// Returns the moral graph of this InfluenceDiagram.
-    virtual void _moralGraph(UndiGraph& graph) const;
+    virtual void moralGraph_(UndiGraph& graph) const;
 
     /**
      * Removing ancient table
      */
-    void _removeTables();
+    void removeTables_();
 
     /**
      * Copying tables from another influence diagram
      */
-    void _copyTables(const InfluenceDiagram< GUM_SCALAR >& IDsource);
+    void copyTables_(const InfluenceDiagram< GUM_SCALAR >& IDsource);
 
     /**
      * Add a node
      */
-    NodeId _addNode(const DiscreteVariable& variableType, NodeId DesiredId);
+    NodeId addNode_(const DiscreteVariable& variableType, NodeId DesiredId);
 
     /**
      * Returns the list of children decision for a given nodeId
      */
-    Sequence< NodeId > _getChildrenDecision(NodeId parentDecision) const;
+    Sequence< NodeId > getChildrenDecision_(NodeId parentDecision) const;
 
     private:
     /// Mapping between id and variable
-    VariableNodeMap __variableMap;
+    VariableNodeMap variableMap__;
 
     /// Mapping between potential variable's id and their CPT
-    NodeProperty< Potential< GUM_SCALAR >* > __potentialMap;
+    NodeProperty< Potential< GUM_SCALAR >* > potentialMap__;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty< Potential< GUM_SCALAR >* > __utilityMap;
+    NodeProperty< Potential< GUM_SCALAR >* > utilityMap__;
 
     /// The temporal order
-    mutable List< NodeSet > __temporalOrder;
+    mutable List< NodeSet > temporalOrder__;
   };
 
 } /* namespace gum */

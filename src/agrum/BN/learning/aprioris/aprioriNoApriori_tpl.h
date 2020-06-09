@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the no a priori class: corresponds to 0 weight-sample
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -157,14 +157,14 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addAllApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addConditioningApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {}
 
 

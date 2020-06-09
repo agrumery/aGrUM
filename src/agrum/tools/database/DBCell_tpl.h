@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The inlined implementation of DBCells
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -72,16 +72,16 @@ namespace gum {
     template < template < typename > class ALLOC >
     std::string DBCell::toString(
        const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
-      switch (__type) {
-        case EltType::STRING: return __strings().first(__val_index);
+      switch (type__) {
+        case EltType::STRING: return strings__().first(val_index__);
 
         case EltType::REAL: {
           char buffer[100];
-          sprintf(buffer, "%g", __val_real);
+          sprintf(buffer, "%g", val_real__);
           return std::string(buffer);
         }
 
-        case EltType::INTEGER: return std::to_string(__val_integer);
+        case EltType::INTEGER: return std::to_string(val_integer__);
 
         case EltType::MISSING:
           if (missingVals.size())

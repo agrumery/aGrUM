@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of PRMFactory.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_PRM_FACTORY_H
@@ -845,29 +845,29 @@ namespace gum {
       /// @}
 
       private:
-      /// Decompose a string in v using dots ('.') as delimiters.
-      void __fill_sc_in_vector(std::vector< std::string >& v,
-                               const std::string&          str);
+      // TODELETE /// Decompose a string in v using dots ('.') as delimiters.
+      // TODELETE void fill_sc_in_vector__(std::vector< std::string >& v,
+      // TODELETE                                const std::string&          str);
 
       // ======================================================================
       ///  @name Private methods for type checking and exception handling.
       // ======================================================================
       /// @{
 
-      /// Adds __prefix to str iff __prefix != ""
-      std::string __addPrefix(const std::string& str) const;
+      /// Adds prefix__ to str iff prefix__ != ""
+      std::string addPrefix__(const std::string& str) const;
 
-      /// Return a pointer on a PRMObject at __stack.size() - i position after
+      /// Return a pointer on a PRMObject at stack__.size() - i position after
       /// checking the type of the object given obj_type.
       /// @throw FactoryInvalidState Raised if the stack isn't consistent with
       /// the
       //                             current declaration.
-      PRMObject* __checkStack(Idx i, PRMObject::prm_type obj_type);
+      PRMObject* checkStack__(Idx i, PRMObject::prm_type obj_type);
 
-      PRMClassElement< GUM_SCALAR >* __checkStack(
+      PRMClassElement< GUM_SCALAR >* checkStack__(
          Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
 
-      PRMClassElementContainer< GUM_SCALAR >* __checkStackContainter(Idx i);
+      PRMClassElementContainer< GUM_SCALAR >* checkStackContainter__(Idx i);
 
       /// @}
       // ======================================================================
@@ -891,22 +891,22 @@ namespace gum {
       /// In the case a local name is used multiple time, it's preferable to
       /// use it's full name.
       /// @throw OperationNotAllowed If the type is undeclared.
-      PRMType* __retrieveType(const std::string& name) const;
+      PRMType* retrieveType__(const std::string& name) const;
 
       /// Returns a pointer on a class given it's name. Used when building
       /// models, meaning that the class name can either be local (need to
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
-      /// @see PRMFactory::__retrieveType
-      PRMClass< GUM_SCALAR >* __retrieveClass(const std::string& name) const;
+      /// @see PRMFactory::retrieveType__
+      PRMClass< GUM_SCALAR >* retrieveClass__(const std::string& name) const;
 
       /// Returns a pointer on an interface given it's name. Used when building
       /// models, meaning that the interface name can either be local (need to
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
-      /// @see PRMFactory::__retrieveType
+      /// @see PRMFactory::retrieveType__
       PRMInterface< GUM_SCALAR >*
-         __retrieveInterface(const std::string& name) const;
+         retrieveInterface__(const std::string& name) const;
 
       /// @}
       // ======================================================================
@@ -922,7 +922,7 @@ namespace gum {
       /// PRMSlotChain<GUM_SCALAR> could be built.
       ///
       PRMSlotChain< GUM_SCALAR >*
-         __buildSlotChain(PRMClassElementContainer< GUM_SCALAR >* start,
+         buildSlotChain__(PRMClassElementContainer< GUM_SCALAR >* start,
                           const std::string&                      name);
 
       /// @brief Retrieve inputs for an PRMAggregate.
@@ -931,7 +931,7 @@ namespace gum {
       /// does not match an existing PRMClassElement<GUM_SCALAR> in c, then a
       /// call
       /// to
-      /// PRMFactory::__buildSlotChains() is made. Such created
+      /// PRMFactory::buildSlotChains__() is made. Such created
       /// PRMSlotChain<GUM_SCALAR> are
       /// added to c.
       ///
@@ -946,7 +946,7 @@ namespace gum {
       /// @throw NotFound Raised if a name in chains does not match a legal
       ///                 PRMSlotChain<GUM_SCALAR> or an existing
       ///                 PRMClassElement<GUM_SCALAR> in c.
-      bool __retrieveInputs(PRMClass< GUM_SCALAR >*                        c,
+      bool retrieveInputs__(PRMClass< GUM_SCALAR >*                        c,
                             const std::vector< std::string >&              chains,
                             std::vector< PRMClassElement< GUM_SCALAR >* >& inputs);
 
@@ -972,28 +972,28 @@ namespace gum {
       /// PRMClassElement<GUM_SCALAR> without a PRMType.
       /// @throw NotFound Raised if there exists no common super type of all
       ///                 PRMClassElement<GUM_SCALAR> in elts.
-      PRMType* __retrieveCommonType(
+      PRMType* retrieveCommonType__(
          const std::vector< PRMClassElement< GUM_SCALAR >* >& elts);
 
       /// @brief Returns the inheritance depth of a PRMType.
       ///
-      /// This used by PRMFactory::__retrieveCommonType.
+      /// This used by PRMFactory::retrieveCommonType__.
       /// This returns 0 if t does not have a super type.
       ///
       /// @param t The PRMType for which we compute its depth.
       /// @return Returns the depth of t.
-      int __typeDepth(const PRMType* t);
+      int typeDepth__(const PRMType* t);
 
       /// Check if c implements correctly all his interfaces.
-      void __checkInterfaceImplementation(PRMClass< GUM_SCALAR >* c);
+      void checkInterfaceImplementation__(PRMClass< GUM_SCALAR >* c);
 
       /// Add a parent to an attribute.
-      void __addParent(PRMClassElementContainer< GUM_SCALAR >* c,
+      void addParent__(PRMClassElementContainer< GUM_SCALAR >* c,
                        PRMAttribute< GUM_SCALAR >*             agg,
                        const std::string&                      name);
 
       /// Add a parent to an aggregate.
-      void __addParent(PRMClass< GUM_SCALAR >*     c,
+      void addParent__(PRMClass< GUM_SCALAR >*     c,
                        PRMAggregate< GUM_SCALAR >* agg,
                        const std::string&          name);
       /// @}
@@ -1004,31 +1004,30 @@ namespace gum {
       /// @{
 
       /// Adds a instance to the current model.
-      void __addInstance(PRMClass< GUM_SCALAR >* type, const std::string& name);
+      void addInstance__(PRMClass< GUM_SCALAR >* type, const std::string& name);
 
-      /// Builds all PRMSlotChain<GUM_SCALAR><PRMInstance<GUM_SCALAR>> in the
-      /// given
-      /// model.
-      /// @throw OperationNotAllowed If reference slots are left un affected
-      void __buildSlotChains(PRMSystem< GUM_SCALAR >* model);
+      // Builds all PRMSlotChain<GUM_SCALAR><PRMInstance<GUM_SCALAR>> in the
+      // given model.
+      // @throw OperationNotAllowed If reference slots are left un affected
+      // ERROR? void buildSlotChains__(PRMSystem< GUM_SCALAR >* model);
 
       /// Builds all Aggregates CPF in the given model.
       /// This must be called after all the slot chains have been generated.
-      void __buildAggregateCPF(PRMSystem< GUM_SCALAR >* model);
+      void buildAggregateCPF__(PRMSystem< GUM_SCALAR >* model);
 
       /// Instantiate a slot chain in the given instance
-      void __instantiateSlotChain(PRMSystem< GUM_SCALAR >*        model,
+      void instantiateSlotChain__(PRMSystem< GUM_SCALAR >*        model,
                                   PRMInstance< GUM_SCALAR >*      inst,
                                   PRMReferenceSlot< GUM_SCALAR >* ref,
                                   PRMSlotChain< GUM_SCALAR >*     sc);
 
       /// Fill seq with the sequence of instance build using inst as the
-      /// instantiation of sc->__class and seeking each instantiation of
+      /// instantiation of sc->class__ and seeking each instantiation of
       /// reference in sc.
       /// @return Returns the name of the corresponding
       /// PRMSlotChain<GUM_SCALAR>.
       std::string
-         __retrieveInstanceSequence(PRMInstance< GUM_SCALAR >*              inst,
+         retrieveInstanceSequence__(PRMInstance< GUM_SCALAR >*              inst,
                                     Sequence< PRMInstance< GUM_SCALAR >* >& seq,
                                     PRMSlotChain< GUM_SCALAR >*             sc);
 
@@ -1040,20 +1039,20 @@ namespace gum {
 
       /// The prefix used for classes and types names. It is normally the
       /// namespace of the corresponding compilation unit.
-      std::vector< std::string > __packages;
+      std::vector< std::string > packages__;
 
       /// Set of all declared namespaces.
-      std::vector< List< std::string >* > __namespaces;
+      std::vector< List< std::string >* > namespaces__;
 
       /// The pointer on the PRM<GUM_SCALAR> built by this factory.
-      PRM< GUM_SCALAR >* __prm;
+      PRM< GUM_SCALAR >* prm__;
 
       /// A stack used to keep track of created PRMObject.
-      std::vector< PRMObject* > __stack;
+      std::vector< PRMObject* > stack__;
 
       /// A mapping between aggregators and their parameters
       HashTable< PRMAggregate< GUM_SCALAR >*, std::vector< std::string > >
-         __agg_params;
+         agg_params__;
 
       /// @}
     };

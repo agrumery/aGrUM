@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of StructuredBayesBall.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <sstream>
@@ -108,7 +108,7 @@ namespace gum {
       void compute(const PRMInstance< GUM_SCALAR >& i, NodeId n);
 
       /// Returns true if there is a hard evidence on i->get(n).
-      bool __isHardEvidence(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      bool isHardEvidence__(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       private:
       /// Copy constructor.
@@ -122,38 +122,38 @@ namespace gum {
       /// Code alias
       typedef HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* > InstanceMap;
       /// Code alias
-      std::pair< bool, bool >& __getMark(InstanceMap&                     marks,
+      std::pair< bool, bool >& getMark__(InstanceMap&                     marks,
                                          const PRMInstance< GUM_SCALAR >* i,
                                          NodeId                           n);
       /// Code alias
-      const PRMSlotChain< GUM_SCALAR >& __getSC(const PRMInstance< GUM_SCALAR >* i,
+      const PRMSlotChain< GUM_SCALAR >& getSC__(const PRMInstance< GUM_SCALAR >* i,
                                                 NodeId n);
 
       /// Cleans this before a new computation.
-      void __clean();
+      void clean__();
 
       /// The real compute method.
-      void __compute(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      void compute__(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       /// When the ball is received on i->get(n) from a child.
-      void __fromChild(const PRMInstance< GUM_SCALAR >* i,
+      void fromChild__(const PRMInstance< GUM_SCALAR >* i,
                        NodeId                           n,
                        InstanceMap&                     marks);
 
       /// When the ball is receive on i->get(n) from a parent.
-      void __fromParent(const PRMInstance< GUM_SCALAR >* i,
+      void fromParent__(const PRMInstance< GUM_SCALAR >* i,
                         NodeId                           n,
                         InstanceMap&                     marks);
 
-      /// Fill __keyMap and __reqMap.
-      void __fillMaps(InstanceMap& marks);
+      /// Fill keyMap__ and reqMap__.
+      void fillMaps__(InstanceMap& marks);
 
       /// Builds the HashKey for the given instance and requisite nodes set.
-      std::string __buildHashKey(const PRMInstance< GUM_SCALAR >* i,
+      std::string buildHashKey__(const PRMInstance< GUM_SCALAR >* i,
                                  Set< NodeId >&                   req_nodes);
 
-      /// The PRM at which __model belongs.
-      const PRMInference< GUM_SCALAR >* __inf;
+      /// The PRM at which model__ belongs.
+      const PRMInference< GUM_SCALAR >* inf__;
 
       /// Associate an PRMInstance<GUM_SCALAR> with a unique key w.r.t.
       /// d-separation and
@@ -161,11 +161,11 @@ namespace gum {
       /// set of requisite nodes deduced from d-separation analysis.
       HashTable< const PRMInstance< GUM_SCALAR >*,
                  std::pair< std::string, Set< NodeId >* > >
-         __keyMap;
+         keyMap__;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.
-      HashTable< std::string, std::pair< Set< NodeId >*, Size > > __reqMap;
+      HashTable< std::string, std::pair< Set< NodeId >*, Size > > reqMap__;
     };
 
 

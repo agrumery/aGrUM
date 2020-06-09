@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Header of ContinuousVariable.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_CONTINUOUS_VARIABLE_H
 #define GUM_CONTINUOUS_VARIABLE_H
@@ -176,10 +176,10 @@ namespace gum {
 
     private:
     // the lower bound.
-    GUM_SCALAR __lower_bound;
+    GUM_SCALAR lower_bound__;
 
     // the upper bound.
-    GUM_SCALAR __upper_bound;
+    GUM_SCALAR upper_bound__;
 
     template < typename TX_VAL >
     friend class ContinuousVariable;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Decision Strategy interface.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -70,12 +70,12 @@ namespace gum {
     /// Initializes the learner
     // ==========================================================================
     virtual void initialize(const FMDP< double >* fmdp) {
-      _optPol = nullptr;
-      if (_allActions.size() == 0)
+      optPol_ = nullptr;
+      if (allActions_.size() == 0)
         for (auto actionIter = fmdp->beginActions();
              actionIter != fmdp->endActions();
              ++actionIter)
-          _allActions += *actionIter;
+          allActions_ += *actionIter;
     }
     /// @}
 
@@ -89,22 +89,22 @@ namespace gum {
 
     void setOptimalStrategy(
        const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
-      _optPol =
+      optPol_ =
          const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(
             optPol);
     }
 
     virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {
-      return (_optPol && _optPol->realSize() != 0) ? _optPol->get(curState)
-                                                   : _allActions;
+      return (optPol_ && optPol_->realSize() != 0) ? optPol_->get(curState)
+                                                   : allActions_;
     }
 
     protected:
     ///
-    const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* _optPol;
+    const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol_;
 
     ///
-    ActionSet _allActions;
+    ActionSet allActions_;
 
     /// @}
   };

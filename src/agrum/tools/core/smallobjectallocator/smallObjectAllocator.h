@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_SMALL_OBJECT_ALLOCATOR_H
@@ -139,18 +139,18 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable< Size, FixedAllocator* > __Pool;
-    __Pool                                     __pool;
+    typedef HashTable< Size, FixedAllocator* > Pool__;
+    Pool__                                     pool__;
 
     // ============================================================================
     /// The memory that a chunk allocates
     // ============================================================================
-    std::size_t __chunkSize;
+    std::size_t chunkSize__;
 
     // ============================================================================
     /// The maximal size of an object befor new is called
     // ============================================================================
-    std::size_t __maxObjectSize;
+    std::size_t maxObjectSize__;
 
     Idx nbAllocation;
     Idx nbDeallocation;

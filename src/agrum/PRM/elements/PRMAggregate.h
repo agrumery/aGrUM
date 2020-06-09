@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMAggregate.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_AGGREGATE_H
@@ -118,7 +118,7 @@ namespace gum {
         } else if (toLower(str) == "median") {
           return AggregateType::MEDIAN;
         } else if (toLower(str) == "sum") {
-            return AggregateType::SUM;
+          return AggregateType::SUM;
         } else {
           std::string msg = "Unknown aggregate: ";
           msg.append(str);
@@ -206,14 +206,14 @@ namespace gum {
       bool hasLabel() const;
 
       /**
-        * @brief Returns true if the aggregator is decomposable.
+       * @brief Returns true if the aggregator is decomposable.
        */
       bool isDecomposable() const;
 
-      /// See gum::PRMClassElement::_addParent().
+      /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
-      /// See gum::PRMClassElement::_addChild().
+      /// See gum::PRMClassElement::addChild_().
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::type().
@@ -266,18 +266,18 @@ namespace gum {
       /// @{
 
       /// The AggregateType of this aggregate.
-      AggregateType __agg_type;
+      AggregateType agg_type__;
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      PRMType* __type;
+      PRMType* type__;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      std::shared_ptr< Idx > __label;
-      // Idx* __label;
-      std::string __label_value;
+      std::shared_ptr< Idx > label__;
+      // Idx* label__;
+      std::string label_value__;
 
       /// @}
     };

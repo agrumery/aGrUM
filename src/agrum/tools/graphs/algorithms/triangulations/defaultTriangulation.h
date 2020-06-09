@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Class for computing default triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_DEFAULT_TRIANGULATION_H
 #define GUM_DEFAULT_TRIANGULATION_H
@@ -104,11 +104,11 @@ namespace gum {
 
     private:
     /// the ratio above which we consider nodes to be quasi simplicial
-    double __quasi_ratio;
+    double quasi_ratio__;
 
     /** @brief threshold under which almost and quasi simplicial nodes can be
      * chosen to be eliminated */
-    double __threshold;
+    double threshold__;
 
 
     // ############################################################################

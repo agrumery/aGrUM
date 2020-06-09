@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Sources of the class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -48,7 +48,7 @@ namespace gum {
   E_GreedyDecider::E_GreedyDecider() {
     GUM_CONSTRUCTOR(E_GreedyDecider);
 
-    __sss = 1.0;
+    sss__ = 1.0;
   }
 
 
@@ -73,7 +73,7 @@ namespace gum {
     IDecisionStrategy::initialize(fmdp);
     for (auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables();
          ++varIter)
-      __sss *= (double)(*varIter)->domainSize();
+      sss__ *= (double)(*varIter)->domainSize();
   }
 
 
@@ -90,10 +90,10 @@ namespace gum {
   // ###################################################################
   void E_GreedyDecider::checkState(const Instantiation& reachedState,
                                    Idx                  actionId) {
-    if (__statecpt.nbVisitedStates() == 0)
-      __statecpt.reset(reachedState);
-    else if (!__statecpt.checkState(reachedState))
-      __statecpt.addState(reachedState);
+    if (statecpt__.nbVisitedStates() == 0)
+      statecpt__.reset(reachedState);
+    else if (!statecpt__.checkState(reachedState))
+      statecpt__.addState(reachedState);
   }
 
   // ###################################################################
@@ -105,7 +105,7 @@ namespace gum {
   ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
     double explo = (double)std::rand() / (double)RAND_MAX;
     double temp =
-       std::pow((__sss - (double)__statecpt.nbVisitedStates()) / __sss, 3.0);
+       std::pow((sss__ - (double)statecpt__.nbVisitedStates()) / sss__, 3.0);
     double exploThreshold = temp < 0.1 ? 0.1 : temp;
 
     //      std::cout << exploThreshold << std::endl;
@@ -116,15 +116,15 @@ namespace gum {
       return optimalSet;
     }
 
-    if (_allActions.size() > optimalSet.size()) {
-      ActionSet ret(_allActions);
+    if (allActions_.size() > optimalSet.size()) {
+      ActionSet ret(allActions_);
       ret -= optimalSet;
       //        std::cout << "Explore : " << ret << std::endl;
       return ret;
     }
 
-    //      std::cout << "Explore : " << _allActions << std::endl;
-    return _allActions;
+    //      std::cout << "Explore : " << allActions_ << std::endl;
+    return allActions_;
   }
 
 }   // End of namespace gum

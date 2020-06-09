@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::FixedAllocator
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_FIXED_ALLOCATOR_H
@@ -58,7 +58,7 @@ namespace gum {
   class FixedAllocator {
     // clang-format off
     /**
-     * @struct __Chunk fixedAllocator.h <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
+     * @struct Chunk__ fixedAllocator.h <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
      *
      * @brief Allocates objects of one given size. Has a fixed limit of
      * allocation
@@ -77,41 +77,41 @@ namespace gum {
      * @ingroup core
      */
     // clang-format on
-    struct __Chunk {
+    struct Chunk__ {
       // ============================================================================
       /// Initializes a Chunk object
       // ============================================================================
-      void __init(const std::size_t& blockSize, const unsigned char& numBlocks);
+      void init__(const std::size_t& blockSize, const unsigned char& numBlocks);
 
       // ============================================================================
       /// Allocates a block of memory
       // ============================================================================
-      void* __allocate(const std::size_t& blockSize);
+      void* allocate__(const std::size_t& blockSize);
 
       // ============================================================================
       /// Deallocates a block of memory
       // ============================================================================
-      void __deallocat(void* p, const std::size_t& blockSize);
+      void deallocat__(void* p, const std::size_t& blockSize);
 
       // ============================================================================
       /// Releases the allocated memory
       // ============================================================================
-      void __release();
+      void release__();
 
       // ============================================================================
       /// Pointer to the managed memory itself
       // ============================================================================
-      unsigned char* __pData;
+      unsigned char* pData__;
 
       // ============================================================================
       /// Holds the index of the first block available in this chunck
       // ============================================================================
-      unsigned char __firstAvailableBlock;
+      unsigned char firstAvailableBlock__;
 
       // ============================================================================
       /// Number of blocks available in this chunck
       // ============================================================================
-      unsigned char __blocksAvailable;
+      unsigned char blocksAvailable__;
     };
 
     public:
@@ -159,34 +159,34 @@ namespace gum {
     // ============================================================================
     /// Returns the size of block allocated by this FixedAllocator
     // ============================================================================
-    const size_t& objectSize() { return __blockSize; }
+    const size_t& objectSize() { return blockSize__; }
 
     private:
     // ============================================================================
     /// Size of a memory block allocated
     // ============================================================================
-    std::size_t __blockSize;
+    std::size_t blockSize__;
 
     // ============================================================================
     /// The maximum number of blocks a chunk can allocate
     // ============================================================================
-    unsigned char __numBlocks;
+    unsigned char numBlocks__;
 
     // ============================================================================
-    /// Vector of __Chunk objects
+    /// Vector of Chunk__ objects
     // ============================================================================
-    typedef std::vector< __Chunk > __Chunks;
-    __Chunks                       __chunks;
+    typedef std::vector< Chunk__ > Chunks__;
+    Chunks__                       chunks__;
 
     // ============================================================================
     /// Last Chunk used for an allocation
     // ============================================================================
-    __Chunks::iterator __allocChunk;
+    Chunks__::iterator allocChunk__;
 
     // ============================================================================
     /// Last Chunk used for a deallocation
     // ============================================================================
-    __Chunks::iterator __deallocChunk;
+    Chunks__::iterator deallocChunk__;
   };
 
 }   // namespace gum

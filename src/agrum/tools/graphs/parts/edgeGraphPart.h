@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ namespace gum {
    *
    * \ingroup graph_group
    *
-   * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
    *
    * @par Usage example:
    * @code
@@ -223,15 +223,15 @@ namespace gum {
 
     private:
     /// the set of all the edges contained within the EdgeGraphPart
-    EdgeSet __edges;
+    EdgeSet edges__;
 
     /// for each node, the set of its adjacent edges
-    mutable NodeProperty< NodeSet* > __neighbours;
+    mutable NodeProperty< NodeSet* > neighbours__;
 
     /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
-     * this function adds an empty set entry to __neighbours[id]
-     * @param id the node whose __neighbours[id] is checked */
-    void __checkNeighbours(const NodeId id) const;
+     * this function adds an empty set entry to neighbours__[id]
+     * @param id the node whose neighbours__[id] is checked */
+    void checkNeighbours__(const NodeId id) const;
   };
 
   /// for friendly displaying the content of an edge set

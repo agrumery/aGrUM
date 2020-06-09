@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the epsilon-greedy decision maker class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -96,8 +96,8 @@ namespace gum {
     /// @}
 
     private:
-    StatesChecker __statecpt;
-    double        __sss;
+    StatesChecker statecpt__;
+    double        sss__;
   };
 }   // namespace gum
 #endif   // GUM_E_GREEDY_DECIDER_H

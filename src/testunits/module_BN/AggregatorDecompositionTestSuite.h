@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN & Christophe GONZALES(@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -43,82 +43,88 @@
 
 namespace gum_tests {
 
-    class AggregatorDecompositionTestSuite : public CxxTest::TestSuite {
+  class AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
     private:
-        gum::prm::PRM<double>* __prm;
-        float __epsilon{1e-6f};
-		gum::BayesNet< double >* __bn;
-		gum::BayesNet< double >* __bn2;
-		gum::LazyPropagation< double >* __inf;
-		gum::LazyPropagation< double >* __inf2;
-		gum::AggregatorDecomposition< double >* __aggregatorDecomposition;
+    gum::prm::PRM< double >*                prm__;
+    float                                   epsilon__{1e-6f};
+    gum::BayesNet< double >*                bn__;
+    gum::BayesNet< double >*                bn2__;
+    gum::LazyPropagation< double >*         inf__;
+    gum::LazyPropagation< double >*         inf2__;
+    gum::AggregatorDecomposition< double >* aggregatorDecomposition__;
 
-	public:
-        void setUp() {
-            {
-                gum::prm::o3prm::O3prmReader<double> reader;
-                reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
-                reader.showElegantErrorsAndWarnings();
-                __prm = reader.prm();
-                if (reader.errors() > 0) {
-                    GUM_ERROR(gum::FatalError, "could not load ressource file");
-                }
-            }
-			__bn = new gum::BayesNet< double >();
-			__bn2 = new gum::BayesNet< double >();
-			__inf = 0;
-			__inf2 = 0;
-			__aggregatorDecomposition = new gum::AggregatorDecomposition< double >();
-		}
-
-        void tearDown() {
-            delete __prm;
-            delete __bn;
-            delete __bn2;
-            delete __inf;
-            delete __inf2;
-            delete __aggregatorDecomposition;
+    public:
+    void setUp() {
+      {
+        gum::prm::o3prm::O3prmReader< double > reader;
+        reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
+        reader.showElegantErrorsAndWarnings();
+        prm__ = reader.prm();
+        if (reader.errors() > 0) {
+          GUM_ERROR(gum::FatalError, "could not load ressource file");
         }
+      }
+      bn__ = new gum::BayesNet< double >();
+      bn2__ = new gum::BayesNet< double >();
+      inf__ = 0;
+      inf2__ = 0;
+      aggregatorDecomposition__ = new gum::AggregatorDecomposition< double >();
+    }
 
-        void testDecomposition() {
-			gum::BayesNetFactory< double >* factory = 0;
-			gum::BayesNetFactory< double >* factory2 = 0;
-			gum::NodeId node = 0;
+    void tearDown() {
+      delete prm__;
+      delete bn__;
+      delete bn2__;
+      delete inf__;
+      delete inf2__;
+      delete aggregatorDecomposition__;
+    }
 
-			TS_GUM_ASSERT_THROWS_NOTHING(factory =
-												 new gum::BayesNetFactory< double >(__bn));
-			TS_GUM_ASSERT_THROWS_NOTHING(factory2 =
-												 new gum::BayesNetFactory< double >(__bn2));
+    void testDecomposition() {
+      gum::BayesNetFactory< double >* factory = 0;
+      gum::BayesNetFactory< double >* factory2 = 0;
+      gum::NodeId                     node = 0;
 
-			TS_GUM_ASSERT_THROWS_NOTHING(__prm->getSystem("aSys").groundedBN(*factory));
-			TS_GUM_ASSERT_THROWS_NOTHING(__prm->getSystem("aSys").groundedBN(*factory2));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory =
+                                      new gum::BayesNetFactory< double >(bn__));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory2 =
+                                      new gum::BayesNetFactory< double >(bn2__));
 
-			TS_GUM_ASSERT_THROWS_NOTHING(__aggregatorDecomposition->setMaximumArity(2));
-			TS_GUM_ASSERT_THROWS_NOTHING(*__bn = __aggregatorDecomposition->getDecomposedAggregator(*__bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm__->getSystem("aSys").groundedBN(*factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm__->getSystem("aSys").groundedBN(*factory2));
 
-			TS_GUM_ASSERT_THROWS_NOTHING(__inf = new gum::LazyPropagation< double >(__bn))
-			TS_GUM_ASSERT_THROWS_NOTHING(__inf->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(aggregatorDecomposition__->setMaximumArity(2));
+      TS_GUM_ASSERT_THROWS_NOTHING(*bn__ = aggregatorDecomposition__
+                                              ->getDecomposedAggregator(*bn__));
 
-			TS_GUM_ASSERT_THROWS_NOTHING(__inf2 = new gum::LazyPropagation< double >(__bn2))
-			TS_GUM_ASSERT_THROWS_NOTHING(__inf2->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(inf__ =
+                                      new gum::LazyPropagation< double >(bn__))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf__->makeInference();)
 
-			TS_GUM_ASSERT_THROWS_NOTHING(node = __bn->idFromName("city.(total_quantity)waterlevel"));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf2__ =
+                                      new gum::LazyPropagation< double >(bn2__))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf2__->makeInference();)
 
-			gum::Instantiation inst(__inf->posterior(node));
-			gum::Instantiation inst2(__inf2->posterior(node));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         node = bn__->idFromName("city.(total_quantity)waterlevel"));
 
-			inst.setFirst();
-			inst2.setFirst();
+      gum::Instantiation inst(inf__->posterior(node));
+      gum::Instantiation inst2(inf2__->posterior(node));
 
-			while (!inst.end()) {
+      inst.setFirst();
+      inst2.setFirst();
 
-				TS_ASSERT_DELTA(abs(__inf->posterior(node).get(inst) - __inf2->posterior(node).get(inst2)), 0, __epsilon)
-				inst.inc();
-				inst2.inc();
-			}
+      while (!inst.end()) {
+        TS_ASSERT_DELTA(abs(inf__->posterior(node).get(inst)
+                            - inf2__->posterior(node).get(inst2)),
+                        0,
+                        epsilon__)
+        inst.inc();
+        inst2.inc();
+      }
 
-			delete factory;
-			delete factory2;
-        }
-    };
+      delete factory;
+      delete factory2;
+    }
+  };
 }   // namespace gum_tests

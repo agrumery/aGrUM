@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Class representing probabilistic DAG model
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_UGMODEL_H
@@ -121,8 +121,8 @@ namespace gum {
      * @param node2 the nodeId (or the name) of the node2
      * @return true if the edge exists
      */
-    bool existsEdge(const NodeId node1,const NodeId node2) const;
-    bool existsEdge(const std::string& name1,const std::string& name2) const;
+    bool existsEdge(const NodeId node1, const NodeId node2) const;
+    bool existsEdge(const std::string& name1, const std::string& name2) const;
 
     /// returns the neighbours of a node as set of nodes
     /** Note that the set of nodes returned may be empty if no edge within the
@@ -144,7 +144,7 @@ namespace gum {
     UGmodel& operator=(const UGmodel& source);
 
     /// The DAG of this Directed Graphical Model.
-    UndiGraph _graph;
+    UndiGraph graph_;
   };
 }   // namespace gum
 

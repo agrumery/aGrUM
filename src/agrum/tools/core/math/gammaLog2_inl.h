@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief The class for computing Log2 (Gamma(x)).
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -37,17 +37,16 @@ namespace gum {
     // if x is small, use precomputed values
     if (x < 50) {
       if (x >= 0.01) {
-        if (__requires_precision) {
+        if (requires_precision__) {
           const Idx index = int(x * 100);
-          return __small_values[index]
-            + (__small_values[index + 1] - __small_values[index])
-            * double(x * 100 - index);
+          return small_values__[index]
+                 + (small_values__[index + 1] - small_values__[index])
+                      * double(x * 100 - index);
         } else {
           const Idx index = int(x * 100 + 0.5);
-          return __small_values[index];
+          return small_values__[index];
         }
-      }
-      else {
+      } else {
         // for very small values of x, Gamma(x) is approximately equal to
         // 1/x. Hence gammaLog2(x) is approximately equal to log2(1/x)
         return std::log2(1.0 / x);
@@ -55,14 +54,14 @@ namespace gum {
     }
 
     // returns the approximation by the stirling formula
-    return (__log_sqrt_2pi + (x - 0.5f) * log(x) - x + log(1.0 + 1.0 / (12 * x)))
-           * __1log2;
+    return (log_sqrt_2pi__ + (x - 0.5f) * log(x) - x + log(1.0 + 1.0 / (12 * x)))
+           * inv_log2__;
   }
 
   ALWAYS_INLINE double GammaLog2::operator()(double x) const {
     return gammaLog2(x);
   }
 
-  INLINE void GammaLog2::setPrecision(bool prec) { __requires_precision = prec; }
+  INLINE void GammaLog2::setPrecision(bool prec) { requires_precision__ = prec; }
 
 } /* namespace gum */

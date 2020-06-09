@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * The pack currently contains K2, GreedyHillClimbing and
  *LocalSearchWithTabuList
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_BN_LEARNER_H
 #define GUM_LEARNING_BN_LEARNER_H
@@ -56,9 +56,9 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    template<typename GUM_SCALAR>
-    class BNLearner : public genericBNLearner {
-    public:
+    template < typename GUM_SCALAR >
+    class BNLearner: public genericBNLearner {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -69,10 +69,10 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      BNLearner(const std::string &filename,
-                const std::vector<std::string> &missing_symbols = {"?"});
+      BNLearner(const std::string&                filename,
+                const std::vector< std::string >& missing_symbols = {"?"});
 
-      BNLearner(const DatabaseTable<> &db);
+      BNLearner(const DatabaseTable<>& db);
 
       /**
        * @brief Read the database file for the score / parameter estimation and
@@ -107,15 +107,15 @@ namespace gum {
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
        * to find those modalities and nodeids.
        **/
-      BNLearner(const std::string &filename,
-                const gum::BayesNet<GUM_SCALAR> &src,
-                const std::vector<std::string> &missing_symbols = {"?"});
+      BNLearner(const std::string&                 filename,
+                const gum::BayesNet< GUM_SCALAR >& src,
+                const std::vector< std::string >&  missing_symbols = {"?"});
 
       /// copy constructor
-      BNLearner(const BNLearner &);
+      BNLearner(const BNLearner&);
 
       /// move constructor
-      BNLearner(BNLearner &&);
+      BNLearner(BNLearner&&);
 
       /// destructor
       virtual ~BNLearner();
@@ -128,15 +128,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      BNLearner &operator=(const BNLearner &);
+      BNLearner& operator=(const BNLearner&);
 
       /// move operator
-      BNLearner &operator=(BNLearner &&);
+      BNLearner& operator=(BNLearner&&);
 
       /// @}
 
       /// learn a Bayes Net from a file (must have read the db before)
-      BayesNet<GUM_SCALAR> learnBN();
+      BayesNet< GUM_SCALAR > learnBN();
 
       /// learns a BN (its parameters) when its structure is known
       /**
@@ -150,8 +150,8 @@ namespace gum {
        * specified by methods useAprioriXXX () + the implicit apriori of the
        * score, else we just take into account the apriori specified by
        * useAprioriXXX () */
-      BayesNet<GUM_SCALAR> learnParameters(const DAG &dag,
-                                           bool take_into_account_score = true);
+      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag,
+                                             bool take_into_account_score = true);
 
       // learns a BN (its parameters) when its structure is known
       /** @param take_into_account_score The dag of the BN which was passed in
@@ -169,13 +169,13 @@ namespace gum {
        * @throw UnknownLabelInDatabase if a label is found in the databast that
        * do not correpond to the variable.
        */
-      BayesNet<GUM_SCALAR> learnParameters(bool take_into_account_score = true);
+      BayesNet< GUM_SCALAR > learnParameters(bool take_into_account_score = true);
 
-    private:
+      private:
       /// read the first line of a file to find column names
-      NodeProperty<Sequence<std::string> >
-      __labelsFromBN(const std::string &filename,
-                     const BayesNet<GUM_SCALAR> &src);
+      NodeProperty< Sequence< std::string > >
+         labelsFromBN__(const std::string&            filename,
+                        const BayesNet< GUM_SCALAR >& src);
     };
 
   } /* namespace learning */

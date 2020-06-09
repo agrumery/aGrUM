@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Template implementation of FMDP/planning/TreeOperatorStrategy.h
  * classes.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -127,7 +127,7 @@ namespace gum {
         Idx                                        del) {
     TreeOperator< GUM_SCALAR, Maximizes > opi(f1, f2);
     MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 
@@ -142,7 +142,7 @@ namespace gum {
         Idx                                        del) {
     TreeOperator< GUM_SCALAR, Minimizes > opi(f1, f2);
     MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 
@@ -156,7 +156,7 @@ namespace gum {
         Idx                                        del) {
     TreeOperator< GUM_SCALAR, std::multiplies > opi(f1, f2);
     MultiDimFunctionGraph< GUM_SCALAR >*        ret = opi.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 
@@ -179,7 +179,7 @@ namespace gum {
        argmaxope(f1, f2);
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
        ret = argmaxope.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 
@@ -196,7 +196,7 @@ namespace gum {
      Idx                                        del) {
     TreeOperator< GUM_SCALAR, std::plus > opi(f1, f2);
     MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 
@@ -214,7 +214,7 @@ namespace gum {
         Idx                                        del) {
     TreeOperator< GUM_SCALAR, std::minus > opi(f1, f2);
     MultiDimFunctionGraph< GUM_SCALAR >*   ret = opi.compute();
-    this->_deleteFunctionGraph(f1, f2, del);
+    this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
 

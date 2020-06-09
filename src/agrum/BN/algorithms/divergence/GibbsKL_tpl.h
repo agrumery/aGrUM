@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief KL divergence between BNs -- implementation using Gibbs sampling
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/math.h>
@@ -98,17 +98,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void GibbsBNdistance< GUM_SCALAR >::_computeKL() {
-    auto Iq = _q.completeInstantiation();
+  void GibbsBNdistance< GUM_SCALAR >::computeKL_() {
+    auto Iq = q_.completeInstantiation();
 
     gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
 
-    // map between particle() variables and _q variables (using name of vars)
+    // map between particle() variables and q_ variables (using name of vars)
     HashTable< const DiscreteVariable*, const DiscreteVariable* > map;
 
     for (Idx ite = 0; ite < I.nbrDim(); ++ite) {
-      map.insert(&I.variable(ite), &_q.variableFromName(I.variable(ite).name()));
+      map.insert(&I.variable(ite), &q_.variableFromName(I.variable(ite).name()));
     }
 
     // BURN IN
@@ -116,8 +116,8 @@ namespace gum {
       I = this->nextSample(I);
 
     // SAMPLING
-    _klPQ = _klQP = _hellinger = _jsd = (GUM_SCALAR)0.0;
-    _errorPQ = _errorQP = 0;
+    klPQ_ = klQP_ = hellinger_ = jsd_ = (GUM_SCALAR)0.0;
+    errorPQ_ = errorQP_ = 0;
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
@@ -132,25 +132,25 @@ namespace gum {
       //_p.synchroInstantiations( Ip,I);
       Iq.setValsFrom(map, I);
 
-      pp = _p.jointProbability(I);
-      pq = _q.jointProbability(Iq);
+      pp = p_.jointProbability(I);
+      pq = q_.jointProbability(Iq);
       pmid = (pp + pq) / 2.0;
 
       if (pp != (GUM_SCALAR)0.0) {
-        _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
+        hellinger_ += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
 
         if (pq != (GUM_SCALAR)0.0) {
-          _bhattacharya += std::sqrt(pq / pp);   // std::sqrt(pp*pq)/pp
+          bhattacharya_ += std::sqrt(pq / pp);   // std::sqrt(pp*pq)/pp
           /// check_rate=true;
           this->enableMinEpsilonRate();   // replace check_rate=true;
           ratio = pq / pp;
           delta = (GUM_SCALAR)log2(ratio);
-          _klPQ += delta;
+          klPQ_ += delta;
 
           // pmid!=0
-          _jsd -= log2(pp / pmid) + ratio * log2(pq / pmid);
+          jsd_ -= log2(pp / pmid) + ratio * log2(pq / pmid);
         } else {
-          _errorPQ++;
+          errorPQ_++;
         }
       }
 
@@ -159,34 +159,34 @@ namespace gum {
           // if we are here, it is certain that delta and ratio have been
           // computed
           // further lines above. (for now #112-113)
-          _klQP += (GUM_SCALAR)(-delta * ratio);
+          klQP_ += (GUM_SCALAR)(-delta * ratio);
         } else {
-          _errorQP++;
+          errorQP_++;
         }
       }
 
       if (this->isEnabledMinEpsilonRate()) {   // replace check_rate
         // delta is used as a temporary variable
-        delta = _klPQ / nbrIterations();
+        delta = klPQ_ / nbrIterations();
         error = (GUM_SCALAR)std::abs(delta - oldPQ);
         oldPQ = delta;
       }
     } while (continueApproximationScheme(error));   //
 
-    _klPQ = -_klPQ / (nbrIterations());
-    _klQP = -_klQP / (nbrIterations());
-    _jsd = -0.5 * _jsd / (nbrIterations());
-    _hellinger = std::sqrt(_hellinger / nbrIterations());
-    _bhattacharya = -std::log(_bhattacharya / (nbrIterations()));
+    klPQ_ = -klPQ_ / (nbrIterations());
+    klQP_ = -klQP_ / (nbrIterations());
+    jsd_ = -0.5 * jsd_ / (nbrIterations());
+    hellinger_ = std::sqrt(hellinger_ / nbrIterations());
+    bhattacharya_ = -std::log(bhattacharya_ / (nbrIterations()));
   }
 
   template < typename GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::setBurnIn(Size b) {
-    this->_burn_in = b;
+    this->burn_in_ = b;
   }
 
   template < typename GUM_SCALAR >
   Size GibbsBNdistance< GUM_SCALAR >::burnIn() const {
-    return this->_burn_in;
+    return this->burn_in_;
   }
 }   // namespace gum

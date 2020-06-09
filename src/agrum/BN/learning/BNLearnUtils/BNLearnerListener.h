@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -21,7 +21,8 @@
 
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2012  Pierre-Henri WUILLEMIN (@LIP6) <pierre-henri.wuillemin@lip6.fr>
+    Copyright (C) 2012  Pierre-Henri WUILLEMIN(@LIP6)
+   <pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,7 +43,7 @@
  * @brief A listener that allows BNLearner to be used as a proxy for its inner
  * algorithms
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef BNLEARNERLISTENER_H
 #define BNLEARNERLISTENER_H
@@ -77,7 +78,7 @@ namespace gum {
       BNLearnerListener(const BNLearnerListener& other);
       BNLearnerListener& operator=(const BNLearnerListener& other);
 
-      genericBNLearner* __bnlearner;
+      genericBNLearner* bnlearner__;
     };
   }   // namespace learning
 }   // namespace gum

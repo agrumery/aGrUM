@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -40,11 +40,11 @@ namespace gum {
   // ==========================================================================
   /// computes the probability of normal z value (used by the cache)
   // ==========================================================================
-  double ChiSquare::__probaZValue(double z) {
+  double ChiSquare::probaZValue__(double z) {
     //      ++nbZt;
 
     //      z = std::round(z * std::pow(10, 3)) / std::pow(10, 3);
-    //      if( !__ZCache.exists(z) ){
+    //      if( !ZCache__.exists(z) ){
 
     double y, x, w;
 
@@ -53,7 +53,7 @@ namespace gum {
     else {
       y = 0.5 * fabs(z);
 
-      if (y >= (__Z_MAX * 0.5))
+      if (y >= (Z_MAX__ * 0.5))
         x = 1.0;
       else if (y < 1.0) {
         w = y * y;
@@ -101,13 +101,13 @@ namespace gum {
       }
     }
 
-    //        __ZCache.insert(z, ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x )
+    //        ZCache__.insert(z, ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x )
     //        * 0.5 ) ) );
     //      } else {
     //          ++nbZ;
     //        }
 
-    //      return __ZCache[z];
+    //      return ZCache__[z];
     return (z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5));
   }
 
@@ -120,43 +120,43 @@ namespace gum {
     //      ++nbChit;
 
     //      std::pair<double, unsigned long> conty(x, df);
-    //      if( !__chi2Cache.exists(conty) ){
+    //      if( !chi2Cache__.exists(conty) ){
 
     double a, y = 0, s;
     double e, c, z;
     int    even; /* true if df is an even number */
 
     if ((x <= 0.0) || (df < 1)) {
-      //          __chi2Cache.insert(conty,1.0);
+      //          chi2Cache__.insert(conty,1.0);
       retVal = 1.0;
     } else {
       a = 0.5 * x;
 
       even = (2 * (df / 2)) == df;
 
-      if (df > 1) y = __exp(-a);
+      if (df > 1) y = exp__(-a);
 
-      s = (even ? y : (2.0 * __probaZValue(-sqrt(x))));
+      s = (even ? y : (2.0 * probaZValue__(-sqrt(x))));
 
       if (df > 2) {
         x = 0.5 * (df - 1.0);
         z = (even ? 1.0 : 0.5);
 
-        if (a > __BIGX) {
-          e = (even ? 0.0 : __LOG_SQRT_PI);
+        if (a > BIGX__) {
+          e = (even ? 0.0 : LOG_SQRT_PI__);
           c = log(a);
 
           while (z <= x) {
             e = log(z) + e;
-            s += __exp(c * z - a - e);
+            s += exp__(c * z - a - e);
             z += 1.0;
           }
 
-          //              __chi2Cache.insert(conty,s);
+          //              chi2Cache__.insert(conty,s);
           retVal = s;
 
         } else {
-          e = (even ? 1.0 : (__I_SQRT_PI / sqrt(a)));
+          e = (even ? 1.0 : (I_SQRT_PI__ / sqrt(a)));
           c = 0.0;
 
           while (z <= x) {
@@ -165,11 +165,11 @@ namespace gum {
             z += 1.0;
           }
 
-          //              __chi2Cache.insert(conty,( c * y + s ));
+          //              chi2Cache__.insert(conty,( c * y + s ));
           retVal = (c * y + s);
         }
       } else {
-        //            __chi2Cache.insert(conty,s);
+        //            chi2Cache__.insert(conty,s);
         retVal = s;
       }
     }
@@ -178,14 +178,14 @@ namespace gum {
     //        }
     //      std::cout << "Z avoid : " << nbZ << " / " << nbZt << ". Chi avoid :
     //      " << nbChi << " / " << nbChit << "." << std::endl;
-    //      return __chi2Cache[conty];
+    //      return chi2Cache__[conty];
     return retVal;
   }
 
 }   // End of namespace gum
 
-// HashTable<std::pair<double, unsigned long>, double> ChiSquare::__chi2Cache;
-// HashTable<double, double> ChiSquare::__ZCache;
+// HashTable<std::pair<double, unsigned long>, double> ChiSquare::chi2Cache__;
+// HashTable<double, double> ChiSquare::ZCache__;
 // Idx ChiSquare::nbZ = 0;
 // Idx ChiSquare::nbChi = 0;
 // Idx ChiSquare::nbZt = 0;

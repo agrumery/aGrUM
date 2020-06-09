@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief A class for sampling w.r.t. Dirichlet distributions.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DIRICHLET_H
 #define GUM_LEARNING_DIRICHLET_H
@@ -168,14 +168,14 @@ namespace gum {
 
     private:
     /// The random engine used by the unform random distribution.
-    std::default_random_engine __generator;
+    std::default_random_engine generator__;
 
     /// The gamma distribution used to compute the Dirichlet unnormalized
     /// samples.
-    std::gamma_distribution< float > __gamma;
+    std::gamma_distribution< float > gamma__;
 
     /// The parameters of the distribution.
-    param_type __params;
+    param_type params__;
   };
 
 } /* namespace gum */

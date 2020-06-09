@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The base class for initializing DatabaseTables and RawDatabaseTables
  * from files or sql databases
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -37,7 +37,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename IDBInitializer< ALLOC >::allocator_type
        IDBInitializer< ALLOC >::getAllocator() const {
-      return __var_names.get_allocator();
+      return var_names__.get_allocator();
     }
 
 
@@ -46,8 +46,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        typename IDBInitializer< ALLOC >::InputType             type,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        __var_names(alloc),
-        __input_type(type) {
+        var_names__(alloc),
+        input_type__(type) {
       GUM_CONSTRUCTOR(IDBInitializer);
     }
 
@@ -57,8 +57,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        const IDBInitializer< ALLOC >&                          from,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        __var_names(from.__var_names, alloc),
-        __input_type(from.__input_type) {
+        var_names__(from.var_names__, alloc),
+        input_type__(from.input_type__) {
       GUM_CONS_CPY(IDBInitializer);
     }
 
@@ -75,8 +75,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        IDBInitializer< ALLOC >&&                               from,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        __var_names(std::move(from.__var_names), alloc),
-        __input_type(from.__input_type) {
+        var_names__(std::move(from.var_names__), alloc),
+        input_type__(from.input_type__) {
       GUM_CONS_MOV(IDBInitializer);
     }
 
@@ -99,8 +99,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     const std::vector< std::string, ALLOC< std::string > >&
        IDBInitializer< ALLOC >::variableNames() {
-      if (__var_names.empty()) __var_names = this->_variableNames();
-      return __var_names;
+      if (var_names__.empty()) var_names__ = this->variableNames_();
+      return var_names__;
     }
 
 
@@ -109,9 +109,9 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(const IDBInitializer< ALLOC >& from) {
       if (this != &from) {
-        __var_names = from.__var_names;
-        __input_type = from.__input_type;
-        __last_insertion_failed = false;
+        var_names__ = from.var_names__;
+        input_type__ = from.input_type__;
+        last_insertion_failed__ = false;
       }
       return *this;
     }
@@ -122,9 +122,9 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(IDBInitializer< ALLOC >&& from) {
       if (this != &from) {
-        __var_names = std::move(from.__var_names);
-        __input_type = from.__input_type;
-        __last_insertion_failed = false;
+        var_names__ = std::move(from.var_names__);
+        input_type__ = from.input_type__;
+        last_insertion_failed__ = false;
       }
       return *this;
     }
@@ -135,13 +135,13 @@ namespace gum {
     template < template < template < typename > class > class DATABASE >
     INLINE void IDBInitializer< ALLOC >::fillDatabase(DATABASE< ALLOC >& database,
                                                       const bool retry_insertion) {
-      switch (__input_type) {
+      switch (input_type__) {
         case InputType::STRING:
-          __fillDatabaseFromStrings(database, retry_insertion);
+          fillDatabaseFromStrings__(database, retry_insertion);
           return;
 
         case InputType::DBCELL:
-          __fillDatabaseFromDBCells(database, retry_insertion);
+          fillDatabaseFromDBCells__(database, retry_insertion);
           return;
 
         default:
@@ -155,21 +155,21 @@ namespace gum {
     /// fills the rows of the database using string inputs
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
-    void IDBInitializer< ALLOC >::__fillDatabaseFromStrings(
+    void IDBInitializer< ALLOC >::fillDatabaseFromStrings__(
        DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if (retry_insertion && __last_insertion_failed) {
-        database.insertRow(_currentStringRow());
-        __last_insertion_failed = false;
+      if (retry_insertion && last_insertion_failed__) {
+        database.insertRow(currentStringRow_());
+        last_insertion_failed__ = false;
       }
 
       // try to insert the next rows
-      while (this->_nextRow()) {
+      while (this->nextRow_()) {
         try {
           // read a new line in the input file and insert it into the database
-          database.insertRow(_currentStringRow());
+          database.insertRow(currentStringRow_());
         } catch (...) {
-          __last_insertion_failed = true;
+          last_insertion_failed__ = true;
           throw;
         }
       }
@@ -179,21 +179,21 @@ namespace gum {
     /// fills the rows of the database using DBCell inputs
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
-    void IDBInitializer< ALLOC >::__fillDatabaseFromDBCells(
+    void IDBInitializer< ALLOC >::fillDatabaseFromDBCells__(
        DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if (retry_insertion && __last_insertion_failed) {
-        database.insertRow(_currentDBCellRow());
-        __last_insertion_failed = false;
+      if (retry_insertion && last_insertion_failed__) {
+        database.insertRow(currentDBCellRow_());
+        last_insertion_failed__ = false;
       }
 
       // try to insert the next rows
-      while (this->_nextRow()) {
+      while (this->nextRow_()) {
         try {
           // read a new line in the input file and insert it into the database
-          database.insertRow(_currentDBCellRow());
+          database.insertRow(currentDBCellRow_());
         } catch (...) {
-          __last_insertion_failed = true;
+          last_insertion_failed__ = true;
           throw;
         }
       }
@@ -203,18 +203,18 @@ namespace gum {
     /// asks the child class for the content of the current row using strings
     template < template < typename > class ALLOC >
     const std::vector< std::string, ALLOC< std::string > >&
-       IDBInitializer< ALLOC >::_currentStringRow() {
+       IDBInitializer< ALLOC >::currentStringRow_() {
       GUM_ERROR(FatalError,
-                "Method _currentStringRow should not be used or it should be "
+                "Method currentStringRow_ should not be used or it should be "
                 "overloaded in children classes.");
     }
 
 
     /// asks the child class for the content of the current row using dbcells
     template < template < typename > class ALLOC >
-    const DBRow< DBCell, ALLOC >& IDBInitializer< ALLOC >::_currentDBCellRow() {
+    const DBRow< DBCell, ALLOC >& IDBInitializer< ALLOC >::currentDBCellRow_() {
       GUM_ERROR(FatalError,
-                "Method _currentDBCellRow should not be used or it should be "
+                "Method currentDBCellRow_ should not be used or it should be "
                 "overloaded in children classes.");
     }
 

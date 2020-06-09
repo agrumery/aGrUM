@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The class representing a record stored in a tabular database
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_ROW_H
 #define GUM_LEARNING_DB_ROW_H
@@ -198,10 +198,10 @@ namespace gum {
 
       protected:
       /// the row itself
-      std::vector< T_DATA, ALLOC< T_DATA > > _row;
+      std::vector< T_DATA, ALLOC< T_DATA > > row_;
 
       /// the weight of the row
-      double _weight{1.0f};
+      double weight_{1.0f};
 
       // used for constructors and operators
       template < typename TX_DATA, template < typename > class OTHER_ALLOC >

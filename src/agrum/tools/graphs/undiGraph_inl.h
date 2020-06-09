@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inline implementation of Base classes for undirected graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -33,9 +33,13 @@
 namespace gum {
 
   INLINE void UndiGraph::addEdge(const NodeId first, const NodeId second) {
-    if (!exists(first)) { GUM_ERROR(InvalidNode, "Node ("<<first<<") does not exist."); }
+    if (!exists(first)) {
+      GUM_ERROR(InvalidNode, "Node (" << first << ") does not exist.");
+    }
 
-    if (!exists(second)) { GUM_ERROR(InvalidNode, "Node ("<<second<<") does not exist."); }
+    if (!exists(second)) {
+      GUM_ERROR(InvalidNode, "Node (" << second << ") does not exist.");
+    }
 
     EdgeGraphPart::addEdge(second, first);
   }

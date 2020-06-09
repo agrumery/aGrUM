@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base classes for oriented graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_DIGRAPH_H
 #define GUM_DIGRAPH_H
@@ -207,11 +207,11 @@ namespace gum {
 
     private:
     /// The topology sequence of this Directed Graphical Model.
-    mutable Sequence< NodeId >* __mutableTopologicalOrder;
+    mutable Sequence< NodeId >* mutableTopologicalOrder__;
 
     /// Returns a topological order of this DAGModel.
-    /// @warning __mutableTopologicalOrder is assumed to be valid and empty
-    void __topologicalOrder() const;
+    /// @warning mutableTopologicalOrder__ is assumed to be valid and empty
+    void topologicalOrder__() const;
   };
 
   /// for friendly displaying the content of directed graphs

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The databases' cell translators for continuous variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_4_CONTINUOUS_VARIABLE_H
 #define GUM_LEARNING_DB_TRANSLATOR_4_CONTINUOUS_VARIABLE_H
@@ -380,25 +380,25 @@ namespace gum {
       private:
       // the ContinuousVariable really used by the translator. As its values
       // are floats, this speeds-up translations
-      ContinuousVariable< float > __variable;
+      ContinuousVariable< float > variable__;
 
       // the ContinuousVariablee returned by method variable ()
       // We must return a IContinuousVariable because the user may have
       // saved into the translator a ContinuousVariable<X>, with X != float
-      IContinuousVariable* __real_variable;
+      IContinuousVariable* real_variable__;
 
       // assign to each float missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< float, bool > > >
-         __status_float_missing_symbols;
+         status_float_missing_symbols__;
 
       // a string containing a non real missing symbol
       // (useful for back translations)
-      std::string __nonfloat_missing_symbol;
+      std::string nonfloat_missing_symbol__;
 
       // indicates whether we should fit the range of the observed values
-      bool __fit_range;
+      bool fit_range__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

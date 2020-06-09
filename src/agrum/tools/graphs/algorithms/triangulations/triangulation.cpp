@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Abstract base class for computing triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -44,7 +44,7 @@ namespace gum {
 
   // constructor with a domain size specified
   Triangulation::Triangulation(const NodeProperty< Size >* domsizes) :
-      _domain_sizes(domsizes) {
+      domain_sizes_(domsizes) {
     GUM_CONSTRUCTOR(Triangulation);
   }
 
@@ -56,13 +56,13 @@ namespace gum {
 
   // copy constructor
   Triangulation::Triangulation(const Triangulation& from) :
-      _domain_sizes(from._domain_sizes) {
+      domain_sizes_(from.domain_sizes_) {
     GUM_CONS_CPY(Triangulation);
   }
 
   // move constructor
   Triangulation::Triangulation(Triangulation&& from) :
-      _domain_sizes(from._domain_sizes) {
+      domain_sizes_(from.domain_sizes_) {
     GUM_CONS_MOV(Triangulation);
   }
 
@@ -71,13 +71,13 @@ namespace gum {
     double              res = 0.0;
     double              dSize;
     const JunctionTree& jt = junctionTree();   // here, the fact that we get
-    // a junction tree ensures that _domain_sizes is different from nullptr
+    // a junction tree ensures that domain_sizes_ is different from nullptr
 
     for (const NodeId cl: jt) {
       dSize = 0.0;
 
       for (const auto node: jt.clique(cl))
-        dSize += std::log10((*_domain_sizes)[node]);
+        dSize += std::log10((*domain_sizes_)[node]);
 
       if (res < dSize) res = dSize;
     }

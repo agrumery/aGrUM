@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief A DBRowGenerator class that returns the rows that are complete
  * (fully observed) w.r.t. the nodes of interest
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
 
@@ -62,7 +62,7 @@ namespace gum {
        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-        __input_row(from.__input_row) {
+        input_row__(from.input_row__) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
     }
 
@@ -81,7 +81,7 @@ namespace gum {
        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-        __input_row(from.__input_row) {
+        input_row__(from.input_row__) {
       GUM_CONS_MOV(DBRowGenerator4CompleteRows);
     }
 
@@ -133,7 +133,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      __input_row = from.__input_row;
+      input_row__ = from.input_row__;
       return *this;
     }
 
@@ -144,7 +144,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      __input_row = from.__input_row;
+      input_row__ = from.input_row__;
       return *this;
     }
 
@@ -154,40 +154,40 @@ namespace gum {
     INLINE const DBRow< DBTranslatedValue, ALLOC >&
                  DBRowGenerator4CompleteRows< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return *__input_row;
+      return *input_row__;
     }
 
 
     /// computes the rows it will provide in output
     template < template < typename > class ALLOC >
-    INLINE std::size_t DBRowGenerator4CompleteRows< ALLOC >::_computeRows(
+    INLINE std::size_t DBRowGenerator4CompleteRows< ALLOC >::computeRows_(
        const DBRow< DBTranslatedValue, ALLOC >& row) {
       // check that all the values are observed
       const auto& xrow = row.row();
-      for (const auto col: this->_columns_of_interest) {
-        switch (this->_column_types[col]) {
+      for (const auto col: this->columns_of_interest_) {
+        switch (this->column_types_[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
-              __input_row = nullptr;
+              input_row__ = nullptr;
               return std::size_t(0);
             }
             break;
 
           case DBTranslatedValueType::CONTINUOUS:
             if (xrow[col].cont_val == std::numeric_limits< float >::max()) {
-              __input_row = nullptr;
+              input_row__ = nullptr;
               return std::size_t(0);
             }
             break;
 
           default:
             GUM_ERROR(NotImplementedYet,
-                      "DBTranslatedValueType " << int(this->_column_types[col])
+                      "DBTranslatedValueType " << int(this->column_types_[col])
                                                << " is not supported yet");
             break;
         }
       }
-      __input_row = &row;
+      input_row__ = &row;
       return std::size_t(1);
     }
 

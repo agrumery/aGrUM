@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * and
  * an approximate Inference method.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_LOOPY_INFERENCE_H
@@ -70,14 +70,14 @@ namespace gum {
 
     /// makes the inference by generating samples w.r.t the mother class' sampling
     /// method after initalizing  estimators with loopy belief propagation
-    virtual void _makeInference();
+    virtual void makeInference_();
 
     void setVirtualLBPSize(GUM_SCALAR vlbpsize) {
-      if (vlbpsize > 0) _virtualLBPSize = vlbpsize;
+      if (vlbpsize > 0) virtualLBPSize_ = vlbpsize;
     };
 
     protected:
-    GUM_SCALAR _virtualLBPSize;
+    GUM_SCALAR virtualLBPSize_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

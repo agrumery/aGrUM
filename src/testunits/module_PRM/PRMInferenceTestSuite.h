@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -617,7 +617,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          g_ve = new gum::prm::SVE< double >(*prm, prm->getSystem("aSys")));
-      __testEvidencenSioux3(g_ve);
+      testEvidencenSioux3__(g_ve);
       delete g_ve;
     }
 
@@ -626,12 +626,12 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          g_ve = new gum::prm::SVED< double >(*prm, prm->getSystem("aSys")));
-      __testEvidencenSioux3(g_ve);
+      testEvidencenSioux3__(g_ve);
       delete g_ve;
     }
 
     private:
-    void __testEvidencenSioux3(gum::prm::PRMInference< double >* g_ve) {
+    void testEvidencenSioux3__(gum::prm::PRMInference< double >* g_ve) {
       // Adding evidence
       {
         const gum::prm::PRMInstance< double >& instance =

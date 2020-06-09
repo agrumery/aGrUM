@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the MultiDimBijArray class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
@@ -36,7 +36,7 @@ namespace gum {
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
      const MultiDimBijArray< GUM_SCALAR >& from) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      __array(from.__array), __name(from.__name) {
+      array__(from.array__), name__(from.name__) {
     GUM_CONS_CPY(MultiDimBijArray);
 
     for (auto var: from.variablesSequence()) {
@@ -48,7 +48,7 @@ namespace gum {
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
      const VarBijection& bijection, const MultiDimArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      __array(array), __name("MultiDimBijArray") {
+      array__(array), name__("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -60,7 +60,7 @@ namespace gum {
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
      const VarBijection& bijection, const MultiDimBijArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      __array(array.__array), __name("MultiDimBijArray") {
+      array__(array.array__), name__("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -87,7 +87,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const std::string& MultiDimBijArray< GUM_SCALAR >::name() const {
-    return __name;
+    return name__;
   }
 
   template < typename GUM_SCALAR >
@@ -111,7 +111,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::_commitMultipleChanges() {
+  INLINE void MultiDimBijArray< GUM_SCALAR >::commitMultipleChanges_() {
     // Do nothing
   }
 
@@ -119,9 +119,9 @@ namespace gum {
   INLINE GUM_SCALAR
      MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
     if (i.isMaster(this)) {
-      return __array._values[this->_offsets[&i]];
+      return array__.values_[this->offsets_[&i]];
     } else {
-      return __array._values[this->_getOffs(i)];
+      return array__.values_[this->getOffs_(i)];
     }
   }
 
@@ -145,14 +145,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
-         MultiDimBijArray< GUM_SCALAR >::_get(const Instantiation& i) const {
+         MultiDimBijArray< GUM_SCALAR >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+  INLINE void MultiDimBijArray< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                        const DiscreteVariable* y) {
-    MultiDimImplementation< GUM_SCALAR >::_replace(x, y);
+    MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
   }
 
 }   // namespace gum

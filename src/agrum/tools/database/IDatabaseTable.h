@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * IDatabases are not intended to be created as is but should be created through
  * the RawDatabaseTable and DatabaseTable classes.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_IDATABASE_TABLE_H
 #define GUM_IDATABASE_TABLE_H
@@ -577,21 +577,21 @@ namespace gum {
 
         protected:
         /// a reference to the whole database, including variable names
-        const IDatabaseTable< T_DATA, ALLOC >* __db;
+        const IDatabaseTable< T_DATA, ALLOC >* db__;
 
         /// a reference on the database's records pointed to by the handler
-        /** this data could be retrieved from __db but we prefer using a
+        /** this data could be retrieved from db__ but we prefer using a
          * specific variable here for speed-up reasons. */
-        const Matrix< T_DATA >* __row;
+        const Matrix< T_DATA >* row__;
 
         /// the index of the row currently pointed to by the handler
-        std::size_t __index{std::size_t(0)};
+        std::size_t index__{std::size_t(0)};
 
         /// the first row managed by the handler
-        std::size_t __begin_index{std::size_t(0)};
+        std::size_t begin_index__{std::size_t(0)};
 
         /// the row just after the last one managed by the handler
-        std::size_t __end_index{std::size_t(0)};
+        std::size_t end_index__{std::size_t(0)};
 
         friend class IDatabaseTable< T_DATA, ALLOC >;
 
@@ -749,10 +749,10 @@ namespace gum {
 
         private:
         /// attach a new handler to the database
-        void __attachHandler();
+        void attachHandler__();
 
         /// detach a handler
-        void __detachHandler();
+        void detachHandler__();
 
         friend class IDatabaseTable< T_DATA, ALLOC >;
 
@@ -1151,29 +1151,29 @@ namespace gum {
 
       protected:
       /// the names of the variables for each column
-      DBVector< std::string > _variable_names;
+      DBVector< std::string > variable_names_;
 
       // the vector of DBRows containing all the raw data
-      Matrix< T_DATA > _rows;
+      Matrix< T_DATA > rows_;
 
       // the set of string corresponding to missing values
-      DBVector< std::string > _missing_symbols;
+      DBVector< std::string > missing_symbols_;
 
       // a vector indicating which rows have missing values (char != 0)
-      DBVector< IsMissing > _has_row_missing_val;
+      DBVector< IsMissing > has_row_missing_val_;
 
       // the maximal number of threads that the database can use
-      mutable std::size_t _max_nb_threads{
+      mutable std::size_t max_nb_threads_{
          std::size_t(gum::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context
-      mutable std::size_t _min_nb_rows_per_thread{100};
+      mutable std::size_t min_nb_rows_per_thread_{100};
 
 
       /** @brief checks whether a size corresponds to the number of columns
        * of the database */
-      bool _isRowSizeOK(const std::size_t size) const;
+      bool isRowSizeOK_(const std::size_t size) const;
 
       /// copy operator
       IDatabaseTable< T_DATA, ALLOC >&
@@ -1189,28 +1189,28 @@ namespace gum {
       private:
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */
-      mutable DBVector< HandlerSafe* > __list_of_safe_handlers;
+      mutable DBVector< HandlerSafe* > list_of_safe_handlers__;
 
-      // a mutex to safely add/remove handlers in __list_of_safe_handlers
-      mutable std::mutex __safe_handlers_mutex;
+      // a mutex to safely add/remove handlers in list_of_safe_handlers__
+      mutable std::mutex safe_handlers_mutex__;
 
       // the end iterator for the database
-      Handler* __end{nullptr};
+      Handler* end__{nullptr};
 
       // the safe end iterator for the database
-      iterator_safe* __end_safe{nullptr};
+      iterator_safe* end_safe__{nullptr};
 
       /// add a new safe handler to the list of attached handlers
-      void __attachHandler(HandlerSafe* handler) const;
+      void attachHandler__(HandlerSafe* handler) const;
 
       /// detach a safe handler from the list of attached handlers
-      void __detachHandler(HandlerSafe* handler) const;
+      void detachHandler__(HandlerSafe* handler) const;
 
       /// update the handlers when the size of the database changes
-      void __updateHandlers(std::size_t new_size) const;
+      void updateHandlers__(std::size_t new_size) const;
 
       // create the end iterators
-      void __createEndIterators();
+      void createEndIterators__();
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -1025,9 +1025,9 @@ namespace gum_tests {
       {
         auto t2 = t1.margSumOut(proj_set);
         TS_ASSERT(t2 == *t5);
-       
-         gum::Instantiation I5(*t5);
-         TS_ASSERT(1.0 == (*t5)[I5]);
+
+        gum::Instantiation I5(*t5);
+        TS_ASSERT(1.0 == (*t5)[I5]);
       }
       delete t5;
 

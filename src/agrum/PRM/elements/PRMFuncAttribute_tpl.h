@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of gum::PRMFuncAttribute
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -73,7 +73,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-       PRMFuncAttribute< GUM_SCALAR >::_setCpf(Potential< GUM_SCALAR >* cpf) {
+       PRMFuncAttribute< GUM_SCALAR >::setCpf_(Potential< GUM_SCALAR >* cpf) {
       GUM_ERROR(OperationNotAllowed,
                 "Cannot change CPF of a functional attribute");
     }

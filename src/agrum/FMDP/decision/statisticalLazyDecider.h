@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Statistical lazy decision maker class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -59,7 +59,7 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    StatisticalLazyDecider() : __counter(), __initialized(false) {
+    StatisticalLazyDecider() : counter__(), initialized__(false) {
       GUM_CONSTRUCTOR(StatisticalLazyDecider);
     }
 
@@ -77,16 +77,16 @@ namespace gum {
     /// @{
     public:
     void checkState(const Instantiation& newState, Idx actionId = 0) {
-      if (!__initialized) {
-        __counter.reset(newState);
-        __initialized = true;
+      if (!initialized__) {
+        counter__.reset(newState);
+        initialized__ = true;
       } else
-        __counter.incState(newState);
+        counter__.incState(newState);
     }
 
     private:
-    StatesCounter __counter;
-    bool          __initialized;
+    StatesCounter counter__;
+    bool          initialized__;
   };
 }   // namespace gum
 #endif   // GUM_STATISTICAL_LAZY_DECIDER_H

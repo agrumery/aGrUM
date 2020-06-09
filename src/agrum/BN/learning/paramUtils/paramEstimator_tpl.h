@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for estimating parameters of CPTs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -36,7 +36,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename ParamEstimator< ALLOC >::allocator_type
        ParamEstimator< ALLOC >::getAllocator() const {
-      return _counter.getAllocator();
+      return counter_.getAllocator();
     }
 
 
@@ -51,15 +51,15 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                                nodeId2columns,
        const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
-        _counter(parser, ranges, nodeId2columns, alloc) {
+        counter_(parser, ranges, nodeId2columns, alloc) {
       // copy the a prioris
-      _external_apriori = external_apriori.clone(alloc);
+      external_apriori_ = external_apriori.clone(alloc);
       try {
-        _score_internal_apriori = score_internal_apriori.clone();
+        score_internal_apriori_ = score_internal_apriori.clone();
       } catch (...) {
         ALLOC< Apriori< ALLOC > > allocator(alloc);
-        allocator.destroy(_external_apriori);
-        allocator.deallocate(_external_apriori, 1);
+        allocator.destroy(external_apriori_);
+        allocator.deallocate(external_apriori_, 1);
         throw;
       }
 
@@ -76,15 +76,15 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                                nodeId2columns,
        const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
-        _counter(parser, nodeId2columns, alloc) {
+        counter_(parser, nodeId2columns, alloc) {
       // copy the a prioris
-      _external_apriori = external_apriori.clone(alloc);
+      external_apriori_ = external_apriori.clone(alloc);
       try {
-        _score_internal_apriori = score_internal_apriori.clone();
+        score_internal_apriori_ = score_internal_apriori.clone();
       } catch (...) {
         ALLOC< Apriori< ALLOC > > allocator(alloc);
-        allocator.destroy(_external_apriori);
-        allocator.deallocate(_external_apriori, 1);
+        allocator.destroy(external_apriori_);
+        allocator.deallocate(external_apriori_, 1);
         throw;
       }
 
@@ -97,9 +97,9 @@ namespace gum {
     INLINE ParamEstimator< ALLOC >::ParamEstimator(
        const ParamEstimator< ALLOC >&                          from,
        const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
-        _external_apriori(from._external_apriori->clone(alloc)),
-        _score_internal_apriori(from._score_internal_apriori->clone(alloc)),
-        _counter(from._counter, alloc) {
+        external_apriori_(from.external_apriori_->clone(alloc)),
+        score_internal_apriori_(from.score_internal_apriori_->clone(alloc)),
+        counter_(from.counter_, alloc) {
       GUM_CONS_CPY(ParamEstimator);
     }
 
@@ -116,11 +116,11 @@ namespace gum {
     INLINE ParamEstimator< ALLOC >::ParamEstimator(
        ParamEstimator< ALLOC >&&                               from,
        const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
-        _external_apriori(from._external_apriori),
-        _score_internal_apriori(from._score_internal_apriori),
-        _counter(std::move(from._counter), alloc) {
-      from._external_apriori = nullptr;
-      from._score_internal_apriori = nullptr;
+        external_apriori_(from.external_apriori_),
+        score_internal_apriori_(from.score_internal_apriori_),
+        counter_(std::move(from.counter_), alloc) {
+      from.external_apriori_ = nullptr;
+      from.score_internal_apriori_ = nullptr;
       GUM_CONS_MOV(ParamEstimator);
     }
 
@@ -136,14 +136,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >::~ParamEstimator() {
       ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
-      if (_external_apriori != nullptr) {
-        allocator.destroy(_external_apriori);
-        allocator.deallocate(_external_apriori, 1);
+      if (external_apriori_ != nullptr) {
+        allocator.destroy(external_apriori_);
+        allocator.deallocate(external_apriori_, 1);
       }
 
-      if (_score_internal_apriori != nullptr) {
-        allocator.destroy(_score_internal_apriori);
-        allocator.deallocate(_score_internal_apriori, 1);
+      if (score_internal_apriori_ != nullptr) {
+        allocator.destroy(score_internal_apriori_);
+        allocator.deallocate(score_internal_apriori_, 1);
       }
 
       GUM_DESTRUCTOR(ParamEstimator);
@@ -156,22 +156,22 @@ namespace gum {
        ParamEstimator< ALLOC >::operator=(const ParamEstimator< ALLOC >& from) {
       if (this != &from) {
         ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
-        if (_external_apriori != nullptr) {
-          allocator.destroy(_external_apriori);
-          allocator.deallocate(_external_apriori, 1);
-          _external_apriori = nullptr;
+        if (external_apriori_ != nullptr) {
+          allocator.destroy(external_apriori_);
+          allocator.deallocate(external_apriori_, 1);
+          external_apriori_ = nullptr;
         }
-        _external_apriori = from._external_apriori->clone(this->getAllocator());
+        external_apriori_ = from.external_apriori_->clone(this->getAllocator());
 
-        if (_score_internal_apriori != nullptr) {
-          allocator.destroy(_score_internal_apriori);
-          allocator.deallocate(_score_internal_apriori, 1);
-          _external_apriori = nullptr;
+        if (score_internal_apriori_ != nullptr) {
+          allocator.destroy(score_internal_apriori_);
+          allocator.deallocate(score_internal_apriori_, 1);
+          external_apriori_ = nullptr;
         }
-        _score_internal_apriori =
-           from._score_internal_apriori->clone(this->getAllocator());
+        score_internal_apriori_ =
+           from.score_internal_apriori_->clone(this->getAllocator());
 
-        _counter = from._counter;
+        counter_ = from.counter_;
       }
       return *this;
     }
@@ -182,11 +182,11 @@ namespace gum {
     ParamEstimator< ALLOC >&
        ParamEstimator< ALLOC >::operator=(ParamEstimator< ALLOC >&& from) {
       if (this != &from) {
-        _external_apriori = from._external_apriori;
-        _score_internal_apriori = from._score_internal_apriori;
-        _counter = std::move(from._counter);
-        from._external_apriori = nullptr;
-        from._score_internal_apriori = nullptr;
+        external_apriori_ = from.external_apriori_;
+        score_internal_apriori_ = from.score_internal_apriori_;
+        counter_ = std::move(from.counter_);
+        from.external_apriori_ = nullptr;
+        from.score_internal_apriori_ = nullptr;
       }
       return *this;
     }
@@ -195,21 +195,21 @@ namespace gum {
     /// clears all the data structures from memory
     template < template < typename > class ALLOC >
     INLINE void ParamEstimator< ALLOC >::clear() {
-      _counter.clear();
+      counter_.clear();
     }
 
 
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     void ParamEstimator< ALLOC >::setMaxNbThreads(std::size_t nb) const {
-      _counter.setMaxNbThreads(nb);
+      counter_.setMaxNbThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
     std::size_t ParamEstimator< ALLOC >::nbThreads() const {
-      return _counter.nbThreads();
+      return counter_.nbThreads();
     }
 
 
@@ -218,14 +218,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void
        ParamEstimator< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
-      _counter.setMinNbRowsPerThread(nb);
+      counter_.setMinNbRowsPerThread(nb);
     }
 
 
     /// returns the minimum of rows that each thread should process
     template < template < typename > class ALLOC >
     INLINE std::size_t ParamEstimator< ALLOC >::minNbRowsPerThread() const {
-      return _counter.minNbRowsPerThread();
+      return counter_.minNbRowsPerThread();
     }
 
 
@@ -245,7 +245,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
-      _counter.setRanges(new_ranges);
+      counter_.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
 
@@ -256,7 +256,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
-      _counter.clearRanges();
+      counter_.clearRanges();
       if (old_ranges != ranges()) clear();
     }
 
@@ -266,7 +266,7 @@ namespace gum {
     INLINE const std::vector< std::pair< std::size_t, std::size_t >,
                               ALLOC< std::pair< std::size_t, std::size_t > > >&
                  ParamEstimator< ALLOC >::ranges() const {
-      return _counter.ranges();
+      return counter_.ranges();
     }
 
 
@@ -274,14 +274,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::vector< double, ALLOC< double > >
            ParamEstimator< ALLOC >::parameters(const NodeId target_node) {
-      return parameters(target_node, _empty_nodevect);
+      return parameters(target_node, empty_nodevect_);
     }
 
 
     // check the coherency between the parameters passed to setParameters functions
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void ParamEstimator< ALLOC >::__checkParameters(
+    void ParamEstimator< ALLOC >::checkParameters__(
        const NodeId                                  target_node,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
        Potential< GUM_SCALAR >&                      pot) {
@@ -291,8 +291,8 @@ namespace gum {
         GUM_ERROR(SizeError, "the potential contains no variable");
       }
 
-      const auto& database = _counter.database();
-      const auto& node2cols = _counter.nodeId2Columns();
+      const auto& database = counter_.database();
+      const auto& node2cols = counter_.nodeId2Columns();
       if (node2cols.empty()) {
         if (database.domainSize(target_node) != vars[0]->domainSize()) {
           GUM_ERROR(SizeError,
@@ -346,11 +346,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-       ParamEstimator< ALLOC >::__setParameters(
+       ParamEstimator< ALLOC >::setParameters__(
           const NodeId                                  target_node,
           const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
           Potential< GUM_SCALAR >&                      pot) {
-      __checkParameters(target_node, conditioning_nodes, pot);
+      checkParameters__(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
          parameters(target_node, conditioning_nodes));
@@ -370,11 +370,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-       ParamEstimator< ALLOC >::__setParameters(
+       ParamEstimator< ALLOC >::setParameters__(
           const NodeId                                  target_node,
           const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
           Potential< GUM_SCALAR >&                      pot) {
-      __checkParameters(target_node, conditioning_nodes, pot);
+      checkParameters__(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
          parameters(target_node, conditioning_nodes));
@@ -389,7 +389,7 @@ namespace gum {
        const NodeId                                  target_node,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
        Potential< GUM_SCALAR >&                      pot) {
-      __setParameters(target_node, conditioning_nodes, pot);
+      setParameters__(target_node, conditioning_nodes, pot);
     }
 
 
@@ -397,7 +397,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                  ParamEstimator< ALLOC >::nodeId2Columns() const {
-      return _counter.nodeId2Columns();
+      return counter_.nodeId2Columns();
     }
 
 
@@ -405,7 +405,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const DatabaseTable< ALLOC >&
                  ParamEstimator< ALLOC >::database() const {
-      return _counter.database();
+      return counter_.database();
     }
 
 
@@ -414,7 +414,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void
        ParamEstimator< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
-      _counter.setBayesNet(new_bn);
+      counter_.setBayesNet(new_bn);
     }
 
 

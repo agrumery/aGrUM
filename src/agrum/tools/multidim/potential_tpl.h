@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /**
  * @file
  * @brief Implementation of the Potential class.
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/agrum.h>
@@ -55,7 +55,7 @@ namespace gum {
       Potential< GUM_SCALAR >(static_cast< MultiDimImplementation< GUM_SCALAR >* >(
                                  src.content()->newFactory()),
                               *(src.content())) {
-    this->_empty_value = src._empty_value;
+    this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
     // GUM_CONS_CPY( Potential );
   }
@@ -128,32 +128,32 @@ namespace gum {
   // sum of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::sum() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return this->empty_value_;
     }
     return gum::projectSum(*this->content());
   }
   // product of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::product() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return this->empty_value_;
     }
     return gum::projectProduct(*this->content());
   }
   // max of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::max() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return this->empty_value_;
     }
     return gum::projectMax(*this->content());
   }
   // min of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::min() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return this->empty_value_;
     }
     return gum::projectMin(*this->content());
   }
@@ -164,8 +164,8 @@ namespace gum {
   GUM_SCALAR Potential< GUM_SCALAR >::maxNonOne() const {
     GUM_SCALAR res;
 
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      res = this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      res = this->empty_value_;
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
@@ -185,8 +185,8 @@ namespace gum {
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::minNonZero() const {
     GUM_SCALAR res;
 
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      res = this->_empty_value;
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      res = this->empty_value_;
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
@@ -202,7 +202,7 @@ namespace gum {
   // entropy of this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::entropy() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return static_cast< GUM_SCALAR >(0);
     }
 
@@ -355,9 +355,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::normalize() const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      if (this->_empty_value != static_cast< GUM_SCALAR >(0))
-        this->_empty_value = static_cast< GUM_SCALAR >(1.0);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      if (this->empty_value_ != static_cast< GUM_SCALAR >(0))
+        this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
     } else {
       GUM_SCALAR s = sum();
 
@@ -371,17 +371,16 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      if (this->_empty_value != static_cast< GUM_SCALAR >(0)) {
-        this->_empty_value = static_cast< GUM_SCALAR >(1.0);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      if (this->empty_value_ != static_cast< GUM_SCALAR >(0)) {
+        this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
       } else {
         GUM_ERROR(FatalError,
                   "Normalization for a potential that sum to 0 in " << *this);
       }
     } else {
-      if (varId>=this->nbrDim()) {
-        GUM_ERROR(FatalError,
-                  varId <<" is not a position for " << *this);
+      if (varId >= this->nbrDim()) {
+        GUM_ERROR(FatalError, varId << " is not a position for " << *this);
       }
       Instantiation inst(*this);
       const auto&   v = this->variable(varId);
@@ -427,8 +426,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margSumOut(
      const Set< const DiscreteVariable* >& del_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
   }
@@ -436,8 +435,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margProdOut(
      const Set< const DiscreteVariable* >& del_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(
        gum::projectProduct(*this->content(), del_vars));
@@ -446,8 +445,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMinOut(
      const Set< const DiscreteVariable* >& del_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
   }
@@ -455,49 +454,49 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMaxOut(
      const Set< const DiscreteVariable* >& del_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
   }
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margSumIn(
      const Set< const DiscreteVariable* >& kept_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(
-       gum::projectSum(*this->content(), _complementVars(kept_vars)));
+       gum::projectSum(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margProdIn(
      const Set< const DiscreteVariable* >& kept_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(
-       gum::projectProduct(*this->content(), _complementVars(kept_vars)));
+       gum::projectProduct(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMinIn(
      const Set< const DiscreteVariable* >& kept_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(
-       gum::projectMin(*this->content(), _complementVars(kept_vars)));
+       gum::projectMin(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMaxIn(
      const Set< const DiscreteVariable* >& kept_vars) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
     return Potential< GUM_SCALAR >(
-       gum::projectMax(*this->content(), _complementVars(kept_vars)));
+       gum::projectMax(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
@@ -513,7 +512,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Set< const DiscreteVariable* > Potential< GUM_SCALAR >::_complementVars(
+  Set< const DiscreteVariable* > Potential< GUM_SCALAR >::complementVars_(
      const Set< const DiscreteVariable* >& vars) const {
     Set< const DiscreteVariable* > cplt;
 
@@ -600,7 +599,7 @@ namespace gum {
     Instantiation        I(*this);
     Set< Instantiation > res;
 
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return res;
     }
     for (I.setFirst(); !I.end(); ++I) {

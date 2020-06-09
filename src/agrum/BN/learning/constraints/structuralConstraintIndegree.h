@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class for structural constraints limiting the number of parents
  * of nodes in a directed graph
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
@@ -207,10 +207,10 @@ namespace gum {
 
       protected:
       /// the max number of parents per node
-      NodeProperty< Size > _Indegree__max_parents;
+      NodeProperty< Size > Indegree__max_parents_;
 
       /// a default max indegree to assign for nodes without specified indegree
-      Size _Indegree__max_indegree{std::numeric_limits< Size >::max()};
+      Size Indegree__max_indegree_{std::numeric_limits< Size >::max()};
     };
 
   } /* namespace learning */

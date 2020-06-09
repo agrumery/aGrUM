@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief min aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 // to ease parser in IDEs
@@ -38,7 +38,7 @@ namespace gum {
     // Default constructor
     template < typename GUM_SCALAR >
     INLINE Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
-      this->_decomposable=true;
+      this->decomposable_ = true;
       GUM_CONSTRUCTOR(Min);
     }
 
@@ -56,12 +56,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Min< GUM_SCALAR >::_neutralElt() const {
+    INLINE Idx Min< GUM_SCALAR >::neutralElt_() const {
       return std::numeric_limits< Idx >::max();
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Min< GUM_SCALAR >::_fold(const DiscreteVariable& v,
+    INLINE Idx Min< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
                                         bool& stop_iteration) const {

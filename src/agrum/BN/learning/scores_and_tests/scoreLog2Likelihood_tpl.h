@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing Log2-Likelihood scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,7 +46,7 @@ namespace gum {
                                                                     nodeId2columns,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
@@ -60,7 +60,7 @@ namespace gum {
                                                                     nodeId2columns,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
@@ -71,7 +71,7 @@ namespace gum {
        const ScoreLog2Likelihood< ALLOC >&                          from,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        __internal_apriori(from.__internal_apriori, alloc) {
+        internal_apriori__(from.internal_apriori__, alloc) {
       GUM_CONS_CPY(ScoreLog2Likelihood);
     }
 
@@ -89,7 +89,7 @@ namespace gum {
        ScoreLog2Likelihood< ALLOC >&&                               from,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        __internal_apriori(std::move(from.__internal_apriori), alloc) {
+        internal_apriori__(std::move(from.internal_apriori__), alloc) {
       GUM_CONS_MOV(ScoreLog2Likelihood);
     }
 
@@ -138,7 +138,7 @@ namespace gum {
        const ScoreLog2Likelihood< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        __internal_apriori = from.__internal_apriori;
+        internal_apriori__ = from.internal_apriori__;
       }
       return *this;
     }
@@ -150,7 +150,7 @@ namespace gum {
        ScoreLog2Likelihood< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        __internal_apriori = std::move(from.__internal_apriori);
+        internal_apriori__ = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -187,7 +187,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string ScoreLog2Likelihood< ALLOC >::isAprioriCompatible() const {
-      return isAprioriCompatible(*(this->_apriori));
+      return isAprioriCompatible(*(this->apriori_));
     }
 
 
@@ -195,26 +195,26 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >&
                  ScoreLog2Likelihood< ALLOC >::internalApriori() const {
-      return __internal_apriori;
+      return internal_apriori__;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreLog2Likelihood< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
+    double ScoreLog2Likelihood< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
-      const bool informative_external_apriori = this->_apriori->isInformative();
+         this->counter_.counts(idset, true));
+      const bool informative_external_apriori = this->apriori_->isInformative();
       if (informative_external_apriori)
-        this->_apriori->addAllApriori(idset, N_ijk);
+        this->apriori_->addAllApriori(idset, N_ijk);
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
-           this->_marginalize(idset[0], N_ijk));
+           this->marginalize_(idset[0], N_ijk));
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
@@ -229,7 +229,7 @@ namespace gum {
         }
 
         // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
+        score *= this->one_log2_;
 
         return score;
       } else {
@@ -250,7 +250,7 @@ namespace gum {
         score -= N * std::log(N);
 
         // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
+        score *= this->one_log2_;
 
         return score;
       }
@@ -261,7 +261,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE double
        ScoreLog2Likelihood< ALLOC >::score(const IdCondSet< ALLOC >& idset) {
-      return _score(idset);
+      return score_(idset);
     }
 
 

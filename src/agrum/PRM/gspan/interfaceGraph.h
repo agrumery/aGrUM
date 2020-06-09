@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of InterfaceGraph.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_INTERFACE_GRAPH_H
 #define GUM_INTERFACE_GRAPH_H
@@ -77,7 +77,7 @@ namespace gum {
 
       /**
        * @struct NodeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
-       * Inner class to handle data about nodes in __graph.
+       * Inner class to handle data about nodes in graph__.
        */
       template < typename GUM_SCALAR >
       class NodeData {
@@ -110,7 +110,7 @@ namespace gum {
 
       /**
        * @struct EdgeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
-       * Inner class to handle data about edges in __graph.
+       * Inner class to handle data about edges in graph__.
        */
       template < typename GUM_SCALAR >
       class EdgeData {
@@ -246,47 +246,47 @@ namespace gum {
         private:
         /// The gum::prm::PRMSystem<GUM_SCALAR> represented by this interface
         /// graph.
-        const PRMSystem< GUM_SCALAR >* __sys;
+        const PRMSystem< GUM_SCALAR >* sys__;
 
         /// The interface graph.
-        UndiGraph __graph;
+        UndiGraph graph__;
 
-        /// Data associated with a node in __graph.
-        NodeProperty< NodeData< GUM_SCALAR >* > __nodes;
+        /// Data associated with a node in graph__.
+        NodeProperty< NodeData< GUM_SCALAR >* > nodes__;
 
-        /// Mapping between PRMInstance<GUM_SCALAR> dans their id in __graph.
-        HashTable< PRMInstance< GUM_SCALAR >*, NodeId > __idMap;
+        /// Mapping between PRMInstance<GUM_SCALAR> dans their id in graph__.
+        HashTable< PRMInstance< GUM_SCALAR >*, NodeId > idMap__;
 
-        /// Data associated with edges in __graph.
-        EdgeProperty< EdgeData< GUM_SCALAR >* > __edges;
+        /// Data associated with edges in graph__.
+        EdgeProperty< EdgeData< GUM_SCALAR >* > edges__;
 
         /// Bijection between labels and their ids.
-        Bijection< Idx, LabelData* >* __labels;
+        Bijection< Idx, LabelData* >* labels__;
 
         /// Mapping between a LabelData and the set of NodeData<GUM_SCALAR> with
         /// that
         /// label.
-        HashTable< LabelData*, Set< NodeData< GUM_SCALAR >* >* > __nodeMap;
+        HashTable< LabelData*, Set< NodeData< GUM_SCALAR >* >* > nodeMap__;
 
         /// Mapping between a LabelData and the set of EdgeData<GUM_SCALAR> with
         /// that
         /// label.
-        HashTable< LabelData*, Set< EdgeData< GUM_SCALAR >* >* > __edgeMap;
+        HashTable< LabelData*, Set< EdgeData< GUM_SCALAR >* >* > edgeMap__;
 
         /// A counter used of assigning ids to labels.
-        Idx __counter;
+        Idx counter__;
 
         /// For shallow copies
-        bool __erase_flag;
+        bool erase_flag__;
 
-        /// Compute the label of node and add it to __labels if it does not
+        /// Compute the label of node and add it to labels__ if it does not
         /// exists yet. Update node with the correct label's id.
-        void __label(NodeData< GUM_SCALAR >*               node,
+        void label__(NodeData< GUM_SCALAR >*               node,
                      HashTable< std::string, LabelData* >& label_map);
 
-        /// Compute the label of edge and add it to __labels if it does not
+        /// Compute the label of edge and add it to labels__ if it does not
         /// exists yet. Update edge with the correct label's id.
-        void __label(EdgeData< GUM_SCALAR >*               edge,
+        void label__(EdgeData< GUM_SCALAR >*               edge,
                      HashTable< std::string, LabelData* >& label_map);
       };
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Heaps definition.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -371,16 +371,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap.
-    std::vector< Val, Alloc > __heap;
+    std::vector< Val, Alloc > heap__;
 
     /// The number of elements in the heap.
-    Size __nb_elements{0};
+    Size nb_elements__{0};
 
     /// Comparison function.
-    Cmp __cmp;
+    Cmp cmp__;
 
     /// After inserting an element at the end of the heap, restore heap property
-    Size __restoreHeap();
+    Size restoreHeap__();
   };
 
 } /* namespace gum */

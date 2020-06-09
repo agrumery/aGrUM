@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * The pack currently contains K2, GreedyHillClimbing and
  *LocalSearchWithTabuList
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <fstream>
 
@@ -114,14 +114,14 @@ namespace gum {
       if (notification != "") {
         std::cout << "[aGrUM notification] " << notification << std::endl;
       }
-      __createApriori();
-      __createScore();
+      createApriori__();
+      createScore__();
 
       std::unique_ptr< ParamEstimator<> > param_estimator(
-         __createParamEstimator(__score_database.parser(), true));
+         createParamEstimator__(score_database__.parser(), true));
 
-      return __Dag2BN.createBN< GUM_SCALAR >(*(param_estimator.get()),
-                                             __learnDAG());
+      return Dag2BN__.createBN< GUM_SCALAR >(*(param_estimator.get()),
+                                             learnDAG__());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -139,13 +139,13 @@ namespace gum {
         ids.push_back(node);
       std::sort(ids.begin(), ids.end());
 
-      if (ids.back() >= __score_database.names().size()) {
+      if (ids.back() >= score_database__.names().size()) {
         std::stringstream str;
         str << "Learning parameters corresponding to the dag is impossible "
             << "because the database does not contain the following nodeID";
         std::vector< NodeId > bad_ids;
         for (const auto node: ids) {
-          if (node >= __score_database.names().size()) bad_ids.push_back(node);
+          if (node >= score_database__.names().size()) bad_ids.push_back(node);
         }
         if (bad_ids.size() > 1) str << 's';
         str << ": ";
@@ -161,14 +161,14 @@ namespace gum {
       }
 
       // create the apriori
-      __createApriori();
+      createApriori__();
 
-      if (__EMepsilon == 0.0) {
+      if (EMepsilon__ == 0.0) {
         // check that the database does not contain any missing value
-        if (__score_database.databaseTable().hasMissingValues()
-            || ((__apriori_database != nullptr)
-                && (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE)
-                && __apriori_database->databaseTable().hasMissingValues())) {
+        if (score_database__.databaseTable().hasMissingValues()
+            || ((apriori_database__ != nullptr)
+                && (apriori_type__ == AprioriType::DIRICHLET_FROM_DATABASE)
+                && apriori_database__->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
                        << "missing values in databases. To learn parameters in "
@@ -177,18 +177,18 @@ namespace gum {
         }
 
         // create the usual estimator
-        DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
+        DBRowGeneratorParser<> parser(score_database__.databaseTable().handler(),
                                       DBRowGeneratorSet<>());
         std::unique_ptr< ParamEstimator<> > param_estimator(
-           __createParamEstimator(parser, take_into_account_score));
+           createParamEstimator__(parser, take_into_account_score));
 
-        return __Dag2BN.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
+        return Dag2BN__.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
       } else {
         // EM !
-        BNLearnerListener listener(this, __Dag2BN);
+        BNLearnerListener listener(this, Dag2BN__);
 
         // get the column types
-        const auto&       database = __score_database.databaseTable();
+        const auto&       database = score_database__.databaseTable();
         const std::size_t nb_vars = database.nbVariables();
         const std::vector< gum::learning::DBTranslatedValueType > col_types(
            nb_vars, gum::learning::DBTranslatedValueType::DISCRETE);
@@ -200,7 +200,7 @@ namespace gum {
         DBRowGeneratorParser<>              parser_bootstrap(database.handler(),
                                                 genset_bootstrap);
         std::unique_ptr< ParamEstimator<> > param_estimator_bootstrap(
-           __createParamEstimator(parser_bootstrap, take_into_account_score));
+           createParamEstimator__(parser_bootstrap, take_into_account_score));
 
         // create the EM estimator
         BayesNet< GUM_SCALAR >         dummy_bn;
@@ -210,10 +210,10 @@ namespace gum {
         genset_EM.insertGenerator(gen_EM);
         DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);
         std::unique_ptr< ParamEstimator<> > param_estimator_EM(
-           __createParamEstimator(parser_EM, take_into_account_score));
+           createParamEstimator__(parser_EM, take_into_account_score));
 
-        __Dag2BN.setEpsilon(__EMepsilon);
-        return __Dag2BN.createBN< GUM_SCALAR >(
+        Dag2BN__.setEpsilon(EMepsilon__);
+        return Dag2BN__.createBN< GUM_SCALAR >(
            *(param_estimator_bootstrap.get()), *(param_estimator_EM.get()), dag);
       }
     }
@@ -223,13 +223,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
        BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
-      return learnParameters(__initial_dag, take_into_account_score);
+      return learnParameters(initial_dag__, take_into_account_score);
     }
 
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
-       BNLearner< GUM_SCALAR >::__labelsFromBN(const std::string& filename,
+       BNLearner< GUM_SCALAR >::labelsFromBN__(const std::string& filename,
                                                const BayesNet< GUM_SCALAR >& src) {
       std::ifstream in(filename, std::ifstream::in);
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief A container for registering binary functions on
  * multiDimImplementations
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,17 +46,17 @@ namespace gum {
     // insert the new entry
     OperatorSet* theset;
 
-    if (!__set.exists(operation_name)) {
-      theset = __set.insert(operation_name, new OperatorSet).second;
+    if (!set__.exists(operation_name)) {
+      theset = set__.insert(operation_name, new OperatorSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::__inc_deletion(
+      __debug__::inc_deletion__(
          "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
-      theset = __set[operation_name];
+      theset = set__[operation_name];
     }
 
     std::pair< std::string, std::string > thepair(type1, type2);
@@ -70,9 +70,9 @@ namespace gum {
      const std::string& operation_name,
      const std::string& type1,
      const std::string& type2) {
-    if (!__set.exists(operation_name)) return;
+    if (!set__.exists(operation_name)) return;
 
-    OperatorSet* theset = __set[operation_name];
+    OperatorSet* theset = set__[operation_name];
 
     theset->erase(std::pair< std::string, std::string >(type1, type2));
   }
@@ -83,8 +83,8 @@ namespace gum {
      const std::string& operation_name,
      const std::string& type1,
      const std::string& type2) const {
-    if (!__set.exists(operation_name)) return false;
-    OperatorSet* theset = __set[operation_name];
+    if (!set__.exists(operation_name)) return false;
+    OperatorSet* theset = set__[operation_name];
     return theset->exists(std::pair< std::string, std::string >(type1, type2));
   }
 
@@ -96,7 +96,7 @@ namespace gum {
         const std::string& operation_name,
         const std::string& type1,
         const std::string& type2) const {
-    OperatorSet* theset = __set[operation_name];
+    OperatorSet* theset = set__[operation_name];
     return (*theset)[std::pair< std::string, std::string >(type1, type2)];
   }
 
@@ -116,11 +116,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::__inc_deletion("HashTable",
+      __debug__::inc_deletion__("HashTable",
                                 __FILE__,
                                 __LINE__,
                                 "destructor of",
-                                (void*)&container->__set);
+                                (void*)&container->set__);
 #  endif /* GUM_DEBUG_MODE */
     }
 
@@ -137,8 +137,8 @@ namespace gum {
   OperatorRegister4MultiDim< GUM_SCALAR >::~OperatorRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter =
-            __set.beginSafe();
-         iter != __set.endSafe();
+            set__.beginSafe();
+         iter != set__.endSafe();
          ++iter)
       delete iter.val();
   }

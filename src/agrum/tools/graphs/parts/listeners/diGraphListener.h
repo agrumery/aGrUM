@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base classes for oriented graph listeners
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_DIGRAPH_LISTENER_H
 #define GUM_DIGRAPH_LISTENER_H
@@ -96,7 +96,7 @@ namespace gum {
 
     protected:
     /// the graph to listen to
-    DiGraph* _graph;
+    DiGraph* graph_;
 
     private:
     /// copy constructor (for the moment, this operation is forbidden)

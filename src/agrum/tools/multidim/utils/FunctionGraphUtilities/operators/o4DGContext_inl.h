@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to manipulate o4DGContext in Function Graph Operations
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/o4DGContext.h>
@@ -34,34 +34,34 @@ namespace gum {
 
   // Set DG1 diagram current explored Node
   INLINE void O4DGContext::setDG1Node(const NodeId& exploredNode) {
-    __DG1ExploredNode = exploredNode;
+    DG1ExploredNode__ = exploredNode;
   }
 
   // Set DG2 diagram current explored Node
   INLINE void O4DGContext::setDG2Node(const NodeId& exploredNode) {
-    __DG2ExploredNode = exploredNode;
+    DG2ExploredNode__ = exploredNode;
   }
 
   // Changes given variable modality
   INLINE void O4DGContext::chgVarModality(Idx varIndex, Idx newModality) {
-    __varInstantiation[varIndex] = newModality;
+    varInstantiation__[varIndex] = newModality;
   }
 
   // Changes given variable modality
   INLINE Idx O4DGContext::varModality(Idx varIndex) {
-    return __varInstantiation[varIndex];
+    return varInstantiation__[varIndex];
   }
 
   // Returns o4DGContext key
   INLINE const double& O4DGContext::key(short int* instNeeded) {
-    __key = __DG1ExploredNode * __logPrime[__offset1]
-            + __DG2ExploredNode * __logPrime[__offset2];
+    key__ = DG1ExploredNode__ * logPrime__[offset1__]
+            + DG2ExploredNode__ * logPrime__[offset2__];
 
-    for (Idx varPos = 0, offset = __offsetv; varPos < __nbVar; varPos++, offset--)
+    for (Idx varPos = 0, offset = offsetv__; varPos < nbVar__; varPos++, offset--)
       if (instNeeded[varPos])
-        __key += __varInstantiation[varPos] * __logPrime[offset];
+        key__ += varInstantiation__[varPos] * logPrime__[offset];
 
-    return __key;
+    return key__;
   }
 
   INLINE void* O4DGContext::operator new(size_t s) {

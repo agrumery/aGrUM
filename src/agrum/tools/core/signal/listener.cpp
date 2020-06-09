@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class of listener.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -37,7 +37,7 @@ namespace gum {
   Listener::Listener(const Listener& l) {
     GUM_CONS_CPY(Listener);
 
-    for (const auto el: __senders) {
+    for (const auto el: senders__) {
       el->duplicateTarget(&l, this);
     };
   }
@@ -45,11 +45,11 @@ namespace gum {
   Listener::~Listener() {
     GUM_DESTRUCTOR(Listener);
 
-    for (const auto el: __senders) {
+    for (const auto el: senders__) {
       el->detachFromTarget(this);
     }
 
-    __senders.clear();
+    senders__.clear();
   }
 
 }   // namespace gum

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * The Chi2 class allows to easily compute critical values for the Chi2
  * distribution.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -36,9 +36,9 @@ namespace gum {
   // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void
      Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
-    __conditioning_size = 1;
+    conditioning_size__ = 1;
     for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
-      __conditioning_size *= __modalities[db_conditioning_ids[i]];
+      conditioning_size__ *= modalities__[db_conditioning_ids[i]];
     }
   }
 
@@ -49,8 +49,8 @@ namespace gum {
 
   // returns the number of degrees of freedom
   INLINE Size Chi2::degreesOfFreedom(Idx var1, Idx var2) {
-    return (__conditioning_size * (__modalities[var1] - 1)
-            * (__modalities[var2] - 1));
+    return (conditioning_size__ * (modalities__[var1] - 1)
+            * (modalities__[var2] - 1));
   }
 
   // computes the critical value according to the number of degrees of freedom
@@ -64,12 +64,12 @@ namespace gum {
 
     // try to see if the threshold is not already in cache
     try {
-      return __critical_values[DF];
+      return critical_values__[DF];
     } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      double value = __criticalValue(__confidence_proba, DF);
-      __critical_values.insert(DF, value);
+      double value = criticalValue__(confidence_proba__, DF);
+      critical_values__.insert(DF, value);
       return value;
     }
   }
@@ -77,12 +77,12 @@ namespace gum {
   // modifies the confidence proba
   INLINE void Chi2::setConfidenceProba(double new_proba) {
     // if we did not change the confidence proba, do nothing
-    if (__confidence_proba == new_proba) return;
+    if (confidence_proba__ == new_proba) return;
 
-    __confidence_proba = new_proba;
+    confidence_proba__ = new_proba;
 
     // remove the currently stored critical values
-    __critical_values.clear();
+    critical_values__.clear();
   }
 
 } /* namespace gum */

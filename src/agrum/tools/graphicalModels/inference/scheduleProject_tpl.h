@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a Projection operator class used for scheduling inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -43,20 +43,20 @@ namespace gum {
         const Set< const DiscreteVariable* >&)) :
       ScheduleOperation< GUM_SCALAR >(
          ScheduleOperation< GUM_SCALAR >::Type::PROJECT_MULTIDIM),
-      __table(table), __del_vars(del_vars), __args(0), __results(0),
-      __project(project) {
+      table__(table), del_vars__(del_vars), args__(0), results__(0),
+      project__(project) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleProject);
 
     // compute the variables that shall belong to the result of the projection
-    Sequence< const DiscreteVariable* > vars = __table.variablesSequence();
+    Sequence< const DiscreteVariable* > vars = table__.variablesSequence();
 
     for (const auto var: del_vars)
       vars.erase(var);
 
     // create the scheduleMultiDim that should result from the combination of
     // table1 and table2
-    __result = new ScheduleMultiDim< GUM_SCALAR >(vars);
+    result__ = new ScheduleMultiDim< GUM_SCALAR >(vars);
   }
 
   /// copy constructor
@@ -64,9 +64,9 @@ namespace gum {
   ScheduleProject< GUM_SCALAR >::ScheduleProject(
      const ScheduleProject< GUM_SCALAR >& f) :
       ScheduleOperation< GUM_SCALAR >(f),
-      __table(f.__table), __del_vars(f.__del_vars),
-      __result(new ScheduleMultiDim< GUM_SCALAR >(*(f.__result))), __args(0),
-      __results(0), __project(f.__project) {
+      table__(f.table__), del_vars__(f.del_vars__),
+      result__(new ScheduleMultiDim< GUM_SCALAR >(*(f.result__))), args__(0),
+      results__(0), project__(f.project__) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleProject);
   }
@@ -83,11 +83,11 @@ namespace gum {
   ScheduleProject< GUM_SCALAR >::~ScheduleProject() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleProject);
-    delete __result;
+    delete result__;
 
-    if (__args) delete __args;
+    if (args__) delete args__;
 
-    if (__results) delete __results;
+    if (results__) delete results__;
   }
 
   /// copy operator
@@ -97,20 +97,20 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      __table = from.__table;
-      __del_vars = from.__del_vars;
-      *__result = *(from.__result);
-      __project = from.__project;
+      table__ = from.table__;
+      del_vars__ = from.del_vars__;
+      *result__ = *(from.result__);
+      project__ = from.project__;
 
-      // update __args and __results if they were already created
-      if (__args) {
-        __args->clear();
-        __args->insert(&__table);
+      // update args__ and results__ if they were already created
+      if (args__) {
+        args__->clear();
+        args__->insert(&table__);
       }
 
-      if (__results) {
-        __results->clear();
-        __results->insert(__result);
+      if (results__) {
+        results__->clear();
+        results__->insert(result__);
       }
     }
 
@@ -125,8 +125,8 @@ namespace gum {
 
     const ScheduleProject< GUM_SCALAR >& real_op =
        static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
-    return ((__table == real_op.__table) && (__del_vars == real_op.__del_vars)
-            && (__project == real_op.__project));
+    return ((table__ == real_op.table__) && (del_vars__ == real_op.del_vars__)
+            && (project__ == real_op.project__));
   }
 
   /// operator !=
@@ -137,17 +137,17 @@ namespace gum {
 
     const ScheduleProject< GUM_SCALAR >& real_op =
        static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
-    return ((__table != real_op.__table) || (__del_vars != real_op.__del_vars)
-            || (__project != real_op.__project));
+    return ((table__ != real_op.table__) || (del_vars__ != real_op.del_vars__)
+            || (project__ != real_op.project__));
   }
 
   /// executes the operation
   template < typename GUM_SCALAR >
   void ScheduleProject< GUM_SCALAR >::execute() {
-    if (__result->isAbstract()) {
-      const MultiDimImplementation< GUM_SCALAR >& t = __table.multiDim();
-      MultiDimImplementation< GUM_SCALAR >*       res = __project(t, __del_vars);
-      __result->setMultiDim(*res);
+    if (result__->isAbstract()) {
+      const MultiDimImplementation< GUM_SCALAR >& t = table__.multiDim();
+      MultiDimImplementation< GUM_SCALAR >*       res = project__(t, del_vars__);
+      result__->setMultiDim(*res);
     }
   }
 
@@ -155,17 +155,17 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template < typename GUM_SCALAR >
   INLINE float ScheduleProject< GUM_SCALAR >::nbOperations() const {
-    return float(__table.domainSize());
+    return float(table__.domainSize());
   }
 
   /// returns the memory consumption used during the operation
   template < typename GUM_SCALAR >
   std::pair< long, long > ScheduleProject< GUM_SCALAR >::memoryUsage() const {
     long                                       size = 1;
-    const Sequence< const DiscreteVariable* >& seq = __table.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq = table__.variablesSequence();
 
     for (const auto var: seq)
-      if (!__del_vars.contains(var)) {
+      if (!del_vars__.contains(var)) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize() < size) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
@@ -180,38 +180,38 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const ScheduleMultiDim< GUM_SCALAR >&
                ScheduleProject< GUM_SCALAR >::result() const {
-    return *__result;
+    return *result__;
   }
 
   /// returns the set of multidims passed in argument to the operation
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleProject< GUM_SCALAR >::multiDimArgs() const {
-    if (!__args) {
-      __args = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      __args->insert(&__table);
+    if (!args__) {
+      args__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+      args__->insert(&table__);
     }
 
-    return *__args;
+    return *args__;
   }
 
   /// returns the set of multidims that should be the result of the operation
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleProject< GUM_SCALAR >::multiDimResults() const {
-    if (!__results) {
-      __results = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      __results->insert(__result);
+    if (!results__) {
+      results__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+      results__->insert(result__);
     }
 
-    return *__results;
+    return *results__;
   }
 
   /// displays the content of the operation
   template < typename GUM_SCALAR >
   std::string ScheduleProject< GUM_SCALAR >::toString() const {
-    return __result->toString() + " = project ( " + __table.toString() + " , "
-           + __del_vars.toString() + " )";
+    return result__->toString() + " = project ( " + table__.toString() + " , "
+           + del_vars__.toString() + " )";
   }
 
 } /* namespace gum */

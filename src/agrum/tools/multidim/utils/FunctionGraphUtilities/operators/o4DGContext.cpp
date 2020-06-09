@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to manipulate o4DGContext in Function Graph Operations
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/o4DGContext.h>
@@ -36,11 +36,11 @@ namespace gum {
   // see e.g.
   // http://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_500_prime_numbers
   // if more is needed...
-  // Don't forget to change __nbLogPrime to match number of log2 of prime
+  // Don't forget to change nbLogPrime__ to match number of log2 of prime
   // numbers  in that table.
-  const Idx O4DGContext::__nbLogPrime = 140;
+  const Idx O4DGContext::nbLogPrime__ = 140;
 
-  const double O4DGContext::__logPrime[] = {
+  const double O4DGContext::logPrime__[] = {
      log2(2),   log2(3),   log2(5),   log2(7),   log2(11),  log2(13),  log2(17),
      log2(19),  log2(23),  log2(29),  log2(31),  log2(37),  log2(41),  log2(43),
      log2(47),  log2(53),  log2(59),  log2(61),  log2(67),  log2(71),  log2(73),
@@ -62,16 +62,16 @@ namespace gum {
      log2(709), log2(719), log2(727), log2(733), log2(739), log2(743), log2(751),
      log2(757), log2(761), log2(769), log2(773), log2(787), log2(797), log2(809)};
 
-  const Idx O4DGContext::__offsetv = O4DGContext::__nbLogPrime - 3;
-  const Idx O4DGContext::__offset1 = O4DGContext::__nbLogPrime - 1;
-  const Idx O4DGContext::__offset2 = O4DGContext::__nbLogPrime - 2;
+  const Idx O4DGContext::offsetv__ = O4DGContext::nbLogPrime__ - 3;
+  const Idx O4DGContext::offset1__ = O4DGContext::nbLogPrime__ - 1;
+  const Idx O4DGContext::offset2__ = O4DGContext::nbLogPrime__ - 2;
 
   // Default constructor.
   O4DGContext::O4DGContext(Idx* varInst, Idx nbVar) :
-      __DG1ExploredNode(0), __DG2ExploredNode(0), __key(0) {
+      DG1ExploredNode__(0), DG2ExploredNode__(0), key__(0) {
     GUM_CONSTRUCTOR(O4DGContext);
-    __varInstantiation = varInst;
-    __nbVar = nbVar;
+    varInstantiation__ = varInst;
+    nbVar__ = nbVar;
   }
 
   // Default Destructor.

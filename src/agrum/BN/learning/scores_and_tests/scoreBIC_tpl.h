@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing BIC scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,7 +46,7 @@ namespace gum {
                                                          nodeId2columns,
        const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
@@ -60,7 +60,7 @@ namespace gum {
                                                          nodeId2columns,
        const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
@@ -71,7 +71,7 @@ namespace gum {
        const ScoreBIC< ALLOC >&                          from,
        const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        __internal_apriori(from.__internal_apriori, alloc) {
+        internal_apriori__(from.internal_apriori__, alloc) {
       GUM_CONS_CPY(ScoreBIC);
     }
 
@@ -88,7 +88,7 @@ namespace gum {
        ScoreBIC< ALLOC >&&                               from,
        const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        __internal_apriori(std::move(from.__internal_apriori), alloc) {
+        internal_apriori__(std::move(from.internal_apriori__), alloc) {
       GUM_CONS_MOV(ScoreBIC);
     }
 
@@ -136,7 +136,7 @@ namespace gum {
        ScoreBIC< ALLOC >::operator=(const ScoreBIC< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        __internal_apriori = from.__internal_apriori;
+        internal_apriori__ = from.internal_apriori__;
       }
       return *this;
     }
@@ -147,7 +147,7 @@ namespace gum {
     ScoreBIC< ALLOC >& ScoreBIC< ALLOC >::operator=(ScoreBIC< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        __internal_apriori = std::move(from.__internal_apriori);
+        internal_apriori__ = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -184,26 +184,26 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string ScoreBIC< ALLOC >::isAprioriCompatible() const {
-      return isAprioriCompatible(*(this->_apriori));
+      return isAprioriCompatible(*(this->apriori_));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreBIC< ALLOC >::internalApriori() const {
-      return __internal_apriori;
+      return internal_apriori__;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreBIC< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
+    double ScoreBIC< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
-      const bool informative_external_apriori = this->_apriori->isInformative();
+         this->counter_.counts(idset, true));
+      const bool informative_external_apriori = this->apriori_->isInformative();
       if (informative_external_apriori)
-        this->_apriori->addAllApriori(idset, N_ijk);
+        this->apriori_->addAllApriori(idset, N_ijk);
       const std::size_t all_size = N_ijk.size();
 
       // here, we distinguish idsets with conditioning nodes from those
@@ -211,7 +211,7 @@ namespace gum {
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
-           this->_marginalize(idset[0], N_ijk));
+           this->marginalize_(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
 
         // initialize the score: this should be the penalty of the BIC score,
@@ -240,7 +240,7 @@ namespace gum {
         score -= penalty * std::log(N) * 0.5;
 
         // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
+        score *= this->one_log2_;
 
         return score;
       } else {
@@ -268,7 +268,7 @@ namespace gum {
         score -= penalty * std::log(N) * 0.5;
 
         // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
+        score *= this->one_log2_;
 
         return score;
       }
@@ -280,9 +280,9 @@ namespace gum {
     double ScoreBIC< ALLOC >::N(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
-      if (this->_apriori->isInformative())
-        this->_apriori->addAllApriori(idset, N_ijk);
+         this->counter_.counts(idset, true));
+      if (this->apriori_->isInformative())
+        this->apriori_->addAllApriori(idset, N_ijk);
 
       double N = 0;
       for (const auto n_ijk: N_ijk) {

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint indicating that some arcs shall never be
  * removed or reversed
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H
@@ -195,7 +195,7 @@ namespace gum {
 
       protected:
       /// the MandatoryArcs on which we perform checks
-      ArcSet _MandatoryArcs__mandatory_arcs;
+      ArcSet MandatoryArcs__mandatory_arcs_;
     };
 
   } /* namespace learning */

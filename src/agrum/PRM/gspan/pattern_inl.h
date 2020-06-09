@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of the Pattern class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -32,7 +32,7 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern() : DiGraph(), __last(0) { GUM_CONSTRUCTOR(Pattern); }
+      Pattern::Pattern() : DiGraph(), last__(0) { GUM_CONSTRUCTOR(Pattern); }
 
       INLINE
       Pattern::~Pattern() { GUM_DESTRUCTOR(Pattern); }
@@ -41,15 +41,15 @@ namespace gum {
       NodeId Pattern::addNodeWithLabel(LabelData& l) {
         NodeId n = NodeId(size() + 1);
         DiGraph::addNodeWithId(n);
-        __node_map.insert(n, &l);
-        __last = &l;
+        node_map__.insert(n, &l);
+        last__ = &l;
         return n;
       }
 
       INLINE
       LabelData& Pattern::label(NodeId node) {
         try {
-          return *(__node_map[node]);
+          return *(node_map__[node]);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "node not found in this Pattern");
         }
@@ -58,7 +58,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(NodeId node) const {
         try {
-          return *(__node_map[node]);
+          return *(node_map__[node]);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "node not found in this Pattern");
         }
@@ -66,14 +66,14 @@ namespace gum {
 
       INLINE
       LabelData& Pattern::lastAdded() {
-        if (__last) return *__last;
+        if (last__) return *last__;
 
         GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
       }
 
       INLINE
       const LabelData& Pattern::lastAdded() const {
-        if (__last) return *__last;
+        if (last__) return *last__;
 
         GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
       }
@@ -81,7 +81,7 @@ namespace gum {
       INLINE
       LabelData& Pattern::label(NodeId i, NodeId j) {
         try {
-          return *(__arc_map[Arc(i, j)].first);
+          return *(arc_map__[Arc(i, j)].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern");
         }
@@ -90,7 +90,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(NodeId i, NodeId j) const {
         try {
-          return *(__arc_map[Arc(i, j)].first);
+          return *(arc_map__[Arc(i, j)].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern");
         }
@@ -99,7 +99,7 @@ namespace gum {
       INLINE
       LabelData& Pattern::label(const Arc& arc) {
         try {
-          return *(__arc_map[arc].first);
+          return *(arc_map__[arc].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern");
         }
@@ -108,7 +108,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(const Arc& arc) const {
         try {
-          return *(__arc_map[arc].first);
+          return *(arc_map__[arc].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern");
         }
@@ -121,12 +121,12 @@ namespace gum {
         }
 
         EdgeCode* edge =
-           new EdgeCode(i, j, __node_map[i]->id, l.id, __node_map[j]->id);
+           new EdgeCode(i, j, node_map__[i]->id, l.id, node_map__[j]->id);
 
         if ((code().codes.size() == 0)
             || (DFSCode::validNeighbors(code().codes.back(), edge))) {
           DiGraph::addArc(i, j);
-          __arc_map.insert(Arc(i, j), std::make_pair(&l, edge));
+          arc_map__.insert(Arc(i, j), std::make_pair(&l, edge));
           code().codes.push_back(edge);
         } else {
           delete edge;
@@ -170,51 +170,51 @@ namespace gum {
       INLINE const ArcSet& Pattern::arcs() const { return DiGraph::arcs(); }
 
       INLINE
-      DFSCode& Pattern::code() { return __code; }
+      DFSCode& Pattern::code() { return code__; }
 
       INLINE
-      const DFSCode& Pattern::code() const { return __code; }
+      const DFSCode& Pattern::code() const { return code__; }
 
       INLINE
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
         try {
-          return *(__arc_map[Arc(tail, head)].second);
+          return *(arc_map__[Arc(tail, head)].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
         try {
-          return *(__arc_map[arc].second);
+          return *(arc_map__[arc].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
         try {
-          return *(__arc_map[Arc(tail, head)].second);
+          return *(arc_map__[Arc(tail, head)].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
         try {
-          return *(__arc_map[arc].second);
+          return *(arc_map__[arc].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       void Pattern::pop_back() {
-        EdgeCode* edge = __code.codes.back();
-        __code.codes.pop_back();
+        EdgeCode* edge = code__.codes.back();
+        code__.codes.pop_back();
 
         if (edge->isForward()) {
-          __node_map.erase(edge->j);
-          __arc_map.erase(Arc(edge->i, edge->j));
+          node_map__.erase(edge->j);
+          arc_map__.erase(Arc(edge->i, edge->j));
           DiGraph::eraseArc(Arc(edge->i, edge->j));
           DiGraph::eraseNode(edge->j);
         } else {
-          __arc_map.erase(Arc(edge->i, edge->j));
+          arc_map__.erase(Arc(edge->i, edge->j));
           DiGraph::eraseArc(Arc(edge->i, edge->j));
         }
 
@@ -225,7 +225,7 @@ namespace gum {
       void Pattern::remove(NodeId node) {
         if (DiGraph::parents(node).empty() && DiGraph::children(node).empty()) {
           DiGraph::eraseNode(node);
-          __node_map.erase(node);
+          node_map__.erase(node);
         } else {
           GUM_ERROR(OperationNotAllowed, "the given node has neighbors");
         }

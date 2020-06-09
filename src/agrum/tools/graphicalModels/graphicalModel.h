@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing probabilistic DAG model
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_GRAPHICALMODEL_H
@@ -145,11 +145,11 @@ namespace gum {
     private:
     /// The properties of this Directed Graphical Model.
     /// Initialized using a lazy instantiation.
-    mutable HashTable< std::string, std::string >* __propertiesMap;
+    mutable HashTable< std::string, std::string >* propertiesMap__;
 
     /// Return the properties of this Directed Graphical Model and initialize
     /// the hash table is necessary.
-    HashTable< std::string, std::string >& __properties() const;
+    HashTable< std::string, std::string >& properties__() const;
   };
 }   // namespace gum
 

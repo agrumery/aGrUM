@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ namespace gum {
    *
    * \ingroup graph_group
    *
-   * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
    *
    * @par Usage example:
    * @code
@@ -256,33 +256,33 @@ namespace gum {
     /// a (virtualized) function to remove a given set of arcs
     /** @warning this function uses eraseArc, which is a virtual function. Hence
      * the behaviour of this function is that of a virtual function */
-    void _eraseSetOfArcs(const ArcSet& set);
+    void eraseSetOfArcs_(const ArcSet& set);
 
-    /// similar to @ref _eraseSetOfArcs except that it is unvirtualized
+    /// similar to @ref eraseSetOfArcs_ except that it is unvirtualized
     /** @warning this function uses ArcGraphPart::eraseArc, hence, as compared
-     * with _eraseSetOfArcs, it removes the arcs without calling a virtual
+     * with eraseSetOfArcs_, it removes the arcs without calling a virtual
      * eraseArc */
-    void _unvirtualizedEraseSetOfArcs(const ArcSet& set);
+    void unvirtualizedEraseSetOfArcs_(const ArcSet& set);
 
     private:
     /// the set of all the arcs contained within the ArcGraphPart
-    Set< Arc > __arcs;
+    Set< Arc > arcs__;
 
     /// for each arc, the sets of its parents
-    mutable NodeProperty< NodeSet* > __parents;
+    mutable NodeProperty< NodeSet* > parents__;
 
     /// for each arc, the set of its children
-    mutable NodeProperty< NodeSet* > __children;
+    mutable NodeProperty< NodeSet* > children__;
 
     /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
-     * this function adds an empty set entry to __parents[id]
-     * @param id the node whose __parents[id] is checked */
-    void __checkParents(const NodeId id) const;
+     * this function adds an empty set entry to parents__[id]
+     * @param id the node whose parents__[id] is checked */
+    void checkParents__(const NodeId id) const;
 
     /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
-     * this function adds an empty set entry to __children[id]
-     * @param id the node whose __children[id] is checked */
-    void __checkChildren(const NodeId id) const;
+     * this function adds an empty set entry to children__[id]
+     * @param id the node whose children__[id] is checked */
+    void checkChildren__(const NodeId id) const;
   };
 
   /// for friendly displaying the content of arc set

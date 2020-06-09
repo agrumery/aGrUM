@@ -116,7 +116,7 @@ namespace CxxTest {
       delete ( __clock );
       newLine();
 #ifdef GUM_DEBUG_MODE
-      gum::__debug__::__atexit();
+      gum::__debug__::atexit__();
 #endif // GUM_DEBUG_MODE
 
       ( *_o ) << endl

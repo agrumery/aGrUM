@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,26 +27,26 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel() : __mutableMoralGraph(nullptr) {
+  DAGmodel::DAGmodel() : mutableMoralGraph__(nullptr) {
     GUM_CONSTRUCTOR(DAGmodel);
   }
 
   DAGmodel::DAGmodel(const DAGmodel& from) :
-      _dag(from._dag), __mutableMoralGraph(nullptr) {
+      dag_(from.dag_), mutableMoralGraph__(nullptr) {
     GUM_CONS_CPY(DAGmodel);
   }
 
   DAGmodel::~DAGmodel() {
     GUM_DESTRUCTOR(DAGmodel);
-    if (__mutableMoralGraph) { delete __mutableMoralGraph; }
+    if (mutableMoralGraph__) { delete mutableMoralGraph__; }
   }
 
-  void DAGmodel::__moralGraph() const {
-    __mutableMoralGraph->populateNodes(dag());
+  void DAGmodel::moralGraph__() const {
+    mutableMoralGraph__->populateNodes(dag());
     // transform the arcs into edges
 
     for (const auto& arc: arcs())
-      __mutableMoralGraph->addEdge(arc.first(), arc.second());
+      mutableMoralGraph__->addEdge(arc.first(), arc.second());
 
     //}
 
@@ -59,7 +59,7 @@ namespace gum {
 
         for (++it2; it2 != par.end(); ++it2) {
           // will automatically check if this edge already exists
-          __mutableMoralGraph->addEdge(*it1, *it2);
+          mutableMoralGraph__->addEdge(*it1, *it2);
         }
       }
     }
@@ -69,11 +69,11 @@ namespace gum {
     if (this != &source) {
       GraphicalModel::operator=(source);
 
-      if (__mutableMoralGraph) {
-        delete __mutableMoralGraph;
-        __mutableMoralGraph = nullptr;
+      if (mutableMoralGraph__) {
+        delete mutableMoralGraph__;
+        mutableMoralGraph__ = nullptr;
       }
-      _dag = source._dag;
+      dag_ = source.dag_;
     }
 
     return *this;
@@ -81,18 +81,18 @@ namespace gum {
 
   const UndiGraph& DAGmodel::moralGraph(bool clear) const {
     if (clear
-        || (__mutableMoralGraph == nullptr)) {   // we have to call _moralGraph
-      if (__mutableMoralGraph == nullptr) {
-        __mutableMoralGraph = new UndiGraph();
+        || (mutableMoralGraph__ == nullptr)) {   // we have to call moralGraph_
+      if (mutableMoralGraph__ == nullptr) {
+        mutableMoralGraph__ = new UndiGraph();
       } else {
         // clear is True ,__mutableMoralGraph exists
-        __mutableMoralGraph->clear();
+        mutableMoralGraph__->clear();
       }
 
-      __moralGraph();
+      moralGraph__();
     }
 
-    return *__mutableMoralGraph;
+    return *mutableMoralGraph__;
   }
 
   const Sequence< NodeId >& DAGmodel::topologicalOrder(bool clear) const {

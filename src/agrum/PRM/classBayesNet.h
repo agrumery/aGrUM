@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of ClassBayesNet<GUM_SCALAR>.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_CLASS_BAYESNET_H
 #define GUM_CLASS_BAYESNET_H
@@ -131,24 +131,24 @@ namespace gum {
       private:
       /// Mapping between DiscreteVariable and their NodeId
       HashTable< const DiscreteVariable*, const PRMClassElement< GUM_SCALAR >* >
-         __varNodeMap;
+         varNodeMap__;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement< GUM_SCALAR >& __get(NodeId id) const;
+      const PRMClassElement< GUM_SCALAR >& get__(NodeId id) const;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement< GUM_SCALAR >& __get(const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& get__(const std::string& name) const;
 
       /// The PRMClassElementContainer decorated by this.
-      const PRMClass< GUM_SCALAR >* __class;
+      const PRMClass< GUM_SCALAR >* class__;
 
-      mutable NodeProperty< Size > __modalities;
+      mutable NodeProperty< Size > modalities__;
 
-      void __init(const PRMClass< GUM_SCALAR >& c);
+      void init__(const PRMClass< GUM_SCALAR >& c);
     };
 
 

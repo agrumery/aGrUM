@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief debugging functions
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/agrum.h>
@@ -51,80 +51,80 @@ namespace gum {
     static std::mutex debug_mutex;
 
     // this static hashtable only on debug mode.
-    static DEBUG_MAP& __sizeof() {
+    static DEBUG_MAP& sizeof__() {
       // This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* sizeOf = new DEBUG_MAP();
       return *sizeOf;
     }
 
     // this static hashtable only on debug mode.
-    static DEBUG_MAP& __creation() {
+    static DEBUG_MAP& creation__() {
       // @warning This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* creation = new DEBUG_MAP();
       return *creation;
     }
 
-    static DEBUG_MAP& __deletion() {
+    static DEBUG_MAP& deletion__() {
       // @warning This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* deletion = new DEBUG_MAP();
       return *deletion;
     }
 
-    std::string __getFile(const char* f) {
+    std::string getFile__(const char* f) {
       std::string s(f);
       return s.erase(0, s.rfind("/") + 1);
     }
 
-    void __show_trace(const char* zeKey,
+    void show_trace__(const char* zeKey,
                       const char* zeFile,
                       long        zeLine,
                       const char* zeMsg,
                       const void* zePtr) {
 #    ifdef GUM_DEEP_TRACE_ON
-      std::cerr << std::setw(40) << std::setfill(' ') << __getFile(zeFile) << "#"
+      std::cerr << std::setw(40) << std::setfill(' ') << getFile__(zeFile) << "#"
                 << std::setfill('0') << std::setw(5) << std::dec << zeLine << " : "
                 << zeMsg << " <" << zeKey << "> [" << std::hex << zePtr << "]"
                 << std::dec << std::endl;
 #    endif   // TRACE_CONSTRUCTION_ON
     }
 
-    void __inc_creation(const char* zeKey,
+    void inc_creation__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize) {
       debug_mutex.lock();
-      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      __creation()[zeKey]++;
-      __sizeof()[zeKey] = zeSize;
+      show_trace__(zeKey, zeFile, zeLine, zeMsg, zePtr);
+      creation__()[zeKey]++;
+      sizeof__()[zeKey] = zeSize;
       debug_mutex.unlock();
     }
 
     // to handle static element of agrum library
-    void __dec_creation(const char* zeKey,
+    void dec_creation__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
       debug_mutex.lock();
-      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      __creation()[zeKey]--;
+      show_trace__(zeKey, zeFile, zeLine, zeMsg, zePtr);
+      creation__()[zeKey]--;
       debug_mutex.unlock();
     }
 
-    void __inc_deletion(const char* zeKey,
+    void inc_deletion__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
       debug_mutex.lock();
-      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      __deletion()[zeKey]++;
+      show_trace__(zeKey, zeFile, zeLine, zeMsg, zePtr);
+      deletion__()[zeKey]++;
       debug_mutex.unlock();
     }
 
-    void __dumpObjects() {
+    void dumpObjects__() {
       Size   nb_err = 0;
       double total_size = 0.0;
 
@@ -152,13 +152,13 @@ namespace gum {
       // list of created objects
       std::map< std::string, std::string > res;
 
-      for (DEBUG_MAP::const_iterator xx = __creation().begin();
-           xx != __creation().end();
+      for (DEBUG_MAP::const_iterator xx = creation__().begin();
+           xx != creation__().end();
            ++xx) {
         std::stringstream stream;
         int               zeCreatedObjs = xx->second;
         int               zeDeletedObjts = -1;
-        int               size = __sizeof()[xx->first];
+        int               size = sizeof__()[xx->first];
 
         stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
                << std::setw(widthColLibelle) << std::left << xx->first << " | "
@@ -168,7 +168,7 @@ namespace gum {
         if (size > 0) total_size += zeCreatedObjs * (size / 1024.0);
 
         try {
-          zeDeletedObjts = __deletion()[xx->first];
+          zeDeletedObjts = deletion__()[xx->first];
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber)
                  << zeDeletedObjts;
         } catch (NotFound&) {
@@ -189,18 +189,18 @@ namespace gum {
       }
 
       // list of deleted objects, but not created (?)
-      for (DEBUG_MAP::const_iterator xx = __deletion().begin();
-           xx != __deletion().end();
+      for (DEBUG_MAP::const_iterator xx = deletion__().begin();
+           xx != deletion__().end();
            ++xx) {
         try {
-          __creation()[xx->first];
+          creation__()[xx->first];
         } catch (NotFound&) {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
                  << std::setw(widthColLibelle) << std::left << xx->first + " "
                  << " | " << std::right << std::setw(widthColSizeOf)
-                 << __sizeof()[xx->first] << " o | "
+                 << sizeof__()[xx->first] << " o | "
                  << std::setw(widthColItemsNumber) << "?????"
                  << " | " << std::setw(widthColItemsNumber) << xx->second
                  << " |<--- failed";
@@ -252,13 +252,13 @@ namespace gum {
 
     // take into account static objects in agrum (no called destructor before
     // exit())
-    void __staticCorrections() {}
+    void staticCorrections__() {}
 
-    void __atexit() {
-      __staticCorrections();
-      __dumpObjects();
-      __creation().clear();
-      __deletion().clear();
+    void atexit__() {
+      staticCorrections__();
+      dumpObjects__();
+      creation__().clear();
+      deletion__().clear();
     }
 
   }   // namespace __debug__

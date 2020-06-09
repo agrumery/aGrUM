@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Methods of the MultiDimFunctionGraph InternalNode class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
@@ -40,18 +40,18 @@ namespace gum {
   // ============================================================================
   InternalNode::InternalNode() {
     GUM_CONSTRUCTOR(InternalNode);
-    __nodeVar = nullptr;
+    nodeVar__ = nullptr;
   }
 
   InternalNode::InternalNode(const DiscreteVariable* v) {
     GUM_CONSTRUCTOR(InternalNode);
-    __setNodeVar(v);
+    setNodeVar__(v);
   }
 
   InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons) {
     GUM_CONSTRUCTOR(InternalNode);
-    __nodeVar = v;
-    __nodeSons = sons;
+    nodeVar__ = v;
+    nodeSons__ = sons;
   }
 
   // ============================================================================
@@ -59,7 +59,7 @@ namespace gum {
   // ============================================================================
   InternalNode::~InternalNode() {
     GUM_DESTRUCTOR(InternalNode);
-    if (__nodeVar != nullptr) deallocateNodeSons(__nodeVar, __nodeSons);
+    if (nodeVar__ != nullptr) deallocateNodeSons(nodeVar__, nodeSons__);
   }
 
   // ============================================================================
@@ -84,33 +84,33 @@ namespace gum {
   // Node handlers
   // ============================================================================
   void InternalNode::setNode(const DiscreteVariable* v, NodeId* sons) {
-    if (__nodeVar != nullptr) deallocateNodeSons(__nodeVar, __nodeSons);
-    __nodeVar = v;
-    __nodeSons = sons;
+    if (nodeVar__ != nullptr) deallocateNodeSons(nodeVar__, nodeSons__);
+    nodeVar__ = v;
+    nodeSons__ = sons;
   }
 
   // ============================================================================
   // Var handlers
   // ============================================================================
   void InternalNode::setNodeVar(const DiscreteVariable* v) {
-    if (__nodeVar != nullptr) deallocateNodeSons(__nodeVar, __nodeSons);
-    __setNodeVar(v);
+    if (nodeVar__ != nullptr) deallocateNodeSons(nodeVar__, nodeSons__);
+    setNodeVar__(v);
   }
 
-  void InternalNode::__setNodeVar(const DiscreteVariable* v) {
-    __nodeVar = v;
-    __nodeSons = allocateNodeSons(v);
+  void InternalNode::setNodeVar__(const DiscreteVariable* v) {
+    nodeVar__ = v;
+    nodeSons__ = allocateNodeSons(v);
   }
 
   // ============================================================================
   // Parent handlers
   // ============================================================================
   void InternalNode::addParent(NodeId parent, Idx modality) {
-    __nodeParents.addLink(Parent(parent, modality));
+    nodeParents__.addLink(Parent(parent, modality));
   }
 
   void InternalNode::removeParent(NodeId parent, Idx modality) {
-    __nodeParents.searchAndRemoveLink(Parent(parent, modality));
+    nodeParents__.searchAndRemoveLink(Parent(parent, modality));
   }
 
 }   // namespace gum

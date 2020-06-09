@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief A filtered row generator that returns exactly the rows it gets in
  *input
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/database/DBRowGeneratorIdentity.h>
 
@@ -62,7 +62,7 @@ namespace gum {
        const DBRowGeneratorIdentity< ALLOC >&                          from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-        __input_row(from.__input_row) {
+        input_row__(from.input_row__) {
       GUM_CONS_CPY(DBRowGeneratorIdentity);
     }
 
@@ -80,7 +80,7 @@ namespace gum {
        DBRowGeneratorIdentity< ALLOC >&&                               from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-        __input_row(from.__input_row) {
+        input_row__(from.input_row__) {
       GUM_CONS_MOV(DBRowGeneratorIdentity);
     }
 
@@ -129,7 +129,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        const DBRowGeneratorIdentity< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      __input_row = from.__input_row;
+      input_row__ = from.input_row__;
       return *this;
     }
 
@@ -139,7 +139,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        DBRowGeneratorIdentity< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      __input_row = from.__input_row;
+      input_row__ = from.input_row__;
       return *this;
     }
 
@@ -149,15 +149,15 @@ namespace gum {
     INLINE const DBRow< DBTranslatedValue, ALLOC >&
                  DBRowGeneratorIdentity< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return *__input_row;
+      return *input_row__;
     }
 
 
     /// computes the rows it will provide in output
     template < template < typename > class ALLOC >
-    INLINE std::size_t DBRowGeneratorIdentity< ALLOC >::_computeRows(
+    INLINE std::size_t DBRowGeneratorIdentity< ALLOC >::computeRows_(
        const DBRow< DBTranslatedValue, ALLOC >& row) {
-      __input_row = &row;
+      input_row__ = &row;
       return std::size_t(1);
     }
 

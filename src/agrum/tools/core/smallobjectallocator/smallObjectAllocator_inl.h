@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inlines of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 // ============================================================================
@@ -48,9 +48,9 @@ namespace gum {
    */
   // ============================================================================
   INLINE SmallObjectAllocator::SmallObjectAllocator() :
-      __chunkSize(GUM_DEFAULT_CHUNK_SIZE),
-      __maxObjectSize(GUM_DEFAULT_MAX_OBJECT_SIZE) {
-    __pool.setKeyUniquenessPolicy(false);
+      chunkSize__(GUM_DEFAULT_CHUNK_SIZE),
+      maxObjectSize__(GUM_DEFAULT_MAX_OBJECT_SIZE) {
+    pool__.setKeyUniquenessPolicy(false);
     GUM_CONSTRUCTOR(SmallObjectAllocator);
     nbAllocation = 0;
     nbDeallocation = 0;
@@ -67,7 +67,7 @@ namespace gum {
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
     GUM_DESTRUCTOR(SmallObjectAllocator);
-    for (__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
+    for (Pool__::iterator pit = pool__.begin(); pit != pool__.end(); ++pit)
       delete pit.val();
   }
 
@@ -89,24 +89,24 @@ namespace gum {
     GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
-    if (objectSize > __maxObjectSize) return new unsigned char[objectSize];
+    if (objectSize > maxObjectSize__) return new unsigned char[objectSize];
 
     void* ret;
 #pragma omp critical(soa)
     {
       //
-      if (!__pool.exists(Size(objectSize))) {
+      if (!pool__.exists(Size(objectSize))) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb = __chunkSize / Size(objectSize);
+        std::size_t nb = chunkSize__ / Size(objectSize);
         if (nb > UCHAR_MAX) nb = UCHAR_MAX;
         unsigned char numBlocks = static_cast< unsigned char >(nb);
 
         FixedAllocator* newFa = new FixedAllocator(Size(objectSize), numBlocks);
-        __pool.set(Size(objectSize), newFa);
+        pool__.set(Size(objectSize), newFa);
       }
       nbAllocation++;
 
-      ret = __pool[Size(objectSize)]->allocate();
+      ret = pool__[Size(objectSize)]->allocate();
     }
     return ret;
   }
@@ -123,7 +123,7 @@ namespace gum {
     GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
-    if (objectSize > __maxObjectSize) {
+    if (objectSize > maxObjectSize__) {
       delete[](unsigned char*) pDeallocatedObject;
       return;
     }
@@ -131,7 +131,7 @@ namespace gum {
 #pragma omp critical(soa)
     {
       //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      __pool[Size(objectSize)]->deallocate(pDeallocatedObject);
+      pool__[Size(objectSize)]->deallocate(pDeallocatedObject);
       nbDeallocation++;
     }
   }

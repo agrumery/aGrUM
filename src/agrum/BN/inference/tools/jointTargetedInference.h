@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief This file contains the abstract inference class definition for
  * computing (incrementally) joint posteriors.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
@@ -243,27 +243,27 @@ namespace gum {
 
     protected:
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn);
+    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn);
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded(const NodeSet& set) = 0;
+    virtual void onJointTargetAdded_(const NodeSet& set) = 0;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased(const NodeSet& set) = 0;
+    virtual void onJointTargetErased_(const NodeSet& set) = 0;
 
     /// fired before a all the marginal and joint targets are removed
-    virtual void _onAllTargetsErased() = 0;
+    virtual void onAllTargetsErased_() = 0;
 
     ///  fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased() = 0;
+    virtual void onAllJointTargetsErased_() = 0;
 
 
     /// asks derived classes for the joint posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) = 0;
+    virtual const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& set) = 0;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -273,7 +273,7 @@ namespace gum {
      * @param declared_target the joint target declared by the user that
      * contains set */
     virtual const Potential< GUM_SCALAR >&
-       _jointPosterior(const NodeSet& wanted_target,
+       jointPosterior_(const NodeSet& wanted_target,
                        const NodeSet& declared_target) = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
@@ -281,15 +281,15 @@ namespace gum {
      * @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual Potential< GUM_SCALAR >*
-       _unnormalizedJointPosterior(const NodeSet& set) = 0;
+       unnormalizedJointPosterior_(const NodeSet& set) = 0;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) = 0;
+    virtual Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) = 0;
 
 
     private:
     /// the set of joint targets
-    Set< NodeSet > __joint_targets;
+    Set< NodeSet > joint_targets__;
   };
 
 

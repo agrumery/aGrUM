@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the States Checker class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -70,25 +70,25 @@ namespace gum {
     // ==========================================================================
     /// @{
 
-    bool checkState(const Instantiation& state) { return __checker->get(state); }
+    bool checkState(const Instantiation& state) { return checker__->get(state); }
 
     void addState(const Instantiation&);
 
-    Idx nbVisitedStates() { return __nbVisitedStates; }
+    Idx nbVisitedStates() { return nbVisitedStates__; }
 
     void reset(const Instantiation&);
 
     /// @}
 
     private:
-    void __insertState(const Instantiation&, NodeId, Idx);
+    void insertState__(const Instantiation&, NodeId, Idx);
 
-    Idx __nbVisitedStates;
+    Idx nbVisitedStates__;
 
-    MultiDimFunctionGraph< bool >* __checker;
-    NodeId                         __checkerTrueId, __checkerFalseId;
+    MultiDimFunctionGraph< bool >* checker__;
+    NodeId                         checkerTrueId__, checkerFalseId__;
 
-    Set< Instantiation* > __visitedStates;
+    Set< Instantiation* > visitedStates__;
   };
 } /* namespace gum */
 

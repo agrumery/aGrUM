@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The databases' cell translators for range variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_4_RANGE_VARIABLE_H
 #define GUM_LEARNING_DB_TRANSLATOR_4_RANGE_VARIABLE_H
@@ -379,20 +379,20 @@ namespace gum {
 
       private:
       // the RangeVariable assigned to the translator, if any
-      RangeVariable __variable;
+      RangeVariable variable__;
 
       // assign to each integer missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< std::string, bool > > >
-         __status_int_missing_symbols;
+         status_int_missing_symbols__;
 
       // the set of translations of the integer missing symbols found so far
-      Set< long, ALLOC< long > > __translated_int_missing_symbols;
+      Set< long, ALLOC< long > > translated_int_missing_symbols__;
 
       // a string containing a non int missing symbol
       // (useful for back translations)
-      std::string __nonint_missing_symbol;
+      std::string nonint_missing_symbol__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

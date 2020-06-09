@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@
  * # finally, the heuristic proposed by Kjaerulff(90) is used to compute the
  *   last nodes to be eliminated.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
@@ -220,23 +220,23 @@ namespace gum {
     private:
     /// for each node, the weight of the clique created by the node's
     /// elimination
-    NodeProperty< double > __log_weights;
+    NodeProperty< double > log_weights__;
 
     /// the simplicial set used for determining the best nodes to eliminate
-    SimplicialSet* __simplicial_set{nullptr};
+    SimplicialSet* simplicial_set__{nullptr};
 
-    /// the ratio used by __simplicial_set for its quasi-simplicial nodes
-    double __simplicial_ratio;
+    /// the ratio used by simplicial_set__ for its quasi-simplicial nodes
+    double simplicial_ratio__;
 
-    /// the threshold used by  __simplicial_set to determine small cliques
-    double __simplicial_threshold;
+    /// the threshold used by  simplicial_set__ to determine small cliques
+    double simplicial_threshold__;
 
     /// indicates whether we compute new fill-ins
-    bool __provide_fill_ins{false};
+    bool provide_fill_ins__{false};
 
 
     /// create a new simplicial set suited for the current graph
-    void __createSimplicialSet();
+    void createSimplicialSet__();
   };
 
 

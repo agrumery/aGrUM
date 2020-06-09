@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Headers of the InternalNode class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
@@ -102,7 +102,7 @@ namespace gum {
   class InternalNode {
     private:
     /// Variable associated to such node
-    const DiscreteVariable* __nodeVar;
+    const DiscreteVariable* nodeVar__;
 
     /**
      * @brief Table of sons of the node.
@@ -119,13 +119,13 @@ namespace gum {
      *
      * @endcode
      */
-    NodeId* __nodeSons;
+    NodeId* nodeSons__;
 
     /// The list of the node's parent
-    LinkedList< Parent > __nodeParents;
+    LinkedList< Parent > nodeParents__;
 
     /// @brief Set the node variable.
-    void __setNodeVar(const DiscreteVariable* v);
+    void setNodeVar__(const DiscreteVariable* v);
 
     public:
     // ============================================================================

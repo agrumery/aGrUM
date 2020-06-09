@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Implementation of a variable elimination algorithm
  * for inference in Bayesian Networks.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_VARIABLE_ELIMINATION_H
 #define GUM_VARIABLE_ELIMINATION_H
@@ -129,16 +129,16 @@ namespace gum {
 
     protected:
     /// fired when the stage is changed
-    void _onStateChanged() final{};
+    void onStateChanged_() final{};
 
     /// fired after a new evidence is inserted
-    void _onEvidenceAdded(const NodeId id, bool isHardEvidence) final;
+    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) final;
 
     /// fired before an evidence is removed
-    void _onEvidenceErased(const NodeId id, bool isHardEvidence) final;
+    void onEvidenceErased_(const NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
-    void _onAllEvidenceErased(bool contains_hard_evidence) final;
+    void onAllEvidenceErased_(bool contains_hard_evidence) final;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -147,64 +147,64 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) final;
+    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) final;
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    void _onMarginalTargetAdded(const NodeId id) final;
+    void onMarginalTargetAdded_(const NodeId id) final;
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    void _onMarginalTargetErased(const NodeId id) final;
+    void onMarginalTargetErased_(const NodeId id) final;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) final;
+    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    void _onJointTargetAdded(const NodeSet& set) final;
+    void onJointTargetAdded_(const NodeSet& set) final;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    void _onJointTargetErased(const NodeSet& set) final;
+    void onJointTargetErased_(const NodeSet& set) final;
 
     /// fired after all the nodes of the BN are added as single targets
-    void _onAllMarginalTargetsAdded() final;
+    void onAllMarginalTargetsAdded_() final;
 
     /// fired before a all the single targets are removed
-    void _onAllMarginalTargetsErased() final;
+    void onAllMarginalTargetsErased_() final;
 
     /// fired before a all the joint targets are removed
-    void _onAllJointTargetsErased() final;
+    void onAllJointTargetsErased_() final;
 
     /// fired before a all single and joint_targets are removed
-    void _onAllTargetsErased() final;
+    void onAllTargetsErased_() final;
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNStructure and
-     * _makeInference. */
-    void _updateOutdatedBNStructure() final;
+     * known and can be changed between updateOutdatedBNStructure_ and
+     * makeInference_. */
+    void updateOutdatedBNStructure_() final;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNPotentials and
-     * _makeInference. */
-    void _updateOutdatedBNPotentials() final;
+     * known and can be changed between updateOutdatedBNPotentials_ and
+     * makeInference_. */
+    void updateOutdatedBNPotentials_() final;
 
     /// called when the inference has to be performed effectively
-    /** Once the inference is done, _fillPosterior can be called. */
-    void _makeInference() final;
+    /** Once the inference is done, fillPosterior_ can be called. */
+    void makeInference_() final;
 
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
-    const Potential< GUM_SCALAR >& _posterior(NodeId id) final;
+    const Potential< GUM_SCALAR >& posterior_(NodeId id) final;
 
     /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) final;
+    const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& set) final;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -214,137 +214,137 @@ namespace gum {
      * @param declared_target the joint target declared by the user that contains
      * set */
     const Potential< GUM_SCALAR >&
-       _jointPosterior(const NodeSet& wanted_target,
+       jointPosterior_(const NodeSet& wanted_target,
                        const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
+    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeSet& set) final;
+    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(const NodeSet& set) final;
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* > __PotentialSet;
+    typedef Set< const Potential< GUM_SCALAR >* > PotentialSet__;
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-       __PotentialSetIterator;
+       PotentialSetIterator__;
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType __find_relevant_potential_type;
+    RelevantPotentialsFinderType find_relevant_potential_type__;
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void (VariableElimination< GUM_SCALAR >::*__findRelevantPotentials)(
+    void (VariableElimination< GUM_SCALAR >::*findRelevantPotentials__)(
        Set< const Potential< GUM_SCALAR >* >& pot_list,
        Set< const DiscreteVariable* >&        kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType __barren_nodes_type;
+    FindBarrenNodesType barren_nodes_type__;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (*__projection_op)(
+    Potential< GUM_SCALAR >* (*projection_op__)(
        const Potential< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&){VENewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (*__combination_op)(const Potential< GUM_SCALAR >&,
+    Potential< GUM_SCALAR >* (*combination_op__)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
        VENewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
-    Triangulation* __triangulation;
+    Triangulation* triangulation__;
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target, __graph will be
+     * instance if the BN is A->B->C and only B is a target, graph__ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
-    UndiGraph __graph;
+    UndiGraph graph__;
 
     /// the junction tree used to answer the last inference query
-    JunctionTree* __JT{nullptr};
+    JunctionTree* JT__{nullptr};
 
-    /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId > __node_to_clique;
+    /// for each node of graph__ (~ in the Bayes net), associate an ID in the JT
+    HashTable< NodeId, NodeId > node_to_clique__;
 
     /// for each BN node, indicate in which clique its CPT will be stored
-    HashTable< NodeId, NodeSet > __clique_potentials;
+    HashTable< NodeId, NodeSet > clique_potentials__;
 
     /// indicate a clique that contains all the nodes of the target
-    NodeId __targets2clique;
+    NodeId targets2clique__;
 
     /// the posterior computed during the last inference
     /** the posterior is owned by VariableElimination. */
-    Potential< GUM_SCALAR >* __target_posterior{nullptr};
+    Potential< GUM_SCALAR >* target_posterior__{nullptr};
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR __1_minus_epsilon{GUM_SCALAR(1.0 - 1e-6)};
+    const GUM_SCALAR one_minus_epsilon__{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// create a new junction tree as well as its related data structures
-    void __createNewJT(const NodeSet& targets);
+    void createNewJT__(const NodeSet& targets);
 
     /// sets the operator for performing the projections
-    void __setProjectionFunction(Potential< GUM_SCALAR >* (*proj)(
+    void setProjectionFunction__(Potential< GUM_SCALAR >* (*proj)(
        const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void __setCombinationFunction(Potential< GUM_SCALAR >* (*comb)(
+    void setCombinationFunction__(Potential< GUM_SCALAR >* (*comb)(
        const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    void findRelevantPotentialsWithdSeparation__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation2(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    void findRelevantPotentialsWithdSeparation2__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation3(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    void findRelevantPotentialsWithdSeparation3__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsGetAll(__PotentialSet&                 pot_list,
+    void findRelevantPotentialsGetAll__(PotentialSet__&                 pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsXX(__PotentialSet&                 pot_list,
+    void findRelevantPotentialsXX__(PotentialSet__&                 pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-    __PotentialSet
-       __removeBarrenVariables(__PotentialSet&                 pot_list,
+    PotentialSet__
+       removeBarrenVariables__(PotentialSet__&                 pot_list,
                                Set< const DiscreteVariable* >& del_vars);
 
     /// actually perform the collect phase
-    std::pair< __PotentialSet, __PotentialSet > __collectMessage(NodeId id,
+    std::pair< PotentialSet__, PotentialSet__ > collectMessage__(NodeId id,
                                                                  NodeId from);
 
     /// returns the CPT + evidence of a node projected w.r.t. hard evidence
-    std::pair< __PotentialSet, __PotentialSet > __NodePotentials(NodeId node);
+    std::pair< PotentialSet__, PotentialSet__ > NodePotentials__(NodeId node);
 
     /// creates the message sent by clique from_id to clique to_id
-    std::pair< __PotentialSet, __PotentialSet > __produceMessage(
+    std::pair< PotentialSet__, PotentialSet__ > produceMessage__(
        NodeId                                        from_id,
        NodeId                                        to_id,
-       std::pair< __PotentialSet, __PotentialSet >&& incoming_messages);
+       std::pair< PotentialSet__, PotentialSet__ >&& incoming_messages);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut(__PotentialSet                  pot_list,
+    PotentialSet__ marginalizeOut__(PotentialSet__                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
   };

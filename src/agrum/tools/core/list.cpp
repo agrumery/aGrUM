@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief outlined implementations for the chained lists
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/list.h>
@@ -37,7 +37,7 @@ namespace gum {
 #  define GCC_JOINSTR(x, y) GCC_STR(x##y)
 
 #  if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
-#    define GCC_DIAG_DO_PRAGMA(x) _Pragma(#    x)
+#    define GCC_DIAG_DO_PRAGMA(x) Pragma_(#    x)
 #    define GCC_DIAG_PRAGMA(x)    GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
 #    if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
 #      define GCC_DIAG_OFF(x) \
@@ -71,16 +71,16 @@ namespace gum {
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
-  static const ListConstIteratorSafe< Debug > __static_list_end_safe;
-  static const ListConstIterator< Debug >     __static_list_end;
+  static const ListConstIteratorSafe< Debug > static_list_end_safe__;
+  static const ListConstIterator< Debug >     static_list_end__;
 
-  static constexpr const void* __get_list_end_safe() {
-    return &__static_list_end_safe;
+  static constexpr const void* get_list_end_safe__() {
+    return &static_list_end_safe__;
   }
-  static constexpr const void* __get_list_end() { return &__static_list_end; }
+  static constexpr const void* get_list_end__() { return &static_list_end__; }
 
-  const void* const __list_end_safe = __get_list_end_safe();
-  const void* const __list_end = __get_list_end();
+  const void* const list_end_safe__ = get_list_end_safe__();
+  const void* const list_end__ = get_list_end__();
 
 } /* namespace gum */
 

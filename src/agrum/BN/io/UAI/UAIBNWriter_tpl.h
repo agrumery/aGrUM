@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -50,16 +50,16 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream& output,
+                                               const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __preambule(bn) << std::endl;
+    output << preambule__(bn) << std::endl;
 
     for (auto node: bn.nodes())
-      output << __cptBloc(bn, node) << std::endl;
+      output << cptBloc__(bn, node) << std::endl;
 
     output << std::endl;
 
@@ -79,7 +79,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void UAIBNWriter< GUM_SCALAR >::write(const std::string& filePath,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+                                               const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, bn);
@@ -91,7 +91,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIBNWriter< GUM_SCALAR >::__preambule(const IBayesNet< GUM_SCALAR >& bn) {
+         UAIBNWriter< GUM_SCALAR >::preambule__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -127,8 +127,8 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIBNWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
-                                        NodeId                         node) {
+         UAIBNWriter< GUM_SCALAR >::cptBloc__(const IBayesNet< GUM_SCALAR >& bn,
+                                          NodeId                         node) {
     std::stringstream str;
 
     const auto& p = bn.cpt(node);

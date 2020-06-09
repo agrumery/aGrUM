@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@
 
  * @endcode
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // ======================================================================================================
@@ -88,7 +88,7 @@ namespace gum {
    * @class FMDPDatReader
    * @brief Definition of templatized reader of FMDPDat files for Factored
    * Markov Decision Processes.
-   * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+   * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
    */
   template < typename GUM_SCALAR >
   class FMDPDatReader: public FMDPReader< GUM_SCALAR > {
@@ -140,18 +140,18 @@ namespace gum {
     /// @}
 
     protected:
-    FMDP< GUM_SCALAR >*        __fmdp;
-    FMDPFactory< GUM_SCALAR >* __factory;
-    MDPDAT::Scanner*           __scanner;
-    MDPDAT::Parser*            __parser;
+    FMDP< GUM_SCALAR >*        fmdp__;
+    FMDPFactory< GUM_SCALAR >* factory__;
+    MDPDAT::Scanner*           scanner__;
+    MDPDAT::Parser*            parser__;
 
-    std::string __streamName;
-    bool        __traceScanning;
-    bool        __parseDone;
+    std::string streamName__;
+    bool        traceScanning__;
+    bool        parseDone__;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool __ioerror;
+    bool ioerror__;
   };
 
 

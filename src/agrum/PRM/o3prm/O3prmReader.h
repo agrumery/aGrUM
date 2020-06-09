@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for the O3prmReader class.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  * @author Lionel TORTI
  */
 
@@ -107,8 +107,8 @@ namespace gum {
          */
         void addClassPath(const std::string& class_path);
 
-        gum::prm::PRM< GUM_SCALAR >*       prm() { return __prm; }
-        const gum::prm::PRM< GUM_SCALAR >* prm() const { return __prm; }
+        gum::prm::PRM< GUM_SCALAR >*       prm() { return prm__; }
+        const gum::prm::PRM< GUM_SCALAR >* prm() const { return prm__; }
 
         /// @{
         /// publishing Errors API
@@ -143,29 +143,29 @@ namespace gum {
         /// @}
 
         private:
-        PRM< GUM_SCALAR >*         __prm;
-        std::unique_ptr< O3PRM >   __o3_prm;
-        std::vector< std::string > __class_path;
-        Set< std::string >         __imported;
+        PRM< GUM_SCALAR >*         prm__;
+        std::unique_ptr< O3PRM >   o3_prm__;
+        std::vector< std::string > class_path__;
+        Set< std::string >         imported__;
 
         // Needed when file can't be parse (can not open it for exemple)
-        ErrorsContainer __errors;
+        ErrorsContainer errors__;
 
-        void __readStream(std::istream&      input,
+        void readStream__(std::istream&      input,
                           const std::string& file,
                           std::string        module = "");
 
-        void __parseImport(const O3Import& i, const std::string& module_path);
+        void parseImport__(const O3Import& i, const std::string& module_path);
 
-        void __parseStream(std::istream&      input,
+        void parseStream__(std::istream&      input,
                            const std::string& filename,
                            const std::string& module);
 
-        std::vector< const O3Import* > __copyImports();
+        std::vector< const O3Import* > copyImports__();
 
-        std::string __clean(std::string text) const;
-        std::string __print(const ParseError& err) const;
-        std::string __readStream(std::istream& input);
+        std::string clean__(std::string text) const;
+        std::string print__(const ParseError& err) const;
+        std::string readStream__(std::istream& input);
       };
 
     }   // namespace o3prm

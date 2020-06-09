@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 
 /***************************************************************************
- *   (C) 2007-2013 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)       *
+ *   (C) 2007-2013 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6) *
  *   info_at_agrum_dot_org                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

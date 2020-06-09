@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -32,41 +32,41 @@
 
 namespace gum {
 
-  void SetInst::__init(MultiDimAdressable* master) {
+  void SetInst::init__(MultiDimAdressable* master) {
     // for speed issues
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
-    __vars.resize(v.size());
-    __vals.reserve(v.size());
+    vars__.resize(v.size());
+    vals__.reserve(v.size());
     // fill the SetInst
 
     for (const auto var: v)
-      __add(*var);
+      add__(*var);
 
     // if ( master ) actAsSlave( master->getMasterRef() );
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable& d) : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable& d) : /*master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
-    __init(&d);
+    init__(&d);
   }
 
   SetInst::SetInst(const MultiDimAdressable& d) :
-      /*__master( 0 ),*/ __overflow(false) {
+      /*master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
-    __init(const_cast< MultiDimAdressable* >(&d));
+    init__(const_cast< MultiDimAdressable* >(&d));
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable* d) : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable* d) : /*master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
-    if (d) __init(d);
+    if (d) init__(d);
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
@@ -74,48 +74,48 @@ namespace gum {
    * in MultiDimAdressable and below */
 
   SetInst::SetInst(const MultiDimAdressable* const_d) :
-      /*__master( 0 ),*/ __overflow(false) {
+      /*master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
-    if (const_d) __init(const_cast< MultiDimAdressable* >(const_d));
+    if (const_d) init__(const_cast< MultiDimAdressable* >(const_d));
   }
 
   // copy constructor
 
   SetInst::SetInst(const SetInst& aI) :
-      /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
+      /* MultiDimInterface(), master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
-    __overflow = aI.__overflow;
+    vars__ = aI.vars__;
+    vals__ = aI.vals__;
+    overflow__ = aI.overflow__;
 
-    // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
+    // if ( aI.master__ && notifyMaster ) actAsSlave( *aI.master__ );
   }
 
   SetInst::SetInst(const Instantiation& aI) :
-      /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
+      /* MultiDimInterface(), master__( 0 ),*/ overflow__(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     const Sequence< const DiscreteVariable* >& v = aI.variablesSequence();
-    __vars.resize(v.size());
+    vars__.resize(v.size());
     //__vals.reserve( v.size() );
     // fill the SetInst
 
     for (const auto var: v) {
-      __add(*var);
-      __vals[__vars.pos(var)] = (Size(1) << (aI.val(*var)));
+      add__(*var);
+      vals__[vars__.pos(var)] = (Size(1) << (aI.val(*var)));
     }
   }
 
   // operator=
   SetInst& SetInst::operator=(const SetInst& aI) {
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
-    __overflow = aI.__overflow;
+    vars__ = aI.vars__;
+    vals__ = aI.vals__;
+    overflow__ = aI.overflow__;
 
     return *this;
   }
@@ -125,13 +125,13 @@ namespace gum {
     std::stringstream sstr;
     // check if the value of the SetInst is correct
 
-    if (__overflow) { sstr << "<invalid>"; }
+    if (overflow__) { sstr << "<invalid>"; }
 
     sstr << "<";
 
-    Sequence< const DiscreteVariable* >::iterator_safe iter = __vars.begin();
+    Sequence< const DiscreteVariable* >::iterator_safe iter = vars__.begin();
 
-    if (iter != __vars.end()) {
+    if (iter != vars__.end()) {
       std::stringstream sstr2;
       sstr2.str("");
       Size si = variable(iter.pos()).domainSize();
@@ -149,7 +149,7 @@ namespace gum {
       sstr << variable(iter.pos()).name() << ":" << sstr2.str();
       ++iter;
 
-      while (iter != __vars.end()) {
+      while (iter != vars__.end()) {
         std::stringstream sstr3;
         sstr3 << "";
         si = variable(iter.pos()).domainSize();

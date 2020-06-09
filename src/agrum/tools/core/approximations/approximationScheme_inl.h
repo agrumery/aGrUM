@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@
  *   - onStop(std::string message)
  * @see gum::ApproximationListener for dedicated listener.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -43,120 +43,120 @@ namespace gum {
   INLINE void ApproximationScheme::setEpsilon(double eps) {
     if (eps < 0.) { GUM_ERROR(OutOfLowerBound, "eps should be >=0"); }
 
-    _eps = eps;
-    _enabled_eps = true;
+    eps_ = eps;
+    enabled_eps_ = true;
   }
 
   // Get the value of epsilon
-  INLINE double ApproximationScheme::epsilon() const { return _eps; }
+  INLINE double ApproximationScheme::epsilon() const { return eps_; }
 
   // Disable stopping criterion on epsilon
-  INLINE void ApproximationScheme::disableEpsilon() { _enabled_eps = false; }
+  INLINE void ApproximationScheme::disableEpsilon() { enabled_eps_ = false; }
 
   // Enable stopping criterion on epsilon
-  INLINE void ApproximationScheme::enableEpsilon() { _enabled_eps = true; }
+  INLINE void ApproximationScheme::enableEpsilon() { enabled_eps_ = true; }
 
   // @return true if stopping criterion on epsilon is enabled, false
   // otherwise
   INLINE bool ApproximationScheme::isEnabledEpsilon() const {
-    return _enabled_eps;
+    return enabled_eps_;
   }
 
   // Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
   INLINE void ApproximationScheme::setMinEpsilonRate(double rate) {
     if (rate < 0) { GUM_ERROR(OutOfLowerBound, "rate should be >=0"); }
 
-    _min_rate_eps = rate;
-    _enabled_min_rate_eps = true;
+    min_rate_eps_ = rate;
+    enabled_min_rate_eps_ = true;
   }
 
   // Get the value of the minimal epsilon rate
   INLINE double ApproximationScheme::minEpsilonRate() const {
-    return _min_rate_eps;
+    return min_rate_eps_;
   }
 
   // Disable stopping criterion on epsilon rate
   INLINE void ApproximationScheme::disableMinEpsilonRate() {
-    _enabled_min_rate_eps = false;
+    enabled_min_rate_eps_ = false;
   }
 
   // Enable stopping criterion on epsilon rate
   INLINE void ApproximationScheme::enableMinEpsilonRate() {
-    _enabled_min_rate_eps = true;
+    enabled_min_rate_eps_ = true;
   }
 
   // @return true if stopping criterion on epsilon rate is enabled, false
   // otherwise
   INLINE bool ApproximationScheme::isEnabledMinEpsilonRate() const {
-    return _enabled_min_rate_eps;
+    return enabled_min_rate_eps_;
   }
 
   // stopping criterion on number of iterations
   INLINE void ApproximationScheme::setMaxIter(Size max) {
     if (max < 1) { GUM_ERROR(OutOfLowerBound, "max should be >=1"); }
-    _max_iter = max;
-    _enabled_max_iter = true;
+    max_iter_ = max;
+    enabled_max_iter_ = true;
   }
 
   // @return the criterion on number of iterations
-  INLINE Size ApproximationScheme::maxIter() const { return _max_iter; }
+  INLINE Size ApproximationScheme::maxIter() const { return max_iter_; }
 
   // Disable stopping criterion on max iterations
-  INLINE void ApproximationScheme::disableMaxIter() { _enabled_max_iter = false; }
+  INLINE void ApproximationScheme::disableMaxIter() { enabled_max_iter_ = false; }
 
   // Enable stopping criterion on max iterations
-  INLINE void ApproximationScheme::enableMaxIter() { _enabled_max_iter = true; }
+  INLINE void ApproximationScheme::enableMaxIter() { enabled_max_iter_ = true; }
 
   // @return true if stopping criterion on max iterations is enabled, false
   // otherwise
   INLINE bool ApproximationScheme::isEnabledMaxIter() const {
-    return _enabled_max_iter;
+    return enabled_max_iter_;
   }
 
   // stopping criterion on timeout (in seconds)
   // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime(double timeout) {
     if (timeout <= 0.) { GUM_ERROR(OutOfLowerBound, "timeout should be >0."); }
-    _max_time = timeout;
-    _enabled_max_time = true;
+    max_time_ = timeout;
+    enabled_max_time_ = true;
   }
 
   // returns the timeout (in seconds)
-  INLINE double ApproximationScheme::maxTime() const { return _max_time; }
+  INLINE double ApproximationScheme::maxTime() const { return max_time_; }
 
   // get the current running time in second (double)
-  INLINE double ApproximationScheme::currentTime() const { return _timer.step(); }
+  INLINE double ApproximationScheme::currentTime() const { return timer_.step(); }
 
   // Disable stopping criterion on timeout
-  INLINE void ApproximationScheme::disableMaxTime() { _enabled_max_time = false; }
+  INLINE void ApproximationScheme::disableMaxTime() { enabled_max_time_ = false; }
 
   // Enable stopping criterion on timeout
-  INLINE void ApproximationScheme::enableMaxTime() { _enabled_max_time = true; }
+  INLINE void ApproximationScheme::enableMaxTime() { enabled_max_time_ = true; }
 
   // @return true if stopping criterion on timeout is enabled, false
   // otherwise
   INLINE bool ApproximationScheme::isEnabledMaxTime() const {
-    return _enabled_max_time;
+    return enabled_max_time_;
   }
 
   // how many samples between 2 stopping isEnableds
   INLINE void ApproximationScheme::setPeriodSize(Size p) {
     if (p < 1) { GUM_ERROR(OutOfLowerBound, "p should be >=1"); }
 
-    _period_size = p;
+    period_size_ = p;
   }
 
-  INLINE Size ApproximationScheme::periodSize() const { return _period_size; }
+  INLINE Size ApproximationScheme::periodSize() const { return period_size_; }
 
   // verbosity
-  INLINE void ApproximationScheme::setVerbosity(bool v) { _verbosity = v; }
+  INLINE void ApproximationScheme::setVerbosity(bool v) { verbosity_ = v; }
 
-  INLINE bool ApproximationScheme::verbosity() const { return _verbosity; }
+  INLINE bool ApproximationScheme::verbosity() const { return verbosity_; }
 
   // history
   INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
          ApproximationScheme::stateApproximationScheme() const {
-    return _current_state;
+    return current_state_;
   }
 
   // @throw OperationNotAllowed if scheme not performed
@@ -166,7 +166,7 @@ namespace gum {
                 "state of the approximation scheme is undefined");
     }
 
-    return _current_step;
+    return current_step_;
   }
 
   // @throw OperationNotAllowed if scheme not performed or verbosity=false
@@ -180,36 +180,36 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "No history when verbosity=false");
     }
 
-    return _history;
+    return history_;
   }
 
   // initialise the scheme
   INLINE void ApproximationScheme::initApproximationScheme() {
-    _current_state = ApproximationSchemeSTATE::Continue;
-    _current_step = 0;
-    _current_epsilon = _current_rate = -1.0;
-    _history.clear();
-    _timer.reset();
+    current_state_ = ApproximationSchemeSTATE::Continue;
+    current_step_ = 0;
+    current_epsilon_ = current_rate_ = -1.0;
+    history_.clear();
+    timer_.reset();
   }
 
   // @return true if we are at the beginning of a period (compute error is
   // mandatory)
   INLINE bool ApproximationScheme::startOfPeriod() {
-    if (_current_step < _burn_in) { return false; }
+    if (current_step_ < burn_in_) { return false; }
 
-    if (_period_size == 1) { return true; }
+    if (period_size_ == 1) { return true; }
 
-    return ((_current_step - _burn_in) % _period_size == 0);
+    return ((current_step_ - burn_in_) % period_size_ == 0);
   }
 
   // update the scheme w.r.t the new error and incr steps
   INLINE void ApproximationScheme::updateApproximationScheme(unsigned int incr) {
-    _current_step += incr;
+    current_step_ += incr;
   }
 
   INLINE Size ApproximationScheme::remainingBurnIn() {
-    if (_burn_in > _current_step) {
-      return _burn_in - _current_step;
+    if (burn_in_ > current_step_) {
+      return burn_in_ - current_step_;
     } else {
       return 0;
     }
@@ -217,8 +217,8 @@ namespace gum {
 
   // stop approximation scheme by user request.
   INLINE void ApproximationScheme::stopApproximationScheme() {
-    if (_current_state == ApproximationSchemeSTATE::Continue) {
-      _stopScheme(ApproximationSchemeSTATE::Stopped);
+    if (current_state_ == ApproximationSchemeSTATE::Continue) {
+      stopScheme_(ApproximationSchemeSTATE::Stopped);
     }
   }
 
@@ -227,60 +227,60 @@ namespace gum {
   INLINE bool ApproximationScheme::continueApproximationScheme(double error) {
     // For coherence, we fix the time used in the method
 
-    double timer_step = _timer.step();
+    double timer_step = timer_.step();
 
-    if (_enabled_max_time) {
-      if (timer_step > _max_time) {
-        _stopScheme(ApproximationSchemeSTATE::TimeLimit);
+    if (enabled_max_time_) {
+      if (timer_step > max_time_) {
+        stopScheme_(ApproximationSchemeSTATE::TimeLimit);
         return false;
       }
     }
 
     if (!startOfPeriod()) { return true; }
 
-    if (_current_state != ApproximationSchemeSTATE::Continue) {
+    if (current_state_ != ApproximationSchemeSTATE::Continue) {
       GUM_ERROR(OperationNotAllowed,
                 "state of the approximation scheme is not correct : "
                    + messageApproximationScheme());
     }
 
-    if (verbosity()) { _history.push_back(error); }
+    if (verbosity()) { history_.push_back(error); }
 
-    if (_enabled_max_iter) {
-      if (_current_step > _max_iter) {
-        _stopScheme(ApproximationSchemeSTATE::Limit);
+    if (enabled_max_iter_) {
+      if (current_step_ > max_iter_) {
+        stopScheme_(ApproximationSchemeSTATE::Limit);
         return false;
       }
     }
 
-    _last_epsilon = _current_epsilon;
-    _current_epsilon = error;   // eps rate isEnabled needs it so affectation was
+    last_epsilon_ = current_epsilon_;
+    current_epsilon_ = error;   // eps rate isEnabled needs it so affectation was
     // moved from eps isEnabled below
 
-    if (_enabled_eps) {
-      if (_current_epsilon <= _eps) {
-        _stopScheme(ApproximationSchemeSTATE::Epsilon);
+    if (enabled_eps_) {
+      if (current_epsilon_ <= eps_) {
+        stopScheme_(ApproximationSchemeSTATE::Epsilon);
         return false;
       }
     }
 
-    if (_last_epsilon >= 0.) {
-      if (_current_epsilon > .0) {
-        // ! _current_epsilon can be 0. AND epsilon
+    if (last_epsilon_ >= 0.) {
+      if (current_epsilon_ > .0) {
+        // ! current_epsilon_ can be 0. AND epsilon
         // isEnabled can be disabled !
-        _current_rate =
-           std::fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
+        current_rate_ =
+           std::fabs((current_epsilon_ - last_epsilon_) / current_epsilon_);
       }
       // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
       // infinity the else means a return false if we isEnabled the rate below,
       // as we would have returned false if epsilon isEnabled was enabled
       else {
-        _current_rate = _min_rate_eps;
+        current_rate_ = min_rate_eps_;
       }
 
-      if (_enabled_min_rate_eps) {
-        if (_current_rate <= _min_rate_eps) {
-          _stopScheme(ApproximationSchemeSTATE::Rate);
+      if (enabled_min_rate_eps_) {
+        if (current_rate_ <= min_rate_eps_) {
+          stopScheme_(ApproximationSchemeSTATE::Rate);
           return false;
         }
       }
@@ -288,7 +288,7 @@ namespace gum {
 
     if (stateApproximationScheme() == ApproximationSchemeSTATE::Continue) {
       if (onProgress.hasListener()) {
-        GUM_EMIT3(onProgress, _current_step, _current_epsilon, timer_step);
+        GUM_EMIT3(onProgress, current_step_, current_epsilon_, timer_step);
       }
 
       return true;
@@ -298,13 +298,13 @@ namespace gum {
   }
 
   INLINE void
-     ApproximationScheme::_stopScheme(ApproximationSchemeSTATE new_state) {
+     ApproximationScheme::stopScheme_(ApproximationSchemeSTATE new_state) {
     if (new_state == ApproximationSchemeSTATE::Continue) { return; }
 
     if (new_state == ApproximationSchemeSTATE::Undefined) { return; }
 
-    _current_state = new_state;
-    _timer.pause();
+    current_state_ = new_state;
+    timer_.pause();
 
     if (onStop.hasListener()) { GUM_EMIT1(onStop, messageApproximationScheme()); }
   }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers files for the gum::FormulaPart and gum::Formula classes.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_MATH_FORMULA_H
 #define GUM_MATH_FORMULA_H
@@ -226,7 +226,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the value stored is not an
      * operator.
      */
-    double __operator_eval(const std::vector< FormulaPart >& args) const;
+    double operator_eval__(const std::vector< FormulaPart >& args) const;
 
     /**
      * @brief Returns the evaluation of the vector of gum::FormulaPart as
@@ -241,7 +241,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the value stored is not a
      * function.
      */
-    double __function_eval(const std::vector< FormulaPart >& args) const;
+    double function_eval__(const std::vector< FormulaPart >& args) const;
 
     /**
      * @brief Returns the number of arguments expected by the operator stored
@@ -249,7 +249,7 @@ namespace gum {
      * @return Returns the number of arguments expected by the operator stored
      * in this gum::FormulaPart.
      */
-    size_t __operator_argc() const;
+    size_t operator_argc__() const;
 
     /**
      * @brief Returns the number of arguments expected by the function stored
@@ -257,7 +257,7 @@ namespace gum {
      * @return Returns the number of arguments expected by the function stored
      * in this gum::FormulaPart.
      */
-    size_t __function_argc() const;
+    size_t function_argc__() const;
   };
 
   // extern class gum::formula::Parser;
@@ -392,122 +392,122 @@ namespace gum {
      * @brief Push a number in the formula.
      * @param v The number to push.
      */
-    void __push_number(const double& v);
+    void push_number__(const double& v);
 
     /**
      * @brief Push an operator in the formula.
      * @param o The operator to push.
      */
-    void __push_operator(char o);
+    void push_operator__(char o);
 
     /**
      * @brief Push a left parenthesis in the formula.
      */
-    void __push_leftParenthesis();
+    void push_leftParenthesis__();
 
     /**
      * @brief Push a right parenthesis in the formula.
      */
-    void __push_rightParenthesis();
+    void push_rightParenthesis__();
 
     /**
      * @brief Push a function in the formula.
      * @param func The function to push.
      */
-    void __push_function(const std::string& func);
+    void push_function__(const std::string& func);
 
     /**
      * @brief Push a variable in the formula.
      */
-    void __push_variable(const std::string& var);
+    void push_variable__(const std::string& var);
 
     /**
      * @brief Use this if you don't know if ident is a function or a variable.
      */
-    void __push_identifier(const std::string& ident);
+    void push_identifier__(const std::string& ident);
 
     /**
      * @brief Push a comma in the formula.
      */
-    void __push_comma();
+    void push_comma__();
 
     /**
      * @brief Finalize the formula and prepare it for evaluation.
      */
-    void __finalize();
+    void finalize__();
 
     /// @}
 
     /// The formula to evaluate.
-    std::string __formula;
+    std::string formula__;
 
     /// The scanner used by the formula.
-    std::unique_ptr< gum::formula::Scanner > __scanner;
+    std::unique_ptr< gum::formula::Scanner > scanner__;
 
     /// The parser used by the formula.
-    std::unique_ptr< gum::formula::Parser > __parser;
+    std::unique_ptr< gum::formula::Parser > parser__;
 
     /// The last token added to the formula.
-    FormulaPart __last_token;
+    FormulaPart last_token__;
 
     /// The output stack, will contain one value after evaluation.
-    std::vector< FormulaPart > __output;
+    std::vector< FormulaPart > output__;
 
     /// A stack used during evaluation.
-    std::stack< FormulaPart > __stack;
+    std::stack< FormulaPart > stack__;
 
     /// The variables available in this formula.
-    HashTable< std::string, double > __variables;
+    HashTable< std::string, double > variables__;
 
     /**
      * @brief Initialise the formula scanner and parser.
      */
-    void __initialise();
+    void initialise__();
 
     /**
      * @brief Pop the operator in the inner formula's stack.
      * @param o The operator to pop.
      * @return Returns true if the operator was popped.
      */
-    bool __popOperator(FormulaPart o);
+    bool popOperator__(FormulaPart o);
 
     /**
      * @brief Evaluate an operator or function and push its result.
      * @param item The operator or function to reduce.
      * @param stack The stack to evaluate.
      */
-    void __reduceOperatorOrFunction(FormulaPart                item,
+    void reduceOperatorOrFunction__(FormulaPart                item,
                                     std::stack< FormulaPart >& stack) const;
 
     /**
      * @brief Push an unary operator.
      * @param o The unary operator to push.
      */
-    void __push_unaryOperator(char o);
+    void push_unaryOperator__(char o);
 
     /**
      * @brief Push an operator.
      * @param t The operator to push.
      */
-    void __push_operator(FormulaPart t);
+    void push_operator__(FormulaPart t);
 
     /**
      * @brief Returns true if o is an unary operator.
      * @return Returns true if o is an unary operator.
      */
-    bool __isUnaryOperator(char o);
+    bool isUnaryOperator__(char o);
 
     /**
      * @brief Push the gum::FormulaPart in the output vector.
      * @param t The gum::FormulaPart to push.
      */
-    void __push_output(FormulaPart t);
+    void push_output__(FormulaPart t);
 
     /**
      * @brief Push the gum::FormulaPart in the stack.
      * @param t The gum::FormulaPart to push.
      */
-    void __push_stack(FormulaPart t);
+    void push_stack__(FormulaPart t);
   };
 
   // // ========================================================================

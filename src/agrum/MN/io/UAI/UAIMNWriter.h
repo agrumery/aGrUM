@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  *
  * Writes a markov net in UAI format
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 
@@ -98,9 +98,9 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string __preambule(const IMarkovNet< GUM_SCALAR >& MN);
+    std::string preambule__(const IMarkovNet< GUM_SCALAR >& MN);
 
-    std::string __factorBloc(const IMarkovNet< GUM_SCALAR >& MN,
+    std::string factorBloc__(const IMarkovNet< GUM_SCALAR >& MN,
                              const Potential< GUM_SCALAR >&  clikpot);
   };
 

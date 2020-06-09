@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief median aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MEDIAN_AGGREGATOR_H
@@ -85,17 +85,17 @@ namespace gum {
       virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
       protected:
-      virtual Idx _buildValue(const gum::Instantiation& i) const;
+      virtual Idx buildValue_(const gum::Instantiation& i) const;
 
       // fold scheme is not used, these methods are neutralized
-      virtual Idx _neutralElt() const { return 0; };
-      virtual Idx _fold(const DiscreteVariable& v,
+      virtual Idx neutralElt_() const { return 0; };
+      virtual Idx fold_(const DiscreteVariable& v,
                         Idx                     i1,
                         Idx                     i2,
                         bool&                   stop_iteration) const;
 
       private:
-      Idx __value;
+      Idx value__;
     };
 
 

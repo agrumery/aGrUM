@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -54,14 +54,14 @@ namespace MDPDAT {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_operand=1,
-		_ident=2,
-		_integer=3,
-		_number=4,
-		_string=5,
-		_largestring=6,
-		_lpar=7
+		EOF_=0,
+		operand_=1,
+		ident_=2,
+		integer_=3,
+		number_=4,
+		string_=5,
+		largestring_=6,
+		lpar_=7
 	};
 	int maxT;
 
@@ -76,7 +76,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -84,16 +84,16 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::AbstractFMDPFactory* __factory;
+    gum::AbstractFMDPFactory* factory__;
 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentFunctionGraphVar;
+                std::string currentFunctionGraphVar__;
 
                 /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > __parentNode;
+                std::vector< gum::NodeId > parentNode__;
 
                 /// and current modality
-                std::vector< gum::Idx > __parentModality;
+                std::vector< gum::Idx > parentModality__;
 
 
         // *************************************************************************************
@@ -102,18 +102,18 @@ class Parser {
 
                 /// Sets the main factory
                 void setFactory( gum::AbstractFMDPFactory* f ) {
-                        __factory = f;
+                        factory__ = f;
                 }
 
                 gum::AbstractFMDPFactory& factory() {
-                  if (__factory)
-                        return *__factory;
+                  if (factory__)
+                        return *factory__;
                   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
                 }
 
                 bool IsFollowedByIdent() {
                         Token* next = scanner->Peek();
-                        return la->kind == _lpar && next->kind == _ident;
+                        return la->kind == lpar_ && next->kind == ident_;
                 }
 
                 void SemErr(std::string s) {

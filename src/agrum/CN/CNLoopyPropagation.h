@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class implementing loopy-propagation with binary networks - L2U
  * algorithm.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef __CN_LOOPY_PROPAGATION__H__
@@ -40,7 +40,7 @@
 #include <agrum/tools/core/math/pow.h>
 #include <agrum/tools/core/sequence.h>
 
-#define _INF std::numeric_limits< GUM_SCALAR >::infinity()
+#define INF_ std::numeric_limits< GUM_SCALAR >::infinity()
 
 namespace gum {
   namespace credal {
@@ -52,7 +52,7 @@ namespace gum {
      * @brief Class implementing loopy-propagation with binary networks - L2U
      * algorithm.
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
      */
     template < typename GUM_SCALAR >
     class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
@@ -145,21 +145,21 @@ namespace gum {
 
       /** Topological forward propagation to initialize old marginals &
        * messages. */
-      void _initialize();
+      void initialize_();
 
       /// @}
 
       /// @name Protected algorithm methods
       /// @{
       /** Starts the inference with this inference type. */
-      void _makeInferenceNodeToNeighbours();
+      void makeInferenceNodeToNeighbours_();
       /** Starts the inference with this inference type. */
-      void _makeInferenceByOrderedArcs();
+      void makeInferenceByOrderedArcs_();
       /** Starts the inference with this inference type. */
-      void _makeInferenceByRandomOrder();
+      void makeInferenceByRandomOrder_();
 
       /** Compute marginals from up-to-date messages. */
-      void _updateMarginals();
+      void updateMarginals_();
 
       /**
        * Sends a message to one's parent, i.e. X is sending a message to a
@@ -168,12 +168,12 @@ namespace gum {
        * @param demanding_parent The constant node id of the node receiving the
        * message.
        */
-      void _msgL(
+      void msgL_(
          const NodeId X,
          const NodeId demanding_parent);   // allways sent from X to demanding_X
 
       /**
-       * Used by _msgL. Compute the final message for the given parent's message
+       * Used by msgL_. Compute the final message for the given parent's message
        * and
        * likelihood (children's messages), numerators & denominators.
        * @param msg_l_min The reference to the current lower value of the
@@ -192,7 +192,7 @@ namespace gum {
        * @param den_max The reference to the previously computed upper
        * denominator.
        */
-      void _compute_ext(GUM_SCALAR&                msg_l_min,
+      void compute_ext_(GUM_SCALAR&                msg_l_min,
                         GUM_SCALAR&                msg_l_max,
                         std::vector< GUM_SCALAR >& lx,
                         GUM_SCALAR&                num_min,
@@ -201,7 +201,7 @@ namespace gum {
                         GUM_SCALAR&                den_max);
 
       /**
-       * Used by _msgL. Compute the numerators & denominators for the given
+       * Used by msgL_. Compute the numerators & denominators for the given
        * parent's
        * message and likelihood (children's messages). Marginalisation.
        * @param combi_msg_p The parent's choosen message.
@@ -217,7 +217,7 @@ namespace gum {
        * the CPT
        * of the one sending the message ( first parent, second ... ).
        */
-      void _compute_ext(std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+      void compute_ext_(std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
                         const NodeId&                             id,
                         GUM_SCALAR&                               msg_l_min,
                         GUM_SCALAR&                               msg_l_max,
@@ -225,7 +225,7 @@ namespace gum {
                         const Idx&                                pos);
 
       /**
-       * Used by _msgL. Enumerate parent's messages.
+       * Used by msgL_. Enumerate parent's messages.
        * @param msgs_p All the messages from the parents which will be
        * enumerated.
        * @param id The constant id of the node sending the message.
@@ -240,7 +240,7 @@ namespace gum {
        * the CPT
        * of the one sending the message ( first parent, second ... ).
        */
-      void _enum_combi(
+      void enum_combi_(
          std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
          const NodeId&                                            id,
          GUM_SCALAR&                                              msg_l_min,
@@ -255,10 +255,10 @@ namespace gum {
        * @param demanding_child The constant node id of the node receiving the
        * message.
        */
-      void _msgP(const NodeId X, const NodeId demanding_child);
+      void msgP_(const NodeId X, const NodeId demanding_child);
 
       /**
-       * Used by _msgP. Enumerate parent's messages.
+       * Used by msgP_. Enumerate parent's messages.
        * @param msgs_p All the messages from the parents which will be
        * enumerated.
        * @param id The constant id of the node sending the message.
@@ -269,14 +269,14 @@ namespace gum {
        * message to
        * be sent.
        */
-      void _enum_combi(
+      void enum_combi_(
          std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
          const NodeId&                                            id,
          GUM_SCALAR&                                              msg_p_min,
          GUM_SCALAR&                                              msg_p_max);
 
       /**
-       * Used by _msgP. Marginalisation.
+       * Used by msgP_. Marginalisation.
        * @param combi_msg_p The parent's choosen message.
        * @param id The constant id of the node sending the message.
        * @param msg_p_min The reference to the current lower value of the
@@ -286,19 +286,19 @@ namespace gum {
        * message to
        * be sent.
        */
-      void _compute_ext(std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+      void compute_ext_(std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
                         const NodeId&                             id,
                         GUM_SCALAR&                               msg_p_min,
                         GUM_SCALAR&                               msg_p_max);
 
       /** Get the last messages from one's parents and children. */
-      void _refreshLMsPIs(bool refreshIndic = false);
+      void refreshLMsPIs_(bool refreshIndic = false);
 
       /**
        * Compute epsilon.
        * @return Epsilon.
        */
-      GUM_SCALAR _calculateEpsilon();
+      GUM_SCALAR calculateEpsilon_();
 
       /// @}
 
@@ -308,22 +308,22 @@ namespace gum {
       /** Since the network is binary, expectations can be computed from the
        * final
        * marginals which give us the credal set vertices. */
-      void _computeExpectations();
+      void computeExpectations_();
 
       /** @brief Only update indicatrices variables at the end of computations (
-       * calls _msgP ). */
-      void _updateIndicatrices();
+       * calls msgP_ ). */
+      void updateIndicatrices_();
 
       /// @}
 
       /** Used to keep track of which node needs to update it's information
        * coming
        * from it's parents. */
-      NodeProperty< bool > _update_p;
+      NodeProperty< bool > update_p_;
       /** Used to keep track of which node needs to update it's information
        * coming
        * from it's children. */
-      NodeProperty< bool > _update_l;
+      NodeProperty< bool > update_l_;
 
       /** The current node-set to iterate through at this current step. */
       NodeSet active_nodes_set;
@@ -333,48 +333,48 @@ namespace gum {
       NodeSet next_active_nodes_set;
 
       /** Used to keep track of one's messages sent to it's parents. */
-      NodeProperty< NodeSet* > _msg_l_sent;
+      NodeProperty< NodeSet* > msg_l_sent_;
 
       /** "Lower" information \f$ \Lambda \f$ coming from one's children. */
-      ArcProperty< GUM_SCALAR > _ArcsL_min;
+      ArcProperty< GUM_SCALAR > ArcsL_min_;
       /** "Lower" information \f$ \pi \f$ coming from one's parent. */
-      ArcProperty< GUM_SCALAR > _ArcsP_min;
+      ArcProperty< GUM_SCALAR > ArcsP_min_;
       /** "Lower" node information \f$ \Lambda \f$ obtained by combinaison of
        * children messages. */
-      NodeProperty< GUM_SCALAR > _NodesL_min;
+      NodeProperty< GUM_SCALAR > NodesL_min_;
       /** "Lower" node information \f$ \pi \f$ obtained by combinaison of
        * parent's
        * messages. */
-      NodeProperty< GUM_SCALAR > _NodesP_min;
+      NodeProperty< GUM_SCALAR > NodesP_min_;
 
       /** "Upper" information \f$ \Lambda \f$ coming from one's children. */
-      ArcProperty< GUM_SCALAR > _ArcsL_max;
+      ArcProperty< GUM_SCALAR > ArcsL_max_;
       /** "Upper" information \f$ \pi \f$ coming from one's parent. */
-      ArcProperty< GUM_SCALAR > _ArcsP_max;
+      ArcProperty< GUM_SCALAR > ArcsP_max_;
       /** "Upper" node information \f$ \Lambda \f$ obtained by combinaison of
        * children messages. */
-      NodeProperty< GUM_SCALAR > _NodesL_max;
+      NodeProperty< GUM_SCALAR > NodesL_max_;
       /** "Upper" node information \f$ \pi \f$ obtained by combinaison of
        * parent's
        * messages. */
-      NodeProperty< GUM_SCALAR > _NodesP_max;
+      NodeProperty< GUM_SCALAR > NodesP_max_;
 
       /** \c TRUE if inference has already been performed, \c FALSE otherwise.
        */
-      bool _InferenceUpToDate;
+      bool InferenceUpToDate_;
 
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      using __infE = InferenceEngine< GUM_SCALAR >;
+      using infE__ = InferenceEngine< GUM_SCALAR >;
 
       /** The choosen inference type. nodeToNeighbours by Default. */
-      InferenceType __inferenceType;
+      InferenceType inferenceType__;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet< GUM_SCALAR >* __cn;
+      const CredalNet< GUM_SCALAR >* cn__;
 
       /** A pointer to it's IBayesNet used as a DAG. */
-      const IBayesNet< GUM_SCALAR >* __bnet;
+      const IBayesNet< GUM_SCALAR >* bnet__;
 
       // typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       // cnfunc getCN = &infE::getCN;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -57,21 +57,21 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __heading(bn) << std::endl;
+    output << heading__(bn) << std::endl;
 
     output << "<!-- Variables -->" << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableBloc(bn.variable(node)) << std::endl;
+      output << variableBloc__(bn.variable(node)) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableDefinition(node, bn);
+      output << variableDefinition__(node, bn);
 
     output << std::endl;
 
-    output << __documentend();
+    output << documentend__();
 
     output.flush();
 
@@ -105,7 +105,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFXMLBNWriter< GUM_SCALAR >::__heading(const IBayesNet< GUM_SCALAR >& bn) {
+         BIFXMLBNWriter< GUM_SCALAR >::heading__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -151,7 +151,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFXMLBNWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         BIFXMLBNWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -182,7 +182,7 @@ namespace gum {
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::__variableDefinition(
+  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::variableDefinition__(
      const NodeId& varNodeId, const IBayesNet< GUM_SCALAR >& bn) {
     //<DEFINITION>
     //<FOR>var</FOR>
@@ -236,7 +236,7 @@ namespace gum {
    * Returns the end of the BIF file.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::__documentend() {
+  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::documentend__() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

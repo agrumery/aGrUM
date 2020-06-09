@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation of bns/bayesNet.h classes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
  */
 
 #include <limits>
@@ -316,7 +316,7 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IMarkovNet< GUM_SCALAR >::__minimalCondSetVisit(
+  void IMarkovNet< GUM_SCALAR >::minimalCondSetVisit__(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -327,8 +327,8 @@ namespace gum {
     if (soids.contains(node)) {
       minimal << node;
     } else {
-      for (auto neig: _graph.neighbours(node))
-        __minimalCondSetVisit(neig, soids, minimal, alreadyVisited);
+      for (auto neig: graph_.neighbours(node))
+        minimalCondSetVisit__(neig, soids, minimal, alreadyVisited);
     }
   }
 
@@ -342,8 +342,8 @@ namespace gum {
     NodeSet alreadyVisited;
     alreadyVisited << target;
 
-    for (auto neig: _graph.neighbours(target))
-      __minimalCondSetVisit(neig, soids, res, alreadyVisited);
+    for (auto neig: graph_.neighbours(target))
+      minimalCondSetVisit__(neig, soids, res, alreadyVisited);
     return res;
   }
 

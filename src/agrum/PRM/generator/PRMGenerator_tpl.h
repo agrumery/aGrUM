@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of PRMGenerator.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/generator/PRMGenerator.h>
 
@@ -38,7 +38,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMGenerator< GUM_SCALAR >::PRMGenerator(const PRMGenerator& source) :
-        _name_gen(source._name_gen) {
+        name_gen_(source.name_gen_) {
       GUM_CONS_CPY(PRMGenerator);
     }
 
@@ -50,13 +50,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMGenerator< GUM_SCALAR >::setNameGenerator(
        const NameGenerator& name_gen) {
-      _name_gen = name_gen;
+      name_gen_ = name_gen;
     }
 
     template < typename GUM_SCALAR >
     INLINE const NameGenerator&
                  PRMGenerator< GUM_SCALAR >::getNameGenerator() const {
-      return _name_gen;
+      return name_gen_;
     }
 
   } /* namespace prm */

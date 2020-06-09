@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inline implementation of Base classes for oriented graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -52,14 +52,14 @@ namespace gum {
       NodeGraphPart::operator=(g);
       ArcGraphPart:: operator=(g);
 
-      if (__mutableTopologicalOrder != nullptr) {
-        delete __mutableTopologicalOrder;
-        __mutableTopologicalOrder = nullptr;
+      if (mutableTopologicalOrder__ != nullptr) {
+        delete mutableTopologicalOrder__;
+        mutableTopologicalOrder__ = nullptr;
       }
 
-      if (g.__mutableTopologicalOrder != nullptr) {
-        __mutableTopologicalOrder =
-           new Sequence< NodeId >(*(g.__mutableTopologicalOrder));
+      if (g.mutableTopologicalOrder__ != nullptr) {
+        mutableTopologicalOrder__ =
+           new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
       }
     }
 

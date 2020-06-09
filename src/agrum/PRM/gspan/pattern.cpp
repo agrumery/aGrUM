@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the Pattern class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/PRM/gspan/pattern.h>
@@ -37,7 +37,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern(const Pattern& source) : DiGraph(), __last(0) {
+      Pattern::Pattern(const Pattern& source) : DiGraph(), last__(0) {
         GUM_CONS_CPY(Pattern);
         NodeProperty< NodeId > node_map;
 
@@ -63,7 +63,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) { return false; }
+              if (expandCodeIsMinimal__(node, next)) { return false; }
             }
           }
 
@@ -75,7 +75,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) { return false; }
+              if (expandCodeIsMinimal__(node, next)) { return false; }
             }
           }
         }
@@ -96,7 +96,7 @@ namespace gum {
         return sBuff.str();
       }
 
-      bool Pattern::__expandCodeIsMinimal(NodeId u, NodeId v) {
+      bool Pattern::expandCodeIsMinimal__(NodeId u, NodeId v) {
         Bijection< NodeId, NodeId > node_map;
         Pattern                     p;
         node_map.insert(u, p.addNodeWithLabel(label(u)));
@@ -108,24 +108,24 @@ namespace gum {
 
         for (const auto nei: children(u))
           if (nei != v)
-            if (__rec(p, node_map, u, nei)) return true;
+            if (rec__(p, node_map, u, nei)) return true;
 
         for (const auto nei: parents(u))
           if (nei != v)
-            if (__rec(p, node_map, u, nei)) return true;
+            if (rec__(p, node_map, u, nei)) return true;
 
         for (const auto nei: children(v))
           if (nei != u)
-            if (__rec(p, node_map, v, nei)) return true;
+            if (rec__(p, node_map, v, nei)) return true;
 
         for (const auto nei: parents(v))
           if (nei != u)
-            if (__rec(p, node_map, v, nei)) return true;
+            if (rec__(p, node_map, v, nei)) return true;
 
         return false;
       }
 
-      bool Pattern::__rec(Pattern&                     p,
+      bool Pattern::rec__(Pattern&                     p,
                           Bijection< NodeId, NodeId >& node_map,
                           NodeId                       u,
                           NodeId                       v) {
@@ -173,10 +173,10 @@ namespace gum {
 
           for (const auto node: r_path) {
             for (const auto nei: children(node_map.first(node)))
-              if (__rec(p, node_map, node_map.first(node), nei)) return true;
+              if (rec__(p, node_map, node_map.first(node), nei)) return true;
 
             for (const auto nei: parents(node_map.first(node)))
-              if (__rec(p, node_map, node_map.first(node), nei)) return true;
+              if (rec__(p, node_map, node_map.first(node), nei)) return true;
           }
         }
 
@@ -186,7 +186,7 @@ namespace gum {
         return false;
       }
 
-      bool Pattern::__not_rec(Pattern&                     p,
+      bool Pattern::not_rec__(Pattern&                     p,
                               Bijection< NodeId, NodeId >& node_map,
                               NodeId                       a_u,
                               NodeId                       a_v) {

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for MultiDimDecorator.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MULTI_DIM_DECORATOR_H
 #define GUM_MULTI_DIM_DECORATOR_H
@@ -158,14 +158,14 @@ namespace gum {
     /**
      * @brief Default implementation of MultiDimContainer::set().
      *
-     * Calls _get as a r-value.
+     * Calls get_ as a r-value.
      */
     virtual void set(const Instantiation& i, const GUM_SCALAR& value) const final;
 
     /**
      * @brief Default implementation of MultiDimContainer::get().
      *
-     * Calls _get as a l-value.
+     * Calls get_ as a l-value.
      */
     virtual GUM_SCALAR get(const Instantiation& i) const final;
 
@@ -237,18 +237,18 @@ namespace gum {
 
     /// @}
     protected:
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
      * protecte method to swap the implementation behind the Potential
      * @warning unsafe method for slave Instantiations !
      */
-    void _swapContent(MultiDimImplementation< GUM_SCALAR >* aContent) const;
+    void swapContent_(MultiDimImplementation< GUM_SCALAR >* aContent) const;
 
     /**
      * The true container.
      */
-    mutable MultiDimImplementation< GUM_SCALAR >* _content;
+    mutable MultiDimImplementation< GUM_SCALAR >* content_;
 
     /**
      * Return a data, given a Insantiation - final method.
@@ -256,13 +256,13 @@ namespace gum {
      * @throw NullElement
      * @throw NotFound
      */
-    GUM_SCALAR& _get(const Instantiation& i) const final;
+    GUM_SCALAR& get_(const Instantiation& i) const final;
 
     /**
      * value of the MultiDimDecorator if no dimension.
      *
      */
-    mutable GUM_SCALAR _empty_value;
+    mutable GUM_SCALAR empty_value_;
   };
 
 } /* namespace gum */

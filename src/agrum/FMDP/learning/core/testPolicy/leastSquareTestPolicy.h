@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the LeastSquareTestPolicy
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
@@ -60,7 +60,7 @@ namespace gum {
     /// Constructor
     // ============================================================================
     LeastSquareTestPolicy() :
-        ITestPolicy< GUM_SCALAR >(), __sumO(0.0), __score(0) {
+        ITestPolicy< GUM_SCALAR >(), sumO__(0.0), score__(0) {
       GUM_CONSTRUCTOR(LeastSquareTestPolicy);
     }
 
@@ -145,40 +145,40 @@ namespace gum {
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
-    double sumValue() const { return __sumO; }
+    double sumValue() const { return sumO__; }
 
     // ============================================================================
     /// Returns nbobs per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, Idx >& nbObsTable() const { return __nbObsTable; }
+    const HashTable< Idx, Idx >& nbObsTable() const { return nbObsTable__; }
 
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, double >& sumAttrTable() const { return __sumAttrTable; }
+    const HashTable< Idx, double >& sumAttrTable() const { return sumAttrTable__; }
 
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
     const HashTable< Idx, LinkedList< double >* >& obsTable() const {
-      return __obsTable;
+      return obsTable__;
     }
 
     private:
     /// Global sum
-    double __sumO;
+    double sumO__;
 
     /// Nb Observation for each modality assumed by variable
-    HashTable< Idx, Idx > __nbObsTable;
+    HashTable< Idx, Idx > nbObsTable__;
 
     /// Sum for each modality assumed by variable
-    HashTable< Idx, double > __sumAttrTable;
+    HashTable< Idx, double > sumAttrTable__;
 
     /// Not sure if needed
-    HashTable< Idx, LinkedList< double >* > __obsTable;
+    HashTable< Idx, LinkedList< double >* > obsTable__;
 
     /// Keeping computed score
-    double __score;
+    double score__;
   };
 
 }   // End of namespace gum

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -97,7 +97,8 @@ namespace gum {
     /// decisionId )
     Idx getBestDecisionChoice(NodeId decisionId);
     Idx getBestDecisionChoice(std::string decisionName) {
-      return getBestDecisionChoice(this->influenceDiagram().idFromName(decisionName));
+      return getBestDecisionChoice(
+         this->influenceDiagram().idFromName(decisionName));
     };
 
     /// displays the result of an inference
@@ -139,19 +140,19 @@ namespace gum {
     /// @{
 
     /// The triangulation algorithm.
-    Triangulation* __triangulation;
+    Triangulation* triangulation__;
 
     /// The set of dummies sparse potential matrix created.
-    Set< Potential< GUM_SCALAR >* > __potentialDummies;
+    Set< Potential< GUM_SCALAR >* > potentialDummies__;
 
     /// The set of dummies sparse utilities matrix created.
-    Set< Potential< GUM_SCALAR >* > __utilityDummies;
+    Set< Potential< GUM_SCALAR >* > utilityDummies__;
 
     /// The resulting potential from inference
-    Potential< GUM_SCALAR >* __inferencePotential;
+    Potential< GUM_SCALAR >* inferencePotential__;
 
     /// The resulting utility from inference
-    Potential< GUM_SCALAR >* __inferenceUtility;
+    Potential< GUM_SCALAR >* inferenceUtility__;
 
     /// @}
     // ====================================================================
@@ -160,15 +161,15 @@ namespace gum {
     /// @{
 
     /// Mapping of the nodes with the clique used to put their CPT
-    NodeProperty< NodeId > __nodeToCliqueMap;
+    NodeProperty< NodeId > nodeToCliqueMap__;
 
-    NodeProperty< CliqueProperties< GUM_SCALAR >* > __cliquePropertiesMap;
+    NodeProperty< CliqueProperties< GUM_SCALAR >* > cliquePropertiesMap__;
 
-    HashTable< Size, NodeId > __cliqueEliminationMap;
+    HashTable< Size, NodeId > cliqueEliminationMap__;
 
-    HashTable< NodeId, Idx > __utakenDecisionMap;
+    HashTable< NodeId, Idx > utakenDecisionMap__;
 
-    bool __inferenceMade;
+    bool inferenceMade__;
 
     /// @}
     // ====================================================================
@@ -177,10 +178,10 @@ namespace gum {
     /// @{
 
     /// @return Returns a separator given two adjacent cliques
-    const NodeSet& __getSeparator(NodeId clique_1, NodeId clique_2);
+    const NodeSet& getSeparator__(NodeId clique_1, NodeId clique_2);
 
     /// @return Returns the clique in which the node's potentials must be stored
-    NodeId __getClique(const std::vector< NodeId >& eliminationOrder, NodeId id);
+    NodeId getClique__(const std::vector< NodeId >& eliminationOrder, NodeId id);
 
     /// @}
     // ====================================================================
@@ -189,24 +190,24 @@ namespace gum {
     /// @{
 
     /// Builds the cliques tables
-    /// Uses __getCliquesTable to initialize the cliques table, and multiply
+    /// Uses getCliquesTable__ to initialize the cliques table, and multiply
     /// the tables with the adequate CPT.
-    void __makeCliquePropertiesMap();
+    void makeCliquePropertiesMap__();
 
     /// Makes a strong junction tree that make easier elimination
-    void __makeStrongJunctionTree();
+    void makeStrongJunctionTree__();
 
     /// Cleans Up remaining stuff due to inference
-    void __cleanUp();
+    void cleanUp__();
 
     /// collect child clique for inferences
-    void __collectChild(NodeId parent, NodeId child);
+    void collectChild__(NodeId parent, NodeId child);
 
     /// Performs the operation of absorption of a clique by another
-    void __absorbClique(NodeId absorbedCliqueId, NodeId absorbingCliqueId);
+    void absorbClique__(NodeId absorbedCliqueId, NodeId absorbingCliqueId);
 
     /// Reduces a clique down to her separator from another clique elements
-    void __reduceClique(CliqueProperties< GUM_SCALAR >* absorbedClique,
+    void reduceClique__(CliqueProperties< GUM_SCALAR >* absorbedClique,
                         NodeSet&                        separator,
                         Potential< GUM_SCALAR >*&       potentialMarginal,
                         Potential< GUM_SCALAR >*&       utilityMarginal);
@@ -216,7 +217,7 @@ namespace gum {
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy
     /// potential.
     /// @return A pointer over the dummy bucket.
-    Potential< GUM_SCALAR >* __makeDummyPotential(NodeId cliqueId);
+    Potential< GUM_SCALAR >* makeDummyPotential__(NodeId cliqueId);
 
     /// Returns a pointer over a "dummy" utility, which is a utility table
     /// filled
@@ -225,10 +226,10 @@ namespace gum {
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy
     /// utility.
     /// @return A pointer over the dummy bucket.
-    Potential< GUM_SCALAR >* __makeDummyUtility(NodeId cliqueId);
+    Potential< GUM_SCALAR >* makeDummyUtility__(NodeId cliqueId);
 
     /// Returns true if observed  node is eliminated after current node
-    bool __IsEliminatedAfter(NodeId observedNode, NodeId currentNode);
+    bool IsEliminatedAfter__(NodeId observedNode, NodeId currentNode);
 
     /// @}
   };
@@ -313,28 +314,28 @@ namespace gum {
     private:
     /// Evidences on the variables in this clique
     HashTable< const DiscreteVariable*, const Potential< GUM_SCALAR >* >
-       __evidences;
+       evidences__;
 
     /// The potential bucket of this clique with evidences
-    HashTable< const Potential< GUM_SCALAR >*, Instantiation* > __potentialBucket;
+    HashTable< const Potential< GUM_SCALAR >*, Instantiation* > potentialBucket__;
 
     /// The utility bucket of this clique
-    HashTable< const Potential< GUM_SCALAR >*, Instantiation* > __utilityBucket;
+    HashTable< const Potential< GUM_SCALAR >*, Instantiation* > utilityBucket__;
 
     /// The sequence of elimination of node in the clique
-    Sequence< NodeId > __eliminationOrder;
+    Sequence< NodeId > eliminationOrder__;
 
     /// Instantiation on variable in that clique
-    Instantiation __allVarsInst;
+    Instantiation allVarsInst__;
 
     /// The list of var that have been had during an inference
-    List< const DiscreteVariable* > __removableVarList;
+    List< const DiscreteVariable* > removableVarList__;
 
     /// The list of potentials that have been had during an inference
-    List< const Potential< GUM_SCALAR >* > __removablePotentialList;
+    List< const Potential< GUM_SCALAR >* > removablePotentialList__;
 
     /// The list of utilities that have been had during an inference
-    List< const Potential< GUM_SCALAR >* > __removableUtilityList;
+    List< const Potential< GUM_SCALAR >* > removableUtilityList__;
   };
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

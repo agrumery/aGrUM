@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for all a priori
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_A_PRIORI_H
 #define GUM_LEARNING_A_PRIORI_H
@@ -120,7 +120,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-         addAllApriori(const IdCondSet< ALLOC >&                   idset,
+         addAllApriori(const IdCondSet< ALLOC >&               idset,
                        std::vector< double, ALLOC< double > >& counts) = 0;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -129,7 +129,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-         const IdCondSet< ALLOC >&                   idset,
+         const IdCondSet< ALLOC >&               idset,
          std::vector< double, ALLOC< double > >& counts) = 0;
 
       /// returns the allocator used by the internal apriori
@@ -140,14 +140,14 @@ namespace gum {
 
       protected:
       /// the weight of the apriori
-      double _weight{1.0};
+      double weight_{1.0};
 
       /// a reference to the database in order to have access to its variables
-      const DatabaseTable< ALLOC >* _database;
+      const DatabaseTable< ALLOC >* database_;
 
       /** @brief a mapping from the NodeIds of the variables to the indices of
        * the columns in the database */
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > nodeId2columns_;
 
 
       /// copy constructor

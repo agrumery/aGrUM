@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief base class for all non-incremental triangulations.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_STATIC_TRIANGULATION_H
 #define GUM_STATIC_TRIANGULATION_H
@@ -217,105 +217,105 @@ namespace gum {
      * used to initialize the elimination sequence strategy. Actually, the
      * graph that is modified by the triangulation algorithm is a copy of
      * the original graph, and this copy needs be known by the elimination
-     * sequence strategy. _initTriangulation is used to transmit this
+     * sequence strategy. initTriangulation_ is used to transmit this
      * knowledge to the elimination sequence (through method setGraph of the
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
-     * __original_graph) */
-    virtual void _initTriangulation(UndiGraph& graph);
+     * original_graph__) */
+    virtual void initTriangulation_(UndiGraph& graph);
 
     /// @}
 
 
     /// the elimination sequence strategy used by the triangulation
-    EliminationSequenceStrategy* _elimination_sequence_strategy{nullptr};
+    EliminationSequenceStrategy* elimination_sequence_strategy_{nullptr};
 
     /// the junction tree strategy used by the triangulation
-    JunctionTreeStrategy* _junction_tree_strategy{nullptr};
+    JunctionTreeStrategy* junction_tree_strategy_{nullptr};
 
 
     private:
     /// a pointer to the (external) original graph (which will be triangulated)
-    const UndiGraph* __original_graph{nullptr};
+    const UndiGraph* original_graph__{nullptr};
 
     /// the triangulated graph
-    UndiGraph __triangulated_graph;
+    UndiGraph triangulated_graph__;
 
     /// the fill-ins added during the whole triangulation process
-    EdgeSet __fill_ins;
+    EdgeSet fill_ins__;
 
     /// the order in which nodes are eliminated by the algorithm
-    std::vector< NodeId > __elim_order;
+    std::vector< NodeId > elim_order__;
 
     /// the elimination order (access by NodeId)
-    NodeProperty< NodeId > __reverse_elim_order;
+    NodeProperty< NodeId > reverse_elim_order__;
 
     /// the cliques formed by the elimination of the nodes
-    NodeProperty< NodeSet > __elim_cliques;
+    NodeProperty< NodeSet > elim_cliques__;
 
     /// the elimination tree computed by the algorithm
-    CliqueGraph __elim_tree;
+    CliqueGraph elim_tree__;
 
     /// the junction tree computed by the algorithm
     /** note that the junction tree is owned by the junctionTreeStrategy and,
      * therefore, its deletion from memory is not handled by the static
      * triangulation class. */
-    const CliqueGraph* __junction_tree{nullptr};
+    const CliqueGraph* junction_tree__{nullptr};
 
     /// the maximal prime subgraph junction tree computed from the junction tree
-    CliqueGraph __max_prime_junction_tree;
+    CliqueGraph max_prime_junction_tree__;
 
     /** @brief indicates which clique of the max prime junction tree was created
      * by the elmination of a given node (the key of the table) */
-    NodeProperty< NodeId > __node_2_max_prime_clique;
+    NodeProperty< NodeId > node_2_max_prime_clique__;
 
     /// a boolean indicating whether we have parformed a triangulation
-    bool __has_triangulation{false};
+    bool has_triangulation__{false};
 
     /// a boolean indicating whether we have constructed the triangulated graph
-    bool __has_triangulated_graph{false};
+    bool has_triangulated_graph__{false};
 
     /// a boolean indicating whether the elimination tree has been computed
-    bool __has_elimination_tree{false};
+    bool has_elimination_tree__{false};
 
     /// a boolean indicating whether the junction tree has been constructed
-    bool __has_junction_tree{false};
+    bool has_junction_tree__{false};
 
     /** @brief indicates whether a maximal prime subgraph junction tree has
      * been constructed */
-    bool __has_max_prime_junction_tree{false};
+    bool has_max_prime_junction_tree__{false};
 
     /// indicates whether we actually computed fill-ins
-    bool __has_fill_ins{false};
+    bool has_fill_ins__{false};
 
     /// indicates whether the triangulation must be minimal
-    bool __minimality_required{false};
+    bool minimality_required__{false};
 
     /** @brief a vector containing the set of fill-ins added after each node
      * elimination (used by recursive thinning) */
-    std::vector< EdgeSet > __added_fill_ins;
+    std::vector< EdgeSet > added_fill_ins__;
 
     /** @brief a boolean indicating if we want fill-ins list with the standard
      * triangulation method */
-    bool __we_want_fill_ins{false};
+    bool we_want_fill_ins__{false};
 
     // ===========================================================================
 
     /// the function that performs the triangulation
-    void __triangulate();
+    void triangulate__();
 
     /// returns an elimination tree from a triangulated graph
-    void __computeEliminationTree();
+    void computeEliminationTree__();
 
     /// computes the junction tree of the maximal prime subgraphs
-    void __computeMaxPrimeJunctionTree();
+    void computeMaxPrimeJunctionTree__();
 
     /// removes redondant fill-ins and compute proper elimination cliques and
     /// order
-    void __computeRecursiveThinning();
+    void computeRecursiveThinning__();
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void __computeMaxPrimeMergings(const NodeId        node,
+    void computeMaxPrimeMergings__(const NodeId        node,
                                    const NodeId        from,
                                    std::vector< Arc >& merged_cliques,
                                    NodeSet&            mark) const;

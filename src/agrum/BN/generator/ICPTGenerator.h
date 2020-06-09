@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@
 /** @file
  * @brief Interface-like class for generating Conditional Probability Tables.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6) and Ariele-Paolo
- *MAESANO
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6) and
+ *Ariele-Paolo MAESANO
  */
 #ifndef GUM_I_CPT_GENERATOR_H
 #define GUM_I_CPT_GENERATOR_H

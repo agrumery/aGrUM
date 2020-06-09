@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Sources of
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 // =====================================================================
@@ -45,17 +45,17 @@ namespace gum {
    * Default constructor.
    */
   FMDPSimulator::FMDPSimulator(const FMDP< double >* fmdp) :
-      AbstractSimulator(), __fmdp(const_cast< FMDP< double >* >(fmdp)),
-      __loaded(false) {
+      AbstractSimulator(), fmdp__(const_cast< FMDP< double >* >(fmdp)),
+      loaded__(false) {
     GUM_CONSTRUCTOR(FMDPSimulator);
   }
 
   FMDPSimulator::FMDPSimulator(const std::string& ressource) :
-      AbstractSimulator(), __loaded(true) {
+      AbstractSimulator(), loaded__(true) {
     GUM_CONSTRUCTOR(FMDPSimulator);
 
-    __fmdp = new FMDP< double >(true);
-    FMDPDatReader< double > reader(__fmdp, ressource);
+    fmdp__ = new FMDP< double >(true);
+    FMDPDatReader< double > reader(fmdp__, ressource);
     reader.trace(false);
     reader.proceed();
   }
@@ -65,7 +65,7 @@ namespace gum {
    */
   FMDPSimulator::~FMDPSimulator() {
     GUM_DESTRUCTOR(FMDPSimulator);
-    if (__loaded) delete __fmdp;
+    if (loaded__) delete fmdp__;
   }
 
 
@@ -78,21 +78,21 @@ namespace gum {
     for (auto varIter = this->beginVariables(); varIter != this->endVariables();
          ++varIter) {
       newState.add(**varIter);
-      Instantiation transit(_currentState);
+      Instantiation transit(currentState_);
       transit.add(*(this->primeVar(*varIter)));
 
       double proba = (double)std::rand() / (double)RAND_MAX;
       double cdd = 0.0;
-      for (transit.setFirstOut(_currentState); !transit.end();
-           transit.incOut(_currentState)) {
-        cdd += this->_transitionProbability(*varIter, transit, actionId);
+      for (transit.setFirstOut(currentState_); !transit.end();
+           transit.incOut(currentState_)) {
+        cdd += this->transitionProbability_(*varIter, transit, actionId);
         if (proba <= cdd) {
           newState.chgVal(**varIter, transit.val(*(this->primeVar(*varIter))));
           break;
         }
       }
     }
-    _currentState = newState;
+    currentState_ = newState;
   }
 
 

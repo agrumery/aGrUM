@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   IInfluenceDiagramInference< GUM_SCALAR >::IInfluenceDiagramInference(
      const InfluenceDiagram< GUM_SCALAR >& infDiag) :
-      __infDiag(infDiag) {
+      infDiag__(infDiag) {
     GUM_CONSTRUCTOR(IInfluenceDiagramInference);
   }
 
@@ -50,7 +50,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const InfluenceDiagram< GUM_SCALAR >&
      IInfluenceDiagramInference< GUM_SCALAR >::influenceDiagram() const {
-    return __infDiag;
+    return infDiag__;
   }
 
 } /* namespace gum */

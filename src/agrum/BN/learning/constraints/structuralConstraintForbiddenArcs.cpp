@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
@@ -53,15 +53,15 @@ namespace gum {
     /// copy constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
        const StructuralConstraintForbiddenArcs& from) :
-        _ForbiddenArcs__forbidden_arcs(from._ForbiddenArcs__forbidden_arcs) {
+        ForbiddenArcs__forbidden_arcs_(from.ForbiddenArcs__forbidden_arcs_) {
       GUM_CONS_CPY(StructuralConstraintForbiddenArcs);
     }
 
     /// move constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
        StructuralConstraintForbiddenArcs&& from) :
-        _ForbiddenArcs__forbidden_arcs(
-           std::move(from._ForbiddenArcs__forbidden_arcs)) {
+        ForbiddenArcs__forbidden_arcs_(
+           std::move(from.ForbiddenArcs__forbidden_arcs_)) {
       GUM_CONS_MOV(StructuralConstraintForbiddenArcs);
     }
 
@@ -75,7 +75,7 @@ namespace gum {
        StructuralConstraintForbiddenArcs::operator=(
           const StructuralConstraintForbiddenArcs& from) {
       if (this != &from) {
-        _ForbiddenArcs__forbidden_arcs = from._ForbiddenArcs__forbidden_arcs;
+        ForbiddenArcs__forbidden_arcs_ = from.ForbiddenArcs__forbidden_arcs_;
       }
       return *this;
     }
@@ -85,8 +85,8 @@ namespace gum {
        StructuralConstraintForbiddenArcs::operator=(
           StructuralConstraintForbiddenArcs&& from) {
       if (this != &from) {
-        _ForbiddenArcs__forbidden_arcs =
-           std::move(from._ForbiddenArcs__forbidden_arcs);
+        ForbiddenArcs__forbidden_arcs_ =
+           std::move(from.ForbiddenArcs__forbidden_arcs_);
       }
       return *this;
     }

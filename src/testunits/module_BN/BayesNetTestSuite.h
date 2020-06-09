@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -1034,31 +1034,31 @@ namespace gum_tests {
     void testClearBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
       {   // by hand
-        auto _bn_instance = gum::BayesNet< double >(bn);
-        if (!_bn_instance.empty()) {
-          auto l = _bn_instance.nodes();
+        auto bn_instance = gum::BayesNet< double >(bn);
+        if (!bn_instance.empty()) {
+          auto l = bn_instance.nodes();
           for (const auto no: l) {
-            _bn_instance.erase(no);
+            bn_instance.erase(no);
           }
         }
-        TS_ASSERT(_bn_instance.empty());
+        TS_ASSERT(bn_instance.empty());
       }
       {   // with clear method
-        auto _bn_instance = gum::BayesNet< double >(bn);
-        _bn_instance.clear();
-        TS_ASSERT(_bn_instance.empty());
+        auto bn_instance = gum::BayesNet< double >(bn);
+        bn_instance.clear();
+        TS_ASSERT(bn_instance.empty());
       }
     }
 
     void testExistsArc() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
 
-      TS_ASSERT(bn.existsArc(0,1));
-      TS_ASSERT(bn.existsArc("A","B"));
-      TS_ASSERT(! bn.existsArc(1,0));
-      TS_ASSERT(! bn.existsArc("B","A"));
-      TS_ASSERT(! bn.existsArc(0,2));
-      TS_ASSERT(! bn.existsArc("A","C"));
+      TS_ASSERT(bn.existsArc(0, 1));
+      TS_ASSERT(bn.existsArc("A", "B"));
+      TS_ASSERT(!bn.existsArc(1, 0));
+      TS_ASSERT(!bn.existsArc("B", "A"));
+      TS_ASSERT(!bn.existsArc(0, 2));
+      TS_ASSERT(!bn.existsArc("A", "C"));
     }
   };
 }   // namespace gum_tests

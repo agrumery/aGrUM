@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Classes used to practice approximation on value.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) & Jean-Christophe Magnan
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Jean-Christophe Magnan
  *
  */
 #ifndef GUM_LINEAR_APPROXIMATION_POLICY_H
@@ -202,13 +202,13 @@ namespace gum {
 
     protected:
     /// Lowest value possible.
-    GUM_SCALAR _lowLimit;
+    GUM_SCALAR lowLimit_;
 
     /// Highest value possible.
-    GUM_SCALAR _highLimit;
+    GUM_SCALAR highLimit_;
 
     /// Approximation factor.
-    GUM_SCALAR _epsilon;
+    GUM_SCALAR epsilon_;
 
     /**
      * @brief Concretely computes the approximate representation.
@@ -219,22 +219,22 @@ namespace gum {
      * @param value The value to encode.
      * @return The encoded value.
      */
-    Idx __encode(const GUM_SCALAR& value) const;
+    Idx encode__(const GUM_SCALAR& value) const;
 
     /**
      * @brief Concretely computes the approximate value from representation.
      * @param representation The approximate value to decode.
      * @return The decoded value.
      */
-    GUM_SCALAR __decode(const GUM_SCALAR& representation) const;
+    GUM_SCALAR decode__(const GUM_SCALAR& representation) const;
 
     /**
      * @brief Get the number of interval.
      */
-    void _computeNbInterval();
+    void computeNbInterval_();
 
     /// The number of interval.
-    Idx _nbInterval;
+    Idx nbInterval_;
   };
 }   // namespace gum
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class building the markovBlanket from a DAGmodel and a node name
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_MARKOVBLANKET_H
@@ -88,12 +88,12 @@ namespace gum {
     bool hasSameStructure(const DAGmodel& other);
 
     private:
-    bool __buildMarkovBlanket(const NodeId id);
+    bool buildMarkovBlanket__(const NodeId id);
 
-    const DAGmodel& __model;
-    DAG             __mb;
-    const NodeId    __node;
-    ArcSet          __specialArcs;
+    const DAGmodel& model__;
+    DAG             mb__;
+    const NodeId    node__;
+    ArcSet          specialArcs__;
   };
 }   // namespace gum
 

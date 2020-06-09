@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief gum::ApproximationSchemeListener header file.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
@@ -33,17 +33,17 @@ namespace gum {
 
   ApproximationSchemeListener::ApproximationSchemeListener(
      IApproximationSchemeConfiguration& sch) :
-      __sch(sch) {
+      sch__(sch) {
     GUM_CONSTRUCTOR(ApproximationSchemeListener);
 
     GUM_CONNECT(
-       (__sch), onProgress, (*this), ApproximationSchemeListener::whenProgress);
-    GUM_CONNECT((__sch), onStop, (*this), ApproximationSchemeListener::whenStop);
+       (sch__), onProgress, (*this), ApproximationSchemeListener::whenProgress);
+    GUM_CONNECT((sch__), onStop, (*this), ApproximationSchemeListener::whenStop);
   }
 
   ApproximationSchemeListener::ApproximationSchemeListener(
      const ApproximationSchemeListener& other) :
-      __sch(other.__sch) {
+      sch__(other.sch__) {
     GUM_CONS_CPY(ApproximationSchemeListener);
     GUM_ERROR(OperationNotAllowed,
               "No copy constructor for ApproximationSchemeListener");

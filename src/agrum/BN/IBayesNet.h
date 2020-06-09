@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Bayesian networks
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
  *
  */
 #ifndef GUM_SIMPLE_BAYES_NET_H
@@ -230,12 +230,12 @@ namespace gum {
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     private:
-    void __minimalCondSetVisitUp(NodeId         node,
+    void minimalCondSetVisitUp__(NodeId         node,
                                  const NodeSet& soids,
                                  NodeSet&       minimal,
                                  NodeSet&       alreadyVisitedUp,
                                  NodeSet&       alreadyVisitedDn) const;
-    void __minimalCondSetVisitDn(NodeId         node,
+    void minimalCondSetVisitDn__(NodeId         node,
                                  const NodeSet& soids,
                                  NodeSet&       minimal,
                                  NodeSet&       alreadyVisitedUp,

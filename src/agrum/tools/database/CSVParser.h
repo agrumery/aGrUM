@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@
  * in.close();
  * @endcode
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -138,29 +138,29 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
       
     private:
-      void __getNextTriplet( const std::string& str,
+      void getNextTriplet__( const std::string& str,
                              std::size_t&       first_letter_token,
                              std::size_t&       next_token,
                              std::size_t&       last_letter_token,
                              std::size_t        from ) const;
       
-      void __tokenize( const std::string& str );
+      void tokenize__( const std::string& str );
 
-      std::size_t __correspondingQuoteMarker( const std::string& str,
+      std::size_t correspondingQuoteMarker__( const std::string& str,
                                               std::size_t pos ) const;
 
       
-      std::string              __line;
-      std::string              __delimiter;
-      std::string              __spaces;
-      std::string              __delimiterPlusSpaces;
-      std::size_t              __nbLine;
-      char                     __commentMarker;
-      char                     __quoteMarker;
-      bool                     __emptyData;
+      std::string              line__;
+      std::string              delimiter__;
+      std::string              spaces__;
+      std::string              delimiterPlusSpaces__;
+      std::size_t              nbLine__;
+      char                     commentMarker__;
+      char                     quoteMarker__;
+      bool                     emptyData__;
 
-      std::istream*            __instream;
-      std::vector<std::string,ALLOC<std::string>> __data;
+      std::istream*            instream__;
+      std::vector<std::string,ALLOC<std::string>> data__;
       
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

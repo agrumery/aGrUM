@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inline implementation of the class building the essential Graph from a
  * DAGmodel
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -32,34 +32,34 @@
 
 namespace gum {
 
-  INLINE MixedGraph EssentialGraph::mixedGraph() { return __mg; }
+  INLINE MixedGraph EssentialGraph::mixedGraph() { return mg__; }
 
   INLINE const NodeSet& EssentialGraph::parents(const NodeId id) const {
-    return __mg.parents(id);
+    return mg__.parents(id);
   }
 
   INLINE const NodeSet& EssentialGraph::children(const NodeId id) const {
-    return __mg.children(id);
+    return mg__.children(id);
   }
 
   INLINE const NodeSet& EssentialGraph::neighbours(const NodeId id) const {
-    return __mg.neighbours(id);
+    return mg__.neighbours(id);
   }
 
 
-  INLINE Size EssentialGraph::sizeArcs() const { return __mg.sizeArcs(); }
+  INLINE Size EssentialGraph::sizeArcs() const { return mg__.sizeArcs(); }
 
-  INLINE const ArcSet& EssentialGraph::arcs() const { return __mg.arcs(); }
+  INLINE const ArcSet& EssentialGraph::arcs() const { return mg__.arcs(); }
 
-  INLINE Size EssentialGraph::sizeEdges() const { return __mg.sizeEdges(); }
+  INLINE Size EssentialGraph::sizeEdges() const { return mg__.sizeEdges(); }
 
-  INLINE const EdgeSet& EssentialGraph::edges() const { return __mg.edges(); }
+  INLINE const EdgeSet& EssentialGraph::edges() const { return mg__.edges(); }
 
-  INLINE Size EssentialGraph::sizeNodes() const { return __mg.sizeNodes(); }
+  INLINE Size EssentialGraph::sizeNodes() const { return mg__.sizeNodes(); }
 
-  INLINE Size EssentialGraph::size() const { return __mg.size(); }
+  INLINE Size EssentialGraph::size() const { return mg__.size(); }
 
   INLINE const NodeGraphPart& EssentialGraph::nodes() const {
-    return __mg.nodes();
+    return mg__.nodes();
   }
 }   // namespace gum

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Class for generating bayesian networks.using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Ariele-Paolo MAESANO
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Ariele-Paolo MAESANO
  */
 
 #ifndef GUM_MC_BAYES_NET_GENERATOR
@@ -284,38 +284,38 @@ namespace gum {
 
     /// @}
     protected:
-    Size                                          _iteration;
-    Idx                                           _p, _q;
-    bool                                          _disturbing;
-    BayesNet< GUM_SCALAR >                        _bayesNettemp;
-    HashTable< NodeId, Potential< GUM_SCALAR >* > _hashMarginal;
+    Size                                          iteration_;
+    Idx                                           p_, q_;
+    bool                                          disturbing_;
+    BayesNet< GUM_SCALAR >                        bayesNettemp_;
+    HashTable< NodeId, Potential< GUM_SCALAR >* > hashMarginal_;
 
     /**
      * The function that verify if graph is a polytree.
      **/
-    bool __isPolytree();
+    bool isPolytree__();
     /**
      * The function that verify if node i and j are connected.
      **/
-    bool __connect(NodeId i, NodeId j);
+    bool connect__(NodeId i, NodeId j);
     /**
      * The function that verify if there is a oriented path from node i to node
      *j.
      **/
-    bool __directedPath(NodeId tail, NodeId head);
+    bool directedPath__(NodeId tail, NodeId head);
     /**
      * The function that will insert an arc between node i to node j, but only
      *if
      *there isn't any cycle created.
      **/
-    void __insertArc(NodeId i, NodeId j);
+    void insertArc__(NodeId i, NodeId j);
     /**
      * The function that will remove the arc between node i and node j. If the
      *boolean parameter mustbeconnex is true, the function will assert that the
      *graph
      *remain connected and will restore the arc otherwise.
      **/
-    void __eraseArc(NodeId i, NodeId j, bool mustbeconnex = true);
+    void eraseArc__(NodeId i, NodeId j, bool mustbeconnex = true);
 
     /**
      * In the case that the graph is a polytree, the function will, according to
@@ -327,7 +327,7 @@ namespace gum {
      *will return to the previous topology.
      **/
 
-    void __PMMx_poly();
+    void PMMx_poly__();
     /**
      * In the case that the graph is a multiconnected graph, the function will,
      *according to the probability p and q, choose which change of state must
@@ -336,91 +336,91 @@ namespace gum {
      *and if
      *not, will return to the previous topology.
      **/
-    void __PMMx_multi();
+    void PMMx_multi__();
     /**
      * In the case that the graph is a polytree, the function will add a ramdom
      *arc
-     *by the use of the function __insertArc if the arc does not exist allready.
+     *by the use of the function insertArc__ if the arc does not exist allready.
      **/
 
-    void __jump_poly();
+    void jump_poly__();
 
     /**
      * In the case that the graph is a multiconnect graph, the function will
      *choose
      *randomly two nodes and will remove the arc between them by the use of the
-     *function __insertArc if the arc exists.
+     *function insertArc__ if the arc exists.
      **/
 
-    void __jump_multi();
+    void jump_multi__();
 
     /**
      * The function will add or remove a random arc in the graph using the
      *functions
-     *__insertArc and __removeArc.
+     *insertArc__ and removeArc__.
      **/
-    void __AorR();
+    void AorR__();
     /**
      * The function will remove and add a random arc changing the topology of the
      *graph but asserting its connectivity.
      **/
-    void __AR();
+    void AR__();
     /**
      * The boolean function that will assert the respect of the constraint.
      **/
-    virtual bool __checkConditions();
+    virtual bool checkConditions__();
 
-    // NOT USED ? void __createDAG( Size BNSize, Size iniRoot );
+    // NOT USED ? void createDAG__( Size BNSize, Size iniRoot );
 
-    // NOT USED ? std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot
+    // NOT USED ? std::vector<Idx>* createPartDAG__( Size BNSize, Size iniRoot
     // );
 
     /**
-     * The internal function used by the previous __connect. It asserts the
+     * The internal function used by the previous connect__. It asserts the
      *existence
      *of an unoriented path between node i and node j avoiding passing through
      *nodes
      *listed in excluded.
      **/
 
-    bool __connect(NodeId i, NodeId j, NodeSet& excluded);
+    bool connect__(NodeId i, NodeId j, NodeSet& excluded);
 
     /**
-     * The internal function used by the previous __directedPath. It asserts the
+     * The internal function used by the previous directedPath__. It asserts the
      *existence of an oriented path between node i and node j avoiding passing
      *through nodes listed in excluded.
      **/
-    bool __directedPath(NodeId tail, NodeId head, NodeSet& excluded);
+    bool directedPath__(NodeId tail, NodeId head, NodeSet& excluded);
 
     /**
      * The function that randomly choose two nodes of the graph.
      **/
 
-    void __chooseNodes(NodeId& i, NodeId& j);
+    void chooseNodes__(NodeId& i, NodeId& j);
 
     /**
      * The function that randomly choose two neighbours nodes of the graph.
      **/
-    void __chooseCloseNodes(NodeId& i, NodeId& j);
+    void chooseCloseNodes__(NodeId& i, NodeId& j);
 
     /**
      * The function that randomly change the simple tree into a polytree.
      **/
 
-    void __transformPoly(Idx nbiter);
+    void transformPoly__(Idx nbiter);
 
     /**
      * The function that randomly generate a simple tree.
      **/
-    void __createTree(Size BNSize);
+    void createTree__(Size BNSize);
 
     /**
-     * The internal function used by __createTree that randomly generate a
+     * The internal function used by createTree__ that randomly generate a
      *simple
      *tree.
      * n : id number for node label
      **/
-    NodeId __createPartTree(Size BNSize, Idx& n);
+    NodeId createPartTree__(Size BNSize, Idx& n);
   };
 
 

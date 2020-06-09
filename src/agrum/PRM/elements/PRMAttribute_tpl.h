@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of gum::PRMAttribute
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -51,9 +51,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMAttribute< GUM_SCALAR >::overload(PRMAttribute< GUM_SCALAR >* source) {
-      auto old_type = this->_type();
-      this->_type(source->_type());
-      source->_type(old_type);
+      auto old_type = this->type_();
+      this->type_(source->type_());
+      source->type_(old_type);
     }
 
   } /* namespace prm */

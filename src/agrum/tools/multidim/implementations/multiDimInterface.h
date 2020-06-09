@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of MultiDimInterface.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MULTIDIM_INTERFACE_H
@@ -185,7 +185,7 @@ namespace gum {
      * @param x The variable to replace in
      * @param y The second variable to swap.
      */
-    virtual void _replace(const DiscreteVariable* x,
+    virtual void replace_(const DiscreteVariable* x,
                           const DiscreteVariable* y) = 0;
   };
 

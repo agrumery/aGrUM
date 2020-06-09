@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * before the nodes of the second, which must be eliminated before those of the
  * third subset, and so on.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -37,15 +37,14 @@ namespace gum {
   // returns the current partial ordering
   INLINE const List< NodeSet >*
                PartialOrderedEliminationSequenceStrategy::partialOrder() const noexcept {
-    return _subsets;
+    return subsets_;
   }
 
 
   // indicates if a new partial ordering is needed
-  INLINE bool
-     PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded() const
-     noexcept {
-    return _partial_order_needed;
+  INLINE bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded()
+     const noexcept {
+    return partial_order_needed_;
   }
 
 

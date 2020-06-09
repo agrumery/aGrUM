@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * before the nodes of the second, which must be eliminated before those of the
  * third subset, and so on.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
@@ -126,24 +126,24 @@ namespace gum {
 
     protected:
     /// the subsets constituting the partial ordering
-    const List< NodeSet >* _subsets{nullptr};
+    const List< NodeSet >* subsets_{nullptr};
 
     /// the iterator indicating which is the current subset on which we work
-    List< NodeSet >::const_iterator _subset_iter;
+    List< NodeSet >::const_iterator subset_iter_;
 
     /// the nodes which can be currently eliminated
-    NodeSet _nodeset;
+    NodeSet nodeset_;
 
     /// indicate whether a new partial ordering is necessary for the elimination
-    bool _partial_order_needed{true};
+    bool partial_order_needed_{true};
 
 
     /// indicate whether a partial ordering is compatible with the current graph
     /** The method checks whether all the nodes of the graph belong to the
      * partial ordering.
-     * @return true if some nodes in _graph do not belong to subsets or if
-     * _graph is not defnined (nullptr) */
-    bool _isPartialOrderNeeded(const List< NodeSet >* subsets) const;
+     * @return true if some nodes in graph_ do not belong to subsets or if
+     * graph_ is not defnined (nullptr) */
+    bool isPartialOrderNeeded_(const List< NodeSet >* subsets) const;
 
 
     // ############################################################################

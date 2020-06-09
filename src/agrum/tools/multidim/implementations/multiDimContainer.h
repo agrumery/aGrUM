@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MultiDimContainer class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MULTIDIM_CONTAINER_H
@@ -404,7 +404,7 @@ namespace gum {
      *
      * @param i The instantiation used to find the data.
      */
-    virtual GUM_SCALAR& _get(const Instantiation& i) const = 0;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const = 0;
   };
 } /* namespace gum */
 

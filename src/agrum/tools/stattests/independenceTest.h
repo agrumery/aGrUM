@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for all the independence tests used for learning
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_INDEPENDENCE_TEST_H
 #define GUM_LEARNING_INDEPENDENCE_TEST_H
@@ -218,22 +218,22 @@ namespace gum {
 
       protected:
       /// 1 / log(2)
-      const double _1log2{M_LOG2E};
+      const double one_log2_{M_LOG2E};
 
       /// the expert knowledge a priori we add to the contingency tables
-      Apriori< ALLOC >* _apriori{nullptr};
+      Apriori< ALLOC >* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter< ALLOC > _counter;
+      RecordCounter< ALLOC > counter_;
 
       /// the scoring cache
-      ScoringCache< ALLOC > _cache;
+      ScoringCache< ALLOC > cache_;
 
       /// a Boolean indicating whether we wish to use the cache
-      bool _use_cache{true};
+      bool use_cache_{true};
 
       /// an empty vector
-      const std::vector< NodeId, ALLOC< NodeId > > _empty_ids;
+      const std::vector< NodeId, ALLOC< NodeId > > empty_ids_;
 
 
       /// copy constructor
@@ -260,7 +260,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdCondSet< ALLOC >& idset) = 0;
+      virtual double score_(const IdCondSet< ALLOC >& idset) = 0;
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:
@@ -273,7 +273,7 @@ namespace gum {
        * @param N_xyz a counting vector of dimension X * Y * Z (in this order)
        */
       std::vector< double, ALLOC< double > >
-         _marginalize(const std::size_t node_2_marginalize,
+         marginalize_(const std::size_t node_2_marginalize,
                       const std::size_t X_size,
                       const std::size_t Y_size,
                       const std::size_t Z_size,

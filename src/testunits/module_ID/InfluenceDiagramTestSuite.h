@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -777,7 +777,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(moralGraph = id.moralGraph(true));
 
       // For comparison with what readers will return
-      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");
+      std::string dotfile =
+         GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");
       std::ofstream idOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!idOutput.good()) {

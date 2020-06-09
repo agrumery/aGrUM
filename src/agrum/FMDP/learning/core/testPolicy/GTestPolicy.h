@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the GTestPolicy
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H
@@ -60,7 +60,7 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    GTestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __GStat(0) {
+    GTestPolicy() : ITestPolicy< GUM_SCALAR >(), conTab__(), GStat__(0) {
       GUM_CONSTRUCTOR(GTestPolicy);
     }
 
@@ -106,7 +106,7 @@ namespace gum {
     // ============================================================================
     bool isTestRelevant() const {
       return (this->nbObservation() > 20
-              && this->nbObservation() > __conTab.attrASize() * 5);
+              && this->nbObservation() > conTab__.attrASize() * 5);
     }
 
     // ============================================================================
@@ -142,7 +142,7 @@ namespace gum {
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return __conTab; }
+    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return conTab__; }
 
 
     /// @}
@@ -157,8 +157,8 @@ namespace gum {
       std::stringstream ss;
       ss << ITestPolicy< GUM_SCALAR >::toString()
          << "\t\t\tContingency Table : " << std::endl
-         << __conTab.toString() << std::endl
-         << "\t\t\tGStat : " << __GStat << std::endl
+         << conTab__.toString() << std::endl
+         << "\t\t\tGStat : " << GStat__ << std::endl
          << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
       return ss.str();
     }
@@ -167,8 +167,8 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable< Idx, GUM_SCALAR > __conTab;
-    mutable double                      __GStat;
+    ContingencyTable< Idx, GUM_SCALAR > conTab__;
+    mutable double                      GStat__;
   };
 
 }   // End of namespace gum

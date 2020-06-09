@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class of listener.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -34,13 +34,13 @@
 namespace gum {
 
   INLINE void Listener::attachSignal__(__sig__::ISignaler* sender) {
-    __senders.push_back(sender);
+    senders__.push_back(sender);
   }
 
   INLINE void Listener::detachSignal__(__sig__::ISignaler* sender) {
-    auto del = std::remove(__senders.begin(), __senders.end(), sender);
+    auto del = std::remove(senders__.begin(), senders__.end(), sender);
 
-    if (del != __senders.end()) __senders.erase(del, __senders.end());
+    if (del != senders__.end()) senders__.erase(del, senders__.end());
   }
 
 }   // namespace gum

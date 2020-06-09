@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Headers of the Link and LinkedList classes.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
@@ -115,10 +115,10 @@ namespace gum {
 
     private:
     /// The element embedded in this link
-    T __element;
+    T element__;
 
     /// The next link in the list
-    Link< T >* __nextLink;
+    Link< T >* nextLink__;
   };
 
   /**
@@ -193,7 +193,7 @@ namespace gum {
 
     private:
     /// The first link of our list
-    Link< T >* __firstLink;
+    Link< T >* firstLink__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

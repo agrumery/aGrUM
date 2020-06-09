@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Class for computing default triangulations of graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_INCREMENTAL_TRIANGULATION_H
@@ -174,69 +174,69 @@ namespace gum {
 
     private:
     /// the graph that needs be triangulated
-    UndiGraph __graph;
+    UndiGraph graph__;
 
     /// the domain sizes of the nodes
-    NodeProperty< Size > __domain_sizes;
+    NodeProperty< Size > domain_sizes__;
 
     /// the junction tree computed so far
-    CliqueGraph __junction_tree;
+    CliqueGraph junction_tree__;
 
     /// the maximal prime subgraph tree
-    CliqueGraph __T_mpd;
+    CliqueGraph T_mpd__;
 
     /// for each node in graph, store the MPS containing the node
-    NodeProperty< List< NodeId > > __mps_of_node;
+    NodeProperty< List< NodeId > > mps_of_node__;
 
     /// indicate for each MPS its set of cliques in the junction tree
-    NodeProperty< std::vector< NodeId > > __cliques_of_mps;
+    NodeProperty< std::vector< NodeId > > cliques_of_mps__;
 
     /// indicate for each clique the MPS it belongs to
-    NodeProperty< NodeId > __mps_of_clique;
+    NodeProperty< NodeId > mps_of_clique__;
 
     /// the set of MPS affected by a new triangulation
-    NodeProperty< bool > __mps_affected;
+    NodeProperty< bool > mps_affected__;
 
     /// the triangulation algorithm that will be used incremantally
-    UnconstrainedTriangulation* __triangulation;
+    UnconstrainedTriangulation* triangulation__;
 
     /// a Boolean indicating whether the triangulation need be updated
-    bool __require_update{false};
+    bool require_update__{false};
 
     /// a Boolean indicating wether we should update the elimination order
-    bool __require_elimination_order{false};
+    bool require_elimination_order__{false};
 
     /// the current elimination ordering
-    std::vector< NodeId > __elimination_order;
+    std::vector< NodeId > elimination_order__;
 
     /// the elimination order (access by NodeId)
-    NodeProperty< Idx > __reverse_elimination_order;
+    NodeProperty< Idx > reverse_elimination_order__;
 
     /// a Boolean indicating whether we should compute the createdJTCliques
-    bool __require_created_JT_cliques{false};
+    bool require_created_JT_cliques__{false};
 
     /// For each node, a clique that contains it
-    NodeProperty< NodeId > __created_JT_cliques;
+    NodeProperty< NodeId > created_JT_cliques__;
 
     /// mark the mps affected by the deletion of a given edge
-    void __markAffectedMPSsByRemoveLink(const NodeId My,
+    void markAffectedMPSsByRemoveLink__(const NodeId My,
                                         const NodeId Mz,
                                         const Edge&  edge);
 
     /// mark the mps affected by the insertion of a new edge
-    int __markAffectedMPSsByAddLink(const NodeId My,
+    int markAffectedMPSsByAddLink__(const NodeId My,
                                     const NodeId Mz,
                                     const NodeId X,
                                     const NodeId Y);
 
     /// remove a given node from the T_mpd structure
-    void __performRemoveNode(const NodeId node, const NodeId My, const NodeId Mz);
+    void performRemoveNode__(const NodeId node, const NodeId My, const NodeId Mz);
 
     /// adds a new node to T_mpd, the graph and the clique graph
-    void __performAddNode(const NodeId node);
+    void performAddNode__(const NodeId node);
 
     /// set-up the connected subgraph that needs be retriangulated
-    void __setUpConnectedTriangulation(
+    void setUpConnectedTriangulation__(
        NodeId                     Mx,
        NodeId                     Mfrom,
        UndiGraph&                 theGraph,
@@ -244,7 +244,7 @@ namespace gum {
        HashTable< NodeId, bool >& cliques_affected);
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void __computeMaxPrimeMergings(
+    void computeMaxPrimeMergings__(
        const NodeId                                node,
        const NodeId                                from,
        std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
@@ -252,28 +252,28 @@ namespace gum {
        const NodeSet& new_nodes_in_junction_tree) const;
 
     /// update the junction tree
-    void __updateJunctionTree(NodeProperty< bool >& all_cliques_affected,
+    void updateJunctionTree__(NodeProperty< bool >& all_cliques_affected,
                               NodeSet&              new_nodes_in_junction_tree);
 
     /// update the max prime subgraph
-    void __updateMaxPrimeSubgraph(NodeProperty< bool >& cliques_affected,
+    void updateMaxPrimeSubgraph__(NodeProperty< bool >& cliques_affected,
                                   const NodeSet& new_nodes_in_junction_tree);
 
     /// a collect algorithm to compute elimination orderings
-    void __collectEliminationOrder(const NodeId          node,
+    void collectEliminationOrder__(const NodeId          node,
                                    const NodeId          from,
                                    NodeProperty< bool >& examined,
                                    Idx&                  index);
 
     /// a collect algorithm to compute, for each node, one container JT's clique
-    void __collectJTCliques(const NodeId          clique,
+    void collectJTCliques__(const NodeId          clique,
                             const NodeId          from,
                             NodeProperty< bool >& examined);
 
     /// checks that the incremental triangulation works properly
-    bool __check();
+    bool check__();
 
-    /// to enable testunits to use __check
+    /// to enable testunits to use check__
     friend class gum_tests::IncrementalTriangulationTestSuite;
   };
 

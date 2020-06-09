@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -105,18 +105,18 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    MultiDimFunctionGraph< double >* __instantiateFunctionGraph() {
-      return __instantiateFunctionGraph(Int2Type< LearnerSelection >());
+    MultiDimFunctionGraph< double >* instantiateFunctionGraph__() {
+      return instantiateFunctionGraph__(Int2Type< LearnerSelection >());
     }
 
     MultiDimFunctionGraph< double >*
-       __instantiateFunctionGraph(Int2Type< IMDDILEARNER >) {
+       instantiateFunctionGraph__(Int2Type< IMDDILEARNER >) {
       return MultiDimFunctionGraph< double, ExactTerminalNodePolicy >::
          getReducedAndOrderedInstance();
     }
 
     MultiDimFunctionGraph< double >*
-       __instantiateFunctionGraph(Int2Type< ITILEARNER >) {
+       instantiateFunctionGraph__(Int2Type< ITILEARNER >) {
       return MultiDimFunctionGraph< double,
                                     ExactTerminalNodePolicy >::getTreeInstance();
     }
@@ -126,32 +126,32 @@ namespace gum {
     ///
     // ==========================================================================
     VariableLearnerType*
-       __instantiateVarLearner(MultiDimFunctionGraph< double >* target,
+       instantiateVarLearner__(MultiDimFunctionGraph< double >* target,
                                Set< const DiscreteVariable* >&  mainVariables,
                                const DiscreteVariable*          learnedVar) {
-      return __instantiateVarLearner(
+      return instantiateVarLearner__(
          target, mainVariables, learnedVar, Int2Type< LearnerSelection >());
     }
 
     VariableLearnerType*
-       __instantiateVarLearner(MultiDimFunctionGraph< double >* target,
+       instantiateVarLearner__(MultiDimFunctionGraph< double >* target,
                                Set< const DiscreteVariable* >&  mainVariables,
                                const DiscreteVariable*          learnedVar,
                                Int2Type< IMDDILEARNER >) {
       return new VariableLearnerType(target,
-                                     __learningThreshold,
-                                     __similarityThreshold,
+                                     learningThreshold__,
+                                     similarityThreshold__,
                                      mainVariables,
                                      learnedVar);
     }
 
     VariableLearnerType*
-       __instantiateVarLearner(MultiDimFunctionGraph< double >* target,
+       instantiateVarLearner__(MultiDimFunctionGraph< double >* target,
                                Set< const DiscreteVariable* >&  mainVariables,
                                const DiscreteVariable*          learnedVar,
                                Int2Type< ITILEARNER >) {
       return new VariableLearnerType(
-         target, __learningThreshold, mainVariables, learnedVar);
+         target, learningThreshold__, mainVariables, learnedVar);
     }
 
 
@@ -159,25 +159,25 @@ namespace gum {
     ///
     // ==========================================================================
     RewardLearnerType*
-       __instantiateRewardLearner(MultiDimFunctionGraph< double >* target,
+       instantiateRewardLearner__(MultiDimFunctionGraph< double >* target,
                                   Set< const DiscreteVariable* >&  mainVariables) {
-      return __instantiateRewardLearner(
+      return instantiateRewardLearner__(
          target, mainVariables, Int2Type< LearnerSelection >());
     }
 
     RewardLearnerType*
-       __instantiateRewardLearner(MultiDimFunctionGraph< double >* target,
+       instantiateRewardLearner__(MultiDimFunctionGraph< double >* target,
                                   Set< const DiscreteVariable* >&  mainVariables,
                                   Int2Type< IMDDILEARNER >) {
       return new RewardLearnerType(
-         target, __learningThreshold, __similarityThreshold, mainVariables);
+         target, learningThreshold__, similarityThreshold__, mainVariables);
     }
 
     RewardLearnerType*
-       __instantiateRewardLearner(MultiDimFunctionGraph< double >* target,
+       instantiateRewardLearner__(MultiDimFunctionGraph< double >* target,
                                   Set< const DiscreteVariable* >&  mainVariables,
                                   Int2Type< ITILEARNER >) {
-      return new RewardLearnerType(target, __learningThreshold, mainVariables);
+      return new RewardLearnerType(target, learningThreshold__, mainVariables);
     }
 
     /// @}
@@ -228,35 +228,35 @@ namespace gum {
     // ==========================================================================
     const IVisitableGraphLearner* varLearner(Idx                     actionId,
                                              const DiscreteVariable* var) const {
-      return __actionLearners[actionId]->getWithDefault(var, nullptr);
+      return actionLearners__[actionId]->getWithDefault(var, nullptr);
     }
 
-    virtual double rMax() const { return __rmax; }
+    virtual double rMax() const { return rmax__; }
 
     private:
-    double __rmax;
+    double rmax__;
 
     public:
-    virtual double modaMax() const { return __modaMax; }
+    virtual double modaMax() const { return modaMax__; }
 
     private:
-    double __modaMax;
+    double modaMax__;
 
     /// @}
 
 
     private:
     /// The FMDP to store the learned model
-    FMDP< double >* __fmdp;
+    FMDP< double >* fmdp__;
 
-    HashTable< Idx, VarLearnerTable* > __actionLearners;
+    HashTable< Idx, VarLearnerTable* > actionLearners__;
 
-    bool                                 __actionReward;
-    HashTable< Idx, RewardLearnerType* > __actionRewardLearners;
-    RewardLearnerType*                   __rewardLearner;
+    bool                                 actionReward__;
+    HashTable< Idx, RewardLearnerType* > actionRewardLearners__;
+    RewardLearnerType*                   rewardLearner__;
 
-    const double __learningThreshold;
-    const double __similarityThreshold;
+    const double learningThreshold__;
+    const double similarityThreshold__;
   };
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Header of the MultiDimArray class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MULTI_DIM_ARRAY_H
 #define GUM_MULTI_DIM_ARRAY_H
@@ -241,15 +241,15 @@ namespace gum {
     protected:
     /// The true data : the values is mutable since we can change the value /
     /// in a const multiDimArray
-    mutable std::vector< GUM_SCALAR > _values;
+    mutable std::vector< GUM_SCALAR > values_;
 
-    virtual void _commitMultipleChanges();
+    virtual void commitMultipleChanges_();
 
-    virtual void _commitMultipleChanges(const GUM_SCALAR&);
+    virtual void commitMultipleChanges_(const GUM_SCALAR&);
 
-    virtual GUM_SCALAR& _get(const Instantiation& i) const;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const;
 
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class of gum::Signaler0.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -70,14 +70,14 @@ namespace gum {
       protected:
       friend class Listener;
 
-      void _detachFromTarget(Listener* target);
+      void detachFromTarget_(Listener* target);
 
-      void _duplicateTarget(const Listener* oldtarget, Listener* newtarget);
+      void duplicateTarget_(const Listener* oldtarget, Listener* newtarget);
 
-      ConnectorList _connectors;
+      ConnectorList connectors_;
 
       private:
-      std::function< bool(IConnector0* el) > __find_target(const gum::Listener* l);
+      std::function< bool(IConnector0* el) > find_target__(const gum::Listener* l);
     };
 
     template < class TargetClass >
@@ -100,8 +100,8 @@ namespace gum {
       virtual Listener* target() const;
 
       private:
-      TargetClass* __target;
-      void (TargetClass::*__action)(const void*);
+      TargetClass* target__;
+      void (TargetClass::*action__)(const void*);
     };
 
   }   // namespace __sig__
@@ -129,12 +129,12 @@ namespace gum {
     void attach(TargetClass* target, void (TargetClass::*action)(const void*)) {
       __sig__::Connector0< TargetClass >* conn =
          new __sig__::Connector0< TargetClass >(target, action);
-      this->_connectors.push_back(conn);
+      this->connectors_.push_back(conn);
       target->attachSignal__(this);
     }
 
     INLINE void operator()(const void* src) {
-      for (const auto el: _connectors) {
+      for (const auto el: connectors_) {
         el->notify(src);
       }
     }

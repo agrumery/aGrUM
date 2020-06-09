@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@
  * time consuming operation in learning. This class provides an efficient cache
  * that can significantly alleviate the learning computational burden.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_SCORING_CACHE_H
 #define GUM_LEARNING_SCORING_CACHE_H
@@ -161,7 +161,7 @@ namespace gum {
       HashTable< IdCondSet< ALLOC >,
                  double,
                  ALLOC< std::pair< IdCondSet< ALLOC >, double > > >
-         __scores;
+         scores__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

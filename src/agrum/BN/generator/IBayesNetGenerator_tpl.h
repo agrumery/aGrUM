@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,9 +23,8 @@
 /** @file
  * @brief Source implementation of IBayesNetGenerator
  *
- * @author Christophe GONZALES (@AMU), Pierre-Henri WUILLEMIN (@LIP6), Lionel TORTI and
- *Ariele-Paolo
- *MAESANO
+ * @author Christophe GONZALES(@AMU), Pierre-Henri WUILLEMIN(@LIP6), Lionel TORTI
+ *and Ariele-Paolo MAESANO
  *
  */
 
@@ -38,9 +37,9 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(
      Size nbrNodes, Size maxArcs, Size maxModality) :
-      _bayesNet() {
+      bayesNet_() {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
-    _nbrNodes = nbrNodes;
+    nbrNodes_ = nbrNodes;
 
     if (maxArcs < nbrNodes - 1 || maxArcs > (nbrNodes * (nbrNodes - 1)) / 2)
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ");
@@ -49,38 +48,38 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 " maxModality must be at least equal to two ");
 
-    _maxArcs = maxArcs;
-    _maxModality = maxModality;
+    maxArcs_ = maxArcs;
+    maxModality_ = maxModality;
   }
 
   // Destructor.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::~IBayesNetGenerator() {
     GUM_DESTRUCTOR(IBayesNetGenerator);
-    //    delete _cptGenerator;
+    //    delete cptGenerator_;
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fillCPT() {
-    for (auto node: _bayesNet.nodes())
-      this->generateCPT(_bayesNet.cpt(node).pos(_bayesNet.variable(node)),
-                        _bayesNet.cpt(node));
+    for (auto node: bayesNet_.nodes())
+      this->generateCPT(bayesNet_.cpt(node).pos(bayesNet_.variable(node)),
+                        bayesNet_.cpt(node));
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE Size
      IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::maxModality() const {
-    return _maxModality;
+    return maxModality_;
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE Size IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::nbrNodes() const {
-    return _nbrNodes;
+    return nbrNodes_;
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE Size IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::maxArcs() const {
-    return _maxArcs;
+    return maxArcs_;
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
@@ -90,24 +89,24 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 " maxModality must be at least equal to two ");
 
-    _maxModality = maxModality;
+    maxModality_ = maxModality;
   }
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE void
      IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
-    if ((_maxArcs < nbrNodes - 1) || (_maxArcs > (nbrNodes * (nbrNodes - 1)) / 2))
+    if ((maxArcs_ < nbrNodes - 1) || (maxArcs_ > (nbrNodes * (nbrNodes - 1)) / 2))
       GUM_ERROR(OperationNotAllowed, " nbrNodes value not possible ");
 
-    _nbrNodes = nbrNodes;
+    nbrNodes_ = nbrNodes;
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE void
      IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxArcs(Size maxArcs) {
-    if (maxArcs < _nbrNodes - 1 || maxArcs > (_nbrNodes * (_nbrNodes - 1)) / 2)
+    if (maxArcs < nbrNodes_ - 1 || maxArcs > (nbrNodes_ * (nbrNodes_ - 1)) / 2)
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ");
 
-    _maxArcs = maxArcs;
+    maxArcs_ = maxArcs;
   }
 
   // Generates a bayesian network using floats.

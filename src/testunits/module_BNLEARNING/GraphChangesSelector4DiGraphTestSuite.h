@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ namespace gum_tests {
 
   class GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
     private:
-    void __order_nodes(
+    void order_nodes__(
        const std::vector< std::vector< double > >&      all_scores,
        const std::vector< gum::NodeId >&                best_nodes,
        std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
@@ -57,7 +57,7 @@ namespace gum_tests {
                 });
     }
 
-    void __compute_scores(gum::learning::ScoreK2<>&             score,
+    void compute_scores__(gum::learning::ScoreK2<>&             score,
                           const gum::DAG&                       graph,
                           std::vector< std::vector< double > >& all_scores,
                           std::vector< gum::NodeId >&           best_nodes,
@@ -195,7 +195,7 @@ namespace gum_tests {
       std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
       std::vector< gum::NodeId >           best_nodes(6);
       gum::NodeId                          best_node;
-      __compute_scores(score, graph, all_scores, best_nodes, best_node);
+      compute_scores__(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
@@ -223,7 +223,7 @@ namespace gum_tests {
       selector.applyChangeWithoutScoreUpdate(change2);
       selector.updateScoresAfterAppliedChanges();
 
-      __compute_scores(score, graph, all_scores, best_nodes, best_node);
+      compute_scores__(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -242,7 +242,7 @@ namespace gum_tests {
       graph.addArc(change3.node1(), change3.node2());
       selector.applyChange(change3);
 
-      __compute_scores(score, graph, all_scores, best_nodes, best_node);
+      compute_scores__(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -261,7 +261,7 @@ namespace gum_tests {
       graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
       selector.applyChange(change4);
 
-      __compute_scores(score, graph, all_scores, best_nodes, best_node);
+      compute_scores__(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -278,7 +278,7 @@ namespace gum_tests {
       TS_ASSERT(xnodes.size() == std::size_t(6));
 
       std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
-      __order_nodes(all_scores, best_nodes, sorted_nodes);
+      order_nodes__(all_scores, best_nodes, sorted_nodes);
       for (std::size_t i = 0; i < 6; ++i) {
         TS_ASSERT(xnodes[i] == sorted_nodes[i]);
       }

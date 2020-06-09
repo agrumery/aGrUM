@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief This file contains abstract class definitions for Markov networks
  *        inference classes.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MARKOV_NET_INFERENCE_H
@@ -171,8 +171,8 @@ namespace gum {
      * to add in the constructors of their inference algorithms a call to
      * MarkovNetInference( mn ), we added constructor MarkovNetInference(),
      * which will be called automatically by the lowest descendant.
-     * Then, MarginalTargetedMNInference and JointTargetedMNInference will take care
-     * of setting the appropriate mn into MarkovNetInference. */
+     * Then, MarginalTargetedMNInference and JointTargetedMNInference will take
+     * care of setting the appropriate mn into MarkovNetInference. */
     MarkovNetInference();
 
     /// destructor
@@ -469,16 +469,16 @@ namespace gum {
 
     protected:
     /// fired when the stage is changed
-    virtual void _onStateChanged() = 0;
+    virtual void onStateChanged_() = 0;
 
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) = 0;
+    virtual void onEvidenceAdded_(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence) = 0;
+    virtual void onEvidenceErased_(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence) = 0;
+    virtual void onAllEvidenceErased_(bool contains_hard_evidence) = 0;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -488,26 +488,26 @@ namespace gum {
      * Hard or from Hard to Soft
      *
      */
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
+    virtual void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) = 0;
 
     /// fired after a new Markov net has been assigned to the engine
-    virtual void _onMarkovNetChanged(const IMarkovNet< GUM_SCALAR >* mn) = 0;
+    virtual void onMarkovNetChanged_(const IMarkovNet< GUM_SCALAR >* mn) = 0;
 
     /// prepares inference when the latter is in OutdatedMNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedMNStructure and
-     * _makeMNInference. */
-    virtual void _updateOutdatedMNStructure() = 0;
+     * known and can be changed between updateOutdatedMNStructure_ and
+     * makeMNInference_. */
+    virtual void updateOutdatedMNStructure_() = 0;
 
     /// prepares inference when the latter is in OutdatedMNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedMNPotentials and
-     * _makeMNInference. */
-    virtual void _updateOutdatedMNPotentials() = 0;
+     * known and can be changed between updateOutdatedMNPotentials_ and
+     * makeMNInference_. */
+    virtual void updateOutdatedMNPotentials_() = 0;
 
     /// called when the inference has to be performed effectively
-    /** Once the inference is done, _fillPosterior can be called. */
-    virtual void _makeInference() = 0;
+    /** Once the inference is done, fillPosterior_ can be called. */
+    virtual void makeInference_() = 0;
 
     /// put the inference into an outdated MN structure state
     /** OutdatedMNStructure: in this state, the inference is fully unprepared
@@ -517,7 +517,7 @@ namespace gum {
      * structural change in the MN. As a consequence, the (incremental)
      * inference (probably) needs a significant amount of preparation to be
      * ready for the next inference.*/
-    void _setOutdatedMNStructureState();
+    void setOutdatedMNStructureState_();
 
     /** @brief puts the inference into an OutdatedMNPotentials state if it is
      * not already in an OutdatedMNStructure state
@@ -528,47 +528,47 @@ namespace gum {
      * potentials to be ready. Only a light amount of preparation is needed to
      * be able to perform inference.
      */
-    void _setOutdatedMNPotentialsState();
+    void setOutdatedMNPotentialsState_();
 
 
     private:
     /// the current state of the inference (outdated/ready/done)
-    StateOfMNInference __state{StateOfMNInference::OutdatedMNStructure};
+    StateOfMNInference state__{StateOfMNInference::OutdatedMNStructure};
 
     /// the Markov net on which we perform inferences
-    const IMarkovNet< GUM_SCALAR >* __mn{nullptr};
+    const IMarkovNet< GUM_SCALAR >* mn__{nullptr};
 
     /// the domain sizes of the random variables
-    NodeProperty< Size > __domain_sizes;
+    NodeProperty< Size > domain_sizes__;
 
     /// the set of evidence entered into the network
-    NodeProperty< const Potential< GUM_SCALAR >* > __evidence;
+    NodeProperty< const Potential< GUM_SCALAR >* > evidence__;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty< Idx > __hard_evidence;
+    NodeProperty< Idx > hard_evidence__;
 
     /// the set of nodes that received soft evidence
-    NodeSet __soft_evidence_nodes;
+    NodeSet soft_evidence_nodes__;
 
     /// the set of nodes that received hard evidence
-    NodeSet __hard_evidence_nodes;
+    NodeSet hard_evidence_nodes__;
 
     /// set the state of the inference engine and
-    /// call the notification _onStateChanged
+    /// call the notification onStateChanged_
     /// when necessary (i.e. when the state has effectively changed).
-    virtual void __setState(const StateOfMNInference state) final;
+    virtual void setState__(const StateOfMNInference state) final;
 
     /// create the internal structure for a hard evidence
-    Potential< GUM_SCALAR > __createHardEvidence(NodeId id, Idx val) const;
+    Potential< GUM_SCALAR > createHardEvidence__(NodeId id, Idx val) const;
 
     /// checks whether a potential corresponds to a hard evidence or not
-    bool __isHardEvidence(const Potential< GUM_SCALAR >& pot, Idx& val) const;
+    bool isHardEvidence__(const Potential< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
-    void __computeDomainSizes();
+    void computeDomainSizes__();
 
     /// assigns a MN during the inference engine construction
-    void __setMarkovNetDuringConstruction(const IMarkovNet< GUM_SCALAR >* mn);
+    void setMarkovNetDuringConstruction__(const IMarkovNet< GUM_SCALAR >* mn);
 
 
     /// allow JointInference to access the single targets and inference states

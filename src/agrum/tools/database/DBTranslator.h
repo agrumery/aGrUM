@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * This file contains the basis for interacting with a tabular database as
  * a translator. Every translator should derive from this class.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_H
 #define GUM_LEARNING_DB_TRANSLATOR_H
@@ -376,13 +376,13 @@ namespace gum {
 
 
       /// indicates whether the dictionary can be updated or not
-      bool _is_dictionary_dynamic;
+      bool is_dictionary_dynamic_;
 
       /// the maximum number of entries that the dictionary is allowed to contain
-      std::size_t _max_dico_entries;
+      std::size_t max_dico_entries_;
 
       /// the set of missing symbols
-      Set< std::string, ALLOC< std::string > > _missing_symbols;
+      Set< std::string, ALLOC< std::string > > missing_symbols_;
 
       /// the bijection relating back translated values and their original strings.
       /** Note that the translated values considered here are of type std::size_t
@@ -393,10 +393,10 @@ namespace gum {
       mutable Bijection< std::size_t,
                          std::string,
                          ALLOC< std::pair< float, std::string > > >
-         _back_dico;
+         back_dico_;
 
       /// the type of the values translated by the translator
-      DBTranslatedValueType _val_type;
+      DBTranslatedValueType val_type_;
     };
 
 

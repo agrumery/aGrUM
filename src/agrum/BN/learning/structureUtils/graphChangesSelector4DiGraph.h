@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The mecanism to compute the next available graph changes for directed
  * structure learning search algorithms.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H
 #define GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H
@@ -181,66 +181,66 @@ namespace gum {
 
       private:
       /// the scoring function
-      Score< ALLOC >* __score;
+      Score< ALLOC >* score__;
 
       /// the set of constraints used to determine valid changes
-      STRUCTURAL_CONSTRAINT* __constraint;
+      STRUCTURAL_CONSTRAINT* constraint__;
 
       /// the generator that returns the set of possible changes
-      GRAPH_CHANGES_GENERATOR* __changes_generator;
+      GRAPH_CHANGES_GENERATOR* changes_generator__;
 
       /// a sequence containing all the possible changes
-      Sequence< GraphChange > __changes;
+      Sequence< GraphChange > changes__;
 
       /// the scores for the head and tail of all the changes
-      /** the scores are indexed by their index in sequence __changes */
-      std::vector< std::pair< double, double > > __change_scores;
+      /** the scores are indexed by their index in sequence changes__ */
+      std::vector< std::pair< double, double > > change_scores__;
 
       /// for each node, a priority queue sorting GraphChanges by decreasing score
       /** within each queue, the changes are determined by their index in
-       * sequence __changes. */
+       * sequence changes__. */
       NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-         __change_queue_per_node;
+         change_queue_per_node__;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue< NodeId, double, std::greater< double > > __node_queue;
+      PriorityQueue< NodeId, double, std::greater< double > > node_queue__;
 
       /// the set of changes known to be currently illegal (due to the constraints)
       /** within each queue, the changes are determined by their index in
-       * sequence __changes. */
-      Set< std::size_t > __illegal_changes;
+       * sequence changes__. */
+      Set< std::size_t > illegal_changes__;
 
       /// the current score of each node
-      NodeProperty< double > __node_current_scores;
+      NodeProperty< double > node_current_scores__;
 
       /// the set of parents of each node (speeds-up score computations)
-      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > __parents;
+      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > parents__;
 
       /// indicates whether we need to recompute whether the queue is empty or not
-      bool __queues_valid{false};
+      bool queues_valid__{false};
 
       /// the set of queues to update when applying several changes
-      Set< NodeId > __queues_to_update;
+      Set< NodeId > queues_to_update__;
 
       /// indicates whether a given change is valid or not
-      bool __isChangeValid(const std::size_t index) const;
+      bool isChangeValid__(const std::size_t index) const;
 
       /// put a change into the illegal set
-      void __invalidateChange(const std::size_t change_index);
+      void invalidateChange__(const std::size_t change_index);
 
       /// remove the now legal changes from the illegal set
-      void __illegal2LegalChanges(Set< std::size_t >& changes_to_recompute);
+      void illegal2LegalChanges__(Set< std::size_t >& changes_to_recompute);
 
       /// finds the changes that are affected by a given node modification
       void
-         __findLegalChangesNeedingUpdate(Set< std::size_t >& changes_to_recompute,
+         findLegalChangesNeedingUpdate__(Set< std::size_t >& changes_to_recompute,
                                          const NodeId        target_node);
 
       /// perform the necessary updates of the scores
-      void __updateScores(const Set< std::size_t >& changes_to_recompute);
+      void updateScores__(const Set< std::size_t >& changes_to_recompute);
 
       /// get from the graph change generator a new set of changes
-      void __getNewChanges();
+      void getNewChanges__();
     };
 
   } /* namespace learning */

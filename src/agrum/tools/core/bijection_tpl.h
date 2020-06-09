@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,8 @@
  * @file
  * @brief Class providing generic double hash tables
  *
- * @author Jean-Philippe DUBUS, Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Philippe DUBUS, Christophe GONZALES(@AMU) and Pierre-Henri
+ * WUILLEMIN(@LIP6)
  */
 
 // To simply IDE parsing
@@ -55,18 +56,18 @@ namespace gum {
   // a function that performs a complete copy of another bijection
   template < typename T1, typename T2, typename Alloc, bool Gen >
   template < typename OtherAlloc >
-  INLINE void BijectionImplementation< T1, T2, Alloc, Gen >::__copy(
+  INLINE void BijectionImplementation< T1, T2, Alloc, Gen >::copy__(
      const HashTable< T1, T2*, OtherAlloc >& f2s) {
     // parse f2s and perform copies
     for (auto iter = f2s.cbegin(); iter != f2s.cend(); ++iter) {
       typename HashTable12::value_type* val1 =
-         &(__firstToSecond.insert(iter.key(), nullptr));
+         &(firstToSecond__.insert(iter.key(), nullptr));
       typename HashTable21::value_type* val2;
 
       try {
-        val2 = &(__secondToFirst.insert(*(iter.val()), nullptr));
+        val2 = &(secondToFirst__.insert(*(iter.val()), nullptr));
       } catch (...) {
-        __firstToSecond.erase(iter.key());
+        firstToSecond__.erase(iter.key());
         throw;
       }
 
@@ -74,9 +75,9 @@ namespace gum {
       val2->second = &(const_cast< T1& >(val1->first));
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
   }
 
   // Default constructor: creates a bijection without association
@@ -88,8 +89,8 @@ namespace gum {
       // policy set to false because we will do the uniqueness tests ourselves
       // (this
       // will speed-up the process)
-      __firstToSecond(size, resize_policy, false),
-      __secondToFirst(size, resize_policy, false) {
+      firstToSecond__(size, resize_policy, false),
+      secondToFirst__(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
 
     // make sure the end() iterator is constructed properly
@@ -101,8 +102,8 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE BijectionImplementation< T1, T2, Alloc, Gen >::BijectionImplementation(
      std::initializer_list< std::pair< T1, T2 > > list) :
-      __firstToSecond(Size(list.size()) / 2, true, false),
-      __secondToFirst(Size(list.size()) / 2, true, false) {
+      firstToSecond__(Size(list.size()) / 2, true, false),
+      secondToFirst__(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
 
     for (const auto& elt: list) {
@@ -118,10 +119,10 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE BijectionImplementation< T1, T2, Alloc, Gen >::BijectionImplementation(
      const BijectionImplementation< T1, T2, Alloc, Gen >& toCopy) :
-      __firstToSecond(toCopy.__firstToSecond.capacity(), true, false),
-      __secondToFirst(toCopy.__secondToFirst.capacity(), true, false) {
+      firstToSecond__(toCopy.firstToSecond__.capacity(), true, false),
+      secondToFirst__(toCopy.secondToFirst__.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
   }
 
   // Generalized copy constructor
@@ -129,18 +130,18 @@ namespace gum {
   template < typename OtherAlloc >
   INLINE BijectionImplementation< T1, T2, Alloc, Gen >::BijectionImplementation(
      const BijectionImplementation< T1, T2, OtherAlloc, Gen >& toCopy) :
-      __firstToSecond(toCopy.__firstToSecond.capacity(), true, false),
-      __secondToFirst(toCopy.__secondToFirst.capacity(), true, false) {
+      firstToSecond__(toCopy.firstToSecond__.capacity(), true, false),
+      secondToFirst__(toCopy.secondToFirst__.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
   }
 
   // move constructor
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE BijectionImplementation< T1, T2, Alloc, Gen >::BijectionImplementation(
      BijectionImplementation< T1, T2, Alloc, Gen >&& from) noexcept :
-      __firstToSecond(std::move(from.__firstToSecond)),
-      __secondToFirst(std::move(from.__secondToFirst)) {
+      firstToSecond__(std::move(from.firstToSecond__)),
+      secondToFirst__(std::move(from.secondToFirst__)) {
     GUM_CONS_MOV(BijectionImplementation);
   }
 
@@ -154,10 +155,10 @@ namespace gum {
   // removes all the associations from the bijection
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Alloc, Gen >::clear() {
-    __firstToSecond.clear();
-    __secondToFirst.clear();
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
+    firstToSecond__.clear();
+    secondToFirst__.clear();
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
     // after the clear's
   }
 
@@ -169,12 +170,12 @@ namespace gum {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
-      __copy(toCopy.__firstToSecond);
+      copy__(toCopy.firstToSecond__);
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -185,11 +186,11 @@ namespace gum {
      BijectionImplementation< T1, T2, Alloc, Gen >::operator=(
         const BijectionImplementation< T1, T2, OtherAlloc, Gen >& toCopy) {
     clear();
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -201,13 +202,13 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       clear();
-      __firstToSecond = std::move(from.__firstToSecond);
-      __secondToFirst = std::move(from.__secondToFirst);
+      firstToSecond__ = std::move(from.firstToSecond__);
+      secondToFirst__ = std::move(from.secondToFirst__);
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -230,7 +231,7 @@ namespace gum {
   INLINE const typename BijectionImplementation< T1, T2, Alloc, Gen >::iterator&
      BijectionImplementation< T1, T2, Alloc, Gen >::end() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEnd));
+       BijectionIteratorStaticEnd::BijectionIterEnd__));
   }
 
   // returns the iterator to the end of the bijection
@@ -239,7 +240,7 @@ namespace gum {
      const_iterator&
      BijectionImplementation< T1, T2, Alloc, Gen >::cend() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEnd));
+       BijectionIteratorStaticEnd::BijectionIterEnd__));
   }
 
   // returns the iterator at the beginning of the bijection
@@ -263,7 +264,7 @@ namespace gum {
      iterator_safe&
      BijectionImplementation< T1, T2, Alloc, Gen >::endSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEndSafe));
+       BijectionIteratorStaticEnd::BijectionIterEndSafe__));
   }
 
   // returns the iterator to the end of the bijection
@@ -272,42 +273,42 @@ namespace gum {
      const_iterator_safe&
      BijectionImplementation< T1, T2, Alloc, Gen >::cendSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEndSafe));
+       BijectionIteratorStaticEnd::BijectionIterEndSafe__));
   }
 
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T1&
                BijectionImplementation< T1, T2, Alloc, Gen >::first(const T2& second) const {
-    return *(__secondToFirst[second]);
+    return *(secondToFirst__[second]);
   }
 
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T2&
                BijectionImplementation< T1, T2, Alloc, Gen >::second(const T1& first) const {
-    return *(__firstToSecond[first]);
+    return *(firstToSecond__[first]);
   }
 
   // Test whether the bijection contains the "first" value
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE bool BijectionImplementation< T1, T2, Alloc, Gen >::existsFirst(
      const T1& first) const {
-    return __firstToSecond.exists(first);
+    return firstToSecond__.exists(first);
   }
 
   // Test whether the bijection contains the "second" value
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE bool BijectionImplementation< T1, T2, Alloc, Gen >::existsSecond(
      const T2& second) const {
-    return __secondToFirst.exists(second);
+    return secondToFirst__.exists(second);
   }
 
   // inserts a new association in the bijection
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Alloc, Gen >::HashTable12::
      value_type*
-     BijectionImplementation< T1, T2, Alloc, Gen >::__insert(const T1& first,
+     BijectionImplementation< T1, T2, Alloc, Gen >::insert__(const T1& first,
                                                              const T2& second) {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
@@ -318,13 +319,13 @@ namespace gum {
 
     // insert copies of first and second
     typename HashTable12::value_type* val1 =
-       &(__firstToSecond.insert(first, nullptr));
+       &(firstToSecond__.insert(first, nullptr));
     typename HashTable21::value_type* val2;
 
     try {
-      val2 = &(__secondToFirst.insert(second, nullptr));
+      val2 = &(secondToFirst__.insert(second, nullptr));
     } catch (...) {
-      __firstToSecond.erase(first);
+      firstToSecond__.erase(first);
       throw;
     }
 
@@ -338,7 +339,7 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Alloc, Gen >::HashTable12::
      value_type*
-     BijectionImplementation< T1, T2, Alloc, Gen >::__insert(T1&& first,
+     BijectionImplementation< T1, T2, Alloc, Gen >::insert__(T1&& first,
                                                              T2&& second) {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
@@ -349,13 +350,13 @@ namespace gum {
 
     // insert copies of first and second
     typename HashTable12::value_type* val1 =
-       &(__firstToSecond.insert(std::move(first), nullptr));
+       &(firstToSecond__.insert(std::move(first), nullptr));
     typename HashTable21::value_type* val2;
 
     try {
-      val2 = &(__secondToFirst.insert(std::move(second), nullptr));
+      val2 = &(secondToFirst__.insert(std::move(second), nullptr));
     } catch (...) {
-      __firstToSecond.erase(val1->first);
+      firstToSecond__.erase(val1->first);
       throw;
     }
 
@@ -372,7 +373,7 @@ namespace gum {
      const T2& second, const T1& val) const {
     try {
       return first(second);
-    } catch (NotFound&) { return __insert(val, second)->first; }
+    } catch (NotFound&) { return insert__(val, second)->first; }
   }
 
   /* @brief Same method as second, but if the value is not found, a default
@@ -383,7 +384,7 @@ namespace gum {
         const T1& first, const T2& val) const {
     try {
       return second(first);
-    } catch (NotFound&) { return *(__insert(first, val)->second); }
+    } catch (NotFound&) { return *(insert__(first, val)->second); }
   }
 
   // inserts a new association in the bijection
@@ -391,14 +392,14 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, Gen >::insert(const T1& first,
                                                            const T2& second) {
-    __insert(first, second);
+    insert__(first, second);
   }
 
   // inserts a new association in the bijection
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Alloc, Gen >::insert(T1&& first,
                                                                     T2&& second) {
-    __insert(std::move(first), std::move(second));
+    insert__(std::move(first), std::move(second));
   }
 
   // emplace a new element in the bijection
@@ -407,23 +408,23 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, Gen >::emplace(Args&&... args) {
     std::pair< T1, T2 > new_elt(std::forward< Args >(args)...);
-    __insert(std::move(new_elt.first), std::move(new_elt.second));
+    insert__(std::move(new_elt.first), std::move(new_elt.second));
   }
 
   // returns true if the bijection doesn't contain any relation
   template < typename T1, typename T2, typename Alloc, bool Gen >
-  INLINE bool BijectionImplementation< T1, T2, Alloc, Gen >::empty() const
-     noexcept {
-    GUM_ASSERT(__firstToSecond.empty() == __secondToFirst.empty());
-    return __firstToSecond.empty();
+  INLINE bool
+     BijectionImplementation< T1, T2, Alloc, Gen >::empty() const noexcept {
+    GUM_ASSERT(firstToSecond__.empty() == secondToFirst__.empty());
+    return firstToSecond__.empty();
   }
 
   // returns the number of associations stored within the bijection
   template < typename T1, typename T2, typename Alloc, bool Gen >
-  INLINE Size BijectionImplementation< T1, T2, Alloc, Gen >::size() const
-     noexcept {
-    GUM_ASSERT(__firstToSecond.size() == __secondToFirst.size());
-    return __firstToSecond.size();
+  INLINE Size
+     BijectionImplementation< T1, T2, Alloc, Gen >::size() const noexcept {
+    GUM_ASSERT(firstToSecond__.size() == secondToFirst__.size());
+    return firstToSecond__.size();
   }
 
   // erases an association containing the given first element
@@ -431,8 +432,8 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, Gen >::eraseFirst(const T1& first) {
     try {
-      __secondToFirst.erase(*__firstToSecond[first]);
-      __firstToSecond.erase(first);
+      secondToFirst__.erase(*firstToSecond__[first]);
+      firstToSecond__.erase(first);
     } catch (NotFound&) {}
   }
 
@@ -441,39 +442,39 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, Gen >::eraseSecond(const T2& second) {
     try {
-      __firstToSecond.erase(*__secondToFirst[second]);
-      __secondToFirst.erase(second);
+      firstToSecond__.erase(*secondToFirst__[second]);
+      secondToFirst__.erase(second);
     } catch (NotFound&) {}
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)
   template < typename T1, typename T2, typename Alloc, bool Gen >
-  INLINE Size BijectionImplementation< T1, T2, Alloc, Gen >::capacity() const
-     noexcept {
-    return __firstToSecond.capacity();
+  INLINE Size
+     BijectionImplementation< T1, T2, Alloc, Gen >::capacity() const noexcept {
+    return firstToSecond__.capacity();
   }
 
   // similar to the hashtable's resize
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE void
      BijectionImplementation< T1, T2, Alloc, Gen >::resize(Size new_size) {
-    __firstToSecond.resize(new_size);
-    __secondToFirst.resize(new_size);
+    firstToSecond__.resize(new_size);
+    secondToFirst__.resize(new_size);
   }
 
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Alloc, Gen >::setResizePolicy(
      const bool new_policy) noexcept {
-    __firstToSecond.setResizePolicy(new_policy);
-    __secondToFirst.setResizePolicy(new_policy);
+    firstToSecond__.setResizePolicy(new_policy);
+    secondToFirst__.setResizePolicy(new_policy);
   }
 
   // returns the current resizing policy
   template < typename T1, typename T2, typename Alloc, bool Gen >
-  INLINE bool BijectionImplementation< T1, T2, Alloc, Gen >::resizePolicy() const
-     noexcept {
-    return __firstToSecond.resizePolicy();
+  INLINE bool
+     BijectionImplementation< T1, T2, Alloc, Gen >::resizePolicy() const noexcept {
+    return firstToSecond__.resizePolicy();
   }
 
   // friendly displays the content of the CliqueGraph
@@ -525,8 +526,8 @@ namespace gum {
       // policy set to false because we will do the uniqueness tests ourselves
       // (this
       // will speed-up the process)
-      __firstToSecond(size, resize_policy, false),
-      __secondToFirst(size, resize_policy, false) {
+      firstToSecond__(size, resize_policy, false),
+      secondToFirst__(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
 
     // make sure the end() iterator is constructed properly
@@ -538,8 +539,8 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc >
   INLINE BijectionImplementation< T1, T2, Alloc, true >::BijectionImplementation(
      std::initializer_list< std::pair< T1, T2 > > list) :
-      __firstToSecond(Size(list.size()) / 2, true, false),
-      __secondToFirst(Size(list.size()) / 2, true, false) {
+      firstToSecond__(Size(list.size()) / 2, true, false),
+      secondToFirst__(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
 
     for (const auto& elt: list) {
@@ -554,33 +555,33 @@ namespace gum {
   // a function that performs a complete copy of another bijection
   template < typename T1, typename T2, typename Alloc >
   template < typename OtherAlloc >
-  INLINE void BijectionImplementation< T1, T2, Alloc, true >::__copy(
+  INLINE void BijectionImplementation< T1, T2, Alloc, true >::copy__(
      const HashTable< T1, T2, OtherAlloc >& f2s) {
     // parse f2s and perform copies
     for (auto iter = f2s.cbegin(); iter != f2s.cend(); ++iter) {
-      __firstToSecond.insert(iter.key(), iter.val());
+      firstToSecond__.insert(iter.key(), iter.val());
 
       try {
-        __secondToFirst.insert(iter.val(), iter.key());
+        secondToFirst__.insert(iter.val(), iter.key());
       } catch (...) {
-        __firstToSecond.erase(iter.key());
+        firstToSecond__.erase(iter.key());
         throw;
       }
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
   }
 
   // Copy constructor
   template < typename T1, typename T2, typename Alloc >
   INLINE BijectionImplementation< T1, T2, Alloc, true >::BijectionImplementation(
      const BijectionImplementation< T1, T2, Alloc, true >& toCopy) :
-      __firstToSecond(toCopy.__firstToSecond.capacity(), true, false),
-      __secondToFirst(toCopy.__secondToFirst.capacity(), true, false) {
+      firstToSecond__(toCopy.firstToSecond__.capacity(), true, false),
+      secondToFirst__(toCopy.secondToFirst__.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
   }
 
   // Generalized copy constructor
@@ -588,18 +589,18 @@ namespace gum {
   template < typename OtherAlloc >
   INLINE BijectionImplementation< T1, T2, Alloc, true >::BijectionImplementation(
      const BijectionImplementation< T1, T2, OtherAlloc, true >& toCopy) :
-      __firstToSecond(toCopy.__firstToSecond.capacity(), true, false),
-      __secondToFirst(toCopy.__secondToFirst.capacity(), true, false) {
+      firstToSecond__(toCopy.firstToSecond__.capacity(), true, false),
+      secondToFirst__(toCopy.secondToFirst__.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
   }
 
   // move constructor
   template < typename T1, typename T2, typename Alloc >
   INLINE BijectionImplementation< T1, T2, Alloc, true >::BijectionImplementation(
      BijectionImplementation< T1, T2, Alloc, true >&& toCopy) noexcept :
-      __firstToSecond(std::move(toCopy.__firstToSecond)),
-      __secondToFirst(std::move(toCopy.__secondToFirst)) {
+      firstToSecond__(std::move(toCopy.firstToSecond__)),
+      secondToFirst__(std::move(toCopy.secondToFirst__)) {
     GUM_CONS_MOV(BijectionImplementation);
   }
 
@@ -629,7 +630,7 @@ namespace gum {
   INLINE const typename BijectionImplementation< T1, T2, Alloc, true >::iterator&
      BijectionImplementation< T1, T2, Alloc, true >::end() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEnd));
+       BijectionIteratorStaticEnd::BijectionIterEnd__));
   }
 
   // returns the iterator to the end of the bijection
@@ -638,7 +639,7 @@ namespace gum {
      const_iterator&
      BijectionImplementation< T1, T2, Alloc, true >::cend() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEnd));
+       BijectionIteratorStaticEnd::BijectionIterEnd__));
   }
 
   // returns the iterator at the beginning of the bijection
@@ -662,7 +663,7 @@ namespace gum {
      iterator_safe&
      BijectionImplementation< T1, T2, Alloc, true >::endSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEndSafe));
+       BijectionIteratorStaticEnd::BijectionIterEndSafe__));
   }
 
   // returns the iterator to the end of the bijection
@@ -671,16 +672,16 @@ namespace gum {
      const_iterator_safe&
      BijectionImplementation< T1, T2, Alloc, true >::cendSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::__BijectionIterEndSafe));
+       BijectionIteratorStaticEnd::BijectionIterEndSafe__));
   }
 
   // removes all the associations from the bijection
   template < typename T1, typename T2, typename Alloc >
   INLINE void BijectionImplementation< T1, T2, Alloc, true >::clear() {
-    __firstToSecond.clear();
-    __secondToFirst.clear();
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
+    firstToSecond__.clear();
+    secondToFirst__.clear();
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
     // after the clear's
   }
 
@@ -692,12 +693,12 @@ namespace gum {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
-      __copy(toCopy.__firstToSecond);
+      copy__(toCopy.firstToSecond__);
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -708,11 +709,11 @@ namespace gum {
      BijectionImplementation< T1, T2, Alloc, true >::operator=(
         const BijectionImplementation< T1, T2, OtherAlloc, true >& toCopy) {
     clear();
-    __copy(toCopy.__firstToSecond);
+    copy__(toCopy.firstToSecond__);
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -724,13 +725,13 @@ namespace gum {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
-      __firstToSecond = std::move(toCopy.__firstToSecond);
-      __secondToFirst = std::move(toCopy.__secondToFirst);
+      firstToSecond__ = std::move(toCopy.firstToSecond__);
+      secondToFirst__ = std::move(toCopy.secondToFirst__);
     }
 
-    // note that __iter_end is actually a constant, whatever we add/remove
-    // to/from __firstToSecond. As a consequence, it need not be updated
-    // after __copy
+    // note that iter_end__ is actually a constant, whatever we add/remove
+    // to/from firstToSecond__. As a consequence, it need not be updated
+    // after copy__
     return *this;
   }
 
@@ -738,33 +739,33 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc >
   INLINE const T1&
                BijectionImplementation< T1, T2, Alloc, true >::first(T2 second) const {
-    return __secondToFirst[second];
+    return secondToFirst__[second];
   }
 
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc >
   INLINE const T2&
                BijectionImplementation< T1, T2, Alloc, true >::second(T1 first) const {
-    return __firstToSecond[first];
+    return firstToSecond__[first];
   }
 
   // Test whether the bijection contains the "first" value
   template < typename T1, typename T2, typename Alloc >
   INLINE bool
      BijectionImplementation< T1, T2, Alloc, true >::existsFirst(T1 first) const {
-    return __firstToSecond.exists(first);
+    return firstToSecond__.exists(first);
   }
 
   // Test whether the bijection contains the "second" value
   template < typename T1, typename T2, typename Alloc >
   INLINE bool BijectionImplementation< T1, T2, Alloc, true >::existsSecond(
      T2 second) const {
-    return __secondToFirst.exists(second);
+    return secondToFirst__.exists(second);
   }
 
   // inserts a new association in the bijection
   template < typename T1, typename T2, typename Alloc >
-  INLINE void BijectionImplementation< T1, T2, Alloc, true >::__insert(T1 first,
+  INLINE void BijectionImplementation< T1, T2, Alloc, true >::insert__(T1 first,
                                                                        T2 second) {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
@@ -774,12 +775,12 @@ namespace gum {
     }
 
     // insert copies of first and second
-    __firstToSecond.insert(first, second);
+    firstToSecond__.insert(first, second);
 
     try {
-      __secondToFirst.insert(second, first);
+      secondToFirst__.insert(second, first);
     } catch (...) {
-      __firstToSecond.erase(first);
+      firstToSecond__.erase(first);
       throw;
     }
   }
@@ -788,7 +789,7 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc >
   INLINE void BijectionImplementation< T1, T2, Alloc, true >::insert(T1 first,
                                                                      T2 second) {
-    __insert(first, second);
+    insert__(first, second);
   }
 
   // emplace a new element in the bijection
@@ -797,7 +798,7 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, true >::emplace(Args&&... args) {
     std::pair< T1, T2 > new_elt(std::forward< Args >(args)...);
-    __insert(new_elt.first, new_elt.second);
+    insert__(new_elt.first, new_elt.second);
   }
 
   /* @brief Same method as first, but if the value is not found, a default
@@ -809,7 +810,7 @@ namespace gum {
     try {
       return first(second);
     } catch (NotFound&) {
-      __insert(val, second);
+      insert__(val, second);
       return val;
     }
   }
@@ -823,25 +824,25 @@ namespace gum {
     try {
       return second(first);
     } catch (NotFound&) {
-      __insert(first, val);
+      insert__(first, val);
       return val;
     }
   }
 
   // returns true if the bijection doesn't contain any relation
   template < typename T1, typename T2, typename Alloc >
-  INLINE bool BijectionImplementation< T1, T2, Alloc, true >::empty() const
-     noexcept {
-    GUM_ASSERT(__firstToSecond.empty() == __secondToFirst.empty());
-    return __firstToSecond.empty();
+  INLINE bool
+     BijectionImplementation< T1, T2, Alloc, true >::empty() const noexcept {
+    GUM_ASSERT(firstToSecond__.empty() == secondToFirst__.empty());
+    return firstToSecond__.empty();
   }
 
   // returns the number of associations stored within the bijection
   template < typename T1, typename T2, typename Alloc >
-  INLINE Size BijectionImplementation< T1, T2, Alloc, true >::size() const
-     noexcept {
-    GUM_ASSERT(__firstToSecond.size() == __secondToFirst.size());
-    return __firstToSecond.size();
+  INLINE Size
+     BijectionImplementation< T1, T2, Alloc, true >::size() const noexcept {
+    GUM_ASSERT(firstToSecond__.size() == secondToFirst__.size());
+    return firstToSecond__.size();
   }
 
   // erases an association containing the given first element
@@ -849,8 +850,8 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, true >::eraseFirst(T1 first) {
     try {
-      __secondToFirst.erase(__firstToSecond[first]);
-      __firstToSecond.erase(first);
+      secondToFirst__.erase(firstToSecond__[first]);
+      firstToSecond__.erase(first);
     } catch (NotFound&) {}
   }
 
@@ -859,39 +860,39 @@ namespace gum {
   INLINE void
      BijectionImplementation< T1, T2, Alloc, true >::eraseSecond(T2 second) {
     try {
-      __firstToSecond.erase(__secondToFirst[second]);
-      __secondToFirst.erase(second);
+      firstToSecond__.erase(secondToFirst__[second]);
+      secondToFirst__.erase(second);
     } catch (NotFound&) {}
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)
   template < typename T1, typename T2, typename Alloc >
-  INLINE Size BijectionImplementation< T1, T2, Alloc, true >::capacity() const
-     noexcept {
-    return __firstToSecond.capacity();
+  INLINE Size
+     BijectionImplementation< T1, T2, Alloc, true >::capacity() const noexcept {
+    return firstToSecond__.capacity();
   }
 
   // similar to the hashtable's resize
   template < typename T1, typename T2, typename Alloc >
   INLINE void
      BijectionImplementation< T1, T2, Alloc, true >::resize(Size new_size) {
-    __firstToSecond.resize(new_size);
-    __secondToFirst.resize(new_size);
+    firstToSecond__.resize(new_size);
+    secondToFirst__.resize(new_size);
   }
 
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2, typename Alloc >
   INLINE void BijectionImplementation< T1, T2, Alloc, true >::setResizePolicy(
      const bool new_policy) noexcept {
-    __firstToSecond.setResizePolicy(new_policy);
-    __secondToFirst.setResizePolicy(new_policy);
+    firstToSecond__.setResizePolicy(new_policy);
+    secondToFirst__.setResizePolicy(new_policy);
   }
 
   // returns the current resizing policy
   template < typename T1, typename T2, typename Alloc >
-  INLINE bool BijectionImplementation< T1, T2, Alloc, true >::resizePolicy() const
-     noexcept {
-    return __firstToSecond.resizePolicy();
+  INLINE bool BijectionImplementation< T1, T2, Alloc, true >::resizePolicy()
+     const noexcept {
+    return firstToSecond__.resizePolicy();
   }
 
   // friendly displays the content of the CliqueGraph
@@ -929,7 +930,7 @@ namespace gum {
   template < typename Alloc, bool Gen >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
      const BijectionImplementation< T1, T2, Alloc, Gen >& bijection) :
-      __iter{bijection.__firstToSecond.cbeginSafe()} {
+      iter__{bijection.firstToSecond__.cbeginSafe()} {
     GUM_CONSTRUCTOR(BijectionIteratorSafe);
   }
 
@@ -938,7 +939,7 @@ namespace gum {
   template < typename Alloc >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
      const Bijection< T1, T2, Alloc >& bijection) :
-      __iter{bijection.__firstToSecond.cbeginSafe()} {
+      iter__{bijection.firstToSecond__.cbeginSafe()} {
     GUM_CONSTRUCTOR(BijectionIteratorSafe);
   }
 
@@ -946,7 +947,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
      const BijectionIteratorSafe< T1, T2 >& toCopy) :
-      __iter{toCopy.__iter} {
+      iter__{toCopy.iter__} {
     GUM_CONS_CPY(BijectionIteratorSafe);
   }
 
@@ -954,7 +955,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
      BijectionIteratorSafe< T1, T2 >&& from) noexcept :
-      __iter{std::move(from.__iter)} {
+      iter__{std::move(from.iter__)} {
     GUM_CONS_MOV(BijectionIteratorSafe);
   }
 
@@ -969,7 +970,7 @@ namespace gum {
   INLINE BijectionIteratorSafe< T1, T2 >&
      BijectionIteratorSafe< T1, T2 >::operator=(
         const BijectionIteratorSafe< T1, T2 >& toCopy) {
-    __iter = toCopy.__iter;
+    iter__ = toCopy.iter__;
     return *this;
   }
 
@@ -978,7 +979,7 @@ namespace gum {
   INLINE BijectionIteratorSafe< T1, T2 >&
      BijectionIteratorSafe< T1, T2 >::operator=(
         BijectionIteratorSafe< T1, T2 >&& toCopy) noexcept {
-    __iter = std::move(toCopy.__iter);
+    iter__ = std::move(toCopy.iter__);
     return *this;
   }
 
@@ -986,7 +987,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >&
      BijectionIteratorSafe< T1, T2 >::operator++() noexcept {
-    ++__iter;
+    ++iter__;
     return *this;
   }
 
@@ -994,7 +995,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >&
      BijectionIteratorSafe< T1, T2 >::operator+=(Size nb) noexcept {
-    __iter += nb;
+    iter__ += nb;
     return *this;
   }
 
@@ -1009,26 +1010,26 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE bool BijectionIteratorSafe< T1, T2 >::operator!=(
      const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
-    return __iter != toCompare.__iter;
+    return iter__ != toCompare.iter__;
   }
 
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIteratorSafe< T1, T2 >::operator==(
      const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
-    return __iter == toCompare.__iter;
+    return iter__ == toCompare.iter__;
   }
 
   /// return the first element of the current association
   template < typename T1, typename T2 >
   INLINE const T1& BijectionIteratorSafe< T1, T2 >::first() const {
-    return __iter.key();
+    return iter__.key();
   }
 
   /// return the second element of the current association
   template < typename T1, typename T2 >
   INLINE const T2& BijectionIteratorSafe< T1, T2 >::second() const {
-    return Getter::op_second(__iter.val());
+    return Getter::op_second(iter__.val());
   }
 
   /* ===========================================================================
@@ -1049,7 +1050,7 @@ namespace gum {
   template < typename Alloc, bool Gen >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(
      const BijectionImplementation< T1, T2, Alloc, Gen >& bijection) :
-      __iter{bijection.__firstToSecond.cbegin()} {
+      iter__{bijection.firstToSecond__.cbegin()} {
     GUM_CONSTRUCTOR(BijectionIterator);
   }
 
@@ -1058,7 +1059,7 @@ namespace gum {
   template < typename Alloc >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(
      const Bijection< T1, T2, Alloc >& bijection) :
-      __iter{bijection.__firstToSecond.cbegin()} {
+      iter__{bijection.firstToSecond__.cbegin()} {
     GUM_CONSTRUCTOR(BijectionIterator);
   }
 
@@ -1066,7 +1067,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(
      const BijectionIterator< T1, T2 >& toCopy) :
-      __iter{toCopy.__iter} {
+      iter__{toCopy.iter__} {
     GUM_CONS_CPY(BijectionIterator);
   }
 
@@ -1074,7 +1075,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(
      BijectionIterator< T1, T2 >&& from) noexcept :
-      __iter{std::move(from.__iter)} {
+      iter__{std::move(from.iter__)} {
     GUM_CONS_MOV(BijectionIterator);
   }
 
@@ -1088,7 +1089,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >& BijectionIterator< T1, T2 >::operator=(
      const BijectionIterator< T1, T2 >& toCopy) {
-    __iter = toCopy.__iter;
+    iter__ = toCopy.iter__;
     return *this;
   }
 
@@ -1096,7 +1097,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >& BijectionIterator< T1, T2 >::operator=(
      BijectionIterator< T1, T2 >&& toCopy) noexcept {
-    __iter = std::move(toCopy.__iter);
+    iter__ = std::move(toCopy.iter__);
     return *this;
   }
 
@@ -1104,7 +1105,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >&
      BijectionIterator< T1, T2 >::operator++() noexcept {
-    ++__iter;
+    ++iter__;
     return *this;
   }
 
@@ -1112,7 +1113,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >&
      BijectionIterator< T1, T2 >::operator+=(Size nb) noexcept {
-    __iter += nb;
+    iter__ += nb;
     return *this;
   }
 
@@ -1127,26 +1128,26 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE bool BijectionIterator< T1, T2 >::operator!=(
      const BijectionIterator< T1, T2 >& toCompare) const noexcept {
-    return __iter != toCompare.__iter;
+    return iter__ != toCompare.iter__;
   }
 
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIterator< T1, T2 >::operator==(
      const BijectionIterator< T1, T2 >& toCompare) const noexcept {
-    return __iter == toCompare.__iter;
+    return iter__ == toCompare.iter__;
   }
 
   /// return the first element of the current association
   template < typename T1, typename T2 >
   INLINE const T1& BijectionIterator< T1, T2 >::first() const {
-    return __iter.key();
+    return iter__.key();
   }
 
   /// return the second element of the current association
   template < typename T1, typename T2 >
   INLINE const T2& BijectionIterator< T1, T2 >::second() const {
-    return Getter::op_second(__iter.val());
+    return Getter::op_second(iter__.val());
   }
 
   // ============================================================================

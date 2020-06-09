@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Class representing probabilistic DAG model
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_DAGMODEL_H
@@ -122,8 +122,8 @@ namespace gum {
      * @param head the nodeId (or the name) of the head in tail->head
      * @return true if the arc exists
      */
-    bool existsArc(const NodeId tail,const NodeId head) const;
-    bool existsArc(const std::string& nametail,const std::string& namehead) const;
+    bool existsArc(const NodeId tail, const NodeId head) const;
+    bool existsArc(const std::string& nametail, const std::string& namehead) const;
 
     /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of nodes returned may be empty if no arc within the
@@ -169,15 +169,15 @@ namespace gum {
     DAGmodel& operator=(const DAGmodel& source);
 
     /// The DAG of this Directed Graphical Model.
-    DAG _dag;
+    DAG dag_;
 
     private:
     /// Returns the moral graph of this DAGModel.
-    /// @warning __mutableMoralGraph is assumed to be valid and empty
-    void __moralGraph() const;
+    /// @warning mutableMoralGraph__ is assumed to be valid and empty
+    void moralGraph__() const;
 
     /// The moral graph of this Directed Graphical Model.
-    mutable UndiGraph* __mutableMoralGraph;
+    mutable UndiGraph* mutableMoralGraph__;
   };
 }   // namespace gum
 

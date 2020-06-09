@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -31,29 +31,29 @@ namespace gum_tests {
 
   class GSpanTestSuite: public CxxTest::TestSuite {
     private:
-    gum::prm::o3prm::O3prmReader< double >*    __driver;
-    std::string                                dot_dir;
-    gum::prm::gspan::InterfaceGraph< double >* ig;
+    gum::prm::o3prm::O3prmReader< double >*    driver__;
+    std::string                                dot_dir__;
+    gum::prm::gspan::InterfaceGraph< double >* ig__;
 
     void local__setUp() {
-      __driver = new gum::prm::o3prm::O3prmReader< double >();
-      __driver->readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
+      driver__ = new gum::prm::o3prm::O3prmReader< double >();
+      driver__->readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
 
-      if (__driver->errors() == 0) {
-        ig = new gum::prm::gspan::InterfaceGraph< double >(
-           __driver->prm()->getSystem("m"));
+      if (driver__->errors() == 0) {
+        ig__ = new gum::prm::gspan::InterfaceGraph< double >(
+           driver__->prm()->getSystem("m"));
       } else {
-        __driver->showElegantErrorsAndWarnings();
+        driver__->showElegantErrorsAndWarnings();
         TS_ASSERT(false);
       }
     }
 
     void local__tearDown() {
-      delete ig;
+      delete ig__;
 
-      if (__driver->prm() != nullptr) { delete __driver->prm(); }
+      if (driver__->prm() != nullptr) { delete driver__->prm(); }
 
-      delete __driver;
+      delete driver__;
     }
 
     public:
@@ -68,9 +68,9 @@ namespace gum_tests {
     void testInterfaceGraph() {
       try {
         local__setUp();
-        TS_ASSERT_EQUALS(ig->graph().size(),
+        TS_ASSERT_EQUALS(ig__->graph().size(),
                          (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4);
-        TS_ASSERT_EQUALS(ig->graph().sizeEdges(),
+        TS_ASSERT_EQUALS(ig__->graph().sizeEdges(),
                          (gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2);
         local__tearDown();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
@@ -80,8 +80,8 @@ namespace gum_tests {
       local__setUp();
       gum::prm::GSpan< double >* gspan = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gspan = new gum::prm::GSpan< double >(*(__driver->prm()),
-                                               __driver->prm()->getSystem("m")));
+         gspan = new gum::prm::GSpan< double >(*(driver__->prm()),
+                                               driver__->prm()->getSystem("m")));
       TS_ASSERT(gspan != nullptr);
 
       if (gspan != nullptr) {

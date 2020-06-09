@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -142,12 +142,12 @@ namespace gum_tests {
     void testCompareInferenceDAGWithSoftEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
       gum::LazyPropagation< double > iebn(&bn);
-      iebn.addEvidence("B", std::vector<double>{0.8,0.5});
+      iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iebn.makeInference();
 
       auto mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
-      iemn.addEvidence("B", std::vector<double>{0.8,0.5});
+      iemn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
@@ -273,18 +273,18 @@ namespace gum_tests {
 
       {
         gum::ShaferShenoyMNInference< double > ie(&mn);
-        ie.addEvidence("A", std::vector<double>{0.3,0.9});
-        ie.addEvidence("D", std::vector<double>{0.5,0.2});
+        ie.addEvidence("A", std::vector< double >{0.3, 0.9});
+        ie.addEvidence("D", std::vector< double >{0.5, 0.2});
         ie.addEvidence("B", 0);
         ie.makeInference();
 
         gum::ShaferShenoyMNInference< double > ie2(&mn);
-        ie2.addEvidence("A", std::vector<double>{0.5,0.2});
-        ie2.addEvidence("D", std::vector<double>{0.5,0.2});
-        ie2.addEvidence("B", std::vector<double>{0.5,0.2});
+        ie2.addEvidence("A", std::vector< double >{0.5, 0.2});
+        ie2.addEvidence("D", std::vector< double >{0.5, 0.2});
+        ie2.addEvidence("B", std::vector< double >{0.5, 0.2});
         ie2.makeInference();
 
-        ie2.chgEvidence("A", std::vector<double>{0.3,0.9});
+        ie2.chgEvidence("A", std::vector< double >{0.3, 0.9});
         ie2.chgEvidence("B", 0);
         ie2.makeInference();
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the MultiDimArray class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
@@ -45,7 +45,7 @@ namespace gum {
   MultiDimArray< GUM_SCALAR >::MultiDimArray(
      const MultiDimArray< GUM_SCALAR >& src) :
       MultiDimWithOffset< GUM_SCALAR >(src),
-      _values(src._values) {
+      values_(src.values_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimArray);
   }
@@ -66,54 +66,54 @@ namespace gum {
     if (mda == nullptr) {
       MultiDimContainer< GUM_SCALAR >::copyFrom(src);
     } else {
-      _values = mda->_values;
+      values_ = mda->values_;
     }
   }
 
   template < typename GUM_SCALAR >
   void MultiDimArray< GUM_SCALAR >::apply(
      std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
-    std::transform(_values.begin(), _values.end(), _values.begin(), f);
+    std::transform(values_.begin(), values_.end(), values_.begin(), f);
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimArray< GUM_SCALAR >::reduce(
      std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
      GUM_SCALAR                                          base) const {
-    return std::accumulate(_values.begin(), _values.end(), base, f);
+    return std::accumulate(values_.begin(), values_.end(), base, f);
   }
 
 
   // data access operator
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
-         MultiDimArray< GUM_SCALAR >::_get(const Instantiation& i) const {
+         MultiDimArray< GUM_SCALAR >::get_(const Instantiation& i) const {
     if (i.isMaster(this)) {
-      return _values[this->_offsets[&i]];
+      return values_[this->offsets_[&i]];
     } else {
-      return _values[this->_getOffs(i)];
+      return values_[this->getOffs_(i)];
     }
   }
 
-  // add a new dimension, needed for updating the _offsets & _gaps
+  // add a new dimension, needed for updating the offsets_ & gaps_
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::add(const DiscreteVariable& v) {
     Size lg = MultiDimWithOffset< GUM_SCALAR >::domainSize();
     MultiDimWithOffset< GUM_SCALAR >::add(v);
 
-    if (!this->_isInMultipleChangeMethod()) {
-      _values.resize(lg * v.domainSize());
+    if (!this->isInMultipleChangeMethod_()) {
+      values_.resize(lg * v.domainSize());
     }
   }
 
-  // removes a dimension, needed for updating the _offsets & _gaps
+  // removes a dimension, needed for updating the offsets_ & gaps_
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     Sequence< const DiscreteVariable* > variables = this->variablesSequence();
     Idx pos = variables.pos(&v);   // throw a NotFound if necessary
 
     if (variables.size() == 1) {
-      if (!this->_isInMultipleChangeMethod()) _values.clear();
+      if (!this->isInMultipleChangeMethod_()) values_.clear();
     } else {
       Size v_size = v.domainSize();
       Size size = this->domainSize();
@@ -125,21 +125,21 @@ namespace gum {
       // let w be the next variable in the set of variables of the array.
       // Then we must copy |gap(v)| elements every |gap(w)| elements
 
-      if (!this->_isInMultipleChangeMethod()) {
+      if (!this->isInMultipleChangeMethod_()) {
         if (pos != variables.size() - 1) {
-          Size gap_v = this->_gaps[variables[pos]];
-          Size gap_w = this->_gaps[variables[pos + 1]];
+          Size gap_v = this->gaps_[variables[pos]];
+          Size gap_w = this->gaps_[variables[pos + 1]];
 
           for (Idx i = 0, j = 0; i < size; i += gap_w) {
             Idx last = i + gap_v;
 
             for (Idx k = i; k < last; ++k, ++j)
-              _values[j] = _values[k];
+              values_[j] = values_[k];
           }
         }
 
-        // shrink _values
-        _values.resize(size / v_size);
+        // shrink values_
+        values_.resize(size / v_size);
       }
     }
 
@@ -153,25 +153,25 @@ namespace gum {
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::_commitMultipleChanges() {
-    if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != _values.size()) {
-      _values.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize());
+  INLINE void MultiDimArray< GUM_SCALAR >::commitMultipleChanges_() {
+    if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != values_.size()) {
+      values_.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize());
     }
   }
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
   INLINE void
-     MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(const GUM_SCALAR& x) {
-    if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != _values.size()) {
-      _values.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize(), x);
+     MultiDimArray< GUM_SCALAR >::commitMultipleChanges_(const GUM_SCALAR& x) {
+    if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != values_.size()) {
+      values_.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize(), x);
     }
   }
 
   // fill the array with the arg
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::fill(const GUM_SCALAR& d) const {
-    if (!this->empty()) std::fill(_values.begin(), _values.end(), d);
+    if (!this->empty()) std::fill(values_.begin(), values_.end(), d);
   }
 
   // virtual constructor
@@ -185,30 +185,30 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const GUM_SCALAR&
                MultiDimArray< GUM_SCALAR >::unsafeGet(Idx offset) const {
-    return _values[offset];
+    return values_[offset];
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::unsafeSet(Idx               offset,
                                                      const GUM_SCALAR& data) {
-    _values[offset] = data;
+    values_[offset] = data;
   }
 
   // returns the element stored in the multidimArray at a given offset
   template < typename GUM_SCALAR >
   INLINE const GUM_SCALAR&
                MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
-    if (offset >= _values.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
+    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
 
-    return _values[offset];
+    return values_[offset];
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::setByOffset(Idx               offset,
                                                        const GUM_SCALAR& data) {
-    if (offset >= _values.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
+    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
 
-    _values[offset] = data;
+    values_[offset] = data;
   }
 
   // returns the name of the implementation
@@ -219,8 +219,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+  INLINE void MultiDimArray< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                     const DiscreteVariable* y) {
-    MultiDimImplementation< GUM_SCALAR >::_replace(x, y);
+    MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
   }
 } /* namespace gum */

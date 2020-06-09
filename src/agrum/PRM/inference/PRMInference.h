@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of PRMInference.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_PRM_INFERENCE_H
@@ -189,31 +189,31 @@ namespace gum {
 
       /// This method is called whenever an evidence is added, but AFTER
       /// any processing made by PRMInference.
-      virtual void _evidenceAdded(const Chain& chain) = 0;
+      virtual void evidenceAdded_(const Chain& chain) = 0;
 
       /// This method is called whenever an evidence is removed, but BEFORE
       /// any processing made by PRMInference.
-      virtual void _evidenceRemoved(const Chain& chain) = 0;
+      virtual void evidenceRemoved_(const Chain& chain) = 0;
 
       /// @brief Generic method to compute the posterior of given element.
       /// @param chain
       /// @param m CPF filled with the posterior of elt. It is initialized
       ///          properly.
-      virtual void _posterior(const Chain& chain, Potential< GUM_SCALAR >& m) = 0;
+      virtual void posterior_(const Chain& chain, Potential< GUM_SCALAR >& m) = 0;
 
       /// @brief Generic method to compute the posterior of given element.
       /// @param queries Set of pairs of PRMInstance<GUM_SCALAR> and
       /// PRMAttribute<GUM_SCALAR>.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
-      virtual void _joint(const std::vector< Chain >& queries,
+      virtual void joint_(const std::vector< Chain >& queries,
                           Potential< GUM_SCALAR >&    j) = 0;
 
       /// The PRM<GUM_SCALAR> on which inference is done.
-      PRM< GUM_SCALAR > const* _prm;
+      PRM< GUM_SCALAR > const* prm_;
 
       /// The Model on which inference is done.
-      PRMSystem< GUM_SCALAR > const* _sys;
+      PRMSystem< GUM_SCALAR > const* sys_;
 
       /// @}
 
@@ -232,10 +232,10 @@ namespace gum {
                              EMap* >::const_iterator_safe EvidenceConstIterator;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
-      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > __evidences;
+      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > evidences__;
 
-      /// Private getter over __evidences, if necessary creates an EMap for i.
-      EMap& __EMap(const PRMInstance< GUM_SCALAR >* i);
+      /// Private getter over evidences__, if necessary creates an EMap for i.
+      EMap& EMap__(const PRMInstance< GUM_SCALAR >* i);
 
       /// @}
     };

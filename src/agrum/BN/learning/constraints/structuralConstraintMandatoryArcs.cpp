@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint indicating that some arcs shall never be
  * removed or reversed
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
@@ -53,15 +53,15 @@ namespace gum {
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
        const StructuralConstraintMandatoryArcs& from) :
-        _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
+        MandatoryArcs__mandatory_arcs_(from.MandatoryArcs__mandatory_arcs_) {
       GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
     }
 
     /// move constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
        StructuralConstraintMandatoryArcs&& from) :
-        _MandatoryArcs__mandatory_arcs(
-           std::move(from._MandatoryArcs__mandatory_arcs)) {
+        MandatoryArcs__mandatory_arcs_(
+           std::move(from.MandatoryArcs__mandatory_arcs_)) {
       GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
     }
 
@@ -75,7 +75,7 @@ namespace gum {
        StructuralConstraintMandatoryArcs::operator=(
           const StructuralConstraintMandatoryArcs& from) {
       if (this != &from) {
-        _MandatoryArcs__mandatory_arcs = from._MandatoryArcs__mandatory_arcs;
+        MandatoryArcs__mandatory_arcs_ = from.MandatoryArcs__mandatory_arcs_;
       }
       return *this;
     }
@@ -85,8 +85,8 @@ namespace gum {
        StructuralConstraintMandatoryArcs::operator=(
           StructuralConstraintMandatoryArcs&& from) {
       if (this != &from) {
-        _MandatoryArcs__mandatory_arcs =
-           std::move(from._MandatoryArcs__mandatory_arcs);
+        MandatoryArcs__mandatory_arcs_ =
+           std::move(from.MandatoryArcs__mandatory_arcs_);
       }
       return *this;
     }

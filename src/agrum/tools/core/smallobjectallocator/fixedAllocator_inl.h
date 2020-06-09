@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inlines of gum::FixedAllocator
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 // ============================================================================
@@ -36,25 +36,25 @@ namespace gum {
   // ============================================================================
   // Initializes a Chunk object
   // ============================================================================
-  INLINE void FixedAllocator::__Chunk::__init(const std::size_t&   blockSize,
+  INLINE void FixedAllocator::Chunk__::init__(const std::size_t&   blockSize,
                                               const unsigned char& numBlocks) {
     // Chunk memory space allocation. A chunk allocates a memory of blockSize *
     // numBlocks size.
     // The chunk will then give us numBlocks distinct blocks of blockSize from
     // that space.
-    __pData = new unsigned char[blockSize * numBlocks];
+    pData__ = new unsigned char[blockSize * numBlocks];
 
     // The first available block of memory is logically at the beginning.
-    __firstAvailableBlock = 0;
+    firstAvailableBlock__ = 0;
 
     // The number of block still available is all the blocks at the beginning.
-    __blocksAvailable = numBlocks;
+    blocksAvailable__ = numBlocks;
 
     // For each unallocated block, the first byte contains a number.
     // That number is the index of the next available block
     // Since we're at the beginning, next free block is the next one simply.
     // Following code initiate those number for each block
-    unsigned char* p = __pData;
+    unsigned char* p = pData__;
     for (unsigned char indexBlock = 0; indexBlock != numBlocks; p += blockSize)
       *p = ++indexBlock;
   }
@@ -62,25 +62,25 @@ namespace gum {
   // ============================================================================
   // Allocates a block of memory
   // ============================================================================
-  INLINE void* FixedAllocator::__Chunk::__allocate(const std::size_t& blockSize) {
-    if (!__blocksAvailable)
+  INLINE void* FixedAllocator::Chunk__::allocate__(const std::size_t& blockSize) {
+    if (!blocksAvailable__)
       // If no block is available return nullptr
       return NULL;
 
-    // __pData points to the beginning of allocated space.
-    // __firstAvailableBlock gives us how many block to pass before getting
+    // pData__ points to the beginning of allocated space.
+    // firstAvailableBlock__ gives us how many block to pass before getting
     // the good one. We have to multiply by blockSize to get the good memory
     // emplacement
-    unsigned char* pResult = __pData + (__firstAvailableBlock * blockSize);
+    unsigned char* pResult = pData__ + (firstAvailableBlock__ * blockSize);
 
     // Remember that the first byte of each block gives us the index of next
     // available slot.
     // The new first availble block will be at the index indicating in this
     // block.
-    __firstAvailableBlock = *pResult;
+    firstAvailableBlock__ = *pResult;
 
     // We lose one block
-    --__blocksAvailable;
+    --blocksAvailable__;
 
     return pResult;
   }
@@ -88,36 +88,36 @@ namespace gum {
   // ============================================================================
   // Deallocates a block of memory
   // ============================================================================
-  INLINE void FixedAllocator::__Chunk::__deallocat(void* pDeallocatedBlock,
+  INLINE void FixedAllocator::Chunk__::deallocat__(void* pDeallocatedBlock,
                                                    const std::size_t& blockSize) {
     // first, ensure that deallocated is in this chunk
-    GUM_ASSERT(pDeallocatedBlock >= __pData);
+    GUM_ASSERT(pDeallocatedBlock >= pData__);
 
     // Conversion pf pointer for handling
     unsigned char* toRelease = static_cast< unsigned char* >(pDeallocatedBlock);
 
     // Alignement check
-    GUM_ASSERT((toRelease - __pData) % blockSize == 0);
+    GUM_ASSERT((toRelease - pData__) % blockSize == 0);
 
     // First byte of toRelease has now to give the index of current first
     // available block
-    *toRelease = __firstAvailableBlock;
+    *toRelease = firstAvailableBlock__;
 
     // So that first available block points to it
-    __firstAvailableBlock =
-       static_cast< unsigned char >((toRelease - __pData) / blockSize);
+    firstAvailableBlock__ =
+       static_cast< unsigned char >((toRelease - pData__) / blockSize);
 
     // Truncation check
-    GUM_ASSERT(__firstAvailableBlock == (toRelease - __pData) / blockSize);
+    GUM_ASSERT(firstAvailableBlock__ == (toRelease - pData__) / blockSize);
 
     // We gain one block, yeah
-    ++__blocksAvailable;
+    ++blocksAvailable__;
   }
 
   // ============================================================================
   // Releases the allocated memory
   // ============================================================================
-  INLINE void FixedAllocator::__Chunk::__release() { delete[] __pData; }
+  INLINE void FixedAllocator::Chunk__::release__() { delete[] pData__; }
 
 
   // ############################################################################
@@ -130,20 +130,20 @@ namespace gum {
   INLINE FixedAllocator::FixedAllocator(const std::size_t&   blockSize,
                                         const unsigned char& numBlocks) {
     //    GUM_CONSTRUCTOR(FixedAllocator)
-    __blockSize = blockSize;
-    __numBlocks = numBlocks;
-    __allocChunk = __chunks.begin();
-    __deallocChunk = __chunks.begin();
+    blockSize__ = blockSize;
+    numBlocks__ = numBlocks;
+    allocChunk__ = chunks__.begin();
+    deallocChunk__ = chunks__.begin();
   }
 
   // ============================================================================
   // Destructor.
   // ============================================================================
   INLINE FixedAllocator::~FixedAllocator() {
-    for (__Chunks::iterator chunkIter = __chunks.begin();
-         chunkIter != __chunks.end();
+    for (Chunks__::iterator chunkIter = chunks__.begin();
+         chunkIter != chunks__.end();
          ++chunkIter)
-      chunkIter->__release();
+      chunkIter->release__();
     //    GUM_DESTRUCTOR(FixedAllocator)
   }
 
@@ -155,71 +155,71 @@ namespace gum {
   // Allocates a block
   // ============================================================================
   INLINE void* FixedAllocator::allocate() {
-    if (__chunks.empty() || __allocChunk->__blocksAvailable == 0) {
+    if (chunks__.empty() || allocChunk__->blocksAvailable__ == 0) {
       // no available memory in this chunk
       // Try to find one with memory available
-      for (__Chunks::iterator chunksIter = __chunks.begin();; ++chunksIter) {
-        if (chunksIter == __chunks.end()) {
+      for (Chunks__::iterator chunksIter = chunks__.begin();; ++chunksIter) {
+        if (chunksIter == chunks__.end()) {
           // All chunks are filled up. Adding a new one
-          __chunks.reserve(__chunks.size() + 1);
-          __Chunk newChunk;
-          newChunk.__init(__blockSize, __numBlocks);
-          __chunks.push_back(newChunk);
-          __allocChunk = __chunks.end();
-          --__allocChunk;
-          __deallocChunk = __allocChunk;
+          chunks__.reserve(chunks__.size() + 1);
+          Chunk__ newChunk;
+          newChunk.init__(blockSize__, numBlocks__);
+          chunks__.push_back(newChunk);
+          allocChunk__ = chunks__.end();
+          --allocChunk__;
+          deallocChunk__ = allocChunk__;
           break;
         }
-        if (chunksIter->__blocksAvailable > 0) {
+        if (chunksIter->blocksAvailable__ > 0) {
           // Found a chunk
-          __allocChunk = chunksIter;
+          allocChunk__ = chunksIter;
           break;
         }
       }
     }
-    return __allocChunk->__allocate(__blockSize);
+    return allocChunk__->allocate__(blockSize__);
   }
 
   // ============================================================================
   // Deallocates a block
   // ============================================================================
   INLINE void FixedAllocator::deallocate(void* pDeallocatedBlock) {
-    if (__deallocChunk->__pData > pDeallocatedBlock
+    if (deallocChunk__->pData__ > pDeallocatedBlock
         || pDeallocatedBlock
-              > (__deallocChunk->__pData + (__numBlocks * __blockSize))) {
+              > (deallocChunk__->pData__ + (numBlocks__ * blockSize__))) {
       // If not things get ugly
       // We have to find where the Chunk containing this pointer is
       std::ptrdiff_t offset = 0;
 
-      // We perform a bidirectionnal search from __deallocChunk
+      // We perform a bidirectionnal search from deallocChunk__
       while (true) {
         ++offset;
         // First we look for the one going to the end of the vector
-        if ((__deallocChunk + offset) < __chunks.end()) {
-          if ((__deallocChunk + offset)->__pData <= pDeallocatedBlock
-              && pDeallocatedBlock < ((__deallocChunk + offset)->__pData
-                                      + (__numBlocks * __blockSize))) {
+        if ((deallocChunk__ + offset) < chunks__.end()) {
+          if ((deallocChunk__ + offset)->pData__ <= pDeallocatedBlock
+              && pDeallocatedBlock < ((deallocChunk__ + offset)->pData__
+                                      + (numBlocks__ * blockSize__))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
-            __deallocChunk = (__deallocChunk + offset);
+            deallocChunk__ = (deallocChunk__ + offset);
             break;
           }
         }
 
         // Then we look for the one going to the beginning of the vector
-        if ((__deallocChunk - offset) >= __chunks.begin()) {
-          if ((__deallocChunk - offset)->__pData <= pDeallocatedBlock
-              && pDeallocatedBlock < ((__deallocChunk - offset)->__pData
-                                      + (__numBlocks * __blockSize))) {
+        if ((deallocChunk__ - offset) >= chunks__.begin()) {
+          if ((deallocChunk__ - offset)->pData__ <= pDeallocatedBlock
+              && pDeallocatedBlock < ((deallocChunk__ - offset)->pData__
+                                      + (numBlocks__ * blockSize__))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
-            __deallocChunk = (__deallocChunk - offset);
+            deallocChunk__ = (deallocChunk__ - offset);
             break;
           }
         }
       }
     }
-    __deallocChunk->__deallocat(pDeallocatedBlock, __blockSize);
+    deallocChunk__->deallocat__(pDeallocatedBlock, blockSize__);
   }
 
 }   // namespace gum

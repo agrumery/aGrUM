@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint indicating that some arcs shall never be
  * removed or reversed
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -47,14 +47,14 @@ namespace gum {
     INLINE bool
        StructuralConstraintMandatoryArcs::checkArcDeletionAlone(NodeId x,
                                                                 NodeId y) const {
-      return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
+      return !MandatoryArcs__mandatory_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
        StructuralConstraintMandatoryArcs::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
-      return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
+      return !MandatoryArcs__mandatory_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -132,22 +132,22 @@ namespace gum {
 
     /// assign a set of forbidden arcs
     INLINE void StructuralConstraintMandatoryArcs::setArcs(const ArcSet& set) {
-      _MandatoryArcs__mandatory_arcs = set;
+      MandatoryArcs__mandatory_arcs_ = set;
     }
 
     /// assign a new forbidden arc
     INLINE void StructuralConstraintMandatoryArcs::addArc(const Arc& arc) {
-      _MandatoryArcs__mandatory_arcs.insert(arc);
+      MandatoryArcs__mandatory_arcs_.insert(arc);
     }
 
     /// remove a forbidden arc
     INLINE void StructuralConstraintMandatoryArcs::eraseArc(const Arc& arc) {
-      _MandatoryArcs__mandatory_arcs.erase(arc);
+      MandatoryArcs__mandatory_arcs_.erase(arc);
     }
 
     /// returns the set of mandatory arcs
     INLINE const ArcSet& StructuralConstraintMandatoryArcs::arcs() const {
-      return _MandatoryArcs__mandatory_arcs;
+      return MandatoryArcs__mandatory_arcs_;
     }
 
 // include all the methods applicable to the whole class hierarchy

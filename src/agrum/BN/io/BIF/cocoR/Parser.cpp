@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -51,11 +51,11 @@ namespace gum {
 
 
 		const ErrorsContainer &Parser::errors(void) const {
-			return __errors;
+			return errors__;
 		}
 
 		ErrorsContainer &Parser::errors(void) {
-			return __errors;
+			return errors__;
 		}
 
 		void Parser::Get() {
@@ -118,13 +118,13 @@ namespace gum {
 			NETWORK();
 			while (la->kind == 9 /* "variable" */ || la->kind == 16 /* "probability" */) {
 				if (la->kind == 9 /* "variable" */) {
-					while (!(la->kind == _EOF || la->kind == 9 /* "variable" */)) {
+					while (!(la->kind == EOF_ || la->kind == 9 /* "variable" */)) {
 						SynErr(26);
 						Get();
 					}
 					VARIABLE();
 				} else {
-					while (!(la->kind == _EOF || la->kind == 16 /* "probability" */)) {
+					while (!(la->kind == EOF_ || la->kind == 16 /* "probability" */)) {
 						SynErr(27);
 						Get();
 					}
@@ -138,9 +138,9 @@ namespace gum {
 			factory().startNetworkDeclaration();
 
 			Expect(6 /* "network" */);
-			if (la->kind == _ident) {
+			if (la->kind == ident_) {
 				IDENT(name_of_network);
-			} else if (la->kind == _string) {
+			} else if (la->kind == string_) {
 				STRING(name_of_network);
 			} else SynErr(28);
 			factory().addNetworkProperty("name", name_of_network);
@@ -233,12 +233,12 @@ namespace gum {
 		}
 
 		void Parser::IDENT(std::string &name) {
-			Expect(_ident);
+			Expect(ident_);
 			name = narrow(t->val);
 		}
 
 		void Parser::STRING(std::string &str) {
-			Expect(_string);
+			Expect(string_);
 			str = narrow(t->val);
 		}
 
@@ -251,12 +251,12 @@ namespace gum {
 				Get();
 				STRING(content);
 				Expect(14 /* ";" */);
-			} else if (la->kind == _largestring) {
+			} else if (la->kind == largestring_) {
 				Get();
-			} else if (la->kind == _ident) {
+			} else if (la->kind == ident_) {
 				IDENT(content);
 				Expect(14 /* ";" */);
-			} else if (la->kind == _integer || la->kind == _number) {
+			} else if (la->kind == integer_ || la->kind == number_) {
 				FLOAT(val);
 				Expect(14 /* ";" */);
 			} else SynErr(30);
@@ -277,7 +277,7 @@ namespace gum {
 		}
 
 		void Parser::NBR(int &val) {
-			Expect(_integer);
+			Expect(integer_);
 			val = coco_atoi(t->val);
 		}
 
@@ -292,9 +292,9 @@ namespace gum {
 		}
 
 		void Parser::IDENT_OR_INTEGER(std::string &name) {
-			if (la->kind == _ident) {
+			if (la->kind == ident_) {
 				IDENT(name);
-			} else if (la->kind == _integer) {
+			} else if (la->kind == integer_) {
 				Get();
 				name = narrow(t->val);
 			} else SynErr(31);
@@ -355,7 +355,7 @@ namespace gum {
 				LISTE_LABELS(parents, labels, 0);
 				Expect(19 /* ")" */);
 				LISTE_FLOAT(v);
-				__checkSizeOfProbabilityAssignation(v, var);
+				checkSizeOfProbabilityAssignation__(v, var);
 				TRY(factory().setVariableValuesUnchecked(v));
 				TRY(factory().endFactorizedEntry());
 
@@ -364,7 +364,7 @@ namespace gum {
 				if (!is_first) SemErr("'default' assignation has to be the first.");
 				LISTE_FLOAT(v);
 				TRY(factory().startFactorizedEntry());
-				__checkSizeOfProbabilityAssignation(v, var);
+				checkSizeOfProbabilityAssignation__(v, var);
 				TRY(factory().setVariableValuesUnchecked(v));
 				TRY(factory().endFactorizedEntry());
 
@@ -376,7 +376,7 @@ namespace gum {
 		Parser::LISTE_LABELS(const std::vector<std::string> &parents, std::vector<std::string> &labels, Idx num_label) {
 			std::string name_of_label;
 
-			if (la->kind == _ident || la->kind == _integer) {
+			if (la->kind == ident_ || la->kind == integer_) {
 				IDENT_OR_INTEGER(name_of_label);
 				labels.push_back(name_of_label);
 				if (num_label >= parents.size()) {
@@ -396,10 +396,10 @@ namespace gum {
 		}
 
 		void Parser::FLOAT(float &val) {
-			if (la->kind == _number) {
+			if (la->kind == number_) {
 				Get();
 				val = coco_atof(t->val);
-			} else if (la->kind == _integer) {
+			} else if (la->kind == integer_) {
 				Get();
 				val = float(coco_atoi(t->val));
 			} else SynErr(34);
@@ -546,13 +546,13 @@ namespace gum {
 		}
 
 		void Parser::SemErr(const wchar_t *msg) {
-			if (errDist >= minErrDist) __errors.Error(scanner->filename(), t->line, t->col, msg);
+			if (errDist >= minErrDist) errors__.Error(scanner->filename(), t->line, t->col, msg);
 
 			errDist = 0;
 		}
 
 		void Parser::Warning(const wchar_t *msg) {
-			__errors.Warning(scanner->filename(), t->line, t->col, msg);
+			errors__.Warning(scanner->filename(), t->line, t->col, msg);
 		}
 
 		void Parser::SynErr(const std::wstring &filename, int line, int col, int n) {
@@ -676,7 +676,7 @@ namespace gum {
 
 			//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
 			std::wstring ss = L"Syntax error : " + std::wstring(s);
-			__errors.Error(filename, line, col, ss.c_str());
+			errors__.Error(filename, line, col, ss.c_str());
 			coco_string_delete(s);
 		}
 

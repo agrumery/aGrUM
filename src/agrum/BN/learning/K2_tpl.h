@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The K2 algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <type_traits>
@@ -41,7 +41,7 @@ namespace gum {
     DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-         std::is_base_of< __GraphChangesGenerator4K2,
+         std::is_base_of< GraphChangesGenerator4K2__,
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType >::value,
          "K2 must be called with a K2-compliant Graph Change Generator");
 
@@ -50,7 +50,7 @@ namespace gum {
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
-      generator.setOrder(__order);
+      generator.setOrder(order__);
 
       // use the greedy hill climbing algorithm to perform the search
       return GreedyHillClimbing::learnStructure(selector, initial_dag);
@@ -65,7 +65,7 @@ namespace gum {
                                        DAG                     initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-         std::is_base_of< __GraphChangesGenerator4K2,
+         std::is_base_of< GraphChangesGenerator4K2__,
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType >::value,
          "K2 must be called with a K2-compliant Graph Change Generator");
 
@@ -74,7 +74,7 @@ namespace gum {
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
-      generator.setOrder(__order);
+      generator.setOrder(order__);
 
       // use the greedy hill climbing algorithm to perform the search
       return GreedyHillClimbing::learnBN< GUM_SCALAR >(

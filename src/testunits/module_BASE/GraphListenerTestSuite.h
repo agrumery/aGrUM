@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -48,116 +48,116 @@ namespace gum_tests {
   class GraphListenerTestSuite: public CxxTest::TestSuite {
     class CountListener: public gum::Listener {
       private:
-      int  __nbrNode, __nbrArcs, __nbrEdges;
-      bool __isOn;
+      int  nbrNode__, nbrArcs__, nbrEdges__;
+      bool isOn__;
 
       public:
       CountListener() {
-        __nbrNode = __nbrArcs = __nbrEdges = 0;
-        __isOn = false;
+        nbrNode__ = nbrArcs__ = nbrEdges__ = 0;
+        isOn__ = false;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { __nbrNode++; }
+      void whenNodeAdded(const void*, gum::NodeId) { nbrNode__++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { __nbrNode--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { nbrNode__--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { __nbrArcs++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { nbrArcs__++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { __nbrArcs--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { nbrArcs__--; }
 
       void whenEdgeAdded(const void*, gum::NodeId f, gum::NodeId s) {
-        __nbrEdges++;
+        nbrEdges__++;
 
-        if (__isOn) GUM_TRACE(f << "--" << s << "(" << __nbrEdges << ")");
+        if (isOn__) GUM_TRACE(f << "--" << s << "(" << nbrEdges__ << ")");
       }
 
       void whenEdgeDeleted(const void*, gum::NodeId f, gum::NodeId s) {
-        __nbrEdges--;
+        nbrEdges__--;
 
-        if (__isOn) GUM_TRACE(f << "--" << s << "(" << __nbrEdges << ")");
+        if (isOn__) GUM_TRACE(f << "--" << s << "(" << nbrEdges__ << ")");
       }
 
-      const int nodes() const { return __nbrNode; }
+      const int nodes() const { return nbrNode__; }
 
-      const int arcs() const { return __nbrArcs; }
+      const int arcs() const { return nbrArcs__; }
 
-      const int edges() const { return __nbrEdges; }
+      const int edges() const { return nbrEdges__; }
 
-      void on() { __isOn = true; }
+      void on() { isOn__ = true; }
 
-      void off() { __isOn = false; }
+      void off() { isOn__ = false; }
     };
 
     class DiGraphCounter: public gum::DiGraphListener {
       private:
-      int __nbrNode, __nbrArcs;
+      int nbrNode__, nbrArcs__;
 
       public:
       DiGraphCounter(gum::DiGraph* g) : gum::DiGraphListener(g) {
-        __nbrNode = __nbrArcs = 0;
+        nbrNode__ = nbrArcs__ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { __nbrNode++; }
+      void whenNodeAdded(const void*, gum::NodeId) { nbrNode__++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { __nbrNode--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { nbrNode__--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { __nbrArcs++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { nbrArcs__++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { __nbrArcs--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { nbrArcs__--; }
 
-      const int nodes() const { return __nbrNode; }
+      const int nodes() const { return nbrNode__; }
 
-      const int arcs() const { return __nbrArcs; }
+      const int arcs() const { return nbrArcs__; }
     };
 
     class UndiGraphCounter: public gum::UndiGraphListener {
       private:
-      int __nbrNode, __nbrEdges;
+      int nbrNode__, nbrEdges__;
 
       public:
       UndiGraphCounter(gum::UndiGraph* g) : gum::UndiGraphListener(g) {
-        __nbrNode = __nbrEdges = 0;
+        nbrNode__ = nbrEdges__ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { __nbrNode++; }
+      void whenNodeAdded(const void*, gum::NodeId) { nbrNode__++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { __nbrNode--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { nbrNode__--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { __nbrEdges++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { nbrEdges__++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { __nbrEdges--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { nbrEdges__--; }
 
-      const int nodes() const { return __nbrNode; }
+      const int nodes() const { return nbrNode__; }
 
-      const int edges() const { return __nbrEdges; }
+      const int edges() const { return nbrEdges__; }
     };
 
     class MixedGraphCounter: public gum::MixedGraphListener {
       private:
-      int __nbrNode, __nbrArcs, __nbrEdges;
+      int nbrNode__, nbrArcs__, nbrEdges__;
 
       public:
       MixedGraphCounter(gum::MixedGraph* g) : gum::MixedGraphListener(g) {
-        __nbrNode = __nbrArcs = __nbrEdges = 0;
+        nbrNode__ = nbrArcs__ = nbrEdges__ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { __nbrNode++; }
+      void whenNodeAdded(const void*, gum::NodeId) { nbrNode__++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { __nbrNode--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { nbrNode__--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { __nbrArcs++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { nbrArcs__++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { __nbrArcs--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { nbrArcs__--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { __nbrEdges++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { nbrEdges__++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { __nbrEdges--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { nbrEdges__--; }
 
-      const int nodes() const { return __nbrNode; }
+      const int nodes() const { return nbrNode__; }
 
-      const int arcs() const { return __nbrArcs; }
+      const int arcs() const { return nbrArcs__; }
 
-      const int edges() const { return __nbrEdges; }
+      const int edges() const { return nbrEdges__; }
     };
 
     private:

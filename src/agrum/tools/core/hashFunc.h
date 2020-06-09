@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Classes providing basic hash functions for hash tables.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_HASH_FUNC_H
 #define GUM_HASH_FUNC_H
@@ -55,7 +55,7 @@ namespace gum {
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
    */
-  unsigned int __hashTableLog2(const Size nb);
+  unsigned int hashTableLog2__(const Size nb);
 
   /**
    * @class HashFuncConst
@@ -111,9 +111,9 @@ namespace gum {
    * public:
    *   Size operator() (const MyObject& key) const  {
    *      // here write the code using
-   *      // HashFuncBase<MyObject>::_hash_size and/or
-   *      // HashFuncBase<MyObject>::_hash_log2_size and/or
-   *      // HashFuncBase<MyObject>::_hash_mask
+   *      // HashFuncBase<MyObject>::hash_size_ and/or
+   *      // HashFuncBase<MyObject>::hash_log2_size_ and/or
+   *      // HashFuncBase<MyObject>::hash_mask_
    *   }
    * };
    * @endcode
@@ -128,17 +128,17 @@ namespace gum {
    *     for (size_t i = 0, j = key.size(); i < j; ++i) {
    *       h = 19 * h + key[i];
    *     }
-   *     return ((h * GUM_HASHTABLE_INT_GOLD) & _hash_mask);
+   *     return ((h * GUM_HASHTABLE_INT_GOLD) & hash_mask_);
    *   }
    * };
    * @endcode
    *
-   * The gum::HashFunc::_hash_size attribute corresponds to the number of slots
+   * The gum::HashFunc::hash_size_ attribute corresponds to the number of slots
    * in the gum::HashTable. Your function should always return a number in
    * [0,_hash_size). As the number of slots in a gum::HashTable is always a
    * power of 2, it may be convenient to know the number of bits used by the
    * hashed keys, this is precisely the information contained in
-   * gum::HashFunc::_hash_log2_size. Finally, gum::HashFunc::_hash_mask is a
+   * gum::HashFunc::hash_log2_size_. Finally, gum::HashFunc::hash_mask_ is a
    * mask that can be used to ensure that the hashed key actually belongs to
    * [0,_hash_size). This is used in particular in the hash function for
    * hashing strings.
@@ -183,7 +183,7 @@ namespace gum {
      * and its implementation should be something like:
      * @code
      * INLINE Size HashFunc< Key >::operator()(const Key& key) const {
-     *   return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+     *   return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
      * }
      * @endcode
      * By doing this, compilers optimize the code so that it is significantly
@@ -198,32 +198,32 @@ namespace gum {
 
     protected:
     /// The size of the hash table.
-    Size _hash_size{Size(0)};
+    Size hash_size_{Size(0)};
 
     /// Log of the number of slots of the hash table in base 2.
-    unsigned int _hash_log2_size{0};
+    unsigned int hash_log2_size_{0};
 
     /**
-     * @brief performing y = x & _hash_mask guarantees that y is a slot index
+     * @brief performing y = x & hash_mask_ guarantees that y is a slot index
      * of the hash table
      *
      * To transform a Size x into a slot index of the hash table, you can either
-     * use x & _hash_mask or x >> _right_shift depending on whether you want
+     * use x & hash_mask_ or x >> right_shift_ depending on whether you want
      * to exploit the least significant bits of x (&) or the most significant
      * one (>>).
      */
-    Size _hash_mask{Size(0)};
+    Size hash_mask_{Size(0)};
 
     /**
-     * @brief performing y = x >> _right_shift guarantees that y is a slot
+     * @brief performing y = x >> right_shift_ guarantees that y is a slot
      * index of the hash table
      *
      * To transform a Size x into a slot index of the hash table, you can either
-     * use x & _hash_mask or x >> _right_shift depending on whether you want
+     * use x & hash_mask_ or x >> right_shift_ depending on whether you want
      * to exploit the least significant bits of x (&) or the most significant
      * one (>>).
      */
-    unsigned int _right_shift{0};
+    unsigned int right_shift_{0};
   };
 
 
@@ -297,7 +297,7 @@ namespace gum {
      * An additional mask to ensure that keys with fewer bits than Size
      * are cast correctly.
      */
-    static constexpr Size _small_key_mask{(Size(1) << (8 * sizeof(Key)))
+    static constexpr Size small_key_mask_{(Size(1) << (8 * sizeof(Key)))
                                           - Size(1)};
   };
 

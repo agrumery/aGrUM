@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class used to store optimum IBayesNet during some inference
  * algorithms.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef __VAR_MOD_2_BNS_MAP__H__
@@ -49,7 +49,7 @@ namespace gum {
      * algorithms.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
      */
 
     template < typename GUM_SCALAR >
@@ -67,26 +67,26 @@ namespace gum {
 
       protected:
       /** Map id - dBN : get a net from it's id. */
-      hashNet _myHashNet;
+      hashNet myHashNet_;
       /** Map varKey - list(id) : get all optimal nets id from the given key :
        * variable, modality and min=0 ( or max=1 ). */
-      varHashs _myVarHashs;
+      varHashs myVarHashs_;
       /** Map id - list(varKey) : get all variables, modalities associated to
        * this
        * optimal net id. */
-      hashVars _myHashVars;
+      hashVars myHashVars_;
 
       /** Since all samples have the same structure, this will be used as
        * default
        * initialization (copy constructor) for any sample. */
-      std::vector< std::vector< std::vector< bool > > > _sampleDef;
+      std::vector< std::vector< std::vector< bool > > > sampleDef_;
 
       /** The current sampled IBayesNet. */
-      dBN _currentSample;
+      dBN currentSample_;
       /** The current sampled IBayesNet hash. */
-      Size _currentHash;
+      Size currentHash_;
       /** The hash fuction. Requires c++11/0x. */
-      std::hash< std::vector< bool > > _vectHash;
+      std::hash< std::vector< bool > > vectHash_;
 
       /** A pointer to the CredalNet to be used. */
       const CredalNet< GUM_SCALAR >* cnet;
@@ -97,7 +97,7 @@ namespace gum {
 
       /**
        * Thread constructor.
-       * Initialize __sampleDef from the CredalNet.
+       * Initialize sampleDef__ from the CredalNet.
        *
        * @param cn The CredalNet to be used.
        */
@@ -137,7 +137,7 @@ namespace gum {
       /// @{
 
       /**
-       * Initialize __sampleDef from the CredalNet.
+       * Initialize sampleDef__ from the CredalNet.
        *
        * Shoud only be used by InferenceEngine to initialize it's member
        *variable.

@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -61,14 +61,14 @@ namespace gum_tests {
       reader.proceed();
 
       if (net != nullptr) {
-        TS_ASSERT(! net->empty());
+        TS_ASSERT(!net->empty());
         delete net;
       }
     }
 
     void testRead_file2() {
       std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovNet< double >* net = new gum::MarkovNet< double >();
+      gum::MarkovNet< double >*  net = new gum::MarkovNet< double >();
       gum::UAIMNReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
@@ -94,9 +94,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_2.name(), "2");
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)3);
 
-        TS_ASSERT_EQUALS(net->factors().size(),(gum::Size)2);
+        TS_ASSERT_EQUALS(net->factors().size(), (gum::Size)2);
 
-        const auto& factor_01 = net->factor({node_0,node_1});
+        const auto& factor_01 = net->factor({node_0, node_1});
         TS_ASSERT_EQUALS(factor_01.domainSize(), (gum::Size)4);
         TS_ASSERT_EQUALS(factor_01.nbrDim(), (gum::Size)2);
 
@@ -106,7 +106,7 @@ namespace gum_tests {
         inst_01.setLast();
         TS_ASSERT_DELTA(factor_01[inst_01], 0.08, 0.001);
 
-        const auto& factor_12 = net->factor({node_2,node_1});
+        const auto& factor_12 = net->factor({node_2, node_1});
         TS_ASSERT_EQUALS(factor_12.domainSize(), (gum::Size)6);
         TS_ASSERT_EQUALS(factor_12.nbrDim(), (gum::Size)2);
 

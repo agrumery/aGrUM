@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of Weighted Sampling for inference in Bayesian Networks.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -52,14 +52,14 @@ namespace gum {
 
   /// No burn in needed for Weighted sampling
   template < typename GUM_SCALAR >
-  Instantiation WeightedSampling< GUM_SCALAR >::_burnIn() {
+  Instantiation WeightedSampling< GUM_SCALAR >::burnIn_() {
     gum::Instantiation I;
     return I;
   }
 
 
   template < typename GUM_SCALAR >
-  Instantiation WeightedSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
+  Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
                                                       Instantiation prev) {
     *w = 1.0f;
     bool wrongValue = false;
@@ -81,7 +81,7 @@ namespace gum {
 
           *w *= localp;
         } else {
-          this->_addVarSample(nod, &prev);
+          this->addVarSample_(nod, &prev);
         }
       }
     } while (wrongValue);

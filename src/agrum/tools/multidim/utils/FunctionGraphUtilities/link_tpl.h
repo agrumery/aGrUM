@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Template methods of MultiDimFunctionGraph.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -35,14 +35,14 @@ namespace gum {
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem) : __element(elem) {
+  INLINE Link< T >::Link(const T& elem) : element__(elem) {
     GUM_CONSTRUCTOR(Link);
   }
 
   // Constructor
   template < typename T >
   INLINE Link< T >::Link(const T& elem, Link< T >* nextLink) :
-      __element(elem), __nextLink(nextLink) {
+      element__(elem), nextLink__(nextLink) {
     GUM_CONSTRUCTOR(Link);
   }
 
@@ -64,34 +64,34 @@ namespace gum {
 
   template < typename T >
   INLINE const T& Link< T >::element() const {
-    return __element;
+    return element__;
   }
 
   template < typename T >
   INLINE T& Link< T >::element() {
-    return __element;
+    return element__;
   }
 
   template < typename T >
   INLINE const Link< T >* Link< T >::nextLink() const {
-    return __nextLink;
+    return nextLink__;
   }
 
   template < typename T >
   INLINE Link< T >* Link< T >::nextLink() {
-    return __nextLink;
+    return nextLink__;
   }
 
   template < typename T >
   INLINE void Link< T >::setNextLink(Link< T >* newLink) {
-    __nextLink = newLink;
+    nextLink__ = newLink;
   }
 
   // Constructor
   template < typename T >
   INLINE LinkedList< T >::LinkedList() {
     GUM_CONSTRUCTOR(LinkedList);
-    __firstLink = nullptr;
+    firstLink__ = nullptr;
   }
 
   // Destructor
@@ -113,17 +113,17 @@ namespace gum {
 
   template < typename T >
   INLINE const Link< T >* LinkedList< T >::list() const {
-    return __firstLink;
+    return firstLink__;
   }
 
   template < typename T >
   INLINE Link< T >* LinkedList< T >::list() {
-    return __firstLink;
+    return firstLink__;
   }
 
   template < typename T >
   void LinkedList< T >::clear() {
-    Link< T >* curLink = __firstLink;
+    Link< T >* curLink = firstLink__;
     Link< T >* nl = nullptr;
     while (curLink) {
       nl = curLink->nextLink();
@@ -134,13 +134,13 @@ namespace gum {
 
   template < typename T >
   INLINE void LinkedList< T >::addLink(const T& elem) {
-    Link< T >* newLink = new Link< T >(elem, __firstLink);
-    __firstLink = newLink;
+    Link< T >* newLink = new Link< T >(elem, firstLink__);
+    firstLink__ = newLink;
   }
 
   template < typename T >
   INLINE void LinkedList< T >::searchAndRemoveLink(const T& elem) {
-    Link< T >* curLink = __firstLink;
+    Link< T >* curLink = firstLink__;
     Link< T >* prevLink = nullptr;
     while (curLink && curLink->element() != elem) {
       prevLink = curLink;
@@ -150,7 +150,7 @@ namespace gum {
       if (prevLink)
         prevLink->setNextLink(curLink->nextLink());
       else
-        __firstLink = curLink->nextLink();
+        firstLink__ = curLink->nextLink();
       delete curLink;
     }
   }

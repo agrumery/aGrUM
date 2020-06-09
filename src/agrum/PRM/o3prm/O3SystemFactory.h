@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for the O3SystemFactory class.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  * @author Lionel TORTI
  */
 
@@ -72,29 +72,29 @@ namespace gum {
         void build();
 
         private:
-        PRM< GUM_SCALAR >*          __prm;
-        O3PRM*                      __o3_prm;
-        O3NameSolver< GUM_SCALAR >* __solver;
-        ErrorsContainer*            __errors;
+        PRM< GUM_SCALAR >*          prm__;
+        O3PRM*                      o3_prm__;
+        O3NameSolver< GUM_SCALAR >* solver__;
+        ErrorsContainer*            errors__;
 
-        HashTable< std::string, O3Instance* > __nameMap;
+        HashTable< std::string, O3Instance* > nameMap__;
 
-        void __addInstances(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void addInstances__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void __addAssignments(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void addAssignments__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void __addIncrements(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void addIncrements__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        bool __checkSystem(O3System& sys);
+        bool checkSystem__(O3System& sys);
 
-        bool __checkIncrements(O3System& sys);
+        bool checkIncrements__(O3System& sys);
 
-        bool __checkParameters(const PRMClass< GUM_SCALAR >& type,
+        bool checkParameters__(const PRMClass< GUM_SCALAR >& type,
                                const O3Instance&             inst);
 
-        bool __checkInstance(O3System& sys);
+        bool checkInstance__(O3System& sys);
 
-        bool __checkAssignments(O3System& sys);
+        bool checkAssignments__(O3System& sys);
       };
 
     }   // namespace o3prm

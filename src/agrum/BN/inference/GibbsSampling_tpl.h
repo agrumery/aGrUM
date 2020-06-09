@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of Gibbs Sampling for inference in Bayesian Networks.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/inference/GibbsSampling.h>
@@ -62,20 +62,20 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::_monteCarloSample() {
+  Instantiation GibbsSampling< GUM_SCALAR >::monteCarloSample_() {
     return GibbsOperator< GUM_SCALAR >::monteCarloSample();
   }
 
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::_burnIn() {
+  Instantiation GibbsSampling< GUM_SCALAR >::burnIn_() {
     gum::Instantiation Ip;
     if (this->burnIn() == 0) return Ip;
 
     GUM_SCALAR w = 1.0f;
-    Ip = _monteCarloSample();
+    Ip = monteCarloSample_();
     for (Size i = 1; i < this->burnIn(); i++)
-      Ip = this->_draw(&w, Ip);
+      Ip = this->draw_(&w, Ip);
 
     return Ip;
   }
@@ -83,7 +83,7 @@ namespace gum {
   /// draws next sample for gibbs sampling
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
+  Instantiation GibbsSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
                                                    Instantiation prev) {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of SVED (Structured Value Elimination with d-seperation).
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SVED_H
 #define GUM_SVED_H
@@ -92,17 +92,17 @@ namespace gum {
       /// Code alias.
       typedef typename PRMInference< GUM_SCALAR >::Chain Chain;
 
-      /// See PRMInference::_evidenceAdded().
-      virtual void _evidenceAdded(const Chain& chain);
+      /// See PRMInference::evidenceAdded_().
+      virtual void evidenceAdded_(const Chain& chain);
 
-      /// See PRMInference::_evidenceRemoved().
-      virtual void _evidenceRemoved(const Chain& chain);
+      /// See PRMInference::evidenceRemoved_().
+      virtual void evidenceRemoved_(const Chain& chain);
 
-      /// See PRMInference::_posterior().
-      virtual void _posterior(const Chain& chain, Potential< GUM_SCALAR >& m);
+      /// See PRMInference::posterior_().
+      virtual void posterior_(const Chain& chain, Potential< GUM_SCALAR >& m);
 
-      /// See PRMInference::_joint().
-      virtual void _joint(const std::vector< Chain >& queries,
+      /// See PRMInference::joint_().
+      virtual void joint_(const std::vector< Chain >& queries,
                           Potential< GUM_SCALAR >&    j);
 
       /// @}
@@ -118,35 +118,35 @@ namespace gum {
          ArraySetIterator;
 
       HashTable< const PRMClass< GUM_SCALAR >*, std::vector< NodeId >* >
-         __elim_orders;
+         elim_orders__;
 
       /// The Set<NodeId> returned by StructuredBayesBall<GUM_SCALAR> is unique
       /// for
       /// each
       /// family of instances with the same requisite set (thus the same lifted
       /// potentials).
-      HashTable< const Set< NodeId >*, BucketSet* > __lifted_pools;
+      HashTable< const Set< NodeId >*, BucketSet* > lifted_pools__;
 
-      Sequence< std::string >* __class_elim_order;
+      Sequence< std::string >* class_elim_order__;
 
-      StructuredBayesBall< GUM_SCALAR > __bb;
+      StructuredBayesBall< GUM_SCALAR > bb__;
 
       /// First pair  -> requisite Attributes
       /// Second pair -> requisite SlotChains
       HashTable< const Set< NodeId >*,
                  std::pair< Set< NodeId >*, Set< NodeId >* > >
-         __req_set;
+         req_set__;
 
       /// @name Inference sub methods.
 
       /// @{
 
-      void __eliminateNodes(const PRMInstance< GUM_SCALAR >* query,
+      void eliminateNodes__(const PRMInstance< GUM_SCALAR >* query,
                             NodeId                           id,
                             BucketSet&                       pool,
                             BucketSet&                       trash);
 
-      void __eliminateNodesDownward(
+      void eliminateNodesDownward__(
          const PRMInstance< GUM_SCALAR >*          from,
          const PRMInstance< GUM_SCALAR >*          i,
          BucketSet&                                pool,
@@ -154,51 +154,51 @@ namespace gum {
          List< const PRMInstance< GUM_SCALAR >* >& elim_list,
          Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
 
-      void __eliminateNodesUpward(
+      void eliminateNodesUpward__(
          const PRMInstance< GUM_SCALAR >*          i,
          BucketSet&                                pool,
          BucketSet&                                trash,
          List< const PRMInstance< GUM_SCALAR >* >& elim_list,
          Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
 
-      void __eliminateNodesWithEvidence(const PRMInstance< GUM_SCALAR >* i,
+      void eliminateNodesWithEvidence__(const PRMInstance< GUM_SCALAR >* i,
                                         BucketSet&                       pool,
                                         BucketSet&                       trash);
 
-      void __insertLiftedNodes(const PRMInstance< GUM_SCALAR >* i,
+      void insertLiftedNodes__(const PRMInstance< GUM_SCALAR >* i,
                                BucketSet&                       pool,
                                BucketSet&                       trash);
 
       /// Returns true if second can be eliminated before first.
-      bool __checkElimOrder(const PRMInstance< GUM_SCALAR >* first,
+      bool checkElimOrder__(const PRMInstance< GUM_SCALAR >* first,
                             const PRMInstance< GUM_SCALAR >* second);
 
-      void __initElimOrder();
+      void initElimOrder__();
 
-      void __insertEvidence(const PRMInstance< GUM_SCALAR >* i, BucketSet& pool);
+      void insertEvidence__(const PRMInstance< GUM_SCALAR >* i, BucketSet& pool);
 
-      std::vector< NodeId >& __getElimOrder(const PRMClass< GUM_SCALAR >& c);
+      std::vector< NodeId >& getElimOrder__(const PRMClass< GUM_SCALAR >& c);
 
       Potential< GUM_SCALAR >*
-         __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
+         getAggPotential__(const PRMInstance< GUM_SCALAR >*  i,
                            const PRMAggregate< GUM_SCALAR >* agg);
 
-      void __initLiftedNodes(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);
+      void initLiftedNodes__(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);
 
-      void __initReqSets(const PRMInstance< GUM_SCALAR >* i);
+      void initReqSets__(const PRMInstance< GUM_SCALAR >* i);
 
-      Set< NodeId >& __getAttrSet(const PRMInstance< GUM_SCALAR >* i);
+      Set< NodeId >& getAttrSet__(const PRMInstance< GUM_SCALAR >* i);
 
-      Set< NodeId >& __getSCSet(const PRMInstance< GUM_SCALAR >* i);
+      Set< NodeId >& getSCSet__(const PRMInstance< GUM_SCALAR >* i);
 
-      void __reduceElimList(const PRMInstance< GUM_SCALAR >*          i,
+      void reduceElimList__(const PRMInstance< GUM_SCALAR >*          i,
                             List< const PRMInstance< GUM_SCALAR >* >& elim_list,
                             List< const PRMInstance< GUM_SCALAR >* >& reduced_list,
                             Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
                             BucketSet&                                pool,
                             BucketSet&                                trash);
 
-      std::string __trim(const std::string& s);
+      std::string trim__(const std::string& s);
       /// @}
     };
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -55,11 +55,11 @@ namespace net {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_ident=1,
-		_integer=2,
-		_number=3,
-		_string=4
+		EOF_=0,
+		ident_=1,
+		integer_=2,
+		number_=3,
+		string_=4
 	};
 	int maxT;
 
@@ -74,7 +74,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -82,14 +82,14 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::IBayesNetFactory* __factory;
+    gum::IBayesNetFactory* factory__;
 
 void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
+  factory__=f;
 }
 
 gum::IBayesNetFactory& factory() {
-  if (__factory) return *__factory;
+  if (factory__) return *factory__;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
 }
 
@@ -101,7 +101,7 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
+void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::string& var, int res) {
   if ((int) v.size()<res)
     Warning("Not enough data in probability assignation for node "+var);
   if ((int) v.size()>res)

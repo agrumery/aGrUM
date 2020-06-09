@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -30,11 +30,11 @@ namespace gum {
 
   INLINE
   void Timer::reset() {
-    _sleeping = false;
-    _start = std::chrono::high_resolution_clock::now();
-    _pause = std::chrono::high_resolution_clock::now();
+    sleeping_ = false;
+    start_ = std::chrono::high_resolution_clock::now();
+    pause_ = std::chrono::high_resolution_clock::now();
 
-    // do _start = clock(); while ( _start == k );// to be sure to start at the
+    // do start_ = clock(); while ( start_ == k );// to be sure to start at the
     // beginning of a tick
   }
 
@@ -42,18 +42,18 @@ namespace gum {
   double Timer::step() const {
     std::chrono::duration< double, std::milli > ms;
     ;
-    if (_sleeping)
-      ms = _pause - _start;
+    if (sleeping_)
+      ms = pause_ - start_;
     else
-      ms = std::chrono::high_resolution_clock::now() - _start;
+      ms = std::chrono::high_resolution_clock::now() - start_;
     return ms.count() / 1000.0;
   }
 
   INLINE
   double Timer::pause() {
-    if (!_sleeping) {
-      _pause = std::chrono::high_resolution_clock::now();
-      _sleeping = true;
+    if (!sleeping_) {
+      pause_ = std::chrono::high_resolution_clock::now();
+      sleeping_ = true;
     }
 
     return step();
@@ -61,9 +61,9 @@ namespace gum {
 
   INLINE
   double Timer::resume() {
-    if (_sleeping) {
-      _start += std::chrono::high_resolution_clock::now() - _pause;
-      _sleeping = false;
+    if (sleeping_) {
+      start_ += std::chrono::high_resolution_clock::now() - pause_;
+      sleeping_ = false;
     }
 
     return step();

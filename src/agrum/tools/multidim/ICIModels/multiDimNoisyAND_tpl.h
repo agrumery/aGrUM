@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief class for NoisyAND-net implementation as multiDim
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/core/exceptions.h>
@@ -123,8 +123,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimNoisyAND< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyAND< GUM_SCALAR >(this->__external_weight,
-                                              this->__default_weight);
+    return new MultiDimNoisyAND< GUM_SCALAR >(this->external_weight__,
+                                              this->default_weight__);
   }
 
   // returns the name of the implementation

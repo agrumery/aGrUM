@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  * the class is designed to be fast for such modifications. However, the number
  * of modifications checked should be higher than at least 3 for this class to
  * be competitive.
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_DAG_CYCLE_DETECTOR_H
 #define GUM_DAG_CYCLE_DETECTOR_H
@@ -95,13 +95,13 @@ namespace gum {
 
       private:
       /// the type of modification
-      ChangeType __type;
+      ChangeType type__;
 
       /// the tail of the arc to be modified
-      NodeId __tail;
+      NodeId tail__;
 
       /// the head of the arc to be modified
-      NodeId __head;
+      NodeId head__;
     };
 
     /**
@@ -313,30 +313,30 @@ namespace gum {
 
     private:
     /// the initial dag from which modifications are applied
-    DiGraph __dag;
+    DiGraph dag__;
 
     /// the set of ancestors of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty< NodeProperty< Size > > __ancestors;
+    NodeProperty< NodeProperty< Size > > ancestors__;
 
     /// the set of descendants of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty< NodeProperty< Size > > __descendants;
+    NodeProperty< NodeProperty< Size > > descendants__;
 
     /// adds a weighted nodeset to another (weights are added)
-    void __addWeightedSet(NodeProperty< Size >&       nodeset,
+    void addWeightedSet__(NodeProperty< Size >&       nodeset,
                           const NodeProperty< Size >& set_to_add,
                           Size                        multiplier) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
-    void __delWeightedSet(NodeProperty< Size >&       nodeset,
+    void delWeightedSet__(NodeProperty< Size >&       nodeset,
                           const NodeProperty< Size >& set_to_del,
                           Size                        multiplier) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
-    void __restrictWeightedSet(NodeProperty< Size >&       result_set,
+    void restrictWeightedSet__(NodeProperty< Size >&       result_set,
                                const NodeProperty< Size >& set_to_restrict,
                                const NodeSet&              extrmities) const;
   };

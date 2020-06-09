@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -128,7 +128,7 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    void _updateNodeWithObservation(const Observation* newObs,
+    void updateNodeWithObservation_(const Observation* newObs,
                                     NodeId             currentNodeId);
 
     /// @}
@@ -152,7 +152,7 @@ namespace gum {
      * @return the newly created node's id
      */
     // ==========================================================================
-    NodeId _insertNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+    NodeId insertNode_(NodeDatabase< AttributeSelection, isScalar >* nDB,
                        const DiscreteVariable*                       boundVar);
 
     // ==========================================================================
@@ -162,7 +162,7 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    void _chgNodeBoundVar(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
+    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
 
     // ==========================================================================
     /**
@@ -170,7 +170,7 @@ namespace gum {
      * @param removedNodeId : the node to remove
      */
     // ==========================================================================
-    void _removeNode(NodeId removedNodeId);
+    void removeNode_(NodeId removedNodeId);
 
     /// @}
 
@@ -193,7 +193,7 @@ namespace gum {
      * @return the mathcing node id in the target
      */
     // ==========================================================================
-    NodeId __insertNodeInFunctionGraph(NodeId src);
+    NodeId insertNodeInFunctionGraph__(NodeId src);
 
     // ==========================================================================
     /**
@@ -205,8 +205,8 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode(NodeId src) {
-      return __insertTerminalNode(src, Int2Type< isScalar >());
+    NodeId insertTerminalNode__(NodeId src) {
+      return insertTerminalNode__(src, Int2Type< isScalar >());
     }
 
     // ==========================================================================
@@ -218,7 +218,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode(NodeId src, Int2Type< true >);
+    NodeId insertTerminalNode__(NodeId src, Int2Type< true >);
 
     // ==========================================================================
     /**
@@ -229,7 +229,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode(NodeId src, Int2Type< false >);
+    NodeId insertTerminalNode__(NodeId src, Int2Type< false >);
 
     /// @}
 
@@ -237,14 +237,14 @@ namespace gum {
     protected:
     // ==========================================================================
     /**
-     * @brief _insertSetOfVars
+     * @brief insertSetOfVars_
      * @param ret
      */
     // ==========================================================================
-    void _insertSetOfVars(MultiDimFunctionGraph< double >* ret) {
+    void insertSetOfVars_(MultiDimFunctionGraph< double >* ret) {
       for (SetIteratorSafe< const DiscreteVariable* > varIter =
-              this->_setOfVars.beginSafe();
-           varIter != this->_setOfVars.endSafe();
+              this->setOfVars_.beginSafe();
+           varIter != this->setOfVars_.endSafe();
            ++varIter)
         ret->add(**varIter);
     }
@@ -253,13 +253,13 @@ namespace gum {
     /// Hashtable indicating if given node has been modified (upon receiving new
     /// exemple or through a transpose)
     /// The aim is not if we have revise the installed variable on that node
-    HashTable< NodeId, bool > __staleTable;
+    HashTable< NodeId, bool > staleTable__;
 
     /// The total number of observation added to this tree
-    Idx __nbTotalObservation;
+    Idx nbTotalObservation__;
 
     /// The threshold above which we consider variables to be dependant
-    double __attributeSelectionThreshold;
+    double attributeSelectionThreshold__;
   };
 
 

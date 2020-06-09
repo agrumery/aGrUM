@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return __errors;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -109,23 +109,23 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(_string);
+		Expect(string_);
 		str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end()); 
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(_ident);
+		Expect(ident_);
 		name=narrow(t->val); 
 }
 
 void Parser::ELT_LIST(std::string& val) {
-		if (la->kind == _string) {
+		if (la->kind == string_) {
 			Get();
-		} else if (la->kind == _number) {
+		} else if (la->kind == number_) {
 			Get();
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
-		} else if (la->kind == _ident) {
+		} else if (la->kind == ident_) {
 			Get();
 		} else SynErr(18);
 		val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end()); 
@@ -148,22 +148,22 @@ void Parser::LIST(std::vector<std::string>& vals ) {
 }
 
 void Parser::GARBAGE_ELT_LIST() {
-		if (la->kind == _number) {
+		if (la->kind == number_) {
 			Get();
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
 		} else SynErr(19);
 }
 
 void Parser::GARBAGE_LISTS_SEQUENCE() {
 		GARBAGE_NESTED_LIST();
-		while (la->kind == _integer || la->kind == _number || la->kind == 5 /* "(" */) {
+		while (la->kind == integer_ || la->kind == number_ || la->kind == 5 /* "(" */) {
 			GARBAGE_NESTED_LIST();
 		}
 }
 
 void Parser::GARBAGE_NESTED_LIST() {
-		if (la->kind == _integer || la->kind == _number) {
+		if (la->kind == integer_ || la->kind == number_) {
 			GARBAGE_ELT_LIST();
 		} else if (la->kind == 5 /* "(" */) {
 			Get();
@@ -180,14 +180,14 @@ void Parser::Net() {
 		std::vector<std::string> vals;
 		
 		Expect(8 /* "{" */);
-		while (la->kind == _ident) {
+		while (la->kind == ident_) {
 			IDENT(prop);
 			Expect(9 /* "=" */);
-			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
-				if (la->kind == _ident) {
+			while (la->kind == ident_ || la->kind == string_ || la->kind == 5 /* "(" */) {
+				if (la->kind == ident_) {
 					IDENT(val);
 					factory().addNetworkProperty(prop,val); 
-				} else if (la->kind == _string) {
+				} else if (la->kind == string_) {
 					STRING(val);
 					factory().addNetworkProperty(prop,val); 
 				} else {
@@ -230,13 +230,13 @@ void Parser::NODE() {
 		TRY( factory().variableType(VarType::Labelized));
 		
 		Expect(8 /* "{" */);
-		while (la->kind == _ident) {
+		while (la->kind == ident_) {
 			IDENT(prop);
 			Expect(9 /* "=" */);
-			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
-				if (la->kind == _ident) {
+			while (la->kind == ident_ || la->kind == string_ || la->kind == 5 /* "(" */) {
+				if (la->kind == ident_) {
 					IDENT(val);
-				} else if (la->kind == _string) {
+				} else if (la->kind == string_) {
 					STRING(val);
 				} else {
 					LIST(vals);
@@ -304,10 +304,10 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == _number) {
+		if (la->kind == number_) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
 			val=float(coco_atoi(t->val)); 
 		} else SynErr(21);
@@ -317,7 +317,7 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		while (la->kind == _integer || la->kind == _number) {
+		while (la->kind == integer_ || la->kind == number_) {
 			FLOAT(value);
 			v.push_back(value); 
 		}
@@ -330,7 +330,7 @@ void Parser::FLOAT_NESTED_LIST(std::vector<float>& v ) {
 			while (la->kind == 5 /* "(" */) {
 				FLOAT_NESTED_LIST(v);
 			}
-		} else if (la->kind == _integer || la->kind == _number) {
+		} else if (la->kind == integer_ || la->kind == number_) {
 			FLOAT_LIST(v);
 		} else SynErr(22);
 		Expect(6 /* ")" */);
@@ -492,13 +492,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -540,7 +540,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

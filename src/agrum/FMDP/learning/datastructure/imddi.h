@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@ namespace gum {
     void addObservation(const Observation*);
 
     protected:
-    void _updateNodeWithObservation(const Observation* newObs,
+    void updateNodeWithObservation_(const Observation* newObs,
                                     NodeId             currentNodeId);
 
     public:
@@ -107,17 +107,17 @@ namespace gum {
     void updateGraph();
 
     protected:
-    NodeId _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+    NodeId insertLeafNode_(NodeDatabase< AttributeSelection, isScalar >* nDB,
                            const DiscreteVariable*                       boundVar,
                            Set< const Observation* >*                    sonsMap);
 
-    void _chgNodeBoundVar(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
+    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
 
-    void _removeNode(NodeId removedNodeId);
+    void removeNode_(NodeId removedNodeId);
 
     private:
-    void __addLeaf(NodeId);
-    void __removeLeaf(NodeId);
+    void addLeaf__(NodeId);
+    void removeLeaf__(NodeId);
 
     /// @}
 
@@ -130,8 +130,8 @@ namespace gum {
     // ==========================================================================
     /// Computes the score of the given variables for the given node
     // ==========================================================================
-    void __updateScore(const DiscreteVariable*, NodeId, VariableSelector& vs);
-    void __downdateScore(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void updateScore__(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void downdateScore__(const DiscreteVariable*, NodeId, VariableSelector& vs);
 
     // ==========================================================================
     /// For each node in the given set, this methods checks whether or not
@@ -139,7 +139,7 @@ namespace gum {
     /// If so, the node is updated
     // ==========================================================================
     void
-       __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
+       updateNodeSet__(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -149,37 +149,37 @@ namespace gum {
     void updateFunctionGraph();
 
     private:
-    void   __rebuildFunctionGraph();
-    NodeId __insertLeafInFunctionGraph(AbstractLeaf*, Int2Type< true >);
-    NodeId __insertLeafInFunctionGraph(AbstractLeaf*, Int2Type< false >);
+    void   rebuildFunctionGraph__();
+    NodeId insertLeafInFunctionGraph__(AbstractLeaf*, Int2Type< true >);
+    NodeId insertLeafInFunctionGraph__(AbstractLeaf*, Int2Type< false >);
 
     /// @}
     ///
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-              __varOrder.beginSafe();
-           varIter != __varOrder.endSafe();
+              varOrder__.beginSafe();
+           varIter != varOrder__.endSafe();
            ++varIter)
         ret->add(**varIter);
     }
 
     private:
-    Sequence< const DiscreteVariable* > __varOrder;
+    Sequence< const DiscreteVariable* > varOrder__;
 
-    LeafAggregator __lg;
+    LeafAggregator lg__;
 
-    HashTable< NodeId, AbstractLeaf* > __leafMap;
+    HashTable< NodeId, AbstractLeaf* > leafMap__;
 
     /// The total number of observation added to this tree
-    Idx __nbTotalObservation;
+    Idx nbTotalObservation__;
 
     /// The threshold above which we consider variables to be dependant
-    double __attributeSelectionThreshold;
+    double attributeSelectionThreshold__;
 
     /// The threshold above which two leaves does not share the same probability
     /// distribution
-    // double __pairSelectionThreshold;
+    // double pairSelectionThreshold__;
   };
 
 

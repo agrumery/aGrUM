@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Basic binary search trees.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BIN_SEARCH_TREE_H
@@ -56,7 +56,7 @@ namespace gum {
    * @ingroup basicstruct_group
    *
    * @tparam Val The values type to store in the binary search tree.
-   * @tparam Cmp The compatator for sorting the binary search tree.
+   * @tparam Cmp The comparator for sorting the binary search tree.
    * @tparam Node The nodes type used to store values in the binary search
    * tree.
    *
@@ -120,7 +120,7 @@ namespace gum {
 
     /**
      * @brief Begin iterator.
-     * @return Returns an iterator at the begining of the gum::BinSearchTree.
+     * @return Returns an iterator at the beginning of the gum::BinSearchTree.
      */
     /// @{
     iterator       begin();
@@ -129,7 +129,7 @@ namespace gum {
 
     /**
      * @brief Reverse iterator.
-     * @return Returns an iterator at the begining of the gum::BinSearchTree for
+     * @return Returns an iterator at the beginning of the gum::BinSearchTree for
      * reverse iteration.
      */
     /// @{
@@ -224,7 +224,7 @@ namespace gum {
      * If we could not find the node, then nothing happens. In particular, no
      * exception is raised.
      *
-     * @param iter The iterator pointing toward the valeu to remove.
+     * @param iter The iterator pointing toward the value to remove.
      */
     void erase(const iterator& iter);
 
@@ -292,20 +292,20 @@ namespace gum {
 
     protected:
     /// The root node of the tree.
-    Node* _root;
+    Node* root_;
 
     /// The comparison function.
-    Cmp _cmp;
+    Cmp cmp_;
 
     /// The list of iterators pointing to the binary search tree.
-    mutable iterator* _iterator_list;
+    mutable iterator* iterator_list_;
 
     /// The uniqueness property: whether the same value can appear multiple
     /// times.
-    mutable bool _uniqueness_policy;
+    mutable bool uniqueness_policy_;
 
     /// The number of elements stored in the tree.
-    Size _nb_elements;
+    Size nb_elements_;
 
     /**
      * @brief Pseudo static iterator.
@@ -315,7 +315,7 @@ namespace gum {
      * this will avoid creating objects end and rend each time we pass in the
      * loop.
      */
-    iterator _iter_end;
+    iterator iter_end_;
 
     /// @brief To speed-up accesses.
     /// @{
@@ -333,7 +333,7 @@ namespace gum {
      * @param parent The node that should be the parent of the copy.
      * @param dir The direction of the edge parent->copy.
      */
-    Node* _copy(Node*      root_from,
+    Node* copy_(Node*      root_from,
                 Node*      parent = 0,
                 BinTreeDir dir = BinTreeDir::LEFT_CHILD);
 
@@ -343,7 +343,7 @@ namespace gum {
      * @param node The root for looking for the the smallest node.
      * @return Returns the smallest node.
      */
-    Node* _minNode(Node* node) const;
+    Node* minNode_(Node* node) const;
 
     /**
      * @brief Returns the greatest node w.r.t. order Cmp in the subtree rooted
@@ -351,21 +351,21 @@ namespace gum {
      * @param node The root for looking for the the greatest node.
      * @return Returns the greatest node.
      */
-    Node* _maxNode(Node* node) const;
+    Node* maxNode_(Node* node) const;
 
     /**
      * @brief Returns the next node according to the weak ordering Cmp.
      * @param node The node for which the sucessor is returned.
      * @return Returns the next node according to the weak ordering Cmp.
      */
-    Node* _succNode(Node* node) const;
+    Node* succNode_(Node* node) const;
 
     /**
      * @brief Returns the previous node according to weak ordering Cmp.
      * @param node The node for which the previous node is returned.
      * @return Returns the previous node according to the weak ordering Cmp.
      */
-    Node* _prevNode(Node* node) const;
+    Node* prevNode_(Node* node) const;
 
     /**
      * @brief Returns the node containing a given value.
@@ -373,7 +373,7 @@ namespace gum {
      * @return Returns the node containing a given value (0 if the value cannot
      * be found).
      */
-    Node* _getNode(const Val& val) const;
+    Node* getNode_(const Val& val) const;
 
     ///
     /**
@@ -381,26 +381,26 @@ namespace gum {
      * gum::BinSearchTree.
      *
      * Note that this method does not update the iterators pointing to nodes of
-     * the subtree. These should be cleared before _deleteSubTree is called.
+     * the subtree. These should be cleared before deleteSubTree_ is called.
      *
      * @param node The root of the subtree to delete.
      */
-    void _deleteSubTree(Node* node);
+    void deleteSubTree_(Node* node);
 
     /**
      * @brief Erase the node passed in argument.
      * @param node The Node to erase.
      */
-    virtual void _erase(Node* node);
+    virtual void erase_(Node* node);
 
     private:
     /**
      * @brief Erase a node with two children.
      *
-     * This is used by gum::BinSearchTree::_erase(Node*).
+     * This is used by gum::BinSearchTree::erase_(Node*).
      * @param node The node to erase.
      */
-    void __eraseWithTwoChildren(Node* node);
+    void eraseWithTwoChildren__(Node* node);
 
     protected:
     /**
@@ -419,14 +419,14 @@ namespace gum {
      * @param val The value added by copy.
      * @return Returns the node containing the newly created copy.
      */
-    virtual Node* _insert(const Val& val);
+    virtual Node* insert_(const Val& val);
 
     private:
     /**
      * @brief Update all iterators when a given node is deleted.
      * @param node The node that is erased.
      */
-    void __updateEraseIterators(Node* node);
+    void updateEraseIterators__(Node* node);
   };
 
   // ===========================================================================
@@ -585,29 +585,29 @@ namespace gum {
 
     protected:
     /// The current node pointed to by the iterator.
-    Node* _node;
+    Node* node_;
 
-    /// The next node to be used when _node=0 (if a ++ operator is applied).
-    Node* _next_node;
+    /// The next node to be used when node_=0 (if a ++ operator is applied).
+    Node* next_node_;
 
-    /// The preceding node to be used when _node=0 (if a -- operator is
+    /// The preceding node to be used when node_=0 (if a -- operator is
     /// applied).
-    Node* _prev_node;
+    Node* prev_node_;
 
-    /// The parent to be used when _node=0 (if operation up is applied).
-    Node* _parent;
+    /// The parent to be used when node_=0 (if operation up is applied).
+    Node* parent_;
 
-    /// The left child to be used when _node=0 and leftdown() is applied.
-    Node* _left_child;
+    /// The left child to be used when node_=0 and leftdown() is applied.
+    Node* left_child_;
 
-    /// The right child to be used when _node=0 and rightdown() is applied.
-    Node* _right_child;
+    /// The right child to be used when node_=0 and rightdown() is applied.
+    Node* right_child_;
 
     /// The binary search tree pointed to by the iterator.
-    BinSearchTree< Val, Cmp, Node >* _tree;
+    BinSearchTree< Val, Cmp, Node >* tree_;
 
     /// The next iterator in the list of iterators of the binSearchTree.
-    BinSearchTreeIterator< Val, Cmp, Node >* _next_iter;
+    BinSearchTreeIterator< Val, Cmp, Node >* next_iter_;
 
     private:
     /// To speed-up accesses.
@@ -627,7 +627,7 @@ namespace gum {
      * @param current_node The node pointed by this iterator.
      * @param add_to_iterator_list Add this iterator to the iterator list.
      */
-    void _initialize(const BinSearchTree< Val, Cmp, Node >* tree,
+    void initialize_(const BinSearchTree< Val, Cmp, Node >* tree,
                      const Node*                            current_node,
                      bool                                   add_to_iterator_list);
 
@@ -635,7 +635,7 @@ namespace gum {
      * @brief a method to detach the current iterator from its tree's
      * iterator's list.
      */
-    void _detachFromTree();
+    void detachFromTree_();
   };
 
 } /* namespace gum */

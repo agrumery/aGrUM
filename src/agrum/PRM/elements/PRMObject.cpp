@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Source implementation of PRMObject.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -40,19 +40,19 @@ namespace gum {
     // Constructor.
     // @param type The type of this object.
     // ==========================================================================
-    PRMObject::PRMObject(const std::string& name) : __name(name) {
+    PRMObject::PRMObject(const std::string& name) : name__(name) {
       GUM_CONSTRUCTOR(PRMObject);
     }
     // ==========================================================================
     // Copy constructor.
     // ==========================================================================
-    PRMObject::PRMObject(const PRMObject& source) : __name(source.__name) {
+    PRMObject::PRMObject(const PRMObject& source) : name__(source.name__) {
       GUM_CONS_CPY(PRMObject);
     }
     // ==========================================================================
     // Move constructor.
     // ==========================================================================
-    PRMObject::PRMObject(PRMObject&& source) : __name(std::move(source.__name)) {
+    PRMObject::PRMObject(PRMObject&& source) : name__(std::move(source.name__)) {
       GUM_CONS_CPY(PRMObject);
     }
     // ==========================================================================
@@ -62,13 +62,13 @@ namespace gum {
 
     // Copy operator.
     PRMObject& PRMObject::operator=(const PRMObject& source) {
-      __name = source.__name;
+      name__ = source.name__;
       return *this;
     }
 
     // Move operator.
     PRMObject& PRMObject::operator=(PRMObject&& source) {
-      __name = std::move(source.__name);
+      name__ = std::move(source.name__);
       return *this;
     }
 

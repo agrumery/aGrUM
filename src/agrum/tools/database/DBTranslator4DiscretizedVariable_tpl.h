@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The databases' cell translators for discretized variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <utility>
@@ -54,7 +54,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        __variable(var.name(), var.description()) {
+        variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError,
@@ -64,7 +64,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
       for (const auto tick: ticks) {
-        __variable.addTick((float)tick);
+        variable__.addTick((float)tick);
       }
 
       // the the bounds of the discretized variable
@@ -73,13 +73,13 @@ namespace gum {
 
       // remove all the missing symbols corresponding to a number between
       // lower_bound and upper_bound
-      for (auto iter = this->_missing_symbols.beginSafe();
-           iter != this->_missing_symbols.endSafe();
+      for (auto iter = this->missing_symbols_.beginSafe();
+           iter != this->missing_symbols_.endSafe();
            ++iter) {
         if (DBCell::isReal(*iter)) {
           const float missing_val = std::stof(*iter);
           if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
-            this->_missing_symbols.erase(iter);
+            this->missing_symbols_.erase(iter);
           }
         }
       }
@@ -92,16 +92,16 @@ namespace gum {
         // been entered into the back_dictionary, then, this has been done
         // because the label corresponded to a missing value, so we should
         // remove the label as well from the back_dictionary.
-        if (this->_missing_symbols.exists(label)) {
-          this->_missing_symbols.erase(label);
+        if (this->missing_symbols_.exists(label)) {
+          this->missing_symbols_.erase(label);
         }
 
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone();
+      real_variable__ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -121,7 +121,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        __variable(var.name(), var.description()) {
+        variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError,
@@ -131,7 +131,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
       for (const auto tick: ticks) {
-        __variable.addTick((float)tick);
+        variable__.addTick((float)tick);
       }
 
       // the the bounds of the discretized variable
@@ -140,13 +140,13 @@ namespace gum {
 
       // remove all the missing symbols corresponding to a number between
       // lower_bound and upper_bound
-      for (auto iter = this->_missing_symbols.beginSafe();
-           iter != this->_missing_symbols.endSafe();
+      for (auto iter = this->missing_symbols_.beginSafe();
+           iter != this->missing_symbols_.endSafe();
            ++iter) {
         if (DBCell::isReal(*iter)) {
           const float missing_val = std::stof(*iter);
           if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
-            this->_missing_symbols.erase(iter);
+            this->missing_symbols_.erase(iter);
           }
         }
       }
@@ -159,16 +159,16 @@ namespace gum {
         // been entered into the back_dictionary, then, this has been done
         // because the label corresponded to a missing value, so we should
         // remove the label as well from the back_dictionary.
-        if (this->_missing_symbols.exists(label)) {
-          this->_missing_symbols.erase(label);
+        if (this->missing_symbols_.exists(label)) {
+          this->missing_symbols_.erase(label);
         }
 
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone();
+      real_variable__ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -184,7 +184,7 @@ namespace gum {
           alloc) :
         DBTranslator< ALLOC >(
            DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
-        __variable(var.name(), var.description()) {
+        variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError,
@@ -194,18 +194,18 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
       for (const auto tick: ticks) {
-        __variable.addTick((float)tick);
+        variable__.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
       for (const auto& label: var.labels()) {
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone();
+      real_variable__ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -220,7 +220,7 @@ namespace gum {
           alloc) :
         DBTranslator< ALLOC >(
            DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
-        __variable(var.name(), var.description()) {
+        variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError,
@@ -230,18 +230,18 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
       for (const auto tick: ticks) {
-        __variable.addTick((float)tick);
+        variable__.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
       for (const auto& label: var.labels()) {
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone();
+      real_variable__ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -254,9 +254,9 @@ namespace gum {
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
         DBTranslator< ALLOC >(from, alloc),
-        __variable(from.__variable) {
+        variable__(from.variable__) {
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = from.__real_variable->clone();
+      real_variable__ = from.real_variable__->clone();
 
       GUM_CONS_CPY(DBTranslator4DiscretizedVariable);
     }
@@ -276,10 +276,10 @@ namespace gum {
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
         DBTranslator< ALLOC >(std::move(from), alloc),
-        __variable(std::move(from.__variable)) {
+        variable__(std::move(from.variable__)) {
       // moves the copy of the variable, that should be used by method variable ()
-      __real_variable = from.__real_variable;
-      from.__real_variable = nullptr;
+      real_variable__ = from.real_variable__;
+      from.real_variable__ = nullptr;
 
       GUM_CONS_MOV(DBTranslator4DiscretizedVariable);
     }
@@ -324,7 +324,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4DiscretizedVariable<
        ALLOC >::~DBTranslator4DiscretizedVariable() {
-      if (__real_variable != nullptr) delete __real_variable;
+      if (real_variable__ != nullptr) delete real_variable__;
 
       GUM_DESTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -337,10 +337,10 @@ namespace gum {
           const DBTranslator4DiscretizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        __variable = from.__variable;
+        variable__ = from.variable__;
 
-        if (__real_variable != nullptr) delete __real_variable;
-        __real_variable = from.__real_variable->clone();
+        if (real_variable__ != nullptr) delete real_variable__;
+        real_variable__ = from.real_variable__->clone();
       }
 
       return *this;
@@ -354,11 +354,11 @@ namespace gum {
           DBTranslator4DiscretizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        __variable = std::move(from.__variable);
+        variable__ = std::move(from.variable__);
 
-        if (__real_variable != nullptr) delete __real_variable;
-        __real_variable = from.__real_variable;
-        from.__real_variable = nullptr;
+        if (real_variable__ != nullptr) delete real_variable__;
+        real_variable__ = from.real_variable__;
+        from.real_variable__ = nullptr;
       }
 
       return *this;
@@ -371,7 +371,7 @@ namespace gum {
        const std::string& str) {
       // try to get the index of str within the discretized variable.
       try {
-        return DBTranslatedValue{std::size_t(__variable[str])};
+        return DBTranslatedValue{std::size_t(variable__[str])};
       } catch (gum::Exception&) {
         // check for a missing symbol
         if (this->isMissingSymbol(str))
@@ -381,7 +381,7 @@ namespace gum {
         // to execute translate ( translateBack ( translate ( str ) ) )
         // without raising an exception
         try {
-          return DBTranslatedValue{this->_back_dico.first(str)};
+          return DBTranslatedValue{this->back_dico_.first(str)};
         } catch (gum::Exception&) {
           if (!DBCell::isReal(str)) {
             GUM_ERROR(TypeError,
@@ -402,12 +402,12 @@ namespace gum {
     INLINE std::string DBTranslator4DiscretizedVariable< ALLOC >::translateBack(
        const DBTranslatedValue translated_val) const {
       try {
-        return this->_back_dico.second(translated_val.discr_val);
+        return this->back_dico_.second(translated_val.discr_val);
       } catch (Exception&) {
         // check if this is a missing value
         if ((translated_val.discr_val == std::numeric_limits< std::size_t >::max())
-            && !this->_missing_symbols.empty())
-          return *(this->_missing_symbols.begin());
+            && !this->missing_symbols_.empty())
+          return *(this->missing_symbols_.begin());
         else
           GUM_ERROR(UnknownLabelInDatabase,
                     "The back translation of \"" << translated_val.discr_val
@@ -454,7 +454,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::size_t
            DBTranslator4DiscretizedVariable< ALLOC >::domainSize() const {
-      return __variable.domainSize();
+      return variable__.domainSize();
     }
 
 
@@ -462,7 +462,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const IDiscretizedVariable*
                  DBTranslator4DiscretizedVariable< ALLOC >::variable() const {
-      return __real_variable;
+      return real_variable__;
     }
 
 

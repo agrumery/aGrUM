@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MultiDimBucket class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
@@ -267,65 +267,65 @@ namespace gum {
        multidims() const;
 
     protected:
-    virtual void _commitMultipleChanges() override;
+    virtual void commitMultipleChanges_() override;
 
     /**
      * @warning This will raise en exception, you should directly use the get()
      * and operator[]() methods.
      */
-    virtual GUM_SCALAR& _get(const Instantiation& i) const override;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const override;
 
-    virtual void _replace(const DiscreteVariable* x,
+    virtual void replace_(const DiscreteVariable* x,
                           const DiscreteVariable* y) override;
 
     private:
-    /// The number of element allowed in __bucket.
-    Size __bufferSize;
+    /// The number of element allowed in bucket__.
+    Size bufferSize__;
 
     /// Bijection between instantiations registered on this and
-    /// their equivalent on __bucket
-    Bijection< Instantiation*, Instantiation* > __instantiations;
+    /// their equivalent on bucket__
+    Bijection< Instantiation*, Instantiation* > instantiations__;
 
     /// The result table of this bucket.
-    MultiDimArray< GUM_SCALAR >* __bucket;
+    MultiDimArray< GUM_SCALAR >* bucket__;
 
     /// The set of MultiDimContainer in this bucket.
     mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >
-       __multiDims;
+       multiDims__;
 
     /// The set of all variables of the multidims in this bucket.
-    Set< const DiscreteVariable* > __allVariables;
+    Set< const DiscreteVariable* > allVariables__;
 
     /// Instantiation over all variable in this
-    mutable Instantiation __allVarsInst;
+    mutable Instantiation allVarsInst__;
 
     /**
-     * @brief Add a variable to __allVariables, and do nothing if var is already
+     * @brief Add a variable to allVariables__, and do nothing if var is already
      * in
      * the set.
      * @param var The DiscreteVariable to add.
      */
-    void __addVariable(const DiscreteVariable* var);
+    void addVariable__(const DiscreteVariable* var);
 
     /**
-     * @brief Erase a variable from __allVariables if no other multidimensional
+     * @brief Erase a variable from allVariables__ if no other multidimensional
      * table
      * uses it in this bucket.
      * @param var The DiscreteVariable to remove.
      */
-    void __eraseVariable(const DiscreteVariable* var);
+    void eraseVariable__(const DiscreteVariable* var);
 
     /**
      * @brief Initialize the internal buffer.
      *
-     * This method delete __bucket after saving it's slave instantiations.
+     * This method delete bucket__ after saving it's slave instantiations.
      */
-    void __initializeBuffer();
+    void initializeBuffer__();
 
     /**
      * @brief Clean the buffer and switch it's instantiation to this bucket.
      */
-    void __eraseBuffer();
+    void eraseBuffer__();
 
     /**
      * @brief Compute the value of the final table of this bucket given i.
@@ -336,18 +336,18 @@ namespace gum {
      * @param value The value to compute.
      * @throw SizeError Raised if the bucket is empty.
      */
-    GUM_SCALAR __computeValue(const Instantiation& value) const;
+    GUM_SCALAR computeValue__(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last
     /// computation.
-    mutable bool __changed;
+    mutable bool changed__;
 
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
-    mutable HashTable< const Instantiation*, GUM_SCALAR > __slavesValue;
+    mutable HashTable< const Instantiation*, GUM_SCALAR > slavesValue__;
 
     /// The class name.
-    std::string __name;
+    std::string name__;
   };
 
 

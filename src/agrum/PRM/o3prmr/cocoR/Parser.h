@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -63,21 +63,21 @@ namespace o3prmr {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_word=3,
-		_eol=4,
-		_package=5,
-		_import=6,
-		_request=7,
-		_query=8,
-		_unobserve=9,
-		_engine=10,
-		_grd_engine=11,
-		_as=12,
-		_default=13,
-		_and=14
+		EOF_=0,
+		integer_=1,
+		float_=2,
+		word_=3,
+		eol_=4,
+		package_=5,
+		import_=6,
+		request_=7,
+		query_=8,
+		unobserve_=9,
+		engine_=10,
+		grd_engine_=11,
+		as_=12,
+		default_=13,
+		and_=14
 	};
 	int maxT;
 
@@ -92,7 +92,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -100,15 +100,15 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::prm::o3prmr::O3prmrContext<double> *__context;
-gum::prm::o3prmr::O3prmrSession<double> *__currentSession;
+    gum::prm::o3prmr::O3prmrContext<double> *context__;
+gum::prm::o3prmr::O3prmrSession<double> *currentSession__;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
 void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
-  __context=c;
+  context__=c;
 }
 
 //=====================

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@
 namespace gum {
   UGmodel::UGmodel() { GUM_CONSTRUCTOR(UGmodel); }
 
-  UGmodel::UGmodel(const UGmodel& from) : _graph(from._graph) {
+  UGmodel::UGmodel(const UGmodel& from) : graph_(from.graph_) {
     GUM_CONS_CPY(UGmodel);
   }
 
@@ -38,7 +38,7 @@ namespace gum {
   UGmodel& UGmodel::operator=(const UGmodel& source) {
     if (this != &source) {
       GraphicalModel::operator=(source);
-      _graph = source._graph;
+      graph_ = source.graph_;
     }
 
     return *this;

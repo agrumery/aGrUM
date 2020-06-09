@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class for simulating a markov decision process.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_TAXI_SIMULATOR_H
 #define GUM_TAXI_SIMULATOR_H
@@ -106,7 +106,7 @@ namespace gum {
 
     protected:
     /// Choses a random state as the first test for a run
-    Instantiation _randomState();
+    Instantiation randomState_();
 
     public:
     bool hasReachEnd();
@@ -119,15 +119,15 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return __primeMap.second(mainVar);
+      return primeMap__.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return __taxiVars.beginSafe();
+      return taxiVars__.beginSafe();
     }
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return __taxiVars.endSafe();
+      return taxiVars__.endSafe();
     }
 
     /// @}
@@ -137,25 +137,25 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return *__actionMap[actionId]; }
+    const std::string& actionName(Idx actionId) { return *actionMap__[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() {
-      return __taxiActions.beginSafe();
+      return taxiActions__.beginSafe();
     }
-    SequenceIteratorSafe< Idx > endActions() { return __taxiActions.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() { return taxiActions__.endSafe(); }
 
 
     void perform(Idx);
 
     private:
-    void __performGoNorth();
-    void __performGoEast();
-    void __performGoSouth();
-    void __performGoWest();
-    void __performPickUp();
-    void __performPutDown();
-    void __performFillUp();
+    void performGoNorth__();
+    void performGoEast__();
+    void performGoSouth__();
+    void performGoWest__();
+    void performPickUp__();
+    void performPutDown__();
+    void performFillUp__();
 
     /// @}
 
@@ -167,33 +167,33 @@ namespace gum {
     double reward();
 
     private:
-    void __evalReward();
-    bool __isAtDestination(TaxiSimulationLandmark  passDest,
+    void evalReward__();
+    bool isAtDestination__(TaxiSimulationLandmark  passDest,
                            TaxiSimulationLandmarkX xCurPos,
                            TaxiSimulationLandmarkY yCurPos);
-    bool __isAtMeetPoint(TaxiSimulationLandmark  passpos,
+    bool isAtMeetPoint__(TaxiSimulationLandmark  passpos,
                          TaxiSimulationLandmarkX xCurPos,
                          TaxiSimulationLandmarkY yCurPos);
 
     /// @}
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* >                           __taxiVars;
-    Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
-    LabelizedVariable*                                            __xPos;
-    LabelizedVariable*                                            __yPos;
-    LabelizedVariable*                                            __passengerPos;
-    LabelizedVariable*                                            __passengerDest;
-    LabelizedVariable*                                            __fuelLevel;
+    Sequence< const DiscreteVariable* >                           taxiVars__;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > primeMap__;
+    LabelizedVariable*                                            xPos__;
+    LabelizedVariable*                                            yPos__;
+    LabelizedVariable*                                            passengerPos__;
+    LabelizedVariable*                                            passengerDest__;
+    LabelizedVariable*                                            fuelLevel__;
 
     /// Actions
-    Sequence< Idx >                __taxiActions;
-    HashTable< Idx, std::string* > __actionMap;   //__actionMap.insert ( actionId,
+    Sequence< Idx >                taxiActions__;
+    HashTable< Idx, std::string* > actionMap__;   //__actionMap.insert ( actionId,
     // new std::string ( action ) );
-    TaxiSimulationAction __lastAction;
+    TaxiSimulationAction lastAction__;
 
     /// Reward
-    double __reward;
+    double reward__;
   };
 
 } /* namespace gum */

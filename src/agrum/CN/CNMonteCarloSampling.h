@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal
  * networks.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef __CN_MC_SAMPLING__H__
@@ -49,7 +49,7 @@ namespace gum {
      * @tparam BNInferenceEngine A IBayesNet inference engine such as
      *LazyPropagation
      *( recommanded ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
      *
      * @warning p(e) must be available ( by a call to
      *my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if
@@ -65,30 +65,30 @@ namespace gum {
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      using __infEs = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
+      using infEs__ = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
 
       /// @name Private initialization methods
       /// @{
       /** Initialize approximation Scheme. */
-      void __mcInitApproximationScheme();
+      void mcInitApproximationScheme__();
       /** Initialize threads data. */
-      void __mcThreadDataCopy();
+      void mcThreadDataCopy__();
       /// @}
 
       /// @name Private algorithm methods
       /// @{
       /** Thread samples a IBayesNet from the CredalNet. */
-      inline void __verticesSampling();
+      inline void verticesSampling__();
 
       /** Insert CredalNet evidence into a thread BNInferenceEngine. */
-      inline void __insertEvidence();
+      inline void insertEvidence__();
 
       /** Thread performs an inference using BNInferenceEngine. Calls
-       * __verticesSampling and __insertEvidence. */
-      inline void __threadInference();
+       * verticesSampling__ and insertEvidence__. */
+      inline void threadInference__();
 
       /** Update thread data after a IBayesNet inference. */
-      inline void __threadUpdate();
+      inline void threadUpdate__();
 
       /**
        * Get the binary representation of a given value.
@@ -97,7 +97,7 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void __binaryRep(std::vector< bool >& toFill, const Idx value) const;
+      inline void binaryRep__(std::vector< bool >& toFill, const Idx value) const;
 
       /// @}
 
@@ -129,7 +129,7 @@ namespace gum {
       };
 
       protected:
-      bool _repetitiveInd;
+      bool repetitiveInd_;
     };
 
 

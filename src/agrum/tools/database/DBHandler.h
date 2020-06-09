@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The base class for all database handlers
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_HANDLER_H
 #define GUM_LEARNING_DB_HANDLER_H
@@ -232,10 +232,10 @@ namespace gum {
 
       protected:
       // the cache used to avoid cacheline problems due to parallelism
-      static constexpr int _cache_size{128};
+      static constexpr int cache_size_{128};
 
       // a buffer to avoid cacheline problems due to parallelism
-      char _align[_cache_size];
+      char align_[cache_size_];
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

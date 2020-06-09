@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@
  * list of changes and put into the list only the changes that are affected
  * by the graph modification.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
@@ -75,7 +75,7 @@ namespace gum {
   namespace learning {
 
     // a dummy class used to check that the generator is adapted to K2
-    struct __GraphChangesGenerator4K2 {};
+    struct GraphChangesGenerator4K2__ {};
 
     /** @class GraphChangesGenerator4K2
      * @brief The basic class for computing the next graph changes possible in a
@@ -120,7 +120,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     class GraphChangesGenerator4K2:
         public IGraphChangesGenerator4DiGraph,
-        __GraphChangesGenerator4K2 {
+        GraphChangesGenerator4K2__ {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;
@@ -220,26 +220,26 @@ namespace gum {
 
       protected:
       /// the graph on which we generate operators
-      DiGraph _graph;
+      DiGraph graph_;
 
       /// the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT* _constraint;
+      STRUCT_CONSTRAINT* constraint_;
 
       /// the order on the variables
-      Sequence< NodeId > _order;
+      Sequence< NodeId > order_;
 
       /// the current set of graph changes
-      Set< GraphChange > _legal_changes;
+      Set< GraphChange > legal_changes_;
 
       /// create the set of legal and illegal changes from a given graph
-      void _createChanges();
+      void createChanges_();
 
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size __max_threads_number{getMaxNumberOfThreads()};
+      Size max_threads_number__{getMaxNumberOfThreads()};
 #else
-      Size __max_threads_number{1};
+      Size max_threads_number__{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

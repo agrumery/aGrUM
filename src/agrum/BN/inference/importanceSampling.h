@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief This file contains Importance sampling class definition.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -64,7 +64,7 @@ namespace gum {
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    Instantiation _burnIn() override;
+    Instantiation burnIn_() override;
 
 
     /// draws a sample according to Importance sampling
@@ -80,7 +80,7 @@ namespace gum {
      * Each node added to the sample (in a topological order) has a weight.
      * The sample's weight is the product of all weights.
      */
-    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
+    Instantiation draw_(GUM_SCALAR* w, Instantiation prev) override;
 
 
     /// modifies the cpts of a BN in order to tend to uniform distributions
@@ -93,7 +93,7 @@ namespace gum {
      * normalizing
      *
      */
-    void _unsharpenBN(BayesNetFragment< GUM_SCALAR >* bn, float epsilon);
+    void unsharpenBN_(BayesNetFragment< GUM_SCALAR >* bn, float epsilon);
 
     /// fired when Bayesian network is contextualized
     /**
@@ -106,7 +106,7 @@ namespace gum {
      * BN.
      *
      */
-    void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn) override;
+    void onContextualize_(BayesNetFragment< GUM_SCALAR >* bn) override;
   };
 
 

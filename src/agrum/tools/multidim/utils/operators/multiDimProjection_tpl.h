@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief A generic interface to project efficiently a MultiDim table over a
  * subset of its variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -40,7 +40,7 @@ namespace gum {
   MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(
      TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
                                   const Set< const DiscreteVariable* >&)) :
-      _proj(proj) {
+      proj_(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimProjection);
   }
@@ -49,7 +49,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(
      const MultiDimProjection< GUM_SCALAR, TABLE >& from) :
-      _proj(from._proj) {
+      proj_(from.proj_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimProjection);
   }
@@ -73,7 +73,7 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::project(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) {
-    return _proj(table, del_vars);
+    return proj_(table, del_vars);
   }
 
   // creates and returns the projection of the table over a subset of its vars
@@ -92,7 +92,7 @@ namespace gum {
   void MultiDimProjection< GUM_SCALAR, TABLE >::setProjectFunction(
      TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
                                   const Set< const DiscreteVariable* >&)) {
-    _proj = proj;
+    proj_ = proj;
   }
 
   // returns the projection function currently used by the projector
@@ -100,7 +100,7 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* (
      *MultiDimProjection< GUM_SCALAR, TABLE >::projectFunction())(
      const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) {
-    return _proj;
+    return proj_;
   }
 
   /** @brief returns a rough estimate of the number of operations that will be

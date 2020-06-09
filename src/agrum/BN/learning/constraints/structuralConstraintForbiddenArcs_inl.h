@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -40,7 +40,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintForbiddenArcs::checkArcAdditionAlone(NodeId x,
                                                                 NodeId y) const {
-      return !_ForbiddenArcs__forbidden_arcs.exists(Arc(x, y));
+      return !ForbiddenArcs__forbidden_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -54,7 +54,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintForbiddenArcs::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
-      return !_ForbiddenArcs__forbidden_arcs.exists(Arc(y, x));
+      return !ForbiddenArcs__forbidden_arcs_.exists(Arc(y, x));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -132,22 +132,22 @@ namespace gum {
 
     /// assign a set of forbidden arcs
     INLINE void StructuralConstraintForbiddenArcs::setArcs(const ArcSet& set) {
-      _ForbiddenArcs__forbidden_arcs = set;
+      ForbiddenArcs__forbidden_arcs_ = set;
     }
 
     /// assign a new forbidden arc
     INLINE void StructuralConstraintForbiddenArcs::addArc(const Arc& arc) {
-      _ForbiddenArcs__forbidden_arcs.insert(arc);
+      ForbiddenArcs__forbidden_arcs_.insert(arc);
     }
 
     /// remove a forbidden arc
     INLINE void StructuralConstraintForbiddenArcs::eraseArc(const Arc& arc) {
-      _ForbiddenArcs__forbidden_arcs.erase(arc);
+      ForbiddenArcs__forbidden_arcs_.erase(arc);
     }
 
     /// returns the set of mandatory arcs
     INLINE const ArcSet& StructuralConstraintForbiddenArcs::arcs() const {
-      return _ForbiddenArcs__forbidden_arcs;
+      return ForbiddenArcs__forbidden_arcs_;
     }
 
 // include all the methods applicable to the whole class hierarchy

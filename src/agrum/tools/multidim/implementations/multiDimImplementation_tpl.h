@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of gum::MultiDimImplementation.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 // to ease IDE parser
@@ -36,11 +36,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >::MultiDimImplementation() :
-      MultiDimContainer< GUM_SCALAR >(), __vars(), __slaveInstantiations() {
+      MultiDimContainer< GUM_SCALAR >(), vars__(), slaveInstantiations__() {
     GUM_CONSTRUCTOR(MultiDimImplementation);
-    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
-    __internalChangeState = __InternalChangeState::NO_CHANGE;
-    __domainSize = 1;
+    internalChangeMethod__ = InternalChangeMethod__::DIRECT_CHANGE;
+    internalChangeState__ = InternalChangeState__::NO_CHANGE;
+    domainSize__ = 1;
   }
 
   // Copy constructor
@@ -49,11 +49,11 @@ namespace gum {
   INLINE MultiDimImplementation< GUM_SCALAR >::MultiDimImplementation(
      const MultiDimImplementation< GUM_SCALAR >& from) :
       MultiDimContainer< GUM_SCALAR >(from),
-      __vars(from.__vars), __internalChangeMethod(from.__internalChangeMethod),
-      __internalChangeState(from.__internalChangeState),
-      __domainSize(from.__domainSize) {
+      vars__(from.vars__), internalChangeMethod__(from.internalChangeMethod__),
+      internalChangeState__(from.internalChangeState__),
+      domainSize__(from.domainSize__) {
     GUM_CONS_CPY(MultiDimImplementation);
-    GUM_ASSERT(!this->_isCommitNeeded());
+    GUM_ASSERT(!this->isCommitNeeded_());
   }
 
   // destructor
@@ -64,43 +64,43 @@ namespace gum {
     // unregister all remaining slave instantiations
 
     for (List< Instantiation* >::iterator_safe iter =
-            __slaveInstantiations.beginSafe();
-         iter != __slaveInstantiations.endSafe();
+            slaveInstantiations__.beginSafe();
+         iter != slaveInstantiations__.endSafe();
          ++iter)
       (*iter)->forgetMaster();
   }
 
-  // add a new var to the sequence of __vars.
+  // add a new var to the sequence of vars__.
 
   template < typename GUM_SCALAR >
   INLINE void
      MultiDimImplementation< GUM_SCALAR >::add(const DiscreteVariable& v) {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if (__vars.exists(&v)) {
+    if (vars__.exists(&v)) {
       GUM_ERROR(DuplicateElement,
                 "Var " << v.name() << " already exists in this instantiation");
     }
-    for (const auto& w: __vars) {
+    for (const auto& w: vars__) {
       if (w->name() == v.name())
         GUM_ERROR(DuplicateElement,
                   "A var with name '" << v.name()
                                       << "' already exists in this instantiation");
     }
 
-    __domainSize *= v.domainSize();
+    domainSize__ *= v.domainSize();
 
-    __vars.insert(&v);
+    vars__.insert(&v);
 
     // informs all the slaves that they have to update themselves
     for (List< Instantiation* >::iterator_safe iter =
-            __slaveInstantiations.beginSafe();
-         iter != __slaveInstantiations.endSafe();
+            slaveInstantiations__.beginSafe();
+         iter != slaveInstantiations__.endSafe();
          ++iter) {
       (*iter)->addWithMaster(this, v);
     }
 
-    if (_isInMultipleChangeMethod()) __setNotCommitedChange();
+    if (isInMultipleChangeMethod_()) setNotCommitedChange__();
   }
 
   // removes a var from the variables of the multidimensional matrix
@@ -110,26 +110,26 @@ namespace gum {
      MultiDimImplementation< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     // check that the variable does actually belong to the
     // MultiDimImplementation
-    if (!__vars.exists(&v)) {
+    if (!vars__.exists(&v)) {
       GUM_ERROR(NotFound, "Var does not exist in this implementation");
     }
 
-    __domainSize /= v.domainSize();
+    domainSize__ /= v.domainSize();
 
-    __vars.erase(&v);
+    vars__.erase(&v);
 
     // informs all the slaves that they have to update themselves
     for (List< Instantiation* >::iterator_safe iter =
-            __slaveInstantiations.beginSafe();
-         iter != __slaveInstantiations.endSafe();
+            slaveInstantiations__.beginSafe();
+         iter != slaveInstantiations__.endSafe();
          ++iter) {
       (*iter)->eraseWithMaster(this, v);
     }
 
-    if (_isInMultipleChangeMethod()) __setNotCommitedChange();
+    if (isInMultipleChangeMethod_()) setNotCommitedChange__();
   }
 
-  // adds a new var to the sequence of __vars
+  // adds a new var to the sequence of vars__
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >&
          operator<<(MultiDimImplementation< GUM_SCALAR >& array,
@@ -144,17 +144,17 @@ namespace gum {
   INLINE bool
      MultiDimImplementation< GUM_SCALAR >::registerSlave(Instantiation& slave) {
     // check that the Instantiation has the same variables as this
-    if (slave.nbrDim() != __vars.size()) return false;
+    if (slave.nbrDim() != vars__.size()) return false;
 
     for (Sequence< const DiscreteVariable* >::iterator_safe iter =
-            __vars.beginSafe();
-         iter != __vars.endSafe();
+            vars__.beginSafe();
+         iter != vars__.endSafe();
          ++iter)
       if (!slave.contains(*iter)) return false;
 
     slave.synchronizeWithMaster(this);
 
-    __slaveInstantiations += (&slave);
+    slaveInstantiations__ += (&slave);
 
     return true;
   }
@@ -164,30 +164,30 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool
      MultiDimImplementation< GUM_SCALAR >::unregisterSlave(Instantiation& slave) {
-    __slaveInstantiations.eraseByVal(&slave);
+    slaveInstantiations__.eraseByVal(&slave);
     return true;
   }
 
   template < typename GUM_SCALAR >
   INLINE Idx MultiDimImplementation< GUM_SCALAR >::nbrDim() const {
-    return __vars.size();
+    return vars__.size();
   }
 
   template < typename GUM_SCALAR >
   INLINE Size MultiDimImplementation< GUM_SCALAR >::domainSize() const {
-    return __domainSize;
+    return domainSize__;
   }
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
                MultiDimImplementation< GUM_SCALAR >::variable(Idx i) const {
-    return *(__vars.atPos(i));
+    return *(vars__.atPos(i));
   }
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable& MultiDimImplementation< GUM_SCALAR >::variable(
      const std::string& name) const {
-    for (const auto& v: __vars) {
+    for (const auto& v: vars__) {
       if (v->name() == name) return *v;
     }
 
@@ -198,13 +198,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Idx
      MultiDimImplementation< GUM_SCALAR >::pos(const DiscreteVariable& v) const {
-    return __vars.pos(&v);
+    return vars__.pos(&v);
   }
 
   template < typename GUM_SCALAR >
   INLINE bool MultiDimImplementation< GUM_SCALAR >::contains(
      const DiscreteVariable& v) const {
-    return __vars.exists(&v);
+    return vars__.exists(&v);
   }
 
   // returns a const ref to the sequence of DiscreteVariable*
@@ -212,49 +212,49 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const DiscreteVariable* >&
                MultiDimImplementation< GUM_SCALAR >::variablesSequence() const {
-    return __vars;
+    return vars__;
   }
 
   // is this empty ?
   template < typename GUM_SCALAR >
   INLINE bool MultiDimImplementation< GUM_SCALAR >::empty() const {
-    GUM_ASSERT(!this->_isCommitNeeded());
-    return __vars.empty();
+    GUM_ASSERT(!this->isCommitNeeded_());
+    return vars__.empty();
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimImplementation< GUM_SCALAR >::beginMultipleChanges() {
-    __internalChangeMethod = __InternalChangeMethod::MULTIPLE_CHANGE;
+    internalChangeMethod__ = InternalChangeMethod__::MULTIPLE_CHANGE;
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimImplementation< GUM_SCALAR >::endMultipleChanges() {
-    if (__internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE) {
-      _commitMultipleChanges();
-      __internalChangeState = __InternalChangeState::NO_CHANGE;
+    if (internalChangeState__ == InternalChangeState__::NOT_COMMITTED_CHANGE) {
+      commitMultipleChanges_();
+      internalChangeState__ = InternalChangeState__::NO_CHANGE;
     }
 
-    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
+    internalChangeMethod__ = InternalChangeMethod__::DIRECT_CHANGE;
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimImplementation< GUM_SCALAR >::endMultipleChanges(
      const GUM_SCALAR& x) {
-    if (__internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE) {
-      _commitMultipleChanges(x);
-      __internalChangeState = __InternalChangeState::NO_CHANGE;
+    if (internalChangeState__ == InternalChangeState__::NOT_COMMITTED_CHANGE) {
+      commitMultipleChanges_(x);
+      internalChangeState__ = InternalChangeState__::NO_CHANGE;
     }
 
-    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
+    internalChangeMethod__ = InternalChangeMethod__::DIRECT_CHANGE;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::_commitMultipleChanges() {
+  INLINE void MultiDimImplementation< GUM_SCALAR >::commitMultipleChanges_() {
     // empty!
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::_commitMultipleChanges(
+  INLINE void MultiDimImplementation< GUM_SCALAR >::commitMultipleChanges_(
      const GUM_SCALAR&) {
     // empty!
   }
@@ -262,27 +262,27 @@ namespace gum {
   // get the actual change method of *this
   template < typename GUM_SCALAR >
   INLINE bool
-     MultiDimImplementation< GUM_SCALAR >::_isInMultipleChangeMethod() const {
-    return (__internalChangeMethod == __InternalChangeMethod::MULTIPLE_CHANGE);
+     MultiDimImplementation< GUM_SCALAR >::isInMultipleChangeMethod_() const {
+    return (internalChangeMethod__ == InternalChangeMethod__::MULTIPLE_CHANGE);
   }
 
   // get the actual state of *this
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimImplementation< GUM_SCALAR >::_isCommitNeeded() const {
-    return (__internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE);
+  INLINE bool MultiDimImplementation< GUM_SCALAR >::isCommitNeeded_() const {
+    return (internalChangeState__ == InternalChangeState__::NOT_COMMITTED_CHANGE);
   }
 
   // Returns a constant reference over the list of slaved instantiations.
   template < typename GUM_SCALAR >
   INLINE const List< Instantiation* >&
-               MultiDimImplementation< GUM_SCALAR >::_slaves() const {
-    return __slaveInstantiations;
+               MultiDimImplementation< GUM_SCALAR >::slaves_() const {
+    return slaveInstantiations__;
   }
 
   // get the actual state of *this
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::__setNotCommitedChange() {
-    __internalChangeState = __InternalChangeState::NOT_COMMITTED_CHANGE;
+  INLINE void MultiDimImplementation< GUM_SCALAR >::setNotCommitedChange__() {
+    internalChangeState__ = InternalChangeState__::NOT_COMMITTED_CHANGE;
   }
 
   // get the actual state of *this
@@ -300,21 +300,21 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-     MultiDimImplementation< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+     MultiDimImplementation< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                     const DiscreteVariable* y) {
-    __vars.setAtPos(__vars.pos(x), y);
+    vars__.setAtPos(vars__.pos(x), y);
 
     for (List< Instantiation* >::iterator_safe iter =
-            __slaveInstantiations.beginSafe();
-         iter != __slaveInstantiations.endSafe();
+            slaveInstantiations__.beginSafe();
+         iter != slaveInstantiations__.endSafe();
          ++iter) {
       (**iter).replace(*x, *y);
     }
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::_invert(Idx p1, Idx p2) {
-    __vars.swap(p1, p2);
+  INLINE void MultiDimImplementation< GUM_SCALAR >::invert_(Idx p1, Idx p2) {
+    vars__.swap(p1, p2);
   }
 
   // for friendly displaying the content of the array
@@ -326,14 +326,14 @@ namespace gum {
   }
 
 
-  // protected access to _content
+  // protected access to content_
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >*
          MultiDimImplementation< GUM_SCALAR >::content() {
     return this;
   }
 
-  // protected access to _content
+  // protected access to content_
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                MultiDimImplementation< GUM_SCALAR >::content() const {

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief This file contains Gibbs sampling class definition.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -71,17 +71,17 @@ namespace gum {
      * @param b The number of burn in.
      * @throw OutOfLowerBound Raised if b < 1.
      */
-    void setBurnIn(Size b) { this->_burn_in = b; };
+    void setBurnIn(Size b) { this->burn_in_ = b; };
 
     /**
      * @brief Returns the number of burn in.
      * @return Returns the number of burn in.
      */
-    Size burnIn() const { return this->_burn_in; };
+    Size burnIn() const { return this->burn_in_; };
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    Instantiation _burnIn() override;
+    Instantiation burnIn_() override;
 
     /// draws a sample given previous one according to Gibbs sampling
     /**
@@ -97,7 +97,7 @@ namespace gum {
      * sample, given the instantiation of all other nodes. It requires computing of
      * P( x \given instantiation_markovblanket(x)).
      */
-    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
+    Instantiation draw_(GUM_SCALAR* w, Instantiation prev) override;
 
     /// draws a Monte Carlo sample
     /**
@@ -110,7 +110,7 @@ namespace gum {
      * class Approximate Inference because it also initializes attributes needed
      * for Gibbs sampling.
      */
-    Instantiation _monteCarloSample();
+    Instantiation monteCarloSample_();
   };
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -116,7 +116,8 @@ namespace gum_tests {
 
     /*
     void xtest_alarm1() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+    database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -174,7 +175,8 @@ namespace gum_tests {
     }
 
     void xtest_alarm2() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+    database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -233,7 +235,8 @@ namespace gum_tests {
     }
 
     void xtest_alarm3() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+    database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

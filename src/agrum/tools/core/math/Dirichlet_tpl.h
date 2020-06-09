@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief A class for sampling w.r.t. Dirichlet distributions.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -38,8 +38,8 @@ namespace gum {
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-        __gamma.param(std::gamma_distribution< float >::param_type(parm[i], 1));
-        res[i] = __gamma(generator);
+        gamma__.param(std::gamma_distribution< float >::param_type(parm[i], 1));
+        res[i] = gamma__(generator);
         sum += res[i];
       }
     }

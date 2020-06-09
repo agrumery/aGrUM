@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The basic class for computing the next graph changes possible in an
  * undirected structure learning algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -36,7 +36,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
        GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT& constraint) :
-        _constraint(&constraint) {
+        constraint_(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGenerator4UndiGraph);
     }
 
@@ -45,9 +45,9 @@ namespace gum {
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
        GraphChangesGenerator4UndiGraph(
           const GraphChangesGenerator4UndiGraph& from) :
-        _graph(from._graph),
-        _constraint(from._constraint), _legal_changes(from._legal_changes),
-        __max_threads_number(from.__max_threads_number) {
+        graph_(from.graph_),
+        constraint_(from.constraint_), legal_changes_(from.legal_changes_),
+        max_threads_number__(from.max_threads_number__) {
       GUM_CONS_CPY(GraphChangesGenerator4UndiGraph);
     }
 
@@ -55,10 +55,10 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
        GraphChangesGenerator4UndiGraph(GraphChangesGenerator4UndiGraph&& from) :
-        _graph(std::move(from._graph)),
-        _constraint(from._constraint),
-        _legal_changes(std::move(from._legal_changes)),
-        __max_threads_number(from.__max_threads_number) {
+        graph_(std::move(from.graph_)),
+        constraint_(from.constraint_),
+        legal_changes_(std::move(from.legal_changes_)),
+        max_threads_number__(from.max_threads_number__) {
       GUM_CONS_MOV(GraphChangesGenerator4UndiGraph);
     }
 
@@ -75,10 +75,10 @@ namespace gum {
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
           const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
-        _graph = from._graph;
-        _constraint = from._constraint;
-        _legal_changes = from._legal_changes;
-        __max_threads_number = from.__max_threads_number;
+        graph_ = from.graph_;
+        constraint_ = from.constraint_;
+        legal_changes_ = from.legal_changes_;
+        max_threads_number__ = from.max_threads_number__;
       }
       return *this;
     }
@@ -89,22 +89,22 @@ namespace gum {
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
           GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
-        _graph = std::move(from._graph);
-        _constraint = std::move(from._constraint);
-        _legal_changes = std::move(from._legal_changes);
-        __max_threads_number = from.__max_threads_number;
+        graph_ = std::move(from.graph_);
+        constraint_ = std::move(from.constraint_);
+        legal_changes_ = std::move(from.legal_changes_);
+        max_threads_number__ = from.max_threads_number__;
       }
       return *this;
     }
 
     /// create the set of legal and illegal changes from a given graph
     template < typename STRUCT_CONSTRAINT >
-    void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::_createChanges() {
-      _legal_changes.clear();
+    void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::createChanges_() {
+      legal_changes_.clear();
 
       // for all the pairs of nodes, consider adding, reverse and removing edges
       std::vector< Set< GraphChange > > legal_changes;
-#  pragma omp parallel num_threads(__max_threads_number)
+#  pragma omp parallel num_threads(max_threads_number__)
       {
         int num_threads = getNumberOfRunningThreads();
 
@@ -118,19 +118,19 @@ namespace gum {
         const Idx this_thread = getThreadNumber();
 
         Idx i = 0;
-        for (const auto node1: _graph) {
+        for (const auto node1: graph_) {
           if (i == this_thread) {
-            for (const auto node2: _graph) {
+            for (const auto node2: graph_) {
               if (node1 != node2) {
                 // try edge additions
                 EdgeAddition edge_add(node1, node2);
-                if (!_constraint->isAlwaysInvalid(edge_add)) {
+                if (!constraint_->isAlwaysInvalid(edge_add)) {
                   legal_changes[this_thread].insert(std::move(edge_add));
                 }
 
                 // try edge deletion
                 EdgeDeletion edge_del(node1, node2);
-                if (!_constraint->isAlwaysInvalid(edge_del)) {
+                if (!constraint_->isAlwaysInvalid(edge_del)) {
                   legal_changes[this_thread].insert(std::move(edge_del));
                 }
               }
@@ -145,7 +145,7 @@ namespace gum {
       // GraphChangesGenerator4UndiGraph
       for (const auto& changes: legal_changes) {
         for (const auto& change: changes) {
-          _legal_changes.insert(std::move(change));
+          legal_changes_.insert(std::move(change));
         }
       }
     }
@@ -155,24 +155,24 @@ namespace gum {
     INLINE void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setGraph(
        const UndiGraph& graph) {
       // sets the current graph
-      _graph = graph;
+      graph_ = graph;
 
       // generate the set of all changes
-      _createChanges();
+      createChanges_();
     }
 
     /// empty the set of possible change operators that can be applied
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph<
        STRUCT_CONSTRAINT >::clearChanges() noexcept {
-      _legal_changes.clear();
+      legal_changes_.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE typename GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::iterator
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::begin() const {
-      return _legal_changes.cbegin();
+      return legal_changes_.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
@@ -180,7 +180,7 @@ namespace gum {
     INLINE const typename GraphChangesGenerator4UndiGraph<
        STRUCT_CONSTRAINT >::iterator&
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::end() const {
-      return _legal_changes.cend();
+      return legal_changes_.cend();
     }
 
     /// notify the operator set of a change applied to the graph
@@ -202,7 +202,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE void
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
-      if (_legal_changes.size()) _legal_changes.clear();
+      if (legal_changes_.size()) legal_changes_.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
@@ -212,18 +212,18 @@ namespace gum {
           Size nb) noexcept {
 #  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       if (nb == 0) nb = getMaxNumberOfThreads();
-      __max_threads_number = nb;
+      max_threads_number__ = nb;
 #  else
-      __max_threads_number = 1;
+      max_threads_number__ = 1;
 #  endif /* _OPENMP && GUM_DEBUG_MODE */
     }
 
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
-           GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::constraint() const
-       noexcept {
-      return *_constraint;
+           GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::constraint()
+          const noexcept {
+      return *constraint_;
     }
 
   } /* namespace learning */

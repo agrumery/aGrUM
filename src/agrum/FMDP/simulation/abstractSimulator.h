@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -71,25 +71,25 @@ namespace gum {
 
     /// Sets the intial statefrom which we begun the simulation
     INLINE void setInitialState(const Instantiation& initialState) {
-      _currentState = initialState;
+      currentState_ = initialState;
     }
     void setInitialStateRandomly();
 
     protected:
     /// Choses a random state as the first test for a run
-    virtual Instantiation _randomState();
+    virtual Instantiation randomState_();
 
     public:
     /// Sets the final states upon which a run is over
     INLINE void setEndState(const Instantiation& endState) {
-      _endState = endState;
+      endState_ = endState;
     }
 
     /// Tests if end state has been reached
     virtual bool hasReachEnd();
 
     ///
-    INLINE const Instantiation& currentState() { return _currentState; }
+    INLINE const Instantiation& currentState() { return currentState_; }
 
     ///
     virtual double reward() = 0;
@@ -127,7 +127,7 @@ namespace gum {
     /// @}
 
     /// Tha state in which the system currently is
-    Instantiation _currentState, _endState;
+    Instantiation currentState_, endState_;
   };
 
 } /* namespace gum */

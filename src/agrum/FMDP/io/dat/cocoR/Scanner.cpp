@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -57,7 +57,7 @@ Token::~Token() {
 Buffer::Buffer( FILE* s, bool isUserStream ) {
 // ensure binary read on windows
 #if _MSC_VER >= 1300
-  _setmode( _fileno( s ), _O_BINARY );
+  _setmode( _fileno( s ), _O_BINARY);
 #endif
   stream = s; this->isUserStream = isUserStream;
 
@@ -260,19 +260,19 @@ int UTF8Buffer::Read() {
 
 Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  __filenamne=widen( filename.c_str() );
-  __trace=trace;
+  filenamne__=widen( filename.c_str() );
+  trace__=trace;
   Init();
 }
 
 Scanner::Scanner( const char* fileName,bool trace ) {
   Load( widen( std::string( fileName ) ).c_str() );
-  __trace=trace;
+  trace__=trace;
 }
 
 Scanner::Scanner( const wchar_t* fileName,bool trace ) {
   Load( fileName );
-  __trace=trace;
+  trace__=trace;
 }
 
 void Scanner::Load( const wchar_t* fileName ) {
@@ -286,15 +286,15 @@ void Scanner::Load( const wchar_t* fileName ) {
 
   coco_string_delete( chFileName );
   buffer = new Buffer( stream, false );
-  __filenamne=std::wstring( fileName );
+  filenamne__=std::wstring( fileName );
   Init();
 }
 
 Scanner::Scanner( FILE* s,bool trace ) {
   buffer = new Buffer( s, true );
-  __filenamne=L"FILE";
+  filenamne__=L"FILE";
   Init();
-  __trace=trace;
+  trace__=trace;
 }
 
 Scanner::~Scanner() {
@@ -402,7 +402,7 @@ void Scanner::NextCh() {
     // eol handling uniform across Windows, Unix and Mac
     if ( ch == L'\r' && buffer->Peek() != L'\n' ) ch = EOL;
 
-    if ( ch == EOL ) { /*if (__trace) std::cout<<line<<std::endl;*/ line++; col = 0; }
+    if ( ch == EOL ) { /*if (trace__) std::cout<<line<<std::endl;*/ line++; col = 0; }
   }
 
   

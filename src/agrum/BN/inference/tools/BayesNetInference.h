@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief This file contains abstract class definitions for Bayesian networks
  *        inference classes.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BAYES_NET_INFERENCE_H
@@ -500,16 +500,16 @@ namespace gum {
 
     protected:
     /// fired when the stage is changed
-    virtual void _onStateChanged() = 0;
+    virtual void onStateChanged_() = 0;
 
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) = 0;
+    virtual void onEvidenceAdded_(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence) = 0;
+    virtual void onEvidenceErased_(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence) = 0;
+    virtual void onAllEvidenceErased_(bool contains_hard_evidence) = 0;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -519,26 +519,26 @@ namespace gum {
      * Hard or from Hard to Soft
      *
      */
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
+    virtual void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) = 0;
+    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) = 0;
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNStructure and
-     * _makeInference. */
-    virtual void _updateOutdatedBNStructure() = 0;
+     * known and can be changed between updateOutdatedBNStructure_ and
+     * makeInference_. */
+    virtual void updateOutdatedBNStructure_() = 0;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNPotentials and
-     * _makeInference. */
-    virtual void _updateOutdatedBNPotentials() = 0;
+     * known and can be changed between updateOutdatedBNPotentials_ and
+     * makeInference_. */
+    virtual void updateOutdatedBNPotentials_() = 0;
 
     /// called when the inference has to be performed effectively
-    /** Once the inference is done, _fillPosterior can be called. */
-    virtual void _makeInference() = 0;
+    /** Once the inference is done, fillPosterior_ can be called. */
+    virtual void makeInference_() = 0;
 
     /// put the inference into an outdated BN structure state
     /** OutdatedBNStructure: in this state, the inference is fully unprepared
@@ -561,7 +561,7 @@ namespace gum {
      * inference contains only one clique DE. Now, adding new evidence e_A on A
      * has no impact on E given hard evidence e_C. In this case, LazyPropagation
      * can be smart and not update its join tree.*/
-    void _setOutdatedBNStructureState();
+    void setOutdatedBNStructureState_();
 
     /** @brief puts the inference into an OutdatedBNPotentials state if it is
      * not already in an OutdatedBNStructure state
@@ -572,47 +572,47 @@ namespace gum {
      * potentials to be ready. Only a light amount of preparation is needed to
      * be able to perform inference.
      */
-    void _setOutdatedBNPotentialsState();
+    void setOutdatedBNPotentialsState_();
 
 
     private:
     /// the current state of the inference (outdated/ready/done)
-    StateOfInference __state{StateOfInference::OutdatedBNStructure};
+    StateOfInference state__{StateOfInference::OutdatedBNStructure};
 
     /// the Bayes net on which we perform inferences
-    const IBayesNet< GUM_SCALAR >* __bn{nullptr};
+    const IBayesNet< GUM_SCALAR >* bn__{nullptr};
 
     /// the domain sizes of the random variables
-    NodeProperty< Size > __domain_sizes;
+    NodeProperty< Size > domain_sizes__;
 
     /// the set of evidence entered into the network
-    NodeProperty< const Potential< GUM_SCALAR >* > __evidence;
+    NodeProperty< const Potential< GUM_SCALAR >* > evidence__;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty< Idx > __hard_evidence;
+    NodeProperty< Idx > hard_evidence__;
 
     /// the set of nodes that received soft evidence
-    NodeSet __soft_evidence_nodes;
+    NodeSet soft_evidence_nodes__;
 
     /// the set of nodes that received hard evidence
-    NodeSet __hard_evidence_nodes;
+    NodeSet hard_evidence_nodes__;
 
     /// set the state of the inference engine and
-    /// call the notification _onStateChanged
+    /// call the notification onStateChanged_
     /// when necessary (i.e. when the state has effectively changed).
-    virtual void __setState(const StateOfInference state) final;
+    virtual void setState__(const StateOfInference state) final;
 
     /// create the internal structure for a hard evidence
-    Potential< GUM_SCALAR > __createHardEvidence(NodeId id, Idx val) const;
+    Potential< GUM_SCALAR > createHardEvidence__(NodeId id, Idx val) const;
 
     /// checks whether a potential corresponds to a hard evidence or not
-    bool __isHardEvidence(const Potential< GUM_SCALAR >& pot, Idx& val) const;
+    bool isHardEvidence__(const Potential< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
-    void __computeDomainSizes();
+    void computeDomainSizes__();
 
     /// assigns a BN during the inference engine construction
-    void __setBayesNetDuringConstruction(const IBayesNet< GUM_SCALAR >* bn);
+    void setBayesNetDuringConstruction__(const IBayesNet< GUM_SCALAR >* bn);
 
 
     /// allow JointInference to access the single targets and inference states

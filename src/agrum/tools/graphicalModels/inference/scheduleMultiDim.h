@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a MultiDimImplementation Wrapper used for scheduling inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SCHEDULE_MULTI_DIM_H
 #define GUM_SCHEDULE_MULTI_DIM_H
@@ -203,30 +203,30 @@ namespace gum {
     friend class ScheduleDeleteMultiDim< GUM_SCALAR >;
 
     /// the unique Id of the ScheduleMultiDim
-    Idx __id;
+    Idx id__;
 
     /// returns a new distinct ID for each abtract scheduleMultiDim
-    static Idx __newId();
+    static Idx newId__();
 
     /// returns a mapping from id to multidimImplementations
     static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >&
-       __id2multidim();
+       id2multidim__();
 
     /// returns the id corresponding to a given multidim
     /** useful to assign the same id every time a given MultiDimImplementation
      * is wrapped into a ScheduleMultiDim */
     static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >&
-       __multidim2id();
+       multidim2id__();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
-    static HashTable< Idx, Idx >& __id2refs();
+    static HashTable< Idx, Idx >& id2refs__();
 
     /// returns a table with the variables of the table corresponding to id
     static HashTable< Idx, const Sequence< const DiscreteVariable* >* >&
-       __id2vars();
+       id2vars__();
 
     /// returns a table with the domain size of the table corresponding to id
-    static HashTable< Idx, Size >& __id2size();
+    static HashTable< Idx, Size >& id2size__();
   };
 
 } /* namespace gum */

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The local search with tabu list learning algorithm (for directed
  *graphs)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
@@ -180,7 +180,7 @@ namespace gum {
         }
 
         // std::cout << "current N = " << current_N << std::endl;
-      } while ((current_N <= __MaxNbDecreasing)
+      } while ((current_N <= MaxNbDecreasing__)
                && continueApproximationScheme(delta_score));
 
       stopApproximationScheme();   // just to be sure of the

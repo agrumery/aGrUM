@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -36,8 +36,8 @@ namespace gum {
      const IMarkovNet< GUM_SCALAR >* mn) :
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
-    if (this->__mn == nullptr) {
-      MarkovNetInference< GUM_SCALAR >::__setMarkovNetDuringConstruction(mn);
+    if (this->mn__ == nullptr) {
+      MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
     }
 
     GUM_CONSTRUCTOR(EvidenceMNInference);

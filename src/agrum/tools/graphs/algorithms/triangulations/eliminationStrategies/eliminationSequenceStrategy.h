@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * This class is the interface that should be implemented by all elimination
  * sequence algorithms used by triangulation algorithms.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_ELIMINATION_SEQUENCE_STRATEGY_H
@@ -153,13 +153,13 @@ namespace gum {
 
     protected:
     /// the graph to be triangulated
-    UndiGraph* _graph{nullptr};
+    UndiGraph* graph_{nullptr};
 
     /// the domain sizes of the variables/nodes
-    const NodeProperty< Size >* _domain_sizes{nullptr};
+    const NodeProperty< Size >* domain_sizes_{nullptr};
 
     /// the log of the domain sizes of the variables/nodes
-    NodeProperty< double > _log_domain_sizes;
+    NodeProperty< double > log_domain_sizes_;
 
 
     // ############################################################################
@@ -184,7 +184,7 @@ namespace gum {
 
     private:
     /// an empty fill-ins set used by default
-    static const EdgeSet& __empty_fill_ins();
+    static const EdgeSet& empty_fill_ins__();
   };
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -113,7 +113,7 @@ namespace gum_tests {
     gum::Potential< double >*
        proj(const gum::Potential< double >&                 table,
             const gum::Set< const gum::DiscreteVariable* >& del_vars,
-            double                                           neutral_elt) {
+            double                                          neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
          table.variablesSequence();

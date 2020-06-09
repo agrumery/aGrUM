@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief A generic class to project efficiently a MultiDim table over all
  * of its variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -39,7 +39,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) :
-      _proj(proj) {
+      proj_(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCompleteProjection);
   }
@@ -48,7 +48,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
      const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from) :
-      _proj(from._proj) {
+      proj_(from.proj_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCompleteProjection);
   }
@@ -71,14 +71,14 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE GUM_SCALAR MultiDimCompleteProjection< GUM_SCALAR, TABLE >::project(
      const TABLE< GUM_SCALAR >& table, Instantiation* inst) {
-    return _proj(table, inst);
+    return proj_(table, inst);
   }
 
   // changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void MultiDimCompleteProjection< GUM_SCALAR, TABLE >::setProjectFunction(
      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) {
-    _proj = proj;
+    proj_ = proj;
   }
 
   // returns the projection function currently used by the projector
@@ -86,7 +86,7 @@ namespace gum {
   INLINE GUM_SCALAR (
      *MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
      const TABLE< GUM_SCALAR >&, Instantiation*) {
-    return _proj;
+    return proj_;
   }
 
 } /* namespace gum */

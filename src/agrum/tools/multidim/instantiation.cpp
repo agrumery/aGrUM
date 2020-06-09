@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of gum::Instantiation.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/multidim/implementations/multiDimAdressable.h>
@@ -37,85 +37,85 @@
 namespace gum {
 
   // Default constructor
-  Instantiation::Instantiation() : __master(nullptr), __overflow(false) {
+  Instantiation::Instantiation() : master__(nullptr), overflow__(false) {
     GUM_CONSTRUCTOR(Instantiation);
   }
 
   // destructor
   Instantiation::~Instantiation() {
     GUM_DESTRUCTOR(Instantiation);
-    // unregister the Instantiation from its __master
+    // unregister the Instantiation from its master__
 
-    if (__master) __master->unregisterSlave(*this);
+    if (master__) master__->unregisterSlave(*this);
   }
 
-  void Instantiation::__init(MultiDimAdressable* master) {
+  void Instantiation::init__(MultiDimAdressable* master) {
     // for speed issues
     GUM_ASSERT(master != nullptr);
 
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
-    __vars.resize(v.size());
-    __vals.reserve(v.size());
+    vars__.resize(v.size());
+    vals__.reserve(v.size());
     // fill the instantiation
 
     for (const auto var: v)
-      __add(*var);
+      add__(*var);
 
     actAsSlave(master->getMasterRef());
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface
   Instantiation::Instantiation(MultiDimAdressable& d) :
-      __master(0), __overflow(false) {
+      master__(0), overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
-    __init(&d);
+    init__(&d);
   }
 
   Instantiation::Instantiation(const MultiDimAdressable& d) :
-      __master(0), __overflow(false) {
+      master__(0), overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
-    __init(const_cast< MultiDimAdressable* >(&d));
+    init__(const_cast< MultiDimAdressable* >(&d));
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface
   Instantiation::Instantiation(MultiDimAdressable* d) :
-      __master(0), __overflow(false) {
+      master__(0), overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
 
-    if (d) __init(d);
+    if (d) init__(d);
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface this
   // constructor is needed in order to allow creation of Instantiation(this) in
   // MultiDimAdressable and below
   Instantiation::Instantiation(const MultiDimAdressable* const_d) :
-      __master(0), __overflow(false) {
+      master__(0), overflow__(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
 
-    if (const_d) __init(const_cast< MultiDimAdressable* >(const_d));
+    if (const_d) init__(const_cast< MultiDimAdressable* >(const_d));
   }
 
   // copy constructor
   Instantiation::Instantiation(const Instantiation& aI, const bool notifyMaster) :
-      MultiDimInterface(), __master(0), __overflow(false) {
+      MultiDimInterface(), master__(0), overflow__(false) {
     // for debugging purposes
     GUM_CONS_CPY(Instantiation);
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
-    __overflow = aI.__overflow;
+    vars__ = aI.vars__;
+    vals__ = aI.vals__;
+    overflow__ = aI.overflow__;
 
-    if (aI.__master && notifyMaster) actAsSlave(*aI.__master);
+    if (aI.master__ && notifyMaster) actAsSlave(*aI.master__);
   }
 
   // operator=
   Instantiation& Instantiation::operator=(const Instantiation& aI) {
-    if (__master) {
-      if (!aI.isMaster(__master)) {   // aI as the same master.
+    if (master__) {
+      if (!aI.isMaster(master__)) {   // aI as the same master.
         if (nbrDim() != aI.nbrDim()) {
           GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
         }
@@ -130,11 +130,11 @@ namespace gum {
       setVals(aI);
     } else {
       // copy the content of aI
-      __vars = aI.__vars;
-      __vals = aI.__vals;
-      __overflow = aI.__overflow;
+      vars__ = aI.vars__;
+      vals__ = aI.vals__;
+      overflow__ = aI.overflow__;
 
-      if (aI.__master) actAsSlave(*aI.__master);
+      if (aI.master__) actAsSlave(*aI.master__);
     }
 
     return *this;
@@ -145,13 +145,13 @@ namespace gum {
     std::stringstream sstr;
     // check if the value of the instantiation is correct
 
-    if (__overflow) { sstr << "<invalid>"; }
+    if (overflow__) { sstr << "<invalid>"; }
 
     sstr << "<";
 
     bool first = true;
 
-    for (const auto var: __vars) {
+    for (const auto var: vars__) {
       if (!first) sstr << "|";
 
       first = false;
@@ -167,7 +167,7 @@ namespace gum {
   Idx Instantiation::hamming() const {
     Idx res = 0;
 
-    for (const auto var: __vars)
+    for (const auto var: vars__)
       res += val(*var);
 
     return res;
@@ -195,69 +195,69 @@ namespace gum {
     }
   }
 
-  void Instantiation::__masterChangeNotification(Idx varPos,
+  void Instantiation::masterChangeNotification__(Idx varPos,
                                                  Idx newVal,
                                                  Idx oldVal) const {
-    if (__master)
-      __master->changeNotification(*this, __vars[varPos], oldVal, newVal);
+    if (master__)
+      master__->changeNotification(*this, vars__[varPos], oldVal, newVal);
   }
 
-  void Instantiation::__masterFirstNotification() const {
-    if (__master) __master->setFirstNotification(*this);
+  void Instantiation::masterFirstNotification__() const {
+    if (master__) master__->setFirstNotification(*this);
   }
 
-  void Instantiation::__masterIncNotification() const {
-    if (__master) __master->setIncNotification(*this);
+  void Instantiation::masterIncNotification__() const {
+    if (master__) master__->setIncNotification(*this);
   }
-  void Instantiation::__masterLastNotification() const {
-    if (__master) __master->setLastNotification(*this);
+  void Instantiation::masterLastNotification__() const {
+    if (master__) master__->setLastNotification(*this);
   }
-  void Instantiation::__masterDecNotification() const {
-    if (__master) __master->setDecNotification(*this);
+  void Instantiation::masterDecNotification__() const {
+    if (master__) master__->setDecNotification(*this);
   }
 
   // deassociate the master MultiDimAdressable, if any
   bool Instantiation::forgetMaster() {
-    if (__master) {
-      __master->unregisterSlave(*this);
-      __master = nullptr;
+    if (master__) {
+      master__->unregisterSlave(*this);
+      master__ = nullptr;
     }
     return true;
   }
   // force the variables sequence order to be the same as the master one
   void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
-    if (m != __master) {
+    if (m != master__) {
       GUM_ERROR(OperationNotAllowed, "only master can do this");
     }
 
-    __reorder(__master->variablesSequence());
+    reorder__(master__->variablesSequence());
   }
   // erase new dim by master
   void Instantiation::eraseWithMaster(const MultiDimAdressable* m,
                                       const DiscreteVariable&   v) {
-    if (m != __master) {
+    if (m != master__) {
       GUM_ERROR(OperationNotAllowed, "only master can do this");
     }
 
-    __erase(v);
+    erase__(v);
 
-    if (__master) __master->setChangeNotification(*this);
+    if (master__) master__->setChangeNotification(*this);
   }
 
   // tries to register the Instantiation to a MultiDimAdressable
   bool Instantiation::actAsSlave(MultiDimAdressable& aMD) {
-    // if __master : not allowed
-    if (__master != nullptr) {
+    // if master__ : not allowed
+    if (master__ != nullptr) {
       GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
     }
 
-    __master = &aMD;
+    master__ = &aMD;
 
     // perform the registration
     if (aMD.registerSlave(*this)) {
       return true;
     } else {
-      __master = nullptr;
+      master__ = nullptr;
       return false;
     }
   }

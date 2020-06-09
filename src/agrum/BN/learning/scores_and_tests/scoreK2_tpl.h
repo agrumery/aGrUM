@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing K2 scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,7 +46,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -60,7 +60,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -71,8 +71,8 @@ namespace gum {
        const ScoreK2< ALLOC >&                          from,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        __internal_apriori(from.__internal_apriori, alloc),
-        __gammalog2(from.__gammalog2) {
+        internal_apriori__(from.internal_apriori__, alloc),
+        gammalog2__(from.gammalog2__) {
       GUM_CONS_CPY(ScoreK2);
     }
 
@@ -89,8 +89,8 @@ namespace gum {
        ScoreK2< ALLOC >&&                               from,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        __internal_apriori(std::move(from.__internal_apriori), alloc),
-        __gammalog2(std::move(from.__gammalog2)) {
+        internal_apriori__(std::move(from.internal_apriori__), alloc),
+        gammalog2__(std::move(from.gammalog2__)) {
       GUM_CONS_MOV(ScoreK2);
     }
 
@@ -137,7 +137,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(const ScoreK2< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        __internal_apriori = from.__internal_apriori;
+        internal_apriori__ = from.internal_apriori__;
       }
       return *this;
     }
@@ -148,7 +148,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(ScoreK2< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        __internal_apriori = std::move(from.__internal_apriori);
+        internal_apriori__ = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -193,25 +193,25 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string ScoreK2< ALLOC >::isAprioriCompatible() const {
-      return isAprioriCompatible(*(this->_apriori));
+      return isAprioriCompatible(*(this->apriori_));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreK2< ALLOC >::internalApriori() const {
-      return __internal_apriori;
+      return internal_apriori__;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreK2< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
+    double ScoreK2< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
+         this->counter_.counts(idset, true));
       const std::size_t all_size = N_ijk.size();
-      const bool informative_external_apriori = this->_apriori->isInformative();
+      const bool informative_external_apriori = this->apriori_->isInformative();
       double     score = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
@@ -219,7 +219,7 @@ namespace gum {
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
-           this->_marginalize(idset[0], N_ijk));
+           this->marginalize_(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
         const double      ri = double(all_size / conditioning_size);
 
@@ -227,9 +227,9 @@ namespace gum {
           // the score to compute is that of BD with aprioris N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
           std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
-          this->_apriori->addAllApriori(idset, N_prime_ijk);
+          this->apriori_->addAllApriori(idset, N_prime_ijk);
           std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
-          this->_apriori->addConditioningApriori(idset, N_prime_ij);
+          this->apriori_->addConditioningApriori(idset, N_prime_ij);
 
           // the K2 score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
@@ -237,24 +237,24 @@ namespace gum {
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
           //                             gammalog2 ( N'_ijk + 1 ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-            score += __gammalog2(N_prime_ij[j] + ri)
-                     - __gammalog2(N_ij[j] + N_prime_ij[j] + ri);
+            score += gammalog2__(N_prime_ij[j] + ri)
+                     - gammalog2__(N_ij[j] + N_prime_ij[j] + ri);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1.0)
-                     - __gammalog2(N_prime_ijk[k] + 1.0);
+            score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1.0)
+                     - gammalog2__(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:
           // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
           //                                   sum_k=1^ri log { N_ijk! } ]
-          score = conditioning_size * __gammalog2(ri);
+          score = conditioning_size * gammalog2__(ri);
 
           for (const auto n_ij: N_ij) {
-            score -= __gammalog2(n_ij + ri);
+            score -= gammalog2__(n_ij + ri);
           }
           for (const auto n_ijk: N_ijk) {
-            score += __gammalog2(n_ijk + 1);
+            score += gammalog2__(n_ijk + 1);
           }
         }
       } else {
@@ -270,28 +270,28 @@ namespace gum {
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
           std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
-          this->_apriori->addAllApriori(idset, N_prime_ijk);
+          this->apriori_->addAllApriori(idset, N_prime_ijk);
 
           // the K2 score can be computed as follows:
           double N = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
-                     - __gammalog2(N_prime_ijk[k] + 1);
+            score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1)
+                     - gammalog2__(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score += __gammalog2(N_prime + ri) - __gammalog2(N + N_prime + ri);
+          score += gammalog2__(N_prime + ri) - gammalog2__(N + N_prime + ri);
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-          score = __gammalog2(ri);
+          score = gammalog2__(ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
-            score += __gammalog2(n_ijk + 1);
+            score += gammalog2__(n_ijk + 1);
             N += n_ijk;
           }
-          score -= __gammalog2(N + ri);
+          score -= gammalog2__(N + ri);
         }
       }
 

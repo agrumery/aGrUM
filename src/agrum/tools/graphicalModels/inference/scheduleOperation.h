@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base operation class used to schedule inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SCHEDULE_OPERATION_H
 #define GUM_SCHEDULE_OPERATION_H
@@ -140,13 +140,13 @@ namespace gum {
 
     private:
     /// the name of the operation to perform
-    Type __type;
+    Type type__;
 
     /// the id corresponding to the operation
-    Idx __id;
+    Idx id__;
 
     /// returns a new distinct ID for each operation
-    static Idx __newId();
+    static Idx newId__();
   };
 
 } /* namespace gum */

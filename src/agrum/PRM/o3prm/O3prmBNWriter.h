@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *
  * Writes an bayes net in XML files with BIF format
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_O3PRMBNWRITER_H
@@ -97,22 +97,22 @@ namespace gum {
                        const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
-    std::string __extractAttribute(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractAttribute__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractType(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractType__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
     template < typename VARTYPE >
-    std::string __extractDiscretizedType(const VARTYPE* var);
+    std::string extractDiscretizedType__(const VARTYPE* var);
 
-    std::string __extractName(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractName__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractParents(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractParents__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractCPT(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractCPT__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractRangeType(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string extractRangeType__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractLabelizedType(const IBayesNet< GUM_SCALAR >& bn,
+    std::string extractLabelizedType__(const IBayesNet< GUM_SCALAR >& bn,
                                        NodeId                         node);
   };
 

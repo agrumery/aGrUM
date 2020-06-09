@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the ModelLearner class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -61,32 +61,32 @@ namespace gum {
                Idx                          nbValueIterationStep,
                bool                         actionReward,
                bool                         verbose) :
-      __learner(learner),
-      __planer(planer), __decider(decider),
-      __observationPhaseLenght(observationPhaseLenght),
-      __nbValueIterationStep(nbValueIterationStep), __actionReward(actionReward),
-      _verbose(verbose) {
+      learner__(learner),
+      planer__(planer), decider__(decider),
+      observationPhaseLenght__(observationPhaseLenght),
+      nbValueIterationStep__(nbValueIterationStep), actionReward__(actionReward),
+      verbose_(verbose) {
     GUM_CONSTRUCTOR(SDYNA);
 
-    _fmdp = new FMDP< double >();
+    fmdp_ = new FMDP< double >();
 
-    __nbObservation = 1;
+    nbObservation__ = 1;
   }
 
   // ###################################################################
   // Destructor
   // ###################################################################
   SDYNA::~SDYNA() {
-    delete __decider;
+    delete decider__;
 
-    delete __learner;
+    delete learner__;
 
-    delete __planer;
+    delete planer__;
 
-    for (auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
+    for (auto obsIter = bin__.beginSafe(); obsIter != bin__.endSafe(); ++obsIter)
       delete *obsIter;
 
-    delete _fmdp;
+    delete fmdp_;
 
     GUM_DESTRUCTOR(SDYNA);
   }
@@ -96,9 +96,9 @@ namespace gum {
   // ==========================================================================
 
   void SDYNA::initialize() {
-    __learner->initialize(_fmdp);
-    __planer->initialize(_fmdp);
-    __decider->initialize(_fmdp);
+    learner__->initialize(fmdp_);
+    planer__->initialize(fmdp_);
+    decider__->initialize(fmdp_);
   }
 
   // ###################################################################
@@ -131,8 +131,8 @@ namespace gum {
                        const Instantiation& prevState,
                        Idx                  lastAction,
                        double               reward) {
-    __lastAction = lastAction;
-    _lastState = prevState;
+    lastAction__ = lastAction;
+    lastState_ = prevState;
     feedback(curState, reward);
   }
 
@@ -142,7 +142,7 @@ namespace gum {
    * In extenso, learn from the transition.
    * @param reachedState : the state reached after the transition
    * @param obtainedReward : the reward obtained during the transition
-   * @warning Uses the __originalState and __performedAction stored in cache
+   * @warning Uses the originalState__ and performedAction__ stored in cache
    * If you want to specify the original state and the performed action, see
    * below
    */
@@ -150,34 +150,34 @@ namespace gum {
   void SDYNA::feedback(const Instantiation& newState, double reward) {
     Observation* obs = new Observation();
 
-    for (auto varIter = _lastState.variablesSequence().beginSafe();
-         varIter != _lastState.variablesSequence().endSafe();
+    for (auto varIter = lastState_.variablesSequence().beginSafe();
+         varIter != lastState_.variablesSequence().endSafe();
          ++varIter)
-      obs->setModality(*varIter, _lastState.val(**varIter));
+      obs->setModality(*varIter, lastState_.val(**varIter));
 
     for (auto varIter = newState.variablesSequence().beginSafe();
          varIter != newState.variablesSequence().endSafe();
          ++varIter) {
-      obs->setModality(_fmdp->main2prime(*varIter), newState.val(**varIter));
+      obs->setModality(fmdp_->main2prime(*varIter), newState.val(**varIter));
 
-      if (this->__actionReward)
-        obs->setRModality(*varIter, _lastState.val(**varIter));
+      if (this->actionReward__)
+        obs->setRModality(*varIter, lastState_.val(**varIter));
       else
         obs->setRModality(*varIter, newState.val(**varIter));
     }
 
     obs->setReward(reward);
 
-    __learner->addObservation(__lastAction, obs);
-    __bin.insert(obs);
+    learner__->addObservation(lastAction__, obs);
+    bin__.insert(obs);
 
     setCurrentState(newState);
-    __decider->checkState(_lastState, __lastAction);
+    decider__->checkState(lastState_, lastAction__);
 
-    if (__nbObservation % __observationPhaseLenght == 0)
-      makePlanning(__nbValueIterationStep);
+    if (nbObservation__ % observationPhaseLenght__ == 0)
+      makePlanning(nbValueIterationStep__);
 
-    __nbObservation++;
+    nbObservation__++;
   }
 
   // ###################################################################
@@ -188,15 +188,15 @@ namespace gum {
    */
   // ###################################################################
   void SDYNA::makePlanning(Idx nbValueIterationStep) {
-    if (_verbose) std::cout << "Updating decision trees ..." << std::endl;
-    __learner->updateFMDP();
+    if (verbose_) std::cout << "Updating decision trees ..." << std::endl;
+    learner__->updateFMDP();
     // std::cout << << "Done" << std::endl;
 
-    if (_verbose) std::cout << "Planning ..." << std::endl;
-    __planer->makePlanning(nbValueIterationStep);
+    if (verbose_) std::cout << "Planning ..." << std::endl;
+    planer__->makePlanning(nbValueIterationStep);
     // std::cout << << "Done" << std::endl;
 
-    __decider->setOptimalStrategy(__planer->optimalPolicy());
+    decider__->setOptimalStrategy(planer__->optimalPolicy());
   }
 
   // ##################################################################
@@ -206,7 +206,7 @@ namespace gum {
    */
   // ###################################################################
   Idx SDYNA::takeAction(const Instantiation& curState) {
-    _lastState = curState;
+    lastState_ = curState;
     return takeAction();
   }
 
@@ -216,14 +216,14 @@ namespace gum {
    */
   // ###################################################################
   Idx SDYNA::takeAction() {
-    ActionSet actionSet = __decider->stateOptimalPolicy(_lastState);
+    ActionSet actionSet = decider__->stateOptimalPolicy(lastState_);
     if (actionSet.size() == 1) {
-      __lastAction = actionSet[0];
+      lastAction__ = actionSet[0];
     } else {
       Idx randy = (Idx)((double)std::rand() / (double)RAND_MAX * actionSet.size());
-      __lastAction = actionSet[randy == actionSet.size() ? 0 : randy];
+      lastAction__ = actionSet[randy == actionSet.size() ? 0 : randy];
     }
-    return __lastAction;
+    return lastAction__;
   }
 
   // ###################################################################
@@ -232,8 +232,8 @@ namespace gum {
   std::string SDYNA::toString() {
     std::stringstream description;
 
-    description << _fmdp->toString() << std::endl;
-    description << __planer->optimalPolicy2String() << std::endl;
+    description << fmdp_->toString() << std::endl;
+    description << planer__->optimalPolicy2String() << std::endl;
 
     return description.str();
   }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ namespace gum {
   // a function used to perform copies of HashTableLists
 
   template < class Element >
-  INLINE void SplayBinaryNode< Element >::_copy(
+  INLINE void SplayBinaryNode< Element >::copy_(
      const SplayBinaryNode< Element >&                  from,
      HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     if (addr.exists(from.elt))
@@ -93,7 +93,7 @@ namespace gum {
   INLINE SplayBinaryNode< Element >::SplayBinaryNode(
      const SplayBinaryNode< Element >&                  from,
      HashTable< Element, SplayBinaryNode< Element >* >& addr) {
-    _copy(from, addr);
+    copy_(from, addr);
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayBinaryNode);
   }
@@ -352,7 +352,7 @@ namespace gum {
   // a function used to perform copies
 
   template < class Element >
-  INLINE void SplayTree< Element >::_copy(const SplayTree< Element >& from) {
+  INLINE void SplayTree< Element >::copy_(const SplayTree< Element >& from) {
     if (from.root) {
       root = new SplayBinaryNode< Element >(*from.root, addr);
     } else {
@@ -384,7 +384,7 @@ namespace gum {
 
   template < class Element >
   INLINE SplayTree< Element >::SplayTree(const SplayTree& from) : addr() {
-    _copy(from);
+    copy_(from);
     // for debugging purposes
     GUM_CONS_CPY(SplayTree);
   }
@@ -404,7 +404,7 @@ namespace gum {
 
       addr.clear();
 
-      _copy(from);
+      copy_(from);
     }
 
     return *this;
@@ -717,11 +717,11 @@ namespace gum {
 
       s.root->fg = 0;
 
-      Size _size = 1;
+      Size size_ = 1;
 
-      if (s.root->fd) _size += s.root->fd->size;
+      if (s.root->fd) size_ += s.root->fd->size;
 
-      s.root->size = _size;
+      s.root->size = size_;
 
       // We remove the old nodes in the hash table
       // Complexity O(n) => very expensive

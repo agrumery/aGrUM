@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for all a prioris
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -39,7 +39,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        _database(&database), _nodeId2columns(nodeId2columns) {
+        database_(&database), nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(Apriori);
     }
 
@@ -50,8 +50,8 @@ namespace gum {
        const Apriori< ALLOC >&                          from,
        const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        _weight(from._weight), _database(from._database),
-        _nodeId2columns(from._nodeId2columns) {
+        weight_(from.weight_), database_(from.database_),
+        nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(Apriori);
     }
 
@@ -68,8 +68,8 @@ namespace gum {
        Apriori< ALLOC >&&                               from,
        const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        _weight(from._weight), _database(from._database),
-        _nodeId2columns(std::move(from._nodeId2columns)) {
+        weight_(from.weight_), database_(from.database_),
+        nodeId2columns_(std::move(from.nodeId2columns_)) {
       GUM_CONS_MOV(Apriori);
     }
 
@@ -91,9 +91,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     Apriori< ALLOC >& Apriori< ALLOC >::operator=(const Apriori< ALLOC >& from) {
       if (this != &from) {
-        _nodeId2columns = from._nodeId2columns;
-        _weight = from._weight;
-        _database = from._database;
+        nodeId2columns_ = from.nodeId2columns_;
+        weight_ = from.weight_;
+        database_ = from.database_;
       }
       return *this;
     }
@@ -103,9 +103,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     Apriori< ALLOC >& Apriori< ALLOC >::operator=(Apriori< ALLOC >&& from) {
       if (this != &from) {
-        _nodeId2columns = std::move(from._nodeId2columns);
-        _weight = from._weight;
-        _database = from._database;
+        nodeId2columns_ = std::move(from.nodeId2columns_);
+        weight_ = from.weight_;
+        database_ = from.database_;
       }
       return *this;
     }
@@ -119,14 +119,14 @@ namespace gum {
                   "A negative weight (" << weight
                                         << ") is forbidden for an apriori");
       }
-      _weight = weight;
+      weight_ = weight;
     }
 
 
     /// returns the weight assigned to the apriori
     template < template < typename > class ALLOC >
     INLINE double Apriori< ALLOC >::weight() const {
-      return _weight;
+      return weight_;
     }
 
 

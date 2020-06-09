@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing BDeu scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_LEARNING_SCORE_BDEU_H
@@ -212,17 +212,17 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet< ALLOC >& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the internal apriori of the score
-      AprioriBDeu< ALLOC > __internal_apriori;
+      AprioriBDeu< ALLOC > internal_apriori__;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
-      GammaLog2 __gammalog2;
+      GammaLog2 gammalog2__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

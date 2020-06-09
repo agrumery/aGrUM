@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of gum::PRMReferenceSlot
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 
@@ -37,9 +37,9 @@ namespace gum {
        PRMClassElementContainer< GUM_SCALAR >& type,
        bool                                    isArray) :
         PRMClassElement< GUM_SCALAR >(name),
-        __slotType(type), __isArray(isArray) {
+        slotType__(type), isArray__(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
-      this->_safeName =
+      this->safeName_ =
          PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
     }
 
@@ -53,7 +53,7 @@ namespace gum {
     PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
        const PRMReferenceSlot< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source),
-        __slotType(source.__slotType), __isArray(source.__isArray) {
+        slotType__(source.slotType__), isArray__(source.isArray__) {
       GUM_CONS_CPY(PRMReferenceSlot);
       GUM_ERROR(FatalError,
                 "illegal call to gum::ReferenceSlot copy constructor.");
@@ -75,18 +75,18 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMReferenceSlot< GUM_SCALAR >::slotType() {
-      return __slotType;
+      return slotType__;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMReferenceSlot< GUM_SCALAR >::slotType() const {
-      return __slotType;
+      return slotType__;
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMReferenceSlot< GUM_SCALAR >::isArray() const {
-      return __isArray;
+      return isArray__;
     }
 
     template < typename GUM_SCALAR >

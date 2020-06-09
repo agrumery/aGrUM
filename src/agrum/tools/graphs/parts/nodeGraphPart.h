@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base node set class for graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_NODE_GRAPH_PART_H
 #define GUM_NODE_GRAPH_PART_H
@@ -118,19 +118,19 @@ namespace gum {
 
     protected:
     /// @brief this function is used by @ref NodeGraphPart to update
-    void _setPos(NodeId id) noexcept;
+    void setPos_(NodeId id) noexcept;
 
     /// ensure that the nodeId is either end() either a valid NodeId
-    void _validate() noexcept;
+    void validate_() noexcept;
 
     /// the nodegraphpart on which points the iterator
-    const NodeGraphPart* _nodes;
+    const NodeGraphPart* nodes_;
 
     /// the nodeid on which the iterator points currently
-    NodeId _pos{0};
+    NodeId pos_{0};
 
     // is this iterator still valid ?
-    bool _valid{false};
+    bool valid_{false};
   };
 
   /**
@@ -207,10 +207,10 @@ namespace gum {
    *
    * NodeGraphPart represents the set of nodes of all the graphs. It is built to
    * be as light as possible and it implements its own NodeId factory.
-   * The set of NodeId is 0 ... (__bound-1) minus the NodeIds in
-   * __holes.
+   * The set of NodeId is 0 ... (bound__-1) minus the NodeIds in
+   * holes__.
    *
-   * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
    *
    *
    * @par Usage example:
@@ -463,53 +463,53 @@ namespace gum {
     friend class NodeGraphPartIterator;
     friend class NodeGraphPartIteratorSafe;
 
-    /// to enable testunits to use __check
+    /// to enable testunits to use check__
 
     friend class gum_tests::NodeGraphPartTestSuite;
 
-    /// updating endIterator (always at __max+1)
-    void __updateEndIteratorSafe();
+    /// updating endIterator (always at max__+1)
+    void updateEndIteratorSafe__();
 
     /// code for clearing nodes (called twice)
-    void __clearNodes();
+    void clearNodes__();
 
     /// to delete hole.
     /// @warning the hole is assumed to be existing.
-    void __eraseHole(NodeId id);
+    void eraseHole__(NodeId id);
 
     /// to add a hole.
     /// @warning id is assumed not to be already a hole
-    void __addHole(NodeId id);
+    void addHole__(NodeId id);
 
     // ############################################################################
     /// @name Introspection
     // ############################################################################
     /// @{
 
-    /// @return true if id is part of __holes
-    bool __inHoles(NodeId id) const;
+    /// @return true if id is part of holes__
+    bool inHoles__(NodeId id) const;
 
-    /// @return the size of __holes
-    Size __sizeHoles() const;
+    /// @return the size of holes__
+    Size sizeHoles__() const;
 
     /// @}
 
     /** @brief the set of nodes not contained in the NodeGraphPart in the
-     * interval 1..__max
-     * @warning __holes may be nullptr. */
-    NodeSet* __holes;
+     * interval 1..max__
+     * @warning holes__ may be nullptr. */
+    NodeSet* holes__;
 
-    /// value for __holes configuration
-    Size __holes_size;
+    /// value for holes__ configuration
+    Size holes_size__;
 
-    /// value for __holes configuration
-    bool __holes_resize_policy;
+    /// value for holes__ configuration
+    bool holes_resize_policy__;
 
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
-    NodeGraphPartIteratorSafe __endIteratorSafe;
+    NodeGraphPartIteratorSafe endIteratorSafe__;
 
     /** @brief the id below which NodeIds may belong to the NodeGraphPart */
-    NodeId __boundVal;
+    NodeId boundVal__;
   };
 
   /// for friendly displaying the content of node set

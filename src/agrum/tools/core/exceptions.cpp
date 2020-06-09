@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  const std::string __createMsg(const std::string& filename,
+  const std::string createMsg__(const std::string& filename,
                                 const std::string& function,
                                 const int          line,
                                 const std::string& msg) {
@@ -54,10 +54,10 @@ namespace gum {
 #  endif   // SWIG
     return stream.str();
   }
-  Exception::Exception(const Exception& e) : _msg(e._msg), _type(e._type) {}
+  Exception::Exception(const Exception& e) : msg_(e.msg_), type_(e.type_) {}
 
   Exception::Exception(const std::string aMsg, const std::string aType) :
-      _msg(aMsg), _type(aType) {
+      msg_(aMsg), type_(aType) {
 #  ifdef GUM_DEBUG_MODE
 #    ifdef HAVE_EXECINFO_H
 #      define callStackDepth 20
@@ -74,12 +74,12 @@ namespace gum {
     }
 
     free(strings);
-    _callstack = stream.str();
+    callstack_ = stream.str();
 #    else    // HAVE_EXECINFO_H
-    _callstack = "Callstack only in linux debug mode when execinfo.h available";
+    callstack_ = "Callstack only in linux debug mode when execinfo.h available";
 #    endif   // HAVE_EXECINFO_H
 #  else      // GUM_DEBUG_MODE
-    _callstack = "Callstack only in linux debug mod ewhen execinfo.h available";
+    callstack_ = "Callstack only in linux debug mod ewhen execinfo.h available";
 #  endif     // GUM_DEBUG_MODE
   }
 

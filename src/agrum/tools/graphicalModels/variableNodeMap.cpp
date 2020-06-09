@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Outlined implementation VariableNodeMap
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -45,7 +45,7 @@ namespace gum {
   VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
     GUM_CONS_CPY(VariableNodeMap);
 
-    __copy(source);
+    copy__(source);
   }
 
   // Destructor
@@ -58,17 +58,17 @@ namespace gum {
   // Copy operator.
   VariableNodeMap& VariableNodeMap::operator=(const VariableNodeMap& source) {
     clear();
-    __copy(source);
+    copy__(source);
 
     return *this;
   }
 
   void VariableNodeMap::clear() {
-    for (auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter)
+    for (auto iter = nodes2vars__.begin(); iter != nodes2vars__.end(); ++iter)
       delete iter.second();
 
-    __nodes2vars.clear();
-    __names2nodes.clear();
+    nodes2vars__.clear();
+    names2nodes__.clear();
   }
 
   /// friendly displays the content of the VariableNodeMap
@@ -76,23 +76,23 @@ namespace gum {
     std::stringstream stream;
 
     stream << "list of associations:" << std::endl;
-    stream << __nodes2vars << std::endl << std::endl;
+    stream << nodes2vars__ << std::endl << std::endl;
     stream << "list of variable names:" << std::endl;
-    stream << __names2nodes << std::endl;
+    stream << names2nodes__ << std::endl;
 
     return stream.str();
   }
 
   /// do the copy
-  void VariableNodeMap::__copy(const VariableNodeMap& source) {
-    for (auto iter = source.__nodes2vars.begin();
-         iter != source.__nodes2vars.end();
+  void VariableNodeMap::copy__(const VariableNodeMap& source) {
+    for (auto iter = source.nodes2vars__.begin();
+         iter != source.nodes2vars__.end();
          ++iter)
-      __nodes2vars.insert(iter.first(), iter.second()->clone());
+      nodes2vars__.insert(iter.first(), iter.second()->clone());
 
     // copy factory is used inside insert
 
-    __names2nodes = source.__names2nodes;
+    names2nodes__ = source.names2nodes__;
   }
 
   /// for friendly displaying the content of clique graphs

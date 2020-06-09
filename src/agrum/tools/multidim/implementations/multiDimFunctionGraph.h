@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Headers of MultiDimFunctionGraph.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_H
@@ -360,39 +360,39 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed as this method has not
      * yet been implemented.
      */
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
      * @warning This will raise an OperationNotAllowed as you should not use
      * this method as MultiDimFunctionGraph use its own internal structure for
      * storing data.
      */
-    GUM_SCALAR& _get(const Instantiation& inst) const;
+    GUM_SCALAR& get_(const Instantiation& inst) const;
 
     private:
     /// The name of the data structure
-    std::string __name;
+    std::string name__;
 
     /// The name of the data structure
-    std::string __tableName;
+    std::string tableName__;
 
     /// Indicates available nodeIds
-    NodeGraphPart __model;
+    NodeGraphPart model__;
 
     /// A reference to the manager that edits this function graph
-    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >* __manager;
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >* manager__;
 
     /// The root node of the function graph
-    NodeId __root;
+    NodeId root__;
 
     /// Associates each non-terminal node to a variable
-    HashTable< NodeId, InternalNode* > __internalNodeMap;
+    HashTable< NodeId, InternalNode* > internalNodeMap__;
 
     /// Mapping between var and node
-    HashTable< const DiscreteVariable*, LinkedList< NodeId >* > __var2NodeIdMap;
+    HashTable< const DiscreteVariable*, LinkedList< NodeId >* > var2NodeIdMap__;
 
     /// Wheter the MultiDimFunctionGraphManager is reduced or not
-    bool __isReduced;
+    bool isReduced__;
 
     friend class MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >;
   };

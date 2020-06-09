@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief A wrapper that enables to store data in a way that prevents false
  * cacheline sharing.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_THREAD_DATA_H
 #define GUM_THREAD_DATA_H
@@ -51,7 +51,8 @@ namespace gum {
    * To get the data wrapped, use wrapped_data.data;
    */
   template < typename T_DATA >
-  // @TODO: for C++17, replace by alignas(std::hardware_destructive_interference_size)
+  // @TODO: for C++17, replace by
+  // alignas(std::hardware_destructive_interference_size)
   struct alignas(128) ThreadData {
     // ##########################################################################
     /// @name Constructors / Destructors

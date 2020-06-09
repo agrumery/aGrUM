@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ namespace gum {
        const BayesNet< GUM_SCALAR >&     bn,
        const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      genericBNLearner::__checkFileName(filename);
+      genericBNLearner::checkFileName__(filename);
       DBInitializerFromCSV<> initializer(filename);
       const auto&            xvar_names = initializer.variableNames();
       std::size_t            nb_vars = xvar_names.size();
@@ -51,34 +51,34 @@ namespace gum {
       for (auto node: nodes) {
         const Variable& var = bn.variable(node);
         try {
-          __database.insertTranslator(var, var_names[var.name()], missing_symbols);
+          database__.insertTranslator(var, var_names[var.name()], missing_symbols);
         } catch (NotFound&) {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable '" << var.name() << "' is missing");
         }
-        __nodeId2cols.insert(NodeId(node), i++);
+        nodeId2cols__.insert(NodeId(node), i++);
       }
 
       // fill the database
-      initializer.fillDatabase(__database);
+      initializer.fillDatabase(database__);
 
       // get the domain sizes of the variables
-      for (auto dom: __database.domainSizes())
-        __domain_sizes.push_back(dom);
+      for (auto dom: database__.domainSizes())
+        domain_sizes__.push_back(dom);
 
       // create the parser
-      __parser =
-         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
+      parser__ =
+         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > genericBNLearner::Database::__BNVars() const {
+    BayesNet< GUM_SCALAR > genericBNLearner::Database::BNVars__() const {
       BayesNet< GUM_SCALAR > bn;
-      const std::size_t      nb_vars = __database.nbVariables();
+      const std::size_t      nb_vars = database__.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
         const DiscreteVariable& var =
-           dynamic_cast< const DiscreteVariable& >(__database.variable(i));
+           dynamic_cast< const DiscreteVariable& >(database__.variable(i));
         bn.add(var);
       }
       return bn;
@@ -90,8 +90,8 @@ namespace gum {
        const std::string&                 filename,
        const gum::BayesNet< GUM_SCALAR >& bn,
        const std::vector< std::string >&  missing_symbols) :
-        __score_database(filename, bn, missing_symbols) {
-      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
+        score_database__(filename, bn, missing_symbols) {
+      no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
@@ -103,9 +103,9 @@ namespace gum {
                           XALLOC< std::pair< std::size_t, std::size_t > > >&
           new_ranges) {
       // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood<> score(__score_database.parser(), *__no_apriori);
+      ScoreLog2Likelihood<> score(score_database__.parser(), *no_apriori__);
       score.setRanges(new_ranges);
-      __ranges = score.ranges();
+      ranges__ = score.ranges();
     }
   }   // namespace learning
 }   // namespace gum

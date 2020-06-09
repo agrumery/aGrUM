@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class of signalers.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -40,21 +40,21 @@ namespace gum {
     BasicSignaler0::BasicSignaler0(const BasicSignaler0& s) : ISignaler(s) {
       GUM_CONS_CPY(BasicSignaler0);
 
-      for (const auto el: _connectors) {
+      for (const auto el: connectors_) {
         el->target()->attachSignal__(this);
-        _connectors.push_back(el->clone());
+        connectors_.push_back(el->clone());
       }
     }
 
     BasicSignaler0::~BasicSignaler0() {
       GUM_DESTRUCTOR(BasicSignaler0);
 
-      for (const auto el: _connectors) {
+      for (const auto el: connectors_) {
         el->target()->detachSignal__(this);
         delete el;
       }
 
-      _connectors.clear();
+      connectors_.clear();
     }
 
   }   // namespace __sig__

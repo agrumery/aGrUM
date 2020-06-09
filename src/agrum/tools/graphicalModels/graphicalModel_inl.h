@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief  Interface-like class encapsulating basic functionalities for both a
  *IBayesNet and IMarkovNet
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/math.h>
@@ -36,7 +36,7 @@ namespace gum {
   INLINE
   const std::string& GraphicalModel::property(const std::string& name) const {
     try {
-      return __properties()[name];
+      return properties__()[name];
     } catch (NotFound&) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name);
@@ -44,12 +44,12 @@ namespace gum {
   }
 
   INLINE
-  HashTable< std::string, std::string >& GraphicalModel::__properties() const {
-    if (__propertiesMap == nullptr) {
-      __propertiesMap = new HashTable< std::string, std::string >();
+  HashTable< std::string, std::string >& GraphicalModel::properties__() const {
+    if (propertiesMap__ == nullptr) {
+      propertiesMap__ = new HashTable< std::string, std::string >();
     }
 
-    return *__propertiesMap;
+    return *propertiesMap__;
   }
 
   INLINE
@@ -57,7 +57,7 @@ namespace gum {
      GraphicalModel::propertyWithDefault(const std::string& name,
                                          const std::string& byDefault) const {
     try {
-      return __properties()[name];
+      return properties__()[name];
     } catch (NotFound&) { return byDefault; }
   }
 
@@ -65,8 +65,8 @@ namespace gum {
   void GraphicalModel::setProperty(const std::string& name,
                                    const std::string& value) {
     try {
-      __properties()[name] = value;
-    } catch (NotFound&) { __properties().insert(name, value); }
+      properties__()[name] = value;
+    } catch (NotFound&) { properties__().insert(name, value); }
   }
 
 

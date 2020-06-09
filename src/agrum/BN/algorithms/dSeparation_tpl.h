@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief d-separation analysis (as described in Koller & Friedman 2009)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -108,7 +108,7 @@ namespace gum {
         if (!already_visited) { visited_from_parent.insert(node); }
       }
 
-      // if the node belongs to the query, update __node2potentials: remove all
+      // if the node belongs to the query, update node2potentials__: remove all
       // the potentials containing the node
       if (node2potentials.exists(node)) {
         auto& pot_set = node2potentials[node];
@@ -124,7 +124,7 @@ namespace gum {
         }
         node2potentials.erase(node);
 
-        // if __node2potentials is empty, no need to go on: all the potentials
+        // if node2potentials__ is empty, no need to go on: all the potentials
         // are d-connected to the query
         if (node2potentials.empty()) return;
       }
@@ -162,7 +162,7 @@ namespace gum {
       }
     }
 
-    // here, all the potentials that belong to __node2potentials are d-separated
+    // here, all the potentials that belong to node2potentials__ are d-separated
     // from the query
     for (const auto elt: node2potentials) {
       for (const auto pot: elt.second) {

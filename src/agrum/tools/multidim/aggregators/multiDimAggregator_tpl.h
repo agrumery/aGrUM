@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief MultiDimAggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 // to ease parser in IDEs
@@ -36,8 +36,7 @@ namespace gum {
     // Default constructor
     template < typename GUM_SCALAR >
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator() :
-        MultiDimReadOnly< GUM_SCALAR >(),
-        _decomposable(false) {
+        MultiDimReadOnly< GUM_SCALAR >(), decomposable_(false) {
       GUM_CONSTRUCTOR(MultiDimAggregator);
     }
 
@@ -46,7 +45,7 @@ namespace gum {
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
        const MultiDimAggregator< GUM_SCALAR >& from) :
         MultiDimReadOnly< GUM_SCALAR >(from),
-        _decomposable(from._decomposable) {
+        decomposable_(from.decomposable_) {
       GUM_CONS_CPY(MultiDimAggregator);
     }
 
@@ -57,17 +56,17 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    Idx MultiDimAggregator< GUM_SCALAR >::_buildValue(
+    Idx MultiDimAggregator< GUM_SCALAR >::buildValue_(
        const Instantiation& i) const {
-      if (this->nbrDim() == 1) return _neutralElt();
+      if (this->nbrDim() == 1) return neutralElt_();
 
       // is i equal to f(f(f(f...(j_,neutral_elt))))
-      Idx current = _neutralElt();
+      Idx current = neutralElt_();
 
       bool stop_iteration = false;
 
       for (Idx j = 1; j < this->nbrDim(); j++) {
-        current = _fold(
+        current = fold_(
            this->variable(j), i.val(this->variable(j)), current, stop_iteration);
 
         if (stop_iteration) break;
@@ -85,7 +84,7 @@ namespace gum {
       }
 
       const DiscreteVariable& agg = this->variable((Idx)0);
-      auto                    current = _buildValue(i);
+      auto                    current = buildValue_(i);
 
       // truncate to fit in aggreegator domain size
       if (current >= agg.domainSize()) current = agg.domainSize() - 1;
@@ -126,7 +125,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool MultiDimAggregator< GUM_SCALAR >::isDecomposable() const {
-       return _decomposable;
+      return decomposable_;
     }
 
 

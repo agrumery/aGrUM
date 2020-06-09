@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,8 @@
  * @file
  * @brief The BayesBall algorithm (as described by Schachter).
  *
- * @author Lionel TORTI and Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI & Christophe GONZALES(@AMU) and Pierre-Henri
+ * WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BAYESBALLS_H

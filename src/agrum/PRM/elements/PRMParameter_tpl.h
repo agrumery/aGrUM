@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of gum::PRMParameter.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -35,16 +35,16 @@ namespace gum {
                                              ParameterType      type,
                                              GUM_SCALAR         value) :
         PRMClassElement< GUM_SCALAR >(name),
-        __type(type), __value(value) {
+        type__(type), value__(value) {
       GUM_CONSTRUCTOR(PRMParameter);
-      this->_safeName = name;
+      this->safeName_ = name;
     }
 
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >::PRMParameter(
        const PRMParameter< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
-        __type(source.valueType()), __value(source.value()) {
+        type__(source.valueType()), value__(source.value()) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR");
     }
 
@@ -67,18 +67,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     GUM_SCALAR PRMParameter< GUM_SCALAR >::value() const {
-      return __value;
+      return value__;
     }
 
     template < typename GUM_SCALAR >
     void PRMParameter< GUM_SCALAR >::value(GUM_SCALAR value) {
-      __value = value;
+      value__ = value;
     }
 
     template < typename GUM_SCALAR >
     typename PRMParameter< GUM_SCALAR >::ParameterType
        PRMParameter< GUM_SCALAR >::valueType() const {
-      return __type;
+      return type__;
     }
 
     template < typename GUM_SCALAR >

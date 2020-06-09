@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of ClassDependencyGraph<GUM_SCALAR>.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_ClassDependencyGraph_H
@@ -103,34 +103,34 @@ namespace gum {
       /// @}
       private:
       /// Build the class dependency graph.
-      void __buildGraph(const PRM< GUM_SCALAR >& prm);
+      void buildGraph__(const PRM< GUM_SCALAR >& prm);
 
-      /// Add nodes in __graph while updating consequently all the mappings.
-      void __addNode(const PRMClassElementContainer< GUM_SCALAR >* c,
+      /// Add nodes in graph__ while updating consequently all the mappings.
+      void addNode__(const PRMClassElementContainer< GUM_SCALAR >* c,
                      const PRMClassElement< GUM_SCALAR >&          elt);
 
-      /// Add arcs in __graph.
+      /// Add arcs in graph__.
       void
-         __addArcs(const PRMClassElementContainer< GUM_SCALAR >&              c,
+         addArcs__(const PRMClassElementContainer< GUM_SCALAR >&              c,
                    NodeId                                                     node,
                    HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
 
       /// The graph itself.
-      DAG __graph;
+      DAG graph__;
 
       /// The modalities map for each node in the
       /// ClassDependencyGraph<GUM_SCALAR>.
       /// This
       /// is useful when using a Triangulation class over a
       /// ClassDependencyGraph<GUM_SCALAR>.
-      NodeProperty< Size > __modalitites;
+      NodeProperty< Size > modalitites__;
 
-      /// Mapping between the nodes in __graph with the
+      /// Mapping between the nodes in graph__ with the
       /// PRMClassElement<GUM_SCALAR>
       /// in
       /// the
       /// PRM<GUM_SCALAR>.
-      NodeProperty< EltPair* > __elt_map;
+      NodeProperty< EltPair* > elt_map__;
 
       /// Code shortcut.
       typedef HashTable<
@@ -140,8 +140,8 @@ namespace gum {
 
       /// Map each Class to a HashTable mapping the Class's ClassElements to
       /// their
-      /// assigned NodeId in __graph.
-      NodeMap __node_map;
+      /// assigned NodeId in graph__.
+      NodeMap node_map__;
     };
 
 

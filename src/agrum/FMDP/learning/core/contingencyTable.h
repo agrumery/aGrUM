@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the ContingencyTable class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -97,9 +97,9 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
-      return __jointTable.exists(
+      return jointTable__.exists(
                 std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
-                ? __jointTable[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
+                ? jointTable__[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
                                                                        valueB)]
                 : 0;
     }
@@ -108,7 +108,7 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrAMarginal(GUM_SCALAR_A valueA) const {
-      return __attrAMarginalTable.exists(valueA) ? __attrAMarginalTable[valueA]
+      return attrAMarginalTable__.exists(valueA) ? attrAMarginalTable__[valueA]
                                                  : 0;
     }
 
@@ -116,7 +116,7 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrBMarginal(GUM_SCALAR_B valueB) const {
-      return __attrAMarginalTable.exists(valueB) ? __attrAMarginalTable[valueB]
+      return attrAMarginalTable__.exists(valueB) ? attrAMarginalTable__[valueB]
                                                  : 0;
     }
 
@@ -124,35 +124,35 @@ namespace gum {
     /// Returns the number of samples for line iattr
 
     //        Idx aMarginal( GUM_SCALAR_A iattr ) { return
-    //        __attrMarginalTable[iattr]; }
+    //        attrMarginalTable__[iattr]; }
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrABeginSafe() const {
-      return __attrAMarginalTable.cbeginSafe();
+      return attrAMarginalTable__.cbeginSafe();
     }
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrAEndSafe() const {
-      return __attrAMarginalTable.cendSafe();
+      return attrAMarginalTable__.cendSafe();
     }
 
 
     /// Returns the number of samples for column ivalue
 
     //        Idx vMarginal( GUM_SCALAR_B ivalue ) { return
-    //        __valueMarginalTable[ivalue]; }
+    //        valueMarginalTable__[ivalue]; }
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBBeginSafe() const {
-      return __attrBMarginalTable.cbeginSafe();
+      return attrBMarginalTable__.cbeginSafe();
     }
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBEndSafe() const {
-      return __attrBMarginalTable.cendSafe();
+      return attrBMarginalTable__.cendSafe();
     }
 
 
     /// Returns the number of samples for line iattr
 
-    Idx attrASize() const { return __attrAMarginalTable.size(); }
+    Idx attrASize() const { return attrAMarginalTable__.size(); }
 
 
     /// Returns the number of samples for column ivalue
 
-    Idx attrBSize() const { return __attrBMarginalTable.size(); }
+    Idx attrBSize() const { return attrBMarginalTable__.size(); }
 
     /// @}
 
@@ -161,9 +161,9 @@ namespace gum {
 
     std::string toString() const {
       std::stringstream ss;
-      ss << "\t\t\t\t" << __attrAMarginalTable << std::endl
-         << "\t\t\t\t" << __attrBMarginalTable << std::endl
-         << "\t\t\t\t" << __jointTable << std::endl;
+      ss << "\t\t\t\t" << attrAMarginalTable__ << std::endl
+         << "\t\t\t\t" << attrBMarginalTable__ << std::endl
+         << "\t\t\t\t" << jointTable__ << std::endl;
       return ss.str();
     }
 
@@ -177,9 +177,9 @@ namespace gum {
      * If someone ever use this class and has time to correctly implements
      * a efficient contingency table, you're welcome
      */
-    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __jointTable;
-    HashTable< GUM_SCALAR_A, Idx >                            __attrAMarginalTable;
-    HashTable< GUM_SCALAR_B, Idx >                            __attrBMarginalTable;
+    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > jointTable__;
+    HashTable< GUM_SCALAR_A, Idx >                            attrAMarginalTable__;
+    HashTable< GUM_SCALAR_B, Idx >                            attrBMarginalTable__;
   };
 
 } /* namespace gum */

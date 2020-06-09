@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class used to compute response times for benchmark purposes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) & Jean-Philippe Dubus
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Jean-Philippe Dubus
  */
 #ifndef GUM_TIMER_H
 #define GUM_TIMER_H
@@ -116,13 +116,13 @@ namespace gum {
 
     protected:
     /// Time of the last call to reset() or the constructor.
-    std::chrono::high_resolution_clock::time_point _start;
+    std::chrono::high_resolution_clock::time_point start_;
 
     /// Time of the last call to pause().
-    std::chrono::high_resolution_clock::time_point _pause;
+    std::chrono::high_resolution_clock::time_point pause_;
 
     /// False if running.
-    bool _sleeping;
+    bool sleeping_;
   };
 
 } /* namespace gum */

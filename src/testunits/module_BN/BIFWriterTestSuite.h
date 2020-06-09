@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -160,7 +160,8 @@ namespace gum_tests {
       gum::BIFWriter< double > writer;
       std::string file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
+      TS_ASSERT(
+         __compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 
     private:

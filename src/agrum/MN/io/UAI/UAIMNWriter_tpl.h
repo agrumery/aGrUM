@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -57,10 +57,10 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __preambule(MN) << std::endl;
+    output << preambule__(MN) << std::endl;
 
     for (const auto& kv: MN.factors())
-      output << __factorBloc(MN, *kv.second) << std::endl;
+      output << factorBloc__(MN, *kv.second) << std::endl;
 
     output << std::endl;
 
@@ -93,18 +93,19 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIMNWriter< GUM_SCALAR >::__preambule(const IMarkovNet< GUM_SCALAR >& MN) {
+         UAIMNWriter< GUM_SCALAR >::preambule__(const IMarkovNet< GUM_SCALAR >& MN) {
     std::stringstream str;
 
     str << "MARKOV" << std::endl;
 
-    str << MN.size() << " # nbr Nodes" <<std::endl;
+    str << MN.size() << " # nbr Nodes" << std::endl;
 
     for (auto node: MN.nodes())
       str << MN.variable(node).domainSize() << " ";
     str << std::endl;
 
-    str << MN.factors().size() << " # nbr Factors "<<std::endl;   // number of cliques
+    str << MN.factors().size() << " # nbr Factors "
+        << std::endl;   // number of cliques
 
     for (const auto& kv: MN.factors()) {
       const auto& nodeset = kv.first;
@@ -119,7 +120,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string UAIMNWriter< GUM_SCALAR >::__factorBloc(
+  INLINE std::string UAIMNWriter< GUM_SCALAR >::factorBloc__(
      const IMarkovNet< GUM_SCALAR >& MN, const Potential< GUM_SCALAR >& clikpot) {
     std::stringstream str;
 

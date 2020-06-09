@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The Prim algorithm for computing min cost spanning trees or forests
  *
- * @author Jean-Philippe DUBUS and Christophe GONZALES (@AMU)
+ * @author Jean-Philippe DUBUS & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_SPANNING_FOREST_PRIM_H
 #define GUM_SPANNING_FOREST_PRIM_H
@@ -91,31 +91,31 @@ namespace gum {
 
     private:
     /// the graph the spanning tree of which we wish to compute
-    const UndiGraph& __graph;
+    const UndiGraph& graph__;
 
     /// the costs of the edges
-    const EdgeProperty< float >& __costTable;
+    const EdgeProperty< float >& costTable__;
 
     /// the next edges that may be added to the spanning tree
-    PriorityQueue< Edge, float > __edgesToExplore;
+    PriorityQueue< Edge, float > edgesToExplore__;
 
     /// the computed spanning tree
-    UndiGraph __spanning_tree;
+    UndiGraph spanning_tree__;
 
     /// the cost of the spanning tree
-    float __spanning_tree_cost;
+    float spanning_tree_cost__;
 
     /// a Boolean indicating whether we need recompute the spanning tree
-    bool __require_computation;
+    bool require_computation__;
 
     /// Computes the spanning forest
-    void __compute();
+    void compute__();
 
-    /// compute a spanning tree in a given connected component of __graph
-    void __computeInAComponent(const NodeId id);
+    /// compute a spanning tree in a given connected component of graph__
+    void computeInAComponent__(const NodeId id);
 
     /// explore the neighborhood of a node belonging to the spanning tree
-    void __exploreNode(const NodeId id);
+    void exploreNode__(const NodeId id);
 
     /// Copy operator: private to prevent using it
     SpanningForestPrim& operator=(const SpanningForestPrim& toCopy);

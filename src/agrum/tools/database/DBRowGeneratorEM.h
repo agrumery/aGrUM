@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A DBRowGenerator class that returns incomplete rows as EM would do
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_EM_H
 #define GUM_LEARNING_DBROW_GENERATOR_EM_H
@@ -165,44 +165,44 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
+         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* input_row__{nullptr};
 
       /// the set of missing columns of the current row
-      std::vector< std::size_t, ALLOC< std::size_t > > __missing_cols;
+      std::vector< std::size_t, ALLOC< std::size_t > > missing_cols__;
 
       /// the number of missing values in the current row
-      std::size_t __nb_miss;
+      std::size_t nb_miss__;
 
       /// the joint probability of the missing variables of the current row
-      Potential< GUM_SCALAR > __joint_proba;
+      Potential< GUM_SCALAR > joint_proba__;
 
       /// an instantiation over the joint proba
-      Instantiation* __joint_inst{nullptr};
+      Instantiation* joint_inst__{nullptr};
 
       /// the row that we return if there are missing values
       /** DBRowGeneratorSets produce new rows in advance. So, when they
        * return a row, they have already computed the new row. To cope with
        * this, the DBRowGeneratorEM should have 2 filled_row: one that will
        * be used for the first row returned and one for the next one. Hence
-       * __filled_row1 and __filled_row2, which are filled alternatively by
+       * filled_row1__ and filled_row2__, which are filled alternatively by
        * the content of the probabilities computed. */
-      DBRow< DBTranslatedValue, ALLOC > __filled_row1;
+      DBRow< DBTranslatedValue, ALLOC > filled_row1__;
 
       /// the row that we return if there are missing values
-      DBRow< DBTranslatedValue, ALLOC > __filled_row2;
+      DBRow< DBTranslatedValue, ALLOC > filled_row2__;
 
       /// indicates whether we should return filled_row1 or filled_row2
-      bool __use_filled_row1{true};
+      bool use_filled_row1__{true};
 
       /// the weight of the original input row
-      double __original_weight;
+      double original_weight__;
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

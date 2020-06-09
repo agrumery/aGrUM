@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MDDOperatorStrategy planer class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -65,13 +65,13 @@ namespace gum {
       if (x > y) { return x; }
       if (x < y) { return y; }
 
-      __temp = x;
-      __temp += y;
-      return __temp;
+      temp__ = x;
+      temp__ += y;
+      return temp__;
     }
 
     private:
-    mutable GUM_SCALAR __temp;
+    mutable GUM_SCALAR temp__;
   };
 
 
@@ -97,20 +97,20 @@ namespace gum {
     // ============================================================================
     ActionSet() {
       GUM_CONSTRUCTOR(ActionSet);
-      __actionSeq = new Sequence< Idx >();
+      actionSeq__ = new Sequence< Idx >();
     }
 
     ActionSet(const ActionSet& src) {
       GUM_CONSTRUCTOR(ActionSet);
-      __actionSeq = new Sequence< Idx >();
+      actionSeq__ = new Sequence< Idx >();
       for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
-        __actionSeq->insert(*idi);
+        actionSeq__->insert(*idi);
     }
 
     ActionSet& operator=(const ActionSet& src) {
-      __actionSeq = new Sequence< Idx >();
+      actionSeq__ = new Sequence< Idx >();
       for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
-        __actionSeq->insert(*idi);
+        actionSeq__->insert(*idi);
       return *this;
     }
 
@@ -119,7 +119,7 @@ namespace gum {
     // ============================================================================
     ~ActionSet() {
       GUM_DESTRUCTOR(ActionSet);
-      delete __actionSeq;
+      delete actionSeq__;
     }
 
     // ============================================================================
@@ -143,13 +143,13 @@ namespace gum {
     /// Iterator beginning
     // ============================================================================
     SequenceIteratorSafe< Idx > beginSafe() const {
-      return __actionSeq->beginSafe();
+      return actionSeq__->beginSafe();
     }
 
     // ============================================================================
     /// Iterator end
     // ============================================================================
-    SequenceIteratorSafe< Idx > endSafe() const { return __actionSeq->endSafe(); }
+    SequenceIteratorSafe< Idx > endSafe() const { return actionSeq__->endSafe(); }
 
     /// @}
 
@@ -162,7 +162,7 @@ namespace gum {
     /// Ajout d'un élément
     // ============================================================================
     ActionSet& operator+=(const Idx& elem) {
-      __actionSeq->insert(elem);
+      actionSeq__->insert(elem);
       return *this;
     }
 
@@ -171,7 +171,7 @@ namespace gum {
     // ============================================================================
     ActionSet& operator+=(const ActionSet& src) {
       for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
-        if (!__actionSeq->exists(*iter)) __actionSeq->insert(*iter);
+        if (!actionSeq__->exists(*iter)) actionSeq__->insert(*iter);
       return *this;
     }
 
@@ -180,21 +180,21 @@ namespace gum {
     // ============================================================================
     ActionSet& operator-=(const ActionSet& src) {
       for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
-        if (__actionSeq->exists(*iter)) __actionSeq->erase(*iter);
+        if (actionSeq__->exists(*iter)) actionSeq__->erase(*iter);
       return *this;
     }
 
     // ============================================================================
     /// Gives the ith element
     // ============================================================================
-    const Idx& operator[](const Idx i) const { return __actionSeq->atPos(i); }
+    const Idx& operator[](const Idx i) const { return actionSeq__->atPos(i); }
 
     // ============================================================================
     /// Compares two ActionSet to check if they are equals
     // ============================================================================
     bool operator==(const ActionSet& compared) const {
       for (auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter)
-        if (!__actionSeq->exists(*iter)) return false;
+        if (!actionSeq__->exists(*iter)) return false;
       for (auto iter = this->beginSafe(); iter != this->endSafe(); ++iter)
         if (!compared.exists(*iter)) return false;
       return true;
@@ -208,16 +208,16 @@ namespace gum {
     // ============================================================================
     /// Gives the size
     // ============================================================================
-    Size size() const { return __actionSeq->size(); }
+    Size size() const { return actionSeq__->size(); }
 
-    bool exists(const Idx& elem) const { return __actionSeq->exists(elem); }
+    bool exists(const Idx& elem) const { return actionSeq__->exists(elem); }
 
     private:
     /// The very bone of the ActionSet
-    Sequence< Idx >* __actionSeq;
+    Sequence< Idx >* actionSeq__;
 
     friend std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy) {
-      streamy << objy.__actionSeq->toString();
+      streamy << objy.actionSeq__->toString();
       return streamy;
     }
   };

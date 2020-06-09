@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /**
  * @file
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MULTI_DIM_COMPLETE_PROJECTION_H
@@ -94,7 +94,7 @@ namespace gum {
 
     protected:
     /// The projection function actually used
-    GUM_SCALAR (*_proj)(const TABLE< GUM_SCALAR >&, Instantiation*);
+    GUM_SCALAR (*proj_)(const TABLE< GUM_SCALAR >&, Instantiation*);
 
     private:
     /// Forbid copy operators

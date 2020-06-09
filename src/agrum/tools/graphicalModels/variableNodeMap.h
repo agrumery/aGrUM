@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Header of class VariableNodeMap.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_VARIABLE_NODE_MAP_H
 #define GUM_VARIABLE_NODE_MAP_H
@@ -160,13 +160,13 @@ namespace gum {
 
     private:
     /// effectively do the copy (for copy constructor or operator=)
-    void __copy(const VariableNodeMap& source);
+    void copy__(const VariableNodeMap& source);
 
     /// Bijection between the node's NodeIds and the variables.
-    Bijection< NodeId, const DiscreteVariable* > __nodes2vars;
+    Bijection< NodeId, const DiscreteVariable* > nodes2vars__;
 
     /// HashTable for easely find an id from a name
-    Bijection< std::string, NodeId > __names2nodes;
+    Bijection< std::string, NodeId > names2nodes__;
   };
 
   /// for friendly displaying the content of clique graphs

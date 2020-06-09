@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief Implementation of gum::learning::ThreeOffTwo
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/math.h>
@@ -43,7 +43,7 @@ namespace gum {
     Miic::Miic() { GUM_CONSTRUCTOR(Miic); }
 
     /// default constructor with maxLog
-    Miic::Miic(int maxLog) : __maxLog(maxLog) { GUM_CONSTRUCTOR(Miic); }
+    Miic::Miic(int maxLog) : maxLog__(maxLog) { GUM_CONSTRUCTOR(Miic); }
 
     /// copy constructor
     Miic::Miic(const Miic& from) : ApproximationScheme(from) {
@@ -104,14 +104,13 @@ namespace gum {
       // First, we look at the sign of information.
       // Then, the probility values
       // and finally the abs value of information.
-      if ( (I1 < 0 && I2 < 0) || (I1 >= 0 && I2 >=0) ){
+      if ((I1 < 0 && I2 < 0) || (I1 >= 0 && I2 >= 0)) {
         if (std::max(p1xz, p1yz) == std::max(p2xz, p2yz)) {
           return std::abs(I1) > std::abs(I2);
         } else {
           return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
         }
-      }
-      else {
+      } else {
         return I1 < I2;
       }
     }
@@ -119,33 +118,34 @@ namespace gum {
     /// learns the structure of a MixedGraph
     MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation<>& I,
                                          MixedGraph                    graph) {
-      _timer.reset();
-      _current_step = 0;
+      timer_.reset();
+      current_step_ = 0;
 
       // clear the vector of latent arcs to be sure
-      __latent_couples.clear();
+      latent_couples__.clear();
 
       /// the heap of ranks, with the score, and the NodeIds of x, y and z.
       Heap<
          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                     double >,
          GreaterPairOn2nd >
-         _rank;
+         rank_;
 
       /// the variables separation sets
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
 
-      _initiation(I, graph, sep_set, _rank);
+      initiation_(I, graph, sep_set, rank_);
 
-      _iteration(I, graph, sep_set, _rank);
+      iteration_(I, graph, sep_set, rank_);
 
-      //std::cout << "Le graphe contient: " << graph.sizeEdges() << " edges." << std::endl;
-      //std::cout << "En voici la liste: " << graph.edges() << std::endl;
+      // std::cout << "Le graphe contient: " << graph.sizeEdges() << " edges." <<
+      // std::endl; std::cout << "En voici la liste: " << graph.edges() <<
+      // std::endl;
 
-      if (__usemiic) {
-        _orientation_miic(I, graph, sep_set);
+      if (usemiic__) {
+        orientation_miic_(I, graph, sep_set);
       } else {
-        _orientation_3off2(I, graph, sep_set);
+        orientation_3off2_(I, graph, sep_set);
       }
 
       return graph;
@@ -158,14 +158,14 @@ namespace gum {
      * are,
      * the edge is deleted. If not, the best contributor is found.
      */
-    void Miic::_initiation(
+    void Miic::initiation_(
        CorrectedMutualInformation<>&                                    I,
        MixedGraph&                                                      graph,
        HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
        Heap<
           std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                      double >,
-          GreaterPairOn2nd >& _rank) {
+          GreaterPairOn2nd >& rank_) {
       NodeId  x, y;
       EdgeSet edges = graph.edges();
       Size    steps_init = edges.size();
@@ -177,15 +177,15 @@ namespace gum {
 
         if (Ixy <= 0) {   //< K
           graph.eraseEdge(edge);
-          sep_set.insert(std::make_pair(x, y), __empty_set);
+          sep_set.insert(std::make_pair(x, y), empty_set__);
         } else {
-          _findBestContributor(x, y, __empty_set, graph, I, _rank);
+          findBestContributor_(x, y, empty_set__, graph, I, rank_);
         }
 
-        ++_current_step;
+        ++current_step_;
         if (onProgress.hasListener()) {
           GUM_EMIT3(
-             onProgress, (_current_step * 33) / steps_init, 0., _timer.step());
+             onProgress, (current_step_ * 33) / steps_init, 0., timer_.step());
         }
       }
     }
@@ -196,25 +196,25 @@ namespace gum {
      * As long as we find important nodes for edges, we go over them to see if
      * we can assess the independence of the variables.
      */
-    void Miic::_iteration(
+    void Miic::iteration_(
        CorrectedMutualInformation<>&                                    I,
        MixedGraph&                                                      graph,
        HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
        Heap<
           std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                      double >,
-          GreaterPairOn2nd >& _rank) {
+          GreaterPairOn2nd >& rank_) {
       // if no triples to further examine pass
       std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                  double >
          best;
 
-      Size steps_init = _current_step;
-      Size steps_iter = _rank.size();
+      Size steps_init = current_step_;
+      Size steps_iter = rank_.size();
 
       try {
-        while (_rank.top().second > 0.5) {
-          best = _rank.pop();
+        while (rank_.top().second > 0.5) {
+          best = rank_.pop();
 
           const NodeId          x = std::get< 0 >(*(best.first));
           const NodeId          y = std::get< 1 >(*(best.first));
@@ -227,25 +227,25 @@ namespace gum {
             graph.eraseEdge(Edge(x, y));
             sep_set.insert(std::make_pair(x, y), std::move(ui));
           } else {
-            _findBestContributor(x, y, ui, graph, I, _rank);
+            findBestContributor_(x, y, ui, graph, I, rank_);
           }
 
           delete best.first;
 
-          ++_current_step;
+          ++current_step_;
           if (onProgress.hasListener()) {
             GUM_EMIT3(onProgress,
-                      (_current_step * 66) / (steps_init + steps_iter),
+                      (current_step_ * 66) / (steps_init + steps_iter),
                       0.,
-                      _timer.step());
+                      timer_.step());
           }
         }
       } catch (...) {}   // here, rank is empty
-      _current_step = steps_init + steps_iter;
+      current_step_ = steps_init + steps_iter;
       if (onProgress.hasListener()) {
-        GUM_EMIT3(onProgress, 66, 0., _timer.step());
+        GUM_EMIT3(onProgress, 66, 0., timer_.step());
       }
-      _current_step = steps_init + steps_iter;
+      current_step_ = steps_init + steps_iter;
     }
 
     /*
@@ -253,20 +253,20 @@ namespace gum {
      *
      * Try to assess v-structures and propagate them.
      */
-    void Miic::_orientation_3off2(
+    void Miic::orientation_3off2_(
        CorrectedMutualInformation<>& I,
        MixedGraph&                   graph,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
           sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-           triples = _getUnshieldedTriples(graph, I, sep_set);
+           triples = getUnshieldedTriples_(graph, I, sep_set);
       Size steps_orient = triples.size();
-      Size past_steps = _current_step;
+      Size past_steps = current_step_;
 
       // marks always correspond to the head of the arc/edge. - is for a forbidden
       // arc, > for a mandatory arc
       // we start by adding the mandatory arcs
-      for (auto iter = __initial_marks.begin(); iter != __initial_marks.end();
+      for (auto iter = initial_marks__.begin(); iter != initial_marks__.end();
            ++iter) {
         if (graph.existsEdge(iter.key().first, iter.key().second)
             && iter.val() == '>') {
@@ -307,114 +307,114 @@ namespace gum {
               // when we try to add an arc to the graph, we always verify if
               // we are allowed to do so, ie it is not a forbidden arc an it
               // does not create a cycle
-              if (!__existsDirectedPath(graph, z, x)
-                  && !(__initial_marks.exists({x, z})
-                       && __initial_marks[{x, z}] == '-')) {
+              if (!existsDirectedPath__(graph, z, x)
+                  && !(initial_marks__.exists({x, z})
+                       && initial_marks__[{x, z}] == '-')) {
                 reset = true;
                 graph.eraseEdge(Edge(x, z));
                 graph.addArc(x, z);
-              } else if (__existsDirectedPath(graph, z, x)
-                         && !(__initial_marks.exists({z, x})
-                              && __initial_marks[{z, x}] == '-')) {
+              } else if (existsDirectedPath__(graph, z, x)
+                         && !(initial_marks__.exists({z, x})
+                              && initial_marks__[{z, x}] == '-')) {
                 reset = true;
                 graph.eraseEdge(Edge(x, z));
                 // if we find a cycle, we force the competing edge
                 graph.addArc(z, x);
                 if (std::find(
-                       __latent_couples.begin(), __latent_couples.end(), Arc(z, x))
-                    == __latent_couples.end()) {
-                  __latent_couples.push_back(Arc(z, x));
+                       latent_couples__.begin(), latent_couples__.end(), Arc(z, x))
+                    == latent_couples__.end()) {
+                  latent_couples__.push_back(Arc(z, x));
                 }
               }
             } else if (!graph.existsArc(y, z) && !graph.existsArc(z, y)) {
-              if (!__existsDirectedPath(graph, z, y)
-                  && !(__initial_marks.exists({x, z})
-                       && __initial_marks[{x, z}] == '-')) {
+              if (!existsDirectedPath__(graph, z, y)
+                  && !(initial_marks__.exists({x, z})
+                       && initial_marks__[{x, z}] == '-')) {
                 reset = true;
                 graph.eraseEdge(Edge(y, z));
                 graph.addArc(y, z);
-              } else if (__existsDirectedPath(graph, z, y)
-                         && !(__initial_marks.exists({z, y})
-                              && __initial_marks[{z, y}] == '-')) {
+              } else if (existsDirectedPath__(graph, z, y)
+                         && !(initial_marks__.exists({z, y})
+                              && initial_marks__[{z, y}] == '-')) {
                 reset = true;
                 graph.eraseEdge(Edge(y, z));
                 // if we find a cycle, we force the competing edge
                 graph.addArc(z, y);
                 if (std::find(
-                       __latent_couples.begin(), __latent_couples.end(), Arc(z, y))
-                    == __latent_couples.end()) {
-                  __latent_couples.push_back(Arc(z, y));
+                       latent_couples__.begin(), latent_couples__.end(), Arc(z, y))
+                    == latent_couples__.end()) {
+                  latent_couples__.push_back(Arc(z, y));
                 }
               }
             } else {
               // checking if the anti-directed arc already exists, to register a
               // latent variable
               if (graph.existsArc(z, x)
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(z, x))
-                        == __latent_couples.end()
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(x, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, x));
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, x));
               }
               if (graph.existsArc(z, y)
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(z, y))
-                        == __latent_couples.end()
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(y, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, y));
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, y));
               }
             }
           }
         } else {   // try Rule 1
           if (graph.existsArc(x, z) && !graph.existsArc(z, y)
               && !graph.existsArc(y, z)) {
-            if (!__existsDirectedPath(graph, y, z)
-                && !(__initial_marks.exists({z, y})
-                     && __initial_marks[{z, y}] == '-')) {
+            if (!existsDirectedPath__(graph, y, z)
+                && !(initial_marks__.exists({z, y})
+                     && initial_marks__[{z, y}] == '-')) {
               reset = true;
               graph.eraseEdge(Edge(z, y));
               graph.addArc(z, y);
-            } else if (__existsDirectedPath(graph, y, z)
-                       && !(__initial_marks.exists({y, z})
-                            && __initial_marks[{y, z}] == '-')) {
+            } else if (existsDirectedPath__(graph, y, z)
+                       && !(initial_marks__.exists({y, z})
+                            && initial_marks__[{y, z}] == '-')) {
               reset = true;
               graph.eraseEdge(Edge(z, y));
               // if we find a cycle, we force the competing edge
               graph.addArc(y, z);
               if (std::find(
-                     __latent_couples.begin(), __latent_couples.end(), Arc(y, z))
-                  == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(y, z));
+                     latent_couples__.begin(), latent_couples__.end(), Arc(y, z))
+                  == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(y, z));
               }
             }
           }
           if (graph.existsArc(y, z) && !graph.existsArc(z, x)
               && !graph.existsArc(x, z)) {
-            if (!__existsDirectedPath(graph, x, z)
-                && !(__initial_marks.exists({z, x})
-                     && __initial_marks[{z, x}] == '-')) {
+            if (!existsDirectedPath__(graph, x, z)
+                && !(initial_marks__.exists({z, x})
+                     && initial_marks__[{z, x}] == '-')) {
               reset = true;
               graph.eraseEdge(Edge(z, x));
               graph.addArc(z, x);
-            } else if (__existsDirectedPath(graph, x, z)
-                       && !(__initial_marks.exists({x, z})
-                            && __initial_marks[{x, z}] == '-')) {
+            } else if (existsDirectedPath__(graph, x, z)
+                       && !(initial_marks__.exists({x, z})
+                            && initial_marks__[{x, z}] == '-')) {
               reset = true;
               graph.eraseEdge(Edge(z, x));
               // if we find a cycle, we force the competing edge
               graph.addArc(x, z);
               if (std::find(
-                     __latent_couples.begin(), __latent_couples.end(), Arc(x, z))
-                  == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(x, z));
+                     latent_couples__.begin(), latent_couples__.end(), Arc(x, z))
+                  == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(x, z));
               }
             }
           }
@@ -428,28 +428,28 @@ namespace gum {
         }
         if (onProgress.hasListener()) {
           GUM_EMIT3(onProgress,
-                    ((_current_step + i) * 100) / (past_steps + steps_orient),
+                    ((current_step_ + i) * 100) / (past_steps + steps_orient),
                     0.,
-                    _timer.step());
+                    timer_.step());
         }
       }   // while
 
       // erasing the the double headed arcs
-      for (const Arc& arc: __latent_couples) {
+      for (const Arc& arc: latent_couples__) {
         graph.eraseArc(Arc(arc.head(), arc.tail()));
       }
     }
 
     /// varient trying to propagate both orientations in a bidirected arc
-    void Miic::_orientation_latents(
+    void Miic::orientation_latents_(
        CorrectedMutualInformation<>& I,
        MixedGraph&                   graph,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
           sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-           triples = _getUnshieldedTriples(graph, I, sep_set);
+           triples = getUnshieldedTriples_(graph, I, sep_set);
       Size steps_orient = triples.size();
-      Size past_steps = _current_step;
+      Size past_steps = current_step_;
 
       NodeId i = 0;
       // list of elements that we shouldnt read again, ie elements that are
@@ -492,7 +492,7 @@ namespace gum {
                 try {
                   std::vector< NodeId > path = graph.directedPath(z, x);
                   // if we find a cycle, we force the competing edge
-                  __latent_couples.push_back(Arc(z, x));
+                  latent_couples__.push_back(Arc(z, x));
                 } catch (gum::NotFound) { graph.addArc(x, z); }
                 graph.addArc(z, x);
               } else {
@@ -500,7 +500,7 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, x);
                   // if we find a cycle, we force the competing edge
                   graph.addArc(z, x);
-                  __latent_couples.push_back(Arc(z, x));
+                  latent_couples__.push_back(Arc(z, x));
                 } catch (gum::NotFound) { graph.addArc(x, z); }
               }
               if (graph.existsArc(z, y)) {
@@ -508,7 +508,7 @@ namespace gum {
                 try {
                   std::vector< NodeId > path = graph.directedPath(z, y);
                   // if we find a cycle, we force the competing edge
-                  __latent_couples.push_back(Arc(z, y));
+                  latent_couples__.push_back(Arc(z, y));
                 } catch (gum::NotFound) { graph.addArc(y, z); }
                 graph.addArc(z, y);
               } else {
@@ -516,31 +516,31 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, y);
                   // if we find a cycle, we force the competing edge
                   graph.addArc(z, y);
-                  __latent_couples.push_back(Arc(z, y));
+                  latent_couples__.push_back(Arc(z, y));
 
                 } catch (gum::NotFound) { graph.addArc(y, z); }
               }
               if (graph.existsArc(z, x)
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(z, x))
-                        == __latent_couples.end()
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(x, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, x));
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, x));
               }
               if (graph.existsArc(z, y)
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(z, y))
-                        == __latent_couples.end()
-                  && std::find(__latent_couples.begin(),
-                               __latent_couples.end(),
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
                                Arc(y, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, y));
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, y));
               }
             }
           } else {
@@ -556,7 +556,7 @@ namespace gum {
               std::vector< NodeId > path = graph.directedPath(y, z);
               // if we find a cycle, we force the competing edge
               graph.addArc(y, z);
-              __latent_couples.push_back(Arc(y, z));
+              latent_couples__.push_back(Arc(y, z));
             } catch (gum::NotFound) { graph.addArc(z, y); }
           }
           if (graph.existsArc(y, z) && !graph.existsArc(z, x)
@@ -567,7 +567,7 @@ namespace gum {
               std::vector< NodeId > path = graph.directedPath(x, z);
               // if we find a cycle, we force the competing edge
               graph.addArc(x, z);
-              __latent_couples.push_back(Arc(x, z));
+              latent_couples__.push_back(Arc(x, z));
             } catch (gum::NotFound) { graph.addArc(z, x); }
           }
 
@@ -579,27 +579,27 @@ namespace gum {
         }   // if rule 0 or rule 1
         if (onProgress.hasListener()) {
           GUM_EMIT3(onProgress,
-                    ((_current_step + i) * 100) / (past_steps + steps_orient),
+                    ((current_step_ + i) * 100) / (past_steps + steps_orient),
                     0.,
-                    _timer.step());
+                    timer_.step());
         }
       }   // while
 
       // erasing the the double headed arcs
-      for (const Arc& arc: __latent_couples) {
+      for (const Arc& arc: latent_couples__) {
         graph.eraseArc(Arc(arc.head(), arc.tail()));
       }
     }
 
     /// varient using the orientation protocol of MIIC
     void
-       Miic::_orientation_miic(CorrectedMutualInformation<>&             I,
+       Miic::orientation_miic_(CorrectedMutualInformation<>&             I,
                                MixedGraph&                               graph,
                                const HashTable< std::pair< NodeId, NodeId >,
                                                 std::vector< NodeId > >& sep_set) {
       // structure to store the orientations marks -, o, or >,
       // Considers the head of the arc/edge first node -* second node
-      HashTable< std::pair< NodeId, NodeId >, char > marks = __initial_marks;
+      HashTable< std::pair< NodeId, NodeId >, char > marks = initial_marks__;
 
       // marks always correspond to the head of the arc/edge. - is for a forbidden
       // arc, > for a mandatory arc
@@ -616,10 +616,10 @@ namespace gum {
                                double,
                                double,
                                double > >
-         proba_triples = _getUnshieldedTriplesMIIC(graph, I, sep_set, marks);
+         proba_triples = getUnshieldedTriplesMIIC_(graph, I, sep_set, marks);
 
       Size steps_orient = proba_triples.size();
-      Size past_steps = _current_step;
+      Size past_steps = current_step_;
 
       std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >
          best;
@@ -631,124 +631,142 @@ namespace gum {
         x = std::get< 0 >(*std::get< 0 >(best));
         y = std::get< 1 >(*std::get< 0 >(best));
         z = std::get< 2 >(*std::get< 0 >(best));
-        //std::cout << "Triple: (" << x << "," << y << "," << z << ")" << std::endl;
+        // std::cout << "Triple: (" << x << "," << y << "," << z << ")" <<
+        // std::endl;
 
         const double i3 = std::get< 1 >(best);
 
         if (i3 <= 0) {
           // v-structure discovery
-          if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {  // If x-z-y
-            if (!__existsDirectedPath(graph, z, x, false)) {
+          if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {   // If x-z-y
+            if (!existsDirectedPath__(graph, z, x, false)) {
               graph.eraseEdge(Edge(x, z));
               graph.addArc(x, z);
-              //std::cout << "1.a Removing edge (" << x << "," << z << ")" << std::endl;
-              //std::cout << "1.a Adding arc (" << x << "," << z << ")" << std::endl;
+              // std::cout << "1.a Removing edge (" << x << "," << z << ")" <<
+              // std::endl; std::cout << "1.a Adding arc (" << x << "," << z << ")"
+              // << std::endl;
               marks[{x, z}] = '>';
               if (graph.existsArc(z, x)
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(z, x))
-                        == __latent_couples.end()
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(x, z))
-                        == __latent_couples.end()) {
-                //std::cout << "Adding latent couple (" << z << "," << x << ")" << std::endl;
-                __latent_couples.push_back(Arc(z, x));
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(z, x))
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(x, z))
+                        == latent_couples__.end()) {
+                // std::cout << "Adding latent couple (" << z << "," << x << ")" <<
+                // std::endl;
+                latent_couples__.push_back(Arc(z, x));
               }
-              if (!__arc_probas.exists(Arc(x, z)))
-                __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
-            }
-            else {
+              if (!arc_probas__.exists(Arc(x, z)))
+                arc_probas__.insert(Arc(x, z), std::get< 2 >(best));
+            } else {
               graph.eraseEdge(Edge(x, z));
-              //std::cout << "1.b Adding arc (" << x << "," << z << ")" << std::endl;
-              if (!__existsDirectedPath(graph, x, z, false)){
+              // std::cout << "1.b Adding arc (" << x << "," << z << ")" <<
+              // std::endl;
+              if (!existsDirectedPath__(graph, x, z, false)) {
                 graph.addArc(z, x);
-                //std::cout << "1.b Removing edge (" << x << "," << z << ")" << std::endl;
-                marks[{z,x}] = '>';
+                // std::cout << "1.b Removing edge (" << x << "," << z << ")" <<
+                // std::endl;
+                marks[{z, x}] = '>';
               }
             }
 
-            if (!__existsDirectedPath(graph, z, y, false)){
+            if (!existsDirectedPath__(graph, z, y, false)) {
               graph.eraseEdge(Edge(y, z));
               graph.addArc(y, z);
-              //std::cout << "1.c Removing edge (" << y << "," << z << ")" << std::endl;
-              //std::cout << "1.c Adding arc (" << y << "," << z << ")" << std::endl;
+              // std::cout << "1.c Removing edge (" << y << "," << z << ")" <<
+              // std::endl; std::cout << "1.c Adding arc (" << y << "," << z << ")"
+              // << std::endl;
               marks[{y, z}] = '>';
               if (graph.existsArc(z, y)
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(z, y))
-                        == __latent_couples.end()
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(y, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, y));
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(z, y))
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(y, z))
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, y));
               }
-              if (!__arc_probas.exists(Arc(y, z)))
-                __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
-            }
-            else {
+              if (!arc_probas__.exists(Arc(y, z)))
+                arc_probas__.insert(Arc(y, z), std::get< 3 >(best));
+            } else {
               graph.eraseEdge(Edge(y, z));
-              //std::cout << "1.d Removing edge (" << y << "," << z << ")" << std::endl;
-              if (!__existsDirectedPath(graph, y, z, false)){
+              // std::cout << "1.d Removing edge (" << y << "," << z << ")" <<
+              // std::endl;
+              if (!existsDirectedPath__(graph, y, z, false)) {
                 graph.addArc(z, y);
-                //std::cout << "1.d Adding arc (" << z << "," << y << ")" << std::endl;
-                marks[{z,y}] = '>';
+                // std::cout << "1.d Adding arc (" << z << "," << y << ")" <<
+                // std::endl;
+                marks[{z, y}] = '>';
               }
             }
-          } else if (marks[{x, z}] == '>' && marks[{y, z}] == 'o') { // If x->z-y
-            if (!__existsDirectedPath(graph, z, y, false)){
+          } else if (marks[{x, z}] == '>' && marks[{y, z}] == 'o') {   // If x->z-y
+            if (!existsDirectedPath__(graph, z, y, false)) {
               graph.eraseEdge(Edge(y, z));
               graph.addArc(y, z);
-              //std::cout << "2.a Removing edge (" << y << "," << z << ")" << std::endl;
-              //std::cout << "2.a Adding arc (" << y << "," << z << ")" << std::endl;
+              // std::cout << "2.a Removing edge (" << y << "," << z << ")" <<
+              // std::endl; std::cout << "2.a Adding arc (" << y << "," << z << ")"
+              // << std::endl;
               marks[{y, z}] = '>';
               if (graph.existsArc(z, y)
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(z, y))
-                        == __latent_couples.end()
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(y, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, y));
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(z, y))
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(y, z))
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, y));
               }
-              if (!__arc_probas.exists(Arc(y, z)))
-                __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
-            }
-            else {
-                graph.eraseEdge(Edge(y,z));
-                //std::cout << "2.b Removing edge (" << y << "," << z << ")" << std::endl;
-                if (!__existsDirectedPath(graph, y, z, false)){
-                    graph.addArc(z,y);
-                    //std::cout << "2.b Adding arc (" << y << "," << z << ")" << std::endl;
-                    marks[{z,y}] = '>';
-                }
+              if (!arc_probas__.exists(Arc(y, z)))
+                arc_probas__.insert(Arc(y, z), std::get< 3 >(best));
+            } else {
+              graph.eraseEdge(Edge(y, z));
+              // std::cout << "2.b Removing edge (" << y << "," << z << ")" <<
+              // std::endl;
+              if (!existsDirectedPath__(graph, y, z, false)) {
+                graph.addArc(z, y);
+                // std::cout << "2.b Adding arc (" << y << "," << z << ")" <<
+                // std::endl;
+                marks[{z, y}] = '>';
+              }
             }
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o') {
-            if (!__existsDirectedPath(graph, z, x, false)){
+            if (!existsDirectedPath__(graph, z, x, false)) {
               graph.eraseEdge(Edge(x, z));
               graph.addArc(x, z);
-              //std::cout << "3.a Removing edge (" << x << "," << z << ")" << std::endl;
-              //std::cout << "3.a Adding arc (" << x << "," << z << ")" << std::endl;
+              // std::cout << "3.a Removing edge (" << x << "," << z << ")" <<
+              // std::endl; std::cout << "3.a Adding arc (" << x << "," << z << ")"
+              // << std::endl;
               marks[{x, z}] = '>';
               if (graph.existsArc(z, x)
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(z, x))
-                        == __latent_couples.end()
-                  && std::find(
-                        __latent_couples.begin(), __latent_couples.end(), Arc(x, z))
-                        == __latent_couples.end()) {
-                __latent_couples.push_back(Arc(z, x));
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(z, x))
+                        == latent_couples__.end()
+                  && std::find(latent_couples__.begin(),
+                               latent_couples__.end(),
+                               Arc(x, z))
+                        == latent_couples__.end()) {
+                latent_couples__.push_back(Arc(z, x));
               }
-              if (!__arc_probas.exists(Arc(x, z)))
-                __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
-            }
-            else {
-                graph.eraseEdge(Edge(x,z));
-                //std::cout << "3.b Removing edge (" << x << "," << z << ")" << std::endl;
-                if (!__existsDirectedPath(graph, x, z, false)){
-                    graph.addArc(z,x);
-                    //std::cout << "3.b Adding arc (" << x << "," << z << ")" << std::endl;
-                    marks[{z,x}] = '>';
-                }
+              if (!arc_probas__.exists(Arc(x, z)))
+                arc_probas__.insert(Arc(x, z), std::get< 2 >(best));
+            } else {
+              graph.eraseEdge(Edge(x, z));
+              // std::cout << "3.b Removing edge (" << x << "," << z << ")" <<
+              // std::endl;
+              if (!existsDirectedPath__(graph, x, z, false)) {
+                graph.addArc(z, x);
+                // std::cout << "3.b Adding arc (" << x << "," << z << ")" <<
+                // std::endl;
+                marks[{z, x}] = '>';
+              }
             }
           }
 
@@ -757,79 +775,85 @@ namespace gum {
           if (marks[{x, z}] == '>' && marks[{y, z}] == 'o'
               && marks[{z, y}] != '-') {
             graph.eraseEdge(Edge(z, y));
-            //std::cout << "4. Removing edge (" << z << "," << y << ")" << std::endl;
-            if (!__existsDirectedPath(graph, y, z) && graph.parents(y).empty()) {
+            // std::cout << "4. Removing edge (" << z << "," << y << ")" <<
+            // std::endl;
+            if (!existsDirectedPath__(graph, y, z) && graph.parents(y).empty()) {
               graph.addArc(z, y);
-              //std::cout << "4.a Adding arc (" << z << "," << y << ")" << std::endl;
+              // std::cout << "4.a Adding arc (" << z << "," << y << ")" <<
+              // std::endl;
               marks[{z, y}] = '>';
               marks[{y, z}] = '-';
-              if (!__arc_probas.exists(Arc(z, y)))
-                __arc_probas.insert(Arc(z, y), std::get< 3 >(best));
-            } else if (!__existsDirectedPath(graph, z, y)
+              if (!arc_probas__.exists(Arc(z, y)))
+                arc_probas__.insert(Arc(z, y), std::get< 3 >(best));
+            } else if (!existsDirectedPath__(graph, z, y)
                        && graph.parents(z).empty()) {
               graph.addArc(y, z);
-              //std::cout << "4.b Adding arc (" << y << "," << z << ")" << std::endl;
+              // std::cout << "4.b Adding arc (" << y << "," << z << ")" <<
+              // std::endl;
               marks[{z, y}] = '-';
               marks[{y, z}] = '>';
-              __latent_couples.push_back(Arc(y, z));
-              if (!__arc_probas.exists(Arc(y, z)))
-                __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
-            }
-            else if (!__existsDirectedPath(graph, y, z)){
-              graph.addArc(z,y);
-              //std::cout << "4.c Adding arc (" << z << "," << y << ")" << std::endl;
-              marks[{z,y}] = '>';
-              marks[{y,z}] = '-';
-              if (!__arc_probas.exists(Arc(z,y)))
-                __arc_probas.insert(Arc(z, y), std::get< 3 >(best));
-            }
-            else if (!__existsDirectedPath(graph, z, y)){
-              graph.addArc(y,z);
-              //std::cout << "4.d Adding arc (" << y << "," << z << ")" << std::endl;
-              __latent_couples.push_back(Arc(y, z));
-              marks[{z,y}] = '-';
-              marks[{y,z}] = '>';
-              if (!__arc_probas.exists(Arc(y,z)))
-                __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
+              latent_couples__.push_back(Arc(y, z));
+              if (!arc_probas__.exists(Arc(y, z)))
+                arc_probas__.insert(Arc(y, z), std::get< 3 >(best));
+            } else if (!existsDirectedPath__(graph, y, z)) {
+              graph.addArc(z, y);
+              // std::cout << "4.c Adding arc (" << z << "," << y << ")" <<
+              // std::endl;
+              marks[{z, y}] = '>';
+              marks[{y, z}] = '-';
+              if (!arc_probas__.exists(Arc(z, y)))
+                arc_probas__.insert(Arc(z, y), std::get< 3 >(best));
+            } else if (!existsDirectedPath__(graph, z, y)) {
+              graph.addArc(y, z);
+              // std::cout << "4.d Adding arc (" << y << "," << z << ")" <<
+              // std::endl;
+              latent_couples__.push_back(Arc(y, z));
+              marks[{z, y}] = '-';
+              marks[{y, z}] = '>';
+              if (!arc_probas__.exists(Arc(y, z)))
+                arc_probas__.insert(Arc(y, z), std::get< 3 >(best));
             }
 
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o'
                      && marks[{z, x}] != '-') {
             graph.eraseEdge(Edge(z, x));
-            //std::cout << "5. Removing edge (" << z << "," << x << ")" << std::endl;
-            if (!__existsDirectedPath(graph, x, z) && graph.parents(x).empty()) {
+            // std::cout << "5. Removing edge (" << z << "," << x << ")" <<
+            // std::endl;
+            if (!existsDirectedPath__(graph, x, z) && graph.parents(x).empty()) {
               graph.addArc(z, x);
-              //std::cout << "5.a Adding arc (" << z << "," << x << ")" << std::endl;
+              // std::cout << "5.a Adding arc (" << z << "," << x << ")" <<
+              // std::endl;
               marks[{z, x}] = '>';
               marks[{x, z}] = '-';
-              if (!__arc_probas.exists(Arc(z, x)))
-                __arc_probas.insert(Arc(z, x), std::get< 2 >(best));
-            } else if (!__existsDirectedPath(graph, z, x)
+              if (!arc_probas__.exists(Arc(z, x)))
+                arc_probas__.insert(Arc(z, x), std::get< 2 >(best));
+            } else if (!existsDirectedPath__(graph, z, x)
                        && graph.parents(z).empty()) {
               graph.addArc(x, z);
-              //std::cout << "5.b Adding arc (" << x << "," << z << ")" << std::endl;
+              // std::cout << "5.b Adding arc (" << x << "," << z << ")" <<
+              // std::endl;
               marks[{z, x}] = '-';
               marks[{x, z}] = '>';
-              __latent_couples.push_back(Arc(x, z));
-              if (!__arc_probas.exists(Arc(x, z)))
-                __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
-            }
-            else if (!__existsDirectedPath(graph, x, z)){
-              graph.addArc(z,x);
-              //std::cout << "5.c Adding arc (" << z << "," << x << ")" << std::endl;
-              marks[{z,x}] = '>';
-              marks[{x,z}] = '-';
-              if (!__arc_probas.exists(Arc(z,x)))
-                __arc_probas.insert(Arc(z, x), std::get< 2 >(best));
-            }
-            else if (!__existsDirectedPath(graph, z, x)){
-              graph.addArc(x,z);
-              //std::cout << "5.d Adding arc (" << x << "," << z << ")" << std::endl;
-              marks[{z,x}] = '-';
-              marks[{x,z}] = '>';
-              __latent_couples.push_back(Arc(x, z));
-              if (!__arc_probas.exists(Arc(x,z)))
-                __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
+              latent_couples__.push_back(Arc(x, z));
+              if (!arc_probas__.exists(Arc(x, z)))
+                arc_probas__.insert(Arc(x, z), std::get< 2 >(best));
+            } else if (!existsDirectedPath__(graph, x, z)) {
+              graph.addArc(z, x);
+              // std::cout << "5.c Adding arc (" << z << "," << x << ")" <<
+              // std::endl;
+              marks[{z, x}] = '>';
+              marks[{x, z}] = '-';
+              if (!arc_probas__.exists(Arc(z, x)))
+                arc_probas__.insert(Arc(z, x), std::get< 2 >(best));
+            } else if (!existsDirectedPath__(graph, z, x)) {
+              graph.addArc(x, z);
+              // std::cout << "5.d Adding arc (" << x << "," << z << ")" <<
+              // std::endl;
+              marks[{z, x}] = '-';
+              marks[{x, z}] = '>';
+              latent_couples__.push_back(Arc(x, z));
+              if (!arc_probas__.exists(Arc(x, z)))
+                arc_probas__.insert(Arc(x, z), std::get< 2 >(best));
             }
           }
         }
@@ -837,25 +861,24 @@ namespace gum {
         delete std::get< 0 >(best);
         proba_triples.erase(proba_triples.begin());
         // actualisation of the list of triples
-        proba_triples = _updateProbaTriples(graph, proba_triples);
+        proba_triples = updateProbaTriples_(graph, proba_triples);
 
-        if (!proba_triples.empty())
-          best = proba_triples[0];
+        if (!proba_triples.empty()) best = proba_triples[0];
 
-        ++_current_step;
+        ++current_step_;
         if (onProgress.hasListener()) {
           GUM_EMIT3(onProgress,
-                    (_current_step * 100) / (steps_orient + past_steps),
+                    (current_step_ * 100) / (steps_orient + past_steps),
                     0.,
-                    _timer.step());
+                    timer_.step());
         }
       }   // while
 
       // erasing the double headed arcs
-      for (auto iter = __latent_couples.rbegin(); iter != __latent_couples.rend();
+      for (auto iter = latent_couples__.rbegin(); iter != latent_couples__.rend();
            ++iter) {
         graph.eraseArc(Arc(iter->head(), iter->tail()));
-        if (__existsDirectedPath(graph, iter->head(), iter->tail())) {
+        if (existsDirectedPath__(graph, iter->head(), iter->tail())) {
           // if we find a cycle, we force the competing edge
           graph.addArc(iter->head(), iter->tail());
           graph.eraseArc(Arc(iter->tail(), iter->head()));
@@ -864,12 +887,12 @@ namespace gum {
       }
 
       if (onProgress.hasListener()) {
-        GUM_EMIT3(onProgress, 100, 0., _timer.step());
+        GUM_EMIT3(onProgress, 100, 0., timer_.step());
       }
     }
 
     /// finds the best contributor node for a pair given a conditioning set
-    void Miic::_findBestContributor(
+    void Miic::findBestContributor_(
        NodeId                        x,
        NodeId                        y,
        const std::vector< NodeId >&  ui,
@@ -878,7 +901,7 @@ namespace gum {
        Heap<
           std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                      double >,
-          GreaterPairOn2nd >& _rank) {
+          GreaterPairOn2nd >& rank_) {
       double maxP = -1.0;
       NodeId maxZ = 0;
 
@@ -896,9 +919,9 @@ namespace gum {
           const double Ixyz_ui = I.score(x, y, z, ui);
           double       calc_expo1 = -Ixyz_ui * M_LN2;
           // if exponentials are too high or to low, crop them at |__maxLog|
-          if (calc_expo1 > __maxLog) {
+          if (calc_expo1 > maxLog__) {
             Pnv = 0.0;
-          } else if (calc_expo1 < -__maxLog) {
+          } else if (calc_expo1 < -maxLog__) {
             Pnv = 1.0;
           } else {
             Pnv = 1 / (1 + std::exp(calc_expo1));
@@ -911,19 +934,19 @@ namespace gum {
           calc_expo1 = -(Ixz_ui - Ixy_ui) * M_LN2;
           double calc_expo2 = -(Iyz_ui - Ixy_ui) * M_LN2;
 
-          // if exponentials are too high or to low, crop them at __maxLog
-          if (calc_expo1 > __maxLog || calc_expo2 > __maxLog) {
+          // if exponentials are too high or to low, crop them at maxLog__
+          if (calc_expo1 > maxLog__ || calc_expo2 > maxLog__) {
             Pb = 0.0;
-          } else if (calc_expo1 < -__maxLog && calc_expo2 < -__maxLog) {
+          } else if (calc_expo1 < -maxLog__ && calc_expo2 < -maxLog__) {
             Pb = 1.0;
           } else {
             double expo1, expo2;
-            if (calc_expo1 < -__maxLog) {
+            if (calc_expo1 < -maxLog__) {
               expo1 = 0.0;
             } else {
               expo1 = std::exp(calc_expo1);
             }
-            if (calc_expo2 < -__maxLog) {
+            if (calc_expo2 < -maxLog__) {
               expo2 = 0.0;
             } else {
               expo2 = std::exp(calc_expo2);
@@ -939,7 +962,7 @@ namespace gum {
           }
         }   // if z not in (x, y)
       }     // for z in graph.nodes
-      // storing best z in _rank
+      // storing best z in rank_
       std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                  double >
            final;
@@ -947,13 +970,13 @@ namespace gum {
          x, y, maxZ, ui};
       final.first = tup;
       final.second = maxP;
-      _rank.insert(final);
+      rank_.insert(final);
     }
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
     std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-       Miic::_getUnshieldedTriples(
+       Miic::getUnshieldedTriples_(
           const MixedGraph&             graph,
           CorrectedMutualInformation<>& I,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
@@ -995,7 +1018,7 @@ namespace gum {
     std::vector<
        std::
           tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
-       Miic::_getUnshieldedTriplesMIIC(
+       Miic::getUnshieldedTriplesMIIC_(
           const MixedGraph&             graph,
           CorrectedMutualInformation<>& I,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
@@ -1038,7 +1061,7 @@ namespace gum {
           }
         }
       }
-      triples = _updateProbaTriples(graph, triples);
+      triples = updateProbaTriples_(graph, triples);
       std::sort(triples.begin(), triples.end(), GreaterTupleOnLast());
       return triples;
     }
@@ -1047,7 +1070,7 @@ namespace gum {
     std::vector<
        std::
           tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
-       Miic::_updateProbaTriples(
+       Miic::updateProbaTriples_(
           const MixedGraph&                   graph,
           std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
                                    double,
@@ -1094,31 +1117,34 @@ namespace gum {
     DAG Miic::learnStructure(CorrectedMutualInformation<>& I,
                              MixedGraph                    initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
-      //std::cout << "Le mixed graph mesdames et messieurs: "
-                //<< essentialGraph.toDot() << std::endl;
+      // std::cout << "Le mixed graph mesdames et messieurs: "
+      //<< essentialGraph.toDot() << std::endl;
 
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
       // first, propagate existing orientations
       for (NodeId x: order) {
         if (!essentialGraph.parents(x).empty()) {
-          _propagatesHead(essentialGraph, x);
+          propagatesHead_(essentialGraph, x);
         }
       }
-      //std::cout << "Le mixed graph après une première propagation mesdames et messieurs: "
-                //<< essentialGraph.toDot() << std::endl;
+      // std::cout << "Le mixed graph après une première propagation mesdames et
+      // messieurs: "
+      //<< essentialGraph.toDot() << std::endl;
       // then decide the orientation by the topological order and propagate them
       for (NodeId x: order) {
         if (!essentialGraph.neighbours(x).empty()) {
-          _propagatesHead(essentialGraph, x);
+          propagatesHead_(essentialGraph, x);
         }
       }
 
-      //std::cout << "Le mixed graph après une deuxième propagation mesdames et messieurs: "
-                //<< essentialGraph.toDot() << std::endl;
-      //std::cout << "Le graphe contient maintenant : " << essentialGraph.sizeArcs() << " arcs." 
-                //<< std::endl;
-      //std::cout << "Que voici: " << essentialGraph.arcs() << std::endl;
+      // std::cout << "Le mixed graph après une deuxième propagation mesdames et
+      // messieurs: "
+      //<< essentialGraph.toDot() << std::endl;
+      // std::cout << "Le graphe contient maintenant : " <<
+      // essentialGraph.sizeArcs() << " arcs."
+      //<< std::endl;
+      // std::cout << "Que voici: " << essentialGraph.arcs() << std::endl;
       // turn the mixed graph into a dag
       DAG dag;
       for (auto node: essentialGraph) {
@@ -1132,63 +1158,67 @@ namespace gum {
     }
 
     /// Propagates the orientation from a node to its neighbours
-    void Miic::_propagatesHead(MixedGraph& graph, NodeId node) {
+    void Miic::propagatesHead_(MixedGraph& graph, NodeId node) {
       const auto neighbours = graph.neighbours(node);
       for (auto& neighbour: neighbours) {
-        //std::cout << "Orientation de l'edge (" << node << "," << neighbour << ")" << std::endl;
+        // std::cout << "Orientation de l'edge (" << node << "," << neighbour <<
+        // ")" << std::endl;
         if (graph.neighbours(neighbour).contains(node)) {
-          if (!__existsDirectedPath(graph, neighbour, node)
-              && !(__initial_marks.exists({node, neighbour})
-                   && __initial_marks[{node, neighbour}] == '-')
+          if (!existsDirectedPath__(graph, neighbour, node)
+              && !(initial_marks__.exists({node, neighbour})
+                   && initial_marks__[{node, neighbour}] == '-')
               && graph.parents(neighbour).empty()) {
             graph.eraseEdge(Edge(neighbour, node));
             graph.addArc(node, neighbour);
-            //std::cout << "1. Removing edge (" << neighbour << "," << node << ")" << std::endl;
-            //std::cout << "1. Adding arc (" << node << "," << neighbour << ")" << std::endl;
-            _propagatesHead(graph, neighbour);
-          } else if (!__existsDirectedPath(graph, node, neighbour)
-                     && !(__initial_marks.exists({neighbour, node})
-                          && __initial_marks[{neighbour, node}] == '-')
+            // std::cout << "1. Removing edge (" << neighbour << "," << node << ")"
+            // << std::endl; std::cout << "1. Adding arc (" << node << "," <<
+            // neighbour << ")" << std::endl;
+            propagatesHead_(graph, neighbour);
+          } else if (!existsDirectedPath__(graph, node, neighbour)
+                     && !(initial_marks__.exists({neighbour, node})
+                          && initial_marks__[{neighbour, node}] == '-')
                      && graph.parents(node).empty()) {
             graph.eraseEdge(Edge(neighbour, node));
             graph.addArc(neighbour, node);
-            //std::cout << "2. Removing edge (" << neighbour << "," << node << ")" << std::endl;
-            //std::cout << "2. Adding arc (" << neighbour << "," << node << ")" << std::endl;
-          }
-          else if (!__existsDirectedPath(graph, node, neighbour)
-                   && !(__initial_marks.exists({neighbour, node})
-                        && __initial_marks[{neighbour, node}] == '-')) {
-              graph.eraseEdge(Edge(neighbour,node));
-              graph.addArc(neighbour, node);
-              if (!graph.parents(neighbour).empty()
-                  && !graph.parents(node).empty()) {
-                __latent_couples.push_back(Arc(node, neighbour));
-              }
+            // std::cout << "2. Removing edge (" << neighbour << "," << node << ")"
+            // << std::endl; std::cout << "2. Adding arc (" << neighbour << "," <<
+            // node << ")" << std::endl;
+          } else if (!existsDirectedPath__(graph, node, neighbour)
+                     && !(initial_marks__.exists({neighbour, node})
+                          && initial_marks__[{neighbour, node}] == '-')) {
+            graph.eraseEdge(Edge(neighbour, node));
+            graph.addArc(neighbour, node);
+            if (!graph.parents(neighbour).empty()
+                && !graph.parents(node).empty()) {
+              latent_couples__.push_back(Arc(node, neighbour));
+            }
 
-              //std::cout << "3. Removing edge (" << neighbour << "," << node << ")" << std::endl;
-              //std::cout << "3. Adding arc (" << neighbour << "," << node << ")" << std::endl;
+            // std::cout << "3. Removing edge (" << neighbour << "," << node << ")"
+            // << std::endl; std::cout << "3. Adding arc (" << neighbour << "," <<
+            // node << ")" << std::endl;
+          } else if (!existsDirectedPath__(graph, neighbour, node)
+                     && !(initial_marks__.exists({node, neighbour})
+                          && initial_marks__[{node, neighbour}] == '-')) {
+            graph.eraseEdge(Edge(node, neighbour));
+            graph.addArc(node, neighbour);
+            if (!graph.parents(neighbour).empty()
+                && !graph.parents(node).empty()) {
+              latent_couples__.push_back(Arc(node, neighbour));
+            }
+            // std::cout << "4. Removing edge (" << neighbour << "," << node << ")"
+            // << std::endl; std::cout << "4. Adding arc (" << node << "," <<
+            // neighbour << ")" << std::endl;
           }
-          else if (!__existsDirectedPath(graph, neighbour, node)
-                   && !(__initial_marks.exists({node, neighbour})
-                        && __initial_marks[{node, neighbour}] == '-')) {
-              graph.eraseEdge(Edge(node, neighbour));
-              graph.addArc(node, neighbour);
-              if (!graph.parents(neighbour).empty()
-                  && !graph.parents(node).empty()) {
-                __latent_couples.push_back(Arc(node, neighbour));
-              }
-              //std::cout << "4. Removing edge (" << neighbour << "," << node << ")" << std::endl;
-              //std::cout << "4. Adding arc (" << node << "," << neighbour << ")" << std::endl;
-          }
-          //else if (!graph.parents(neighbour).empty()
-                     //&& !graph.parents(node).empty()) {
-            //graph.eraseEdge(Edge(neighbour, node));
-            //graph.addArc(node, neighbour);
-            //__latent_couples.push_back(Arc(node, neighbour));
+          // else if (!graph.parents(neighbour).empty()
+          //&& !graph.parents(node).empty()) {
+          // graph.eraseEdge(Edge(neighbour, node));
+          // graph.addArc(node, neighbour);
+          //__latent_couples.push_back(Arc(node, neighbour));
           //}
           else {
             graph.eraseEdge(Edge(neighbour, node));
-            //std::cout << "5. Removing edge (" << neighbour << "," << node << ")" << std::endl;
+            // std::cout << "5. Removing edge (" << neighbour << "," << node << ")"
+            // << std::endl;
           }
         }
       }
@@ -1196,7 +1226,7 @@ namespace gum {
 
     /// get the list of arcs hiding latent variables
     const std::vector< Arc > Miic::latentVariables() const {
-      return __latent_couples;
+      return latent_couples__;
     }
 
     /// learns the structure and the parameters of a BN
@@ -1210,16 +1240,16 @@ namespace gum {
          estimator, learnStructure(selector, initial_dag));
     }
 
-    void Miic::setMiicBehaviour() { this->__usemiic = true; }
-    void Miic::set3off2Behaviour() { this->__usemiic = false; }
+    void Miic::setMiicBehaviour() { this->usemiic__ = true; }
+    void Miic::set3off2Behaviour() { this->usemiic__ = false; }
 
     void Miic::addConstraints(
        HashTable< std::pair< NodeId, NodeId >, char > constraints) {
-      this->__initial_marks = constraints;
+      this->initial_marks__ = constraints;
     }
 
 
-    const bool Miic::__existsDirectedPath(const MixedGraph& graph,
+    const bool Miic::existsDirectedPath__(const MixedGraph& graph,
                                           const NodeId      n1,
                                           const NodeId      n2,
                                           const bool        countArc) const {
@@ -1240,8 +1270,9 @@ namespace gum {
         // check the parents
 
         for (const auto new_one: graph.parents(current)) {
-          if (!countArc && current == n2 && new_one == n1)  // If countArc is set to false
-            continue;                                       // paths of length 1 are ignored
+          if (!countArc && current == n2
+              && new_one == n1)   // If countArc is set to false
+            continue;             // paths of length 1 are ignored
 
           if (mark.exists(new_one))   // if this node is already marked, do not
             continue;                 // check it again

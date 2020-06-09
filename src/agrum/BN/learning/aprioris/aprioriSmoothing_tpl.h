@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the smooth a priori: adds a weight w to all the countings
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -144,45 +144,45 @@ namespace gum {
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriSmoothing< ALLOC >::isInformative() const {
-      return this->_weight != 0.0;
+      return this->weight_ != 0.0;
     }
 
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriSmoothing< ALLOC >::addAllApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
-      if (idset.empty() || (this->_weight == 0.0)) return;
+      if (idset.empty() || (this->weight_ == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
       for (auto& count: counts)
-        count += this->_weight;
+        count += this->weight_;
     }
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriSmoothing< ALLOC >::addConditioningApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
-      if ((idset.size() == idset.nbLHSIds()) || (this->_weight == 0.0)
+      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
           || (idset.nbLHSIds() == std::size_t(0)))
         return;
 
       // compute the weight of the conditioning set
-      double weight = this->_weight;
-      if (this->_nodeId2columns.empty()) {
+      double weight = this->weight_;
+      if (this->nodeId2columns_.empty()) {
         for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *= this->_database->domainSize(idset[i]);
+          weight *= this->database_->domainSize(idset[i]);
         }
       } else {
         for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
           weight *=
-             this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
+             this->database_->domainSize(this->nodeId2columns_.second(idset[i]));
         }
       }
 

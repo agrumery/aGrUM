@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The class representing a record stored in a tabular database
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -37,14 +37,14 @@ namespace gum {
     /// returns the allocator used by the DBRow
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE ALLOC< T_DATA > DBRow< T_DATA, ALLOC >::getAllocator() const {
-      return _row.get_allocator();
+      return row_.get_allocator();
     }
 
 
     /// default constructor with specific allocator
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE DBRow< T_DATA, ALLOC >::DBRow(const ALLOC< T_DATA >& alloc) :
-        _row(alloc) {
+        row_(alloc) {
       GUM_CONSTRUCTOR(DBRow);
     }
 
@@ -60,8 +60,8 @@ namespace gum {
                                          const T_DATA           default_cell,
                                          const double           weight,
                                          const ALLOC< T_DATA >& alloc) :
-        _row(size, default_cell, alloc),
-        _weight(weight) {
+        row_(size, default_cell, alloc),
+        weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
 
@@ -78,8 +78,8 @@ namespace gum {
     INLINE DBRow< T_DATA, ALLOC >::DBRow(std::initializer_list< T_DATA > list,
                                          const double                    weight,
                                          const ALLOC< T_DATA >&          alloc) :
-        _row(list, alloc),
-        _weight(weight) {
+        row_(list, alloc),
+        weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
 
@@ -91,10 +91,10 @@ namespace gum {
        const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& new_row) {
       const std::size_t size = new_row.size();
       if (size) {
-        _row.resize(size);
-        std::copy(new_row.begin(), new_row.end(), _row.begin());
+        row_.resize(size);
+        std::copy(new_row.begin(), new_row.end(), row_.begin());
       } else {
-        _row.clear();
+        row_.clear();
       }
     }
 
@@ -103,7 +103,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::setRow(
        std::vector< T_DATA, ALLOC< T_DATA > >&& new_row) {
-      _row = std::move(new_row);
+      row_ = std::move(new_row);
     }
 
 
@@ -114,8 +114,8 @@ namespace gum {
        const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& cells,
        const double                                        weight,
        const ALLOC< T_DATA >&                              alloc) :
-        _row(alloc),
-        _weight(weight) {
+        row_(alloc),
+        weight_(weight) {
       setRow(cells);
       GUM_CONSTRUCTOR(DBRow);
     }
@@ -127,8 +127,8 @@ namespace gum {
        std::vector< T_DATA, ALLOC< T_DATA > >&& cells,
        const double                             weight,
        const ALLOC< T_DATA >&                   alloc) :
-        _row(std::move(cells), alloc),
-        _weight(weight) {
+        row_(std::move(cells), alloc),
+        weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
 
@@ -137,8 +137,8 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE DBRow< T_DATA, ALLOC >::DBRow(const DBRow< T_DATA, ALLOC >& from,
                                          const ALLOC< T_DATA >&        alloc) :
-        _row(from._row, alloc),
-        _weight(from._weight) {
+        row_(from.row_, alloc),
+        weight_(from.weight_) {
       GUM_CONS_CPY(DBRow);
     }
 
@@ -153,8 +153,8 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE DBRow< T_DATA, ALLOC >::DBRow(DBRow< T_DATA, ALLOC >&& from,
                                          const ALLOC< T_DATA >&   alloc) :
-        _row(std::move(from._row), alloc),
-        _weight(from._weight) {
+        row_(std::move(from.row_), alloc),
+        weight_(from.weight_) {
       GUM_CONS_MOV(DBRow);
     }
 
@@ -200,8 +200,8 @@ namespace gum {
     INLINE DBRow< T_DATA, ALLOC >&
        DBRow< T_DATA, ALLOC >::operator=(const DBRow< T_DATA, ALLOC >& from) {
       if (this != &from) {
-        _row = from._row;
-        _weight = from._weight;
+        row_ = from.row_;
+        weight_ = from.weight_;
       }
       return *this;
     }
@@ -212,8 +212,8 @@ namespace gum {
     INLINE DBRow< T_DATA, ALLOC >&
        DBRow< T_DATA, ALLOC >::operator=(DBRow< T_DATA, ALLOC >&& from) {
       if (this != &from) {
-        _row = std::move(from._row);
-        _weight = from._weight;
+        row_ = std::move(from.row_);
+        weight_ = from.weight_;
       }
       return *this;
     }
@@ -221,76 +221,76 @@ namespace gum {
     /// returns the ith T_DATA of the row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE T_DATA& DBRow< T_DATA, ALLOC >::operator[](const std::size_t i) {
-      return _row[i];
+      return row_[i];
     }
 
     /// returns the ith T_DATA of the row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const T_DATA&
        DBRow< T_DATA, ALLOC >::operator[](const std::size_t i) const {
-      return _row[i];
+      return row_[i];
     }
 
     /// returns the current row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const std::vector< T_DATA, ALLOC< T_DATA > >&
                  DBRow< T_DATA, ALLOC >::row() const noexcept {
-      return _row;
+      return row_;
     }
 
     /// returns the current row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::vector< T_DATA, ALLOC< T_DATA > >&
            DBRow< T_DATA, ALLOC >::row() noexcept {
-      return _row;
+      return row_;
     }
 
     /// returns the weight
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const double& DBRow< T_DATA, ALLOC >::weight() const noexcept {
-      return _weight;
+      return weight_;
     }
 
     /// returns the weight
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE double& DBRow< T_DATA, ALLOC >::weight() noexcept {
-      return _weight;
+      return weight_;
     }
 
     /// sets a new weight
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::setWeight(const double new_weight) {
-      _weight = new_weight;
+      weight_ = new_weight;
     }
 
     /// returns the size of the row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t DBRow< T_DATA, ALLOC >::size() const noexcept {
-      return _row.size();
+      return row_.size();
     }
 
     /// resize a given row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::resize(const std::size_t new_size) {
-      _row.resize(new_size);
+      row_.resize(new_size);
     }
 
     /// reserve a size for the elements of a given row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::reserve(const std::size_t new_size) {
-      _row.reserve(new_size);
+      row_.reserve(new_size);
     }
 
     /// adds a new element at the end of the row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::pushBack(const T_DATA& elt) {
-      _row.push_back(elt);
+      row_.push_back(elt);
     }
 
     /// adds a new element at the end of the row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::pushBack(T_DATA&& elt) {
-      _row.push_back(std::move(elt));
+      row_.push_back(std::move(elt));
     }
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The K2 algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -37,13 +37,13 @@ namespace gum {
 
     /// copy constructor
     INLINE K2::K2(const K2& from) :
-        GreedyHillClimbing(from), __order(from.__order) {
+        GreedyHillClimbing(from), order__(from.order__) {
       GUM_CONS_CPY(K2);
     }
 
     /// move constructor
     INLINE K2::K2(K2&& from) :
-        GreedyHillClimbing(std::move(from)), __order(std::move(from.__order)) {
+        GreedyHillClimbing(std::move(from)), order__(std::move(from.order__)) {
       GUM_CONS_MOV(K2);
     }
 
@@ -54,7 +54,7 @@ namespace gum {
     INLINE K2& K2::operator=(const K2& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(from);
-        __order = from.__order;
+        order__ = from.order__;
       }
       return *this;
     }
@@ -63,36 +63,36 @@ namespace gum {
     INLINE K2& K2::operator=(K2&& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(std::move(from));
-        __order = std::move(from.__order);
+        order__ = std::move(from.order__);
       }
       return *this;
     }
 
     /// sets the order on the variables
-    INLINE void K2::setOrder(const Sequence< NodeId >& order) { __order = order; }
+    INLINE void K2::setOrder(const Sequence< NodeId >& order) { order__ = order; }
 
     /// sets the order on the variables
     INLINE void K2::setOrder(const std::vector< NodeId >& order) {
-      __order.clear();
+      order__.clear();
       for (const auto node: order) {
-        __order.insert(node);
+        order__.insert(node);
       }
     }
 
     /// returns the current order
-    INLINE const Sequence< NodeId >& K2::order() const noexcept { return __order; }
+    INLINE const Sequence< NodeId >& K2::order() const noexcept { return order__; }
 
     /** @brief checks that the order passed to K2 is coherent with the variables
      * as specified by their modalities */
-    INLINE void K2::__checkOrder(const std::vector< Size >& modal) {
-      if (modal.size() != __order.size()) {
+    INLINE void K2::checkOrder__(const std::vector< Size >& modal) {
+      if (modal.size() != order__.size()) {
         GUM_ERROR(InvalidArgument,
                   "the number of elements in the order given "
                   "to K2 is not the same as the number of nodes");
       }
       bool order_ok = true;
-      for (const auto node: __order) {
-        if (node >= __order.size()) {
+      for (const auto node: order__) {
+        if (node >= order__.size()) {
           order_ok = false;
           break;
         }

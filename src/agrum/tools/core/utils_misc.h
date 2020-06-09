@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Utilities for aGrUM.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_UTILS_H
@@ -133,17 +133,17 @@ namespace gum {
 
   /**
    * @brief Cross-platform replacement for memcmp.
-   * @param _in A pointer to the block of memory to copy.
-   * @param _out A pointer to the block of memory receiving copy.
+   * @param in_ A pointer to the block of memory to copy.
+   * @param out_ A pointer to the block of memory receiving copy.
    * @param size Number of bytes to copy.
    * @return Returns true if OK.
    */
-  bool Memcmp(const void* const _in, const void* const _out, unsigned long size);
+  bool Memcmp(const void* const in_, const void* const out_, unsigned long size);
 
   /**
    * @brief Used for debug purpose.
    */
-  void __atexit();
+  void atexit__();
 
   /**
    * @brief Indicate whether two elements are (almost) different or not.

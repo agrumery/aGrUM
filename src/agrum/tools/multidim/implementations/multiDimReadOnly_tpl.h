@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the MultiDimReadOnly class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 namespace gum {
@@ -71,7 +71,7 @@ namespace gum {
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR& MultiDimReadOnly< GUM_SCALAR >::_get(const Instantiation& i) const {
+  GUM_SCALAR& MultiDimReadOnly< GUM_SCALAR >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "No (unconst) access to an aggregator");
   }
 

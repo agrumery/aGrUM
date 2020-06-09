@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class for computing the log2 of the parametric complexity of
  * an r-ary multinomial variable
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -51,7 +51,7 @@ namespace gum {
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
      const allocator_type& alloc) :
       VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-      __cache(1000) {
+      cache__(1000) {
     GUM_CONSTRUCTOR(VariableLog2ParamComplexity);
   }
 
@@ -62,7 +62,7 @@ namespace gum {
      const VariableLog2ParamComplexity< ALLOC >&                          from,
      const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc) :
       VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-      __use_cache(from.__use_cache), __cache(from.__cache) {
+      use_cache__(from.use_cache__), cache__(from.cache__) {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
   }
 
@@ -80,7 +80,7 @@ namespace gum {
      VariableLog2ParamComplexity< ALLOC >&&                               from,
      const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc) :
       VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-      __use_cache(from.__use_cache), __cache(std::move(from.__cache)) {
+      use_cache__(from.use_cache__), cache__(std::move(from.cache__)) {
     GUM_CONS_MOV(VariableLog2ParamComplexity);
   }
 
@@ -146,14 +146,14 @@ namespace gum {
   /// indicates whether we wish to use a cache for the Cnr
   template < template < typename > class ALLOC >
   INLINE void VariableLog2ParamComplexity< ALLOC >::useCache(const bool on_off) {
-    __use_cache = on_off;
+    use_cache__ = on_off;
   }
 
 
   /// clears the current cache
   template < template < typename > class ALLOC >
   INLINE void VariableLog2ParamComplexity< ALLOC >::clearCache() {
-    __cache.clear();
+    cache__.clear();
   }
 
 
@@ -182,9 +182,9 @@ namespace gum {
         return VariableLog2ParamComplexityCTable[r - 2][xn];
       } else {
         // try to find the value in the cache
-        if (__use_cache) {
+        if (use_cache__) {
           try {
-            return __cache[std::pair< std::size_t, double >{r, n}];
+            return cache__[std::pair< std::size_t, double >{r, n}];
           } catch (NotFound&) {}
         }
 
@@ -217,24 +217,24 @@ namespace gum {
         }
 
         // if we use a cache, update it
-        if (__use_cache) {
-          __cache.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
+        if (use_cache__) {
+          cache__.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
         }
 
         return log2Cnr;
       }
     } else {
       // try to find the value in the cache
-      if (__use_cache) {
+      if (use_cache__) {
         try {
-          return __cache[std::pair< std::size_t, double >{r, n}];
+          return cache__[std::pair< std::size_t, double >{r, n}];
         } catch (NotFound&) {}
       }
 
       // compute the corrected Szpankowski approximation of cn2 (see the
       // documentation of constants cst1, cst2, cst3 in the ScorefNML header)
       double log2Cnr1 =
-         0.5 * std::log2(n) + __cst1 + __cst2 / std::sqrt(n) + __cst3 / n;
+         0.5 * std::log2(n) + cst1__ + cst2__ / std::sqrt(n) + cst3__ / n;
       if (r == std::size_t(2)) return log2Cnr1;
 
       // the value of log2(cn1), which is always equal to 0
@@ -253,8 +253,8 @@ namespace gum {
       }
 
       // if we use a cache, update it
-      if (__use_cache) {
-        __cache.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
+      if (use_cache__) {
+        cache__.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
       }
 
       return log2Cnr;

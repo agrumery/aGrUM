@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMAttribute.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_FUNC_ATTRIBUTE_H
@@ -42,8 +42,8 @@ namespace gum {
     /**
      * @class PRMFuncAttribute funcAttribute.h
      *<agrum/PRM/elements/funcAttribute.h>
-     * @brief This class overload gum::prm::PRMClassElement::_addParent() and
-     *        gum::prm::PRMClassElement::_addChild with empty methods.
+     * @brief This class overload gum::prm::PRMClassElement::addParent_() and
+     *        gum::prm::PRMClassElement::addChild_ with empty methods.
      *
      * This class should be used when dealing with functions such as Noisy-Or
      *which
@@ -78,10 +78,10 @@ namespace gum {
       /// Destructor.
       virtual ~PRMFuncAttribute();
 
-      /// See gum::PRMClassElement::_addParent().
+      /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
-      /// See gum::PRMClassElement::_addChild().
+      /// See gum::PRMClassElement::addChild_().
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       protected:
@@ -92,7 +92,7 @@ namespace gum {
       PRMFuncAttribute< GUM_SCALAR >&
          operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
 
-      virtual void _setCpf(Potential< GUM_SCALAR >* cpf);
+      virtual void setCpf_(Potential< GUM_SCALAR >* cpf);
     };
 
 

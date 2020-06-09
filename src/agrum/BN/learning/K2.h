@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The K2 algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_K2_H
 #define GUM_LEARNING_K2_H
@@ -116,12 +116,12 @@ namespace gum {
 
       private:
       /// the order on the variable used for learning
-      Sequence< NodeId > __order;
+      Sequence< NodeId > order__;
 
       /** @brief checks that the order passed to K2 is coherent with the
        * variables
        * as specified by their modalities */
-      void __checkOrder(const std::vector< Size >& modal);
+      void checkOrder__(const std::vector< Size >& modal);
       /// @}
     };
 

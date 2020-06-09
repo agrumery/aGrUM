@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@
 /** @file
  * @brief Class for generating bayesian networks.
  *
- * @author Christophe GONZALES (@AMU), Pierre-Henri WUILLEMIN (@LIP6), Lionel TORTI and
- * Ariele-Paolo MAESANO
+ * @author Christophe GONZALES(@AMU), Pierre-Henri WUILLEMIN(@LIP6), Lionel TORTI
+ * and Ariele-Paolo MAESANO
  */
 #include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/agrum.h>

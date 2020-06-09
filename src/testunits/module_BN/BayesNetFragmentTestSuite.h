@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -301,7 +301,7 @@ namespace gum_tests {
 
       while (!I.end()) {
         double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
-                  * bn.cpt(bn.idFromName("v6"))[I];
+                   * bn.cpt(bn.idFromName("v6"))[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
         ++I;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMAttribute.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_ATTRIBUTE_H
@@ -98,10 +98,10 @@ namespace gum {
       /// See gum::PRMClassElement::cpf().
       virtual const Potential< GUM_SCALAR >& cpf() const = 0;
 
-      /// See gum::PRMClassElement::_addParent().
+      /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
-      /// See gum::PRMClassElement::_addChild().
+      /// See gum::PRMClassElement::addChild_().
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       /**
@@ -175,8 +175,8 @@ namespace gum {
       protected:
       PRMAttribute(const PRMAttribute< GUM_SCALAR >& source);
 
-      virtual PRMType* _type() = 0;
-      virtual void     _type(PRMType* t) = 0;
+      virtual PRMType* type_() = 0;
+      virtual void     type_(PRMType* t) = 0;
     };
 
 

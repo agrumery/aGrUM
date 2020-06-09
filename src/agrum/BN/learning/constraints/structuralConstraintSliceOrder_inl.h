@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@
  * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
  * do not belong to the property) are free.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -52,7 +52,7 @@ namespace gum {
        StructuralConstraintSliceOrder::checkArcAdditionAlone(NodeId x,
                                                              NodeId y) const {
       try {
-        return _SliceOrder__order[x] <= _SliceOrder__order[y];
+        return SliceOrder__order_[x] <= SliceOrder__order_[y];
       } catch (const Exception&) { return true; }
     }
 
@@ -68,7 +68,7 @@ namespace gum {
        StructuralConstraintSliceOrder::checkArcReversalAlone(NodeId x,
                                                              NodeId y) const {
       try {
-        return _SliceOrder__order[x] == _SliceOrder__order[y];
+        return SliceOrder__order_[x] == SliceOrder__order_[y];
       } catch (const Exception&) { return true; }
     }
 
@@ -94,16 +94,16 @@ namespace gum {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           try {
-            return (_SliceOrder__order[change.node1()]
-                    > _SliceOrder__order[change.node2()]);
+            return (SliceOrder__order_[change.node1()]
+                    > SliceOrder__order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
         case GraphChangeType::ARC_DELETION: return false;
 
         case GraphChangeType::ARC_REVERSAL:
           try {
-            return (_SliceOrder__order[change.node1()]
-                    != _SliceOrder__order[change.node2()]);
+            return (SliceOrder__order_[change.node1()]
+                    != SliceOrder__order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
         default:
@@ -154,12 +154,12 @@ namespace gum {
     /// sets the time slices of all the nodes in the property
     INLINE void StructuralConstraintSliceOrder::setSliceOrder(
        const NodeProperty< NodeId >& order) {
-      _SliceOrder__order = order;
+      SliceOrder__order_ = order;
     }
 
     /// sets the default time slice
     INLINE void StructuralConstraintSliceOrder::setDefaultSlice(NodeId slice) {
-      for (auto& node: _SliceOrder__order) {
+      for (auto& node: SliceOrder__order_) {
         node.second = slice;
       }
     }
@@ -167,13 +167,13 @@ namespace gum {
     /// adds a new node in the slice order
     INLINE void StructuralConstraintSliceOrder::addNode(NodeId node,
                                                         NodeId slice) {
-      _SliceOrder__order.set(node, slice);
+      SliceOrder__order_.set(node, slice);
     }
 
     /// returns the current slice order
     INLINE const NodeProperty< NodeId >&
                  StructuralConstraintSliceOrder::sliceOrder() const {
-      return _SliceOrder__order;
+      return SliceOrder__order_;
     }
 
 // include all the methods applicable to the whole class hierarchy

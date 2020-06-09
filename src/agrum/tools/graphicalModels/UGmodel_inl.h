@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief  Interface-like class encapsulating basic functionalities for a
  *IMarkovNetwork.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/core/math/math.h>
@@ -33,32 +33,33 @@
 
 namespace gum {
   INLINE
-  const UndiGraph& UGmodel::graph() const { return _graph; }
+  const UndiGraph& UGmodel::graph() const { return graph_; }
 
   INLINE
   Size UGmodel::size() const { return graph().size(); }
 
   INLINE
-  Size UGmodel::sizeEdges() const { return _graph.sizeEdges(); }
+  Size UGmodel::sizeEdges() const { return graph_.sizeEdges(); }
 
-  INLINE const EdgeSet& UGmodel::edges() const { return _graph.edges(); }
+  INLINE const EdgeSet& UGmodel::edges() const { return graph_.edges(); }
 
-  INLINE bool UGmodel::existsEdge(const NodeId node1,const NodeId node2) const {
-    return _graph.existsEdge(node1,node2);
+  INLINE bool UGmodel::existsEdge(const NodeId node1, const NodeId node2) const {
+    return graph_.existsEdge(node1, node2);
   }
 
-  INLINE bool UGmodel::existsEdge(const std::string& name1,const std::string& name2) const {
-    return existsEdge(idFromName(name1),idFromName(name2));
+  INLINE bool UGmodel::existsEdge(const std::string& name1,
+                                  const std::string& name2) const {
+    return existsEdge(idFromName(name1), idFromName(name2));
   }
 
   INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const {
-    return _graph.neighbours(id);
+    return graph_.neighbours(id);
   }
   INLINE const NodeSet& UGmodel::neighbours(const std::string& name) const {
     return neighbours(idFromName(name));
   }
 
   INLINE const NodeGraphPart& UGmodel::nodes() const {
-    return (NodeGraphPart&)_graph;
+    return (NodeGraphPart&)graph_;
   }
 } /* namespace gum */

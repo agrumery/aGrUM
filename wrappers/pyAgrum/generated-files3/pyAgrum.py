@@ -365,9 +365,9 @@ class PythonLoadListener(object):
 _pyAgrum.PythonLoadListener_swigregister(PythonLoadListener)
 
 
-def __fillLoadListeners(py_listener: "std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &", l: "PyObject *") -> "int":
-    r"""__fillLoadListeners(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int"""
-    return _pyAgrum.__fillLoadListeners(py_listener, l)
+def fillLoadListeners__(py_listener: "std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &", l: "PyObject *") -> "int":
+    r"""fillLoadListeners__(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int"""
+    return _pyAgrum.fillLoadListeners__(py_listener, l)
 class PythonApproximationListener(object):
     r"""
 
@@ -1751,9 +1751,9 @@ class GumException(Exception):
 _pyAgrum.GumException_swigregister(GumException)
 
 
-def __createMsg(filename: "std::string const &", function: "std::string const &", line: "int const", msg: "std::string const &") -> "std::string const":
-    r"""__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
-    return _pyAgrum.__createMsg(filename, function, line, msg)
+def createMsg__(filename: "std::string const &", function: "std::string const &", line: "int const", msg: "std::string const &") -> "std::string const":
+    r"""createMsg__(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
+    return _pyAgrum.createMsg__(filename, function, line, msg)
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
 
@@ -3414,9 +3414,9 @@ class RangeVariable(DiscreteVariable):
         _pyAgrum.RangeVariable_swiginit(self, _pyAgrum.new_RangeVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_RangeVariable
 
-    def clone(self) -> "gum::DiscreteVariable *":
+    def clone(self) -> "gum::RangeVariable *":
         r"""
-        clone(RangeVariable self) -> DiscreteVariable
+        clone(RangeVariable self) -> RangeVariable
 
         Returns
         -------
@@ -6259,8 +6259,8 @@ class GraphicalModel(object):
 # Register GraphicalModel in _pyAgrum:
 _pyAgrum.GraphicalModel_swigregister(GraphicalModel)
 cvar = _pyAgrum.cvar
-__list_end_safe = cvar.__list_end_safe
-__list_end = cvar.__list_end
+list_end_safe__ = cvar.list_end_safe__
+list_end__ = cvar.list_end__
 
 class DAGmodel(GraphicalModel):
     r"""
@@ -10303,6 +10303,25 @@ class BayesNet(IBayesNet):
 
         """
         return _pyAgrum.BayesNet_addMIN(self, var)
+
+    def addSUM(self, var: "DiscreteVariable") -> "gum::NodeId":
+        r"""
+        addSUM(BayesNet self, DiscreteVariable var) -> gum::NodeId
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+                the variable to be added
+
+        Returns
+        -------
+        int
+                the id of the added value
+
+        """
+        return _pyAgrum.BayesNet_addSUM(self, var)
 
     def addWeightedArc(self, *args) -> "void":
         r"""
@@ -18867,9 +18886,9 @@ class LoopyImportanceSampling(object):
 
     __swig_destroy__ = _pyAgrum.delete_LoopyImportanceSampling
 
-    def _makeInference(self) -> "void":
-        r"""_makeInference(LoopyImportanceSampling self)"""
-        return _pyAgrum.LoopyImportanceSampling__makeInference(self)
+    def makeInference_(self) -> "void":
+        r"""makeInference_(LoopyImportanceSampling self)"""
+        return _pyAgrum.LoopyImportanceSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: "double") -> "void":
         r"""
@@ -19708,9 +19727,9 @@ class LoopyWeightedSampling(object):
 
     __swig_destroy__ = _pyAgrum.delete_LoopyWeightedSampling
 
-    def _makeInference(self) -> "void":
-        r"""_makeInference(LoopyWeightedSampling self)"""
-        return _pyAgrum.LoopyWeightedSampling__makeInference(self)
+    def makeInference_(self) -> "void":
+        r"""makeInference_(LoopyWeightedSampling self)"""
+        return _pyAgrum.LoopyWeightedSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: "double") -> "void":
         r"""
@@ -20549,9 +20568,9 @@ class LoopyGibbsSampling(object):
 
     __swig_destroy__ = _pyAgrum.delete_LoopyGibbsSampling
 
-    def _makeInference(self) -> "void":
-        r"""_makeInference(LoopyGibbsSampling self)"""
-        return _pyAgrum.LoopyGibbsSampling__makeInference(self)
+    def makeInference_(self) -> "void":
+        r"""makeInference_(LoopyGibbsSampling self)"""
+        return _pyAgrum.LoopyGibbsSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: "double") -> "void":
         r"""
@@ -21462,9 +21481,9 @@ class LoopyMonteCarloSampling(object):
 
     __swig_destroy__ = _pyAgrum.delete_LoopyMonteCarloSampling
 
-    def _makeInference(self) -> "void":
-        r"""_makeInference(LoopyMonteCarloSampling self)"""
-        return _pyAgrum.LoopyMonteCarloSampling__makeInference(self)
+    def makeInference_(self) -> "void":
+        r"""makeInference_(LoopyMonteCarloSampling self)"""
+        return _pyAgrum.LoopyMonteCarloSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: "double") -> "void":
         r"""

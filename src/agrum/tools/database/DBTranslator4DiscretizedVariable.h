@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The databases' cell translators for discretized variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_4_DISCRETIZED_VARIABLE_H
 #define GUM_LEARNING_DB_TRANSLATOR_4_DISCRETIZED_VARIABLE_H
@@ -328,12 +328,12 @@ namespace gum {
 
       private:
       // the DiscretizedVariable used for translations
-      DiscretizedVariable< float > __variable;
+      DiscretizedVariable< float > variable__;
 
       // the DiscretizedVariable returned by method variable ()
       // We must return a IDiscretizedVariable because the user may have
       // saved into the translator a DiscretizedVariable<X>, with X != float
-      IDiscretizedVariable* __real_variable;
+      IDiscretizedVariable* real_variable__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

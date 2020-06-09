@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -94,14 +94,14 @@ namespace gum {
     // ###################################################################
     public:
     bool containsAssociatedLeaf(AbstractLeaf* l) {
-      return __containsAssociatedLeaf(l, Int2Type< isInitial >());
+      return containsAssociatedLeaf__(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __containsAssociatedLeaf(AbstractLeaf* l, Int2Type< false >) {
-      return __leaf2Pair.exists(l);
+    bool containsAssociatedLeaf__(AbstractLeaf* l, Int2Type< false >) {
+      return leaf2Pair__.exists(l);
     }
-    bool __containsAssociatedLeaf(AbstractLeaf*, Int2Type< true >) {
+    bool containsAssociatedLeaf__(AbstractLeaf*, Int2Type< true >) {
       return false;
     }
 
@@ -110,12 +110,12 @@ namespace gum {
     // ###################################################################
     public:
     bool associateLeaf(AbstractLeaf* l) {
-      return __associateLeaf(l, Int2Type< isInitial >());
+      return associateLeaf__(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __associateLeaf(AbstractLeaf*, Int2Type< false >);
-    bool __associateLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
+    bool associateLeaf__(AbstractLeaf*, Int2Type< false >);
+    bool associateLeaf__(AbstractLeaf*, Int2Type< true >) { return false; }
 
 
     // ###################################################################
@@ -123,21 +123,21 @@ namespace gum {
     // ###################################################################
     public:
     bool updateAssociatedLeaf(AbstractLeaf* l) {
-      return __updateAssociatedLeaf(l, Int2Type< isInitial >());
+      return updateAssociatedLeaf__(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __updateAssociatedLeaf(AbstractLeaf*, Int2Type< false >);
-    bool __updateAssociatedLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
+    bool updateAssociatedLeaf__(AbstractLeaf*, Int2Type< false >);
+    bool updateAssociatedLeaf__(AbstractLeaf*, Int2Type< true >) { return false; }
 
     public:
     bool updateAllAssociatedLeaves() {
-      return __updateAllAssociatedLeaves(Int2Type< isInitial >());
+      return updateAllAssociatedLeaves__(Int2Type< isInitial >());
     }
 
     private:
-    bool __updateAllAssociatedLeaves(Int2Type< false >);
-    bool __updateAllAssociatedLeaves(Int2Type< true >) { return false; }
+    bool updateAllAssociatedLeaves__(Int2Type< false >);
+    bool updateAllAssociatedLeaves__(Int2Type< true >) { return false; }
 
 
     // ###################################################################
@@ -147,12 +147,12 @@ namespace gum {
     // ###################################################################
     public:
     bool deassociateLeaf(AbstractLeaf* l) {
-      return __deassociateLeaf(l, Int2Type< isInitial >());
+      return deassociateLeaf__(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __deassociateLeaf(AbstractLeaf*, Int2Type< false >);
-    bool __deassociateLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
+    bool deassociateLeaf__(AbstractLeaf*, Int2Type< false >);
+    bool deassociateLeaf__(AbstractLeaf*, Int2Type< true >) { return false; }
 
     /// @}
 
@@ -178,8 +178,8 @@ namespace gum {
     bool removePair(LeafPair* p);
 
 
-    pair_iterator beginPairs() { return __pairsHeap.allValues().beginSafe(); }
-    pair_iterator endPairs() { return __pairsHeap.allValues().endSafe(); }
+    pair_iterator beginPairs() { return pairsHeap__.allValues().beginSafe(); }
+    pair_iterator endPairs() { return pairsHeap__.allValues().endSafe(); }
 
     /// @}
 
@@ -191,13 +191,13 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    LeafPair* top() { return !__pairsHeap.empty() ? __pairsHeap.top() : nullptr; }
+    LeafPair* top() { return !pairsHeap__.empty() ? pairsHeap__.top() : nullptr; }
 
     // ###################################################################
     ///
     // ###################################################################
     double topLikelyhood() {
-      return !__pairsHeap.empty() ? __pairsHeap.topPriority() : 1.0;
+      return !pairsHeap__.empty() ? pairsHeap__.topPriority() : 1.0;
     }
 
     /// @}
@@ -210,13 +210,13 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    AbstractLeaf* leaf() { return __leaf; }
+    AbstractLeaf* leaf() { return leaf__; }
 
     // ###################################################################
     ///
     // ###################################################################
     LeafPair* leafAssociatedPair(AbstractLeaf* l) {
-      return __leaf2Pair.getWithDefault(l, nullptr);
+      return leaf2Pair__.getWithDefault(l, nullptr);
     }
 
     // ###################################################################
@@ -224,12 +224,12 @@ namespace gum {
     // ###################################################################
     public:
     Set< LeafPair* > associatedPairs() {
-      return __associatedPairs(Int2Type< isInitial >());
+      return associatedPairs__(Int2Type< isInitial >());
     }
 
     private:
-    Set< LeafPair* > __associatedPairs(Int2Type< false >);
-    Set< LeafPair* > __associatedPairs(Int2Type< true >) {
+    Set< LeafPair* > associatedPairs__(Int2Type< false >);
+    Set< LeafPair* > associatedPairs__(Int2Type< true >) {
       return Set< LeafPair* >();
     }
     /// @}
@@ -238,11 +238,11 @@ namespace gum {
     std::string toString();
 
     private:
-    MultiPriorityQueue< LeafPair*, double, std::less< double > > __pairsHeap;
+    MultiPriorityQueue< LeafPair*, double, std::less< double > > pairsHeap__;
 
-    HashTable< AbstractLeaf*, LeafPair* > __leaf2Pair;
+    HashTable< AbstractLeaf*, LeafPair* > leaf2Pair__;
 
-    AbstractLeaf* __leaf;
+    AbstractLeaf* leaf__;
   };
 
 

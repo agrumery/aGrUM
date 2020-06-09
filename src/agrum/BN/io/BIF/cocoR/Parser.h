@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -55,12 +55,12 @@ namespace BIF {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_ident=1,
-		_integer=2,
-		_number=3,
-		_string=4,
-		_largestring=5
+		EOF_=0,
+		ident_=1,
+		integer_=2,
+		number_=3,
+		string_=4,
+		largestring_=5
 	};
 	int maxT;
 
@@ -75,7 +75,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -83,14 +83,14 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::IBayesNetFactory* __factory;
+    gum::IBayesNetFactory* factory__;
 
 void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
+  factory__=f;
 }
 
 gum::IBayesNetFactory& factory() {
-  if (__factory) return *__factory;
+  if (factory__) return *factory__;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
 }
 
@@ -102,7 +102,7 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
+void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::string& var) {
   gum::Size s=(gum::Size)0;
   TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
   if (v.size()<s)

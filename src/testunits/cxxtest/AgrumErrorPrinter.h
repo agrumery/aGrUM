@@ -24,7 +24,7 @@
 
 #ifdef _CXXTEST_OLD_STD
 #include <iostream.h>
-#else  // !_CXXTEST_OLD_STD
+#else  // !CXXTEST_OLD_STD_
 #include <iostream>
 #endif  // _CXXTEST_OLD_STD
 

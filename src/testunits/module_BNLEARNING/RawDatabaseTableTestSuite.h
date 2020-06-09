@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -536,7 +536,7 @@ namespace gum_tests {
       std::vector< int >          nb(num_threads);
 
       for (unsigned int i = 0; i < num_threads; ++i) {
-        threads[i] = new std::thread(&RawDatabaseTableTestSuite::__create_handler,
+        threads[i] = new std::thread(&RawDatabaseTableTestSuite::create_handler__,
                                      this,
                                      &database,
                                      &(handlers[i]),
@@ -594,7 +594,7 @@ namespace gum_tests {
 
       for (unsigned int i = 0; i < num_threads; ++i) {
         threads[i] =
-           new std::thread(&RawDatabaseTableTestSuite::__create_handler_safe,
+           new std::thread(&RawDatabaseTableTestSuite::create_handler_safe__,
                            this,
                            &database,
                            &(handlers[i]),
@@ -895,7 +895,7 @@ namespace gum_tests {
 
 
     private:
-    void __create_handler(gum::learning::RawDatabaseTable<>*           database,
+    void create_handler__(gum::learning::RawDatabaseTable<>*           database,
                           gum::learning::RawDatabaseTable<>::Handler** handler,
                           int*                                         nb) {
       *handler = new gum::learning::RawDatabaseTable<>::Handler(*database);
@@ -909,7 +909,7 @@ namespace gum_tests {
       *nb = x;
     }
 
-    void __create_handler_safe(
+    void create_handler_safe__(
        gum::learning::RawDatabaseTable<>*               database,
        gum::learning::RawDatabaseTable<>::HandlerSafe** handler,
        int*                                             nb) {

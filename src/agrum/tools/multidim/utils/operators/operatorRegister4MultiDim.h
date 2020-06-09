@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief A container for registering binary functions on
  * multiDimImplementations
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_OPERATOR_REGISTER_4_MULTI_DIM_H
@@ -211,7 +211,7 @@ namespace gum {
      * hence to a pair of types of MultiDimImplementations, is associated a
      * function to combine them (the OperatorPtr).
      */
-    HashTable< std::string, OperatorSet* > __set;
+    HashTable< std::string, OperatorSet* > set__;
   };
 
   /// A function to more easily register new operators in MultiDims

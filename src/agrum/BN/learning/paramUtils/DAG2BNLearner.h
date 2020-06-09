@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief A class that, given a structure and a parameter estimator returns a
  * full Bayes net
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DAG_2_BN_LEARNER_H
 #define GUM_LEARNING_DAG_2_BN_LEARNER_H
@@ -138,7 +138,7 @@ namespace gum {
        * order differs */
       template < typename GUM_SCALAR = double >
       static void
-         __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
+         probaVarReordering__(gum::Potential< GUM_SCALAR >&       pot,
                               const gum::Potential< GUM_SCALAR >& other_pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

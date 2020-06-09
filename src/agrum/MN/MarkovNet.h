@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Markov networks
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #ifndef GUM_MARKOV_NET_H
@@ -58,7 +58,7 @@ namespace gum {
    *
    * where \f$f_{C}$ is a factor on a clique of the undirected graph, \f${\cal C}$
    * is the set of cliques in the graph and \f$X_C$ is the instantiation of the
-   * variables in the clique _f$C$.
+   * variables in the clique f_$C$.
    *
    * The probability distribution can be represented as a undirected acyclic
    * graph where:
@@ -69,9 +69,9 @@ namespace gum {
    * You can print a MarkovNet using
    * gum::operator<<(std::ostream&, const MarkovNet<GUM_SCALAR>&).
    */
-  template<typename GUM_SCALAR>
-  class MarkovNet : public IMarkovNet<GUM_SCALAR> {
-  public:
+  template < typename GUM_SCALAR >
+  class MarkovNet: public IMarkovNet< GUM_SCALAR > {
+    public:
     /**
      * Create a Markov network with a dot-like syntax which specifies:
      *   - the structure "a-b-c;b-d-e;".
@@ -94,15 +94,15 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting bayesian network
      */
-    static MarkovNet<GUM_SCALAR> fastPrototype(const std::string &dotlike,
-                                               Size domainSize = 2);
+    static MarkovNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                 Size domainSize = 2);
 
     /**
      * build a Markov Network from a Bayesian Network
      * @param bn the Bayesian network
      * @return a markov network
      */
-    static MarkovNet<GUM_SCALAR> fromBN(const BayesNet<GUM_SCALAR> &bn);
+    static MarkovNet< GUM_SCALAR > fromBN(const BayesNet< GUM_SCALAR >& bn);
 
     // ===========================================================================
     /// @name Constructors and Destructor
@@ -129,7 +129,7 @@ namespace gum {
     /**
      * @brief Copy constructor.
      */
-    MarkovNet(const MarkovNet<GUM_SCALAR> &source);
+    MarkovNet(const MarkovNet< GUM_SCALAR >& source);
 
     /// @}
     // ===========================================================================
@@ -143,7 +143,7 @@ namespace gum {
      * @param source The copied MarkovNet.
      * @return The copy of source.
      */
-    MarkovNet<GUM_SCALAR> &operator=(const MarkovNet<GUM_SCALAR> &source);
+    MarkovNet< GUM_SCALAR >& operator=(const MarkovNet< GUM_SCALAR >& source);
 
     /// @}
     // ===========================================================================
@@ -158,11 +158,11 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential<GUM_SCALAR> &
-    factor(const NodeSet &varIds) const final;
+    virtual const Potential< GUM_SCALAR >&
+       factor(const NodeSet& varIds) const final;
 
-    virtual const Potential<GUM_SCALAR> &
-    factor(const std::vector<std::string>& varnames) const final;
+    virtual const Potential< GUM_SCALAR >&
+       factor(const std::vector< std::string >& varnames) const final;
 
     /**
      * Returns a factor that contains this variable
@@ -175,14 +175,14 @@ namespace gum {
      * Returns the set of factors as a IMarkovNet::FactorTable
      *
      */
-    virtual const FactorTable<GUM_SCALAR> &factors() const final;
+    virtual const FactorTable< GUM_SCALAR >& factors() const final;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::MarkovNet.
      *
      * @return Returns a constant reference to the gum::VariableNodeMap.
      */
-    virtual const VariableNodeMap &variableNodeMap() const final;
+    virtual const VariableNodeMap& variableNodeMap() const final;
 
     /**
      * @brief Add a variable to the gum::MarkovNet.
@@ -198,7 +198,7 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::MarkovNet.
      */
-    NodeId add(const DiscreteVariable &var);
+    NodeId add(const DiscreteVariable& var);
 
     /**
      * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
@@ -211,7 +211,7 @@ namespace gum {
      *                        gum::MarkovNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string &name, unsigned int nbrmod);
+    NodeId add(const std::string& name, unsigned int nbrmod);
 
     /**
      * @brief Add a variable to the gum::MarkovNet.
@@ -230,7 +230,7 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::MarkovNet.
      */
-    NodeId add(const DiscreteVariable &var, NodeId id);
+    NodeId add(const DiscreteVariable& var, NodeId id);
 
     /**
      * @brief clear the whole Markov net
@@ -252,7 +252,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::MarkovNet.
      */
-    void erase(const std::string &name);
+    void erase(const std::string& name);
 
     /**
      * @brief Remove a variable from the gum::MarkovNet.
@@ -264,7 +264,7 @@ namespace gum {
      *
      * @param var A reference on the variable to remove.
      */
-    void erase(const DiscreteVariable &var);
+    void erase(const DiscreteVariable& var);
 
     /**
      * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
@@ -276,7 +276,7 @@ namespace gum {
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::MarkovNet.
      */
-    const DiscreteVariable &variable(NodeId id) const final;
+    const DiscreteVariable& variable(NodeId id) const final;
 
     /**
      * @brief Returns a gum::DiscreteVariable given its name in the
@@ -284,7 +284,7 @@ namespace gum {
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::MarkovNet.
      */
-    const DiscreteVariable &variable(const std::string &name) const {
+    const DiscreteVariable& variable(const std::string& name) const {
       return variable(idFromName(name));
     };
 
@@ -297,12 +297,12 @@ namespace gum {
      *                        gum::MarkovNet.
      * @throws NotFound Raised if no variable matches id.
      */
-    void changeVariableName(NodeId id, const std::string &new_name);
+    void changeVariableName(NodeId id, const std::string& new_name);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName(const std::string &name, const std::string &new_name) {
+    void changeVariableName(const std::string& name, const std::string& new_name) {
       changeVariableName(idFromName(name), new_name);
     }
 
@@ -316,16 +316,16 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id or if the variable is not
      * a LabelizedVariable
      */
-    void changeVariableLabel(NodeId id,
-                             const std::string &old_label,
-                             const std::string &new_label);
+    void changeVariableLabel(NodeId             id,
+                             const std::string& old_label,
+                             const std::string& new_label);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableLabel(const std::string &name,
-                             const std::string &old_label,
-                             const std::string &new_label) {
+    void changeVariableLabel(const std::string& name,
+                             const std::string& old_label,
+                             const std::string& new_label) {
       changeVariableLabel(idFromName(name), old_label, new_label);
     }
 
@@ -337,7 +337,7 @@ namespace gum {
      *         gum::MarkovNet.
      * @throw NotFound If var is not in the gum::MarkovNet.
      */
-    NodeId nodeId(const DiscreteVariable &var) const final;
+    NodeId nodeId(const DiscreteVariable& var) const final;
 
     /**
      * @brief Returns a variable's id given its name in the gum::MarkovNet.
@@ -347,7 +347,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::MarkovNet.
      */
-    NodeId idFromName(const std::string &name) const final;
+    NodeId idFromName(const std::string& name) const final;
 
     /**
      * @brief Returns a variable given its name in the gum::MarkovNet.
@@ -358,7 +358,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::MarkovNet.
      */
-    const DiscreteVariable &variableFromName(const std::string &name) const final;
+    const DiscreteVariable& variableFromName(const std::string& name) const final;
     /// @}
 
     // ===========================================================================
@@ -376,15 +376,16 @@ namespace gum {
      *
      * @return a const ref to the factor in the Markov Network
      *
-     * @warning in order to be deterministic, the Potential contains all the vars of the clique sorted by id.
+     * @warning in order to be deterministic, the Potential contains all the vars
+     * of the clique sorted by id.
      */
-    const Potential<GUM_SCALAR> &
-    addFactor(const std::vector<std::string> &varnames);
+    const Potential< GUM_SCALAR >&
+       addFactor(const std::vector< std::string >& varnames);
 
-    const Potential<GUM_SCALAR> &addFactor(const NodeSet &vars);
+    const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
 
-    const Potential<GUM_SCALAR> &
-    addFactor(const Potential<GUM_SCALAR> &factor);
+    const Potential< GUM_SCALAR >&
+       addFactor(const Potential< GUM_SCALAR >& factor);
 
     /**
      * Removes a factor in the MN, and update head's CTP.
@@ -392,9 +393,9 @@ namespace gum {
      * @param vars the NodeSet
      * @throw
      */
-    void eraseFactor(const NodeSet &vars);
+    void eraseFactor(const NodeSet& vars);
 
-    void eraseFactor(const std::vector<std::string> &varnames);
+    void eraseFactor(const std::vector< std::string >& varnames);
     /// @}
 
 
@@ -402,7 +403,7 @@ namespace gum {
     void generateFactors() const;
 
     /// randomly generate factor for a given node in a given structure
-    void generateFactor(const NodeSet &vars) const;
+    void generateFactor(const NodeSet& vars) const;
 
     /// when multiple change in factors/node, no need to update internal structure
     /// many times during the process but only once at the end.
@@ -410,47 +411,46 @@ namespace gum {
 
     void endTopologyTransformation();
 
-  private:
-    bool __topologyTransformationInProgress;
+    private:
+    bool topologyTransformationInProgress__;
 
     /// clear all potentials
-    void __clearFactors();
+    void clearFactors__();
 
     /// copy of potentials from a MN to another, using names of vars as ref.
-    void __copyFactors(const MarkovNet<GUM_SCALAR> &source);
+    void copyFactors__(const MarkovNet< GUM_SCALAR >& source);
 
     /// rebuild the graph after strucural changes in the factors
-    void __rebuildGraph();
+    void rebuildGraph__();
 
     /// the map between variable and id
-    VariableNodeMap __varMap;
+    VariableNodeMap varMap__;
 
     /// the factors
-    FactorTable<GUM_SCALAR> __factors;
+    FactorTable< GUM_SCALAR > factors__;
 
-    const Potential<GUM_SCALAR> *
-    __addFactor(const NodeSet &vars,
-                const Potential<GUM_SCALAR> *src = nullptr);
+    const Potential< GUM_SCALAR >*
+       addFactor__(const NodeSet&                 vars,
+                   const Potential< GUM_SCALAR >* src = nullptr);
 
-    void __eraseFactor(const NodeSet &vars);
+    void eraseFactor__(const NodeSet& vars);
 
-  public:
-    using IMarkovNet<GUM_SCALAR>::graph;
-    using IMarkovNet<GUM_SCALAR>::size;
-    using IMarkovNet<GUM_SCALAR>::nodes;
-    using IMarkovNet<GUM_SCALAR>::log10DomainSize;
+    public:
+    using IMarkovNet< GUM_SCALAR >::graph;
+    using IMarkovNet< GUM_SCALAR >::size;
+    using IMarkovNet< GUM_SCALAR >::nodes;
+    using IMarkovNet< GUM_SCALAR >::log10DomainSize;
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template<typename GUM_SCALAR>
-  std::ostream &operator<<(std::ostream &output,
-                           const MarkovNet<GUM_SCALAR> &bn);
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                  output,
+                           const MarkovNet< GUM_SCALAR >& bn);
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 
-  extern template
-  class MarkovNet<double>;
+  extern template class MarkovNet< double >;
 
 #endif
 

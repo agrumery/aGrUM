@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A DBRowGenerator class that returns incomplete rows as EM would do
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/database/DBRowGeneratorIdentity.h>
 
@@ -54,7 +54,7 @@ namespace gum {
        const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(column_types, goal, alloc),
-        _bn(&bn), _nodeId2columns(nodeId2columns) {
+        bn_(&bn), nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(DBRowGeneratorWithBN);
     }
 
@@ -66,7 +66,7 @@ namespace gum {
        const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-        _bn(from._bn), _nodeId2columns(from._nodeId2columns) {
+        bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(DBRowGeneratorWithBN);
     }
 
@@ -85,7 +85,7 @@ namespace gum {
        const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-        _bn(from._bn), _nodeId2columns(std::move(from._nodeId2columns)) {
+        bn_(from.bn_), nodeId2columns_(std::move(from.nodeId2columns_)) {
       GUM_CONS_MOV(DBRowGeneratorWithBN);
     }
 
@@ -112,8 +112,8 @@ namespace gum {
           const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(from);
-        _bn = from._bn;
-        _nodeId2columns = from._nodeId2columns;
+        bn_ = from.bn_;
+        nodeId2columns_ = from.nodeId2columns_;
       }
 
       return *this;
@@ -127,8 +127,8 @@ namespace gum {
           DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(std::move(from));
-        _bn = from._bn;
-        _nodeId2columns = std::move(from._nodeId2columns);
+        bn_ = from.bn_;
+        nodeId2columns_ = std::move(from.nodeId2columns_);
       }
 
       return *this;
@@ -139,7 +139,7 @@ namespace gum {
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE void DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::setBayesNet(
        const BayesNet< GUM_SCALAR >& new_bn) {
-      _bn = &new_bn;
+      bn_ = &new_bn;
     }
 
 
@@ -147,7 +147,7 @@ namespace gum {
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE const BayesNet< GUM_SCALAR >&
                  DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::getBayesNet() const {
-      return *_bn;
+      return *bn_;
     }
 
 

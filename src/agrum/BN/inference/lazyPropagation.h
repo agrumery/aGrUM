@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Implementation of a Shafer-Shenoy's-like version of lazy propagation
  * for inference in Bayesian Networks.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LAZY_PROPAGATION_H
 #define GUM_LAZY_PROPAGATION_H
@@ -146,13 +146,13 @@ namespace gum {
 
     protected:
     /// fired after a new evidence is inserted
-    void _onEvidenceAdded(const NodeId id, bool isHardEvidence) final;
+    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) final;
 
     /// fired before an evidence is removed
-    void _onEvidenceErased(const NodeId id, bool isHardEvidence) final;
+    void onEvidenceErased_(const NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
-    void _onAllEvidenceErased(bool has_hard_evidence) final;
+    void onAllEvidenceErased_(bool has_hard_evidence) final;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -161,67 +161,67 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) final;
+    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) final;
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    void _onMarginalTargetAdded(const NodeId id) final;
+    void onMarginalTargetAdded_(const NodeId id) final;
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    void _onMarginalTargetErased(const NodeId id) final;
+    void onMarginalTargetErased_(const NodeId id) final;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) final;
+    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    void _onJointTargetAdded(const NodeSet& set) final;
+    void onJointTargetAdded_(const NodeSet& set) final;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    void _onJointTargetErased(const NodeSet& set) final;
+    void onJointTargetErased_(const NodeSet& set) final;
 
     /// fired after all the nodes of the BN are added as single targets
-    void _onAllMarginalTargetsAdded() final;
+    void onAllMarginalTargetsAdded_() final;
 
     /// fired before a all the single targets are removed
-    void _onAllMarginalTargetsErased() final;
+    void onAllMarginalTargetsErased_() final;
 
     /// fired before a all the joint targets are removed
-    void _onAllJointTargetsErased() final;
+    void onAllJointTargetsErased_() final;
 
     /// fired before a all single and joint_targets are removed
-    void _onAllTargetsErased() final;
+    void onAllTargetsErased_() final;
 
     /// fired when the stage is changed
-    void _onStateChanged() final{};
+    void onStateChanged_() final{};
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNStructure and
-     * _makeInference. */
-    void _updateOutdatedBNStructure() final;
+     * known and can be changed between updateOutdatedBNStructure_ and
+     * makeInference_. */
+    void updateOutdatedBNStructure_() final;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _updateOutdatedBNPotentials and
-     * _makeInference. */
-    void _updateOutdatedBNPotentials() final;
+     * known and can be changed between updateOutdatedBNPotentials_ and
+     * makeInference_. */
+    void updateOutdatedBNPotentials_() final;
 
     /// called when the inference has to be performed effectively
-    /** Once the inference is done, _fillPosterior can be called. */
-    void _makeInference() final;
+    /** Once the inference is done, fillPosterior_ can be called. */
+    void makeInference_() final;
 
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
-    const Potential< GUM_SCALAR >& _posterior(NodeId id) final;
+    const Potential< GUM_SCALAR >& posterior_(NodeId id) final;
 
     /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) final;
+    const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& set) final;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -231,85 +231,85 @@ namespace gum {
      * @param declared_target the joint target declared by the user that contains
      * set */
     const Potential< GUM_SCALAR >&
-       _jointPosterior(const NodeSet& wanted_target,
+       jointPosterior_(const NodeSet& wanted_target,
                        const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
+    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeSet& set) final;
+    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(const NodeSet& set) final;
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* > __PotentialSet;
+    typedef Set< const Potential< GUM_SCALAR >* > PotentialSet__;
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-       __PotentialSetIterator;
+       PotentialSetIterator__;
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType __find_relevant_potential_type;
+    RelevantPotentialsFinderType find_relevant_potential_type__;
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void (LazyPropagation< GUM_SCALAR >::*__findRelevantPotentials)(
+    void (LazyPropagation< GUM_SCALAR >::*findRelevantPotentials__)(
        Set< const Potential< GUM_SCALAR >* >& pot_list,
        Set< const DiscreteVariable* >&        kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType __barren_nodes_type;
+    FindBarrenNodesType barren_nodes_type__;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (*__projection_op)(
+    Potential< GUM_SCALAR >* (*projection_op__)(
        const Potential< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&){LPNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (*__combination_op)(const Potential< GUM_SCALAR >&,
+    Potential< GUM_SCALAR >* (*combination_op__)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
        LPNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
-    Triangulation* __triangulation;
+    Triangulation* triangulation__;
 
     /** @brief indicates whether we should transform junction trees into
      * binary join trees */
-    bool __use_binary_join_tree{true};
+    bool use_binary_join_tree__{true};
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target, __graph will be
+     * instance if the BN is A->B->C and only B is a target, graph__ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
-    UndiGraph __graph;
+    UndiGraph graph__;
 
     /// the join (or junction) tree used to answer the last inference query
-    JoinTree* __JT{nullptr};
+    JoinTree* JT__{nullptr};
 
     /// the junction tree to answer the last inference query
-    JunctionTree* __junctionTree{nullptr};
+    JunctionTree* junctionTree__{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
      * the current JT is no more appropriate for inference. This variable
      * enables us to keep track of this. */
-    bool __is_new_jt_needed{true};
+    bool is_new_jt_needed__{true};
 
-    /// a clique node used as a root in each connected component of __JT
+    /// a clique node used as a root in each connected component of JT__
     /** For usual probabilistic inference, roots is useless. This is useful
      * when computing the probability of evidence. In this case, we need to
      * compute this probability in every connected component and multiply
      * them to get the overall probability of evidence.
-     * @warning __roots should be computed only when evidenceProbability
+     * @warning roots__ should be computed only when evidenceProbability
      * is called. */
-    NodeSet __roots;
+    NodeSet roots__;
 
-    /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId > __node_to_clique;
+    /// for each node of graph__ (~ in the Bayes net), associate an ID in the JT
+    HashTable< NodeId, NodeId > node_to_clique__;
 
     /// for each set target, assign a clique in the JT that contains it
-    HashTable< NodeSet, NodeId > __joint_target_to_clique;
+    HashTable< NodeSet, NodeId > joint_target_to_clique__;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
@@ -317,142 +317,142 @@ namespace gum {
      * the entry for the clique does exist. Note that clique potentials
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. */
-    NodeProperty< __PotentialSet > __clique_potentials;
+    NodeProperty< PotentialSet__ > clique_potentials__;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
      * directions) whether the arc received any potential or not. */
-    ArcProperty< __PotentialSet > __separator_potentials;
+    ArcProperty< PotentialSet__ > separator_potentials__;
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
      * been created.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
-     * __hard_ev_projected_CPTs. */
-    ArcProperty< __PotentialSet > __created_potentials;
+     * hard_ev_projected_CPTs__. */
+    ArcProperty< PotentialSet__ > created_potentials__;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > __target_posteriors;
+    NodeProperty< const Potential< GUM_SCALAR >* > target_posteriors__;
 
     /// the set of set target posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable< NodeSet, const Potential< GUM_SCALAR >* > __joint_target_posteriors;
+    HashTable< NodeSet, const Potential< GUM_SCALAR >* > joint_target_posteriors__;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
      * @TODO remove this constant and insert the notion of a constant into
      * potentials/multidim arrays */
-    NodeProperty< GUM_SCALAR > __constants;
+    NodeProperty< GUM_SCALAR > constants__;
 
     /// indicates whether a message (from one clique to another) has been
     /// computed
     /** Here, all the messages, computed or not, are put into the property, only
      * the Boolean makes the difference between messages computed and those that
      * were not computed */
-    ArcProperty< bool > __messages_computed;
+    ArcProperty< bool > messages_computed__;
 
     /// the soft evidence stored in the cliques per their assigned node in the BN
-    /** This variable is useful for method _updateOutdatedBNPotentials: it
+    /** This variable is useful for method updateOutdatedBNPotentials_: it
      * enables to know which soft evidence should be removed/added into the
      * cliques of the join tree.
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
-    NodeProperty< const Potential< GUM_SCALAR >* > __node_to_soft_evidence;
+    NodeProperty< const Potential< GUM_SCALAR >* > node_to_soft_evidence__;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > __hard_ev_projected_CPTs;
+    NodeProperty< const Potential< GUM_SCALAR >* > hard_ev_projected_CPTs__;
 
     /// the hard evidence nodes which were projected in CPTs
-    NodeSet __hard_ev_nodes;
+    NodeSet hard_ev_nodes__;
 
     /// the possible types of evidence changes
     enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
-    NodeProperty< EvidenceChangeType > __evidence_changes;
+    NodeProperty< EvidenceChangeType > evidence_changes__;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR __1_minus_epsilon{GUM_SCALAR(1.0 - 1e-6)};
+    const GUM_SCALAR one_minus_epsilon__{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// check whether a new join tree is really needed for the next inference
-    bool __isNewJTNeeded() const;
+    bool isNewJTNeeded__() const;
 
     /// create a new junction tree as well as its related data structures
-    void __createNewJT();
+    void createNewJT__();
     /// sets the operator for performing the projections
-    void __setProjectionFunction(Potential< GUM_SCALAR >* (*proj)(
+    void setProjectionFunction__(Potential< GUM_SCALAR >* (*proj)(
        const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void __setCombinationFunction(Potential< GUM_SCALAR >* (*comb)(
+    void setCombinationFunction__(Potential< GUM_SCALAR >* (*comb)(
        const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
-    void __diffuseMessageInvalidations(NodeId   from_id,
+    void diffuseMessageInvalidations__(NodeId   from_id,
                                        NodeId   to_id,
                                        NodeSet& invalidated_cliques);
 
     /// invalidate all messages, posteriors and created potentials
-    void __invalidateAllMessages();
+    void invalidateAllMessages__();
 
-    /// compute a root for each connected component of __JT
-    void __computeJoinTreeRoots();
-
-    /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    /// compute a root for each connected component of JT__
+    void computeJoinTreeRoots__();
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation2(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    void findRelevantPotentialsWithdSeparation__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsWithdSeparation3(
-       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+    void findRelevantPotentialsWithdSeparation2__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsGetAll(__PotentialSet&                 pot_list,
+    void findRelevantPotentialsWithdSeparation3__(
+       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void findRelevantPotentialsGetAll__(PotentialSet__&                 pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsXX(__PotentialSet&                 pot_list,
+    void findRelevantPotentialsXX__(PotentialSet__&                 pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-    __PotentialSet
-       __removeBarrenVariables(__PotentialSet&                 pot_list,
+    PotentialSet__
+       removeBarrenVariables__(PotentialSet__&                 pot_list,
                                Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut(__PotentialSet                  pot_list,
+    PotentialSet__ marginalizeOut__(PotentialSet__                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void __produceMessage(NodeId from_id, NodeId to_id);
+    void produceMessage__(NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void __collectMessage(NodeId id, NodeId from);
+    void collectMessage__(NodeId id, NodeId from);
   };
 
 

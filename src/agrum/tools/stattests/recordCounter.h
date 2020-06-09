@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * This class is the one to be called by scores and independence tests to
  * compute countings of observations from tabular databases.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_RECORD_COUNTER_H
 #define GUM_LEARNING_RECORD_COUNTER_H
@@ -250,8 +250,8 @@ namespace gum {
        * @return a vector containing the multidimensional contingency table
        * over all the variables corresponding to the ids passed in argument
        * (both at the left hand side and right hand side of the conditioning
-       * bar of the IdCondSet). The first dimension is that of the first variable in
-       * the IdCondSet, i.e., when its value increases by 1, the offset in the
+       * bar of the IdCondSet). The first dimension is that of the first variable
+       * in the IdCondSet, i.e., when its value increases by 1, the offset in the
        * output vector also increases by 1. The second dimension is that of the
        * second variable in the IdCondSet, i.e., when its value increases by 1, the
        * offset in the ouput vector increases by the domain size of the first
@@ -278,7 +278,8 @@ namespace gum {
        * one variable is not of a discrete nature.
        */
       const std::vector< double, ALLOC< double > >&
-         counts(const IdCondSet< ALLOC >& ids, const bool check_discrete_vars = false);
+         counts(const IdCondSet< ALLOC >& ids,
+                const bool                check_discrete_vars = false);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -330,13 +331,13 @@ namespace gum {
       // the parsers used by the threads
       std::vector< ThreadData< DBRowGeneratorParser< ALLOC > >,
                    ALLOC< ThreadData< DBRowGeneratorParser< ALLOC > > > >
-         __parsers;
+         parsers__;
 
       // the set of ranges of the database's rows indices over which the user
       // wishes to perform the countings
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-         __ranges;
+         ranges__;
 
       // the ranges actually used by the threads: there is a hopefully clever
       // algorithm that split the rows ranges into another set of ranges that
@@ -345,50 +346,50 @@ namespace gum {
       // rows. These sets are precisely what are stored in the field below
       mutable std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >
-         __thread_ranges;
+         thread_ranges__;
 
       // the mapping from the NodeIds of the variables to the indices of the
       // columns in the database
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > __nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > nodeId2columns__;
 
       // the last database-parsed countings
-      std::vector< double, ALLOC< double > > __last_DB_countings;
+      std::vector< double, ALLOC< double > > last_DB_countings__;
 
       // the ids of the nodes for the last database-parsed countings
-      IdCondSet< ALLOC > __last_DB_ids;
+      IdCondSet< ALLOC > last_DB_ids__;
 
-      // the last countings deduced from __last_DB_countings
-      std::vector< double, ALLOC< double > > __last_nonDB_countings;
+      // the last countings deduced from last_DB_countings__
+      std::vector< double, ALLOC< double > > last_nonDB_countings__;
 
-      // the ids of the nodes of last countings deduced from __last_DB_countings
-      IdCondSet< ALLOC > __last_nonDB_ids;
+      // the ids of the nodes of last countings deduced from last_DB_countings__
+      IdCondSet< ALLOC > last_nonDB_ids__;
 
       // the maximal number of threads that the record counter can use
-      mutable std::size_t __max_nb_threads{
+      mutable std::size_t max_nb_threads__{
          std::size_t(gum::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context
-      mutable std::size_t __min_nb_rows_per_thread{100};
+      mutable std::size_t min_nb_rows_per_thread__{100};
 
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when
-      // __nodeId2columns is empty (which means that there is an identity mapping)
+      // nodeId2columns__ is empty (which means that there is an identity mapping)
       HashTable< NodeId, std::size_t >
-         __getNodeIds2Columns(const IdCondSet< ALLOC >& ids) const;
+         getNodeIds2Columns__(const IdCondSet< ALLOC >& ids) const;
 
       /// extracts some new countings from previously computed ones
-      std::vector< double, ALLOC< double > >& __extractFromCountings(
-         const IdCondSet< ALLOC >&                         subset_ids,
-         const IdCondSet< ALLOC >&                         superset_ids,
+      std::vector< double, ALLOC< double > >& extractFromCountings__(
+         const IdCondSet< ALLOC >&                     subset_ids,
+         const IdCondSet< ALLOC >&                     superset_ids,
          const std::vector< double, ALLOC< double > >& superset_vect);
 
       /// parse the database to produce new countings
       std::vector< double, ALLOC< double > >&
-         __countFromDatabase(const IdCondSet< ALLOC >& ids);
+         countFromDatabase__(const IdCondSet< ALLOC >& ids);
 
       /// the method used by threads to produce countings by parsing the database
-      void __threadedCount(
+      void threadedCount__(
          const std::size_t              range_begin,
          const std::size_t              range_end,
          DBRowGeneratorParser< ALLOC >& parser,
@@ -402,7 +403,7 @@ namespace gum {
        * bound and the latter is also lower than or equal to the number of rows
        * in the database. */
       template < template < typename > class XALLOC >
-      void __checkRanges(
+      void checkRanges__(
          const std::vector< std::pair< std::size_t, std::size_t >,
                             XALLOC< std::pair< std::size_t, std::size_t > > >&
             new_ranges) const;
@@ -410,17 +411,17 @@ namespace gum {
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is
        * of a continuous nature. */
-      void __checkDiscreteVariables(const IdCondSet< ALLOC >& ids) const;
+      void checkDiscreteVariables__(const IdCondSet< ALLOC >& ids) const;
 
       /// compute and raise the exception when some variables are continuous
-      /** This method is used by __checkDiscreteVariables to determine the
+      /** This method is used by checkDiscreteVariables__ to determine the
        * appropriate message to include in the TypeError exception raised when
        * some variables over which we should perform countings are continuous. */
-      void __raiseCheckException(
+      void raiseCheckException__(
          const std::vector< std::string, ALLOC< std::string > >& bad_vars) const;
 
       /// sets the ranges within which each thread will perform its computations
-      void __dispatchRangesToThreads();
+      void dispatchRangesToThreads__();
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

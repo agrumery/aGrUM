@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of InfluenceDiagramGenerator
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
@@ -35,8 +35,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    __cptGenerator = new SimpleCPTGenerator< GUM_SCALAR >();
-    __utGenerator = new SimpleUTGenerator();
+    cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
+    utGenerator__ = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -47,8 +47,8 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
      ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    __cptGenerator = cptGenerator;
-    __utGenerator = new SimpleUTGenerator();
+    cptGenerator__ = cptGenerator;
+    utGenerator__ = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -59,8 +59,8 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
      UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    __cptGenerator = new SimpleCPTGenerator< GUM_SCALAR >();
-    __utGenerator = utGenerator;
+    cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
+    utGenerator__ = utGenerator;
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -73,16 +73,16 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
      ICPTGenerator< GUM_SCALAR >* cptGenerator, UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    __cptGenerator = cptGenerator;
-    __utGenerator = utGenerator;
+    cptGenerator__ = cptGenerator;
+    utGenerator__ = utGenerator;
   }
 
   // Destructor.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::~InfluenceDiagramGenerator() {
     GUM_DESTRUCTOR(InfluenceDiagramGenerator);
-    delete __cptGenerator;
-    delete __utGenerator;
+    delete cptGenerator__;
+    delete utGenerator__;
   }
 
   // Generates an influence diagram using floats.
@@ -145,21 +145,21 @@ namespace gum {
     // And fill the CPTs and UTs
     for (Size i = 0; i < nbrNodes; ++i)
       if (influenceDiagram->isChanceNode(map[i]))
-        __cptGenerator->generateCPT(
+        cptGenerator__->generateCPT(
            influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
            influenceDiagram->cpt(map[i]));
       else if (influenceDiagram->isUtilityNode(map[i]))
-        __utGenerator->generateUT(influenceDiagram->utility(map[i]).pos(
+        utGenerator__->generateUT(influenceDiagram->utility(map[i]).pos(
                                      influenceDiagram->variable(map[i])),
                                   influenceDiagram->utility(map[i]));
 
-    __checkTemporalOrder(influenceDiagram);
+    checkTemporalOrder__(influenceDiagram);
 
     return influenceDiagram;
   }
 
   template < typename GUM_SCALAR >
-  void InfluenceDiagramGenerator< GUM_SCALAR >::__checkTemporalOrder(
+  void InfluenceDiagramGenerator< GUM_SCALAR >::checkTemporalOrder__(
      InfluenceDiagram< GUM_SCALAR >* infdiag) {
     if (!infdiag->decisionOrderExists()) {
       Sequence< NodeId > order = infdiag->topologicalOrder(true);

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Generic class for manipulating lists.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_LIST_H
@@ -71,16 +71,16 @@ namespace gum {
 #endif   // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // __list_end is a 'pseudo static' iterator that represents both end and rend
+  // list_end__ is a 'pseudo static' iterator that represents both end and rend
   // iterators for all Lists (whatever their type). This global variable
-  // avoids creating the same iterators whithin every List instance (this would
+  // avoids creating the same iterators within every List instance (this would
   // be quite inefficient as end and rend are precisely identical for all
   // lists).
-  // The type of __list_end is a pointer to void because C++ allows pointers to
+  // The type of list_end__ is a pointer to void because C++ allows pointers to
   // void to be cast into pointers to other types (and conversely). This avoids
   // the weird strict-aliasing rule warning
-  extern const void* const __list_end_safe;
-  extern const void* const __list_end;
+  extern const void* const list_end_safe__;
+  extern const void* const list_end__;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
@@ -241,12 +241,12 @@ namespace gum {
 
     /// @{
     /// Chaining toward the adjacent elements.
-    ListBucket< Val >* __prev{nullptr};
-    ListBucket< Val >* __next{nullptr};
+    ListBucket< Val >* prev__{nullptr};
+    ListBucket< Val >* next__{nullptr};
     /// @}
 
     /// Val is the value contained in the box.
-    Val __val;
+    Val val__;
   };
 
   // ===========================================================================
@@ -1299,19 +1299,19 @@ namespace gum {
 
     private:
     /// A pointer on the first element of the chained list.
-    ListBucket< Val >* __deb_list{nullptr};
+    ListBucket< Val >* deb_list__{nullptr};
 
     /// A pointer on the last element of the chained list.
-    ListBucket< Val >* __end_list{nullptr};
+    ListBucket< Val >* end_list__{nullptr};
 
     /// The number of elements in the list.
-    Size __nb_elements{Size(0)};
+    Size nb_elements__{Size(0)};
 
     /// The list of "safe" iterators attached to the list.
-    mutable std::vector< const_iterator_safe* > __safe_iterators;
+    mutable std::vector< const_iterator_safe* > safe_iterators__;
 
     /// The allocator for the buckets.
-    mutable BucketAllocator __alloc_bucket;
+    mutable BucketAllocator alloc_bucket__;
 
     /**
      * @brief A function used to perform copies of elements of Lists.
@@ -1323,7 +1323,7 @@ namespace gum {
      * @param src The gum::List to copy.
      */
     template < typename OtherAlloc >
-    void __copy_elements(const List< Val, OtherAlloc >& src);
+    void copy_elements__(const List< Val, OtherAlloc >& src);
 
     /**
      * @brief Returns the bucket corresponding to the ith position in the list.
@@ -1334,7 +1334,7 @@ namespace gum {
      * @param i The position of the returned element.
      * @return Returns the gum::ListBucket of the ith element.
      */
-    ListBucket< Val >* __getIthBucket(Size i) const noexcept;
+    ListBucket< Val >* getIthBucket__(Size i) const noexcept;
 
     /**
      * @brief Returns the bucket corresponding to a given value.
@@ -1349,7 +1349,7 @@ namespace gum {
      * return.
      * @return Returns the bucket corresponding to a given value.
      */
-    ListBucket< Val >* __getBucket(const Val& val) const noexcept;
+    ListBucket< Val >* getBucket__(const Val& val) const noexcept;
 
     /**
      * @brief Removes an element from a chained list.
@@ -1362,21 +1362,21 @@ namespace gum {
      * @param bucket A pointer on the bucket in the chained list
      * we wish to remove.
      */
-    void __erase(ListBucket< Val >* bucket);
+    void erase__(ListBucket< Val >* bucket);
 
     /**
      * @brief Create a new bucket with a given value.
      * @param val The value of the new bucket.
      * @return Returns the bucket holding val.
      */
-    ListBucket< Val >* __createBucket(const Val& val) const;
+    ListBucket< Val >* createBucket__(const Val& val) const;
 
     /**
      * @brief Create a new bucket with a given value.
      * @param val The value of the new bucket.
      * @return Returns the bucket holding val.
      */
-    ListBucket< Val >* __createBucket(Val&& val) const;
+    ListBucket< Val >* createBucket__(Val&& val) const;
 
     /**
      * Create an emplace bucket.
@@ -1385,21 +1385,21 @@ namespace gum {
      * @return Returns the bucket holding the new value.
      */
     template < typename... Args >
-    ListBucket< Val >* __createEmplaceBucket(Args&&... args) const;
+    ListBucket< Val >* createEmplaceBucket__(Args&&... args) const;
 
     /**
      * @brief Insert a bucket at the front of the list.
      * @param new_elt The new element pushed at the front of the gum::List.
      * @return Returns a refefence over the value stored in the gum::List.
      */
-    Val& __pushFront(ListBucket< Val >* new_elt);
+    Val& pushFront__(ListBucket< Val >* new_elt);
 
     /**
      * @brief Insert a bucket at the end of the list.
      * @param new_elt The new element pushed at the end of the gum::List.
      * @return Returns a refefence over the value stored in the gum::List.
      */
-    Val& __pushBack(ListBucket< Val >* new_elt);
+    Val& pushBack__(ListBucket< Val >* new_elt);
 
     /**
      * @brief Insert a new bucket before another one.
@@ -1407,7 +1407,7 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertBefore(ListBucket< Val >* new_elt,
+    Val& insertBefore__(ListBucket< Val >* new_elt,
                         ListBucket< Val >* current_elt);
 
     /**
@@ -1416,7 +1416,7 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertAfter(ListBucket< Val >* new_elt, ListBucket< Val >* current_elt);
+    Val& insertAfter__(ListBucket< Val >* new_elt, ListBucket< Val >* current_elt);
 
     /**
      * @brief Inserts a new bucket before or after the location pointed to by
@@ -1426,7 +1426,7 @@ namespace gum {
      * @param place Where to insert the new element relatively to the iterator.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insert(const const_iterator_safe& iter,
+    Val& insert__(const const_iterator_safe& iter,
                   ListBucket< Val >*         new_elt,
                   location                   place);
 
@@ -1438,7 +1438,7 @@ namespace gum {
      * @param place Where to insert the new element relatively to the iterator.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insert(const const_iterator& iter,
+    Val& insert__(const const_iterator& iter,
                   ListBucket< Val >*    new_elt,
                   location              place);
 
@@ -1725,10 +1725,10 @@ namespace gum {
     friend class List;
 
     /// The bucket in the chained list pointed to by the iterator.
-    ListBucket< Val >* __bucket{nullptr};
+    ListBucket< Val >* bucket__{nullptr};
 
     /// Returns the bucket the iterator is pointing to.
-    ListBucket< Val >* __getBucket() const noexcept;
+    ListBucket< Val >* getBucket__() const noexcept;
   };
 
   /// For STL compliance, a distance operator.
@@ -2250,33 +2250,33 @@ namespace gum {
     /// @}
 
     /// The list the iterator is pointing to.
-    const List< Val, std::allocator< Val > >* __list{nullptr};
+    const List< Val, std::allocator< Val > >* list__{nullptr};
 
     /// The bucket in the chained list pointed to by the iterator.
-    ListBucket< Val >* __bucket{nullptr};
+    ListBucket< Val >* bucket__{nullptr};
 
     /// The bucket we should start from when we are pointing on a deleted
     /// bucket and we decide to do a ++.
-    ListBucket< Val >* __next_current_bucket{nullptr};
+    ListBucket< Val >* next_current_bucket__{nullptr};
 
     /// The bucket we should start from when we are pointing on a deleted
     /// bucket and we decide to do a --.
-    ListBucket< Val >* __prev_current_bucket{nullptr};
+    ListBucket< Val >* prev_current_bucket__{nullptr};
 
     /// Indicates whether the bucket the iterator points to has been deleted.
-    bool __null_pointing{false};
+    bool null_pointing__{false};
 
     /// Returns the bucket the iterator is pointing to.
-    ListBucket< Val >* __getBucket() const noexcept;
+    ListBucket< Val >* getBucket__() const noexcept;
 
     /// Remove the iterator for its list' safe iterators list.
-    void __removeFromSafeList() const;
+    void removeFromSafeList__() const;
 
     /// Makes the iterator point to the next element in the List.
-    ListConstIteratorSafe< Val >& __opPlus(Size i) noexcept;
+    ListConstIteratorSafe< Val >& opPlus__(Size i) noexcept;
 
     /// Makes the iterator point to i elements before in the List.
-    ListConstIteratorSafe< Val >& __opMinus(Size i) noexcept;
+    ListConstIteratorSafe< Val >& opMinus__(Size i) noexcept;
   };
 
   /// For STL compliance, a distance operator.

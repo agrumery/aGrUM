@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief an operator used by scheduled inferences to store tables into
  *separators
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -42,8 +42,8 @@ namespace gum {
      Arc separator) :
       ScheduleOperation< GUM_SCALAR >(
          ScheduleOperation< GUM_SCALAR >::Type::SEPARATOR_STORE_MULTIDIM),
-      __table(table), __tableSet(&separator_tables), __separator(separator),
-      __args(0) {
+      table__(table), tableSet__(&separator_tables), separator__(separator),
+      args__(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleSeparatorStoreMultiDim);
   }
@@ -53,8 +53,8 @@ namespace gum {
   ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::ScheduleSeparatorStoreMultiDim(
      const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& from) :
       ScheduleOperation< GUM_SCALAR >(from),
-      __table(from.__table), __tableSet(from.__tableSet),
-      __separator(from.__separator), __args(0) {
+      table__(from.table__), tableSet__(from.tableSet__),
+      separator__(from.separator__), args__(0) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleSeparatorStoreMultiDim);
   }
@@ -72,7 +72,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleSeparatorStoreMultiDim);
 
-    if (__args) delete __args;
+    if (args__) delete args__;
   }
 
   /// copy operator
@@ -83,13 +83,13 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      __table = from.__table;
-      __tableSet = from.__tableSet;
-      __separator = from.__separator;
+      table__ = from.table__;
+      tableSet__ = from.tableSet__;
+      separator__ = from.separator__;
 
-      if (__args) {
-        __args->clear();
-        __args->insert(&__table);
+      if (args__) {
+        args__->clear();
+        args__->insert(&table__);
       }
     }
 
@@ -104,8 +104,8 @@ namespace gum {
 
     const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op =
        static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((__table == real_op.__table) && (__tableSet == real_op.__tableSet)
-            && (__separator == real_op.__separator));
+    return ((table__ == real_op.table__) && (tableSet__ == real_op.tableSet__)
+            && (separator__ == real_op.separator__));
   }
 
   /// operator !=
@@ -116,21 +116,21 @@ namespace gum {
 
     const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op =
        static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((__table != real_op.__table) || (__tableSet != real_op.__tableSet)
-            || (__separator != real_op.__separator));
+    return ((table__ != real_op.table__) || (tableSet__ != real_op.tableSet__)
+            || (separator__ != real_op.separator__));
   }
 
   /// executes the operation
   template < typename GUM_SCALAR >
   void ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::execute() {
-    const MultiDimImplementation< GUM_SCALAR >& multidim = __table.multiDim();
+    const MultiDimImplementation< GUM_SCALAR >& multidim = table__.multiDim();
 
-    if (!__tableSet->exists(__separator)) {
-      __tableSet->insert(__separator,
+    if (!tableSet__->exists(separator__)) {
+      tableSet__->insert(separator__,
                          Set< const MultiDimImplementation< GUM_SCALAR >* >());
     }
 
-    __tableSet->operator[](__separator).insert(&multidim);
+    tableSet__->operator[](separator__).insert(&multidim);
   }
 
   /** @brief returns an estimation of the number of elementary operations
@@ -151,12 +151,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::multiDimArgs() const {
-    if (!__args) {
-      __args = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      __args->insert(&__table);
+    if (!args__) {
+      args__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+      args__->insert(&table__);
     }
 
-    return *__args;
+    return *args__;
   }
 
   /// returns the set of multidims that should be the result of the operation
@@ -172,9 +172,9 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion(
+      __debug__::inc_deletion__(
          "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
-      __debug__::__inc_deletion("SequenceImplementation",
+      __debug__::inc_deletion__("SequenceImplementation",
                                 __FILE__,
                                 __LINE__,
                                 "destructor of",
@@ -189,7 +189,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::toString() const {
     std::stringstream s;
-    s << "store ( " << __table.toString() << ", separator " << __separator << " )";
+    s << "store ( " << table__.toString() << ", separator " << separator__ << " )";
     return s.str();
   }
 

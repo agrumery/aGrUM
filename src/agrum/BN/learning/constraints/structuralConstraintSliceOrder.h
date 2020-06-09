@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@
  * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
  * do not belong to the property) are free.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
@@ -231,7 +231,7 @@ namespace gum {
 
       protected:
       /// slices to which belong the nodes
-      NodeProperty< NodeId > _SliceOrder__order;
+      NodeProperty< NodeId > SliceOrder__order_;
     };
 
   } /* namespace learning */

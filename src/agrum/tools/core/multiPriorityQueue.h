@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Priority queues in which the same element can appear several times.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MULTI_PRIORITY_QUEUE_H
@@ -477,16 +477,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, const Val* >, HeapAlloc > __heap;
+    std::vector< std::pair< Priority, const Val* >, HeapAlloc > heap__;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, std::vector< Size >, IndexAlloc > __indices;
+    HashTable< Val, std::vector< Size >, IndexAlloc > indices__;
 
     /// The number of elements in the heap.
-    Size __nb_elements{0};
+    Size nb_elements__{0};
 
     /// Comparison function.
-    Cmp __cmp;
+    Cmp cmp__;
   };
 
 } /* namespace gum */

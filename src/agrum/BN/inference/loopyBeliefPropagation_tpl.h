@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ namespace gum {
     this->setVerbosity(LBP_DEFAULT_VERBOSITY);
     this->setPeriodSize(LBP_DEFAULT_PERIOD_SIZE);
 
-    __init_messages();
+    init_messages__();
   }
 
   /// destructor
@@ -68,34 +68,34 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void LoopyBeliefPropagation< GUM_SCALAR >::__init_messages() {
-    __messages.clear();
+  void LoopyBeliefPropagation< GUM_SCALAR >::init_messages__() {
+    messages__.clear();
     for (const auto& tail: this->BN().nodes()) {
       Potential< GUM_SCALAR > p;
       p.add(this->BN().variable(tail));
       p.fill(static_cast< GUM_SCALAR >(1));
 
       for (const auto& head: this->BN().children(tail)) {
-        __messages.insert(Arc(head, tail), p);
-        __messages.insert(Arc(tail, head), p);
+        messages__.insert(Arc(head, tail), p);
+        messages__.insert(Arc(tail, head), p);
       }
     }
   }
 
   template < typename GUM_SCALAR >
-  void LoopyBeliefPropagation< GUM_SCALAR >::_updateOutdatedBNStructure() {
-    __init_messages();
+  void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedBNStructure_() {
+    init_messages__();
   }
 
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X) {
+     LoopyBeliefPropagation< GUM_SCALAR >::computeProdPi__(NodeId X) {
     const auto& varX = this->BN().variable(X);
 
     auto piX = this->BN().cpt(X);
     for (const auto& U: this->BN().parents(X)) {
-      piX *= __messages[Arc(U, X)];
+      piX *= messages__[Arc(U, X)];
     }
     piX = piX.margSumIn({&varX});
 
@@ -104,13 +104,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X,
+     LoopyBeliefPropagation< GUM_SCALAR >::computeProdPi__(NodeId X,
                                                            NodeId except) {
     const auto& varX = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
     for (const auto& U: this->BN().parents(X)) {
-      if (U != except) { piXexcept *= __messages[Arc(U, X)]; }
+      if (U != except) { piXexcept *= messages__[Arc(U, X)]; }
     }
     piXexcept = piXexcept.margSumIn({&varX, &varExcept});
     return piXexcept;
@@ -119,7 +119,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X) {
+     LoopyBeliefPropagation< GUM_SCALAR >::computeProdLambda__(NodeId X) {
     Potential< GUM_SCALAR > lamX;
     if (this->hasEvidence(X)) {
       lamX = *(this->evidence()[X]);
@@ -128,7 +128,7 @@ namespace gum {
       lamX.fill(1);
     }
     for (const auto& Y: this->BN().children(X)) {
-      lamX *= __messages[Arc(Y, X)];
+      lamX *= messages__[Arc(Y, X)];
     }
 
     return lamX;
@@ -136,7 +136,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X,
+     LoopyBeliefPropagation< GUM_SCALAR >::computeProdLambda__(NodeId X,
                                                                NodeId except) {
     Potential< GUM_SCALAR > lamXexcept;
     if (this->hasEvidence(X)) {   //
@@ -146,7 +146,7 @@ namespace gum {
       lamXexcept.fill(1);
     }
     for (const auto& Y: this->BN().children(X)) {
-      if (Y != except) { lamXexcept *= __messages[Arc(Y, X)]; }
+      if (Y != except) { lamXexcept *= messages__[Arc(Y, X)]; }
     }
 
     return lamXexcept;
@@ -154,9 +154,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR LoopyBeliefPropagation< GUM_SCALAR >::__updateNodeMessage(NodeId X) {
-    auto piX = __computeProdPi(X);
-    auto lamX = __computeProdLambda(X);
+  GUM_SCALAR LoopyBeliefPropagation< GUM_SCALAR >::updateNodeMessage__(NodeId X) {
+    auto piX = computeProdPi__(X);
+    auto lamX = computeProdLambda__(X);
 
     GUM_SCALAR KL = 0;
     Arc        argKL(0, 0);
@@ -164,11 +164,11 @@ namespace gum {
     // update lambda_par (for arc U->x)
     for (const auto& U: this->BN().parents(X)) {
       auto newLambda =
-         (__computeProdPi(X, U) * lamX).margSumIn({&this->BN().variable(U)});
+         (computeProdPi__(X, U) * lamX).margSumIn({&this->BN().variable(U)});
       newLambda.normalize();
       auto ekl = static_cast< GUM_SCALAR >(0);
       try {
-        ekl = __messages[Arc(X, U)].KL(newLambda);
+        ekl = messages__[Arc(X, U)].KL(newLambda);
       } catch (InvalidArgument&) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
       } catch (FatalError&) {   // 0 misplaced
@@ -178,16 +178,16 @@ namespace gum {
         KL = ekl;
         argKL = Arc(X, U);
       }
-      __messages.set(Arc(X, U), newLambda);
+      messages__.set(Arc(X, U), newLambda);
     }
 
     // update pi_child (for arc x->child)
     for (const auto& Y: this->BN().children(X)) {
-      auto newPi = (piX * __computeProdLambda(X, Y));
+      auto newPi = (piX * computeProdLambda__(X, Y));
       newPi.normalize();
       GUM_SCALAR ekl = KL;
       try {
-        ekl = __messages[Arc(X, Y)].KL(newPi);
+        ekl = messages__[Arc(X, Y)].KL(newPi);
       } catch (InvalidArgument&) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
       } catch (FatalError&) {   // 0 misplaced
@@ -197,25 +197,25 @@ namespace gum {
         KL = ekl;
         argKL = Arc(X, Y);
       }
-      __messages.set(Arc(X, Y), newPi);
+      messages__.set(Arc(X, Y), newPi);
     }
 
     return KL;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void LoopyBeliefPropagation< GUM_SCALAR >::__initStats() {
-    __init_messages();
+  INLINE void LoopyBeliefPropagation< GUM_SCALAR >::initStats__() {
+    init_messages__();
     for (const auto& node: this->BN().topologicalOrder()) {
-      __updateNodeMessage(node);
+      updateNodeMessage__(node);
     }
   }
 
 
   /// Returns the probability of the variables.
   template < typename GUM_SCALAR >
-  void LoopyBeliefPropagation< GUM_SCALAR >::_makeInference() {
-    __initStats();
+  void LoopyBeliefPropagation< GUM_SCALAR >::makeInference_() {
+    initStats__();
     this->initApproximationScheme();
 
     std::vector< NodeId > shuffleIds;
@@ -229,7 +229,7 @@ namespace gum {
       std::shuffle(std::begin(shuffleIds), std::end(shuffleIds), engine);
       this->updateApproximationScheme();
       for (const auto& node: shuffleIds) {
-        GUM_SCALAR e = __updateNodeMessage(node);
+        GUM_SCALAR e = updateNodeMessage__(node);
         if (e > error) error = e;
       }
     } while (this->continueApproximationScheme(error));
@@ -239,12 +239,12 @@ namespace gum {
   /// Returns the probability of the variable.
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               LoopyBeliefPropagation< GUM_SCALAR >::_posterior(NodeId id) {
-    auto p = __computeProdPi(id) * __computeProdLambda(id);
+               LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
+    auto p = computeProdPi__(id) * computeProdLambda__(id);
     p.normalize();
-    __posteriors.set(id, p);
+    posteriors__.set(id, p);
 
-    return __posteriors[id];
+    return posteriors__[id];
   }
 } /* namespace gum */
 

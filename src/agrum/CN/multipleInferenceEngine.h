@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived
@@ -49,34 +49,34 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @tparam BNInferenceEngine A IBayesNet inference engine such as
      * LazyPropagation.
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
      */
     template < typename GUM_SCALAR, class BNInferenceEngine >
     class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine< GUM_SCALAR > __infE;
+      typedef InferenceEngine< GUM_SCALAR > infE__;
 
-      typedef NodeProperty< std::vector< NodeId > >                    __cluster;
-      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > __credalSet;
-      typedef NodeProperty< std::vector< GUM_SCALAR > >                __margi;
-      typedef NodeProperty< GUM_SCALAR >                               __expe;
+      typedef NodeProperty< std::vector< NodeId > >                    cluster__;
+      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > credalSet__;
+      typedef NodeProperty< std::vector< GUM_SCALAR > >                margi__;
+      typedef NodeProperty< GUM_SCALAR >                               expe__;
 
-      typedef IBayesNet< GUM_SCALAR >                 __bnet;
-      typedef std::vector< __margi >                  __margis;
-      typedef std::vector< __expe >                   __expes;
-      typedef std::vector< __credalSet >              __credalSets;
-      typedef std::vector< std::vector< __cluster > > __clusters;
+      typedef IBayesNet< GUM_SCALAR >                 bnet__;
+      typedef std::vector< margi__ >                  margis__;
+      typedef std::vector< expe__ >                   expes__;
+      typedef std::vector< credalSet__ >              credalSets__;
+      typedef std::vector< std::vector< cluster__ > > clusters__;
 
       typedef typename std::vector<
          HashTable< std::string, std::vector< GUM_SCALAR > > >
-         __modals;
+         modals__;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
        *thread.
        *
-       * Called by _updateThread if vertices are stored.
+       * Called by updateThread_ if vertices are stored.
        *
        * @param id A constant reference to the node id whose credal set is to be
        *checked for redundancy.
@@ -85,39 +85,39 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void __updateThreadCredalSets(const NodeId&                    id,
+      inline void updateThreadCredalSets__(const NodeId&                    id,
                                            const std::vector< GUM_SCALAR >& vertex,
                                            const bool& elimRedund);
 
       protected:
       /** Threads lower marginals, one per thread. */
-      __margis _l_marginalMin;
+      margis__ l_marginalMin_;
       /** Threads upper marginals, one per thread. */
-      __margis _l_marginalMax;
+      margis__ l_marginalMax_;
       /** Threads lower expectations, one per thread. */
-      __expes _l_expectationMin;
+      expes__ l_expectationMin_;
       /** Threads upper expectations, one per thread. */
-      __expes _l_expectationMax;
+      expes__ l_expectationMax_;
       /** Threads modalities. */
-      __modals _l_modal;
+      modals__ l_modal_;
       /** Threads vertices. */
-      __credalSets _l_marginalSets;
+      credalSets__ l_marginalSets_;
       /** Threads evidence. */
-      __margis _l_evidence;
+      margis__ l_evidence_;
       /** Threads clusters. */
-      __clusters _l_clusters;
+      clusters__ l_clusters_;
 
       /** Threads IBayesNet. */
-      typename std::vector< __bnet* > _workingSet;
+      typename std::vector< bnet__* > workingSet_;
       /** Threads evidence. */
-      typename std::vector< List< const Potential< GUM_SCALAR >* >* > _workingSetE;
+      typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
 
       /** Threads BNInferenceEngine. */
-      typename std::vector< BNInferenceEngine* > _l_inferenceEngine;
+      typename std::vector< BNInferenceEngine* > l_inferenceEngine_;
       /** Threads optimal IBayesNet. */
-      std::vector< VarMod2BNsMap< GUM_SCALAR >* > _l_optimalNet;
+      std::vector< VarMod2BNsMap< GUM_SCALAR >* > l_optimalNet_;
       /** Fusion of threads optimal IBayesNet. */
-      // OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp
+      // OptBN< GUM_SCALAR > threadFusion_; // we should use this OptBN if omp
       // is
       // disabled (avoid creating 2 objects when only one is necessary)
       // it should also avoid calling thread fusion operations
@@ -129,15 +129,15 @@ namespace gum {
        * @brief Initialize threads data.
        *
        * @param num_threads The number of threads.
-       * @param __storeVertices \c True if vertices should be stored, \c False
+       * @param storeVertices__ \c True if vertices should be stored, \c False
        *otherwise.
-       * @param __storeBNOpt \c True if optimal IBayesNet should be stored, \c
+       * @param storeBNOpt__ \c True if optimal IBayesNet should be stored, \c
        *false
        *otherwise.
        */
-      void _initThreadsData(const Size& num_threads,
-                            const bool  __storeVertices,
-                            const bool  __storeBNOpt);
+      void initThreadsData_(const Size& num_threads,
+                            const bool  storeVertices__,
+                            const bool  storeBNOpt__);
 
       /// @}
 
@@ -155,30 +155,30 @@ namespace gum {
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread(const NodeId&                    id,
+      inline bool updateThread_(const NodeId&                    id,
                                 const std::vector< GUM_SCALAR >& vertex,
                                 const bool& elimRedund = false);
 
       /**
        * @brief Fusion of threads marginals.
        */
-      inline void _updateMarginals();
+      inline void updateMarginals_();
 
       /**
        * @brief Compute epsilon and update old marginals.
        *
        * @return Epsilon.
        */
-      inline const GUM_SCALAR _computeEpsilon();
+      inline const GUM_SCALAR computeEpsilon_();
 
       /**
        * Update old marginals (from current marginals). Call this once to
        * initialize
-       * old marginals (after burn-in for example) and then use _computeEpsilon
+       * old marginals (after burn-in for example) and then use computeEpsilon_
        * which
        * does the same job but compute epsilon too.
        */
-      void _updateOldMarginals();
+      void updateOldMarginals_();
 
       /// @}
 
@@ -186,11 +186,11 @@ namespace gum {
       /// @{
 
       /** Fusion of threads optimal IBayesNet. */
-      void _optFusion();
+      void optFusion_();
       /** Fusion of threads expectations. */
-      void _expFusion();
+      void expFusion_();
       /** @deprecated Fusion of threads vertices. */
-      void _verticesFusion();   // called ?? not done yet
+      void verticesFusion_();   // called ?? not done yet
 
       /// @}
 

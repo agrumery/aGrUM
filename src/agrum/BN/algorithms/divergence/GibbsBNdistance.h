@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *GIBBS
  *sampling
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -114,19 +114,19 @@ namespace gum {
     Size burnIn() const;
 
     protected:
-    void _computeKL() final;
+    void computeKL_() final;
 
-    using BNdistance< GUM_SCALAR >::_p;
-    using BNdistance< GUM_SCALAR >::_q;
-    using BNdistance< GUM_SCALAR >::_hellinger;
-    using BNdistance< GUM_SCALAR >::_bhattacharya;
-    using BNdistance< GUM_SCALAR >::_jsd;
+    using BNdistance< GUM_SCALAR >::p_;
+    using BNdistance< GUM_SCALAR >::q_;
+    using BNdistance< GUM_SCALAR >::hellinger_;
+    using BNdistance< GUM_SCALAR >::bhattacharya_;
+    using BNdistance< GUM_SCALAR >::jsd_;
 
-    using BNdistance< GUM_SCALAR >::_klPQ;
-    using BNdistance< GUM_SCALAR >::_klQP;
+    using BNdistance< GUM_SCALAR >::klPQ_;
+    using BNdistance< GUM_SCALAR >::klQP_;
 
-    using BNdistance< GUM_SCALAR >::_errorPQ;
-    using BNdistance< GUM_SCALAR >::_errorQP;
+    using BNdistance< GUM_SCALAR >::errorPQ_;
+    using BNdistance< GUM_SCALAR >::errorQP_;
   };
 
 

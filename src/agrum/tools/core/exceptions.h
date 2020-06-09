@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief aGrUM's exceptions
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
@@ -41,9 +41,9 @@
 #ifdef GUM_FOR_SWIG
 #  define GUM_ERROR(type, msg)         \
     {                                  \
-      std::ostringstream __error__str; \
-      __error__str << msg;             \
-      throw(type(__error__str.str())); \
+      std::ostringstream error_stream; \
+      error_stream << msg;             \
+      throw(type(error_stream.str())); \
     }
 #  define GUM_SHOWERROR(e)                                                      \
     {                                                                           \
@@ -52,11 +52,11 @@
     }
 #else
 #  ifndef GUM_DEBUG_MODE
-#    define GUM_ERROR(type, msg)                                    \
-      {                                                             \
-        std::ostringstream __error__str;                            \
-        __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
-        throw(type(__error__str.str()));                            \
+#    define GUM_ERROR(type, msg)                                  \
+      {                                                           \
+        std::ostringstream error_stream;                            \
+        error_stream << __FILE__ << ":" << __LINE__ << ": " << msg; \
+        throw(type(error_stream.str()));                            \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \
@@ -65,13 +65,13 @@
                   << " from " << std::endl                                 \
                   << (e).errorContent() << std::endl;                      \
       }
-#  else // GUM_FOR_SWIG
+#  else   // GUM_FOR_SWIG
 #    define GUM_ERROR(type, msg)                                    \
       {                                                             \
-        std::ostringstream __error__str;                            \
-        __error__str << msg;                                        \
-        throw(type(gum::__createMsg(                                \
-           __FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
+        std::ostringstream error_stream;                            \
+        error_stream << msg;                                        \
+        throw(type(gum::createMsg__(                                \
+           __FILE__, __FUNCTION__, __LINE__, error_stream.str()))); \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \
@@ -91,11 +91,11 @@
     TYPE(const TYPE& src) : SUPERCLASS(src){};                                   \
   };
 
-#define GUM_SYNTAX_ERROR(msg, line, column)                    \
-  {                                                            \
-    std::ostringstream __error__str;                           \
-    __error__str << msg;                                       \
-    throw(gum::SyntaxError(__error__str.str(), line, column)); \
+#define GUM_SYNTAX_ERROR(msg, line, column)                  \
+  {                                                          \
+    std::ostringstream error_stream;                           \
+    error_stream << msg;                                       \
+    throw(gum::SyntaxError(error_stream.str(), line, column)); \
   }
 
 namespace gum {
@@ -105,9 +105,9 @@ namespace gum {
    */
   class Exception {
     protected:
-    std::string _msg;
-    std::string _type;
-    std::string _callstack;
+    std::string msg_;
+    std::string type_;
+    std::string callstack_;
 
     public:
     // ====================================================================
@@ -123,28 +123,28 @@ namespace gum {
 
 /// @}
 #ifdef GUM_FOR_SWIG
-    const std::string what() const { return "[pyAgrum] " + _type + ": " + _msg; }
-#else // GUM_FOR_SWIG
-    const std::string what() const { return _type + " : " + _msg; }
-#endif  // GUM_FOR_SWIG
+    const std::string what() const { return "[pyAgrum] " + type_ + ": " + msg_; }
+#else    // GUM_FOR_SWIG
+    const std::string what() const { return type_ + " : " + msg_; }
+#endif   // GUM_FOR_SWIG
 
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    const std::string errorContent() const { return _msg; }
+    const std::string errorContent() const { return msg_; }
 
     /**
      * @brief Returns the error type.
      * @return Returns the error type.
      */
-    const std::string errorType() const { return _type; }
+    const std::string errorType() const { return type_; }
 
     /**
      * @brief Returns the error call stack.
      * @return Returns the error call stack.
      */
-    const std::string errorCallStack() const { return _callstack; }
+    const std::string errorCallStack() const { return callstack_; }
   };
 
   /**
@@ -484,7 +484,7 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  const std::string __createMsg(const std::string& filename,
+  const std::string createMsg__(const std::string& filename,
                                 const std::string& function,
                                 const int          line,
                                 const std::string& msg);
@@ -549,8 +549,8 @@ namespace gum {
 
   class SyntaxError: public IOError {
     protected:
-    Size _noLine;
-    Size _noCol;
+    Size noLine_;
+    Size noCol_;
 
     public:
     SyntaxError(const std::string& aMsg,
@@ -558,12 +558,12 @@ namespace gum {
                 Size               noc,
                 std::string        aType = "Syntax Error") :
         IOError(aMsg, aType),
-        _noLine(nol), _noCol(noc){
+        noLine_(nol), noCol_(noc){
 
                       };
 
-    Size col() const { return _noCol; };
-    Size line() const { return _noLine; };
+    Size col() const { return noCol_; };
+    Size line() const { return noLine_; };
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */

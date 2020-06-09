@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * The Chi2 class allows to easily compute critical values for the Chi2
  * distribution.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/chi2.h>
@@ -57,8 +57,8 @@ namespace gum {
   // default constructor
   Chi2::Chi2(const std::vector< std::size_t >& var_modalities,
              double                            confidence_proba) :
-      __modalities(var_modalities),
-      __confidence_proba(confidence_proba) {
+      modalities__(var_modalities),
+      confidence_proba__(confidence_proba) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Chi2);
   }
@@ -70,7 +70,7 @@ namespace gum {
   }
 
   // computes the probability of normal z value (used by the cache)
-  double Chi2::__probaZValue(double z) {
+  double Chi2::probaZValue__(double z) {
     double y, x, w;
 
     if (z == 0.0)
@@ -143,7 +143,7 @@ namespace gum {
 
     if (df > 1) y = gum__ex(-a);
 
-    s = (even ? y : (2.0 * __probaZValue(-std::sqrt(x))));
+    s = (even ? y : (2.0 * probaZValue__(-std::sqrt(x))));
 
     if (df > 2) {
       x = 0.5 * (df - 1.0);
@@ -177,7 +177,7 @@ namespace gum {
   }
 
   // computes the critical value of a given chi2 test (used by the cache)
-  double Chi2::__criticalValue(double proba, Size df) {
+  double Chi2::criticalValue__(double proba, Size df) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
     double chisqval;

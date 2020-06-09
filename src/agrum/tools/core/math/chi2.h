@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * The Chi2 class allows to easily compute critical values for the Chi2
  * distribution.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_LEARNING_CHI2_H
@@ -149,16 +149,16 @@ namespace gum {
 
     private:
     /// The modalities of the random variables.
-    const std::vector< std::size_t >& __modalities;
+    const std::vector< std::size_t >& modalities__;
 
     /// The confidence probability used for critical values.
-    double __confidence_proba;
+    double confidence_proba__;
 
     /// The domain size of the conditioning nodes.
-    Size __conditioning_size;
+    Size conditioning_size__;
 
     /// A set of already computed critical values.
-    HashTable< Idx, double > __critical_values;
+    HashTable< Idx, double > critical_values__;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the
@@ -170,7 +170,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return Returns the critical value of a given chi2 test.
      */
-    static double __criticalValue(double proba, Size df);
+    static double criticalValue__(double proba, Size df);
 
 
     /**
@@ -183,12 +183,12 @@ namespace gum {
      * Collected Algorithms of the CACM 1963 p. 616
      *
      * This routine has six digit accuracy, so it is only useful for absolute z
-     * values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0.
+     * values < 6.  For z values >= to 6.0, probaZValue__() returns 0.0.
      *
      * @param z A value.
      * @return The probability of z.
      */
-    static double __probaZValue(double z);
+    static double probaZValue__(double z);
 
     /// Forbid use of the copy constructor.
     Chi2(const Chi2&) = delete;

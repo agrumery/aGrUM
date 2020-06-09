@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Implementation of Monte Carlo Sampling for inference in Bayesian
  * Networks.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -50,14 +50,14 @@ namespace gum {
 
   /// no burn in needed for Monte Carlo sampling
   template < typename GUM_SCALAR >
-  Instantiation MonteCarloSampling< GUM_SCALAR >::_burnIn() {
+  Instantiation MonteCarloSampling< GUM_SCALAR >::burnIn_() {
     gum::Instantiation I;
     return I;
   }
 
 
   template < typename GUM_SCALAR >
-  Instantiation MonteCarloSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
+  Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
                                                         Instantiation prev) {
     *w = 1.0f;
     bool wrong_value = false;
@@ -65,7 +65,7 @@ namespace gum {
       wrong_value = false;
       prev.clear();
       for (const auto nod: this->BN().topologicalOrder()) {
-        this->_addVarSample(nod, &prev);
+        this->addVarSample_(nod, &prev);
         if (this->hardEvidenceNodes().contains(nod)
             && prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
           wrong_value = true;

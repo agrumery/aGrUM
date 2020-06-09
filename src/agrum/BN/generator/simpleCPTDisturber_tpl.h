@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of SimpleCPTDisturber.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Ariele-Paolo MAESANO
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Ariele-Paolo MAESANO
  *
  */
 #include <agrum/BN/generator/simpleCPTDisturber.h>

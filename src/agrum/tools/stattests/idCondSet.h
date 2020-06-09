@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A class used by learning caches to represent uniquely sets of variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_ID_SET_H
 #define GUM_LEARNING_ID_SET_H
@@ -99,7 +99,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IdCondSetIterator< ALLOC >& operator=(const IdCondSetIterator< ALLOC >& from);
+      IdCondSetIterator< ALLOC >&
+         operator=(const IdCondSetIterator< ALLOC >& from);
 
       /// move operator
       IdCondSetIterator< ALLOC >& operator=(IdCondSetIterator< ALLOC >&& from);
@@ -137,7 +138,8 @@ namespace gum {
       IdCondSetIterator< ALLOC >& operator+=(const std::size_t i);
 
       /**
-       * @brief Returns a new iterator pointing to i further elements in the IdCondSet
+       * @brief Returns a new iterator pointing to i further elements in the
+       * IdCondSet
        * @param i The number of steps to move the iterator.
        * @return Returns a new gum::IdCondSetIterator.
        */
@@ -165,14 +167,14 @@ namespace gum {
 
       private:
       /// a pointer on the sequence stored in the IdCondSet
-      const Sequence< NodeId, ALLOC< NodeId > >* __seq{nullptr};
+      const Sequence< NodeId, ALLOC< NodeId > >* seq__{nullptr};
 
       /// The index in the IdCondSet's sequence where the iterator is pointing.
-      std::size_t __index{std::size_t(0)};
+      std::size_t index__{std::size_t(0)};
 
 
       /// places the index to the end of the sequence
-      void __gotoEnd();
+      void gotoEnd__();
 
       friend class IdCondSet< ALLOC >;
 
@@ -220,9 +222,9 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdCondSet */
       IdCondSet(const std::vector< NodeId, ALLOC< NodeId > >& ids,
-            const bool                                    rhs_ids,
-            const bool                                    ordered_ids,
-            const allocator_type& alloc = allocator_type());
+                const bool                                    rhs_ids,
+                const bool                                    ordered_ids,
+                const allocator_type& alloc = allocator_type());
 
       /// default constructor with one variable on the left side
       /** @param var1 the variable on the left side of the conditioning bar
@@ -232,9 +234,9 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdCondSet */
       IdCondSet(NodeId                                        var1,
-            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-            const bool                                    ordered_rhs_ids = false,
-            const allocator_type& alloc = allocator_type());
+                const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                const bool            ordered_rhs_ids = false,
+                const allocator_type& alloc = allocator_type());
 
       /// default constructor with two variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -249,11 +251,11 @@ namespace gum {
        * @param ordered_rhs_ids
        * @param alloc the allocator used to store the data in the IdCondSet */
       IdCondSet(NodeId                                        var1,
-            NodeId                                        var2,
-            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-            const bool                                    ordered_lhs_vars,
-            const bool                                    ordered_rhs_ids = false,
-            const allocator_type& alloc = allocator_type());
+                NodeId                                        var2,
+                const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                const bool                                    ordered_lhs_vars,
+                const bool            ordered_rhs_ids = false,
+                const allocator_type& alloc = allocator_type());
 
       /// default constructor with three variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -267,12 +269,12 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdCondSet */
       IdCondSet(NodeId                                        var1,
-            NodeId                                        var2,
-            NodeId                                        var3,
-            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-            const bool                                    ordered_lhs_vars,
-            const bool                                    ordered_rhs_ids = false,
-            const allocator_type& alloc = allocator_type());
+                NodeId                                        var2,
+                NodeId                                        var3,
+                const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                const bool                                    ordered_lhs_vars,
+                const bool            ordered_rhs_ids = false,
+                const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       IdCondSet(const IdCondSet< ALLOC >& from);
@@ -410,13 +412,13 @@ namespace gum {
 
       private:
       /// the ordered set of ids on the right side of the conditioning bar
-      Sequence< NodeId, ALLOC< NodeId > > __ids;
+      Sequence< NodeId, ALLOC< NodeId > > ids__;
 
       /// the number of left ids
-      std::size_t __nb_lhs_ids{std::size_t(0)};
+      std::size_t nb_lhs_ids__{std::size_t(0)};
 
       /// Stores the end iterator for fast access.
-      IdCondSetIterator< ALLOC > __end_safe;
+      IdCondSetIterator< ALLOC > end_safe__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -424,7 +426,8 @@ namespace gum {
 
     /// the display operator
     template < template < typename > class ALLOC >
-    std::ostream& operator<<(std::ostream& stream, const IdCondSet< ALLOC >& idset);
+    std::ostream& operator<<(std::ostream&             stream,
+                             const IdCondSet< ALLOC >& idset);
 
   } /* namespace learning */
 

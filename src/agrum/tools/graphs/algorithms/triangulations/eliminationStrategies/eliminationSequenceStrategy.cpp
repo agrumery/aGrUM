@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief implementation of the base class for all elimination sequence
  *algorithms
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -37,14 +37,14 @@
 namespace gum {
 
   // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet& EliminationSequenceStrategy::__empty_fill_ins() {
+  const EdgeSet& EliminationSequenceStrategy::empty_fill_ins__() {
 #ifdef GUM_DEBUG_MODE
     static bool first_use = true;
     if (first_use) {
       first_use = false;
-      __debug__::__dec_creation(
+      __debug__::dec_creation__(
          "Set", "__empty_edge_set", 0, "static variable correction", 0);
-      __debug__::__dec_creation(
+      __debug__::dec_creation__(
          "HashTable", "__empty_edge_set", 0, "static variable correction", 0);
     }
 #endif
@@ -70,9 +70,9 @@ namespace gum {
   // copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
      const EliminationSequenceStrategy& from) :
-      _graph(from._graph),
-      _domain_sizes(from._domain_sizes),
-      _log_domain_sizes(from._log_domain_sizes) {
+      graph_(from.graph_),
+      domain_sizes_(from.domain_sizes_),
+      log_domain_sizes_(from.log_domain_sizes_) {
     // for debugging purposes
     GUM_CONS_CPY(EliminationSequenceStrategy);
   }
@@ -80,9 +80,9 @@ namespace gum {
   /// move constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
      EliminationSequenceStrategy&& from) :
-      _graph(from._graph),
-      _domain_sizes(from._domain_sizes),
-      _log_domain_sizes(std::move(from._log_domain_sizes)) {
+      graph_(from.graph_),
+      domain_sizes_(from.domain_sizes_),
+      log_domain_sizes_(std::move(from.log_domain_sizes_)) {
     // for debugging purposes
     GUM_CONS_MOV(EliminationSequenceStrategy);
   }
@@ -99,14 +99,14 @@ namespace gum {
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */
   const EdgeSet& EliminationSequenceStrategy::fillIns() {
-    return __empty_fill_ins();
+    return empty_fill_ins__();
   }
 
   // clears the sequence (to prepare, for instance, a new elimination sequence)
   void EliminationSequenceStrategy::clear() {
-    _graph = nullptr;
-    _domain_sizes = nullptr;
-    _log_domain_sizes.clear();
+    graph_ = nullptr;
+    domain_sizes_ = nullptr;
+    log_domain_sizes_.clear();
   }
 
   // sets a new graph to be triangulated
@@ -132,20 +132,20 @@ namespace gum {
     }
 
     // avoid empty modifications
-    if ((graph != _graph) || (dom_sizes != _domain_sizes)) {
+    if ((graph != graph_) || (dom_sizes != domain_sizes_)) {
       // remove, if any, the current graph
       clear();
 
       // assign a new graph
-      _graph = graph;
-      _domain_sizes = dom_sizes;
+      graph_ = graph;
+      domain_sizes_ = dom_sizes;
 
-      if (_graph != nullptr) {
+      if (graph_ != nullptr) {
         // compute the log of the modalities
-        _log_domain_sizes.resize(_graph->sizeNodes() / 2);
+        log_domain_sizes_.resize(graph_->sizeNodes() / 2);
 
-        for (const auto node: *_graph)
-          _log_domain_sizes.insert(node, std::log((*_domain_sizes)[node]));
+        for (const auto node: *graph_)
+          log_domain_sizes_.insert(node, std::log((*domain_sizes_)[node]));
       }
 
       return true;

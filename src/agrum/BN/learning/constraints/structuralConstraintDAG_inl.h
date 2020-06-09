@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for structural constraints imposed by DAGs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,7 +46,7 @@ namespace gum {
       for (auto& arc: graph.arcs())
         g.addArc(arc.tail(), arc.head());
 
-      _DAG__cycle_detector.setDAG(g);
+      DAG__cycle_detector_.setDAG(g);
     }
 
     /// sets a new graph from which we will perform checkings
@@ -57,25 +57,25 @@ namespace gum {
         g.addNodeWithId(i);
       }
 
-      _DAG__cycle_detector.setDAG(g);
+      DAG__cycle_detector_.setDAG(g);
     }
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcAdditionAlone(NodeId x,
                                                                NodeId y) const {
-      return !_DAG__cycle_detector.hasCycleFromAddition(x, y);
+      return !DAG__cycle_detector_.hasCycleFromAddition(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcDeletionAlone(NodeId x,
                                                                NodeId y) const {
-      return !_DAG__cycle_detector.hasCycleFromDeletion(x, y);
+      return !DAG__cycle_detector_.hasCycleFromDeletion(x, y);
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcReversalAlone(NodeId x,
                                                                NodeId y) const {
-      return !_DAG__cycle_detector.hasCycleFromReversal(x, y);
+      return !DAG__cycle_detector_.hasCycleFromReversal(x, y);
     }
 
     /// checks whether the constraints enable to add an arc
@@ -119,19 +119,19 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void
        StructuralConstraintDAG::modifyGraphAlone(const ArcAddition& change) {
-      _DAG__cycle_detector.addArc(change.node1(), change.node2());
+      DAG__cycle_detector_.addArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
        StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion& change) {
-      _DAG__cycle_detector.eraseArc(change.node1(), change.node2());
+      DAG__cycle_detector_.eraseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
        StructuralConstraintDAG::modifyGraphAlone(const ArcReversal& change) {
-      _DAG__cycle_detector.reverseArc(change.node1(), change.node2());
+      DAG__cycle_detector_.reverseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
@@ -165,7 +165,7 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDAG::setGraph(const DAG& graph) {
       constraints::setGraph(graph);
-      _DAG__cycle_detector.setDAG(graph);
+      DAG__cycle_detector_.setDAG(graph);
     }
 
     /// sets a new graph from which we will perform checkings

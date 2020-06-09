@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -121,54 +121,53 @@ namespace gum_tests {
     }
 
 
-    void testConstants () {
-       gum::Potential< double > t1, t2;
-       gum::Instantiation       inst1(t1), inst2(t2);
-       t1.set(inst1, 3.0);
-       t2.set(inst2, 4.0);
+    void testConstants() {
+      gum::Potential< double > t1, t2;
+      gum::Instantiation       inst1(t1), inst2(t2);
+      t1.set(inst1, 3.0);
+      t2.set(inst2, 4.0);
 
-       gum::MultiDimCombinationDefault< double, gum::Potential > xxx(multPotential);
-       gum::Set< const gum::Potential< double >* > set;
-       set << &t1 << &t2;
+      gum::MultiDimCombinationDefault< double, gum::Potential > xxx(multPotential);
+      gum::Set< const gum::Potential< double >* >               set;
+      set << &t1 << &t2;
 
-       gum::Potential< double >* t3 = xxx.combine(set);
-       {
-         gum::Instantiation inst3(t3);
-         TS_ASSERT((*t3)[inst3] == 12.0);
-       }
-       delete t3;
+      gum::Potential< double >* t3 = xxx.combine(set);
+      {
+        gum::Instantiation inst3(t3);
+        TS_ASSERT((*t3)[inst3] == 12.0);
+      }
+      delete t3;
 
-       
-       std::vector< gum::LabelizedVariable* > vars(2);
 
-       for (gum::Idx i = 0; i < 2; ++i) {
-         std::stringstream str;
-         str << "x" << i;
-         std::string s = str.str();
-         vars[i] = new gum::LabelizedVariable(s, s, 2);
-       }
+      std::vector< gum::LabelizedVariable* > vars(2);
 
-       gum::Potential< double > t4;
-       t4 << *(vars[0]) << *(vars[1]);
-       randomInitP(t4);
-       t4.normalize ();
+      for (gum::Idx i = 0; i < 2; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i] = new gum::LabelizedVariable(s, s, 2);
+      }
 
-       set.clear ();
-       set << &t1 << &t4;
-       t3 = xxx.combine(set);
-       {
-         gum::Instantiation inst3(t3);
-         double x = 0;
-         for (inst3.setFirst(); ! inst3.end(); ++inst3)
-           x += (*t3)[inst3];
-         TS_ASSERT_DELTA(x, 3.0, 0.001);
-       }
-       delete t3;
+      gum::Potential< double > t4;
+      t4 << *(vars[0]) << *(vars[1]);
+      randomInitP(t4);
+      t4.normalize();
 
-       for (gum::Idx i = 0; i < vars.size(); ++i)
-         delete vars[i];
+      set.clear();
+      set << &t1 << &t4;
+      t3 = xxx.combine(set);
+      {
+        gum::Instantiation inst3(t3);
+        double             x = 0;
+        for (inst3.setFirst(); !inst3.end(); ++inst3)
+          x += (*t3)[inst3];
+        TS_ASSERT_DELTA(x, 3.0, 0.001);
+      }
+      delete t3;
+
+      for (gum::Idx i = 0; i < vars.size(); ++i)
+        delete vars[i];
     }
-    
   };
 
 } /* namespace gum_tests */

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the base class for structural constraints used by learning algorithms
  * that learn a directed graph structure
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -59,14 +59,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
        const StructuralConstraintDiGraph& from) :
-        _DiGraph__graph(from._DiGraph__graph) {
+        DiGraph__graph_(from.DiGraph__graph_) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
        StructuralConstraintDiGraph&& from) :
-        _DiGraph__graph(std::move(from._DiGraph__graph)) {
+        DiGraph__graph_(std::move(from.DiGraph__graph_)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }
 
@@ -78,14 +78,14 @@ namespace gum {
     /// copy operator
     StructuralConstraintDiGraph& StructuralConstraintDiGraph::operator=(
        const StructuralConstraintDiGraph& from) {
-      if (this != &from) { _DiGraph__graph = from._DiGraph__graph; }
+      if (this != &from) { DiGraph__graph_ = from.DiGraph__graph_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintDiGraph&
        StructuralConstraintDiGraph::operator=(StructuralConstraintDiGraph&& from) {
-      if (this != &from) { _DiGraph__graph = std::move(from._DiGraph__graph); }
+      if (this != &from) { DiGraph__graph_ = std::move(from.DiGraph__graph_); }
       return *this;
     }
 

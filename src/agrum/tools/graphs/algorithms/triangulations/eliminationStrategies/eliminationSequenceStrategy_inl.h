@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * This class is the interface that should be implemented by all elimination
  * sequence algorithms used by triangulation algorithms.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -35,14 +35,14 @@ namespace gum {
 
   /// returns the current graph
   INLINE UndiGraph* EliminationSequenceStrategy::graph() const noexcept {
-    return _graph;
+    return graph_;
   }
 
 
   /// returns the current domain sizes
   INLINE const NodeProperty< Size >*
                EliminationSequenceStrategy::domainSizes() const noexcept {
-    return _domain_sizes;
+    return domain_sizes_;
   }
 
 

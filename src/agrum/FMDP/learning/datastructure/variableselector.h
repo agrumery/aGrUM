@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -89,33 +89,33 @@ namespace gum {
     // ###################################################################
     const DiscreteVariable* select();
 
-    bool isEmpty() { return __remainingVars.empty(); }
+    bool isEmpty() { return remainingVars__.empty(); }
 
-    void begin() { __rvi = __remainingVars.beginSafe(); }
-    bool hasNext() { return __rvi != __remainingVars.endSafe(); }
-    void next() { ++__rvi; }
-    const DiscreteVariable* current() { return *__rvi; }
+    void begin() { rvi__ = remainingVars__.beginSafe(); }
+    bool hasNext() { return rvi__ != remainingVars__.endSafe(); }
+    void next() { ++rvi__; }
+    const DiscreteVariable* current() { return *rvi__; }
 
     private:
-    void __addVar(const DiscreteVariable* var);
-    void __removeVar(const DiscreteVariable* var);
+    void addVar__(const DiscreteVariable* var);
+    void removeVar__(const DiscreteVariable* var);
 
     /// The set of remaining vars to select among
-    Set< const DiscreteVariable* >             __remainingVars;
-    SetIteratorSafe< const DiscreteVariable* > __rvi;
+    Set< const DiscreteVariable* >             remainingVars__;
+    SetIteratorSafe< const DiscreteVariable* > rvi__;
 
     /// Heap keeping best score on top for immediate access
-    MultiPriorityQueue< double, double, std::greater< double > > __remainingScores;
+    MultiPriorityQueue< double, double, std::greater< double > > remainingScores__;
 
     /// HashTable associating to each score the set of variable having that
     /// score
-    HashTable< double, Set< const DiscreteVariable* >* > __remainingVarsByScore;
+    HashTable< double, Set< const DiscreteVariable* >* > remainingVarsByScore__;
 
     /// HashTable associating to each variable its score
-    HashTable< const DiscreteVariable*, double > __remainingVarsScore;
+    HashTable< const DiscreteVariable*, double > remainingVarsScore__;
 
     /// HashTable associating to each variable its 2nd score
-    HashTable< const DiscreteVariable*, double > __remainingVarsOtherScore;
+    HashTable< const DiscreteVariable*, double > remainingVarsOtherScore__;
   };
 
 }   // namespace gum

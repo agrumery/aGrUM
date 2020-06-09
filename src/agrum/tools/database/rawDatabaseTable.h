@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@
  * will subsequently be used by the learning. The purpose of the
  * RawDatabaseTable class is precisely to implement this preprocessed table.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_RAW_DATABASE_TABLE_H
 #define GUM_RAW_DATABASE_TABLE_H
@@ -315,10 +315,10 @@ namespace gum {
 
       private:
       // the set of ignored columns, sorted by increasing order
-      DBVector< std::size_t > __ignored_cols;
+      DBVector< std::size_t > ignored_cols__;
 
       /// translates a string into a DBCell and returns it
-      DBCell __convert(const std::string& elt) const;
+      DBCell convert__(const std::string& elt) const;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

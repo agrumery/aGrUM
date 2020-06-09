@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief
  *
- * @author Santiago CORTIJO and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Santiago CORTIJO and Pierre-Henri WUILLEMIN(@LIP6)
  *
  * Constructor
  * @code
@@ -148,34 +148,34 @@ namespace gum {
 
       private:
       /// Bayesian network
-      const BayesNet< GUM_SCALAR >& __bn;
+      const BayesNet< GUM_SCALAR >& bn__;
 
       /// bijection nodes names
-      Bijection< std::string, NodeId > __names2ids;
+      Bijection< std::string, NodeId > names2ids__;
 
       /// number of variables
-      Size __nbVars;
+      Size nbVars__;
 
       /// generated database
-      std::vector< std::vector< Idx > > __database;
+      std::vector< std::vector< Idx > > database__;
 
       /// variable order in generated database
-      std::vector< Idx > __varOrder;
+      std::vector< Idx > varOrder__;
 
       /// whether drawSamples has been already called.
-      bool __drawnSamples = false;
+      bool drawnSamples__ = false;
 
       /// log2Likelihood of generated samples
-      double __log2likelihood = 0;
+      double log2likelihood__ = 0;
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-         __varOrderFromCSV(const std::string& csvFileURL,
+         varOrderFromCSV__(const std::string& csvFileURL,
                            const std::string& csvSeparator = ",") const;
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-         __varOrderFromCSV(std::ifstream&     csvFile,
+         varOrderFromCSV__(std::ifstream&     csvFile,
                            const std::string& csvSeparator = ",") const;
 
       // forbidden copies / moves

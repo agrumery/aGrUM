@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Sources for concrete leaf class
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 // =======================================================
 #include <agrum/tools/core/math/math.h>
@@ -40,56 +40,56 @@ namespace gum {
   // ############################################################################
 
   void LeafPair::updateLikelyhood() {
-    __likelyhood1 = 0.0;
-    __likelyhood2 = 0.0;
+    likelyhood1__ = 0.0;
+    likelyhood2__ = 0.0;
 
-    if (!__l1->total() || !__l2->total()) {
-      __likelyhood1 = std::numeric_limits< double >::max();
-      __likelyhood2 = std::numeric_limits< double >::max();
+    if (!l1__->total() || !l2__->total()) {
+      likelyhood1__ = std::numeric_limits< double >::max();
+      likelyhood2__ = std::numeric_limits< double >::max();
       return;
     }
 
-    double scaleFactor1 = __l1->total() / (__l1->total() + __l2->total());
-    double scaleFactor2 = __l2->total() / (__l1->total() + __l2->total());
-    for (Idx moda = 0; moda < __l1->nbModa(); ++moda) {
-      if (__l1->effectif(moda)) {
+    double scaleFactor1 = l1__->total() / (l1__->total() + l2__->total());
+    double scaleFactor2 = l2__->total() / (l1__->total() + l2__->total());
+    for (Idx moda = 0; moda < l1__->nbModa(); ++moda) {
+      if (l1__->effectif(moda)) {
         double add =
-           __l1->effectif(moda)
+           l1__->effectif(moda)
            * std::log(
-              __l1->effectif(moda)
-              / (scaleFactor1 * (__l1->effectif(moda) + __l2->effectif(moda))));
-        __likelyhood1 += add;
+              l1__->effectif(moda)
+              / (scaleFactor1 * (l1__->effectif(moda) + l2__->effectif(moda))));
+        likelyhood1__ += add;
       }
-      if (__l2->effectif(moda)) {
+      if (l2__->effectif(moda)) {
         double add =
-           __l2->effectif(moda)
+           l2__->effectif(moda)
            * std::log(
-              __l2->effectif(moda)
-              / (scaleFactor2 * (__l1->effectif(moda) + __l2->effectif(moda))));
-        __likelyhood2 += add;
+              l2__->effectif(moda)
+              / (scaleFactor2 * (l1__->effectif(moda) + l2__->effectif(moda))));
+        likelyhood2__ += add;
       }
     }
 
-    __likelyhood1 *= 2;
-    __likelyhood2 *= 2;
+    likelyhood1__ *= 2;
+    likelyhood2__ *= 2;
   }
 
   double LeafPair::likelyhood() {
     //      updateLikelyhood();
     return 1
-           - ChiSquare::probaChi2(__likelyhood1 > __likelyhood2 ? __likelyhood1
-                                                                : __likelyhood2,
-                                  (__l1->nbModa() - 1));
+           - ChiSquare::probaChi2(likelyhood1__ > likelyhood2__ ? likelyhood1__
+                                                                : likelyhood2__,
+                                  (l1__->nbModa() - 1));
   }
 
   std::string LeafPair::toString() {
     std::stringstream ss;
-    ss << "\t[  Leaf1 : " << __l1->toString() << " - Leaf2 : " << __l2->toString();
-    //      ss << " - L1 Total : " << __l1->total() << " - L2 Total : " <<
-    //      __l2->total();
-    //      for( Idx moda = 0; moda < __l1->nbModa(); ++moda )
-    //        ss << "~ M=" << moda << ".L1=" << __l1->effectif(moda) << ".L2="
-    //        << __l2->effectif(moda) << " ~";
+    ss << "\t[  Leaf1 : " << l1__->toString() << " - Leaf2 : " << l2__->toString();
+    //      ss << " - L1 Total : " << l1__->total() << " - L2 Total : " <<
+    //      l2__->total();
+    //      for( Idx moda = 0; moda < l1__->nbModa(); ++moda )
+    //        ss << "~ M=" << moda << ".L1=" << l1__->effectif(moda) << ".L2="
+    //        << l2__->effectif(moda) << " ~";
     ss << " - GStat : " << this->likelyhood() << " ]";
     return ss.str();
   }

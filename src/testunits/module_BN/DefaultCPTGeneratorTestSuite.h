@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -295,7 +295,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot));
 
         gum::Instantiation inst(aPot);
-        double              sum = (double)0;
+        double             sum = (double)0;
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           sum += aPot[inst];

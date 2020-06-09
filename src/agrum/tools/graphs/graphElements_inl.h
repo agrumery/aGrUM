@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inlined implementation of directed and undirected edges
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <algorithm>
 #include <iostream>
@@ -121,7 +121,7 @@ namespace gum {
 
   // Computes the hashed value of a key.
   INLINE Size HashFunc< Edge >::operator()(const Edge& key) const {
-    return castToSize(key) & this->_hash_mask;
+    return castToSize(key) & this->hash_mask_;
   }
 
 
@@ -173,7 +173,7 @@ namespace gum {
 
   /// modifies the tail of the arc
 
-  INLINE void Arc::__setTail(NodeId id) { n1 = id; }
+  INLINE void Arc::setTail__(NodeId id) { n1 = id; }
 
   /// returns the head of the arc
 
@@ -181,7 +181,7 @@ namespace gum {
 
   /// modifies the head of the arc
 
-  INLINE void Arc::__setHead(NodeId id) { n2 = id; }
+  INLINE void Arc::setHead__(NodeId id) { n2 = id; }
 
   /// returns an extremal node of an edge given the ID of the other one
 
@@ -232,7 +232,7 @@ namespace gum {
 
   // Computes the hashed value of a key.
   INLINE Size HashFunc< Arc >::operator()(const Arc& key) const {
-    return castToSize(key) & this->_hash_mask;
+    return castToSize(key) & this->hash_mask_;
   }
 
 

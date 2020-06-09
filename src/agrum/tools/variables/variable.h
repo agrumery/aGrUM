@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * Basically wrapper for a string name and description.
  * This class is used as an interface. So the constructor/destructor is
  *protected.
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_VARIABLE_H
 #define GUM_VARIABLE_H
@@ -117,7 +117,7 @@ namespace gum {
     const std::string& name() const;
 
     /// sets the description of the variable
-    /// @warning since __description is mutable, setDescription() is const
+    /// @warning since description__ is mutable, setDescription() is const
     /** @param theValue */
 
     void setDescription(const std::string& theValue) const;
@@ -142,7 +142,7 @@ namespace gum {
     /// protected copy
     /** @param aRV to be copied */
 
-    void _copy(const Variable& aRV);
+    void copy_(const Variable& aRV);
 
     /// constructor
     /** @param aName name of the variable
@@ -157,12 +157,12 @@ namespace gum {
 
     private:
     /// the name of the variable
-    std::string __name;
+    std::string name__;
 
     /// the description of the variable
     /// since description is not a characteristic of a variable, we allow the
     /// description to be changed even in a const reference.
-    mutable std::string __description;
+    mutable std::string description__;
   };
 
 } /* namespace gum */

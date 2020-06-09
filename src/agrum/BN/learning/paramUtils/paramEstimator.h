@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for estimating parameters of CPTs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
@@ -242,17 +242,17 @@ namespace gum {
 
       protected:
       /// an external a priori
-      Apriori< ALLOC >* _external_apriori{nullptr};
+      Apriori< ALLOC >* external_apriori_{nullptr};
 
       /** @brief if a score was used for learning the structure of the PGM, this
        * is the a priori internal to the score */
-      Apriori< ALLOC >* _score_internal_apriori{nullptr};
+      Apriori< ALLOC >* score_internal_apriori_{nullptr};
 
       /// the record counter used to parse the database
-      RecordCounter< ALLOC > _counter;
+      RecordCounter< ALLOC > counter_;
 
       /// an empty vector of nodes, used for empty conditioning
-      const std::vector< NodeId, ALLOC< NodeId > > _empty_nodevect;
+      const std::vector< NodeId, ALLOC< NodeId > > empty_nodevect_;
 
 
       /// copy operator
@@ -267,7 +267,7 @@ namespace gum {
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */
       template < typename GUM_SCALAR >
-      void __checkParameters(
+      void checkParameters__(
          const NodeId                                  target_node,
          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
          Potential< GUM_SCALAR >&                      pot);
@@ -278,7 +278,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-         __setParameters(
+         setParameters__(
             const NodeId                                  target_node,
             const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
             Potential< GUM_SCALAR >&                      pot);
@@ -289,7 +289,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-         __setParameters(
+         setParameters__(
             const NodeId                                  target_node,
             const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
             Potential< GUM_SCALAR >&                      pot);

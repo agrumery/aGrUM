@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation of bns/bayesNet.h classes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
  */
 
 #include <limits>
@@ -297,7 +297,7 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >::__minimalCondSetVisitUp(
+  void IBayesNet< GUM_SCALAR >::minimalCondSetVisitUp__(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -309,18 +309,18 @@ namespace gum {
     if (soids.contains(node)) {
       minimal << node;
     } else {
-      for (auto fath: _dag.parents(node))
-        __minimalCondSetVisitUp(
+      for (auto fath: dag_.parents(node))
+        minimalCondSetVisitUp__(
            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-      for (auto chil: _dag.children(node))
-        __minimalCondSetVisitDn(
+      for (auto chil: dag_.children(node))
+        minimalCondSetVisitDn__(
            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >::__minimalCondSetVisitDn(
+  void IBayesNet< GUM_SCALAR >::minimalCondSetVisitDn__(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -331,12 +331,12 @@ namespace gum {
 
     if (soids.contains(node)) {
       minimal << node;
-      for (auto fath: _dag.parents(node))
-        __minimalCondSetVisitUp(
+      for (auto fath: dag_.parents(node))
+        minimalCondSetVisitUp__(
            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     } else {
-      for (auto chil: _dag.children(node))
-        __minimalCondSetVisitDn(
+      for (auto chil: dag_.children(node))
+        minimalCondSetVisitDn__(
            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
@@ -353,11 +353,11 @@ namespace gum {
     alreadyVisitedDn << target;
     alreadyVisitedUp << target;
 
-    for (auto fath: _dag.parents(target))
-      __minimalCondSetVisitUp(
+    for (auto fath: dag_.parents(target))
+      minimalCondSetVisitUp__(
          fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
-    for (auto chil: _dag.children(target))
-      __minimalCondSetVisitDn(
+    for (auto chil: dag_.children(target))
+      minimalCondSetVisitDn__(
          chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     return res;
   }

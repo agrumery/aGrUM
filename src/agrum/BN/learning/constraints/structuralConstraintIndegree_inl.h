@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class for structural constraints limiting the number of parents
  * of nodes in a directed graph
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -37,8 +37,8 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
       // check that the max_indegree corresponds to the graph
       for (const auto id: graph) {
-        if (!_Indegree__max_parents.exists(id)) {
-          _Indegree__max_parents.insert(id, _Indegree__max_indegree);
+        if (!Indegree__max_parents_.exists(id)) {
+          Indegree__max_parents_.insert(id, Indegree__max_indegree_);
         }
       }
     }
@@ -47,7 +47,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintIndegree::checkArcAdditionAlone(NodeId x,
                                                            NodeId y) const {
-      return (_Indegree__max_parents[y] > _DiGraph__graph.parents(y).size());
+      return (Indegree__max_parents_[y] > DiGraph__graph_.parents(y).size());
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -61,7 +61,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintIndegree::checkArcReversalAlone(NodeId x,
                                                            NodeId y) const {
-      return (_Indegree__max_parents[x] > _DiGraph__graph.parents(x).size());
+      return (Indegree__max_parents_[x] > DiGraph__graph_.parents(x).size());
     }
 
     /// checks whether the constraints enable to add an arc
@@ -122,10 +122,10 @@ namespace gum {
     INLINE bool StructuralConstraintIndegree::isAlwaysInvalidAlone(
        const GraphChange& change) const {
       if ((change.type() == GraphChangeType::ARC_ADDITION)
-          && (_Indegree__max_parents[change.node2()] == 0)) {
+          && (Indegree__max_parents_[change.node2()] == 0)) {
         return true;
       } else if ((change.type() == GraphChangeType::ARC_REVERSAL)
-                 && (_Indegree__max_parents[change.node1()] == 0)) {
+                 && (Indegree__max_parents_[change.node1()] == 0)) {
         return true;
       } else {
         return false;
@@ -136,7 +136,7 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setIndegree(
        const NodeProperty< Size >& max_indegree) {
       for (const auto& degree: max_indegree) {
-        _Indegree__max_parents.set(degree.first, degree.second);
+        Indegree__max_parents_.set(degree.first, degree.second);
       }
     }
 
@@ -144,12 +144,12 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setMaxIndegree(Size max_indegree,
                                                              bool update_all) {
       if (update_all) {
-        for (auto& degree: _Indegree__max_parents) {
+        for (auto& degree: Indegree__max_parents_) {
           degree.second = max_indegree;
         }
       }
 
-      _Indegree__max_indegree = max_indegree;
+      Indegree__max_indegree_ = max_indegree;
     }
 
 // include all the methods applicable to the whole class hierarchy

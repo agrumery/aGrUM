@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Class containing a schedule of operations to perform on multidims
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SCHEDULE_H
 #define GUM_SCHEDULE_H
@@ -205,17 +205,17 @@ namespace gum {
     /** Operations can be scheduled as a DAG: nodes without parents can be
      * executed directly. The other nodes need their parents to be executed to
      * get all their arguments constructed. */
-    mutable DAG __dag;
+    mutable DAG dag__;
 
     /// a hashtable assigning to each node of the DAG an operation
-    NodeProperty< ScheduleOperation< GUM_SCALAR >* > __node2operation;
+    NodeProperty< ScheduleOperation< GUM_SCALAR >* > node2operation__;
 
     /// a hashtable assigning to each operation id a node id in the DAG
-    HashTable< OperationId, NodeId > __operation2node;
+    HashTable< OperationId, NodeId > operation2node__;
 
     /** @brief a hashtable assigning to each ScheduleMultiDim resulting from a
      * computation the MultiDimOperation node id that created it */
-    HashTable< MultiDimId, NodeId > __created_multidims;
+    HashTable< MultiDimId, NodeId > created_multidims__;
 
     /// a list of operations whose parents are not properly set
     /** when entering operations to be performed in a "wrong" order, it may
@@ -225,17 +225,17 @@ namespace gum {
      * we compute the correct set of parents of the operations of this list
      * and, when this is done, we remove them from the list. As such, when the
      * list is empty, the schedule can be performed. */
-    mutable NodeSet __operations_with_wrong_parents;
+    mutable NodeSet operations_with_wrong_parents__;
 
     /// the set of operations that can be executed at once
-    mutable NodeSet __operations_available;
+    mutable NodeSet operations_available__;
 
     /// for each multidim, store the set of operations involving it
-    HashTable< MultiDimId, NodeSet* > __multidim2operations;
+    HashTable< MultiDimId, NodeSet* > multidim2operations__;
 
     /** @brief updates the set of parents for the nodes whoses parents are not
      * correct yet and update accordingly the available operations */
-    void __updateWrongParents() const;
+    void updateWrongParents__() const;
   };
 
 } /* namespace gum */

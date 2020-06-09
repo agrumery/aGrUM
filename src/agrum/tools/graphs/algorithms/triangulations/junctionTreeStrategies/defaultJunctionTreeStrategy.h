@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief An algorithms producing a junction given the elimination tree
  * produced by the triangulation algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H
@@ -127,17 +127,17 @@ namespace gum {
 
     private:
     /// a boolean indicating whether the junction tree has been constructed
-    bool __has_junction_tree{false};
+    bool has_junction_tree__{false};
 
     /// the junction tree computed by the algorithm
-    CliqueGraph __junction_tree;
+    CliqueGraph junction_tree__;
 
     /** @brief indicates which clique of the junction tree was created
      * by the elimination of a given node (the key of the table) */
-    NodeProperty< NodeId > __node_2_junction_clique;
+    NodeProperty< NodeId > node_2_junction_clique__;
 
     /// computes a junction tree from an elimination tree
-    void __computeJunctionTree();
+    void computeJunctionTree__();
   };
 
 } /* namespace gum */

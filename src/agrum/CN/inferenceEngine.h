@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <map>
 
@@ -49,7 +49,7 @@ namespace gum {
      * multi-threading) or CNMonteCarloSampling (outer multi-threading).
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
      */
     template < typename GUM_SCALAR >
     class InferenceEngine: public ApproximationScheme {
@@ -67,94 +67,94 @@ namespace gum {
 
       protected:
       /** @brief A pointer to the Credal Net used. */
-      const CredalNet< GUM_SCALAR >* _credalNet;
+      const CredalNet< GUM_SCALAR >* credalNet_;
 
       /** @brief Old lower marginals used to compute epsilon. */
-      margi _oldMarginalMin;
+      margi oldMarginalMin_;
       /** @brief Old upper marginals used to compute epsilon. */
-      margi _oldMarginalMax;
+      margi oldMarginalMax_;
 
       /** @brief Lower marginals. */
-      margi _marginalMin;
+      margi marginalMin_;
       /** @brief Upper marginals. */
-      margi _marginalMax;
+      margi marginalMax_;
 
       /** @brief Credal sets vertices, if enabled */
-      credalSet _marginalSets;
+      credalSet marginalSets_;
 
       /** @brief Lower expectations, if some variables modalities were inserted.
        */
-      expe _expectationMin;
+      expe expectationMin_;
       /** @brief Upper expectations, if some variables modalities were inserted.
        */
-      expe _expectationMax;
+      expe expectationMax_;
 
       /** @brief Lower dynamic expectations. If the network is not dynamic it's
-       * content is the same as _expectationMin. */
-      dynExpe _dynamicExpMin;
+       * content is the same as expectationMin_. */
+      dynExpe dynamicExpMin_;
       /** @brief Upper dynamic expectations. If the network if not dynamic it's
-       * content is the same as _expectationMax. */
-      dynExpe _dynamicExpMax;
+       * content is the same as expectationMax_. */
+      dynExpe dynamicExpMax_;
 
       /** @brief Variables modalities used to compute expectations. */
-      dynExpe _modal;
+      dynExpe modal_;
 
       /** @brief Holds observed variables states. */
-      margi _evidence;
+      margi evidence_;
       /** @brief Holds the query nodes states. */
-      query _query;
+      query query_;
 
       /** @brief Clusters of nodes used with dynamic networks. Any node key in
-       * _t0 is
+       * t0_ is
        * present at \f$ t=0 \f$ and any node belonging to the node set of this
        * key
        * share the same CPT than the key. Used for sampling with repetitive
        * independence. */
-      cluster _t0;
+      cluster t0_;
       /** @brief Clusters of nodes used with dynamic networks. Any node key in
-       * _t1 is
+       * t1_ is
        * present at \f$ t=1 \f$ and any node belonging to the node set of this
        * key
        * share the same CPT than the key. Used for sampling with repetitive
        * independence. */
-      cluster _t1;
+      cluster t1_;
 
       /** @brief \c True if credal sets vertices are stored, \c False otherwise.
        * \c
        * False by default. */
-      bool _storeVertices;
+      bool storeVertices_;
       /** @brief \c True if using repetitive independence ( dynamic network only
        * ),
        * \c False otherwise. \c False by default. */
-      bool _repetitiveInd;
+      bool repetitiveInd_;
       /** @brief Iterations limit stopping rule used by some algorithms such as
        * CNMonteCarloSampling. The algorithms stops if no changes occured within
        * 1000
        * iterations by default. */
-      /// int _iterStop;
+      /// int iterStop_;
       /** @brief \c True is optimal bayes net are stored, for each variable and
        * each
        * modality, \c False otherwise. Not all algorithms offers this option. \c
        * False by default. */
-      bool _storeBNOpt;
+      bool storeBNOpt_;
       /** @brief Object used to efficiently store optimal bayes net during
        * inference,
        * for some algorithms. */
-      VarMod2BNsMap< GUM_SCALAR > _dbnOpt;
+      VarMod2BNsMap< GUM_SCALAR > dbnOpt_;
 
       /**
        * @deprecated
        * @brief The number of time steps of this network (only usefull for
        * dynamic
        * networks). */
-      int _timeSteps;
+      int timeSteps_;
 
       /// @name Protected initialization methods
       /// @{
       /**
-       * Initialize _t0 and _t1 clusters.
+       * Initialize t0_ and t1_ clusters.
        */
-      void _repetitiveInit();
+      void repetitiveInit_();
 
       /**
        * Initialize lower and upper expectations before inference, with the
@@ -162,19 +162,19 @@ namespace gum {
        * expectation being initialized on the highest modality and the upper
        * expectation being initialized on the lowest modality.
        */
-      void _initExpectations();
+      void initExpectations_();
 
       /**
        * Initialize lower and upper old marginals and marginals before
        * inference,
        * with the lower marginal being 1 and the upper 0.
        */
-      void _initMarginals();
+      void initMarginals_();
 
       /**
        * Initialize credal set vertices with empty sets.
        */
-      void _initMarginalSets();
+      void initMarginalSets_();
 
       /// @}
 
@@ -189,7 +189,7 @@ namespace gum {
        *
        * @return Epsilon.
        */
-      inline const GUM_SCALAR _computeEpsilon();
+      inline const GUM_SCALAR computeEpsilon_();
 
       /**
        * Given a node id and one of it's possible vertex obtained during
@@ -199,7 +199,7 @@ namespace gum {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateExpectations(const NodeId&                    id,
+      inline void updateExpectations_(const NodeId&                    id,
                                       const std::vector< GUM_SCALAR >& vertex);
 
       /**
@@ -213,7 +213,7 @@ namespace gum {
        * @param vertex A (potential) vertex of the node credal set
        * @param elimRedund remove redundant vertex (inside a facet)
        */
-      inline void _updateCredalSets(const NodeId&                    id,
+      inline void updateCredalSets_(const NodeId&                    id,
                                     const std::vector< GUM_SCALAR >& vertex,
                                     const bool& elimRedund = false);
 
@@ -224,7 +224,7 @@ namespace gum {
       /**
        * Rearrange lower and upper expectations to suit dynamic networks.
        */
-      void _dynamicExpectations();
+      void dynamicExpectations_();
       /// @}
 
       public:
@@ -266,14 +266,14 @@ namespace gum {
       const CredalNet< GUM_SCALAR >& credalNet();
 
       /**
-       * Get the _t0 cluster.
-       * @return A constant reference to the _t0 cluster.
+       * Get the t0_ cluster.
+       * @return A constant reference to the t0_ cluster.
        */
       const NodeProperty< std::vector< NodeId > >& getT0Cluster() const;
 
       /**
-       * Get the _t1 cluster.
-       * @return A constant reference to the _t1 cluster.
+       * Get the t1_ cluster.
+       * @return A constant reference to the t1_ cluster.
        */
       const NodeProperty< std::vector< NodeId > >& getT1Cluster() const;
 
@@ -492,7 +492,7 @@ namespace gum {
 
       /**
        * Compute dynamic expectations.
-       * @see _dynamicExpectations
+       * @see dynamicExpectations_
        * Only call this if an algorithm does not call it by itself.
        */
       void dynamicExpectations();   // if someone forgets the protected call at

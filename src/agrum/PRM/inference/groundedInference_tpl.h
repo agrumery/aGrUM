@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of GroundedInference.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #include <agrum/PRM/inference/groundedInference.h>
@@ -36,10 +36,10 @@ namespace gum {
     GroundedInference< GUM_SCALAR >::~GroundedInference() {
       GUM_DESTRUCTOR(GroundedInference);
 
-      if (__inf != nullptr) delete __inf;
+      if (inf__ != nullptr) delete inf__;
 
-      if (!__obs.empty())
-        for (const auto pot: __obs)
+      if (!obs__.empty())
+        for (const auto pot: obs__)
           // We used const ptrs only because of
           // MarginalTargetedInference::addEvidence()
           // requires it
@@ -47,13 +47,13 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void GroundedInference< GUM_SCALAR >::_evidenceAdded(
+    void GroundedInference< GUM_SCALAR >::evidenceAdded_(
        const typename PRMInference< GUM_SCALAR >::Chain& chain) {
       Potential< GUM_SCALAR >* bn_obs = new Potential< GUM_SCALAR >();
       // Retrieving the BN's variable
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
-      bn_obs->add(__inf->BN().variableFromName(var_name.str()));
+      bn_obs->add(inf__->BN().variableFromName(var_name.str()));
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
       const Potential< GUM_SCALAR >* prm_obs =
          this->evidence(chain.first)[chain.second->id()];
@@ -63,22 +63,22 @@ namespace gum {
         bn_obs->set(i, prm_obs->get(j));
       }
 
-      __obs.insert(bn_obs);
+      obs__.insert(bn_obs);
     }
 
     template < typename GUM_SCALAR >
-    void GroundedInference< GUM_SCALAR >::_evidenceRemoved(
+    void GroundedInference< GUM_SCALAR >::evidenceRemoved_(
        const typename PRMInference< GUM_SCALAR >::Chain& chain) {
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
-      const DiscreteVariable& var = __inf->BN().variableFromName(var_name.str());
+      const DiscreteVariable& var = inf__->BN().variableFromName(var_name.str());
 
-      for (auto iter = __obs.beginSafe(); iter != __obs.endSafe();
+      for (auto iter = obs__.beginSafe(); iter != obs__.endSafe();
            ++iter) {   // safe iterator needed here
         if ((**iter).contains(var)) {
-          __inf->eraseEvidence(var_name.str());
+          inf__->eraseEvidence(var_name.str());
           const Potential< GUM_SCALAR >* e = *iter;
-          __obs.erase(iter);
+          obs__.erase(iter);
           delete e;
           break;
         }
@@ -89,7 +89,7 @@ namespace gum {
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
        const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system),
-        __inf(0) {
+        inf__(0) {
       GUM_CONSTRUCTOR(GroundedInference);
     }
 
@@ -97,7 +97,7 @@ namespace gum {
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
        const GroundedInference< GUM_SCALAR >& source) :
         PRMInference< GUM_SCALAR >(source),
-        __inf(0) {
+        inf__(0) {
       GUM_CONS_CPY(GroundedInference);
       GUM_ERROR(FatalError, "illegal to copy constructor");
     }
@@ -112,8 +112,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE MarginalTargetedInference< GUM_SCALAR >&
            GroundedInference< GUM_SCALAR >::getBNInference() {
-      if (__inf != 0) {
-        return *__inf;
+      if (inf__ != 0) {
+        return *inf__;
       } else {
         GUM_ERROR(NotFound, "the inference engine is not yet defined");
       }
@@ -122,35 +122,35 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::setBNInference(
        MarginalTargetedInference< GUM_SCALAR >* bn_inf) {
-      if (__inf != 0) { delete __inf; }
+      if (inf__ != 0) { delete inf__; }
 
-      __inf = bn_inf;
+      inf__ = bn_inf;
     }
 
     template < typename GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::_posterior(
+    INLINE void GroundedInference< GUM_SCALAR >::posterior_(
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
-      if (__inf == 0) {
+      if (inf__ == 0) {
         GUM_ERROR(OperationNotAllowed, "no inference engine defined");
       }
 
       std::stringstream sBuff;
 
-      if (!__obs.empty()) {
-        for (auto e: __obs) {
+      if (!obs__.empty()) {
+        for (auto e: obs__) {
           try {
-            __inf->addEvidence(*e);
-          } catch (InvalidArgument&) { __inf->chgEvidence(*e); }
+            inf__->addEvidence(*e);
+          } catch (InvalidArgument&) { inf__->chgEvidence(*e); }
         }
       }
 
       sBuff << chain.first->name() << "." << chain.second->safeName();
-      m = __inf->posterior(__inf->BN().idFromName(sBuff.str()));
+      m = inf__->posterior(inf__->BN().idFromName(sBuff.str()));
     }
 
     template < typename GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::_joint(
+    INLINE void GroundedInference< GUM_SCALAR >::joint_(
        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
        Potential< GUM_SCALAR >&                                         j) {
       GUM_ERROR(FatalError, "not yet implemented");

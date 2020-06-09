@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@
  * Probability Distributions", Zagorecki, 2003) (see also "Canonical
  * Probabilistic Models for Knowledge Engineering", Diez, Druzdzel, 2007)
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MULTI_DIM_ICI_MODEL_H
 #define GUM_MULTI_DIM_ICI_MODEL_H
@@ -160,7 +160,7 @@ namespace gum {
     /// @}
     protected:
     /// \f$ p_0 \f$ in Henrion (89).
-    mutable GUM_SCALAR __external_weight;
+    mutable GUM_SCALAR external_weight__;
 
     // ============================================================================
     /// @name causal weights
@@ -168,12 +168,12 @@ namespace gum {
     /// @{
 
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-    mutable GUM_SCALAR __default_weight;
+    mutable GUM_SCALAR default_weight__;
 
-    mutable HashTable< const DiscreteVariable*, GUM_SCALAR > __causal_weights;
+    mutable HashTable< const DiscreteVariable*, GUM_SCALAR > causal_weights__;
     /// @}
 
-    virtual void _replace(const DiscreteVariable* x,
+    virtual void replace_(const DiscreteVariable* x,
                           const DiscreteVariable* y) override;
   };
 

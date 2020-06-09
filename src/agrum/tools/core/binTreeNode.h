@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /**
  * @file
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BIN_TREE_NODE_H
@@ -316,16 +316,16 @@ namespace gum {
 
     protected:
     /// The value stored in a node of the tree.
-    Val _val;
+    Val val_;
 
     /// The parent of the node.
-    BinTreeNode< Val >* _parent;
+    BinTreeNode< Val >* parent_;
 
     /// the direction to follow from the parent to reach the current node.
-    BinTreeDir _parent_dir;
+    BinTreeDir parent_dir_;
 
     /// The children of the current node.
-    BinTreeNode< Val >* _children[2];
+    BinTreeNode< Val >* children_[2];
   };
 
 } /* namespace gum */

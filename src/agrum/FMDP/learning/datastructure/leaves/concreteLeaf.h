@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Concrete Leaf class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -71,7 +71,7 @@ namespace gum {
                  NodeDatabase< AttributeSelection, isScalar >* n1,
                  const Sequence< ValueType >*                  valueDomain) :
         AbstractLeaf(leafId),
-        __n1(n1), __valueDomain(valueDomain) {
+        n1__(n1), valueDomain__(valueDomain) {
       GUM_CONSTRUCTOR(ConcreteLeaf);
     }
 
@@ -96,25 +96,25 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     virtual double effectif(Idx moda) const {
-      return __effectif(moda, Int2Type< isScalar >());
+      return effectif__(moda, Int2Type< isScalar >());
     }
 
     private:
-    double __effectif(Idx moda, Int2Type< true >) const {
-      return (double)__n1->effectif(Idx(__valueDomain->atPos(moda)));
+    double effectif__(Idx moda, Int2Type< true >) const {
+      return (double)n1__->effectif(Idx(valueDomain__->atPos(moda)));
     }
-    double __effectif(Idx moda, Int2Type< false >) const {
-      return (double)__n1->effectif(moda);
+    double effectif__(Idx moda, Int2Type< false >) const {
+      return (double)n1__->effectif(moda);
     }
 
     public:
-    virtual double total() const { return double(__n1->nbObservation()); }
+    virtual double total() const { return double(n1__->nbObservation()); }
 
-    Idx nbModa() const { return __nbModa(Int2Type< isScalar >()); }
+    Idx nbModa() const { return nbModa__(Int2Type< isScalar >()); }
 
     private:
-    Idx __nbModa(Int2Type< true >) const { return __valueDomain->size(); }
-    Idx __nbModa(Int2Type< false >) const { return __n1->valueDomain(); }
+    Idx nbModa__(Int2Type< true >) const { return valueDomain__->size(); }
+    Idx nbModa__(Int2Type< false >) const { return n1__->valueDomain(); }
 
     public:
     std::string toString() {
@@ -124,8 +124,8 @@ namespace gum {
     }
 
     private:
-    NodeDatabase< AttributeSelection, isScalar >* __n1;
-    const Sequence< ValueType >*                  __valueDomain;
+    NodeDatabase< AttributeSelection, isScalar >* n1__;
+    const Sequence< ValueType >*                  valueDomain__;
   };
 
 

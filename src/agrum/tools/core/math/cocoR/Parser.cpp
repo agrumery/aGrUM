@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return __errors;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -113,49 +113,49 @@ void Parser::EVAL() {
 		while (StartOf(1)) {
 			expression();
 		}
-		__formula->__finalize(); 
+		formula__->finalize__();
 }
 
 void Parser::expression() {
 		switch (la->kind) {
-		case _integer: {
+		case integer_: {
 			Get();
-			__formula->__push_number((double)coco_atoi(t->val)); 
+			formula__->push_number__((double)coco_atoi(t->val));
 			break;
 		}
-		case _float: {
+		case float_: {
 			Get();
-			__formula->__push_number((double)coco_atof(t->val)); 
+			formula__->push_number__((double)coco_atof(t->val));
 			break;
 		}
-		case _scifloat: {
+		case scifloat_: {
 			Get();
-			__formula->__push_number((double)coco_atof(t->val)); 
+			formula__->push_number__((double)coco_atof(t->val));
 			break;
 		}
-		case _operator: {
+		case operator_: {
 			Get();
-			__formula->__push_operator(narrow(t->val)[0]); 
+			formula__->push_operator__(narrow(t->val)[0]);
 			break;
 		}
 		case 7 /* "(" */: {
 			Get();
-			__formula->__push_leftParenthesis(); 
+			formula__->push_leftParenthesis__();
 			break;
 		}
 		case 8 /* ")" */: {
 			Get();
-			__formula->__push_rightParenthesis(); 
+			formula__->push_rightParenthesis__();
 			break;
 		}
-		case _ident: {
+		case ident_: {
 			Get();
-			__formula->__push_identifier(narrow(t->val)); 
+			formula__->push_identifier__(narrow(t->val));
 			break;
 		}
 		case 9 /* "," */: {
 			Get();
-			__formula->__push_comma(); 
+			formula__->push_comma__();
 			break;
 		}
 		default: SynErr(11); break;
@@ -290,13 +290,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -327,7 +327,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

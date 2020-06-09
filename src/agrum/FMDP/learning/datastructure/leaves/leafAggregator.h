@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -122,28 +122,28 @@ namespace gum {
 
     void update();
 
-    bool needsUpdate() { return __needsUpdate; }
+    bool needsUpdate() { return needsUpdate__; }
 
     HashTable< NodeId, AbstractLeaf* > leavesMap();
 
     std::string toString();
 
     private:
-    void __removeContext(Idx);
-    void __addInitialPair(LeafPair*);
-    void __updateInitialPair(LeafPair*);
-    void __removeInitialPair(LeafPair*);
+    void removeContext__(Idx);
+    void addInitialPair__(LeafPair*);
+    void updateInitialPair__(LeafPair*);
+    void removeInitialPair__(LeafPair*);
 
-    Sequence< FusionContext< false >* > __fusionSeq;
+    Sequence< FusionContext< false >* > fusionSeq__;
 
-    FusionContext< true >* __initialContext;
+    FusionContext< true >* initialContext__;
 
-    HashTable< AbstractLeaf*, Set< LeafPair* >* > __leaf2Pair;
+    HashTable< AbstractLeaf*, Set< LeafPair* >* > leaf2Pair__;
 
-    NodeGraphPart* __leavesCpt;
+    NodeGraphPart* leavesCpt__;
 
-    double __similarityThreshold;
-    bool   __needsUpdate;
+    double similarityThreshold__;
+    bool   needsUpdate__;
   };
 
 

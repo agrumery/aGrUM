@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief or aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <sstream>
@@ -36,7 +36,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
-      this->_decomposable=true;
+      this->decomposable_ = true;
       GUM_CONSTRUCTOR(Or);
     }
 
@@ -52,12 +52,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Or< GUM_SCALAR >::_neutralElt() const {
+    INLINE Idx Or< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Or< GUM_SCALAR >::_fold(const DiscreteVariable& v,
+    INLINE Idx Or< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                        Idx                     i1,
                                        Idx                     i2,
                                        bool& stop_iteration) const {

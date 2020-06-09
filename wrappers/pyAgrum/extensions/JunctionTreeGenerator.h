@@ -38,12 +38,12 @@ class JunctionTreeGenerator {
   public:
   gum::JunctionTree junctionTree(const gum::UndiGraph& g,
                                  PyObject* partial_order = nullptr) const {
-    return _junctionTree(g, _translatePartialOrder(partial_order));
+    return junctionTree_(g, translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree junctionTree(const gum::DAG& dag,
                                  PyObject*       partial_order = nullptr) const {
-    return _junctionTree(dag.moralGraph(), _translatePartialOrder(partial_order));
+    return junctionTree_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree junctionTree(const gum::BayesNet< double >& bn,
@@ -51,8 +51,8 @@ class JunctionTreeGenerator {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node : bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return _junctionTree(
-       bn.moralGraph(), _translatePartialOrder(partial_order), mods);
+    return junctionTree_(
+       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
   gum::JunctionTree junctionTree(const gum::MarkovNet< double >& mn,
@@ -60,19 +60,19 @@ class JunctionTreeGenerator {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node : mn.graph().nodes())
       mods.insert(node, mn.variable(node).domainSize());
-    return _junctionTree(
-       mn.graph(), _translatePartialOrder(partial_order), mods);
+    return junctionTree_(
+       mn.graph(), translatePartialOrder_(partial_order), mods);
   }
 
   PyObject* eliminationOrder(const gum::UndiGraph& g,
                              PyObject*             partial_order = nullptr) const {
-    return _eliminationOrder(g, _translatePartialOrder(partial_order));
+    return eliminationOrder_(g, translatePartialOrder_(partial_order));
   }
 
   PyObject* eliminationOrder(const gum::DAG& dag,
                              PyObject*       partial_order = nullptr) const {
-    return _eliminationOrder(dag.moralGraph(),
-                             _translatePartialOrder(partial_order));
+    return eliminationOrder_(dag.moralGraph(),
+                             translatePartialOrder_(partial_order));
   }
 
   PyObject* eliminationOrder(const gum::BayesNet< double >& bn,
@@ -80,20 +80,20 @@ class JunctionTreeGenerator {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node : bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return _eliminationOrder(
-       bn.moralGraph(), _translatePartialOrder(partial_order), mods);
+    return eliminationOrder_(
+       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
 
   gum::JunctionTree binaryJoinTree(const gum::UndiGraph& g,
                                    PyObject* partial_order = nullptr) const {
-    return _binaryJoinTree(g, _translatePartialOrder(partial_order));
+    return binaryJoinTree_(g, translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree binaryJoinTree(const gum::DAG& dag,
                                    PyObject*       partial_order = nullptr) const {
-    return _binaryJoinTree(dag.moralGraph(),
-                           _translatePartialOrder(partial_order));
+    return binaryJoinTree_(dag.moralGraph(),
+                           translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree binaryJoinTree(const gum::BayesNet< double >& bn,
@@ -101,12 +101,12 @@ class JunctionTreeGenerator {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node : bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return _binaryJoinTree(
-       bn.moralGraph(), _translatePartialOrder(partial_order), mods);
+    return binaryJoinTree_(
+       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
   private:
-  gum::JunctionTree _junctionTree(const gum::UndiGraph&            g,
+  gum::JunctionTree junctionTree_(const gum::UndiGraph&            g,
                                   const gum::List< gum::NodeSet >& partial_order,
                                   gum::NodeProperty< gum::Size >   mods =
                                      gum::NodeProperty< gum::Size >()) const {
@@ -125,7 +125,7 @@ class JunctionTreeGenerator {
     return res;
   }
 
-  gum::JunctionTree _binaryJoinTree(const gum::UndiGraph&            g,
+  gum::JunctionTree binaryJoinTree_(const gum::UndiGraph&            g,
                                     const gum::List< gum::NodeSet >& partial_order,
                                     gum::NodeProperty< gum::Size >   mods =
                                        gum::NodeProperty< gum::Size >()) const {
@@ -133,10 +133,10 @@ class JunctionTreeGenerator {
     gum::NodeSet                        emptyset;
     if (mods.size() == 0) { mods = g.nodesProperty(static_cast< gum::Size >(2)); }
 
-    return bjtc.convert(_junctionTree(g, partial_order, mods), mods, emptyset);
+    return bjtc.convert(junctionTree_(g, partial_order, mods), mods, emptyset);
   }
 
-  PyObject* _eliminationOrder(const gum::UndiGraph&            g,
+  PyObject* eliminationOrder_(const gum::UndiGraph&            g,
                               const gum::List< gum::NodeSet >& partial_order,
                               gum::NodeProperty< gum::Size >   mods =
                                  gum::NodeProperty< gum::Size >()) const {
@@ -154,7 +154,7 @@ class JunctionTreeGenerator {
     return res;
   }
 
-  gum::List< gum::NodeSet > _translatePartialOrder(PyObject* p) const {
+  gum::List< gum::NodeSet > translatePartialOrder_(PyObject* p) const {
     gum::List< gum::NodeSet > res;
     if (p == nullptr) return res;
 

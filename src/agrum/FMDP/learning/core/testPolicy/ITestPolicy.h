@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the ITestPolicy
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H
@@ -57,7 +57,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    ITestPolicy() : __isModified(false), __nbObs(0) {
+    ITestPolicy() : isModified__(false), nbObs__(0) {
       GUM_CONSTRUCTOR(ITestPolicy);
     }
 
@@ -88,14 +88,14 @@ namespace gum {
     /// Comptabilizes the new observation
     // ============================================================================
     virtual void addObservation(Idx attr, GUM_SCALAR value) {
-      __isModified = true;
-      __nbObs++;
+      isModified__ = true;
+      nbObs__++;
     }
 
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    Idx nbObservation() const { return __nbObs; }
+    Idx nbObservation() const { return nbObs__; }
 
     /// @}
 
@@ -114,7 +114,7 @@ namespace gum {
     // ============================================================================
     /// Recomputes the statistic from the beginning
     // ============================================================================
-    virtual void computeScore() const { __isModified = false; }
+    virtual void computeScore() const { isModified__ = false; }
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
@@ -138,8 +138,8 @@ namespace gum {
     ///
     // ============================================================================
     void add(const ITestPolicy< GUM_SCALAR >& src) {
-      __isModified = true;
-      __nbObs += src.nbObservation();
+      isModified__ = true;
+      nbObs__ += src.nbObservation();
     }
 
     /// @}
@@ -155,21 +155,21 @@ namespace gum {
     // ============================================================================
     std::string toString() const {
       std::stringstream ss;
-      ss << "\t\t\tNb Obs : " << __nbObs << std::endl;
+      ss << "\t\t\tNb Obs : " << nbObs__ << std::endl;
       return ss.str();
     }
 
     /// @}
 
     protected:
-    bool _isModified() const { return __isModified; }
+    bool isModified_() const { return isModified__; }
 
     private:
     ///  Booleans indicating if we have to re eval test
-    mutable bool __isModified;
+    mutable bool isModified__;
 
     ///
-    Idx __nbObs;
+    Idx nbObs__;
   };
 
 }   // End of namespace gum

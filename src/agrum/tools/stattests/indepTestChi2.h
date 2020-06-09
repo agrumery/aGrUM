@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing Chi2 scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_LEARNING_INDEP_TEST_CHI2_H
@@ -172,22 +172,22 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet< ALLOC >& idset) final;
 
       /// compute the pair <chi2 statistic,pvalue>
-      std::pair< double, double > _statistics(const IdCondSet< ALLOC >& idset);
+      std::pair< double, double > statistics_(const IdCondSet< ALLOC >& idset);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the domain sizes of the variables
-      std::vector< std::size_t, ALLOC< std::size_t > > __domain_sizes;
+      std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes__;
 
       /// a chi2 distribution for computing critical values
-      Chi2 __chi2;
+      Chi2 chi2__;
 
       /// an empty conditioning set
-      const std::vector< Idx > __empty_set;
+      const std::vector< Idx > empty_set__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

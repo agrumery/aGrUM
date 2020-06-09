@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of the HashTable
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <iostream>
 #include <sstream>
@@ -42,24 +42,24 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
-  void HashTableList< Key, Val, Alloc >::__copy(
+  void HashTableList< Key, Val, Alloc >::copy__(
      const HashTableList< Key, Val, OtherAlloc >& from) {
     Bucket *ptr, *old_ptr{nullptr}, *new_elt{nullptr};
     // set the defaults
-    __deb_list = nullptr;
+    deb_list__ = nullptr;
 
     // copy from's list
     try {
-      for (ptr = from.__deb_list; ptr != nullptr; ptr = ptr->next) {
+      for (ptr = from.deb_list__; ptr != nullptr; ptr = ptr->next) {
         // copy the current from's bucket (may throw an exception either because
         // new cannot allocate the bucket or because the copy constructor of Val
         // throws an exception)
-        new_elt = __alloc_bucket->allocate(1);
+        new_elt = alloc_bucket__->allocate(1);
 
         try {
-          __alloc_bucket->construct(new_elt, *ptr);
+          alloc_bucket__->construct(new_elt, *ptr);
         } catch (...) {
-          __alloc_bucket->deallocate(new_elt, 1);
+          alloc_bucket__->deallocate(new_elt, 1);
           throw;
         }
 
@@ -69,7 +69,7 @@ namespace gum {
         if (old_ptr != nullptr)
           old_ptr->next = new_elt;
         else
-          __deb_list = new_elt;
+          deb_list__ = new_elt;
 
         old_ptr = new_elt;
       }
@@ -78,19 +78,19 @@ namespace gum {
 
       // update the number of elements stored into the list and the end of the
       // list
-      __nb_elements = from.__nb_elements;
-      __end_list = new_elt;
+      nb_elements__ = from.nb_elements__;
+      end_list__ = new_elt;
     } catch (...) {
       // problem: we could not allocate an element in the list => we delete
       // the elements created so far and we throw an exception
-      for (; __deb_list != nullptr; __deb_list = new_elt) {
-        new_elt = __deb_list->next;
-        __alloc_bucket->destroy(__deb_list);
-        __alloc_bucket->deallocate(__deb_list, 1);
+      for (; deb_list__ != nullptr; deb_list__ = new_elt) {
+        new_elt = deb_list__->next;
+        alloc_bucket__->destroy(deb_list__);
+        alloc_bucket__->deallocate(deb_list__, 1);
       }
 
-      __nb_elements = 0;
-      __end_list = nullptr;
+      nb_elements__ = 0;
+      end_list__ = nullptr;
 
       throw;
     }
@@ -99,7 +99,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableBucket< Key, Val >*
          HashTableList< Key, Val, Alloc >::bucket(const Key& key) const {
-    for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next)
+    for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr;
 
     return nullptr;
@@ -117,62 +117,62 @@ namespace gum {
     if (ptr->prev != nullptr)
       ptr->prev->next = ptr->next;
     else
-      __deb_list = ptr->next;
+      deb_list__ = ptr->next;
 
     if (ptr->next != nullptr)
       ptr->next->prev = ptr->prev;
     else
-      __end_list = ptr->prev;
+      end_list__ = ptr->prev;
 
     // remove the current element from the list
-    __alloc_bucket->destroy(ptr);
-    __alloc_bucket->deallocate(ptr, 1);
+    alloc_bucket__->destroy(ptr);
+    alloc_bucket__->deallocate(ptr, 1);
 
-    --__nb_elements;
+    --nb_elements__;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
      typename HashTableList< Key, Val, Alloc >::BucketAllocator*
         allocator) noexcept :
-      __alloc_bucket{allocator} {}
+      alloc_bucket__{allocator} {}
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
      const HashTableList< Key, Val, Alloc >& from) :
-      __alloc_bucket{from.__alloc_bucket} {
-    __copy(from);
+      alloc_bucket__{from.alloc_bucket__} {
+    copy__(from);
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
      HashTableList< Key, Val, Alloc >&& from) noexcept :
-      __deb_list{from.__deb_list},
-      __end_list{from.__end_list}, __nb_elements{from.__nb_elements},
-      __alloc_bucket{from.__alloc_bucket} {
-    from.__deb_list = nullptr;
+      deb_list__{from.deb_list__},
+      end_list__{from.end_list__}, nb_elements__{from.nb_elements__},
+      alloc_bucket__{from.alloc_bucket__} {
+    from.deb_list__ = nullptr;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::~HashTableList() {
-    for (Bucket *next_ptr, *ptr = __deb_list; ptr != nullptr; ptr = next_ptr) {
+    for (Bucket *next_ptr, *ptr = deb_list__; ptr != nullptr; ptr = next_ptr) {
       next_ptr = ptr->next;
-      __alloc_bucket->destroy(ptr);
-      __alloc_bucket->deallocate(ptr, 1);
+      alloc_bucket__->destroy(ptr);
+      alloc_bucket__->deallocate(ptr, 1);
     }
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTableList< Key, Val, Alloc >::clear() {
-    for (Bucket *next_ptr, *ptr = __deb_list; ptr != nullptr; ptr = next_ptr) {
+    for (Bucket *next_ptr, *ptr = deb_list__; ptr != nullptr; ptr = next_ptr) {
       next_ptr = ptr->next;
-      __alloc_bucket->destroy(ptr);
-      __alloc_bucket->deallocate(ptr, 1);
+      alloc_bucket__->destroy(ptr);
+      alloc_bucket__->deallocate(ptr, 1);
     }
 
-    __nb_elements = Size(0);
-    __deb_list = nullptr;
-    __end_list = nullptr;
+    nb_elements__ = Size(0);
+    deb_list__ = nullptr;
+    end_list__ = nullptr;
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -182,7 +182,7 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       clear();
-      __copy(from);
+      copy__(from);
     }
 
     return *this;
@@ -197,7 +197,7 @@ namespace gum {
     if (this
         != reinterpret_cast< const HashTableList< Key, Val, Alloc >* >(&from)) {
       clear();
-      __copy(from);
+      copy__(from);
     }
 
     return *this;
@@ -209,10 +209,10 @@ namespace gum {
         HashTableList< Key, Val, Alloc >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
-      __deb_list = from.__deb_list;
-      __end_list = from.__end_list;
-      __nb_elements = from.__nb_elements;
-      from.__deb_list = nullptr;
+      deb_list__ = from.deb_list__;
+      end_list__ = from.end_list__;
+      nb_elements__ = from.nb_elements__;
+      from.deb_list__ = nullptr;
     }
 
     return *this;
@@ -221,19 +221,19 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTableList< Key, Val, Alloc >::setAllocator(
      typename HashTableList< Key, Val, Alloc >::BucketAllocator& alloc) {
-    __alloc_bucket = &alloc;
+    alloc_bucket__ = &alloc;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTableList< Key, Val, Alloc >::value_type&
      HashTableList< Key, Val, Alloc >::at(Size i) {
-    if (i >= __nb_elements) {
+    if (i >= nb_elements__) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
 
     Bucket* ptr;
 
-    for (ptr = __deb_list; i; --i, ptr = ptr->next) {}
+    for (ptr = deb_list__; i; --i, ptr = ptr->next) {}
 
     return ptr->elt();
   }
@@ -241,13 +241,13 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTableList< Key, Val, Alloc >::value_type&
      HashTableList< Key, Val, Alloc >::at(Size i) const {
-    if (i >= __nb_elements) {
+    if (i >= nb_elements__) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
 
     Bucket* ptr;
 
-    for (ptr = __deb_list; i; --i, ptr = ptr->next) {}
+    for (ptr = deb_list__; i; --i, ptr = ptr->next) {}
 
     return ptr->elt();
   }
@@ -255,26 +255,24 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTableList< Key, Val, Alloc >::mapped_type&
      HashTableList< Key, Val, Alloc >::operator[](const Key& key) const {
-    for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next)
+    for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
-    GUM_ERROR(NotFound,
-              "No element with the key <"<< key << ">");
+    GUM_ERROR(NotFound, "No element with the key <" << key << ">");
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTableList< Key, Val, Alloc >::mapped_type&
      HashTableList< Key, Val, Alloc >::operator[](const Key& key) {
-    for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next)
+    for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
-    GUM_ERROR(NotFound,
-              "No element with the key <"<< key << ">");
+    GUM_ERROR(NotFound, "No element with the key <" << key << ">");
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTableList< Key, Val, Alloc >::exists(const Key& key) const {
-    for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next) {
+    for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next) {
       if (ptr->key() == key) { return true; }
     }
 
@@ -283,7 +281,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTableList< Key, Val, Alloc >::empty() const noexcept {
-    return (__nb_elements == Size(0));
+    return (nb_elements__ == Size(0));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -291,16 +289,16 @@ namespace gum {
      HashTableBucket< Key, Val >* new_elt) noexcept {
     // place the bucket at the beginning of the list
     new_elt->prev = nullptr;
-    new_elt->next = __deb_list;
+    new_elt->next = deb_list__;
 
-    if (__deb_list != nullptr)
-      __deb_list->prev = new_elt;
+    if (deb_list__ != nullptr)
+      deb_list__->prev = new_elt;
     else
-      __end_list = new_elt;
+      end_list__ = new_elt;
 
-    __deb_list = new_elt;
+    deb_list__ = new_elt;
 
-    ++__nb_elements;
+    ++nb_elements__;
   }
 
   // ===========================================================================
@@ -309,30 +307,30 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
-  void HashTable< Key, Val, Alloc >::__copy(
+  void HashTable< Key, Val, Alloc >::copy__(
      const HashTable< Key, Val, OtherAlloc >& table) {
     // in debug mode, check that this and table have '__nodes' arrays of the
     // same size
-    GUM_ASSERT(table.__size == __size);
+    GUM_ASSERT(table.size__ == size__);
 
     // try to fill the array of chained lists
-    for (Size i = 0; i < table.__size; ++i) {
+    for (Size i = 0; i < table.size__; ++i) {
       try {
-        __nodes[i] = table.__nodes[i];
+        nodes__[i] = table.nodes__[i];
       } catch (...) {
-        // here we could allocate the __nodes[j], j=0..i-1, so we should
+        // here we could allocate the nodes__[j], j=0..i-1, so we should
         // deallocate them
-        for (Size j = 0; j < __size; ++j)
-          __nodes[j].clear();
+        for (Size j = 0; j < size__; ++j)
+          nodes__[j].clear();
 
-        __nb_elements = Size(0);
+        nb_elements__ = Size(0);
 
         // propagate the exception
         throw;
       }
     }
 
-    __nb_elements = table.__nb_elements;
+    nb_elements__ = table.nb_elements__;
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -364,16 +362,16 @@ namespace gum {
   }
 
   template < typename Key, typename Val, typename Alloc >
-  INLINE void HashTable< Key, Val, Alloc >::__create(Size size) {
-    // setup the __nodes vector (contains only empty lists)
-    __nodes.resize(size);
+  INLINE void HashTable< Key, Val, Alloc >::create__(Size size) {
+    // setup the nodes__ vector (contains only empty lists)
+    nodes__.resize(size);
 
-    for (auto& list: __nodes) {
-      list.setAllocator(__alloc);
+    for (auto& list: nodes__) {
+      list.setAllocator(alloc__);
     }
 
     // set up properly the hash function
-    __hash_func.resize(size);
+    hash_func__.resize(size);
 
     // make sure the end() iterator is constructed properly
     end4Statics();
@@ -385,26 +383,26 @@ namespace gum {
                                           bool resize_pol,
                                           bool key_uniqueness_pol) :
       // size must be >= 2 else we lose all the bits of the hash function
-      __size{Size(1) << __hashTableLog2(std::max(Size(2), size_param))},
-      __resize_policy{resize_pol}, __key_uniqueness_policy{key_uniqueness_pol} {
+      size__{Size(1) << hashTableLog2__(std::max(Size(2), size_param))},
+      resize_policy__{resize_pol}, key_uniqueness_policy__{key_uniqueness_pol} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTable);
 
     // finalize the creation
-    __create(__size);
+    create__(size__);
   }
 
   template < typename Key, typename Val, typename Alloc >
   HashTable< Key, Val, Alloc >::HashTable(
      std::initializer_list< std::pair< Key, Val > > list) :
       // size must be >= 2 else we lose all the bits of the hash function
-      __size{Size(1) << __hashTableLog2(
+      size__{Size(1) << hashTableLog2__(
                 std::max< Size >(Size(2), Size(list.size()) / 2))} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTable);
 
-    // setup the __nodes vector (contains only empty lists)
-    __create(__size);
+    // setup the nodes__ vector (contains only empty lists)
+    create__(size__);
 
     // insert all the elements
     for (const auto& elt: list) {
@@ -415,71 +413,71 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   HashTable< Key, Val, Alloc >::HashTable(
      const HashTable< Key, Val, Alloc >& table) :
-      __size{table.__size},
-      __resize_policy{table.__resize_policy},
-      __key_uniqueness_policy{table.__key_uniqueness_policy},
-      __begin_index{table.__begin_index} {
+      size__{table.size__},
+      resize_policy__{table.resize_policy__},
+      key_uniqueness_policy__{table.key_uniqueness_policy__},
+      begin_index__{table.begin_index__} {
     // for debugging purposes
     GUM_CONS_CPY(HashTable);
 
-    // setup the __nodes vector (contains only empty lists)
-    __create(__size);
+    // setup the nodes__ vector (contains only empty lists)
+    create__(size__);
 
     // fill with the content of table
-    __copy(table);
+    copy__(table);
   }
 
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
   HashTable< Key, Val, Alloc >::HashTable(
      const HashTable< Key, Val, OtherAlloc >& table) :
-      __size{table.__size},
-      __resize_policy{table.__resize_policy},
-      __key_uniqueness_policy{table.__key_uniqueness_policy},
-      __begin_index{table.__begin_index} {
+      size__{table.size__},
+      resize_policy__{table.resize_policy__},
+      key_uniqueness_policy__{table.key_uniqueness_policy__},
+      begin_index__{table.begin_index__} {
     // for debugging purposes
     GUM_CONS_CPY(HashTable);
 
-    // setup the __nodes vector (contains only empty lists)
-    __create(__size);
+    // setup the nodes__ vector (contains only empty lists)
+    create__(size__);
 
     // fill with the content of table
-    __copy(table);
+    copy__(table);
   }
 
   template < typename Key, typename Val, typename Alloc >
   HashTable< Key, Val, Alloc >::HashTable(HashTable< Key, Val, Alloc >&& table) :
-      __nodes(std::move(table.__nodes)), __size{table.__size},
-      __nb_elements{table.__nb_elements}, __hash_func{table.__hash_func},
-      __resize_policy{table.__resize_policy},
-      __key_uniqueness_policy{table.__key_uniqueness_policy},
-      __begin_index{table.__begin_index},
-      __safe_iterators(std::move(table.__safe_iterators)),
-      __alloc(std::move(table.__alloc)) {
+      nodes__(std::move(table.nodes__)), size__{table.size__},
+      nb_elements__{table.nb_elements__}, hash_func__{table.hash_func__},
+      resize_policy__{table.resize_policy__},
+      key_uniqueness_policy__{table.key_uniqueness_policy__},
+      begin_index__{table.begin_index__},
+      safe_iterators__(std::move(table.safe_iterators__)),
+      alloc__(std::move(table.alloc__)) {
     // for debugging purposes
-    table.__size = 0;
+    table.size__ = 0;
     GUM_CONS_MOV(HashTable);
   }
 
   template < typename Key, typename Val, typename Alloc >
-  INLINE void HashTable< Key, Val, Alloc >::__clearIterators() {
-    const Size len = __safe_iterators.size();
+  INLINE void HashTable< Key, Val, Alloc >::clearIterators__() {
+    const Size len = safe_iterators__.size();
     for (Size i = Size(0); i < len; ++i)
-      __safe_iterators[i]->clear();
+      safe_iterators__[i]->clear();
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::clear() {
     // update all the registered iterators: they should now point to nullptr
     // and they are positioned to the end of the hashtable.
-    __clearIterators();
+    clearIterators__();
 
     // remove the buckets
-    for (Size i = Size(0); i < __size; ++i)
-      __nodes[i].clear();
+    for (Size i = Size(0); i < size__; ++i)
+      nodes__[i].clear();
 
-    __nb_elements = Size(0);
-    __begin_index = std::numeric_limits< Size >::max();
+    nb_elements__ = Size(0);
+    begin_index__ = std::numeric_limits< Size >::max();
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -489,7 +487,7 @@ namespace gum {
 
     // update all the registered iterators: they should now point to nullptr
     // and their hashtable should be set to nullptr
-    __clearIterators();
+    clearIterators__();
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -504,29 +502,29 @@ namespace gum {
       // the iterators point to end
       clear();
 
-      // if sizes of from's and this' __nodes vectors are not the same,
-      // we need to remove the current __nodes' array and to create a
+      // if sizes of from's and this' nodes__ vectors are not the same,
+      // we need to remove the current nodes__' array and to create a
       // new array with the correct size
-      if (__size != from.__size) {
-        __nodes.resize(from.__size);
+      if (size__ != from.size__) {
+        nodes__.resize(from.size__);
 
-        for (Size i = Size(0); i < from.__size; ++i) {
-          __nodes[i].setAllocator(__alloc);
+        for (Size i = Size(0); i < from.size__; ++i) {
+          nodes__[i].setAllocator(alloc__);
         }
 
-        __size = from.__size;
+        size__ = from.size__;
 
         // update the hash function : this is important as the computation of
         // the hash values heavily depends on the size of the hash table
-        __hash_func.resize(__size);
+        hash_func__.resize(size__);
       }
 
-      __resize_policy = from.__resize_policy;
-      __key_uniqueness_policy = from.__key_uniqueness_policy;
-      __begin_index = from.__begin_index;
+      resize_policy__ = from.resize_policy__;
+      key_uniqueness_policy__ = from.key_uniqueness_policy__;
+      begin_index__ = from.begin_index__;
 
       // perform the copy
-      __copy(from);
+      copy__(from);
     }
 
     return *this;
@@ -545,29 +543,29 @@ namespace gum {
       // the iterators point to end
       clear();
 
-      // if sizes of from's and this' __nodes vectors are not the same,
-      // we need to remove the current __nodes' array and to create a
+      // if sizes of from's and this' nodes__ vectors are not the same,
+      // we need to remove the current nodes__' array and to create a
       // new array with the correct size
-      if (__size != from.__size) {
-        __nodes.resize(from.__size);
+      if (size__ != from.size__) {
+        nodes__.resize(from.size__);
 
-        for (Size i = 0; i < from.__size; ++i) {
-          __nodes[i].setAllocator(__alloc);
+        for (Size i = 0; i < from.size__; ++i) {
+          nodes__[i].setAllocator(alloc__);
         }
 
-        __size = from.__size;
+        size__ = from.size__;
 
         // update the hash function : this is important as the computation of
         // the hash values heavily depends on the size of the hash table
-        __hash_func.resize(__size);
+        hash_func__.resize(size__);
       }
 
-      __resize_policy = from.__resize_policy;
-      __key_uniqueness_policy = from.__key_uniqueness_policy;
-      __begin_index = from.__begin_index;
+      resize_policy__ = from.resize_policy__;
+      key_uniqueness_policy__ = from.key_uniqueness_policy__;
+      begin_index__ = from.begin_index__;
 
       // perform the copy
-      __copy(from);
+      copy__(from);
     }
 
     return *this;
@@ -585,17 +583,17 @@ namespace gum {
       // the iterators point to end
       clear();
 
-      __nodes = std::move(table.__nodes);
-      __safe_iterators = std::move(table.__safe_iterators);
-      __alloc = std::move(table.__alloc);
-      __size = table.__size;
-      __nb_elements = table.__nb_elements;
-      __hash_func = table.__hash_func;
-      __resize_policy = table.__resize_policy;
-      __key_uniqueness_policy = table.__key_uniqueness_policy;
-      __begin_index = table.__begin_index;
+      nodes__ = std::move(table.nodes__);
+      safe_iterators__ = std::move(table.safe_iterators__);
+      alloc__ = std::move(table.alloc__);
+      size__ = table.size__;
+      nb_elements__ = table.nb_elements__;
+      hash_func__ = table.hash_func__;
+      resize_policy__ = table.resize_policy__;
+      key_uniqueness_policy__ = table.key_uniqueness_policy__;
+      begin_index__ = table.begin_index__;
 
-      table.__size = 0;   // necessary if we wish to perform moves iteratively,
+      table.size__ = 0;   // necessary if we wish to perform moves iteratively,
                           // i.e. x = std::move ( y ); y = std::move ( z ); ...
     }
 
@@ -609,7 +607,7 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const iterator* >(
-       HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::HashTableIterEnd__));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -619,7 +617,7 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator* >(
-       HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::HashTableIterEnd__));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -629,14 +627,14 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator* >(
-       HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::HashTableIterEnd__));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::iterator
      HashTable< Key, Val, Alloc >::begin() {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return iterator{end()};
     else
       return iterator{*this};
@@ -646,7 +644,7 @@ namespace gum {
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator
      HashTable< Key, Val, Alloc >::begin() const {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return const_iterator{end()};
     else
       return const_iterator{*this};
@@ -656,7 +654,7 @@ namespace gum {
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator
      HashTable< Key, Val, Alloc >::cbegin() const {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return const_iterator{cend()};
     else
       return const_iterator{*this};
@@ -669,7 +667,7 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const iterator_safe* >(
-       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::HashTableIterEndSafe__));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -679,7 +677,7 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator_safe* >(
-       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::HashTableIterEndSafe__));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -689,14 +687,14 @@ namespace gum {
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator_safe* >(
-       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::HashTableIterEndSafe__));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::iterator_safe
      HashTable< Key, Val, Alloc >::beginSafe() {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return iterator_safe{endSafe()};
     else
       return iterator_safe{*this};
@@ -706,7 +704,7 @@ namespace gum {
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator_safe
      HashTable< Key, Val, Alloc >::beginSafe() const {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return const_iterator_safe{endSafe()};
     else
       return const_iterator_safe{*this};
@@ -716,7 +714,7 @@ namespace gum {
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator_safe
      HashTable< Key, Val, Alloc >::cbeginSafe() const {
     // if the table is empty, make the begin and end point to the same element
-    if (__nb_elements == Size(0))
+    if (nb_elements__ == Size(0))
       return const_iterator_safe{cendSafe()};
     else
       return const_iterator_safe{*this};
@@ -724,50 +722,50 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE Val& HashTable< Key, Val, Alloc >::operator[](const Key& key) {
-    return __nodes[__hash_func(key)][key];
+    return nodes__[hash_func__(key)][key];
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const Val&
      HashTable< Key, Val, Alloc >::operator[](const Key& key) const {
-    return __nodes[__hash_func(key)][key];
+    return nodes__[hash_func__(key)][key];
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE Size HashTable< Key, Val, Alloc >::size() const noexcept {
-    return __nb_elements;
+    return nb_elements__;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE Size HashTable< Key, Val, Alloc >::capacity() const noexcept {
-    return __size;
+    return size__;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTable< Key, Val, Alloc >::exists(const Key& key) const {
-    return __nodes[__hash_func(key)].exists(key);
+    return nodes__[hash_func__(key)].exists(key);
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::setResizePolicy(
      const bool new_policy) noexcept {
-    __resize_policy = new_policy;
+    resize_policy__ = new_policy;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTable< Key, Val, Alloc >::resizePolicy() const noexcept {
-    return __resize_policy;
+    return resize_policy__;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::setKeyUniquenessPolicy(
      const bool new_policy) noexcept {
-    __key_uniqueness_policy = new_policy;
+    key_uniqueness_policy__ = new_policy;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTable< Key, Val, Alloc >::keyUniquenessPolicy() const noexcept {
-    return __key_uniqueness_policy;
+    return key_uniqueness_policy__;
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -777,60 +775,60 @@ namespace gum {
 
     // find the real size for allocation (the smallest power of 2 greater
     // than or equal to new_size) and get its base-2 logarithm
-    int log_size = __hashTableLog2(new_size);
+    int log_size = hashTableLog2__(new_size);
     new_size = Size(1) << log_size;
 
     // check if the new size is different from the actual size
     // if not, nothing else need be done
 
-    if (new_size != __size) {
+    if (new_size != size__) {
       // under automatic resize policy, check if the new size leaves
       // enough space for storing all the current elements
-      if (!__resize_policy
-          || (__nb_elements
+      if (!resize_policy__
+          || (nb_elements__
               <= new_size * HashTableConst::default_mean_val_by_slot)) {
-        // create a new array of __nodes to store the elements
+        // create a new array of nodes__ to store the elements
         std::vector< HashTableList< Key, Val, Alloc > > new_nodes(new_size);
 
         for (auto& list: new_nodes) {
-          list.setAllocator(__alloc);
+          list.setAllocator(alloc__);
         }
 
         // set the new hash function
-        __hash_func.resize(new_size);
+        hash_func__.resize(new_size);
 
-        // put all the elements of the current __nodes array into the new one
+        // put all the elements of the current nodes__ array into the new one
         Bucket* bucket;
         Size    new_hashed_key;
 
-        for (Size i = Size(0); i < __size; ++i) {
-          while ((bucket = __nodes[i].__deb_list) != nullptr) {
+        for (Size i = Size(0); i < size__; ++i) {
+          while ((bucket = nodes__[i].deb_list__) != nullptr) {
             // compute the new hashed key
-            new_hashed_key = __hash_func(bucket->key());
+            new_hashed_key = hash_func__(bucket->key());
 
             // remove the bucket from the list of buckets of the current
             // node vector
-            __nodes[i].__deb_list = bucket->next;
+            nodes__[i].deb_list__ = bucket->next;
 
-            // put the bucket into the new __nodes vector
+            // put the bucket into the new nodes__ vector
             new_nodes[new_hashed_key].insert(bucket);
           }
         }
 
         // update the size of the hash table
-        __size = new_size;
-        __begin_index = std::numeric_limits< Size >::max();
+        size__ = new_size;
+        begin_index__ = std::numeric_limits< Size >::max();
 
-        // substitute the current __nodes array by the new one
-        std::swap(__nodes, new_nodes);
+        // substitute the current nodes__ array by the new one
+        std::swap(nodes__, new_nodes);
 
         // update the iterators
-        for (auto iter: __safe_iterators) {
-          if (iter->__bucket)
-            iter->__index = __hash_func(iter->__bucket->key());
+        for (auto iter: safe_iterators__) {
+          if (iter->bucket__)
+            iter->index__ = hash_func__(iter->bucket__->key());
           else {
-            iter->__next_bucket = nullptr;
-            iter->__index = 0;
+            iter->next_bucket__ = nullptr;
+            iter->index__ = 0;
           }
         }
       }
@@ -839,15 +837,15 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   void
-     HashTable< Key, Val, Alloc >::__insert(HashTableBucket< Key, Val >* bucket) {
-    Size hash_key = __hash_func(bucket->key());
+     HashTable< Key, Val, Alloc >::insert__(HashTableBucket< Key, Val >* bucket) {
+    Size hash_key = hash_func__(bucket->key());
 
     // check that there does not already exist an element with the same key
-    if (__key_uniqueness_policy && __nodes[hash_key].exists(bucket->key())) {
+    if (key_uniqueness_policy__ && nodes__[hash_key].exists(bucket->key())) {
       // remove the bucket from memory
       Key k = bucket->key();
-      __alloc.destroy(bucket);
-      __alloc.deallocate(bucket, 1);
+      alloc__.destroy(bucket);
+      alloc__.deallocate(bucket, 1);
       GUM_ERROR(DuplicateElement,
                 "the hashtable contains an element with the same key (" << k
                                                                         << ")");
@@ -855,85 +853,85 @@ namespace gum {
 
     // check whether there is sufficient space to insert the new pair
     // if not, resize the current hashtable
-    if (__resize_policy
-        && (__nb_elements >= __size * HashTableConst::default_mean_val_by_slot)) {
-      resize(__size << 1);
-      hash_key = __hash_func(bucket->key());
+    if (resize_policy__
+        && (nb_elements__ >= size__ * HashTableConst::default_mean_val_by_slot)) {
+      resize(size__ << 1);
+      hash_key = hash_func__(bucket->key());
     }
 
     // add the new pair
-    __nodes[hash_key].insert(bucket);
-    ++__nb_elements;
+    nodes__[hash_key].insert(bucket);
+    ++nb_elements__;
 
     // recompute the index of the beginning of the hashtable if possible
-    // WARNING: if __begin_index = std::numeric_limits<Size>::max (), we CANNOT
+    // WARNING: if begin_index__ = std::numeric_limits<Size>::max (), we CANNOT
     // recompute the index because we cannot know whether the current index is
     // equal to max because there was no element in the hashtable or whether a
-    // previous __erase() has set the index to max.
-    if (__begin_index < hash_key) { __begin_index = hash_key; }
+    // previous erase__() has set the index to max.
+    if (begin_index__ < hash_key) { begin_index__ = hash_key; }
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
      HashTable< Key, Val, Alloc >::insert(const Key& thekey, const Val& theval) {
-    Bucket* bucket = __alloc.allocate(1);
+    Bucket* bucket = alloc__.allocate(1);
 
     try {
-      __alloc.construct(bucket, thekey, theval);
+      alloc__.construct(bucket, thekey, theval);
     } catch (...) {
-      __alloc.deallocate(bucket, 1);
+      alloc__.deallocate(bucket, 1);
       throw;
     }
 
-    __insert(bucket);
+    insert__(bucket);
     return bucket->elt();
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
      HashTable< Key, Val, Alloc >::insert(Key&& thekey, Val&& theval) {
-    Bucket* bucket = __alloc.allocate(1);
+    Bucket* bucket = alloc__.allocate(1);
 
     try {
-      __alloc.construct(bucket, std::move(thekey), std::move(theval));
+      alloc__.construct(bucket, std::move(thekey), std::move(theval));
     } catch (...) {
-      __alloc.deallocate(bucket, 1);
+      alloc__.deallocate(bucket, 1);
       throw;
     }
 
-    __insert(bucket);
+    insert__(bucket);
     return bucket->elt();
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
      HashTable< Key, Val, Alloc >::insert(const std::pair< Key, Val >& elt) {
-    Bucket* bucket = __alloc.allocate(1);
+    Bucket* bucket = alloc__.allocate(1);
 
     try {
-      __alloc.construct(bucket, reinterpret_cast< const value_type& >(elt));
+      alloc__.construct(bucket, reinterpret_cast< const value_type& >(elt));
     } catch (...) {
-      __alloc.deallocate(bucket, 1);
+      alloc__.deallocate(bucket, 1);
       throw;
     }
 
-    __insert(bucket);
+    insert__(bucket);
     return bucket->elt();
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
      HashTable< Key, Val, Alloc >::insert(std::pair< Key, Val >&& elt) {
-    Bucket* bucket = __alloc.allocate(1);
+    Bucket* bucket = alloc__.allocate(1);
 
     try {
-      __alloc.construct(bucket, std::move(reinterpret_cast< value_type& >(elt)));
+      alloc__.construct(bucket, std::move(reinterpret_cast< value_type& >(elt)));
     } catch (...) {
-      __alloc.deallocate(bucket, 1);
+      alloc__.deallocate(bucket, 1);
       throw;
     }
 
-    __insert(bucket);
+    insert__(bucket);
     return bucket->elt();
   }
 
@@ -941,18 +939,18 @@ namespace gum {
   template < typename... Args >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
      HashTable< Key, Val, Alloc >::emplace(Args&&... args) {
-    Bucket* bucket = __alloc.allocate(1);
+    Bucket* bucket = alloc__.allocate(1);
 
     try {
-      __alloc.construct(bucket,
+      alloc__.construct(bucket,
                         HashTableBucket< Key, Val >::Emplace::EMPLACE,
                         std::forward< Args >(args)...);
     } catch (...) {
-      __alloc.deallocate(bucket, 1);
+      alloc__.deallocate(bucket, 1);
       throw;
     }
 
-    __insert(bucket);
+    insert__(bucket);
     return bucket->elt();
   }
 
@@ -960,7 +958,7 @@ namespace gum {
   INLINE typename HashTable< Key, Val, Alloc >::mapped_type&
      HashTable< Key, Val, Alloc >::getWithDefault(const Key& key,
                                                   const Val& default_value) {
-    Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
+    Bucket* bucket = nodes__[hash_func__(key)].bucket(key);
 
     if (bucket == nullptr)
       return insert(key, default_value).second;
@@ -971,7 +969,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::mapped_type&
      HashTable< Key, Val, Alloc >::getWithDefault(Key&& key, Val&& default_value) {
-    Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
+    Bucket* bucket = nodes__[hash_func__(key)].bucket(key);
 
     if (bucket == nullptr)
       return insert(std::move(key), std::move(default_value)).second;
@@ -981,7 +979,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::set(const Key& key, const Val& value) {
-    Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
+    Bucket* bucket = nodes__[hash_func__(key)].bucket(key);
 
     if (bucket == nullptr)
       insert(key, value);
@@ -990,61 +988,61 @@ namespace gum {
   }
 
   template < typename Key, typename Val, typename Alloc >
-  void HashTable< Key, Val, Alloc >::__erase(HashTableBucket< Key, Val >* bucket,
+  void HashTable< Key, Val, Alloc >::erase__(HashTableBucket< Key, Val >* bucket,
                                              Size                         index) {
     if (bucket == nullptr) return;
 
     // update the registered iterators pointing to this bucket
-    for (auto iter: __safe_iterators) {
-      if (iter->__bucket == bucket) {
+    for (auto iter: safe_iterators__) {
+      if (iter->bucket__ == bucket) {
         iter->operator++();
-        iter->__next_bucket = iter->__bucket;
-        iter->__bucket = nullptr;
-      } else if (iter->__next_bucket == bucket) {
-        iter->__bucket = bucket;
+        iter->next_bucket__ = iter->bucket__;
+        iter->bucket__ = nullptr;
+      } else if (iter->next_bucket__ == bucket) {
+        iter->bucket__ = bucket;
         iter->operator++();
-        iter->__next_bucket = iter->__bucket;
-        iter->__bucket = nullptr;
+        iter->next_bucket__ = iter->bucket__;
+        iter->bucket__ = nullptr;
       }
     }
 
-    // remove the element from the __nodes vector
-    __nodes[index].erase(bucket);
+    // remove the element from the nodes__ vector
+    nodes__[index].erase(bucket);
 
-    --__nb_elements;
+    --nb_elements__;
 
-    if ((index == __begin_index) && __nodes[index].empty()) {
-      __begin_index = std::numeric_limits< Size >::max();
+    if ((index == begin_index__) && nodes__[index].empty()) {
+      begin_index__ = std::numeric_limits< Size >::max();
     }
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::erase(const Key& key) {
     // get the hashed key
-    Size hash = __hash_func(key);
+    Size hash = hash_func__(key);
 
     // get the bucket containing the element to erase
-    HashTableBucket< Key, Val >* bucket = __nodes[hash].bucket(key);
+    HashTableBucket< Key, Val >* bucket = nodes__[hash].bucket(key);
 
-    __erase(bucket, hash);
+    erase__(bucket, hash);
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::erase(const iterator_safe& iter) {
-    __erase(iter.__getBucket(), iter.__getIndex());
+    erase__(iter.getBucket__(), iter.getIndex__());
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void
      HashTable< Key, Val, Alloc >::erase(const const_iterator_safe& iter) {
-    __erase(iter.__getBucket(), iter.__getIndex());
+    erase__(iter.getBucket__(), iter.getIndex__());
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::eraseByVal(const Val& val) {
     for (auto iter = cbegin(); iter != cend(); ++iter)
-      if (iter.__bucket->val() == val) {
-        __erase(iter.__getBucket(), iter.__getIndex());
+      if (iter.bucket__->val() == val) {
+        erase__(iter.getBucket__(), iter.getIndex__());
         return;
       }
   }
@@ -1057,7 +1055,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE const Key& HashTable< Key, Val, Alloc >::keyByVal(const Val& val) const {
     for (auto iter = begin(); iter != end(); ++iter)
-      if (iter.__bucket->val() == val) return iter.key();
+      if (iter.bucket__->val() == val) return iter.key();
 
     GUM_ERROR(NotFound, "not enough elements in the chained list");
   }
@@ -1065,7 +1063,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   INLINE const Key& HashTable< Key, Val, Alloc >::key(const Key& key) const {
     // get the bucket corresponding to the key
-    Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
+    Bucket* bucket = nodes__[hash_func__(key)].bucket(key);
 
     if (bucket == nullptr) {
       GUM_ERROR(NotFound, "key does not belong to the hashtable");
@@ -1077,15 +1075,15 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   void HashTable< Key, Val, Alloc >::eraseAllVal(const Val& val) {
     for (auto iterAll = cbeginSafe(); iterAll != cendSafe(); ++iterAll) {
-      if (iterAll.__bucket->val() == val) {
-        __erase(iterAll.__bucket, iterAll.__index);
+      if (iterAll.bucket__->val() == val) {
+        erase__(iterAll.bucket__, iterAll.index__);
       }
     }
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE bool HashTable< Key, Val, Alloc >::empty() const noexcept {
-    return (__nb_elements == Size(0));
+    return (nb_elements__ == Size(0));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -1096,7 +1094,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if (size == 0) size = std::max(Size(2), __nb_elements / 2);
+    if (size == 0) size = std::max(Size(2), nb_elements__ / 2);
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
@@ -1118,7 +1116,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if (size == Size(0)) size = std::max(Size(2), __nb_elements / 2);
+    if (size == Size(0)) size = std::max(Size(2), nb_elements__ / 2);
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
@@ -1143,7 +1141,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if (size == Size(0)) size = std::max(Size(2), __nb_elements / 2);
+    if (size == Size(0)) size = std::max(Size(2), nb_elements__ / 2);
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
@@ -1165,7 +1163,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if (size == Size(0)) size = std::max(Size(2), __nb_elements / 2);
+    if (size == Size(0)) size = std::max(Size(2), nb_elements__ / 2);
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
@@ -1184,7 +1182,7 @@ namespace gum {
   bool HashTable< Key, Val, Alloc >::operator==(
      const HashTable< Key, Val, OtherAlloc >& from) const {
     // checks whether the two hashtables contain the same number of elements
-    if (from.__nb_elements != __nb_elements) return false;
+    if (from.nb_elements__ != nb_elements__) return false;
 
     // parse this and check that each element also belongs to from
     for (auto iter = begin(); iter != end(); ++iter) {
@@ -1209,7 +1207,7 @@ namespace gum {
     bool deja = false;
     stream << "[";
 
-    for (HashTableBucket< Key, Val >* ptr = list.__deb_list; ptr;
+    for (HashTableBucket< Key, Val >* ptr = list.deb_list__; ptr;
          ptr = ptr->list.next, deja = true) {
       if (deja) stream << " , ";
 
@@ -1227,7 +1225,7 @@ namespace gum {
     bool deja = false;
     stream << "[";
 
-    for (HashTableBucket< Key, Val >* ptr = list.__deb_list; ptr;
+    for (HashTableBucket< Key, Val >* ptr = list.deb_list__; ptr;
          ptr = ptr->list.next, deja = true) {
       if (deja) stream << " , ";
 
@@ -1245,8 +1243,8 @@ namespace gum {
     bool deja = false;
     stream << "{";
 
-    for (Size i = Size(0); i < table.__size; ++i)
-      for (auto ptr = table.__nodes[i].__deb_list; ptr; ptr = ptr->next) {
+    for (Size i = Size(0); i < table.size__; ++i)
+      for (auto ptr = table.nodes__[i].deb_list__; ptr; ptr = ptr->next) {
         if (deja) stream << " , ";
 
         stream << ptr->key() << "=>" << ptr->val();
@@ -1265,8 +1263,8 @@ namespace gum {
     bool deja = false;
     stream << "{";
 
-    for (Size i = Size(0); i < table.__size; ++i)
-      for (auto ptr = table.__nodes[i].__deb_list; ptr; ptr = ptr->next) {
+    for (Size i = Size(0); i < table.size__; ++i)
+      for (auto ptr = table.nodes__[i].deb_list__; ptr; ptr = ptr->next) {
         if (deja) stream << " , ";
 
         stream << ptr->key() << "=>" << ptr->val();
@@ -1285,19 +1283,19 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE void
-     HashTableConstIteratorSafe< Key, Val >::__insertIntoSafeList() const {
-    __table->__safe_iterators.push_back(
+     HashTableConstIteratorSafe< Key, Val >::insertIntoSafeList__() const {
+    table__->safe_iterators__.push_back(
        const_cast< HashTableConstIteratorSafe< Key, Val >* >(this));
   }
 
   template < typename Key, typename Val >
   INLINE void
-     HashTableConstIteratorSafe< Key, Val >::__removeFromSafeList() const {
-    if (__table == nullptr) return;
+     HashTableConstIteratorSafe< Key, Val >::removeFromSafeList__() const {
+    if (table__ == nullptr) return;
 
     // find where the iterator is
     std::vector< HashTableConstIteratorSafe< Key, Val >* >& iter_vect =
-       __table->__safe_iterators;
+       table__->safe_iterators__;
 
     auto len = iter_vect.size();
     for (Size i = Size(0); i < len; ++i) {
@@ -1318,25 +1316,25 @@ namespace gum {
   template < typename Alloc >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
      const HashTable< Key, Val, Alloc >& tab) :
-      __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
+      table__{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTableConstIteratorSafe);
 
     // make the hashtable keep track of this iterator
-    __insertIntoSafeList();
+    insertIntoSafeList__();
 
-    if (__table->__nb_elements) {
-      if (__table->__begin_index != std::numeric_limits< Size >::max()) {
-        __index = __table->__begin_index;
-        __bucket = __table->__nodes[__index].__end_list;
+    if (table__->nb_elements__) {
+      if (table__->begin_index__ != std::numeric_limits< Size >::max()) {
+        index__ = table__->begin_index__;
+        bucket__ = table__->nodes__[index__].end_list__;
       } else {
         // find the element we shall point to from the start of the hashtable
-        for (Size i = __table->__size - Size(1);; --i) {   // no test on i since
-                                                           // __nb_elements != 0
-          if (__table->__nodes[i].__nb_elements) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
-            __table->__begin_index = __index;
+        for (Size i = table__->size__ - Size(1);; --i) {   // no test on i since
+                                                           // nb_elements__ != 0
+          if (table__->nodes__[i].nb_elements__) {
+            index__ = i;
+            bucket__ = table__->nodes__[index__].end_list__;
+            table__->begin_index__ = index__;
             break;
           }
         }
@@ -1348,29 +1346,29 @@ namespace gum {
   template < typename Alloc >
   HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
      const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
-      __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
+      table__{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     Size i;
 
     // check if we are looking for a begin() and we know for sure its index
     if ((ind_elt == Size(0))
-        && (__table->__begin_index != std::numeric_limits< Size >::max())) {
-      __index = __table->__begin_index;
-      __bucket = __table->__nodes[__index].__end_list;
+        && (table__->begin_index__ != std::numeric_limits< Size >::max())) {
+      index__ = table__->begin_index__;
+      bucket__ = table__->nodes__[index__].end_list__;
     } else {
       // check if it is faster to find the ind_eltth element from the start or
       // from the end of the hashtable
-      if (ind_elt < (__table->__nb_elements >> 1)) {
+      if (ind_elt < (table__->nb_elements__ >> 1)) {
         // find the element we shall point to from the start of the hashtable
-        for (i = __table->__size - 1;; --i) {   // no test on i since
-          // ind_elt < _table->__nb_elements
-          if (__table->__nodes[i].__nb_elements) {
-            if (ind_elt >= __table->__nodes[i].__nb_elements)
-              ind_elt -= __table->__nodes[i].__nb_elements;
+        for (i = table__->size__ - 1;; --i) {   // no test on i since
+          // ind_elt < table_->nb_elements__
+          if (table__->nodes__[i].nb_elements__) {
+            if (ind_elt >= table__->nodes__[i].nb_elements__)
+              ind_elt -= table__->nodes__[i].nb_elements__;
             else {
-              for (__bucket = __table->__nodes[i].__end_list; ind_elt;
-                   --ind_elt, __bucket = __bucket->prev) {}
+              for (bucket__ = table__->nodes__[i].end_list__; ind_elt;
+                   --ind_elt, bucket__ = bucket__->prev) {}
 
-              __index = i;
+              index__ = i;
               break;
             }
           }
@@ -1378,21 +1376,21 @@ namespace gum {
       } else {
         // ind_elt = the index of the element we should point to
         // check if the index passed as parameter is valid
-        if (ind_elt >= __table->__nb_elements) {
+        if (ind_elt >= table__->nb_elements__) {
           GUM_ERROR(UndefinedIteratorValue,
                     "Not enough elements in the hashtable");
         }
 
         // find the element we shall point to from the end of the hashtable
-        for (i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i) {
-          if (__table->__nodes[i].__nb_elements) {
-            if (ind_elt >= __table->__nodes[i].__nb_elements)
-              ind_elt -= __table->__nodes[i].__nb_elements;
+        for (i = 0, ind_elt = table__->nb_elements__ - ind_elt - 1;; ++i) {
+          if (table__->nodes__[i].nb_elements__) {
+            if (ind_elt >= table__->nodes__[i].nb_elements__)
+              ind_elt -= table__->nodes__[i].nb_elements__;
             else {
-              for (__bucket = __table->__nodes[i].__deb_list; ind_elt;
-                   --ind_elt, __bucket = __bucket->next) {}
+              for (bucket__ = table__->nodes__[i].deb_list__; ind_elt;
+                   --ind_elt, bucket__ = bucket__->next) {}
 
-              __index = i;
+              index__ = i;
               break;
             }
           }
@@ -1404,17 +1402,17 @@ namespace gum {
     GUM_CONSTRUCTOR(HashTableConstIteratorSafe);
 
     // make the hashtable keep track of this iterator
-    __insertIntoSafeList();
+    insertIntoSafeList__();
   }
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
      const HashTableConstIteratorSafe< Key, Val >& from) :
-      __table{from.__table},
-      __index{from.__index}, __bucket{from.__bucket}, __next_bucket{
-                                                         from.__next_bucket} {
+      table__{from.table__},
+      index__{from.index__}, bucket__{from.bucket__}, next_bucket__{
+                                                         from.next_bucket__} {
     // make the hashtable keep track of this iterator
-    if (__table != nullptr) { __insertIntoSafeList(); }
+    if (table__ != nullptr) { insertIntoSafeList__(); }
 
     // for debugging purposes
     GUM_CONS_CPY(HashTableConstIteratorSafe);
@@ -1423,10 +1421,10 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
      const HashTableConstIterator< Key, Val >& from) :
-      __table{from.__table},
-      __index{from.__index}, __bucket{from.__bucket} {
+      table__{from.table__},
+      index__{from.index__}, bucket__{from.bucket__} {
     // make the hashtable keep track of this iterator
-    if (__table != nullptr) { __insertIntoSafeList(); }
+    if (table__ != nullptr) { insertIntoSafeList__(); }
 
     // for debugging purposes
     GUM_CONS_CPY(HashTableConstIteratorSafe);
@@ -1435,21 +1433,21 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
      HashTableConstIteratorSafe< Key, Val >&& from) :
-      __table{from.__table},
-      __index{from.__index}, __bucket{from.__bucket}, __next_bucket{
-                                                         from.__next_bucket} {
+      table__{from.table__},
+      index__{from.index__}, bucket__{from.bucket__}, next_bucket__{
+                                                         from.next_bucket__} {
     GUM_CONS_MOV(HashTableConstIteratorSafe);
 
     // find "from" in the hashtable's list of safe iterators and substitute
     // it by this
-    if (__table != nullptr) {
+    if (table__ != nullptr) {
       std::vector< HashTableConstIteratorSafe< Key, Val >* >& vect =
-         __table->__safe_iterators;
+         table__->safe_iterators__;
 
       for (auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr) {
         if (*ptr == &from) {
           *ptr = this;
-          from.__table = nullptr;
+          from.table__ = nullptr;
           break;
         }
       }
@@ -1464,7 +1462,7 @@ namespace gum {
     GUM_DESTRUCTOR(HashTableConstIteratorSafe);
 
     // remove the iterator from the table's iterator list
-    __removeFromSafeList();
+    removeFromSafeList__();
   }
 
   template < typename Key, typename Val >
@@ -1478,19 +1476,19 @@ namespace gum {
     // a case, we shall remove the iterator from its current hashtable
     // iterator's
     // list and add it to the new hashtable iterator's list
-    if (__table != from.__table) {
+    if (table__ != from.table__) {
       // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
+      removeFromSafeList__();
 
-      __table = from.__table;
+      table__ = from.table__;
 
       // add to the new table
-      if (__table) { __insertIntoSafeList(); }
+      if (table__) { insertIntoSafeList__(); }
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = from.__next_bucket;
+    index__ = from.index__;
+    bucket__ = from.bucket__;
+    next_bucket__ = from.next_bucket__;
 
     return *this;
   }
@@ -1506,19 +1504,19 @@ namespace gum {
     // a case, we shall remove the iterator from its current hashtable
     // iterator's
     // list and add it to the new hashtable iterator's list
-    if (__table != from.__table) {
+    if (table__ != from.table__) {
       // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
+      removeFromSafeList__();
 
-      __table = from.__table;
+      table__ = from.table__;
 
       // add to the new table
-      if (__table) { __insertIntoSafeList(); }
+      if (table__) { insertIntoSafeList__(); }
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = nullptr;
+    index__ = from.index__;
+    bucket__ = from.bucket__;
+    next_bucket__ = nullptr;
 
     return *this;
   }
@@ -1534,14 +1532,14 @@ namespace gum {
     // a case, we shall remove the iterator from its current hashtable
     // iterator's
     // list and add it to the new hashtable iterator's list
-    if (__table != from.__table) {
+    if (table__ != from.table__) {
       // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
+      removeFromSafeList__();
 
-      if (from.__table != nullptr) {
+      if (from.table__ != nullptr) {
         // substitute from by this in the list of safe iterators
         std::vector< HashTableConstIteratorSafe< Key, Val >* >& vect =
-           from.__table->__safe_iterators;
+           from.table__->safe_iterators__;
 
         for (auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr) {
           if (*ptr == &from) {
@@ -1551,13 +1549,13 @@ namespace gum {
         }
       }
 
-      __table = from.__table;
-      from.__table = nullptr;
+      table__ = from.table__;
+      from.table__ = nullptr;
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = from.__next_bucket;
+    index__ = from.index__;
+    bucket__ = from.bucket__;
+    next_bucket__ = from.next_bucket__;
 
     return *this;
   }
@@ -1565,8 +1563,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::key_type&
      HashTableConstIteratorSafe< Key, Val >::key() const {
-    if (__bucket != nullptr)
-      return __bucket->key();
+    if (bucket__ != nullptr)
+      return bucket__->key();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -1575,8 +1573,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::mapped_type&
      HashTableConstIteratorSafe< Key, Val >::val() const {
-    if (__bucket != nullptr)
-      return __bucket->val();
+    if (bucket__ != nullptr)
+      return bucket__->val();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -1585,13 +1583,13 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE void HashTableConstIteratorSafe< Key, Val >::clear() noexcept {
     // remove the iterator from the table's iterator list
-    __removeFromSafeList();
+    removeFromSafeList__();
 
     // set its table as well as the element it points to to 0
-    __table = nullptr;
-    __bucket = nullptr;
-    __next_bucket = nullptr;
-    __index = Size(0);
+    table__ = nullptr;
+    bucket__ = nullptr;
+    next_bucket__ = nullptr;
+    index__ = Size(0);
   }
 
   // WARNING: never inline this function: this result in g++4.3.3 producing a
@@ -1599,24 +1597,24 @@ namespace gum {
   template < typename Key, typename Val >
   HashTableConstIteratorSafe< Key, Val >&
      HashTableConstIteratorSafe< Key, Val >::operator++() noexcept {
-    // if __bucket != nullptr then use it, else use next_bucket
-    if (__bucket == nullptr) {
+    // if bucket__ != nullptr then use it, else use next_bucket
+    if (bucket__ == nullptr) {
       // note that this case only happens when the iterator pointed to an
       // element
       // that has just been erased. Fortunately, in this case, the Hashtable's
-      // erase functions update appropriately the __next_bucket and __index
+      // erase functions update appropriately the next_bucket__ and index__
       // fields.
-      __bucket = __next_bucket;
-      __next_bucket = nullptr;
+      bucket__ = next_bucket__;
+      next_bucket__ = nullptr;
     } else {
-      // ok, here we can use __bucket as a starting point
+      // ok, here we can use bucket__ as a starting point
 
       // if we are not pointing on the first element of the chained list, just
       // point to the preceding bucket in this list
-      if (__bucket->prev) {
-        __bucket = __bucket->prev;
-        // here, no need to update __next_bucket, which is compulsorily
-        // equal to nullptr, nor __index which has not changed.
+      if (bucket__->prev) {
+        bucket__ = bucket__->prev;
+        // here, no need to update next_bucket__, which is compulsorily
+        // equal to nullptr, nor index__ which has not changed.
       } else {
         // ok, here we are on the beginning of a chained list,
         // so 2 cases can obtain:
@@ -1624,8 +1622,8 @@ namespace gum {
         // 2/ index != 0 => we must search for a new slot containing elements
 
         // case 1:
-        if (__index == Size(0)) {
-          __bucket = nullptr;
+        if (index__ == Size(0)) {
+          bucket__ = nullptr;
           // we are thus at the end() of the hashTable
         }
         // case 2:
@@ -1634,22 +1632,22 @@ namespace gum {
           // bucket because we are pointing on a chained list with no more
           // element
           // to the left of the current element
-          if (__index > Size(0)) {
-            for (Size i = __index - Size(1); i > Size(0); --i) {
-              if (__table->__nodes[i].__nb_elements) {
-                __index = i;
-                __bucket = __table->__nodes[i].__end_list;
+          if (index__ > Size(0)) {
+            for (Size i = index__ - Size(1); i > Size(0); --i) {
+              if (table__->nodes__[i].nb_elements__) {
+                index__ = i;
+                bucket__ = table__->nodes__[i].end_list__;
                 return *this;
               }
             }
           }
 
-          if (__table->__nodes[0].__nb_elements)
-            __bucket = __table->__nodes[0].__end_list;
+          if (table__->nodes__[0].nb_elements__)
+            bucket__ = table__->nodes__[0].end_list__;
           else
-            __bucket = nullptr;
+            bucket__ = nullptr;
 
-          __index = 0;
+          index__ = 0;
         }
       }
     }
@@ -1660,45 +1658,45 @@ namespace gum {
   template < typename Key, typename Val >
   HashTableConstIteratorSafe< Key, Val >&
      HashTableConstIteratorSafe< Key, Val >::operator+=(Size nb) noexcept {
-    if ((nb == Size(0)) || (__table == nullptr)) return *this;
+    if ((nb == Size(0)) || (table__ == nullptr)) return *this;
 
-    // if __bucket != nullptr then use it, else use next_bucket
-    if (__bucket == nullptr) {
+    // if bucket__ != nullptr then use it, else use next_bucket
+    if (bucket__ == nullptr) {
       // note that this case only happens when the iterator pointed to an
       // element
       // that has just been erased. Fortunately, in this case, the Hashtable's
-      // erase functions update appropriately the __next_bucket and __index
+      // erase functions update appropriately the next_bucket__ and index__
       // fields.
-      __bucket = __next_bucket;
-      __next_bucket = nullptr;
+      bucket__ = next_bucket__;
+      next_bucket__ = nullptr;
       --nb;
     }
 
-    // ok, here we can use __bucket as a starting point: parse all the elements
+    // ok, here we can use bucket__ as a starting point: parse all the elements
     // of the current chained list
-    for (; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev) {}
+    for (; nb && bucket__ != nullptr; --nb, bucket__ = bucket__->prev) {}
 
-    if (__bucket != nullptr) return *this;
+    if (bucket__ != nullptr) return *this;
 
     // here, we shall skip all the chained list that have not sufficiently
     // many elements
-    --__index;
+    --index__;
 
-    for (; __index < __table->__size
-           && nb >= __table->__nodes[__index].__nb_elements;
-         nb -= __table->__nodes[__index].__nb_elements, --__index) {}
+    for (; index__ < table__->size__
+           && nb >= table__->nodes__[index__].nb_elements__;
+         nb -= table__->nodes__[index__].nb_elements__, --index__) {}
 
-    // here: either __index >= __table->__size, which means that we did not find
+    // here: either index__ >= table__->size__, which means that we did not find
     // the element we looked for, i.e., we are at the end of the hashtable, or
-    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
+    // nb < table__->nodes__[index__].nb_elements__, and we should parse the
     // chained list to get the element (which, we know for sure, exists)
-    if (__index >= __table->__size) {
-      __index = Size(0);
+    if (index__ >= table__->size__) {
+      index__ = Size(0);
       return *this;
     }
 
-    for (__bucket = __table->__nodes[__index].__end_list; nb;
-         --nb, __bucket = __bucket->prev) {}
+    for (bucket__ = table__->nodes__[index__].end_list__; nb;
+         --nb, bucket__ = bucket__->prev) {}
 
     return *this;
   }
@@ -1712,20 +1710,20 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE bool HashTableConstIteratorSafe< Key, Val >::operator!=(
      const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
-    return ((__bucket != from.__bucket) || (__index != from.__index));
+    return ((bucket__ != from.bucket__) || (index__ != from.index__));
   }
 
   template < typename Key, typename Val >
   INLINE bool HashTableConstIteratorSafe< Key, Val >::operator==(
      const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
-    return ((__bucket == from.__bucket) && (__index == from.__index));
+    return ((bucket__ == from.bucket__) && (index__ == from.index__));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::value_type&
      HashTableConstIteratorSafe< Key, Val >::operator*() const {
-    if (__bucket)
-      return __bucket->elt();
+    if (bucket__)
+      return bucket__->elt();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -1733,13 +1731,13 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableBucket< Key, Val >*
-         HashTableConstIteratorSafe< Key, Val >::__getBucket() const noexcept {
-    return __bucket;
+         HashTableConstIteratorSafe< Key, Val >::getBucket__() const noexcept {
+    return bucket__;
   }
 
   template < typename Key, typename Val >
-  INLINE Size HashTableConstIteratorSafe< Key, Val >::__getIndex() const noexcept {
-    return __index;
+  INLINE Size HashTableConstIteratorSafe< Key, Val >::getIndex__() const noexcept {
+    return index__;
   }
 
   // ===========================================================================
@@ -1885,22 +1883,22 @@ namespace gum {
   template < typename Alloc >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
      const HashTable< Key, Val, Alloc >& tab) noexcept :
-      __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
+      table__{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTableConstIterator);
 
-    if (__table->__nb_elements) {
-      if (__table->__begin_index != std::numeric_limits< Size >::max()) {
-        __index = __table->__begin_index;
-        __bucket = __table->__nodes[__index].__end_list;
+    if (table__->nb_elements__) {
+      if (table__->begin_index__ != std::numeric_limits< Size >::max()) {
+        index__ = table__->begin_index__;
+        bucket__ = table__->nodes__[index__].end_list__;
       } else {
         // find the element we shall point to from the start of the hashtable
-        for (Size i = __table->__size - Size(1);; --i) {   // no test on i since
-          // __nb_elements != 0
-          if (__table->__nodes[i].__nb_elements) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
-            __table->__begin_index = __index;
+        for (Size i = table__->size__ - Size(1);; --i) {   // no test on i since
+          // nb_elements__ != 0
+          if (table__->nodes__[i].nb_elements__) {
+            index__ = i;
+            bucket__ = table__->nodes__[index__].end_list__;
+            table__->begin_index__ = index__;
             break;
           }
         }
@@ -1912,29 +1910,29 @@ namespace gum {
   template < typename Alloc >
   HashTableConstIterator< Key, Val >::HashTableConstIterator(
      const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
-      __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
+      table__{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     Size i;
 
     // check if we are looking for a begin() and we know for sure its index
     if ((ind_elt == Size(0))
-        && (__table->__begin_index != std::numeric_limits< Size >::max())) {
-      __index = __table->__begin_index;
-      __bucket = __table->__nodes[__index].__end_list;
+        && (table__->begin_index__ != std::numeric_limits< Size >::max())) {
+      index__ = table__->begin_index__;
+      bucket__ = table__->nodes__[index__].end_list__;
     } else {
       // check if it is faster to find the ind_eltth element from the start or
       // from the end of the hashtable
-      if (ind_elt < (__table->__nb_elements >> 1)) {
+      if (ind_elt < (table__->nb_elements__ >> 1)) {
         // find the element we shall point to from the start of the hashtable
-        for (i = __table->__size - 1;; --i) {   // no test on i since
-          // ind_elt < _table->__nb_elements
-          if (__table->__nodes[i].__nb_elements) {
-            if (ind_elt >= __table->__nodes[i].__nb_elements)
-              ind_elt -= __table->__nodes[i].__nb_elements;
+        for (i = table__->size__ - 1;; --i) {   // no test on i since
+          // ind_elt < table_->nb_elements__
+          if (table__->nodes__[i].nb_elements__) {
+            if (ind_elt >= table__->nodes__[i].nb_elements__)
+              ind_elt -= table__->nodes__[i].nb_elements__;
             else {
-              for (__bucket = __table->__nodes[i].__end_list; ind_elt;
-                   --ind_elt, __bucket = __bucket->prev) {}
+              for (bucket__ = table__->nodes__[i].end_list__; ind_elt;
+                   --ind_elt, bucket__ = bucket__->prev) {}
 
-              __index = i;
+              index__ = i;
               break;
             }
           }
@@ -1942,21 +1940,21 @@ namespace gum {
       } else {
         // ind_elt = the index of the element we should point to
         // check if the index passed as parameter is valid
-        if (ind_elt >= __table->__nb_elements) {
+        if (ind_elt >= table__->nb_elements__) {
           GUM_ERROR(UndefinedIteratorValue,
                     "Not enough elements in the hashtable");
         }
 
         // find the element we shall point to from the end of the hashtable
-        for (i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i) {
-          if (__table->__nodes[i].__nb_elements) {
-            if (ind_elt >= __table->__nodes[i].__nb_elements)
-              ind_elt -= __table->__nodes[i].__nb_elements;
+        for (i = 0, ind_elt = table__->nb_elements__ - ind_elt - 1;; ++i) {
+          if (table__->nodes__[i].nb_elements__) {
+            if (ind_elt >= table__->nodes__[i].nb_elements__)
+              ind_elt -= table__->nodes__[i].nb_elements__;
             else {
-              for (__bucket = __table->__nodes[i].__deb_list; ind_elt;
-                   --ind_elt, __bucket = __bucket->next) {}
+              for (bucket__ = table__->nodes__[i].deb_list__; ind_elt;
+                   --ind_elt, bucket__ = bucket__->next) {}
 
-              __index = i;
+              index__ = i;
               break;
             }
           }
@@ -1971,16 +1969,16 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
      const HashTableConstIterator< Key, Val >& from) noexcept :
-      __table{from.__table},
-      __index{from.__index}, __bucket{from.__bucket} {
+      table__{from.table__},
+      index__{from.index__}, bucket__{from.bucket__} {
     GUM_CONS_CPY(HashTableConstIterator);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
      HashTableConstIterator< Key, Val >&& from) noexcept :
-      __table{from.__table},
-      __index{from.__index}, __bucket{from.__bucket} {
+      table__{from.table__},
+      index__{from.index__}, bucket__{from.bucket__} {
     GUM_CONS_MOV(HashTableConstIterator);
   }
 
@@ -1997,9 +1995,9 @@ namespace gum {
     // here, no need to avoid self assignment: this would slow down normal
     // assignments and, in any case, this would not result in an iterator in
     // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
-    __bucket = from.__bucket;
+    table__ = from.table__;
+    index__ = from.index__;
+    bucket__ = from.bucket__;
 
     return *this;
   }
@@ -2011,9 +2009,9 @@ namespace gum {
     // here, no need to avoid self assignment: this would slow down normal
     // assignments and, in any case, this would not result in an iterator in
     // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
-    __bucket = from.__bucket;
+    table__ = from.table__;
+    index__ = from.index__;
+    bucket__ = from.bucket__;
 
     return *this;
   }
@@ -2021,8 +2019,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::key_type&
      HashTableConstIterator< Key, Val >::key() const {
-    if (__bucket)
-      return __bucket->pair.first;
+    if (bucket__)
+      return bucket__->pair.first;
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -2031,8 +2029,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::mapped_type&
      HashTableConstIterator< Key, Val >::val() const {
-    if (__bucket)
-      return __bucket->val();
+    if (bucket__)
+      return bucket__->val();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -2040,22 +2038,22 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE void HashTableConstIterator< Key, Val >::clear() noexcept {
-    __table = nullptr;
-    __bucket = nullptr;
-    __index = 0;
+    table__ = nullptr;
+    bucket__ = nullptr;
+    index__ = 0;
   }
 
   template < typename Key, typename Val >
   HashTableConstIterator< Key, Val >&
      HashTableConstIterator< Key, Val >::operator++() noexcept {
-    // if __bucket == nullptr then we are at the end of the hashtable
-    if (__bucket == nullptr) return *this;
+    // if bucket__ == nullptr then we are at the end of the hashtable
+    if (bucket__ == nullptr) return *this;
 
     // if we are not pointing on the first element of the chained list, just
     // point to the next bucket in this list
-    if (__bucket->prev) {
-      __bucket = __bucket->prev;
-      // here, no need to update __index which has not changed.
+    if (bucket__->prev) {
+      bucket__ = bucket__->prev;
+      // here, no need to update index__ which has not changed.
     } else {
       // ok, here we are on the end of a chained list,
       // so 2 cases can obtain:
@@ -2063,8 +2061,8 @@ namespace gum {
       // 2/ index != 0 => we must search for a new slot containing elements
 
       // case 1:
-      if (__index == Size(0)) {
-        __bucket = nullptr;
+      if (index__ == Size(0)) {
+        bucket__ = nullptr;
         // we are thus at the end() of the hashTable
       }
 
@@ -2073,20 +2071,20 @@ namespace gum {
         // arrived here, we need to parse the hash table until we find a new
         // bucket because we are pointing on a chained list with no more element
         // to the right of the current element
-        for (Size i = __index - Size(1); i; --i) {
-          if (__table->__nodes[i].__nb_elements) {
-            __index = i;
-            __bucket = __table->__nodes[i].__end_list;
+        for (Size i = index__ - Size(1); i; --i) {
+          if (table__->nodes__[i].nb_elements__) {
+            index__ = i;
+            bucket__ = table__->nodes__[i].end_list__;
             return *this;
           }
         }
 
-        if (__table->__nodes[0].__nb_elements)
-          __bucket = __table->__nodes[0].__end_list;
+        if (table__->nodes__[0].nb_elements__)
+          bucket__ = table__->nodes__[0].end_list__;
         else
-          __bucket = nullptr;
+          bucket__ = nullptr;
 
-        __index = Size(0);
+        index__ = Size(0);
       }
     }
 
@@ -2096,33 +2094,33 @@ namespace gum {
   template < typename Key, typename Val >
   HashTableConstIterator< Key, Val >&
      HashTableConstIterator< Key, Val >::operator+=(Size nb) noexcept {
-    if ((nb == 0) || (__table == nullptr) || (__bucket == nullptr)) return *this;
+    if ((nb == 0) || (table__ == nullptr) || (bucket__ == nullptr)) return *this;
 
-    // ok, here we can use __bucket as a starting point: parse all the elements
+    // ok, here we can use bucket__ as a starting point: parse all the elements
     // of the current chained list
-    for (; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev) {}
+    for (; nb && bucket__ != nullptr; --nb, bucket__ = bucket__->prev) {}
 
-    if (__bucket != nullptr) return *this;
+    if (bucket__ != nullptr) return *this;
 
     // here, we shall skip all the chained list that have not sufficiently
     // many elements
-    --__index;
+    --index__;
 
-    for (; __index < __table->__size
-           && nb >= __table->__nodes[__index].__nb_elements;
-         nb -= __table->__nodes[__index].__nb_elements, --__index) {}
+    for (; index__ < table__->size__
+           && nb >= table__->nodes__[index__].nb_elements__;
+         nb -= table__->nodes__[index__].nb_elements__, --index__) {}
 
-    // here: either __index >= __table->__size, which means that we did not find
+    // here: either index__ >= table__->size__, which means that we did not find
     // the element we looked for, i.e., we are at the end of the hashtable, or
-    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
+    // nb < table__->nodes__[index__].nb_elements__, and we should parse the
     // chained list to get the element (which, we know for sure, exists)
-    if (__index >= __table->__size) {
-      __index = 0;
+    if (index__ >= table__->size__) {
+      index__ = 0;
       return *this;
     }
 
-    for (__bucket = __table->__nodes[__index].__end_list; nb;
-         --nb, __bucket = __bucket->prev) {}
+    for (bucket__ = table__->nodes__[index__].end_list__; nb;
+         --nb, bucket__ = bucket__->prev) {}
 
     return *this;
   }
@@ -2136,20 +2134,20 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE bool HashTableConstIterator< Key, Val >::operator!=(
      const HashTableConstIterator< Key, Val >& from) const noexcept {
-    return (__bucket != from.__bucket);
+    return (bucket__ != from.bucket__);
   }
 
   template < typename Key, typename Val >
   INLINE bool HashTableConstIterator< Key, Val >::operator==(
      const HashTableConstIterator< Key, Val >& from) const noexcept {
-    return (__bucket == from.__bucket);
+    return (bucket__ == from.bucket__);
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::value_type&
      HashTableConstIterator< Key, Val >::operator*() const {
-    if (__bucket)
-      return __bucket->elt();
+    if (bucket__)
+      return bucket__->elt();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }
@@ -2157,13 +2155,13 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::Bucket*
-     HashTableConstIterator< Key, Val >::__getBucket() const noexcept {
-    return __bucket;
+     HashTableConstIterator< Key, Val >::getBucket__() const noexcept {
+    return bucket__;
   }
 
   template < typename Key, typename Val >
-  INLINE Size HashTableConstIterator< Key, Val >::__getIndex() const noexcept {
-    return __index;
+  INLINE Size HashTableConstIterator< Key, Val >::getIndex__() const noexcept {
+    return index__;
   }
 
   // ===========================================================================
@@ -2214,8 +2212,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE typename HashTableIterator< Key, Val >::mapped_type&
      HashTableIterator< Key, Val >::val() {
-    if (this->__bucket)
-      return this->__bucket->val();
+    if (this->bucket__)
+      return this->bucket__->val();
     else {
       GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
     }

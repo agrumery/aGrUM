@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@
  * list of changes and put into the list only the changes that are affected
  * by the graph modification.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
@@ -208,23 +208,23 @@ namespace gum {
 
       protected:
       /// the graph on which we generate operators
-      DiGraph _graph;
+      DiGraph graph_;
 
       /// the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT* _constraint;
+      STRUCT_CONSTRAINT* constraint_;
 
       /// the current set of graph changes
-      Set< GraphChange > _legal_changes;
+      Set< GraphChange > legal_changes_;
 
       /// create the set of legal and illegal changes from a given graph
-      void _createChanges();
+      void createChanges_();
 
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size __max_threads_number{getMaxNumberOfThreads()};
+      Size max_threads_number__{getMaxNumberOfThreads()};
 #else
-      Size __max_threads_number{1};
+      Size max_threads_number__{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

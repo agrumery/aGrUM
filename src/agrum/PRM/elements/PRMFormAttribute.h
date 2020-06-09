@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMFormAttribute.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_FORM_ATTRIBUTE_H
@@ -103,26 +103,26 @@ namespace gum {
       virtual void swap(const PRMType& old_type, const PRMType& new_type);
 
       protected:
-      virtual PRMType* _type();
-      virtual void     _type(PRMType* t);
+      virtual PRMType* type_();
+      virtual void     type_(PRMType* t);
 
       private:
       PRMFormAttribute(const PRMFormAttribute& source);
       PRMFormAttribute& operator=(const PRMFormAttribute& source);
 
       /// The random variable type of this attribute
-      PRMType* __type;
+      PRMType* type__;
 
       /// A pointer on the Potential of this attribute
-      mutable Potential< GUM_SCALAR >* __cpf;
+      mutable Potential< GUM_SCALAR >* cpf__;
 
       /// A pointer on the Potential of this attribute
-      MultiDimImplementation< std::string >* __formulas;
+      MultiDimImplementation< std::string >* formulas__;
 
       /// A pointe toward the class of this attribute
-      const PRMClass< GUM_SCALAR >* __class;
+      const PRMClass< GUM_SCALAR >* class__;
 
-      void __fillCpf() const;
+      void fillCpf__() const;
     };
 
 

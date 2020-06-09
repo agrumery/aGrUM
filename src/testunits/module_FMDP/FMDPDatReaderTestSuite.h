@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ namespace gum_tests {
       gum::FMDPDatReader< double > reader(&fmdp, file);
 
       reader.trace(false);
-      gum::Size nbrErr = gum::Size(0);
+      auto nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
       TS_ASSERT(nbrErr == 0);
@@ -56,14 +56,15 @@ namespace gum_tests {
       reader.showElegantErrorsAndWarnings();
 
 
-      std::ofstream __traceAlgoSaveFile;
-      __traceAlgoSaveFile.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
+      std::ofstream traceAlgoSaveFile__;
+      traceAlgoSaveFile__.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
                                std::ios::out | std::ios::trunc);
-      if (!__traceAlgoSaveFile) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(__traceAlgoSaveFile << fmdp.toString());
-      __traceAlgoSaveFile.close();
+      if (!traceAlgoSaveFile__) return;
+      TS_GUM_ASSERT_THROWS_NOTHING(traceAlgoSaveFile__ << fmdp.toString());
+      traceAlgoSaveFile__.close();
 
-      int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
+      int deletedFile =
+         std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
       if (deletedFile != 0)
         std::cout << "Couldn't delete output file." << std::endl;
 

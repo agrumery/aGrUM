@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -57,15 +57,15 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __header(bn) << std::endl;
+    output << header__(bn) << std::endl;
 
     for (const auto node: bn.nodes()) {
-      output << __variableBloc(bn.variable(node)) << std::endl;
+      output << variableBloc__(bn.variable(node)) << std::endl;
     }
 
     for (const auto node: bn.nodes()) {
       const Potential< GUM_SCALAR >& proba = bn.cpt(node);
-      output << __variableCPT(proba);
+      output << variableCPT__(proba);
     }
 
     output << std::endl;
@@ -91,15 +91,15 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __header(bn) << std::endl;
+    output << header__(bn) << std::endl;
 
     for (const auto node: bn.nodes()) {
-      output << __variableBloc(bn.variable(node)) << std::endl;
+      output << variableBloc__(bn.variable(node)) << std::endl;
     }
 
     for (const auto node: bn.nodes()) {
       const Potential< GUM_SCALAR >& proba = bn.cpt(node);
-      output << __variableCPT(proba);
+      output << variableCPT__(proba);
     }
 
     output << std::endl;
@@ -113,7 +113,7 @@ namespace gum {
   // Returns a bloc defining a variable's CPT in the BIF format.
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
+         BIFWriter< GUM_SCALAR >::variableCPT__(const Potential< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 
@@ -143,7 +143,7 @@ namespace gum {
       condVars << *(varsSeq[varsSeq.size() - 1]);
 
       for (inst.setFirstIn(condVars); !inst.end(); inst.incIn(condVars)) {
-        str << tab << "(" << __variablesLabels(varsSeq, inst) << ")";
+        str << tab << "(" << variablesLabels__(varsSeq, inst) << ")";
         // Writing the probabilities of the variable
 
         for (inst.setFirstOut(condVars); !inst.end(); inst.incOut(condVars)) {
@@ -164,7 +164,7 @@ namespace gum {
   // Returns the header of the BIF file.
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
+         BIFWriter< GUM_SCALAR >::header__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << "network \"" << bn.propertyWithDefault("name", "unnamedBN") << "\" {"
@@ -177,7 +177,7 @@ namespace gum {
   // Returns a bloc defining a variable in the BIF format.
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         BIFWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << "variable " << var.name() << " {" << std::endl;
@@ -195,7 +195,7 @@ namespace gum {
 
   // Returns the modalities labels of the variables in varsSeq
   template < typename GUM_SCALAR >
-  INLINE std::string BIFWriter< GUM_SCALAR >::__variablesLabels(
+  INLINE std::string BIFWriter< GUM_SCALAR >::variablesLabels__(
      const Sequence< const DiscreteVariable* >& varsSeq,
      const Instantiation&                       inst) {
     std::stringstream       str;

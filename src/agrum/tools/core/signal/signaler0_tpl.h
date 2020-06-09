@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class of listener.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -37,16 +37,16 @@ namespace gum {
     template < class TargetClass >
     Connector0< TargetClass >::Connector0() {
       GUM_CONSTRUCTOR(Connector0);
-      __target = nullptr;
-      __action = nullptr;
+      target__ = nullptr;
+      action__ = nullptr;
     }
 
     template < class TargetClass >
     Connector0< TargetClass >::Connector0(
        TargetClass* target, void (TargetClass::*action)(const void*)) {
       GUM_CONSTRUCTOR(Connector0);
-      __target = target;
-      __action = action;
+      target__ = target;
+      action__ = action;
     }
 
     template < class TargetClass >
@@ -67,17 +67,17 @@ namespace gum {
 
     template < class TargetClass >
     IConnector0* Connector0< TargetClass >::duplicate(Listener* target) {
-      return new Connector0< TargetClass >((TargetClass*)target, __action);
+      return new Connector0< TargetClass >((TargetClass*)target, action__);
     }
 
     template < class TargetClass >
     void Connector0< TargetClass >::notify(const void* src) {
-      (__target->*__action)(src);
+      (target__->*action__)(src);
     }
 
     template < class TargetClass >
     Listener* Connector0< TargetClass >::target() const {
-      return __target;
+      return target__;
     }
 
   }   // namespace __sig__

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -87,7 +87,7 @@ namespace gum {
 
     private:
     // Returns a bloc defining a variable in the DSL format.
-    std::string __variableBloc(const IBayesNet< GUM_SCALAR >& bn,
+    std::string variableBloc__(const IBayesNet< GUM_SCALAR >& bn,
                                const DiscreteVariable&        var);
   };
 

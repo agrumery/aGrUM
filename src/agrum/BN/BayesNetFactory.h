@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the BayesNetFactory class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_BAYESNET_FACTORY_H
@@ -400,67 +400,67 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool __foo_flag;
+    bool foo_flag__;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool __bar_flag;
+    bool bar_flag__;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string > __stringBag;
+    std::vector< std::string > stringBag__;
 
     /// Used when a factorized CPT is built.
-    Instantiation* __parents;
+    Instantiation* parents__;
 
     /// Implementation of variable between two
     /// startVariableDeclaration/endVariableDeclaration calls.
-    MultiDimImplementation< GUM_SCALAR >* __impl;
+    MultiDimImplementation< GUM_SCALAR >* impl__;
 
     /// @}
 
     /// State stack.
-    std::vector< factory_state > __states;
+    std::vector< factory_state > states__;
 
     /// The constructed BayesNet.
-    BayesNet< GUM_SCALAR >* __bn;
+    BayesNet< GUM_SCALAR >* bn__;
 
     /// Mapping between a declared variable's name and it's node id.
-    HashTable< std::string, NodeId > __varNameMap;
+    HashTable< std::string, NodeId > varNameMap__;
 
     /// Copy operator is illegal, use only copy constructor.
     BayesNetFactory< GUM_SCALAR >&
        operator=(const BayesNetFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void __illegalStateError(const std::string& s);
+    void illegalStateError__(const std::string& s);
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
-    void __checkVariableName(const std::string& name);
+    void checkVariableName__(const std::string& name);
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
-    Idx __checkVariableModality(const std::string& name, const std::string& mod);
+    Idx checkVariableModality__(const std::string& name, const std::string& mod);
 
-    /// Check if in __stringBag there is no other modality with the same name.
-    void __checkModalityInBag(const std::string& mod);
+    /// Check if in stringBag__ there is no other modality with the same name.
+    void checkModalityInBag__(const std::string& mod);
 
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.
-    void __setCPTAndParents(const DiscreteVariable&  var,
+    void setCPTAndParents__(const DiscreteVariable&  var,
                             Potential< GUM_SCALAR >* table);
 
     /// Reset the different parts used to constructed the BayesNet.
-    void __resetParts();
+    void resetParts__();
 
     /// Fill a potential from a raw CPT.
-    void __fillProbaWithValuesTable(const std::vector< std::string >& variables,
+    void fillProbaWithValuesTable__(const std::vector< std::string >& variables,
                                     const std::vector< float >&       rawTable);
     /// Fill a potential from a raw CPT.(using the canonical order of vars)
-    void __fillProbaWithValuesTable(const std::vector< float >& rawTable);
+    void fillProbaWithValuesTable__(const std::vector< float >& rawTable);
 
-    /// Increment a modality counter for the __fillProbaWithValuesTable method.
-    bool __increment(std::vector< gum::Idx >&         modCounter,
+    /// Increment a modality counter for the fillProbaWithValuesTable__ method.
+    bool increment__(std::vector< gum::Idx >&         modCounter,
                      List< const DiscreteVariable* >& varList);
   };
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A DBRowGenerator class that returns incomplete rows as EM would do
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/database/DBRowGeneratorIdentity.h>
 
@@ -57,8 +57,8 @@ namespace gum {
            DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
            nodeId2columns,
            alloc),
-        __filled_row1(bn.size(), 1.0, alloc),
-        __filled_row2(bn.size(), 1.0, alloc) {
+        filled_row1__(bn.size(), 1.0, alloc),
+        filled_row2__(bn.size(), 1.0, alloc) {
       setBayesNet(bn);
 
       GUM_CONSTRUCTOR(DBRowGeneratorEM);
@@ -72,17 +72,17 @@ namespace gum {
        const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
           alloc) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(from, alloc),
-        __input_row(from.__input_row), __missing_cols(from.__missing_cols),
-        __nb_miss(from.__nb_miss), __joint_proba(from.__joint_proba),
-        __filled_row1(from.__filled_row1), __filled_row2(from.__filled_row2),
-        __use_filled_row1(from.__use_filled_row1),
-        __original_weight(from.__original_weight) {
-      if (from.__joint_inst != nullptr) {
-        __joint_inst = new Instantiation(__joint_proba);
-        const auto&       var_seq = __joint_inst->variablesSequence();
+        input_row__(from.input_row__), missing_cols__(from.missing_cols__),
+        nb_miss__(from.nb_miss__), joint_proba__(from.joint_proba__),
+        filled_row1__(from.filled_row1__), filled_row2__(from.filled_row2__),
+        use_filled_row1__(from.use_filled_row1__),
+        original_weight__(from.original_weight__) {
+      if (from.joint_inst__ != nullptr) {
+        joint_inst__ = new Instantiation(joint_proba__);
+        const auto&       var_seq = joint_inst__->variablesSequence();
         const std::size_t size = var_seq.size();
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          __joint_inst->chgVal(Idx(i), from.__joint_inst->val(i));
+          joint_inst__->chgVal(Idx(i), from.joint_inst__->val(i));
         }
       }
 
@@ -104,19 +104,19 @@ namespace gum {
        const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
           alloc) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(std::move(from), alloc),
-        __input_row(from.__input_row),
-        __missing_cols(std::move(from.__missing_cols)), __nb_miss(from.__nb_miss),
-        __joint_proba(std::move(from.__joint_proba)),
-        __filled_row1(std::move(from.__filled_row1)),
-        __filled_row2(std::move(from.__filled_row2)),
-        __use_filled_row1(from.__use_filled_row1),
-        __original_weight(from.__original_weight) {
-      if (from.__joint_inst != nullptr) {
-        __joint_inst = new Instantiation(__joint_proba);
-        const auto&       var_seq = __joint_inst->variablesSequence();
+        input_row__(from.input_row__),
+        missing_cols__(std::move(from.missing_cols__)), nb_miss__(from.nb_miss__),
+        joint_proba__(std::move(from.joint_proba__)),
+        filled_row1__(std::move(from.filled_row1__)),
+        filled_row2__(std::move(from.filled_row2__)),
+        use_filled_row1__(from.use_filled_row1__),
+        original_weight__(from.original_weight__) {
+      if (from.joint_inst__ != nullptr) {
+        joint_inst__ = new Instantiation(joint_proba__);
+        const auto&       var_seq = joint_inst__->variablesSequence();
         const std::size_t size = var_seq.size();
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          __joint_inst->chgVal(Idx(i), from.__joint_inst->val(i));
+          joint_inst__->chgVal(Idx(i), from.joint_inst__->val(i));
         }
       }
 
@@ -161,7 +161,7 @@ namespace gum {
     /// destructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::~DBRowGeneratorEM() {
-      if (__joint_inst != nullptr) delete __joint_inst;
+      if (joint_inst__ != nullptr) delete joint_inst__;
       GUM_DESTRUCTOR(DBRowGeneratorEM);
     }
 
@@ -173,26 +173,26 @@ namespace gum {
           const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(from);
-        __input_row = from.__input_row;
-        __missing_cols = from.__missing_cols;
-        __nb_miss = from.__nb_miss;
-        __joint_proba = from.__joint_proba;
-        __filled_row1 = from.__filled_row1;
-        __filled_row2 = from.__filled_row2;
-        __use_filled_row1 = from.__use_filled_row1;
-        __original_weight = from.__original_weight;
+        input_row__ = from.input_row__;
+        missing_cols__ = from.missing_cols__;
+        nb_miss__ = from.nb_miss__;
+        joint_proba__ = from.joint_proba__;
+        filled_row1__ = from.filled_row1__;
+        filled_row2__ = from.filled_row2__;
+        use_filled_row1__ = from.use_filled_row1__;
+        original_weight__ = from.original_weight__;
 
-        if (__joint_inst != nullptr) {
-          delete __joint_inst;
-          __joint_inst = nullptr;
+        if (joint_inst__ != nullptr) {
+          delete joint_inst__;
+          joint_inst__ = nullptr;
         }
 
-        if (from.__joint_inst != nullptr) {
-          __joint_inst = new Instantiation(__joint_proba);
-          const auto&       var_seq = __joint_inst->variablesSequence();
+        if (from.joint_inst__ != nullptr) {
+          joint_inst__ = new Instantiation(joint_proba__);
+          const auto&       var_seq = joint_inst__->variablesSequence();
           const std::size_t size = var_seq.size();
           for (std::size_t i = std::size_t(0); i < size; ++i) {
-            __joint_inst->chgVal(Idx(i), from.__joint_inst->val(i));
+            joint_inst__->chgVal(Idx(i), from.joint_inst__->val(i));
           }
         }
       }
@@ -208,26 +208,26 @@ namespace gum {
           DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(std::move(from));
-        __input_row = from.__input_row;
-        __missing_cols = std::move(from.__missing_cols);
-        __nb_miss = from.__nb_miss;
-        __joint_proba = std::move(from.__joint_proba);
-        __filled_row1 = std::move(from.__filled_row1);
-        __filled_row2 = std::move(from.__filled_row2);
-        __use_filled_row1 = from.__use_filled_row1;
-        __original_weight = from.__original_weight;
+        input_row__ = from.input_row__;
+        missing_cols__ = std::move(from.missing_cols__);
+        nb_miss__ = from.nb_miss__;
+        joint_proba__ = std::move(from.joint_proba__);
+        filled_row1__ = std::move(from.filled_row1__);
+        filled_row2__ = std::move(from.filled_row2__);
+        use_filled_row1__ = from.use_filled_row1__;
+        original_weight__ = from.original_weight__;
 
-        if (__joint_inst != nullptr) {
-          delete __joint_inst;
-          __joint_inst = nullptr;
+        if (joint_inst__ != nullptr) {
+          delete joint_inst__;
+          joint_inst__ = nullptr;
         }
 
-        if (from.__joint_inst != nullptr) {
-          __joint_inst = new Instantiation(__joint_proba);
-          const auto&       var_seq = __joint_inst->variablesSequence();
+        if (from.joint_inst__ != nullptr) {
+          joint_inst__ = new Instantiation(joint_proba__);
+          const auto&       var_seq = joint_inst__->variablesSequence();
           const std::size_t size = var_seq.size();
           for (std::size_t i = std::size_t(0); i < size; ++i) {
-            __joint_inst->chgVal(Idx(i), from.__joint_inst->val(i));
+            joint_inst__->chgVal(Idx(i), from.joint_inst__->val(i));
           }
         }
       }
@@ -243,55 +243,55 @@ namespace gum {
       this->decreaseRemainingRows();
 
       // if everything is observed, return the input row
-      if (__input_row != nullptr) return *__input_row;
+      if (input_row__ != nullptr) return *input_row__;
 
-      if (__use_filled_row1) {
+      if (use_filled_row1__) {
         // get the weight of the row from the joint probability
-        __filled_row1.setWeight(__joint_proba.get(*__joint_inst)
-                                * __original_weight);
+        filled_row1__.setWeight(joint_proba__.get(*joint_inst__)
+                                * original_weight__);
 
         // fill the values of the row
-        for (std::size_t i = std::size_t(0); i < __nb_miss; ++i)
-          __filled_row1[__missing_cols[i]].discr_val = __joint_inst->val(i);
+        for (std::size_t i = std::size_t(0); i < nb_miss__; ++i)
+          filled_row1__[missing_cols__[i]].discr_val = joint_inst__->val(i);
 
-        __joint_inst->inc();
-        __use_filled_row1 = false;
+        joint_inst__->inc();
+        use_filled_row1__ = false;
 
-        return __filled_row1;
+        return filled_row1__;
       } else {
         // get the weight of the row from the joint probability
-        __filled_row2.setWeight(__joint_proba.get(*__joint_inst)
-                                * __original_weight);
+        filled_row2__.setWeight(joint_proba__.get(*joint_inst__)
+                                * original_weight__);
 
         // fill the values of the row
-        for (std::size_t i = std::size_t(0); i < __nb_miss; ++i)
-          __filled_row2[__missing_cols[i]].discr_val = __joint_inst->val(i);
+        for (std::size_t i = std::size_t(0); i < nb_miss__; ++i)
+          filled_row2__[missing_cols__[i]].discr_val = joint_inst__->val(i);
 
-        __joint_inst->inc();
-        __use_filled_row1 = true;
+        joint_inst__->inc();
+        use_filled_row1__ = true;
 
-        return __filled_row2;
+        return filled_row2__;
       }
     }
 
 
     /// computes the rows it will provide in output
     template < typename GUM_SCALAR, template < typename > class ALLOC >
-    INLINE std::size_t DBRowGeneratorEM< GUM_SCALAR, ALLOC >::_computeRows(
+    INLINE std::size_t DBRowGeneratorEM< GUM_SCALAR, ALLOC >::computeRows_(
        const DBRow< DBTranslatedValue, ALLOC >& row) {
       // check if there are unobserved values among the columns of interest.
       // If this is the case, set them as targets
       bool        found_unobserved = false;
       const auto& xrow = row.row();
-      for (const auto col: this->_columns_of_interest) {
-        switch (this->_column_types[col]) {
+      for (const auto col: this->columns_of_interest_) {
+        switch (this->column_types_[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
               if (!found_unobserved) {
-                __missing_cols.clear();
+                missing_cols__.clear();
                 found_unobserved = true;
               }
-              __missing_cols.push_back(col);
+              missing_cols__.push_back(col);
             }
             break;
 
@@ -304,51 +304,51 @@ namespace gum {
 
           default:
             GUM_ERROR(NotImplementedYet,
-                      "DBTranslatedValueType " << int(this->_column_types[col])
+                      "DBTranslatedValueType " << int(this->column_types_[col])
                                                << " is not supported yet");
         }
       }
 
-      // if there is no unobserved value, make the __input_row point to the row
+      // if there is no unobserved value, make the input_row__ point to the row
       if (!found_unobserved) {
-        __input_row = &row;
+        input_row__ = &row;
         return std::size_t(1);
       }
 
-      __input_row = nullptr;
-      __nb_miss = __missing_cols.size();
-      __original_weight = row.weight();
+      input_row__ = nullptr;
+      nb_miss__ = missing_cols__.size();
+      original_weight__ = row.weight();
 
       // here, there are missing symbols, so we should compute the distribution
       // of the missing values. For this purpose, we use Variable Elimination
-      VariableElimination< GUM_SCALAR > ve(this->_bn);
+      VariableElimination< GUM_SCALAR > ve(this->bn_);
 
       // add the targets and fill the output row with the observed values
-      NodeSet target_set(__nb_miss);
-      if (this->_nodeId2columns.empty()) {
+      NodeSet target_set(nb_miss__);
+      if (this->nodeId2columns_.empty()) {
         std::size_t i = std::size_t(0);
         bool        end_miss = false;
-        for (const auto col: this->_columns_of_interest) {
-          if (!end_miss && (col == __missing_cols[i])) {
+        for (const auto col: this->columns_of_interest_) {
+          if (!end_miss && (col == missing_cols__[i])) {
             target_set.insert(NodeId(col));
             ++i;
-            if (i == __nb_miss) end_miss = true;
+            if (i == nb_miss__) end_miss = true;
           } else {
-            __filled_row1[col].discr_val = xrow[col].discr_val;
-            __filled_row2[col].discr_val = xrow[col].discr_val;
+            filled_row1__[col].discr_val = xrow[col].discr_val;
+            filled_row2__[col].discr_val = xrow[col].discr_val;
           }
         }
       } else {
         std::size_t i = std::size_t(0);
         bool        end_miss = false;
-        for (const auto col: this->_columns_of_interest) {
-          if (!end_miss && (col == __missing_cols[i])) {
-            target_set.insert(this->_nodeId2columns.first(col));
+        for (const auto col: this->columns_of_interest_) {
+          if (!end_miss && (col == missing_cols__[i])) {
+            target_set.insert(this->nodeId2columns_.first(col));
             ++i;
-            if (i == __nb_miss) end_miss = true;
+            if (i == nb_miss__) end_miss = true;
           } else {
-            __filled_row1[col].discr_val = xrow[col].discr_val;
-            __filled_row2[col].discr_val = xrow[col].discr_val;
+            filled_row1__[col].discr_val = xrow[col].discr_val;
+            filled_row2__[col].discr_val = xrow[col].discr_val;
           }
         }
       }
@@ -357,9 +357,9 @@ namespace gum {
 
       // add the evidence and the target
       const std::size_t row_size = xrow.size();
-      if (this->_nodeId2columns.empty()) {
+      if (this->nodeId2columns_.empty()) {
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-          switch (this->_column_types[col]) {
+          switch (this->column_types_[col]) {
             case DBTranslatedValueType::DISCRETE:
               // only observed values are evidence
               if (xrow[col].discr_val
@@ -377,18 +377,18 @@ namespace gum {
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "DBTranslatedValueType " << int(this->_column_types[col])
+                        "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
           }
         }
       } else {
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-          switch (this->_column_types[col]) {
+          switch (this->column_types_[col]) {
             case DBTranslatedValueType::DISCRETE:
               // only observed values are evidence
               if (xrow[col].discr_val
                   != std::numeric_limits< std::size_t >::max()) {
-                ve.addEvidence(this->_nodeId2columns.first(col),
+                ve.addEvidence(this->nodeId2columns_.first(col),
                                xrow[col].discr_val);
               }
               break;
@@ -402,7 +402,7 @@ namespace gum {
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "DBTranslatedValueType " << int(this->_column_types[col])
+                        "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
           }
         }
@@ -411,25 +411,25 @@ namespace gum {
       // get the potential of the target set
       Potential< GUM_SCALAR >& pot =
          const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
-      __joint_proba = std::move(pot);
-      if (__joint_inst != nullptr) delete __joint_inst;
-      __joint_inst = new Instantiation(__joint_proba);
+      joint_proba__ = std::move(pot);
+      if (joint_inst__ != nullptr) delete joint_inst__;
+      joint_inst__ = new Instantiation(joint_proba__);
 
       // get the mapping between variables of the joint proba and the
       // columns in the database
-      const auto& var_sequence = __joint_proba.variablesSequence();
-      if (this->_nodeId2columns.empty()) {
-        for (std::size_t i = std::size_t(0); i < __nb_miss; ++i) {
-          __missing_cols[i] = std::size_t(this->_bn->nodeId(*(var_sequence[i])));
+      const auto& var_sequence = joint_proba__.variablesSequence();
+      if (this->nodeId2columns_.empty()) {
+        for (std::size_t i = std::size_t(0); i < nb_miss__; ++i) {
+          missing_cols__[i] = std::size_t(this->bn_->nodeId(*(var_sequence[i])));
         }
       } else {
-        for (std::size_t i = std::size_t(0); i < __nb_miss; ++i) {
-          __missing_cols[i] =
-             this->_nodeId2columns.second(this->_bn->nodeId(*(var_sequence[i])));
+        for (std::size_t i = std::size_t(0); i < nb_miss__; ++i) {
+          missing_cols__[i] =
+             this->nodeId2columns_.second(this->bn_->nodeId(*(var_sequence[i])));
         }
       }
 
-      return std::size_t(__joint_proba.domainSize());
+      return std::size_t(joint_proba__.domainSize());
     }
 
 
@@ -439,10 +439,10 @@ namespace gum {
        const BayesNet< GUM_SCALAR >& new_bn) {
       // check that if nodeId2columns is not empty, then all the columns
       // correspond to nodes of the BN
-      if (!this->_nodeId2columns.empty()) {
+      if (!this->nodeId2columns_.empty()) {
         const DAG& dag = new_bn.dag();
-        for (auto iter = this->_nodeId2columns.begin();
-             iter != this->_nodeId2columns.end();
+        for (auto iter = this->nodeId2columns_.begin();
+             iter != this->nodeId2columns_.end();
              ++iter) {
           if (!dag.existsNode(iter.first())) {
             GUM_ERROR(IdError,
@@ -459,18 +459,18 @@ namespace gum {
 
       // we determine the size of the filled rows
       std::size_t size = std::size_t(0);
-      if (this->_nodeId2columns.empty()) {
+      if (this->nodeId2columns_.empty()) {
         for (auto node: new_bn.dag())
           if (std::size_t(node) > size) size = std::size_t(node);
       } else {
-        for (auto iter = this->_nodeId2columns.begin();
-             iter != this->_nodeId2columns.end();
+        for (auto iter = this->nodeId2columns_.begin();
+             iter != this->nodeId2columns_.end();
              ++iter) {
           if (iter.second() > size) size = iter.second();
         }
       }
-      __filled_row1.resize(size + 1);
-      __filled_row2.resize(size + 1);
+      filled_row1__.resize(size + 1);
+      filled_row2__.resize(size + 1);
     }
 
   } /* namespace learning */

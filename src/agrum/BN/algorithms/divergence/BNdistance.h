@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief algorithm for KL divergence between BNs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_KL_H
@@ -87,7 +87,7 @@ namespace gum {
     /**
      * return
      * KL::Complexity::Heavy,KL::Complexity::Difficult,KL::Complexity::Correct
-     * depending on the BNs __p and __q
+     * depending on the BNs p__ and q__
      */
     Complexity difficulty() const;
 
@@ -130,25 +130,25 @@ namespace gum {
     protected:
     // should be pure virtual but using BNdistance directly is a way to delay the
     // choice between different computation scheme (@see ExactBNdistance)
-    virtual void _computeKL();
-    void         _process();
+    virtual void computeKL_();
+    void         process_();
 
-    const IBayesNet< GUM_SCALAR >& _p;
-    const IBayesNet< GUM_SCALAR >& _q;
+    const IBayesNet< GUM_SCALAR >& p_;
+    const IBayesNet< GUM_SCALAR >& q_;
 
-    GUM_SCALAR _klPQ;
-    GUM_SCALAR _klQP;
-    GUM_SCALAR _hellinger;
-    GUM_SCALAR _bhattacharya;
-    GUM_SCALAR _jsd;
+    GUM_SCALAR klPQ_;
+    GUM_SCALAR klQP_;
+    GUM_SCALAR hellinger_;
+    GUM_SCALAR bhattacharya_;
+    GUM_SCALAR jsd_;
 
-    Size _errorPQ;
-    Size _errorQP;
+    Size errorPQ_;
+    Size errorQP_;
 
     private:
-    bool       __checkCompatibility() const;
-    Complexity __difficulty;
-    bool       __done;
+    bool       checkCompatibility__() const;
+    Complexity difficulty__;
+    bool       done__;
   };
 
 

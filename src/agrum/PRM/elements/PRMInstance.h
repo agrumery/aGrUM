@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::prm::PRMInstance<GUM_SCALAR>
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_INSTANCE_H
@@ -364,8 +364,8 @@ namespace gum {
         PRMInstance< GUM_SCALAR >* operator->() const;
 
         private:
-        Set< PRMInstance< GUM_SCALAR >* >&                   __set;
-        typename Set< PRMInstance< GUM_SCALAR >* >::iterator __iter;
+        Set< PRMInstance< GUM_SCALAR >* >&                   set__;
+        typename Set< PRMInstance< GUM_SCALAR >* >::iterator iter__;
       };
 
       /**
@@ -415,8 +415,8 @@ namespace gum {
         const PRMInstance< GUM_SCALAR >* operator->() const;
 
         private:
-        const Set< PRMInstance< GUM_SCALAR >* >&                   __set;
-        typename Set< PRMInstance< GUM_SCALAR >* >::const_iterator __iter;
+        const Set< PRMInstance< GUM_SCALAR >* >&                   set__;
+        typename Set< PRMInstance< GUM_SCALAR >* >::const_iterator iter__;
       };
 
       /**
@@ -466,21 +466,21 @@ namespace gum {
       /// @{
 
       /// Used at construction to instantiate aggregates.
-      void __copyAggregates(PRMAggregate< GUM_SCALAR >* source);
+      void copyAggregates__(PRMAggregate< GUM_SCALAR >* source);
 
       /// Used at construction to instantiate attributes.
-      /// @param source An attribute in __type.
-      void __copyAttribute(PRMAttribute< GUM_SCALAR >* source);
+      /// @param source An attribute in type__.
+      void copyAttribute__(PRMAttribute< GUM_SCALAR >* source);
 
       /**
        * @brief Starts this instance instantiations.
        */
-      void __doInstantiate();
+      void doInstantiate__();
 
       /// @brief Retrieve all instances referred by sc.
       /// @param sc A slot chain of this instance's type.
       /// @throw NotFound Raised if a reference in sc is not instantiated.
-      void __instantiateSlotChain(PRMSlotChain< GUM_SCALAR >* sc);
+      void instantiateSlotChain__(PRMSlotChain< GUM_SCALAR >* sc);
 
       /// @brief Copy the content of an PRMAttribute<GUM_SCALAR> from its
       /// Class<GUM_SCALAR> counterpart.
@@ -488,13 +488,13 @@ namespace gum {
       /// PRMInstance<GUM_SCALAR>.
       /// @throw OperationNotAllowed If the MultiDimImplementation is of an
       /// unknown type.
-      void __copyAttributeCPF(PRMAttribute< GUM_SCALAR >* attr);
+      void copyAttributeCPF__(PRMAttribute< GUM_SCALAR >* attr);
 
       /// @brief Add this as a referring instance over the attribute pointed by
       /// sc in i.
       /// @param sc A slot chain pointing over an attribute in i.
       /// @param i An instance holding an attribute pointed by sc.
-      void __addReferingInstance(PRMSlotChain< GUM_SCALAR >* sc,
+      void addReferingInstance__(PRMSlotChain< GUM_SCALAR >* sc,
                                  PRMInstance< GUM_SCALAR >*  i);
 
       /// @}
@@ -504,29 +504,29 @@ namespace gum {
       /// @{
 
       /// True if this instance has been instantiated
-      bool __instantiated;
+      bool instantiated__;
 
       /// The type of this PRMInstance<GUM_SCALAR>.
-      PRMClass< GUM_SCALAR >* __type;
+      PRMClass< GUM_SCALAR >* type__;
 
       /// The gum::prm::PRMAttribute<GUM_SCALAR> and
       /// gum::prm::PRMAggregate<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
-      NodeProperty< PRMAttribute< GUM_SCALAR >* > __nodeIdMap;
+      NodeProperty< PRMAttribute< GUM_SCALAR >* > nodeIdMap__;
 
       /// Mapping between the gum::prm::PRMReferenceSlot and
       /// gum::prm::PRMSlotChain<GUM_SCALAR> in
-      /// __type / and the PRMInstance<GUM_SCALAR> associated with it.
-      NodeProperty< Set< PRMInstance< GUM_SCALAR >* >* > __referenceMap;
+      /// type__ / and the PRMInstance<GUM_SCALAR> associated with it.
+      NodeProperty< Set< PRMInstance< GUM_SCALAR >* >* > referenceMap__;
 
       /// Code alias.
       typedef std::pair< PRMInstance< GUM_SCALAR >*, std::string > pair;
 
       /// The set of pair (instance, attribute) referring an attribute of
       /// this instance.
-      NodeProperty< std::vector< pair >* > __referingAttr;
+      NodeProperty< std::vector< pair >* > referingAttr__;
 
       /// A bijection used for MultiDim handling.
-      Bijection< const DiscreteVariable*, const DiscreteVariable* > __bijection;
+      Bijection< const DiscreteVariable*, const DiscreteVariable* > bijection__;
 
       /// @}
     };

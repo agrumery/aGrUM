@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Detect barren nodes for inference in Bayesian networks
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_BARREN_NODES_FINDER_H
 #define GUM_BARREN_NODES_FINDER_H
@@ -110,13 +110,13 @@ namespace gum {
 
     private:
     /// the DAG on which we compute the barren nodes
-    const DAG* __dag;
+    const DAG* dag__;
 
     /// the set of observed nodes
-    const NodeSet* __observed_nodes;
+    const NodeSet* observed_nodes__;
 
     /// the set of targeted nodes
-    const NodeSet* __target_nodes;
+    const NodeSet* target_nodes__;
   };
 
 

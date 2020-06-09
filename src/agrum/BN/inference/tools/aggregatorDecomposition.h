@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN & Christophe GONZALES(@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,65 +34,70 @@
 #include <ctime>
 
 namespace gum {
-    /**
-     * @class AggregatorDecomposition aggregatorDecomposition.h
-     *<agrum/BN/inference/tools/aggregatorDecomposition.h>
-        * @brief This class is used to decompose aggregator in PRM<GUM_SCALAR>.
-        */
-    template < typename GUM_SCALAR >
-    class AggregatorDecomposition {
-
+  /**
+   * @class AggregatorDecomposition aggregatorDecomposition.h
+   *<agrum/BN/inference/tools/aggregatorDecomposition.h>
+   * @brief This class is used to decompose aggregator in PRM<GUM_SCALAR>.
+   */
+  template < typename GUM_SCALAR >
+  class AggregatorDecomposition {
     public:
-        // ========================================================================
-        /// @name Constructor & destructor.
-        // ========================================================================
-        /// @{
+    // ========================================================================
+    /// @name Constructor & destructor.
+    // ========================================================================
+    /// @{
 
-        /// Default constructor.
-        AggregatorDecomposition();
+    /// Default constructor.
+    AggregatorDecomposition();
 
-        /// Destructor.
-        virtual ~AggregatorDecomposition();
+    /// Destructor.
+    virtual ~AggregatorDecomposition();
 
-        BayesNet< GUM_SCALAR >& getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn);
+    BayesNet< GUM_SCALAR >& getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn);
 
-        /// @}
-        // ========================================================================
-        /// @name Getters & setters.
-        // ========================================================================
-        /// @{
+    /// @}
+    // ========================================================================
+    /// @name Getters & setters.
+    // ========================================================================
+    /// @{
 
-        virtual std::string name() const;
+    virtual std::string name() const;
 
-        gum::Size getMaximumArity();
+    gum::Size getMaximumArity();
 
-        void setMaximumArity(gum::Size arity);
+    void setMaximumArity(gum::Size arity);
 
-        /// @}
+    /// @}
     protected:
-        // ========================================================================
-        /// @name Private evidence handling methods and members.
-        // ========================================================================
-        /// @{
-        NodeId _addAggregator(BayesNet<GUM_SCALAR>& bn, std::string aggType, const DiscreteVariable& var, Idx value);
+    // ========================================================================
+    /// @name Private evidence handling methods and members.
+    // ========================================================================
+    /// @{
+    NodeId addAggregator_(BayesNet< GUM_SCALAR >& bn,
+                          std::string             aggType,
+                          const DiscreteVariable& var,
+                          Idx                     value);
 
-        BayesNet< GUM_SCALAR >& _decomposeAggregator(BayesNet< GUM_SCALAR >& bn, NodeId node);
+    BayesNet< GUM_SCALAR >& decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
+                                                 NodeId                  node);
 
-        Set<NodeId> _addDepthLayer(BayesNet<GUM_SCALAR> & bn, Set<NodeId> nodes, NodeId initialAggregator, int& j);
-        /// @}
+    Set< NodeId > addDepthLayer_(BayesNet< GUM_SCALAR >& bn,
+                                 Set< NodeId >           nodes,
+                                 NodeId                  initialAggregator,
+                                 int&                    j);
+    /// @}
 
     private:
-
-        gum::Size __arity;
-    };
+    gum::Size arity__;
+  };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-        extern template class AggregatorDecomposition< double >;
+  extern template class AggregatorDecomposition< double >;
 #endif
 
 } /* namespace gum */
 
 #include <agrum/BN/inference/tools/aggregatorDecomposition_tpl.h>
 
-#endif //AGRUM_AGGREGATORDECOMPOSITION_H
+#endif   // AGRUM_AGGREGATORDECOMPOSITION_H

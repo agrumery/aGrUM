@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::prm::PRMClassElementContainer.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
@@ -396,43 +396,43 @@ namespace gum {
       PRMClassElementContainer(
          const PRMClassElementContainer< GUM_SCALAR >& source);
 
-      virtual const DAG& _dag() const = 0;
+      virtual const DAG& dag_() const = 0;
 
       /// Returns a non constant reference over this PRMClassElementContainer's
       /// DAG.
-      virtual DAG& _dag() = 0;
+      virtual DAG& dag_() = 0;
 
       /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
       virtual void
-         _findAllSubtypes(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
+         findAllSubtypes_(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual std::pair< bool, bool >&
-         _getIOFlag(const PRMClassElement< GUM_SCALAR >& elt);
+         getIOFlag_(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual const std::pair< bool, bool >&
-         _getIOFlag(const PRMClassElement< GUM_SCALAR >& elt) const;
+         getIOFlag_(const PRMClassElement< GUM_SCALAR >& elt) const;
 
       /// Defines the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @param flags The IO flags of elt. Overwrite any existing flags.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual void _setIOFlag(const PRMClassElement< GUM_SCALAR >& elt,
+      virtual void setIOFlag_(const PRMClassElement< GUM_SCALAR >& elt,
                               const std::pair< bool, bool >&       flags);
 
       /// Copy the IO Flags of c in this PRMClassElementContainer.
       /// @param c A PRMClassElementContainer.
-      virtual void _copyIOFlags(const PRMClassElementContainer< GUM_SCALAR >& c);
+      virtual void copyIOFlags_(const PRMClassElementContainer< GUM_SCALAR >& c);
 
       /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must
       /// update
@@ -442,11 +442,11 @@ namespace gum {
       ///
       /// @param elt A PRMClassElement<GUM_SCALAR>.
       virtual void
-         _updateDescendants(const PRMClassElement< GUM_SCALAR >& elt) = 0;
+         updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       private:
       /// input / output flags, useful when inheriting or copying.
-      HashTable< std::string, std::pair< bool, bool > > __IOFlags;
+      HashTable< std::string, std::pair< bool, bool > > IOFlags__;
     };
 
 

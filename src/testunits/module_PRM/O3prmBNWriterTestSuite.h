@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -89,8 +89,8 @@ namespace gum_tests {
     }
 
     void testReadAfterWrite() {
-      std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
-      gum::BayesNet< double >      bn;
+      std::string             rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
+      gum::BayesNet< double > bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());

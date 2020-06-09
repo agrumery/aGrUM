@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -55,30 +55,30 @@ namespace o3prm {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_label=3,
-		_eol=4,
-		_dot=5,
-		_comma=6,
-		_colon=7,
-		_semicolon=8,
-		_import=9,
-		_type=10,
-		_class=11,
-		_interface=12,
-		_extends=13,
-		_system=14,
-		_dependson=15,
-		_default=16,
-		_implements=17,
-		_param=18,
-		_labels=19,
-		_int=20,
-		_real=21,
-		_inc=22,
-		_string=23
+		EOF_=0,
+		integer_=1,
+		float_=2,
+		label_=3,
+		eol_=4,
+		dot_=5,
+		comma_=6,
+		colon_=7,
+		semicolon_=8,
+		import_=9,
+		type_=10,
+		class_=11,
+		interface_=12,
+		extends_=13,
+		system_=14,
+		dependson_=15,
+		default_=16,
+		implements_=17,
+		param_=18,
+		labels_=19,
+		int_=20,
+		real_=21,
+		inc_=22,
+		string_=23
 	};
 	int maxT;
 
@@ -93,7 +93,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -155,40 +155,40 @@ using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
-O3PRM* __prm;
-std::string __prefix;
+O3PRM* prm__;
+std::string prefix__;
 
-bool __ok (Size n) { return errors().error_count == n; }
+bool ok__ (Size n) { return errors().error_count == n; }
 
-void __addO3Type( O3Type t ) {
+void addO3Type__( O3Type t ) {
   get_prm()->types().emplace_back( new O3Type(std::move( t )) );
 }
 
-void __addO3IntType( O3IntType t ) {
+void addO3IntType__( O3IntType t ) {
   get_prm()->int_types().emplace_back( new O3IntType(std::move( t )) );
 }
 
-void __addO3RealType( O3RealType t ) {
+void addO3RealType__( O3RealType t ) {
   get_prm()->real_types().emplace_back( new O3RealType(std::move( t )) );
 }
 
-void __addO3Interface( O3Interface i ) {
+void addO3Interface__( O3Interface i ) {
   get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
 }
 
-void __addO3Class( O3Class c ) {
+void addO3Class__( O3Class c ) {
   get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
 }
 
-void __addO3System( O3System s ) {
+void addO3System__( O3System s ) {
   get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
 }
 
-void __addO3Import( O3Import i ) {
+void addO3Import__( O3Import i ) {
   get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
 }
 
-void __split( const O3Label& value, O3Label& left, O3Label& right) {
+void split__( const O3Label& value, O3Label& left, O3Label& right) {
   auto idx = value.label().find_first_of('.');
   if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
@@ -202,7 +202,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
   }
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
+O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   for (const auto& l: t.labels()) {
@@ -214,7 +214,7 @@ O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t)
   return t.name();
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
+O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   ss << "_" << t.start().value() << '_' << t.end().value();
@@ -224,7 +224,7 @@ O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3IntType&
   return t.name();
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
+O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   for (const auto& v: t.values()) {
@@ -239,18 +239,18 @@ O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3RealType
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
-  __prm = prm;
+  prm__ = prm;
 }
 
 O3PRM* get_prm() {
-  return __prm;
+  return prm__;
 }
 
 // Set the prefix for types, interfaces, classes and systems parsed
 void set_prefix( const std::string& prefix ) {
-  __prefix = prefix;
-  if ( __prefix.size() > 0 && __prefix[__prefix.size() - 1] != '.' ) {
-    __prefix.append( "." );
+  prefix__ = prefix;
+  if ( prefix__.size() > 0 && prefix__[prefix__.size() - 1] != '.' ) {
+    prefix__.append( "." );
   }
 }
 

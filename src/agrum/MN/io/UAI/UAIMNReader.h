@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  *
  * Reads a markov net in UAI format
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef UAI_MN_READER_H
@@ -126,23 +126,23 @@ namespace gum {
     /// @}
 
     protected:
-    MarkovNet< GUM_SCALAR >* __mn;
-    UAIMN::Scanner*          __scanner;
-    UAIMN::Parser*           __parser;
+    MarkovNet< GUM_SCALAR >* mn__;
+    UAIMN::Scanner*          scanner__;
+    UAIMN::Parser*           parser__;
 
-    std::string __streamName;
-    bool        __traceScanning;
-    bool        __parseDone;
+    std::string streamName__;
+    bool        traceScanning__;
+    bool        parseDone__;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool __ioerror;
+    bool ioerror__;
 
-    void __addFatalError(Idx                lig,
+    void addFatalError__(Idx                lig,
                          Idx                col,
                          const std::string& s);   // throw an exception
-    void __addError(Idx lig, Idx col, const std::string& s);
-    void __addWarning(Idx lig, Idx col, const std::string& s);
+    void addError__(Idx lig, Idx col, const std::string& s);
+    void addWarning__(Idx lig, Idx col, const std::string& s);
   };
 
 

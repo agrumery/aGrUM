@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class for simulating a markov decision process.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_FMDP_SIMULATOR_H
 #define GUM_FMDP_SIMULATOR_H
@@ -71,7 +71,7 @@ namespace gum {
     /// @{
 
     ///
-    double reward() { return __fmdp->reward()->get(this->_currentState); }
+    double reward() { return fmdp__->reward()->get(this->currentState_); }
 
     void perform(Idx);
 
@@ -83,15 +83,15 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return __fmdp->main2prime(mainVar);
+      return fmdp__->main2prime(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return __fmdp->beginVariables();
+      return fmdp__->beginVariables();
     }
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return __fmdp->endVariables();
+      return fmdp__->endVariables();
     }
 
     /// @}
@@ -102,30 +102,30 @@ namespace gum {
     /// @{
 
     virtual const std::string& actionName(Idx actionId) {
-      return __fmdp->actionName(actionId);
+      return fmdp__->actionName(actionId);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() { return __fmdp->beginActions(); }
-    SequenceIteratorSafe< Idx > endActions() { return __fmdp->endActions(); }
+    SequenceIteratorSafe< Idx > beginActions() { return fmdp__->beginActions(); }
+    SequenceIteratorSafe< Idx > endActions() { return fmdp__->endActions(); }
     /// @}
 
     protected:
-    virtual double _transitionProbability(const DiscreteVariable* var,
+    virtual double transitionProbability_(const DiscreteVariable* var,
                                           const Instantiation&    transit,
                                           Idx                     actionId) {
       return reinterpret_cast< const MultiDimFunctionGraph< double >* >(
-                __fmdp->transition(actionId, var))
+                fmdp__->transition(actionId, var))
          ->get(transit);
     }
 
     private:
     /// The Factored Markov Decision Process that describes how the system
     /// evolves
-    FMDP< double >* __fmdp;
+    FMDP< double >* fmdp__;
 
     /// Just to know if it should be deleted in the end
-    const bool __loaded;
+    const bool loaded__;
   };
 
 } /* namespace gum */

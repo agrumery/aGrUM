@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to manipulate o4DGContext in Function Graph Operations
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef O4DGCONTEXT_H
@@ -83,13 +83,13 @@ namespace gum {
     void setDG1Node(const NodeId&);
 
     /// Get DG1 diagram current explored Node
-    const NodeId& DG1Node() const { return __DG1ExploredNode; }
+    const NodeId& DG1Node() const { return DG1ExploredNode__; }
 
     /// Set DG2 diagram current explored Node
     void setDG2Node(const NodeId&);
 
     /// Get DG2 diagram current explored Node
-    const NodeId& DG2Node() const { return __DG2ExploredNode; }
+    const NodeId& DG2Node() const { return DG2ExploredNode__; }
     /// @}
 
     // ============================================================================
@@ -116,22 +116,22 @@ namespace gum {
 
     private:
     /// DG1 Diagram current explored node
-    NodeId __DG1ExploredNode;
+    NodeId DG1ExploredNode__;
 
     /// DG2 Diagram current explored node
-    NodeId __DG2ExploredNode;
+    NodeId DG2ExploredNode__;
 
     /// Vector containing for each retrograde variable its current modality
     /// 0 meaning no instantiation done => there's an offset
-    Idx* __varInstantiation;
-    Idx  __nbVar;
+    Idx* varInstantiation__;
+    Idx  nbVar__;
 
     /// The key use to store the context as a key in the hashtable
-    double __key;
+    double key__;
 
     /// Table containing the log2 of prime numbers
-    static const double __logPrime[];
-    static const Idx    __nbLogPrime, __offsetv, __offset1, __offset2;
+    static const double logPrime__[];
+    static const Idx    nbLogPrime__, offsetv__, offset1__, offset2__;
   };
 }   // namespace gum
 

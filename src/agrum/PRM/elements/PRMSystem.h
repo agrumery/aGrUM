@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of PRMSystem.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SYSTEM_H
@@ -260,7 +260,8 @@ namespace gum {
       PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
       /// Copy operator. Don't use it.
-      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from);
+      PRMSystem< GUM_SCALAR >&
+         operator=(const PRMSystem< GUM_SCALAR >& from) = delete;
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.
@@ -268,18 +269,18 @@ namespace gum {
       /// @{
 
       /// The relational skeleton of this PRMSystem.
-      DiGraph _skeleton;
+      DiGraph skeleton_;
 
-      /// The maping between PRMInstance and their NodeId in the relational
+      /// The mapping between PRMInstance and their NodeId in the relational
       /// skeleton of this PRMSystem.
-      NodeProperty< PRMInstance< GUM_SCALAR >* > _nodeIdMap;
+      NodeProperty< PRMInstance< GUM_SCALAR >* > nodeIdMap_;
 
       /// The mapping between PRMInstance and their names.
-      HashTable< std::string, PRMInstance< GUM_SCALAR >* > _nameMap;
+      HashTable< std::string, PRMInstance< GUM_SCALAR >* > nameMap_;
 
       /// Mapping between a class and all it's PRMInstance in this system
       HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* >
-         _instanceMap;
+         instanceMap_;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
@@ -289,7 +290,7 @@ namespace gum {
 
       /// Mapping between arrays and their name. The first element of the pair
       /// is the type of the array.
-      HashTable< std::string, model_pair > _arrayMap;
+      HashTable< std::string, model_pair > arrayMap_;
 
       /// @}
       // ========================================================================
@@ -302,14 +303,14 @@ namespace gum {
       ///        in the IBayesNet.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void __groundRef(const PRMInstance< GUM_SCALAR >& instance,
+      void groundRef__(const PRMInstance< GUM_SCALAR >& instance,
                        BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which ground Atttributes and Aggregators of
       ///        an PRMInstance.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void __groundAttr(const PRMInstance< GUM_SCALAR >& instance,
+      void groundAttr__(const PRMInstance< GUM_SCALAR >& instance,
                         BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which copy node's Potential of an PRMInstance to the
@@ -320,7 +321,7 @@ namespace gum {
       /// is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void __groundPotential(const PRMInstance< GUM_SCALAR >&  instance,
+      void groundPotential__(const PRMInstance< GUM_SCALAR >&  instance,
                              const PRMAttribute< GUM_SCALAR >& attr,
                              BayesNetFactory< GUM_SCALAR >&    factory) const;
 
@@ -329,7 +330,7 @@ namespace gum {
       /// @param elt     The aggregator grounded.
       /// @param name    The aggregator's name in the grounded IBayesNet.
       /// @param factory The factory used to build the grounded IBayesNet.
-      void __groundAgg(const PRMClassElement< GUM_SCALAR >& elt,
+      void groundAgg__(const PRMClassElement< GUM_SCALAR >& elt,
                        const std::string&                   name,
                        BayesNetFactory< GUM_SCALAR >&       factory) const;
       /// @}

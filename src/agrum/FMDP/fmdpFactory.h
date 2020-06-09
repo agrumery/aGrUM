@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the FMDPFactory class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_FMDP_FACTORY_H
@@ -264,53 +264,53 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool __foo_flag;
+    bool foo_flag__;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool __bar_flag;
+    bool bar_flag__;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string > __stringBag;
+    std::vector< std::string > stringBag__;
 
     /// Just to keep track of multidim between two start/end calls.
-    std::vector< const MultiDimImplementation< GUM_SCALAR >* > __ddBag;
+    std::vector< const MultiDimImplementation< GUM_SCALAR >* > ddBag__;
 
     /// Used in VARIABLE mode
-    /// Checks if in __stringBag there is no other modality with the same name.
-    void __checkModalityInBag(const std::string& mod);
+    /// Checks if in stringBag__ there is no other modality with the same name.
+    void checkModalityInBag__(const std::string& mod);
 
     /// Reset the different parts used to constructed the FMDP.
-    void __resetParts();
+    void resetParts__();
 
     /// Insert every variables in the function graph
-    void __initializeFunctionGraph();
+    void initializeFunctionGraph__();
 
     /// Insert every variables in the function graph
-    void __finalizeFunctionGraph();
+    void finalizeFunctionGraph__();
 
     /// @}
 
     /// State stack.
-    std::vector< FMDPfactory_state > __states;
+    std::vector< FMDPfactory_state > states__;
 
     /// The constructed FMDP
-    FMDP< GUM_SCALAR >* __fmdp;
+    FMDP< GUM_SCALAR >* fmdp__;
 
     /// The FunctionGraph we're building at a given time
-    MultiDimFunctionGraph< GUM_SCALAR >* __FunctionGraph;
+    MultiDimFunctionGraph< GUM_SCALAR >* FunctionGraph__;
 
     /// Mapping between a declared variable's name and itself.
-    HashTable< std::string, const DiscreteVariable* > __varNameMap;
+    HashTable< std::string, const DiscreteVariable* > varNameMap__;
 
     /// Action Id counter
-    Idx __actionIdcpt;
+    Idx actionIdcpt__;
 
     /// Copy operator is illegal, use only copy constructor.
     FMDPFactory< GUM_SCALAR >& operator=(const FMDPFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void __illegalStateError(const std::string& s);
+    void illegalStateError__(const std::string& s);
   };
 
 

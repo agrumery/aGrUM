@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * of the second, which must be eliminated before those of the third subset,
  * and so on.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_PARTIAL_ORDERED_TRIANGULATION_H
 #define GUM_PARTIAL_ORDERED_TRIANGULATION_H
@@ -150,15 +150,15 @@ namespace gum {
      * used to initialize the elimination sequence strategy. Actually, the
      * graph that is modified by the triangulation algorithm is a copy of
      * the original graph, and this copy need be known by the elimination
-     * sequence strategy. _initTriangulation is used to transmit this
+     * sequence strategy. initTriangulation_ is used to transmit this
      * knowledge to the elimination sequence (through method setGraph of the
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
-     * _original_graph) */
-    virtual void _initTriangulation(UndiGraph& graph) final;
+     * original_graph_) */
+    virtual void initTriangulation_(UndiGraph& graph) final;
 
     /// the partial ordering to apply to eliminate nodes
-    const List< NodeSet >* __partial_order{nullptr};
+    const List< NodeSet >* partial_order__{nullptr};
 
     /// @}
 

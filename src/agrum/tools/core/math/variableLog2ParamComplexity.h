@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class for computing the log2 of the parametric complexity of
  * an r-ary multinomial variable
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H
@@ -144,7 +144,7 @@ namespace gum {
 
     private:
     /// the value of N above which we should use Szpankowski's approximation
-    const double __Szpankowski_threshold{VariableLog2ParamComplexityCTableNSize};
+    const double Szpankowski_threshold__{VariableLog2ParamComplexityCTableNSize};
 
     // constants used to speed-up the computation of the Szpankowski
     // approximation.
@@ -158,16 +158,16 @@ namespace gum {
     // 0.5 log2(n) - 0.5 + log2(sqrt(pi)) + (sqrt(2/pi)/3) / sqrt(n) +
     // (3/36 - 4/(9*pi)) / n.
     // So, given the constants below, it is equal to:
-    // 0.5 * std::log2 (n) + __cst1 + __cst2 / std::sqrt(n) + __cst3 / n
-    const double __cst1 = -0.5 + std::log2(std::sqrt(M_PI));
-    const double __cst2 = std::sqrt(2.0 / M_PI) / 3.0;
-    const double __cst3 = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
+    // 0.5 * std::log2 (n) + cst1__ + cst2__ / std::sqrt(n) + cst3__ / n
+    const double cst1__ = -0.5 + std::log2(std::sqrt(M_PI));
+    const double cst2__ = std::sqrt(2.0 / M_PI) / 3.0;
+    const double cst3__ = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
 
     // indicates whether we should use a cache or not
-    bool __use_cache{true};
+    bool use_cache__{true};
 
     // the cache used, eventually, to store the log2Cnr values
-    HashTable< std::pair< std::size_t, double >, double > __cache;
+    HashTable< std::pair< std::size_t, double >, double > cache__;
   };
 
 } /* namespace gum */

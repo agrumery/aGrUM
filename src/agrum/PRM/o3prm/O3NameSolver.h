@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for the O3NameSolver class.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  * @author Lionel TORTI
  */
 
@@ -82,17 +82,17 @@ namespace gum {
         bool resolveSlotType(O3Label& name);
 
         private:
-        PRM< GUM_SCALAR >* __prm;
-        O3PRM*             __o3_prm;
-        ErrorsContainer*   __errors;
+        PRM< GUM_SCALAR >* prm__;
+        O3PRM*             o3_prm__;
+        ErrorsContainer*   errors__;
 
         using NameMap = HashTable< std::string, std::string >;
 
-        NameMap __typeName;
-        NameMap __eltName;
-        NameMap __refName;
-        NameMap __interfaceName;
-        NameMap __className;
+        NameMap typeName__;
+        NameMap eltName__;
+        NameMap refName__;
+        NameMap interfaceName__;
+        NameMap className__;
       };
 
     }   // namespace o3prm

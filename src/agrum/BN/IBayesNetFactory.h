@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Header of the IBayesNetFactory class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_INTERFACE_BAYESNET_FACTORY_H
 #define GUM_INTERFACE_BAYESNET_FACTORY_H
@@ -67,7 +67,7 @@ namespace gum {
       FACT_ENTRY
     };
 
-    IBayesNetFactory() : __verbose(false){};
+    IBayesNetFactory() : verbose__(false){};
     // just to make some compilers happy
     virtual ~IBayesNetFactory(){};
 
@@ -75,11 +75,11 @@ namespace gum {
      * @name verbosity control
      * @{
      */
-    void setVerbose() { __verbose = true; };
+    void setVerbose() { verbose__ = true; };
 
-    void resetVerbose() { __verbose = false; };
+    void resetVerbose() { verbose__ = false; };
 
-    bool isVerbose() { return __verbose; };
+    bool isVerbose() { return verbose__; };
 
     /**
      * @}
@@ -129,7 +129,7 @@ namespace gum {
     /// @}
 
     private:
-    bool __verbose;
+    bool verbose__;
   };
 } /* namespace gum */
 

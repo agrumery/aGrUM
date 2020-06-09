@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -40,8 +40,8 @@ namespace gum {
     INLINE bool
        StructuralConstraintPossibleEdges::checkArcAdditionAlone(NodeId x,
                                                                 NodeId y) const {
-      auto res = _PossibleEdges__possible_edges.empty()
-                 || _PossibleEdges__possible_edges.exists(Edge(x, y));
+      auto res = PossibleEdges__possible_edges_.empty()
+                 || PossibleEdges__possible_edges_.exists(Edge(x, y));
       return res;
     }
 
@@ -56,8 +56,8 @@ namespace gum {
     INLINE bool
        StructuralConstraintPossibleEdges::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
-      return _PossibleEdges__possible_edges.empty()
-             || _PossibleEdges__possible_edges.exists(Edge(y, x));
+      return PossibleEdges__possible_edges_.empty()
+             || PossibleEdges__possible_edges_.exists(Edge(y, x));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -135,22 +135,22 @@ namespace gum {
 
     /// assign a set of forbidden edge
     INLINE void StructuralConstraintPossibleEdges::setEdges(const EdgeSet& set) {
-      _PossibleEdges__possible_edges = set;
+      PossibleEdges__possible_edges_ = set;
     }
 
     /// assign a new forbidden edge
     INLINE void StructuralConstraintPossibleEdges::addEdge(const Edge& edge) {
-      _PossibleEdges__possible_edges.insert(edge);
+      PossibleEdges__possible_edges_.insert(edge);
     }
 
     /// remove a forbidden edge
     INLINE void StructuralConstraintPossibleEdges::eraseEdge(const Edge& edge) {
-      _PossibleEdges__possible_edges.erase(edge);
+      PossibleEdges__possible_edges_.erase(edge);
     }
 
     /// returns the set of possible edges
     INLINE const EdgeSet& StructuralConstraintPossibleEdges::edges() const {
-      return _PossibleEdges__possible_edges;
+      return PossibleEdges__possible_edges_;
     }
 
 // include all the methods applicable to the whole class hierarchy

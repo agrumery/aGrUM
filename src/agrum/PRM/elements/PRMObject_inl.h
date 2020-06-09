@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of PRMObject.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -32,22 +32,22 @@ namespace gum {
 
     // Returns the name of this object.
     INLINE
-    const std::string& PRMObject::name() const { return __name; }
+    const std::string& PRMObject::name() const { return name__; }
 
     // Returns the name of this object.
     INLINE
-    void PRMObject::name(const std::string& name) { __name = name; }
+    void PRMObject::name(const std::string& name) { name__ = name; }
 
     // To PRMObject are equal if they have the same name (which is unique).
     INLINE
     bool PRMObject::operator==(const PRMObject& obj) const {
-      return __name == obj.name();
+      return name__ == obj.name();
     }
 
     // To PRMObject are equal if they have the same name (which is unique).
     INLINE
     bool PRMObject::operator!=(const PRMObject& obj) const {
-      return __name != obj.name();
+      return name__ != obj.name();
     }
 
   } /* namespace prm */

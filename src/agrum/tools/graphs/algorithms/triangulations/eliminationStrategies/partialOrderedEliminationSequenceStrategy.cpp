@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * before the nodes of the second, which must be eliminated before those of the
  * third subset, and so on.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.h>
@@ -64,8 +64,8 @@ namespace gum {
      PartialOrderedEliminationSequenceStrategy(
         const PartialOrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
-      _subsets(from._subsets), _subset_iter(from._subset_iter),
-      _nodeset(from._nodeset), _partial_order_needed(from._partial_order_needed) {
+      subsets_(from.subsets_), subset_iter_(from.subset_iter_),
+      nodeset_(from.nodeset_), partial_order_needed_(from.partial_order_needed_) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
   }
@@ -75,10 +75,10 @@ namespace gum {
      PartialOrderedEliminationSequenceStrategy(
         PartialOrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
-      _subsets(from._subsets), _subset_iter(from._subset_iter),
-      _nodeset(std::move(from._nodeset)),
-      _partial_order_needed(from._partial_order_needed) {
-    from._partial_order_needed = true;
+      subsets_(from.subsets_), subset_iter_(from.subset_iter_),
+      nodeset_(std::move(from.nodeset_)),
+      partial_order_needed_(from.partial_order_needed_) {
+    from.partial_order_needed_ = true;
 
     // for debugging purposes
     GUM_CONS_MOV(PartialOrderedEliminationSequenceStrategy);
@@ -95,47 +95,47 @@ namespace gum {
   bool PartialOrderedEliminationSequenceStrategy::setGraph(
      UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
-      setPartialOrder(_subsets);
+      setPartialOrder(subsets_);
       return true;
     }
     return false;
   }
 
   /// indicate whether a partial ordering is compatible with the current graph
-  bool PartialOrderedEliminationSequenceStrategy::_isPartialOrderNeeded(
+  bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded_(
      const List< NodeSet >* subsets) const {
-    if ((_graph == nullptr) || (subsets == nullptr)) return true;
+    if ((graph_ == nullptr) || (subsets == nullptr)) return true;
 
     // determine the set of nodes in the subsets that belong to the graph
-    NodeSet nodes_found(_graph->size() / 2);
+    NodeSet nodes_found(graph_->size() / 2);
     for (const auto& nodes: *subsets) {
       for (const auto node: nodes) {
-        if (_graph->existsNode(node)) { nodes_found.insert(node); }
+        if (graph_->existsNode(node)) { nodes_found.insert(node); }
       }
     }
 
     // check that the size of nodes_found is equal to that of the graph
-    return nodes_found.size() != _graph->size();
+    return nodes_found.size() != graph_->size();
   }
 
   /// sets a new partial order
   bool PartialOrderedEliminationSequenceStrategy::setPartialOrder(
      const List< NodeSet >* subsets) {
     // check that the partial order contains all the nodes of the graph
-    _partial_order_needed = _isPartialOrderNeeded(subsets);
+    partial_order_needed_ = isPartialOrderNeeded_(subsets);
 
-    if (!_partial_order_needed) {
-      _subsets = subsets;
+    if (!partial_order_needed_) {
+      subsets_ = subsets;
 
       // initialize properly the set of nodes that can be currently eliminated:
       // find the first subset that contains some node(s) of the graph
-      _nodeset.clear();
-      for (_subset_iter = _subsets->cbegin(); _subset_iter != _subsets->cend();
-           ++_subset_iter) {
-        for (const auto node: *_subset_iter) {
-          if (_graph->existsNode(node)) { _nodeset.insert(node); }
+      nodeset_.clear();
+      for (subset_iter_ = subsets_->cbegin(); subset_iter_ != subsets_->cend();
+           ++subset_iter_) {
+        for (const auto node: *subset_iter_) {
+          if (graph_->existsNode(node)) { nodeset_.insert(node); }
         }
-        if (!_nodeset.empty()) return true;
+        if (!nodeset_.empty()) return true;
       }
     }
 
@@ -145,9 +145,9 @@ namespace gum {
   /// clears the sequence (to prepare, for instance, a new elimination sequence)
   void PartialOrderedEliminationSequenceStrategy::clear() {
     EliminationSequenceStrategy::clear();
-    _subsets = nullptr;
-    _nodeset.clear();
-    _partial_order_needed = true;
+    subsets_ = nullptr;
+    nodeset_.clear();
+    partial_order_needed_ = true;
   }
 
 } /* namespace gum */

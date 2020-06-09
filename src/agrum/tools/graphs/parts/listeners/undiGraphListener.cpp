@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief source file for virtual Base classes for non-oriented graphs listener
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/graphs/parts/listeners/undiGraphListener.h>
@@ -50,14 +50,14 @@ namespace gum {
     }
 
     GUM_CONSTRUCTOR(UndiGraphListener);
-    _graph = g;
+    graph_ = g;
 
-    GUM_CONNECT((*_graph), onNodeAdded, (*this), UndiGraphListener::whenNodeAdded);
+    GUM_CONNECT((*graph_), onNodeAdded, (*this), UndiGraphListener::whenNodeAdded);
     GUM_CONNECT(
-       (*_graph), onNodeDeleted, (*this), UndiGraphListener::whenNodeDeleted);
-    GUM_CONNECT((*_graph), onEdgeAdded, (*this), UndiGraphListener::whenEdgeAdded);
+       (*graph_), onNodeDeleted, (*this), UndiGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onEdgeAdded, (*this), UndiGraphListener::whenEdgeAdded);
     GUM_CONNECT(
-       (*_graph), onEdgeDeleted, (*this), UndiGraphListener::whenEdgeDeleted);
+       (*graph_), onEdgeDeleted, (*this), UndiGraphListener::whenEdgeDeleted);
   }
 
   UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR(UndiGraphListener); }

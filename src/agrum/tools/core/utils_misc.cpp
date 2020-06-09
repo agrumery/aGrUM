@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Outlined implementation for utilities for aGrUM.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/utils_misc.h>
@@ -37,9 +37,9 @@ namespace std {
 
 namespace gum {
 
-  bool Memcmp(const void* const _in, const void* const _out, unsigned long size) {
-    unsigned char* in = (unsigned char*)_in;
-    unsigned char* out = (unsigned char*)_out;
+  bool Memcmp(const void* const in_, const void* const out_, unsigned long size) {
+    unsigned char* in = (unsigned char*)in_;
+    unsigned char* out = (unsigned char*)out_;
 
     for (unsigned long i = 0; i < size; ++i)
       if (*(in++) != *(out++)) return false;
@@ -47,9 +47,9 @@ namespace gum {
     return true;
   }
 
-  void __atexit() {
+  void atexit__() {
 #ifdef GUM_DEBUG_MODE
-    gum::__debug__::__atexit();
+    gum::__debug__::atexit__();
 #endif
   }
 

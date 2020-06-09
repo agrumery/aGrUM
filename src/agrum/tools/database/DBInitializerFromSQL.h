@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  * @brief The class for initializing DatabaseTable and RawDatabaseTable
  * instances from SQL databases
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
-#ifdef _ODBC
+#ifdef ODBC_
 
 #  ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
 #    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
@@ -233,39 +233,39 @@ namespace gum {
       protected:
       /// returns the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-         _variableNames() final;
+         variableNames_() final;
 
       /// returns the content of the current row using strings
       virtual const std::vector< std::string, ALLOC< std::string > >&
-         _currentStringRow() final;
+         currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow() final;
+      virtual bool nextRow_() final;
 
 
 #    ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       // the string specifying how to connect to the database
-      std::string __connection_string;
+      std::string connection_string__;
 
       // the current query
-      std::string __query;
+      std::string query__;
 
       // the timeout for executing the queries
-      long __timeout;
+      long timeout__;
 
       // the names of the columns in the query result
-      std::vector< std::string, ALLOC< std::string > > __var_names;
+      std::vector< std::string, ALLOC< std::string > > var_names__;
 
       // the nanodbc connection to the database
-      nanodbc::connection __connection;
+      nanodbc::connection connection__;
 
       // the parser used for parsing the query results
-      NanodbcParser< ALLOC > __parser;
+      NanodbcParser< ALLOC > parser__;
 
       /// perform a connection from a connection string
-      void __connect(const std::string& connection_string, long timeout);
+      void connect__(const std::string& connection_string, long timeout);
 
 
 #    endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -280,4 +280,4 @@ namespace gum {
 
 #  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 
-#endif /* _ODBC */
+#endif /* ODBC_ */

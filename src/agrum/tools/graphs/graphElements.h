@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief some utils for topology : NodeId, Edge, Arc and consorts ...
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  *
  * This file provides two classes, namely Edge and Arc
  * which represent respectively undirected and directed edges. The
@@ -315,10 +315,10 @@ namespace gum {
     NodeId n1, n2;
 
     /// modifies the tail of the arc
-    void __setTail(NodeId id);
+    void setTail__(NodeId id);
 
     /// modifies the head of the arc
-    void __setHead(NodeId id);
+    void setHead__(NodeId id);
 
     /// reverses the direction of the arc
     void operator-();

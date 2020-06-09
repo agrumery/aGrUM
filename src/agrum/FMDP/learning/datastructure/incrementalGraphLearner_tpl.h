@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 // =======================================================
 #include <queue>
@@ -62,19 +62,19 @@ namespace gum {
      MultiDimFunctionGraph< double >* target,
      Set< const DiscreteVariable* >   varList,
      const DiscreteVariable*          value) :
-      _target(target),
-      _setOfVars(varList), _value(value) {
+      target_(target),
+      setOfVars_(varList), value_(value) {
     GUM_CONSTRUCTOR(IncrementalGraphLearner);
 
-    for (auto varIter = _setOfVars.cbeginSafe(); varIter != _setOfVars.cendSafe();
+    for (auto varIter = setOfVars_.cbeginSafe(); varIter != setOfVars_.cendSafe();
          ++varIter)
-      _var2Node.insert(*varIter, new LinkedList< NodeId >());
-    _var2Node.insert(_value, new LinkedList< NodeId >());
+      var2Node_.insert(*varIter, new LinkedList< NodeId >());
+    var2Node_.insert(value_, new LinkedList< NodeId >());
 
-    _model.addNode();
-    this->_root = _insertLeafNode(
-       new NodeDatabase< AttributeSelection, isScalar >(&_setOfVars, _value),
-       _value,
+    model_.addNode();
+    this->root_ = insertLeafNode_(
+       new NodeDatabase< AttributeSelection, isScalar >(&setOfVars_, value_),
+       value_,
        new Set< const Observation* >());
   }
 
@@ -85,27 +85,27 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   IncrementalGraphLearner< AttributeSelection,
                            isScalar >::~IncrementalGraphLearner() {
-    for (auto nodeIter = _nodeId2Database.beginSafe();
-         nodeIter != _nodeId2Database.endSafe();
+    for (auto nodeIter = nodeId2Database_.beginSafe();
+         nodeIter != nodeId2Database_.endSafe();
          ++nodeIter)
       delete nodeIter.val();
 
-    for (auto nodeIter = _nodeSonsMap.beginSafe();
-         nodeIter != _nodeSonsMap.endSafe();
+    for (auto nodeIter = nodeSonsMap_.beginSafe();
+         nodeIter != nodeSonsMap_.endSafe();
          ++nodeIter)
       SOA_DEALLOCATE(nodeIter.val(),
-                     sizeof(NodeId) * _nodeVarMap[nodeIter.key()]->domainSize());
+                     sizeof(NodeId) * nodeVarMap_[nodeIter.key()]->domainSize());
 
-    for (auto varIter = _var2Node.beginSafe(); varIter != _var2Node.endSafe();
+    for (auto varIter = var2Node_.beginSafe(); varIter != var2Node_.endSafe();
          ++varIter)
       delete varIter.val();
 
-    for (auto nodeIter = _leafDatabase.beginSafe();
-         nodeIter != _leafDatabase.endSafe();
+    for (auto nodeIter = leafDatabase_.beginSafe();
+         nodeIter != leafDatabase_.endSafe();
          ++nodeIter)
       delete nodeIter.val();
 
-    __clearValue();
+    clearValue__();
 
     GUM_DESTRUCTOR(IncrementalGraphLearner);
   }
@@ -124,24 +124,24 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   void IncrementalGraphLearner< AttributeSelection, isScalar >::addObservation(
      const Observation* newObs) {
-    __assumeValue(newObs);
+    assumeValue__(newObs);
 
     // The we go across the tree
-    NodeId currentNodeId = _root;
+    NodeId currentNodeId = root_;
 
-    while (_nodeSonsMap.exists(currentNodeId)) {
+    while (nodeSonsMap_.exists(currentNodeId)) {
       // On each encountered node, we update the database
-      _updateNodeWithObservation(newObs, currentNodeId);
+      updateNodeWithObservation_(newObs, currentNodeId);
 
       // The we select the next to go throught
       currentNodeId =
-         _nodeSonsMap[currentNodeId]
-                     [__branchObs(newObs, _nodeVarMap[currentNodeId])];
+         nodeSonsMap_[currentNodeId]
+                     [branchObs__(newObs, nodeVarMap_[currentNodeId])];
     }
 
     // On final insertion into the leave we reach
-    _updateNodeWithObservation(newObs, currentNodeId);
-    _leafDatabase[currentNodeId]->insert(newObs);
+    updateNodeWithObservation_(newObs, currentNodeId);
+    leafDatabase_[currentNodeId]->insert(newObs);
   }
 
 
@@ -157,11 +157,11 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   void IncrementalGraphLearner< AttributeSelection, isScalar >::updateVar(
      const DiscreteVariable* var) {
-    Link< NodeId >* nodIter = _var2Node[var]->list();
+    Link< NodeId >* nodIter = var2Node_[var]->list();
     Link< NodeId >* nni = nullptr;
     while (nodIter) {
       nni = nodIter->nextLink();
-      _convertNode2Leaf(nodIter->element());
+      convertNode2Leaf_(nodIter->element());
       nodIter = nni;
     }
   }
@@ -177,18 +177,18 @@ namespace gum {
    */
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void IncrementalGraphLearner< AttributeSelection, isScalar >::_updateNode(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::updateNode_(
      NodeId updatedNode, Set< const DiscreteVariable* >& varsOfInterest) {
     // If this node has no interesting variable, we turn it into a leaf
     if (varsOfInterest.empty()) {
-      _convertNode2Leaf(updatedNode);
+      convertNode2Leaf_(updatedNode);
       return;
     }
 
     // If this node has already one of the best variable intalled as test, we
     // move on
-    if (_nodeVarMap.exists(updatedNode)
-        && varsOfInterest.exists(_nodeVarMap[updatedNode])) {
+    if (nodeVarMap_.exists(updatedNode)
+        && varsOfInterest.exists(nodeVarMap_[updatedNode])) {
       return;
     }
 
@@ -200,7 +200,7 @@ namespace gum {
          ++varIter, basc++)
       ;
 
-    _transpose(updatedNode, *varIter);
+    transpose_(updatedNode, *varIter);
   }
 
 
@@ -208,26 +208,26 @@ namespace gum {
   /// Turns the given node into a leaf if not already so
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void IncrementalGraphLearner< AttributeSelection, isScalar >::_convertNode2Leaf(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::convertNode2Leaf_(
      NodeId currentNodeId) {
-    if (_nodeVarMap[currentNodeId] != _value) {
-      _leafDatabase.insert(currentNodeId, new Set< const Observation* >());
+    if (nodeVarMap_[currentNodeId] != value_) {
+      leafDatabase_.insert(currentNodeId, new Set< const Observation* >());
 
       // Resolving potential sons issue
-      for (Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize();
+      for (Idx modality = 0; modality < nodeVarMap_[currentNodeId]->domainSize();
            ++modality) {
-        NodeId sonId = _nodeSonsMap[currentNodeId][modality];
-        _convertNode2Leaf(sonId);
-        (*_leafDatabase[currentNodeId]) =
-           (*_leafDatabase[currentNodeId]) + *(_leafDatabase[sonId]);
-        _removeNode(sonId);
+        NodeId sonId = nodeSonsMap_[currentNodeId][modality];
+        convertNode2Leaf_(sonId);
+        (*leafDatabase_[currentNodeId]) =
+           (*leafDatabase_[currentNodeId]) + *(leafDatabase_[sonId]);
+        removeNode_(sonId);
       }
 
-      SOA_DEALLOCATE(_nodeSonsMap[currentNodeId],
-                     sizeof(NodeId) * _nodeVarMap[currentNodeId]->domainSize());
-      _nodeSonsMap.erase(currentNodeId);
+      SOA_DEALLOCATE(nodeSonsMap_[currentNodeId],
+                     sizeof(NodeId) * nodeVarMap_[currentNodeId]->domainSize());
+      nodeSonsMap_.erase(currentNodeId);
 
-      _chgNodeBoundVar(currentNodeId, _value);
+      chgNodeBoundVar_(currentNodeId, value_);
     }
   }
 
@@ -237,17 +237,17 @@ namespace gum {
   /// is not present in its subtree
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void IncrementalGraphLearner< AttributeSelection, isScalar >::_transpose(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::transpose_(
      NodeId currentNodeId, const DiscreteVariable* desiredVar) {
     // **************************************************************************************
     // Si le noeud courant contient déjà la variable qu'on souhaite lui amener
     // Il n'y a rien à faire
-    if (_nodeVarMap[currentNodeId] == desiredVar) { return; }
+    if (nodeVarMap_[currentNodeId] == desiredVar) { return; }
 
     // **************************************************************************************
     // Si le noeud courant est terminal,
     // Il faut artificiellement insérer un noeud liant à la variable
-    if (_nodeVarMap[currentNodeId] == _value) {
+    if (nodeVarMap_[currentNodeId] == value_) {
       // We turned this leaf into an internal node.
       // This mean that we'll need to install children leaves for each value of
       // desiredVar
@@ -263,15 +263,15 @@ namespace gum {
             sizeof(Set< const Observation* >*) * desiredVar->domainSize()));
       for (Idx modality = 0; modality < desiredVar->domainSize(); ++modality) {
         dbMap[modality] =
-           new NodeDatabase< AttributeSelection, isScalar >(&_setOfVars, _value);
+           new NodeDatabase< AttributeSelection, isScalar >(&setOfVars_, value_);
         obsetMap[modality] = new Set< const Observation* >();
       }
       for (SetIteratorSafe< const Observation* > obsIter =
-              _leafDatabase[currentNodeId]->beginSafe();
-           _leafDatabase[currentNodeId]->endSafe() != obsIter;
+              leafDatabase_[currentNodeId]->beginSafe();
+           leafDatabase_[currentNodeId]->endSafe() != obsIter;
            ++obsIter) {
-        dbMap[__branchObs(*obsIter, desiredVar)]->addObservation(*obsIter);
-        obsetMap[__branchObs(*obsIter, desiredVar)]->insert(*obsIter);
+        dbMap[branchObs__(*obsIter, desiredVar)]->addObservation(*obsIter);
+        obsetMap[branchObs__(*obsIter, desiredVar)]->insert(*obsIter);
       }
 
       // Then we can install each new leaves (and put in place the sonsMap)
@@ -279,7 +279,7 @@ namespace gum {
          SOA_ALLOCATE(sizeof(NodeId) * desiredVar->domainSize()));
       for (Idx modality = 0; modality < desiredVar->domainSize(); ++modality)
         sonsMap[modality] =
-           _insertLeafNode(dbMap[modality], _value, obsetMap[modality]);
+           insertLeafNode_(dbMap[modality], value_, obsetMap[modality]);
 
       // Some necessary clean up
       SOA_DEALLOCATE(dbMap,
@@ -290,8 +290,8 @@ namespace gum {
 
       // And finally we can turn the node into an internal node associated to
       // desiredVar
-      _chgNodeBoundVar(currentNodeId, desiredVar);
-      _nodeSonsMap.insert(currentNodeId, sonsMap);
+      chgNodeBoundVar_(currentNodeId, desiredVar);
+      nodeSonsMap_.insert(currentNodeId, sonsMap);
 
       return;
     }
@@ -300,13 +300,13 @@ namespace gum {
     // Remains the general case where currentNodeId is an internal node.
 
     // First we ensure that children node use desiredVar as variable
-    for (Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize();
+    for (Idx modality = 0; modality < nodeVarMap_[currentNodeId]->domainSize();
          ++modality)
-      _transpose(_nodeSonsMap[currentNodeId][modality], desiredVar);
+      transpose_(nodeSonsMap_[currentNodeId][modality], desiredVar);
 
     //        Sequence<NodeDatabase<AttributeSelection, isScalar>*>
     //        sonsNodeDatabase =
-    //        _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+    //        nodeId2Database_[currentNodeId]->splitOnVar(desiredVar);
     NodeId* sonsMap = static_cast< NodeId* >(
        SOA_ALLOCATE(sizeof(NodeId) * desiredVar->domainSize()));
 
@@ -314,35 +314,35 @@ namespace gum {
     for (Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize();
          ++desiredVarModality) {
       NodeId* grandSonsMap = static_cast< NodeId* >(
-         SOA_ALLOCATE(sizeof(NodeId) * _nodeVarMap[currentNodeId]->domainSize()));
+         SOA_ALLOCATE(sizeof(NodeId) * nodeVarMap_[currentNodeId]->domainSize()));
       NodeDatabase< AttributeSelection, isScalar >* sonDB =
-         new NodeDatabase< AttributeSelection, isScalar >(&_setOfVars, _value);
+         new NodeDatabase< AttributeSelection, isScalar >(&setOfVars_, value_);
       for (Idx currentVarModality = 0;
-           currentVarModality < _nodeVarMap[currentNodeId]->domainSize();
+           currentVarModality < nodeVarMap_[currentNodeId]->domainSize();
            ++currentVarModality) {
         grandSonsMap[currentVarModality] =
-           _nodeSonsMap[_nodeSonsMap[currentNodeId][currentVarModality]]
+           nodeSonsMap_[nodeSonsMap_[currentNodeId][currentVarModality]]
                        [desiredVarModality];
-        sonDB->operator+=((*_nodeId2Database[grandSonsMap[currentVarModality]]));
+        sonDB->operator+=((*nodeId2Database_[grandSonsMap[currentVarModality]]));
       }
 
       sonsMap[desiredVarModality] =
-         _insertInternalNode(sonDB, _nodeVarMap[currentNodeId], grandSonsMap);
+         insertInternalNode_(sonDB, nodeVarMap_[currentNodeId], grandSonsMap);
     }
 
     // Finally we clean the old remaining nodes
     for (Idx currentVarModality = 0;
-         currentVarModality < _nodeVarMap[currentNodeId]->domainSize();
+         currentVarModality < nodeVarMap_[currentNodeId]->domainSize();
          ++currentVarModality) {
-      _removeNode(_nodeSonsMap[currentNodeId][currentVarModality]);
+      removeNode_(nodeSonsMap_[currentNodeId][currentVarModality]);
     }
 
     // We suppress the old sons map and remap to the new one
-    SOA_DEALLOCATE(_nodeSonsMap[currentNodeId],
-                   sizeof(NodeId) * _nodeVarMap[currentNodeId]->domainSize());
-    _nodeSonsMap[currentNodeId] = sonsMap;
+    SOA_DEALLOCATE(nodeSonsMap_[currentNodeId],
+                   sizeof(NodeId) * nodeVarMap_[currentNodeId]->domainSize());
+    nodeSonsMap_[currentNodeId] = sonsMap;
 
-    _chgNodeBoundVar(currentNodeId, desiredVar);
+    chgNodeBoundVar_(currentNodeId, desiredVar);
   }
 
 
@@ -355,15 +355,15 @@ namespace gum {
    */
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::_insertNode(
+  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::insertNode_(
      NodeDatabase< AttributeSelection, isScalar >* nDB,
      const DiscreteVariable*                       boundVar) {
-    NodeId newNodeId = _model.addNode();
-    _nodeVarMap.insert(newNodeId, boundVar);
-    _nodeId2Database.insert(newNodeId, nDB);
-    _var2Node[boundVar]->addLink(newNodeId);
+    NodeId newNodeId = model_.addNode();
+    nodeVarMap_.insert(newNodeId, boundVar);
+    nodeId2Database_.insert(newNodeId, nDB);
+    var2Node_[boundVar]->addLink(newNodeId);
 
-    _needUpdate = true;
+    needUpdate_ = true;
 
     return newNodeId;
   }
@@ -380,12 +380,12 @@ namespace gum {
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeId
-     IncrementalGraphLearner< AttributeSelection, isScalar >::_insertInternalNode(
+     IncrementalGraphLearner< AttributeSelection, isScalar >::insertInternalNode_(
         NodeDatabase< AttributeSelection, isScalar >* nDB,
         const DiscreteVariable*                       boundVar,
         NodeId*                                       sonsMap) {
-    NodeId newNodeId = this->_insertNode(nDB, boundVar);
-    _nodeSonsMap.insert(newNodeId, sonsMap);
+    NodeId newNodeId = this->insertNode_(nDB, boundVar);
+    nodeSonsMap_.insert(newNodeId, sonsMap);
     return newNodeId;
   }
 
@@ -400,12 +400,12 @@ namespace gum {
    */
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::_insertLeafNode(
+  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::insertLeafNode_(
      NodeDatabase< AttributeSelection, isScalar >* nDB,
      const DiscreteVariable*                       boundVar,
      Set< const Observation* >*                    obsSet) {
-    NodeId newNodeId = this->_insertNode(nDB, boundVar);
-    _leafDatabase.insert(newNodeId, obsSet);
+    NodeId newNodeId = this->insertNode_(nDB, boundVar);
+    leafDatabase_.insert(newNodeId, obsSet);
     return newNodeId;
   }
 
@@ -418,26 +418,26 @@ namespace gum {
    */
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void IncrementalGraphLearner< AttributeSelection, isScalar >::_chgNodeBoundVar(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::chgNodeBoundVar_(
      NodeId currentNodeId, const DiscreteVariable* desiredVar) {
-    if (_nodeVarMap[currentNodeId] == desiredVar) return;
+    if (nodeVarMap_[currentNodeId] == desiredVar) return;
 
-    _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
-    _var2Node[desiredVar]->addLink(currentNodeId);
-    _nodeVarMap[currentNodeId] = desiredVar;
+    var2Node_[nodeVarMap_[currentNodeId]]->searchAndRemoveLink(currentNodeId);
+    var2Node_[desiredVar]->addLink(currentNodeId);
+    nodeVarMap_[currentNodeId] = desiredVar;
 
-    if (_nodeVarMap[currentNodeId] != _value
-        && _leafDatabase.exists(currentNodeId)) {
-      delete _leafDatabase[currentNodeId];
-      _leafDatabase.erase(currentNodeId);
+    if (nodeVarMap_[currentNodeId] != value_
+        && leafDatabase_.exists(currentNodeId)) {
+      delete leafDatabase_[currentNodeId];
+      leafDatabase_.erase(currentNodeId);
     }
 
-    if (_nodeVarMap[currentNodeId] == _value
-        && !_leafDatabase.exists(currentNodeId)) {
-      _leafDatabase.insert(currentNodeId, new Set< const Observation* >());
+    if (nodeVarMap_[currentNodeId] == value_
+        && !leafDatabase_.exists(currentNodeId)) {
+      leafDatabase_.insert(currentNodeId, new Set< const Observation* >());
     }
 
-    _needUpdate = true;
+    needUpdate_ = true;
   }
 
 
@@ -448,31 +448,31 @@ namespace gum {
    */
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void IncrementalGraphLearner< AttributeSelection, isScalar >::_removeNode(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::removeNode_(
      NodeId currentNodeId) {
     // Retriat de l'id
-    _model.eraseNode(currentNodeId);
+    model_.eraseNode(currentNodeId);
 
     // Retrait du vecteur fils
-    if (_nodeSonsMap.exists(currentNodeId)) {
-      SOA_DEALLOCATE(_nodeSonsMap[currentNodeId],
-                     sizeof(NodeId) * _nodeVarMap[currentNodeId]->domainSize());
-      _nodeSonsMap.erase(currentNodeId);
+    if (nodeSonsMap_.exists(currentNodeId)) {
+      SOA_DEALLOCATE(nodeSonsMap_[currentNodeId],
+                     sizeof(NodeId) * nodeVarMap_[currentNodeId]->domainSize());
+      nodeSonsMap_.erase(currentNodeId);
     }
 
-    if (_leafDatabase.exists(currentNodeId)) {
-      delete _leafDatabase[currentNodeId];
-      _leafDatabase.erase(currentNodeId);
+    if (leafDatabase_.exists(currentNodeId)) {
+      delete leafDatabase_[currentNodeId];
+      leafDatabase_.erase(currentNodeId);
     }
 
     // Retrait de la variable
-    _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
-    _nodeVarMap.erase(currentNodeId);
+    var2Node_[nodeVarMap_[currentNodeId]]->searchAndRemoveLink(currentNodeId);
+    nodeVarMap_.erase(currentNodeId);
 
     // Retrait du NodeDatabase
-    delete _nodeId2Database[currentNodeId];
-    _nodeId2Database.erase(currentNodeId);
+    delete nodeId2Database_[currentNodeId];
+    nodeId2Database_.erase(currentNodeId);
 
-    _needUpdate = true;
+    needUpdate_ = true;
   }
 }   // namespace gum

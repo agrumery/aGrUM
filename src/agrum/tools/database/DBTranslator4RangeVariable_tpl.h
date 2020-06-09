@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief The databases' cell translators for range variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <utility>
@@ -53,18 +53,18 @@ namespace gum {
                               true,
                               max_dico_entries,
                               alloc),
-        __variable("var", "", 1, 0) {
+        variable__("var", "", 1, 0) {
       // assign to each integer missing symbol a Boolean indicating that
       // we did not translate it yet. If we encounter a non integer missing
       // symbol, we record it because it cannot be compomised by updating the
       // domain of the range variable
       bool non_int_symbol_found = false;
-      for (const auto& symbol: this->_missing_symbols) {
+      for (const auto& symbol: this->missing_symbols_) {
         if (DBCell::isInteger(symbol)) {
-          __status_int_missing_symbols.insert(symbol, false);
+          status_int_missing_symbols__.insert(symbol, false);
         } else if (!non_int_symbol_found) {
           non_int_symbol_found = true;
-          __nonint_missing_symbol = symbol;
+          nonint_missing_symbol__ = symbol;
         }
       }
 
@@ -79,7 +79,7 @@ namespace gum {
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(
            DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
-        __variable("var", "", 1, 0) {
+        variable__("var", "", 1, 0) {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
 
@@ -98,7 +98,7 @@ namespace gum {
                               editable_dictionary,
                               max_dico_entries,
                               alloc),
-        __variable(var) {
+        variable__(var) {
       // get the bounds of the range variable
       const long lower_bound = var.minVal();
       const long upper_bound = var.maxVal();
@@ -106,7 +106,7 @@ namespace gum {
       // check that the variable has not too many entries for the dictionary
       if ((upper_bound >= lower_bound)
           && (std::size_t(upper_bound - lower_bound + 1)
-              > this->_max_dico_entries)) {
+              > this->max_dico_entries_)) {
         GUM_ERROR(SizeError,
                   "the dictionary induced by the variable is too large");
       }
@@ -115,13 +115,13 @@ namespace gum {
       // than or equal to its lower bound, remove all the missing symbols
       // corresponding to a number between lower_bound and upper_bound
       if (lower_bound <= upper_bound) {
-        for (auto iter = this->_missing_symbols.beginSafe();
-             iter != this->_missing_symbols.endSafe();
+        for (auto iter = this->missing_symbols_.beginSafe();
+             iter != this->missing_symbols_.endSafe();
              ++iter) {
           if (DBCell::isInteger(*iter)) {
             const long missing_val = std::stol(*iter);
             if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
-              this->_missing_symbols.erase(iter);
+              this->missing_symbols_.erase(iter);
             }
           }
         }
@@ -131,7 +131,7 @@ namespace gum {
       std::size_t size = 0;
       for (const auto& label: var.labels()) {
         // insert the label into the back_dictionary
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
@@ -140,12 +140,12 @@ namespace gum {
       // we record it because it cannot be compomised by updating the domain
       // of the range variable. This will be useful for back translations
       bool non_int_symbol_found = false;
-      for (const auto& symbol: this->_missing_symbols) {
+      for (const auto& symbol: this->missing_symbols_) {
         if (DBCell::isInteger(symbol)) {
-          __status_int_missing_symbols.insert(symbol, false);
+          status_int_missing_symbols__.insert(symbol, false);
         } else if (!non_int_symbol_found) {
           non_int_symbol_found = true;
-          __nonint_missing_symbol = symbol;
+          nonint_missing_symbol__ = symbol;
         }
       }
 
@@ -164,7 +164,7 @@ namespace gum {
                               editable_dictionary,
                               max_dico_entries,
                               alloc),
-        __variable(var) {
+        variable__(var) {
       // get the bounds of the range variable
       const long lower_bound = var.minVal();
       const long upper_bound = var.maxVal();
@@ -172,7 +172,7 @@ namespace gum {
       // check that the variable has not too many entries for the dictionary
       if ((upper_bound >= lower_bound)
           && (std::size_t(upper_bound - lower_bound + 1)
-              > this->_max_dico_entries)) {
+              > this->max_dico_entries_)) {
         GUM_ERROR(SizeError,
                   "the dictionary induced by the variable is too large");
       }
@@ -181,7 +181,7 @@ namespace gum {
       std::size_t size = 0;
       for (const auto& label: var.labels()) {
         // insert the label into the back_dictionary
-        this->_back_dico.insert(size, label);
+        this->back_dico_.insert(size, label);
         ++size;
       }
 
@@ -195,10 +195,10 @@ namespace gum {
        const DBTranslator4RangeVariable< ALLOC >&                          from,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(from, alloc),
-        __variable(from.__variable),
-        __status_int_missing_symbols(from.__status_int_missing_symbols),
-        __translated_int_missing_symbols(from.__translated_int_missing_symbols),
-        __nonint_missing_symbol(from.__nonint_missing_symbol) {
+        variable__(from.variable__),
+        status_int_missing_symbols__(from.status_int_missing_symbols__),
+        translated_int_missing_symbols__(from.translated_int_missing_symbols__),
+        nonint_missing_symbol__(from.nonint_missing_symbol__) {
       GUM_CONS_CPY(DBTranslator4RangeVariable);
     }
 
@@ -216,11 +216,11 @@ namespace gum {
        DBTranslator4RangeVariable< ALLOC >&&                               from,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(std::move(from), alloc),
-        __variable(std::move(from.__variable)),
-        __status_int_missing_symbols(std::move(from.__status_int_missing_symbols)),
-        __translated_int_missing_symbols(
-           std::move(from.__translated_int_missing_symbols)),
-        __nonint_missing_symbol(std::move(from.__nonint_missing_symbol)) {
+        variable__(std::move(from.variable__)),
+        status_int_missing_symbols__(std::move(from.status_int_missing_symbols__)),
+        translated_int_missing_symbols__(
+           std::move(from.translated_int_missing_symbols__)),
+        nonint_missing_symbol__(std::move(from.nonint_missing_symbol__)) {
       GUM_CONS_MOV(DBTranslator4RangeVariable);
     }
 
@@ -273,10 +273,10 @@ namespace gum {
           const DBTranslator4RangeVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        __variable = from.__variable;
-        __status_int_missing_symbols = from.__status_int_missing_symbols;
-        __translated_int_missing_symbols = from.__translated_int_missing_symbols;
-        __nonint_missing_symbol = from.__nonint_missing_symbol;
+        variable__ = from.variable__;
+        status_int_missing_symbols__ = from.status_int_missing_symbols__;
+        translated_int_missing_symbols__ = from.translated_int_missing_symbols__;
+        nonint_missing_symbol__ = from.nonint_missing_symbol__;
       }
 
       return *this;
@@ -290,12 +290,12 @@ namespace gum {
           DBTranslator4RangeVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        __variable = std::move(from.__variable);
-        __status_int_missing_symbols =
-           std::move(from.__status_int_missing_symbols);
-        __translated_int_missing_symbols =
-           std::move(from.__translated_int_missing_symbols);
-        __nonint_missing_symbol = std::move(from.__nonint_missing_symbol);
+        variable__ = std::move(from.variable__);
+        status_int_missing_symbols__ =
+           std::move(from.status_int_missing_symbols__);
+        translated_int_missing_symbols__ =
+           std::move(from.translated_int_missing_symbols__);
+        nonint_missing_symbol__ = std::move(from.nonint_missing_symbol__);
       }
 
       return *this;
@@ -311,15 +311,15 @@ namespace gum {
       // Finally, if this is still not a missing value and, if enabled, try
       // to add str as a new label
       try {
-        return DBTranslatedValue{this->_back_dico.first(str)};
+        return DBTranslatedValue{this->back_dico_.first(str)};
       } catch (gum::Exception&) {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
           try {
-            const bool is_str_translated = __status_int_missing_symbols[str];
+            const bool is_str_translated = status_int_missing_symbols__[str];
             if (!is_str_translated) {
-              __status_int_missing_symbols[str] = true;
-              __translated_int_missing_symbols.insert(std::stol(str));
+              status_int_missing_symbols__[str] = true;
+              translated_int_missing_symbols__.insert(std::stol(str));
             }
           } catch (gum::NotFound&) {}
           return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
@@ -342,7 +342,7 @@ namespace gum {
 
         // if str corresponds to a missing symbol that we already
         // translated, raise an exception
-        if (__translated_int_missing_symbols.exists(new_value)) {
+        if (translated_int_missing_symbols__.exists(new_value)) {
           GUM_ERROR(
              OperationNotAllowed,
              "String \""
@@ -357,15 +357,15 @@ namespace gum {
         // there is no need to check whether the new range would contain an
         // already translated missing symbol because this was already tested
         // in the above test.
-        if (__variable.minVal() > __variable.maxVal()) {
-          if (this->_max_dico_entries == 0) {
+        if (variable__.minVal() > variable__.maxVal()) {
+          if (this->max_dico_entries_ == 0) {
             GUM_ERROR(SizeError,
                       "String \"" << str << "\" cannot be translated because "
                                   << "the dictionary is already full");
           }
-          __variable.setMinVal(new_value);
-          __variable.setMaxVal(new_value);
-          this->_back_dico.insert(std::size_t(0), str);
+          variable__.setMinVal(new_value);
+          variable__.setMaxVal(new_value);
+          this->back_dico_.insert(std::size_t(0), str);
           return DBTranslatedValue{std::size_t(0)};
         }
 
@@ -373,20 +373,20 @@ namespace gum {
         // lower bound or the upper bound of the range variable, unless
         // a missing symbol lies within the new bounds and we have already
         // translated it.
-        const long lower_bound = __variable.minVal();
-        const long upper_bound = __variable.maxVal();
+        const long lower_bound = variable__.minVal();
+        const long upper_bound = variable__.maxVal();
 
         std::size_t size = upper_bound - lower_bound + 1;
 
-        if (new_value < __variable.minVal()) {
-          if (std::size_t(upper_bound - new_value + 1) > this->_max_dico_entries)
+        if (new_value < variable__.minVal()) {
+          if (std::size_t(upper_bound - new_value + 1) > this->max_dico_entries_)
             GUM_ERROR(SizeError,
                       "String \"" << str << "\" cannot be translated because "
                                   << "the dictionary is already full");
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
-          for (const auto& missing: __translated_int_missing_symbols) {
+          for (const auto& missing: translated_int_missing_symbols__) {
             if ((missing >= new_value) && (missing <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
@@ -398,36 +398,36 @@ namespace gum {
 
           // remove all the missing symbols that were not translated yet and
           // that lie within the new bounds of the range variable
-          for (auto iter = __status_int_missing_symbols.beginSafe();
-               iter != __status_int_missing_symbols.endSafe();
+          for (auto iter = status_int_missing_symbols__.beginSafe();
+               iter != status_int_missing_symbols__.endSafe();
                ++iter) {
             if (iter.val() == false) {
               const long missing = std::stol(iter.key());
               if ((missing >= new_value) && (missing <= upper_bound)) {
-                this->_missing_symbols.erase(iter.key());
-                __status_int_missing_symbols.erase(iter);
+                this->missing_symbols_.erase(iter.key());
+                status_int_missing_symbols__.erase(iter);
               }
             }
           }
 
           // update the range and the back dictionary
           const std::size_t index = size;
-          for (long i = new_value; i < __variable.minVal(); ++i) {
-            this->_back_dico.insert(size, std::to_string(i));
+          for (long i = new_value; i < variable__.minVal(); ++i) {
+            this->back_dico_.insert(size, std::to_string(i));
             ++size;
           }
-          __variable.setMinVal(new_value);
+          variable__.setMinVal(new_value);
 
           return DBTranslatedValue{index};
         } else {
-          if (std::size_t(new_value - lower_bound + 1) > this->_max_dico_entries)
+          if (std::size_t(new_value - lower_bound + 1) > this->max_dico_entries_)
             GUM_ERROR(SizeError,
                       "String \"" << str << "\" cannot be translated because "
                                   << "the dictionary is already full");
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
-          for (const auto& missing: __translated_int_missing_symbols) {
+          for (const auto& missing: translated_int_missing_symbols__) {
             if ((missing <= new_value) && (missing >= lower_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
@@ -439,24 +439,24 @@ namespace gum {
 
           // remove all the missing symbols that were not translated yet and
           // that lie within the new bounds of the range variable
-          for (auto iter = __status_int_missing_symbols.beginSafe();
-               iter != __status_int_missing_symbols.endSafe();
+          for (auto iter = status_int_missing_symbols__.beginSafe();
+               iter != status_int_missing_symbols__.endSafe();
                ++iter) {
             if (iter.val() == false) {
               const long missing = std::stol(iter.key());
               if ((missing <= new_value) && (missing >= lower_bound)) {
-                this->_missing_symbols.erase(iter.key());
-                __status_int_missing_symbols.erase(iter);
+                this->missing_symbols_.erase(iter.key());
+                status_int_missing_symbols__.erase(iter);
               }
             }
           }
 
           // update the range and the back dictionary
-          for (long i = __variable.maxVal() + 1; i <= new_value; ++i) {
-            this->_back_dico.insert(size, std::to_string(i));
+          for (long i = variable__.maxVal() + 1; i <= new_value; ++i) {
+            this->back_dico_.insert(size, std::to_string(i));
             ++size;
           }
-          __variable.setMaxVal(new_value);
+          variable__.setMaxVal(new_value);
 
           return DBTranslatedValue{size - std::size_t(1)};
         }
@@ -469,14 +469,14 @@ namespace gum {
     INLINE std::string DBTranslator4RangeVariable< ALLOC >::translateBack(
        const DBTranslatedValue translated_val) const {
       try {
-        return this->_back_dico.second(translated_val.discr_val);
+        return this->back_dico_.second(translated_val.discr_val);
       } catch (Exception&) {
         // check if this is a missing value
         if (translated_val.discr_val
             == std::numeric_limits< std::size_t >::max()) {
-          if (!__nonint_missing_symbol.empty()) return __nonint_missing_symbol;
-          if (this->_missing_symbols.empty())
-            return *(this->_missing_symbols.begin());
+          if (!nonint_missing_symbol__.empty()) return nonint_missing_symbol__;
+          if (this->missing_symbols_.empty())
+            return *(this->missing_symbols_.begin());
         }
 
         GUM_ERROR(UnknownLabelInDatabase,
@@ -490,11 +490,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     bool DBTranslator4RangeVariable< ALLOC >::needsReordering() const {
       // if the variable contains only numbers, they should be increasing
-      const auto& labels = __variable.labels();
+      const auto& labels = variable__.labels();
       std::size_t last_number = std::numeric_limits< std::size_t >::lowest();
       std::size_t number;
       for (const auto& label: labels) {
-        number = this->_back_dico.first(label);
+        number = this->back_dico_.first(label);
         if (number < last_number) return true;
         last_number = number;
       }
@@ -510,7 +510,7 @@ namespace gum {
                       ALLOC< std::pair< std::size_t, std::size_t > > >
            DBTranslator4RangeVariable< ALLOC >::reorder() {
       // assign to each label the index it had before reordering
-      const auto&       labels = __variable.labels();
+      const auto&       labels = variable__.labels();
       const std::size_t size = labels.size();
       std::vector< std::pair< std::size_t, std::string >,
                    ALLOC< std::pair< std::size_t, std::string > > >
@@ -518,7 +518,7 @@ namespace gum {
       xlabels.reserve(size);
       bool modifications = false;
       for (std::size_t i = std::size_t(0); i < size; ++i) {
-        const std::size_t old_val = this->_back_dico.first(labels[i]);
+        const std::size_t old_val = this->back_dico_.first(labels[i]);
         xlabels.push_back(std::make_pair(old_val, labels[i]));
         if (old_val != i) modifications = true;
       }
@@ -533,14 +533,14 @@ namespace gum {
 
       // create the hashTable corresponding to the mapping from the old
       // indices to the new one
-      this->_back_dico.clear();
+      this->back_dico_.clear();
       HashTable< std::size_t,
                  std::size_t,
                  ALLOC< std::pair< std::size_t, std::size_t > > >
          mapping((Size)size);
       for (std::size_t i = std::size_t(0); i < size; ++i) {
         mapping.insert(xlabels[i].first, i);
-        this->_back_dico.insert(i, xlabels[i].second);
+        this->back_dico_.insert(i, xlabels[i].second);
       }
 
       return mapping;
@@ -550,7 +550,7 @@ namespace gum {
     /// returns the domain size of a variable corresponding to the translations
     template < template < typename > class ALLOC >
     INLINE std::size_t DBTranslator4RangeVariable< ALLOC >::domainSize() const {
-      return __variable.domainSize();
+      return variable__.domainSize();
     }
 
 
@@ -558,7 +558,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const RangeVariable*
                  DBTranslator4RangeVariable< ALLOC >::variable() const {
-      return &__variable;
+      return &variable__;
     }
 
 

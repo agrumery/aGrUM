@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ between 0 and 100
  * @endcode
  *
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_BIF_XML_ID_READER_H
 #define GUM_BIF_XML_ID_READER_H
@@ -133,24 +133,24 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void __parsingVariables(ticpp::Element* parentNetwork);
+    void parsingVariables__(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void __fillingDiagram(ticpp::Element* parentNetwork);
+    void fillingDiagram__(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the influence diagram in which will be load the content of
      * the
      * xml filePath
      */
-    InfluenceDiagram< GUM_SCALAR >* __infdiag;
+    InfluenceDiagram< GUM_SCALAR >* infdiag__;
 
     /**
      * the path to the xml filePath
      */
-    std::string __filePath;
+    std::string filePath__;
   };
 
 } /* namespace gum */

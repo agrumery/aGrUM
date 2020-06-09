@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the States Counter class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -89,36 +89,36 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId root() const { return __counter->root(); }
+    NodeId root() const { return counter__->root(); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal(NodeId ni) const { return __counter->isTerminalNode(ni); }
+    bool isTerminal(NodeId ni) const { return counter__->isTerminalNode(ni); }
 
     // ==========================================================================
     ///
     // ==========================================================================
     const DiscreteVariable* nodeVar(NodeId ni) const {
-      return __counter->node(ni)->nodeVar();
+      return counter__->node(ni)->nodeVar();
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
     NodeId nodeSon(NodeId ni, Idx modality) const {
-      return __counter->node(ni)->son(modality);
+      return counter__->node(ni)->son(modality);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation(NodeId ni) const { return __counter->nodeValue(ni); }
+    Idx nodeNbObservation(NodeId ni) const { return counter__->nodeValue(ni); }
 
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-              __counter->variablesSequence().beginSafe();
-           varIter != __counter->variablesSequence().endSafe();
+              counter__->variablesSequence().beginSafe();
+           varIter != counter__->variablesSequence().endSafe();
            ++varIter)
         ret->add(**varIter);
     }
@@ -127,11 +127,11 @@ namespace gum {
     /// @}
 
     private:
-    void __incState(const Instantiation&, NodeId, Idx, Size);
+    void incState__(const Instantiation&, NodeId, Idx, Size);
 
-    MultiDimFunctionGraph< Size >* __counter;
+    MultiDimFunctionGraph< Size >* counter__;
 
-    Set< Instantiation* > __visitedStates;
+    Set< Instantiation* > visitedStates__;
   };
 } /* namespace gum */
 

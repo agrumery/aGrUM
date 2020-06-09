@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ namespace gum_tests {
           gum::BayesNet< double > bn;
           gen.generateBN(bn);
 
-          gum::BayesNet< double > bn2;
+          gum::BayesNet< double >            bn2;
           gum::MCBayesNetGenerator< double > gen2(15, 20, 25, 15);
           gen2.generateBN(bn2);
           GUM_UNUSED(bn);

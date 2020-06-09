@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  *   - onStop(std::string message)
  * @see gum::ApproximationListener for dedicated listener.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_APPROXIMATION_SCHEME_H
 #define GUM_APPROXIMATION_SCHEME_H
@@ -362,62 +362,62 @@ namespace gum {
      * @brief Stop the scheme given a new state.
      * @param new_state The scheme new state.
      */
-    void _stopScheme(ApproximationSchemeSTATE new_state);
+    void stopScheme_(ApproximationSchemeSTATE new_state);
 
     protected:
     /// Current epsilon.
-    double _current_epsilon;
+    double current_epsilon_;
 
     /// Last epsilon value.
-    double _last_epsilon;
+    double last_epsilon_;
 
     /// Current rate.
-    double _current_rate;
+    double current_rate_;
 
     /// The current step.
-    Size _current_step;
+    Size current_step_;
 
     /// The timer.
-    Timer _timer;
+    Timer timer_;
 
     /// The current state.
-    ApproximationSchemeSTATE _current_state;
+    ApproximationSchemeSTATE current_state_;
 
     /// The scheme history, used only if verbosity == true.
-    std::vector< double > _history;
+    std::vector< double > history_;
 
     /// Threshold for convergence.
-    double _eps;
+    double eps_;
 
     /// If true, the threshold convergence is enabled.
-    bool _enabled_eps;
+    bool enabled_eps_;
 
     /// Threshold for the epsilon rate.
-    double _min_rate_eps;
+    double min_rate_eps_;
 
     /// If true, the minimal threshold for epsilon rate is enabled.
-    bool _enabled_min_rate_eps;
+    bool enabled_min_rate_eps_;
 
     /// The timeout.
-    double _max_time;
+    double max_time_;
 
     /// If true, the timeout is enabled.
-    bool _enabled_max_time;
+    bool enabled_max_time_;
 
     /// The maximum iterations.
-    Size _max_iter;
+    Size max_iter_;
 
     /// If true, the maximum iterations stopping criterion is enabled.
-    bool _enabled_max_iter;
+    bool enabled_max_iter_;
 
     /// Number of iterations before checking stopping criteria.
-    Size _burn_in;
+    Size burn_in_;
 
     /// Checking criteria frequency.
-    Size _period_size;
+    Size period_size_;
 
     /// If true, verbosity is enabled.
-    bool _verbosity;
+    bool verbosity_;
   };
 }   // namespace gum
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -35,7 +35,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename Score< ALLOC >::allocator_type
        Score< ALLOC >::getAllocator() const {
-      return _counter.getAllocator();
+      return counter_.getAllocator();
     }
 
 
@@ -49,8 +49,8 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                       nodeId2columns,
        const typename Score< ALLOC >::allocator_type& alloc) :
-        _apriori(apriori.clone(alloc)),
-        _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
+        apriori_(apriori.clone(alloc)),
+        counter_(parser, ranges, nodeId2columns, alloc), cache_(alloc) {
       GUM_CONSTRUCTOR(Score);
     }
 
@@ -63,8 +63,8 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                       nodeId2columns,
        const typename Score< ALLOC >::allocator_type& alloc) :
-        _apriori(apriori.clone(alloc)),
-        _counter(parser, nodeId2columns, alloc), _cache(alloc) {
+        apriori_(apriori.clone(alloc)),
+        counter_(parser, nodeId2columns, alloc), cache_(alloc) {
       GUM_CONSTRUCTOR(Score);
     }
 
@@ -74,9 +74,9 @@ namespace gum {
     INLINE Score< ALLOC >::Score(
        const Score< ALLOC >&                          from,
        const typename Score< ALLOC >::allocator_type& alloc) :
-        _apriori(from._apriori->clone(alloc)),
-        _counter(from._counter, alloc), _cache(from._cache, alloc),
-        _use_cache(from._use_cache) {
+        apriori_(from.apriori_->clone(alloc)),
+        counter_(from.counter_, alloc), cache_(from.cache_, alloc),
+        use_cache_(from.use_cache_) {
       GUM_CONS_CPY(Score);
     }
 
@@ -92,10 +92,10 @@ namespace gum {
     INLINE Score< ALLOC >::Score(
        Score< ALLOC >&&                               from,
        const typename Score< ALLOC >::allocator_type& alloc) :
-        _apriori(from._apriori),
-        _counter(std::move(from._counter), alloc),
-        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache) {
-      from._apriori = nullptr;
+        apriori_(from.apriori_),
+        counter_(std::move(from.counter_), alloc),
+        cache_(std::move(from.cache_), alloc), use_cache_(from.use_cache_) {
+      from.apriori_ = nullptr;
       GUM_CONS_MOV(Score);
     }
 
@@ -109,10 +109,10 @@ namespace gum {
     /// destructor
     template < template < typename > class ALLOC >
     INLINE Score< ALLOC >::~Score() {
-      if (_apriori != nullptr) {
+      if (apriori_ != nullptr) {
         ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
-        allocator.destroy(_apriori);
-        allocator.deallocate(_apriori, 1);
+        allocator.destroy(apriori_);
+        allocator.deallocate(apriori_, 1);
       }
       GUM_DESTRUCTOR(Score);
     }
@@ -122,21 +122,21 @@ namespace gum {
     template < template < typename > class ALLOC >
     Score< ALLOC >& Score< ALLOC >::operator=(const Score< ALLOC >& from) {
       if (this != &from) {
-        Apriori< ALLOC >*      new_apriori = from._apriori->clone();
-        RecordCounter< ALLOC > new_counter = from._counter;
-        ScoringCache< ALLOC >  new_cache = from._cache;
+        Apriori< ALLOC >*      new_apriori = from.apriori_->clone();
+        RecordCounter< ALLOC > new_counter = from.counter_;
+        ScoringCache< ALLOC >  new_cache = from.cache_;
 
-        if (_apriori != nullptr) {
+        if (apriori_ != nullptr) {
           ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
-          allocator.destroy(_apriori);
-          allocator.deallocate(_apriori, 1);
+          allocator.destroy(apriori_);
+          allocator.deallocate(apriori_, 1);
         }
 
-        _apriori = new_apriori;
-        _counter = std::move(new_counter);
-        _cache = std::move(new_cache);
+        apriori_ = new_apriori;
+        counter_ = std::move(new_counter);
+        cache_ = std::move(new_cache);
 
-        _use_cache = from._use_cache;
+        use_cache_ = from.use_cache_;
       }
       return *this;
     }
@@ -146,11 +146,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     Score< ALLOC >& Score< ALLOC >::operator=(Score< ALLOC >&& from) {
       if (this != &from) {
-        std::swap(_apriori, from._apriori);
+        std::swap(apriori_, from.apriori_);
 
-        _counter = std::move(from._counter);
-        _cache = std::move(from._cache);
-        _use_cache = from._use_cache;
+        counter_ = std::move(from.counter_);
+        cache_ = std::move(from.cache_);
+        use_cache_ = from.use_cache_;
       }
       return *this;
     }
@@ -159,14 +159,14 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::setMaxNbThreads(std::size_t nb) const {
-      _counter.setMaxNbThreads(nb);
+      counter_.setMaxNbThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
     INLINE std::size_t Score< ALLOC >::nbThreads() const {
-      return _counter.nbThreads();
+      return counter_.nbThreads();
     }
 
 
@@ -174,14 +174,14 @@ namespace gum {
      * multithreading context */
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
-      _counter.setMinNbRowsPerThread(nb);
+      counter_.setMinNbRowsPerThread(nb);
     }
 
 
     /// returns the minimum of rows that each thread should process
     template < template < typename > class ALLOC >
     INLINE std::size_t Score< ALLOC >::minNbRowsPerThread() const {
-      return _counter.minNbRowsPerThread();
+      return counter_.minNbRowsPerThread();
     }
 
 
@@ -201,7 +201,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
-      _counter.setRanges(new_ranges);
+      counter_.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
 
@@ -212,7 +212,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
-      _counter.clearRanges();
+      counter_.clearRanges();
       if (old_ranges != ranges()) clear();
     }
 
@@ -222,23 +222,23 @@ namespace gum {
     INLINE const std::vector< std::pair< std::size_t, std::size_t >,
                               ALLOC< std::pair< std::size_t, std::size_t > > >&
                  Score< ALLOC >::ranges() const {
-      return _counter.ranges();
+      return counter_.ranges();
     }
 
 
     /// returns the score of a single node
     template < template < typename > class ALLOC >
     INLINE double Score< ALLOC >::score(const NodeId var) {
-      IdCondSet< ALLOC > idset(var, _empty_ids, true, this->getAllocator());
-      if (_use_cache) {
+      IdCondSet< ALLOC > idset(var, empty_ids_, true, this->getAllocator());
+      if (use_cache_) {
         try {
-          return _cache.score(idset);
+          return cache_.score(idset);
         } catch (NotFound&) {}
-        double the_score = _score(idset);
-        _cache.insert(std::move(idset), the_score);
+        double the_score = score_(idset);
+        cache_.insert(std::move(idset), the_score);
         return the_score;
       } else {
-        return _score(std::move(idset));
+        return score_(std::move(idset));
       }
     }
 
@@ -251,15 +251,15 @@ namespace gum {
     INLINE double Score< ALLOC >::score(
        const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
       IdCondSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
-      if (_use_cache) {
+      if (use_cache_) {
         try {
-          return _cache.score(idset);
+          return cache_.score(idset);
         } catch (NotFound&) {}
-        double the_score = _score(idset);
-        _cache.insert(std::move(idset), the_score);
+        double the_score = score_(idset);
+        cache_.insert(std::move(idset), the_score);
         return the_score;
       } else {
-        return _score(idset);
+        return score_(idset);
       }
     }
 
@@ -267,29 +267,29 @@ namespace gum {
     /// clears all the data structures from memory
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::clear() {
-      _counter.clear();
-      _cache.clear();
+      counter_.clear();
+      cache_.clear();
     }
 
 
     /// clears the current cache (clear nodesets as well)
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::clearCache() {
-      _cache.clear();
+      cache_.clear();
     }
 
 
     /// turn on/off the use of a cache of the previously computed score
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::useCache(const bool on_off) {
-      _use_cache = on_off;
+      use_cache_ = on_off;
     }
 
 
     /// indicates whether the score uses a cache
     template < template < typename > class ALLOC >
     INLINE bool Score< ALLOC >::isUsingCache() const {
-      return _use_cache;
+      return use_cache_;
     }
 
 
@@ -297,14 +297,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                  Score< ALLOC >::nodeId2Columns() const {
-      return _counter.nodeId2Columns();
+      return counter_.nodeId2Columns();
     }
 
 
     /// return the database used by the score
     template < template < typename > class ALLOC >
     INLINE const DatabaseTable< ALLOC >& Score< ALLOC >::database() const {
-      return _counter.database();
+      return counter_.database();
     }
 
     /// returns a counting vector where variables are marginalized from N_xyz
@@ -313,13 +313,13 @@ namespace gum {
      * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
      */
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > > Score< ALLOC >::_marginalize(
+    std::vector< double, ALLOC< double > > Score< ALLOC >::marginalize_(
        const NodeId                                  X_id,
        const std::vector< double, ALLOC< double > >& N_xyz) const {
       // compute the domain sizes of the varible on the left hand side
       // of the conditioning bar
-      const auto&       nodeId2cols = this->_counter.nodeId2Columns();
-      const auto&       database = this->_counter.database();
+      const auto&       nodeId2cols = this->counter_.nodeId2Columns();
+      const auto&       database = this->counter_.database();
       const std::size_t X_size = database.domainSize(
          nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
 

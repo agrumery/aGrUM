@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@
  * ALWAYS_INLINE : the compiler has to inline
  * NO_INLINE : the compiler should not inline
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_INLINE_H
 #define GUM_INLINE_H
@@ -45,11 +45,11 @@
 
 #    define INLINE inline
 
-// ENFORCED_INLINE is a stronger version of the inline, using __forceinline on
+// ENFORCED_INLINE is a stronger version of the inline, using forceinline__ on
 // MSVC, but it still doesn't use GCC's always_inline. This is useful in
 // (common) situations where MSVC needs forceinline but GCC is still doing fine
 // with just inline.  (from eigen library)
-#    if (defined _MSC_VER) || (defined __INTEL_COMPILER)
+#    if (defined _MSC_VER) || (defined INTEL_COMPILER__)
 #      define ENFORCED_INLINE __forceinline
 #    else
 #      define ENFORCED_INLINE inline
@@ -73,7 +73,7 @@
 #    if (defined __GNUC__)
 #      define NO_INLINE __attribute__((noinline))
 #    elif (defined _MSC_VER)
-#      define NEVER_INLINE __declspec(noinline)
+#      define NEVER_INLINE declspec__(noinline)
 #    else
 #      define NEVER_INLINE
 #    endif

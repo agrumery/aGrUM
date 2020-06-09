@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class ScoreLog2LikelihoodTestSuite: public CxxTest::TestSuite {
     private:
-    double __score(const std::vector< double >& N_ijk,
+    double score__(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
       double N = 0;
@@ -51,7 +51,7 @@ namespace gum_tests {
     }
 
 
-    bool __equal(const double x, const double y) const {
+    bool equal__(const double x, const double y) const {
       double dev = x >= y ? (x - y) / x : (y - x) / y;
       if (dev < 0) dev = -dev;
       return dev <= 1e-5;
@@ -126,20 +126,20 @@ namespace gum_tests {
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = __score(N_ijk_1, N_ij_1);
-      TS_ASSERT(__equal(xscore_1, score.score(node0)));
+      double                xscore_1 = score__(N_ijk_1, N_ij_1);
+      TS_ASSERT(equal__(xscore_1, score.score(node0)));
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{201, 76, 1, 1001, 1, 76, 1, 51, 1};
       std::vector< double > N_ij_2{278, 1078, 53};
-      double                xscore_2 = __score(N_ijk_2, N_ij_2);
-      TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
+      double                xscore_2 = score__(N_ijk_2, N_ij_2);
+      TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{1, 76, 1, 201, 51, 76, 1001, 1, 1};
       std::vector< double > N_ij_3{78, 328, 1003};
-      double                xscore_3 = __score(N_ijk_3, N_ij_3);
-      TS_ASSERT(__equal(xscore_3, score.score(node0, cond3)));
+      double                xscore_3 = score__(N_ijk_3, N_ij_3);
+      TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
 
 
       gum::learning::ScoreLog2Likelihood<> score2(score);
@@ -147,45 +147,45 @@ namespace gum_tests {
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
-      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score2.score(node0)));
+      TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
 
       gum::learning::ScoreLog2Likelihood<> score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score3.score(node0)));
-      TS_ASSERT(__equal(xscore_2, score3.score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score3.score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score3.score(node0)));
+      TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
 
       gum::learning::ScoreLog2Likelihood<>* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       delete score4;
     }
@@ -269,21 +269,21 @@ namespace gum_tests {
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = __score(N_ijk_1, N_ij_1);
-      TS_ASSERT(__equal(xscore_1, score.score(node2)));
+      double                xscore_1 = score__(N_ijk_1, N_ij_1);
+      TS_ASSERT(equal__(xscore_1, score.score(node2)));
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{201, 76, 1, 1001, 1, 76, 1, 51, 1};
       std::vector< double > N_ij_2{278, 1078, 53};
-      double                xscore_2 = __score(N_ijk_2, N_ij_2);
-      TS_ASSERT(__equal(xscore_2, score.score(node2, cond2)));
+      double                xscore_2 = score__(N_ijk_2, N_ij_2);
+      TS_ASSERT(equal__(xscore_2, score.score(node2, cond2)));
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{1, 76, 1, 201, 51, 76, 1001, 1, 1};
       std::vector< double > N_ij_3{78, 328, 1003};
-      double                xscore_3 = __score(N_ijk_3, N_ij_3);
-      TS_ASSERT(__equal(xscore_3, score.score(node2, cond3)));
+      double                xscore_3 = score__(N_ijk_3, N_ij_3);
+      TS_ASSERT(equal__(xscore_3, score.score(node2, cond3)));
 
 
       gum::learning::ScoreLog2Likelihood<> score2(score);
@@ -291,45 +291,45 @@ namespace gum_tests {
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score2.score(node2)));
-      TS_ASSERT(__equal(xscore_2, score2.score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score2.score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score2.score(node2)));
+      TS_ASSERT(equal__(xscore_2, score2.score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score2.score(node2, cond3)));
 
       gum::learning::ScoreLog2Likelihood<> score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score3.score(node2)));
-      TS_ASSERT(__equal(xscore_2, score3.score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score3.score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score3.score(node2)));
+      TS_ASSERT(equal__(xscore_2, score3.score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score3.score(node2, cond3)));
 
       gum::learning::ScoreLog2Likelihood<>* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       delete score4;
     }
@@ -405,20 +405,20 @@ namespace gum_tests {
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = __score(N_ijk_1, N_ij_1);
-      TS_ASSERT(__equal(xscore_1, score.score(node0)));
+      double                xscore_1 = score__(N_ijk_1, N_ij_1);
+      TS_ASSERT(equal__(xscore_1, score.score(node0)));
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
       std::vector< double > N_ij_2{278, 278, 3};
-      double                xscore_2 = __score(N_ijk_2, N_ij_2);
-      TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
+      double                xscore_2 = score__(N_ijk_2, N_ij_2);
+      TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
       std::vector< double > N_ij_3{78, 278, 203};
-      double                xscore_3 = __score(N_ijk_3, N_ij_3);
-      TS_ASSERT(__equal(xscore_3, score.score(node0, cond3)));
+      double                xscore_3 = score__(N_ijk_3, N_ij_3);
+      TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
 
 
       gum::learning::ScoreLog2Likelihood<> score2(score);
@@ -426,45 +426,45 @@ namespace gum_tests {
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
-      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score2.score(node0)));
+      TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
 
       gum::learning::ScoreLog2Likelihood<> score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score3.score(node0)));
-      TS_ASSERT(__equal(xscore_2, score3.score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score3.score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score3.score(node0)));
+      TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
 
       gum::learning::ScoreLog2Likelihood<>* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
       delete score4;
     }
@@ -552,21 +552,21 @@ namespace gum_tests {
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = __score(N_ijk_1, N_ij_1);
-      TS_ASSERT(__equal(xscore_1, score.score(node2)));
+      double                xscore_1 = score__(N_ijk_1, N_ij_1);
+      TS_ASSERT(equal__(xscore_1, score.score(node2)));
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
       std::vector< double > N_ij_2{278, 278, 3};
-      double                xscore_2 = __score(N_ijk_2, N_ij_2);
-      TS_ASSERT(__equal(xscore_2, score.score(node2, cond2)));
+      double                xscore_2 = score__(N_ijk_2, N_ij_2);
+      TS_ASSERT(equal__(xscore_2, score.score(node2, cond2)));
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
       std::vector< double > N_ij_3{78, 278, 203};
-      double                xscore_3 = __score(N_ijk_3, N_ij_3);
-      TS_ASSERT(__equal(xscore_3, score.score(node2, cond3)));
+      double                xscore_3 = score__(N_ijk_3, N_ij_3);
+      TS_ASSERT(equal__(xscore_3, score.score(node2, cond3)));
 
 
       gum::learning::ScoreLog2Likelihood<> score2(score);
@@ -574,45 +574,45 @@ namespace gum_tests {
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score2.score(node2)));
-      TS_ASSERT(__equal(xscore_2, score2.score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score2.score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score2.score(node2)));
+      TS_ASSERT(equal__(xscore_2, score2.score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score2.score(node2, cond3)));
 
       gum::learning::ScoreLog2Likelihood<> score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score3.score(node2)));
-      TS_ASSERT(__equal(xscore_2, score3.score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score3.score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score3.score(node2)));
+      TS_ASSERT(equal__(xscore_2, score3.score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score3.score(node2, cond3)));
 
       gum::learning::ScoreLog2Likelihood<>* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
-      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
+      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
 
       delete score4;
     }
@@ -690,20 +690,20 @@ namespace gum_tests {
         // idset1: node0 | emptyset
         std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
         std::vector< double > N_ij_1;
-        double                xscore_1 = __score(N_ijk_1, N_ij_1);
-        TS_ASSERT(__equal(xscore_1, score.score(node0)));
+        double                xscore_1 = score__(N_ijk_1, N_ij_1);
+        TS_ASSERT(equal__(xscore_1, score.score(node0)));
 
         // idset2: node0 | node1
         std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
         std::vector< double > N_ij_2{278, 278, 3};
-        double                xscore_2 = __score(N_ijk_2, N_ij_2);
-        TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
+        double                xscore_2 = score__(N_ijk_2, N_ij_2);
+        TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
 
         // idset3: node0 | node3
         std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
         std::vector< double > N_ij_3{78, 278, 203};
-        double                xscore_3 = __score(N_ijk_3, N_ij_3);
-        TS_ASSERT(__equal(xscore_3, score.score(node0, cond3)));
+        double                xscore_3 = score__(N_ijk_3, N_ij_3);
+        TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
 
 
         gum::learning::ScoreLog2Likelihood<> score2(score);
@@ -711,45 +711,45 @@ namespace gum_tests {
            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-        TS_ASSERT(__equal(xscore_1, score2.score(node0)));
-        TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
-        TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+        TS_ASSERT(equal__(xscore_1, score2.score(node0)));
+        TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
+        TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
 
         gum::learning::ScoreLog2Likelihood<> score3(std::move(score2));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-        TS_ASSERT(__equal(xscore_1, score3.score(node0)));
-        TS_ASSERT(__equal(xscore_2, score3.score(node0, cond2)));
-        TS_ASSERT(__equal(xscore_3, score3.score(node0, cond3)));
+        TS_ASSERT(equal__(xscore_1, score3.score(node0)));
+        TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
+        TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
 
         gum::learning::ScoreLog2Likelihood<>* score4 = score3.clone();
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-        TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-        TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(__equal(xscore_1, score4->score(node0)));
-        TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
+        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
 
         delete score4;
       }

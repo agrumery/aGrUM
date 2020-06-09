@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MultiDimBijArray class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
@@ -172,18 +172,18 @@ namespace gum {
     /// @}
 
     protected:
-    virtual GUM_SCALAR& _get(const Instantiation& i) const;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const;
 
-    virtual void _commitMultipleChanges();
+    virtual void commitMultipleChanges_();
 
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
     /// The true data.
-    const MultiDimArray< GUM_SCALAR >& __array;
+    const MultiDimArray< GUM_SCALAR >& array__;
 
     /// The class name.
-    std::string __name;
+    std::string name__;
   };
 
 

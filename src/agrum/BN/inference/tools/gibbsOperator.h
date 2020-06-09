@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief This file contains Gibbs sampling (for BNs) class definitions
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -63,13 +63,13 @@ namespace gum {
     virtual ~GibbsOperator();
 
     /** Getters and setters*/
-    Size nbrDrawnVar() const { return _nbr; }
+    Size nbrDrawnVar() const { return nbr_; }
 
-    void setNbrDrawnVar(Size nbr) { _nbr = nbr; }
+    void setNbrDrawnVar(Size nbr) { nbr_ = nbr; }
 
-    bool isDrawnAtRandom() const { return _atRandom; }
+    bool isDrawnAtRandom() const { return atRandom_; }
 
-    void setDrawnAtRandom(bool atRandom) { _atRandom = atRandom; }
+    void setDrawnAtRandom(bool atRandom) { atRandom_ = atRandom; }
 
     /// draws a Monte Carlo sample
     Instantiation monteCarloSample();
@@ -79,22 +79,22 @@ namespace gum {
 
     protected:
     /// number of samples drawn
-    Size                           _counting;
-    const IBayesNet< GUM_SCALAR >& _sampling_bn;
-    const NodeProperty< Idx >*     _hardEv;
-    Sequence< NodeId >             _samplingNodes;
+    Size                           counting_;
+    const IBayesNet< GUM_SCALAR >& sampling_bn_;
+    const NodeProperty< Idx >*     hardEv_;
+    Sequence< NodeId >             samplingNodes_;
 
-    Size _nbr;
+    Size nbr_;
 
     protected:
-    bool _atRandom;
+    bool atRandom_;
 
 
     private:
-    void __updateSamplingNodes();
+    void updateSamplingNodes__();
     // adds a node to current instantiation
-    void __drawVarMonteCarlo(NodeId nod, Instantiation* I);
-    void __GibbsSample(NodeId id, Instantiation* I);
+    void drawVarMonteCarlo__(NodeId nod, Instantiation* I);
+    void GibbsSample__(NodeId id, Instantiation* I);
   };
 
 

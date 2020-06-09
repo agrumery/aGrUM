@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Inlined implementation of the basic hash functions
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <string>
 #include <utility>
@@ -41,10 +41,10 @@ namespace gum {
    * is
    * not actually compulsory for the hash function we use. However, as it
    * speeds up the computations of hashed values, we chose to impose
-   * this restriction. Function __hashTableLog2 thus returns the size in
+   * this restriction. Function hashTableLog2__ thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  INLINE unsigned int __hashTableLog2(const Size nb) {
+  INLINE unsigned int hashTableLog2__(const Size nb) {
     unsigned int i = 0;
 
     for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {};
@@ -74,7 +74,7 @@ namespace gum {
 
   // Returns the hashed value of a key.
   INLINE Size HashFunc< std::string >::operator()(const std::string& key) const {
-    return castToSize(key) & this->_hash_mask;
+    return castToSize(key) & this->hash_mask_;
   }
 
   // ===========================================================================
@@ -93,7 +93,7 @@ namespace gum {
   // Returns the hashed value of a key.
   INLINE Size HashFunc< std::vector< Idx > >::operator()(
      const std::vector< Idx >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
   // ===========================================================================
@@ -110,7 +110,7 @@ namespace gum {
 
   // Returns the hashed value of a key.
   INLINE Size HashFunc< Debug >::operator()(const Debug& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
 

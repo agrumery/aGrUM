@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to compute the operation between two decision diagrams
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
@@ -45,11 +45,11 @@ namespace gum {
      TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2) :
-      __dt1(dt1),
-      __dt2(dt2), __combine() {
+      dt1__(dt1),
+      dt2__(dt2), combine__() {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    __rd =
+    rd__ =
        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
   }
 
@@ -63,11 +63,11 @@ namespace gum {
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
         const HashTable< const DiscreteVariable*, Idx > givenContext) :
-      __dt1(dt1),
-      __dt2(dt2), __combine(), __context(givenContext) {
+      dt1__(dt1),
+      dt2__(dt2), combine__(), context__(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    __rd =
+    rd__ =
        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
   }
 
@@ -90,9 +90,9 @@ namespace gum {
              class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
-    __rd->manager()->setRootNode(__xPloreDT1(__dt1->root()));
+    rd__->manager()->setRootNode(xPloreDT1__(dt1__->root()));
 
-    return __rd;
+    return rd__;
   }
 
   // Main recursion function, called every time we move on a node to determine
@@ -103,26 +103,26 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT1(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::xPloreDT1__(
         NodeId currentNodeId) {
-    if (__dt1->isTerminalNode(currentNodeId)) {
-      __curDT1Leaf = currentNodeId;
-      return __xPloreDT2(__dt2->root());
+    if (dt1__->isTerminalNode(currentNodeId)) {
+      curDT1Leaf__ = currentNodeId;
+      return xPloreDT2__(dt2__->root());
     }
 
-    const InternalNode* currentNode = __dt1->node(currentNodeId);
+    const InternalNode* currentNode = dt1__->node(currentNodeId);
 
-    if (!__rd->variablesSequence().exists(currentNode->nodeVar()))
-      __rd->add(*(currentNode->nodeVar()));
+    if (!rd__->variablesSequence().exists(currentNode->nodeVar()))
+      rd__->add(*(currentNode->nodeVar()));
 
     NodeId* sonsMap = static_cast< NodeId* >(
        ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
     for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda) {
-      __context.insert(currentNode->nodeVar(), moda);
-      sonsMap[moda] = __xPloreDT1(currentNode->son(moda));
-      __context.erase(currentNode->nodeVar());
+      context__.insert(currentNode->nodeVar(), moda);
+      sonsMap[moda] = xPloreDT1__(currentNode->son(moda));
+      context__.erase(currentNode->nodeVar());
     }
-    return __checkRedundancy(currentNode->nodeVar(), sonsMap);
+    return checkRedundancy__(currentNode->nodeVar(), sonsMap);
   }
 
   template < typename GUM_SCALAR,
@@ -131,28 +131,28 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT2(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::xPloreDT2__(
         NodeId currentNodeId) {
-    if (__dt2->isTerminalNode(currentNodeId))
-      return __rd->manager()->addTerminalNode(__combine(
-         __dt1->nodeValue(__curDT1Leaf), __dt2->nodeValue(currentNodeId)));
+    if (dt2__->isTerminalNode(currentNodeId))
+      return rd__->manager()->addTerminalNode(combine__(
+         dt1__->nodeValue(curDT1Leaf__), dt2__->nodeValue(currentNodeId)));
 
-    const InternalNode* currentNode = __dt2->node(currentNodeId);
+    const InternalNode* currentNode = dt2__->node(currentNodeId);
 
-    if (!__rd->variablesSequence().exists(currentNode->nodeVar()))
-      __rd->add(*(currentNode->nodeVar()));
+    if (!rd__->variablesSequence().exists(currentNode->nodeVar()))
+      rd__->add(*(currentNode->nodeVar()));
 
-    if (__context.exists(currentNode->nodeVar()))
-      return __xPloreDT2(currentNode->son(__context[currentNode->nodeVar()]));
+    if (context__.exists(currentNode->nodeVar()))
+      return xPloreDT2__(currentNode->son(context__[currentNode->nodeVar()]));
 
     NodeId* sonsMap = static_cast< NodeId* >(
        ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
     for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda) {
-      __context.insert(currentNode->nodeVar(), moda);
-      sonsMap[moda] = __xPloreDT2(currentNode->son(moda));
-      __context.erase(currentNode->nodeVar());
+      context__.insert(currentNode->nodeVar(), moda);
+      sonsMap[moda] = xPloreDT2__(currentNode->son(moda));
+      context__.erase(currentNode->nodeVar());
     }
-    return __checkRedundancy(currentNode->nodeVar(), sonsMap);
+    return checkRedundancy__(currentNode->nodeVar(), sonsMap);
   }
 
   template < typename GUM_SCALAR,
@@ -161,7 +161,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::
-     __checkRedundancy(const DiscreteVariable* var, NodeId* sonsMap) {
+     checkRedundancy__(const DiscreteVariable* var, NodeId* sonsMap) {
     bool diff = false;
     for (Idx moda = 1; moda < var->domainSize() && !diff; ++moda)
       if (sonsMap[0] != sonsMap[moda]) diff = true;
@@ -172,7 +172,7 @@ namespace gum {
       return zero;
     }
 
-    return __rd->manager()->addInternalNode(var, sonsMap);
+    return rd__->manager()->addInternalNode(var, sonsMap);
   }
 
 }   // namespace gum

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ between 0 and 100
 
  * @endcode
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef BIF_READER_H
 #define BIF_READER_H
@@ -120,7 +120,7 @@ namespace gum {
 
    * @endcode
    *
-   * @author Pierre-Henri WUILLEMIN (@LIP6)
+   * @author Pierre-Henri WUILLEMIN(@LIP6)
    */
   template < typename GUM_SCALAR >
   class BIFReader: public BNReader< GUM_SCALAR > {
@@ -173,18 +173,18 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*        __bn;
-    BayesNetFactory< GUM_SCALAR >* __factory;
-    BIF::Scanner*                  __scanner;
-    BIF::Parser*                   __parser;
+    BayesNet< GUM_SCALAR >*        bn__;
+    BayesNetFactory< GUM_SCALAR >* factory__;
+    BIF::Scanner*                  scanner__;
+    BIF::Parser*                   parser__;
 
-    std::string __streamName;
-    bool        __traceScanning;
-    bool        __parseDone;
+    std::string streamName__;
+    bool        traceScanning__;
+    bool        parseDone__;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool __ioerror;
+    bool ioerror__;
   };
 
 

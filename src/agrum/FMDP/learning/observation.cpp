@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,11 +26,11 @@ namespace gum {
 
   std::string Observation::toString() const {
     std::stringstream status;
-    for (auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe();
+    for (auto varIter = varInst__.beginSafe(); varIter != varInst__.endSafe();
          ++varIter)
-      if (__rInst.exists(varIter.key()))
+      if (rInst__.exists(varIter.key()))
         status << "| " << varIter.key()->name() << " : " << varIter.val() << " -> "
-               << __rInst[varIter.key()] << " |";
+               << rInst__[varIter.key()] << " |";
     status << std::endl;
     return status.str();
   }

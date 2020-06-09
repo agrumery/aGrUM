@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,8 @@
  * @brief The class computing n times the corrected mutual information,
  * as used in the 3off2 algorithm
  *
- * @author Quentin FALCAND, Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6).
+ * @author Quentin FALCAND, Christophe GONZALES(@AMU) and Pierre-Henri
+ * WUILLEMIN(@LIP6).
  */
 #ifndef GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
 #define GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
@@ -319,76 +320,76 @@ namespace gum {
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
-      ScoreLog2Likelihood< ALLOC > __NH;
+      ScoreLog2Likelihood< ALLOC > NH__;
 
       /// the object computing the NML k score
-      KNML< ALLOC > __k_NML;
+      KNML< ALLOC > k_NML__;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
-      ScoreMDL< ALLOC > __score_MDL;
+      ScoreMDL< ALLOC > score_MDL__;
 
       /// the mode used for the correction
-      KModeTypes __kmode{KModeTypes::MDL};
+      KModeTypes kmode__{KModeTypes::MDL};
 
 
       /// a Boolean indicating whether we wish to use the I cache
       /** The I cache is the cache used to store N times the values of
        * mutual informations */
-      bool __use_ICache{true};
+      bool use_ICache__{true};
 
       /// a Boolean indicating whether we wish to use the H cache
       /** The H cache is the cache for storing N times the entropy. Mutual
        * information is computed as a summation/subtraction of entropies. The
-       * latter are cached directly within the __NH instance. */
-      bool __use_HCache{true};
+       * latter are cached directly within the NH__ instance. */
+      bool use_HCache__{true};
 
       /// a Boolean indicating whether we wish to use the K cache
       /** The K cache is used to cache K-scores, which corresponds to
        * summations/subtractions of kNML individual values. The cache for the
        * latter is called the Cnr cache because it uses Cnr values */
-      bool __use_KCache{true};
+      bool use_KCache__{true};
 
       /// a Boolean indicating whether we wish to use the Cnr cache
       /** When using the kNML class, the computation of the K-scores
        * consists of summations/subtractions of kNML scores. The latter
        * essentially amount to computing Cnr values. Those can be
-       * cached directly within the __k_NML instance */
-      bool __use_CnrCache{true};
+       * cached directly within the k_NML__ instance */
+      bool use_CnrCache__{true};
 
 
       /// the ICache
-      ScoringCache< ALLOC > __ICache;
+      ScoringCache< ALLOC > ICache__;
 
       /// the KCache
-      ScoringCache< ALLOC > __KCache;
+      ScoringCache< ALLOC > KCache__;
 
 
       /// an empty conditioning set
-      const std::vector< NodeId, ALLOC< NodeId > > __empty_conditioning_set;
+      const std::vector< NodeId, ALLOC< NodeId > > empty_conditioning_set__;
 
       /// a constant used to prevent numerical instabilities
-      const double __threshold{1e-10};
+      const double threshold__{1e-10};
 
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double __NI_score(NodeId                                        var_x,
+      double NI_score__(NodeId                                        var_x,
                         NodeId                                        var_y,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double __NI_score(NodeId                                        var_x,
+      double NI_score__(NodeId                                        var_x,
                         NodeId                                        var_y,
                         NodeId                                        var_z,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
 
       /// computes the complexity correction for the mutual information
-      double __K_score(NodeId                                        var_x,
+      double K_score__(NodeId                                        var_x,
                        NodeId                                        var_y,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// computes the complexity correction for the mutual information
-      double __K_score(NodeId                                        var_x,
+      double K_score__(NodeId                                        var_x,
                        NodeId                                        var_y,
                        NodeId                                        var_z,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);

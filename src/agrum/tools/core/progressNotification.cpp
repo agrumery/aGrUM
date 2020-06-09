@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,22 +24,22 @@
  * @file
  * @brief gum::ProgressListener header file.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <agrum/tools/core/progressNotification.h>
 
 namespace gum {
 
-  ProgressListener::ProgressListener(ProgressNotifier& notif) : __notif(notif) {
+  ProgressListener::ProgressListener(ProgressNotifier& notif) : notif__(notif) {
     GUM_CONSTRUCTOR(ProgressListener);
 
-    GUM_CONNECT((__notif), onProgress, (*this), ProgressListener::whenProgress);
-    GUM_CONNECT((__notif), onStop, (*this), ProgressListener::whenStop);
+    GUM_CONNECT((notif__), onProgress, (*this), ProgressListener::whenProgress);
+    GUM_CONNECT((notif__), onStop, (*this), ProgressListener::whenStop);
   }
 
   ProgressListener::ProgressListener(const ProgressListener& other) :
-      __notif(other.__notif) {
+      notif__(other.notif__) {
     GUM_CONS_CPY(ProgressListener);
     GUM_ERROR(OperationNotAllowed, "No copy constructor for ProgressListener");
   }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a MultiDim Delete operator class used for scheduling inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SCHEDULE_DELETE_MULTI_DIM_H
@@ -124,10 +124,10 @@ namespace gum {
 
     private:
     // the table to delete
-    ScheduleMultiDim< GUM_SCALAR > __table;
+    ScheduleMultiDim< GUM_SCALAR > table__;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __args;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
   };
 
 } /* namespace gum */

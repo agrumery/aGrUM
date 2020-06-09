@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ namespace gum {
   Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::
        operator()(
         const std::tuple< unsigned int, unsigned int, unsigned int >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
 }   // namespace gum

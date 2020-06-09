@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Implementation of the gumArcGraphPart
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -36,19 +36,19 @@ namespace gum {
   template < typename VAL >
   INLINE ArcProperty< VAL > ArcGraphPart::arcsProperty(VAL (*f)(const Arc&),
                                                        Size size) const {
-    return __arcs.hashMap(f, size);
+    return arcs__.hashMap(f, size);
   }
 
   template < typename VAL >
   INLINE ArcProperty< VAL > ArcGraphPart::arcsProperty(const VAL& val,
                                                        Size       size) const {
-    return __arcs.hashMap(val, size);
+    return arcs__.hashMap(val, size);
   }
 
   /// a method to create a list of Assent from a node list
   template < typename VAL >
   INLINE List< VAL > ArcGraphPart::listMapArcs(VAL (*f)(const Arc&)) const {
-    return __arcs.listMap(f);
+    return arcs__.listMap(f);
   }
 
 } /* namespace gum */

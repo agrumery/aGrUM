@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -39,20 +39,20 @@ namespace gum {
     template < typename GUM_SCALAR >
     BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(
        const BayesNet< GUM_SCALAR >& bn) :
-        __bn(bn) {
+        bn__(bn) {
       // for debugging purposes
       GUM_CONSTRUCTOR(BNDatabaseGenerator);
 
       // get the node names => they will serve as ids
       NodeId id = 0;
-      for (const auto& var: __bn.dag()) {
-        auto name = __bn.variable(var).name();
-        __names2ids.insert(name, var);
+      for (const auto& var: bn__.dag()) {
+        auto name = bn__.variable(var).name();
+        names2ids__.insert(name, var);
         ++id;
       }
-      __nbVars = id;
-      __varOrder.resize(__nbVars);
-      std::iota(__varOrder.begin(), __varOrder.end(), (Idx)0);
+      nbVars__ = id;
+      varOrder__.resize(nbVars__);
+      std::iota(varOrder__.begin(), varOrder__.end(), (Idx)0);
     }
 
     /// destructor
@@ -62,7 +62,7 @@ namespace gum {
     }
 
 
-    /// draw instances from __bn
+    /// draw instances from bn__
     template < typename GUM_SCALAR >
     double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
       Timer timer;
@@ -73,18 +73,18 @@ namespace gum {
       if (onProgress.hasListener()) {
         GUM_EMIT2(onProgress, progress, timer.step());
       }
-      __database.clear();
-      __database.resize(nbSamples);
-      for (auto& row: __database) {
-        row.resize(__nbVars);
+      database__.clear();
+      database__.resize(nbSamples);
+      for (auto& row: database__) {
+        row.resize(nbVars__);
       }
       // get the order in which the nodes will be sampled
-      const gum::Sequence< gum::NodeId >& topOrder = __bn.topologicalOrder();
+      const gum::Sequence< gum::NodeId >& topOrder = bn__.topologicalOrder();
       std::vector< gum::Instantiation >   instantiations;
 
       // create instantiations in advance
-      for (Idx node = 0; node < __nbVars; ++node)
-        instantiations.push_back(gum::Instantiation(__bn.cpt(node)));
+      for (Idx node = 0; node < nbVars__; ++node)
+        instantiations.push_back(gum::Instantiation(bn__.cpt(node)));
 
       // create the random generator
       std::random_device               rd;
@@ -92,8 +92,8 @@ namespace gum {
       std::uniform_real_distribution<> distro(0.0, 1.0);
 
       // perform the sampling
-      __log2likelihood = 0;
-      const gum::DAG& dag = __bn.dag();
+      log2likelihood__ = 0;
+      const gum::DAG& dag = bn__.dag();
       for (Idx i = 0; i < nbSamples; ++i) {
         if (onProgress.hasListener()) {
           int p = int((i * 100) / nbSamples);
@@ -102,15 +102,15 @@ namespace gum {
             GUM_EMIT2(onProgress, progress, timer.step());
           }
         }
-        std::vector< Idx >& sample = __database.at(i);
-        for (Idx j = 0; j < __nbVars; ++j) {
+        std::vector< Idx >& sample = database__.at(i);
+        for (Idx j = 0; j < nbVars__; ++j) {
           const gum::NodeId node = topOrder[j];
-          const auto&       var = __bn.variable(node);
-          const auto&       cpt = __bn.cpt(node);
+          const auto&       var = bn__.variable(node);
+          const auto&       cpt = bn__.cpt(node);
 
           gum::Instantiation& inst = instantiations[node];
           for (auto par: dag.parents(node))
-            inst.chgVal(__bn.variable(par), sample.at(par));
+            inst.chgVal(bn__.variable(par), sample.at(par));
 
           const double nb = distro(gen);
           double       cumul = 0.0;
@@ -122,20 +122,20 @@ namespace gum {
           if (inst.end()) inst.chgVal(var, var.domainSize() - 1);
           sample.at(node) = inst.val(var);
 
-          __log2likelihood += std::log2(__bn.cpt(node)[inst]);
+          log2likelihood__ += std::log2(bn__.cpt(node)[inst]);
         }
       }
 
-      __drawnSamples = true;
+      drawnSamples__ = true;
 
       if (onProgress.hasListener()) {
         std::stringstream ss;
         ss << "Database of size " << nbSamples << " generated in " << timer.step()
-           << " seconds. Log2likelihood : " << __log2likelihood;
+           << " seconds. Log2likelihood : " << log2likelihood__;
         GUM_EMIT1(onStop, ss.str());
       }
 
-      return __log2likelihood;
+      return log2likelihood__;
     }
 
     /// generates database, and writes csv file
@@ -145,7 +145,7 @@ namespace gum {
                                                   bool               append,
                                                   std::string        csvSeparator,
                                                   bool checkOnAppend) const {
-      if (!__drawnSamples) {
+      if (!drawnSamples__) {
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
       }
 
@@ -158,8 +158,8 @@ namespace gum {
       if (append) {
         std::ifstream csvFile(csvFileURL);
         if (csvFile) {
-          auto varOrder = __varOrderFromCSV(csvFile, csvSeparator);
-          if (checkOnAppend && varOrder != __varOrder) {
+          auto varOrder = varOrderFromCSV__(csvFile, csvSeparator);
+          if (checkOnAppend && varOrder != varOrder__) {
             GUM_ERROR(
                OperationNotAllowed,
                "Inconsistent variable order in csvFile when appending. You "
@@ -178,33 +178,33 @@ namespace gum {
       std::ofstream os(csvFileURL, ofstreamFlag);
       bool          firstCol = true;
       if (includeHeader) {
-        for (const auto& i: __varOrder) {
+        for (const auto& i: varOrder__) {
           if (firstCol) {
             firstCol = false;
           } else {
             os << csvSeparator;
           }
-          os << __bn.variable(i).name();
+          os << bn__.variable(i).name();
         }
       }
       os << std::endl;
 
       bool firstRow = true;
-      for (const auto& row: __database) {
+      for (const auto& row: database__) {
         if (firstRow) {
           firstRow = false;
         } else {
           os << std::endl;
         }
         firstCol = true;
-        for (const auto& i: __varOrder) {
+        for (const auto& i: varOrder__) {
           if (firstCol) {
             firstCol = false;
           } else {
             os << csvSeparator;
           }
           if (useLabels) {
-            os << __bn.variable(i).label(row.at(i));
+            os << bn__.variable(i).label(row.at(i));
           } else {
             os << row[i];
           }
@@ -218,19 +218,19 @@ namespace gum {
     template < typename GUM_SCALAR >
     DatabaseTable<>
        BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
-      if (!__drawnSamples)
+      if (!drawnSamples__)
         GUM_ERROR(OperationNotAllowed, "proceed() must be called first.");
 
       DatabaseTable<>            db;
       std::vector< std::string > varNames;
-      varNames.reserve(__nbVars);
-      for (const auto& i: __varOrder) {
-        varNames.push_back(__names2ids.first(i));
+      varNames.reserve(nbVars__);
+      for (const auto& i: varOrder__) {
+        varNames.push_back(names2ids__.first(i));
       }
 
       // create the translators
-      for (std::size_t i = 0; i < __nbVars; ++i) {
-        const Variable& var = __bn.variable(__varOrder[i]);
+      for (std::size_t i = 0; i < nbVars__; ++i) {
+        const Variable& var = bn__.variable(varOrder__[i]);
         db.insertTranslator(var, i);
       }
 
@@ -239,24 +239,24 @@ namespace gum {
       // db.setVariableNames(varOrderNames());
 
       if (useLabels) {
-        std::vector< std::string > xrow(__nbVars);
-        for (const auto& row: __database) {
-          for (Idx i = 0; i < __nbVars; ++i) {
-            Idx j = __varOrder.at(i);
-            xrow[i] = __bn.variable(j).label(row.at(j));
+        std::vector< std::string > xrow(nbVars__);
+        for (const auto& row: database__) {
+          for (Idx i = 0; i < nbVars__; ++i) {
+            Idx j = varOrder__.at(i);
+            xrow[i] = bn__.variable(j).label(row.at(j));
           }
           db.insertRow(xrow);
         }
       } else {
-        std::vector< DBTranslatedValueType > translatorType(__nbVars);
-        for (std::size_t i = 0; i < __nbVars; ++i) {
+        std::vector< DBTranslatedValueType > translatorType(nbVars__);
+        for (std::size_t i = 0; i < nbVars__; ++i) {
           translatorType[i] = db.translator(i).getValType();
         }
-        DBRow< DBTranslatedValue > xrow(__nbVars);
+        DBRow< DBTranslatedValue > xrow(nbVars__);
         const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
-        for (const auto& row: __database) {
-          for (Idx i = 0; i < __nbVars; ++i) {
-            Idx j = __varOrder.at(i);
+        for (const auto& row: database__) {
+          for (Idx i = 0; i < nbVars__; ++i) {
+            Idx j = varOrder__.at(i);
 
             if (translatorType[i] == DBTranslatedValueType::DISCRETE)
               xrow[i].discr_val = std::size_t(row.at(j));
@@ -275,13 +275,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     std::vector< std::vector< Idx > >
        BNDatabaseGenerator< GUM_SCALAR >::database() const {
-      if (!__drawnSamples)
+      if (!drawnSamples__)
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
 
-      auto db(__database);
-      for (Idx i = 0; i < __database.size(); ++i) {
-        for (Idx j = 0; j < __nbVars; ++j) {
-          db.at(i).at(j) = (Idx)__database.at(i).at(__varOrder.at(j));
+      auto db(database__);
+      for (Idx i = 0; i < database__.size(); ++i) {
+        for (Idx j = 0; j < nbVars__; ++j) {
+          db.at(i).at(j) = (Idx)database__.at(i).at(varOrder__.at(j));
         }
       }
       return db;
@@ -291,13 +291,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
        const std::vector< Idx >& varOrder) {
-      if (varOrder.size() != __nbVars) {
+      if (varOrder.size() != nbVars__) {
         GUM_ERROR(FatalError,
                   "varOrder's size must be equal to the number of variables");
       }
-      std::vector< bool > usedVars(__nbVars, false);
+      std::vector< bool > usedVars(nbVars__, false);
       for (const auto& i: varOrder) {
-        if (i >= __nbVars) {
+        if (i >= nbVars__) {
           GUM_ERROR(FatalError, "varOrder contains invalid variables");
         }
         if (usedVars.at(i))
@@ -309,7 +309,7 @@ namespace gum {
         GUM_ERROR(FatalError, "varOrder must contain all variables");
       }
 
-      __varOrder = varOrder;
+      varOrder__ = varOrder;
     }
 
     /// change columns order using variable names
@@ -319,7 +319,7 @@ namespace gum {
       std::vector< Idx > varOrderIdx;
       varOrderIdx.reserve(varOrder.size());
       for (const auto& vname: varOrder) {
-        varOrderIdx.push_back(__names2ids.second(vname));
+        varOrderIdx.push_back(names2ids__.second(vname));
       }
       setVarOrder(varOrderIdx);
     }
@@ -328,15 +328,15 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(
        const std::string& csvFileURL, const std::string& csvSeparator) {
-      setVarOrder(__varOrderFromCSV(csvFileURL, csvSeparator));
+      setVarOrder(varOrderFromCSV__(csvFileURL, csvSeparator));
     }
 
     /// set columns in topoligical order
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setTopologicalVarOrder() {
       std::vector< Idx > varOrder;
-      varOrder.reserve(__nbVars);
-      for (const auto& v: __bn.topologicalOrder()) {
+      varOrder.reserve(nbVars__);
+      for (const auto& v: bn__.topologicalOrder()) {
         varOrder.push_back(v);
       }
       setVarOrder(varOrder);
@@ -346,8 +346,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setAntiTopologicalVarOrder() {
       std::vector< Idx > varOrder;
-      varOrder.reserve(__nbVars);
-      for (const auto& v: __bn.topologicalOrder()) {
+      varOrder.reserve(nbVars__);
+      for (const auto& v: bn__.topologicalOrder()) {
         varOrder.push_back(v);
       }
       std::reverse(varOrder.begin(), varOrder.end());
@@ -358,9 +358,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
       std::vector< std::string > varOrder;
-      varOrder.reserve(__bn.size());
-      for (const auto& var: __bn.dag()) {
-        varOrder.push_back(__bn.variable(var).name());
+      varOrder.reserve(bn__.size());
+      for (const auto& var: bn__.dag()) {
+        varOrder.push_back(bn__.variable(var).name());
       }
       std::random_device rd;
       std::mt19937       g(rd());
@@ -372,7 +372,7 @@ namespace gum {
     /// returns variable order indexes
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrder() const {
-      return __varOrder;
+      return varOrder__;
     }
 
     /// returns variable order.
@@ -380,9 +380,9 @@ namespace gum {
     std::vector< std::string >
        BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
       std::vector< std::string > varNames;
-      varNames.reserve(__nbVars);
-      for (const auto& i: __varOrder) {
-        varNames.push_back(__names2ids.first(i));
+      varNames.reserve(nbVars__);
+      for (const auto& i: varOrder__) {
+        varNames.push_back(names2ids__.first(i));
       }
 
       return varNames;
@@ -391,20 +391,20 @@ namespace gum {
     /// returns log2Likelihood of generated samples
     template < typename GUM_SCALAR >
     double BNDatabaseGenerator< GUM_SCALAR >::log2likelihood() const {
-      if (!__drawnSamples) {
+      if (!drawnSamples__) {
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
       }
-      return __log2likelihood;
+      return log2likelihood__;
     }
 
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
-    std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
+    std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrderFromCSV__(
        const std::string& csvFileURL, const std::string& csvSeparator) const {
       std::ifstream      csvFile(csvFileURL);
       std::vector< Idx > varOrder;
       if (csvFile) {
-        varOrder = __varOrderFromCSV(csvFile, csvSeparator);
+        varOrder = varOrderFromCSV__(csvFile, csvSeparator);
         csvFile.close();
       } else {
         GUM_ERROR(NotFound, "csvFileURL does not exist");
@@ -415,11 +415,11 @@ namespace gum {
 
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
-    std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
+    std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrderFromCSV__(
        std::ifstream& csvFile, const std::string& csvSeparator) const {
       std::string                line;
       std::vector< std::string > header_found;
-      header_found.reserve(__nbVars);
+      header_found.reserve(nbVars__);
       while (std::getline(csvFile, line)) {
         std::size_t i = 0;
         auto        pos = line.find(csvSeparator);
@@ -436,10 +436,10 @@ namespace gum {
       }
 
       std::vector< Size > varOrder;
-      varOrder.reserve(__nbVars);
+      varOrder.reserve(nbVars__);
 
       for (const auto& hf: header_found) {
-        varOrder.push_back(__names2ids.second(hf));
+        varOrder.push_back(names2ids__.second(hf));
       }
 
       return varOrder;

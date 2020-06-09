@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation of the basic hash functions.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // to help IDE parser
@@ -44,16 +44,16 @@ namespace gum {
                    << new_size << " was provided to the resize function.");
     }
 
-    _hash_log2_size = __hashTableLog2(new_size);
-    _hash_size = Size(1) << _hash_log2_size;
-    _hash_mask = _hash_size - 1;
-    _right_shift = HashFuncConst::offset - _hash_log2_size;
+    hash_log2_size_ = hashTableLog2__(new_size);
+    hash_size_ = Size(1) << hash_log2_size_;
+    hash_mask_ = hash_size_ - 1;
+    right_shift_ = HashFuncConst::offset - hash_log2_size_;
   }
 
   // Returns the hash table size as known by the hash function
   template < typename Key >
   INLINE Size HashFuncBase< Key >::size() const {
-    return _hash_size;
+    return hash_size_;
   }
 
   // ===========================================================================
@@ -75,7 +75,7 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Key >
   INLINE Size HashFuncSmallKey< Key >::operator()(const Key& key) const {
-    return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+    return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
   // ===========================================================================
@@ -91,13 +91,13 @@ namespace gum {
   // Returns the value of a key as a Size
   template < typename Key >
   INLINE Size HashFuncSmallCastKey< Key >::castToSize(const Key& key) {
-    return *((Size*)(&key)) & HashFuncSmallCastKey< Key >::_small_key_mask;
+    return *((Size*)(&key)) & HashFuncSmallCastKey< Key >::small_key_mask_;
   }
 
   // Returns the hashed value of a key.
   template < typename Key >
   INLINE Size HashFuncSmallCastKey< Key >::operator()(const Key& key) const {
-    return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+    return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
   // ===========================================================================
@@ -119,7 +119,7 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Key >
   INLINE Size HashFuncMediumCastKey< Key >::operator()(const Key& key) const {
-    return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+    return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
   // ===========================================================================
@@ -142,7 +142,7 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Key >
   INLINE Size HashFuncLargeCastKey< Key >::operator()(const Key& key) const {
-    return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+    return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
   // ===========================================================================
@@ -159,7 +159,7 @@ namespace gum {
   template < typename Key1, typename Key2 >
   INLINE Size HashFunc< std::pair< Key1, Key2 > >::operator()(
      const std::pair< Key1, Key2 >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+    return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
   // ===========================================================================
@@ -167,14 +167,14 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Type >
   INLINE Size HashFunc< RefPtr< Type > >::castToSize(const RefPtr< Type >& key) {
-    return HashFunc< Type* >::castToSize(key.__refCountPtr());
+    return HashFunc< Type* >::castToSize(key.refCountPtr__());
   }
 
   // Returns the hashed value of a key.
   template < typename Type >
   INLINE Size
      HashFunc< RefPtr< Type > >::operator()(const RefPtr< Type >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
 } /* namespace gum */

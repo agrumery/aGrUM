@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * Every class used to read or write a MN from a file, must inherit from
  * MNWriter or MNReader.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe Gonzales
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MN_WRITER_H
 #define GUM_MN_WRITER_H
@@ -73,7 +73,7 @@ namespace gum {
      * @param MN The Markov Network writed in output.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream&                  output,
+    virtual void write(std::ostream&                   output,
                        const IMarkovNet< GUM_SCALAR >& MN) = 0;
 
     /**
@@ -85,7 +85,7 @@ namespace gum {
      * @param MN The Markov Network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(const std::string&             filePath,
+    virtual void write(const std::string&              filePath,
                        const IMarkovNet< GUM_SCALAR >& MN) = 0;
   };
 

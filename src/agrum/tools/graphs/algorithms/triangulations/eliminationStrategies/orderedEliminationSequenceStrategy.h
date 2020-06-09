@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief An Elimination sequence algorithm that imposes a given complete
  * ordering on the nodes elimination sequence
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
@@ -175,18 +175,18 @@ namespace gum {
 
     private:
     /// the vector indicating in which order we should eliminate the nodes
-    const std::vector< NodeId >* __order{nullptr};
+    const std::vector< NodeId >* order__{nullptr};
 
     /// the index in the order indicating the new node to eliminate
-    std::size_t __order_index{std::size_t(0)};
+    std::size_t order_index__{std::size_t(0)};
 
     /// indicate whether a new complete ordering is necessary for the
     /// elimination
-    bool __order_needed{true};
+    bool order_needed__{true};
 
 
     /// indicates whether an order is compatible with the current graph
-    bool __isOrderNeeded(const std::vector< NodeId >* order) const;
+    bool isOrderNeeded__(const std::vector< NodeId >* order) const;
   };
 
 

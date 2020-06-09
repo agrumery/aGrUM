@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief template implementations of heaps
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <sstream>
 #include <string>
@@ -36,8 +36,8 @@ namespace gum {
 
   // basic constructor. Creates an empty heap
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >::Heap(Cmp compare, Size capacity) : __cmp(compare) {
-    __heap.reserve(capacity);
+  Heap< Val, Cmp, Alloc >::Heap(Cmp compare, Size capacity) : cmp__(compare) {
+    heap__.reserve(capacity);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(Heap);
@@ -46,7 +46,7 @@ namespace gum {
   // initializer list constructor
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >::Heap(std::initializer_list< Val > list) {
-    __heap.reserve(list.size());
+    heap__.reserve(list.size());
     for (const auto& elt: list) {
       insert(elt);
     }
@@ -58,7 +58,7 @@ namespace gum {
   // copy constructor
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, Alloc >& from) :
-      __heap(from.__heap), __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
+      heap__(from.heap__), nb_elements__(from.nb_elements__), cmp__(from.cmp__) {
     // for debugging purposes
     GUM_CONS_CPY(Heap);
   }
@@ -67,12 +67,12 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, OtherAlloc >& from) :
-      __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
-    __heap.reserve(__nb_elements);
+      nb_elements__(from.nb_elements__), cmp__(from.cmp__) {
+    heap__.reserve(nb_elements__);
 
-    // copy the elements of from.__heap
-    for (unsigned i = 0; i < __nb_elements; ++i)
-      __heap.push_back(from.__heap[i]);
+    // copy the elements of from.heap__
+    for (unsigned i = 0; i < nb_elements__; ++i)
+      heap__.push_back(from.heap__[i]);
 
     // for debugging purposes
     GUM_CONS_CPY(Heap);
@@ -81,8 +81,8 @@ namespace gum {
   // move constructor
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >::Heap(Heap< Val, Cmp, Alloc >&& from) noexcept :
-      __heap(std::move(from.__heap)), __nb_elements(std::move(from.__nb_elements)),
-      __cmp(std::move(from.__cmp)) {
+      heap__(std::move(from.heap__)), nb_elements__(std::move(from.nb_elements__)),
+      cmp__(std::move(from.cmp__)) {
     // for debugging purposes
     GUM_CONS_MOV(Heap);
   }
@@ -101,17 +101,17 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       try {
-        __heap = from.__heap;
+        heap__ = from.heap__;
       } catch (...) {
-        __heap.clear();
-        __nb_elements = 0;
+        heap__.clear();
+        nb_elements__ = 0;
 
         throw;
       }
 
       // set the comparison function
-      __cmp = from.__cmp;
-      __nb_elements = from.__nb_elements;
+      cmp__ = from.cmp__;
+      nb_elements__ = from.nb_elements__;
 
       // for debugging purposes
       GUM_OP_CPY(Heap);
@@ -128,22 +128,22 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       try {
-        __heap.clear();
+        heap__.clear();
 
-        if (__heap.capacity() < from.__nb_elements)
-          __heap.reserve(from.__nb_elements);
+        if (heap__.capacity() < from.nb_elements__)
+          heap__.reserve(from.nb_elements__);
 
-        for (unsigned int i = 0; i < from.__nb_elements; ++i) {
-          __heap.push_back(from.__heap[i]);
+        for (unsigned int i = 0; i < from.nb_elements__; ++i) {
+          heap__.push_back(from.heap__[i]);
         }
       } catch (...) {
-        __heap.clear();
-        __nb_elements = 0;
+        heap__.clear();
+        nb_elements__ = 0;
         throw;
       }
 
-      __cmp = from.__cmp;
-      __nb_elements = from.__nb_elements;
+      cmp__ = from.cmp__;
+      nb_elements__ = from.nb_elements__;
 
       // for debugging purposes
       GUM_OP_CPY(Heap);
@@ -158,9 +158,9 @@ namespace gum {
      Heap< Val, Cmp, Alloc >::operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
-      __heap = std::move(from.__heap);
-      __nb_elements = std::move(from.__nb_elements);
-      __cmp = std::move(from.__cmp);
+      heap__ = std::move(from.heap__);
+      nb_elements__ = std::move(from.nb_elements__);
+      cmp__ = std::move(from.cmp__);
     }
 
     return *this;
@@ -169,63 +169,63 @@ namespace gum {
   // returns the element at the top of the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE const Val& Heap< Val, Cmp, Alloc >::top() const {
-    if (!__nb_elements) { GUM_ERROR(NotFound, "empty heap"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap"); }
 
-    return __heap[0];
+    return heap__[0];
   }
 
   // returns the number of elements in the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Size Heap< Val, Cmp, Alloc >::size() const noexcept {
-    return __nb_elements;
+    return nb_elements__;
   }
 
   // return the size of the array storing the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Size Heap< Val, Cmp, Alloc >::capacity() const noexcept {
-    return Size(__heap.size());
+    return Size(heap__.size());
   }
 
   // changes the size of the array storing the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE void Heap< Val, Cmp, Alloc >::resize(Size new_size) {
-    if (new_size > __nb_elements) __heap.reserve(new_size);
+    if (new_size > nb_elements__) heap__.reserve(new_size);
   }
 
   // removes the element at position 'index' from the heap
   template < typename Val, typename Cmp, typename Alloc >
   void Heap< Val, Cmp, Alloc >::eraseByPos(Size index) {
-    if (index >= __nb_elements) return;
+    if (index >= nb_elements__) return;
 
     // remove the element and put the last element in its place
-    Val last = std::move(__heap[__nb_elements - 1]);
-    __heap.pop_back();
-    --__nb_elements;
+    Val last = std::move(heap__[nb_elements__ - 1]);
+    heap__.pop_back();
+    --nb_elements__;
 
-    if (!__nb_elements || (index == __nb_elements)) return;
+    if (!nb_elements__ || (index == nb_elements__)) return;
 
     // restore the heap property
     Size i = index;
 
-    for (Size j = (index << 1) + 1; j < __nb_elements; i = j, j = (j << 1) + 1) {
+    for (Size j = (index << 1) + 1; j < nb_elements__; i = j, j = (j << 1) + 1) {
       // let j be the max child
-      if ((j + 1 < __nb_elements) && __cmp(__heap[j + 1], __heap[j])) ++j;
+      if ((j + 1 < nb_elements__) && cmp__(heap__[j + 1], heap__[j])) ++j;
 
-      // if "last" is smaller than __heap[j], "last" must be stored at index i
-      if (__cmp(last, __heap[j])) break;
+      // if "last" is smaller than heap__[j], "last" must be stored at index i
+      if (cmp__(last, heap__[j])) break;
 
-      __heap[i] = std::move(__heap[j]);
+      heap__[i] = std::move(heap__[j]);
     }
 
-    __heap[i] = std::move(last);
+    heap__[i] = std::move(last);
   }
 
   // removes a given element from the heap (but does not return it)
   template < typename Val, typename Cmp, typename Alloc >
   INLINE void Heap< Val, Cmp, Alloc >::erase(const Val& val) {
     // find val in the heap
-    for (Size i = 0; i < __nb_elements; ++i)
-      if (__heap[i] == val) {
+    for (Size i = 0; i < nb_elements__; ++i)
+      if (heap__[i] == val) {
         eraseByPos(i);
         break;
       }
@@ -235,32 +235,32 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   INLINE void Heap< Val, Cmp, Alloc >::eraseTop() {
     // if the heap is empty, do nothing
-    if (!__nb_elements) return;
+    if (!nb_elements__) return;
     eraseByPos(0);
   }
 
   // removes the top element from the heap and return it
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Val Heap< Val, Cmp, Alloc >::pop() {
-    if (!__nb_elements) { GUM_ERROR(NotFound, "empty heap"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap"); }
 
-    Val v = __heap[0];
+    Val v = heap__[0];
     eraseByPos(0);
     return v;
   }
 
   // after inserting an element at the end of the heap, restore heap property
   template < typename Val, typename Cmp, typename Alloc >
-  Size Heap< Val, Cmp, Alloc >::__restoreHeap() {
+  Size Heap< Val, Cmp, Alloc >::restoreHeap__() {
     // get the element at the end of the heap
-    Size i = __nb_elements - 1;
-    Val  v = std::move(__heap[i]);
+    Size i = nb_elements__ - 1;
+    Val  v = std::move(heap__[i]);
 
     // restore the heap property
-    for (Size j = (i - 1) >> 1; i && __cmp(v, __heap[j]); i = j, j = (j - 1) >> 1)
-      __heap[i] = std::move(__heap[j]);
+    for (Size j = (i - 1) >> 1; i && cmp__(v, heap__[j]); i = j, j = (j - 1) >> 1)
+      heap__[i] = std::move(heap__[j]);
 
-    __heap[i] = std::move(v);
+    heap__[i] = std::move(v);
 
     return i;
   }
@@ -269,18 +269,18 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Size Heap< Val, Cmp, Alloc >::insert(const Val& val) {
     // create a new element at the end of the heap
-    __heap.push_back(val);
-    ++__nb_elements;
-    return __restoreHeap();
+    heap__.push_back(val);
+    ++nb_elements__;
+    return restoreHeap__();
   }
 
   // inserts a new (a copy) element in the heap
   template < typename Val, typename Cmp, typename Alloc >
   Size Heap< Val, Cmp, Alloc >::insert(Val&& val) {
     // create a new element at the end of the heap
-    __heap.push_back(std::move(val));
-    ++__nb_elements;
-    return __restoreHeap();
+    heap__.push_back(std::move(val));
+    ++nb_elements__;
+    return restoreHeap__();
   }
 
   // emplace a new element in the heap
@@ -288,22 +288,22 @@ namespace gum {
   template < typename... Args >
   Size Heap< Val, Cmp, Alloc >::emplace(Args&&... args) {
     // create a new element at the end of the heap
-    __heap.emplace_back(std::forward< Args >(args)...);
-    ++__nb_elements;
-    return __restoreHeap();
+    heap__.emplace_back(std::forward< Args >(args)...);
+    ++nb_elements__;
+    return restoreHeap__();
   }
 
   // indicates whether the heap is empty
   template < typename Val, typename Cmp, typename Alloc >
   INLINE bool Heap< Val, Cmp, Alloc >::empty() const noexcept {
-    return (__nb_elements == 0);
+    return (nb_elements__ == 0);
   }
 
   // indicates whether the heap contains a given value
   template < typename Val, typename Cmp, typename Alloc >
   INLINE bool Heap< Val, Cmp, Alloc >::contains(const Val& val) const {
-    for (Size i = 0; i < __nb_elements; ++i)
-      if (__heap[i] == val) return true;
+    for (Size i = 0; i < nb_elements__; ++i)
+      if (heap__[i] == val) return true;
 
     return false;
   }
@@ -312,11 +312,11 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   INLINE const Val& Heap< Val, Cmp, Alloc >::operator[](Size index) const {
     // check if the element exists
-    if (index >= __nb_elements) {
+    if (index >= nb_elements__) {
       GUM_ERROR(NotFound, "not enough elements in the heap");
     }
 
-    return __heap[index];
+    return heap__[index];
   }
 
   // displays the content of the heap
@@ -326,10 +326,10 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    for (Size i = 0; i != __nb_elements; ++i, deja = true) {
+    for (Size i = 0; i != nb_elements__; ++i, deja = true) {
       if (deja) stream << " , ";
 
-      stream << __heap[i];
+      stream << heap__[i];
     }
 
     stream << "]";

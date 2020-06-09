@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  *
  * this class generates the groundedBN from a class or an instance name.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
  */
 #ifndef GUM_PRM_O3PRM_BNREADER_H
 #define GUM_PRM_O3PRM_BNREADER_H
@@ -72,50 +72,50 @@ namespace gum {
     /// publishing Errors API
 
     /// # of errors
-    Size errors() { return __errors.error_count; }
+    Size errors() { return errors__.error_count; }
     /// # of errors
-    Size warnings() { return __errors.warning_count; }
+    Size warnings() { return errors__.warning_count; }
 
-    Idx errLine(Idx i) { return __errors.error(i).line; }
+    Idx errLine(Idx i) { return errors__.error(i).line; }
     /// col of ith error or warning
-    Idx errCol(Idx i) { return __errors.error(i).column; }
+    Idx errCol(Idx i) { return errors__.error(i).column; }
     /// type of ith error or warning
-    bool errIsError(Idx i) { return __errors.error(i).is_error; }
+    bool errIsError(Idx i) { return errors__.error(i).is_error; }
     /// message of ith error or warning
-    std::string errMsg(Idx i) { return __errors.error(i).msg; }
+    std::string errMsg(Idx i) { return errors__.error(i).msg; }
 
     /// send on std::cerr the list of errors
     void showElegantErrors(std::ostream& o = std::cerr) {
-      __errors.elegantErrors(o);
+      errors__.elegantErrors(o);
     }
 
     /// send on std::cerr the list of errors or warnings
     void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) {
-      __errors.elegantErrorsAndWarnings(o);
+      errors__.elegantErrorsAndWarnings(o);
     }
 
     /// send on std::cerr the number of errors and the number of warnings
     void showErrorCounts(std::ostream& o = std::cerr) {
-      __errors.syntheticResults(o);
+      errors__.syntheticResults(o);
     }
     /// @}
 
     private:
-    std::string __filename;
+    std::string filename__;
 
-    std::string __classpath;
-    std::string __entityName;
+    std::string classpath__;
+    std::string entityName__;
 
-    BayesNet< GUM_SCALAR >* __bn;
-    ErrorsContainer         __errors;
+    BayesNet< GUM_SCALAR >* bn__;
+    ErrorsContainer         errors__;
 
-    void               __generateBN(prm::PRMSystem< GUM_SCALAR >& system);
-    static std::string __getVariableName(const std::string& path,
+    void               generateBN__(prm::PRMSystem< GUM_SCALAR >& system);
+    static std::string getVariableName__(const std::string& path,
                                          const std::string& type,
                                          const std::string& name,
                                          const std::string& toRemove = "");
-    static std::string __getEntityName(const std::string& filename);
-    static std::string __getInstanceName(const std::string& classname);
+    static std::string getEntityName__(const std::string& filename);
+    static std::string getInstanceName__(const std::string& classname);
   };
 
 }   // namespace gum

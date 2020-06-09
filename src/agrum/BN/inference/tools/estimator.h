@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief This file contains estimating tools for approximate inference
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_ESTIMATOR_H
 #define GUM_ESTIMATOR_H
@@ -116,16 +116,16 @@ namespace gum {
     private:
     /// estimator represented by hashtable between each variable name and a vector
     /// of cumulative sample weights
-    HashTable< std::string, std::vector< GUM_SCALAR > > _estimator;
+    HashTable< std::string, std::vector< GUM_SCALAR > > estimator_;
 
     /// cumulated weights of all samples
-    GUM_SCALAR _wtotal;
+    GUM_SCALAR wtotal_;
 
     /// number of generated samples
-    Size _ntotal;
+    Size ntotal_;
 
     /// bayesian network on which approximation is done
-    const IBayesNet< GUM_SCALAR >* _bn;
+    const IBayesNet< GUM_SCALAR >* bn_;
 
     /// returns expected value of Bernouilli variable (called by it's name) of
     /// given parameter
@@ -155,7 +155,7 @@ namespace gum {
     private:
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable< std::string, Potential< GUM_SCALAR >* > __target_posteriors;
+    HashTable< std::string, Potential< GUM_SCALAR >* > target_posteriors__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

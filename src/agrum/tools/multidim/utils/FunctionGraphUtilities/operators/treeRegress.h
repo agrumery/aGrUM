@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to compute the operation between two decision diagrams
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_TREE_REGRESS_H
@@ -84,15 +84,15 @@ namespace gum {
     private:
     /// The whatever 1
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-       __xPloreVFunc(NodeId currentNodeId);
+       xPloreVFunc__(NodeId currentNodeId);
 
     /// The function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __vFunc;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vFunc__;
     const Bijection<
        const DiscreteVariable*,
        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
-                                              __pxi;
-    HashTable< const DiscreteVariable*, Idx > __context;
+                                              pxi__;
+    HashTable< const DiscreteVariable*, Idx > context__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

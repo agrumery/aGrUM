@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief The class for the NML penalty used in 3off2
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -44,7 +44,7 @@ namespace gum {
                                                      nodeId2columns,
        const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __param_complexity(alloc) {
+        param_complexity__(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -58,7 +58,7 @@ namespace gum {
                                                      nodeId2columns,
        const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __param_complexity(alloc) {
+        param_complexity__(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -69,7 +69,7 @@ namespace gum {
        KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
                            const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
-        __param_complexity(from.__param_complexity, alloc) {
+        param_complexity__(from.param_complexity__, alloc) {
       GUM_CONS_CPY(KNML);
     }
 
@@ -86,7 +86,7 @@ namespace gum {
        KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
                            const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
-        __param_complexity(std::move(from.__param_complexity), alloc) {
+        param_complexity__(std::move(from.param_complexity__), alloc) {
       GUM_CONS_MOV(KNML);
     }
 
@@ -133,7 +133,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        __param_complexity = from.__param_complexity;
+        param_complexity__ = from.param_complexity__;
       }
       return *this;
     }
@@ -144,7 +144,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(KNML< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-        __param_complexity = std::move(from.__param_complexity);
+        param_complexity__ = std::move(from.param_complexity__);
       }
       return *this;
     }
@@ -154,7 +154,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clear() {
       IndependenceTest< ALLOC >::clear();
-      __param_complexity.clearCache();
+      param_complexity__.clearCache();
     }
 
 
@@ -162,7 +162,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clearCache() {
       IndependenceTest< ALLOC >::clearCache();
-      __param_complexity.clearCache();
+      param_complexity__.clearCache();
     }
 
 
@@ -170,19 +170,19 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::useCache(const bool on_off) {
       IndependenceTest< ALLOC >::useCache(on_off);
-      __param_complexity.useCache(on_off);
+      param_complexity__.useCache(on_off);
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double KNML< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
+    double KNML< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // perform the countings on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
       // that we will be needed subsequently
-      this->_counter.counts(idset, true);
+      this->counter_.counts(idset, true);
 
-      const bool informative_external_apriori = this->_apriori->isInformative();
+      const bool informative_external_apriori = this->apriori_->isInformative();
 
       // get the domain sizes of X and Y
       const auto& db = this->database();
@@ -207,16 +207,16 @@ namespace gum {
         idset_yui.erase(idset[0]);
 
         std::vector< double, ALLOC< double > > N_ui =
-           this->_counter.counts(idset.conditionalIdCondSet(), false);
+           this->counter_.counts(idset.conditionalIdCondSet(), false);
         std::vector< double, ALLOC< double > > N_xui =
-           this->_counter.counts(idset_xui, false);
+           this->counter_.counts(idset_xui, false);
         std::vector< double, ALLOC< double > > N_yui =
-           this->_counter.counts(idset_yui, false);
+           this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
-          this->_apriori->addConditioningApriori(idset, N_ui);
-          this->_apriori->addAllApriori(idset, N_xui);
-          this->_apriori->addAllApriori(idset, N_yui);
+          this->apriori_->addConditioningApriori(idset, N_ui);
+          this->apriori_->addAllApriori(idset, N_xui);
+          this->apriori_->addAllApriori(idset, N_yui);
         }
 
 
@@ -225,12 +225,12 @@ namespace gum {
         // 		 sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
         double score = 0.0;
         for (auto n_xui: N_xui)
-          score += __param_complexity.log2Cnr(r_y, n_xui);
+          score += param_complexity__.log2Cnr(r_y, n_xui);
         for (auto n_yui: N_yui)
-          score += __param_complexity.log2Cnr(r_x, n_yui);
+          score += param_complexity__.log2Cnr(r_x, n_yui);
         for (auto n_ui: N_ui) {
-          score -= __param_complexity.log2Cnr(r_y, n_ui);
-          score -= __param_complexity.log2Cnr(r_x, n_ui);
+          score -= param_complexity__.log2Cnr(r_y, n_ui);
+          score -= param_complexity__.log2Cnr(r_x, n_ui);
         }
 
         score *= 0.5;
@@ -239,33 +239,33 @@ namespace gum {
       } else {
         // here, there is no conditioning set
         // now get the Nxui, Nyui and Nui
-        IdCondSet< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
-        IdCondSet< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
+        IdCondSet< ALLOC > idset_xui(idset[0], this->empty_ids_, true);
+        IdCondSet< ALLOC > idset_yui(idset[1], this->empty_ids_, true);
 
         std::vector< double, ALLOC< double > > N_xui =
-           this->_counter.counts(idset_xui, false);
+           this->counter_.counts(idset_xui, false);
         std::vector< double, ALLOC< double > > N_yui =
-           this->_counter.counts(idset_yui, false);
+           this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
-          this->_apriori->addAllApriori(idset, N_xui);
-          this->_apriori->addAllApriori(idset, N_yui);
+          this->apriori_->addAllApriori(idset, N_xui);
+          this->apriori_->addAllApriori(idset, N_yui);
         }
 
 
         // so, the formula for kNML is:
-        // 0.5 * ( sum_X( log( C^(r_y)_#X ) ) - log( C^(r_y)_N ) +
-        //         sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)_N ) )
+        // 0.5 * ( sum_X( log( C^(r_y)_#X ) ) - log( C^(r_y)N_ ) +
+        //         sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)N_ ) )
         double N = 0.0;
         double score = 0.0;
         for (auto n_xui: N_xui) {
-          score += __param_complexity.log2Cnr(r_y, n_xui);
+          score += param_complexity__.log2Cnr(r_y, n_xui);
           N += n_xui;
         }
         for (auto n_yui: N_yui)
-          score += __param_complexity.log2Cnr(r_x, n_yui);
-        score -= __param_complexity.log2Cnr(r_y, N);
-        score -= __param_complexity.log2Cnr(r_x, N);
+          score += param_complexity__.log2Cnr(r_x, n_yui);
+        score -= param_complexity__.log2Cnr(r_y, N);
+        score -= param_complexity__.log2Cnr(r_x, N);
 
         score *= 0.5;
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *
  * Writes a bayes net in UAI format
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef UAI_BN_WRITER_H
@@ -98,9 +98,9 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string __preambule(const IBayesNet< GUM_SCALAR >& bn);
+    std::string preambule__(const IBayesNet< GUM_SCALAR >& bn);
 
-    std::string __cptBloc(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string cptBloc__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
   };
 
 

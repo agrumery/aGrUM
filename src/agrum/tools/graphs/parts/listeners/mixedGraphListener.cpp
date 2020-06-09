@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief source file for virtual Base classes for mixed graphs listener
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/graphs/parts/listeners/mixedGraphListener.h>
@@ -50,19 +50,19 @@ namespace gum {
     }
 
     GUM_CONSTRUCTOR(MixedGraphListener);
-    _graph = g;
+    graph_ = g;
 
     GUM_CONNECT(
-       (*_graph), onNodeAdded, (*this), MixedGraphListener::whenNodeAdded);
+       (*graph_), onNodeAdded, (*this), MixedGraphListener::whenNodeAdded);
     GUM_CONNECT(
-       (*_graph), onNodeDeleted, (*this), MixedGraphListener::whenNodeDeleted);
-    GUM_CONNECT((*_graph), onArcAdded, (*this), MixedGraphListener::whenArcAdded);
+       (*graph_), onNodeDeleted, (*this), MixedGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onArcAdded, (*this), MixedGraphListener::whenArcAdded);
     GUM_CONNECT(
-       (*_graph), onArcDeleted, (*this), MixedGraphListener::whenArcDeleted);
+       (*graph_), onArcDeleted, (*this), MixedGraphListener::whenArcDeleted);
     GUM_CONNECT(
-       (*_graph), onEdgeAdded, (*this), MixedGraphListener::whenEdgeAdded);
+       (*graph_), onEdgeAdded, (*this), MixedGraphListener::whenEdgeAdded);
     GUM_CONNECT(
-       (*_graph), onEdgeDeleted, (*this), MixedGraphListener::whenEdgeDeleted);
+       (*graph_), onEdgeDeleted, (*this), MixedGraphListener::whenEdgeDeleted);
   }
 
   MixedGraphListener::~MixedGraphListener() { GUM_DESTRUCTOR(MixedGraphListener); }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief a Projection operator class used for scheduling inferences
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SCHEDULE_PROJECT_H
@@ -131,22 +131,22 @@ namespace gum {
 
     private:
     // the table to project
-    ScheduleMultiDim< GUM_SCALAR > __table;
+    ScheduleMultiDim< GUM_SCALAR > table__;
 
     // the set of variables that should be removed from the table
-    Set< const DiscreteVariable* > __del_vars;
+    Set< const DiscreteVariable* > del_vars__;
 
     /// the result of the operation
-    ScheduleMultiDim< GUM_SCALAR >* __result;
+    ScheduleMultiDim< GUM_SCALAR >* result__;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __args;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __results;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* results__;
 
     /// the projection operator
-    MultiDimImplementation< GUM_SCALAR >* (*__project)(
+    MultiDimImplementation< GUM_SCALAR >* (*project__)(
        const MultiDimImplementation< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&);
   };

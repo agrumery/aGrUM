@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Class for generating bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Ariele MAESANO and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Ariele MAESANO and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
@@ -69,10 +69,10 @@ namespace gum {
    *must:\n
    * 1) Create the class
    *XXXXXXMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>.\n
-   * 2) Add a variable specific to the constraint (here _maxParents). \n
-   * 3) Verify in the function _checkCondition() the wanted constraint and then
+   * 2) Add a variable specific to the constraint (here maxParents_). \n
+   * 3) Verify in the function checkCondition_() the wanted constraint and then
    *launch
-   * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions()
+   * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::checkConditions__()
    *to verify the default constraint.\n
    * 4) Define the getters and setters of the constraint variable.\n
    * 5) And verify in the constructor that the constraint is not in
@@ -177,7 +177,7 @@ namespace gum {
     /// @}
 
     protected:
-    Size _maxParents;
+    Size maxParents_;
 
     private:
     /**
@@ -185,7 +185,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    bool __checkConditions() final;
+    bool checkConditions__() final;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

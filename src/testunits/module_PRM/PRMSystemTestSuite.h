@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -46,141 +46,141 @@ namespace gum_tests {
     typedef gum::prm::PRMReferenceSlot< double >   Reference;
     typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
 
-    PRMType*                                    __boolean;
-    PRMClass*                                   __asia;
-    gum::HashTable< std::string, gum::NodeId >* __nodeMap;
+    PRMType*                                    boolean__;
+    PRMClass*                                   asia__;
+    gum::HashTable< std::string, gum::NodeId >* nodeMap__;
 
     public:
     void setUp() {
-      __boolean = PRMType::boolean();
-      __nodeMap = new gum::HashTable< std::string, gum::NodeId >();
-      __asia = new PRMClass("asia");
-      __buildAsiaBN();
+      boolean__ = PRMType::boolean();
+      nodeMap__ = new gum::HashTable< std::string, gum::NodeId >();
+      asia__ = new PRMClass("asia");
+      buildAsiaBN__();
     }
 
     void tearDown() {
-      delete __boolean;
-      delete __nodeMap;
-      delete __asia;
+      delete boolean__;
+      delete nodeMap__;
+      delete asia__;
     }
 
-    void __buildAsiaBN() {
-      __visitToAsia();
-      __tuberculosis();
-      __smoking();
-      __lungCancer();
-      __bronchitis();
-      __tubOrCancer();
-      __positiveXRay();
-      __dyspnea();
+    void buildAsiaBN__() {
+      visitToAsia__();
+      tuberculosis__();
+      smoking__();
+      lungCancer__();
+      bronchitis__();
+      tubOrCancer__();
+      positiveXRay__();
+      dyspnea__();
     }
 
-    void __visitToAsia() {
+    void visitToAsia__() {
       std::string           name = "visitToAsia";
-      auto                  attr = new PRMAttribute(name, *__boolean);
-      auto                  id = __asia->add(attr);
+      auto                  attr = new PRMAttribute(name, *boolean__);
+      auto                  id = asia__->add(attr);
       std::vector< double > values{0.99, 0.01};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __tuberculosis() {
+    void tuberculosis__() {
       std::string name = "tuberculosis";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("visitToAsia", "tuberculosis");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("visitToAsia", "tuberculosis");
       std::vector< double > values{0.99, 0.95, 0.01, 0.05};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __smoking() {
+    void smoking__() {
       std::string           name = "smoking";
-      auto                  attr = new PRMAttribute(name, *__boolean);
-      auto                  id = __asia->add(attr);
+      auto                  attr = new PRMAttribute(name, *boolean__);
+      auto                  id = asia__->add(attr);
       std::vector< double > values{0.50, 0.50};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __lungCancer() {
+    void lungCancer__() {
       std::string name = "lungCancer";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("smoking", "lungCancer");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("smoking", "lungCancer");
       std::vector< double > values{0.99, 0.90, 0.01, 0.10};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __bronchitis() {
+    void bronchitis__() {
       std::string name = "bronchitis";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("smoking", "bronchitis");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("smoking", "bronchitis");
       std::vector< double > values{0.70, 0.40, 0.30, 0.60};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __tubOrCancer() {
+    void tubOrCancer__() {
       std::string name = "tubOrCancer";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("tuberculosis", "tubOrCancer");
-      __asia->addArc("lungCancer", "tubOrCancer");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("tuberculosis", "tubOrCancer");
+      asia__->addArc("lungCancer", "tubOrCancer");
       std::vector< double > values{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __positiveXRay() {
+    void positiveXRay__() {
       std::string name = "positiveXRay";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("tubOrCancer", "positiveXRay");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("tubOrCancer", "positiveXRay");
       std::vector< double > values{0.95, 0.02, 0.05, 0.98};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
-    void __dyspnea() {
+    void dyspnea__() {
       std::string name = "dyspnea";
-      auto        attr = new PRMAttribute(name, *__boolean);
-      auto        id = __asia->add(attr);
-      __asia->addArc("tubOrCancer", "dyspnea");
-      __asia->addArc("bronchitis", "dyspnea");
+      auto        attr = new PRMAttribute(name, *boolean__);
+      auto        id = asia__->add(attr);
+      asia__->addArc("tubOrCancer", "dyspnea");
+      asia__->addArc("bronchitis", "dyspnea");
       std::vector< double > values{0.9, 0.2, 0.3, 0.1, 0.1, 0.8, 0.7, 0.9};
       attr->cpf().fillWith(values);
-      __nodeMap->insert(name, id);
+      nodeMap__->insert(name, id);
     }
 
     void testClassConstruction() {
-      TS_ASSERT_EQUALS(__asia->attributes().size(), (gum::Size)8);
+      TS_ASSERT_EQUALS(asia__->attributes().size(), (gum::Size)8);
     }
 
     void testAddInstance() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       // Act
       TS_ASSERT_THROWS_NOTHING(sys.add(inst));
       // Assert
       TS_ASSERT(sys.exists("asia"));
-      TS_ASSERT(sys.isInstantiated(*__asia));
+      TS_ASSERT(sys.isInstantiated(*asia__));
       TS_ASSERT_EQUALS(sys.size(), (gum::Size)1);
     }
 
     void testInstantiate() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       // Act
       TS_ASSERT_THROWS_NOTHING(sys.instantiate());
       // Assert
       TS_ASSERT(sys.exists("asia"));
-      TS_ASSERT(sys.isInstantiated(*__asia));
+      TS_ASSERT(sys.isInstantiated(*asia__));
       TS_ASSERT_EQUALS(sys.size(), (gum::Size)1);
     }
 
@@ -190,7 +190,7 @@ namespace gum_tests {
       auto        bn = new gum::BayesNet< double >("asia");
       {
         PRMSystem sys("asia");
-        auto      inst = new PRMInstance("asia", *__asia);
+        auto      inst = new PRMInstance("asia", *asia__);
         sys.add(inst);
         sys.instantiate();
         gum::BayesNetFactory< double > factory(bn);
@@ -212,7 +212,7 @@ namespace gum_tests {
     void testGroundBNAfterDelete() {
       // Arrange
       PRMSystem* sys = new PRMSystem("asia");
-      auto       inst = new PRMInstance("asia", *__asia);
+      auto       inst = new PRMInstance("asia", *asia__);
       sys->add(inst);
       sys->instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -237,7 +237,7 @@ namespace gum_tests {
     void testVisitToAsiaId() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -252,7 +252,7 @@ namespace gum_tests {
     void testVisitToAsia() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -260,7 +260,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)visitToAsia");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("visitToAsia").cpf();
+      const auto&           cpf = asia__->get("visitToAsia").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -276,7 +276,7 @@ namespace gum_tests {
     void testTuberculosis() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -284,7 +284,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)tuberculosis");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("tuberculosis").cpf();
+      const auto&           cpf = asia__->get("tuberculosis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -300,7 +300,7 @@ namespace gum_tests {
     void testSmoking() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -308,7 +308,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                            id = bn->idFromName("asia.(boolean)smoking");
       std::vector< double >           values;
-      const auto&                     cpf = __asia->get("smoking").cpf();
+      const auto&                     cpf = asia__->get("smoking").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -324,7 +324,7 @@ namespace gum_tests {
     void testLungCancer() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -332,7 +332,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)lungCancer");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("lungCancer").cpf();
+      const auto&           cpf = asia__->get("lungCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -348,7 +348,7 @@ namespace gum_tests {
     void testBronchitis() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -356,7 +356,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)bronchitis");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("bronchitis").cpf();
+      const auto&           cpf = asia__->get("bronchitis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -372,7 +372,7 @@ namespace gum_tests {
     void testTubOrCancer() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -380,7 +380,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)tubOrCancer");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("tubOrCancer").cpf();
+      const auto&           cpf = asia__->get("tubOrCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -396,7 +396,7 @@ namespace gum_tests {
     void testPositiveXRay() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -404,7 +404,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)positiveXRay");
       std::vector< double > values;
-      const auto&           cpf = __asia->get("positiveXRay").cpf();
+      const auto&           cpf = asia__->get("positiveXRay").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -420,7 +420,7 @@ namespace gum_tests {
     void testDyspnea() {
       // Arrange
       PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *__asia);
+      auto      inst = new PRMInstance("asia", *asia__);
       sys.add(inst);
       sys.instantiate();
       auto                           bn = new gum::BayesNet< double >("asia");
@@ -428,7 +428,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                            id = bn->idFromName("asia.(boolean)dyspnea");
       std::vector< double >           values;
-      const auto&                     cpf = __asia->get("dyspnea").cpf();
+      const auto&                     cpf = asia__->get("dyspnea").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));

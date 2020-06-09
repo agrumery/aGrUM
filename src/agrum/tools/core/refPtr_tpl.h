@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of aGrUM's "smart" pointers.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/core/refPtr.h>
 
@@ -34,7 +34,7 @@ namespace gum {
 
   template < typename Val >
   INLINE RefPtr< Val >::RefPtr(Val* v) :
-      __val(v), __refcount(v ? new unsigned int(1U) : 0) {
+      val__(v), refcount__(v ? new unsigned int(1U) : 0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(RefPtr);
   }
@@ -43,11 +43,11 @@ namespace gum {
 
   template < typename Val >
   INLINE RefPtr< Val >::RefPtr(const RefPtr< Val >& from) :
-      __val(from.__val), __refcount(from.__refcount) {
+      val__(from.val__), refcount__(from.refcount__) {
     // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
-    if (__refcount) ++*__refcount;
+    if (refcount__) ++*refcount__;
   }
 
   // copy constructor for castable pointers
@@ -55,17 +55,17 @@ namespace gum {
   template < typename Val >
   template < typename DownVal >
   INLINE RefPtr< Val >::RefPtr(const RefPtr< DownVal >& from) :
-      __val(from.__val), __refcount(from.__refcount) {
+      val__(from.val__), refcount__(from.refcount__) {
     // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
-    if (__refcount) ++*__refcount;
+    if (refcount__) ++*refcount__;
   }
 
   // removes the current content of the smart pointer
 
   template < typename Val >
-  INLINE void RefPtr< Val >::__destroy(unsigned int* count, Val* v) {
+  INLINE void RefPtr< Val >::destroy__(unsigned int* count, Val* v) {
     if (count) {
       if (*count == 1U) {
         // do not change the order of the deletes (this prevents memory leaks
@@ -83,22 +83,22 @@ namespace gum {
   template < typename Val >
   INLINE RefPtr< Val >& RefPtr< Val >::operator=(const RefPtr< Val >& from) {
     // avoid self assignment
-    if (__val != from.__val) {
+    if (val__ != from.val__) {
       // for debugging purposes
       GUM_OP_CPY(RefPtr);
 
       // keep track of the current refcount and dumb pointer
-      unsigned int* old_refcount = __refcount;
-      Val*          old_val = __val;
+      unsigned int* old_refcount = refcount__;
+      Val*          old_val = val__;
 
       // perform the copy
-      __refcount = from.__refcount;
-      __val = from.__val;
+      refcount__ = from.refcount__;
+      val__ = from.val__;
 
-      if (__refcount) ++*__refcount;
+      if (refcount__) ++*refcount__;
 
       // now try to dereference the old dumb pointer
-      __destroy(old_refcount, old_val);
+      destroy__(old_refcount, old_val);
     }
 
     return *this;
@@ -109,36 +109,36 @@ namespace gum {
   template < typename Val >
   INLINE RefPtr< Val >& RefPtr< Val >::operator=(Val* from) {
     // avoid self assignment
-    if (__val != from) {
+    if (val__ != from) {
       // for debugging purposes
       GUM_OP_CPY(RefPtr);
 
       // keep track of the current refcount and dumb pointer
-      unsigned int* old_refcount = __refcount;
-      Val*          old_val = __val;
+      unsigned int* old_refcount = refcount__;
+      Val*          old_val = val__;
 
       // perform the copy
       try {
         if (from)
-          __refcount = new unsigned int(1U);
+          refcount__ = new unsigned int(1U);
         else
-          __refcount = 0;
+          refcount__ = 0;
 
-        __val = from;
+        val__ = from;
       } catch (std::bad_alloc&) {
         if (*old_refcount == 1) {
-          __val = from;
+          val__ = from;
           delete old_val;
           return *this;
         }
 
-        __refcount = 0;
-        __val = 0;
+        refcount__ = 0;
+        val__ = 0;
         throw;
       }
 
       // now try to dereference the old dumb pointer
-      __destroy(old_refcount, old_val);
+      destroy__(old_refcount, old_val);
     }
 
     return *this;
@@ -152,17 +152,17 @@ namespace gum {
     // for debugging purposes
     GUM_OP_CPY(RefPtr);
     // keep track of the current refcount and dumb pointer
-    unsigned int* old_refcount = __refcount;
-    Val*          old_val = __val;
+    unsigned int* old_refcount = refcount__;
+    Val*          old_val = val__;
 
     // perform the copy
-    __refcount = from.__refcount;
-    __val = from.__val;
+    refcount__ = from.refcount__;
+    val__ = from.val__;
 
-    if (__refcount) ++*__refcount;
+    if (refcount__) ++*refcount__;
 
     // now try to dereference the old dumb pointer
-    __destroy(old_refcount, old_val);
+    destroy__(old_refcount, old_val);
 
     return *this;
   }
@@ -173,55 +173,55 @@ namespace gum {
   INLINE RefPtr< Val >::~RefPtr() {
     // for debugging purposes
     GUM_DESTRUCTOR(RefPtr);
-    __destroy(__refcount, __val);
+    destroy__(refcount__, val__);
   }
 
   // checks whether two RefPtr<Val> are smart pointers for the same element
 
   template < typename Val >
   INLINE bool RefPtr< Val >::operator==(const RefPtr< Val >& from) const {
-    return from.__refcount == __refcount;
+    return from.refcount__ == refcount__;
   }
 
   // checks whether two RefPtr<Val> are smart pointers for differen elements
 
   template < typename Val >
   INLINE bool RefPtr< Val >::operator!=(const RefPtr< Val >& from) const {
-    return from.__refcount != __refcount;
+    return from.refcount__ != refcount__;
   }
 
   // dereferencing operator
 
   template < typename Val >
   INLINE Val& RefPtr< Val >::operator*() {
-    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
-    return *__val;
+    return *val__;
   }
 
   // dereferencing operator
 
   template < typename Val >
   INLINE const Val& RefPtr< Val >::operator*() const {
-    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
-    return *__val;
+    return *val__;
   }
 
   // dereferencing operator
 
   template < typename Val >
   INLINE Val* RefPtr< Val >::operator->() const {
-    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
-    return __val;
+    return val__;
   }
 
   // checks whether a RefPtr points toward something
 
   template < typename Val >
   INLINE RefPtr< Val >::operator bool() const {
-    return (__val != 0);
+    return (val__ != 0);
   }
 
   // dereference what was referenced by the smart pointer
@@ -229,29 +229,29 @@ namespace gum {
   template < typename Val >
   INLINE void RefPtr< Val >::clear() {
     // keep track of the old pointer and reference count
-    unsigned int* old_refcount = __refcount;
-    Val*          old_val = __val;
+    unsigned int* old_refcount = refcount__;
+    Val*          old_val = val__;
     // set properly the dumb pointer and its refcount
-    __val = 0;
-    __refcount = 0;
+    val__ = 0;
+    refcount__ = 0;
     // now try to dereference the old dumb pointer
-    __destroy(old_refcount, old_val);
+    destroy__(old_refcount, old_val);
   }
 
   // returns the number of references on the contained pointer
 
   template < typename Val >
   INLINE unsigned int RefPtr< Val >::refCount() const {
-    if (__refcount == 0) return 0;
+    if (refcount__ == 0) return 0;
 
-    return *__refcount;
+    return *refcount__;
   }
 
   // returns the refcount pointer
 
   template < typename Val >
-  INLINE unsigned int* RefPtr< Val >::__refCountPtr() const {
-    return __refcount;
+  INLINE unsigned int* RefPtr< Val >::refCountPtr__() const {
+    return refcount__;
   }
 
   // replace the contents of two RefPtr
@@ -259,14 +259,14 @@ namespace gum {
   template < typename Val >
   void swap(RefPtr< Val >& ptr1, RefPtr< Val >& ptr2) {
     // save from's content
-    Val*          tmp_val = ptr2.__val;
-    unsigned int* tmp_refcount = ptr2.__refcount;
+    Val*          tmp_val = ptr2.val__;
+    unsigned int* tmp_refcount = ptr2.refcount__;
     // modify from's content
-    ptr2.__refcount = ptr1.__refcount;
-    ptr2.__val = ptr1.__val;
+    ptr2.refcount__ = ptr1.refcount__;
+    ptr2.val__ = ptr1.val__;
     // modify this's content
-    ptr1.__val = tmp_val;
-    ptr1.__refcount = tmp_refcount;
+    ptr1.val__ = tmp_val;
+    ptr1.refcount__ = tmp_refcount;
   }
 
 } /* namespace gum */

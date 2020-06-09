@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to compute the operation between two decision diagrams
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_TREE_OPERATOR_H
@@ -91,25 +91,25 @@ namespace gum {
 
     private:
     /// The main recursion function
-    NodeId __xPloreDT1(NodeId currentNodeId);
+    NodeId xPloreDT1__(NodeId currentNodeId);
 
     /// The main recursion function
-    NodeId __xPloreDT2(NodeId currentNodeId);
+    NodeId xPloreDT2__(NodeId currentNodeId);
 
-    NodeId __checkRedundancy(const DiscreteVariable*, NodeId*);
+    NodeId checkRedundancy__(const DiscreteVariable*, NodeId*);
 
     /// The two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __dt1;
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __dt2;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1__;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2__;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* rd__;
 
     /// The function to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR > __combine;
+    const COMBINEOPERATOR< GUM_SCALAR > combine__;
 
-    HashTable< const DiscreteVariable*, Idx > __context;
-    NodeId                                    __curDT1Leaf;
+    HashTable< const DiscreteVariable*, Idx > context__;
+    NodeId                                    curDT1Leaf__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

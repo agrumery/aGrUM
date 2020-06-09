@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return __errors;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -113,9 +113,9 @@ void Parser::DSL() {
 		factory().startNetworkDeclaration();
 		
 		Expect(6 /* "net" */);
-		if (la->kind == _ident) {
+		if (la->kind == ident_) {
 			IDENT(name_of_network);
-		} else if (la->kind == _string) {
+		} else if (la->kind == string_) {
 			STRING(name_of_network);
 		} else SynErr(34);
 		factory().addNetworkProperty("name", name_of_network); 
@@ -159,12 +159,12 @@ void Parser::DSL() {
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(_ident);
+		Expect(ident_);
 		name=narrow(t->val); 
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(_string);
+		Expect(string_);
 		str=narrow(t->val); 
 }
 
@@ -180,7 +180,7 @@ void Parser::CREATION_PART() {
 
 void Parser::NUM_SAMPLES() {
 		Expect(10 /* "NUMSAMPLES" */);
-		Expect(_integer);
+		Expect(integer_);
 		Expect(9 /* ";" */);
 }
 
@@ -196,7 +196,7 @@ void Parser::WINDOWPOSITION_PART() {
 
 void Parser::BK_COLOR() {
 		Expect(11 /* "BKCOLOR" */);
-		Expect(_integer);
+		Expect(integer_);
 		Expect(9 /* ";" */);
 }
 
@@ -212,7 +212,7 @@ void Parser::DOCUMENTATION_PART() {
 
 void Parser::SHOW_AS() {
 		Expect(12 /* "SHOWAS" */);
-		Expect(_integer);
+		Expect(integer_);
 		Expect(9 /* ";" */);
 }
 
@@ -225,7 +225,7 @@ void Parser::NODE() {
 		IDENT(var);
 		Expect(7 /* "{" */);
 		Expect(14 /* "TYPE" */);
-		Expect(_ident);
+		Expect(ident_);
 		Expect(9 /* ";" */);
 		HEADER();
 		if (la->kind == 15 /* "SCREEN" */) {
@@ -256,10 +256,10 @@ void Parser::HEADER() {
 		Expect(20 /* "HEADER" */);
 		Expect(7 /* "{" */);
 		Expect(23 /* "ID" */);
-		Expect(_ident);
+		Expect(ident_);
 		Expect(9 /* ";" */);
 		Expect(24 /* "NAME" */);
-		Expect(_string);
+		Expect(string_);
 		Expect(9 /* ";" */);
 		Expect(8 /* "}" */);
 		Expect(9 /* ";" */);
@@ -268,7 +268,7 @@ void Parser::HEADER() {
 void Parser::PARENTS(std::vector<std::string>& parents ) {
 		Expect(25 /* "PARENTS" */);
 		Expect(26 /* "(" */);
-		if (la->kind == _ident) {
+		if (la->kind == ident_) {
 			PARENTS_LIST(parents);
 		}
 		Expect(27 /* ")" */);
@@ -359,9 +359,9 @@ void Parser::PROBA(const std::string& var, const std::vector<std::string>& paren
 }
 
 void Parser::IDENT_OR_INTEGER(std::string& name) {
-		if (la->kind == _ident) {
+		if (la->kind == ident_) {
 			IDENT(name);
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
 			name=narrow(t->val);
 		} else SynErr(35);
@@ -433,10 +433,10 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == _number) {
+		if (la->kind == number_) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == _integer) {
+		} else if (la->kind == integer_) {
 			Get();
 			val=float(coco_atoi(t->val)); 
 		} else SynErr(36);
@@ -572,13 +572,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -634,7 +634,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -255,7 +255,7 @@ namespace gum_tests {
     }
 
 
-    void testConstants () {
+    void testConstants() {
       std::vector< gum::LabelizedVariable* > vars(3);
 
       for (gum::Idx i = 0; i < 3; ++i) {
@@ -283,16 +283,16 @@ namespace gum_tests {
 
       {
         gum::Set< const gum::Potential< float >* > res =
-          projcomb.combineAndProject(to_comb, del_vars);
+           projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 3);
-        
-        int nb_empty = 0;
+
+        int   nb_empty = 0;
         float prod = 1;
-        for (const auto ptrPot : res) {
+        for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
             prod *= (*ptrPot)[I];
-            nb_empty ++;
+            nb_empty++;
           }
         }
 
@@ -303,16 +303,16 @@ namespace gum_tests {
       del_vars << vars[1];
       {
         gum::Set< const gum::Potential< float >* > res =
-          projcomb.combineAndProject(to_comb, del_vars);
+           projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 3);
-        
-        int nb_empty = 0;
+
+        int   nb_empty = 0;
         float prod = 1;
-        for (const auto ptrPot : res) {
+        for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
             prod *= (*ptrPot)[I];
-            nb_empty ++;
+            nb_empty++;
           }
         }
 
@@ -321,31 +321,29 @@ namespace gum_tests {
       }
 
 
-      to_comb.clear ();
+      to_comb.clear();
       to_comb << &t2 << &t3;
       {
         gum::Set< const gum::Potential< float >* > res =
-          projcomb.combineAndProject(to_comb, del_vars);
+           projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 2);
-        
-        int nb_empty = 0;
+
+        int   nb_empty = 0;
         float prod = 1;
-        for (const auto ptrPot : res) {
+        for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
             prod *= (*ptrPot)[I];
-            nb_empty ++;
+            nb_empty++;
           }
         }
 
         TS_ASSERT(nb_empty == 2);
         TS_ASSERT_DELTA(prod, 15.0, 1e-6);
       }
-
     }
 
 
-    
     private:
     // =========================================================================
     /// initialize randomly a table

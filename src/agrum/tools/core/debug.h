@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -61,7 +61,7 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_CONSTRUCTOR_BASIC(x)                                          \
       {                                                                       \
-        gum::__debug__::__inc_creation(                                       \
+        gum::__debug__::inc_creation__(                                       \
            #x, __FILE__, __LINE__, "constructor of", (void*)this, sizeof(x)); \
       }
 #    define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x)
@@ -70,7 +70,7 @@
 // DEFINITION OF GUM_DESTRUCTOR
 #    define GUM_DESTRUCTOR_BASIC(x)                               \
       {                                                           \
-        gum::__debug__::__inc_deletion(                           \
+        gum::__debug__::inc_deletion__(                           \
            #x, __FILE__, __LINE__, "destructor of", (void*)this); \
       }
 #    define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x)
@@ -79,7 +79,7 @@
 // DEFINITION OF GUM_CONS_CPY
 #    define GUM_CONS_CPY_BASIC(x)                             \
       {                                                       \
-        gum::__debug__::__inc_creation(#x,                    \
+        gum::__debug__::inc_creation__(#x,                    \
                                        __FILE__,              \
                                        __LINE__,              \
                                        "copy constructor of", \
@@ -92,7 +92,7 @@
 // DEFINITION OF GUM_CONS_MOV
 #    define GUM_CONS_MOV_BASIC(x)                             \
       {                                                       \
-        gum::__debug__::__inc_creation(#x,                    \
+        gum::__debug__::inc_creation__(#x,                    \
                                        __FILE__,              \
                                        __LINE__,              \
                                        "move constructor of", \
@@ -105,7 +105,7 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_OP_CPY_BASIC(x)                                      \
       {                                                              \
-        gum::__debug__::__show_trace(                                \
+        gum::__debug__::show_trace__(                                \
            #x, __FILE__, __LINE__, "copy operator of", (void*)this); \
       }
 #    define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
@@ -113,7 +113,7 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_OP_MOV_BASIC(x)                                      \
       {                                                              \
-        gum::__debug__::__show_trace(                                \
+        gum::__debug__::show_trace__(                                \
            #x, __FILE__, __LINE__, "move operator of", (void*)this); \
       }
 #    define GUM_OP_MOV(x) GUM_OP_MOV_BASIC(x)
@@ -133,14 +133,14 @@
 #  endif   // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
-#    define GUM__PRINT(file, line, msg)                                          \
-      {                                                                          \
-        std::string ff(file);                                                    \
-        std::cout << file << ":" \
-                  << line << " [GUM] "<<msg << std::endl;                                   \
+#    define GUM__PRINT(file, line, msg)                                    \
+      {                                                                    \
+        std::string ff(file);                                              \
+        std::cout << file << ":" << line << " [GUM] " << msg << std::endl; \
       }
 
-#    define GUM_CHECKPOINT GUM__PRINT(__FILE__, __LINE__, "******** checkpoint ********")
+#    define GUM_CHECKPOINT \
+      GUM__PRINT(__FILE__, __LINE__, "******** checkpoint ********")
 #    define GUM_TRACE(msg) GUM__PRINT(__FILE__, __LINE__, msg)
 #    define GUM_TRACE_VAR(var) \
       GUM__PRINT(__FILE__, __LINE__, "<" << #var << ">: " << var)
@@ -161,31 +161,31 @@ namespace gum {
 
   namespace __debug__ {
 
-    std::string __getFile(const char* f);
+    std::string getFile__(const char* f);
 
-    void __show_trace(const char* zeKey,
+    void show_trace__(const char* zeKey,
                       const char* zeFile,
                       long        zeLine,
                       const char* zeMsg,
                       const void* zePtr);
-    void __inc_creation(const char* zeKey,
+    void inc_creation__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize = -1);
-    void __inc_deletion(const char* zeKey,
+    void inc_deletion__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr);
-    void __dec_creation(const char* zeKey,
+    void dec_creation__(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr);
-    void __dumpObjects();
-    void __atexit();
+    void dumpObjects__();
+    void atexit__();
 
   }   // namespace __debug__
 

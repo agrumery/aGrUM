@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing BD scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -46,7 +46,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreBD< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBD);
     }
 
@@ -60,7 +60,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreBD< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __internal_apriori(parser.database(), nodeId2columns) {
+        internal_apriori__(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBD);
     }
 
@@ -71,8 +71,8 @@ namespace gum {
        const ScoreBD< ALLOC >&                          from,
        const typename ScoreBD< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        __internal_apriori(from.__internal_apriori, alloc),
-        __gammalog2(from.__gammalog2) {
+        internal_apriori__(from.internal_apriori__, alloc),
+        gammalog2__(from.gammalog2__) {
       GUM_CONS_CPY(ScoreBD);
     }
 
@@ -89,8 +89,8 @@ namespace gum {
        ScoreBD< ALLOC >&&                               from,
        const typename ScoreBD< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        __internal_apriori(std::move(from.__internal_apriori), alloc),
-        __gammalog2(std::move(from.__gammalog2)) {
+        internal_apriori__(std::move(from.internal_apriori__), alloc),
+        gammalog2__(std::move(from.gammalog2__)) {
       GUM_CONS_MOV(ScoreBD);
     }
 
@@ -137,7 +137,7 @@ namespace gum {
     ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(const ScoreBD< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        __internal_apriori = from.__internal_apriori;
+        internal_apriori__ = from.internal_apriori__;
       }
       return *this;
     }
@@ -148,7 +148,7 @@ namespace gum {
     ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(ScoreBD< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        __internal_apriori = std::move(from.__internal_apriori);
+        internal_apriori__ = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -187,22 +187,22 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string ScoreBD< ALLOC >::isAprioriCompatible() const {
-      return isAprioriCompatible(*(this->_apriori));
+      return isAprioriCompatible(*(this->apriori_));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreBD< ALLOC >::internalApriori() const {
-      return __internal_apriori;
+      return internal_apriori__;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreBD< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
+    double ScoreBD< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // if the weight of the apriori is 0, then gammaLog2 will fail
-      if (!this->_apriori->isInformative()) {
+      if (!this->apriori_->isInformative()) {
         GUM_ERROR(OutOfBounds,
                   "The BD score requires its external apriori to "
                      << "be strictly positive");
@@ -210,10 +210,10 @@ namespace gum {
 
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-         this->_counter.counts(idset, true));
+         this->counter_.counts(idset, true));
       const std::size_t                      all_size = N_ijk.size();
       std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
-      this->_apriori->addAllApriori(idset, N_prime_ijk);
+      this->apriori_->addAllApriori(idset, N_prime_ijk);
 
       double score = 0.0;
 
@@ -222,11 +222,11 @@ namespace gum {
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
-           this->_marginalize(idset[0], N_ijk));
+           this->marginalize_(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
 
         std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
-        this->_apriori->addConditioningApriori(idset, N_prime_ij);
+        this->apriori_->addConditioningApriori(idset, N_prime_ij);
 
         // the BD score can be computed as follows:
         // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
@@ -234,11 +234,11 @@ namespace gum {
         //                             gammalog2 ( N'_ijk ) } ]
         for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
           score +=
-             __gammalog2(N_prime_ij[j]) - __gammalog2(N_ij[j] + N_prime_ij[j]);
+             gammalog2__(N_prime_ij[j]) - gammalog2__(N_ij[j] + N_prime_ij[j]);
         }
         for (std::size_t k = std::size_t(0); k < all_size; ++k) {
           score +=
-             __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
+             gammalog2__(N_ijk[k] + N_prime_ijk[k]) - gammalog2__(N_prime_ijk[k]);
         }
       } else {
         // the BD score can be computed as follows:
@@ -248,11 +248,11 @@ namespace gum {
         double N_prime = 0.0;
         for (std::size_t k = std::size_t(0); k < all_size; ++k) {
           score +=
-             __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
+             gammalog2__(N_ijk[k] + N_prime_ijk[k]) - gammalog2__(N_prime_ijk[k]);
           N += N_ijk[k];
           N_prime += N_prime_ijk[k];
         }
-        score += __gammalog2(N_prime) - __gammalog2(N + N_prime);
+        score += gammalog2__(N_prime) - gammalog2__(N + N_prime);
       }
 
       return score;

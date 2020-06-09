@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -39,20 +39,20 @@ namespace gum_tests {
 
   class ASimpleDBGeneratorListener: public gum::ProgressListener {
     private:
-    gum::Size   __nbr;
-    std::string __mess;
+    gum::Size   nbr__;
+    std::string mess__;
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif), __nbr(0), __mess(""){};
+        gum::ProgressListener(notif), nbr__(0), mess__(""){};
 
     void whenProgress(const void* buffer, const gum::Size a, const double c) {
-      __nbr += a;
+      nbr__ += a;
     }
-    void whenStop(const void* buffer, const std::string& s) { __mess = s; }
+    void whenStop(const void* buffer, const std::string& s) { mess__ = s; }
 
-    gum::Size   getNbr() { return __nbr; }
-    std::string getMess() { return __mess; }
+    gum::Size   getNbr() { return nbr__; }
+    std::string getMess() { return mess__; }
   };
 
 

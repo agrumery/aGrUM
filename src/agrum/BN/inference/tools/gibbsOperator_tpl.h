@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Implementation of Gibbs inference methods in Bayesian Networks.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -38,9 +38,9 @@ namespace gum {
                                              const NodeProperty< Idx >*     hardEv,
                                              Size                           nbr,
                                              bool atRandom) :
-      _counting(0),
-      _sampling_bn(BN), _hardEv(hardEv), _nbr(nbr), _atRandom(atRandom) {
-    __updateSamplingNodes();
+      counting_(0),
+      sampling_bn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
+    updateSamplingNodes__();
     GUM_CONSTRUCTOR(GibbsOperator);
   }
 
@@ -50,16 +50,16 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::__updateSamplingNodes() {
-    _samplingNodes.clear();
-    for (const auto node: _sampling_bn.nodes())
-      if (_hardEv == nullptr || !_hardEv->exists(node))
-        _samplingNodes.insert(node);
-    if (_samplingNodes.size() == 0) {
+  void GibbsOperator< GUM_SCALAR >::updateSamplingNodes__() {
+    samplingNodes_.clear();
+    for (const auto node: sampling_bn_.nodes())
+      if (hardEv_ == nullptr || !hardEv_->exists(node))
+        samplingNodes_.insert(node);
+    if (samplingNodes_.size() == 0) {
       GUM_ERROR(InvalidArgument,
                 "No node to sample (too many nodes or too much evidence)!")
     }
-    if (_nbr > _samplingNodes.size()) _nbr = _samplingNodes.size();
+    if (nbr_ > samplingNodes_.size()) nbr_ = samplingNodes_.size();
   }
 
   /// returns a MC sample
@@ -70,50 +70,50 @@ namespace gum {
   Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample() {
     gum::Instantiation I;
 
-    for (const auto nod: _sampling_bn.topologicalOrder()) {
-      I.add(_sampling_bn.variable(nod));
-      if (_hardEv != nullptr && _hardEv->exists(nod)) {
-        I.chgVal(_sampling_bn.variable(nod), (*_hardEv)[nod]);
+    for (const auto nod: sampling_bn_.topologicalOrder()) {
+      I.add(sampling_bn_.variable(nod));
+      if (hardEv_ != nullptr && hardEv_->exists(nod)) {
+        I.chgVal(sampling_bn_.variable(nod), (*hardEv_)[nod]);
       } else {
-        __drawVarMonteCarlo(nod, &I);
+        drawVarMonteCarlo__(nod, &I);
       }
     }
     return I;
   }
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::__drawVarMonteCarlo(NodeId         nod,
+  void GibbsOperator< GUM_SCALAR >::drawVarMonteCarlo__(NodeId         nod,
                                                         Instantiation* I) {
     gum::Instantiation Itop(*I);
-    Itop.erase(_sampling_bn.variable(nod));
-    I->chgVal(_sampling_bn.variable(nod),
-              _sampling_bn.cpt(nod).extract(Itop).draw());
+    Itop.erase(sampling_bn_.variable(nod));
+    I->chgVal(sampling_bn_.variable(nod),
+              sampling_bn_.cpt(nod).extract(Itop).draw());
   }
 
 
   template < typename GUM_SCALAR >
   Instantiation GibbsOperator< GUM_SCALAR >::nextSample(Instantiation prev) {
-    for (Idx i = 0; i < _nbr; i++) {
-      auto pos = _atRandom ? randomValue(_samplingNodes.size())
-                           : (_counting % _samplingNodes.size());
-      this->__GibbsSample(_samplingNodes[pos], &prev);
-      _counting++;
+    for (Idx i = 0; i < nbr_; i++) {
+      auto pos = atRandom_ ? randomValue(samplingNodes_.size())
+                           : (counting_ % samplingNodes_.size());
+      this->GibbsSample__(samplingNodes_[pos], &prev);
+      counting_++;
     }
     return prev;
   }
   /// change in Instantiation I a new drawn value for id
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::__GibbsSample(NodeId id, Instantiation* I) {
+  void GibbsOperator< GUM_SCALAR >::GibbsSample__(NodeId id, Instantiation* I) {
     gum::Instantiation Itop(*I);
-    Itop.erase(_sampling_bn.variable(id));
-    gum::Potential< GUM_SCALAR > p = _sampling_bn.cpt(id).extract(Itop);
-    for (const auto nod: _sampling_bn.children(id))
-      p *= _sampling_bn.cpt(nod).extract(Itop);
+    Itop.erase(sampling_bn_.variable(id));
+    gum::Potential< GUM_SCALAR > p = sampling_bn_.cpt(id).extract(Itop);
+    for (const auto nod: sampling_bn_.children(id))
+      p *= sampling_bn_.cpt(nod).extract(Itop);
     GUM_ASSERT(p.nbrDim() == 1);
     if (p.sum() != 0) {
       p.normalize();
-      I->chgVal(_sampling_bn.variable(id), p.draw());
+      I->chgVal(sampling_bn_.variable(id), p.draw());
     }
   }
 }   // namespace gum

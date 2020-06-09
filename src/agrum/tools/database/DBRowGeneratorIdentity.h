@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief A DBRowGenerator class that returns exactly the rows it gets in input
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H
 #define GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H
@@ -152,14 +152,14 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* input_row__{nullptr};
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

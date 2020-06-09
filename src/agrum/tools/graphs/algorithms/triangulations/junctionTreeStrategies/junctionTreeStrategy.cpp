@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Base Class for all the algorithms producing a junction given a set
  * of cliques/subcliques resulting from a triangulation
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
@@ -39,14 +39,14 @@ namespace gum {
 
   // copy constructor
   JunctionTreeStrategy::JunctionTreeStrategy(const JunctionTreeStrategy& from) :
-      _triangulation(from._triangulation) {
+      triangulation_(from.triangulation_) {
     // for debugging purposes
     GUM_CONS_CPY(JunctionTreeStrategy);
   }
 
   // move constructor
   JunctionTreeStrategy::JunctionTreeStrategy(JunctionTreeStrategy&& from) :
-      _triangulation(from._triangulation) {
+      triangulation_(from.triangulation_) {
     // for debugging purposes
     GUM_CONS_MOV(JunctionTreeStrategy);
   }
@@ -61,7 +61,7 @@ namespace gum {
    * during a move construction */
   void
      JunctionTreeStrategy::moveTriangulation(StaticTriangulation* triangulation) {
-    _triangulation = triangulation;
+    triangulation_ = triangulation;
   }
 
 } /* namespace gum */

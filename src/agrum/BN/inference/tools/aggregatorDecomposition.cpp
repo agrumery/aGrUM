@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN & Christophe GONZALES(@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@
 namespace gum {
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-        template class AggregatorDecomposition< double >;
+  template class AggregatorDecomposition< double >;
 #endif
 
 } /* namespace gum */

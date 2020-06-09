@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -274,8 +274,12 @@ namespace gum_tests {
       pmn.normalize();
 
       gum::NodeSet s;
-      s.clear();s<<0<<4<<5<<6;TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
-      s.clear();s<<4<<0<<6<<5;TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+      s.clear();
+      s << 0 << 4 << 5 << 6;
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+      s.clear();
+      s << 4 << 0 << 6 << 5;
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
 
       gum::Potential< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
@@ -289,22 +293,24 @@ namespace gum_tests {
     void testExistsEdge() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G");
 
-      TS_ASSERT(mn.existsEdge(0,1));
-      TS_ASSERT(mn.existsEdge("A","B"));
-      TS_ASSERT(mn.existsEdge(1,0));
-      TS_ASSERT(mn.existsEdge("B","A"));
-      TS_ASSERT(mn.existsEdge(0,2));
-      TS_ASSERT(mn.existsEdge("A","C"));
-      TS_ASSERT(! mn.existsEdge(3,7));
-      TS_ASSERT(! mn.existsEdge("C","G"));
+      TS_ASSERT(mn.existsEdge(0, 1));
+      TS_ASSERT(mn.existsEdge("A", "B"));
+      TS_ASSERT(mn.existsEdge(1, 0));
+      TS_ASSERT(mn.existsEdge("B", "A"));
+      TS_ASSERT(mn.existsEdge(0, 2));
+      TS_ASSERT(mn.existsEdge("A", "C"));
+      TS_ASSERT(!mn.existsEdge(3, 7));
+      TS_ASSERT(!mn.existsEdge("C", "G"));
     }
 
     void testMinimalCondSet() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E");
 
-      TS_ASSERT_EQUALS(mn.minimalCondSet(0,{1,2,3,4,5,6}),gum::NodeSet({1,2}));
-      TS_ASSERT_EQUALS(mn.minimalCondSet({0,6},{1,2,3,4,5}),gum::NodeSet({1,2,4,5}));
-      TS_ASSERT_EQUALS(mn.minimalCondSet(3,{0,4,5,6}),gum::NodeSet({0,4}));
+      TS_ASSERT_EQUALS(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}),
+                       gum::NodeSet({1, 2}));
+      TS_ASSERT_EQUALS(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}),
+                       gum::NodeSet({1, 2, 4, 5}));
+      TS_ASSERT_EQUALS(mn.minimalCondSet(3, {0, 4, 5, 6}), gum::NodeSet({0, 4}));
     }
   };
 

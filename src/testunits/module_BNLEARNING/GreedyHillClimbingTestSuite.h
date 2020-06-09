@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -61,32 +61,32 @@ namespace gum_tests {
 
   class simpleListenerForGHC: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __mess;
+    int         nbr__;
+    std::string mess__;
 
     public:
     simpleListenerForGHC(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+        gum::ApproximationSchemeListener(sch), nbr__(0), mess__(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) {
-      __nbr++;
-      std::cout << __nbr << ": error = " << b << std::endl;
+      nbr__++;
+      std::cout << nbr__ << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void* buffer, const std::string s) { __mess = s; }
+    void whenStop(const void* buffer, const std::string s) { mess__ = s; }
 
-    int getNbr() { return __nbr; }
+    int getNbr() { return nbr__; }
 
-    std::string getMess() { return __mess; }
+    std::string getMess() { return mess__; }
   };
 
 
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
-    double __score(gum::learning::ScoreBIC<>& score,
+    double score__(gum::learning::ScoreBIC<>& score,
                    const gum::NodeId&         node,
                    const gum::DAG&            dag) {
       std::vector< gum::NodeId > cond_set;
@@ -96,7 +96,7 @@ namespace gum_tests {
       return score.score(node, cond_set);
     }
 
-    bool __applyNextChange(gum::learning::ScoreBIC<>& score,
+    bool applyNextChange__(gum::learning::ScoreBIC<>& score,
                            std::vector< double >&     current_scores,
                            gum::DAG&                  dag) {
       const int nb_vars = int(dag.size());
@@ -110,7 +110,7 @@ namespace gum_tests {
             if (!dag.existsArc(gum::Arc(i, j))) {
               try {
                 dag.addArc(gum::NodeId(i), gum::NodeId(j));
-                double new_score = __score(score, j, dag) - current_scores[j];
+                double new_score = score__(score, j, dag) - current_scores[j];
                 if (new_score > 0) {
                   changes.push_back(
                      std::pair< gum::learning::GraphChange, double >(
@@ -127,7 +127,7 @@ namespace gum_tests {
             // check remove arc
             if (dag.existsArc(gum::Arc(i, j))) {
               dag.eraseArc(gum::Arc(i, j));
-              double new_score = __score(score, j, dag) - current_scores[j];
+              double new_score = score__(score, j, dag) - current_scores[j];
               if (new_score > 0) {
                 changes.push_back(std::pair< gum::learning::GraphChange, double >(
                    gum::learning::GraphChange(
@@ -144,8 +144,8 @@ namespace gum_tests {
               dag.eraseArc(gum::Arc(i, j));
               try {
                 dag.addArc(j, i);
-                double new_score_i = __score(score, i, dag) - current_scores[i];
-                double new_score_j = __score(score, j, dag) - current_scores[j];
+                double new_score_i = score__(score, i, dag) - current_scores[i];
+                double new_score_j = score__(score, j, dag) - current_scores[j];
                 double new_score = new_score_i + new_score_j;
                 if (new_score > 0) {
                   changes.push_back(
@@ -190,9 +190,9 @@ namespace gum_tests {
                                 changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()] =
-             __score(score, changes[best_i].first.node1(), dag);
+             score__(score, changes[best_i].first.node1(), dag);
           current_scores[changes[best_i].first.node2()] =
-             __score(score, changes[best_i].first.node2(), dag);
+             score__(score, changes[best_i].first.node2(), dag);
           break;
 
         default: break;
@@ -585,9 +585,9 @@ namespace gum_tests {
 
         std::vector< double > scores(nb_vars);
         for (auto node: xdag)
-          scores[std::size_t(node)] = __score(score, node, xdag);
+          scores[std::size_t(node)] = score__(score, node, xdag);
 
-        while (__applyNextChange(score, scores, xdag)) {}
+        while (applyNextChange__(score, scores, xdag)) {}
 
         TS_ASSERT(xdag == dag);
       }
@@ -596,7 +596,8 @@ namespace gum_tests {
 
     void xtest_alarm1() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -645,7 +646,8 @@ namespace gum_tests {
 
     void xtest_alarm1bis() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -694,7 +696,8 @@ namespace gum_tests {
 
     void xtest_alarm1ter() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -743,7 +746,8 @@ namespace gum_tests {
 
     void xtest_alarm2() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -793,7 +797,8 @@ namespace gum_tests {
 
     void xtest_alarm3() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;
@@ -843,7 +848,8 @@ namespace gum_tests {
 
     void xtest_alarm4() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      gum::learning::DatabaseFromCSV
+      database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

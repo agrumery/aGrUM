@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Base class for DBRowGenerator classes that use a BN for computing
  * their outputs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLWithBNIN
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLWithBNIN
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H
 #define GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H
@@ -142,10 +142,10 @@ namespace gum {
 
       protected:
       /// the Bayesian network used to fill the unobserved values
-      const BayesNet< GUM_SCALAR >* _bn;
+      const BayesNet< GUM_SCALAR >* bn_;
 
       /// the mapping betwen the BN's node ids and the database's columns
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > nodeId2columns_;
 
 
       /// copy operator

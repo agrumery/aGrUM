@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the base class for structural constraints used by learning algorithms
  * that learn an undirected graph structure
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintUndiGraph.h>
@@ -59,14 +59,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
        const StructuralConstraintUndiGraph& from) :
-        _UndiGraph__graph(from._UndiGraph__graph) {
+        UndiGraph__graph_(from.UndiGraph__graph_) {
       GUM_CONS_CPY(StructuralConstraintUndiGraph);
     }
 
     /// move constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
        StructuralConstraintUndiGraph&& from) :
-        _UndiGraph__graph(std::move(from._UndiGraph__graph)) {
+        UndiGraph__graph_(std::move(from.UndiGraph__graph_)) {
       GUM_CONS_MOV(StructuralConstraintUndiGraph);
     }
 
@@ -78,14 +78,14 @@ namespace gum {
     /// copy operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
        const StructuralConstraintUndiGraph& from) {
-      if (this != &from) { _UndiGraph__graph = from._UndiGraph__graph; }
+      if (this != &from) { UndiGraph__graph_ = from.UndiGraph__graph_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
        StructuralConstraintUndiGraph&& from) {
-      if (this != &from) { _UndiGraph__graph = std::move(from._UndiGraph__graph); }
+      if (this != &from) { UndiGraph__graph_ = std::move(from.UndiGraph__graph_); }
       return *this;
     }
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class for implementation of factored markov decision process.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 #define GUM_FACTORED_MARKOV_DECISION_PROCESS_H
@@ -93,21 +93,21 @@ namespace gum {
      * Returns an iterator reference to he beginning of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {
-      return __varSeq.beginSafe();
+      return varSeq__.beginSafe();
     }
 
     /**
      * Returns an iterator reference to the end of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() const {
-      return __varSeq.endSafe();
+      return varSeq__.endSafe();
     }
 
     /**
      * Returns the primed variable associate to the given main variable
      */
     const DiscreteVariable* main2prime(const DiscreteVariable* mainVar) const {
-      return __main2primed.second(mainVar);
+      return main2primed__.second(mainVar);
     }
 
     /**
@@ -115,7 +115,7 @@ namespace gum {
      */
     INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
                  mapMainPrime() const {
-      return __main2primed;
+      return main2primed__;
     }
 
     /// @}
@@ -135,14 +135,14 @@ namespace gum {
      * Returns an iterator reference to he beginning of the list of actions
      */
     SequenceIteratorSafe< Idx > beginActions() const {
-      return __actionSeq.beginSafe();
+      return actionSeq__.beginSafe();
     }
 
     /**
      * Returns an iterator reference to the end of the list of actions
      */
     SequenceIteratorSafe< Idx > endActions() const {
-      return __actionSeq.endSafe();
+      return actionSeq__.endSafe();
     }
 
     /// @}
@@ -266,32 +266,32 @@ namespace gum {
 
     private:
     /// Sequence de variables and its iterator
-    Sequence< const DiscreteVariable* > __varSeq;
+    Sequence< const DiscreteVariable* > varSeq__;
 
-    Sequence< Idx > __actionSeq;
+    Sequence< Idx > actionSeq__;
 
     /// Mapping from a main variable to its associated primed version
-    Bijection< const DiscreteVariable*, const DiscreteVariable* > __main2primed;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > main2primed__;
 
     /// Bijection mapping an action name to its id
-    Bijection< Idx, const std::string* > __actionMap;
+    Bijection< Idx, const std::string* > actionMap__;
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > __actionTransitionTable;
+    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > actionTransitionTable__;
 
     /// Table which give for each action cost table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-       __actionCostTable;
+       actionCostTable__;
 
     /// Table which give for each action reward table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-       __actionRewardTable;
+       actionRewardTable__;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance
     /// Usually the case when fmdp has been initialized with the factory
-    bool __onDestructionDeleteVars;
+    bool onDestructionDeleteVars__;
   };
 
 

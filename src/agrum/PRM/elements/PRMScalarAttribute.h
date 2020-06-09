@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMScalarAttribute.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SCALAR_ATTRIBUTE_H
@@ -119,10 +119,10 @@ namespace gum {
       /// See gum::PRMClassElement::cpf().
       virtual const Potential< GUM_SCALAR >& cpf() const;
 
-      /// See gum::PRMClassElement::_addParent().
+      /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
-      /// See gum::PRMClassElement::_addChild().
+      /// See gum::PRMClassElement::addChild_().
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
@@ -140,8 +140,8 @@ namespace gum {
       /// Copy operator. Don't use it.
       PRMScalarAttribute& operator=(const PRMScalarAttribute& from);
 
-      virtual PRMType* _type();
-      virtual void     _type(PRMType* t);
+      virtual PRMType* type_();
+      virtual void     type_(PRMType* t);
 
       private:
       // ========================================================================
@@ -150,10 +150,10 @@ namespace gum {
       /// @{
 
       /// The random variable type of this attribute
-      PRMType* __type;
+      PRMType* type__;
 
       /// A pointer on the Potential of this attribute
-      Potential< GUM_SCALAR >* __cpf;
+      Potential< GUM_SCALAR >* cpf__;
 
       /// @}
     };

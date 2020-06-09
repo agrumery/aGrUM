@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inlined implementation of VariableNodeMap
  *
- * @author Lionel TORTI  and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI  and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -37,26 +37,26 @@ namespace gum {
   // @throws NotFound Raised if no nodes matches id.
   INLINE
   const DiscreteVariable& VariableNodeMap::get(NodeId id) const {
-    return *(__nodes2vars.second(id));
+    return *(nodes2vars__.second(id));
   }
 
   // Returns a node id given it's variable.
   // @throws NotFound Raised if no nodes matches var.
   INLINE
   NodeId VariableNodeMap::get(const DiscreteVariable& var) const {
-    return __nodes2vars.first(&var);
+    return nodes2vars__.first(&var);
   }
 
   // Return true if id matches a node
   INLINE
   bool VariableNodeMap::exists(NodeId id) const {
-    return __nodes2vars.existsFirst(id);
+    return nodes2vars__.existsFirst(id);
   }
 
   // Return true if var matches a node
   INLINE
   bool VariableNodeMap::exists(const DiscreteVariable& var) const {
-    return __nodes2vars.existsSecond(&var);
+    return nodes2vars__.existsSecond(&var);
   }
 
   // Returns a node id given it's variable.
@@ -78,7 +78,7 @@ namespace gum {
   // @throw DuplicateElement if the id already exists in the mapping
   INLINE
   NodeId VariableNodeMap::insert(NodeId id, const DiscreteVariable& var) {
-    if (__names2nodes.existsFirst(var.name())) {
+    if (names2nodes__.existsFirst(var.name())) {
       GUM_ERROR(DuplicateLabel,
                 "Unable to insert var with the name '" << var.name() << "'.");
     }
@@ -88,8 +88,8 @@ namespace gum {
                 "Unable to insert a new variable with id " << id << ".");
     }
 
-    __nodes2vars.insert(id, var.clone());
-    __names2nodes.insert(var.name(), id);
+    nodes2vars__.insert(id, var.clone());
+    names2nodes__.insert(var.name(), id);
 
     return id;
   }
@@ -97,28 +97,28 @@ namespace gum {
   // Removes a var and it's id of this mapping. The pointer is deleted.
   INLINE
   void VariableNodeMap::erase(NodeId id) {
-    const DiscreteVariable* var = __nodes2vars.second(id);
-    __names2nodes.eraseFirst(var->name());
+    const DiscreteVariable* var = nodes2vars__.second(id);
+    names2nodes__.eraseFirst(var->name());
     delete (var);
-    __nodes2vars.eraseFirst(id);
+    nodes2vars__.eraseFirst(id);
   }
 
   // Removes a var and it's id of this mapping. The pointer is deleted.
   INLINE
   void VariableNodeMap::erase(const DiscreteVariable& var) {
-    NodeId id = __nodes2vars.first(&var);
+    NodeId id = nodes2vars__.first(&var);
     erase(id);
   }
 
   INLINE
   NodeId VariableNodeMap::idFromName(const std::string& name) const {
-    return __names2nodes.second(name);
+    return names2nodes__.second(name);
   }
 
   INLINE
   const DiscreteVariable&
      VariableNodeMap::variableFromName(const std::string& name) const {
-    return *__nodes2vars.second(idFromName(name));
+    return *nodes2vars__.second(idFromName(name));
   }
 
   // we allow the user to change the name of a variable
@@ -126,26 +126,26 @@ namespace gum {
   // @throws NotFound Raised if no nodes matches id.
   INLINE
   void VariableNodeMap::changeName(NodeId id, const std::string& new_name) {
-    if (__names2nodes.existsFirst(new_name)) {
+    if (names2nodes__.existsFirst(new_name)) {
       GUM_ERROR(DuplicateLabel,
                 "Unable to insert var with the name '" << new_name << "'.");
     }
 
     DiscreteVariable* var =
-       const_cast< DiscreteVariable* >(__nodes2vars.second(id));
+       const_cast< DiscreteVariable* >(nodes2vars__.second(id));
 
-    __names2nodes.eraseFirst(var->name());
+    names2nodes__.eraseFirst(var->name());
     var->setName(new_name);
-    __names2nodes.insert(new_name, id);
+    names2nodes__.insert(new_name, id);
   }
 
   INLINE const std::string& VariableNodeMap::name(NodeId id) const {
-    return __names2nodes.first(id);
+    return names2nodes__.first(id);
   }
 
   INLINE const std::string&
                VariableNodeMap::name(const DiscreteVariable& var) const {
-    return __names2nodes.first(__nodes2vars.first(&var));
+    return names2nodes__.first(nodes2vars__.first(&var));
   }
 
 } /* namespace gum */

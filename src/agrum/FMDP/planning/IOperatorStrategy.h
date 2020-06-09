@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Operator Strategy interface.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -151,14 +151,14 @@ namespace gum {
     /// @}
 
     protected:
-    INLINE void _deleteFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+    INLINE void deleteFunctionGraph_(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                                      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
                                      Idx del) {
       if (del == 1 || del == 3) delete f1;
       if (del >= 2) delete f2;
     }
 
-    INLINE void _deleteFunctionGraph(
+    INLINE void deleteFunctionGraph_(
        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >* f1,
        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,

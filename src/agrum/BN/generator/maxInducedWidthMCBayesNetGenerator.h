@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Class for generating bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Ariele MAESANO & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Ariele MAESANO & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MAX_INDUCED_WIDTH_MC_BAYES_NET_GENERATOR
@@ -163,7 +163,7 @@ namespace gum {
     /// @}
 
     protected:
-    Size _maxlog10InducedWidth;
+    Size maxlog10InducedWidth_;
 
     private:
     /**
@@ -171,7 +171,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    bool __checkConditions() final;
+    bool checkConditions__() final;
   };
 
 

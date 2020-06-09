@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of ClassBayesNet.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
 #include <agrum/tools/core/inline.h>
@@ -33,15 +33,15 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    void ClassBayesNet< GUM_SCALAR >::__init(const PRMClass< GUM_SCALAR >& c) {
+    void ClassBayesNet< GUM_SCALAR >::init__(const PRMClass< GUM_SCALAR >& c) {
       for (const auto node: c.containerDag().nodes()) {
         try {
           // Adding the attribute
           if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node))
               || PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
             const PRMClassElement< GUM_SCALAR >& elt = c.get(node);
-            this->_dag.addNodeWithId(elt.id());
-            this->__varNodeMap.insert(&(elt.type().variable()), &elt);
+            this->dag_.addNodeWithId(elt.id());
+            this->varNodeMap__.insert(&(elt.type().variable()), &elt);
           }
         } catch (NotFound&) {
           // Not an attribute
@@ -50,7 +50,7 @@ namespace gum {
 
       for (const auto& arc: c.containerDag().arcs()) {
         try {
-          this->_dag.addArc(arc.tail(), arc.head());
+          this->dag_.addArc(arc.tail(), arc.head());
         } catch (InvalidNode&) {
           // Not added means not an attribute
         }
@@ -61,16 +61,16 @@ namespace gum {
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
        const PRMClass< GUM_SCALAR >& c) :
         IBayesNet< GUM_SCALAR >(),
-        __class(&c) {
+        class__(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
-      __init(c);
+      init__(c);
     }
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
        const ClassBayesNet< GUM_SCALAR >& from) :
         IBayesNet< GUM_SCALAR >(from),
-        __class(from.__class) {
+        class__(from.class__) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
@@ -85,7 +85,7 @@ namespace gum {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
-        __class = from.__class;
+        class__ = from.class__;
       }
 
       return *this;
@@ -94,7 +94,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
-      return __get(varId).cpf();
+      return get__(varId).cpf();
     }
 
     template < typename GUM_SCALAR >
@@ -106,32 +106,32 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
                  ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
-      return __get(id).type().variable();
+      return get__(id).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
        ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-      return __varNodeMap[&var]->id();
+      return varNodeMap__[&var]->id();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
        ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
-      return __get(name).id();
+      return get__(name).id();
     }
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variableFromName(
        const std::string& name) const {
-      return __get(name).type().variable();
+      return get__(name).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::__get(NodeId id) const {
-      if (this->_dag.exists(id)) {
-        return __class->get(id);
+                 ClassBayesNet< GUM_SCALAR >::get__(NodeId id) const {
+      if (this->dag_.exists(id)) {
+        return class__->get(id);
       } else {
         GUM_ERROR(NotFound, "no element found with that id.");
       }
@@ -139,9 +139,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::__get(const std::string& name) const {
+                 ClassBayesNet< GUM_SCALAR >::get__(const std::string& name) const {
       try {
-        return __class->get(name);
+        return class__->get(name);
       } catch (NotFound&) {
         GUM_ERROR(NotFound, "no element found with that id.");
       }
@@ -150,13 +150,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const NodeProperty< Size >&
                  ClassBayesNet< GUM_SCALAR >::modalities() const {
-      if (__modalities.empty()) {
+      if (modalities__.empty()) {
         for (const auto node: this->nodes()) {
-          __modalities.insert(node, (Size)variable(node).domainSize());
+          modalities__.insert(node, (Size)variable(node).domainSize());
         }
       }
 
-      return __modalities;
+      return modalities__;
     }
 
     template < typename GUM_SCALAR >
@@ -164,7 +164,7 @@ namespace gum {
       std::string       tab = "  ";
       std::stringstream output;
       output << "digraph \"";
-      output << __class->name() << "\" {" << std::endl;
+      output << class__->name() << "\" {" << std::endl;
 
       for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0)

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ namespace gum {
     /// Default constructor
     // ###################################################################
     ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2) :
-        AbstractLeaf(leafId), __l1(l1), __l2(l2) {
+        AbstractLeaf(leafId), l1__(l1), l2__(l2) {
       GUM_CONSTRUCTOR(ComposedLeaf);
     }
 
@@ -81,25 +81,25 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     double effectif(Idx moda) const {
-      return __l1->effectif(moda) + __l2->effectif(moda);
+      return l1__->effectif(moda) + l2__->effectif(moda);
     }
-    double total() const { return __l1->total() + __l2->total(); }
+    double total() const { return l1__->total() + l2__->total(); }
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
     bool contains(NodeId testedId) const {
-      return AbstractLeaf::contains(testedId) || __l1->contains(testedId)
-             || __l2->contains(testedId);
+      return AbstractLeaf::contains(testedId) || l1__->contains(testedId)
+             || l2__->contains(testedId);
     }
 
-    Idx nbModa() const { return __l1->nbModa(); }
+    Idx nbModa() const { return l1__->nbModa(); }
 
     std::string toString();
 
     private:
-    AbstractLeaf* __l1;
-    AbstractLeaf* __l2;
+    AbstractLeaf* l1__;
+    AbstractLeaf* l2__;
   };
 
 

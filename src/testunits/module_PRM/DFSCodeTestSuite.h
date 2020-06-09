@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ namespace gum_tests {
     int c;
     int d;
 
-    void __build_alpha() {
+    void build_alpha__() {
       alpha = new gum::prm::gspan::DFSCode();
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, X, a, Y));
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, Y, b, X));
@@ -60,7 +60,7 @@ namespace gum_tests {
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(1, 4, Y, d, Z));
     }
 
-    void __build_beta() {
+    void build_beta__() {
       beta = new gum::prm::gspan::DFSCode();
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, Y, a, X));
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, X, a, X));
@@ -70,7 +70,7 @@ namespace gum_tests {
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(0, 4, Y, d, Z));
     }
 
-    void __build_gamma() {
+    void build_gamma__() {
       gamma = new gum::prm::gspan::DFSCode();
       gamma->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, X, a, X));
       gamma->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, X, a, Y));
@@ -89,9 +89,9 @@ namespace gum_tests {
       b = 1;
       c = 2;
       d = 3;
-      __build_alpha();
-      __build_beta();
-      __build_gamma();
+      build_alpha__();
+      build_beta__();
+      build_gamma__();
     }
 
     void tearDown() {

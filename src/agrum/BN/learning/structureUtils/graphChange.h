@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * notify scores, structural constraints, etc, how the learnt graph has been
  * modified.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGE_H
 #define GUM_LEARNING_GRAPH_CHANGE_H
@@ -123,13 +123,13 @@ namespace gum {
 
       private:
       /// the type of modification
-      GraphChangeType __type;
+      GraphChangeType type__;
 
       /// the first node in the edge or arc to be modified
-      NodeId __node1;
+      NodeId node1__;
 
       /// the second node in the edge or arc to be modified
-      NodeId __node2;
+      NodeId node2__;
     };
 
     /* =========================================================================

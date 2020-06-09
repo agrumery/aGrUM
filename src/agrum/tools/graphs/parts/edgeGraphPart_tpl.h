@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Implementation of the EdgeGraphPart
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -36,18 +36,18 @@ namespace gum {
   template < typename VAL >
   INLINE EdgeProperty< VAL > EdgeGraphPart::edgesProperty(VAL (*f)(const Edge&),
                                                           Size size) const {
-    return __edges.hashMap(f, size);
+    return edges__.hashMap(f, size);
   }
 
   template < typename VAL >
   INLINE EdgeProperty< VAL > EdgeGraphPart::edgesProperty(const VAL& val,
                                                           Size       size) const {
-    return __edges.hashMap(val, size);
+    return edges__.hashMap(val, size);
   }
 
   template < typename VAL >
   INLINE List< VAL > EdgeGraphPart::listMapEdges(VAL (*f)(const Edge&)) const {
-    return __edges.listMap(f);
+    return edges__.listMap(f);
   }
 
 } /* namespace gum */

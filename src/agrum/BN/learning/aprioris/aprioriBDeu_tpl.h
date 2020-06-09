@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -133,7 +133,7 @@ namespace gum {
                   "A negative weight (" << weight
                                         << ") is forbidden for the BDeu apriori");
       }
-      this->_weight = weight;
+      this->weight_ = weight;
     }
 
 
@@ -161,20 +161,20 @@ namespace gum {
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriBDeu< ALLOC >::isInformative() const {
-      return this->_weight != 0.0;
+      return this->weight_ != 0.0;
     }
 
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriBDeu< ALLOC >::addAllApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
-      if (idset.empty() || (this->_weight == 0.0)) return;
+      if (idset.empty() || (this->weight_ == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
-      const double weight = this->_weight / counts.size();
+      const double weight = this->weight_ / counts.size();
       for (auto& count: counts)
         count += weight;
     }
@@ -183,16 +183,16 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriBDeu< ALLOC >::addConditioningApriori(
-       const IdCondSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
-      if ((idset.size() == idset.nbLHSIds()) || (this->_weight == 0.0)
+      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
           || (idset.nbLHSIds() == std::size_t(0)))
         return;
 
       // add the weight to the counting vector
-      const double weight = this->_weight / counts.size();
+      const double weight = this->weight_ / counts.size();
       for (auto& count: counts)
         count += weight;
     }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
  * feature as compared to Sets: we can search very quickly T2's elements when
  * knowing T1 and T1's elements when knowing T2.
  *
- * @author Christophe GONZALES (@AMU) and Jean-Philippe DUBUS
+ * @author Christophe GONZALES(@AMU) and Jean-Philippe DUBUS
  */
 #ifndef GUM_BIJECTION_H
 #define GUM_BIJECTION_H
@@ -657,22 +657,22 @@ namespace gum {
     // size objects, this feature is of particular interest.
 
     /// The gum::HashTable associating T2 objects to T1 objects
-    HashTable12 __firstToSecond;
+    HashTable12 firstToSecond__;
 
     /// The gum::HashTable associating T1 objects to T2 objects
-    HashTable21 __secondToFirst;
+    HashTable21 secondToFirst__;
 
     /**
      * @brief A function that performs a complete copy of another
      * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling __copy.
+     * If it is not the case, use function clear() before calling copy__.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
      */
     template < typename OtherAlloc >
-    void __copy(const HashTable< T1, T2*, OtherAlloc >& source);
+    void copy__(const HashTable< T1, T2*, OtherAlloc >& source);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -680,7 +680,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    typename HashTable12::value_type* __insert(const T1& first, const T2& second);
+    typename HashTable12::value_type* insert__(const T1& first, const T2& second);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -688,7 +688,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    typename HashTable12::value_type* __insert(T1&& first, T2&& second);
+    typename HashTable12::value_type* insert__(T1&& first, T2&& second);
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -1286,22 +1286,22 @@ namespace gum {
     // size objects, this feature is of particular interest.
 
     /// hashtable associating T2 scalars to T1 scalars
-    HashTable12 __firstToSecond;
+    HashTable12 firstToSecond__;
 
     /// hashtable associating T1 scalars to T2 scalars
-    HashTable21 __secondToFirst;
+    HashTable21 secondToFirst__;
 
     /**
      * @brief A function that performs a complete copy of another
      * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling __copy.
+     * If it is not the case, use function clear() before calling copy__.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
      */
     template < typename OtherAlloc >
-    void __copy(const HashTable< T1, T2, OtherAlloc >& f2s);
+    void copy__(const HashTable< T1, T2, OtherAlloc >& f2s);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -1309,7 +1309,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    void __insert(const T1 first, const T2 second);
+    void insert__(const T1 first, const T2 second);
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -1320,9 +1320,9 @@ namespace gum {
    * @brief A class which creates the static iterator used by gim::Bijections.
    * @ingroup bijection_group
    *
-   * The aim of using this class rather than just creating __BijectionIterEnd
+   * The aim of using this class rather than just creating BijectionIterEnd__
    * as a global variable is to prevent other classes to access and modify
-   * __BijectionIterEnd.
+   * BijectionIterEnd__.
    */
   class BijectionIteratorStaticEnd {
     /// Friends that have access to the iterator
@@ -1331,21 +1331,21 @@ namespace gum {
 
     private:
     /// The safe iterator used by everyone
-    static const BijectionIteratorSafe< int, int >* __BijectionIterEndSafe;
+    static const BijectionIteratorSafe< int, int >* BijectionIterEndSafe__;
 
     /// The unsafe iterator used by everyone.
-    static const BijectionIterator< int, int >* __BijectionIterEnd;
+    static const BijectionIterator< int, int >* BijectionIterEnd__;
 
     /**
      * @brief Creates (if needed) and returns the iterator
-     * __BijectionIterEndSafe
-     * @return Returns __BijectionIterEndSafe.
+     * BijectionIterEndSafe__
+     * @return Returns BijectionIterEndSafe__.
      */
     static const BijectionIteratorSafe< int, int >* endSafe4Statics();
 
     /**
-     * @brief Creates (if needed) and returns the iterator __BijectionIterEnd.
-     * @return Returns __BijectionIterEnd;
+     * @brief Creates (if needed) and returns the iterator BijectionIterEnd__.
+     * @return Returns BijectionIterEnd__;
      */
     static const BijectionIterator< int, int >* end4Statics();
   };
@@ -1543,16 +1543,16 @@ namespace gum {
      * @param toCompare The gum::BijectionIteratorSafe to compare.
      * @return Returns true if they differ.
      */
-    bool operator!=(const BijectionIteratorSafe< T1, T2 >& toCompare) const
-       noexcept;
+    bool
+       operator!=(const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept;
 
     /**
      * @brief Equality operator.
      * @param toCompare The gum::BijectionIteratorSafe to compare.
      * @return Returns true if they are equal.
      */
-    bool operator==(const BijectionIteratorSafe< T1, T2 >& toCompare) const
-       noexcept;
+    bool
+       operator==(const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept;
 
     /// @}
     // ============================================================================
@@ -1590,7 +1590,7 @@ namespace gum {
     using HashIter = typename HashTable12::const_iterator_safe;
 
     /// The hashTable iterator that actually does all the job.
-    HashIter __iter;
+    HashIter iter__;
   };
 
   // ===========================================================================
@@ -1779,7 +1779,7 @@ namespace gum {
     using HashIter = typename HashTable12::const_iterator;
 
     /// The hashTable iterator that actually does all the job.
-    HashIter __iter;
+    HashIter iter__;
   };
 
   /**

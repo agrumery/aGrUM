@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Basic class for all graphs of cliques (join trees, etc)
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_CLIQUE_GRAPH_H
 #define GUM_CLIQUE_GRAPH_H
@@ -239,18 +239,18 @@ namespace gum {
 
     private:
     /// the set of nodes contained into the cliques
-    NodeProperty< NodeSet > __cliques;
+    NodeProperty< NodeSet > cliques__;
 
     /// the set of nodes contained into the separators
-    EdgeProperty< NodeSet > __separators;
+    EdgeProperty< NodeSet > separators__;
 
     /// function used to update the separators when a clique is modified
 
-    void __updateSeparators(const NodeId clique1);
+    void updateSeparators__(const NodeId clique1);
 
     /// structure used for the computation of the running intersection property
 
-    struct __RunningIntersect {
+    struct RunningIntersect__ {
       /** @brief structure indicating for each clique whether it has been
        * examined by a DFS (Depth First Search) */
       NodeSet visited_cliques;
@@ -291,9 +291,9 @@ namespace gum {
 
     /// function used for the computation of the running intersection property
 
-    bool __runningIntersectionDFS(const NodeId        clique,
+    bool runningIntersectionDFS__(const NodeId        clique,
                                   const NodeId        from,
-                                  __RunningIntersect& infos_DFS) const;
+                                  RunningIntersect__& infos_DFS) const;
   };
 
   /** @brief a junction tree is a clique graph satisfying the running

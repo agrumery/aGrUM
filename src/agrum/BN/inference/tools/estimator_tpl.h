@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Implementation of Estimator for approximate inference in bayesian
  * networks
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -33,21 +33,21 @@ namespace gum {
   template < typename GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator() {
     GUM_CONSTRUCTOR(Estimator);
-    _wtotal = (GUM_SCALAR)0.;
-    _ntotal = (Size)0;
-    _bn = nullptr;
+    wtotal_ = (GUM_SCALAR)0.;
+    ntotal_ = (Size)0;
+    bn_ = nullptr;
   }
 
 
   template < typename GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) :
       Estimator() {
-    _bn = bn;
+    bn_ = bn;
 
     for (gum::NodeGraphPartIterator iter = bn->nodes().begin();
          iter != bn->nodes().end();
          ++iter)
-      _estimator.insert(
+      estimator_.insert(
          bn->variable(*iter).name(),
          std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), 0.0));
 
@@ -74,11 +74,11 @@ namespace gum {
       auto v = bn->variable(*iter).name();
 
       if (!hardEvidence.contains(*iter)) {
-        if (_estimator.exists(v))
-          _estimator[v] = std::vector< GUM_SCALAR >(
+        if (estimator_.exists(v))
+          estimator_[v] = std::vector< GUM_SCALAR >(
              bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
         else
-          _estimator.insert(v,
+          estimator_.insert(v,
                             std::vector< GUM_SCALAR >(
                                bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
       }
@@ -102,23 +102,23 @@ namespace gum {
           v.push_back(p[inst] * virtualLBPSize);
         }
 
-        _estimator.insert(lbp->BN().variable(node).name(), v);
+        estimator_.insert(lbp->BN().variable(node).name(), v);
       }
     }
-    _ntotal = (Size)virtualLBPSize;
-    _wtotal = virtualLBPSize;
+    ntotal_ = (Size)virtualLBPSize;
+    wtotal_ = virtualLBPSize;
   }
 
   /*update the Estimator given an instantiation I with weight bias w*/
 
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::update(Instantiation I, GUM_SCALAR w) {
-    _wtotal += w;
-    _ntotal += (Size)1;
+    wtotal_ += w;
+    ntotal_ += (Size)1;
 
     for (Idx i = 0; i < I.nbrDim(); i++) {
-      if (_estimator.exists(I.variable(i).name()))
-        _estimator[I.variable(i).name()][I.val(i)] += w;
+      if (estimator_.exists(I.variable(i).name()))
+        estimator_[I.variable(i).name()][I.val(i)] += w;
     }
   }
 
@@ -129,19 +129,19 @@ namespace gum {
      Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
     Potential< GUM_SCALAR >* p = nullptr;
 
-    if (!_estimator.exists(var.name()))
+    if (!estimator_.exists(var.name()))
       GUM_ERROR(NotFound, "Target variable not found");
 
     // check if we have already computed the posterior
-    if (__target_posteriors.exists(var.name())) {
-      p = __target_posteriors[var.name()];
+    if (target_posteriors__.exists(var.name())) {
+      p = target_posteriors__[var.name()];
     } else {
       p = new Potential< GUM_SCALAR >();
       *p << var;
-      __target_posteriors.insert(var.name(), p);
+      target_posteriors__.insert(var.name(), p);
     }
 
-    p->fillWith(_estimator[var.name()]);
+    p->fillWith(estimator_[var.name()]);
     p->normalize();
     return *p;
   }
@@ -151,7 +151,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, Idx val) {
-    return _estimator[name][val] / _wtotal;
+    return estimator_[name][val] / wtotal_;
   }
 
 
@@ -171,10 +171,10 @@ namespace gum {
   GUM_SCALAR Estimator< GUM_SCALAR >::confidence() {
     GUM_SCALAR ic_max = 0;
 
-    for (auto iter = _estimator.begin(); iter != _estimator.end(); ++iter) {
+    for (auto iter = estimator_.begin(); iter != estimator_.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
         GUM_SCALAR ic = GUM_SCALAR(
-           2 * 1.96 * std::sqrt(variance(iter.key(), i) / (_ntotal - 1)));
+           2 * 1.96 * std::sqrt(variance(iter.key(), i) / (ntotal_ - 1)));
         if (ic > ic_max) ic_max = ic;
       }
     }
@@ -184,11 +184,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::clear() {
-    _estimator.clear();
-    _wtotal = (GUM_SCALAR)0;
-    _ntotal = Size(0);
-    for (const auto& pot: __target_posteriors)
+    estimator_.clear();
+    wtotal_ = (GUM_SCALAR)0;
+    ntotal_ = Size(0);
+    for (const auto& pot: target_posteriors__)
       delete pot.second;
-    __target_posteriors.clear();
+    target_posteriors__.clear();
   }
 }   // namespace gum

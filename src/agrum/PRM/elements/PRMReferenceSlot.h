@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::PRMClassElement.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_REFERENCE_SLOT_H
@@ -162,10 +162,10 @@ namespace gum {
       // @{
 
       /// The type of this PRMReferenceSlot.
-      PRMClassElementContainer< GUM_SCALAR >& __slotType;
+      PRMClassElementContainer< GUM_SCALAR >& slotType__;
 
       /// Flag indicating if this slot is an array.
-      bool __isArray;
+      bool isArray__;
 
       /// @}
     };

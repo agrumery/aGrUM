@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,8 @@
  * @brief The class computing n times the corrected mutual information,
  * as used in the 3off2 algorithm
  *
- * @author Quentin FALCAND, Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6).
+ * @author Quentin FALCAND, Christophe GONZALES(@AMU) and Pierre-Henri
+ * WUILLEMIN(@LIP6).
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -37,7 +38,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     typename CorrectedMutualInformation< ALLOC >::allocator_type
        CorrectedMutualInformation< ALLOC >::getAllocator() const {
-      return __NH.getAllocator();
+      return NH__.getAllocator();
     }
 
 
@@ -51,10 +52,10 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                                            nodeId2columns,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
-        __NH(parser, apriori, ranges, nodeId2columns, alloc),
-        __k_NML(parser, apriori, ranges, nodeId2columns, alloc),
-        __score_MDL(parser, apriori, ranges, nodeId2columns, alloc),
-        __ICache(alloc), __KCache(alloc) {
+        NH__(parser, apriori, ranges, nodeId2columns, alloc),
+        k_NML__(parser, apriori, ranges, nodeId2columns, alloc),
+        score_MDL__(parser, apriori, ranges, nodeId2columns, alloc),
+        ICache__(alloc), KCache__(alloc) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
@@ -67,10 +68,10 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                                            nodeId2columns,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
-        __NH(parser, apriori, nodeId2columns, alloc),
-        __k_NML(parser, apriori, nodeId2columns, alloc),
-        __score_MDL(parser, apriori, nodeId2columns, alloc), __ICache(alloc),
-        __KCache(alloc) {
+        NH__(parser, apriori, nodeId2columns, alloc),
+        k_NML__(parser, apriori, nodeId2columns, alloc),
+        score_MDL__(parser, apriori, nodeId2columns, alloc), ICache__(alloc),
+        KCache__(alloc) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
@@ -80,12 +81,12 @@ namespace gum {
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
        const CorrectedMutualInformation< ALLOC >&                          from,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
-        __NH(from.__NH, alloc),
-        __k_NML(from.__k_NML, alloc), __score_MDL(from.__score_MDL, alloc),
-        __kmode(from.__kmode), __use_ICache(from.__use_ICache),
-        __use_HCache(from.__use_HCache), __use_KCache(from.__use_KCache),
-        __use_CnrCache(from.__use_CnrCache), __ICache(from.__ICache, alloc),
-        __KCache(from.__KCache, alloc) {
+        NH__(from.NH__, alloc),
+        k_NML__(from.k_NML__, alloc), score_MDL__(from.score_MDL__, alloc),
+        kmode__(from.kmode__), use_ICache__(from.use_ICache__),
+        use_HCache__(from.use_HCache__), use_KCache__(from.use_KCache__),
+        use_CnrCache__(from.use_CnrCache__), ICache__(from.ICache__, alloc),
+        KCache__(from.KCache__, alloc) {
       GUM_CONS_CPY(CorrectedMutualInformation);
     }
 
@@ -102,13 +103,13 @@ namespace gum {
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
        CorrectedMutualInformation< ALLOC >&&                               from,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
-        __NH(std::move(from.__NH), alloc),
-        __k_NML(std::move(from.__k_NML), alloc),
-        __score_MDL(std::move(from.__score_MDL), alloc), __kmode(from.__kmode),
-        __use_ICache(from.__use_ICache), __use_HCache(from.__use_HCache),
-        __use_KCache(from.__use_KCache), __use_CnrCache(from.__use_CnrCache),
-        __ICache(std::move(from.__ICache), alloc),
-        __KCache(std::move(from.__KCache), alloc) {
+        NH__(std::move(from.NH__), alloc),
+        k_NML__(std::move(from.k_NML__), alloc),
+        score_MDL__(std::move(from.score_MDL__), alloc), kmode__(from.kmode__),
+        use_ICache__(from.use_ICache__), use_HCache__(from.use_HCache__),
+        use_KCache__(from.use_KCache__), use_CnrCache__(from.use_CnrCache__),
+        ICache__(std::move(from.ICache__), alloc),
+        KCache__(std::move(from.KCache__), alloc) {
       GUM_CONS_MOV(CorrectedMutualInformation);
     }
 
@@ -161,16 +162,16 @@ namespace gum {
        CorrectedMutualInformation< ALLOC >::operator=(
           const CorrectedMutualInformation< ALLOC >& from) {
       if (this != &from) {
-        __NH = from.__NH;
-        __k_NML = from.__k_NML;
-        __score_MDL = from.__score_MDL;
-        __kmode = from.__kmode;
-        __use_ICache = from.__use_ICache;
-        __use_HCache = from.__use_HCache;
-        __use_KCache = from.__use_KCache;
-        __use_CnrCache = from.__use_CnrCache;
-        __ICache = from.__ICache;
-        __KCache = from.__KCache;
+        NH__ = from.NH__;
+        k_NML__ = from.k_NML__;
+        score_MDL__ = from.score_MDL__;
+        kmode__ = from.kmode__;
+        use_ICache__ = from.use_ICache__;
+        use_HCache__ = from.use_HCache__;
+        use_KCache__ = from.use_KCache__;
+        use_CnrCache__ = from.use_CnrCache__;
+        ICache__ = from.ICache__;
+        KCache__ = from.KCache__;
       }
       return *this;
     }
@@ -182,16 +183,16 @@ namespace gum {
        CorrectedMutualInformation< ALLOC >::operator=(
           CorrectedMutualInformation< ALLOC >&& from) {
       if (this != &from) {
-        __NH = std::move(from.__NH);
-        __k_NML = std::move(from.__k_NML);
-        __score_MDL = std::move(from.__score_MDL);
-        __kmode = from.__kmode;
-        __use_ICache = from.__use_ICache;
-        __use_HCache = from.__use_HCache;
-        __use_KCache = from.__use_KCache;
-        __use_CnrCache = from.__use_CnrCache;
-        __ICache = std::move(from.__ICache);
-        __KCache = std::move(from.__KCache);
+        NH__ = std::move(from.NH__);
+        k_NML__ = std::move(from.k_NML__);
+        score_MDL__ = std::move(from.score_MDL__);
+        kmode__ = from.kmode__;
+        use_ICache__ = from.use_ICache__;
+        use_HCache__ = from.use_HCache__;
+        use_KCache__ = from.use_KCache__;
+        use_CnrCache__ = from.use_CnrCache__;
+        ICache__ = std::move(from.ICache__);
+        KCache__ = std::move(from.KCache__);
       }
       return *this;
     }
@@ -210,43 +211,43 @@ namespace gum {
     /// turn on/off the use of the I cache
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::useICache(bool on_off) {
-      if (!on_off) __ICache.clear();
-      __use_ICache = on_off;
+      if (!on_off) ICache__.clear();
+      use_ICache__ = on_off;
     }
 
 
     /// turn on/off the use of the H cache
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::useHCache(bool on_off) {
-      if (!on_off) __NH.clearCache();
-      __use_HCache = on_off;
-      __NH.useCache(on_off);
+      if (!on_off) NH__.clearCache();
+      use_HCache__ = on_off;
+      NH__.useCache(on_off);
     }
 
 
     /// turn on/off the use of the K cache
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::useKCache(bool on_off) {
-      if (!on_off) __KCache.clear();
-      __use_KCache = on_off;
+      if (!on_off) KCache__.clear();
+      use_KCache__ = on_off;
     }
 
 
     /// turn on/off the use of the Cnr cache
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::useCnrCache(bool on_off) {
-      if (!on_off) __k_NML.clearCache();
-      __use_CnrCache = on_off;
-      __k_NML.useCache(on_off);
+      if (!on_off) k_NML__.clearCache();
+      use_CnrCache__ = on_off;
+      k_NML__.useCache(on_off);
     }
 
 
     /// clears all the data structures from memory
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clear() {
-      __NH.clear();
-      __k_NML.clear();
-      __score_MDL.clear();
+      NH__.clear();
+      k_NML__.clear();
+      score_MDL__.clear();
       clearCache();
     }
 
@@ -254,38 +255,38 @@ namespace gum {
     /// clears the current cache (clear nodesets as well)
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clearCache() {
-      __NH.clearCache();
-      __k_NML.clearCache();
-      __ICache.clear();
-      __KCache.clear();
+      NH__.clearCache();
+      k_NML__.clearCache();
+      ICache__.clear();
+      KCache__.clear();
     }
 
 
     /// clears the ICache (the mutual information  cache)
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clearICache() {
-      __ICache.clear();
+      ICache__.clear();
     }
 
 
     /// clears the HCache (the cache for the entropies)
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clearHCache() {
-      __NH.clearCache();
+      NH__.clearCache();
     }
 
 
     /// clears the KCache (the cache for the penalties)
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clearKCache() {
-      __KCache.clear();
+      KCache__.clear();
     }
 
 
     /// clears the CnrCache (the cache for the Cnr formula)
     template < template < typename > class ALLOC >
     INLINE void CorrectedMutualInformation< ALLOC >::clearCnrCache() {
-      __k_NML.clearCache();
+      k_NML__.clearCache();
     }
 
 
@@ -293,16 +294,16 @@ namespace gum {
     template < template < typename > class ALLOC >
     void
        CorrectedMutualInformation< ALLOC >::setMaxNbThreads(std::size_t nb) const {
-      __NH.setMaxNbThreads(nb);
-      __k_NML.setMaxNbThreads(nb);
-      __score_MDL.setMaxNbThreads(nb);
+      NH__.setMaxNbThreads(nb);
+      k_NML__.setMaxNbThreads(nb);
+      score_MDL__.setMaxNbThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
     std::size_t CorrectedMutualInformation< ALLOC >::nbThreads() const {
-      return __NH.nbThreads();
+      return NH__.nbThreads();
     }
 
 
@@ -311,9 +312,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::setMinNbRowsPerThread(
        const std::size_t nb) const {
-      __NH.setMinNbRowsPerThread(nb);
-      __k_NML.setMinNbRowsPerThread(nb);
-      __score_MDL.setMinNbRowsPerThread(nb);
+      NH__.setMinNbRowsPerThread(nb);
+      k_NML__.setMinNbRowsPerThread(nb);
+      score_MDL__.setMinNbRowsPerThread(nb);
     }
 
 
@@ -321,7 +322,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::size_t
            CorrectedMutualInformation< ALLOC >::minNbRowsPerThread() const {
-      return __NH.minNbRowsPerThread();
+      return NH__.minNbRowsPerThread();
     }
 
 
@@ -342,9 +343,9 @@ namespace gum {
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
 
-      __NH.setRanges(new_ranges);
-      __k_NML.setRanges(new_ranges);
-      __score_MDL.setRanges(new_ranges);
+      NH__.setRanges(new_ranges);
+      k_NML__.setRanges(new_ranges);
+      score_MDL__.setRanges(new_ranges);
 
       if (old_ranges != ranges()) clear();
     }
@@ -356,9 +357,9 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
-      __NH.clearRanges();
-      __k_NML.clearRanges();
-      __score_MDL.clearRanges();
+      NH__.clearRanges();
+      k_NML__.clearRanges();
+      score_MDL__.clearRanges();
       if (old_ranges != ranges()) clear();
     }
 
@@ -368,7 +369,7 @@ namespace gum {
     INLINE const std::vector< std::pair< std::size_t, std::size_t >,
                               ALLOC< std::pair< std::size_t, std::size_t > > >&
                  CorrectedMutualInformation< ALLOC >::ranges() const {
-      return __NH.ranges();
+      return NH__.ranges();
     }
 
 
@@ -376,7 +377,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::useMDL() {
       clearCache();
-      __kmode = KModeTypes::MDL;
+      kmode__ = KModeTypes::MDL;
     }
 
 
@@ -384,7 +385,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::useNML() {
       clearCache();
-      __kmode = KModeTypes::NML;
+      kmode__ = KModeTypes::NML;
     }
 
 
@@ -392,7 +393,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::useNoCorr() {
       clearCache();
-      __kmode = KModeTypes::NoCorr;
+      kmode__ = KModeTypes::NoCorr;
     }
 
 
@@ -400,7 +401,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::score(NodeId var1,
                                                              NodeId var2) {
-      return score(var1, var2, __empty_conditioning_set);
+      return score(var1, var2, empty_conditioning_set__);
     }
 
 
@@ -410,8 +411,8 @@ namespace gum {
        NodeId                                        var1,
        NodeId                                        var2,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
-      return __NI_score(var1, var2, conditioning_ids)
-             - __K_score(var1, var2, conditioning_ids);
+      return NI_score__(var1, var2, conditioning_ids)
+             - K_score__(var1, var2, conditioning_ids);
     }
 
 
@@ -420,7 +421,7 @@ namespace gum {
     INLINE double CorrectedMutualInformation< ALLOC >::score(NodeId var1,
                                                              NodeId var2,
                                                              NodeId var3) {
-      return score(var1, var2, var3, __empty_conditioning_set);
+      return score(var1, var2, var3, empty_conditioning_set__);
     }
 
 
@@ -431,14 +432,14 @@ namespace gum {
        NodeId                                        var2,
        NodeId                                        var3,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
-      return __NI_score(var1, var2, var3, conditioning_ids)
-             + __K_score(var1, var2, var3, conditioning_ids);
+      return NI_score__(var1, var2, var3, conditioning_ids)
+             + K_score__(var1, var2, var3, conditioning_ids);
     }
 
 
     /// return N times the mutual information for conditioned pairs of variables
     template < template < typename > class ALLOC >
-    double CorrectedMutualInformation< ALLOC >::__NI_score(
+    double CorrectedMutualInformation< ALLOC >::NI_score__(
        NodeId                                        var_x,
        NodeId                                        var_y,
        const std::vector< NodeId, ALLOC< NodeId > >& vars_z) {
@@ -459,9 +460,9 @@ namespace gum {
 
       // if the score has already been computed, get its value
       const IdCondSet< ALLOC > idset_xyz(var_x, var_y, vars_z, false, false);
-      if (__use_ICache) {
+      if (use_ICache__) {
         try {
-          return __ICache.score(idset_xyz);
+          return ICache__.score(idset_xyz);
         } catch (const NotFound&) {}
       }
 
@@ -475,17 +476,17 @@ namespace gum {
         // std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
-        const double NHxyz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
+        const double NHxyz = -NH__.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHxz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
+        const double NHxz = -NH__.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
         vars.push_back(var_y);
-        const double NHyz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
+        const double NHyz = -NH__.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
+        const double NHz = -NH__.score(IdCondSet< ALLOC >(vars, false, true));
 
         const double NHxz_NHyz = NHxz + NHyz;
         double       NHz_NHxyz = NHz + NHxyz;
@@ -498,15 +499,16 @@ namespace gum {
           ratio = (NHxz_NHyz - NHz_NHxyz) / NHz_NHxyz;
         }
         if (ratio < 0) ratio = -ratio;
-        if (ratio < __threshold) {
+        if (ratio < threshold__) {
           NHz_NHxyz = NHxz_NHyz;   // ensure that the score is equal to 0
         }
 
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
-        const double NHxy = -__NH.score(IdCondSet< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
-        const double NHx = -__NH.score(var_x);
-        const double NHy = -__NH.score(var_y);
+        const double NHxy = -NH__.score(IdCondSet< ALLOC >(
+           var_x, var_y, empty_conditioning_set__, true, false));
+        const double NHx = -NH__.score(var_x);
+        const double NHy = -NH__.score(var_y);
 
         double NHx_NHy = NHx + NHy;
 
@@ -518,7 +520,7 @@ namespace gum {
           ratio = (NHx_NHy - NHxy) / NHxy;
         }
         if (ratio < 0) ratio = -ratio;
-        if (ratio < __threshold) {
+        if (ratio < threshold__) {
           NHx_NHy = NHxy;   // ensure that the score is equal to 0
         }
 
@@ -527,7 +529,7 @@ namespace gum {
 
 
       // shall we put the score into the cache?
-      if (__use_ICache) { __ICache.insert(idset_xyz, score); }
+      if (use_ICache__) { ICache__.insert(idset_xyz, score); }
 
       return score;
     }
@@ -535,7 +537,7 @@ namespace gum {
 
     /// return N times the mutual information for conditioned triples of variables
     template < template < typename > class ALLOC >
-    INLINE double CorrectedMutualInformation< ALLOC >::__NI_score(
+    INLINE double CorrectedMutualInformation< ALLOC >::NI_score__(
        NodeId                                        var_x,
        NodeId                                        var_y,
        NodeId                                        var_z,
@@ -544,36 +546,36 @@ namespace gum {
       // I(x;y;z|{ui}) = I(x;y|{ui}) - I(x;y|z,{ui})
       std::vector< NodeId, ALLOC< NodeId > > uiz_ids = ui_ids;
       uiz_ids.push_back(var_z);
-      return __NI_score(var_x, var_y, ui_ids) - __NI_score(var_x, var_y, uiz_ids);
+      return NI_score__(var_x, var_y, ui_ids) - NI_score__(var_x, var_y, uiz_ids);
     }
 
 
     /// 2pt penalty
     template < template < typename > class ALLOC >
-    double CorrectedMutualInformation< ALLOC >::__K_score(
+    double CorrectedMutualInformation< ALLOC >::K_score__(
        NodeId                                        var1,
        NodeId                                        var2,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       // if no penalty, return 0
-      if (__kmode == KModeTypes::NoCorr) return 0.0;
+      if (kmode__ == KModeTypes::NoCorr) return 0.0;
 
 
       // If using the K cache, verify whether the set isn't already known
       IdCondSet< ALLOC > idset;
-      if (__use_KCache) {
+      if (use_KCache__) {
         idset = std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
         try {
-          return __KCache.score(idset);
+          return KCache__.score(idset);
         } catch (const NotFound&) {}
       }
 
       // compute the score
       double score;
       size_t rx, ry, rui;
-      switch (__kmode) {
+      switch (kmode__) {
         case KModeTypes::MDL: {
-          const auto& database = __NH.database();
-          const auto& node2cols = __NH.nodeId2Columns();
+          const auto& database = NH__.database();
+          const auto& node2cols = NH__.nodeId2Columns();
 
           rui = 1;
           if (!node2cols.empty()) {
@@ -591,16 +593,17 @@ namespace gum {
           }
 
           // compute the size of the database, including the a priori
-          if (!__use_KCache) {
-            idset = std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
+          if (!use_KCache__) {
+            idset =
+               std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
           }
-          const double N = __score_MDL.N(idset);
+          const double N = score_MDL__.N(idset);
 
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);
         } break;
 
         case KModeTypes::NML:
-          score = __k_NML.score(var1, var2, conditioning_ids);
+          score = k_NML__.score(var1, var2, conditioning_ids);
           break;
 
         default:
@@ -610,14 +613,14 @@ namespace gum {
       }
 
       // shall we put the score into the cache?
-      if (__use_KCache) { __KCache.insert(idset, score); }
+      if (use_KCache__) { KCache__.insert(idset, score); }
       return score;
     }
 
 
     /// 3pt penalty
     template < template < typename > class ALLOC >
-    INLINE double CorrectedMutualInformation< ALLOC >::__K_score(
+    INLINE double CorrectedMutualInformation< ALLOC >::K_score__(
        NodeId                                        var1,
        NodeId                                        var2,
        NodeId                                        var3,
@@ -625,7 +628,7 @@ namespace gum {
       // k(x;y;z|ui) = k(x;y|ui,z) - k(x;y|ui)
       std::vector< NodeId, ALLOC< NodeId > > uiz_ids = ui_ids;
       uiz_ids.push_back(var3);
-      return __K_score(var1, var2, uiz_ids) - __K_score(var1, var2, ui_ids);
+      return K_score__(var1, var2, uiz_ids) - K_score__(var1, var2, ui_ids);
     }
 
 

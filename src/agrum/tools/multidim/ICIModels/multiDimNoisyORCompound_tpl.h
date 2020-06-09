@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief ANoisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *<info_at_agrum_dot_org>
  */
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
@@ -130,8 +130,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimNoisyORCompound< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyORCompound< GUM_SCALAR >(this->__external_weight,
-                                                     this->__default_weight);
+    return new MultiDimNoisyORCompound< GUM_SCALAR >(this->external_weight__,
+                                                     this->default_weight__);
   }
 
   // returns the name of the implementation

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The base class for initializing DatabaseTable and RawDatabaseTable
  * instances from CSV files or SQL databases
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_IDB_INITILIALIZER_H
 #define GUM_LEARNING_IDB_INITILIALIZER_H
@@ -194,44 +194,44 @@ namespace gum {
 
       /// ask the child class for the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-         _variableNames() = 0;
+         variableNames_() = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */
       virtual const std::vector< std::string, ALLOC< std::string > >&
-         _currentStringRow();
+         currentStringRow_();
 
       /// asks the child class for the content of the current row using dbcells
       /** If the child class parses DBRows, this method should be overloaded */
-      virtual const DBRow< DBCell, ALLOC >& _currentDBCellRow();
+      virtual const DBRow< DBCell, ALLOC >& currentDBCellRow_();
 
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow() = 0;
+      virtual bool nextRow_() = 0;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       // the names of the variables
-      std::vector< std::string, ALLOC< std::string > > __var_names;
+      std::vector< std::string, ALLOC< std::string > > var_names__;
 
       // the types of the input data read to fill the database
-      InputType __input_type;
+      InputType input_type__;
 
       // indicates whether an exception was raised when adding the last row
       // into the database. If so, when filling again the database, we may
       // try to insert again the same row
-      bool __last_insertion_failed{false};
+      bool last_insertion_failed__{false};
 
 
       /// fills the rows of the database using string inputs
       template < template < template < typename > class > class DATABASE >
-      void __fillDatabaseFromStrings(DATABASE< ALLOC >& database,
+      void fillDatabaseFromStrings__(DATABASE< ALLOC >& database,
                                      const bool         retry_insertion);
 
       /// fills the rows of the database using DBCell inputs
       template < template < template < typename > class > class DATABASE >
-      void __fillDatabaseFromDBCells(DATABASE< ALLOC >& database,
+      void fillDatabaseFromDBCells__(DATABASE< ALLOC >& database,
                                      const bool         retry_insertion);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

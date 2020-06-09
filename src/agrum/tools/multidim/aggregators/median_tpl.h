@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief median aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <sstream>
@@ -68,7 +68,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    Idx Median< GUM_SCALAR >::_buildValue(const gum::Instantiation& i) const {
+    Idx Median< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
       if (i.nbrDim() < 2)
         return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
 
@@ -100,7 +100,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Median< GUM_SCALAR >::_fold(const DiscreteVariable& v,
+    INLINE Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
                                            bool& stop_iteration) const {

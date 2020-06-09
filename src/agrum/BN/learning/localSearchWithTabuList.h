@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  * To prevent infinite loops, when using local search, you should use a
  * structural constraint that includes a tabu list of at least N elements.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
 #define GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
@@ -126,7 +126,7 @@ namespace gum {
 
       private:
       /// the max number of changes decreasing the score that we allow to apply
-      Size __MaxNbDecreasing{2};
+      Size MaxNbDecreasing__{2};
     };
 
   } /* namespace learning */

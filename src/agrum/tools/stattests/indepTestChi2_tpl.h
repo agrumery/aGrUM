@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the class for computing Chi2 scores
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -45,7 +45,7 @@ namespace gum {
                                                               nodeId2columns,
        const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        __domain_sizes(parser.database().domainSizes()), __chi2(__domain_sizes) {
+        domain_sizes__(parser.database().domainSizes()), chi2__(domain_sizes__) {
       GUM_CONSTRUCTOR(IndepTestChi2);
     }
 
@@ -59,7 +59,7 @@ namespace gum {
                                                               nodeId2columns,
        const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        __domain_sizes(parser.database().domainSizes()), __chi2(__domain_sizes) {
+        domain_sizes__(parser.database().domainSizes()), chi2__(domain_sizes__) {
       GUM_CONSTRUCTOR(IndepTestChi2);
     }
 
@@ -70,7 +70,7 @@ namespace gum {
        const IndepTestChi2< ALLOC >&                          from,
        const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
-        __domain_sizes(from.__domain_sizes), __chi2(__domain_sizes) {
+        domain_sizes__(from.domain_sizes__), chi2__(domain_sizes__) {
       GUM_CONS_CPY(IndepTestChi2);
     }
 
@@ -88,7 +88,7 @@ namespace gum {
        IndepTestChi2< ALLOC >&&                               from,
        const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
-        __domain_sizes(from.__domain_sizes), __chi2(__domain_sizes) {
+        domain_sizes__(from.domain_sizes__), chi2__(domain_sizes__) {
       GUM_CONS_MOV(IndepTestChi2);
     }
 
@@ -136,7 +136,7 @@ namespace gum {
        IndepTestChi2< ALLOC >::operator=(const IndepTestChi2< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        //__chi2 = from.__chi2;
+        //__chi2 = from.chi2__;
       }
       return *this;
     }
@@ -148,7 +148,7 @@ namespace gum {
        IndepTestChi2< ALLOC >::operator=(IndepTestChi2< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-        //__chi2 = std::move(from.__chi2);
+        //__chi2 = std::move(from.chi2__);
       }
       return *this;
     }
@@ -159,24 +159,24 @@ namespace gum {
        NodeId                                        var1,
        NodeId                                        var2,
        const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      return _statistics(IdCondSet< ALLOC >(var1, var2, rhs_ids, false));
+      return statistics_(IdCondSet< ALLOC >(var1, var2, rhs_ids, false));
     }
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     template < template < typename > class ALLOC >
     std::pair< double, double >
-       IndepTestChi2< ALLOC >::_statistics(const IdCondSet< ALLOC >& idset) {
+       IndepTestChi2< ALLOC >::statistics_(const IdCondSet< ALLOC >& idset) {
       // get the countings
       std::vector< double, ALLOC< double > > N_xyz(
-         this->_counter.counts(idset, true));
-      const bool informative_external_apriori = this->_apriori->isInformative();
+         this->counter_.counts(idset, true));
+      const bool informative_external_apriori = this->apriori_->isInformative();
       if (informative_external_apriori)
-        this->_apriori->addAllApriori(idset, N_xyz);
+        this->apriori_->addAllApriori(idset, N_xyz);
       const std::size_t all_size = (N_xyz.size());
 
       // compute the domain sizes of X and Y
-      const auto& nodeId2cols = this->_counter.nodeId2Columns();
-      const auto& database = this->_counter.database();
+      const auto& nodeId2cols = this->counter_.nodeId2Columns();
+      const auto& database = this->counter_.database();
       Idx         var_x, var_y;
       if (nodeId2cols.empty()) {
         var_x = idset[0];
@@ -198,11 +198,11 @@ namespace gum {
 
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_xz =
-           this->_marginalize(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
+           this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
         std::vector< double, ALLOC< double > > N_yz =
-           this->_marginalize(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
+           this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
         std::vector< double, ALLOC< double > > N_z =
-           this->_marginalize(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
+           this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
 
         // indicate to the chi2 distribution the set of conditioning nodes
         std::vector< Idx > cond_nodes;
@@ -217,7 +217,7 @@ namespace gum {
               cond_nodes.push_back(nodeId2cols.second(node));
           }
         }
-        __chi2.setConditioningNodes(cond_nodes);
+        chi2__.setConditioningNodes(cond_nodes);
 
 
         // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
@@ -248,14 +248,14 @@ namespace gum {
         // here, there is no conditioning set
 
         // indicate to the chi2 distribution the set of conditioning nodes
-        __chi2.setConditioningNodes(__empty_set);
+        chi2__.setConditioningNodes(empty_set__);
 
         // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
 
         // get the counts for all the targets and for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_x = this->_marginalize(
+        std::vector< double, ALLOC< double > > N_x = this->marginalize_(
            std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
-        std::vector< double, ALLOC< double > > N_y = this->_marginalize(
+        std::vector< double, ALLOC< double > > N_y = this->marginalize_(
            std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
 
         // count N
@@ -275,16 +275,16 @@ namespace gum {
         }
       }
 
-      Size   df = __chi2.degreesOfFreedom(var_x, var_y);
-      double pValue = __chi2.probaChi2(cumulStat, df);
+      Size   df = chi2__.degreesOfFreedom(var_x, var_y);
+      double pValue = chi2__.probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    inline double IndepTestChi2< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
-      const auto& nodeId2cols = this->_counter.nodeId2Columns();
+    inline double IndepTestChi2< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
+      const auto& nodeId2cols = this->counter_.nodeId2Columns();
       Idx         var_x, var_y;
       if (nodeId2cols.empty()) {
         var_x = idset[0];
@@ -294,14 +294,14 @@ namespace gum {
         var_y = nodeId2cols.second(idset[1]);
       }
 
-      auto   stat = _statistics(idset);   // stat contains pair(Chi2stat,pValue)
+      auto   stat = statistics_(idset);   // stat contains pair(Chi2stat,pValue)
       double score = stat.first;
 
       // ok, here, score contains the value of the chi2 formula.
       // To get a meaningful score, we shall compute the critical values
       // for the Chi2 distribution and assign as the score of
       // (score - alpha ) / alpha, where alpha is the critical value
-      const double alpha = __chi2.criticalValue(var_x, var_y);
+      const double alpha = chi2__.criticalValue(var_x, var_y);
       score = (score - alpha) / alpha;
 
       return score;

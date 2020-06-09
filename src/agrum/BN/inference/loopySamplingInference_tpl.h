@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief Implements approximate inference algorithms from Loopy Belief
  * Propagation.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 
@@ -41,7 +41,7 @@ namespace gum {
   LoopySamplingInference< GUM_SCALAR, APPROX >::LoopySamplingInference(
      const IBayesNet< GUM_SCALAR >* BN) :
       APPROX< GUM_SCALAR >(BN),
-      _virtualLBPSize(DEFAULT_VIRTUAL_LBP_SIZE) {
+      virtualLBPSize_(DEFAULT_VIRTUAL_LBP_SIZE) {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 
@@ -53,7 +53,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
-  void LoopySamplingInference< GUM_SCALAR, APPROX >::_makeInference() {
+  void LoopySamplingInference< GUM_SCALAR, APPROX >::makeInference_() {
     LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
     for (const auto x: this->hardEvidence()) {
       lbp.addEvidence(x.first, x.second);
@@ -61,9 +61,9 @@ namespace gum {
     lbp.makeInference();
 
     if (!this->isSetEstimator) {
-      this->_setEstimatorFromLBP(&lbp, _virtualLBPSize);
+      this->setEstimatorFromLBP_(&lbp, virtualLBPSize_);
     }
 
-    this->_loopApproxInference();
+    this->loopApproxInference_();
   }
 }   // namespace gum

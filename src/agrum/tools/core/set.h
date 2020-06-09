@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Sets of elements (i.e. the mathematical notion of a set).
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_SET_H
 #define GUM_SET_H
@@ -62,9 +62,9 @@ namespace gum {
    * @brief A class used to create the static iterator used by Sets.
    * @ingroup set_group
    *
-   * The aim of using this class rather than just creating __SetIterEnd as a
+   * The aim of using this class rather than just creating SetIterEnd__ as a
    * global variable is to prevent other classes to access and modify
-   * __SetIterEnd.
+   * SetIterEnd__.
    */
   class SetIteratorStaticEnd {
     private:
@@ -72,35 +72,35 @@ namespace gum {
      * @brief The safe iterator used by everyone.
      * @return Returns the safe iterator used by everyone.
      */
-    static const SetIteratorSafe< int >* __SetIterEndSafe;
+    static const SetIteratorSafe< int >* SetIterEndSafe__;
 
     /**
      * @brief The unsafe iterator used by everyone.
      * @return Returns the unsafe iterator used by everyone.
      */
-    static const SetIterator< int >* __SetIterEnd;
+    static const SetIterator< int >* SetIterEnd__;
 
     /**
-     * @brief Creates (if needed) and returns the iterator __SetIterEndSafe.
-     * @return Returns the iterator __SetIterEndSafe.
+     * @brief Creates (if needed) and returns the iterator SetIterEndSafe__.
+     * @return Returns the iterator SetIterEndSafe__.
      */
     static const SetIteratorSafe< int >* endSafe4Statics();
 
     /**
-     * @brief Creates (if needed) and returns the iterator __SetIterEndSafe.
-     * @return Returns the iterator __SetIterEndSafe.
+     * @brief Creates (if needed) and returns the iterator SetIterEndSafe__.
+     * @return Returns the iterator SetIterEndSafe__.
      */
     static const SetIteratorSafe< int >* constEndSafe4Statics();
 
     /**
-     * @brief Creates (if needed) and returns the iterator __SetIterEnd.
-     * @return Returns the iterator __SetIterEnd.
+     * @brief Creates (if needed) and returns the iterator SetIterEnd__.
+     * @return Returns the iterator SetIterEnd__.
      */
     static const SetIterator< int >* end4Statics();
 
     /**
-     * @brief Creates (if needed) and returns the iterator __SetIterEnd.
-     * @return Returns the iterator __SetIterEnd.
+     * @brief Creates (if needed) and returns the iterator SetIterEnd__.
+     * @return Returns the iterator SetIterEnd__.
      */
     static const SetIterator< int >* constEnd4Statics();
 
@@ -764,7 +764,7 @@ namespace gum {
     /// @}
 
     /// A set of X's is actually a hash table whose keys are the X's.
-    HashTable< Key, bool, Alloc > __inside;
+    HashTable< Key, bool, Alloc > inside__;
 
     /// Convert a hash table into a set of keys.
     Set(const HashTable< Key, bool, Alloc >& h);
@@ -978,7 +978,7 @@ namespace gum {
     friend class Set;
 
     /// The underlying iterator for the set's hash table containing the data.
-    HashTableConstIteratorSafe< Key, bool > __ht_iter;
+    HashTableConstIteratorSafe< Key, bool > ht_iter__;
   };
 
   // ===========================================================================
@@ -1180,7 +1180,7 @@ namespace gum {
     friend class SetIteratorSafe< Key >;
 
     /// The underlying iterator for the set's hash table containing the data.
-    HashTableConstIterator< Key, bool > __ht_iter;
+    HashTableConstIterator< Key, bool > ht_iter__;
   };
 
 

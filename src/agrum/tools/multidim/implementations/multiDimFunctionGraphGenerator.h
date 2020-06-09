@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Headers of gum::MultiDimFunctionGraphGenerator.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
@@ -81,21 +81,21 @@ namespace gum {
     /**
      * @brief Creates a leaf.
      */
-    bool __createLeaf(NodeId currentNodeId, HashTable< NodeId, Idx >& node2MinVar);
+    bool createLeaf__(NodeId currentNodeId, HashTable< NodeId, Idx >& node2MinVar);
 
     /**
      * @brief Generate a variable position.
      */
-    Idx __generateVarPos(Idx offset, Idx span);
+    Idx generateVarPos__(Idx offset, Idx span);
 
     /// The variables
-    const Sequence< const DiscreteVariable* > __varSeq;
+    const Sequence< const DiscreteVariable* > varSeq__;
 
     /// The total number of variables
-    Idx __nbTotalVar;
+    Idx nbTotalVar__;
 
     /// The seed for random numbers
-    static Idx __genSeed;
+    static Idx genSeed__;
   };
 }   // namespace gum
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H */

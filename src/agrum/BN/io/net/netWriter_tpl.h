@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -53,13 +53,13 @@ namespace gum {
     if (!output.good())
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
 
-    output << __header(bn) << std::endl;
+    output << header__(bn) << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableBloc(bn.variable(node)) << std::endl;
+      output << variableBloc__(bn.variable(node)) << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableCPT(bn.cpt(node));
+      output << variableCPT__(bn.cpt(node));
 
     output << std::endl;
 
@@ -84,13 +84,13 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
 
-    output << __header(bn) << std::endl;
+    output << header__(bn) << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableBloc(bn.variable(node)) << std::endl;
+      output << variableBloc__(bn.variable(node)) << std::endl;
 
     for (auto node: bn.nodes())
-      output << __variableCPT(bn.cpt(node));
+      output << variableCPT__(bn.cpt(node));
 
     output << std::endl;
 
@@ -103,7 +103,7 @@ namespace gum {
   // Returns a bloc defining a variable's CPT in the BN format.
   template < typename GUM_SCALAR >
   INLINE std::string
-         NetWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
+         NetWriter< GUM_SCALAR >::variableCPT__(const Potential< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 
@@ -122,7 +122,7 @@ namespace gum {
 
       Instantiation conds;
       for (Idx i = 1; i < varsSeq.size(); i++)
-        conds.add(*varsSeq[varsSeq.size()-i]);
+        conds.add(*varsSeq[varsSeq.size() - i]);
 
       str << "potential ( " << (varsSeq[(Idx)0])->name() << " | ";
       for (Idx i = 1; i < varsSeq.size(); i++)
@@ -171,7 +171,7 @@ namespace gum {
   // Returns the header of the BN file.
   template < typename GUM_SCALAR >
   INLINE std::string
-         NetWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
+         NetWriter< GUM_SCALAR >::header__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << std::endl << "net {" << std::endl;
@@ -186,7 +186,7 @@ namespace gum {
   // Returns a bloc defining a variable in the BN format.
   template < typename GUM_SCALAR >
   INLINE std::string
-         NetWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         NetWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << "node " << var.name() << " {" << std::endl;

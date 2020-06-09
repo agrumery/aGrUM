@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Template implementation of idSets
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -45,7 +45,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >::IdCondSetIterator(
        const IdCondSet< ALLOC >& idset) :
-        __seq(&(idset.ids())) {
+        seq__(&(idset.ids())) {
       GUM_CONSTRUCTOR(IdCondSetIterator);
     }
 
@@ -54,8 +54,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >::IdCondSetIterator(
        const IdCondSetIterator< ALLOC >& from) :
-        __seq(from.__seq),
-        __index(from.__index) {
+        seq__(from.seq__),
+        index__(from.index__) {
       GUM_CONS_CPY(IdCondSetIterator);
     }
 
@@ -64,8 +64,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >::IdCondSetIterator(
        IdCondSetIterator< ALLOC >&& from) :
-        __seq(from.__seq),
-        __index(from.__index) {
+        seq__(from.seq__),
+        index__(from.index__) {
       GUM_CONS_MOV(IdCondSetIterator);
     }
 
@@ -79,11 +79,11 @@ namespace gum {
 
     /// places the index to the end of the sequence
     template < template < typename > class ALLOC >
-    INLINE void IdCondSetIterator< ALLOC >::__gotoEnd() {
-      if (__seq != nullptr)
-        __index = __seq->size();
+    INLINE void IdCondSetIterator< ALLOC >::gotoEnd__() {
+      if (seq__ != nullptr)
+        index__ = seq__->size();
       else
-        __index = std::size_t(0);
+        index__ = std::size_t(0);
     }
 
 
@@ -91,8 +91,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >& IdCondSetIterator< ALLOC >::operator=(
        const IdCondSetIterator< ALLOC >& from) {
-      __seq = from.__seq;
-      __index = from.__index;
+      seq__ = from.seq__;
+      index__ = from.index__;
       return *this;
     }
 
@@ -101,8 +101,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >&
        IdCondSetIterator< ALLOC >::operator=(IdCondSetIterator< ALLOC >&& from) {
-      __seq = from.__seq;
-      __index = from.__index;
+      seq__ = from.seq__;
+      index__ = from.index__;
       return *this;
     }
 
@@ -110,7 +110,7 @@ namespace gum {
     /// Gives access to the content of the iterator.
     template < template < typename > class ALLOC >
     INLINE NodeId IdCondSetIterator< ALLOC >::operator*() const {
-      return __seq->operator[](__index);
+      return seq__->operator[](index__);
     }
 
 
@@ -118,7 +118,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE bool IdCondSetIterator< ALLOC >::operator!=(
        const IdCondSetIterator< ALLOC >& from) const {
-      return (__index != from.__index) || (__seq != from.__seq);
+      return (index__ != from.index__) || (seq__ != from.seq__);
     }
 
 
@@ -133,7 +133,7 @@ namespace gum {
     /// Makes the iterator point to the next element in the IdCondSet
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >& IdCondSetIterator< ALLOC >::operator++() {
-      ++__index;
+      ++index__;
       return *this;
     }
 
@@ -142,7 +142,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >&
        IdCondSetIterator< ALLOC >::operator+=(const std::size_t i) {
-      __index += i;
+      index__ += i;
       return *this;
     }
 
@@ -160,14 +160,14 @@ namespace gum {
     /// Returns the position of the iterator in the IdCondSet
     template < template < typename > class ALLOC >
     std::size_t IdCondSetIterator< ALLOC >::pos() const {
-      if (__seq == nullptr)
+      if (seq__ == nullptr)
         GUM_ERROR(UndefinedIteratorValue,
                   "The IdCondSet is empty, so its iterators have no position");
-      if (__index >= __seq->size())
+      if (index__ >= seq__->size())
         GUM_ERROR(UndefinedIteratorValue,
                   "the IdCondSet iterator has no position because it reached "
                   "the set's end.");
-      return __index;
+      return index__;
     }
 
 
@@ -188,7 +188,7 @@ namespace gum {
     INLINE IdCondSet< ALLOC >::IdCondSet(
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __end_safe(*this) {
+        end_safe__(*this) {
       GUM_CONSTRUCTOR(IdCondSet);
     }
 
@@ -201,8 +201,8 @@ namespace gum {
        const bool                                         ordered_ids,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __end_safe(*this) {
-      __ids.resize(ids.size());
+        end_safe__(*this) {
+      ids__.resize(ids.size());
 
       // if the rhs_ids should be considered as unordered, we sort them by
       // increasing order so that we can compare easily two different rhs_ids
@@ -210,16 +210,16 @@ namespace gum {
         std::vector< NodeId, ALLOC< NodeId > > vect(ids);
         std::sort(vect.begin(), vect.end());
         for (const auto id: vect)
-          __ids << id;
+          ids__ << id;
       } else {
         for (const auto id: ids)
-          __ids << id;
+          ids__ << id;
       }
 
-      if (!rhs_ids) __nb_lhs_ids = __ids.size();
+      if (!rhs_ids) nb_lhs_ids__ = ids__.size();
 
       // update the end iterator
-      __end_safe.__gotoEnd();
+      end_safe__.gotoEnd__();
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
@@ -233,9 +233,9 @@ namespace gum {
        const bool                                         ordered_rhs_ids,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __nb_lhs_ids(std::size_t(1)), __end_safe(*this) {
-      __ids.resize(rhs_ids.size() + std::size_t(1));
-      __ids << var1;
+        nb_lhs_ids__(std::size_t(1)), end_safe__(*this) {
+      ids__.resize(rhs_ids.size() + std::size_t(1));
+      ids__ << var1;
 
       // if the rhs_ids should be considered as unordered, we sort them by
       // increasing order so that we can compare easily two different rhs_ids
@@ -243,14 +243,14 @@ namespace gum {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
         for (const auto id: vect)
-          __ids << id;
+          ids__ << id;
       } else {
         for (const auto id: rhs_ids)
-          __ids << id;
+          ids__ << id;
       }
 
       // update the end iterator
-      __end_safe.__gotoEnd();
+      end_safe__.gotoEnd__();
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
@@ -266,14 +266,14 @@ namespace gum {
        const bool                                         ordered_rhs_ids,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __nb_lhs_ids(std::size_t(2)), __end_safe(*this) {
-      __ids.resize(rhs_ids.size() + std::size_t(2));
+        nb_lhs_ids__(std::size_t(2)), end_safe__(*this) {
+      ids__.resize(rhs_ids.size() + std::size_t(2));
 
       // if the variables on the left side are unordered, sort them by
       // increasing order
       if (!ordered_lhs_vars && (var1 > var2)) std::swap(var1, var2);
-      __ids << var1;
-      __ids << var2;
+      ids__ << var1;
+      ids__ << var2;
 
       // if the rhs_ids should be considered as unordered, we sort them by
       // increasing order so that we can compare easily two different rhs_ids
@@ -281,14 +281,14 @@ namespace gum {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
         for (const auto id: vect)
-          __ids << id;
+          ids__ << id;
       } else {
         for (const auto id: rhs_ids)
-          __ids << id;
+          ids__ << id;
       }
 
       // update the end iterator
-      __end_safe.__gotoEnd();
+      end_safe__.gotoEnd__();
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
@@ -305,8 +305,8 @@ namespace gum {
        const bool                                         ordered_rhs_ids,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __nb_lhs_ids(std::size_t(3)), __end_safe(*this) {
-      __ids.resize(rhs_ids.size() + std::size_t(3));
+        nb_lhs_ids__(std::size_t(3)), end_safe__(*this) {
+      ids__.resize(rhs_ids.size() + std::size_t(3));
 
       // if the variables on the left side are unordered, sort them by
       // increasing order
@@ -315,9 +315,9 @@ namespace gum {
         if (var1 > var3) std::swap(var1, var3);
         if (var2 > var3) std::swap(var2, var3);
       }
-      __ids << var1;
-      __ids << var2;
-      __ids << var3;
+      ids__ << var1;
+      ids__ << var2;
+      ids__ << var3;
 
       // if the rhs_ids should be considered as unordered, we sort them by
       // increasing order so that we can compare easily two different rhs_ids
@@ -325,14 +325,14 @@ namespace gum {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
         for (const auto id: vect)
-          __ids << id;
+          ids__ << id;
       } else {
         for (const auto id: rhs_ids)
-          __ids << id;
+          ids__ << id;
       }
 
       // update the end iterator
-      __end_safe.__gotoEnd();
+      end_safe__.gotoEnd__();
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
@@ -344,8 +344,8 @@ namespace gum {
        const IdCondSet< ALLOC >&                          from,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __ids(from.__ids), __nb_lhs_ids(from.__nb_lhs_ids), __end_safe(*this) {
-      __end_safe.__gotoEnd();
+        ids__(from.ids__), nb_lhs_ids__(from.nb_lhs_ids__), end_safe__(*this) {
+      end_safe__.gotoEnd__();
       GUM_CONS_CPY(IdCondSet);
     }
 
@@ -362,9 +362,9 @@ namespace gum {
        IdCondSet< ALLOC >&&                               from,
        const typename IdCondSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __ids(std::move(from.__ids)), __nb_lhs_ids(from.__nb_lhs_ids),
-        __end_safe(*this) {
-      __end_safe.__gotoEnd();
+        ids__(std::move(from.ids__)), nb_lhs_ids__(from.nb_lhs_ids__),
+        end_safe__(*this) {
+      end_safe__.gotoEnd__();
       GUM_CONS_MOV(IdCondSet);
     }
 
@@ -411,9 +411,9 @@ namespace gum {
     INLINE IdCondSet< ALLOC >&
        IdCondSet< ALLOC >::operator=(const IdCondSet< ALLOC >& from) {
       if (this != &from) {
-        __ids = from.__ids;
-        __nb_lhs_ids = from.__nb_lhs_ids;
-        __end_safe.__gotoEnd();
+        ids__ = from.ids__;
+        nb_lhs_ids__ = from.nb_lhs_ids__;
+        end_safe__.gotoEnd__();
       }
       return *this;
     }
@@ -424,9 +424,9 @@ namespace gum {
     INLINE IdCondSet< ALLOC >&
        IdCondSet< ALLOC >::operator=(IdCondSet< ALLOC >&& from) {
       if (this != &from) {
-        __ids = std::move(from.__ids);
-        __nb_lhs_ids = from.__nb_lhs_ids;
-        __end_safe.__gotoEnd();
+        ids__ = std::move(from.ids__);
+        nb_lhs_ids__ = from.nb_lhs_ids__;
+        end_safe__.gotoEnd__();
       }
       return *this;
     }
@@ -435,7 +435,7 @@ namespace gum {
     /// returns the id stored at a given index
     template < template < typename > class ALLOC >
     INLINE NodeId IdCondSet< ALLOC >::operator[](const std::size_t index) const {
-      return __ids.atPos(index);
+      return ids__.atPos(index);
     }
 
 
@@ -443,14 +443,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE bool
        IdCondSet< ALLOC >::operator==(const IdCondSet< ALLOC >& from) const {
-      if (__nb_lhs_ids != from.__nb_lhs_ids) return false;
+      if (nb_lhs_ids__ != from.nb_lhs_ids__) return false;
 
-      const std::size_t size = __ids.size();
+      const std::size_t size = ids__.size();
 
-      if (size != from.__ids.size()) return false;
+      if (size != from.ids__.size()) return false;
 
       for (std::size_t i = std::size_t(0); i < size; ++i) {
-        if (__ids[i] != from.__ids[i]) return false;
+        if (ids__[i] != from.ids__[i]) return false;
       }
 
       return true;
@@ -477,7 +477,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const typename IdCondSet< ALLOC >::iterator_safe&
        IdCondSet< ALLOC >::endSafe() const {
-      return __end_safe;
+      return end_safe__;
     }
 
 
@@ -493,7 +493,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const typename IdCondSet< ALLOC >::iterator&
        IdCondSet< ALLOC >::end() const {
-      return __end_safe;
+      return end_safe__;
     }
 
 
@@ -501,7 +501,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Sequence< NodeId, ALLOC< NodeId > >&
                  IdCondSet< ALLOC >::ids() const {
-      return __ids;
+      return ids__;
     }
 
 
@@ -509,10 +509,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     IdCondSet< ALLOC > IdCondSet< ALLOC >::conditionalIdCondSet() const {
       IdCondSet< ALLOC > set(this->getAllocator());
-      const std::size_t  size = __ids.size();
-      for (std::size_t i = __nb_lhs_ids; i < size; ++i)
-        set.__ids << __ids[i];
-      set.__end_safe.__gotoEnd();
+      const std::size_t  size = ids__.size();
+      for (std::size_t i = nb_lhs_ids__; i < size; ++i)
+        set.ids__ << ids__[i];
+      set.end_safe__.gotoEnd__();
       return set;
     }
 
@@ -520,18 +520,18 @@ namespace gum {
     /// erase a node in the idset
     template < template < typename > class ALLOC >
     void IdCondSet< ALLOC >::erase(const NodeId id) {
-      // search for id in Sequence __ids
-      const std::size_t size = __ids.size();
+      // search for id in Sequence ids__
+      const std::size_t size = ids__.size();
       std::size_t       pos = std::size_t(0);
       for (; pos < size; ++pos) {
-        if (__ids[pos] == id) break;
+        if (ids__[pos] == id) break;
       }
 
       // if we found the id, remove it
       if (pos < size) {
-        __ids.erase(SequenceIteratorSafe< NodeId >(__ids, pos));
-        if (pos < __nb_lhs_ids) --__nb_lhs_ids;
-        __end_safe.__gotoEnd();
+        ids__.erase(SequenceIteratorSafe< NodeId >(ids__, pos));
+        if (pos < nb_lhs_ids__) --nb_lhs_ids__;
+        end_safe__.gotoEnd__();
       }
     }
 
@@ -544,16 +544,16 @@ namespace gum {
       str << '{';
       bool deja = false;
 
-      for (std::size_t i = std::size_t(0); i < __nb_lhs_ids; ++i) {
+      for (std::size_t i = std::size_t(0); i < nb_lhs_ids__; ++i) {
         if (deja)
           str << " , ";
         else
           deja = true;
-        str << __ids[i];
+        str << ids__[i];
       }
 
       deja = false;
-      for (auto iter = __ids.begin() + __nb_lhs_ids; iter != __ids.end(); ++iter) {
+      for (auto iter = ids__.begin() + nb_lhs_ids__; iter != ids__.end(); ++iter) {
         if (deja)
           str << " , ";
         else {
@@ -572,23 +572,23 @@ namespace gum {
     /// returns the number of left hand side ids
     template < template < typename > class ALLOC >
     INLINE std::size_t IdCondSet< ALLOC >::nbLHSIds() const {
-      return __nb_lhs_ids;
+      return nb_lhs_ids__;
     }
 
 
     /// returns the number of right hand side ids
     template < template < typename > class ALLOC >
     INLINE std::size_t IdCondSet< ALLOC >::nbRHSIds() const {
-      return __ids.size() - __nb_lhs_ids;
+      return ids__.size() - nb_lhs_ids__;
     }
 
 
     /// indicates whether the IdCondSet contains the IdCondSet passed in argument
     template < template < typename > class ALLOC >
     bool IdCondSet< ALLOC >::contains(const IdCondSet< ALLOC >& set) const {
-      if (set.__ids.size() > __ids.size()) return false;
-      for (const auto node: set.__ids) {
-        if (!__ids.exists(node)) return false;
+      if (set.ids__.size() > ids__.size()) return false;
+      for (const auto node: set.ids__) {
+        if (!ids__.exists(node)) return false;
       }
       return true;
     }
@@ -597,44 +597,44 @@ namespace gum {
     /// removes all the nodes from the IdCondSet
     template < template < typename > class ALLOC >
     INLINE void IdCondSet< ALLOC >::clear() {
-      __ids.clear();
-      __nb_lhs_ids = std::size_t(0);
-      __end_safe.__gotoEnd();
+      ids__.clear();
+      nb_lhs_ids__ = std::size_t(0);
+      end_safe__.gotoEnd__();
     }
 
 
     /// returns the number of variables (both left and right hand side)
     template < template < typename > class ALLOC >
     INLINE std::size_t IdCondSet< ALLOC >::size() const {
-      return __ids.size();
+      return ids__.size();
     }
 
 
     /// returns the position of a given node in the IdCondSet
     template < template < typename > class ALLOC >
     INLINE std::size_t IdCondSet< ALLOC >::pos(const NodeId id) const {
-      return __ids.pos(id);
+      return ids__.pos(id);
     }
 
 
     /// indicates whether a given id is contained in the IdCondSet
     template < template < typename > class ALLOC >
     INLINE bool IdCondSet< ALLOC >::exists(const NodeId id) const {
-      return __ids.exists(id);
+      return ids__.exists(id);
     }
 
 
     /// indicates whether the idset contains a non-empty conditioning set
     template < template < typename > class ALLOC >
     INLINE bool IdCondSet< ALLOC >::hasConditioningSet() const {
-      return __nb_lhs_ids != __ids.size();
+      return nb_lhs_ids__ != ids__.size();
     }
 
 
     /// indicates whether the IdCondSet contains some nodes or not
     template < template < typename > class ALLOC >
     INLINE bool IdCondSet< ALLOC >::empty() const {
-      return __ids.empty();
+      return ids__.empty();
     }
 
 
@@ -671,7 +671,7 @@ namespace gum {
   template < template < typename > class ALLOC >
   INLINE Size HashFunc< learning::IdCondSet< ALLOC > >::operator()(
      const learning::IdCondSet< ALLOC >& key) const {
-    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+    return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 
 } /* namespace gum */

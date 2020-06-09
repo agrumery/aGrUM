@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief An algorithm for converting a join tree into a binary join tree
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -46,7 +46,7 @@ namespace gum {
 
   /** @brief a function used to mark the nodes belonging to a given
    * connected component */
-  void BinaryJoinTreeConverterDefault::__markConnectedComponent(
+  void BinaryJoinTreeConverterDefault::markConnectedComponent__(
      const CliqueGraph& JT, NodeId root, NodeProperty< bool >& mark) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
@@ -79,7 +79,7 @@ namespace gum {
   }
 
   /// returns the domain size of the union of two cliques
-  float BinaryJoinTreeConverterDefault::__combinedSize(
+  float BinaryJoinTreeConverterDefault::combinedSize__(
      const NodeSet&              nodes1,
      const NodeSet&              nodes2,
      const NodeProperty< Size >& domain_sizes) const {
@@ -95,10 +95,10 @@ namespace gum {
   }
 
   /// returns all the roots considered for all the connected components
-  const NodeSet& BinaryJoinTreeConverterDefault::roots() const { return __roots; }
+  const NodeSet& BinaryJoinTreeConverterDefault::roots() const { return roots__; }
 
   /// convert a clique and its adjacent cliques into a binary join tree
-  void BinaryJoinTreeConverterDefault::__convertClique(
+  void BinaryJoinTreeConverterDefault::convertClique__(
      CliqueGraph&                JT,
      NodeId                      clique,
      NodeId                      from,
@@ -141,7 +141,7 @@ namespace gum {
         pair.second = j;
         queue.insert(
            pair,
-           __combinedSize(nodes1, JT.separator(cliques[j], clique), domain_sizes));
+           combinedSize__(nodes1, JT.separator(cliques[j], clique), domain_sizes));
       }
     }
 
@@ -198,7 +198,7 @@ namespace gum {
         for (NodeId ind = 0; ind < ti; ++ind) {
           if (is_cliques_relevant[ind]) {
             pair.first = ind;
-            newsize = __combinedSize(
+            newsize = combinedSize__(
                nodes1, JT.separator(cliques[ind], clique), domain_sizes);
             queue.setPriority(pair, newsize);
           }
@@ -209,7 +209,7 @@ namespace gum {
         for (NodeId ind = ti + 1; ind < cliques.size(); ++ind) {
           if (is_cliques_relevant[ind]) {
             pair.second = ind;
-            newsize = __combinedSize(
+            newsize = combinedSize__(
                nodes1, JT.separator(cliques[ind], clique), domain_sizes);
             queue.setPriority(pair, newsize);
           }
@@ -219,7 +219,7 @@ namespace gum {
   }
 
   /// convert a whole connected component into a binary join tree
-  void BinaryJoinTreeConverterDefault::__convertConnectedComponent(
+  void BinaryJoinTreeConverterDefault::convertConnectedComponent__(
      CliqueGraph&                JT,
      NodeId                      current_node,
      NodeId                      from,
@@ -232,12 +232,12 @@ namespace gum {
     // parse all the neighbors except nodes already converted and convert them
     for (const auto neigh: JT.neighbours(current_node)) {
       if (!mark[neigh]) {
-        __convertConnectedComponent(JT, neigh, current_node, domain_sizes, mark);
+        convertConnectedComponent__(JT, neigh, current_node, domain_sizes, mark);
       }
     }
 
     // convert the current node
-    __convertClique(JT, current_node, from, domain_sizes);
+    convertClique__(JT, current_node, from, domain_sizes);
   }
 
   /// computes the binary join tree
@@ -252,7 +252,7 @@ namespace gum {
     // check that there is no connected component without a root. In such a
     // case,
     // assign an arbitrary root to it
-    __roots = specified_roots;
+    roots__ = specified_roots;
 
     NodeProperty< bool > mark = JT.nodesProperty(false, JT.sizeNodes());
 
@@ -266,15 +266,15 @@ namespace gum {
                   "several roots have been specified for a given "
                   "connected component");
 
-      __markConnectedComponent(JT, root, mark);
+      markConnectedComponent__(JT, root, mark);
     }
 
     // check that all nodes have been marked. If this is not the case, then
     // this means that we need to add new roots
     for (const auto& elt: mark)
       if (!elt.second) {
-        __roots << elt.first;
-        __markConnectedComponent(JT, elt.first, mark);
+        roots__ << elt.first;
+        markConnectedComponent__(JT, elt.first, mark);
       }
 
     // here, we know that each connected component has one and only one root.
@@ -283,8 +283,8 @@ namespace gum {
     // cliques having at most 3 neighbors.
     NodeProperty< bool > mark2 = JT.nodesProperty(false, JT.sizeNodes());
 
-    for (const auto root: __roots)
-      __convertConnectedComponent(binJT, root, root, domain_sizes, mark2);
+    for (const auto root: roots__)
+      convertConnectedComponent__(binJT, root, root, domain_sizes, mark2);
 
     // binJT is now a binary join tree, so we can return it
     return binJT;

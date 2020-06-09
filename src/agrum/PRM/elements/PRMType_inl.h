@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of type.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
 #include <agrum/PRM/elements/PRMType.h>
@@ -34,30 +34,30 @@ namespace gum {
 
 
     INLINE PRMType& PRMType::superType() {
-      if (__superType) {
-        return *__superType;
+      if (superType__) {
+        return *superType__;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.");
       }
     }
 
 
-    INLINE DiscreteVariable& PRMType::variable() { return *__var; }
+    INLINE DiscreteVariable& PRMType::variable() { return *var__; }
 
 
-    INLINE const DiscreteVariable& PRMType::variable() const { return *__var; }
+    INLINE const DiscreteVariable& PRMType::variable() const { return *var__; }
 
 
-    INLINE DiscreteVariable& PRMType::operator*() { return *__var; }
+    INLINE DiscreteVariable& PRMType::operator*() { return *var__; }
 
 
-    INLINE const DiscreteVariable& PRMType::operator*() const { return *__var; }
+    INLINE const DiscreteVariable& PRMType::operator*() const { return *var__; }
 
 
-    INLINE DiscreteVariable* PRMType::operator->() { return __var; }
+    INLINE DiscreteVariable* PRMType::operator->() { return var__; }
 
 
-    INLINE DiscreteVariable const* PRMType::operator->() const { return __var; }
+    INLINE DiscreteVariable const* PRMType::operator->() const { return var__; }
 
 
     INLINE PRMObject::prm_type PRMType::obj_type() const {
@@ -69,8 +69,8 @@ namespace gum {
 
 
     INLINE const PRMType& PRMType::superType() const {
-      if (__superType) {
-        return *__superType;
+      if (superType__) {
+        return *superType__;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.");
       }
@@ -87,20 +87,20 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "This Type has no super Type");
       }
 
-      __superType = &t;
+      superType__ = &t;
     }
 
 
     INLINE const std::vector< Idx >& PRMType::label_map() const {
-      if (__label_map) {
-        return *__label_map;
+      if (label_map__) {
+        return *label_map__;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.");
       }
     }
 
 
-    INLINE bool PRMType::isSubType() const { return __superType != nullptr; }
+    INLINE bool PRMType::isSubType() const { return superType__ != nullptr; }
 
 
     INLINE bool PRMType::isSuperTypeOf(const PRMType& t) const {

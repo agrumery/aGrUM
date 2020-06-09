@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @file
  * @brief Class used to compute the operation between two decision diagrams
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H
@@ -91,58 +91,58 @@ namespace gum {
     Idx sizeVarRetroDomain();
 
     private:
-    Idx __nbCall;
-    Idx __nbVarRetro;
-    Idx __sizeVarRetro;
+    Idx nbCall__;
+    Idx nbVarRetro__;
+    Idx sizeVarRetro__;
 
     /// Computes an order for the final Decision graph that will minimize the
     /// number of re exploration
-    void __establishVarOrder();
+    void establishVarOrder__();
 
     /// Heuristic methods to decide which of two retrograde variables should
     /// come first
-    Idx __distance(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*,
+    Idx distance__(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*,
                    const DiscreteVariable*,
                    const DiscreteVariable*);
 
     /// Establish for each node in both function graph if it has retrograde
     /// variables beneath it
-    void __findRetrogradeVariables(
+    void findRetrogradeVariables__(
        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
        HashTable< NodeId, short int* >&                               dgInstNeed);
 
     /// The main recursion function
-    NodeId __compute(O4DGContext& currentSituation, Idx lastInstVarPos);
+    NodeId compute__(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG1;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1__;
 
     /// The other one
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG2;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2__;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* rd__;
 
     /// The total number of variable implied in the operation
-    Idx __nbVar;
+    Idx nbVar__;
 
     /// The function to be performed on the leaves
-    const FUNCTOR< GUM_SCALAR > __function;
+    const FUNCTOR< GUM_SCALAR > function__;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited
-    HashTable< double, NodeId > __explorationTable;
+    HashTable< double, NodeId > explorationTable__;
 
     /// Table uses to know if a given node of first function graph has
     /// retrograde vrariables
-    HashTable< NodeId, short int* > __DG1InstantiationNeeded;
+    HashTable< NodeId, short int* > DG1InstantiationNeeded__;
 
     /// Table uses to know if a given node of second function graph has
     /// retrograde vrariables
-    HashTable< NodeId, short int* > __DG2InstantiationNeeded;
+    HashTable< NodeId, short int* > DG2InstantiationNeeded__;
 
     /// Just a comptuationnal trick
-    short int* __default;
+    short int* default__;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

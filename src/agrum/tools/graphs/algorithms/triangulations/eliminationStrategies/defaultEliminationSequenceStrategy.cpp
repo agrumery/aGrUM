@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief An efficient unconstrained elimination sequence algorithm
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -35,8 +35,8 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
      double theRatio, double theThreshold) :
-      __simplicial_ratio(theRatio),
-      __simplicial_threshold(theThreshold) {
+      simplicial_ratio__(theRatio),
+      simplicial_threshold__(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
@@ -47,8 +47,8 @@ namespace gum {
      const NodeProperty< Size >* domain_sizes,
      double                      ratio,
      double                      threshold) :
-      __simplicial_ratio(ratio),
-      __simplicial_threshold(threshold) {
+      simplicial_ratio__(ratio),
+      simplicial_threshold__(threshold) {
     setGraph(graph, domain_sizes);
 
     // for debugging purposes
@@ -59,16 +59,16 @@ namespace gum {
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
      const DefaultEliminationSequenceStrategy& from) :
       UnconstrainedEliminationSequenceStrategy(from),
-      // no need to set __log_weights because the copy of the simplicial set
+      // no need to set log_weights__ because the copy of the simplicial set
       // will set it properly
-      __simplicial_set(new SimplicialSet(*from.__simplicial_set,
-                                         _graph,
-                                         &_log_domain_sizes,
-                                         &__log_weights,
+      simplicial_set__(new SimplicialSet(*from.simplicial_set__,
+                                         graph_,
+                                         &log_domain_sizes_,
+                                         &log_weights__,
                                          false)),
-      __simplicial_ratio(from.__simplicial_ratio),
-      __simplicial_threshold(from.__simplicial_threshold),
-      __provide_fill_ins(from.__provide_fill_ins) {
+      simplicial_ratio__(from.simplicial_ratio__),
+      simplicial_threshold__(from.simplicial_threshold__),
+      provide_fill_ins__(from.provide_fill_ins__) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultEliminationSequenceStrategy);
   }
@@ -77,13 +77,13 @@ namespace gum {
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
      DefaultEliminationSequenceStrategy&& from) :
       UnconstrainedEliminationSequenceStrategy(std::move(from)),
-      __log_weights(std::move(from.__log_weights)),
-      __simplicial_set(from.__simplicial_set),
-      __simplicial_ratio(from.__simplicial_ratio),
-      __simplicial_threshold(from.__simplicial_threshold),
-      __provide_fill_ins(from.__provide_fill_ins) {
-    __simplicial_set->replaceLogWeights(&from.__log_weights, &__log_weights);
-    from.__simplicial_set = nullptr;
+      log_weights__(std::move(from.log_weights__)),
+      simplicial_set__(from.simplicial_set__),
+      simplicial_ratio__(from.simplicial_ratio__),
+      simplicial_threshold__(from.simplicial_threshold__),
+      provide_fill_ins__(from.provide_fill_ins__) {
+    simplicial_set__->replaceLogWeights(&from.log_weights__, &log_weights__);
+    from.simplicial_set__ = nullptr;
 
     // for debugging purposes
     GUM_CONS_MOV(DefaultEliminationSequenceStrategy);
@@ -94,15 +94,15 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(DefaultEliminationSequenceStrategy);
 
-    if (__simplicial_set != nullptr) delete __simplicial_set;
+    if (simplicial_set__ != nullptr) delete simplicial_set__;
   }
 
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultEliminationSequenceStrategy*
      DefaultEliminationSequenceStrategy::newFactory() const {
-    return new DefaultEliminationSequenceStrategy(__simplicial_ratio,
-                                                  __simplicial_threshold);
+    return new DefaultEliminationSequenceStrategy(simplicial_ratio__,
+                                                  simplicial_threshold__);
   }
 
   /// virtual copy constructor
@@ -112,22 +112,22 @@ namespace gum {
   }
 
   /// create a new simplicial set suited for the current graph
-  void DefaultEliminationSequenceStrategy::__createSimplicialSet() {
+  void DefaultEliminationSequenceStrategy::createSimplicialSet__() {
     // remove the old simplicial set, if any
-    if (__simplicial_set != nullptr) {
-      delete __simplicial_set;
-      __simplicial_set = nullptr;
+    if (simplicial_set__ != nullptr) {
+      delete simplicial_set__;
+      simplicial_set__ = nullptr;
     }
 
-    if (_graph != nullptr) {
+    if (graph_ != nullptr) {
       // create a simplicial set suited for the graph
-      __simplicial_set = new SimplicialSet(_graph,
-                                           &_log_domain_sizes,
-                                           &__log_weights,
-                                           __simplicial_ratio,
-                                           __simplicial_threshold);
+      simplicial_set__ = new SimplicialSet(graph_,
+                                           &log_domain_sizes_,
+                                           &log_weights__,
+                                           simplicial_ratio__,
+                                           simplicial_threshold__);
 
-      __simplicial_set->setFillIns(__provide_fill_ins);
+      simplicial_set__->setFillIns(provide_fill_ins__);
     }
   }
 
@@ -135,7 +135,7 @@ namespace gum {
   bool DefaultEliminationSequenceStrategy::setGraph(
      UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     if (UnconstrainedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
-      __createSimplicialSet();
+      createSimplicialSet__();
       return true;
     }
 
@@ -146,37 +146,37 @@ namespace gum {
   void DefaultEliminationSequenceStrategy::clear() {
     UnconstrainedEliminationSequenceStrategy::clear();
 
-    __log_weights.clear();
-    if (__simplicial_set != nullptr) {
-      delete __simplicial_set;
-      __simplicial_set = nullptr;
+    log_weights__.clear();
+    if (simplicial_set__ != nullptr) {
+      delete simplicial_set__;
+      simplicial_set__ = nullptr;
     }
   }
 
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId DefaultEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if (_graph == nullptr) { GUM_ERROR(NotFound, "the graph is empty"); }
+    if (graph_ == nullptr) { GUM_ERROR(NotFound, "the graph is empty"); }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
-    // note that if __graph != 0, __simplicial_set has been allocated
-    if (__simplicial_set->hasSimplicialNode())
-      return __simplicial_set->bestSimplicialNode();
-    else if (__simplicial_set->hasAlmostSimplicialNode())
-      return __simplicial_set->bestAlmostSimplicialNode();
-    else if (__simplicial_set->hasQuasiSimplicialNode())
-      return __simplicial_set->bestQuasiSimplicialNode();
+    // note that if graph__ != 0, simplicial_set__ has been allocated
+    if (simplicial_set__->hasSimplicialNode())
+      return simplicial_set__->bestSimplicialNode();
+    else if (simplicial_set__->hasAlmostSimplicialNode())
+      return simplicial_set__->bestAlmostSimplicialNode();
+    else if (simplicial_set__->hasQuasiSimplicialNode())
+      return simplicial_set__->bestQuasiSimplicialNode();
     else {
       // here: select the node through Kjaerulff's heuristic
-      auto iter_heuristic = __log_weights.cbegin();
+      auto iter_heuristic = log_weights__.cbegin();
 
-      if (iter_heuristic == __log_weights.cend())
+      if (iter_heuristic == log_weights__.cend())
         GUM_ERROR(NotFound, "there exists no more node to eliminate");
 
       double min_weight = iter_heuristic.val();
       NodeId removable_node = iter_heuristic.key();
-      for (++iter_heuristic; iter_heuristic != __log_weights.cend();
+      for (++iter_heuristic; iter_heuristic != log_weights__.cend();
            ++iter_heuristic) {
         if (iter_heuristic.val() < min_weight) {
           removable_node = iter_heuristic.key();
@@ -192,17 +192,17 @@ namespace gum {
    * indicate
    * whether we want this feature to be activated */
   void DefaultEliminationSequenceStrategy::askFillIns(bool do_it) {
-    __provide_fill_ins = do_it;
+    provide_fill_ins__ = do_it;
 
-    if (__simplicial_set != nullptr)
-      __simplicial_set->setFillIns(__provide_fill_ins);
+    if (simplicial_set__ != nullptr)
+      simplicial_set__->setFillIns(provide_fill_ins__);
   }
 
   /** @brief indicates whether the new fill-ins generated by a new eliminated
    * node, if needed, will be computed by the elimination sequence, or need be
    * computed by the triangulation itself. */
   bool DefaultEliminationSequenceStrategy::providesFillIns() const {
-    return __provide_fill_ins;
+    return provide_fill_ins__;
   }
 
   /** @brief indicates whether the elimination sequence updates by itself the
@@ -213,19 +213,19 @@ namespace gum {
 
   /// performs all the graph/fill-ins updates provided
   void DefaultEliminationSequenceStrategy::eliminationUpdate(const NodeId id) {
-    if (__simplicial_set != nullptr) {
-      __simplicial_set->makeClique(id);
-      __simplicial_set->eraseClique(id);
+    if (simplicial_set__ != nullptr) {
+      simplicial_set__->makeClique(id);
+      simplicial_set__->eraseClique(id);
     }
   }
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * generated after the last node elimination */
   const EdgeSet& DefaultEliminationSequenceStrategy::fillIns() {
-    if (!__provide_fill_ins || (__simplicial_set == nullptr))
+    if (!provide_fill_ins__ || (simplicial_set__ == nullptr))
       return UnconstrainedEliminationSequenceStrategy::fillIns();
     else
-      return __simplicial_set->fillIns();
+      return simplicial_set__->fillIns();
   }
 
 } /* namespace gum */

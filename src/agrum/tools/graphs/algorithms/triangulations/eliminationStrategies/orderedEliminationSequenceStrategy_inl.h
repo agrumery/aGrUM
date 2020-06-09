@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief An Elimination sequence algorithm that imposes a given complete
  * ordering on the nodes elimination sequence
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 namespace gum {
@@ -33,13 +33,13 @@ namespace gum {
   // returns the current complete ordering
   INLINE const std::vector< NodeId >*
                OrderedEliminationSequenceStrategy::order() const noexcept {
-    return __order;
+    return order__;
   }
 
 
   // indicates whether a new complete ordering is needed
   INLINE bool OrderedEliminationSequenceStrategy::isOrderNeeded() const noexcept {
-    return __order_needed;
+    return order_needed__;
   }
 
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief forall aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #include <sstream>
@@ -36,14 +36,14 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::Forall(Idx value) :
-        MultiDimAggregator< GUM_SCALAR >(), __value(value) {
+        MultiDimAggregator< GUM_SCALAR >(), value__(value) {
       GUM_CONSTRUCTOR(Forall);
     }
 
     template < typename GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::Forall(const Forall< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
-      __value = from.__value;
+      value__ = from.value__;
       GUM_CONS_CPY(Forall);
     }
 
@@ -53,16 +53,16 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Forall< GUM_SCALAR >::_neutralElt() const {
+    INLINE Idx Forall< GUM_SCALAR >::neutralElt_() const {
       return (Idx)1;
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx Forall< GUM_SCALAR >::_fold(const DiscreteVariable& v,
+    INLINE Idx Forall< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
                                            bool& stop_iteration) const {
-      if (i1 == __value) {
+      if (i1 == value__) {
         return (Idx)1;
       } else {
         stop_iteration = true;
@@ -76,14 +76,14 @@ namespace gum {
        std::string
        Forall< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
-      ss << "forall[" << __value << "]";
+      ss << "forall[" << value__ << "]";
       return ss.str();
     }
 
     template < typename GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >*
            Forall< GUM_SCALAR >::newFactory() const {
-      return new Forall< GUM_SCALAR >(__value);
+      return new Forall< GUM_SCALAR >(value__);
     }
 
   }   // namespace aggregator

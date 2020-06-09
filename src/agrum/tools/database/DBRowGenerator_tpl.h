@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Template implementation of DBRowGenerator
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/tools/database/DBRowGenerator.h>
 
@@ -40,8 +40,8 @@ namespace gum {
                                                                column_types,
        const DBRowGeneratorGoal                                goal,
        const typename DBRowGenerator< ALLOC >::allocator_type& alloc) :
-        _column_types(column_types, alloc),
-        _columns_of_interest(alloc), _goal(goal) {
+        column_types_(column_types, alloc),
+        columns_of_interest_(alloc), goal_(goal) {
       GUM_CONSTRUCTOR(DBRowGenerator);
     }
 
@@ -51,9 +51,9 @@ namespace gum {
     INLINE DBRowGenerator< ALLOC >::DBRowGenerator(
        const DBRowGenerator< ALLOC >&                          from,
        const typename DBRowGenerator< ALLOC >::allocator_type& alloc) :
-        _nb_remaining_output_rows(from._nb_remaining_output_rows),
-        _column_types(from._column_types, alloc),
-        _columns_of_interest(from._columns_of_interest, alloc), _goal(from._goal) {
+        nb_remaining_output_rows_(from.nb_remaining_output_rows_),
+        column_types_(from.column_types_, alloc),
+        columns_of_interest_(from.columns_of_interest_, alloc), goal_(from.goal_) {
       GUM_CONS_CPY(DBRowGenerator);
     }
 
@@ -70,10 +70,10 @@ namespace gum {
     INLINE DBRowGenerator< ALLOC >::DBRowGenerator(
        DBRowGenerator< ALLOC >&&                               from,
        const typename DBRowGenerator< ALLOC >::allocator_type& alloc) :
-        _nb_remaining_output_rows(from._nb_remaining_output_rows),
-        _column_types(std::move(from._column_types), alloc),
-        _columns_of_interest(std::move(from._columns_of_interest), alloc),
-        _goal(from._goal) {
+        nb_remaining_output_rows_(from.nb_remaining_output_rows_),
+        column_types_(std::move(from.column_types_), alloc),
+        columns_of_interest_(std::move(from.columns_of_interest_), alloc),
+        goal_(from.goal_) {
       GUM_CONS_MOV(DBRowGenerator);
     }
 
@@ -96,10 +96,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBRowGenerator< ALLOC >&
        DBRowGenerator< ALLOC >::operator=(const DBRowGenerator< ALLOC >& from) {
-      _nb_remaining_output_rows = from._nb_remaining_output_rows;
-      _column_types = from._column_types;
-      _columns_of_interest = from._columns_of_interest;
-      _goal = from._goal;
+      nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
+      column_types_ = from.column_types_;
+      columns_of_interest_ = from.columns_of_interest_;
+      goal_ = from.goal_;
       return *this;
     }
 
@@ -108,10 +108,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBRowGenerator< ALLOC >&
        DBRowGenerator< ALLOC >::operator=(DBRowGenerator< ALLOC >&& from) {
-      _nb_remaining_output_rows = from._nb_remaining_output_rows;
-      _column_types = std::move(from._column_types);
-      _columns_of_interest = std::move(from._columns_of_interest);
-      _goal = from._goal;
+      nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
+      column_types_ = std::move(from.column_types_);
+      columns_of_interest_ = std::move(from.columns_of_interest_);
+      goal_ = from.goal_;
       return *this;
     }
 
@@ -119,7 +119,7 @@ namespace gum {
     /// returns true if there are still rows that can be output by the RowFilter
     template < template < typename > class ALLOC >
     INLINE bool DBRowGenerator< ALLOC >::hasRows() {
-      return _nb_remaining_output_rows != std::size_t(0);
+      return nb_remaining_output_rows_ != std::size_t(0);
     }
 
 
@@ -127,7 +127,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE bool DBRowGenerator< ALLOC >::setInputRow(
        const DBRow< DBTranslatedValue, ALLOC >& row) {
-      _nb_remaining_output_rows = _computeRows(row);
+      nb_remaining_output_rows_ = computeRows_(row);
       return hasRows();
     }
 
@@ -135,14 +135,14 @@ namespace gum {
     /// decrease the number of remaining output rows
     template < template < typename > class ALLOC >
     INLINE void DBRowGenerator< ALLOC >::decreaseRemainingRows() {
-      --_nb_remaining_output_rows;
+      --nb_remaining_output_rows_;
     }
 
 
     /// resets the filter
     template < template < typename > class ALLOC >
     INLINE void DBRowGenerator< ALLOC >::reset() {
-      _nb_remaining_output_rows = 0;
+      nb_remaining_output_rows_ = 0;
     }
 
 
@@ -151,7 +151,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void DBRowGenerator< ALLOC >::setColumnsOfInterest(
        const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest) {
-      _columns_of_interest = cols_of_interest;
+      columns_of_interest_ = cols_of_interest;
     }
 
 
@@ -160,7 +160,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void DBRowGenerator< ALLOC >::setColumnsOfInterest(
        std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest) {
-      _columns_of_interest = std::move(cols_of_interest);
+      columns_of_interest_ = std::move(cols_of_interest);
     }
 
 
@@ -168,7 +168,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const std::vector< std::size_t, ALLOC< std::size_t > >&
                  DBRowGenerator< ALLOC >::columnsOfInterest() const {
-      return _columns_of_interest;
+      return columns_of_interest_;
     }
 
 
@@ -176,14 +176,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     typename DBRowGenerator< ALLOC >::allocator_type
        DBRowGenerator< ALLOC >::getAllocator() const {
-      return _columns_of_interest.get_allocator();
+      return columns_of_interest_.get_allocator();
     }
 
 
     /// returns the goal of the DBRowGenerator
     template < template < typename > class ALLOC >
     INLINE DBRowGeneratorGoal DBRowGenerator< ALLOC >::goal() const {
-      return _goal;
+      return goal_;
     }
 
 

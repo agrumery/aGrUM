@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : __l1(l1), __l2(l2) {
+    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : l1__(l1), l2__(l2) {
       GUM_CONSTRUCTOR(LeafPair);
     }
 
@@ -99,35 +99,35 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    AbstractLeaf* firstLeaf() { return __l1; }
-    AbstractLeaf* secondLeaf() { return __l2; }
+    AbstractLeaf* firstLeaf() { return l1__; }
+    AbstractLeaf* secondLeaf() { return l2__; }
 
     // ###################################################################
     /// Returns true if pair has leaf in it
     // ###################################################################
     bool contains(NodeId testedId) {
-      return __l1->contains(testedId) || __l2->contains(testedId);
+      return l1__->contains(testedId) || l2__->contains(testedId);
     }
 
     // ###################################################################
     /// Returns a leaf matching data and having given id as id
     // ###################################################################
     AbstractLeaf* convert2Leaf(NodeId leafId) const {
-      return new ComposedLeaf(leafId, __l1, __l2);
+      return new ComposedLeaf(leafId, l1__, l2__);
     }
 
     AbstractLeaf* otherLeaf(AbstractLeaf* l) const {
-      return l == __l1 ? __l2 : __l1;
+      return l == l1__ ? l2__ : l1__;
     }
 
     std::string toString();
 
     private:
-    AbstractLeaf* __l1;
-    AbstractLeaf* __l2;
+    AbstractLeaf* l1__;
+    AbstractLeaf* l2__;
 
-    double __likelyhood1;
-    double __likelyhood2;
+    double likelyhood1__;
+    double likelyhood2__;
   };
 
 

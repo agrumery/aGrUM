@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  *subset
  * of its variables
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -43,7 +43,7 @@ namespace gum {
         const MultiDimImplementation< GUM_SCALAR >&,
         const Set< const DiscreteVariable* >&)) :
       ScheduleProjection< GUM_SCALAR >(),
-      _proj(proj) {
+      proj_(proj) {
     /// for debugging purposes
     GUM_CONSTRUCTOR(ScheduleProjectionBasic);
   }
@@ -53,7 +53,7 @@ namespace gum {
   ScheduleProjectionBasic< GUM_SCALAR >::ScheduleProjectionBasic(
      const ScheduleProjectionBasic< GUM_SCALAR >& from) :
       ScheduleProjection< GUM_SCALAR >(from),
-      _proj(from._proj) {
+      proj_(from.proj_) {
     /// for debugging purposes
     GUM_CONS_CPY(ScheduleProjectionBasic);
   }
@@ -79,7 +79,7 @@ namespace gum {
      const Set< const DiscreteVariable* >& del_vars,
      Schedule< GUM_SCALAR >&               schedule) {
     // create the projection that will be performed later on
-    ScheduleProject< GUM_SCALAR > proj(table, del_vars, _proj);
+    ScheduleProject< GUM_SCALAR > proj(table, del_vars, proj_);
     schedule.insert(proj);
 
     return proj.result();
@@ -112,7 +112,7 @@ namespace gum {
      MultiDimImplementation< GUM_SCALAR >* (*proj)(
         const MultiDimImplementation< GUM_SCALAR >&,
         const Set< const DiscreteVariable* >&)) {
-    _proj = proj;
+    proj_ = proj;
   }
 
   /// returns the projection function currently used by the projector
@@ -121,7 +121,7 @@ namespace gum {
      *ScheduleProjectionBasic< GUM_SCALAR >::projectFunction())(
      const MultiDimImplementation< GUM_SCALAR >&,
      const Set< const DiscreteVariable* >&) {
-    return _proj;
+    return proj_;
   }
 
   /** @brief returns a rough estimate of the number of operations that will be

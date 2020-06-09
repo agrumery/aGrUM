@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the ChiSquare class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 
@@ -54,22 +54,22 @@ namespace gum {
     /// @{
 
     /// maximum meaningful z value
-    static constexpr double __Z_MAX = 6.0;
+    static constexpr double Z_MAX__ = 6.0;
 
     /// accuracy of critchi approximation
-    static constexpr double __CHI_EPSILON = 0.000001;
+    static constexpr double CHI_EPSILON__ = 0.000001;
 
     /// maximum chi square value
-    static constexpr double __CHI_MAX = 99999.0;
+    static constexpr double CHI_MAX__ = 99999.0;
 
     /// log (sqrt (pi))
-    static constexpr double __LOG_SQRT_PI = 0.5723649429247000870717135;
+    static constexpr double LOG_SQRT_PI__ = 0.5723649429247000870717135;
 
     /// 1 / sqrt (pi)
-    static constexpr double __I_SQRT_PI = 0.5641895835477562869480795;
+    static constexpr double I_SQRT_PI__ = 0.5641895835477562869480795;
 
     /// max value to represent exp (x)
-    static constexpr double __BIGX = 20.0;
+    static constexpr double BIGX__ = 20.0;
 
     /// @}
 
@@ -77,9 +77,9 @@ namespace gum {
     /// Required constant to compute the cdf
     /// @{
 
-    static double __exp(double x) { return (((x) < -__BIGX) ? 0.0 : exp(x)); }
+    static double exp__(double x) { return (((x) < -BIGX__) ? 0.0 : exp(x)); }
 
-    static double __probaZValue(double z);
+    static double probaZValue__(double z);
     /// @}
   };
 
@@ -88,8 +88,8 @@ namespace gum {
 #endif   // GUM_CHI_SQUARE_H
 
 
-// static HashTable<std::pair<double, unsigned long>, double> __chi2Cache;
-// static HashTable<double, double> __ZCache;
+// static HashTable<std::pair<double, unsigned long>, double> chi2Cache__;
+// static HashTable<double, double> ZCache__;
 // static Idx nbZ;
 // static Idx nbChi;
 // static Idx nbZt;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base class for labelized discrete random variables
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_LABELIZED_DISCRETE_VARIABLE_H
 #define GUM_LABELIZED_DISCRETE_VARIABLE_H
@@ -174,11 +174,11 @@ namespace gum {
 
     /// copies the content of aLDRV
 
-    void _copy(const LabelizedVariable& aLDRV);
+    void copy_(const LabelizedVariable& aLDRV);
 
     private:
     /// the set of labels contained in the variable
-    mutable Sequence< std::string > __labels;
+    mutable Sequence< std::string > labels__;
   };
 
 } /* namespace gum */

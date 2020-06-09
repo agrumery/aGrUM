@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -35,8 +35,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   MarkovNetInference< GUM_SCALAR >::MarkovNetInference(
      const IMarkovNet< GUM_SCALAR >* mn) :
-      __mn(mn) {
-    __computeDomainSizes();
+      mn__(mn) {
+    computeDomainSizes__();
 
     GUM_CONSTRUCTOR(MarkovNetInference);
   }
@@ -54,10 +54,10 @@ namespace gum {
   MarkovNetInference< GUM_SCALAR >::~MarkovNetInference() {
     // clear all evidence.
     // Warning: Do not use method eraseAllEvidence () because it contains a call
-    // to pure virtual method _onAllEvidenceErased which belongs to an inherited
+    // to pure virtual method onAllEvidenceErased_ which belongs to an inherited
     // instance and, therefore, does not exist anymore when ~MarkovNetInference ()
     // is called
-    for (const auto& pair: __evidence) {
+    for (const auto& pair: evidence__) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 
@@ -68,33 +68,31 @@ namespace gum {
   // returns whether the inference object is in a ready state
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::isInferenceReady() const noexcept {
-    return (__state == StateOfMNInference::ReadyForMNInference);
+    return (state__ == StateOfMNInference::ReadyForMNInference);
   }
   // returns whether the inference object is in a OutdatedMNStructure state
   template < typename GUM_SCALAR >
-  INLINE bool
-     MarkovNetInference< GUM_SCALAR >::isInferenceOutdatedMNStructure() const
-     noexcept {
-    return (__state == StateOfMNInference::OutdatedMNStructure);
+  INLINE bool MarkovNetInference< GUM_SCALAR >::isInferenceOutdatedMNStructure()
+     const noexcept {
+    return (state__ == StateOfMNInference::OutdatedMNStructure);
   }
   // returns whether the inference object is in a OutdatedMNPotential state
   template < typename GUM_SCALAR >
-  INLINE bool
-     MarkovNetInference< GUM_SCALAR >::isInferenceOutdatedMNPotentials() const
-     noexcept {
-    return (__state == StateOfMNInference::OutdatedMNPotentials);
+  INLINE bool MarkovNetInference< GUM_SCALAR >::isInferenceOutdatedMNPotentials()
+     const noexcept {
+    return (state__ == StateOfMNInference::OutdatedMNPotentials);
   }
   // returns whether the inference object is in a InferenceDone state
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::isInferenceDone() const noexcept {
-    return (__state == StateOfMNInference::Done);
+    return (state__ == StateOfMNInference::Done);
   }
 
 
   // returns whether the inference object is in a done state
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::isDone() const noexcept {
-    return (__state == StateOfMNInference::Done);
+    return (state__ == StateOfMNInference::Done);
   }
 
 
@@ -102,16 +100,16 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename MarkovNetInference< GUM_SCALAR >::StateOfMNInference
      MarkovNetInference< GUM_SCALAR >::state() const noexcept {
-    return __state;
+    return state__;
   }
 
   // set the state of the inference
   template < typename GUM_SCALAR >
   INLINE void
-     MarkovNetInference< GUM_SCALAR >::__setState(const StateOfMNInference state) {
-    if (__state != state) {
-      __state = state;
-      _onStateChanged();
+     MarkovNetInference< GUM_SCALAR >::setState__(const StateOfMNInference state) {
+    if (state__ != state) {
+      state__ = state;
+      onStateChanged_();
     }
   }
 
@@ -119,32 +117,33 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const IMarkovNet< GUM_SCALAR >&
                MarkovNetInference< GUM_SCALAR >::MN() const {
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(UndefinedElement,
                 "No Markov net has been assigned to "
                 "the inference algorithm.");
-    return *__mn;
+    return *mn__;
   }
 
 
   // assigns a new MN to the inference engine
   template < typename GUM_SCALAR >
-  void MarkovNetInference< GUM_SCALAR >::setMN(const IMarkovNet< GUM_SCALAR >* mn) {
+  void
+     MarkovNetInference< GUM_SCALAR >::setMN(const IMarkovNet< GUM_SCALAR >* mn) {
     clear();
-    __mn = mn;
-    __computeDomainSizes();
-    _onMarkovNetChanged(mn);
-    __setState(StateOfMNInference::OutdatedMNStructure);
+    mn__ = mn;
+    computeDomainSizes__();
+    onMarkovNetChanged_(mn);
+    setState__(StateOfMNInference::OutdatedMNStructure);
   }
 
 
   // assigns a MN to a newly constructed inference engine
   template < typename GUM_SCALAR >
-  void MarkovNetInference< GUM_SCALAR >::__setMarkovNetDuringConstruction(
+  void MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(
      const IMarkovNet< GUM_SCALAR >* mn) {
-    __mn = mn;
-    __computeDomainSizes();
-    __setState(StateOfMNInference::OutdatedMNStructure);
+    mn__ = mn;
+    computeDomainSizes__();
+    setState__(StateOfMNInference::OutdatedMNStructure);
   }
 
 
@@ -152,17 +151,17 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MarkovNetInference< GUM_SCALAR >::clear() {
     eraseAllEvidence();
-    __setState(StateOfMNInference::OutdatedMNStructure);
+    setState__(StateOfMNInference::OutdatedMNStructure);
   }
 
 
   /// computes the domain sizes of the random variables
   template < typename GUM_SCALAR >
-  void MarkovNetInference< GUM_SCALAR >::__computeDomainSizes() {
-    __domain_sizes.clear();
-    if (__mn != nullptr) {
-      for (const auto node: __mn->nodes()) {
-        __domain_sizes.insert(node, __mn->variable(node).domainSize());
+  void MarkovNetInference< GUM_SCALAR >::computeDomainSizes__() {
+    domain_sizes__.clear();
+    if (mn__ != nullptr) {
+      for (const auto node: mn__->nodes()) {
+        domain_sizes__.insert(node, mn__->variable(node).domainSize());
       }
     }
   }
@@ -172,7 +171,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Size >&
                MarkovNetInference< GUM_SCALAR >::domainSizes() const {
-    return __domain_sizes;
+    return domain_sizes__;
   }
 
 
@@ -183,32 +182,32 @@ namespace gum {
   // create the internal structure for a hard evidence
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     MarkovNetInference< GUM_SCALAR >::__createHardEvidence(NodeId    id,
-                                                           const Idx val) const {
+     MarkovNetInference< GUM_SCALAR >::createHardEvidence__(NodeId    id,
+                                                            const Idx val) const {
     // check that it is possible to create the evidence
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!__mn->graph().exists(id)) {
+    if (!mn__->graph().exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the Markov net");
     }
 
-    if (__mn->variable(id).domainSize() <= val) {
+    if (mn__->variable(id).domainSize() <= val) {
       GUM_ERROR(InvalidArgument,
-                "node " << __mn->variable(id) << " has fewer possible values than "
+                "node " << mn__->variable(id) << " has fewer possible values than "
                         << val);
     }
 
     // create the deterministic potential
     Potential< GUM_SCALAR > pot;
     pot.beginMultipleChanges();
-    pot << __mn->variable(id);
+    pot << mn__->variable(id);
     pot.endMultipleChanges(0.0);
 
     Instantiation I(pot);
-    I.chgVal(__mn->variable(id), val);
+    I.chgVal(mn__->variable(id), val);
     pot.set(I, 1.0);
 
     return pot;
@@ -217,7 +216,7 @@ namespace gum {
 
   // checks whether a potential corresponds to a hard evidence
   template < typename GUM_SCALAR >
-  bool MarkovNetInference< GUM_SCALAR >::__isHardEvidence(
+  bool MarkovNetInference< GUM_SCALAR >::isHardEvidence__(
      const Potential< GUM_SCALAR >& pot, Idx& val) const {
     // checking if pot is deterministic
     bool          notZero = false;
@@ -245,15 +244,15 @@ namespace gum {
   // adds a new hard evidence on node id
   template < typename GUM_SCALAR >
   INLINE void MarkovNetInference< GUM_SCALAR >::addEvidence(NodeId    id,
-                                                           const Idx val) {
-    addEvidence(__createHardEvidence(id, val));
+                                                            const Idx val) {
+    addEvidence(createHardEvidence__(id, val));
   }
 
   // adds a new hard evidence on node id
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::addEvidence(const std::string& nodeName,
-                                                  const Idx          val) {
+                                                   const Idx          val) {
     addEvidence(this->MN().idFromName(nodeName), val);
   }
 
@@ -261,7 +260,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::addEvidence(NodeId             id,
-                                                  const std::string& label) {
+                                                   const std::string& label) {
     addEvidence(id, this->MN().variable(id)[label]);
   }
 
@@ -269,7 +268,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::addEvidence(const std::string& nodeName,
-                                                  const std::string& label) {
+                                                   const std::string& label) {
     NodeId id = this->MN().idFromName(nodeName);
     addEvidence(id, this->MN().variable(id)[label]);
   }
@@ -279,23 +278,23 @@ namespace gum {
   void MarkovNetInference< GUM_SCALAR >::addEvidence(
      NodeId id, const std::vector< GUM_SCALAR >& vals) {
     // checks that the evidence is meaningful
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!__mn->graph().exists(id)) {
+    if (!mn__->graph().exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the Markov network");
     }
 
-    if (__mn->variable(id).domainSize() != vals.size()) {
+    if (mn__->variable(id).domainSize() != vals.size()) {
       GUM_ERROR(InvalidArgument,
-                "node " << __mn->variable(id)
+                "node " << mn__->variable(id)
                         << " and its evidence vector have different sizes.");
     }
 
     Potential< GUM_SCALAR > pot;
-    pot.add(__mn->variable(id));
+    pot.add(mn__->variable(id));
     pot.fillWith(vals);
     addEvidence(std::move(pot));
   }
@@ -315,12 +314,12 @@ namespace gum {
     if (pot.nbrDim() != 1) {
       GUM_ERROR(InvalidArgument, pot << " is not mono-dimensional.");
     }
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    NodeId id = __mn->nodeId(pot.variable(0));
+    NodeId id = mn__->nodeId(pot.variable(0));
 
     if (hasEvidence(id)) {
       GUM_ERROR(InvalidArgument,
@@ -332,20 +331,20 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val;
-    bool is_hard_evidence = __isHardEvidence(pot, val);
+    bool is_hard_evidence = isHardEvidence__(pot, val);
 
     // insert the evidence
-    __evidence.insert(
+    evidence__.insert(
        id,
        new Potential< GUM_SCALAR >(std::forward< Potential< GUM_SCALAR > >(pot)));
     if (is_hard_evidence) {   // pot is deterministic
-      __hard_evidence.insert(id, val);
-      __hard_evidence_nodes.insert(id);
+      hard_evidence__.insert(id, val);
+      hard_evidence_nodes__.insert(id);
     } else {
-      __soft_evidence_nodes.insert(id);
+      soft_evidence_nodes__.insert(id);
     }
-    __setState(StateOfMNInference::OutdatedMNStructure);
-    _onEvidenceAdded(id, is_hard_evidence);
+    setState__(StateOfMNInference::OutdatedMNStructure);
+    onEvidenceAdded_(id, is_hard_evidence);
   }
 
 
@@ -379,28 +378,28 @@ namespace gum {
   // indicates whether some node(s) have received evidence
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::hasEvidence() const {
-    return !__evidence.empty();
+    return !evidence__.empty();
   }
 
 
   // indicates whether node id has received an evidence
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::hasEvidence(NodeId id) const {
-    return __evidence.exists(id);
+    return evidence__.exists(id);
   }
 
 
   // indicates whether node id has received a hard evidence
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::hasHardEvidence(NodeId id) const {
-    return __hard_evidence_nodes.exists(id);
+    return hard_evidence_nodes__.exists(id);
   }
 
 
   // indicates whether node id has received a soft evidence
   template < typename GUM_SCALAR >
   INLINE bool MarkovNetInference< GUM_SCALAR >::hasSoftEvidence(NodeId id) const {
-    return __soft_evidence_nodes.exists(id);
+    return soft_evidence_nodes__.exists(id);
   }
 
 
@@ -430,15 +429,15 @@ namespace gum {
   // change the value of an already existing hard evidence
   template < typename GUM_SCALAR >
   INLINE void MarkovNetInference< GUM_SCALAR >::chgEvidence(NodeId    id,
-                                                           const Idx val) {
-    chgEvidence(__createHardEvidence(id, val));
+                                                            const Idx val) {
+    chgEvidence(createHardEvidence__(id, val));
   }
 
   // change the value of an already existing hard evidence
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::chgEvidence(const std::string& nodeName,
-                                                  const Idx          val) {
+                                                   const Idx          val) {
     chgEvidence(this->MN().idFromName(nodeName), val);
   }
 
@@ -446,7 +445,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::chgEvidence(NodeId             id,
-                                                  const std::string& label) {
+                                                   const std::string& label) {
     chgEvidence(id, this->MN().variable(id)[label]);
   }
 
@@ -454,7 +453,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNetInference< GUM_SCALAR >::chgEvidence(const std::string& nodeName,
-                                                  const std::string& label) {
+                                                   const std::string& label) {
     NodeId id = this->MN().idFromName(nodeName);
     chgEvidence(id, this->MN().variable(id)[label]);
   }
@@ -464,24 +463,24 @@ namespace gum {
   INLINE void MarkovNetInference< GUM_SCALAR >::chgEvidence(
      NodeId id, const std::vector< GUM_SCALAR >& vals) {
     // check whether this corresponds to an evidence
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!__mn->graph().exists(id)) {
+    if (!mn__->graph().exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the Markov network");
     }
 
-    if (__mn->variable(id).domainSize() != vals.size()) {
+    if (mn__->variable(id).domainSize() != vals.size()) {
       GUM_ERROR(InvalidArgument,
-                "node " << __mn->variable(id)
+                "node " << mn__->variable(id)
                         << " and its evidence have different sizes.");
     }
 
     // create the potential corresponding to vals
     Potential< GUM_SCALAR > pot;
-    pot.add(__mn->variable(id));
+    pot.add(mn__->variable(id));
     pot.fillWith(vals);
     chgEvidence(pot);
   }
@@ -502,12 +501,12 @@ namespace gum {
     if (pot.nbrDim() != 1) {
       GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional potential.");
     }
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    NodeId id = __mn->nodeId(pot.variable(0));
+    NodeId id = mn__->nodeId(pot.variable(0));
 
     if (!hasEvidence(id)) {
       GUM_ERROR(InvalidArgument,
@@ -518,10 +517,10 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val;
-    bool is_hard_evidence = __isHardEvidence(pot, val);
+    bool is_hard_evidence = isHardEvidence__(pot, val);
 
     // modify the evidence already stored
-    const Potential< GUM_SCALAR >* localPot = __evidence[id];
+    const Potential< GUM_SCALAR >* localPot = evidence__[id];
     Instantiation                  I(pot);
     for (I.setFirst(); !I.end(); I.inc()) {
       localPot->set(I, pot[I]);
@@ -534,30 +533,30 @@ namespace gum {
     if (is_hard_evidence) {
       if (!hasHardEvidence(id)) {
         hasChangedSoftHard = true;
-        __hard_evidence.insert(id, val);
-        __hard_evidence_nodes.insert(id);
-        __soft_evidence_nodes.erase(id);
+        hard_evidence__.insert(id, val);
+        hard_evidence_nodes__.insert(id);
+        soft_evidence_nodes__.erase(id);
       } else {
-        __hard_evidence[id] = val;
+        hard_evidence__[id] = val;
       }
     } else {
       if (hasHardEvidence(id)) {   // evidence was hard
-        __hard_evidence.erase(id);
-        __hard_evidence_nodes.erase(id);
-        __soft_evidence_nodes.insert(id);
+        hard_evidence__.erase(id);
+        hard_evidence_nodes__.erase(id);
+        soft_evidence_nodes__.insert(id);
         hasChangedSoftHard = true;
       }
     }
 
     if (hasChangedSoftHard) {
-      __setState(StateOfMNInference::OutdatedMNStructure);
+      setState__(StateOfMNInference::OutdatedMNStructure);
     } else {
       if (!isInferenceOutdatedMNStructure()) {
-        __setState(StateOfMNInference::OutdatedMNPotentials);
+        setState__(StateOfMNInference::OutdatedMNPotentials);
       }
     }
 
-    _onEvidenceChanged(id, hasChangedSoftHard);
+    onEvidenceChanged_(id, hasChangedSoftHard);
   }
 
 
@@ -566,20 +565,20 @@ namespace gum {
   INLINE void MarkovNetInference< GUM_SCALAR >::eraseEvidence(NodeId id) {
     if (hasEvidence(id)) {
       if (hasHardEvidence(id)) {
-        _onEvidenceErased(id, true);
-        __hard_evidence.erase(id);
-        __hard_evidence_nodes.erase(id);
-        __setState(StateOfMNInference::OutdatedMNStructure);
+        onEvidenceErased_(id, true);
+        hard_evidence__.erase(id);
+        hard_evidence_nodes__.erase(id);
+        setState__(StateOfMNInference::OutdatedMNStructure);
       } else {
-        _onEvidenceErased(id, false);
-        __soft_evidence_nodes.erase(id);
+        onEvidenceErased_(id, false);
+        soft_evidence_nodes__.erase(id);
         if (!isInferenceOutdatedMNStructure()) {
-          __setState(StateOfMNInference::OutdatedMNPotentials);
+          setState__(StateOfMNInference::OutdatedMNPotentials);
         }
       }
 
-      delete (__evidence[id]);
-      __evidence.erase(id);
+      delete (evidence__[id]);
+      evidence__.erase(id);
     }
   }
   // removed the evidence, if any, corresponding to node of name nodeName
@@ -593,23 +592,23 @@ namespace gum {
   // removes all the evidence entered into the network
   template < typename GUM_SCALAR >
   INLINE void MarkovNetInference< GUM_SCALAR >::eraseAllEvidence() {
-    bool has_hard_evidence = !__hard_evidence.empty();
-    this->_onAllEvidenceErased(has_hard_evidence);
+    bool has_hard_evidence = !hard_evidence__.empty();
+    this->onAllEvidenceErased_(has_hard_evidence);
 
-    for (const auto& pair: __evidence) {
+    for (const auto& pair: evidence__) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 
-    __evidence.clear();
-    __hard_evidence.clear();
-    __hard_evidence_nodes.clear();
-    __soft_evidence_nodes.clear();
+    evidence__.clear();
+    hard_evidence__.clear();
+    hard_evidence_nodes__.clear();
+    soft_evidence_nodes__.clear();
 
     if (has_hard_evidence) {
-      __setState(StateOfMNInference::OutdatedMNStructure);
+      setState__(StateOfMNInference::OutdatedMNStructure);
     } else {
       if (!isInferenceOutdatedMNStructure()) {
-        __setState(StateOfMNInference::OutdatedMNPotentials);
+        setState__(StateOfMNInference::OutdatedMNPotentials);
       }
     }
   }
@@ -618,21 +617,21 @@ namespace gum {
   // returns the number of evidence entered into the Markov network
   template < typename GUM_SCALAR >
   INLINE Size MarkovNetInference< GUM_SCALAR >::nbrEvidence() const {
-    return __evidence.size();
+    return evidence__.size();
   }
 
 
   // returns the number of hard evidence entered into the Markov network
   template < typename GUM_SCALAR >
   INLINE Size MarkovNetInference< GUM_SCALAR >::nbrHardEvidence() const {
-    return __hard_evidence_nodes.size();
+    return hard_evidence_nodes__.size();
   }
 
 
   // returns the number of soft evidence entered into the Markov network
   template < typename GUM_SCALAR >
   INLINE Size MarkovNetInference< GUM_SCALAR >::nbrSoftEvidence() const {
-    return __soft_evidence_nodes.size();
+    return soft_evidence_nodes__.size();
   }
 
 
@@ -640,7 +639,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Idx >&
                MarkovNetInference< GUM_SCALAR >::hardEvidence() const {
-    return __hard_evidence;
+    return hard_evidence__;
   }
 
 
@@ -648,7 +647,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< const Potential< GUM_SCALAR >* >&
                MarkovNetInference< GUM_SCALAR >::evidence() const {
-    return __evidence;
+    return evidence__;
   }
 
 
@@ -656,7 +655,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
                MarkovNetInference< GUM_SCALAR >::softEvidenceNodes() const {
-    return __soft_evidence_nodes;
+    return soft_evidence_nodes__;
   }
 
 
@@ -664,7 +663,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
                MarkovNetInference< GUM_SCALAR >::hardEvidenceNodes() const {
-    return __hard_evidence_nodes;
+    return hard_evidence_nodes__;
   }
 
 
@@ -674,16 +673,16 @@ namespace gum {
 
   // put the inference into an unprepared state
   template < typename GUM_SCALAR >
-  INLINE void MarkovNetInference< GUM_SCALAR >::_setOutdatedMNStructureState() {
-    __setState(StateOfMNInference::OutdatedMNStructure);
+  INLINE void MarkovNetInference< GUM_SCALAR >::setOutdatedMNStructureState_() {
+    setState__(StateOfMNInference::OutdatedMNStructure);
   }
 
 
   /** puts the inference into an OutdatedMNPotentials state if it is not
    *  already in an OutdatedMNStructure state */
   template < typename GUM_SCALAR >
-  INLINE void MarkovNetInference< GUM_SCALAR >::_setOutdatedMNPotentialsState() {
-    __setState(StateOfMNInference::OutdatedMNPotentials);
+  INLINE void MarkovNetInference< GUM_SCALAR >::setOutdatedMNPotentialsState_() {
+    setState__(StateOfMNInference::OutdatedMNPotentials);
   }
 
 
@@ -692,17 +691,17 @@ namespace gum {
   INLINE void MarkovNetInference< GUM_SCALAR >::prepareInference() {
     if (isInferenceReady() || isDone()) { return; }
 
-    if (__mn == nullptr)
+    if (mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (__state == StateOfMNInference::OutdatedMNStructure)
-      _updateOutdatedMNStructure();
+    if (state__ == StateOfMNInference::OutdatedMNStructure)
+      updateOutdatedMNStructure_();
     else
-      _updateOutdatedMNPotentials();
+      updateOutdatedMNPotentials_();
 
-    __setState(StateOfMNInference::ReadyForMNInference);
+    setState__(StateOfMNInference::ReadyForMNInference);
   }
 
 
@@ -713,9 +712,9 @@ namespace gum {
 
     if (!isInferenceReady()) { prepareInference(); }
 
-    _makeInference();
+    makeInference_();
 
-    __setState(StateOfMNInference::Done);
+    setState__(StateOfMNInference::Done);
   }
 
 

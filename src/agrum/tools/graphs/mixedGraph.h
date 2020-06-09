@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Base classes for mixed directed/undirected graphs
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MIXED_GRAPH_H
 #define GUM_MIXED_GRAPH_H
@@ -144,7 +144,7 @@ namespace gum {
                         bool arcs_resize_policy = true,
                         Size edges_size = HashTableConst::default_size,
                         bool edges_resize_policy = true);
-    
+
     explicit MixedGraph(const UndiGraph& g);
 
     explicit MixedGraph(const DiGraph& g);

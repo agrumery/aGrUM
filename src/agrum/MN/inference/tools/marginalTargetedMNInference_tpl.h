@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -36,14 +36,14 @@ namespace gum {
      const IMarkovNet< GUM_SCALAR >* mn) :
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
-    if (this->__mn == nullptr) {
-      MarkovNetInference< GUM_SCALAR >::__setMarkovNetDuringConstruction(mn);
+    if (this->mn__ == nullptr) {
+      MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
     }
 
     // sets all the nodes as targets
     if (mn != nullptr) {
-      __targeted_mode = false;
-      __targets = mn->graph().asNodeSet();
+      targeted_mode__ = false;
+      targets__ = mn->graph().asNodeSet();
     }
 
     GUM_CONSTRUCTOR(MarginalTargetedMNInference);
@@ -59,10 +59,10 @@ namespace gum {
 
   // fired when a new MN is assigned to the inference engine
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::_onMarkovNetChanged(
+  void MarginalTargetedMNInference< GUM_SCALAR >::onMarkovNetChanged_(
      const IMarkovNet< GUM_SCALAR >* mn) {
-    __targeted_mode = true;
-    __setAllMarginalTargets();
+    targeted_mode__ = true;
+    setAllMarginalTargets__();
   }
 
 
@@ -75,34 +75,35 @@ namespace gum {
   INLINE bool
      MarginalTargetedMNInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the mn
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
-    if (!this->__mn->graph().exists(node)) {
-      GUM_ERROR(UndefinedElement, node << " is not a NodeId in the Markov network");
+    if (!this->mn__->graph().exists(node)) {
+      GUM_ERROR(UndefinedElement,
+                node << " is not a NodeId in the Markov network");
     }
 
-    return __targets.contains(node);
+    return targets__.contains(node);
   }
 
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTarget(
      const std::string& nodeName) const {
-    return isTarget(this->__mn->idFromName(nodeName));
+    return isTarget(this->mn__->idFromName(nodeName));
   }
 
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
   INLINE void MarginalTargetedMNInference< GUM_SCALAR >::eraseAllTargets() {
-    _onAllMarginalTargetsErased();
+    onAllMarginalTargetsErased_();
 
-    __targets.clear();
-    _setTargetedMode();   // does nothing if already in targeted mode
+    targets__.clear();
+    setTargetedMode_();   // does nothing if already in targeted mode
 
-    this->__setState(
+    this->setState__(
        MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
   }
 
@@ -111,22 +112,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedMNInference< GUM_SCALAR >::addTarget(NodeId target) {
     // check if the node belongs to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->__mn->graph().exists(target)) {
-      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov network");
+    if (!this->mn__->graph().exists(target)) {
+      GUM_ERROR(UndefinedElement,
+                target << " is not a NodeId in the Markov network");
     }
 
-    _setTargetedMode();   // does nothing if already in targeted mode
+    setTargetedMode_();   // does nothing if already in targeted mode
     // add the new target
-    if (!__targets.contains(target)) {
-      __targets.insert(target);
-      _onMarginalTargetAdded(target);
-      this->__setState(
-         MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+    if (!targets__.contains(target)) {
+      targets__.insert(target);
+      onMarginalTargetAdded_(target);
+      this->setState__(MarkovNetInference<
+                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
     }
   }
 
@@ -135,19 +137,19 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedMNInference< GUM_SCALAR >::addAllTargets() {
     // check if the node belongs to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
 
-    _setTargetedMode();   // does nothing if already in targeted mode
-    for (const auto target: this->__mn->graph()) {
-      if (!__targets.contains(target)) {
-        __targets.insert(target);
-        _onMarginalTargetAdded(target);
-        this->__setState(
-           MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+    setTargetedMode_();   // does nothing if already in targeted mode
+    for (const auto target: this->mn__->graph()) {
+      if (!targets__.contains(target)) {
+        targets__.insert(target);
+        onMarginalTargetAdded_(target);
+        this->setState__(MarkovNetInference<
+                         GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
       }
     }
   }
@@ -158,12 +160,12 @@ namespace gum {
   void MarginalTargetedMNInference< GUM_SCALAR >::addTarget(
      const std::string& nodeName) {
     // check if the node belongs to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    addTarget(this->__mn->idFromName(nodeName));
+    addTarget(this->mn__->idFromName(nodeName));
   }
 
 
@@ -171,23 +173,24 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedMNInference< GUM_SCALAR >::eraseTarget(NodeId target) {
     // check if the node belongs to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->__mn->graph().exists(target)) {
-      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov network");
+    if (!this->mn__->graph().exists(target)) {
+      GUM_ERROR(UndefinedElement,
+                target << " is not a NodeId in the Markov network");
     }
 
 
-    if (__targets.contains(target)) {
-      __targeted_mode = true;   // we do not use _setTargetedMode because we do not
+    if (targets__.contains(target)) {
+      targeted_mode__ = true;   // we do not use setTargetedMode_ because we do not
                                 // want to clear the targets
-      _onMarginalTargetErased(target);
-      __targets.erase(target);
-      this->__setState(
-         MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+      onMarginalTargetErased_(target);
+      targets__.erase(target);
+      this->setState__(MarkovNetInference<
+                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
     }
   }
 
@@ -197,37 +200,37 @@ namespace gum {
   void MarginalTargetedMNInference< GUM_SCALAR >::eraseTarget(
      const std::string& nodeName) {
     // check if the node belongs to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    eraseTarget(this->__mn->idFromName(nodeName));
+    eraseTarget(this->mn__->idFromName(nodeName));
   }
 
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
-  INLINE const NodeSet& MarginalTargetedMNInference< GUM_SCALAR >::targets() const
-     noexcept {
-    return __targets;
+  INLINE const NodeSet&
+               MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
+    return targets__;
   }
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
-  INLINE const Size MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const
-     noexcept {
-    return __targets.size();
+  INLINE const Size
+     MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
+    return targets__.size();
   }
 
 
   /// sets all the nodes of the Markov net as targets
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::__setAllMarginalTargets() {
-    __targets.clear();
-    if (this->__mn != nullptr) {
-      __targets = this->__mn->graph().asNodeSet();
-      _onAllMarginalTargetsAdded();
+  void MarginalTargetedMNInference< GUM_SCALAR >::setAllMarginalTargets__() {
+    targets__.clear();
+    if (this->mn__ != nullptr) {
+      targets__ = this->mn__->graph().asNodeSet();
+      onAllMarginalTargetsAdded_();
     }
   }
 
@@ -251,7 +254,7 @@ namespace gum {
 
     if (!this->isDone()) { this->makeInference(); }
 
-    return _posterior(node);
+    return posterior_(node);
   }
 
   // Compute the posterior of a node.
@@ -282,8 +285,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
-                                                             const NodeSet& evs) {
+     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
+        NodeId target, const NodeSet& evs) {
     const auto& vtarget = this->MN().variable(target);
 
     if (evs.contains(target)) {
@@ -321,8 +324,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
-     const std::string& target, const std::vector< std::string >& evs) {
+  Potential< GUM_SCALAR >
+     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
+        const std::string& target, const std::vector< std::string >& evs) {
     const auto& mn = this->MN();
 
     gum::NodeSet evsId;
@@ -335,14 +339,14 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::_isTargetedMode() const {
-    return __targeted_mode;
+  INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTargetedMode_() const {
+    return targeted_mode__;
   }
   template < typename GUM_SCALAR >
-  INLINE void MarginalTargetedMNInference< GUM_SCALAR >::_setTargetedMode() {
-    if (!__targeted_mode) {
-      __targets.clear();
-      __targeted_mode = true;
+  INLINE void MarginalTargetedMNInference< GUM_SCALAR >::setTargetedMode_() {
+    if (!targeted_mode__) {
+      targets__.clear();
+      targeted_mode__ = true;
     }
   }
 } /* namespace gum */

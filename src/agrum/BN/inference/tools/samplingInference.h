@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief This file contains general methods for simulation-oriented approximate
  * inference.
  *
- * @author Paul ALAM & Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SAMPLING_INFERENCE_H
@@ -127,7 +127,7 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    const Potential< GUM_SCALAR >& _posterior(NodeId id) override;
+    const Potential< GUM_SCALAR >& posterior_(NodeId id) override;
 
     /// @}
 
@@ -158,7 +158,7 @@ namespace gum {
      * posterior
      *
      */
-    virtual void _setEstimatorFromBN();
+    virtual void setEstimatorFromBN_();
 
     /// Initializes the estimators object linked to the simulation
     /**
@@ -170,13 +170,13 @@ namespace gum {
      * obtained by running LoopyBeliefPropagation algorithm
      *
      */
-    virtual void _setEstimatorFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+    virtual void setEstimatorFromLBP_(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
                                       GUM_SCALAR virtualLBPSize);
     ///@}
 
     protected:
     /// Estimator object designed to approximate target posteriors
-    Estimator< GUM_SCALAR > __estimator;
+    Estimator< GUM_SCALAR > estimator__;
 
     /// whether the Estimator object has been initialized
     bool isSetEstimator = false;
@@ -185,7 +185,7 @@ namespace gum {
     bool isContextualized = false;
 
     /// draws samples without updating the estimators
-    virtual Instantiation _burnIn() = 0;
+    virtual Instantiation burnIn_() = 0;
 
     /// draws a sample in the bayesian network given a previous one
     /**
@@ -193,11 +193,11 @@ namespace gum {
      * @param prev the previous sample generated
      *
      */
-    virtual Instantiation _draw(GUM_SCALAR* w, Instantiation prev) = 0;
+    virtual Instantiation draw_(GUM_SCALAR* w, Instantiation prev) = 0;
 
     /// makes the inference by generating samples
-    void _makeInference() override;
-    void _loopApproxInference();
+    void makeInference_() override;
+    void loopApproxInference_();
 
     /// adds a node to current instantiation
     /**
@@ -207,7 +207,7 @@ namespace gum {
      * generates random value based on the BN's CPT's and adds the node to the
      * Instantiation with that value
      */
-    virtual void _addVarSample(NodeId nod, Instantiation* I);
+    virtual void addVarSample_(NodeId nod, Instantiation* I);
 
 
     /// fired when Bayesian network is contextualized
@@ -218,34 +218,34 @@ namespace gum {
      * @param hardEv hard evidences values
      *
      */
-    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
+    virtual void onContextualize_(BayesNetFragment< GUM_SCALAR >* bn);
 
-    void _onEvidenceAdded(const NodeId id, bool isHardEvidence) override;
+    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) override;
 
-    void _onEvidenceErased(const NodeId id, bool isHardEvidence) override;
+    void onEvidenceErased_(const NodeId id, bool isHardEvidence) override;
 
-    void _onAllEvidenceErased(bool contains_hard_evidence) override;
+    void onAllEvidenceErased_(bool contains_hard_evidence) override;
 
-    void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) override;
+    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) override;
 
-    void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) override;
+    void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) override;
 
-    void _updateOutdatedBNStructure() override;
+    void updateOutdatedBNStructure_() override;
 
-    void _updateOutdatedBNPotentials() override;
+    void updateOutdatedBNPotentials_() override;
 
-    void _onMarginalTargetAdded(const NodeId id) override;
+    void onMarginalTargetAdded_(const NodeId id) override;
 
-    void _onMarginalTargetErased(const NodeId id) override;
+    void onMarginalTargetErased_(const NodeId id) override;
 
-    void _onAllMarginalTargetsAdded() override;
+    void onAllMarginalTargetsAdded_() override;
 
-    void _onAllMarginalTargetsErased() override;
+    void onAllMarginalTargetsErased_() override;
 
-    void _onStateChanged() override;
+    void onStateChanged_() override;
 
     private:
-    BayesNetFragment< GUM_SCALAR >* __samplingBN;
+    BayesNetFragment< GUM_SCALAR >* samplingBN__;
   };
 
 

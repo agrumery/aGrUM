@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ namespace gum {
 
   /// returns a new distinct ID for each ScheduleOperation
   template < typename GUM_SCALAR >
-  Idx ScheduleOperation< GUM_SCALAR >::__newId() {
+  Idx ScheduleOperation< GUM_SCALAR >::newId__() {
     static Idx id = 0;
     return ++id;
   }
@@ -36,7 +36,7 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(Type t) :
-      __type(t), __id(__newId()) {
+      type__(t), id__(newId__()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -45,8 +45,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(
      const ScheduleOperation< GUM_SCALAR >& from) :
-      __type(from.__type),
-      __id(from.__id) {
+      type__(from.type__),
+      id__(from.id__) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -63,8 +63,8 @@ namespace gum {
   INLINE ScheduleOperation< GUM_SCALAR >&
      ScheduleOperation< GUM_SCALAR >::operator=(
         const ScheduleOperation< GUM_SCALAR >& from) {
-    __type = from.__type;
-    __id = from.__id;
+    type__ = from.type__;
+    id__ = from.id__;
     return *this;
   }
 
@@ -72,13 +72,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename ScheduleOperation< GUM_SCALAR >::Type
      ScheduleOperation< GUM_SCALAR >::type() const {
-    return __type;
+    return type__;
   }
 
   /// returns the id of the operation
   template < typename GUM_SCALAR >
   INLINE Idx ScheduleOperation< GUM_SCALAR >::id() const {
-    return __id;
+    return id__;
   }
 
 } /* namespace gum */

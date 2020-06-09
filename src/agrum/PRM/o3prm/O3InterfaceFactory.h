@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers for the O3InterfaceFactory class.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  * @author Lionel TORTI
  */
 
@@ -75,37 +75,37 @@ namespace gum {
         void buildElements();
 
         private:
-        PRM< GUM_SCALAR >*          __prm;
-        O3PRM*                      __o3_prm;
-        O3NameSolver< GUM_SCALAR >* __solver;
-        ErrorsContainer*            __errors;
+        PRM< GUM_SCALAR >*          prm__;
+        O3PRM*                      o3_prm__;
+        O3NameSolver< GUM_SCALAR >* solver__;
+        ErrorsContainer*            errors__;
 
-        HashTable< std::string, std::string >  __eltName;
-        HashTable< std::string, gum::NodeId >  __nameMap;
-        HashTable< std::string, O3Interface* > __interfaceMap;
-        HashTable< NodeId, O3Interface* >      __nodeMap;
-        DAG                                    __dag;
-        std::vector< O3Interface* >            __o3Interface;
+        HashTable< std::string, std::string >  eltName__;
+        HashTable< std::string, gum::NodeId >  nameMap__;
+        HashTable< std::string, O3Interface* > interfaceMap__;
+        HashTable< NodeId, O3Interface* >      nodeMap__;
+        DAG                                    dag__;
+        std::vector< O3Interface* >            o3Interface__;
 
-        bool __addInterface2Dag();
+        bool addInterface2Dag__();
 
-        bool __addArcs2Dag();
+        bool addArcs2Dag__();
 
-        void __setO3InterfaceCreationOrder();
+        void setO3InterfaceCreationOrder__();
 
-        bool __checkO3Interfaces();
+        bool checkO3Interfaces__();
 
-        bool __checkInterfaceElement(O3Interface& i, O3InterfaceElement& elt);
+        bool checkInterfaceElement__(O3Interface& i, O3InterfaceElement& elt);
 
-        bool __checkOverloadLegality(O3Interface& i, O3InterfaceElement& elt);
+        bool checkOverloadLegality__(O3Interface& i, O3InterfaceElement& elt);
 
-        bool __checkAttributeOverloadLegality(O3Interface&        i,
+        bool checkAttributeOverloadLegality__(O3Interface&        i,
                                               O3InterfaceElement& elt);
 
-        bool __checkReferenceOverloadLegality(O3Interface&        i,
+        bool checkReferenceOverloadLegality__(O3Interface&        i,
                                               O3InterfaceElement& elt);
 
-        bool __checkCyclicReference(O3Interface& i, O3InterfaceElement& elt);
+        bool checkCyclicReference__(O3Interface& i, O3InterfaceElement& elt);
       };
 
     }   // namespace o3prm

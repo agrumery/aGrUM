@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Outlined implementation of Sets
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -32,20 +32,20 @@
 
 namespace gum {
 
-  // creates (if needed) and returns the iterator __SetIterEndSafe
+  // creates (if needed) and returns the iterator SetIterEndSafe__
   const SetIteratorSafe< int >* SetIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time = false;
-      __SetIterEndSafe = new SetIteratorSafe< int >;
+      SetIterEndSafe__ = new SetIteratorSafe< int >;
 #  ifdef GUM_DEBUG_MODE
-      __debug__::__dec_creation("SetIteratorSafe",
+      __debug__::dec_creation__("SetIteratorSafe",
                                 "__set_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-      __debug__::__dec_creation("HashTableConstIteratorSafe",
+      __debug__::dec_creation__("HashTableConstIteratorSafe",
                                 "__set_static_end",
                                 0,
                                 "static variable correction",
@@ -53,25 +53,25 @@ namespace gum {
 #  endif
     }
 
-    return __SetIterEndSafe;
+    return SetIterEndSafe__;
   }
 
-  // creates (if needed) and returns the iterator __SetIterEndSafe
+  // creates (if needed) and returns the iterator SetIterEndSafe__
   const SetIteratorSafe< int >* SetIteratorStaticEnd::constEndSafe4Statics() {
     return endSafe4Statics();
   }
 
-  // creates (if needed) and returns the iterator __SetIterEnd
+  // creates (if needed) and returns the iterator SetIterEnd__
   const SetIterator< int >* SetIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time = false;
-      __SetIterEnd = new SetIterator< int >;
+      SetIterEnd__ = new SetIterator< int >;
 #  ifdef GUM_DEBUG_MODE
-      __debug__::__dec_creation(
+      __debug__::dec_creation__(
          "SetIterator", "__set_static_end", 0, "static variable correction", 0);
-      __debug__::__dec_creation("HashTableConstIterator",
+      __debug__::dec_creation__("HashTableConstIterator",
                                 "__set_static_end",
                                 0,
                                 "static variable correction",
@@ -79,20 +79,20 @@ namespace gum {
 #  endif
     }
 
-    return __SetIterEnd;
+    return SetIterEnd__;
   }
 
-  // creates (if needed) and returns the iterator __SetIterEnd
+  // creates (if needed) and returns the iterator SetIterEnd__
   const SetIterator< int >* SetIteratorStaticEnd::constEnd4Statics() {
     return end4Statics();
   }
 
   // create the end iterator for all Sets
-  const SetIteratorSafe< int >* SetIteratorStaticEnd::__SetIterEndSafe =
+  const SetIteratorSafe< int >* SetIteratorStaticEnd::SetIterEndSafe__ =
      SetIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Sets
-  const SetIterator< int >* SetIteratorStaticEnd::__SetIterEnd =
+  const SetIterator< int >* SetIteratorStaticEnd::SetIterEnd__ =
      SetIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */

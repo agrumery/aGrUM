@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of SimpleBayesNetGenerator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI and Ariele-Paolo MAESANO
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI and Ariele-Paolo MAESANO
  *
  */
 
@@ -73,29 +73,29 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::generateBN(
      BayesNet< GUM_SCALAR >& bayesNet) {
-    this->_bayesNet = bayesNet;
+    this->bayesNet_ = bayesNet;
     HashTable< Size, NodeId > map;
     std::stringstream         strBuff;
 
-    for (Size i = 0; this->_nbrNodes > i; ++i) {
+    for (Size i = 0; this->nbrNodes_ > i; ++i) {
       strBuff << "n" << i;
       Size nb_mod =
-         (this->_maxModality == 2) ? 2 : 2 + randomValue(this->_maxModality - 1);
+         (this->maxModality_ == 2) ? 2 : 2 + randomValue(this->maxModality_ - 1);
       map.insert(
-         i, this->_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
+         i, this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
       strBuff.str("");
     }
 
     // We add arcs
-    float density = (float)(this->_maxArcs * 2)
-                    / (float)(this->_nbrNodes * (this->_nbrNodes - 1));
+    float density = (float)(this->maxArcs_ * 2)
+                    / (float)(this->nbrNodes_ * (this->nbrNodes_ - 1));
 
-    for (Size i = 0; i < this->_nbrNodes; ++i)
-      for (Size j = i + 1; j < this->_nbrNodes; ++j)
-        if (randomProba() < density) this->_bayesNet.addArc(map[i], map[j]);
+    for (Size i = 0; i < this->nbrNodes_; ++i)
+      for (Size j = i + 1; j < this->nbrNodes_; ++j)
+        if (randomProba() < density) this->bayesNet_.addArc(map[i], map[j]);
 
     this->fillCPT();
 
-    bayesNet = this->_bayesNet;
+    bayesNet = this->bayesNet_;
   }
 } /* namespace gum */

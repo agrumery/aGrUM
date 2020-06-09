@@ -31,14 +31,14 @@
 
 class PythonBNListener : public gum::DiGraphListener {
   private:
-    PyObject* __pyWhenNodeAdded;
-    PyObject* __pyWhenNodeDeleted;
-    PyObject* __pyWhenArcAdded;
-    PyObject* __pyWhenArcDeleted;
+    PyObject* pyWhenNodeAdded__;
+    PyObject* pyWhenNodeDeleted__;
+    PyObject* pyWhenArcAdded__;
+    PyObject* pyWhenArcDeleted__;
 
-    const gum::VariableNodeMap* __map;
+    const gum::VariableNodeMap* map__;
 
-    void __checkCallable ( PyObject* pyfunc ) {
+    void checkCallable__ ( PyObject* pyfunc ) {
       if ( !PyCallable_Check ( pyfunc ) ) {
         PyErr_SetString ( PyExc_TypeError, "Need a callable object!" );
       }
@@ -46,79 +46,79 @@ class PythonBNListener : public gum::DiGraphListener {
 
   public:
     PythonBNListener ( const gum::BayesNet<double>* bn, const gum::VariableNodeMap* vnm ) :
-      gum::DiGraphListener ( &(bn->dag())), __map ( vnm ) {
-      __pyWhenArcAdded = __pyWhenArcDeleted = ( PyObject* ) 0;
-      __pyWhenNodeAdded = __pyWhenNodeDeleted = ( PyObject* ) 0;
+      gum::DiGraphListener ( &(bn->dag())), map__ ( vnm ) {
+      pyWhenArcAdded__ = pyWhenArcDeleted__ = ( PyObject* ) 0;
+      pyWhenNodeAdded__ = pyWhenNodeDeleted__ = ( PyObject* ) 0;
     }
 
     ~PythonBNListener() {
-      if ( __pyWhenArcAdded ) Py_DECREF ( __pyWhenArcAdded );
+      if ( pyWhenArcAdded__ ) Py_DECREF ( pyWhenArcAdded__ );
 
-      if ( __pyWhenArcDeleted ) Py_DECREF ( __pyWhenArcDeleted );
+      if ( pyWhenArcDeleted__ ) Py_DECREF ( pyWhenArcDeleted__ );
 
-      if ( __pyWhenNodeAdded ) Py_DECREF ( __pyWhenNodeAdded );
+      if ( pyWhenNodeAdded__ ) Py_DECREF ( pyWhenNodeAdded__ );
 
-      if ( __pyWhenNodeDeleted ) Py_DECREF ( __pyWhenNodeDeleted );
+      if ( pyWhenNodeDeleted__ ) Py_DECREF ( pyWhenNodeDeleted__ );
     }
 
     virtual void whenNodeAdded ( const void* source, gum::NodeId id ) {
       // we could check if source==_digraph !!!
-      if ( __pyWhenNodeAdded ) {
+      if ( pyWhenNodeAdded__ ) {
         PyObject* arglist = Py_BuildValue ( "(ls)", id,
-                                            ( *__map ) [id].name().c_str() );
-        PyEval_CallObject ( __pyWhenNodeAdded, arglist );
+                                            ( *map__ ) [id].name().c_str() );
+        PyEval_CallObject ( pyWhenNodeAdded__, arglist );
         Py_DECREF ( arglist );
       }
     }
 
     virtual void whenNodeDeleted ( const void*, gum::NodeId id ) {
       // we could check if source==_digraph !!!
-      if ( __pyWhenNodeDeleted ) {
+      if ( pyWhenNodeDeleted__ ) {
         PyObject* arglist = Py_BuildValue ( "(l)", id );
-        PyEval_CallObject ( __pyWhenNodeDeleted, arglist );
+        PyEval_CallObject ( pyWhenNodeDeleted__, arglist );
         Py_DECREF ( arglist );
       }
     }
 
     virtual void whenArcAdded ( const void*, gum::NodeId src, gum::NodeId dst ) {
       // we could check if source==_digraph !!!
-      if ( __pyWhenArcAdded ) {
+      if ( pyWhenArcAdded__ ) {
         PyObject* arglist = Py_BuildValue ( "(ll)", src, dst );
-        PyEval_CallObject ( __pyWhenArcAdded, arglist );
+        PyEval_CallObject ( pyWhenArcAdded__, arglist );
         Py_DECREF ( arglist );
       }
     }
 
     virtual void whenArcDeleted ( const void*, gum::NodeId src, gum::NodeId dst ) {
       // we could check if source==_digraph !!!
-      if ( __pyWhenArcDeleted ) {
+      if ( pyWhenArcDeleted__ ) {
         PyObject* arglist = Py_BuildValue ( "(ll)", src, dst );
-        PyEval_CallObject ( __pyWhenArcDeleted, arglist );
+        PyEval_CallObject ( pyWhenArcDeleted__, arglist );
         Py_DECREF ( arglist );
       }
     }
 
     void setWhenArcAdded ( PyObject* pyfunc ) {
-      __checkCallable ( pyfunc );
-      __pyWhenArcAdded = pyfunc;
+      checkCallable__ ( pyfunc );
+      pyWhenArcAdded__ = pyfunc;
       Py_INCREF ( pyfunc );
     }
 
     void setWhenArcDeleted ( PyObject* pyfunc ) {
-      __checkCallable ( pyfunc );
-      __pyWhenArcDeleted = pyfunc;
+      checkCallable__ ( pyfunc );
+      pyWhenArcDeleted__ = pyfunc;
       Py_INCREF ( pyfunc );
     }
 
     void setWhenNodeAdded ( PyObject* pyfunc ) {
-      __checkCallable ( pyfunc );
-      __pyWhenNodeAdded = pyfunc;
+      checkCallable__ ( pyfunc );
+      pyWhenNodeAdded__ = pyfunc;
       Py_INCREF ( pyfunc );
     }
 
     void setWhenNodeDeleted ( PyObject* pyfunc ) {
-      __checkCallable ( pyfunc );
-      __pyWhenNodeDeleted = pyfunc;
+      checkCallable__ ( pyfunc );
+      pyWhenNodeDeleted__ = pyfunc;
       Py_INCREF ( pyfunc );
     }
 };

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief The class for computing Log2 (Gamma(x)).
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/gammaLog2.h>
@@ -37,19 +37,19 @@ namespace gum {
 
   // @brief Default constructor.
   GammaLog2::GammaLog2(bool requires_precision) :
-      __requires_precision{requires_precision} {
+      requires_precision__{requires_precision} {
     GUM_CONSTRUCTOR(GammaLog2);
   }
 
   // @brief Copy constructor.
   GammaLog2::GammaLog2(const GammaLog2& from) :
-      __requires_precision{from.__requires_precision} {
+      requires_precision__{from.requires_precision__} {
     GUM_CONS_CPY(GammaLog2);
   }
 
   // @brief Move constructor.
   GammaLog2::GammaLog2(GammaLog2&& from) :
-      __requires_precision{from.__requires_precision} {
+      requires_precision__{from.requires_precision__} {
     GUM_CONS_MOV(GammaLog2);
   }
 
@@ -58,7 +58,7 @@ namespace gum {
 
 
   // the Log2 (gamma (x)) for x varying from 0 to 50 by step of 1/100
-  const std::vector< double > GammaLog2::__small_values{
+  const std::vector< double > GammaLog2::small_values__{
      std::numeric_limits< double >::max(),
      6.635647,
      5.627671,

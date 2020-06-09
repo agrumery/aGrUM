@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief Class for fast retrieval of simplicial and quasi/almost simplicial
  * nodes
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_SIMPLICIAL_SET_H
 #define GUM_SIMPLICIAL_SET_H
@@ -290,7 +290,7 @@ namespace gum {
     /// reassigns a new set of cliques' log weights (with the same content)
     /** This method is useful for move constructors in elimination sequences.
      * @throws InvalidArgument is raised if the old_weights argument is
-     * different from the current __log_weights pointer. */
+     * different from the current log_weights__ pointer. */
     void replaceLogWeights(NodeProperty< double >* old_weigths,
                            NodeProperty< double >* new_weights);
 
@@ -299,39 +299,39 @@ namespace gum {
 
     private:
     /// the graph on which we perform the simplicial computations
-    UndiGraph* __graph;
+    UndiGraph* graph__;
 
     /// the weights of the nodes (i.e., weight of their clique)
-    NodeProperty< double >* __log_weights;
+    NodeProperty< double >* log_weights__;
 
     /// the log of the modalities of the nodes
-    const NodeProperty< double >* __log_domain_sizes;
+    const NodeProperty< double >* log_domain_sizes__;
 
     /// a queue of the simplicial nodes ordered by increasing node weight
-    PriorityQueue< NodeId, double > __simplicial_nodes;
+    PriorityQueue< NodeId, double > simplicial_nodes__;
 
     /// a queue of the almost simplicial nodes ordered by increasing node weight
-    PriorityQueue< NodeId, double > __almost_simplicial_nodes;
+    PriorityQueue< NodeId, double > almost_simplicial_nodes__;
 
     /// a queue of the quasi simplicial nodes ordered by increasing node weight
-    PriorityQueue< NodeId, double > __quasi_simplicial_nodes;
+    PriorityQueue< NodeId, double > quasi_simplicial_nodes__;
 
     /** @brief indicates for each node to which list (simplicial, almost
      * simplicial, quasi simplicial) it belongs */
-    enum class __Belong : char {
+    enum class Belong__ : char {
       SIMPLICIAL,
       ALMOST_SIMPLICIAL,
       QUASI_SIMPLICIAL,
       NO_LIST
     };
-    NodeProperty< __Belong > __containing_list;
+    NodeProperty< Belong__ > containing_list__;
 
     /** @brief for each edge, keep track of the number of triangles passing
      * through this egde */
-    EdgeProperty< Size > __nb_triangles;
+    EdgeProperty< Size > nb_triangles__;
 
     /// for each node, the number of pairs of adjacent neighbours
-    NodeProperty< Size > __nb_adjacent_neighbours;
+    NodeProperty< Size > nb_adjacent_neighbours__;
 
     /// the current (induced) tree width
     /** @warning Note that what we call tree width here is not the classical
@@ -341,42 +341,42 @@ namespace gum {
      * the product of the modalities of the nodes/variables contained in
      * the cliques
      */
-    double __log_tree_width;
+    double log_tree_width__;
 
     /** @brief for a given node, if the number of pairs of neighbors that are
      * adjacent / the number of adjacent neighbors in a clique is greater than
      * the quasi ratio, then the node should belong the quasi simplicial list */
-    double __quasi_ratio;
+    double quasi_ratio__;
 
     /** @brief quasi and almost simplicial nodes may not be eliminated unless
      * their weight is lower than (1 + threshold) * tree_width */
-    double __log_threshold;
+    double log_threshold__;
 
     /// the set of nodes that have potentially changed of status
-    NodeSet __changed_status;
+    NodeSet changed_status__;
 
     /** @brief a boolean indicating if we want fill-ins list with the standard
      * triangulation method */
-    bool __we_want_fill_ins{false};
+    bool we_want_fill_ins__{false};
 
     /// fill-ins list
-    EdgeSet __fill_ins_list;
+    EdgeSet fill_ins_list__;
 
 
     /** @brief put node id in the correct simplicial/almost simplicial/quasi
      * simplicial list */
-    void __updateList(const NodeId id);
+    void updateList__(const NodeId id);
 
     /// put all the nodes in their appropriate list
-    void __updateAllNodes();
+    void updateAllNodes__();
 
-    /** @brief initialize: compute __nb_triangles, __nb_adjacent_neighbors, etc
+    /** @brief initialize: compute nb_triangles__, nb_adjacent_neighbors__, etc
      * when a new graph is set
      *
      * This method initializes the log_weights, the number of triangles and the
      * number of adjacent neighbors given the current graph. This is to be used
      * in constructors and method setGraph */
-    void __initialize();
+    void initialize__();
 
     /// prevent a copy operator to be used
     /** If we did not prevent this operator to be used, we would be in a mess

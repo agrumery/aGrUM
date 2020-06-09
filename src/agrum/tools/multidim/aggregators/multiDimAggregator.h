@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief MultiDimAggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MULTI_DIM_AGGREGATOR_H
@@ -172,22 +172,22 @@ namespace gum {
 
       /// @}
       protected:
-      /// by default, _buildValue uses a "fold" scheme and the user has to
-      /// implement _neutralElt and _fold
-      /// but if necessary (as for @ref Median), _buildValue can be
+      /// by default, buildValue_ uses a "fold" scheme and the user has to
+      /// implement neutralElt_ and fold_
+      /// but if necessary (as for @ref Median), buildValue_ can be
       /// reimplemented.
-      virtual Idx _buildValue(const gum::Instantiation& i) const;
+      virtual Idx buildValue_(const gum::Instantiation& i) const;
 
-      /// _decomposable indicates if the aggregator can be decomposed
-      bool _decomposable;
+      /// decomposable_ indicates if the aggregator can be decomposed
+      bool decomposable_;
 
-      /// _neutralElt() is the result value for the first application of _fold
-      virtual Idx _neutralElt() const = 0;
+      /// neutralElt_() is the result value for the first application of fold_
+      virtual Idx neutralElt_() const = 0;
 
-      /// _fold is applied on value i1 for variable v. the actual result for
+      /// fold_ is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx _fold(const DiscreteVariable& v,
+      virtual Idx fold_(const DiscreteVariable& v,
                         Idx                     i1,
                         Idx                     i2,
                         bool&                   stop_iteration) const = 0;

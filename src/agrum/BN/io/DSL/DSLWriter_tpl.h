@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumBNWriter.h classes.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -66,7 +66,7 @@ namespace gum {
            << std::endl;
 
     for (auto node: bn.topologicalOrder()) {
-      output << __variableBloc(bn, bn.variable(node));
+      output << variableBloc__(bn, bn.variable(node));
     }
 
     output << "};";
@@ -100,7 +100,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   std::string
-     DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
+     DSLWriter< GUM_SCALAR >::variableBloc__(const IBayesNet< GUM_SCALAR >& bn,
                                              const DiscreteVariable&        var) {
     NodeId             id;
     std::ostringstream oss;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -139,7 +139,7 @@ namespace gum {
      * @param from the src SplayBinaryNode
      * @param addr TODO don't know what to do here ..
      */
-    void _copy(const SplayBinaryNode< Element >&                  from,
+    void copy_(const SplayBinaryNode< Element >&                  from,
                HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /**
@@ -423,7 +423,7 @@ namespace gum {
     /// @}
 
     /// a function used to perform copies
-    void _copy(const SplayTree< Element >&);
+    void copy_(const SplayTree< Element >&);
 
     /// Friendly to display
     friend std::ostream& operator<<<>(std::ostream& out,
@@ -432,7 +432,7 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the _tpl.h as it contains only templates
+// always include the tpl_.h as it contains only templates
 #include <agrum/tools/core/splay_tpl.h>
 
 #endif /* GUM_SPLAY_H */

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the Pattern class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_PATTERN_H
@@ -202,44 +202,44 @@ namespace gum {
 
         private:
         /// The DFSCode of this Pattern.
-        DFSCode __code;
+        DFSCode code__;
 
         /// Mapping between nodes in this Pattern and their respective
         /// LabelData.
-        NodeProperty< LabelData* > __node_map;
+        NodeProperty< LabelData* > node_map__;
 
         /// Mapping between edges in this Pattern and their respective
         /// LabelData.
-        ArcProperty< std::pair< LabelData*, EdgeCode* > > __arc_map;
+        ArcProperty< std::pair< LabelData*, EdgeCode* > > arc_map__;
 
         /// The last LabelData added to this pattern.
-        LabelData* __last;
+        LabelData* last__;
 
         /// Returns true if the expand code by adding and edge betwenne u and v
         /// is
         /// minimal
-        /// with respect to __code.
+        /// with respect to code__.
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @returns true if the expand code by adding and edge betwenne u and v
         /// is
         /// minimal
-        ///          with respect to __code.
-        bool __expandCodeIsMinimal(NodeId u, NodeId v);
+        ///          with respect to code__.
+        bool expandCodeIsMinimal__(NodeId u, NodeId v);
 
-        /// Recurisve method used by __expandCodeIsMinimal.
+        /// Recurisve method used by expandCodeIsMinimal__.
         /// @param p A Pattern.
         /// @param node_map A bijection.
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @return true if the expansion is minimal.
-        bool __rec(Pattern&                     p,
+        bool rec__(Pattern&                     p,
                    Bijection< NodeId, NodeId >& node_map,
                    NodeId                       u,
                    NodeId                       v);
 
-        /// A non recursive bugged version of __rec.
-        bool __not_rec(Pattern&                     p,
+        /// A non recursive bugged version of rec__.
+        bool not_rec__(Pattern&                     p,
                        Bijection< NodeId, NodeId >& node_map,
                        NodeId                       u,
                        NodeId                       v);

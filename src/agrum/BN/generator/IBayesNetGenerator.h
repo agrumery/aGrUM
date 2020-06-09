@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@
 /** @file
  * @brief Interface-like class for generating bayesian networks.
  *
- * @author Christophe GONZALES (@AMU), Pierre-Henri WUILLEMIN (@LIP6), Lionel TORTI and
- * Ariele-Paolo MAESANO
+ * @author Christophe GONZALES(@AMU), Pierre-Henri WUILLEMIN(@LIP6), Lionel TORTI
+ * and Ariele-Paolo MAESANO
  */
 #ifndef GUM_I_BAYES_NET_GENERATOR_H
 #define GUM_I_BAYES_NET_GENERATOR_H
@@ -160,11 +160,11 @@ namespace gum {
     /// @}
     protected:
     // The Conditional Probability Table generator
-    //  CPTGenerator * _cptGenerator;
-    Size                   _nbrNodes;
-    Size                   _maxArcs;
-    Size                   _maxModality;
-    BayesNet< GUM_SCALAR > _bayesNet;
+    //  CPTGenerator * cptGenerator_;
+    Size                   nbrNodes_;
+    Size                   maxArcs_;
+    Size                   maxModality_;
+    BayesNet< GUM_SCALAR > bayesNet_;
   };
 
 } /* namespace gum */

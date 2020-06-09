@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,8 +34,8 @@
  * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
  * from 3off2, with a diffferent ranking method and different propagation rules.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN (@LIP6) and Maria Virginia RUIZ
- * CUEVAS
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(@LIP6) and Maria Virginia
+ * RUIZ CUEVAS
  */
 #ifndef GUM_LEARNING_3_OFF_2_H
 #define GUM_LEARNING_3_OFF_2_H
@@ -201,16 +201,16 @@ namespace gum {
        * and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * @param sep_set the separation set for independent couples, here set to {}
-       * @param _rank the heap of ranks of the algorithm
+       * @param rank_ the heap of ranks of the algorithm
        */
-      void _initiation(
+      void initiation_(
          CorrectedMutualInformation<>&                                    I,
          MixedGraph&                                                      graph,
          HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
          Heap< std::pair<
                   std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                   double >,
-               GreaterPairOn2nd >&                                        _rank);
+               GreaterPairOn2nd >&                                        rank_);
 
       /// Iteration phase
       /**
@@ -222,16 +222,16 @@ namespace gum {
        * @param graph the MixedGraph returned from the previous phase
        * @param sep_set the separation set for independent couples, built during
        * the iterations of the phase
-       * @param _rank the heap of ranks of the algorithm
+       * @param rank_ the heap of ranks of the algorithm
        */
-      void _iteration(
+      void iteration_(
          CorrectedMutualInformation<>&                                    I,
          MixedGraph&                                                      graph,
          HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
          Heap< std::pair<
                   std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                   double >,
-               GreaterPairOn2nd >&                                        _rank);
+               GreaterPairOn2nd >&                                        rank_);
 
       /// Orientation phase from the 3off2 algorithm, returns a CPDAG
       /** @param I A mutual information instance that will do the computations
@@ -240,7 +240,7 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_3off2(CorrectedMutualInformation<>&             I,
+      void orientation_3off2_(CorrectedMutualInformation<>&             I,
                               MixedGraph&                               graph,
                               const HashTable< std::pair< NodeId, NodeId >,
                                                std::vector< NodeId > >& sep_set);
@@ -253,7 +253,7 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_latents(CorrectedMutualInformation<>&             I,
+      void orientation_latents_(CorrectedMutualInformation<>&             I,
                                 MixedGraph&                               graph,
                                 const HashTable< std::pair< NodeId, NodeId >,
                                                  std::vector< NodeId > >& sep_set);
@@ -266,7 +266,7 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_miic(CorrectedMutualInformation<>&             I,
+      void orientation_miic_(CorrectedMutualInformation<>&             I,
                              MixedGraph&                               graph,
                              const HashTable< std::pair< NodeId, NodeId >,
                                               std::vector< NodeId > >& sep_set);
@@ -279,9 +279,9 @@ namespace gum {
        * @param I A mutual information instance that will do the computations
        * and has loaded the database.
        * @param graph containing the assessed nodes
-       * @param _rank the heap of ranks of the algorithm
+       * @param rank_ the heap of ranks of the algorithm
        */
-      void _findBestContributor(
+      void findBestContributor_(
          NodeId                        x,
          NodeId                        y,
          const std::vector< NodeId >&  ui,
@@ -290,7 +290,7 @@ namespace gum {
          Heap< std::pair<
                   std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                   double >,
-               GreaterPairOn2nd >&     _rank);
+               GreaterPairOn2nd >&     rank_);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|
@@ -299,7 +299,7 @@ namespace gum {
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-         _getUnshieldedTriples(const MixedGraph&                         graph,
+         getUnshieldedTriples_(const MixedGraph&                         graph,
                                CorrectedMutualInformation<>&             I,
                                const HashTable< std::pair< NodeId, NodeId >,
                                                 std::vector< NodeId > >& sep_set);
@@ -315,7 +315,7 @@ namespace gum {
                                double,
                                double,
                                double > >
-         _getUnshieldedTriplesMIIC(
+         getUnshieldedTriplesMIIC_(
             const MixedGraph&             graph,
             CorrectedMutualInformation<>& I,
             const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
@@ -330,7 +330,7 @@ namespace gum {
                                double,
                                double,
                                double > >
-         _updateProbaTriples(
+         updateProbaTriples_(
             const MixedGraph&                   graph,
             std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
                                      double,
@@ -342,27 +342,27 @@ namespace gum {
        *@param node node on which neighbours to propagate th orientation
        *@todo : avoid exception driven programmation in circle detection
        */
-      void _propagatesHead(MixedGraph& graph, NodeId node);
+      void propagatesHead_(MixedGraph& graph, NodeId node);
 
 
       private:
       /// Fixes the maximum log that we accept in exponential computations
-      int __maxLog = 100;
+      int maxLog__ = 100;
       /// an empty conditioning set
-      const std::vector< NodeId > __empty_set;
+      const std::vector< NodeId > empty_set__;
       /// an empty vector of arcs
-      std::vector< Arc > __latent_couples;
+      std::vector< Arc > latent_couples__;
 
       /// size of the database
-      Size __N;
+      Size N__;
       /// wether to use the miic algorithm or not
-      bool __usemiic{false};
+      bool usemiic__{false};
 
       /// Storing the propabilities for each arc set in the graph
-      ArcProperty< double > __arc_probas;
+      ArcProperty< double > arc_probas__;
 
       /// Initial marks for the orientation phase, used to convey constraints
-      HashTable< std::pair< NodeId, NodeId >, char > __initial_marks;
+      HashTable< std::pair< NodeId, NodeId >, char > initial_marks__;
 
       /// checks for directed paths in a graph, consider double arcs like edges
       /*@param graph MixedGraph in which to search the path
@@ -370,7 +370,7 @@ namespace gum {
        *@param n2 head of the path
        *@param countArc bool to know if we consider arc as a directed path
        */
-      const bool __existsDirectedPath(const MixedGraph& graph,
+      const bool existsDirectedPath__(const MixedGraph& graph,
                                       const NodeId      n1,
                                       const NodeId      n2,
                                       const bool        countArc = true) const;

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the base class for structural constraints used by learning algorithms
  * that learn an undirected graph structure
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -35,22 +35,22 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     INLINE void
        StructuralConstraintUndiGraph::setGraphAlone(const UndiGraph& graph) {
-      _UndiGraph__graph = graph;
+      UndiGraph__graph_ = graph;
     }
 
     /// checks whether the constraints enable to add edge (x,y)
     INLINE bool
        StructuralConstraintUndiGraph::checkEdgeAdditionAlone(NodeId x,
                                                              NodeId y) const {
-      return _UndiGraph__graph.existsNode(x) && _UndiGraph__graph.existsNode(y)
-             && !_UndiGraph__graph.existsEdge(x, y);
+      return UndiGraph__graph_.existsNode(x) && UndiGraph__graph_.existsNode(y)
+             && !UndiGraph__graph_.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to remove edge (x,y)
     INLINE bool
        StructuralConstraintUndiGraph::checkEdgeDeletionAlone(NodeId x,
                                                              NodeId y) const {
-      return _UndiGraph__graph.existsEdge(x, y);
+      return UndiGraph__graph_.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to add an edge
@@ -85,13 +85,13 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
        const EdgeAddition& change) {
-      _UndiGraph__graph.addEdge(change.node1(), change.node2());
+      UndiGraph__graph_.addEdge(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
        const EdgeDeletion& change) {
-      _UndiGraph__graph.eraseEdge(Edge(change.node1(), change.node2()));
+      UndiGraph__graph_.eraseEdge(Edge(change.node1(), change.node2()));
     }
 
     /// notify the constraint of a modification of the graph
@@ -121,9 +121,9 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintUndiGraph::setGraph(Size nb_nodes) {
-      _UndiGraph__graph.clear();
+      UndiGraph__graph_.clear();
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        _UndiGraph__graph.addNodeWithId(i);
+        UndiGraph__graph_.addNodeWithId(i);
       }
     }
 

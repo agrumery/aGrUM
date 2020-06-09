@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief the base class for structural constraints imposed by DAGs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
@@ -206,7 +206,7 @@ namespace gum {
 
       protected:
       /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector _DAG__cycle_detector;
+      DAGCycleDetector DAG__cycle_detector_;
     };
 
   } /* namespace learning */

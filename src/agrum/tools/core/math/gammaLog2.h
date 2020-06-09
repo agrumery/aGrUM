@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,12 +24,12 @@
  * @file
  * @brief The class for computing Log2 (Gamma(x)).
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_GAMMA_LOG2_H
 #define GUM_GAMMA_LOG2_H
 
-#define _USE_MATH_DEFINES   // for Visual C++
+#define USE_MATH_DEFINES_   // for Visual C++
 
 #include <limits>
 #include <vector>
@@ -111,16 +111,16 @@ namespace gum {
 
     private:
     /// Indicates whether we need more precision for small values.
-    bool __requires_precision{false};
+    bool requires_precision__{false};
 
     /// The value of 1 / std::log(2).
-    static constexpr double __1log2{M_LOG2E};
+    static constexpr double inv_log2__{M_LOG2E};
 
     /// The value of std::log ( std::sqrt(2pi) ).
-    static constexpr double __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
+    static constexpr double log_sqrt_2pi__{GUM_LOG_SQRT_2PI};
 
     /// The 5000 values from 0 to 50 by step of 1/100.
-    static const std::vector< double > __small_values;
+    static const std::vector< double > small_values__;
   };
 
 } /* namespace gum */

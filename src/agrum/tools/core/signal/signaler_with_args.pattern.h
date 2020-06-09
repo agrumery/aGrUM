@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Meta classes for signalers.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 
@@ -65,9 +65,9 @@ namespace gum {
       (const MAKE_NAME(BasicSignaler) & s) : ISignaler(s) {
         GUM_CONS_CPY(MAKE_NAME(BasicSignaler));
 
-        for (const auto& connector: _connectors) {
+        for (const auto& connector: connectors_) {
           connector->target()->attachSignal__(this);
-          _connectors.pushBack(connector->clone());
+          connectors_.pushBack(connector->clone());
         }
       }
 
@@ -75,24 +75,24 @@ namespace gum {
       virtual ~MAKE_NAME(BasicSignaler)() {
         GUM_DESTRUCTOR(MAKE_NAME(BasicSignaler));
 
-        for (const auto& connector: _connectors) {
+        for (const auto& connector: connectors_) {
           connector->target()->detachSignal__(this);
           delete connector;
         }
 
-        _connectors.clear();
+        connectors_.clear();
       }
 
-      bool hasListener() { return (!(_connectors.empty())); }
+      bool hasListener() { return (!(connectors_.empty())); }
 
       void detach(Listener* target) {
         for (ConnectorIterator it =
-                _connectors.reginSafe();   // safe iterator needed here
-             it != _connectors.rendSafe();
+                connectors_.reginSafe();   // safe iterator needed here
+             it != connectors_.rendSafe();
              --it) {
           if ((*it)->target() == target) {
             delete *it;
-            _connectors.erase(it);
+            connectors_.erase(it);
             target->detachSignal__(this);
             return;
           }
@@ -103,9 +103,9 @@ namespace gum {
       friend class Listener;
 
       void duplicateTarget(const Listener* oldtarget, Listener* newtarget) {
-        for (const auto& connector: _connectors)
+        for (const auto& connector: connectors_)
           if (connector->target() == oldtarget) {
-            _connectors.pushBack(connector->duplicate(newtarget));
+            connectors_.pushBack(connector->duplicate(newtarget));
           }
       }
 
@@ -113,19 +113,19 @@ namespace gum {
         ConnectorIterator itprev;
 
         for (ConnectorIterator it =
-                _connectors.rbeginSafe();   // safe iterator needed here
-             it != _connectors.rendSafe();) {
+                connectors_.rbeginSafe();   // safe iterator needed here
+             it != connectors_.rendSafe();) {
           itprev = it;
           --it;
 
           if ((*itprev)->target() == target) {
             delete *itprev;
-            _connectors.erase(itprev);
+            connectors_.erase(itprev);
           }
         }
       }
 
-      ConnectorList _connectors;
+      ConnectorList connectors_;
     };
 
     template < class TargetClass, LIST_DECL_CLASSES >
@@ -133,16 +133,16 @@ namespace gum {
       public:
       MAKE_NAME(Connector)() {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
-        __target = NULL;
-        __action = NULL;
+        target__ = NULL;
+        action__ = NULL;
       }
 
       MAKE_NAME(Connector)
       (TargetClass* target,
        void (TargetClass::*action)(const void*, LIST_CLASSES)) {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
-        __target = target;
-        __action = action;
+        target__ = target;
+        action__ = action;
       }
 
       MAKE_NAME(Connector)
@@ -160,18 +160,18 @@ namespace gum {
       INLINE virtual MAKE_NAME(IConnector)< LIST_CLASSES >* duplicate(
          Listener* target) {
         return new MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(
-           (TargetClass*)target, __action);
+           (TargetClass*)target, action__);
       }
 
       INLINE virtual void notify(const void* src, LIST_DECL_ARGS) {
-        (__target->*__action)(src, LIST_ARGS);
+        (target__->*action__)(src, LIST_ARGS);
       }
 
-      INLINE virtual Listener* target() const { return __target; }
+      INLINE virtual Listener* target() const { return target__; }
 
       private:
-      TargetClass* __target;
-      void (TargetClass::*__action)(const void*, LIST_CLASSES);
+      TargetClass* target__;
+      void (TargetClass::*action__)(const void*, LIST_CLASSES);
     };
 
   }   // namespace __sig__
@@ -201,12 +201,12 @@ namespace gum {
       __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn =
          new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target,
                                                                         action);
-      this->_connectors.pushBack(conn);
+      this->connectors_.pushBack(conn);
       target->attachSignal__(this);
     }
 
     INLINE void operator()(const void* src, LIST_DECL_ARGS) {
-      for (const auto& connector: this->_connectors) {
+      for (const auto& connector: this->connectors_) {
         connector->notify(src, LIST_ARGS);
       }
     }

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumMNReader.h classes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -34,7 +34,7 @@ namespace gum {
   /* =========================================================================*/
   template < typename GUM_SCALAR >
   INLINE MNReader< GUM_SCALAR >::MNReader(MarkovNet< GUM_SCALAR >* MN,
-                                          const std::string&      filename) {
+                                          const std::string&       filename) {
     GUM_CONSTRUCTOR(MNReader);
   }
 

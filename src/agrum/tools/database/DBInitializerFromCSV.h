@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief The class for initializing DatabaseTable and RawDatabaseTable
  * instances from CSV files
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H
 #define GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H
@@ -212,42 +212,42 @@ namespace gum {
       protected:
       /// returns the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-         _variableNames() final;
+         variableNames_() final;
 
       /// returns the content of the current row using strings
       virtual const std::vector< std::string, ALLOC< std::string > >&
-         _currentStringRow() final;
+         currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow() final;
+      virtual bool nextRow_() final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       // the filename used for parsing
-      std::string __filename;
+      std::string filename__;
 
       // indicates the delimiter used within the CSV
-      std::string __delimiter;
+      std::string delimiter__;
 
       // indicates which character is a comment symbol in the CSV
-      char __comment_marker;
+      char comment_marker__;
 
       // indicates which character is a quote symbol in the CSV
-      char __quote_marker;
+      char quote_marker__;
 
       // indicates whether the first row of the file contains the names
-      bool __first_row_has_names;
+      bool first_row_has_names__;
 
       // the input stream read by the parser
-      std::ifstream __input_stream;
+      std::ifstream input_stream__;
 
       // the CSV parser used for the reading the CSV file
-      CSVParser< ALLOC > __parser;
+      CSVParser< ALLOC > parser__;
 
       // the variables names, if the first row has names
-      std::vector< std::string, ALLOC< std::string > > __var_names;
+      std::vector< std::string, ALLOC< std::string > > var_names__;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

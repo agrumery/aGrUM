@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of the SearchStrategy class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/gspan/searchStrategy.h>
 
@@ -33,10 +33,10 @@ namespace gum {
     namespace gspan {
 
       template < typename GUM_SCALAR >
-      double SearchStrategy< GUM_SCALAR >::_computeCost(const Pattern& p) {
+      double SearchStrategy< GUM_SCALAR >::computeCost_(const Pattern& p) {
         double                                        cost = 0;
         const Sequence< PRMInstance< GUM_SCALAR >* >& seq =
-           *(this->_tree->data(p).iso_map.begin().val());
+           *(this->tree_->data(p).iso_map.begin().val());
         Sequence< PRMClassElement< GUM_SCALAR >* > input_set;
 
         for (const auto inst: seq) {
@@ -62,7 +62,7 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      void StrictSearch< GUM_SCALAR >::__buildPatternGraph(
+      void StrictSearch< GUM_SCALAR >::buildPatternGraph__(
          typename StrictSearch< GUM_SCALAR >::PData&   data,
          Set< Potential< GUM_SCALAR >* >&              pool,
          const Sequence< PRMInstance< GUM_SCALAR >* >& match) {
@@ -70,7 +70,7 @@ namespace gum {
           for (const auto& elt: *inst) {
             // Adding the node
             NodeId id = data.graph.addNode();
-            data.node2attr.insert(id, __str(inst, elt.second));
+            data.node2attr.insert(id, str__(inst, elt.second));
             data.mod.insert(id, elt.second->type()->domainSize());
             data.vars.insert(id, &elt.second->type().variable());
             pool.insert(
@@ -81,7 +81,7 @@ namespace gum {
         // Second we add edges and nodes to inners or outputs
         for (const auto inst: match)
           for (const auto& elt: *inst) {
-            NodeId node = data.node2attr.first(__str(inst, elt.second));
+            NodeId node = data.node2attr.first(str__(inst, elt.second));
             bool   found =
                false;   // If this is set at true, then node is an outer node
 
@@ -89,7 +89,7 @@ namespace gum {
             for (const auto chld:
                  inst->type().containerDag().children(elt.second->id())) {
               data.graph.addEdge(
-                 node, data.node2attr.first(__str(inst, inst->get(chld))));
+                 node, data.node2attr.first(str__(inst, inst->get(chld))));
             }
 
             // Parents existing in the instance type's DAG
@@ -99,7 +99,7 @@ namespace gum {
                 case PRMClassElement< GUM_SCALAR >::prm_attribute:
                 case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
                   data.graph.addEdge(
-                     node, data.node2attr.first(__str(inst, inst->get(par))));
+                     node, data.node2attr.first(str__(inst, inst->get(par))));
                   break;
                 }
 
@@ -109,7 +109,7 @@ namespace gum {
                       data.graph.addEdge(
                          node,
                          data.node2attr.first(
-                            __str(inst2,
+                            str__(inst2,
                                   static_cast< const PRMSlotChain< GUM_SCALAR >& >(
                                      inst->type().get(par)))));
 
@@ -134,7 +134,7 @@ namespace gum {
                   for (const auto child:
                        pair->first->type().containerDag().children(id))
                     data.graph.addEdge(node,
-                                       data.node2attr.first(__str(
+                                       data.node2attr.first(str__(
                                           pair->first, pair->first->get(child))));
                 } else {
                   found = true;
@@ -150,7 +150,7 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      std::pair< Size, Size > StrictSearch< GUM_SCALAR >::__elimination_cost(
+      std::pair< Size, Size > StrictSearch< GUM_SCALAR >::elimination_cost__(
          typename StrictSearch< GUM_SCALAR >::PData& data,
          Set< Potential< GUM_SCALAR >* >&            pool) {
         List< NodeSet > partial_order;
@@ -205,14 +205,14 @@ namespace gum {
 
       // The SearchStrategy class
       template < typename GUM_SCALAR >
-      INLINE SearchStrategy< GUM_SCALAR >::SearchStrategy() : _tree(0) {
+      INLINE SearchStrategy< GUM_SCALAR >::SearchStrategy() : tree_(0) {
         GUM_CONSTRUCTOR(SearchStrategy);
       }
 
       template < typename GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >::SearchStrategy(
          const SearchStrategy< GUM_SCALAR >& from) :
-          _tree(from._tree) {
+          tree_(from.tree_) {
         GUM_CONS_CPY(SearchStrategy);
       }
 
@@ -224,14 +224,14 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >& SearchStrategy< GUM_SCALAR >::operator=(
          const SearchStrategy< GUM_SCALAR >& from) {
-        this->_tree = from._tree;
+        this->tree_ = from.tree_;
         return *this;
       }
 
       template < typename GUM_SCALAR >
       INLINE void
          SearchStrategy< GUM_SCALAR >::setTree(DFSTree< GUM_SCALAR >* tree) {
-        this->_tree = tree;
+        this->tree_ = tree;
       }
 
       // FrequenceSearch
@@ -239,7 +239,7 @@ namespace gum {
       // The FrequenceSearch class
       template < typename GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(Size freq) :
-          SearchStrategy< GUM_SCALAR >(), __freq(freq) {
+          SearchStrategy< GUM_SCALAR >(), freq__(freq) {
         GUM_CONSTRUCTOR(FrequenceSearch);
       }
 
@@ -247,7 +247,7 @@ namespace gum {
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(
          const FrequenceSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from),
-          __freq(from.__freq) {
+          freq__(from.freq__) {
         GUM_CONS_CPY(FrequenceSearch);
       }
 
@@ -260,13 +260,13 @@ namespace gum {
       INLINE FrequenceSearch< GUM_SCALAR >&
          FrequenceSearch< GUM_SCALAR >::operator=(
             const FrequenceSearch< GUM_SCALAR >& from) {
-        __freq = from.__freq;
+        freq__ = from.freq__;
         return *this;
       }
 
       template < typename GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::accept_root(const Pattern* r) {
-        return this->_tree->frequency(*r) >= __freq;
+        return this->tree_->frequency(*r) >= freq__;
       }
 
       template < typename GUM_SCALAR >
@@ -274,20 +274,20 @@ namespace gum {
          const Pattern*                  parent,
          const Pattern*                  child,
          const EdgeGrowth< GUM_SCALAR >& growh) {
-        return this->_tree->frequency(*child) >= __freq;
+        return this->tree_->frequency(*child) >= freq__;
       }
 
       template < typename GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::operator()(gspan::Pattern* i,
                                                             gspan::Pattern* j) {
         // We want a descending order
-        return this->_tree->frequency(*i) > this->_tree->frequency(*j);
+        return this->tree_->frequency(*i) > this->tree_->frequency(*j);
       }
 
       template < typename GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::operator()(LabelData* i,
                                                             LabelData* j) {
-        return (this->_tree->graph().size(i) > this->_tree->graph().size(j));
+        return (this->tree_->graph().size(i) > this->tree_->graph().size(j));
       }
 
       // StrictSearch
@@ -295,7 +295,7 @@ namespace gum {
       // The StrictSearch class
       template < typename GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >::StrictSearch(Size freq) :
-          SearchStrategy< GUM_SCALAR >(), __freq(freq), __dot(".") {
+          SearchStrategy< GUM_SCALAR >(), freq__(freq), dot__(".") {
         GUM_CONSTRUCTOR(StrictSearch);
       }
 
@@ -303,7 +303,7 @@ namespace gum {
       INLINE StrictSearch< GUM_SCALAR >::StrictSearch(
          const StrictSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from),
-          __freq(from.__freq) {
+          freq__(from.freq__) {
         GUM_CONS_CPY(StrictSearch);
       }
 
@@ -315,13 +315,13 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >& StrictSearch< GUM_SCALAR >::operator=(
          const StrictSearch< GUM_SCALAR >& from) {
-        __freq = from.__freq;
+        freq__ = from.freq__;
         return *this;
       }
 
       template < typename GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::accept_root(const Pattern* r) {
-        return (this->_tree->frequency(*r) >= __freq);
+        return (this->tree_->frequency(*r) >= freq__);
       }
 
       template < typename GUM_SCALAR >
@@ -329,75 +329,75 @@ namespace gum {
          const Pattern*                  parent,
          const Pattern*                  child,
          const EdgeGrowth< GUM_SCALAR >& growth) {
-        return __inner_cost(child)
-                  + this->_tree->frequency(*child) * __outer_cost(child)
-               < this->_tree->frequency(*child) * __outer_cost(parent);
+        return inner_cost__(child)
+                  + this->tree_->frequency(*child) * outer_cost__(child)
+               < this->tree_->frequency(*child) * outer_cost__(parent);
       }
 
       template < typename GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::operator()(gspan::Pattern* i,
                                                          gspan::Pattern* j) {
-        return __inner_cost(i) + this->_tree->frequency(*i) * __outer_cost(i)
-               < __inner_cost(j) + this->_tree->frequency(*j) * __outer_cost(j);
+        return inner_cost__(i) + this->tree_->frequency(*i) * outer_cost__(i)
+               < inner_cost__(j) + this->tree_->frequency(*j) * outer_cost__(j);
       }
 
       template < typename GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::operator()(LabelData* i,
                                                          LabelData* j) {
-        return i->tree_width * this->_tree->graph().size(i)
-               < j->tree_width * this->_tree->graph().size(j);
+        return i->tree_width * this->tree_->graph().size(i)
+               < j->tree_width * this->tree_->graph().size(j);
       }
 
       template < typename GUM_SCALAR >
-      INLINE double StrictSearch< GUM_SCALAR >::__inner_cost(const Pattern* p) {
+      INLINE double StrictSearch< GUM_SCALAR >::inner_cost__(const Pattern* p) {
         try {
-          return __map[p].first;
+          return map__[p].first;
         } catch (NotFound&) {
-          __compute_costs(p);
-          return __map[p].first;
+          compute_costs__(p);
+          return map__[p].first;
         }
       }
 
       template < typename GUM_SCALAR >
-      INLINE double StrictSearch< GUM_SCALAR >::__outer_cost(const Pattern* p) {
+      INLINE double StrictSearch< GUM_SCALAR >::outer_cost__(const Pattern* p) {
         try {
-          return __map[p].second;
+          return map__[p].second;
         } catch (NotFound&) {
-          __compute_costs(p);
-          return __map[p].second;
+          compute_costs__(p);
+          return map__[p].second;
         }
       }
 
       template < typename GUM_SCALAR >
-      INLINE std::string StrictSearch< GUM_SCALAR >::__str(
+      INLINE std::string StrictSearch< GUM_SCALAR >::str__(
          const PRMInstance< GUM_SCALAR >*  i,
          const PRMAttribute< GUM_SCALAR >* a) const {
-        return i->name() + __dot + a->safeName();
+        return i->name() + dot__ + a->safeName();
       }
 
       template < typename GUM_SCALAR >
-      INLINE std::string StrictSearch< GUM_SCALAR >::__str(
+      INLINE std::string StrictSearch< GUM_SCALAR >::str__(
          const PRMInstance< GUM_SCALAR >*  i,
          const PRMAttribute< GUM_SCALAR >& a) const {
-        return i->name() + __dot + a.safeName();
+        return i->name() + dot__ + a.safeName();
       }
 
       template < typename GUM_SCALAR >
-      INLINE std::string StrictSearch< GUM_SCALAR >::__str(
+      INLINE std::string StrictSearch< GUM_SCALAR >::str__(
          const PRMInstance< GUM_SCALAR >*  i,
          const PRMSlotChain< GUM_SCALAR >& a) const {
-        return i->name() + __dot + a.lastElt().safeName();
+        return i->name() + dot__ + a.lastElt().safeName();
       }
 
       template < typename GUM_SCALAR >
-      INLINE void StrictSearch< GUM_SCALAR >::__compute_costs(const Pattern* p) {
+      INLINE void StrictSearch< GUM_SCALAR >::compute_costs__(const Pattern* p) {
         typename StrictSearch< GUM_SCALAR >::PData data;
         Set< Potential< GUM_SCALAR >* >            pool;
-        __buildPatternGraph(
-           data, pool, *(this->_tree->data(*p).iso_map.begin().val()));
-        double inner = std::log(__elimination_cost(data, pool).first);
-        double outer = this->_computeCost(*p);
-        __map.insert(p, std::make_pair(inner, outer));
+        buildPatternGraph__(
+           data, pool, *(this->tree_->data(*p).iso_map.begin().val()));
+        double inner = std::log(elimination_cost__(data, pool).first);
+        double outer = this->computeCost_(*p);
+        map__.insert(p, std::make_pair(inner, outer));
       }
 
       // TreeWidthSearch
@@ -430,10 +430,10 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE double TreeWidthSearch< GUM_SCALAR >::cost(const Pattern& p) {
         try {
-          return __map[&p];
+          return map__[&p];
         } catch (NotFound&) {
-          __map.insert(&p, this->_computeCost(p));
-          return __map[&p];
+          map__.insert(&p, this->computeCost_(p));
+          return map__[&p];
         }
       }
 

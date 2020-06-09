@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
  * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * @brief  Interface-like class encapsulating basic functionalities for a
  *IBayesNet.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/tools/core/math/math.h>
@@ -33,18 +33,18 @@
 
 namespace gum {
   INLINE
-  const DAG& DAGmodel::dag() const { return _dag; }
+  const DAG& DAGmodel::dag() const { return dag_; }
 
   INLINE
   Size DAGmodel::size() const { return dag().size(); }
 
   INLINE
-  Size DAGmodel::sizeArcs() const { return _dag.sizeArcs(); }
+  Size DAGmodel::sizeArcs() const { return dag_.sizeArcs(); }
 
-  INLINE const ArcSet& DAGmodel::arcs() const { return _dag.arcs(); }
+  INLINE const ArcSet& DAGmodel::arcs() const { return dag_.arcs(); }
 
   INLINE bool DAGmodel::existsArc(const NodeId tail, const NodeId head) const {
-    return _dag.existsArc(tail, head);
+    return dag_.existsArc(tail, head);
   }
 
   INLINE bool DAGmodel::existsArc(const std::string& nametail,
@@ -53,7 +53,7 @@ namespace gum {
   }
 
   INLINE const NodeSet& DAGmodel::parents(const NodeId id) const {
-    return _dag.parents(id);
+    return dag_.parents(id);
   }
 
   INLINE const NodeSet& DAGmodel::parents(const std::string& name) const {
@@ -61,13 +61,13 @@ namespace gum {
   }
 
   INLINE const NodeSet& DAGmodel::children(const NodeId id) const {
-    return _dag.children(id);
+    return dag_.children(id);
   }
   INLINE const NodeSet& DAGmodel::children(const std::string& name) const {
-    return _dag.children(idFromName(name));
+    return dag_.children(idFromName(name));
   }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const {
-    return (NodeGraphPart&)_dag;
+    return (NodeGraphPart&)dag_;
   }
 } /* namespace gum */

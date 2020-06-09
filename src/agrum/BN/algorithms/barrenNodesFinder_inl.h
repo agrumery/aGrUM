@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ namespace gum {
 
 
   /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) : __dag(dag) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) : dag__(dag) {
     // for debugging purposes
     GUM_CONSTRUCTOR(BarrenNodesFinder);
   }
@@ -32,8 +32,8 @@ namespace gum {
 
   /// copy constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
-      __dag(from.__dag), __observed_nodes(from.__observed_nodes),
-      __target_nodes(from.__target_nodes) {
+      dag__(from.dag__), observed_nodes__(from.observed_nodes__),
+      target_nodes__(from.target_nodes__) {
     // for debugging purposes
     GUM_CONS_CPY(BarrenNodesFinder);
   }
@@ -41,8 +41,8 @@ namespace gum {
 
   /// move constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept :
-      __dag(from.__dag), __observed_nodes(from.__observed_nodes),
-      __target_nodes(from.__target_nodes) {
+      dag__(from.dag__), observed_nodes__(from.observed_nodes__),
+      target_nodes__(from.target_nodes__) {
     // for debugging purposes
     GUM_CONS_MOV(BarrenNodesFinder);
   }
@@ -59,9 +59,9 @@ namespace gum {
   INLINE BarrenNodesFinder&
      BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
     if (this != &from) {
-      __dag = from.__dag;
-      __observed_nodes = from.__observed_nodes;
-      __target_nodes = from.__target_nodes;
+      dag__ = from.dag__;
+      observed_nodes__ = from.observed_nodes__;
+      target_nodes__ = from.target_nodes__;
     }
     return *this;
   }
@@ -71,27 +71,27 @@ namespace gum {
   INLINE BarrenNodesFinder&
      BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
     if (this != &from) {
-      __dag = from.__dag;
-      __observed_nodes = from.__observed_nodes;
-      __target_nodes = from.__target_nodes;
+      dag__ = from.dag__;
+      observed_nodes__ = from.observed_nodes__;
+      target_nodes__ = from.target_nodes__;
     }
     return *this;
   }
 
 
   /// sets a new DAG
-  INLINE void BarrenNodesFinder::setDAG(const DAG* new_dag) { __dag = new_dag; }
+  INLINE void BarrenNodesFinder::setDAG(const DAG* new_dag) { dag__ = new_dag; }
 
 
   /// sets the observed nodes in the DAG
   INLINE void BarrenNodesFinder::setEvidence(const NodeSet* observed_nodes) {
-    __observed_nodes = observed_nodes;
+    observed_nodes__ = observed_nodes;
   }
 
 
   /// sets the set of target nodes we are interested in
   INLINE void BarrenNodesFinder::setTargets(const NodeSet* target_nodes) {
-    __target_nodes = target_nodes;
+    target_nodes__ = target_nodes;
   }
 
 

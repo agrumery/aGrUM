@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const gum::Set< int >& key) const {
-      return ((key.size() * gum::HashFuncConst::gold) & _hash_mask);
+      return ((key.size() * gum::HashFuncConst::gold) & hash_mask_);
     }
   };
 }   // namespace gum

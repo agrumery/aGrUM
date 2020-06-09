@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Header of the MultiDimReadOnly class.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 #ifndef GUM_MULTI_DIM_READONLY_H
@@ -94,7 +94,7 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual GUM_SCALAR& _get(const Instantiation& i) const;
+    virtual GUM_SCALAR& get_(const Instantiation& i) const;
   };
 } /* namespace gum */
 

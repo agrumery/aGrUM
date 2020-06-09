@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief Source implementation of classes for directed edge sets
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/tools/graphs/parts/arcGraphPart.h>
@@ -37,34 +37,34 @@ namespace gum {
 
   ///////////////////// ArcGraphPart
   ArcGraphPart::ArcGraphPart(Size arcs_size, bool arcs_resize_policy) :
-      __arcs(arcs_size, arcs_resize_policy) {
+      arcs__(arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(ArcGraphPart);
   }
 
-  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : __arcs(s.__arcs) {
+  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : arcs__(s.arcs__) {
     GUM_CONS_CPY(ArcGraphPart);
 
     // copy the sets of parents
-    const NodeProperty< NodeSet* >& pars = s.__parents;
-    __parents.resize(pars.capacity());
+    const NodeProperty< NodeSet* >& pars = s.parents__;
+    parents__.resize(pars.capacity());
 
     for (const auto& elt: pars) {
       NodeSet* newpar = new NodeSet(*elt.second);
-      __parents.insert(elt.first, newpar);
+      parents__.insert(elt.first, newpar);
     }
 
     // copy the sets of children
-    const NodeProperty< NodeSet* >& children = s.__children;
-    __children.resize(children.capacity());
+    const NodeProperty< NodeSet* >& children = s.children__;
+    children__.resize(children.capacity());
 
     for (const auto& elt: children) {
       NodeSet* newchildren = new NodeSet(*elt.second);
-      __children.insert(elt.first, newchildren);
+      children__.insert(elt.first, newchildren);
     }
 
     // send signals to indicate that there are new arcs
     if (onArcAdded.hasListener()) {
-      for (const auto& arc: __arcs) {
+      for (const auto& arc: arcs__) {
         GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
       }
     }
@@ -77,25 +77,25 @@ namespace gum {
   }
 
   void ArcGraphPart::clearArcs() {
-    for (const auto& elt: __parents)
+    for (const auto& elt: parents__)
       delete elt.second;
 
-    __parents.clear();
+    parents__.clear();
 
-    for (const auto& elt: __children)
+    for (const auto& elt: children__)
       delete elt.second;
 
-    __children.clear();
+    children__.clear();
 
     // we need this copy only if at least one onArcDeleted listener exists
     if (onArcDeleted.hasListener()) {
-      ArcSet tmp = __arcs;
-      __arcs.clear();
+      ArcSet tmp = arcs__;
+      arcs__.clear();
 
       for (const auto& arc: tmp)
         GUM_EMIT2(onArcDeleted, arc.tail(), arc.head());
     } else {
-      __arcs.clear();
+      arcs__.clear();
     }
   }
 
@@ -104,26 +104,26 @@ namespace gum {
     if (this != &s) {
       // copy the arcs
       clearArcs();
-      __arcs = s.__arcs;
+      arcs__ = s.arcs__;
 
       // copy the sets of parents
-      __parents.resize(s.__parents.capacity());
+      parents__.resize(s.parents__.capacity());
 
-      for (const auto& elt: s.__parents) {
+      for (const auto& elt: s.parents__) {
         NodeSet* newpar = new NodeSet(*elt.second);
-        __parents.insert(elt.first, newpar);
+        parents__.insert(elt.first, newpar);
       }
 
       // copy the sets of children
-      __children.resize(s.__children.capacity());
+      children__.resize(s.children__.capacity());
 
-      for (const auto& elt: s.__children) {
+      for (const auto& elt: s.children__) {
         NodeSet* newchildren = new NodeSet(*elt.second);
-        __children.insert(elt.first, newchildren);
+        children__.insert(elt.first, newchildren);
       }
 
       if (onArcAdded.hasListener()) {
-        for (const auto& arc: __arcs) {
+        for (const auto& arc: arcs__) {
           GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
         }
       }
@@ -137,7 +137,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (const auto& arc: __arcs) {
+    for (const auto& arc: arcs__) {
       if (first) {
         first = false;
       } else {

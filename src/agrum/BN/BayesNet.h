@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Bayesian networks
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
  *
  */
 #ifndef GUM_BAYES_NET_H
@@ -653,29 +653,29 @@ namespace gum {
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
-    /// __probaMap[NodeId]
+    /// probaMap__[NodeId]
     void changePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
     void changePotential(const std::string& name, Potential< GUM_SCALAR >* newPot);
 
     private:
     /// clear all potentials
-    void __clearPotentials();
+    void clearPotentials__();
 
     /// copy of potentials from a BN to another, using names of vars as ref.
-    void __copyPotentials(const BayesNet< GUM_SCALAR >& source);
+    void copyPotentials__(const BayesNet< GUM_SCALAR >& source);
 
     /// the map between variable and id
-    VariableNodeMap __varMap;
+    VariableNodeMap varMap__;
 
     /// Mapping between the variable's id and their CPT.
-    NodeProperty< Potential< GUM_SCALAR >* > __probaMap;
-    // HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
+    NodeProperty< Potential< GUM_SCALAR >* > probaMap__;
+    // HashTable<NodeId, Potential<GUM_SCALAR>* > probaMap__;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
     /// @see changePotential
-    void _unsafeChangePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
+    void unsafeChangePotential_(NodeId id, Potential< GUM_SCALAR >* newPot);
 
     public:
     using IBayesNet< GUM_SCALAR >::dag;

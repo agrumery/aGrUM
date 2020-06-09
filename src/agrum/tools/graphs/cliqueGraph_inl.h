@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /** @file
  * @brief inline source of basic clique graphs
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -37,8 +37,8 @@ namespace gum {
   INLINE CliqueGraph& CliqueGraph::operator=(const CliqueGraph& g) {
     if (this != &g) {
       UndiGraph::operator=(g);
-      __cliques = g.__cliques;
-      __separators = g.__separators;
+      cliques__ = g.cliques__;
+      separators__ = g.separators__;
     }
 
     return *this;
@@ -52,7 +52,7 @@ namespace gum {
       UndiGraph::addEdge(first, second);
 
       // create the separator
-      __separators.insert(edge, __cliques[first] * __cliques[second]);
+      separators__.insert(edge, cliques__[first] * cliques__[second]);
     }
   }
 
@@ -60,7 +60,7 @@ namespace gum {
 
   INLINE void CliqueGraph::eraseEdge(const Edge& edge) {
     if (existsEdge(edge)) {
-      __separators.erase(edge);
+      separators__.erase(edge);
       UndiGraph::eraseEdge(edge);
     }
   }
@@ -72,7 +72,7 @@ namespace gum {
     NodeId new_node = UndiGraph::addNode();
 
     // update the set of nodes of the clique
-    __cliques.insert(new_node, clique);
+    cliques__.insert(new_node, clique);
     return new_node;
   }
 
@@ -85,7 +85,7 @@ namespace gum {
     UndiGraph::addNodeWithId(id);
 
     // update the set of nodes of the clique
-    __cliques.insert(id, clique);
+    cliques__.insert(id, clique);
   }
 
   INLINE void CliqueGraph::addNode(const NodeId id) { addNode(id, NodeSet()); }
@@ -103,7 +103,7 @@ namespace gum {
       eraseEdge(Edge(*iter, id));
 
     // erase the clique set
-    __cliques.erase(id);
+    cliques__.erase(id);
 
     // erase the node and its neighbours from the graph
     UndiGraph::eraseNode(id);
@@ -112,24 +112,24 @@ namespace gum {
   /// returns the set of nodes included into a given clique
 
   INLINE const NodeSet& CliqueGraph::clique(const NodeId clique) const {
-    return __cliques[clique];
+    return cliques__[clique];
   }
 
   /// returns the id of a clique containing the node the id of which is in
   /// argument
 
   INLINE NodeId CliqueGraph::container(const NodeId id) const {
-    for (const auto& elt: __cliques)
+    for (const auto& elt: cliques__)
       if (elt.second.contains(id)) return elt.first;
 
     GUM_ERROR(NotFound, "This node belongs to no clique");
   }
 
-  /// function used to update the __separators when __clique/edges are modified
+  /// function used to update the separators__ when clique__/edges are modified
 
-  INLINE void CliqueGraph::__updateSeparators(const NodeId id1) {
+  INLINE void CliqueGraph::updateSeparators__(const NodeId id1) {
     for (const auto nei: neighbours(id1))
-      __separators[Edge(nei, id1)] = __cliques[id1] * __cliques[nei];
+      separators__[Edge(nei, id1)] = cliques__[id1] * cliques__[nei];
   }
 
   /// changes the set of nodes included into a given clique and returns the new
@@ -137,14 +137,14 @@ namespace gum {
 
   INLINE void CliqueGraph::setClique(const NodeId id, const NodeSet& new_clique) {
     // get the current clique set
-    __cliques[id] = new_clique;
-    __updateSeparators(id);
+    cliques__[id] = new_clique;
+    updateSeparators__(id);
   }
 
   /// returns the separator included in a given edge
 
   INLINE const NodeSet& CliqueGraph::separator(const Edge& edge) const {
-    return __separators[edge];
+    return separators__[edge];
   }
 
   /// returns the separator included in an edge specified by its extremities
@@ -165,15 +165,15 @@ namespace gum {
 
   INLINE void CliqueGraph::clear() {
     UndiGraph::clear();
-    __cliques.clear();
-    __separators.clear();
+    cliques__.clear();
+    separators__.clear();
   }
 
   /// removes all the edges from the clique graph
 
   INLINE void CliqueGraph::clearEdges() {
     UndiGraph::clearEdges();
-    __separators.clear();
+    separators__.clear();
   }
 
   /// checks whether two clique graphs are different

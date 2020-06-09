@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
  * of the dataset easier, all the DBTranslator instances used are gathered
  * into a single DBRowTranslatorSet.
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_SET_H
 #define GUM_LEARNING_DB_TRANSLATOR_SET_H
@@ -478,17 +478,17 @@ namespace gum {
       private:
       // the set of all the translators
       std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >
-         __translators;
+         translators__;
 
       // a vector indicating which column of the original database each
       // translator should translate
-      std::vector< std::size_t, ALLOC< std::size_t > > __columns;
+      std::vector< std::size_t, ALLOC< std::size_t > > columns__;
 
       // the highest column index read by the translators
-      std::size_t __highest_column{std::size_t(0)};
+      std::size_t highest_column__{std::size_t(0)};
 
       /// copy the content of another translator set that uses another allocator
-      void __copy(const DBTranslatorSet< ALLOC >& from,
+      void copy__(const DBTranslatorSet< ALLOC >& from,
                   const allocator_type&           alloc);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -60,13 +60,13 @@ namespace formula {
 class Parser {
   private:
     	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_scifloat=3,
-		_operator=4,
-		_eol=5,
-		_ident=6
+		EOF_=0,
+		integer_=1,
+		float_=2,
+		scifloat_=3,
+		operator_=4,
+		eol_=5,
+		ident_=6
 	};
 	int maxT;
 
@@ -81,7 +81,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -90,19 +90,19 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-  gum::Formula* __formula;
+  gum::Formula* formula__;
 
 public:
   void formula( gum::Formula* f ) {
-    __formula = f;
+    formula__ = f;
   }
 
   gum::Formula& formula() {
-    return *__formula;
+    return *formula__;
   }
 
   const gum::Formula& formula() const {
-    return *__formula;
+    return *formula__;
   }
 
 // =============================================================================

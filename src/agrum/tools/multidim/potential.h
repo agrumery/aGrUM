@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /**
  * @file
  * @brief Header of the Potential class.
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_POTENTIAL_H
 #define GUM_POTENTIAL_H
@@ -333,7 +333,7 @@ namespace gum {
      *
      * @throw FatalError it some distribution sums to 0, or if varId>=nbrDim()
      */
-    const Potential< GUM_SCALAR >& normalizeAsCPT(const Idx& varId=0) const;
+    const Potential< GUM_SCALAR >& normalizeAsCPT(const Idx& varId = 0) const;
 
     /**
      * @brief multiply (each value of) *this by v
@@ -366,9 +366,9 @@ namespace gum {
     /// the function to be used to add two Potentials
     Potential< GUM_SCALAR > operator+(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).translate(p2._empty_value);
+        return Potential< GUM_SCALAR >(*this).translate(p2.empty_value_);
       if (this->empty())
-        return Potential< GUM_SCALAR >(p2).translate(this->_empty_value);
+        return Potential< GUM_SCALAR >(p2).translate(this->empty_value_);
 
       return Potential< GUM_SCALAR >(*this->content() + *p2.content());
     }
@@ -381,10 +381,10 @@ namespace gum {
     /// the function to be used to subtract two Potentials
     Potential< GUM_SCALAR > operator-(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).translate(-p2._empty_value);
+        return Potential< GUM_SCALAR >(*this).translate(-p2.empty_value_);
       if (this->empty()) {
         auto p = Potential< GUM_SCALAR >(p2);
-        p.apply([this](GUM_SCALAR x) { return this->_empty_value - x; });
+        p.apply([this](GUM_SCALAR x) { return this->empty_value_ - x; });
         return p;
       }
       return Potential< GUM_SCALAR >(*this->content() - *p2.content());
@@ -397,9 +397,9 @@ namespace gum {
 
     /// the function to be used to multiply two Potentials
     Potential< GUM_SCALAR > operator*(const Potential< GUM_SCALAR >& p2) const {
-      if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2._empty_value);
+      if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2.empty_value_);
       if (this->empty())
-        return Potential< GUM_SCALAR >(p2).scale(this->_empty_value);
+        return Potential< GUM_SCALAR >(p2).scale(this->empty_value_);
 
       return Potential< GUM_SCALAR >(*this->content() * *p2.content());
     }
@@ -412,10 +412,10 @@ namespace gum {
     /// the function to be used to divide two Potentials
     Potential< GUM_SCALAR > operator/(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).scale(1 / p2._empty_value);
+        return Potential< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
       if (this->empty()) {
         auto p = Potential< GUM_SCALAR >(p2);
-        p.apply([this](GUM_SCALAR x) { return this->_empty_value / x; });
+        p.apply([this](GUM_SCALAR x) { return this->empty_value_ / x; });
         return p;
       }
       return Potential< GUM_SCALAR >(*this->content() / *p2.content());
@@ -464,14 +464,14 @@ namespace gum {
     bool operator==(const Potential< GUM_SCALAR >& r) const {
       if (this->empty()) {
         if (r.empty())
-          return this->_empty_value == r._empty_value;
+          return this->empty_value_ == r.empty_value_;
         else
           return false;
       } else {
         if (r.empty())
           return false;
         else
-          return (*this->_content) == (*r._content);
+          return (*this->content_) == (*r.content_);
       }
     }
 
@@ -487,7 +487,7 @@ namespace gum {
 
     protected:
     Set< const DiscreteVariable* >
-       _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
+       complementVars_(const Set< const DiscreteVariable* >& del_vars) const;
   };
 
 

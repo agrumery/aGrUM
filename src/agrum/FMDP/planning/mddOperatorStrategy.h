@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of the MDDOperatorStrategy planer class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 // =========================================================================
@@ -166,7 +166,7 @@ namespace gum {
     /// Indicates if whether or not given var is to be eliminated.
     /// Called by the evalQaction.
     // ==========================================================================
-    INLINE bool _shouldEleminateVar(const DiscreteVariable*   v,
+    INLINE bool shouldEleminateVar_(const DiscreteVariable*   v,
                                     const FMDP< GUM_SCALAR >* fmdp) {
       return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
     }
@@ -176,7 +176,7 @@ namespace gum {
     /// Called by the evalQaction.
     // ==========================================================================
     INLINE const DiscreteVariable*
-                 _lastVar(const MultiDimFunctionGraph< GUM_SCALAR >* function) {
+                 lastVar_(const MultiDimFunctionGraph< GUM_SCALAR >* function) {
       return function->variablesSequence().size() == 0
                 ? nullptr
                 : function->variablesSequence().atPos(

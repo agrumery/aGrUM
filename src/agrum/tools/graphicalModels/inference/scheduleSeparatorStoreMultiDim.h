@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief an operator used by scheduled inferences to store tables into
  *separators
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_SCHEDULE_SEPARATOR_STORE_MULTI_DIM_H
@@ -128,16 +128,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim< GUM_SCALAR > __table;
+    ScheduleMultiDim< GUM_SCALAR > table__;
 
     // a mapping assigning to each clique a set of tables
-    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* __tableSet;
+    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* tableSet__;
 
     // the separator into which the table will be stored
-    Arc __separator;
+    Arc separator__;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __args;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
   };
 
 } /* namespace gum */

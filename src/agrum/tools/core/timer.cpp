@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Class used to compute response times for benchmark purposes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) & Jean-Philippe Dubus
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Jean-Philippe Dubus
  */
 
 #include <agrum/tools/core/timer.h>
@@ -41,7 +41,7 @@ namespace gum {
   }
 
   Timer::Timer(const Timer& from) :
-      _start(from._start), _pause(from._pause), _sleeping(from._sleeping) {
+      start_(from.start_), pause_(from.pause_), sleeping_(from.sleeping_) {
     GUM_CONS_CPY(Timer);
   }
 
@@ -49,9 +49,9 @@ namespace gum {
 
   Timer& Timer::operator=(const Timer& from) {
     GUM_OP_CPY(Timer);
-    _start = from._start;
-    _pause = from._pause;
-    _sleeping = from._sleeping;
+    start_ = from.start_;
+    pause_ = from.pause_;
+    sleeping_ = from.sleeping_;
     return *this;
   }
 

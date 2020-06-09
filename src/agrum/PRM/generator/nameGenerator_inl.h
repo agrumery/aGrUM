@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,20 +24,20 @@
  * @file
  * @brief Inline implementation of PRMGenerator.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #include <agrum/PRM/generator/nameGenerator.h>
 
 namespace gum {
   namespace prm {
     INLINE
-    NameGenerator::NameGenerator() : __counters(3, 1) {
+    NameGenerator::NameGenerator() : counters__(3, 1) {
       GUM_CONSTRUCTOR(NameGenerator);
     }
 
     INLINE
     NameGenerator::NameGenerator(const NameGenerator& source) :
-        __counters(source.__counters) {
+        counters__(source.counters__) {
       GUM_CONS_CPY(NameGenerator);
     }
 
@@ -46,7 +46,7 @@ namespace gum {
 
     INLINE
     NameGenerator& NameGenerator::operator=(const NameGenerator& source) {
-      __counters = source.__counters;
+      counters__ = source.counters__;
       return *this;
     }
 
@@ -57,32 +57,32 @@ namespace gum {
       switch (type) {
         case PRMObject::prm_type::ALL:
         case PRMObject::prm_type::CLASS: {
-          s << "class_" << ++(__counters[0]);
+          s << "class_" << ++(counters__[0]);
           break;
         }
 
         case PRMObject::prm_type::PRM_INTERFACE: {
-          s << "iface_" << ++(__counters[0]);
+          s << "iface_" << ++(counters__[0]);
           break;
         }
 
         case PRMObject::prm_type::SYSTEM: {
-          s << "sys_" << ++(__counters[0]);
+          s << "sys_" << ++(counters__[0]);
           break;
         }
 
         case PRMObject::prm_type::TYPE: {
-          s << "type_" << ++(__counters[0]);
+          s << "type_" << ++(counters__[0]);
           break;
         }
 
         case PRMObject::prm_type::CLASS_ELT: {
-          s << "elt_" << ++(__counters[1]);
+          s << "elt_" << ++(counters__[1]);
           break;
         }
 
         case PRMObject::prm_type::INSTANCE: {
-          s << "inst_" << ++(__counters[2]);
+          s << "inst_" << ++(counters__[2]);
           break;
         }
 

@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @file
  * @brief Headers of gum::MultiDimImplementation.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 #ifndef GUM_MULTI_DIM_IMPLEMENTATION_H
 #define GUM_MULTI_DIM_IMPLEMENTATION_H
@@ -205,25 +205,25 @@ namespace gum {
     /**
      * @brief Synchronize content after MultipleChanges.
      */
-    virtual void _commitMultipleChanges();
+    virtual void commitMultipleChanges_();
 
     /**
      * @brief Synchronize content after MultipleChanges.
      * @param value Default value for uninitialized values.
      */
-    virtual void _commitMultipleChanges(const GUM_SCALAR& value);
+    virtual void commitMultipleChanges_(const GUM_SCALAR& value);
 
     /**
      * @brief Get the actual change method of this MultiDimImplementation.
      * @return Returns true if in multiple changes.
      */
-    bool _isInMultipleChangeMethod() const;
+    bool isInMultipleChangeMethod_() const;
 
     /**
      * @brief Get the actual state of *this.
      * @return Returns true if a commit is needed.
      */
-    bool _isCommitNeeded() const;
+    bool isCommitNeeded_() const;
 
     /**
      * @brief Returns a constant reference over the list of slaved
@@ -231,7 +231,7 @@ namespace gum {
      * @return Returns a constant reference over the list of slaved
      * instantiations.
      */
-    const List< Instantiation* >& _slaves() const;
+    const List< Instantiation* >& slaves_() const;
 
     /**
      * @brief Replace variable x by y.
@@ -242,7 +242,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void _replace(const DiscreteVariable* x,
+    virtual void replace_(const DiscreteVariable* x,
                           const DiscreteVariable* y) override;
 
     /**
@@ -254,7 +254,7 @@ namespace gum {
      * @param p1 The first position.
      * @param p2 The second position.
      */
-    virtual void _invert(Idx p1, Idx p2);
+    virtual void invert_(Idx p1, Idx p2);
 
     /// @}
 
@@ -270,30 +270,30 @@ namespace gum {
 
     private:
     /// List of discrete variables (dimensions).
-    Sequence< const DiscreteVariable* > __vars;
+    Sequence< const DiscreteVariable* > vars__;
 
     /// List of instantiations of the tuples (sequences) of variables.
-    List< Instantiation* > __slaveInstantiations;
+    List< Instantiation* > slaveInstantiations__;
 
     /// Used to represent in which change method this MultiDimImplementation is.
-    enum class __InternalChangeMethod : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
+    enum class InternalChangeMethod__ : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
 
     /// Used to represent in which change state this MultiDimImplementation is.
-    enum class __InternalChangeState : char { NO_CHANGE, NOT_COMMITTED_CHANGE };
+    enum class InternalChangeState__ : char { NO_CHANGE, NOT_COMMITTED_CHANGE };
 
     /// The current change method.
-    __InternalChangeMethod __internalChangeMethod;
+    InternalChangeMethod__ internalChangeMethod__;
 
     /// The current change state.
-    __InternalChangeState __internalChangeState;
+    InternalChangeState__ internalChangeState__;
 
     /// This MultiDimImplementation domain size.
-    Size __domainSize;
+    Size domainSize__;
 
     /**
-     * @brief Change the __internalChangeState to NOT_COMMITTED_CHANGE.
+     * @brief Change the internalChangeState__ to NOT_COMMITTED_CHANGE.
      */
-    void __setNotCommitedChange();
+    void setNotCommitedChange__();
   };
 
   /**

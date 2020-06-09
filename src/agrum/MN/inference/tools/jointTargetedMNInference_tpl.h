@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,8 +37,8 @@ namespace gum {
      const IMarkovNet< GUM_SCALAR >* mn) :
       MarginalTargetedMNInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
-    if (this->__mn == nullptr) {
-      MarkovNetInference< GUM_SCALAR >::__setMarkovNetDuringConstruction(mn);
+    if (this->mn__ == nullptr) {
+      MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
     }
     GUM_CONSTRUCTOR(JointTargetedMNInference);
   }
@@ -53,11 +53,11 @@ namespace gum {
 
   // assigns a new MN to the inference engine
   template < typename GUM_SCALAR >
-  void JointTargetedMNInference< GUM_SCALAR >::_onMarkovNetChanged(
+  void JointTargetedMNInference< GUM_SCALAR >::onMarkovNetChanged_(
      const IMarkovNet< GUM_SCALAR >* mn) {
-    MarginalTargetedMNInference< GUM_SCALAR >::_onMarkovNetChanged(mn);
-    _onAllJointTargetsErased();
-    __joint_targets.clear();
+    MarginalTargetedMNInference< GUM_SCALAR >::onMarkovNetChanged_(mn);
+    onAllJointTargetsErased_();
+    joint_targets__.clear();
   }
 
 
@@ -69,19 +69,20 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool JointTargetedMNInference< GUM_SCALAR >::isJointTarget(
      const NodeSet& vars) const {
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& gra = this->__mn->graph();
+    const auto& gra = this->mn__->graph();
     for (const auto var: vars) {
       if (!gra.exists(var)) {
-        GUM_ERROR(UndefinedElement, var << " is not a NodeId in the Markov network");
+        GUM_ERROR(UndefinedElement,
+                  var << " is not a NodeId in the Markov network");
       }
     }
 
-    return __joint_targets.contains(vars);
+    return joint_targets__.contains(vars);
   }
 
 
@@ -95,12 +96,12 @@ namespace gum {
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
   INLINE void JointTargetedMNInference< GUM_SCALAR >::eraseAllJointTargets() {
-    if (__joint_targets.size() > 0) {
-      // we already are in target mode. So no this->_setTargetedMode();  is needed
-      _onAllJointTargetsErased();
-      __joint_targets.clear();
-      this->__setState(
-         MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+    if (joint_targets__.size() > 0) {
+      // we already are in target mode. So no this->setTargetedMode_();  is needed
+      onAllJointTargetsErased_();
+      joint_targets__.clear();
+      this->setState__(MarkovNetInference<
+                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
     }
   }
 
@@ -118,12 +119,12 @@ namespace gum {
   void JointTargetedMNInference< GUM_SCALAR >::addJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->__mn->graph();
+    const auto& dag = this->mn__->graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -133,25 +134,25 @@ namespace gum {
     }
 
     // check that the joint_target set does not contain the new target
-    if (__joint_targets.contains(joint_target)) return;
+    if (joint_targets__.contains(joint_target)) return;
 
     // check if joint_target is a subset of an already existing target
-    for (const auto& target: __joint_targets) {
+    for (const auto& target: joint_targets__) {
       if (target.isSupersetOf(joint_target)) return;
     }
 
     // check if joint_target is not a superset of an already existing target
     // in this case, we need to remove old existing target
-    for (auto iter = __joint_targets.beginSafe();
-         iter != __joint_targets.endSafe();
+    for (auto iter = joint_targets__.beginSafe();
+         iter != joint_targets__.endSafe();
          ++iter) {
       if (iter->isSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
-    this->_setTargetedMode();   // does nothing if already in targeted mode
-    __joint_targets.insert(joint_target);
-    _onJointTargetAdded(joint_target);
-    this->__setState(
+    this->setTargetedMode_();   // does nothing if already in targeted mode
+    joint_targets__.insert(joint_target);
+    onJointTargetAdded_(joint_target);
+    this->setState__(
        MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
   }
 
@@ -161,12 +162,12 @@ namespace gum {
   void JointTargetedMNInference< GUM_SCALAR >::eraseJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov network
-    if (this->__mn == nullptr)
+    if (this->mn__ == nullptr)
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->__mn->graph();
+    const auto& dag = this->mn__->graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -176,13 +177,13 @@ namespace gum {
     }
 
     // check that the joint_target set does not contain the new target
-    if (__joint_targets.contains(joint_target)) {
+    if (joint_targets__.contains(joint_target)) {
       // note that we have to be in target mode when we are here
-      // so, no this->_setTargetedMode();  is necessary
-      _onJointTargetErased(joint_target);
-      __joint_targets.erase(joint_target);
-      this->__setState(
-         MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+      // so, no this->setTargetedMode_();  is necessary
+      onJointTargetErased_(joint_target);
+      joint_targets__.erase(joint_target);
+      this->setState__(MarkovNetInference<
+                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
     }
   }
 
@@ -191,14 +192,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
                JointTargetedMNInference< GUM_SCALAR >::jointTargets() const noexcept {
-    return __joint_targets;
+    return joint_targets__;
   }
 
   /// returns the number of target sets
   template < typename GUM_SCALAR >
-  INLINE Size JointTargetedMNInference< GUM_SCALAR >::nbrJointTargets() const
-     noexcept {
-    return __joint_targets.size();
+  INLINE Size
+     JointTargetedMNInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
+    return joint_targets__.size();
   }
 
 
@@ -214,11 +215,11 @@ namespace gum {
     NodeSet set;
     bool    found_exact_target = false;
 
-    if (__joint_targets.contains(nodes)) {
+    if (joint_targets__.contains(nodes)) {
       set = nodes;
       found_exact_target = true;
     } else {
-      for (const auto& target: __joint_targets) {
+      for (const auto& target: joint_targets__) {
         if (nodes.isSubsetOf(target)) {
           set = target;
           break;
@@ -229,15 +230,15 @@ namespace gum {
     if (set.empty()) {
       GUM_ERROR(UndefinedElement,
                 " no joint target containing " << nodes << " could be found among "
-                                               << __joint_targets);
+                                               << joint_targets__);
     }
 
     if (!this->isDone()) { this->makeInference(); }
 
     if (found_exact_target)
-      return _jointPosterior(nodes);
+      return jointPosterior_(nodes);
     else
-      return _jointPosterior(nodes, set);
+      return jointPosterior_(nodes, set);
   }
 
 
@@ -253,8 +254,8 @@ namespace gum {
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
-     JointTargetedMNInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+  const Potential< GUM_SCALAR >& JointTargetedMNInference< GUM_SCALAR >::posterior(
+     const std::string& nodeName) {
     return posterior(this->MN().idFromName(nodeName));
   }
 
@@ -280,7 +281,7 @@ namespace gum {
       // here use unnormalized joint posterior rather than just posterior
       // to avoid saving the posterior in the cache of the inference engines
       // like LazyPropagation or SahferShenoy.
-      pXY = this->_unnormalizedJointPosterior({X, Y});
+      pXY = this->unnormalizedJointPosterior_({X, Y});
       pXY->normalize();
       pX = pXY->margSumOut({&(this->MN().variable(Y))});
       pY = pXY->margSumOut({&(this->MN().variable(X))});
@@ -321,7 +322,8 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
+  INLINE GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(NodeId X,
+                                                               NodeId Y) {
     return this->H(X) + this->H(Y) - 2 * I(X, Y);
   }
 

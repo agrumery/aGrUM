@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 /**
  * @file
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H
@@ -192,10 +192,10 @@ namespace gum {
 
     private:
     /// the class used for the combinations
-    MultiDimCombination< GUM_SCALAR, TABLE >* __combination;
+    MultiDimCombination< GUM_SCALAR, TABLE >* combination__;
 
     /// the class used for the projections
-    MultiDimProjection< GUM_SCALAR, TABLE >* __projection;
+    MultiDimProjection< GUM_SCALAR, TABLE >* projection__;
   };
 
 } /* namespace gum */

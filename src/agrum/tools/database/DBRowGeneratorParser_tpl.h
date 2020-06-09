@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,7 @@
 /** @file
  * @brief Template implementation of the DBRowGeneratorParser class
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -35,9 +35,9 @@ namespace gum {
       const typename DatabaseTable<ALLOC>::Handler& handler,
       const DBRowGeneratorSet<ALLOC>& generator_set,
       const typename DBRowGeneratorParser<ALLOC>::allocator_type& alloc )
-      : __handler(handler)
-      , __generator_set(generator_set, alloc)
-      , __generator_size ( generator_set.size () ) {
+      : handler__(handler)
+      , generator_set__(generator_set, alloc)
+      , generator_size__ ( generator_set.size () ) {
       GUM_CONSTRUCTOR(DBRowGeneratorParser);
     }
     
@@ -47,9 +47,9 @@ namespace gum {
     DBRowGeneratorParser<ALLOC>::DBRowGeneratorParser(
       const DBRowGeneratorParser<ALLOC>& from,
       const typename DBRowGeneratorParser<ALLOC>::allocator_type& alloc )
-      : __handler(from.__handler)
-      , __generator_set(from.__generator_set)
-      , __generator_size(from.__generator_size) {
+      : handler__(from.handler__)
+      , generator_set__(from.generator_set__)
+      , generator_size__(from.generator_size__) {
       GUM_CONS_CPY(DBRowGeneratorParser);
     }
 
@@ -66,9 +66,9 @@ namespace gum {
     DBRowGeneratorParser<ALLOC>::DBRowGeneratorParser(
       DBRowGeneratorParser<ALLOC>&& from,
       const typename DBRowGeneratorParser<ALLOC>::allocator_type& alloc )
-      : __handler ( std::move(from.__handler) )
-      , __generator_set(std::move(from.__generator_set))
-      , __generator_size(from.__generator_size) {
+      : handler__ ( std::move(from.handler__) )
+      , generator_set__(std::move(from.generator_set__))
+      , generator_size__(from.generator_size__) {
       GUM_CONS_MOV(DBRowGeneratorParser);
     }
     
@@ -118,9 +118,9 @@ namespace gum {
     DBRowGeneratorParser<ALLOC>::operator=(
       const DBRowGeneratorParser<ALLOC>& from) {
       if (this != &from) {
-        __handler = from.__handler;
-        __generator_set = from.__generator_set;
-        __generator_size = from.__generator_size;
+        handler__ = from.handler__;
+        generator_set__ = from.generator_set__;
+        generator_size__ = from.generator_size__;
       }
       return *this;
     }
@@ -131,9 +131,9 @@ namespace gum {
     INLINE DBRowGeneratorParser<ALLOC>&
     DBRowGeneratorParser<ALLOC>::operator=(DBRowGeneratorParser<ALLOC>&& from) {
       if (this != &from) {
-        __handler = std::move(from.__handler);
-        __generator_set = std::move(from.__generator_set);
-        __generator_size = from.__generator_size;
+        handler__ = std::move(from.handler__);
+        generator_set__ = std::move(from.generator_set__);
+        generator_size__ = from.generator_size__;
       }
       return *this;
     }
@@ -142,12 +142,12 @@ namespace gum {
     /// returns true if there are still rows that can be output by the RowFilter
     template <template<typename> class ALLOC>
     INLINE bool DBRowGeneratorParser<ALLOC>::hasRows() {
-      if ( ! __generator_size ) return __handler.hasRows();
+      if ( ! generator_size__ ) return handler__.hasRows();
 
-      while ( ! __generator_set.hasRows() ) {
-        if ( ! __handler.hasRows () ) return false;
-        __generator_set.setInputRow( *__handler );
-        ++__handler;
+      while ( ! generator_set__.hasRows() ) {
+        if ( ! handler__.hasRows () ) return false;
+        generator_set__.setInputRow( *handler__ );
+        ++handler__;
       }
       return true;
     }
@@ -159,13 +159,13 @@ namespace gum {
     DBRowGeneratorParser<ALLOC>::row() {
       // if there exists no generator in the generator set, we just return
       // the row pointed to by the handler
-      if ( ! __generator_size ) {
-        const auto& pointed_row = *__handler;
-        ++__handler;
+      if ( ! generator_size__ ) {
+        const auto& pointed_row = *handler__;
+        ++handler__;
         return pointed_row;
       }
       else {
-        return __generator_set.generate();
+        return generator_set__.generate();
       }
     }
     
@@ -173,8 +173,8 @@ namespace gum {
     /// resets the filter
     template <template<typename> class ALLOC>
     INLINE void DBRowGeneratorParser<ALLOC>::reset() {
-      __handler.reset();
-      __generator_set.reset();
+      handler__.reset();
+      generator_set__.reset();
     }
     
 
@@ -182,7 +182,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE typename DatabaseTable<ALLOC>::Handler&
     DBRowGeneratorParser<ALLOC>::handler() {
-      return __handler;
+      return handler__;
     }
     
 
@@ -190,7 +190,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE const typename DatabaseTable<ALLOC>::Handler&
     DBRowGeneratorParser<ALLOC>::handler() const {
-      return __handler;
+      return handler__;
     }
 
     
@@ -199,7 +199,7 @@ namespace gum {
     INLINE const DatabaseTable< ALLOC >&
     DBRowGeneratorParser<ALLOC>::database () const {
       return static_cast<const DatabaseTable< ALLOC >&>
-        (__handler.database ());
+        (handler__.database ());
     }
 
 
@@ -207,7 +207,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE DBRowGeneratorSet<ALLOC>&
     DBRowGeneratorParser<ALLOC>::generatorSet() {
-      return __generator_set;
+      return generator_set__;
     }
 
     
@@ -215,7 +215,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE void DBRowGeneratorParser<ALLOC>::setRange(std::size_t begin,
                                                       std::size_t end) {
-      __handler.setRange (begin,end);
+      handler__.setRange (begin,end);
     }
     
     
@@ -223,7 +223,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE const DBRowGeneratorSet<ALLOC>&
     DBRowGeneratorParser<ALLOC>::generatorSet() const {
-      return __generator_set;
+      return generator_set__;
     }
 
     
@@ -232,7 +232,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE void DBRowGeneratorParser<ALLOC>::setColumnsOfInterest (
       const std::vector<std::size_t,ALLOC<std::size_t>>& cols_of_interest ) {
-      __generator_set.setColumnsOfInterest ( cols_of_interest );
+      generator_set__.setColumnsOfInterest ( cols_of_interest );
     }
 
     
@@ -241,7 +241,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE void DBRowGeneratorParser<ALLOC>::setColumnsOfInterest (
       std::vector<std::size_t,ALLOC<std::size_t>>&& cols_of_interest ) {
-      __generator_set.setColumnsOfInterest ( std::move ( cols_of_interest ) );
+      generator_set__.setColumnsOfInterest ( std::move ( cols_of_interest ) );
     }
 
 
@@ -250,7 +250,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void DBRowGeneratorParser<ALLOC>::setBayesNet (
                 const BayesNet<GUM_SCALAR>& new_bn) {
-      __generator_set.setBayesNet(new_bn);
+      generator_set__.setBayesNet(new_bn);
     }
     
       
@@ -258,7 +258,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE typename DBRowGeneratorParser<ALLOC>::allocator_type
     DBRowGeneratorParser<ALLOC>::getAllocator () const {
-      return __generator_set.getAllocator ();
+      return generator_set__.getAllocator ();
     }
     
 

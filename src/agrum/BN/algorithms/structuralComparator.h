@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * Classifies corresponding arcs, edges and nothing in a graph given a reference
  * graph to then return values of recall, precision and Fscore.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
@@ -108,11 +108,11 @@ namespace gum {
      *  |______________|___________|___________|___________|
      *
      */
-    double __true_edge, __true_arc, __true_none;
-    double __wrong_edge_arc, __wrong_edge_none;
-    double __wrong_arc_edge, __wrong_arc_none, __misoriented_arc;
-    double __wrong_none_edge, __wrong_none_arc;
-    // double __precision, __recall, __f_score;
+    double true_edge__, true_arc__, true_none__;
+    double wrong_edge_arc__, wrong_edge_none__;
+    double wrong_arc_edge__, wrong_arc_none__, misoriented_arc__;
+    double wrong_none_edge__, wrong_none_arc__;
+    // double precision__, recall__, f_score__;
   };
 
 } /* namespace gum */

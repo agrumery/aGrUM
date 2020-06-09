@@ -1,7 +1,7 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief the class for structural constraints limiting the number of parents
  * of nodes in a directed graph
  *
- * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
@@ -47,9 +47,9 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(Size nb_nodes,
                                                                Size max_indegree) :
         StructuralConstraintDiGraph(nb_nodes),
-        _Indegree__max_indegree(max_indegree) {
+        Indegree__max_indegree_(max_indegree) {
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        _Indegree__max_parents.insert(i, max_indegree);
+        Indegree__max_parents_.insert(i, max_indegree);
       }
       GUM_CONSTRUCTOR(StructuralConstraintIndegree);
     }
@@ -58,9 +58,9 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(
        const DiGraph& graph, Size max_indegree) :
         StructuralConstraintDiGraph(graph),
-        _Indegree__max_indegree(max_indegree) {
+        Indegree__max_indegree_(max_indegree) {
       for (const auto id: graph) {
-        _Indegree__max_parents.insert(id, max_indegree);
+        Indegree__max_parents_.insert(id, max_indegree);
       }
       GUM_CONSTRUCTOR(StructuralConstraintIndegree);
     }
@@ -69,8 +69,8 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(
        const StructuralConstraintIndegree& from) :
         StructuralConstraintDiGraph(from),
-        _Indegree__max_parents(from._Indegree__max_parents),
-        _Indegree__max_indegree(from._Indegree__max_indegree) {
+        Indegree__max_parents_(from.Indegree__max_parents_),
+        Indegree__max_indegree_(from.Indegree__max_indegree_) {
       GUM_CONS_CPY(StructuralConstraintIndegree);
     }
 
@@ -78,8 +78,8 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(
        StructuralConstraintIndegree&& from) :
         StructuralConstraintDiGraph(std::move(from)),
-        _Indegree__max_parents(std::move(from._Indegree__max_parents)),
-        _Indegree__max_indegree(std::move(from._Indegree__max_indegree)) {
+        Indegree__max_parents_(std::move(from.Indegree__max_parents_)),
+        Indegree__max_indegree_(std::move(from.Indegree__max_indegree_)) {
       GUM_CONS_MOV(StructuralConstraintIndegree);
     }
 
@@ -93,8 +93,8 @@ namespace gum {
        const StructuralConstraintIndegree& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        _Indegree__max_parents = from._Indegree__max_parents;
-        _Indegree__max_indegree = from._Indegree__max_indegree;
+        Indegree__max_parents_ = from.Indegree__max_parents_;
+        Indegree__max_indegree_ = from.Indegree__max_indegree_;
       }
 
       return *this;
@@ -105,8 +105,8 @@ namespace gum {
        StructuralConstraintIndegree&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        _Indegree__max_parents = std::move(from._Indegree__max_parents);
-        _Indegree__max_indegree = std::move(from._Indegree__max_indegree);
+        Indegree__max_parents_ = std::move(from.Indegree__max_parents_);
+        Indegree__max_indegree_ = std::move(from.Indegree__max_indegree_);
       }
 
       return *this;
