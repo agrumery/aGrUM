@@ -1,5 +1,30 @@
 # aGrUM Changelog
 
+## Changelog for 0.18.0
+
+* aGrUM
+  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy)
+  * Bug fix in `MIIC` learning algorithm
+  * Bug fix in `gum::GammaLog2` approximations for very small values
+  * Updating and enhancing ` gum::GraphicalBNComparator`
+  * Enhancing API for `gum::MixedGraph` (build a MixedGraph from other graphs)
+  * API changes for `gum::MultiDimAggregator` (consistant behavior without parent)
+  * new `gum::MultidimmAggegator` : `Sum`
+  * Minor API changes for `gum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`)
+  * Minor API changes for graphical models (`gum::DAGModel` and `gum::UGModels`)
+  * [internal] adopting more classical convention for naming pr{otected|ivate} methods and attributes
+  * [internal] Updating sources for MVSC 2019
+
+* pyAgrum
+  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy)
+  * Bug fix in `MIIC` learning algorithm
+  * Updating and enhancing ` pyAgrum.GraphicalBNComparator`
+  * Enhancing API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs)
+  * API changes for `pyAgrum::MultiDimAggregator` (consistant behavior without parent)
+  * new `pyAgrum::MultidimmAggegator` : `Sum`
+  * Minor API changes for `pyAgrum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`)
+  * In `gum.lib.bn2roc` : bugfix for ROC, access to significant_digit for `predict`, add Precision-Recall graph. 
+
 ## Changelog for 0.17.3
 
 * aGrUM

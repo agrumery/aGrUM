@@ -637,10 +637,10 @@ def _reprInformation(bn, evs, size, cmap, asString):
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
   sss += "<font color='" + \
-         _proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
+         gum._proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
   sss += png_legend
   sss += "<font color='" + \
-         _proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
+         gum._proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
   sss += "</div>"
 
   if asString:
@@ -701,7 +701,7 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
   if isinstance(model, gum.BayesNet):
     if engine is None:
       engine = gum.LazyPropagation(model)
-    return BNinference2dot(model, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph)
+    return BNinference2dot(model, size, engine, evs, targets, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc)
   elif isinstance(model, gum.MarkovNet):
     if view is None:
       view = gum.config["notebook", "default_markovnetwork_view"]
@@ -766,8 +766,8 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
 
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
-                             view)
+  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph,
+                             view=view)
   return getGraph(grinf, size)
 
 
