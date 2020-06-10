@@ -109,23 +109,23 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(string_);
+		Expect(_string);
 		str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end()); 
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(ident_);
+		Expect(_ident);
 		name=narrow(t->val); 
 }
 
 void Parser::ELT_LIST(std::string& val) {
-		if (la->kind == string_) {
+		if (la->kind == _string) {
 			Get();
-		} else if (la->kind == number_) {
+		} else if (la->kind == _number) {
 			Get();
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
-		} else if (la->kind == ident_) {
+		} else if (la->kind == _ident) {
 			Get();
 		} else SynErr(18);
 		val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end()); 
@@ -148,22 +148,22 @@ void Parser::LIST(std::vector<std::string>& vals ) {
 }
 
 void Parser::GARBAGE_ELT_LIST() {
-		if (la->kind == number_) {
+		if (la->kind == _number) {
 			Get();
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 		} else SynErr(19);
 }
 
 void Parser::GARBAGE_LISTS_SEQUENCE() {
 		GARBAGE_NESTED_LIST();
-		while (la->kind == integer_ || la->kind == number_ || la->kind == 5 /* "(" */) {
+		while (la->kind == _integer || la->kind == _number || la->kind == 5 /* "(" */) {
 			GARBAGE_NESTED_LIST();
 		}
 }
 
 void Parser::GARBAGE_NESTED_LIST() {
-		if (la->kind == integer_ || la->kind == number_) {
+		if (la->kind == _integer || la->kind == _number) {
 			GARBAGE_ELT_LIST();
 		} else if (la->kind == 5 /* "(" */) {
 			Get();
@@ -180,14 +180,14 @@ void Parser::Net() {
 		std::vector<std::string> vals;
 		
 		Expect(8 /* "{" */);
-		while (la->kind == ident_) {
+		while (la->kind == _ident) {
 			IDENT(prop);
 			Expect(9 /* "=" */);
-			while (la->kind == ident_ || la->kind == string_ || la->kind == 5 /* "(" */) {
-				if (la->kind == ident_) {
+			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
+				if (la->kind == _ident) {
 					IDENT(val);
 					factory().addNetworkProperty(prop,val); 
-				} else if (la->kind == string_) {
+				} else if (la->kind == _string) {
 					STRING(val);
 					factory().addNetworkProperty(prop,val); 
 				} else {
@@ -227,16 +227,15 @@ void Parser::NODE() {
 		
 		TRY( factory().startVariableDeclaration());
 		TRY( factory().variableName(var));
-		TRY( factory().variableType(VarType::Labelized));
 		
 		Expect(8 /* "{" */);
-		while (la->kind == ident_) {
+		while (la->kind == _ident) {
 			IDENT(prop);
 			Expect(9 /* "=" */);
-			while (la->kind == ident_ || la->kind == string_ || la->kind == 5 /* "(" */) {
-				if (la->kind == ident_) {
+			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
+				if (la->kind == _ident) {
 					IDENT(val);
-				} else if (la->kind == string_) {
+				} else if (la->kind == _string) {
 					STRING(val);
 				} else {
 					LIST(vals);
@@ -282,16 +281,9 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 			Get();
 			if (StartOf(1)) {
 				PURE_LIST(parents);
-                                /*
-				for (Size i=Size(parents.size());i>=Size(1);--i){
-				   TRY(factory().variableId(parents[i-1]));
-				   TRY(factory().addParent(parents[i-1]));
-				 var_seq.push_back(parents[i-1]);
-				}
-				*/
 				for(Size i=0;i<Size(parents.size());i++) {
-				   TRY(factory().variableId(parents[i]));
-				   TRY(factory().addParent(parents[i]));
+				 TRY(factory().variableId(parents[i]));
+				 TRY(factory().addParent(parents[i]));
 				 var_seq.push_back(parents[i]);
 				}
 				
@@ -304,10 +296,10 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == number_) {
+		if (la->kind == _number) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 			val=float(coco_atoi(t->val)); 
 		} else SynErr(21);
@@ -317,7 +309,7 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		while (la->kind == integer_ || la->kind == number_) {
+		while (la->kind == _integer || la->kind == _number) {
 			FLOAT(value);
 			v.push_back(value); 
 		}
@@ -330,7 +322,7 @@ void Parser::FLOAT_NESTED_LIST(std::vector<float>& v ) {
 			while (la->kind == 5 /* "(" */) {
 				FLOAT_NESTED_LIST(v);
 			}
-		} else if (la->kind == integer_ || la->kind == number_) {
+		} else if (la->kind == _integer || la->kind == _number) {
 			FLOAT_LIST(v);
 		} else SynErr(22);
 		Expect(6 /* ")" */);

@@ -54,14 +54,14 @@ namespace MDPDAT {
 class Parser {
   private:
     	enum {
-		EOF_=0,
-		operand_=1,
-		ident_=2,
-		integer_=3,
-		number_=4,
-		string_=5,
-		largestring_=6,
-		lpar_=7
+		_EOF=0,
+		_operand=1,
+		_ident=2,
+		_integer=3,
+		_number=4,
+		_string=5,
+		_largestring=6,
+		_lpar=7
 	};
 	int maxT;
 
@@ -113,7 +113,7 @@ class Parser {
 
                 bool IsFollowedByIdent() {
                         Token* next = scanner->Peek();
-                        return la->kind == lpar_ && next->kind == ident_;
+                        return la->kind == _lpar && next->kind == _ident;
                 }
 
                 void SemErr(std::string s) {

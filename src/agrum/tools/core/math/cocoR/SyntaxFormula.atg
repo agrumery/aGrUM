@@ -42,19 +42,19 @@
 COMPILER EVAL
 
 private:
-  gum::Formula* __formula;
+  gum::Formula* formula__;
 
 public:
   void formula( gum::Formula* f ) {
-    __formula = f;
+    formula__ = f;
   }
 
   gum::Formula& formula() {
-    return *__formula;
+    return *formula__;
   }
 
   const gum::Formula& formula() const {
-    return *__formula;
+    return *formula__;
   }
 
 // =============================================================================
@@ -89,18 +89,18 @@ PRODUCTIONS
 
 //________________________
 EVAL =
-  (expression { expression }) (. __formula->__finalize(); .)
+  (expression { expression }) (. formula__->finalize__(); .)
   .
 
 expression =
-    integer    (. __formula->__push_number((double)coco_atoi(t->val)); .)
-    | float    (. __formula->__push_number((double)coco_atof(t->val)); .)
-    | scifloat (. __formula->__push_number((double)coco_atof(t->val)); .)
-    | operator (. __formula->__push_operator(narrow(t->val)[0]); .)
-    | '('      (. __formula->__push_leftParenthesis(); .)
-    | ')'      (. __formula->__push_rightParenthesis(); .)
-    | ident    (. __formula->__push_identifier(narrow(t->val)); .)
-    | ','      (. __formula->__push_comma(); .)
+    integer    (. formula__->push_number__((double)coco_atoi(t->val)); .)
+    | float    (. formula__->push_number__((double)coco_atof(t->val)); .)
+    | scifloat (. formula__->push_number__((double)coco_atof(t->val)); .)
+    | operator (. formula__->push_operator__(narrow(t->val)[0]); .)
+    | '('      (. formula__->push_leftParenthesis__(); .)
+    | ')'      (. formula__->push_rightParenthesis__(); .)
+    | ident    (. formula__->push_identifier__(narrow(t->val)); .)
+    | ','      (. formula__->push_comma__(); .)
   .
 
 END EVAL.

@@ -18,16 +18,16 @@ COMPILER MDPDAT
         // *************************************************************************************
 
                 /// the FMDP factory to build it
-                gum::AbstractFMDPFactory* __factory;
+                gum::AbstractFMDPFactory* factory__;
 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentFunctionGraphVar;
+                std::string currentFunctionGraphVar__;
 
                 /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > __parentNode;
+                std::vector< gum::NodeId > parentNode__;
 
                 /// and current modality
-                std::vector< gum::Idx > __parentModality;
+                std::vector< gum::Idx > parentModality__;
 
 
         // *************************************************************************************
@@ -36,12 +36,12 @@ COMPILER MDPDAT
 
                 /// Sets the main factory
                 void setFactory( gum::AbstractFMDPFactory* f ) {
-                        __factory = f;
+                        factory__ = f;
                 }
 
                 gum::AbstractFMDPFactory& factory() {
-                  if (__factory)
-                        return *__factory;
+                  if (factory__)
+                        return *factory__;
                   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
                 }
 
@@ -140,17 +140,17 @@ PRODUCTIONS
         /// Variable rule
         /// *************************************************************************************
         VARIABLE =                          (. std::string name_of_var; .)
-                '('                         (. __factory->startVariableDeclaration(); .)
-                IDENT<name_of_var>          (. TRY( __factory->variableName( name_of_var ) ); .)
+                '('                         (. factory__->startVariableDeclaration(); .)
+                IDENT<name_of_var>          (. TRY( factory__->variableName( name_of_var ) ); .)
                 MODALITY_LIST
-                ')'                         (. TRY( __factory->endVariableDeclaration() ); .)
+                ')'                         (. TRY( factory__->endVariableDeclaration() ); .)
                 .
 
         /// *************************************************************************************
         /// Modality List rule
         /// *************************************************************************************
         MODALITY_LIST =                     (. std::string label; .)
-                IDENT_OR_INTEGER<label>     (. TRY( __factory->addModality( label ) ); .)
+                IDENT_OR_INTEGER<label>     (. TRY( factory__->addModality( label ) ); .)
                 [ MODALITY_LIST ]
                 .
 
@@ -160,27 +160,27 @@ PRODUCTIONS
         /// *************************************************************************************
         ACTION =                                                    (. std::string name_of_action;
                                                                        float tolerance; .)
-                "action"                                            (. __factory->startActionDeclaration(); .)
-                (IDENT<name_of_action> | STRING<name_of_action>)    (. TRY( __factory->addAction( name_of_action ) ); .)
+                "action"                                            (. factory__->startActionDeclaration(); .)
+                (IDENT<name_of_action> | STRING<name_of_action>)    (. TRY( factory__->addAction( name_of_action ) ); .)
                 [ FLOAT<tolerance> ]
                 { TRANSITION_FUNCTION_GRAPH }
                 [ COST_FUNCTION_GRAPH ]
-                "endaction"                                         (. TRY( __factory->endActionDeclaration() ); .)
+                "endaction"                                         (. TRY( factory__->endActionDeclaration() ); .)
                 .
 
         /// *************************************************************************************
         /// Transition Function Graph main rule
         /// *************************************************************************************
         TRANSITION_FUNCTION_GRAPH =             (. std::string name_of_var;
-                                                                             __factory->startTransitionDeclaration(); .)
+                                                                             factory__->startTransitionDeclaration(); .)
                 IDENT<name_of_var>                        (. std::string prime_name_of_var = name_of_var + "'";
-                                                                             __currentFunctionGraphVar = prime_name_of_var; .)
+                                                                             currentFunctionGraphVar__ = prime_name_of_var; .)
                 ( IF( IsFollowedByIdent() )
                 '(' SUB_TRANSITION_FUNCTION_GRAPH ')' |  '(' TRANSITION_LEAF ')' )
-                                                                         (. TRY( __factory->addTransition( name_of_var ) );
-                                                                            __factory->endTransitionDeclaration();
-                                                                            __parentModality.clear();
-                                                                            __parentNode.clear(); .)
+                                                                         (. TRY( factory__->addTransition( name_of_var ) );
+                                                                            factory__->endTransitionDeclaration();
+                                                                            parentModality__.clear();
+                                                                            parentNode__.clear(); .)
                 .
 
         /// *************************************************************************************
@@ -189,18 +189,18 @@ PRODUCTIONS
         SUB_TRANSITION_FUNCTION_GRAPH =           (. std::string name_of_var;
                                                        std::string modality_of_var;
                                                        NodeId var_id; .)
-                IDENT<name_of_var>                  (. var_id = __factory->addInternalNode( name_of_var );
-                                                       if( !__parentNode.empty() )
-                                                         __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                IDENT<name_of_var>                  (. var_id = factory__->addInternalNode( name_of_var );
+                                                       if( !parentNode__.empty() )
+                                                         factory__->addArc( parentNode__.back(), var_id, parentModality__.back() );
                                                        else
-                                                         __factory->setRoot(var_id); .)
+                                                         factory__->setRoot(var_id); .)
                 {'('
-                IDENT_OR_INTEGER<modality_of_var>                  (. __parentNode.push_back( var_id );
-                                                                                               __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
+                IDENT_OR_INTEGER<modality_of_var>                  (. parentNode__.push_back( var_id );
+                                                                                               parentModality__.push_back( (* (factory__->variable( name_of_var )))[modality_of_var] ); .)
                 ( IF( IsFollowedByIdent() )
                 '(' SUB_TRANSITION_FUNCTION_GRAPH ')' |  '(' TRANSITION_LEAF ')' )
-                                                                                            (. __parentModality.pop_back(); .)
-                ')'}                                                                       (. __parentNode.pop_back(); .)
+                                                                                            (. parentModality__.pop_back(); .)
+                ')'}                                                                       (. parentNode__.pop_back(); .)
                 .
 
         /// *************************************************************************************
@@ -208,17 +208,17 @@ PRODUCTIONS
         /// *************************************************************************************
         TRANSITION_LEAF =       (. float value;
                                    gum::Idx i = 0;
-                                   NodeId var_id = __factory->addInternalNode( __currentFunctionGraphVar );
-                                   if( !__parentNode.empty() )
-                                      __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                                   NodeId var_id = factory__->addInternalNode( currentFunctionGraphVar__ );
+                                   if( !parentNode__.empty() )
+                                      factory__->addArc( parentNode__.back(), var_id, parentModality__.back() );
                                    else
-                                     __factory->setRoot(var_id); .)
-                FLOAT<value>    (. NodeId val_id = __factory->addTerminalNode( value );
-                                   __factory->addArc( var_id, val_id, i ); .)
+                                     factory__->setRoot(var_id); .)
+                FLOAT<value>    (. NodeId val_id = factory__->addTerminalNode( value );
+                                   factory__->addArc( var_id, val_id, i ); .)
                 {
                 FLOAT<value>                 (. ++i;
-                                                           val_id = __factory->addTerminalNode( value );
-                                                          __factory->addArc( var_id, val_id, i ); .)
+                                                           val_id = factory__->addTerminalNode( value );
+                                                          factory__->addArc( var_id, val_id, i ); .)
                 }
                 .
 
@@ -226,42 +226,42 @@ PRODUCTIONS
         /// Cost Function Graph main rule
         /// *************************************************************************************
         COST_FUNCTION_GRAPH =         (. std::string name_of_var;
-                                                               __factory->startCostDeclaration(); .)
+                                                               factory__->startCostDeclaration(); .)
                 "cost"
                 '('
                 SUB_FUNCTION_GRAPH
-                ')'                                        (. TRY( __factory->addCost( ) );
-                                                              __factory->endCostDeclaration();
-                                                              __parentModality.clear();
-                                                              __parentNode.clear(); .)
+                ')'                                        (. TRY( factory__->addCost( ) );
+                                                              factory__->endCostDeclaration();
+                                                              parentModality__.clear();
+                                                              parentNode__.clear(); .)
                 .
 
         /// *************************************************************************************
         /// Reward Function Graph main rule
         /// *************************************************************************************
         REWARD_FUNCTION_GRAPH =                               (. std::string name_of_var;
-                                                                                          __factory->startRewardDeclaration(); .)
+                                                                                          factory__->startRewardDeclaration(); .)
                 "reward"
 		(
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )    (.  TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
+                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )    (.  TRY( factory__->addReward( ) );
+                                                                                        parentModality__.clear();
+                                                                                        parentNode__.clear(); .)
 		|
 		'['                                                                   (. std::string operand_type; .)
-		OPERAND<operand_type>                            (.  __factory->setOperationModeOn( operand_type );.)
+		OPERAND<operand_type>                            (.  factory__->setOperationModeOn( operand_type );.)
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
+                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( factory__->addReward( ) );
+                                                                                        parentModality__.clear();
+                                                                                        parentNode__.clear(); .)
 		{
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
+                '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( factory__->addReward( ) );
+                                                                                        parentModality__.clear();
+                                                                                        parentNode__.clear(); .)
 		}
 		']'
-		)                                                                   (. __factory->endRewardDeclaration(); .)
+		)                                                                   (. factory__->endRewardDeclaration(); .)
 		.
 
         /// *************************************************************************************
@@ -270,29 +270,29 @@ PRODUCTIONS
         SUB_FUNCTION_GRAPH =                      (. std::string name_of_var;
                                                        std::string modality_of_var;
                                                        NodeId var_id;.)
-                IDENT<name_of_var>                  (. var_id = __factory->addInternalNode( name_of_var );
-                                                       if( !__parentNode.empty() )
-                                                         __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                IDENT<name_of_var>                  (. var_id = factory__->addInternalNode( name_of_var );
+                                                       if( !parentNode__.empty() )
+                                                         factory__->addArc( parentNode__.back(), var_id, parentModality__.back() );
                                                        else
-                                                       __factory->setRoot(var_id); .)
+                                                       factory__->setRoot(var_id); .)
                 {'('
-                IDENT_OR_INTEGER<modality_of_var>                (. __parentNode.push_back( var_id );
-                                                                                             __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
+                IDENT_OR_INTEGER<modality_of_var>                (. parentNode__.push_back( var_id );
+                                                                                             parentModality__.push_back( (* (factory__->variable( name_of_var )))[modality_of_var] );  .)
                 ( IF( IsFollowedByIdent() )
                 '(' SUB_FUNCTION_GRAPH ')' |  '(' LEAF ')' )
-                                                                                          (. __parentModality.pop_back(); .)
-                ')'}                                                                     (. __parentNode.pop_back(); .)
+                                                                                          (. parentModality__.pop_back(); .)
+                ')'}                                                                     (. parentNode__.pop_back(); .)
                 .
 
         /// *************************************************************************************
         /// Graph leaf rule
         /// *************************************************************************************
         LEAF =                            (. float value; .)
-                FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                  __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); .)
+                FLOAT<value>         (. NodeId val_id = factory__->addTerminalNode( value );
+                                                  factory__->addArc( parentNode__.back(), val_id, parentModality__.back() ); .)
                         {
-                FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                   __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); .)
+                FLOAT<value>         (. NodeId val_id = factory__->addTerminalNode( value );
+                                                   factory__->addArc( parentNode__.back(), val_id, parentModality__.back() ); .)
                 }
                 .
 
@@ -300,10 +300,10 @@ PRODUCTIONS
         /// Graph leaf rule
         /// *************************************************************************************
         DISCOUNT =                         (. float value;
-                                                       __factory->startDiscountDeclaration( ); .)
+                                                       factory__->startDiscountDeclaration( ); .)
                         "discount"
-                        FLOAT<value>     (. __factory->addDiscount( value );
-                                                       __factory->endDiscountDeclaration( ); .)
+                        FLOAT<value>     (. factory__->addDiscount( value );
+                                                       factory__->endDiscountDeclaration( ); .)
                         .
 
         /// *************************************************************************************

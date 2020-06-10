@@ -109,10 +109,10 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::NUMBER() {
-		if (la->kind == float_) {
+		if (la->kind == _float) {
 			Get();
 			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); 
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 			quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); 
 		} else SynErr(6);
@@ -120,7 +120,7 @@ void Parser::NUMBER() {
 
 void Parser::LISTE() {
 		NUMBER();
-		if (la->kind == integer_ || la->kind == float_) {
+		if (la->kind == _integer || la->kind == _float) {
 			LISTE();
 		}
 }

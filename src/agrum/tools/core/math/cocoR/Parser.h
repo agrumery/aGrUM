@@ -60,13 +60,13 @@ namespace formula {
 class Parser {
   private:
     	enum {
-		EOF_=0,
-		integer_=1,
-		float_=2,
-		scifloat_=3,
-		operator_=4,
-		eol_=5,
-		ident_=6
+		_EOF=0,
+		_integer=1,
+		_float=2,
+		_scifloat=3,
+		_operator=4,
+		_eol=5,
+		_ident=6
 	};
 	int maxT;
 

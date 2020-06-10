@@ -113,49 +113,49 @@ void Parser::EVAL() {
 		while (StartOf(1)) {
 			expression();
 		}
-		formula__->finalize__();
+		formula__->finalize__(); 
 }
 
 void Parser::expression() {
 		switch (la->kind) {
-		case integer_: {
+		case _integer: {
 			Get();
-			formula__->push_number__((double)coco_atoi(t->val));
+			formula__->push_number__((double)coco_atoi(t->val)); 
 			break;
 		}
-		case float_: {
+		case _float: {
 			Get();
-			formula__->push_number__((double)coco_atof(t->val));
+			formula__->push_number__((double)coco_atof(t->val)); 
 			break;
 		}
-		case scifloat_: {
+		case _scifloat: {
 			Get();
-			formula__->push_number__((double)coco_atof(t->val));
+			formula__->push_number__((double)coco_atof(t->val)); 
 			break;
 		}
-		case operator_: {
+		case _operator: {
 			Get();
-			formula__->push_operator__(narrow(t->val)[0]);
+			formula__->push_operator__(narrow(t->val)[0]); 
 			break;
 		}
 		case 7 /* "(" */: {
 			Get();
-			formula__->push_leftParenthesis__();
+			formula__->push_leftParenthesis__(); 
 			break;
 		}
 		case 8 /* ")" */: {
 			Get();
-			formula__->push_rightParenthesis__();
+			formula__->push_rightParenthesis__(); 
 			break;
 		}
-		case ident_: {
+		case _ident: {
 			Get();
-			formula__->push_identifier__(narrow(t->val));
+			formula__->push_identifier__(narrow(t->val)); 
 			break;
 		}
 		case 9 /* "," */: {
 			Get();
-			formula__->push_comma__();
+			formula__->push_comma__(); 
 			break;
 		}
 		default: SynErr(11); break;

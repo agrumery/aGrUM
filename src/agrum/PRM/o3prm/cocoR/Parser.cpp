@@ -110,7 +110,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::O3PRM_UNIT() {
-		if (la->kind == import_) {
+		if (la->kind == _import) {
 			IMPORT_UNIT();
 		}
 		UNIT();
@@ -121,29 +121,29 @@ void Parser::O3PRM_UNIT() {
 
 void Parser::IMPORT_UNIT() {
 		IMPORT_BODY();
-		while (la->kind == import_) {
+		while (la->kind == _import) {
 			IMPORT_BODY();
 		}
 }
 
 void Parser::UNIT() {
-		if (la->kind == type_ || la->kind == int_ || la->kind == real_) {
+		if (la->kind == _type || la->kind == _int || la->kind == _real) {
 			TYPE_UNIT();
-		} else if (la->kind == interface_) {
+		} else if (la->kind == _interface) {
 			INTERFACE_UNIT();
-		} else if (la->kind == class_) {
+		} else if (la->kind == _class) {
 			CLASS_UNIT();
-		} else if (la->kind == system_) {
+		} else if (la->kind == _system) {
 			SYSTEM_UNIT();
 		} else SynErr(33);
 }
 
 void Parser::TYPE_UNIT() {
-		if (la->kind == type_) {
+		if (la->kind == _type) {
 			TYPE_DECLARATION();
-		} else if (la->kind == int_) {
+		} else if (la->kind == _int) {
 			DEPRECATED_INT_DECLARATION();
-		} else if (la->kind == real_) {
+		} else if (la->kind == _real) {
 			DEPRECATED_REAL_DECLARATION();
 		} else SynErr(34);
 }
@@ -152,31 +152,31 @@ void Parser::INTERFACE_UNIT() {
 		auto n = errors().error_count; 
 		auto i = O3Interface(); 
 		INTERFACE_DECLARATION(i.position(), i.name(), i.superLabel(), i.elements() );
-		if (ok__(n)) { addO3Interface__( std::move( i ) ); }
+		if (ok__(n)) { addO3Interface__( std::move( i ) ); } 
 }
 
 void Parser::CLASS_UNIT() {
 		auto n = errors().error_count; 
 		auto c = O3Class(); 
 		CLASS_DECLARATION(c);
-		if (ok__(n)) { addO3Class__( std::move(c) ); }
+		if (ok__(n)) { addO3Class__( std::move(c) ); } 
 }
 
 void Parser::SYSTEM_UNIT() {
 		auto n = errors().error_count; 
 		auto s = O3System(); 
 		SYSTEM_DECLARATION(s);
-		if (ok__(n)) { addO3System__( std::move(s) ); }
+		if (ok__(n)) { addO3System__( std::move(s) ); } 
 }
 
 void Parser::CLASS_DECLARATION(O3Class& c) {
 		CLASS(c.position());
 		PREFIXED_LABEL(c.name());
-		if (la->kind == extends_) {
+		if (la->kind == _extends) {
 			Get();
 			CHAIN(c.superLabel());
 		}
-		if (la->kind == implements_) {
+		if (la->kind == _implements) {
 			Get();
 			IDENTIFIER_LIST(c.interfaces());
 		}
@@ -188,29 +188,29 @@ void Parser::CLASS_DECLARATION(O3Class& c) {
 }
 
 void Parser::CLASS(O3Position& pos) {
-		Expect(class_);
+		Expect(_class);
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 
 		pos.column() = t->col; 
 }
 
 void Parser::PREFIXED_LABEL(O3Label& l) {
-		Expect(label_);
+		Expect(_label);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		auto label = narrow( t->val ); 
-		if (prefix__ != "") { label = prefix__ + label; }
+		if (prefix__ != "") { label = prefix__ + label; } 
 		l = O3Label( pos, label ); 
 }
 
 void Parser::CHAIN(O3Label& ident) {
 		std::stringstream s; 
-		Expect(label_);
+		Expect(_label);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		s << narrow( t->val ); 
-		while (la->kind == dot_) {
+		while (la->kind == _dot) {
 			Get();
 			s << narrow( t->val ); 
-			Expect(label_);
+			Expect(_label);
 			s << narrow( t->val ); 
 		}
 		ident = O3Label( pos, s.str() ); 
@@ -220,7 +220,7 @@ void Parser::IDENTIFIER_LIST(O3LabelList& list) {
 		auto label = O3Label(); 
 		IDENTIFIER(label);
 		list.push_back( label ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			IDENTIFIER(label);
 			list.push_back( label ); 
@@ -228,36 +228,36 @@ void Parser::IDENTIFIER_LIST(O3LabelList& list) {
 }
 
 void Parser::CLASS_BODY(O3Class& c) {
-		if (la->kind == param_) {
+		if (la->kind == _param) {
 			CLASS_PARAMETER(c.parameters());
-		} else if (la->kind == labels_ || la->kind == int_ || la->kind == real_) {
+		} else if (la->kind == _labels || la->kind == _int || la->kind == _real) {
 			CLASS_ANON_TYPE_ATTR(c);
-		} else if (la->kind == label_) {
+		} else if (la->kind == _label) {
 			CLASS_ELEMENT(c);
 		} else SynErr(35);
 }
 
 void Parser::CLASS_PARAMETER(O3ParameterList& params) {
-		Expect(param_);
-		if (la->kind == int_) {
+		Expect(_param);
+		if (la->kind == _int) {
 			auto name = O3Label(); 
 			auto val = O3Integer(); 
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			LABEL(name);
-			Expect(default_);
+			Expect(_default);
 			INTEGER(val);
-			Expect(semicolon_);
+			Expect(_semicolon);
 			params.push_back( O3Parameter(pos, name, val) ); 
-		} else if (la->kind == real_) {
+		} else if (la->kind == _real) {
 			auto name = O3Label(); 
 			auto val = O3Float(); 
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			LABEL(name);
-			Expect(default_);
+			Expect(_default);
 			FLOAT(val);
-			Expect(semicolon_);
+			Expect(_semicolon);
 			params.push_back( O3Parameter(pos, name, val) ); 
 		} else SynErr(36);
 }
@@ -270,7 +270,7 @@ void Parser::CLASS_ANON_TYPE_ATTR(O3Class& c) {
 		pos.column() = t->col; 
 		auto type = O3Label(); 
 		auto name = O3Label(); 
-		if (la->kind == labels_) {
+		if (la->kind == _labels) {
 			auto t = O3Type(); 
 			t.position() = pos; 
 			Get();
@@ -278,22 +278,22 @@ void Parser::CLASS_ANON_TYPE_ATTR(O3Class& c) {
 			TYPE_VALUE_LIST(t.labels());
 			Expect(27 /* ")" */);
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t);
-			if ( ok__( n ) ) { addO3Type__( std::move(t) ); }
-		} else if (la->kind == int_) {
+			type = setAnonTypeName__(c, name, pos, t); 
+			if ( ok__( n ) ) { addO3Type__( std::move(t) ); } 
+		} else if (la->kind == _int) {
 			auto t = O3IntType(); 
 			t.position() = pos; 
 			INT_TYPE_DECLARATION(t.start(), t.end());
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t);
-			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); }
-		} else if (la->kind == real_) {
+			type = setAnonTypeName__(c, name, pos, t); 
+			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } 
+		} else if (la->kind == _real) {
 			auto t = O3RealType(); 
 			t.position() = pos; 
 			REAL_TYPE_DECLARATION(t.values());
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t);
-			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); }
+			type = setAnonTypeName__(c, name, pos, t); 
+			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } 
 		} else SynErr(37);
 		ATTRIBUTE(type, name, c);
 }
@@ -303,25 +303,25 @@ void Parser::CLASS_ELEMENT(O3Class& c) {
 		CHAIN(type);
 		if (la->kind == 28 /* "[" */) {
 			ARRAY_REFERENCE_SLOT(type, c.referenceSlots());
-		} else if (la->kind == integer_ || la->kind == label_) {
+		} else if (la->kind == _integer || la->kind == _label) {
 			NAMED_CLASS_ELEMENT(type, c);
 		} else SynErr(38);
 }
 
 void Parser::LABEL(O3Label& l) {
-		Expect(label_);
+		Expect(_label);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::INTEGER(O3Integer& i) {
-		Expect(integer_);
+		Expect(_integer);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		i = O3Integer( pos, coco_atoi( t->val ) ); 
 }
 
 void Parser::FLOAT(O3Float& f) {
-		Expect(float_);
+		Expect(_float);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		f = O3Float( pos, coco_atof( t->val ) ); 
 }
@@ -332,11 +332,11 @@ void Parser::TYPE_VALUE_LIST(LabelMap& labels ) {
 		TYPE_LABEL(l);
 		pair.first = l; 
 		labels.push_back( pair ); 
-		Expect(comma_);
+		Expect(_comma);
 		TYPE_LABEL(l);
 		pair.first = l; 
 		labels.push_back( pair ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			TYPE_LABEL(l);
 			pair.first = l; 
@@ -345,24 +345,24 @@ void Parser::TYPE_VALUE_LIST(LabelMap& labels ) {
 }
 
 void Parser::LABEL_OR_INT(O3Label& l) {
-		if (la->kind == label_) {
+		if (la->kind == _label) {
 			LABEL(l);
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
 		} else SynErr(39);
 }
 
 void Parser::INT_TYPE_DECLARATION(O3Integer& start, O3Integer& end) {
-		Expect(int_);
+		Expect(_int);
 		Expect(26 /* "(" */);
 		INTEGER(start);
-		Expect(comma_);
+		Expect(_comma);
 		INTEGER(end);
 		Expect(27 /* ")" */);
 }
 
 void Parser::REAL_TYPE_DECLARATION(O3FloatList& values) {
-		Expect(real_);
+		Expect(_real);
 		Expect(26 /* "(" */);
 		FLOAT_LIST(values);
 		Expect(27 /* ")" */);
@@ -370,7 +370,7 @@ void Parser::REAL_TYPE_DECLARATION(O3FloatList& values) {
 
 void Parser::ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c) {
 		auto parents = O3LabelList(); 
-		if (la->kind == dependson_) {
+		if (la->kind == _dependson) {
 			Get();
 			IDENTIFIER_LIST(parents);
 		}
@@ -381,7 +381,7 @@ void Parser::ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c) {
 			RULE_CPT(type, name, parents, c.attributes());
 		} else SynErr(40);
 		Expect(25 /* "}" */);
-		Expect(semicolon_);
+		Expect(_semicolon);
 }
 
 void Parser::ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs) {
@@ -391,16 +391,16 @@ void Parser::ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs) {
 		Expect(28 /* "[" */);
 		Expect(29 /* "]" */);
 		LABEL_OR_INT(name);
-		Expect(semicolon_);
+		Expect(_semicolon);
 		refs.push_back( O3ReferenceSlot( type, name, isArray ) ); 
 }
 
 void Parser::NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c) {
 		auto name = O3Label(); 
 		LABEL_OR_INT(name);
-		if (la->kind == semicolon_) {
+		if (la->kind == _semicolon) {
 			REFERENCE_SLOT(type, name, c);
-		} else if (la->kind == dependson_ || la->kind == 24 /* "{" */) {
+		} else if (la->kind == _dependson || la->kind == 24 /* "{" */) {
 			ATTRIBUTE(type, name, c);
 		} else if (la->kind == 30 /* "=" */) {
 			AGGREGATE(type, name, c);
@@ -408,7 +408,7 @@ void Parser::NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c) {
 }
 
 void Parser::REFERENCE_SLOT(O3Label& type, O3Label& name, O3Class& c) {
-		Expect(semicolon_);
+		Expect(_semicolon);
 		c.referenceSlots().push_back( O3ReferenceSlot( type, name, false ) ); 
 }
 
@@ -420,12 +420,12 @@ void Parser::AGGREGATE(O3Label& type, O3Label& name, O3Class& c) {
 		LABEL(agg.aggregateType());
 		Expect(26 /* "(" */);
 		AGGREGATE_PARENTS(agg.parents());
-		if (la->kind == comma_) {
+		if (la->kind == _comma) {
 			Get();
 			LABEL_LIST(agg.parameters());
 		}
 		Expect(27 /* ")" */);
-		Expect(semicolon_);
+		Expect(_semicolon);
 		c.aggregates().push_back( std::move(agg) ); 
 }
 
@@ -455,7 +455,7 @@ O3AttributeList& elts) {
 }
 
 void Parser::AGGREGATE_PARENTS(O3LabelList& parents) {
-		if (la->kind == integer_ || la->kind == label_ || la->kind == 26 /* "(" */) {
+		if (la->kind == _integer || la->kind == _label || la->kind == 26 /* "(" */) {
 			auto prnt = O3Label(); 
 			IDENTIFIER(prnt);
 			parents.push_back(prnt); 
@@ -470,7 +470,7 @@ void Parser::LABEL_LIST(O3LabelList& list) {
 		auto label = O3Label(); 
 		LABEL_OR_INT(label);
 		list.push_back( label ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			LABEL_OR_INT(label);
 			list.push_back( label ); 
@@ -484,7 +484,7 @@ void Parser::IDENTIFIER(O3Label& ident) {
 		}
 		LINK(s);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
-		while (la->kind == dot_) {
+		while (la->kind == _dot) {
 			Get();
 			s << narrow( t->val ); 
 			if (la->kind == 26 /* "(" */) {
@@ -499,7 +499,7 @@ void Parser::FORMULA_LIST(O3FormulaList& values) {
 		auto f = O3Formula(); 
 		FORMULA(f);
 		values.push_back( f ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			FORMULA(f);
 			values.push_back( f ); 
@@ -510,9 +510,9 @@ void Parser::RULE(O3RuleList& rules) {
 		auto labels = O3LabelList(); 
 		auto formulas = O3FormulaList(); 
 		LABEL_OR_STAR_LIST(labels);
-		Expect(colon_);
+		Expect(_colon);
 		FORMULA_LIST(formulas);
-		Expect(semicolon_);
+		Expect(_semicolon);
 		auto rule = O3Rule(std::move(labels), std::move(formulas)); 
 		rules.push_back( std::move(rule) ); 
 }
@@ -521,7 +521,7 @@ void Parser::LABEL_OR_STAR_LIST(O3LabelList& list) {
 		auto label = O3Label(); 
 		LABEL_OR_STAR(label);
 		list.push_back( label ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			LABEL_OR_STAR(label);
 			list.push_back( label ); 
@@ -534,19 +534,19 @@ O3Label& superLabel,
 O3InterfaceElementList& elts) {
 		INTERFACE(pos);
 		PREFIXED_LABEL(name);
-		if (la->kind == extends_) {
+		if (la->kind == _extends) {
 			Get();
 			CHAIN(superLabel);
 		}
 		Expect(24 /* "{" */);
-		while (la->kind == label_) {
+		while (la->kind == _label) {
 			INTERFACE_BODY(elts);
 		}
 		Expect(25 /* "}" */);
 }
 
 void Parser::INTERFACE(O3Position& pos) {
-		Expect(interface_);
+		Expect(_interface);
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 
 		pos.column() = t->col; 
@@ -561,13 +561,13 @@ void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 			elt.isArray() = true; 
 		}
 		LABEL(elt.name());
-		Expect(semicolon_);
+		Expect(_semicolon);
 		elts.push_back( std::move( elt )) ; 
 }
 
 void Parser::TYPE_DECLARATION() {
 		auto n = errors().error_count; 
-		Expect(type_);
+		Expect(_type);
 		auto pos = O3Position(); 
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 
@@ -582,19 +582,19 @@ void Parser::TYPE_DECLARATION() {
 			} else {
 				EXTENDED_TYPE_DECLARATION(t.deprecated(), t.superLabel(), t.labels());
 			}
-			if ( ok__( n ) ) { addO3Type__( std::move(t) ); }
-		} else if (la->kind == int_) {
+			if ( ok__( n ) ) { addO3Type__( std::move(t) ); } 
+		} else if (la->kind == _int) {
 			auto t = O3IntType(); 
 			t.name() = name; t.position() = pos; 
 			INT_TYPE_DECLARATION(t.start(), t.end());
-			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); }
-		} else if (la->kind == real_) {
+			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } 
+		} else if (la->kind == _real) {
 			auto t = O3RealType(); 
 			t.name() = name; t.position() = pos; 
 			REAL_TYPE_DECLARATION(t.values());
-			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); }
+			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } 
 		} else SynErr(43);
-		Expect(semicolon_);
+		Expect(_semicolon);
 }
 
 void Parser::DEPRECATED_INT_DECLARATION() {
@@ -604,12 +604,12 @@ void Parser::DEPRECATED_INT_DECLARATION() {
 		INT(t.position());
 		Expect(26 /* "(" */);
 		INTEGER(t.start());
-		Expect(comma_);
+		Expect(_comma);
 		INTEGER(t.end());
 		Expect(27 /* ")" */);
 		LABEL(t.name());
-		Expect(semicolon_);
-		if ( ok__( n ) ) { addO3IntType__( std::move( t ) ); }
+		Expect(_semicolon);
+		if ( ok__( n ) ) { addO3IntType__( std::move( t ) ); } 
 }
 
 void Parser::DEPRECATED_REAL_DECLARATION() {
@@ -621,30 +621,30 @@ void Parser::DEPRECATED_REAL_DECLARATION() {
 		FLOAT_LIST(t.values());
 		Expect(27 /* ")" */);
 		LABEL(t.name());
-		Expect(semicolon_);
-		if ( ok__( n ) ) { addO3RealType__( std::move( t ) ); }
+		Expect(_semicolon);
+		if ( ok__( n ) ) { addO3RealType__( std::move( t ) ); } 
 }
 
 void Parser::DISCRETE_TYPE_DECLARATION(bool& deprecated, LabelMap& labels) {
-		if (la->kind == labels_) {
+		if (la->kind == _labels) {
 			Get();
 			Expect(26 /* "(" */);
 			TYPE_VALUE_LIST(labels);
 			Expect(27 /* ")" */);
-		} else if (la->kind == integer_ || la->kind == float_ || la->kind == label_) {
+		} else if (la->kind == _integer || la->kind == _float || la->kind == _label) {
 			DEPRECATED_DISCRETE_TYPE_DECLERATION(labels);
 			deprecated = true; 
 		} else SynErr(44);
 }
 
 void Parser::EXTENDED_TYPE_DECLARATION(bool& deprecated, O3Label& super, LabelMap& labels) {
-		Expect(extends_);
+		Expect(_extends);
 		CHAIN(super);
 		if (la->kind == 26 /* "(" */) {
 			Get();
 			MAP(labels);
 			Expect(27 /* ")" */);
-		} else if (la->kind == integer_ || la->kind == float_ || la->kind == label_) {
+		} else if (la->kind == _integer || la->kind == _float || la->kind == _label) {
 			DEPRECATED_EXTENDED_TYPE_DECLARATION(labels);
 			deprecated = true; 
 		} else SynErr(45);
@@ -659,22 +659,22 @@ void Parser::MAP(LabelMap& labels ) {
 		auto second = O3Label(); 
 		auto pair = std::pair<O3Label, O3Label>(); 
 		TYPE_LABEL(first);
-		Expect(colon_);
+		Expect(_colon);
 		TYPE_LABEL(second);
 		pair.first = first; 
 		pair.second = second; 
 		labels.push_back( pair ); 
-		Expect(comma_);
+		Expect(_comma);
 		TYPE_LABEL(first);
-		Expect(colon_);
+		Expect(_colon);
 		TYPE_LABEL(second);
 		pair.first = first; 
 		pair.second = second; 
 		labels.push_back( pair ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			TYPE_LABEL(first);
-			Expect(colon_);
+			Expect(_colon);
 			TYPE_LABEL(second);
 			pair.first = first; 
 			pair.second = second; 
@@ -690,7 +690,7 @@ void Parser::FLOAT_LIST(O3FloatList& values) {
 		auto val = O3Float(); 
 		FLOAT_OR_INT(val);
 		values.push_back( val ); 
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			FLOAT_OR_INT(val);
 			values.push_back( val ); 
@@ -698,25 +698,25 @@ void Parser::FLOAT_LIST(O3FloatList& values) {
 }
 
 void Parser::INT(O3Position& pos) {
-		Expect(int_);
+		Expect(_int);
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 
 		pos.column() = t->col; 
 }
 
 void Parser::REAL(O3Position& pos) {
-		Expect(real_);
+		Expect(_real);
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 
 		pos.column() = t->col; 
 }
 
 void Parser::FLOAT_OR_INT(O3Float& f) {
-		if (la->kind == float_) {
+		if (la->kind == _float) {
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Float( pos, coco_atof( t->val ) ); 
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Float( pos, coco_atof( t->val ) ); 
@@ -724,32 +724,32 @@ void Parser::FLOAT_OR_INT(O3Float& f) {
 }
 
 void Parser::TYPE_LABEL(O3Label& l) {
-		if (la->kind == label_) {
+		if (la->kind == _label) {
 			LABEL(l);
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
-		} else if (la->kind == float_) {
+		} else if (la->kind == _float) {
 			FLOAT_AS_LABEL(l);
 		} else SynErr(47);
 }
 
 void Parser::INTEGER_AS_LABEL(O3Label& l) {
-		Expect(integer_);
+		Expect(_integer);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::FLOAT_AS_LABEL(O3Label& l) {
-		Expect(float_);
+		Expect(_float);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::SYSTEM_DECLARATION(O3System& s) {
-		Expect(system_);
+		Expect(_system);
 		PREFIXED_LABEL(s.name());
 		Expect(24 /* "{" */);
-		while (la->kind == label_) {
+		while (la->kind == _label) {
 			SYSTEM_BODY(s);
 		}
 		Expect(25 /* "}" */);
@@ -757,21 +757,21 @@ void Parser::SYSTEM_DECLARATION(O3System& s) {
 
 void Parser::SYSTEM_BODY(O3System& sys) {
 		std::stringstream left_value; 
-		Expect(label_);
+		Expect(_label);
 		left_value << narrow(t->val); 
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
-		if (la->kind == dot_) {
+		if (la->kind == _dot) {
 			Get();
-			Expect(label_);
+			Expect(_label);
 			auto tmp = narrow( t->val ); 
 			auto tmp_pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
-			if (la->kind == label_ || la->kind == dot_ || la->kind == 28 /* "[" */) {
+			if (la->kind == _label || la->kind == _dot || la->kind == 28 /* "[" */) {
 				left_value << "."; 
 				left_value << tmp; 
-				while (la->kind == dot_) {
+				while (la->kind == _dot) {
 					Get();
 					left_value << "."; 
-					Expect(label_);
+					Expect(_label);
 					left_value << narrow( t->val ); 
 				}
 				auto inst = O3Instance(); 
@@ -787,7 +787,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					Expect(27 /* ")" */);
 				}
 				sys.instances().push_back( std::move( inst ) ); 
-			} else if (la->kind == inc_ || la->kind == 30 /* "=" */) {
+			} else if (la->kind == _inc || la->kind == 30 /* "=" */) {
 				if (la->kind == 30 /* "=" */) {
 					auto ass = O3Assignment(); 
 					ass.leftInstance().label() = left_value.str(); 
@@ -821,7 +821,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 		} else if (la->kind == 28 /* "[" */) {
 			auto i = O3Integer(); 
 			ARRAY(i);
-			if (la->kind == label_) {
+			if (la->kind == _label) {
 				auto inst = O3Instance(); 
 				inst.type().label() = left_value.str(); 
 				inst.type().position() = pos; 
@@ -833,7 +833,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					Expect(27 /* ")" */);
 				}
 				sys.instances().push_back( std::move( inst ) ); 
-			} else if (la->kind == dot_) {
+			} else if (la->kind == _dot) {
 				auto ref = O3Label(); 
 				Get();
 				LABEL(ref);
@@ -849,7 +849,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 						ARRAY(ass.rightIndex());
 					}
 					sys.assignments().push_back( std::move( ass ) ); 
-				} else if (la->kind == inc_) {
+				} else if (la->kind == _inc) {
 					auto inc = O3Increment(); 
 					inc.leftInstance().label() = left_value.str(); 
 					inc.leftIndex() = i; 
@@ -863,7 +863,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					sys.increments().push_back( std::move( inc ) ); 
 				} else SynErr(49);
 			} else SynErr(50);
-		} else if (la->kind == label_) {
+		} else if (la->kind == _label) {
 			auto inst = O3Instance(); 
 			inst.type().label() = left_value.str(); 
 			inst.type().position() = pos; 
@@ -875,7 +875,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 			}
 			sys.instances().push_back( std::move( inst ) ); 
 		} else SynErr(51);
-		Expect(semicolon_);
+		Expect(_semicolon);
 }
 
 void Parser::ARRAY(O3Integer& size) {
@@ -886,7 +886,7 @@ void Parser::ARRAY(O3Integer& size) {
 
 void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
 		PARAMETER(params);
-		while (la->kind == comma_) {
+		while (la->kind == _comma) {
 			Get();
 			PARAMETER(params);
 		}
@@ -896,10 +896,10 @@ void Parser::PARAMETER(O3InstanceParameterList& params) {
 		auto p = O3InstanceParameter(); 
 		LABEL(p.name());
 		Expect(30 /* "=" */);
-		if (la->kind == integer_) {
+		if (la->kind == _integer) {
 			INTEGER_AS_FLOAT(p.value());
 			p.isInteger() = true; 
-		} else if (la->kind == float_) {
+		} else if (la->kind == _float) {
 			FLOAT(p.value());
 			p.isInteger() = false; 
 		} else SynErr(52);
@@ -907,7 +907,7 @@ void Parser::PARAMETER(O3InstanceParameterList& params) {
 }
 
 void Parser::INTEGER_AS_FLOAT(O3Float& f) {
-		Expect(integer_);
+		Expect(_integer);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		f = O3Float( pos, (float)coco_atoi( t->val ) ); 
 }
@@ -915,20 +915,20 @@ void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 void Parser::IMPORT_BODY() {
 		auto i = O3Import(); 
 		IMPORT_DECLARATION(i);
-		addO3Import__( std::move( i ) );
+		addO3Import__( std::move( i ) ); 
 }
 
 void Parser::IMPORT_DECLARATION(O3Import& import) {
-		Expect(import_);
+		Expect(_import);
 		CHAIN(import.import());
-		Expect(semicolon_);
+		Expect(_semicolon);
 }
 
 void Parser::CAST(std::stringstream& s) {
 		Expect(26 /* "(" */);
 		s << narrow( t->val ); 
 		LINK(s);
-		while (la->kind == dot_) {
+		while (la->kind == _dot) {
 			Get();
 			s << narrow( t->val ); 
 			LINK(s);
@@ -938,17 +938,17 @@ void Parser::CAST(std::stringstream& s) {
 }
 
 void Parser::LINK(std::stringstream& s) {
-		if (la->kind == label_) {
+		if (la->kind == _label) {
 			Get();
 			s << narrow( t->val ); 
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 			s << narrow( t->val ); 
 		} else SynErr(53);
 }
 
 void Parser::LABEL_OR_STAR(O3Label& l) {
-		if (la->kind == integer_ || la->kind == float_ || la->kind == label_) {
+		if (la->kind == _integer || la->kind == _float || la->kind == _label) {
 			TYPE_LABEL(l);
 		} else if (la->kind == 31 /* "*" */) {
 			Get();
@@ -958,17 +958,17 @@ void Parser::LABEL_OR_STAR(O3Label& l) {
 }
 
 void Parser::FORMULA(O3Formula& f) {
-		if (la->kind == string_) {
+		if (la->kind == _string) {
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			auto value = narrow(t->val); 
 			value = value.size() > 2 ? value.substr(1, value.size() - 2) : "" ; 
 			f = O3Formula( pos, value ); 
-		} else if (la->kind == float_) {
+		} else if (la->kind == _float) {
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 
-		} else if (la->kind == integer_) {
+		} else if (la->kind == _integer) {
 			Get();
 			auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 

@@ -9,14 +9,14 @@
 
 COMPILER Net
 
-gum::IBayesNetFactory* __factory;
+gum::IBayesNetFactory* factory__;
 
 void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
+  factory__=f;
 }
 
 gum::IBayesNetFactory& factory() {
-  if (__factory) return *__factory;
+  if (factory__) return *factory__;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
 }
 
@@ -28,7 +28,7 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
+void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::string& var, int res) {
   if ((int) v.size()<res)
     Warning("Not enough data in probability assignation for node "+var);
   if ((int) v.size()>res)

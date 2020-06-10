@@ -55,12 +55,12 @@ namespace BIF {
 class Parser {
   private:
     	enum {
-		EOF_=0,
-		ident_=1,
-		integer_=2,
-		number_=3,
-		string_=4,
-		largestring_=5
+		_EOF=0,
+		_ident=1,
+		_integer=2,
+		_number=3,
+		_string=4,
+		_largestring=5
 	};
 	int maxT;
 

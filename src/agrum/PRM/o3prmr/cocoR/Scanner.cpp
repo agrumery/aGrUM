@@ -58,7 +58,7 @@ Token::~Token() {
 Buffer::Buffer( FILE* s, bool isUserStream ) {
 // ensure binary read on windows
 #if _MSC_VER >= 1300
-  _setmode( _fileno( s ), _O_BINARY);
+  _setmode( _fileno( s ), _O_BINARY );
 #endif
   stream = s; this->isUserStream = isUserStream;
 

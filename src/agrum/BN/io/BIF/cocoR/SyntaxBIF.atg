@@ -8,14 +8,14 @@
 COMPILER BIF
 
 
-gum::IBayesNetFactory* __factory;
+gum::IBayesNetFactory* factory__;
 
 void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
+  factory__=f;
 }
 
 gum::IBayesNetFactory& factory() {
-  if (__factory) return *__factory;
+  if (factory__) return *factory__;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
 }
 
@@ -27,7 +27,7 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
+void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::string& var) {
   gum::Size s=(gum::Size)0;
   TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
   if (v.size()<s)
@@ -205,7 +205,7 @@ ASSIGNATION<. const std::string& var,const std::vector<std::string>& parents,boo
     LISTE_LABELS<parents,labels,0>
     ')'
     LISTE_FLOAT<v>          (.
-                            __checkSizeOfProbabilityAssignation(v,var);
+                            checkSizeOfProbabilityAssignation__(v,var);
                             TRY(factory().setVariableValuesUnchecked(v));
                             TRY(factory().endFactorizedEntry());
                             .)
@@ -213,7 +213,7 @@ ASSIGNATION<. const std::string& var,const std::vector<std::string>& parents,boo
     "default"                (. if (! is_first) SemErr("'default' assignation has to be the first."); .)
     LISTE_FLOAT<v>          (.
                               TRY(factory().startFactorizedEntry());
-                              __checkSizeOfProbabilityAssignation(v,var);
+                              checkSizeOfProbabilityAssignation__(v,var);
                               TRY(factory().setVariableValuesUnchecked(v));
                               TRY(factory().endFactorizedEntry());
                             .)

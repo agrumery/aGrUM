@@ -55,10 +55,10 @@ namespace UAIMN {
 class Parser {
   private:
     	enum {
-		EOF_=0,
-		eol_=1,
-		integer_=2,
-		float_=3
+		_EOF=0,
+		_eol=1,
+		_integer=2,
+		_float=3
 	};
 	int maxT;
 

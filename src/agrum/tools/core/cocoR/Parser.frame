@@ -63,7 +63,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -112,10 +112,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return __errors;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -290,13 +290,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -315,7 +315,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

@@ -63,21 +63,21 @@ namespace o3prmr {
 class Parser {
   private:
     	enum {
-		EOF_=0,
-		integer_=1,
-		float_=2,
-		word_=3,
-		eol_=4,
-		package_=5,
-		import_=6,
-		request_=7,
-		query_=8,
-		unobserve_=9,
-		engine_=10,
-		grd_engine_=11,
-		as_=12,
-		default_=13,
-		and_=14
+		_EOF=0,
+		_integer=1,
+		_float=2,
+		_word=3,
+		_eol=4,
+		_package=5,
+		_import=6,
+		_request=7,
+		_query=8,
+		_unobserve=9,
+		_engine=10,
+		_grd_engine=11,
+		_as=12,
+		_default=13,
+		_and=14
 	};
 	int maxT;
 
