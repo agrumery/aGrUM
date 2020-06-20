@@ -36,6 +36,12 @@ class TestSimpson(pyAgrumTestCase):
         self.model, "Patient", doing="Drug", knowing=evs)
 
 
+class TestFromUsers(pyAgrumTestCase):
+  def test_AccentsInVariables(self):
+    bn = gum.fastBN("héhé->hoho")
+    cm = csl.CausalModel(bn)
+    formula,impact, explanation = csl.causalImpact(cm,"héhé","hoho")
+
 class TestFromR(pyAgrumTestCase):
   def setUp(self):
     m = gum.fastBN("z2->x->z1->y;z2->z1;z2->z3->y")
@@ -89,5 +95,6 @@ class TestsFromGumWhy(pyAgrumTestCase):
 
 ts = unittest.TestSuite()
 addTests(ts, TestSimpson)
+addTests(ts, TestFromUsers)
 addTests(ts, TestFromR)
 addTests(ts, TestsFromGumWhy)

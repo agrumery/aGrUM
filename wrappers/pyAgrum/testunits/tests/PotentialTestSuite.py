@@ -2,6 +2,7 @@
 
 import math
 import random
+import sys
 
 import numpy as np
 import pyAgrum as gum
@@ -509,6 +510,35 @@ class TestOperators(pyAgrumTestCase):
       self.assertTrue(False)
     except gum.InvalidArgument:
       self.assertTrue(True)
+
+  
+  def testReorganizePotentialWithAccents(self):
+    if sys.version_info >= (3,0):
+      a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "éèàû"]
+      p = gum.Potential()
+      p.add(a).add(b)
+      p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+      q = gum.Potential()
+      q.add(c).add(d)
+      q.fillWith([4, 5, 6, 3, 2, 1, 4, 3, 2])
+
+      self.assertNotEqual(str(p * q), str(q * p))
+      self.assertEqual(str(p * q), str((q * p).reorganize(['à', 'û', 'é', 'è'])))
+      self.assertNotEqual(
+          str(p * q), str((q * p).reorganize(['à', 'é', 'û', 'è'])))
+
+      try:
+        q.reorganize(['é'])
+        self.assertTrue(False)
+      except gum.InvalidArgument:
+        self.assertTrue(True)
+
+      try:
+        q.reorganize(['û'])
+        self.assertTrue(False)
+      except gum.InvalidArgument:
+        self.assertTrue(True)
 
   def testPutFirstPotential(self):
     a, b = [gum.LabelizedVariable(s, s, 3) for s in "ab"]
