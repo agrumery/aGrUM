@@ -236,6 +236,13 @@ namespace gum {
     Potential< GUM_SCALAR >
        reorganize(const std::vector< const DiscreteVariable* >& vars) const;
 
+    /** create a new Potential with another order
+     * @throw InvalidArgument if not all and only the vars of the potential are
+     * in vars
+     */
+    Potential< GUM_SCALAR >
+       reorganize(const std::vector<  std::string >& vars) const;
+
     /** create a new Potential extracted from *this given a partial
      * instantiation
      */

@@ -546,6 +546,26 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::reorganize(
+     const std::vector< std::string >& vars) const {
+    std::vector< const DiscreteVariable* > res;
+
+    gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
+    for (gum::Idx i = 0; i < this->nbrDim(); i++)
+      namesToVars.insert(this->variable(i).name(), &(this->variable(i)));
+
+    for (const auto& name: vars) {
+      if (!namesToVars.exists(name)) {
+        GUM_ERROR(gum::InvalidArgument,
+                  "'" << name
+                      << "' is a not a name of a variable in this potential");
+      }
+      res.push_back(namesToVars[name]);
+    }
+    return reorganize(res);
+  }
+
+  template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      Potential< GUM_SCALAR >::putFirst(const DiscreteVariable* var) const {
     if (!this->contains(*var)) {
