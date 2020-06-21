@@ -253,6 +253,11 @@ namespace gum {
      */
     Potential< GUM_SCALAR > putFirst(const DiscreteVariable* var) const;
 
+    /** create a new Potential with a certain variable in first
+     * @throw InvalidArgument if the var is not in the potential
+     */
+    Potential< GUM_SCALAR > putFirst(const std::string&  varname) const;
+
     /**
      * @brief copy a Potential data using name of variables and labels (not
      * necessarily the same variables in the same orders)

@@ -584,6 +584,24 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
+     Potential< GUM_SCALAR >::putFirst(const std::string& varname) const {
+    const DiscreteVariable* var = nullptr;
+
+    for (gum::Idx i = 0; i < this->nbrDim(); i++)
+      if (this->variable(i).name() == varname) {
+        var = &(this->variable(i));
+        break;
+      }
+    if (var == nullptr)
+      GUM_ERROR(InvalidArgument,
+                "The variable '"
+                   << varname
+                   << "' to put first does not belong to the potential");
+    return this->putFirst(var);
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
      Potential< GUM_SCALAR >::extract(const Instantiation& inst) const {
     Potential< GUM_SCALAR > p;
     p.extractFrom(*this, inst);

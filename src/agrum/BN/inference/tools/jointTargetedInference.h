@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
@@ -216,6 +215,14 @@ namespace gum {
      * @throw OperationNotAllowed in these cases
      */
     GUM_SCALAR I(NodeId X, NodeId Y);
+    /** Mutual information between X and Y
+     * @see http://en.wikipedia.org/wiki/Mutual_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
+    GUM_SCALAR I(const std::string& Xname, const std::string&  Yname);
 
     /** Variation of information between X and Y
      * @see http://en.wikipedia.org/wiki/Variation_of_information
@@ -225,6 +232,15 @@ namespace gum {
      * @throw OperationNotAllowed in these cases
      */
     GUM_SCALAR VI(NodeId X, NodeId Y);
+
+    /** Variation of information between X and Y
+     * @see http://en.wikipedia.org/wiki/Variation_of_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
+    GUM_SCALAR VI(const std::string& Xname, const std::string&  Yname);
 
     /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information

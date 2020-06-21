@@ -259,11 +259,20 @@ namespace gum {
   }
 
   // ##############################################################################
-  // Entropy
+  // Mutual Information
   // ##############################################################################
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
+    return I(this->BN().idFromName(Xname),this->BN().idFromName(Yname));
+  }
 
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
+    return VI(this->BN().idFromName(Xname),this->BN().idFromName(Yname));
+  }
 
   /* Mutual information between X and Y
+   *
    * @see http://en.wikipedia.org/wiki/Mutual_information
    *
    * @warning Due to limitation of @joint, may not be able to compute this value

@@ -268,6 +268,36 @@ namespace gum_tests {
 
       //@TODO : test computations and not only good behaviour
     }
+    void testInformationMethodsWithNames() {
+      fill(*bn);
+
+      gum::LazyPropagation< double > inf(bn);
+      gum::NodeSet                   nodeset;
+      nodeset.insert(0);
+      nodeset.insert(4);
+      inf.addJointTarget(nodeset);
+      nodeset.clear();
+      nodeset.insert(2);
+      nodeset.insert(4);
+      inf.addJointTarget(nodeset);
+      inf.makeInference();
+
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.H(bn->variable(2).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(2).name(), bn->variable(4).name()));
+      TS_ASSERT_THROWS(inf.I(bn->variable(2).name(), bn->variable(2).name()),
+                       gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(bn->variable(2).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(0).name(), bn->variable(4).name()));
+
+      for (const auto node: bn->dag()) {
+        for (const auto par: bn->dag().parents(node)) {
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(node).name(), bn->variable(par).name()));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(par).name(), bn->variable(node).name()));
+        }
+      }
+
+      //@TODO : test computations and not only good behaviour
+    }
 
     void testSmartManagementOfJointTarget() {
       fill(*bn);

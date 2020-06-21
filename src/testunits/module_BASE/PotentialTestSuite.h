@@ -515,6 +515,22 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.putFirst(&c), gum::InvalidArgument);
     }
 
+    void testPutFirstWithName() {
+      auto a = gum::LabelizedVariable("a", "afoo", 3);
+      auto b = gum::LabelizedVariable("b", "bfoo", 3);
+      auto c = gum::LabelizedVariable("b", "bfoo", 3);
+
+      gum::Potential< double > p;
+      p << a << b;
+      p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+      TS_ASSERT_DIFFERS(p.toString(), p.putFirst("b").toString());
+      TS_ASSERT_EQUALS(p.toString(), p.putFirst("b").putFirst("a").toString());
+      TS_ASSERT_EQUALS(p.toString(), p.putFirst("a").toString());
+
+      TS_ASSERT_THROWS(p.putFirst("c"), gum::InvalidArgument);
+    }
+
     void testExtraction() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
