@@ -8091,6 +8091,48 @@ class Potential(object):
         """
         return _pyAgrum.Potential_entropy(self)
 
+    def reorganize(self, *args) -> "gum::Potential< double >":
+        r"""
+        reorganize(Potential self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential
+        reorganize(Potential self, Vector_string vars) -> Potential
+
+        Create a new Potential with another order.
+
+        Returns
+        -------
+        varnames : list
+          a list of the var names in the new order
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the modified potential
+
+        """
+        return _pyAgrum.Potential_reorganize(self, *args)
+
+    def putFirst(self, varname: "std::string const &") -> "gum::Potential< double >":
+        r"""
+        putFirst(Potential self, std::string const & varname) -> Potential
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable for which the index should be 0.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the modified potential
+
+        Raises
+        ------
+        gum.InvalidArgument
+          If the var is not in the potential 
+
+        """
+        return _pyAgrum.Potential_putFirst(self, varname)
+
     def fillWith(self, *args) -> "gum::Potential< double > const &":
         r"""
         fillWith(Potential self, Potential src) -> Potential
@@ -8409,48 +8451,6 @@ class Potential(object):
 
         """
         return _pyAgrum.Potential_extract(self, *args)
-
-    def reorganize(self, *args) -> "gum::Potential< double >":
-        r"""
-        reorganize(Potential self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential
-        reorganize(Potential self, PyObject * varnames) -> Potential
-
-        Create a new Potential with another order.
-
-        Returns
-        -------
-        varnames : list
-          a list of the var names in the new order
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a reference to the modified potential
-
-        """
-        return _pyAgrum.Potential_reorganize(self, *args)
-
-    def putFirst(self, varname: "PyObject *") -> "gum::Potential< double >":
-        r"""
-        putFirst(Potential self, PyObject * varname) -> Potential
-
-        Parameters
-        ----------
-        v : pyAgrum.DiscreteVariable
-            The variable for which the index should be 0.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a reference to the modified potential
-
-        Raises
-        ------
-        gum.InvalidArgument
-          If the var is not in the potential 
-
-        """
-        return _pyAgrum.Potential_putFirst(self, varname)
 
     def margSumOut(self, varnames: "PyObject *") -> "gum::Potential< double >":
         r"""
@@ -12720,7 +12720,7 @@ class ShaferShenoyMNInference(object):
         Returns
         -------
         double
-          the computed Shanon's entropy of a node given the observation
+          the Shanon's entropy of a node given the observation
 
         """
         return _pyAgrum.ShaferShenoyMNInference_H(self, *args)
@@ -12761,15 +12761,15 @@ class ShaferShenoyMNInference(object):
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+          a node Id or a node name
+        Y : int or str
+          another node Id or node name
 
         Returns
         -------
         double
-          the computed Shanon's entropy of a node given the observation
+          the Mutual Information of X and Y given the observation
 
         """
         return _pyAgrum.ShaferShenoyMNInference_I(self, X, Y)
@@ -12780,10 +12780,10 @@ class ShaferShenoyMNInference(object):
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+           a node Id or a node name
+        Y : int or str
+           another node Id or node name
 
         Returns
         -------
@@ -13791,43 +13791,45 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_nbrJointTargets(self)
 
-    def I(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+    def I(self, *args) -> "double":
         r"""
         I(LazyPropagation self, gum::NodeId const X, gum::NodeId const Y) -> double
+        I(LazyPropagation self, std::string const & X, std::string const & Y) -> double
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+           a node Id or a node name
+        Y : int or str
+           another node Id or node name
 
-        Returns
+           Returns
         -------
         double
-          the computed Shanon's entropy of a node given the observation
+           the Mutual Information of X and Y given the observation
 
         """
-        return _pyAgrum.LazyPropagation_I(self, X, Y)
+        return _pyAgrum.LazyPropagation_I(self, *args)
 
-    def VI(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+    def VI(self, *args) -> "double":
         r"""
         VI(LazyPropagation self, gum::NodeId const X, gum::NodeId const Y) -> double
+        VI(LazyPropagation self, std::string const & X, std::string const & Y) -> double
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+           a node Id or a node name
+        Y : int or str
+           another node Id or node name
 
-        Returns
+           Returns
         -------
         double
-          variation of information between X and Y
+           variation of information between X and Y
 
         """
-        return _pyAgrum.LazyPropagation_VI(self, X, Y)
+        return _pyAgrum.LazyPropagation_VI(self, *args)
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""
@@ -14635,43 +14637,45 @@ class ShaferShenoyInference(object):
         """
         return _pyAgrum.ShaferShenoyInference_nbrJointTargets(self)
 
-    def I(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+    def I(self, *args) -> "double":
         r"""
         I(ShaferShenoyInference self, gum::NodeId const X, gum::NodeId const Y) -> double
+        I(ShaferShenoyInference self, std::string const & X, std::string const & Y) -> double
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+           a node Id or a node name
+        Y : int or str
+           another node Id or node name
 
-        Returns
+           Returns
         -------
         double
-          the computed Shanon's entropy of a node given the observation
+           the Mutual Information of X and Y given the observation
 
         """
-        return _pyAgrum.ShaferShenoyInference_I(self, X, Y)
+        return _pyAgrum.ShaferShenoyInference_I(self, *args)
 
-    def VI(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+    def VI(self, *args) -> "double":
         r"""
         VI(ShaferShenoyInference self, gum::NodeId const X, gum::NodeId const Y) -> double
+        VI(ShaferShenoyInference self, std::string const & X, std::string const & Y) -> double
 
         Parameters
         ----------
-        X : int
-          a node Id
-        Y : int
-          another node Id
+        X : int or str
+           a node Id or a node name
+        Y : int or str
+           another node Id or node name
 
-        Returns
+           Returns
         -------
         double
-          variation of information between X and Y
+           variation of information between X and Y
 
         """
-        return _pyAgrum.ShaferShenoyInference_VI(self, X, Y)
+        return _pyAgrum.ShaferShenoyInference_VI(self, *args)
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""

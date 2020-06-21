@@ -528,6 +528,13 @@ ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::MonteCarloSam
     return self->gum::JointTargetedInference<double>::VI(X,Y);
   }
 
+  double I( const std::string& X, const std::string& Y ) {
+    return self->gum::JointTargetedInference<double>::I(X,Y);
+  }
+  double VI( const std::string& X, const std::string& Y ) {
+    return self->gum::JointTargetedInference<double>::VI(X,Y);
+  }
+
   Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
     return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }

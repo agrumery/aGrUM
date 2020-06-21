@@ -79,20 +79,6 @@ CHANGE_THEN_RETURN_SELF(fillWith)
     }
 
     Potential<double>
-    reorganize(PyObject* varnames ) const {
-      std::vector<const gum::DiscreteVariable*> v;
-      PyAgrumHelper::fillDVVectorFromPyObject(self,v,varnames); //from helpers.h
-      return self->reorganize(v);
-    }
-
-    Potential<double>
-    putFirst(PyObject* varname ) const {
-      const gum::DiscreteVariable* v;
-      PyAgrumHelper::fillDVFromPyObject(self,v,varname); //from helpers.h
-      return self->putFirst(v);
-    }
-
-    Potential<double>
     margSumOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h

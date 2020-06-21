@@ -24,32 +24,32 @@ nodeName : str
 Returns
 -------
 double
-  the computed Shanon's entropy of a node given the observation
+  the Shanon's entropy of a node given the observation
 "
 
 %feature("docstring") gum::classname::I
 "
 Parameters
 ----------
-X : int
-  a node Id
-Y : int
-  another node Id
+X : int or str
+  a node Id or a node name
+Y : int or str
+  another node Id or node name
 
 Returns
 -------
 double
-  the computed Shanon's entropy of a node given the observation
+  the Mutual Information of X and Y given the observation
 "
 
 %feature("docstring") gum::classname::VI
 "
 Parameters
 ----------
-X : int
-  a node Id
-Y : int
-  another node Id
+X : int or str
+   a node Id or a node name
+Y : int or str
+   another node Id or node name
 
 Returns
 -------
