@@ -262,6 +262,15 @@ namespace gum {
   // ##############################################################################
   // Entropy
   // ##############################################################################
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
+    return I(this->MN().idFromName(Xname),this->MN().idFromName(Yname));
+  }
+
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
+    return VI(this->MN().idFromName(Xname),this->MN().idFromName(Yname));
+  }
 
 
   /* Mutual information between X and Y
@@ -280,7 +289,7 @@ namespace gum {
     try {
       // here use unnormalized joint posterior rather than just posterior
       // to avoid saving the posterior in the cache of the inference engines
-      // like LazyPropagation or SahferShenoy.
+      // like LazyPropagation or Shafer-Shenoy.
       pXY = this->unnormalizedJointPosterior_({X, Y});
       pXY->normalize();
       pX = pXY->margSumOut({&(this->MN().variable(Y))});
