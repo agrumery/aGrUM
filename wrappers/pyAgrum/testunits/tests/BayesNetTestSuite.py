@@ -400,6 +400,21 @@ class TestFeatures(BayesNetTestCase):
     self.assertFalse(bn.existsArc(0,2))
     self.assertFalse(bn.existsArc("A","C"))
 
+  def testAncestors(self):
+    bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
+    
+    self.assertEqual(bn.descendants(6),set([0,1,4,5]))
+    self.assertEqual(bn.descendants("G"), set([0, 1, 4, 5]))
+    
+    self.assertEqual(bn.descendants(1),set())
+    self.assertEqual(bn.descendants("B"), set())
+    
+    self.assertEqual(bn.ancestors(1),set([0, 2, 6, 8, 9]))
+    self.assertEqual(bn.ancestors("B"), set([0, 2, 6, 8, 9]))
+    
+    self.assertEqual(bn.ancestors(9),set())
+    self.assertEqual(bn.ancestors("J"), set())
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

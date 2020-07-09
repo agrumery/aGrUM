@@ -218,7 +218,6 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), {1, 2, 4, 5})
     self.assertEqual(mn.minimalCondSet(3, {0, 4, 5, 6}), {0, 4})
 
-    print(mn.minimalCondSet("A", {"B", "C", "D", "E", "F", "G"}))
     self.assertEqual(mn.minimalCondSet(
         "A", {"B", "C", "D", "E", "F", "G"}), {1, 2})
     self.assertEqual(mn.minimalCondSet(

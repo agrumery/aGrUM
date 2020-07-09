@@ -74,6 +74,13 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
   PyObject *arcs() const {
     return PyAgrumHelper::PySetFromArcSet(self->arcs());
   };
+
+  PyObject *descendants(PyObject* norid) const {
+    return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+  };
+  PyObject *ancestors(PyObject* norid) const {
+    return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+  };
 }
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);

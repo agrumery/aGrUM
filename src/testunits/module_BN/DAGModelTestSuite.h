@@ -58,13 +58,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.descendants(1), gum::NodeSet());
       TS_ASSERT_EQUALS(bn.descendants("B"), gum::NodeSet());
 
-      TS_ASSERT_EQUALS(bn.ancestors(1), gum::NodeSet({0, 2,6,8,9}));
-      TS_ASSERT_EQUALS(bn.ancestors("B"), gum::NodeSet({0, 2,6,8,9}));
+      TS_ASSERT_EQUALS(bn.ancestors(1), gum::NodeSet({0, 2, 6, 8, 9}));
+      TS_ASSERT_EQUALS(bn.ancestors("B"), gum::NodeSet({0, 2, 6, 8, 9}));
 
       TS_ASSERT_EQUALS(bn.ancestors(9), gum::NodeSet());
       TS_ASSERT_EQUALS(bn.ancestors("J"), gum::NodeSet());
-
-
     }
   };
 }   // namespace gum_tests

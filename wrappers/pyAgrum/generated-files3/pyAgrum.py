@@ -6455,6 +6455,20 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_children(self, *args)
 
+    def descendants(self, *args) -> "gum::NodeSet":
+        r"""
+        descendants(DAGmodel self, gum::NodeId const id) -> gum::NodeSet
+        descendants(DAGmodel self, std::string const & name) -> gum::NodeSet
+        """
+        return _pyAgrum.DAGmodel_descendants(self, *args)
+
+    def ancestors(self, *args) -> "gum::NodeSet":
+        r"""
+        ancestors(DAGmodel self, gum::NodeId const id) -> gum::NodeSet
+        ancestors(DAGmodel self, std::string const & name) -> gum::NodeSet
+        """
+        return _pyAgrum.DAGmodel_ancestors(self, *args)
+
     def moralGraph(self, clear: "bool"=True) -> "gum::UndiGraph const &":
         r"""
         moralGraph(DAGmodel self, bool clear=True) -> UndiGraph
@@ -9515,6 +9529,14 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_arcs(self)
 
+    def descendants(self, norid: "PyObject *") -> "PyObject *":
+        r"""descendants(IBayesNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.IBayesNet_descendants(self, norid)
+
+    def ancestors(self, norid: "PyObject *") -> "PyObject *":
+        r"""ancestors(IBayesNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.IBayesNet_ancestors(self, norid)
+
     def __repr__(self) -> "std::string":
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
@@ -10531,6 +10553,14 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_arcs(self)
 
+    def descendants(self, norid: "PyObject *") -> "PyObject *":
+        r"""descendants(BayesNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.BayesNet_descendants(self, norid)
+
+    def ancestors(self, norid: "PyObject *") -> "PyObject *":
+        r"""ancestors(BayesNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.BayesNet_ancestors(self, norid)
+
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
         Add the listeners in parameters to the list of existing ones.
@@ -11324,6 +11354,14 @@ class BayesNetFragment(IBayesNet, ):
 
         """
         return _pyAgrum.BayesNetFragment_arcs(self)
+
+    def descendants(self, norid: "PyObject *") -> "PyObject *":
+        r"""descendants(BayesNetFragment self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.BayesNetFragment_descendants(self, norid)
+
+    def ancestors(self, norid: "PyObject *") -> "PyObject *":
+        r"""ancestors(BayesNetFragment self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.BayesNetFragment_ancestors(self, norid)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
