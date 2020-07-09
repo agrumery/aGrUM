@@ -81,6 +81,12 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
   PyObject *ancestors(PyObject* norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
+
+  gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
+    gum::NodeSet sonodes;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
+    return self->moralizedAncestralGraph(sonodes);
+  };
 }
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);

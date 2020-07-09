@@ -1,4 +1,5 @@
 # -*- encoding: UTF-8 -*-
+import pyAgrum.lib.bn_vs_bn as bvb
 import unittest
 
 import numpy
@@ -112,7 +113,8 @@ class TestInsertions(BayesNetTestCase):
     with self.assertRaises(gum.DuplicateElement):
       bn.addArc(idList[1], idList[4])
 
-    self.assertRaises(gum.InvalidDirectedCycle, bn.addArc, idList[4], idList[0])
+    self.assertRaises(gum.InvalidDirectedCycle,
+                      bn.addArc, idList[4], idList[0])
     self.assertRaises(gum.InvalidNode, bn.addArc, 42, 666)
 
   def testEraseArcs(self):
@@ -171,7 +173,7 @@ class TestFeatures(BayesNetTestCase):
       bn.addArc(*arc)
 
     with self.assertRaises(gum.DuplicateElement):
-      bn.addArc("A","C")
+      bn.addArc("A", "C")
 
     self.assertEqual(str(bn), "BN{nodes: 3, arcs: 2, domainSize: 8, dim: 12}")
 
@@ -194,7 +196,7 @@ class TestFeatures(BayesNetTestCase):
     bn.erase("A")
     self.assertEqual(str(bn), "BN{nodes: 2, arcs: 1, domainSize: 4, dim: 6}")
 
-    self.assertEqual(bn.parents(bn.idFromName("C")),bn.parents("C"))
+    self.assertEqual(bn.parents(bn.idFromName("C")), bn.parents("C"))
 
     with self.assertRaises(gum.NotFound):
       bn.erase("A")
@@ -236,7 +238,7 @@ class TestFeatures(BayesNetTestCase):
     bn = gum.fastBN("a->b->c;a->c")
     self.assertEquals(bn.size(), 3)
     self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(len(bn.arcs()),3)
+    self.assertEquals(len(bn.arcs()), 3)
     self.assertEquals(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
 
     bn = gum.fastBN("a->b->c;a->c", 3)
@@ -310,7 +312,7 @@ class TestFeatures(BayesNetTestCase):
     self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
-    
+
   def testFastPrototypeVarType(self):
     bn = gum.fastBN("a")
     self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
@@ -319,11 +321,11 @@ class TestFeatures(BayesNetTestCase):
     self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
 
     with self.assertRaises(gum.InvalidArgument):
-      bn=gum.fastBN("a[0,0]")
+      bn = gum.fastBN("a[0,0]")
     with self.assertRaises(gum.InvalidArgument):
-      bn=gum.fastBN("a[1,0]")
+      bn = gum.fastBN("a[1,0]")
     with self.assertRaises(gum.InvalidArgument):
-      bn=gum.fastBN("a[1,1]")
+      bn = gum.fastBN("a[1,1]")
 
     bn = gum.fastBN("a[5]")
     self.assertEquals(bn.variable("a").__str__(), "a[0,4]")
@@ -335,8 +337,9 @@ class TestFeatures(BayesNetTestCase):
     self.assertEquals(bn.variable("a").__str__(), "a[-2,2]")
 
     bn = gum.fastBN("a[-0.4,0.1,0.5,3.14,10]")
-    self.assertEquals(bn.variable("a").__str__(), "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
-    
+    self.assertEquals(bn.variable("a").__str__(),
+                      "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
+
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
     iA, iB, iC, iD, iE, iF, iG, iH = [bn.idFromName(s) for s in
@@ -393,27 +396,53 @@ class TestFeatures(BayesNetTestCase):
   def testExistsArc(self):
     bn = gum.fastBN("A->B->C<-D->E<-A<-G->F")
 
-    self.assertTrue(bn.existsArc(0,1))
-    self.assertTrue(bn.existsArc("A","B"))
-    self.assertFalse(bn.existsArc(1,0))
-    self.assertFalse(bn.existsArc("B","A"))
-    self.assertFalse(bn.existsArc(0,2))
-    self.assertFalse(bn.existsArc("A","C"))
+    self.assertTrue(bn.existsArc(0, 1))
+    self.assertTrue(bn.existsArc("A", "B"))
+    self.assertFalse(bn.existsArc(1, 0))
+    self.assertFalse(bn.existsArc("B", "A"))
+    self.assertFalse(bn.existsArc(0, 2))
+    self.assertFalse(bn.existsArc("A", "C"))
 
   def testAncestors(self):
     bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
-    
-    self.assertEqual(bn.descendants(6),set([0,1,4,5]))
+
+    self.assertEqual(bn.descendants(6), set([0, 1, 4, 5]))
     self.assertEqual(bn.descendants("G"), set([0, 1, 4, 5]))
-    
-    self.assertEqual(bn.descendants(1),set())
+
+    self.assertEqual(bn.descendants(1), set())
     self.assertEqual(bn.descendants("B"), set())
-    
-    self.assertEqual(bn.ancestors(1),set([0, 2, 6, 8, 9]))
+
+    self.assertEqual(bn.ancestors(1), set([0, 2, 6, 8, 9]))
     self.assertEqual(bn.ancestors("B"), set([0, 2, 6, 8, 9]))
-    
-    self.assertEqual(bn.ancestors(9),set())
+
+    self.assertEqual(bn.ancestors(9), set())
     self.assertEqual(bn.ancestors("J"), set())
+
+  def testMoralizedAncestralGraph(self):
+    bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
+
+    g = bn.moralizedAncestralGraph({"I", "J"})
+    self.assertEqual(g.nodes(), {8, 9})
+    self.assertEqual(g.edges(), set())
+
+    g = bn.moralizedAncestralGraph({"A"})
+    self.assertEqual(g.nodes(), {0, 6, 8})
+    self.assertEqual(g.edges(), {(0, 6), (6, 8)})
+
+    # V-structure
+    g = bn.moralizedAncestralGraph({"C"})
+    self.assertEqual(g.nodes(), {2, 8, 9})
+    self.assertEqual(g.edges(), {(2, 8), (2, 9), (8, 9)})
+
+    g = bn.moralizedAncestralGraph({"A", "D", "I", "H"})
+    self.assertEqual(g.nodes(), {0, 2, 3, 6, 7, 8, 9})
+    self.assertEqual(
+        g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8)})
+
+    g = bn.moralizedAncestralGraph({"F", "B", "E", "H"})
+    self.assertEqual(g.nodes(), {0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+    self.assertEqual(
+        g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8), (0, 5), (0, 1), (3, 4), (0, 2), (0, 3), (0, 4), (1, 2)})
 
 
 class TestLoadBN(BayesNetTestCase):
@@ -430,13 +459,16 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), self.listen)
+    res = bn.loadBIF(self.agrumSrcDir(
+        'src/testunits/ressources/alarm.bif'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleBIFLoadWithoutListener(self):
     self.bufferlisten = ""
@@ -447,38 +479,47 @@ class TestLoadBN(BayesNetTestCase):
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testListBIFLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), [self.listen, self.ecoute])
+    res = bn.loadBIF(self.agrumSrcDir(
+        'src/testunits/ressources/alarm.bif'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testTupleBIFLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), (self.ecoute, self.listen))
+    res = bn.loadBIF(self.agrumSrcDir(
+        'src/testunits/ressources/alarm.bif'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleNETLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadNET(self.agrumSrcDir('src/testunits/ressources/test1.net'), self.listen)
+    res = bn.loadNET(self.agrumSrcDir(
+        'src/testunits/ressources/test1.net'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -487,49 +528,61 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), self.listen)
+    res = bn.loadDSL(self.agrumSrcDir(
+        'src/testunits/ressources/DSL/alarm.dsl'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleDSLLoadWithoutListener(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'))
+    res = bn.loadDSL(self.agrumSrcDir(
+        'src/testunits/ressources/DSL/alarm.dsl'))
     self.assertEqual(self.bufferlisten, "")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testListDSLLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), [self.listen, self.ecoute])
+    res = bn.loadDSL(self.agrumSrcDir(
+        'src/testunits/ressources/DSL/alarm.dsl'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testTupleDSLLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), (self.ecoute, self.listen))
+    res = bn.loadDSL(self.agrumSrcDir(
+        'src/testunits/ressources/DSL/alarm.dsl'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
-    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
+        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+    self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
+                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testO3PRMLoad(self):
     bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'), [],
@@ -551,7 +604,8 @@ class TestSaveBN(BayesNetTestCase):
   def testReadAfterWrite(self):
     bn = gum.BayesNet()
     bn.add(gum.RangeVariable("1", "", 0, 1))
-    bn.add(gum.DiscretizedVariable("2", "").addTick(0.0).addTick(0.5).addTick(1.0))
+    bn.add(gum.DiscretizedVariable("2", "").addTick(
+        0.0).addTick(0.5).addTick(1.0))
     bn.add(gum.LabelizedVariable("3", "", 2))
     bn.add(gum.LabelizedVariable("4", "", 2))
     bn.add(gum.LabelizedVariable("5", "", 3))
@@ -571,69 +625,71 @@ class TestSaveBN(BayesNetTestCase):
                           0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
                           0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0])
 
-    gum.saveBN(bn, self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"))
+    gum.saveBN(bn, self.agrumSrcDir(
+        "src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"))
 
-    bn2 = gum.loadBN(self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
+    bn2 = gum.loadBN(self.agrumSrcDir(
+        "src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
 
     self.assertEquals(bn.dim(), bn2.dim())
     self.assertEquals(bn.log10DomainSize(), bn2.log10DomainSize())
     for n in bn.names():
       self.assertEquals(bn.variable(n).name(), bn2.variable(n).name())
       self.assertEquals(bn.variable(n).varType(), bn2.variable(n).varType())
-      self.assertEquals(bn.variable(n).domainSize(), bn2.variable(n).domainSize())
+      self.assertEquals(bn.variable(n).domainSize(),
+                        bn2.variable(n).domainSize())
 
-import pyAgrum.lib.bn_vs_bn as bvb
 
 class TestScore(BayesNetTestCase):
-    def testSkeletonPrecision(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        precision = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['precision']
-        self.assertEquals(2./3., precision)
+  def testSkeletonPrecision(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    precision = bvb.GraphicalBNComparator(
+        true_bn, bn).skeletonScores()['precision']
+    self.assertEquals(2./3., precision)
 
-    def testSkeletonRecall(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        recall = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['recall']
-        self.assertEquals(1., recall)
+  def testSkeletonRecall(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    recall = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['recall']
+    self.assertEquals(1., recall)
 
-    def testSkeletonFscore(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        fscore = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['fscore']
-        self.assertEquals(4./5., fscore)
+  def testSkeletonFscore(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    fscore = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['fscore']
+    self.assertEquals(4./5., fscore)
 
-    def testPrecision(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
-        self.assertEquals(1./3., precision)
+  def testPrecision(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
+    self.assertEquals(1./3., precision)
 
-    def testRecall(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
-        self.assertEquals(1./2., recall)
+  def testRecall(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
+    self.assertEquals(1./2., recall)
 
-    def testFscore(self):
-        true_bn = gum.fastBN("A->B->C")
-        bn = gum.fastBN("A->B;C->B;A->C")
-        fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
-        self.assertEquals(2./5., fscore)
-    
-    def testHamming(self):
-        true_bn = gum.fastBN("A->B->C;B->D")
-        bn = gum.fastBN("A->B;C->B;D->C")
-        hamming = bvb.GraphicalBNComparator(true_bn, bn).hamming()['hamming']
-        self.assertEquals(2, hamming)
-    
-    def testStructuralHamming(self):
-        true_bn = gum.fastBN("A->B->C;B->D")
-        bn = gum.fastBN("A->B;C->B;D->C")
-        shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()['structural hamming']
-        self.assertEquals(4, shd)
+  def testFscore(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
+    self.assertEquals(2./5., fscore)
 
+  def testHamming(self):
+    true_bn = gum.fastBN("A->B->C;B->D")
+    bn = gum.fastBN("A->B;C->B;D->C")
+    hamming = bvb.GraphicalBNComparator(true_bn, bn).hamming()['hamming']
+    self.assertEquals(2, hamming)
 
+  def testStructuralHamming(self):
+    true_bn = gum.fastBN("A->B->C;B->D")
+    bn = gum.fastBN("A->B;C->B;D->C")
+    shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()[
+        'structural hamming']
+    self.assertEquals(4, shd)
 
 
 ts = unittest.TestSuite()

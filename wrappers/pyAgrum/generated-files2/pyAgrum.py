@@ -6469,6 +6469,13 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_ancestors(self, *args)
 
+    def moralizedAncestralGraph(self, *args):
+        r"""
+        moralizedAncestralGraph(DAGmodel self, gum::NodeSet const & nodes) -> UndiGraph
+        moralizedAncestralGraph(DAGmodel self, Vector_string nodenames) -> UndiGraph
+        """
+        return _pyAgrum.DAGmodel_moralizedAncestralGraph(self, *args)
+
     def moralGraph(self, clear=True):
         r"""
         moralGraph(DAGmodel self, bool clear=True) -> UndiGraph
@@ -9537,6 +9544,10 @@ class IBayesNet(DAGmodel):
         r"""ancestors(IBayesNet self, PyObject * norid) -> PyObject *"""
         return _pyAgrum.IBayesNet_ancestors(self, norid)
 
+    def moralizedAncestralGraph(self, nodes):
+        r"""moralizedAncestralGraph(IBayesNet self, PyObject * nodes) -> UndiGraph"""
+        return _pyAgrum.IBayesNet_moralizedAncestralGraph(self, nodes)
+
     def __repr__(self):
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
@@ -10561,6 +10572,10 @@ class BayesNet(IBayesNet):
         r"""ancestors(BayesNet self, PyObject * norid) -> PyObject *"""
         return _pyAgrum.BayesNet_ancestors(self, norid)
 
+    def moralizedAncestralGraph(self, nodes):
+        r"""moralizedAncestralGraph(BayesNet self, PyObject * nodes) -> UndiGraph"""
+        return _pyAgrum.BayesNet_moralizedAncestralGraph(self, nodes)
+
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
         Add the listeners in parameters to the list of existing ones.
@@ -11362,6 +11377,10 @@ class BayesNetFragment(IBayesNet, ):
     def ancestors(self, norid):
         r"""ancestors(BayesNetFragment self, PyObject * norid) -> PyObject *"""
         return _pyAgrum.BayesNetFragment_ancestors(self, norid)
+
+    def moralizedAncestralGraph(self, nodes):
+        r"""moralizedAncestralGraph(BayesNetFragment self, PyObject * nodes) -> UndiGraph"""
+        return _pyAgrum.BayesNetFragment_moralizedAncestralGraph(self, nodes)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
