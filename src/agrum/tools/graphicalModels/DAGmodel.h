@@ -128,16 +128,40 @@ namespace gum {
     /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of nodes returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
-     * @param id the node toward which the nodes returned share an arc*/
+     * @param id the node which is the head of an arc with the returned nodes
+     * @param name the name of the node the node which is the head of an arc with
+     * the returned nodes*/
     const NodeSet& parents(const NodeId id) const;
     const NodeSet& parents(const std::string& name) const;
 
     /// returns the set of nodes with arc outgoing from a given node
-    /** Note that the set of arcs returned may be empty if no arc within the
-     * ArcGraphPart is outgoing from the given node.
-     * @param id the node which is the tail of the arcs returned */
+    /** Note that the set of nodes returned may be empty if no node
+     * is outgoing from the given node.
+     * @param id the node which is the tail of an arc with the returned nodes
+     * @param name the name of the node which is the tail of an arc with the
+     * returned nodes */
     const NodeSet& children(const NodeId id) const;
     const NodeSet& children(const std::string& name) const;
+
+    /// returns the set of nodes with directed path outgoing from a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is outgoing from the given node.
+     * @param id the node which is the tail of a directed path with the returned
+     * nodes
+     * @param name the name of the node which is the tail of a directed path with
+     * the returned nodes */
+    NodeSet descendants(const NodeId id) const;
+    NodeSet descendants(const std::string& name) const;
+
+    /// returns the set of nodes with directed path ingoing to a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is ingoing to the given node.
+     * @param id the node which is the head of a directed path with the returned
+     * nodes
+     * @param name the name of the node which is the head of a directed path with
+     * the returned nodes */
+    NodeSet ancestors(const NodeId id) const;
+    NodeSet ancestors(const std::string& name) const;
     /// @}
 
     /// @name Graphical methods

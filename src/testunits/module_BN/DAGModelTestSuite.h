@@ -48,5 +48,23 @@ namespace gum_tests {
       TS_ASSERT(
          !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->d")));
     }
+
+    void testAncestors() {
+      auto bn = gum::BayesNet< float >::fastPrototype(
+         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+      TS_ASSERT_EQUALS(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
+      TS_ASSERT_EQUALS(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
+
+      TS_ASSERT_EQUALS(bn.descendants(1), gum::NodeSet());
+      TS_ASSERT_EQUALS(bn.descendants("B"), gum::NodeSet());
+
+      TS_ASSERT_EQUALS(bn.ancestors(1), gum::NodeSet({0, 2,6,8,9}));
+      TS_ASSERT_EQUALS(bn.ancestors("B"), gum::NodeSet({0, 2,6,8,9}));
+
+      TS_ASSERT_EQUALS(bn.ancestors(9), gum::NodeSet());
+      TS_ASSERT_EQUALS(bn.ancestors("J"), gum::NodeSet());
+
+
+    }
   };
 }   // namespace gum_tests

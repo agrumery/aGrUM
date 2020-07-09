@@ -120,4 +120,46 @@ namespace gum {
 
     return true;
   }
+
+  NodeSet DAGmodel::descendants(const NodeId id) const {
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: children(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: children(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
+  NodeSet DAGmodel::descendants(const std::string& name) const {
+    return descendants(idFromName(name));
+  }
+
+  NodeSet DAGmodel::ancestors(const NodeId id) const{
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: parents(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: parents(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
+  NodeSet DAGmodel::ancestors(const std::string& name) const {
+    return ancestors(idFromName(name));
+  }
 }   // namespace gum
