@@ -444,6 +444,24 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(
         g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8), (0, 5), (0, 1), (3, 4), (0, 2), (0, 3), (0, 4), (1, 2)})
 
+  def testIsIndependent(self):
+    bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
+
+    self.assertTrue(bn.isIndependent("I", "J", {}))
+    self.assertFalse(bn.isIndependent("I", "J", {"C"}))
+    self.assertFalse(bn.isIndependent("I", "J", {"H"}))
+    self.assertTrue(bn.isIndependent("I", "J", {"F"}))
+    self.assertFalse(bn.isIndependent("I", "J", {"E"}))
+    self.assertFalse(bn.isIndependent("I", "J", {"E", "G"}))
+    self.assertFalse(bn.isIndependent("I", "J", {"E", "G", "H"}))
+
+    self.assertFalse(bn.isIndependent("I", "H", {}))
+    self.assertTrue(bn.isIndependent("I", "H", {"C"}))
+    self.assertTrue(bn.isIndependent("I", "H", {"C", "B"}))
+    self.assertFalse(bn.isIndependent("I", "H", {"C", "E"}))
+    self.assertFalse(bn.isIndependent("I", "H", {"C", "E", "B"}))
+    self.assertTrue(bn.isIndependent("I", "H", {"C", "E", "B", "G"}))
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

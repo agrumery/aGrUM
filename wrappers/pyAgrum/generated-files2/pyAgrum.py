@@ -6476,6 +6476,13 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_moralizedAncestralGraph(self, *args)
 
+    def isIndependent(self, *args):
+        r"""
+        isIndependent(DAGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        isIndependent(DAGmodel self, std::string const & X, std::string const & Y, Vector_string Z) -> bool
+        """
+        return _pyAgrum.DAGmodel_isIndependent(self, *args)
+
     def moralGraph(self, clear=True):
         r"""
         moralGraph(DAGmodel self, bool clear=True) -> UndiGraph
@@ -9548,6 +9555,10 @@ class IBayesNet(DAGmodel):
         r"""moralizedAncestralGraph(IBayesNet self, PyObject * nodes) -> UndiGraph"""
         return _pyAgrum.IBayesNet_moralizedAncestralGraph(self, nodes)
 
+    def isIndependent(self, X, Y, Z):
+        r"""isIndependent(IBayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
+        return _pyAgrum.IBayesNet_isIndependent(self, X, Y, Z)
+
     def __repr__(self):
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
@@ -10576,6 +10587,10 @@ class BayesNet(IBayesNet):
         r"""moralizedAncestralGraph(BayesNet self, PyObject * nodes) -> UndiGraph"""
         return _pyAgrum.BayesNet_moralizedAncestralGraph(self, nodes)
 
+    def isIndependent(self, X, Y, Z):
+        r"""isIndependent(BayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
+        return _pyAgrum.BayesNet_isIndependent(self, X, Y, Z)
+
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
         Add the listeners in parameters to the list of existing ones.
@@ -11381,6 +11396,10 @@ class BayesNetFragment(IBayesNet, ):
     def moralizedAncestralGraph(self, nodes):
         r"""moralizedAncestralGraph(BayesNetFragment self, PyObject * nodes) -> UndiGraph"""
         return _pyAgrum.BayesNetFragment_moralizedAncestralGraph(self, nodes)
+
+    def isIndependent(self, X, Y, Z):
+        r"""isIndependent(BayesNetFragment self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
+        return _pyAgrum.BayesNetFragment_isIndependent(self, X, Y, Z)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
