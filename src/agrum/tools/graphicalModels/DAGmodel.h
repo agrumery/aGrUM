@@ -167,6 +167,16 @@ namespace gum {
     /// @name Graphical methods
     /// @{
 
+    /** build a UndiGraph by moralizing the Ancestral Graph of a set of Nodes
+     *
+     * @param nodes the set of nodeId
+     * @param nodenames the vector of names of nodes
+     * @return the moralized ancestral graph
+     */
+    UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
+    UndiGraph
+       moralizedAncestralGraph(const std::vector<std::string>& nodenames) const;
+
     /**
      * The node's id are coherent with the variables and nodes of the topology.
      * @param clear If false returns the previously created moral graph.

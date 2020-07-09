@@ -142,7 +142,7 @@ namespace gum {
     return descendants(idFromName(name));
   }
 
-  NodeSet DAGmodel::ancestors(const NodeId id) const{
+  NodeSet DAGmodel::ancestors(const NodeId id) const {
     NodeSet res;
     NodeSet tmp;
     for (auto next: parents(id))
@@ -161,5 +161,38 @@ namespace gum {
 
   NodeSet DAGmodel::ancestors(const std::string& name) const {
     return ancestors(idFromName(name));
+  }
+
+  UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
+    UndiGraph res;
+    NodeSet   tmp{nodes};
+
+    // findings all nodes
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+
+      res.addNodeWithId(current);
+      for (auto next: parents(current))
+        if (!tmp.contains(next) && !res.exists(next)) tmp.insert(next);
+    }
+
+    // finding all edges and moralizing
+    for (auto current: res)
+      for (auto father: parents(current)) {
+        res.addEdge(current, father); // addEdge does not complain if edge already exists
+        for (auto other_father: parents(current))
+          if (other_father != father) res.addEdge(father, other_father);
+      }
+
+    return res;
+  }
+
+  UndiGraph DAGmodel::moralizedAncestralGraph(
+     const std::vector< std::string >& nodenames) const {
+    NodeSet nodes;
+    for (const auto& name: nodenames)
+      nodes.insert(idFromName(name));
+    return moralizedAncestralGraph(nodes);
   }
 }   // namespace gum

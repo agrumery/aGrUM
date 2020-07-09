@@ -64,5 +64,59 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.ancestors(9), gum::NodeSet());
       TS_ASSERT_EQUALS(bn.ancestors("J"), gum::NodeSet());
     }
+
+    void testMoralizedAncestralGraph() {
+      auto bn = gum::BayesNet< float >::fastPrototype(
+         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+
+      auto g = bn.moralizedAncestralGraph({"I", "J"});
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
+      TS_ASSERT_EQUALS(g.edges(), gum::EdgeSet({}));
+
+      g = bn.moralizedAncestralGraph({"A"});
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
+      TS_ASSERT_EQUALS(g.edges(),
+                       gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
+      // just for the fun
+      TS_ASSERT_EQUALS(g.edges(),
+                       gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
+
+      // V-structure
+      g = bn.moralizedAncestralGraph({"C"});
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
+      TS_ASSERT_EQUALS(
+         g.edges(),
+         gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
+
+      g = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
+      TS_ASSERT_EQUALS(g.edges(),
+                       gum::EdgeSet({gum::Edge(2, 8),
+                                     gum::Edge(2, 9),
+                                     gum::Edge(8, 9),
+                                     gum::Edge(2, 3),
+                                     gum::Edge(3, 7),
+                                     gum::Edge(0, 6),
+                                     gum::Edge(6, 8)}));
+
+      g = bn.moralizedAncestralGraph({"F", "B", "E", "H"});
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(),
+                       gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
+      TS_ASSERT_EQUALS(g.edges(),
+                       gum::EdgeSet({gum::Edge(2, 8),
+                                     gum::Edge(2, 9),
+                                     gum::Edge(8, 9),
+                                     gum::Edge(2, 3),
+                                     gum::Edge(3, 7),
+                                     gum::Edge(0, 6),
+                                     gum::Edge(6, 8),
+                                     gum::Edge(0, 5),
+                                     gum::Edge(0, 1),
+                                     gum::Edge(3, 4),
+                                     gum::Edge(0, 2),
+                                     gum::Edge(0, 3),
+                                     gum::Edge(0, 4),
+                                     gum::Edge(1, 2)}));
+    }
   };
 }   // namespace gum_tests
