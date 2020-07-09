@@ -218,7 +218,13 @@ namespace gum {
      * two nodes */
     const std::vector< NodeId > undirectedPath(const NodeId node1,
                                                const NodeId node2) const;
-
+    /**
+     * return true if n1 and n2 are connected (by an undirected path) in the graph.
+     * @param n1 NodeId
+     * @param n2 NodeId
+     * @return bool
+     */
+    bool hasUndirectedPath(const NodeId n1, const NodeId n2) const;
     /// @}
 
     private:

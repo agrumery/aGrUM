@@ -118,5 +118,25 @@ namespace gum_tests {
                                      gum::Edge(0, 4),
                                      gum::Edge(1, 2)}));
     }
+
+    void testIndependence() {
+      auto bn = gum::BayesNet< float >::fastPrototype(
+         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+
+      TS_ASSERT(bn.isIndependent("I", "J", {}));
+      TS_ASSERT(!bn.isIndependent("I", "J", {"C"}));
+      TS_ASSERT(!bn.isIndependent("I", "J", {"H"}));
+      TS_ASSERT(bn.isIndependent("I", "J", {"F"}));
+      TS_ASSERT(!bn.isIndependent("I", "J", {"E"}));
+      TS_ASSERT(!bn.isIndependent("I", "J", {"E", "G"}));
+      TS_ASSERT(!bn.isIndependent("I", "J", {"E", "G", "H"}));
+
+      TS_ASSERT(!bn.isIndependent("I", "H", {}));
+      TS_ASSERT(bn.isIndependent("I", "H", {"C"}));
+      TS_ASSERT(bn.isIndependent("I", "H", {"C","B"}));
+      TS_ASSERT(!bn.isIndependent("I", "H", {"C","E"}));
+      TS_ASSERT(!bn.isIndependent("I", "H", {"C","E","B"}));
+      TS_ASSERT(bn.isIndependent("I", "H", {"C","E","B","G"}));
+    }
   };
 }   // namespace gum_tests

@@ -180,7 +180,8 @@ namespace gum {
     // finding all edges and moralizing
     for (auto current: res)
       for (auto father: parents(current)) {
-        res.addEdge(current, father); // addEdge does not complain if edge already exists
+        res.addEdge(current,
+                    father);   // addEdge does not complain if edge already exists
         for (auto other_father: parents(current))
           if (other_father != father) res.addEdge(father, other_father);
       }
@@ -194,5 +195,23 @@ namespace gum {
     for (const auto& name: nodenames)
       nodes.insert(idFromName(name));
     return moralizedAncestralGraph(nodes);
+  }
+
+  bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+    NodeSet cumul{Z};
+    cumul << X << Y;
+    auto g = moralizedAncestralGraph(cumul);
+    for (auto node: Z)
+      g.eraseNode(node);
+    return !g.hasUndirectedPath(X, Y);
+  }
+
+  bool DAGmodel::isIndependent(const std::string&                Xname,
+                               const std::string&                Yname,
+                               const std::vector< std::string >& Znames) const {
+    NodeSet Z;
+    for (const auto& name: Znames)
+      Z.insert(idFromName(name));
+    return isIndependent(idFromName(Xname), idFromName(Yname), Z);
   }
 }   // namespace gum

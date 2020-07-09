@@ -164,6 +164,23 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found");
   }
 
+  bool EdgeGraphPart::hasUndirectedPath(const NodeId n1, const NodeId n2) const {
+    NodeSet visited;
+    NodeSet temp;
+
+    temp.insert(n1);
+    while (!temp.empty()) {
+      NodeId current = *(temp.begin());
+      if (current == n2) return true;
+      temp.erase(current);
+      visited.insert(current);
+      for (auto next: neighbours(current)) {
+        if (!temp.contains(next) && !visited.contains(next)) temp.insert(next);
+      }
+    }
+    return false;
+  }
+
   std::ostream& operator<<(std::ostream& stream, const EdgeGraphPart& set) {
     stream << set.toString();
     return stream;

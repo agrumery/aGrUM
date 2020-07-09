@@ -175,7 +175,14 @@ namespace gum {
      */
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
     UndiGraph
-       moralizedAncestralGraph(const std::vector<std::string>& nodenames) const;
+       moralizedAncestralGraph(const std::vector< std::string >& nodenames) const;
+
+    /** check if X and Y are independent given Z
+     */
+    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
+    bool isIndependent(const std::string&                X,
+                       const std::string&                Y,
+                       const std::vector< std::string >& Z) const;
 
     /**
      * The node's id are coherent with the variables and nodes of the topology.
