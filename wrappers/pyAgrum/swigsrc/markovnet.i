@@ -71,6 +71,14 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
 
     return self->factor(idx);
   };
+
+   bool isIndependent(PyObject* X,PyObject* Y,PyObject* Z) {
+     gum::NodeId nx=PyAgrumHelper::nodeIdFromNameOrIndex(X,self->variableNodeMap());
+     gum::NodeId ny=PyAgrumHelper::nodeIdFromNameOrIndex(Y,self->variableNodeMap());
+     gum::NodeSet nz;
+     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nz,Z,self->variableNodeMap());
+     return self->isIndependent(nx,ny,nz);
+   }
 }
 %enddef
 IMPROVE_MARKOVNET_API(gum::IMarkovNet);

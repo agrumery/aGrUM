@@ -180,9 +180,9 @@ namespace gum {
     /** check if X and Y are independent given Z
      */
     bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
-    bool isIndependent(const std::string&                X,
-                       const std::string&                Y,
-                       const std::vector< std::string >& Z) const;
+    bool isIndependent(const std::string&                Xname,
+                       const std::string&                Yname,
+                       const std::vector< std::string >& Zanmes) const;
 
     /**
      * The node's id are coherent with the variables and nodes of the topology.

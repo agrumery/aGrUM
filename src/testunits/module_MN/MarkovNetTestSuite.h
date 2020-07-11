@@ -312,6 +312,16 @@ namespace gum_tests {
                        gum::NodeSet({1, 2, 4, 5}));
       TS_ASSERT_EQUALS(mn.minimalCondSet(3, {0, 4, 5, 6}), gum::NodeSet({0, 4}));
     }
+
+    void testIndependence() {
+      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
+      TS_ASSERT(mn.isIndependent("D", "X", {}));
+      TS_ASSERT(!mn.isIndependent("D", "A", {"C"}));
+      TS_ASSERT(mn.isIndependent("D", "A", {"C","G"}));
+      TS_ASSERT(!mn.isIndependent("G", "A", {"C","F"}));
+      TS_ASSERT(mn.isIndependent("G", "A", {"D","E"}));
+    }
   };
+
 
 }   // namespace gum_tests

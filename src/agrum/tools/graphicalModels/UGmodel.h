@@ -131,6 +131,12 @@ namespace gum {
     const NodeSet& neighbours(const NodeId id) const;
     const NodeSet& neighbours(const std::string& name) const;
 
+    /** check if X and Y are independent given Z
+     */
+    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
+    bool isIndependent(const std::string&                Xname,
+                       const std::string&                Yname,
+                       const std::vector< std::string >& Znames) const;
     /// @}
 
     /// @return true if all the named node are the same and all the named arcs are

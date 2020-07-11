@@ -225,5 +225,16 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.minimalCondSet("D", {"A", "E", "F", "G"}), {0, 4})
 
 
+
+  def testIndependence(self) :
+    mn = gum.fastMN("A-B-C;C-D;E-F-G;B-E;D-G;X")
+    
+    self.assertTrue(mn.isIndependent("D", "X", {}))
+    self.assertFalse(mn.isIndependent("D", "A", {"C"}))
+    self.assertTrue(mn.isIndependent("D", "A", {"C","G"}))
+    self.assertFalse(mn.isIndependent("G", "A", {"C","F"}))
+    self.assertTrue(mn.isIndependent("G", "A", {"D","E"}))
+
+
 ts = unittest.TestSuite()
 addTests(ts, MarkovNetTestCase)

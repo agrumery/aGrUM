@@ -6479,7 +6479,7 @@ class DAGmodel(GraphicalModel):
     def isIndependent(self, *args):
         r"""
         isIndependent(DAGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
-        isIndependent(DAGmodel self, std::string const & X, std::string const & Y, Vector_string Z) -> bool
+        isIndependent(DAGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Zanmes) -> bool
         """
         return _pyAgrum.DAGmodel_isIndependent(self, *args)
 
@@ -6593,6 +6593,13 @@ class UGmodel(GraphicalModel):
         neighbours(UGmodel self, std::string const & name) -> gum::NodeSet const &
         """
         return _pyAgrum.UGmodel_neighbours(self, *args)
+
+    def isIndependent(self, *args):
+        r"""
+        isIndependent(UGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        isIndependent(UGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Znames) -> bool
+        """
+        return _pyAgrum.UGmodel_isIndependent(self, *args)
 
     def hasSameStructure(self, other):
         r"""hasSameStructure(UGmodel self, UGmodel other) -> bool"""
@@ -11599,6 +11606,10 @@ class IMarkovNet(UGmodel):
         """
         return _pyAgrum.IMarkovNet_factor(self, *args)
 
+    def isIndependent(self, X, Y, Z):
+        r"""isIndependent(IMarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
+        return _pyAgrum.IMarkovNet_isIndependent(self, X, Y, Z)
+
     def __repr__(self):
         r"""__repr__(IMarkovNet self) -> std::string"""
         return _pyAgrum.IMarkovNet___repr__(self)
@@ -11950,6 +11961,10 @@ class MarkovNet(IMarkovNet):
 
         """
         return _pyAgrum.MarkovNet_factor(self, *args)
+
+    def isIndependent(self, X, Y, Z):
+        r"""isIndependent(MarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
+        return _pyAgrum.MarkovNet_isIndependent(self, X, Y, Z)
 
     def loadUAI(self, *args):
         r"""
