@@ -52,8 +52,8 @@
     }
 #else
 #  ifndef GUM_DEBUG_MODE
-#    define GUM_ERROR(type, msg)                                  \
-      {                                                           \
+#    define GUM_ERROR(type, msg)                                    \
+      {                                                             \
         std::ostringstream error_stream;                            \
         error_stream << __FILE__ << ":" << __LINE__ << ": " << msg; \
         throw(type(error_stream.str()));                            \
@@ -91,8 +91,8 @@
     TYPE(const TYPE& src) : SUPERCLASS(src){};                                   \
   };
 
-#define GUM_SYNTAX_ERROR(msg, line, column)                  \
-  {                                                          \
+#define GUM_SYNTAX_ERROR(msg, line, column)                    \
+  {                                                            \
     std::ostringstream error_stream;                           \
     error_stream << msg;                                       \
     throw(gum::SyntaxError(error_stream.str(), line, column)); \

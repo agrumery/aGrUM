@@ -11875,14 +11875,7 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_generateFactor(self, vars)
 
     def beginTopologyTransformation(self) -> "void":
-        r"""
-        beginTopologyTransformation(MarkovNet self)
-
-        When inserting/removing arcs, node CPTs change their dimension with a cost in time.
-        begin Multiple Change for all CPTs
-        These functions delay the CPTs change to be done just once at the end of a sequence of topology modification, begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
-
-        """
+        r"""beginTopologyTransformation(MarkovNet self)"""
         return _pyAgrum.MarkovNet_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> "void":

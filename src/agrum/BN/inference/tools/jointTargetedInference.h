@@ -222,7 +222,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR I(const std::string& Xname, const std::string&  Yname);
+    GUM_SCALAR I(const std::string& Xname, const std::string& Yname);
 
     /** Variation of information between X and Y
      * @see http://en.wikipedia.org/wiki/Variation_of_information
@@ -240,7 +240,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR VI(const std::string& Xname, const std::string&  Yname);
+    GUM_SCALAR VI(const std::string& Xname, const std::string& Yname);
 
     /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information

@@ -314,12 +314,13 @@ namespace gum_tests {
     }
 
     void testIndependence() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
+      auto mn =
+         gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
       TS_ASSERT(mn.isIndependent("D", "X", {}));
       TS_ASSERT(!mn.isIndependent("D", "A", {"C"}));
-      TS_ASSERT(mn.isIndependent("D", "A", {"C","G"}));
-      TS_ASSERT(!mn.isIndependent("G", "A", {"C","F"}));
-      TS_ASSERT(mn.isIndependent("G", "A", {"D","E"}));
+      TS_ASSERT(mn.isIndependent("D", "A", {"C", "G"}));
+      TS_ASSERT(!mn.isIndependent("G", "A", {"C", "F"}));
+      TS_ASSERT(mn.isIndependent("G", "A", {"D", "E"}));
     }
   };
 

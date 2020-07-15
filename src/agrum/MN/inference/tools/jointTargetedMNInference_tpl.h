@@ -263,13 +263,15 @@ namespace gum {
   // Entropy
   // ##############################################################################
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
-    return I(this->MN().idFromName(Xname),this->MN().idFromName(Yname));
+  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(const std::string& Xname,
+                                                       const std::string& Yname) {
+    return I(this->MN().idFromName(Xname), this->MN().idFromName(Yname));
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
-    return VI(this->MN().idFromName(Xname),this->MN().idFromName(Yname));
+  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(const std::string& Xname,
+                                                        const std::string& Yname) {
+    return VI(this->MN().idFromName(Xname), this->MN().idFromName(Yname));
   }
 
 

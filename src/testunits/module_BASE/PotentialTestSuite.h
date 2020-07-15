@@ -462,8 +462,12 @@ namespace gum_tests {
       }
 
       TS_ASSERT_THROWS(p.reorganize({&a, &b, &c}), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}), gum::InvalidArgument);
+      TS_ASSERT_THROWS(
+         p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}),
+         gum::InvalidArgument);
+      TS_ASSERT_THROWS(
+         p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}),
+         gum::InvalidArgument);
     }
 
     void testReorganizePotentialFromNames() {
@@ -483,7 +487,7 @@ namespace gum_tests {
       auto joint1 = p * q;
       auto joint2 = q * p;
       TS_ASSERT_DIFFERS(joint1.toString(), joint2.toString());
-      auto joint3 = (q * p).reorganize({"c","d","a","b"});
+      auto joint3 = (q * p).reorganize({"c", "d", "a", "b"});
       TS_ASSERT_EQUALS(joint1.toString(), joint3.toString());
 
       gum::Instantiation inst;
@@ -493,8 +497,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(joint1.get(inst), joint3.get(inst));
       }
 
-      TS_ASSERT_THROWS(p.reorganize({"a","b","c"}), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.reorganize({std::string("a"),"d"}), gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.reorganize({"a", "b", "c"}), gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.reorganize({std::string("a"), "d"}),
+                       gum::InvalidArgument);
       TS_ASSERT_THROWS(p.reorganize({std::string("a")}), gum::InvalidArgument);
       TS_ASSERT_THROWS(p.reorganize({std::string("héhé")}), gum::InvalidArgument);
     }

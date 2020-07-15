@@ -241,7 +241,7 @@ namespace gum {
      * in vars
      */
     Potential< GUM_SCALAR >
-       reorganize(const std::vector<  std::string >& vars) const;
+       reorganize(const std::vector< std::string >& vars) const;
 
     /** create a new Potential extracted from *this given a partial
      * instantiation
@@ -256,7 +256,7 @@ namespace gum {
     /** create a new Potential with a certain variable in first
      * @throw InvalidArgument if the var is not in the potential
      */
-    Potential< GUM_SCALAR > putFirst(const std::string&  varname) const;
+    Potential< GUM_SCALAR > putFirst(const std::string& varname) const;
 
     /**
      * @brief copy a Potential data using name of variables and labels (not

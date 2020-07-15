@@ -133,10 +133,10 @@ namespace gum_tests {
 
       TS_ASSERT(!bn.isIndependent("I", "H", {}));
       TS_ASSERT(bn.isIndependent("I", "H", {"C"}));
-      TS_ASSERT(bn.isIndependent("I", "H", {"C","B"}));
-      TS_ASSERT(!bn.isIndependent("I", "H", {"C","E"}));
-      TS_ASSERT(!bn.isIndependent("I", "H", {"C","E","B"}));
-      TS_ASSERT(bn.isIndependent("I", "H", {"C","E","B","G"}));
+      TS_ASSERT(bn.isIndependent("I", "H", {"C", "B"}));
+      TS_ASSERT(!bn.isIndependent("I", "H", {"C", "E"}));
+      TS_ASSERT(!bn.isIndependent("I", "H", {"C", "E", "B"}));
+      TS_ASSERT(bn.isIndependent("I", "H", {"C", "E", "B", "G"}));
     }
   };
 }   // namespace gum_tests
