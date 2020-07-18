@@ -1,5 +1,19 @@
 # aGrUM Changelog
 
+
+## Changelog for 0.18.1
+
+* aGrUM
+  * Direct access to `gum::<graphicalmodel>::isIndependent(X,Y,Z)`.
+  * Direct access to direct access to `ancestors` and `descendants()`
+  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`
+
+* pyAgrum
+  * bugfix for some UTF8 names
+  * Direct access to `gum::<graphicalmodel>::isIndependent(X,Y,Z)`.
+  * Direct access to direct access to `ancestors` and `descendants()`
+  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`
+
 ## Changelog for 0.18.0
 
 * aGrUM
