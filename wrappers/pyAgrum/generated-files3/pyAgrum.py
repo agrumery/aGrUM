@@ -2187,7 +2187,7 @@ class InvalidEdge(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidEdge self, std::string aMsg, std::string aType="Edge invalid") -> InvalidEdge
+        __init__(InvalidEdge self, std::string aMsg, std::string aType="Invalid edge") -> InvalidEdge
         __init__(InvalidEdge self, InvalidEdge src) -> InvalidEdge
         """
         _pyAgrum.InvalidEdge_swiginit(self, _pyAgrum.new_InvalidEdge(*args))
@@ -2204,7 +2204,7 @@ class InvalidArc(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidArc self, std::string aMsg, std::string aType="Arc invalid") -> InvalidArc
+        __init__(InvalidArc self, std::string aMsg, std::string aType="Invalid arc") -> InvalidArc
         __init__(InvalidArc self, InvalidArc src) -> InvalidArc
         """
         _pyAgrum.InvalidArc_swiginit(self, _pyAgrum.new_InvalidArc(*args))
@@ -2221,7 +2221,7 @@ class InvalidNode(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidNode self, std::string aMsg, std::string aType="Node invalid") -> InvalidNode
+        __init__(InvalidNode self, std::string aMsg, std::string aType="Invalid node") -> InvalidNode
         __init__(InvalidNode self, InvalidNode src) -> InvalidNode
         """
         _pyAgrum.InvalidNode_swiginit(self, _pyAgrum.new_InvalidNode(*args))

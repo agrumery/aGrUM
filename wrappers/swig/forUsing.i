@@ -143,22 +143,22 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
   void addEdge(const NodeId n1,const NodeId n2) {
-    self->gum::EdgeGraphPart::addEdge(n1,n2);
+    self->addEdge(n1,n2);
   }
   void eraseEdge(const NodeId n1,const NodeId n2) {
-    self->gum::EdgeGraphPart::eraseEdge(gum::Edge(n1,n2));
+    self->eraseEdge(gum::Edge(n1,n2));
   }
   bool existsEdge(const NodeId n1, const NodeId n2) const {
-    return self->gum::EdgeGraphPart::existsEdge(n1,n2);
+    return self->existsEdge(n1,n2);
   }
   gum::Size sizeEdges() const {
-    return self->gum::EdgeGraphPart::sizeEdges();
+    return self->sizeEdges();
   }
   bool emptyEdges() const {
-    return self->gum::EdgeGraphPart::emptyEdges();
+    return self->emptyEdges();
   }
   void eraseNeighbours(const gum::NodeId n) {
-    self->gum::EdgeGraphPart::eraseNeighbours(n);
+    self->eraseNeighbours(n);
   }
 }
 %enddef
@@ -168,25 +168,25 @@ ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 %define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
   void addArc(const gum::NodeId n1,const gum::NodeId n2) {
-    self->gum::ArcGraphPart::addArc(n1,n2);
+    self->addArc(n1,n2);
   }
   void eraseArc(const gum::NodeId n1,const gum::NodeId n2) {
-    self->gum::ArcGraphPart::eraseArc(gum::Arc(n1,n2));
+    self->eraseArc(gum::Arc(n1,n2));
   }
   bool existsArc(const gum::NodeId n1,const gum::NodeId n2) const {
-    return self->gum::ArcGraphPart::existsArc(n1,n2);
+    return self->existsArc(n1,n2);
   }
   void eraseParents(const gum::NodeId n) {
-    self->gum::ArcGraphPart::eraseParents(n);
+    self->eraseParents(n);
   }
   void eraseChildren(const gum::NodeId n) {
-    self->gum::ArcGraphPart::eraseChildren(n);
+    self->eraseChildren(n);
   }
   gum::Size sizeArcs() const {
-    return self->gum::ArcGraphPart::sizeArcs();
+    return self->sizeArcs();
   }
   bool emptyArcs() const {
-    return self->gum::ArcGraphPart::emptyArcs();
+    return self->emptyArcs();
   }
 }
 %enddef

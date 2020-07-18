@@ -53,15 +53,16 @@ log.info("path : {}".format(gum.__file__))
 print("*****************")
 print("Python Test Suite")
 print("*****************")
-import testsOnPython
+if False:
+  import testsOnPython
 
-try:
-  total_errs += testsOnPython.errs
-except NameError:
-  pass
-except:
-  total_errs += 1
-  print("=> Error in TestSuite")
+  try:
+    total_errs += testsOnPython.errs
+  except NameError:
+    pass
+  except:
+    total_errs += 1
+    print("=> Error in TestSuite")
 
 if testNotebooks:
   print("\n")

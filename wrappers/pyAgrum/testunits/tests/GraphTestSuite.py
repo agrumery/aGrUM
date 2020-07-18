@@ -24,10 +24,7 @@ class TestGraph(pyAgrumTestCase):
   def testConstructorFromUG(self):
     ug = gum.UndiGraph()
 
-    ug.addNode()
-    ug.addNode()
-    ug.addNode()
-    ug.addNode()
+    ug.addNodes(4)
 
     ug.addEdge(0,2)
     ug.addEdge(1,2)
@@ -35,10 +32,7 @@ class TestGraph(pyAgrumTestCase):
     
     mixed_graph = gum.MixedGraph()
 
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
+    mixed_graph.addNodes(4)
 
     mixed_graph.addEdge(0,2)
     mixed_graph.addEdge(1,2)
@@ -51,10 +45,7 @@ class TestGraph(pyAgrumTestCase):
   def testConstructorFromDG(self):
     dg = gum.DiGraph()
 
-    dg.addNode()
-    dg.addNode()
-    dg.addNode()
-    dg.addNode()
+    dg.addNodes(4)
 
     dg.addArc(0,2)
     dg.addArc(1,2)
@@ -62,10 +53,7 @@ class TestGraph(pyAgrumTestCase):
     
     mixed_graph = gum.MixedGraph()
 
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
+    mixed_graph.addNodes(4)
 
     mixed_graph.addArc(0,2)
     mixed_graph.addArc(1,2)
@@ -78,10 +66,7 @@ class TestGraph(pyAgrumTestCase):
   def testCopyConstructor(self):
     mixed_graph = gum.MixedGraph()
 
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
-    mixed_graph.addNode()
+    mixed_graph.addNodes(4)
 
     mixed_graph.addEdge(0,2)
     mixed_graph.addEdge(1,2)
@@ -90,6 +75,17 @@ class TestGraph(pyAgrumTestCase):
     copy = mixed_graph
 
     self.assertEqual(mixed_graph, copy)
+
+  def testNonRegressionAddEdge(self):
+    ug=gum.UndiGraph()
+    ug.addNodes(4)
+    with self.assertRaises(gum.InvalidNode):
+      ug.addEdge(1,6)
+    with self.assertRaises(gum.InvalidNode):
+      ug.addEdge(7,0)
+    with self.assertRaises(gum.InvalidNode):
+      ug.addEdge(6,7)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestGraph)
