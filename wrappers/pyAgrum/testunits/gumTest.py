@@ -53,7 +53,7 @@ log.info("path : {}".format(gum.__file__))
 print("*****************")
 print("Python Test Suite")
 print("*****************")
-if False:
+if True: 
   import testsOnPython
 
   try:

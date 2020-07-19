@@ -93,7 +93,7 @@ def runNotebooks():
 
   errs = 0
 
-  list = []
+  l = []
   # slow notebooks
   excludes = {"11-structuralLearning.ipynb",
               "12-parametersLearningWithPandas.ipynb",
@@ -107,7 +107,7 @@ def runNotebooks():
   excludes = {}
   for filename in glob.glob("../pyLibs/notebooks/*.ipynb"):
     if not os.path.basename(filename) in excludes:
-      list.append(filename)
+      l.append(filename)
 
   startTime = time.time()
 
@@ -118,7 +118,7 @@ def runNotebooks():
   # concurrent
   futures = []
   executor = concurrent.futures.ProcessPoolExecutor(None)
-  for notebook_filename in sorted(list):
+  for notebook_filename in sorted(l):
     fut = executor.submit(processeNotebook, notebook_filename)
     fut.add_done_callback(done)
     fut.filename = notebook_filename
