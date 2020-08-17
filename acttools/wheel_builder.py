@@ -243,6 +243,8 @@ def get_tags():
     arch = 'manylinux1_x86_64'
   elif arch == "linux_i686":
     arch = 'manylinux1_i686'
+  if 'macosx' in arch :
+    arch = arch.replace('.','_')
   tags = '{0}-{1}-{2}'.format(impl, abi, arch)
   return tags
 
