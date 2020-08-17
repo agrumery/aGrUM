@@ -46,7 +46,8 @@ from .configuration import cfg
 FOUND_WHEEL=True
 
 try:
-  import wheel.pep425tags as pep425
+  import wheel.bdist_wheel as pep
+  from wheel.vendored.packaging import tags as wheel_tags
 except ImportError:
   FOUND_WHEEL=False
 
@@ -232,12 +233,12 @@ def update_wheel_file(dist_info):
 
 def get_tags():
   """Get proper tags using wheel's package implementation of PEP427."""
-  impl = pep425.get_abbr_impl() + pep425.get_impl_ver()
-  abi = pep425.get_abi_tag()
+  impl = wheel_tags.interpreter_name() + wheel_tags.interpreter_version()
+  abi = pep.get_abi_tag()
   try:
-      arch = pep425.get_platform(None)
+      arch = pep.safer_name(pep.get_platform(None))
   except:
-      arch = pep425.get_platform()
+      arch = pep.safer_name(pep.get_platform())
   if arch == "linux_x86_64":
     arch = 'manylinux1_x86_64'
   elif arch == "linux_i686":
