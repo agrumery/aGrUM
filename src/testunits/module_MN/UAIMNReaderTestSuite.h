@@ -119,5 +119,27 @@ namespace gum_tests {
         delete net;
       }
     }
+
+    void testReadInFilledMN() {
+      std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      gum::MarkovNet< double >  net;
+      gum::UAIMNReader< double > reader(&net, file);
+
+      gum::Size nbErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+
+      TS_ASSERT(!net.empty());
+      TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
+
+      net=gum::MarkovNet<double>::fastPrototype("A-B");
+      gum::UAIMNReader< double > reader2(&net, file);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+
+      TS_ASSERT(!net.empty());
+      TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
+    }
   };
 }   // namespace gum_tests

@@ -294,5 +294,19 @@ namespace gum_tests {
         }
       }
     }
+
+    void testJointTargetFromExistingJoint() {
+      try {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        //ie.addJointTarget({0, 1});
+        GUM_TRACE_VAR(ie.jointTargets());
+        ie.makeInference();
+        GUM_TRACE_VAR(ie.jointTargets());
+        GUM_TRACE_VAR(ie.jointPosterior({0, 1}));
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+    }
   };
 }   // namespace gum_tests

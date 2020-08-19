@@ -191,7 +191,7 @@ namespace gum {
   /// returns the list of target sets
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
-               JointTargetedMNInference< GUM_SCALAR >::jointTargets() const noexcept {
+     JointTargetedMNInference< GUM_SCALAR >::jointTargets() const noexcept {
     return joint_targets__;
   }
 
@@ -212,22 +212,32 @@ namespace gum {
   const Potential< GUM_SCALAR >&
      JointTargetedMNInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
-    NodeSet set;
+    NodeSet jointset;
     bool    found_exact_target = false;
 
     if (joint_targets__.contains(nodes)) {
-      set = nodes;
+      jointset = nodes;
       found_exact_target = true;
-    } else {
-      for (const auto& target: joint_targets__) {
-        if (nodes.isSubsetOf(target)) {
-          set = target;
-          break;
-        }
-      }
     }
 
-    if (set.empty()) {
+    if (jointset.empty()) {
+      for (const auto& target: joint_targets__)
+        if (nodes.isSubsetOf(target)) {
+          jointset = target;
+          break;
+        }
+    }
+
+    if (jointset.empty()) {
+      for (const auto& factor: this->MN().factors())
+        if (nodes.isSubsetOf(factor.first)) {
+          GUM_TRACE_VAR(factor.first)
+          jointset = factor.first;
+          break;
+        }
+    }
+
+    if (jointset.empty()) {
       GUM_ERROR(UndefinedElement,
                 " no joint target containing " << nodes << " could be found among "
                                                << joint_targets__);
@@ -238,7 +248,7 @@ namespace gum {
     if (found_exact_target)
       return jointPosterior_(nodes);
     else
-      return jointPosterior_(nodes, set);
+      return jointPosterior_(nodes, jointset);
   }
 
 

@@ -30,6 +30,8 @@ namespace gum {
       MNReader< GUM_SCALAR >(MN, filename) {
     GUM_CONSTRUCTOR(UAIMNReader);
     mn__ = MN;
+    mn__->clear();
+
     streamName__ = filename;
     parseDone__ = false;
 
