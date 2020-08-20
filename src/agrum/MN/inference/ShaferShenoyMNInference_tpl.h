@@ -586,7 +586,7 @@ namespace gum {
 
           // perform the combination of those potentials and their projection
           MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential >
-                         combine_and_project(combination_op__, SSNewMNprojPotential);
+             combine_and_project(combination_op__, SSNewMNprojPotential);
           PotentialSet__ new_factor_list = combine_and_project.combineAndProject(
              marg_factor_set, hard_variables);
 
@@ -1487,6 +1487,38 @@ namespace gum {
     return prob_ev;
   }
 
+  template < typename GUM_SCALAR >
+  bool ShaferShenoyMNInference< GUM_SCALAR >::isExactJointComputable_(
+     const NodeSet& vars)  {
+    if (JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(vars))
+      return true;
+
+    if (!this->isInferenceReady()) { this->prepareInference(); }
+
+    for (const auto& cliknode: junctionTree()->nodes()) {
+      const auto clique=junctionTree()->clique(cliknode);
+      if (vars == clique) return true;
+    }
+    return false;
+  }
+
+  template < typename GUM_SCALAR >
+  NodeSet ShaferShenoyMNInference< GUM_SCALAR >::superForJointComputable_(
+     const NodeSet& vars) {
+    const auto superset =
+       JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(vars);
+    if (!superset.empty()) return superset;
+
+    if (!this->isInferenceReady()) { this->prepareInference(); }
+
+    for (const auto& cliknode: junctionTree()->nodes()) {
+      const auto clique=junctionTree()->clique(cliknode);
+      if (vars.isSubsetOf(clique)) return clique;
+    }
+
+
+    return NodeSet();
+  }
 
 } /* namespace gum */
 

@@ -133,8 +133,8 @@ namespace gum {
       }
     }
 
-    // check that the joint_target set does not contain the new target
-    if (joint_targets__.contains(joint_target)) return;
+    if (isExactJointComputable_(joint_target)) return;
+    if (! superForJointComputable_(joint_target).empty()) return;
 
     // check if joint_target is a subset of an already existing target
     for (const auto& target: joint_targets__) {
@@ -212,35 +212,18 @@ namespace gum {
   const Potential< GUM_SCALAR >&
      JointTargetedMNInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
-    NodeSet jointset;
     bool    found_exact_target = false;
+    NodeSet super_target;
 
-    if (joint_targets__.contains(nodes)) {
-      jointset = nodes;
+    if (isExactJointComputable_(nodes)) {
       found_exact_target = true;
-    }
-
-    if (jointset.empty()) {
-      for (const auto& target: joint_targets__)
-        if (nodes.isSubsetOf(target)) {
-          jointset = target;
-          break;
-        }
-    }
-
-    if (jointset.empty()) {
-      for (const auto& factor: this->MN().factors())
-        if (nodes.isSubsetOf(factor.first)) {
-          GUM_TRACE_VAR(factor.first)
-          jointset = factor.first;
-          break;
-        }
-    }
-
-    if (jointset.empty()) {
-      GUM_ERROR(UndefinedElement,
-                " no joint target containing " << nodes << " could be found among "
-                                               << joint_targets__);
+    } else {
+      super_target = superForJointComputable_(nodes);
+      if (super_target.empty()) {
+        GUM_ERROR(UndefinedElement,
+                  "No joint target containing "
+                     << nodes << " could be found among " << joint_targets__);
+      }
     }
 
     if (!this->isDone()) { this->makeInference(); }
@@ -248,7 +231,7 @@ namespace gum {
     if (found_exact_target)
       return jointPosterior_(nodes);
     else
-      return jointPosterior_(nodes, jointset);
+      return jointPosterior_(nodes, super_target);
   }
 
 
@@ -476,6 +459,26 @@ namespace gum {
     }
 
     return jointMutualInformation(targetsId);
+  }
+
+  template < typename GUM_SCALAR >
+  bool JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(
+     const NodeSet& vars)  {
+    if (joint_targets__.contains(vars)) return true;
+
+    return false;
+  }
+
+  template < typename GUM_SCALAR >
+  NodeSet JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(
+     const NodeSet& vars)  {
+    for (const auto& target: joint_targets__)
+      if (vars.isSubsetOf(target)) return target;
+
+    for (const auto& factor: this->MN().factors())
+      if (vars.isSubsetOf(factor.first)) return factor.first;
+
+    return NodeSet();
   }
 
 } /* namespace gum */

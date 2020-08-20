@@ -74,8 +74,12 @@ from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTr
 
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
-  '__version__','__license__','__project_url__',        # here
-  'about','availableBNExts','loadBN','saveBN','loadID','getPosterior', # in fuctions.py
+  '__version__','__license__','__project_url__',
+  'about',
+  'availableBNExts', 'loadBN', 'saveBN',
+  'availableMNExts', 'loadMN', 'saveMN',
+  'loadID',
+  'getPosterior',
   'statsObj',
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
@@ -137,7 +141,6 @@ def about():
     FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
     """)
 
-
 def availableBNExts():
   """ Give the list of all formats known by pyAgrum to save a Bayesian network.
 
@@ -147,7 +150,7 @@ def availableBNExts():
 
 
 def loadBN(filename, listeners=None, verbose=False, **opts):
-  """load a file with optional listeners and arguments
+  """load a BN from a file with optional listeners and arguments
 
   :param filename: the name of the input file
   :param listeners: list of functions to execute
@@ -215,7 +218,7 @@ def saveBN(bn, filename):
   """
   save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
 
-  :parma bn(gum.BayesNet): the BN to save
+  :param bn(gum.BayesNet): the BN to save
   :param filename(str): the name of the output file
   """
   extension = filename.split('.')[-1].upper()
@@ -234,6 +237,80 @@ def saveBN(bn, filename):
   else:
     raise InvalidArgument("[pyAgrum] extension "+filename.split('.')
                           [-1]+" unknown. Please use among "+availableBNExts())
+
+
+def availableMNExts():
+  """ Give the list of all formats known by pyAgrum to save a Markov network.
+
+  :return: a string which lists all suffixes for supported MN file formats.
+  """
+  return "uai"
+
+def loadMN(filename, listeners=None, verbose=False):
+  """load a MN from a file with optional listeners and arguments
+
+  :param filename: the name of the input file
+  :param listeners: list of functions to execute
+  :param verbose: whether to print or not warning messages
+  :return: a MN from a file using one of the availableMNExts() suffixes.
+
+  Listeners could be added in order to monitor its loading.
+
+  Examples
+  --------
+  >>> import pyAgrum as gum
+  >>>
+  >>> # creating listeners
+  >>> def foo_listener(progress):
+  >>>    if progress==200:
+  >>>        print(' BN loaded ')
+  >>>        return
+  >>>    elif progress==100:
+  >>>        car='%'
+  >>>    elif progress%10==0:
+  >>>        car='#'
+  >>>    else:
+  >>>        car='.'
+  >>>    print(car,end='',flush=True)
+  >>>
+  >>> def bar_listener(progress):
+  >>>    if progress==50:
+  >>>        print('50%')
+  >>>
+  >>> # loadBN with list of listeners
+  >>> gum.loadMN('./bn.uai',listeners=[foo_listener,bar_listener])
+  >>> # .........#.........#.........#.........#..50%
+  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  """
+  mn = MarkovNet()
+
+  extension = filename.split('.')[-1].upper()
+  if extension == "UAI":
+    warns = mn.loadUAI(filename, listeners)
+  else:
+    raise InvalidArgument("extension "+filename.split('.')
+                          [-1]+" unknown. Please use among "+availableBNExts())
+
+  if verbose:
+    print(warns)
+
+  mn.setProperty("name", filename)
+  return mn
+
+
+def saveMN(mn, filename):
+  """
+  save a MN into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
+
+  :param mn(gum.MarkovNet): the MN to save
+  :param filename(str): the name of the output file
+  """
+  extension = filename.split('.')[-1].upper()
+  if extension == "UAI":
+    mn.saveUAI(filename)
+  else:
+    raise InvalidArgument("[pyAgrum] extension "+filename.split('.')
+                          [-1]+" unknown. Please use among "+availableMNExts())
 
 
 def loadID(filename):

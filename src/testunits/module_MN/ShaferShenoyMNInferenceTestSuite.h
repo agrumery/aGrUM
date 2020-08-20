@@ -296,16 +296,56 @@ namespace gum_tests {
     }
 
     void testJointTargetFromExistingJoint() {
-      try {
+      // explicit jointtarget
+      {
         auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
-        //ie.addJointTarget({0, 1});
-        GUM_TRACE_VAR(ie.jointTargets());
         ie.makeInference();
-        GUM_TRACE_VAR(ie.jointTargets());
-        GUM_TRACE_VAR(ie.jointPosterior({0, 1}));
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
+        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}),
+                         gum::UndefinedElement);
+      }
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addJointTarget({0, 2});
+        ie.makeInference();
+        auto p = ie.jointPosterior({0, 2});
+      }
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addJointTarget({0, 2});
+        auto p = ie.jointPosterior({0, 2});
+      }
+
+      // implicit jointtarget as factor
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.makeInference();
+        auto p = ie.jointPosterior({0, 1});
+      }
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addJointTarget({0, 1});
+        ie.makeInference();
+        auto p = ie.jointPosterior({0, 1});
+      }
+
+      // implicit jointtarget as subset of clique in junction tree
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C;A-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.makeInference();
+        auto p = ie.jointPosterior({0, 2});
+      }
+      {
+        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C;A-C");
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addJointTarget({0, 2});
+        ie.makeInference();
+        auto p = ie.jointPosterior({0, 2});
       }
     }
   };
