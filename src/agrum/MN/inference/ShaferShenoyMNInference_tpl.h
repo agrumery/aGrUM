@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
@@ -1493,12 +1492,16 @@ namespace gum {
     if (JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(vars))
       return true;
 
-    if (!this->isInferenceReady()) { this->prepareInference(); }
+    this->prepareInference();
 
-    for (const auto& cliknode: junctionTree()->nodes()) {
-      const auto clique=junctionTree()->clique(cliknode);
+    for (const auto& cliknode: this->propagator__->nodes()) {
+      GUM_TRACE_VAR(cliknode);
+      const auto clique=propagator__->clique(cliknode);
+      GUM_TRACE_VAR(clique);
       if (vars == clique) return true;
+      GUM_CHECKPOINT;
     }
+    GUM_CHECKPOINT;
     return false;
   }
 
@@ -1509,10 +1512,10 @@ namespace gum {
        JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(vars);
     if (!superset.empty()) return superset;
 
-    if (!this->isInferenceReady()) { this->prepareInference(); }
+    this->prepareInference();
 
-    for (const auto& cliknode: junctionTree()->nodes()) {
-      const auto clique=junctionTree()->clique(cliknode);
+    for (const auto& cliknode: propagator__->nodes()) {
+      const auto clique=propagator__->clique(cliknode);
       if (vars.isSubsetOf(clique)) return clique;
     }
 
