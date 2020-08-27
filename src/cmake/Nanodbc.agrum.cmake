@@ -27,7 +27,12 @@ if (USE_NANODBC)
 		find_program(ODBC_CONFIG odbc_config
 			$ENV{ODBC_PATH}/bin /usr/bin /usr/local/bin PATHS)
 		if(ODBC_CONFIG)
-			set(ODBCLIB odbc)
+			if(APPLE)
+				set(ODBCLIB iodbc)
+			else(APPLE)
+				set(ODBCLIB odbc)
+			endif(APPLE)
+
 			execute_process(COMMAND ${ODBC_CONFIG} --include-prefix
 				OUTPUT_VARIABLE ODBC_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
 			set(ODBC_CFLAGS "-I${ODBC_INCLUDE_DIR}")
