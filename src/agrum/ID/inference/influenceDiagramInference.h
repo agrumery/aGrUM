@@ -220,9 +220,7 @@ namespace gum {
     Potential< GUM_SCALAR >* makeDummyPotential__(NodeId cliqueId);
 
     /// Returns a pointer over a "dummy" utility, which is a utility table
-    /// filled
-    /// with
-    /// one MultiDimSparse filled with 0. This is used by empty cliques.
+    /// filled with one MultiDimSparse filled with 0. This is used by empty cliques.
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy
     /// utility.
     /// @return A pointer over the dummy bucket.
@@ -302,13 +300,13 @@ namespace gum {
     const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
        utilityBucket();
 
-    /// @return returns the elimination sequence for this clique
+    /// @return the elimination sequence for this clique
     const Sequence< NodeId >& cliqueEliminationOrder();
 
-    /// @return returns List containing all variables contained in this clique
+    /// @return List containing all variables contained in this clique
     const Sequence< const DiscreteVariable* >& cliqueVariables();
 
-    /// @return returns instanciation on variable within this clique
+    /// @return returns instantiation on variable within this clique
     Instantiation& cliqueInstantiation();
 
     private:
@@ -328,13 +326,13 @@ namespace gum {
     /// Instantiation on variable in that clique
     Instantiation allVarsInst__;
 
-    /// The list of var that have been had during an inference
+    /// The list of var that have been added during an inference
     List< const DiscreteVariable* > removableVarList__;
 
-    /// The list of potentials that have been had during an inference
+    /// The list of potentials that have been added during an inference
     List< const Potential< GUM_SCALAR >* > removablePotentialList__;
 
-    /// The list of utilities that have been had during an inference
+    /// The list of utilities that have been added during an inference
     List< const Potential< GUM_SCALAR >* > removableUtilityList__;
   };
 

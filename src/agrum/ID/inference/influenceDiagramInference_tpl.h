@@ -128,8 +128,7 @@ namespace gum {
   }
 
   // getBestDecisionChoice : Returns for given decision node the best decision
-  // to
-  // take under this infernece
+  // to take under this inference
   template < typename GUM_SCALAR >
   INLINE Idx InfluenceDiagramInference< GUM_SCALAR >::getBestDecisionChoice(
      NodeId decisionId) {
@@ -211,7 +210,6 @@ namespace gum {
   }
 
   // getSeparator__ :: returns the set of node contains in clique1 inter clique2
-
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
                InfluenceDiagramInference< GUM_SCALAR >::getSeparator__(NodeId clique_1,
@@ -247,8 +245,7 @@ namespace gum {
   }
 
   // makeCliquePropertiesMap__ : Builds up clique data structure for the
-  // inference
-
+ // inference
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::makeCliquePropertiesMap__() {
     const std::vector< NodeId > elim = triangulation__->eliminationOrder();
@@ -289,15 +286,13 @@ namespace gum {
     }
 
     // Third pass to fill empty cliques with "one" matrices for potentials and
-    // "zero"
-    // matrices for utilities.
+    // "zero" matrices for utilities.
     for (const auto cliq: potentialsCliquesSet)
       cliquePropertiesMap__[cliq]->addPotential(*makeDummyPotential__(cliq));
 
-    // Fourth pass to adress utility table to the good clique
-    // We go trought all diagram's nodes in search of utility nodes since they
-    // do not
-    // appear in elimination order
+    // Fourth pass to address utility table to the good clique
+    // We go through all diagram's nodes in search of utility nodes since they
+    // do not appear in elimination order
     for (const auto node: this->influenceDiagram().nodes())
       if (this->influenceDiagram().isUtilityNode(node)) {
         // Récupération de la bonne clique
@@ -358,7 +353,7 @@ namespace gum {
       if (validIndex) {
         Idx index = 1;
 
-        for (std::vector< NodeId >::const_iterator eliminationOrderIter =
+        for (auto eliminationOrderIter =
                 triangulation__->eliminationOrder().begin();
              eliminationOrderIter != triangulation__->eliminationOrder().end()
              && *eliminationOrderIter != *cliqueNodesIter;
@@ -375,9 +370,7 @@ namespace gum {
   }
 
   // IsEliminatedAfter__ :   checks if  observed  node is eliminated after
-  // current
-  // node.
-
+  // current node.
   template < typename GUM_SCALAR >
   bool InfluenceDiagramInference< GUM_SCALAR >::IsEliminatedAfter__(
      NodeId observedNode, NodeId currentNode) {
@@ -442,23 +435,19 @@ namespace gum {
     CliqueProperties< GUM_SCALAR >* absorbedClique =
        cliquePropertiesMap__[absorbedCliqueId];
 
-    // Get the nodes making the separtion between the absorbed clique and the
+    // Get the nodes making the separation between the absorbed clique and the
     // absorbing one
     NodeSet separator = getSeparator__(absorbedCliqueId, absorbingCliqueId);
 
     Potential< GUM_SCALAR >* potentialMarginal = 0;
     Potential< GUM_SCALAR >* utilityMarginal = 0;
 
-    // First  we reduce absorbed clique by eleminating clique variables which
-    // aren't
-    // in the separator.
+    // First  we reduce absorbed clique by eliminating clique variables which
+    // aren't in the separator.
     // The aim of this operation is to obtained by marginalization a potential
-    // and a
-    // utility over the variable presents
-    // in the separator (and only those one ). Those tables represent the
-    // "messages"
-    // sent by child
-    // clique to its parent.
+    // and a utility over the variable presents in the separator (and only those
+    // ones). Those tables represent the "messages" sent by childclique to its
+    // parent.
     reduceClique__(absorbedClique, separator, potentialMarginal, utilityMarginal);
 
     // Then those tables are add in parents clique property.
@@ -466,7 +455,7 @@ namespace gum {
     cliquePropertiesMap__[absorbingCliqueId]->addPotential(*potentialMarginal,
                                                            true);
 
-    // For  the utility table, we need first to divide it by the potential
+    // For the utility table, we need first to divide it by the potential
     Instantiation utilityMarginalInst(utilityMarginal);
 
     for (utilityMarginalInst.setFirst(); !utilityMarginalInst.end();
@@ -486,9 +475,9 @@ namespace gum {
 
   // reduceClique__ : Performs a clique reduction
 
-  // This operations consists in eliminating each variable of the clique wich
+  // This operations consists in eliminating each variable of the clique which
   // are not in the separator between this clique and its parent clique.
-  // Variable elimination is done by performing the correct marging operation on
+  // Variable elimination is done by performing the correct marginalisation operation on
   // clique potential. That operation is determined by the nature
   // of currently eliminated variable : if its a chance variable, we sum over
   // its modalities, if its a decision node we maximise over its modalities.
@@ -522,19 +511,16 @@ namespace gum {
         }
 
         // And finally, before doing marginalizing operations,
-        // we add an instanciation to those tables to ease marginalizing
-        // operations.
-        // Note that we only need one tablel instance because the other one 's
-        // got
-        // exactly sames variables
+        // we add an instantiation to those tables to ease marginalizing
+        // operations. Note that we only need one table instance because the
+        // other one 's got exactly sames variables
         Instantiation newInstantiation(newPotential);
 
         //=====================================================================================
         // Marginalization
 
         // Then we fill the new potentials over all their values by
-        // marginalizing the
-        // previous one
+        // marginalizing the previous one
         for (newInstantiation.setFirst(); !newInstantiation.end();
              newInstantiation.inc()) {
           // Various initialization
@@ -576,7 +562,6 @@ namespace gum {
                 uti.second->setVals(cliqueInstance);
                 currentUtility += uti.first->get(*uti.second);
               }
-
               currentUtility *= currentPotential;
             } else {
               Instantiation utilityMarginalInst(utilityMarginal);
@@ -709,9 +694,8 @@ namespace gum {
   }
 
   // addPotential : adds a potential to this clique
-  // The removable boolean inidcates if this potential can be cleaned off after
-  // an
-  // inference or not
+  // The removable boolean indicates if this potential can be cleaned off after
+  // an inference or not
   template < typename GUM_SCALAR >
   void CliqueProperties< GUM_SCALAR >::addPotential(
      const Potential< GUM_SCALAR >& cpt, bool removable) {
@@ -739,9 +723,8 @@ namespace gum {
   }
 
   // addUtility : adds a utility table to this clique
-  // The removable boolean inidcates if this utilityTable can be cleaned off
-  // after an
-  // inference or not
+  // The removable boolean indicates if this utilityTable can be cleaned off
+  // after an inference or not
   template < typename GUM_SCALAR >
   void
      CliqueProperties< GUM_SCALAR >::addUtility(const Potential< GUM_SCALAR >& ut,
@@ -761,7 +744,7 @@ namespace gum {
     }
   }
 
-  //  utilityBucket : Returns the utiluty table bucket of this Clique
+  //  utilityBucket : Returns the utility table bucket of this Clique
   template < typename GUM_SCALAR >
   INLINE const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
                CliqueProperties< GUM_SCALAR >::utilityBucket() {
@@ -770,9 +753,8 @@ namespace gum {
 
   // cleanFromInference : performs a cleaning of the clique after an inference
   // This is done by removing the "message" given by a child clique to its
-  // parents,
-  // meaning the potentials and utility tables obtained by
-  // variable elemination in the clique.
+  // parents, meaning the potentials and utility tables obtained by
+  // variable elimination in the clique.
   template < typename GUM_SCALAR >
   void CliqueProperties< GUM_SCALAR >::cleanFromInference() {
     // Removed added variables during inference (normally, the
