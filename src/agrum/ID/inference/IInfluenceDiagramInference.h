@@ -95,6 +95,22 @@ namespace gum {
     virtual GUM_SCALAR getMEU() = 0;
 
     /**
+     * Returns a copy of the posterior or the marginal utility for a node
+     *
+     * @throw OperationNotAllowed if no inference have yet been made
+     * @throw NotFound if the node is not found
+     */
+    virtual gum::Potential< GUM_SCALAR > getMarginal(NodeId node) = 0;
+
+    /**
+     * Returns a copy of the posterior or the marginal utility for a node
+     *
+     * @throw OperationNotAllowed if no inference have yet been made
+     * @throw NotFound if the node is not found
+     */
+    virtual gum::Potential< GUM_SCALAR > getMarginal(const std::string& name) final;
+
+    /**
      * Returns best choice for decision variable given in parameter ( based upon
      * MEU
      * criteria )

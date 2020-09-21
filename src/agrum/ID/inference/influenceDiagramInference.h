@@ -120,6 +120,9 @@ namespace gum {
     /// @see gum::IInfluenceDiagramInference::eraseAllEvidence().
     virtual void eraseAllEvidence();
 
+    virtual gum::Potential< GUM_SCALAR > getMarginal(NodeId node) final {
+      return gum::Potential<GUM_SCALAR>();
+    }
     /// @}
     // ====================================================================
     /// @name Getters & setters
@@ -138,6 +141,8 @@ namespace gum {
     /// @name Private members
     // ====================================================================
     /// @{
+    /// The potentials for resulting marginals (proba or decision)
+    gum::NodeProperty<gum::Potential<GUM_SCALAR>> marginals__;
 
     /// The triangulation algorithm.
     Triangulation* triangulation__;
@@ -178,10 +183,10 @@ namespace gum {
     /// @{
 
     /// @return Returns a separator given two adjacent cliques
-    const NodeSet& getSeparator__(NodeId clique_1, NodeId clique_2);
+    const NodeSet& separator__(NodeId clique_1, NodeId clique_2);
 
     /// @return Returns the clique in which the node's potentials must be stored
-    NodeId getClique__(const std::vector< NodeId >& eliminationOrder, NodeId id);
+    NodeId firstEliminatedVariableClique__(const std::vector< NodeId >& eliminationOrder, NodeId id);
 
     /// @}
     // ====================================================================
@@ -262,7 +267,7 @@ namespace gum {
     /// of adding potential during inference
     void addPotential(const Potential< GUM_SCALAR >& cpt, bool removable = false);
 
-    /// Add a potential to this clique
+    /// Add a utility potential to this clique
     /// @param cpt v's cpt.
     /// @param removable for cleaning purpose after inference, we have to keep
     /// track
