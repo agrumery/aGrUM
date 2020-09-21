@@ -57,7 +57,7 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  NodeId build_node(MarkovNet< GUM_SCALAR >& mn,
+  NodeId build_node_for_MN(MarkovNet< GUM_SCALAR >& mn,
                     std::string              node,
                     Size                     default_domain_size) {
     std::string                name = node;
@@ -143,7 +143,7 @@ namespace gum {
     for (const auto& clikchain: split(dotlike, ";")) {
       NodeSet cliq;
       for (const auto& node: split(clikchain, "-")) {
-        auto idVar = build_node(mn, node, domainSize);
+        auto idVar = build_node_for_MN(mn, node, domainSize);
         cliq.insert(idVar);
       }
       mn.addFactor(cliq);

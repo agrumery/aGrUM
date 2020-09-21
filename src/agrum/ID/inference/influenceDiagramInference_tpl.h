@@ -364,6 +364,7 @@ namespace gum {
           cliqueEliminationMap__.insert(0, cli);
         } catch (Exception& e) { throw(e); }
     }
+    GUM_TRACE_VAR(cliqueEliminationMap__)
   }
 
   // IsEliminatedAfter__ :   checks if  observed  node is eliminated after

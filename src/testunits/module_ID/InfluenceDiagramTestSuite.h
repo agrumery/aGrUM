@@ -814,5 +814,10 @@ namespace gum_tests {
         GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
       }
     }
+
+    void testFastPrototype() {
+      auto infdiag=gum::InfluenceDiagram<double>::fastPrototype("A->*B<-C;E<-B->$D");
+      GUM_TRACE_VAR(infdiag.toDot());
+    }
   };
 }   // namespace gum_tests

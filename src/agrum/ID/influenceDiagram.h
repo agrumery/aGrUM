@@ -53,8 +53,36 @@ namespace gum {
   template < typename GUM_SCALAR >
   class InfluenceDiagram: public DAGmodel {
     // friend class InfluenceDiagramFactory<GUM_SCALAR>;
-
     public:
+    /**
+     * Create an Influence Diagram with a dot-like syntax which specifies:
+     *   - the structure "a->*b->$c;b->d<-*e;".
+     *   - the prefix of a variable can be :
+     *      - nothing : chance node (a,d)
+     *      - * :  decision node (*b)
+     *      - $ : utility node ($c)     *
+     *   - the type of the chance or decision variables with different syntax:
+     *     + by default, a variable is a gum::RangeVariable using the default
+     * domainSize (second argument)
+     *     + with "a[10]", the variable is a gum::RangeVariable using 10 as
+     * domainSize (from 0 to 9)
+     *     + with "a[3,7]", the variable is a gum::RangeVariable using a domainSize
+     * from 3 to 7
+     *     + with "a[1,3.14,5,6.2]", the variable is a gum::DiscretizedVariable
+     * using the given ticks (at least 3 values)
+     *     + with "a{top|middle|bottom}", the variable is a gum::LabelizedVariable
+     * using the given labels.
+     *
+     * Note that if the dot-like string contains such a specification more than
+     * once for a variable, the first specification will be used.
+     *
+     * @param dotlike the string containing the specification
+     * @param domainSize the default domain size for chance and decision variables
+     * @return the resulting influence diagram
+     */
+    static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                        Size               domainSize = 2);
+
     // ===========================================================================
     /// @name Constructors / Destructors
     // ===========================================================================
