@@ -1701,19 +1701,19 @@ class GumException(Exception):
 
     def __init__(self, *args):
         r"""
-        Exception(std::string const aMsg="", std::string const aType="Generic error") -> GumException
+        Exception(std::string aMsg="", std::string aType="Generic error") -> GumException
         __init__(GumException self, GumException e) -> GumException
         """
         _pyAgrum.GumException_swiginit(self, _pyAgrum.new_GumException(*args))
     __swig_destroy__ = _pyAgrum.delete_GumException
 
-    def what(self) -> "std::string const":
-        r"""what(GumException self) -> std::string const"""
+    def what(self) -> "std::string":
+        r"""what(GumException self) -> std::string"""
         return _pyAgrum.GumException_what(self)
 
-    def errorContent(self) -> "std::string const":
+    def errorContent(self) -> "std::string":
         r"""
-        errorContent(GumException self) -> std::string const
+        errorContent(GumException self) -> std::string
 
         Returns
         -------
@@ -1723,9 +1723,9 @@ class GumException(Exception):
         """
         return _pyAgrum.GumException_errorContent(self)
 
-    def errorType(self) -> "std::string const":
+    def errorType(self) -> "std::string":
         r"""
-        errorType(GumException self) -> std::string const
+        errorType(GumException self) -> std::string
 
         Returns
         -------
@@ -1735,9 +1735,9 @@ class GumException(Exception):
         """
         return _pyAgrum.GumException_errorType(self)
 
-    def errorCallStack(self) -> "std::string const":
+    def errorCallStack(self) -> "std::string":
         r"""
-        errorCallStack(GumException self) -> std::string const
+        errorCallStack(GumException self) -> std::string
 
         Returns
         -------
@@ -1751,8 +1751,8 @@ class GumException(Exception):
 _pyAgrum.GumException_swigregister(GumException)
 
 
-def createMsg__(filename: "std::string const &", function: "std::string const &", line: "int const", msg: "std::string const &") -> "std::string const":
-    r"""createMsg__(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
+def createMsg__(filename: "std::string const &", function: "std::string const &", line: "int", msg: "std::string const &") -> "std::string const":
+    r"""createMsg__(std::string const & filename, std::string const & function, int line, std::string const & msg) -> std::string const"""
     return _pyAgrum.createMsg__(filename, function, line, msg)
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
@@ -1762,7 +1762,7 @@ class IdError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(IdError self, std::string aMsg, std::string aType="ID error") -> IdError
+        __init__(IdError self, std::string const & aMsg, std::string const & aType="ID error") -> IdError
         __init__(IdError self, IdError src) -> IdError
         """
         _pyAgrum.IdError_swiginit(self, _pyAgrum.new_IdError(*args))
@@ -1779,7 +1779,7 @@ class FatalError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(FatalError self, std::string aMsg, std::string aType="Fatal error") -> FatalError
+        __init__(FatalError self, std::string const & aMsg, std::string const & aType="Fatal error") -> FatalError
         __init__(FatalError self, FatalError src) -> FatalError
         """
         _pyAgrum.FatalError_swiginit(self, _pyAgrum.new_FatalError(*args))
@@ -1796,7 +1796,7 @@ class NotImplementedYet(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(NotImplementedYet self, std::string aMsg, std::string aType="Not implemented yet") -> NotImplementedYet
+        __init__(NotImplementedYet self, std::string const & aMsg, std::string const & aType="Not implemented yet") -> NotImplementedYet
         __init__(NotImplementedYet self, NotImplementedYet src) -> NotImplementedYet
         """
         _pyAgrum.NotImplementedYet_swiginit(self, _pyAgrum.new_NotImplementedYet(*args))
@@ -1813,7 +1813,7 @@ class UndefinedIteratorValue(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(UndefinedIteratorValue self, std::string aMsg, std::string aType="Undefined iterator") -> UndefinedIteratorValue
+        __init__(UndefinedIteratorValue self, std::string const & aMsg, std::string const & aType="Undefined iterator") -> UndefinedIteratorValue
         __init__(UndefinedIteratorValue self, UndefinedIteratorValue src) -> UndefinedIteratorValue
         """
         _pyAgrum.UndefinedIteratorValue_swiginit(self, _pyAgrum.new_UndefinedIteratorValue(*args))
@@ -1830,7 +1830,7 @@ class UndefinedIteratorKey(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(UndefinedIteratorKey self, std::string aMsg, std::string aType="Undefined iterator\'s key") -> UndefinedIteratorKey
+        __init__(UndefinedIteratorKey self, std::string const & aMsg, std::string const & aType="Undefined iterator\'s key") -> UndefinedIteratorKey
         __init__(UndefinedIteratorKey self, UndefinedIteratorKey src) -> UndefinedIteratorKey
         """
         _pyAgrum.UndefinedIteratorKey_swiginit(self, _pyAgrum.new_UndefinedIteratorKey(*args))
@@ -1847,7 +1847,7 @@ class NullElement(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(NullElement self, std::string aMsg, std::string aType="Null element") -> NullElement
+        __init__(NullElement self, std::string const & aMsg, std::string const & aType="Null element") -> NullElement
         __init__(NullElement self, NullElement src) -> NullElement
         """
         _pyAgrum.NullElement_swiginit(self, _pyAgrum.new_NullElement(*args))
@@ -1864,7 +1864,7 @@ class UndefinedElement(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(UndefinedElement self, std::string aMsg, std::string aType="Undefined element") -> UndefinedElement
+        __init__(UndefinedElement self, std::string const & aMsg, std::string const & aType="Undefined element") -> UndefinedElement
         __init__(UndefinedElement self, UndefinedElement src) -> UndefinedElement
         """
         _pyAgrum.UndefinedElement_swiginit(self, _pyAgrum.new_UndefinedElement(*args))
@@ -1881,7 +1881,7 @@ class SizeError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(SizeError self, std::string aMsg, std::string aType="incorrect size") -> SizeError
+        __init__(SizeError self, std::string const & aMsg, std::string const & aType="incorrect size") -> SizeError
         __init__(SizeError self, SizeError src) -> SizeError
         """
         _pyAgrum.SizeError_swiginit(self, _pyAgrum.new_SizeError(*args))
@@ -1898,7 +1898,7 @@ class EmptySet(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(EmptySet self, std::string aMsg, std::string aType="Empty set") -> EmptySet
+        __init__(EmptySet self, std::string const & aMsg, std::string const & aType="Empty set") -> EmptySet
         __init__(EmptySet self, EmptySet src) -> EmptySet
         """
         _pyAgrum.EmptySet_swiginit(self, _pyAgrum.new_EmptySet(*args))
@@ -1915,7 +1915,7 @@ class InvalidArgumentsNumber(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidArgumentsNumber self, std::string aMsg, std::string aType="Invalid argument number") -> InvalidArgumentsNumber
+        __init__(InvalidArgumentsNumber self, std::string const & aMsg, std::string const & aType="Invalid argument number") -> InvalidArgumentsNumber
         __init__(InvalidArgumentsNumber self, InvalidArgumentsNumber src) -> InvalidArgumentsNumber
         """
         _pyAgrum.InvalidArgumentsNumber_swiginit(self, _pyAgrum.new_InvalidArgumentsNumber(*args))
@@ -1932,7 +1932,7 @@ class InvalidArgument(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidArgument self, std::string aMsg, std::string aType="Invalid argument") -> InvalidArgument
+        __init__(InvalidArgument self, std::string const & aMsg, std::string const & aType="Invalid argument") -> InvalidArgument
         __init__(InvalidArgument self, InvalidArgument src) -> InvalidArgument
         """
         _pyAgrum.InvalidArgument_swiginit(self, _pyAgrum.new_InvalidArgument(*args))
@@ -1949,7 +1949,7 @@ class IOError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(IOError self, std::string aMsg, std::string aType="I/O Error") -> IOError
+        __init__(IOError self, std::string const & aMsg, std::string const & aType="I/O Error") -> IOError
         __init__(IOError self, IOError src) -> IOError
         """
         _pyAgrum.IOError_swiginit(self, _pyAgrum.new_IOError(*args))
@@ -1966,7 +1966,7 @@ class FormatNotFound(IOError):
 
     def __init__(self, *args):
         r"""
-        __init__(FormatNotFound self, std::string aMsg, std::string aType="Format not found") -> FormatNotFound
+        __init__(FormatNotFound self, std::string const & aMsg, std::string const & aType="Format not found") -> FormatNotFound
         __init__(FormatNotFound self, FormatNotFound src) -> FormatNotFound
         """
         _pyAgrum.FormatNotFound_swiginit(self, _pyAgrum.new_FormatNotFound(*args))
@@ -1983,7 +1983,7 @@ class OperationNotAllowed(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(OperationNotAllowed self, std::string aMsg, std::string aType="Operation not allowed") -> OperationNotAllowed
+        __init__(OperationNotAllowed self, std::string const & aMsg, std::string const & aType="Operation not allowed") -> OperationNotAllowed
         __init__(OperationNotAllowed self, OperationNotAllowed src) -> OperationNotAllowed
         """
         _pyAgrum.OperationNotAllowed_swiginit(self, _pyAgrum.new_OperationNotAllowed(*args))
@@ -2000,7 +2000,7 @@ class NotFound(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(NotFound self, std::string aMsg, std::string aType="Object not found") -> NotFound
+        __init__(NotFound self, std::string const & aMsg, std::string const & aType="Object not found") -> NotFound
         __init__(NotFound self, NotFound src) -> NotFound
         """
         _pyAgrum.NotFound_swiginit(self, _pyAgrum.new_NotFound(*args))
@@ -2017,7 +2017,7 @@ class ReferenceError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(ReferenceError self, std::string aMsg, std::string aType="Reference error") -> ReferenceError
+        __init__(ReferenceError self, std::string const & aMsg, std::string const & aType="Reference error") -> ReferenceError
         __init__(ReferenceError self, ReferenceError src) -> ReferenceError
         """
         _pyAgrum.ReferenceError_swiginit(self, _pyAgrum.new_ReferenceError(*args))
@@ -2034,7 +2034,7 @@ class OutOfBounds(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(OutOfBounds self, std::string aMsg, std::string aType="Out of bound error") -> OutOfBounds
+        __init__(OutOfBounds self, std::string const & aMsg, std::string const & aType="Out of bound error") -> OutOfBounds
         __init__(OutOfBounds self, OutOfBounds src) -> OutOfBounds
         """
         _pyAgrum.OutOfBounds_swiginit(self, _pyAgrum.new_OutOfBounds(*args))
@@ -2051,7 +2051,7 @@ class OutOfLowerBound(OutOfBounds):
 
     def __init__(self, *args):
         r"""
-        __init__(OutOfLowerBound self, std::string aMsg, std::string aType="Out of lower bound error") -> OutOfLowerBound
+        __init__(OutOfLowerBound self, std::string const & aMsg, std::string const & aType="Out of lower bound error") -> OutOfLowerBound
         __init__(OutOfLowerBound self, OutOfLowerBound src) -> OutOfLowerBound
         """
         _pyAgrum.OutOfLowerBound_swiginit(self, _pyAgrum.new_OutOfLowerBound(*args))
@@ -2068,7 +2068,7 @@ class OutOfUpperBound(OutOfBounds):
 
     def __init__(self, *args):
         r"""
-        __init__(OutOfUpperBound self, std::string aMsg, std::string aType="Out of upper bound error") -> OutOfUpperBound
+        __init__(OutOfUpperBound self, std::string const & aMsg, std::string const & aType="Out of upper bound error") -> OutOfUpperBound
         __init__(OutOfUpperBound self, OutOfUpperBound src) -> OutOfUpperBound
         """
         _pyAgrum.OutOfUpperBound_swiginit(self, _pyAgrum.new_OutOfUpperBound(*args))
@@ -2085,7 +2085,7 @@ class DuplicateElement(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(DuplicateElement self, std::string aMsg, std::string aType="Duplicate element") -> DuplicateElement
+        __init__(DuplicateElement self, std::string const & aMsg, std::string const & aType="Duplicate element") -> DuplicateElement
         __init__(DuplicateElement self, DuplicateElement src) -> DuplicateElement
         """
         _pyAgrum.DuplicateElement_swiginit(self, _pyAgrum.new_DuplicateElement(*args))
@@ -2102,7 +2102,7 @@ class DuplicateLabel(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(DuplicateLabel self, std::string aMsg, std::string aType="Duplicate label") -> DuplicateLabel
+        __init__(DuplicateLabel self, std::string const & aMsg, std::string const & aType="Duplicate label") -> DuplicateLabel
         __init__(DuplicateLabel self, DuplicateLabel src) -> DuplicateLabel
         """
         _pyAgrum.DuplicateLabel_swiginit(self, _pyAgrum.new_DuplicateLabel(*args))
@@ -2119,7 +2119,7 @@ class GraphError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(GraphError self, std::string aMsg, std::string aType="Graph error") -> GraphError
+        __init__(GraphError self, std::string const & aMsg, std::string const & aType="Graph error") -> GraphError
         __init__(GraphError self, GraphError src) -> GraphError
         """
         _pyAgrum.GraphError_swiginit(self, _pyAgrum.new_GraphError(*args))
@@ -2136,7 +2136,7 @@ class NoNeighbour(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(NoNeighbour self, std::string aMsg, std::string aType="No neighbour found") -> NoNeighbour
+        __init__(NoNeighbour self, std::string const & aMsg, std::string const & aType="No neighbour found") -> NoNeighbour
         __init__(NoNeighbour self, NoNeighbour src) -> NoNeighbour
         """
         _pyAgrum.NoNeighbour_swiginit(self, _pyAgrum.new_NoNeighbour(*args))
@@ -2153,7 +2153,7 @@ class NoParent(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(NoParent self, std::string aMsg, std::string aType="No parent found") -> NoParent
+        __init__(NoParent self, std::string const & aMsg, std::string const & aType="No parent found") -> NoParent
         __init__(NoParent self, NoParent src) -> NoParent
         """
         _pyAgrum.NoParent_swiginit(self, _pyAgrum.new_NoParent(*args))
@@ -2170,7 +2170,7 @@ class NoChild(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(NoChild self, std::string aMsg, std::string aType="No child found") -> NoChild
+        __init__(NoChild self, std::string const & aMsg, std::string const & aType="No child found") -> NoChild
         __init__(NoChild self, NoChild src) -> NoChild
         """
         _pyAgrum.NoChild_swiginit(self, _pyAgrum.new_NoChild(*args))
@@ -2187,7 +2187,7 @@ class InvalidEdge(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidEdge self, std::string aMsg, std::string aType="Invalid edge") -> InvalidEdge
+        __init__(InvalidEdge self, std::string const & aMsg, std::string const & aType="Invalid edge") -> InvalidEdge
         __init__(InvalidEdge self, InvalidEdge src) -> InvalidEdge
         """
         _pyAgrum.InvalidEdge_swiginit(self, _pyAgrum.new_InvalidEdge(*args))
@@ -2204,7 +2204,7 @@ class InvalidArc(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidArc self, std::string aMsg, std::string aType="Invalid arc") -> InvalidArc
+        __init__(InvalidArc self, std::string const & aMsg, std::string const & aType="Invalid arc") -> InvalidArc
         __init__(InvalidArc self, InvalidArc src) -> InvalidArc
         """
         _pyAgrum.InvalidArc_swiginit(self, _pyAgrum.new_InvalidArc(*args))
@@ -2221,7 +2221,7 @@ class InvalidNode(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidNode self, std::string aMsg, std::string aType="Invalid node") -> InvalidNode
+        __init__(InvalidNode self, std::string const & aMsg, std::string const & aType="Invalid node") -> InvalidNode
         __init__(InvalidNode self, InvalidNode src) -> InvalidNode
         """
         _pyAgrum.InvalidNode_swiginit(self, _pyAgrum.new_InvalidNode(*args))
@@ -2238,7 +2238,7 @@ class EmptyBSTree(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(EmptyBSTree self, std::string aMsg, std::string aType="Empty binary search tree") -> EmptyBSTree
+        __init__(EmptyBSTree self, std::string const & aMsg, std::string const & aType="Empty binary search tree") -> EmptyBSTree
         __init__(EmptyBSTree self, EmptyBSTree src) -> EmptyBSTree
         """
         _pyAgrum.EmptyBSTree_swiginit(self, _pyAgrum.new_EmptyBSTree(*args))
@@ -2255,7 +2255,7 @@ class DefaultInLabel(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(DefaultInLabel self, std::string aMsg, std::string aType="Error on label") -> DefaultInLabel
+        __init__(DefaultInLabel self, std::string const & aMsg, std::string const & aType="Error on label") -> DefaultInLabel
         __init__(DefaultInLabel self, DefaultInLabel src) -> DefaultInLabel
         """
         _pyAgrum.DefaultInLabel_swiginit(self, _pyAgrum.new_DefaultInLabel(*args))
@@ -2272,7 +2272,7 @@ class InvalidDirectedCycle(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(InvalidDirectedCycle self, std::string aMsg, std::string aType="Directed cycle detected") -> InvalidDirectedCycle
+        __init__(InvalidDirectedCycle self, std::string const & aMsg, std::string const & aType="Directed cycle detected") -> InvalidDirectedCycle
         __init__(InvalidDirectedCycle self, InvalidDirectedCycle src) -> InvalidDirectedCycle
         """
         _pyAgrum.InvalidDirectedCycle_swiginit(self, _pyAgrum.new_InvalidDirectedCycle(*args))
@@ -2289,7 +2289,7 @@ class CPTError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(CPTError self, std::string aMsg, std::string aType="CPT error") -> CPTError
+        __init__(CPTError self, std::string const & aMsg, std::string const & aType="CPT error") -> CPTError
         __init__(CPTError self, CPTError src) -> CPTError
         """
         _pyAgrum.CPTError_swiginit(self, _pyAgrum.new_CPTError(*args))
@@ -2306,7 +2306,7 @@ class CPTNoSumTo1(CPTError):
 
     def __init__(self, *args):
         r"""
-        __init__(CPTNoSumTo1 self, std::string aMsg, std::string aType="CPT does not sum to 1") -> CPTNoSumTo1
+        __init__(CPTNoSumTo1 self, std::string const & aMsg, std::string const & aType="CPT does not sum to 1") -> CPTNoSumTo1
         __init__(CPTNoSumTo1 self, CPTNoSumTo1 src) -> CPTNoSumTo1
         """
         _pyAgrum.CPTNoSumTo1_swiginit(self, _pyAgrum.new_CPTNoSumTo1(*args))
@@ -2323,7 +2323,7 @@ class IncompatibleEvidence(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(IncompatibleEvidence self, std::string aMsg, std::string aType="several evidence/CPT are incompatible together (proba=0)") -> IncompatibleEvidence
+        __init__(IncompatibleEvidence self, std::string const & aMsg, std::string const & aType="several evidence/CPT are incompatible together (proba=0)") -> IncompatibleEvidence
         __init__(IncompatibleEvidence self, IncompatibleEvidence src) -> IncompatibleEvidence
         """
         _pyAgrum.IncompatibleEvidence_swiginit(self, _pyAgrum.new_IncompatibleEvidence(*args))
@@ -2340,7 +2340,7 @@ class FactoryError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(FactoryError self, std::string aMsg, std::string aType="factory error") -> FactoryError
+        __init__(FactoryError self, std::string const & aMsg, std::string const & aType="factory error") -> FactoryError
         __init__(FactoryError self, FactoryError src) -> FactoryError
         """
         _pyAgrum.FactoryError_swiginit(self, _pyAgrum.new_FactoryError(*args))
@@ -2357,7 +2357,7 @@ class FactoryInvalidState(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(FactoryInvalidState self, std::string aMsg, std::string aType="invalid state error") -> FactoryInvalidState
+        __init__(FactoryInvalidState self, std::string const & aMsg, std::string const & aType="invalid state error") -> FactoryInvalidState
         __init__(FactoryInvalidState self, FactoryInvalidState src) -> FactoryInvalidState
         """
         _pyAgrum.FactoryInvalidState_swiginit(self, _pyAgrum.new_FactoryInvalidState(*args))
@@ -2374,7 +2374,7 @@ class WrongType(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(WrongType self, std::string aMsg, std::string aType="wrong type for this operation") -> WrongType
+        __init__(WrongType self, std::string const & aMsg, std::string const & aType="wrong type for this operation") -> WrongType
         __init__(WrongType self, WrongType src) -> WrongType
         """
         _pyAgrum.WrongType_swiginit(self, _pyAgrum.new_WrongType(*args))
@@ -2391,7 +2391,7 @@ class WrongClassElement(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(WrongClassElement self, std::string aMsg, std::string aType="Wrong ClassElement") -> WrongClassElement
+        __init__(WrongClassElement self, std::string const & aMsg, std::string const & aType="Wrong ClassElement") -> WrongClassElement
         __init__(WrongClassElement self, WrongClassElement src) -> WrongClassElement
         """
         _pyAgrum.WrongClassElement_swiginit(self, _pyAgrum.new_WrongClassElement(*args))
@@ -2408,7 +2408,7 @@ class TypeError(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(TypeError self, std::string aMsg, std::string aType="Wrong subtype or subclass") -> TypeError
+        __init__(TypeError self, std::string const & aMsg, std::string const & aType="Wrong subtype or subclass") -> TypeError
         __init__(TypeError self, TypeError src) -> TypeError
         """
         _pyAgrum.TypeError_swiginit(self, _pyAgrum.new_TypeError(*args))
@@ -2425,7 +2425,7 @@ class LearningError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(LearningError self, std::string aMsg, std::string aType="Factory error") -> LearningError
+        __init__(LearningError self, std::string const & aMsg, std::string const & aType="Factory error") -> LearningError
         __init__(LearningError self, LearningError src) -> LearningError
         """
         _pyAgrum.LearningError_swiginit(self, _pyAgrum.new_LearningError(*args))
@@ -2442,7 +2442,7 @@ class IncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(IncompatibleScoreApriori self, std::string aMsg, std::string aType="Incompatbile (maybe implicit) priors") -> IncompatibleScoreApriori
+        __init__(IncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Incompatbile (maybe implicit) priors") -> IncompatibleScoreApriori
         __init__(IncompatibleScoreApriori self, IncompatibleScoreApriori src) -> IncompatibleScoreApriori
         """
         _pyAgrum.IncompatibleScoreApriori_swiginit(self, _pyAgrum.new_IncompatibleScoreApriori(*args))
@@ -2459,7 +2459,7 @@ class PossiblyIncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(PossiblyIncompatibleScoreApriori self, std::string aMsg, std::string aType="Possible incompatibilty between score and prior") -> PossiblyIncompatibleScoreApriori
+        __init__(PossiblyIncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Possible incompatibilty between score and prior") -> PossiblyIncompatibleScoreApriori
         __init__(PossiblyIncompatibleScoreApriori self, PossiblyIncompatibleScoreApriori src) -> PossiblyIncompatibleScoreApriori
         """
         _pyAgrum.PossiblyIncompatibleScoreApriori_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args))
@@ -2476,7 +2476,7 @@ class DatabaseError(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(DatabaseError self, std::string aMsg, std::string aType="Database error") -> DatabaseError
+        __init__(DatabaseError self, std::string const & aMsg, std::string const & aType="Database error") -> DatabaseError
         __init__(DatabaseError self, DatabaseError src) -> DatabaseError
         """
         _pyAgrum.DatabaseError_swiginit(self, _pyAgrum.new_DatabaseError(*args))
@@ -2493,7 +2493,7 @@ class MissingVariableInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(MissingVariableInDatabase self, std::string aMsg, std::string aType="Missing variable name in database") -> MissingVariableInDatabase
+        __init__(MissingVariableInDatabase self, std::string const & aMsg, std::string const & aType="Missing variable name in database") -> MissingVariableInDatabase
         __init__(MissingVariableInDatabase self, MissingVariableInDatabase src) -> MissingVariableInDatabase
         """
         _pyAgrum.MissingVariableInDatabase_swiginit(self, _pyAgrum.new_MissingVariableInDatabase(*args))
@@ -2510,7 +2510,7 @@ class MissingValueInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(MissingValueInDatabase self, std::string aMsg, std::string aType="The database contains some missing values") -> MissingValueInDatabase
+        __init__(MissingValueInDatabase self, std::string const & aMsg, std::string const & aType="The database contains some missing values") -> MissingValueInDatabase
         __init__(MissingValueInDatabase self, MissingValueInDatabase src) -> MissingValueInDatabase
         """
         _pyAgrum.MissingValueInDatabase_swiginit(self, _pyAgrum.new_MissingValueInDatabase(*args))
@@ -2527,7 +2527,7 @@ class UnknownLabelInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(UnknownLabelInDatabase self, std::string aMsg, std::string aType="Unknown label found in database") -> UnknownLabelInDatabase
+        __init__(UnknownLabelInDatabase self, std::string const & aMsg, std::string const & aType="Unknown label found in database") -> UnknownLabelInDatabase
         __init__(UnknownLabelInDatabase self, UnknownLabelInDatabase src) -> UnknownLabelInDatabase
         """
         _pyAgrum.UnknownLabelInDatabase_swiginit(self, _pyAgrum.new_UnknownLabelInDatabase(*args))
@@ -2543,7 +2543,7 @@ class SyntaxError(IOError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        r"""__init__(SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc, std::string aType="Syntax Error") -> SyntaxError"""
+        r"""__init__(SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc, std::string const & aType="Syntax Error") -> SyntaxError"""
         _pyAgrum.SyntaxError_swiginit(self, _pyAgrum.new_SyntaxError(*args))
 
     def col(self) -> "gum::Size":
@@ -24977,6 +24977,53 @@ class InfluenceDiagram(DAGmodel):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    @staticmethod
+    def fastPrototype(dotlike: "std::string const &", domainSize: "gum::Size"=2) -> "gum::InfluenceDiagram< double >":
+        r"""
+        fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> InfluenceDiagram
+
+        Create an Influence Diagram with a dot-like syntax which specifies:
+            - the structure 'a->b<-c;b->d;c<-e;'.
+            - a prefix for the type of node (chance/decision/utiliy nodes):
+
+              - 'a' : a chance node named 'a' (by default)
+              - '$a' : a utility node named 'a'
+              - '*a' : a decision node named 'a'
+
+            - the type of the variables with different syntax as postfix:
+
+              - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+              - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+              - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+              - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+              - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+        Note 
+        ----
+          - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+          - the potentials (probabilities, utilities) are randomly generated.
+          - see also pyAgrum.fastID.
+
+        Examples
+        --------
+        >>> import pyAgrum as gum
+        >>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+
+        Parameters
+        ----------
+        dotlike : str
+                the string containing the specification
+        domainSize : int
+                the default domain size for variables
+
+        Returns
+        -------
+        pyAgrum.InfluenceDiagram
+                the resulting Influence Diagram
+
+        """
+        return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram
 
     def __init__(self, *args):
@@ -25470,22 +25517,9 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_getDecisionGraph(self)
 
-    def getDecisionOrder(self) -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > *":
-        r"""
-        getDecisionOrder(InfluenceDiagram self) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > *
-
-        Returns
-        -------
-        list
-        	the sequence of decision nodes in the directed path.
-
-        Raises
-        ------
-        NotFound
-        	If such a path does not exist 
-
-        """
-        return _pyAgrum.InfluenceDiagram_getDecisionOrder(self)
+    def decisionOrder(self) -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
+        r"""decisionOrder(InfluenceDiagram self) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >"""
+        return _pyAgrum.InfluenceDiagram_decisionOrder(self)
 
     def existsPathBetween(self, *args) -> "bool":
         r"""
@@ -25616,6 +25650,52 @@ class InfluenceDiagram(DAGmodel):
 # Register InfluenceDiagram in _pyAgrum:
 _pyAgrum.InfluenceDiagram_swigregister(InfluenceDiagram)
 
+def InfluenceDiagram_fastPrototype(dotlike: "std::string const &", domainSize: "gum::Size"=2) -> "gum::InfluenceDiagram< double >":
+    r"""
+    InfluenceDiagram_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> InfluenceDiagram
+
+    Create an Influence Diagram with a dot-like syntax which specifies:
+        - the structure 'a->b<-c;b->d;c<-e;'.
+        - a prefix for the type of node (chance/decision/utiliy nodes):
+
+          - 'a' : a chance node named 'a' (by default)
+          - '$a' : a utility node named 'a'
+          - '*a' : a decision node named 'a'
+
+        - the type of the variables with different syntax as postfix:
+
+          - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+          - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+          - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+          - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+          - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+    Note 
+    ----
+      - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+      - the potentials (probabilities, utilities) are randomly generated.
+      - see also pyAgrum.fastID.
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+
+    Parameters
+    ----------
+    dotlike : str
+            the string containing the specification
+    domainSize : int
+            the default domain size for variables
+
+    Returns
+    -------
+    pyAgrum.InfluenceDiagram
+            the resulting Influence Diagram
+
+    """
+    return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
+
 class InfluenceDiagramInference(object):
     r"""
     Proxy of C++ gum::InfluenceDiagramInference< double > class.
@@ -25732,6 +25812,10 @@ class InfluenceDiagramInference(object):
 
         """
         return _pyAgrum.InfluenceDiagramInference_eraseAllEvidence(self)
+
+    def getMarginal(self, node: "gum::NodeId") -> "gum::Potential< double >":
+        r"""getMarginal(InfluenceDiagramInference self, gum::NodeId node) -> Potential"""
+        return _pyAgrum.InfluenceDiagramInference_getMarginal(self, node)
 
     def displayStrongJunctionTree(self, *args) -> "void":
         r"""

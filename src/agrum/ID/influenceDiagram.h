@@ -27,7 +27,9 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
  *
  */
+
 #ifndef GUM_INF_DIAG_H
+
 #define GUM_INF_DIAG_H
 
 #include <string>
@@ -36,9 +38,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/hashTable.h>
-
 #include <agrum/tools/graphicalModels/DAGmodel.h>
-
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {
@@ -96,7 +96,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~InfluenceDiagram();
+    ~InfluenceDiagram() override;
 
     /**
      * Copy Constructor
@@ -107,7 +107,7 @@ namespace gum {
      * Copy Operator
      */
     InfluenceDiagram< GUM_SCALAR >&
-       operator=(const InfluenceDiagram< GUM_SCALAR >& source);
+    operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
@@ -144,7 +144,7 @@ namespace gum {
      * Returns a constant reference to the VariableNodeMap of this Influence
      * Diagram
      */
-    virtual const VariableNodeMap& variableNodeMap() const;
+    const VariableNodeMap& variableNodeMap() const final;
 
     /**
      * Returns true if node is a utility one
@@ -184,25 +184,25 @@ namespace gum {
     Size decisionNodeSize() const;
 
     /**
-     * Returns a constant reference over a variabe given it's node id.
+     * Returns a constant reference over a variable given it's node id.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const DiscreteVariable& variable(NodeId id) const;
+    const DiscreteVariable& variable(NodeId id) const final;
 
     /**
      * Return id node from discrete var pointer.
      * @throw NotFound If no variable matches var.
      */
-    virtual NodeId nodeId(const DiscreteVariable& var) const;
+    NodeId nodeId(const DiscreteVariable& var) const final;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual NodeId idFromName(const std::string& name) const;
+    NodeId idFromName(const std::string& name) const final;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const;
+    const DiscreteVariable&
+    variableFromName(const std::string& name) const final;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -301,7 +301,7 @@ namespace gum {
 
     /**
      * Erase a Variable from the network and remove the variable from
-     * all his childs.
+     * all his children.
      * If no variable matches the id, then nothing is done.
      *
      * @param id The id of the variable to erase.
@@ -311,7 +311,7 @@ namespace gum {
 
     /**
      * Erase a Variable from the network and remove the variable from
-     * all his childs.
+     * all his children.
      * If no variable matches, then nothing is done.
      *
      * @param var The reference on the variable to remove.
@@ -377,7 +377,7 @@ namespace gum {
     /// @{
 
     /**
-     * True if a directed path exist with all decison nodes
+     * True if a directed path exist with all decision nodes
      */
     bool decisionOrderExists() const;
 
@@ -390,7 +390,7 @@ namespace gum {
      * Returns the sequence of decision nodes in the directed path
      * @throw NotFound if such a path does not exist
      */
-    std::vector< NodeId >* getDecisionOrder() const;
+    std::vector< NodeId > decisionOrder() const;
 
     /**
      * Returns true if a path exists between two nodes

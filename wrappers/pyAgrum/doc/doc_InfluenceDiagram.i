@@ -498,3 +498,45 @@ gum.IndexError
 "
 TBD
 "
+
+%feature("docstring") gum::InfluenceDiagram::fastPrototype
+"
+Create an Influence Diagram with a dot-like syntax which specifies:
+    - the structure 'a->b<-c;b->d;c<-e;'.
+    - a prefix for the type of node (chance/decision/utiliy nodes):
+
+      - 'a' : a chance node named 'a' (by default)
+      - '$a' : a utility node named 'a'
+      - '*a' : a decision node named 'a'
+
+    - the type of the variables with different syntax as postfix:
+
+      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+Note 
+----
+  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+  - the potentials (probabilities, utilities) are randomly generated.
+  - see also pyAgrum.fastID.
+    
+Examples
+--------
+>>> import pyAgrum as gum
+>>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+
+Parameters
+----------
+dotlike : str
+        the string containing the specification
+domainSize : int
+        the default domain size for variables
+
+Returns
+-------
+pyAgrum.InfluenceDiagram
+        the resulting Influence Diagram
+"

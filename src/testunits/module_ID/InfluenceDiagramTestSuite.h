@@ -223,7 +223,7 @@ namespace gum_tests {
       output.close();
 
       if (output.fail()) {
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
       }
     }
 
@@ -659,9 +659,9 @@ namespace gum_tests {
                          &id.variable(node));
       }
 
-      TS_ASSERT_THROWS(id.idFromName("choucroute"), gum::NotFound);
+      TS_ASSERT_THROWS(id.idFromName("chorizo"), gum::NotFound);
 
-      TS_ASSERT_THROWS(id.variableFromName("choucroute"), gum::NotFound);
+      TS_ASSERT_THROWS(id.variableFromName("chorizo"), gum::NotFound);
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"));
       id.erase(id.idFromName("decisionVar1"));
@@ -675,11 +675,11 @@ namespace gum_tests {
       fill(id, idList);
 
       TS_ASSERT(!id.decisionOrderExists());
-      TS_ASSERT_THROWS(id.getDecisionOrder(), gum::NotFound);
+      TS_ASSERT_THROWS(id.decisionOrder(), gum::NotFound);
       id.addArc(idList[2], idList[1]);
       id.addArc(idList[7], idList[3]);
       TS_ASSERT(id.decisionOrderExists());
-      TS_ASSERT_THROWS_NOTHING(id.getDecisionOrder());
+      TS_ASSERT_THROWS_NOTHING(id.decisionOrder());
       TS_ASSERT_THROWS_NOTHING(id.getPartialTemporalOrder());
       gum::List< gum::NodeSet > partialTemporalOrder =
          id.getPartialTemporalOrder();
@@ -792,7 +792,7 @@ namespace gum_tests {
       idOutput.close();
 
       if (idOutput.fail()) {
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
       }
 
       // For comparison with what readers will return
@@ -811,13 +811,17 @@ namespace gum_tests {
       moralOutput.close();
 
       if (moralOutput.fail()) {
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
       }
     }
 
     void testFastPrototype() {
       auto infdiag=gum::InfluenceDiagram<double>::fastPrototype("A->*B<-C;E<-B->$D");
-      GUM_TRACE_VAR(infdiag.toDot());
+      TS_ASSERT_EQUALS(infdiag.size(),gum::Size(5))
+      TS_ASSERT_EQUALS(infdiag.chanceNodeSize(),gum::Size(3))
+      TS_ASSERT_EQUALS(infdiag.utilityNodeSize(),gum::Size(1))
+      TS_ASSERT_EQUALS(infdiag.decisionNodeSize(),gum::Size(1))
+      TS_ASSERT_EQUALS(infdiag.sizeArcs(),gum::Size(4))
     }
   };
 }   // namespace gum_tests
