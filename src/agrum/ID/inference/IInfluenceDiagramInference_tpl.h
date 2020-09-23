@@ -57,7 +57,7 @@ namespace gum {
   gum::Potential< GUM_SCALAR > IInfluenceDiagramInference< GUM_SCALAR >::getMarginal(
         const std::string& name) {
     return getMarginal(infDiag__.idFromName(name));
-  };
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

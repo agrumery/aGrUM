@@ -51,9 +51,6 @@
 //         \  /  C5 -> U2 & D4 -> U2
 //          U2
 
-#pragma clang diagnostic push
-#pragma ide diagnostic   ignored "OCUnusedStructInspection"
-
 namespace gum_tests {
 
   class InfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
@@ -278,7 +275,7 @@ namespace gum_tests {
     }
 
     void /*test*/ Constructor() {
-      gum::InfluenceDiagram< double >* topology;
+      gum::InfluenceDiagram< double >* topology = nullptr;
       gum::List< gum::NodeId >         idList;
       TS_GUM_ASSERT_THROWS_NOTHING(topology =
                                       new gum::InfluenceDiagram< double >())
@@ -287,8 +284,8 @@ namespace gum_tests {
       gum::InfluenceDiagramInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
          dIDI = new gum::InfluenceDiagramInference< double >(*topology))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete dIDI)
-      delete topology;
+      TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
+      if (topology != nullptr) delete topology;
     }
 
     void /*test*/ StrongJunctionTree() {
@@ -609,7 +606,7 @@ namespace gum_tests {
         l.insert(&eFirstTest);
         l.insert(&eSecondTest);
         inf.insertEvidence(l);
-        
+
         inf.makeInference();
         GUM_TRACE_VAR(inf.displayResult())
         GUM_TRACE_VAR(inf.getMEU())
@@ -618,5 +615,3 @@ namespace gum_tests {
     }
   };
 }   // namespace gum_tests
-
-#pragma clang diagnostic pop

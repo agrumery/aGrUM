@@ -23,6 +23,7 @@
 #include <cstdio>
 #include <iostream>
 #include <sstream>
+#include <utility>
 #include <string.h>
 
 #include <agrum/agrum.h>
@@ -56,8 +57,8 @@ namespace gum {
   }
   Exception::Exception(const Exception& e) : msg_(e.msg_), type_(e.type_) {}
 
-  Exception::Exception(const std::string aMsg, const std::string aType) :
-      msg_(aMsg), type_(aType) {
+  Exception::Exception(std::string aMsg, std::string aType) :
+      msg_(std::move(aMsg)), type_(std::move(aType)) {
 #  ifdef GUM_DEBUG_MODE
 #    ifdef HAVE_EXECINFO_H
 #      define callStackDepth 20
@@ -75,12 +76,12 @@ namespace gum {
 
     free(strings);
     callstack_ = stream.str();
-#    else    // HAVE_EXECINFO_H
+#    else   // HAVE_EXECINFO_H
     callstack_ = "Callstack only in linux debug mode when execinfo.h available";
 #    endif   // HAVE_EXECINFO_H
-#  else      // GUM_DEBUG_MODE
+#  else   // GUM_DEBUG_MODE
     callstack_ = "Callstack only in linux debug mod ewhen execinfo.h available";
-#  endif     // GUM_DEBUG_MODE
+#  endif   // GUM_DEBUG_MODE
   }
 
 } /* namespace gum */

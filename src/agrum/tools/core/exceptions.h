@@ -84,11 +84,12 @@
 #  endif   // GUM_DEBUG_MODE
 #endif     //  GUM_FOR_SWIG
 
-#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                    \
-  class TYPE: public SUPERCLASS {                                                \
-    public:                                                                      \
-    TYPE(std::string aMsg, std::string aType = MSG) : SUPERCLASS(aMsg, aType){}; \
-    TYPE(const TYPE& src) : SUPERCLASS(src){};                                   \
+#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
+  class TYPE: public SUPERCLASS {                                            \
+    public:                                                                  \
+    explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
+        SUPERCLASS(aMsg, aType){};                                           \
+    TYPE(const TYPE& src) : SUPERCLASS(src){};                               \
   };
 
 #define GUM_SYNTAX_ERROR(msg, line, column)                    \
@@ -114,37 +115,36 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    Exception(const std::string aMsg = "",
-              const std::string aType = "Generic error");
+    explicit Exception(std::string  aMsg = "", std::string  aType = "Generic error");
 
     Exception(const Exception& e);
 
-    ~Exception() {}
+    ~Exception() = default;
 
 /// @}
 #ifdef GUM_FOR_SWIG
-    const std::string what() const { return "[pyAgrum] " + type_ + ": " + msg_; }
-#else    // GUM_FOR_SWIG
-    const std::string what() const { return type_ + " : " + msg_; }
+    std::string what() const { return "[pyAgrum] " + type_ + ": " + msg_; }
+#else   // GUM_FOR_SWIG
+    std::string what() const { return type_ + " : " + msg_; }
 #endif   // GUM_FOR_SWIG
 
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    const std::string errorContent() const { return msg_; }
+    std::string errorContent() const { return msg_; }
 
     /**
      * @brief Returns the error type.
      * @return Returns the error type.
      */
-    const std::string errorType() const { return type_; }
+    std::string errorType() const { return type_; }
 
     /**
      * @brief Returns the error call stack.
      * @return Returns the error call stack.
      */
-    const std::string errorCallStack() const { return callstack_; }
+    std::string errorCallStack() const { return callstack_; }
   };
 
   /**
@@ -157,7 +157,7 @@ namespace gum {
   /**
    * @class gum::FatalError agrum/tools/core/exceptions.h
    * @extends gum::Exception
-   * Exception : erreur (inconnue ?) fatale
+   * Exception : fatal (unknown ?) error
    */
   class FatalError;
 
@@ -250,7 +250,7 @@ namespace gum {
   /**
    * @class gum::ReferenceError agrum/tools/core/exceptions.h
    * @extends gum::Exception
-   * Exception base for reference errro
+   * Exception base for reference error
    */
   class ReferenceError;
 
@@ -441,7 +441,7 @@ namespace gum {
   /**
    * @class gum::DatabaseError agrum/tools/core/exceptions.h
    * @extends gum::LearningError
-   * Error: An unknown error occured while accessing a database
+   * Error: An unknown error occurred while accessing a database
    */
   class DatabaseError;
 
@@ -486,7 +486,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   const std::string createMsg__(const std::string& filename,
                                 const std::string& function,
-                                const int          line,
+                                int                line,
                                 const std::string& msg);
   GUM_MAKE_ERROR(IdError, Exception, "ID error")
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
@@ -556,7 +556,7 @@ namespace gum {
     SyntaxError(const std::string& aMsg,
                 Size               nol,
                 Size               noc,
-                std::string        aType = "Syntax Error") :
+                const std::string& aType = "Syntax Error") :
         IOError(aMsg, aType),
         noLine_(nol), noCol_(noc){
 
