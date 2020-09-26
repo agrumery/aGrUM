@@ -54,9 +54,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  gum::Potential< GUM_SCALAR > IInfluenceDiagramInference< GUM_SCALAR >::getMarginal(
+  gum::Potential< GUM_SCALAR > IInfluenceDiagramInference< GUM_SCALAR >::posterior(
         const std::string& name) {
-    return getMarginal(infDiag__.idFromName(name));
+    return posterior(infDiag__.idFromName(name));
   }
 } /* namespace gum */
 

@@ -32,7 +32,6 @@
 #define GUM_IINFLUENCE_DIAGRAM_INFERENCE_H
 
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/agrum.h>
 
 namespace gum {
   /**
@@ -100,7 +99,7 @@ namespace gum {
      * @throw OperationNotAllowed if no inference have yet been made
      * @throw NotFound if the node is not found
      */
-    virtual gum::Potential< GUM_SCALAR > getMarginal(NodeId node) = 0;
+    virtual gum::Potential< GUM_SCALAR > posterior(NodeId node) = 0;
 
     /**
      * Returns a copy of the posterior or the marginal utility for a node
@@ -108,7 +107,7 @@ namespace gum {
      * @throw OperationNotAllowed if no inference have yet been made
      * @throw NotFound if the node is not found
      */
-    virtual gum::Potential< GUM_SCALAR > getMarginal(const std::string& name) final;
+    virtual gum::Potential< GUM_SCALAR > posterior(const std::string& name) final;
 
     /**
      * Returns best choice for decision variable given in parameter ( based upon
