@@ -223,14 +223,14 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {}
+  void SamplingInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::updateOutdatedBNStructure_() {}
+  void SamplingInference< GUM_SCALAR >::updateOutdatedStructure_() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::updateOutdatedBNPotentials_() {}
+  void SamplingInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}

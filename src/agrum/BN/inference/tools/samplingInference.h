@@ -228,11 +228,11 @@ namespace gum {
 
     void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) override;
 
-    void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) override;
+    void onModelChanged_(const GraphicalModel* bn) override;
 
-    void updateOutdatedBNStructure_() override;
+    void updateOutdatedStructure_() override;
 
-    void updateOutdatedBNPotentials_() override;
+    void updateOutdatedPotentials_() override;
 
     void onMarginalTargetAdded_(const NodeId id) override;
 

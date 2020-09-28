@@ -127,15 +127,15 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const final;
-    virtual const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
+    const Potential< GUM_SCALAR >& cpt(NodeId varId) const final;
+    const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
       return cpt(idFromName(name));
     };
 
     /**
      * Returns a constant reference to the VariableNodeMap of this BN
      */
-    virtual const VariableNodeMap& variableNodeMap() const final;
+    const VariableNodeMap& variableNodeMap() const final;
 
     /**
      * Returns a constant reference over a variabe given it's node id.

@@ -37,7 +37,7 @@ namespace gum {
      const IMarkovNet< GUM_SCALAR >* mn) :
       MarginalTargetedMNInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
-    if (this->mn__ == nullptr) {
+    if (this->hasNoModel_()) {
       MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
     }
     GUM_CONSTRUCTOR(JointTargetedMNInference);
@@ -53,9 +53,9 @@ namespace gum {
 
   // assigns a new MN to the inference engine
   template < typename GUM_SCALAR >
-  void JointTargetedMNInference< GUM_SCALAR >::onMarkovNetChanged_(
-     const IMarkovNet< GUM_SCALAR >* mn) {
-    MarginalTargetedMNInference< GUM_SCALAR >::onMarkovNetChanged_(mn);
+  void JointTargetedMNInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* mn) {
+    MarginalTargetedMNInference< GUM_SCALAR >::onModelChanged_(mn);
     onAllJointTargetsErased_();
     joint_targets__.clear();
   }
@@ -69,12 +69,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool JointTargetedMNInference< GUM_SCALAR >::isJointTarget(
      const NodeSet& vars) const {
-    if (this->mn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& gra = this->mn__->graph();
+    const auto& gra = this->MN().graph();
     for (const auto var: vars) {
       if (!gra.exists(var)) {
         GUM_ERROR(UndefinedElement,
@@ -100,8 +100,8 @@ namespace gum {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
       joint_targets__.clear();
-      this->setState__(MarkovNetInference<
-                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+      this->setState_(MarkovNetInference<
+                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -119,12 +119,12 @@ namespace gum {
   void JointTargetedMNInference< GUM_SCALAR >::addJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov network
-    if (this->mn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->mn__->graph();
+    const auto& dag = this->MN().graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -152,8 +152,8 @@ namespace gum {
     this->setTargetedMode_();   // does nothing if already in targeted mode
     joint_targets__.insert(joint_target);
     onJointTargetAdded_(joint_target);
-    this->setState__(
-       MarkovNetInference< GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+    this->setState_(
+       MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
 
@@ -162,12 +162,12 @@ namespace gum {
   void JointTargetedMNInference< GUM_SCALAR >::eraseJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov network
-    if (this->mn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->mn__->graph();
+    const auto& dag = this->MN().graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -182,8 +182,8 @@ namespace gum {
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
       joint_targets__.erase(joint_target);
-      this->setState__(MarkovNetInference<
-                       GUM_SCALAR >::StateOfMNInference::OutdatedMNStructure);
+      this->setState_(MarkovNetInference<
+                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 

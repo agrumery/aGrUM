@@ -226,7 +226,7 @@ namespace gum {
     virtual void onAllMarginalTargetsErased_() = 0;
 
     /// fired after a new Markov net has been assigned to the engine
-    virtual void onMarkovNetChanged_(const IMarkovNet< GUM_SCALAR >* mn);
+    virtual void onModelChanged_(const GraphicalModel* mn);
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

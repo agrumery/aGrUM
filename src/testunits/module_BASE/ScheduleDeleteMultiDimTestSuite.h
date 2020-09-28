@@ -26,8 +26,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/tools/core/utils_random.h>
-#include <agrum/tools/graphicalModels/inference/scheduleDeleteMultiDim.h>
-#include <agrum/tools/graphicalModels/inference/scheduleProject.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeleteMultiDim.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleProject.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 

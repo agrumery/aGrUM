@@ -53,20 +53,15 @@ namespace gum {
      * @brief Returns a copy of a Potential after applying a bijection over the
      *variables in source.
      * This copies the Potential source in a new Potential by permuting all
-     *variables
-     *in source with respect
-     * to bij.
+     *variables in source with respect to bij.
      *
      * @warning This method in most case creates the new Potential using a
-     *gum::MultiDimBijArray, this means
-     *          that the created Potential holds a reference over source, so do
-     *not
-     *delete source if you
-     *          still need the created potential.
+     *gum::MultiDimBijArray, this means that the created Potential holds a
+     *reference over source, so do not delete source if you still need the created
+     *potential.
      *
      * @param bij A Bijection of DiscreteVariable where firsts are variables in
-     *source and seconds variables
-     *            added in the returned Potential.
+     *source and seconds variables added in the returned Potential.
      * @param source The copied Potential.
      * @return a pointer over a Potential which is a copy of source.
      * @throw FatalError raised if an unknown MultiDimImplementation is
@@ -83,7 +78,7 @@ namespace gum {
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.
-     * @param pool A pool of potentials in wich the elimination of var is done.
+     * @param pool A pool of potentials in which the elimination of var is done.
      * @param trash All create potentials are inserted in this set, useful to
      *              delete later.
      */

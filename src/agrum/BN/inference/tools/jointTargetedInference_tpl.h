@@ -37,7 +37,7 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >* bn) :
       MarginalTargetedInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
-    if (this->bn__ == nullptr) {
+    if (this->hasNoModel_()) {
       BayesNetInference< GUM_SCALAR >::setBayesNetDuringConstruction__(bn);
     }
     GUM_CONSTRUCTOR(JointTargetedInference);
@@ -53,9 +53,9 @@ namespace gum {
 
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
-  void JointTargetedInference< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {
-    MarginalTargetedInference< GUM_SCALAR >::onBayesNetChanged_(bn);
+  void JointTargetedInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {
+    MarginalTargetedInference< GUM_SCALAR >::onModelChanged_(bn);
     onAllJointTargetsErased_();
     joint_targets__.clear();
   }
@@ -69,12 +69,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(
      const NodeSet& vars) const {
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->bn__->dag();
+    const auto& dag = this->BN().dag();
     for (const auto var: vars) {
       if (!dag.exists(var)) {
         GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn");
@@ -99,8 +99,8 @@ namespace gum {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
       joint_targets__.clear();
-      this->setState__(
-         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+      this->setState_(
+         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -118,12 +118,12 @@ namespace gum {
   void JointTargetedInference< GUM_SCALAR >::addJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->bn__->dag();
+    const auto& dag = this->BN().dag();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -151,8 +151,8 @@ namespace gum {
     this->setTargetedMode_();   // does nothing if already in targeted mode
     joint_targets__.insert(joint_target);
     onJointTargetAdded_(joint_target);
-    this->setState__(
-       BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+    this->setState_(
+       GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
   }
 
 
@@ -161,12 +161,12 @@ namespace gum {
   void JointTargetedInference< GUM_SCALAR >::eraseJointTarget(
      const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->bn__->dag();
+    const auto& dag = this->BN().dag();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -181,8 +181,8 @@ namespace gum {
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
       joint_targets__.erase(joint_target);
-      this->setState__(
-         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+      this->setState_(
+         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
     }
   }
 

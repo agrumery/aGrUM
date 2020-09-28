@@ -36,7 +36,7 @@ namespace gum {
      const IMarkovNet< GUM_SCALAR >* mn) :
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
-    if (this->mn__ == nullptr) {
+    if (this->hasNoModel_()) {
       MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
     }
 

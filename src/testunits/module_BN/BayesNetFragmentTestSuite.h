@@ -466,6 +466,7 @@ namespace gum_tests {
     void testRelevantForRelevantReasonning() {
       // an inference for all the bn with an hard evidence and an inference for
       // the right fragment with a local CPT should be the same
+      try {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -480,9 +481,7 @@ namespace gum_tests {
       inf_complete.addEvidence(ev);
       inf_complete.makeInference();
 
-      try {
         auto p = inf_complete.posterior(bn.idFromName("v6"));
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       const gum::Potential< double >& p1 =
          inf_complete.posterior(bn.idFromName("v6"));
 
@@ -508,6 +507,7 @@ namespace gum_tests {
 
       for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
         TS_ASSERT_DELTA(p1[I], p2[J], 1e-6);
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testInstallCPTs() {

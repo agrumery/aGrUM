@@ -104,7 +104,7 @@ namespace gum {
     delete triangulation__;
     triangulation__ = new_triangulation.newFactory();
     is_new_jt_needed__ = true;
-    this->setOutdatedBNStructureState_();
+    this->setOutdatedStructureState_();
   }
 
 
@@ -165,7 +165,7 @@ namespace gum {
 
     // indicate that new messages need be computed
     if (this->isInferenceReady() || this->isDone())
-      this->setOutdatedBNPotentialsState_();
+      this->setOutdatedPotentialsState_();
   }
 
 
@@ -189,7 +189,7 @@ namespace gum {
       barren_nodes_type__ = type;
 
       // potentially, we may need to reconstruct a junction tree
-      this->setOutdatedBNStructureState_();
+      this->setOutdatedStructureState_();
     }
   }
 
@@ -326,8 +326,8 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void ShaferShenoyInference< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void ShaferShenoyInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {}
 
   /// fired before a all the joint_targets are removed
   template < typename GUM_SCALAR >
@@ -747,7 +747,7 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
-  void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedBNStructure_() {
+  void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedStructure_() {
     // check if a new JT is really needed. If so, create it
     if (isNewJTNeeded__()) {
       createNewJT__();
@@ -755,7 +755,7 @@ namespace gum {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
       // update the potentials and messages for these queries
-      updateOutdatedBNPotentials_();
+      updateOutdatedPotentials_();
     }
   }
 
@@ -792,7 +792,7 @@ namespace gum {
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template < typename GUM_SCALAR >
-  void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedBNPotentials_() {
+  void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedPotentials_() {
     // for each clique, indicate whether the potential stored into
     // clique_ss_potentials__[clique] is the result of a combination. In this
     // case, it has been allocated by the combination and will need to be
@@ -922,7 +922,7 @@ namespace gum {
 
 
     // Now add the projections of the CPTs due to newly changed hard evidence:
-    // if we are performing updateOutdatedBNPotentials_, this means that the
+    // if we are performing updateOutdatedPotentials_, this means that the
     // set of nodes that received hard evidence has not been changed, only
     // their instantiations can have been changed. So, if there is an entry
     // for node in constants__, there will still be such an entry after

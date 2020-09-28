@@ -88,6 +88,11 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     /**
+     * Return true if this node exists in this graphical model.
+     */
+    bool exists(NodeId node) const final;
+
+    /**
      * Returns a constant reference over a variable given it's node id.
      * @throw NotFound If no variable's id matches varId.
      */

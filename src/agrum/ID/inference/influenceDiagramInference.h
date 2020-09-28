@@ -120,7 +120,7 @@ namespace gum {
     /// @see gum::IInfluenceDiagramInference::eraseAllEvidence().
     virtual void eraseAllEvidence();
 
-    virtual gum::Potential< GUM_SCALAR > getMarginal(NodeId node) final {
+    virtual gum::Potential< GUM_SCALAR > posterior(NodeId node) final {
       return gum::Potential<GUM_SCALAR>();
     }
     /// @}

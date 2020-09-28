@@ -259,7 +259,7 @@ namespace gum {
 
     protected:
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn);
+    virtual void onModelChanged_(const GraphicalModel* bn);
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

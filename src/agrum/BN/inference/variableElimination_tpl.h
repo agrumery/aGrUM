@@ -208,8 +208,8 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void VariableElimination< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {}
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
@@ -474,13 +474,13 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
-  void VariableElimination< GUM_SCALAR >::updateOutdatedBNStructure_() {}
+  void VariableElimination< GUM_SCALAR >::updateOutdatedStructure_() {}
 
 
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template < typename GUM_SCALAR >
-  void VariableElimination< GUM_SCALAR >::updateOutdatedBNPotentials_() {}
+  void VariableElimination< GUM_SCALAR >::updateOutdatedPotentials_() {}
 
 
   // find the potentials d-connected to a set of variables

@@ -67,6 +67,10 @@ namespace gum {
     return dag_.children(idFromName(name));
   }
 
+  INLINE bool DAGmodel::exists(NodeId node) const {
+    return dag_.exists(node);
+  }
+
   INLINE const NodeGraphPart& DAGmodel::nodes() const {
     return (NodeGraphPart&)dag_;
   }

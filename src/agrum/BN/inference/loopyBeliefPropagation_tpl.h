@@ -83,7 +83,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedBNStructure_() {
+  void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedStructure_() {
     init_messages__();
   }
 

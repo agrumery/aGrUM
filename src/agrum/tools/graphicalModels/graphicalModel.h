@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
@@ -102,9 +101,14 @@ namespace gum {
     virtual Size size() const = 0;
 
     /**
-     * Retursn true if this Directed Graphical Model is empty.
+     * Return true if this graphical model is empty.
      */
     virtual bool empty() const;
+
+    /**
+     * Return true if this node exists in this graphical model.
+     */
+    virtual bool exists(NodeId node) const =0;
 
     virtual const NodeGraphPart& nodes() const = 0;
 

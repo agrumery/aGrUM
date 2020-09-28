@@ -25,7 +25,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduleCliqueStoreMultiDim.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleCliqueStoreMultiDim.h>
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>

@@ -99,7 +99,7 @@ namespace gum {
     delete triangulation__;
     triangulation__ = new_triangulation.newFactory();
     is_new_jt_needed__ = true;
-    this->setOutdatedBNStructureState_();
+    this->setOutdatedStructureState_();
   }
 
 
@@ -201,7 +201,7 @@ namespace gum {
 
     // indicate that new messages need be computed
     if (this->isInferenceReady() || this->isDone())
-      this->setOutdatedBNPotentialsState_();
+      this->setOutdatedPotentialsState_();
   }
 
 
@@ -226,7 +226,7 @@ namespace gum {
       barren_nodes_type__ = type;
 
       // potentially, we may need to reconstruct a junction tree
-      this->setOutdatedBNStructureState_();
+      this->setOutdatedStructureState_();
     }
   }
 
@@ -329,8 +329,8 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void LazyPropagation< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {}
 
 
   /// fired after a new target is inserted
@@ -758,7 +758,7 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
-  void LazyPropagation< GUM_SCALAR >::updateOutdatedBNStructure_() {
+  void LazyPropagation< GUM_SCALAR >::updateOutdatedStructure_() {
     // check if a new JT is really needed. If so, create it
     if (isNewJTNeeded__()) {
       createNewJT__();
@@ -766,7 +766,7 @@ namespace gum {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
       // update the potentials and messages for these queries
-      updateOutdatedBNPotentials_();
+      updateOutdatedPotentials_();
     }
   }
 
@@ -803,7 +803,7 @@ namespace gum {
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template < typename GUM_SCALAR >
-  void LazyPropagation< GUM_SCALAR >::updateOutdatedBNPotentials_() {
+  void LazyPropagation< GUM_SCALAR >::updateOutdatedPotentials_() {
     // compute the set of CPTs that were projected due to hard evidence and
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
@@ -912,7 +912,7 @@ namespace gum {
 
 
     // Now add the projections of the CPTs due to newly changed hard evidence:
-    // if we are performing updateOutdatedBNPotentials_, this means that the
+    // if we are performing updateOutdatedPotentials_, this means that the
     // set of nodes that received hard evidence has not changed, only
     // their instantiations can have changed. So, if there is an entry
     // for node in constants__, there will still be such an entry after
@@ -1708,7 +1708,7 @@ namespace gum {
     if (old_relevant_type != RelevantPotentialsFinderType::FIND_ALL) {
       find_relevant_potential_type__ = RelevantPotentialsFinderType::FIND_ALL;
       is_new_jt_needed__ = true;
-      this->setOutdatedBNStructureState_();
+      this->setOutdatedStructureState_();
     }
 
     // perform inference in each connected component

@@ -29,7 +29,6 @@
  */
 
 #ifndef GUM_INF_DIAG_H
-
 #define GUM_INF_DIAG_H
 
 #include <string>

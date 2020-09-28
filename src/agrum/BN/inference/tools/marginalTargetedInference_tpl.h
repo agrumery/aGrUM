@@ -36,7 +36,7 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
-    if (this->bn__ == nullptr) {
+    if (this->hasNoModel_()) {
       BayesNetInference< GUM_SCALAR >::setBayesNetDuringConstruction__(bn);
     }
 
@@ -59,8 +59,8 @@ namespace gum {
 
   // fired when a new BN is assigned to the inference engine
   template < typename GUM_SCALAR >
-  void MarginalTargetedInference< GUM_SCALAR >::onBayesNetChanged_(
-     const IBayesNet< GUM_SCALAR >* bn) {
+  void MarginalTargetedInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* bn) {
     targeted_mode__ = true;
     setAllMarginalTargets__();
   }
@@ -75,11 +75,11 @@ namespace gum {
   INLINE bool
      MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the bn
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
-    if (!this->bn__->dag().exists(node)) {
+    if (!this->BN().dag().exists(node)) {
       GUM_ERROR(UndefinedElement, node << " is not a NodeId in the bn");
     }
 
@@ -90,7 +90,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTarget(
      const std::string& nodeName) const {
-    return isTarget(this->bn__->idFromName(nodeName));
+    return isTarget(this->BN().idFromName(nodeName));
   }
 
 
@@ -102,8 +102,8 @@ namespace gum {
     targets__.clear();
     setTargetedMode_();   // does nothing if already in targeted mode
 
-    this->setState__(
-       BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+    this->setState_(
+       GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
   }
 
 
@@ -111,12 +111,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::addTarget(NodeId target) {
     // check if the node belongs to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->bn__->dag().exists(target)) {
+    if (!this->BN().dag().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn");
     }
 
@@ -125,8 +125,8 @@ namespace gum {
     if (!targets__.contains(target)) {
       targets__.insert(target);
       onMarginalTargetAdded_(target);
-      this->setState__(
-         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+      this->setState_(
+         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -135,19 +135,19 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::addAllTargets() {
     // check if the node belongs to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
 
     setTargetedMode_();   // does nothing if already in targeted mode
-    for (const auto target: this->bn__->dag()) {
+    for (const auto target: this->BN().dag()) {
       if (!targets__.contains(target)) {
         targets__.insert(target);
         onMarginalTargetAdded_(target);
-        this->setState__(
-           BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+        this->setState_(
+           GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
       }
     }
   }
@@ -158,12 +158,12 @@ namespace gum {
   void MarginalTargetedInference< GUM_SCALAR >::addTarget(
      const std::string& nodeName) {
     // check if the node belongs to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    addTarget(this->bn__->idFromName(nodeName));
+    addTarget(this->BN().idFromName(nodeName));
   }
 
 
@@ -171,12 +171,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(NodeId target) {
     // check if the node belongs to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->bn__->dag().exists(target)) {
+    if (!this->BN().dag().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn");
     }
 
@@ -186,8 +186,8 @@ namespace gum {
                                 // want to clear the targets
       onMarginalTargetErased_(target);
       targets__.erase(target);
-      this->setState__(
-         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+      this->setState_(
+         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -197,12 +197,12 @@ namespace gum {
   void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(
      const std::string& nodeName) {
     // check if the node belongs to the Bayesian network
-    if (this->bn__ == nullptr)
+    if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    eraseTarget(this->bn__->idFromName(nodeName));
+    eraseTarget(this->BN().idFromName(nodeName));
   }
 
 
@@ -225,8 +225,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::setAllMarginalTargets__() {
     targets__.clear();
-    if (this->bn__ != nullptr) {
-      targets__ = this->bn__->dag().asNodeSet();
+    if (!this->hasNoModel_()) {
+      targets__ = this->BN().dag().asNodeSet();
       onAllMarginalTargetsAdded_();
     }
   }

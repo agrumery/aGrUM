@@ -646,7 +646,7 @@ namespace gum {
    * // check whether the hash table is empty
    * if (!table1.empty ()) cerr << "table not empty" << endl;
    *
-   * // check wether hashtables contain the same elements
+   * // check whether hashtables contain the same elements
    * if ((table1 == table2) && (table1 != table3))
    *   cerr << "check for equality/inequality" << endl;
    *

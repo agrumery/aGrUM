@@ -225,7 +225,7 @@ namespace gum {
     virtual void onAllMarginalTargetsErased_() = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn);
+    virtual void onModelChanged_(const GraphicalModel* bn);
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

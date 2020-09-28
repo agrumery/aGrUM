@@ -97,7 +97,7 @@ namespace gum {
     delete triangulation__;
     triangulation__ = new_triangulation.newFactory();
     is_new_jt_needed__ = true;
-    this->setOutdatedMNStructureState_();
+    this->setOutdatedStructureState_();
   }
 
 
@@ -159,7 +159,7 @@ namespace gum {
 
     // indicate that new messages need be computed
     if (this->isInferenceReady() || this->isDone())
-      this->setOutdatedMNPotentialsState_();
+      this->setOutdatedPotentialsState_();
   }
 
   /// fired when a new evidence is inserted
@@ -644,7 +644,7 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
-  void ShaferShenoyMNInference< GUM_SCALAR >::updateOutdatedMNStructure_() {
+  void ShaferShenoyMNInference< GUM_SCALAR >::updateOutdatedStructure_() {
     // check if a new JT is really needed. If so, create it
     if (isNewJTNeeded__()) {
       createNewJT__();
@@ -652,7 +652,7 @@ namespace gum {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
       // update the potentials and messages for these queries
-      updateOutdatedMNPotentials_();
+      updateOutdatedPotentials_();
     }
   }
 
@@ -689,7 +689,7 @@ namespace gum {
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template < typename GUM_SCALAR >
-  void ShaferShenoyMNInference< GUM_SCALAR >::updateOutdatedMNPotentials_() {
+  void ShaferShenoyMNInference< GUM_SCALAR >::updateOutdatedPotentials_() {
     // for each clique, indicate whether the potential stored into
     // clique_ss_potentials__[clique] is the result of a combination. In this
     // case, it has been allocated by the combination and will need to be
@@ -820,7 +820,7 @@ namespace gum {
 
 
     // Now add the projections of the factors due to newly changed hard evidence:
-    // if we are performing updateOutdatedMNPotentials_, this means that the
+    // if we are performing updateOutdatedPotentials_, this means that the
     // set of nodes that received hard evidence has not been changed, only
     // their instantiations can have been changed. So, if there is an entry
     // for node in constants__, there will still be such an entry after

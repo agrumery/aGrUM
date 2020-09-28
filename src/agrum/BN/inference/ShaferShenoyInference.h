@@ -152,7 +152,7 @@ namespace gum {
     void onMarginalTargetErased_(const NodeId id) final;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void onBayesNetChanged_(const IBayesNet< GUM_SCALAR >* bn) final;
+    virtual void onModelChanged_(const GraphicalModel* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
@@ -174,17 +174,17 @@ namespace gum {
     /// fired before a all single and joint_targets are removed
     void onAllTargetsErased_() final;
 
-    /// prepares inference when the latter is in OutdatedBNStructure state
+    /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between updateOutdatedBNStructure_ and
+     * known and can be changed between updateOutdatedStructure_ and
      * makeInference_. */
-    void updateOutdatedBNStructure_() final;
+    void updateOutdatedStructure_() final;
 
-    /// prepares inference when the latter is in OutdatedBNPotentials state
+    /// prepares inference when the latter is in OutdatedPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between updateOutdatedBNStructure_ and
+     * known and can be changed between updateOutdatedStructure_ and
      * makeInference_. */
-    void updateOutdatedBNPotentials_() final;
+    void updateOutdatedPotentials_() final;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, fillPosterior_ can be called. */
@@ -331,7 +331,7 @@ namespace gum {
     ArcProperty< bool > messages_computed__;
 
     /// the soft evidence stored in the cliques per their assigned node in the BN
-    /** This variable is useful for method updateOutdatedBNPotentials_: it
+    /** This variable is useful for method updateOutdatedPotentials_: it
      * enables to know which soft evidence should be removed/added into the
      * cliques of the join tree.
      * @warning These potentials are not owned by ShaferShenoyInference,

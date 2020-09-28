@@ -25,8 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduleCombinationBasic.h>
-#include <agrum/tools/graphicalModels/inference/schedulerBasic.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleCombinationBasic.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerBasic.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/tools/variables/labelizedVariable.h>

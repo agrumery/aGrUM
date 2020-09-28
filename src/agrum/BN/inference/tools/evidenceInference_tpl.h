@@ -36,7 +36,7 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
-    if (this->bn__ == nullptr) {
+    if (this->hasNoModel_()) {
       BayesNetInference< GUM_SCALAR >::setBayesNetDuringConstruction__(bn);
     }
 
