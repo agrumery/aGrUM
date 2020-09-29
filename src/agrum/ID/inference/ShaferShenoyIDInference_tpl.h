@@ -22,42 +22,36 @@
 
 /**
  * @file
- * @brief Implementation of the non pure virtual methods of
- * IInfluenceDiagramInference.
+ * @brief Implementations of the classes defined in
+ * InfluenceDiagram/inference/influenceDiagramInference.h.
+ *  @note For deep understanding of the inherent algorithms implemented here,
+ *  a strong look at "From Influence Diagrams To Junction Trees, Frank Jensen,
+ * Finn V.
+ * Jensen, Soren L; Dittmer, 1994" is
+ *  highly recommended.
+ *  @note triangulation__->eliminationOrder() gives nodes in order in which they
+ * disappear, meaning that the first one
+ *  is the first one to be eliminated.
  */
-
-// to ease parsers in IDE
-#include <agrum/ID/inference/IInfluenceDiagramInference.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parsing by IDE
+#  include <agrum/ID/inference/ShaferShenoyIDInference.h>
+
 namespace gum {
 
-  // Default Constructor
   template < typename GUM_SCALAR >
-  IInfluenceDiagramInference< GUM_SCALAR >::IInfluenceDiagramInference(
-     const InfluenceDiagram< GUM_SCALAR >& infDiag) :
-      infDiag__(infDiag) {
-    GUM_CONSTRUCTOR(IInfluenceDiagramInference);
-  }
-
-  // Destructor
-  template < typename GUM_SCALAR >
-  IInfluenceDiagramInference< GUM_SCALAR >::~IInfluenceDiagramInference() {
-    GUM_DESTRUCTOR(IInfluenceDiagramInference);
+  ShaferShenoyIDInference< GUM_SCALAR >::ShaferShenoyIDInference(
+     const InfluenceDiagram< GUM_SCALAR >* infDiag) : InfluenceDiagramInference<GUM_SCALAR>(infDiag) {
+    GUM_CONSTRUCTOR(ShaferShenoyIDInference);
   }
 
   template < typename GUM_SCALAR >
-  const InfluenceDiagram< GUM_SCALAR >&
-     IInfluenceDiagramInference< GUM_SCALAR >::influenceDiagram() const {
-    return infDiag__;
+  ShaferShenoyIDInference< GUM_SCALAR >::~ShaferShenoyIDInference() {
+    GUM_DESTRUCTOR(ShaferShenoyIDInference);
   }
 
-  template < typename GUM_SCALAR >
-  gum::Potential< GUM_SCALAR > IInfluenceDiagramInference< GUM_SCALAR >::posterior(
-        const std::string& name) {
-    return posterior(infDiag__.idFromName(name));
-  }
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -20,4 +20,4 @@
  */
 
 
-#include <agrum/ID/inference/IInfluenceDiagramInference.h>
+#include <agrum/ID/inference/ShaferShenoyIDInference.h>

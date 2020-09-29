@@ -29,7 +29,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
-#include <agrum/ID/inference/influenceDiagramInference.h>
+#include <agrum/ID/inference/ShaferShenoyIDInference.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/tools/graphs/graphElements.h>
@@ -53,7 +53,7 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
+  class ShaferShenoyIDInferenceTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopoOilWildcater(gum::InfluenceDiagram< double >& id,
                               gum::List< gum::NodeId >&        idList) const {
@@ -281,9 +281,9 @@ namespace gum_tests {
                                       new gum::InfluenceDiagram< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(populateDecAsia(*topology, idList))
 
-      gum::InfluenceDiagramInference< double >* dIDI = nullptr;
+      gum::ShaferShenoyIDInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::InfluenceDiagramInference< double >(*topology))
+         dIDI = new gum::ShaferShenoyIDInference< double >(topology))
       TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
       if (topology != nullptr) delete topology;
     }
@@ -363,8 +363,8 @@ namespace gum_tests {
       id.addArc(idList[15], idList[19]);
 
       gum::NullStream                          devnull;
-      gum::InfluenceDiagramInference< double > dIDI(id);
-      dIDI.displayStrongJunctionTree(devnull);
+      gum::ShaferShenoyIDInference< double > dIDI(&id);
+      auto jt=dIDI.junctionTree();
     }
 
     void /*test*/ InferenceWithOilWildCater() {
@@ -373,8 +373,8 @@ namespace gum_tests {
       topology = new gum::InfluenceDiagram< double >();
       populateOilWildcater(*topology, idList);
 
-      gum::InfluenceDiagramInference< double >* dIDI;
-      dIDI = new gum::InfluenceDiagramInference< double >(*topology);
+      gum::ShaferShenoyIDInference< double >* dIDI;
+      dIDI = new gum::ShaferShenoyIDInference< double >(topology);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
 
@@ -389,9 +389,9 @@ namespace gum_tests {
       populateDecAsia(*topology, idList);
       gum::NullStream devnull;
 
-      gum::InfluenceDiagramInference< double >* dIDI;
+      gum::ShaferShenoyIDInference< double >* dIDI;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::InfluenceDiagramInference< double >(*topology))
+         dIDI = new gum::ShaferShenoyIDInference< double >(topology))
 
       TS_ASSERT_THROWS(dIDI->getMEU(), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(dIDI->getBestDecisionChoice(idList[0]),
@@ -422,7 +422,7 @@ namespace gum_tests {
       e_list.insert(evidence1);
       e_list.insert(evidence2);
 
-      gum::InfluenceDiagramInference< double > inf(*topology);
+      gum::ShaferShenoyIDInference< double > inf(topology);
 
       evidence1->add(topology->variable(idList[2]));
       evidence1->add(topology->variable(idList[3]));
@@ -492,13 +492,13 @@ namespace gum_tests {
       tst_id.cpt(c1).populate({1, 0, 0, 1});
       tst_id.utility(u).populate({10, 100, 21, 200});
       {
-        gum::InfluenceDiagramInference< double > inf(tst_id);
+        gum::ShaferShenoyIDInference< double > inf(&tst_id);
         inf.makeInference();
         TS_ASSERT_EQUALS(inf.getBestDecisionChoice(d), 1u)
         TS_ASSERT_EQUALS(inf.getMEU(), 110.5)
       }
       {
-        gum::InfluenceDiagramInference< double > inf(tst_id);
+        gum::ShaferShenoyIDInference< double > inf(&tst_id);
         gum::Potential< double >                 evidence;
         evidence.add(tst_id.variableFromName("c"));
         evidence.populate({1, 0});
@@ -580,14 +580,14 @@ namespace gum_tests {
                     0, 4.0 / 9.0, 5.0 / 9.0});   // clang-format on
 
       {
-        gum::InfluenceDiagramInference< double > inf(model);
+        gum::ShaferShenoyIDInference< double > inf(&model);
         inf.makeInference();
         GUM_TRACE_VAR(inf.displayResult())
         GUM_TRACE_VAR(inf.getMEU())
         GUM_TRACE_VAR(inf.getBestDecisionChoice("Buy"))
       }
       /*{
-        gum::InfluenceDiagramInference< double > inf(model);
+        gum::ShaferShenoyIDInference< double > inf(&model);
 
         gum::Potential< double > eDoTest;
         eDoTest.add(model.variableFromName("DoTest"));
