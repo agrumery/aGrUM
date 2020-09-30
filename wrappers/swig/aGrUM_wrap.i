@@ -144,8 +144,8 @@
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/ID/inference/IInfluenceDiagramInference.h>
-#include <agrum/ID/inference/influenceDiagramInference.h>
+#include <agrum/ID/inference/tools/influenceDiagramInference.h>
+#include <agrum/ID/inference/ShaferShenoyIDInference.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
@@ -296,6 +296,8 @@ namespace std {
 %include <agrum/tools/core/approximations/approximationScheme.h>
 
 %import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+
+%ignore gum::BayesNetInference;
 %include <agrum/BN/inference/tools/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
@@ -330,7 +332,7 @@ namespace std {
 %include <agrum/CN/CNLoopyPropagation.h>
 
 %include <agrum/ID/influenceDiagram.h>
-%include <agrum/ID/inference/influenceDiagramInference.h>
+%include <agrum/ID/inference/ShaferShenoyIDInference.h>
 
 /* TEMPLATES INSTANTIATIONS */
 
@@ -354,7 +356,7 @@ namespace std {
 %template ( MarkovNet ) gum::MarkovNet<double>;
 %template ( ShaferShenoyMNInference ) gum::ShaferShenoyMNInference<double>;
 
-%template ( BayesNetInference ) gum::BayesNetInference<double>;
+//%template ( BayesNetInference ) gum::BayesNetInference<double>;
 %template ( LazyPropagation ) gum::LazyPropagation<double>;
 %template ( ShaferShenoyInference ) gum::ShaferShenoyInference<double>;
 %template ( VariableElimination ) gum::VariableElimination<double>;
@@ -378,7 +380,7 @@ namespace std {
 %template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
 
 %template ( InfluenceDiagram) gum::InfluenceDiagram<double>;
-%template ( InfluenceDiagramInference) gum::InfluenceDiagramInference<double>;
+%template ( ShaferShenoyIDInference) gum::ShaferShenoyIDInference<double>;
 
 %template ( BNLearner) gum::learning::BNLearner<double>;
 %template ( BNDatabaseGenerator) gum::learning::BNDatabaseGenerator<double>;

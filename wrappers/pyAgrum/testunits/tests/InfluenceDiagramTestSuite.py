@@ -111,18 +111,18 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     tst_id.utility(u)[{'c': 1, 'd': 0}] = [100]
     tst_id.utility(u)[{'c': 1, 'd': 1}] = [200]
 
-    ie = gum.InfluenceDiagramInference(tst_id)
+    ie = gum.ShaferShenoyIDInference(tst_id)
     ie.makeInference()
     self.assertEqual(ie.getBestDecisionChoice(d),1)
     self.assertEqual(ie.getMEU(),110.5)
 
-    ie = gum.InfluenceDiagramInference(tst_id)
+    ie = gum.ShaferShenoyIDInference(tst_id)
     ie.setEvidence({'c': 0})
     ie.makeInference()
     self.assertEqual(ie.getBestDecisionChoice(d),1)
     self.assertEqual(ie.getMEU(),21)
 
-    ie = gum.InfluenceDiagramInference(tst_id)
+    ie = gum.ShaferShenoyIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
     self.assertEqual(ie.getBestDecisionChoice(d),1)

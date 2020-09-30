@@ -13,9 +13,9 @@ CredalNet.setCPT (pb de type de param)
 
 CredalNet.setCPTs (pb de type de param)
 
-InfluenceDiagramInference.insertEvidence (pb type de param ?)
+ShaferShenoyIDInference.insertEvidence (pb type de param ?)
 
-InfluenceDiagramInference.displayStrongJunctionTree (pb type de param ?)
+ShaferShenoyIDInference.displayStrongJunctionTree (pb type de param ?)
 
 LazyPropagation.setTriangulation prend en paramètre un objet Triangulation
 

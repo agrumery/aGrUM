@@ -17,13 +17,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
-%ignore *::insertEvidence();
+
 %ignore *::getTriangulation();
-%ignore *::displayStrongJunctionTree();
 
 // copy: M indicates the modifications
-%feature("shadow") gum::InfluenceDiagramInference<double>::setEvidence %{
+%feature("shadow") gum::ShaferShenoyIDInference<double>::setEvidence %{
 def setEvidence(self, evidces):
     """
     Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -108,10 +106,7 @@ def setEvidence(self, evidces):
 
 
 // these void class extensions are rewritten by "shadow" declarations
-%extend gum::InfluenceDiagramInference<double> {
-    const gum::InfluenceDiagram<double>& influenceDiagram() const {
-      return static_cast<const gum::IInfluenceDiagramInference<double> *>($self)->influenceDiagram();
-    }
+%extend gum::ShaferShenoyIDInference<double> {
     void setEvidence(PyObject *evidces) {}
 
     // evidences is a python list of potentials*
@@ -135,14 +130,7 @@ def setEvidence(self, evidces):
 	gum::Potential< double > *arg1 =  reinterpret_cast< gum::Potential< double > * >(argp1);
 	l.push_front(arg1);
       }
-      self->insertEvidence(l);
+      self->addListOfEvidence(l);
     }
-
-    const std::string junctionTreeToDot() {
-      std::stringstream stream;
-      self->displayStrongJunctionTree(stream);
-      return stream.str();
-    };
-
 }
 

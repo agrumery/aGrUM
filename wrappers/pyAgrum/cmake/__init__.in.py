@@ -56,7 +56,7 @@ from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadLi
 from .pyAgrum import BNGenerator, IDGenerator, JunctionTreeGenerator
 from .pyAgrum import BNLearner
 from .pyAgrum import BNDatabaseGenerator
-from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
+from .pyAgrum import InfluenceDiagram, ShaferShenoyIDInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from .pyAgrum import PRMexplorer
 
@@ -95,7 +95,7 @@ __all__=[
   'BNGenerator','IDGenerator','JunctionTreeGenerator',
   'BNLearner',
   'BNDatabaseGenerator',
-  'InfluenceDiagram','InfluenceDiagramInference',
+  'InfluenceDiagram','ShaferShenoyIDInference',
   'CredalNet','CNMonteCarloSampling','CNLoopyPropagation',
   'PRMexplorer',
 

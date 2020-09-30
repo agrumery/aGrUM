@@ -37,7 +37,7 @@
 namespace gum {
   /**
    * @class InfluenceDiagramInference InfluenceDiagramInference.h
-   *<agrum/ID/inference/InfluenceDiagramInference.h>
+   *<agrum/ID/inference/influenceDiagramInference.h>
    * @brief Abstract base class for inference engines in influence diagrams.
    * @ingroup id_group
    *
@@ -56,8 +56,8 @@ namespace gum {
      */
     virtual ~InfluenceDiagramInference();
 
-    /// assigns a new ID to the inference engine
-    /** Assigns a new ID to the ShaferShenoyIDInference engine and sends messages
+    /// assigns a new influence diagram to the inference engine
+    /** Assigns a new influence diagram to the o,fere,ce e,go,e engine and sends messages
      * to the descendants of ShaferShenoyIDInference to inform them that the ID has
      * changed.
      * @warning note that, by aGrUM's rule, the influence Diagram is not copied
@@ -77,6 +77,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/ID/inference/tools/InfluenceDiagramInference_tpl.h>
+#include <agrum/ID/inference/tools/influenceDiagramInference_tpl.h>
 
 #endif /* GUM_INFLUENCE_DIAGRAM_INFERENCE_H */

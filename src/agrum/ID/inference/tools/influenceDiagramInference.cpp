@@ -20,4 +20,4 @@
  */
 
 
-#include <agrum/ID/inference/tools/InfluenceDiagramInference.h>
+#include <agrum/ID/inference/tools/influenceDiagramInference.h>

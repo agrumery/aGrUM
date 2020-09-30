@@ -31,7 +31,7 @@ CredalNet.setCPT (issue with parameter type)
 
 CredalNet.setCPTs (issue with parameter type)
 
-InfluenceDiagramInference.displayStrongJunctionTree (issue with parameter type)
+ShaferShenoyIDInference.displayStrongJunctionTree (issue with parameter type)
 
 LazyPropagation.setTriangulation (issue with parameter type, Triangulation is not a wrapped object)
 

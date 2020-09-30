@@ -8,6 +8,13 @@ from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket,InfluenceDiagram
 from .pyAgrum import ExactBNdistance,GibbsBNdistance
 from .pyAgrum import BNLearner
 
+def InfluenceDiagramInference(infdiag):
+  """
+  Deprecated class. Use pyAgrum.ShaferShenoyIDInference instead.
+  """
+  print("** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.")
+  print("** A pyAgrum.ShaferShenoyIDInference has been created.")
+  return ShaferShenoyIDInference(bn)
 
 def GibbsInference(bn):
   """

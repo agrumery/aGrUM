@@ -6228,6 +6228,10 @@ class GraphicalModel(object):
         r"""empty(GraphicalModel self) -> bool"""
         return _pyAgrum.GraphicalModel_empty(self)
 
+    def exists(self, node):
+        r"""exists(GraphicalModel self, gum::NodeId node) -> bool"""
+        return _pyAgrum.GraphicalModel_exists(self, node)
+
     def nodes(self):
         r"""nodes(GraphicalModel self) -> NodeGraphPart"""
         return _pyAgrum.GraphicalModel_nodes(self)
@@ -6329,6 +6333,10 @@ class DAGmodel(GraphicalModel):
 
         """
         return _pyAgrum.DAGmodel_nodes(self)
+
+    def exists(self, node):
+        r"""exists(DAGmodel self, gum::NodeId node) -> bool"""
+        return _pyAgrum.DAGmodel_exists(self, node)
 
     def variable(self, id):
         r"""
@@ -6559,6 +6567,10 @@ class UGmodel(GraphicalModel):
     def nodes(self):
         r"""nodes(UGmodel self) -> NodeGraphPart"""
         return _pyAgrum.UGmodel_nodes(self)
+
+    def exists(self, node):
+        r"""exists(UGmodel self, gum::NodeId node) -> bool"""
+        return _pyAgrum.UGmodel_exists(self, node)
 
     def variable(self, id):
         r"""variable(UGmodel self, gum::NodeId id) -> DiscreteVariable"""
@@ -12908,172 +12920,6 @@ class ShaferShenoyMNInference(object):
 
 # Register ShaferShenoyMNInference in _pyAgrum:
 _pyAgrum.ShaferShenoyMNInference_swigregister(ShaferShenoyMNInference)
-
-class BayesNetInference(object):
-    r"""
-    Proxy of C++ gum::BayesNetInference< double > class.
-    Proxy of C++ gum::BayesNetInference< double > class.
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    def __init__(self, *args, **kwargs):
-        raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
-    StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_StateOfInference_OutdatedBNStructure
-    
-    StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_StateOfInference_OutdatedBNPotentials
-    
-    StateOfInference_ReadyForInference = _pyAgrum.BayesNetInference_StateOfInference_ReadyForInference
-    
-    StateOfInference_Done = _pyAgrum.BayesNetInference_StateOfInference_Done
-    
-    __swig_destroy__ = _pyAgrum.delete_BayesNetInference
-
-    def setBN(self, bn):
-        r"""setBN(BayesNetInference self, IBayesNet bn)"""
-        return _pyAgrum.BayesNetInference_setBN(self, bn)
-
-    def BN(self):
-        r"""BN(BayesNetInference self) -> IBayesNet"""
-        return _pyAgrum.BayesNetInference_BN(self)
-
-    def domainSizes(self):
-        r"""domainSizes(BayesNetInference self) -> gum::NodeProperty< gum::Size > const &"""
-        return _pyAgrum.BayesNetInference_domainSizes(self)
-
-    def isInferenceReady(self):
-        r"""isInferenceReady(BayesNetInference self) -> bool"""
-        return _pyAgrum.BayesNetInference_isInferenceReady(self)
-
-    def isInferenceOutdatedBNStructure(self):
-        r"""isInferenceOutdatedBNStructure(BayesNetInference self) -> bool"""
-        return _pyAgrum.BayesNetInference_isInferenceOutdatedBNStructure(self)
-
-    def isInferenceOutdatedBNPotentials(self):
-        r"""isInferenceOutdatedBNPotentials(BayesNetInference self) -> bool"""
-        return _pyAgrum.BayesNetInference_isInferenceOutdatedBNPotentials(self)
-
-    def isInferenceDone(self):
-        r"""isInferenceDone(BayesNetInference self) -> bool"""
-        return _pyAgrum.BayesNetInference_isInferenceDone(self)
-
-    def isDone(self):
-        r"""isDone(BayesNetInference self) -> bool"""
-        return _pyAgrum.BayesNetInference_isDone(self)
-
-    def prepareInference(self):
-        r"""prepareInference(BayesNetInference self)"""
-        return _pyAgrum.BayesNetInference_prepareInference(self)
-
-    def makeInference(self):
-        r"""makeInference(BayesNetInference self)"""
-        return _pyAgrum.BayesNetInference_makeInference(self)
-
-    def clear(self):
-        r"""clear(BayesNetInference self)"""
-        return _pyAgrum.BayesNetInference_clear(self)
-
-    def state(self):
-        r"""state(BayesNetInference self) -> gum::BayesNetInference< double >::StateOfInference"""
-        return _pyAgrum.BayesNetInference_state(self)
-
-    def addEvidence(self, *args):
-        r"""
-        addEvidence(BayesNetInference self, gum::NodeId id, gum::Idx const val)
-        addEvidence(BayesNetInference self, std::string const & nodeName, gum::Idx const val)
-        addEvidence(BayesNetInference self, gum::NodeId id, std::string const & label)
-        addEvidence(BayesNetInference self, std::string const & nodeName, std::string const & label)
-        addEvidence(BayesNetInference self, gum::NodeId id, Vector vals)
-        addEvidence(BayesNetInference self, std::string const & nodeName, Vector vals)
-        addEvidence(BayesNetInference self, Potential pot)
-        addEvidence(BayesNetInference self, Potential pot)
-        """
-        return _pyAgrum.BayesNetInference_addEvidence(self, *args)
-
-    def addSetOfEvidence(self, potset):
-        r"""addSetOfEvidence(BayesNetInference self, gum::Set< gum::Potential< double > const * > const & potset)"""
-        return _pyAgrum.BayesNetInference_addSetOfEvidence(self, potset)
-
-    def addListOfEvidence(self, potlist):
-        r"""addListOfEvidence(BayesNetInference self, gum::List< gum::Potential< double > const * > const & potlist)"""
-        return _pyAgrum.BayesNetInference_addListOfEvidence(self, potlist)
-
-    def chgEvidence(self, *args):
-        r"""
-        chgEvidence(BayesNetInference self, gum::NodeId id, gum::Idx const val)
-        chgEvidence(BayesNetInference self, std::string const & nodeName, gum::Idx const val)
-        chgEvidence(BayesNetInference self, gum::NodeId id, std::string const & label)
-        chgEvidence(BayesNetInference self, std::string const & nodeName, std::string const & label)
-        chgEvidence(BayesNetInference self, gum::NodeId id, Vector vals)
-        chgEvidence(BayesNetInference self, std::string const & nodeName, Vector vals)
-        chgEvidence(BayesNetInference self, Potential pot)
-        """
-        return _pyAgrum.BayesNetInference_chgEvidence(self, *args)
-
-    def eraseAllEvidence(self):
-        r"""eraseAllEvidence(BayesNetInference self)"""
-        return _pyAgrum.BayesNetInference_eraseAllEvidence(self)
-
-    def eraseEvidence(self, *args):
-        r"""
-        eraseEvidence(BayesNetInference self, gum::NodeId id)
-        eraseEvidence(BayesNetInference self, std::string const & nodeName)
-        """
-        return _pyAgrum.BayesNetInference_eraseEvidence(self, *args)
-
-    def hasEvidence(self, *args):
-        r"""
-        hasEvidence(BayesNetInference self) -> bool
-        hasEvidence(BayesNetInference self, gum::NodeId id) -> bool
-        hasEvidence(BayesNetInference self, std::string const & nodeName) -> bool
-        """
-        return _pyAgrum.BayesNetInference_hasEvidence(self, *args)
-
-    def hasHardEvidence(self, *args):
-        r"""
-        hasHardEvidence(BayesNetInference self, gum::NodeId id) -> bool
-        hasHardEvidence(BayesNetInference self, std::string const & nodeName) -> bool
-        """
-        return _pyAgrum.BayesNetInference_hasHardEvidence(self, *args)
-
-    def hasSoftEvidence(self, *args):
-        r"""
-        hasSoftEvidence(BayesNetInference self, gum::NodeId id) -> bool
-        hasSoftEvidence(BayesNetInference self, std::string const & nodeName) -> bool
-        """
-        return _pyAgrum.BayesNetInference_hasSoftEvidence(self, *args)
-
-    def nbrEvidence(self):
-        r"""nbrEvidence(BayesNetInference self) -> gum::Size"""
-        return _pyAgrum.BayesNetInference_nbrEvidence(self)
-
-    def nbrHardEvidence(self):
-        r"""nbrHardEvidence(BayesNetInference self) -> gum::Size"""
-        return _pyAgrum.BayesNetInference_nbrHardEvidence(self)
-
-    def nbrSoftEvidence(self):
-        r"""nbrSoftEvidence(BayesNetInference self) -> gum::Size"""
-        return _pyAgrum.BayesNetInference_nbrSoftEvidence(self)
-
-    def evidence(self):
-        r"""evidence(BayesNetInference self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
-        return _pyAgrum.BayesNetInference_evidence(self)
-
-    def softEvidenceNodes(self):
-        r"""softEvidenceNodes(BayesNetInference self) -> gum::NodeSet const &"""
-        return _pyAgrum.BayesNetInference_softEvidenceNodes(self)
-
-    def hardEvidenceNodes(self):
-        r"""hardEvidenceNodes(BayesNetInference self) -> gum::NodeSet const &"""
-        return _pyAgrum.BayesNetInference_hardEvidenceNodes(self)
-
-    def hardEvidence(self):
-        r"""hardEvidence(BayesNetInference self) -> gum::NodeProperty< gum::Idx > const &"""
-        return _pyAgrum.BayesNetInference_hardEvidence(self)
-
-# Register BayesNetInference in _pyAgrum:
-_pyAgrum.BayesNetInference_swigregister(BayesNetInference)
 
 class LazyPropagation(object):
     r"""
@@ -25696,32 +25542,31 @@ def InfluenceDiagram_fastPrototype(dotlike, domainSize=2):
     """
     return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
 
-class InfluenceDiagramInference(object):
+class ShaferShenoyIDInference(object):
     r"""
-    Proxy of C++ gum::InfluenceDiagramInference< double > class.
-    Proxy of C++ gum::InfluenceDiagramInference< double > class.
+    Proxy of C++ gum::ShaferShenoyIDInference< double > class.
+    Proxy of C++ gum::ShaferShenoyIDInference< double > class.
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, infDiag):
-        r"""__init__(InfluenceDiagramInference self, InfluenceDiagram infDiag) -> InfluenceDiagramInference"""
-        _pyAgrum.InfluenceDiagramInference_swiginit(self, _pyAgrum.new_InfluenceDiagramInference(infDiag))
-    __swig_destroy__ = _pyAgrum.delete_InfluenceDiagramInference
+        r"""__init__(ShaferShenoyIDInference self, InfluenceDiagram infDiag) -> ShaferShenoyIDInference"""
+        _pyAgrum.ShaferShenoyIDInference_swiginit(self, _pyAgrum.new_ShaferShenoyIDInference(infDiag))
+    __swig_destroy__ = _pyAgrum.delete_ShaferShenoyIDInference
 
-    def makeInference(self):
+    def junctionTree(self):
+        r"""junctionTree(ShaferShenoyIDInference self) -> CliqueGraph"""
+        return _pyAgrum.ShaferShenoyIDInference_junctionTree(self)
+
+    def clear(self):
+        r"""clear(ShaferShenoyIDInference self)"""
+        return _pyAgrum.ShaferShenoyIDInference_clear(self)
+
+    def MEU(self):
         r"""
-        makeInference(InfluenceDiagramInference self)
-
-        Makes the inference. 
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_makeInference(self)
-
-    def getMEU(self):
-        r"""
-        getMEU(InfluenceDiagramInference self) -> double
+        MEU(ShaferShenoyIDInference self) -> double
 
         Returns maximum expected utility obtained from inference.
 
@@ -25731,19 +25576,19 @@ class InfluenceDiagramInference(object):
         	If no inference have yet been made 
 
         """
-        return _pyAgrum.InfluenceDiagramInference_getMEU(self)
+        return _pyAgrum.ShaferShenoyIDInference_MEU(self)
 
-    def getBestDecisionChoice(self, *args):
+    def optimalDecision(self, *args):
         r"""
-        getBestDecisionChoice(InfluenceDiagramInference self, gum::NodeId decisionId) -> gum::Idx
-        getBestDecisionChoice(InfluenceDiagramInference self, std::string decisionName) -> gum::Idx
+        optimalDecision(ShaferShenoyIDInference self, gum::NodeId decisionId) -> gum::Idx
+        optimalDecision(ShaferShenoyIDInference self, std::string decisionName) -> gum::Idx
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
         Parameters
         ----------
-        decisionId : int
-        	the id of the decision variable
+        decisionId : int,str
+        	the id or name of the decision variable
 
         Raises
         ------
@@ -25753,96 +25598,16 @@ class InfluenceDiagramInference(object):
         	If node given in parmaeter is not a decision node 
 
         """
-        return _pyAgrum.InfluenceDiagramInference_getBestDecisionChoice(self, *args)
+        return _pyAgrum.ShaferShenoyIDInference_optimalDecision(self, *args)
 
-    def displayResult(self):
+    def optimalDecisions(self):
         r"""
-        displayResult(InfluenceDiagramInference self) -> std::string
+        optimalDecisions(ShaferShenoyIDInference self) -> std::vector< std::pair< gum::NodeId,gum::Idx >,std::allocator< std::pair< gum::NodeId,gum::Idx > > >
 
         Displays the result of an inference.
 
         """
-        return _pyAgrum.InfluenceDiagramInference_displayResult(self)
-
-    def insertEvidence(self, evidenceList):
-        r"""
-        insertEvidence(InfluenceDiagramInference self, gum::List< gum::Potential< double > const * > const & evidenceList)
-
-        Insert new evidence in the graph.
-
-        Parameters
-        ----------
-        evidenceList : list
-        	a list of potentials as evidences
-
-        Warnings
-        --------
-        If an evidence already w.r.t. a given node and a new evidence w.r.t. this node is onserted, the old evidence is removed
-
-        Raises
-        ------
-        gum.OperationNotAllowed
-        	If an evidence is over more than one variable
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_insertEvidence(self, evidenceList)
-
-    def eraseEvidence(self, evidence):
-        r"""
-        eraseEvidence(InfluenceDiagramInference self, Potential evidence)
-
-        Parameters
-        ----------
-        evidence : pyAgrum.Potential
-        	the evidence to remove
-
-        Raises
-        ------
-        gum.IndexError
-        	If the evidence does not belong to the influence diagram
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_eraseEvidence(self, evidence)
-
-    def eraseAllEvidence(self):
-        r"""
-        eraseAllEvidence(InfluenceDiagramInference self)
-
-        Removes all the evidence entered into the diagram.
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_eraseAllEvidence(self)
-
-    def getMarginal(self, node):
-        r"""getMarginal(InfluenceDiagramInference self, gum::NodeId node) -> Potential"""
-        return _pyAgrum.InfluenceDiagramInference_getMarginal(self, node)
-
-    def displayStrongJunctionTree(self, *args):
-        r"""
-        displayStrongJunctionTree(InfluenceDiagramInference self, std::ostream & stream=std::cout)
-
-        Displays on terminal the result of strong junction tree computation for test purpose only.
-
-        Parameters
-        ----------
-        args : TBW
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_displayStrongJunctionTree(self, *args)
-
-    def influenceDiagram(self):
-        r"""
-        influenceDiagram(InfluenceDiagramInference self) -> InfluenceDiagram
-
-        Returns a constant reference over the InfluenceDiagram on which this class work.
-
-        Returns
-        -------
-        pyAgrum.InfluenceDiagram
-        	the InfluenceDiagram on which this class work
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_influenceDiagram(self)
+        return _pyAgrum.ShaferShenoyIDInference_optimalDecisions(self)
 
     def setEvidence(self, evidces):
         """
@@ -25928,23 +25693,11 @@ class InfluenceDiagramInference(object):
 
 
     def _setEvidence(self, evidences):
-        r"""_setEvidence(InfluenceDiagramInference self, PyObject * evidences)"""
-        return _pyAgrum.InfluenceDiagramInference__setEvidence(self, evidences)
+        r"""_setEvidence(ShaferShenoyIDInference self, PyObject * evidences)"""
+        return _pyAgrum.ShaferShenoyIDInference__setEvidence(self, evidences)
 
-    def junctionTreeToDot(self):
-        r"""
-        junctionTreeToDot(InfluenceDiagramInference self) -> std::string const
-
-        Returns
-        -------
-        str
-        	the result of strong junction tree computation for test purpose only.
-
-        """
-        return _pyAgrum.InfluenceDiagramInference_junctionTreeToDot(self)
-
-# Register InfluenceDiagramInference in _pyAgrum:
-_pyAgrum.InfluenceDiagramInference_swigregister(InfluenceDiagramInference)
+# Register ShaferShenoyIDInference in _pyAgrum:
+_pyAgrum.ShaferShenoyIDInference_swigregister(ShaferShenoyIDInference)
 
 class BNLearner(object):
     r"""

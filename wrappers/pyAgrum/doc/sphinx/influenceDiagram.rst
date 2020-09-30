@@ -22,5 +22,5 @@ Model
 
 Inference
 ---------
-.. autoclass:: pyAgrum.InfluenceDiagramInference
+.. autoclass:: pyAgrum.ShaferShenoyIDInference
 			:members:

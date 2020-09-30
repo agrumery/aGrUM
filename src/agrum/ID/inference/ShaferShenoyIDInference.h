@@ -44,7 +44,7 @@
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>
 #include <agrum/tools/multidim/implementations/multiDimSparse.h>
 
-#include <agrum/ID/inference/tools/InfluenceDiagramInference.h>
+#include <agrum/ID/inference/tools/influenceDiagramInference.h>
 
 namespace gum {
 
