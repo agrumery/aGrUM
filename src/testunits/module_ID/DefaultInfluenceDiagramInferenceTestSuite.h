@@ -393,18 +393,18 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
          dIDI = new gum::ShaferShenoyIDInference< double >(topology))
 
-      TS_ASSERT_THROWS(dIDI->getMEU(), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->getBestDecisionChoice(idList[0]),
+      TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]),
                        gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->displayResult(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dIDI->optimalDecisions(), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->getMEU())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->getBestDecisionChoice(idList[0]))
-      TS_ASSERT_THROWS(dIDI->getBestDecisionChoice(idList[2]), gum::InvalidNode)
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->displayResult())
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(idList[0]))
+      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[2]), gum::InvalidNode)
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecisions())
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->displayResult())
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecisions())
 
       delete dIDI;
       delete topology;
@@ -426,18 +426,18 @@ namespace gum_tests {
 
       evidence1->add(topology->variable(idList[2]));
       evidence1->add(topology->variable(idList[3]));
-      TS_ASSERT_THROWS(inf.insertEvidence(e_list), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(inf.addListOfEvidence(e_list), gum::OperationNotAllowed)
       evidence1->erase(topology->variable(idList[3]));
       evidence2->add(topology->variable(idList[3]));
 
       TS_GUM_ASSERT_THROWS_NOTHING(evidence1->populate({0.2f, 0.3f, 0.1f, 0.4f}))
       evidence2->populate({0.2f, 0.3f, 0.5f});
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.insertEvidence(e_list))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.addListOfEvidence(e_list))
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.eraseEvidence(evidence1))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.eraseEvidence(idList[2])) //remove evidence1
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.eraseAllEvidence())
 
@@ -494,8 +494,8 @@ namespace gum_tests {
       {
         gum::ShaferShenoyIDInference< double > inf(&tst_id);
         inf.makeInference();
-        TS_ASSERT_EQUALS(inf.getBestDecisionChoice(d), 1u)
-        TS_ASSERT_EQUALS(inf.getMEU(), 110.5)
+        TS_ASSERT_EQUALS(inf.optimalDecision(d), 1u)
+        TS_ASSERT_EQUALS(inf.MEU(), 110.5)
       }
       {
         gum::ShaferShenoyIDInference< double > inf(&tst_id);
@@ -504,10 +504,10 @@ namespace gum_tests {
         evidence.populate({1, 0});
         gum::List< const gum::Potential< double >* > l;
         l.insert(&evidence);
-        inf.insertEvidence(l);
+        inf.addListOfEvidence(l);
         inf.makeInference();
-        TS_ASSERT_EQUALS(inf.getBestDecisionChoice(d), 1u)
-        TS_ASSERT_EQUALS(inf.getMEU(), 21)
+        TS_ASSERT_EQUALS(inf.optimalDecision(d), 1u)
+        TS_ASSERT_EQUALS(inf.MEU(), 21)
       }
     }
 
@@ -582,9 +582,9 @@ namespace gum_tests {
       {
         gum::ShaferShenoyIDInference< double > inf(&model);
         inf.makeInference();
-        GUM_TRACE_VAR(inf.displayResult())
-        GUM_TRACE_VAR(inf.getMEU())
-        GUM_TRACE_VAR(inf.getBestDecisionChoice("Buy"))
+        GUM_TRACE_VAR(inf.optimalDecisions())
+        GUM_TRACE_VAR(inf.MEU())
+        GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }
       /*{
         gum::ShaferShenoyIDInference< double > inf(&model);
@@ -605,12 +605,12 @@ namespace gum_tests {
         l.insert(&eDoTest);
         l.insert(&eFirstTest);
         l.insert(&eSecondTest);
-        inf.insertEvidence(l);
+        inf.addListOfEvidence(l);
 
         inf.makeInference();
-        GUM_TRACE_VAR(inf.displayResult())
-        GUM_TRACE_VAR(inf.getMEU())
-        GUM_TRACE_VAR(inf.getBestDecisionChoice("Buy"))
+        GUM_TRACE_VAR(inf.optimalDecisions())
+        GUM_TRACE_VAR(inf.MEU())
+        GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }*/
     }
   };

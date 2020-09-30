@@ -62,12 +62,13 @@ namespace gum {
      * changed.
      * @warning note that, by aGrUM's rule, the influence Diagram is not copied
      * into the inference engine but only referenced. */
-    virtual void setID(const InfluenceDiagram< GUM_SCALAR >* infdiag);
+    virtual void
+       setInfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >* infdiag);
 
     /// Returns a constant reference over the IBayesNet referenced by this class
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
      * the inference. */
-    virtual const InfluenceDiagram< GUM_SCALAR >& ID() const final;
+    virtual const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const final;
 
     private:
     /// assigns a influence diagram during the inference engine construction

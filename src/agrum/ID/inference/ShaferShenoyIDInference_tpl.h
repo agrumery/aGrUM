@@ -43,13 +43,64 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   ShaferShenoyIDInference< GUM_SCALAR >::ShaferShenoyIDInference(
-     const InfluenceDiagram< GUM_SCALAR >* infDiag) : InfluenceDiagramInference<GUM_SCALAR>(infDiag) {
+     const InfluenceDiagram< GUM_SCALAR >* infDiag) :
+      InfluenceDiagramInference< GUM_SCALAR >(infDiag) {
     GUM_CONSTRUCTOR(ShaferShenoyIDInference);
   }
 
   template < typename GUM_SCALAR >
   ShaferShenoyIDInference< GUM_SCALAR >::~ShaferShenoyIDInference() {
     GUM_DESTRUCTOR(ShaferShenoyIDInference);
+  }
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::clear() {
+    GraphicalModelInference< GUM_SCALAR >::clear();
+  }
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::onStateChanged_() {}
+  template < typename GUM_SCALAR >
+  void
+     ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
+                                                             bool isHardEvidence) {
+
+  }
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceErased_(
+     const NodeId id, bool isHardEvidence) {}
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::onAllEvidenceErased_(
+     bool contains_hard_evidence) {}
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceChanged_(
+     const NodeId id, bool hasChangedSoftHard) {}
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::onModelChanged_(
+     const GraphicalModel* model) {}
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedStructure_() {}
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::makeInference_() {
+    GUM_ERROR(NotImplementedYet, "tbd asap")
+  }
+
+  template < typename GUM_SCALAR >
+  GUM_SCALAR ShaferShenoyIDInference< GUM_SCALAR >::MEU() {
+    GUM_ERROR(NotImplementedYet, "tbd asap")
+  }
+
+  template < typename GUM_SCALAR >
+  Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(
+     NodeId decisionId) {
+    GUM_ERROR(NotImplementedYet, "tbd asap")
+  }
+
+  template < typename GUM_SCALAR >
+  std::vector< std::pair< NodeId, Idx > >
+     ShaferShenoyIDInference< GUM_SCALAR >::optimalDecisions() {
+    GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
 } /* namespace gum */

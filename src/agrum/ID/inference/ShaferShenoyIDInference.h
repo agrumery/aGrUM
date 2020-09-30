@@ -79,8 +79,30 @@ namespace gum {
     virtual ~ShaferShenoyIDInference();
 
     const JunctionTree* junctionTree() const {
-      GUM_ERROR(NotImplementedYet,"tbd asap")
+      GUM_ERROR(NotImplementedYet, "tbd asap")
     }
+
+    void clear() override;
+
+    GUM_SCALAR MEU();
+
+    Idx optimalDecision(NodeId decisionId);
+    Idx optimalDecision(std::string decisionName) {
+      return optimalDecision(this->influenceDiagram().idFromName(decisionName));
+    };
+
+    std::vector< std::pair< NodeId, Idx > > optimalDecisions();
+
+    protected:
+    void onStateChanged_() override;
+    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) override;
+    void onEvidenceErased_(const NodeId id, bool isHardEvidence) override;
+    void onAllEvidenceErased_(bool contains_hard_evidence) override;
+    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) override;
+    void onModelChanged_(const GraphicalModel* model) override;
+    void updateOutdatedStructure_() override;
+    void updateOutdatedPotentials_() override;
+    void makeInference_() override;
     /// @}
   };
 } /* namespace gum */

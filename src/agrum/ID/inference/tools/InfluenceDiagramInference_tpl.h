@@ -50,13 +50,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const InfluenceDiagram< GUM_SCALAR >&
-     InfluenceDiagramInference< GUM_SCALAR >::ID() const {
-    return static_cast< const InfluenceDiagram< GUM_SCALAR >& >(this->model);
+     InfluenceDiagramInference< GUM_SCALAR >::influenceDiagram() const {
+    return static_cast< const InfluenceDiagram< GUM_SCALAR >& >(this->model());
   }
 
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
-  void InfluenceDiagramInference< GUM_SCALAR >::setID(const InfluenceDiagram<GUM_SCALAR >* infdiag) {
+  void InfluenceDiagramInference< GUM_SCALAR >::setInfluenceDiagram(const InfluenceDiagram<GUM_SCALAR >* infdiag) {
     this->setModel_(infdiag);
   }
 
