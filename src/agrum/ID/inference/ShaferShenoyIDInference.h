@@ -39,6 +39,7 @@
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/core/list.h>
 
+#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>
@@ -103,7 +104,12 @@ namespace gum {
     void updateOutdatedStructure_() override;
     void updateOutdatedPotentials_() override;
     void makeInference_() override;
-    /// @}
+
+    DAG reduce_;
+
+    void createReduced_();
+    bool NoForgetting_;
+    std::vector<NodeSet> partialOrder_;
   };
 } /* namespace gum */
 

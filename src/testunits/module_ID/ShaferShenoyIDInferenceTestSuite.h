@@ -362,9 +362,10 @@ namespace gum_tests {
       id.addArc(idList[14], idList[18]);
       id.addArc(idList[15], idList[19]);
 
-      gum::NullStream                          devnull;
+      gum::NullStream                        devnull;
       gum::ShaferShenoyIDInference< double > dIDI(&id);
-      auto jt=dIDI.junctionTree();
+      auto                                   jt = dIDI.junctionTree();
+      GUM_TRACE_VAR(jt);
     }
 
     void /*test*/ InferenceWithOilWildCater() {
@@ -394,8 +395,7 @@ namespace gum_tests {
          dIDI = new gum::ShaferShenoyIDInference< double >(topology))
 
       TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]),
-                       gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(dIDI->optimalDecisions(), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
@@ -437,7 +437,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.eraseEvidence(idList[2])) //remove evidence1
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         inf.eraseEvidence(idList[2]))   // remove evidence1
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.eraseAllEvidence())
 
@@ -499,7 +500,7 @@ namespace gum_tests {
       }
       {
         gum::ShaferShenoyIDInference< double > inf(&tst_id);
-        gum::Potential< double >                 evidence;
+        gum::Potential< double >               evidence;
         evidence.add(tst_id.variableFromName("c"));
         evidence.populate({1, 0});
         gum::List< const gum::Potential< double >* > l;
@@ -511,7 +512,7 @@ namespace gum_tests {
       }
     }
 
-    void testBugFromNeapolitan() {
+    void /*test*/ BugFromNeapolitan() {
       gum::InfluenceDiagram< double > model;
 
       model.addDecisionNode(gum::LabelizedVariable(
@@ -612,6 +613,78 @@ namespace gum_tests {
         GUM_TRACE_VAR(inf.MEU())
         GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }*/
+    }
+
+    void testNewStructure() {
+      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+         "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;*D3<-M<-*D6->N->*D4<-*D2;X<-*D1->"
+         "Y->D3;D5->$Q1<-W;U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
+
+      GUM_TRACE_VAR(infdiag.toString())
+
+      gum::DAG                       reduce_;
+      std::vector< gum::NodeSet >    partialOrder_;
+      gum::NodeProperty< gum::Size > level;
+
+      for (auto node: infdiag.nodes())
+        if (!infdiag.isUtilityNode(node))
+          reduce_.addNodeWithId(node);
+        else
+          level.insert(node, 0);
+      for (const auto& arc: infdiag.arcs())
+        if (reduce_.exists(arc.tail()) && reduce_.exists(arc.head()))
+          reduce_.addArc(arc.tail(), arc.head());
+
+      gum::Size max_level = 0;
+      partialOrder_.clear();
+      partialOrder_.resize(infdiag.size());
+      gum::NodeSet currents;
+      for (auto node: infdiag.nodes()) {
+        if (infdiag.isUtilityNode(node)) continue;
+
+        if (reduce_.children(node).empty()) {
+          currents.clear();
+          currents.insert(node);
+          level.insert(node, 0);
+          GUM_TRACE(" Adding " << infdiag.variable(node).name() << " : " << 0)
+          while (!currents.empty()) {
+            gum::NodeId elt = *(currents.begin());
+            currents.erase(elt);
+
+            if (infdiag.isDecisionNode(elt)) partialOrder_[level[elt]].insert(elt);
+
+            for (auto parent: reduce_.parents(elt)) {
+              gum::Size lev = 0;
+              gum::Size newl;
+              bool      ok_to_add = true;
+              for (auto child: infdiag.children(parent)) {
+                if (!level.exists(child)) {
+                  ok_to_add = false;
+                  break;
+                }
+                newl = level[child];
+                if (infdiag.isDecisionNode(child)) newl += 1;
+                if (lev < newl) lev = newl;
+              }
+              if (ok_to_add) {
+                currents.insert(parent);
+                level.insert(parent, lev);
+                GUM_TRACE(" Adding " << infdiag.variable(parent).name() << " : "
+                                     << lev)
+                if (max_level < lev) max_level = lev;
+              }
+            }
+          }
+        }
+      }
+      partialOrder_.resize(max_level + 1);
+      for (const auto& ns: partialOrder_) {
+        for (const auto& node: ns)
+          std::cout << infdiag.variable(node).name() << " ";
+        std::cout << std::endl;
+      }
+
+      std::cout<<infdiag.toDot();
     }
   };
 }   // namespace gum_tests

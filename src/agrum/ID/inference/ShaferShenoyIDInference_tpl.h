@@ -44,8 +44,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   ShaferShenoyIDInference< GUM_SCALAR >::ShaferShenoyIDInference(
      const InfluenceDiagram< GUM_SCALAR >* infDiag) :
-      InfluenceDiagramInference< GUM_SCALAR >(infDiag) {
+      InfluenceDiagramInference< GUM_SCALAR >(infDiag),
+      NoForgetting_(false) {
     GUM_CONSTRUCTOR(ShaferShenoyIDInference);
+
+    createReduced_();
   }
 
   template < typename GUM_SCALAR >
@@ -76,10 +79,19 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::onModelChanged_(
      const GraphicalModel* model) {}
+
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedStructure_() {}
+  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedStructure_() {
+    InfluenceDiagramInference< GUM_SCALAR >::updateOutdatedStructure_();
+
+    createReduced_();
+    /*if (NoForgetting_) { addNoForgetting_(); }
+    reduce();*/
+  }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
+  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {
+    InfluenceDiagramInference< GUM_SCALAR >::updateOutdatedPotentials_();
+  }
 
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::makeInference_() {
@@ -92,8 +104,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(
-     NodeId decisionId) {
+  Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
@@ -101,6 +112,18 @@ namespace gum {
   std::vector< std::pair< NodeId, Idx > >
      ShaferShenoyIDInference< GUM_SCALAR >::optimalDecisions() {
     GUM_ERROR(NotImplementedYet, "tbd asap")
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::createReduced_() {
+    reduce_.clear();
+    const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
+
+    for (auto node: infdiag.nodes())
+      if (!infdiag.isUtilityNode(node)) reduce_.addNodeWithId(node);
+    for (const auto& arc: infdiag.arcs())
+      if (reduce_.exists(arc.tail()) && reduce_.exists(arc.head()))
+        reduce_.addArc(arc.tail(), arc.head());
   }
 
 } /* namespace gum */
