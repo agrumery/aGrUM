@@ -84,6 +84,9 @@ namespace gum {
     }
 
     void clear() override;
+    ///@{
+    /// No forgetting rule assumption
+    bool isNoForgettingAssumption() const;
 
     GUM_SCALAR MEU();
 
@@ -91,6 +94,8 @@ namespace gum {
     Idx optimalDecision(std::string decisionName) {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
+
+    std::vector<NodeSet> partialOrder();
 
     std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
@@ -108,8 +113,8 @@ namespace gum {
     DAG reduce_;
 
     void createReduced_();
-    bool NoForgetting_;
     std::vector<NodeSet> partialOrder_;
+    ArcSet decisionConstraints_;
   };
 } /* namespace gum */
 
