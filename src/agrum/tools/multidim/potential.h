@@ -311,22 +311,38 @@ namespace gum {
     /**
      * @brief Apply abs on every element of the container
      */
-    const Potential< GUM_SCALAR >& abs() const;
+    const Potential< GUM_SCALAR >& abs_inplace() const;
+
+    /**
+     * @brief apply $x^2$ on every element of the container
+     */
+    const Potential< GUM_SCALAR >& sq_inplace() const;
+
+    /**
+     * @brief apply $log_2(x)$ on every element of the container
+     */
+    const Potential< GUM_SCALAR >& log2_inplace() const;
+
+    /**
+    * @brief Create a new potential and apply abs on every element of the container
+    */
+    const Potential< GUM_SCALAR > abs() const;
+
+    /**
+     * @brief Create a new potential and apply $x^2$ on every element of the container
+     */
+    const Potential< GUM_SCALAR > sq() const;
+
+    /**
+     * @brief Create a new potential and apply $log_2(x)$ on every element of the container
+     */
+    const Potential< GUM_SCALAR > log2() const;
+
 
     /**
      * @brief normalisation of this do nothing if sum is 0
      */
     const Potential< GUM_SCALAR >& normalize() const;
-
-    /**
-     * @brief apply $x^2$ on every element of the container
-     */
-    const Potential< GUM_SCALAR >& sq() const;
-
-    /**
-     * @brief apply $log_2(x)$ on every element of the container
-     */
-    const Potential< GUM_SCALAR >& log2() const;
 
     /**
      * @brief compute KL divergence between this and p

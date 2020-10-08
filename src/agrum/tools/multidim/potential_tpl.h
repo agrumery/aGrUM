@@ -292,13 +292,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::sq() const {
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::sq_inplace() const {
     this->apply([](GUM_SCALAR x) { return x * x; });
     return *this;
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::log2() const {
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::log2_inplace() const {
     this->apply([](GUM_SCALAR x) { return std::log2(x); });
     return *this;
   }
@@ -340,7 +340,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::abs() const {
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::abs_inplace() const {
     this->apply([](GUM_SCALAR x) {
       if (x >= 0)
         return x;
@@ -697,6 +697,21 @@ namespace gum {
     Potential< GUM_SCALAR > noise(*this);
     return fillWith(scale(1 - alpha) + noise.randomCPT().scale(alpha))
        .normalizeAsCPT();
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::abs() const {
+    return Potential< GUM_SCALAR >(*this).abs_inplace();
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::sq() const {
+    return Potential< GUM_SCALAR >(*this).sq_inplace();
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::log2() const {
+    return Potential< GUM_SCALAR >(*this).log2_inplace();
   }
 
 } /* namespace gum */
