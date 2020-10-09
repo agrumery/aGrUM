@@ -122,12 +122,12 @@ namespace gum {
                       std::stringstream msg;
                       msg << "class " << c->name()
                           << " does not respect interface ";
-                      GUM_ERROR(TypeError, msg.str() + i->name());
+                      GUM_ERROR(PRMTypeError, msg.str() + i->name());
                     }
                   } else {
                     std::stringstream msg;
                     msg << "class " << c->name() << " does not respect interface ";
-                    GUM_ERROR(TypeError, msg.str() + i->name());
+                    GUM_ERROR(PRMTypeError, msg.str() + i->name());
                   }
 
                   break;
@@ -147,12 +147,12 @@ namespace gum {
                       std::stringstream msg;
                       msg << "class " << c->name()
                           << " does not respect interface ";
-                      GUM_ERROR(TypeError, msg.str() + i->name());
+                      GUM_ERROR(PRMTypeError, msg.str() + i->name());
                     }
                   } else {
                     std::stringstream msg;
                     msg << "class " << c->name() << " does not respect interface ";
-                    GUM_ERROR(TypeError, msg.str() + i->name());
+                    GUM_ERROR(PRMTypeError, msg.str() + i->name());
                   }
 
                   break;
@@ -173,7 +173,7 @@ namespace gum {
           } catch (NotFound&) {
             std::stringstream msg;
             msg << "class " << c->name() << " does not respect interface ";
-            GUM_ERROR(TypeError, msg.str() + i->name());
+            GUM_ERROR(PRMTypeError, msg.str() + i->name());
           }
         }
       } catch (NotFound&) {
@@ -628,7 +628,7 @@ namespace gum {
         case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
         case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
           if (inputs.front()->type() != *(retrieveType__("boolean"))) {
-            GUM_ERROR(WrongType, "expected booleans");
+            GUM_ERROR(TypeError, "expected booleans");
           }
 
           break;
@@ -709,7 +709,7 @@ namespace gum {
       if (inputs.size() > 1) {
         for (auto iter = inputs.begin() + 1; iter != inputs.end(); ++iter) {
           if ((**(iter - 1)).type() != (**iter).type()) {
-            GUM_ERROR(WrongType, "found different types");
+            GUM_ERROR(TypeError, "found different types");
           }
         }
       }
@@ -721,7 +721,7 @@ namespace gum {
         case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
         case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
           if (inputs.front()->type() != *(retrieveType__("boolean"))) {
-            GUM_ERROR(WrongType, "expected booleans");
+            GUM_ERROR(TypeError, "expected booleans");
           }
           if (params.size() != 0) {
             GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
@@ -891,7 +891,7 @@ namespace gum {
           inst = new PRMInstance< GUM_SCALAR >(elt_name.str(), *c);
           model->add(name, inst);
         }
-      } catch (TypeError&) {
+      } catch (PRMTypeError&) {
         delete inst;
         throw;
       } catch (NotFound&) {

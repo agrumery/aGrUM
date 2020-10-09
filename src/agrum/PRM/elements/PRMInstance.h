@@ -246,7 +246,7 @@ namespace gum {
        * @throw WrongClassElement Raised if id is not a valid PRMClassElement.
        * @throw OutOfUpperBound Raised if no more PRMInstance<GUM_SCALAR> can be
        *added to id.
-       * @throw TypeError Raised if instance's type isn't compatible with the
+       * @throw PRMTypeError Raised if instance's type isn't compatible with the
        *                  reference's type.
        * @throw NotFound If there is no PRMClassElement given id.
        */

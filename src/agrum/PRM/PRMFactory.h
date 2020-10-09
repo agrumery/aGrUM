@@ -355,7 +355,7 @@ namespace gum {
       /**
        * Tells the factory that we finished a class declaration.
        *
-       * @throw TypeError Raised if the current Class<GUM_SCALAR> does not
+       * @throw PRMTypeError Raised if the current Class<GUM_SCALAR> does not
        *respect one of
        *                  it's PRMInterface<GUM_SCALAR>.
        */
@@ -682,7 +682,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if one or more parameters misses or
        * are not correct.
-       * @throw WrongType Raised if the aggregator's type or one or more of the
+       * @throw TypeError Raised if the aggregator's type or one or more of the
        * chains are not of the good type.
        */
       virtual void addAggregator(const std::string&                name,

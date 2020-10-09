@@ -109,7 +109,7 @@ namespace gum {
        * @param chain A string of the form instance.attribute.
        * @param m An empty CPF which will be filed by the posterior of chain.
        * @throw NotFound Raised if chain is invalid.
-       * @throw WrongType Raised if chain does not point to an
+       * @throw TypeError Raised if chain does not point to an
        *PRMAttribute<GUM_SCALAR>.
        * @throw OperationNotAllowed Raise if m is not empty.
        */
@@ -174,7 +174,7 @@ namespace gum {
       /// @param chain The variable being observed.
       ///
       /// @throw NotFound Raised if the given names are not found.
-      /// @throw WrongType Raised if the elt is not an PRMAttribute<GUM_SCALAR>.
+      /// @throw TypeError Raised if the elt is not an PRMAttribute<GUM_SCALAR>.
       void removeEvidence(const Chain& chain);
 
       /// Remove all evidences.

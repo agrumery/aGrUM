@@ -635,10 +635,9 @@ namespace gum_tests {
 
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
-           "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;*D3<-M<-*D6->N->*D4<-*D2;X<"
-           "-*"
-           "D1->"
-           "Y->D3;D5->$Q1<-W;U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
+           "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;"
+           "*D3<-M<-*D6->N->*D4<-*D2;X<-*D1->Y->D3;D5->$Q1<-W;"
+           "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
         auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
         auto res = ieid.partialOrder();
         TS_ASSERT_EQUALS(res.size(), 4U);
@@ -653,6 +652,48 @@ namespace gum_tests {
            gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")}));
         TS_ASSERT_EQUALS(res[3], gum::NodeSet({infdiag.idFromName("D1")}));
       }
+    }
+
+    void testNoForgettingAssumption() {
+      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+         "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
+         "R4->D4<-*D3<-D2<-D1;"
+         "D3->$U1<-R2;R3->$U2");
+      auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
+
+      TS_ASSERT(!ieid.isNoForgettingAssumption());
+
+      auto dag = ieid.reducedGraph();
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")).size(), 0u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")).size(), 1u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")).size(), 1u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")).size(), 2u);
+
+      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D11"}), gum::NotFound);
+      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
+                       gum::InvalidDirectedCycle);
+      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D1", "D2", "D3"}),
+                       gum::SizeError);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"}));
+      TS_ASSERT(ieid.isNoForgettingAssumption());
+
+      dag = ieid.reducedGraph();
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")).size(), 0u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")).size(), 1u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")).size(), 1u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")).size(), 2u);
+    }
+
+    void testNoForgettingAssumption2() {
+      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+         "a->c->e->g->*d4->l->$u4;"
+         "b->d->f->h->k<-*d3->$u2;"
+         "$u1<-*d1->d1;d->e->*d2->i->l;g->i;"
+         "f->d2"
+         "h->j->$u3<-k");
+      GUM_TRACE_VAR(infdiag.toDot());
     }
   };
 }   // namespace gum_tests

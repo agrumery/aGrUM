@@ -224,7 +224,7 @@ namespace gum {
        * @param t The PRMType to replace this PRMType super.
        *
        * @throw OperationNotAllowed If this PRMType has no super.
-       * @throw TypeError If t is not equal to this PRMType super.
+       * @throw PRMTypeError If t is not equal to this PRMType super.
        */
       void setSuper(PRMType& t);
 

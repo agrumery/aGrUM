@@ -58,8 +58,8 @@
 namespace gum {
   template < typename GUM_SCALAR >
   NodeId build_node_for_MN(MarkovNet< GUM_SCALAR >& mn,
-                    std::string              node,
-                    Size                     default_domain_size) {
+                           std::string              node,
+                           Size                     default_domain_size) {
     std::string                name = node;
     auto                       ds = default_domain_size;
     long                       range_min = 0;
@@ -268,11 +268,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::factor(
      const std::vector< std::string >& varnames) const {
-    NodeSet vars;
-    for (const auto name: varnames) {
-      vars.insert(idFromName(name));
-    }
-    return factor(vars);
+    return factor(this->nodeset(varnames));
   }
 
   template < typename GUM_SCALAR >
@@ -330,7 +326,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+     MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return varMap__.variableFromName(name);
   }
 
@@ -411,11 +407,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(
      const std::vector< std::string >& varnames) {
-    NodeSet vars;
-    for (const auto name: varnames) {
-      vars.insert(idFromName(name));
-    }
-
+    auto vars = this->nodeset(varnames);
     if (factors__.exists(vars)) {
       GUM_ERROR(InvalidArgument,
                 "A factor for (" << varnames << ") already exists.")
@@ -426,7 +418,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
+     MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
     if (factor.nbrDim() == 0) {
       GUM_ERROR(InvalidArgument, "Empty factor cannot be added.");
     }
@@ -495,10 +487,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::eraseFactor(
      const std::vector< std::string >& varnames) {
-    NodeSet vars;
-    for (const auto name: varnames) {
-      vars.insert(idFromName(name));
-    }
+    auto vars = this->nodeset(varnames);
     if (factors__.exists(vars)) {
       eraseFactor__(vars);
       rebuildGraph__();

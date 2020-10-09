@@ -396,11 +396,11 @@ namespace gum {
   class FactoryInvalidState;
 
   /**
-   * @class gum::WrongType agrum/tools/core/exceptions.h
+   * @class gum::TypeError agrum/tools/core/exceptions.h
    * @extends gum::FactoryError
    * Exception : wrong type for this operation
    */
-  class WrongType;
+  class TypeError;
 
   /**
    * @class gum::WrongClassElement agrum/tools/core/exceptions.h
@@ -410,11 +410,11 @@ namespace gum {
   class WrongClassElement;
 
   /**
-   * @class gum::TypeError agrum/tools/core/exceptions.h
+   * @class gum::PRMTypeError agrum/tools/core/exceptions.h
    * @extends gum::FactoryError
    * Exception : wrong subtype or subclass
    */
-  class TypeError;
+  class PRMTypeError;
 
   /**
    * @class gum::LearningError agrum/tools/core/exceptions.h
@@ -523,19 +523,19 @@ namespace gum {
   GUM_MAKE_ERROR(CPTNoSumTo1, CPTError, "CPT does not sum to 1")
   GUM_MAKE_ERROR(IncompatibleEvidence,
                  Exception,
-                 "several evidence/CPT are incompatible together (proba=0)")
-  GUM_MAKE_ERROR(FactoryError, Exception, "factory error")
-  GUM_MAKE_ERROR(FactoryInvalidState, FactoryError, "invalid state error")
-  GUM_MAKE_ERROR(WrongType, FactoryError, "wrong type for this operation")
+                 "Several evidence/CPT are incompatible together (proba=0)")
+  GUM_MAKE_ERROR(FactoryError, Exception, "Factory error")
+  GUM_MAKE_ERROR(FactoryInvalidState, FactoryError, "Invalid state error")
+  GUM_MAKE_ERROR(TypeError, FactoryError, "Wrong type")
   GUM_MAKE_ERROR(WrongClassElement, FactoryError, "Wrong ClassElement")
-  GUM_MAKE_ERROR(TypeError, FactoryError, "Wrong subtype or subclass")
+  GUM_MAKE_ERROR(PRMTypeError, FactoryError, "Wrong subtype or subclass")
   GUM_MAKE_ERROR(LearningError, Exception, "Factory error")
   GUM_MAKE_ERROR(IncompatibleScoreApriori,
                  LearningError,
-                 "Incompatbile (maybe implicit) priors")
+                 "Incompatible (maybe implicit) priors")
   GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori,
                  LearningError,
-                 "Possible incompatibilty between score and prior")
+                 "Possible incompatibility between score and prior")
   GUM_MAKE_ERROR(DatabaseError, LearningError, "Database error")
   GUM_MAKE_ERROR(MissingVariableInDatabase,
                  LearningError,

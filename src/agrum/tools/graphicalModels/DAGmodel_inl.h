@@ -67,11 +67,49 @@ namespace gum {
     return dag_.children(idFromName(name));
   }
 
-  INLINE bool DAGmodel::exists(NodeId node) const {
-    return dag_.exists(node);
-  }
+  INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const {
     return (NodeGraphPart&)dag_;
+  }
+
+  INLINE const Sequence< NodeId >& DAGmodel::topologicalOrder(bool clear) const {
+    return dag().topologicalOrder(clear);
+  }
+
+  INLINE NodeSet DAGmodel::descendants(const NodeId id) const {
+    return dag().descendants(id);
+  }
+
+  INLINE NodeSet DAGmodel::descendants(const std::string& name) const {
+    return descendants(idFromName(name));
+  }
+
+  INLINE NodeSet DAGmodel::ancestors(const NodeId id) const {
+    return dag().descendants(id);
+  }
+
+  INLINE NodeSet DAGmodel::ancestors(const std::string& name) const {
+    return ancestors(idFromName(name));
+  }
+
+  INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
+    return dag().moralizedAncestralGraph(nodes);
+  }
+
+  INLINE UndiGraph DAGmodel::moralizedAncestralGraph(
+     const std::vector< std::string >& nodenames) const {
+    return moralizedAncestralGraph(nodeset(nodenames));
+  }
+
+  INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+    return dag().isIndependent(X, Y, Z);
+  }
+
+  INLINE bool
+     DAGmodel::isIndependent(const std::string&                Xname,
+                             const std::string&                Yname,
+                             const std::vector< std::string >& Znames) const {
+    return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
   }
 } /* namespace gum */

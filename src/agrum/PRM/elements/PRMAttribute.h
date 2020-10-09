@@ -150,7 +150,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if this PRMAttribute can not have any
        *                            cast descendant.
-       * @throw TypeError Raised if attr's PRMType is not a direct
+       * @throw PRMTypeError Raised if attr's PRMType is not a direct
        *descendant of
        *                  this PRMAttribute's PRMType.
        */

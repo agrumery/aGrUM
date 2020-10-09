@@ -49,8 +49,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
-    reduce_.clear();
-    decisionConstraints_.clear();
+    reduced_.clear();
+    noForgettingOrder_.clear();
     partialOrder().clear();
   }
   template < typename GUM_SCALAR >
@@ -77,8 +77,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedStructure_() {
     createReduced_();
-    /*if (NoForgetting_) { addNoForgetting_(); }
-    reduce();*/
   }
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
@@ -106,24 +104,41 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ShaferShenoyIDInference< GUM_SCALAR >::createReduced_() {
-    reduce_.clear();
+    reduced_.clear();
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (infdiag.decisionNodeSize() == 0U) return;
 
     gum::NodeProperty< gum::Size > level;
 
-    // build reduce_
+    // build reduced_
     for (auto node: infdiag.nodes())
       if (!infdiag.isUtilityNode(node))
-        reduce_.addNodeWithId(node);
+        reduced_.addNodeWithId(node);
       else
         level.insert(node, 0);   // utility node is level 0
 
     for (const auto& arc: infdiag.arcs())
-      if (reduce_.exists(arc.tail()) && reduce_.exists(arc.head()))
-        reduce_.addArc(arc.tail(), arc.head());
+      if (reduced_.exists(arc.tail()) && reduced_.exists(arc.head()))
+        reduced_.addArc(arc.tail(), arc.head());
 
-    // build partialOrder_
+    // force no forgetting if necessary
+    if (isNoForgettingAssumption()) {
+      auto last = *(noForgettingOrder_.begin());
+      for (auto node: noForgettingOrder_)
+        if (node == last)   // first one
+          continue;
+        else {   // we dead with last->node
+          // adding the whole family of last as parents of node
+          reduced_.addArc(last, node);
+          for (auto par: reduced_.parents(last))
+            reduced_.addArc(par, node);
+
+          last = node;
+        }
+    }
+
+    // reducing the graph
+
     gum::Size max_level = 0;
 
     partialOrder_.clear();
@@ -132,7 +147,7 @@ namespace gum {
     for (auto node: infdiag.nodes()) {
       if (infdiag.isUtilityNode(node)) continue;
 
-      if (reduce_.children(node).empty()) {
+      if (reduced_.children(node).empty()) {
         currents.clear();
         currents.insert(node);
         level.insert(node, 0);
@@ -142,7 +157,7 @@ namespace gum {
 
           if (infdiag.isDecisionNode(elt)) partialOrder_[level[elt]].insert(elt);
 
-          for (auto parent: reduce_.parents(elt)) {
+          for (auto parent: reduced_.parents(elt)) {
             gum::Size lev = 0;
             gum::Size newl;
             bool      ok_to_add = true;
@@ -165,22 +180,142 @@ namespace gum {
       }
     }
     partialOrder_.resize(max_level + 1);
+
+    // we add utility nodes for finding requisite nodes
+    for (auto node: infdiag.nodes()) {
+      if (infdiag.isUtilityNode(node)) {
+        reduced_.addNodeWithId(node);
+        for (auto par: infdiag.parents(node))
+          reduced_.addArc(par, node);
+      }
+    }
+
+    for (const auto& sen: partialOrder_) {
+      for (auto n: sen)
+        for (auto p: nonRequisiteNodes(n))
+          reduced_.eraseArc(Arc(p, n));
+    }
+
+    // and then we erase them
+    for (auto node: infdiag.nodes()) {
+      if (infdiag.isUtilityNode(node)) reduced_.eraseNode(node);
+    }
+
+
+    this->setState_(
+       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
   template < typename GUM_SCALAR >
-  std::vector< NodeSet > ShaferShenoyIDInference< GUM_SCALAR >::partialOrder() {
+  std::vector< NodeSet >
+     ShaferShenoyIDInference< GUM_SCALAR >::partialOrder() const {
     return partialOrder_;
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::forceNoForgettingAssumption(
-     const std::vector< std::string >& seq) {}
+  bool ShaferShenoyIDInference< GUM_SCALAR >::isNoForgettingAssumption() const {
+    return (!noForgettingOrder_.empty());
+  }
 
   template < typename GUM_SCALAR >
-  bool ShaferShenoyIDInference< GUM_SCALAR >::isNoForgettingAssumption() const {
-    return NoForgetting_;
+  void ShaferShenoyIDInference< GUM_SCALAR >::addNoForgettingAssumption(
+     const std::vector< std::string >& names) {
+    addNoForgettingAssumption(this->influenceDiagram().ids(names));
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyIDInference< GUM_SCALAR >::addNoForgettingAssumption(
+     const std::vector< NodeId >& ids) {
+    const auto& infdiag = this->influenceDiagram();
+    for (const auto node: ids) {
+      if (!infdiag.exists(node)) GUM_ERROR(NotFound, node << " is not a NodeId");
+      if (!infdiag.isDecisionNode(node))
+        GUM_ERROR(TypeError,
+                  "Node " << node << node << " (" << infdiag.variable(node).name()
+                          << ") is not a decision node");
+    }
+    if (infdiag.decisionNodeSize() != ids.size())
+      GUM_ERROR(SizeError,
+                "Some decision nodes are missing in the sequence " << ids);
+
+    noForgettingOrder_ = ids;
+    createReduced_();
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::releaseNoForgettingAssumption() {}
+  NodeSet
+     ShaferShenoyIDInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d) const {
+    NodeSet     res;
+    const auto& infdiag = this->influenceDiagram();
+
+    if (!infdiag.isDecisionNode(d))
+      GUM_ERROR(TypeError, d << " is not a decision node");
+
+    if (infdiag.parents(d).empty()) return res;
+
+    const DAG dag = reducedGraph();
+    NodeSet   descUs;
+    for (const auto n: dag.descendants(d))
+      if (infdiag.isUtilityNode(n)) descUs.insert(n);
+
+    NodeSet cumul{descUs};
+    cumul << d;
+    auto g = dag.moralizedAncestralGraph(cumul);
+
+    NodeSet family{dag.parents(d)};
+    family << d;
+    bool notReq;
+    for (const auto p: dag.parents(d)) {
+      notReq = true;
+      for (const auto u: descUs) {
+        if (g.hasUndirectedPath(p, u, family)) {
+          notReq = false;
+          break;
+        }
+      }
+      if (notReq) res << p;
+    }
+
+    return res;
+  }
+
+  template < typename GUM_SCALAR >
+  gum::Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(
+     std::string decisionName) {
+    return optimalDecision(this->influenceDiagram().idFromName(decisionName));
+  }
+
+  template < typename GUM_SCALAR >
+  NodeSet ShaferShenoyIDInference< GUM_SCALAR >::nonRequisiteNodes(
+     const std::string& dname) const {
+    return nonRequisiteNodes(this->influenceDiagram().idFromName(dname));
+  }
+  template < typename GUM_SCALAR >
+  InfluenceDiagram< GUM_SCALAR >
+     ShaferShenoyIDInference< GUM_SCALAR >::reducedLIMID() const {
+    const auto&                    infdiag = this->influenceDiagram();
+    InfluenceDiagram< GUM_SCALAR > res;
+    for (auto node: infdiag.nodes()) {
+      if (infdiag.isChanceNode(node))
+        res.addChanceNode(infdiag.variable(node), node);
+      else if (infdiag.isDecisionNode(node))
+        res.addDecisionNode(infdiag.variable(node), node);
+    }
+
+    for (const auto& arc: reduced_.arcs()) {
+      res.addArc(arc.tail(), arc.head());
+    }
+
+    for (auto node: infdiag.nodes()) {
+      if (infdiag.isUtilityNode(node)) {
+        res.addUtilityNode(infdiag.variable(node), node);
+        for (auto par: infdiag.parents(node))
+          res.addArc(par, node);
+      }
+    }
+
+    // Potentials !!!
+    return res;
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -95,11 +95,7 @@ namespace gum {
     return *mutableMoralGraph__;
   }
 
-  const Sequence< NodeId >& DAGmodel::topologicalOrder(bool clear) const {
-    return this->dag().topologicalOrder(clear);
-  }
-
-  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
+   bool DAGmodel::hasSameStructure(const DAGmodel& other) {
     if (this == &other) return true;
 
     if (size() != other.size()) return false;
@@ -119,99 +115,5 @@ namespace gum {
     }
 
     return true;
-  }
-
-  NodeSet DAGmodel::descendants(const NodeId id) const {
-    NodeSet res;
-    NodeSet tmp;
-    for (auto next: children(id))
-      tmp.insert(next);
-
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-      res.insert(current);
-      for (auto next: children(current)) {
-        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
-      }
-    }
-    return res;
-  }
-
-  NodeSet DAGmodel::descendants(const std::string& name) const {
-    return descendants(idFromName(name));
-  }
-
-  NodeSet DAGmodel::ancestors(const NodeId id) const {
-    NodeSet res;
-    NodeSet tmp;
-    for (auto next: parents(id))
-      tmp.insert(next);
-
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-      res.insert(current);
-      for (auto next: parents(current)) {
-        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
-      }
-    }
-    return res;
-  }
-
-  NodeSet DAGmodel::ancestors(const std::string& name) const {
-    return ancestors(idFromName(name));
-  }
-
-  UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
-    UndiGraph res;
-    NodeSet   tmp{nodes};
-
-    // findings all nodes
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-
-      res.addNodeWithId(current);
-      for (auto next: parents(current))
-        if (!tmp.contains(next) && !res.exists(next)) tmp.insert(next);
-    }
-
-    // finding all edges and moralizing
-    for (auto current: res)
-      for (auto father: parents(current)) {
-        res.addEdge(current,
-                    father);   // addEdge does not complain if edge already exists
-        for (auto other_father: parents(current))
-          if (other_father != father) res.addEdge(father, other_father);
-      }
-
-    return res;
-  }
-
-  UndiGraph DAGmodel::moralizedAncestralGraph(
-     const std::vector< std::string >& nodenames) const {
-    NodeSet nodes;
-    for (const auto& name: nodenames)
-      nodes.insert(idFromName(name));
-    return moralizedAncestralGraph(nodes);
-  }
-
-  bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    NodeSet cumul{Z};
-    cumul << X << Y;
-    auto g = moralizedAncestralGraph(cumul);
-    for (auto node: Z)
-      g.eraseNode(node);
-    return !g.hasUndirectedPath(X, Y);
-  }
-
-  bool DAGmodel::isIndependent(const std::string&                Xname,
-                               const std::string&                Yname,
-                               const std::vector< std::string >& Znames) const {
-    NodeSet Z;
-    for (const auto& name: Znames)
-      Z.insert(idFromName(name));
-    return isIndependent(idFromName(Xname), idFromName(Yname), Z);
   }
 }   // namespace gum

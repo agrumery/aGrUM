@@ -171,7 +171,7 @@ namespace gum {
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(ref->slotType())) {
-            GUM_ERROR(TypeError,
+            GUM_ERROR(PRMTypeError,
                       "given Instance type is not a proper "
                       "subclass of the ReferenceSlot<GUM_SCALAR> slot type");
           }
@@ -194,7 +194,7 @@ namespace gum {
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(sc.end())) {
-            GUM_ERROR(TypeError,
+            GUM_ERROR(PRMTypeError,
                       "given Instance type is not a proper "
                       "subclass of the ClassElementContainer pointed"
                       " by the SlotChain<GUM_SCALAR>");

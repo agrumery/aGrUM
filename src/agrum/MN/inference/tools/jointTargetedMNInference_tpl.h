@@ -100,8 +100,8 @@ namespace gum {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
       joint_targets__.clear();
-      this->setState_(MarkovNetInference<
-                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      this->setState_(
+         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -134,7 +134,7 @@ namespace gum {
     }
 
     if (isExactJointComputable_(joint_target)) return;
-    if (! superForJointComputable_(joint_target).empty()) return;
+    if (!superForJointComputable_(joint_target).empty()) return;
 
     // check if joint_target is a subset of an already existing target
     for (const auto& target: joint_targets__) {
@@ -182,8 +182,8 @@ namespace gum {
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
       joint_targets__.erase(joint_target);
-      this->setState_(MarkovNetInference<
-                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      this->setState_(
+         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -381,18 +381,7 @@ namespace gum {
         const std::vector< std::string >& targets,
         const std::vector< std::string >& evs) {
     const auto& mn = this->MN();
-
-    gum::NodeSet targetsId;
-    for (const auto& targetname: targets) {
-      targetsId.insert(mn.idFromName(targetname));
-    }
-
-    gum::NodeSet evsId;
-    for (const auto& evname: evs) {
-      evsId.insert(mn.idFromName(evname));
-    }
-
-    return evidenceJointImpact(targetsId, evsId);
+    return evidenceJointImpact(mn.nodeset(targets), mn.nodeset(evs));
   }
 
 
@@ -451,19 +440,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::jointMutualInformation(
      const std::vector< std::string >& targets) {
-    const auto& mn = this->MN();
-
-    gum::NodeSet targetsId;
-    for (const auto& targetname: targets) {
-      targetsId.insert(mn.idFromName(targetname));
-    }
-
-    return jointMutualInformation(targetsId);
+    return jointMutualInformation(this->MN().nodeset(targets));
   }
 
   template < typename GUM_SCALAR >
   bool JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(
-     const NodeSet& vars)  {
+     const NodeSet& vars) {
     if (joint_targets__.contains(vars)) return true;
 
     return false;
@@ -471,7 +453,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   NodeSet JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(
-     const NodeSet& vars)  {
+     const NodeSet& vars) {
     for (const auto& target: joint_targets__)
       if (vars.isSubsetOf(target)) return target;
 

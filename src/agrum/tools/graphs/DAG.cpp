@@ -49,6 +49,42 @@ namespace gum {
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
+
+  NodeSet DAG::descendants(const NodeId id) const {
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: children(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: children(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
+
+  NodeSet DAG::ancestors(const NodeId id) const {
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: parents(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: parents(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
   UndiGraph DAG::moralGraph() const {
     UndiGraph moralgraph;
     moralgraph.populateNodes(*this);
@@ -72,4 +108,39 @@ namespace gum {
     return moralgraph;
   }
 
+
+  UndiGraph DAG::moralizedAncestralGraph(const NodeSet& nodes) const {
+    UndiGraph res;
+    NodeSet   tmp{nodes};
+
+    // findings all nodes
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+
+      res.addNodeWithId(current);
+      for (auto next: parents(current))
+        if (!tmp.contains(next) && !res.exists(next)) tmp.insert(next);
+    }
+
+    // finding all edges and moralizing
+    for (auto current: res)
+      for (auto father: parents(current)) {
+        res.addEdge(current,
+                    father);   // addEdge does not complain if edge already exists
+        for (auto other_father: parents(current))
+          if (other_father != father) res.addEdge(father, other_father);
+      }
+
+    return res;
+  }
+
+  bool DAG::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+    NodeSet cumul{Z};
+    cumul << X << Y;
+    auto g = moralizedAncestralGraph(cumul);
+    for (auto node: Z)
+      g.eraseNode(node);
+    return !g.hasUndirectedPath(X, Y);
+  }
 } /* namespace gum */

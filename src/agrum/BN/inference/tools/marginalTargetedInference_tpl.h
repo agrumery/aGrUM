@@ -324,13 +324,7 @@ namespace gum {
   Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
      const std::string& target, const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
-
-    gum::NodeSet evsId;
-    for (const auto& evname: evs) {
-      evsId.insert(bn.idFromName(evname));
-    }
-
-    return evidenceImpact(bn.idFromName(target), evsId);
+    return evidenceImpact(bn.idFromName(target), bn.nodeset(evs));
   }
 
 

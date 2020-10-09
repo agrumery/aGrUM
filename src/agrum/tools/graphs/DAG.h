@@ -155,10 +155,43 @@ namespace gum {
      * @warning Unfortunately, this means that addArc is not in constant
      * time anymore.
      */
-    virtual void addArc(const NodeId tail, const NodeId head);
+    void addArc(NodeId tail, NodeId head) final;
     /// @}
 
+
+    /// returns the set of nodes with directed path outgoing from a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is outgoing from the given node.
+     * @param id the node which is the tail of a directed path with the returned
+     * nodes
+     **/
+    NodeSet descendants(const NodeId id) const;
+
+
+    /// returns the set of nodes with directed path ingoing to a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is ingoing to the given node.
+     * @param id the node which is the head of a directed path with the returned
+     * nodes
+     **/
+    NodeSet ancestors(const NodeId id) const;
+
+    /** build a UndiGraph by moralizing the dag
+     *
+     * @return the moralized graph
+     */
     UndiGraph moralGraph() const;
+
+    /** build a UndiGraph by moralizing the Ancestral Graph of a set of Nodes
+     *
+     * @param nodes the set of nodeId
+     * @return the moralized ancestral graph
+     */
+    UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
+
+    /** check if X and Y are independent given Z (in the sense of d-separation)*/
+    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
+
   };
 
 } /* namespace gum */

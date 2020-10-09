@@ -99,8 +99,8 @@ namespace gum {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
       joint_targets__.clear();
-      this->setState_(
-         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+      this->setState_(GraphicalModelInference<
+                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -152,7 +152,7 @@ namespace gum {
     joint_targets__.insert(joint_target);
     onJointTargetAdded_(joint_target);
     this->setState_(
-       GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
 
@@ -181,8 +181,8 @@ namespace gum {
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
       joint_targets__.erase(joint_target);
-      this->setState_(
-         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+      this->setState_(GraphicalModelInference<
+                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -190,7 +190,7 @@ namespace gum {
   /// returns the list of target sets
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
-               JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
+     JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
     return joint_targets__;
   }
 
@@ -386,18 +386,7 @@ namespace gum {
         const std::vector< std::string >& targets,
         const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
-
-    gum::NodeSet targetsId;
-    for (const auto& targetname: targets) {
-      targetsId.insert(bn.idFromName(targetname));
-    }
-
-    gum::NodeSet evsId;
-    for (const auto& evname: evs) {
-      evsId.insert(bn.idFromName(evname));
-    }
-
-    return evidenceJointImpact(targetsId, evsId);
+    return evidenceJointImpact(bn.nodeset(targets), bn.nodeset(evs));
   }
 
 
@@ -456,14 +445,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
      const std::vector< std::string >& targets) {
-    const auto& bn = this->BN();
-
-    gum::NodeSet targetsId;
-    for (const auto& targetname: targets) {
-      targetsId.insert(bn.idFromName(targetname));
-    }
-
-    return jointMutualInformation(targetsId);
+    return jointMutualInformation(this->BN().ids(targets));
   }
 
 } /* namespace gum */

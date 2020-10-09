@@ -86,35 +86,41 @@ namespace gum {
     void clear() override;
     ///@{
     /// No forgetting rule assumption
+    void addNoForgettingAssumption(const std::vector<NodeId>& ids);
+    void addNoForgettingAssumption(const std::vector<std::string>& names);
     bool isNoForgettingAssumption() const;
+    DAG reducedGraph() const {return reduced_;};
+
+    /// Returns the set of non-requisite for node d
+    NodeSet nonRequisiteNodes(NodeId d) const;
+    NodeSet nonRequisiteNodes(const std::string& dname) const;
 
     GUM_SCALAR MEU();
 
     Idx optimalDecision(NodeId decisionId);
-    Idx optimalDecision(std::string decisionName) {
-      return optimalDecision(this->influenceDiagram().idFromName(decisionName));
-    };
+    Idx optimalDecision(std::string decisionName);
 
-    std::vector<NodeSet> partialOrder();
+    std::vector<NodeSet> partialOrder() const;
 
     std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
+    InfluenceDiagram<GUM_SCALAR> reducedLIMID() const;
     protected:
     void onStateChanged_() override;
-    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) override;
-    void onEvidenceErased_(const NodeId id, bool isHardEvidence) override;
+    void onEvidenceAdded_(NodeId id, bool isHardEvidence) override;
+    void onEvidenceErased_(NodeId id, bool isHardEvidence) override;
     void onAllEvidenceErased_(bool contains_hard_evidence) override;
-    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) override;
+    void onEvidenceChanged_(NodeId id, bool hasChangedSoftHard) override;
     void onModelChanged_(const GraphicalModel* model) override;
     void updateOutdatedStructure_() override;
     void updateOutdatedPotentials_() override;
     void makeInference_() override;
 
-    DAG reduce_;
+    DAG reduced_;
 
     void createReduced_();
     std::vector<NodeSet> partialOrder_;
-    ArcSet decisionConstraints_;
+    std::vector<NodeId> noForgettingOrder_;
   };
 } /* namespace gum */
 

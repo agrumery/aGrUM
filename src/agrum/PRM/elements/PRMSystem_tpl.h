@@ -526,7 +526,7 @@ namespace gum {
           arrayMap_[array].second->insert(i);
           return id;
         } else {
-          GUM_ERROR(TypeError,
+          GUM_ERROR(PRMTypeError,
                     "the given Instance<GUM_SCALAR> is of an incorrect "
                     "Class<GUM_SCALAR> type");
         }

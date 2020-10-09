@@ -60,4 +60,12 @@ namespace gum {
     }
     return *this;
   }
+  NodeSet GraphicalModel::nodeset(const std::vector< std::string >& names) const {
+    NodeSet res;
+    const auto& v=variableNodeMap();
+    for(const auto& name:names) {
+      res.insert(v.idFromName(name));
+    }
+    return res;
+  }
 }   // namespace gum

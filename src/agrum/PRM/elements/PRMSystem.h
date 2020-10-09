@@ -177,7 +177,7 @@ namespace gum {
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
-      /// @throw TypeError Raised if i is not of the good type.
+      /// @throw PRMTypeError Raised if i is not of the good type.
       /// @throw DuplicateElement Raised if an PRMInstance with same name
       /// already
       /// exists.
@@ -185,7 +185,7 @@ namespace gum {
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
-      /// @throw TypeError Raised if i is not of the good type.
+      /// @throw PRMTypeError Raised if i is not of the good type.
       /// @throw DuplicateElement Raised if an PRMInstance with same name
       /// already
       /// exists.

@@ -93,11 +93,11 @@
  *    gum::NodeId) does not match any gum::prm::ClassElement in a given
  *    gum::prm::ClassElementContainer or gum::prm::Instance.
  *
- *    - gum::TypeError: raised if an gum::prm::PRMObject is not a valid type
+ *    - gum::PRMTypeError: raised if an gum::prm::PRMObject is not a valid type
  *    when using it in some context.  For example assigning an
  *    gum::prm::Instance to gum::prm::ReferenceSlot where the
  *    gum::prm::Instance type is not a subtype of the gum::prm::ReferenceSlot
- *    slot type will raise a gum::TypeError exception.
+ *    slot type will raise a gum::PRMTypeError exception.
  *
  *    - gum::WrongClassElement: raised if a gum::prm::ClassElement is used
  *    where it should not be.  For example adding an gum::prm::Attribute as a

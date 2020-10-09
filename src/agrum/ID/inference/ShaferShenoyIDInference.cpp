@@ -21,3 +21,4 @@
 
 
 #include <agrum/ID/inference/ShaferShenoyIDInference.h>
+

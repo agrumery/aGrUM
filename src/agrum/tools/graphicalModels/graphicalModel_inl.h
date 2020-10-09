@@ -93,4 +93,38 @@ namespace gum {
 
   INLINE
   bool GraphicalModel::empty() const { return size() == 0; }
+
+  INLINE
+  std::vector< std::string >
+     GraphicalModel::names(const std::vector< NodeId >& ids) const {
+    std::vector< std::string > res;
+    const VariableNodeMap&     v = variableNodeMap();
+    std::transform(ids.cbegin(),
+                   ids.cend(),
+                   std::back_inserter(res),
+                   [v](NodeId n) { return v[n].name(); });
+    return res;
+  }
+
+  INLINE
+  std::vector< std::string > GraphicalModel::names(const NodeSet& ids) const {
+    const VariableNodeMap&     v = variableNodeMap();
+    std::vector< std::string > res;
+    for (auto n: ids) {
+      res.push_back(v.name(n));
+    }
+    return res;
+  }
+
+  INLINE
+  std::vector< NodeId >
+     GraphicalModel::ids(const std::vector< std::string >& names) const {
+    std::vector< NodeId >  res;
+    const VariableNodeMap& v = variableNodeMap();
+    std::transform(names.cbegin(),
+                   names.cend(),
+                   std::back_inserter(res),
+                   [v](const std::string& n) { return v.idFromName(n); });
+    return res;
+  }
 } /* namespace gum */

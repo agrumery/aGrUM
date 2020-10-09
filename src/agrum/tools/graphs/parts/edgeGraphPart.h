@@ -225,6 +225,16 @@ namespace gum {
      * @return bool
      */
     bool hasUndirectedPath(const NodeId n1, const NodeId n2) const;
+
+    /**
+     * return true if n1 and n2 are connected (by an undirected path not using the nodes of except) in the graph.
+     * @param n1 NodeId
+     * @param n2 NodeId
+     * @param except NodeSet
+     * @warning n1 in except has no repercussion. However n2 in except naturally leads to 'false'
+     * @return bool
+     */
+    bool hasUndirectedPath(const NodeId n1, const NodeId n2,const NodeSet& except) const;
     /// @}
 
     private:

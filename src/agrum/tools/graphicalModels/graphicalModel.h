@@ -108,7 +108,34 @@ namespace gum {
     /**
      * Return true if this node exists in this graphical model.
      */
-    virtual bool exists(NodeId node) const =0;
+    virtual bool exists(NodeId node) const = 0;
+    bool         exists(const std::string& name) const {
+      return exists(idFromName(name));
+    };
+
+    /**
+     * transform a vector of NodeId in a vector of names
+     * @return the vector of names
+     */
+    std::vector< std::string > names(const std::vector< NodeId >& ids) const;
+
+    /**
+     * transform a NodeSet in a vector of names
+     * @return the vector of names
+     */
+    std::vector< std::string > names(const NodeSet& ids) const;
+
+    /**
+     * transform a vector of names into a vector of nodeId
+     * @return the vector of names
+     */
+    std::vector< NodeId > ids(const std::vector< std::string >& names) const;
+
+    /**
+     * transform a vector of names into a NodeSet
+     * @return NodeSet
+     */
+    NodeSet nodeset(const std::vector< std::string >& names) const;
 
     virtual const NodeGraphPart& nodes() const = 0;
 

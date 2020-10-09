@@ -79,9 +79,6 @@ namespace gum {
   bool UGmodel::isIndependent(const std::string&                Xname,
                               const std::string&                Yname,
                               const std::vector< std::string >& Znames) const {
-    NodeSet Z;
-    for (const auto& name: Znames)
-      Z.insert(idFromName(name));
-    return isIndependent(idFromName(Xname), idFromName(Yname), Z);
+    return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
   }   // namespace gum
 }   // namespace gum
