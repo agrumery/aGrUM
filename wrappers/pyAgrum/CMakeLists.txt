@@ -35,7 +35,7 @@ message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python library : ${PYTHON_LIBRARY}")
 message(STATUS "================================")
-
+link_directories( ${PYTHON_LIBRARY})
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
@@ -117,6 +117,7 @@ else (SWIG_FOUND)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
 endif (SWIG_FOUND)
+
 
 target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
 target_link_libraries_with_dynamic_lookup (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})

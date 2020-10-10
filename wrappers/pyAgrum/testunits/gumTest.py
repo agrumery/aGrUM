@@ -17,7 +17,10 @@ fh.setFormatter(logging.Formatter(FORMAT))
 log.addHandler(fh)
 log.propagate = False
 
-os.chdir(os.path.dirname(__file__ if __file__[0] == '/' else "./" + __file__))
+if __file__[0]=='/' or __file__[:3]=="C:\\":
+  os.chdir(os.path.dirname(__file__))
+else:
+  os.chdir(os.path.dirname("./" + __file__))
 
 mod = "standAlone"
 testNotebooks = False
