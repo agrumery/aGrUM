@@ -86,7 +86,7 @@ namespace gum {
   }
 
   INLINE NodeSet DAGmodel::ancestors(const NodeId id) const {
-    return dag().descendants(id);
+    return dag().ancestors(id);
   }
 
   INLINE NodeSet DAGmodel::ancestors(const std::string& name) const {
