@@ -47,7 +47,7 @@ namespace gum {
   //
   // Writes a Bayesian Network in the output stream using the BN format.
   //
-  // @param ouput The output stream.
+  // @param output The output stream.
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >

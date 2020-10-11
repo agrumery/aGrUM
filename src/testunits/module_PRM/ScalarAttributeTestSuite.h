@@ -341,7 +341,7 @@ namespace gum_tests {
       PRMAttribute           state("state", *state__);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
+      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::TypeError);
       // Assert
       auto after = foo.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS(before, after);

@@ -340,7 +340,7 @@ namespace gum_tests {
       PRMType state{boolean, map, *state__};
       PRMType state_bis{*state__};
       // Act & Assert
-      TS_ASSERT_THROWS(state.setSuper(state_bis), gum::WrongType);
+      TS_ASSERT_THROWS(state.setSuper(state_bis), gum::TypeError);
     }
 
     void testSetSuperOperationNotAllowed() {
