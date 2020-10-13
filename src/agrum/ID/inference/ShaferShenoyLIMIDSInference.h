@@ -26,8 +26,8 @@
  * Shaffer-Shenoy's one for bayes net inferences
  */
 
-#ifndef GUM_SHAFERSHENOY_INFLUENCE_DIAGRAM_INFERENCE_H
-#define GUM_SHAFERSHENOY_INFLUENCE_DIAGRAM_INFERENCE_H
+#ifndef GUM_SHAFERSHENOY_LIMIDS_H
+#define GUM_SHAFERSHENOY_LIMIDS_H
 
 #include <iostream>
 #include <string>
@@ -60,7 +60,7 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
+  class ShaferShenoyLIMIDSInference: public InfluenceDiagramInference< GUM_SCALAR > {
     public:
     // ====================================================================
     /// @name Constructor & destructor
@@ -71,13 +71,13 @@ namespace gum {
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    explicit ShaferShenoyIDInference(
+    explicit ShaferShenoyLIMIDSInference(
        const InfluenceDiagram< GUM_SCALAR >* infDiag);
 
     /**
      * Destructor.
      */
-    virtual ~ShaferShenoyIDInference();
+    virtual ~ShaferShenoyLIMIDSInference();
 
     const JunctionTree* junctionTree() const {
       GUM_ERROR(NotImplementedYet, "tbd asap")
@@ -124,6 +124,6 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/ID/inference/ShaferShenoyIDInference_tpl.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDSInference_tpl.h>
 
-#endif /* GUM_SHAFERSHENOY_INFLUENCE_DIAGRAM_INFERENCE_H */
+#endif /* GUM_SHAFERSHENOY_LIMIDS_H */

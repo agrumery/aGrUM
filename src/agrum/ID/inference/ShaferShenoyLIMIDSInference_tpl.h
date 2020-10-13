@@ -23,87 +23,86 @@
 /**
  * @file
  * @brief Implementations of the classes defined
- * in InfluenceDiagram/inference/ShaferShenoyIDInference.h.
+ * in InfluenceDiagram/inference/ShaferShenoyLIMIDSInference.h.
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing by IDE
-#  include <agrum/ID/inference/ShaferShenoyIDInference.h>
+#  include <agrum/ID/inference/ShaferShenoyLIMIDSInference.h>
 
 namespace gum {
 
   template < typename GUM_SCALAR >
-  ShaferShenoyIDInference< GUM_SCALAR >::ShaferShenoyIDInference(
+  ShaferShenoyLIMIDSInference< GUM_SCALAR >::ShaferShenoyLIMIDSInference(
      const InfluenceDiagram< GUM_SCALAR >* infDiag) :
       InfluenceDiagramInference< GUM_SCALAR >(infDiag) {
-    GUM_CONSTRUCTOR(ShaferShenoyIDInference);
+    GUM_CONSTRUCTOR(ShaferShenoyLIMIDSInference);
 
     createReduced_();
   }
 
   template < typename GUM_SCALAR >
-  ShaferShenoyIDInference< GUM_SCALAR >::~ShaferShenoyIDInference() {
-    GUM_DESTRUCTOR(ShaferShenoyIDInference);
+  ShaferShenoyLIMIDSInference< GUM_SCALAR >::~ShaferShenoyLIMIDSInference() {
+    GUM_DESTRUCTOR(ShaferShenoyLIMIDSInference);
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::clear() {
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
     reduced_.clear();
     noForgettingOrder_.clear();
     partialOrder().clear();
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::onStateChanged_() {}
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onStateChanged_() {}
   template < typename GUM_SCALAR >
-  void
-     ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                              bool isHardEvidence) {
 
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceErased_(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceErased_(
      const NodeId id, bool isHardEvidence) {}
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::onAllEvidenceErased_(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onAllEvidenceErased_(
      bool contains_hard_evidence) {}
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::onEvidenceChanged_(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceChanged_(
      const NodeId id, bool hasChangedSoftHard) {}
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::onModelChanged_(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onModelChanged_(
      const GraphicalModel* model) {}
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedStructure_() {
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::updateOutdatedStructure_() {
     createReduced_();
   }
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::makeInference_() {
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::makeInference_() {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR ShaferShenoyIDInference< GUM_SCALAR >::MEU() {
+  GUM_SCALAR ShaferShenoyLIMIDSInference< GUM_SCALAR >::MEU() {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
   template < typename GUM_SCALAR >
-  Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
+  Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
   template < typename GUM_SCALAR >
   std::vector< std::pair< NodeId, Idx > >
-     ShaferShenoyIDInference< GUM_SCALAR >::optimalDecisions() {
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecisions() {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::createReduced_() {
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::createReduced_() {
     reduced_.clear();
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (infdiag.decisionNodeSize() == 0U) return;
@@ -208,22 +207,23 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   std::vector< NodeSet >
-     ShaferShenoyIDInference< GUM_SCALAR >::partialOrder() const {
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::partialOrder() const {
     return partialOrder_;
   }
   template < typename GUM_SCALAR >
-  bool ShaferShenoyIDInference< GUM_SCALAR >::isNoForgettingAssumption() const {
+  bool
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::isNoForgettingAssumption() const {
     return (!noForgettingOrder_.empty());
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::addNoForgettingAssumption(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::addNoForgettingAssumption(
      const std::vector< std::string >& names) {
     addNoForgettingAssumption(this->influenceDiagram().ids(names));
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyIDInference< GUM_SCALAR >::addNoForgettingAssumption(
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::addNoForgettingAssumption(
      const std::vector< NodeId >& ids) {
     const auto& infdiag = this->influenceDiagram();
     for (const auto node: ids) {
@@ -242,7 +242,7 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   NodeSet
-     ShaferShenoyIDInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d) const {
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d) const {
     NodeSet     res;
     const auto& infdiag = this->influenceDiagram();
 
@@ -278,19 +278,19 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  gum::Idx ShaferShenoyIDInference< GUM_SCALAR >::optimalDecision(
+  gum::Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(
      std::string decisionName) {
     return optimalDecision(this->influenceDiagram().idFromName(decisionName));
   }
 
   template < typename GUM_SCALAR >
-  NodeSet ShaferShenoyIDInference< GUM_SCALAR >::nonRequisiteNodes(
+  NodeSet ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(
      const std::string& dname) const {
     return nonRequisiteNodes(this->influenceDiagram().idFromName(dname));
   }
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
-     ShaferShenoyIDInference< GUM_SCALAR >::reducedLIMID() const {
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::reducedLIMID() const {
     const auto&                    infdiag = this->influenceDiagram();
     InfluenceDiagram< GUM_SCALAR > res;
     for (auto node: infdiag.nodes()) {

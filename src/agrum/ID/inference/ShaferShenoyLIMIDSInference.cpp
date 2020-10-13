@@ -20,5 +20,4 @@
  */
 
 
-#include <agrum/ID/inference/ShaferShenoyIDInference.h>
-
+#include <agrum/ID/inference/ShaferShenoyLIMIDSInference.h>

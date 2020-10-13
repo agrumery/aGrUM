@@ -29,7 +29,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
-#include <agrum/ID/inference/ShaferShenoyIDInference.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDSInference.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/tools/graphs/graphElements.h>
@@ -281,9 +281,9 @@ namespace gum_tests {
                                       new gum::InfluenceDiagram< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(populateDecAsia(*topology, idList))
 
-      gum::ShaferShenoyIDInference< double >* dIDI = nullptr;
+      gum::ShaferShenoyLIMIDSInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::ShaferShenoyIDInference< double >(topology))
+         dIDI = new gum::ShaferShenoyLIMIDSInference< double >(topology))
       TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
       if (topology != nullptr) delete topology;
     }
@@ -362,9 +362,9 @@ namespace gum_tests {
       id.addArc(idList[14], idList[18]);
       id.addArc(idList[15], idList[19]);
 
-      gum::NullStream                        devnull;
-      gum::ShaferShenoyIDInference< double > dIDI(&id);
-      auto                                   jt = dIDI.junctionTree();
+      gum::NullStream                            devnull;
+      gum::ShaferShenoyLIMIDSInference< double > dIDI(&id);
+      auto                                       jt = dIDI.junctionTree();
       GUM_TRACE_VAR(jt);
     }
 
@@ -374,8 +374,8 @@ namespace gum_tests {
       topology = new gum::InfluenceDiagram< double >();
       populateOilWildcater(*topology, idList);
 
-      gum::ShaferShenoyIDInference< double >* dIDI;
-      dIDI = new gum::ShaferShenoyIDInference< double >(topology);
+      gum::ShaferShenoyLIMIDSInference< double >* dIDI;
+      dIDI = new gum::ShaferShenoyLIMIDSInference< double >(topology);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
 
@@ -390,9 +390,9 @@ namespace gum_tests {
       populateDecAsia(*topology, idList);
       gum::NullStream devnull;
 
-      gum::ShaferShenoyIDInference< double >* dIDI;
+      gum::ShaferShenoyLIMIDSInference< double >* dIDI;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::ShaferShenoyIDInference< double >(topology))
+         dIDI = new gum::ShaferShenoyLIMIDSInference< double >(topology))
 
       TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]), gum::OperationNotAllowed)
@@ -422,7 +422,7 @@ namespace gum_tests {
       e_list.insert(evidence1);
       e_list.insert(evidence2);
 
-      gum::ShaferShenoyIDInference< double > inf(topology);
+      gum::ShaferShenoyLIMIDSInference< double > inf(topology);
 
       evidence1->add(topology->variable(idList[2]));
       evidence1->add(topology->variable(idList[3]));
@@ -493,14 +493,14 @@ namespace gum_tests {
       tst_id.cpt(c1).populate({1, 0, 0, 1});
       tst_id.utility(u).populate({10, 100, 21, 200});
       {
-        gum::ShaferShenoyIDInference< double > inf(&tst_id);
+        gum::ShaferShenoyLIMIDSInference< double > inf(&tst_id);
         inf.makeInference();
         TS_ASSERT_EQUALS(inf.optimalDecision(d), 1u)
         TS_ASSERT_EQUALS(inf.MEU(), 110.5)
       }
       {
-        gum::ShaferShenoyIDInference< double > inf(&tst_id);
-        gum::Potential< double >               evidence;
+        gum::ShaferShenoyLIMIDSInference< double > inf(&tst_id);
+        gum::Potential< double >                   evidence;
         evidence.add(tst_id.variableFromName("c"));
         evidence.populate({1, 0});
         gum::List< const gum::Potential< double >* > l;
@@ -581,14 +581,14 @@ namespace gum_tests {
                     0, 4.0 / 9.0, 5.0 / 9.0});   // clang-format on
 
       {
-        gum::ShaferShenoyIDInference< double > inf(&model);
+        gum::ShaferShenoyLIMIDSInference< double > inf(&model);
         inf.makeInference();
         GUM_TRACE_VAR(inf.optimalDecisions())
         GUM_TRACE_VAR(inf.MEU())
         GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }
       /*{
-        gum::ShaferShenoyIDInference< double > inf(&model);
+        gum::ShaferShenoyLIMIDSInference< double > inf(&model);
 
         gum::Potential< double > eDoTest;
         eDoTest.add(model.variableFromName("DoTest"));
@@ -619,7 +619,7 @@ namespace gum_tests {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
-        auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
         auto res = ieid.partialOrder();
         TS_ASSERT_EQUALS(res.size(), 2U);
         TS_ASSERT_EQUALS(res[0], gum::NodeSet({infdiag.idFromName("D2")}));
@@ -628,7 +628,7 @@ namespace gum_tests {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("D1->Z->D2->X->$U");
-        auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
         auto res = ieid.partialOrder();
         TS_ASSERT_EQUALS(res.size(), 0U);
       }
@@ -638,7 +638,7 @@ namespace gum_tests {
            "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;"
            "*D3<-M<-*D6->N->*D4<-*D2;X<-*D1->Y->D3;D5->$Q1<-W;"
            "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
-        auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
         auto res = ieid.partialOrder();
         TS_ASSERT_EQUALS(res.size(), 4U);
         TS_ASSERT_EQUALS(
@@ -659,7 +659,7 @@ namespace gum_tests {
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
          "R4->D4<-*D3<-D2<-D1;"
          "D3->$U1<-R2;R3->$U2");
-      auto ieid = gum::ShaferShenoyIDInference< double >(&infdiag);
+      auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
 
       TS_ASSERT(!ieid.isNoForgettingAssumption());
 
@@ -687,13 +687,13 @@ namespace gum_tests {
     }
 
     void testNoForgettingAssumption2() {
-      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+      auto limids = gum::InfluenceDiagram< double >::fastPrototype(
          "a->c->e->g->*d4->l->$u4;"
          "b->d->f->h->k<-*d3->$u2;"
          "$u1<-*d1->d1;d->e->*d2->i->l;g->i;"
          "f->d2"
          "h->j->$u3<-k");
-      GUM_TRACE_VAR(infdiag.toDot());
+      GUM_TRACE_VAR(limids.toDot());
     }
   };
 }   // namespace gum_tests

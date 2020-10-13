@@ -58,7 +58,7 @@ namespace gum {
 
     /// assigns a new influence diagram to the inference engine
     /** Assigns a new influence diagram to the o,fere,ce e,go,e engine and sends messages
-     * to the descendants of ShaferShenoyIDInference to inform them that the ID has
+     * to the descendants of ShaferShenoyLIMIDSInference to inform them that the ID has
      * changed.
      * @warning note that, by aGrUM's rule, the influence Diagram is not copied
      * into the inference engine but only referenced. */
