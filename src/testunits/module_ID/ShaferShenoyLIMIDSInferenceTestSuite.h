@@ -53,7 +53,7 @@
 
 namespace gum_tests {
 
-  class ShaferShenoyIDInferenceTestSuite: public CxxTest::TestSuite {
+  class ShaferShenoyLIMIDSInferenceTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopoOilWildcater(gum::InfluenceDiagram< double >& id,
                               gum::List< gum::NodeId >&        idList) const {
@@ -693,7 +693,14 @@ namespace gum_tests {
          "$u1<-*d1->d1;d->e->*d2->i->l;g->i;"
          "f->d2"
          "h->j->$u3<-k");
-      GUM_TRACE_VAR(limids.toDot());
+      try {
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&limids);
+
+        GUM_TRACE_VAR(ieid.reducedLIMID().toDot());
+        GUM_TRACE_VAR(limids.toDot());
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
     }
   };
 }   // namespace gum_tests
