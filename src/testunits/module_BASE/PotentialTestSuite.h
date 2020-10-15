@@ -23,6 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/tools/core/exceptions.h>
+
 #include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
@@ -1319,6 +1321,18 @@ namespace gum_tests {
         r /= 4.33;
         TS_ASSERT_EQUALS(r, q);
       }
+    }
+
+    void testOperationWithDifferentVariablesFromMadsLindskou() {
+      gum::Potential< double > px;
+      gum::Potential< double > py;
+      auto                     a1 = gum::LabelizedVariable("a", "a", 2);
+      auto                     a2 = gum::LabelizedVariable("a", "a", 2);
+      auto                     b = gum::LabelizedVariable("b", "b", 2);
+      auto                     c = gum::LabelizedVariable("c", "c", 2);
+      px << a1 << b;
+      py<<a2<<c;
+      TS_ASSERT_THROWS(px*py,gum::DuplicateElement)
     }
   };
 }   // namespace gum_tests

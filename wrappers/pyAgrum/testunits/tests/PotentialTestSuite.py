@@ -1023,8 +1023,23 @@ class TestOperators(pyAgrumTestCase):
     self.assertAlmostEqual(gum.Potential(p).log2(), gum.log2(p), 1e-10)
     self.assertAlmostEqual(gum.Potential(p-0.5).log2(), abs(p-0.5), 1e-10)
 
+  def testOperationWithDifferentVariablesFromMadsLindskou(self):
+    px = gum.Potential()
+    py = gum.Potential()
 
-    
+    for s in "ab":
+      px.add(gum.LabelizedVariable(s, s, 2))
+
+    for s in "bc":
+      py.add(gum.LabelizedVariable(s, s, 2))
+
+    # @todo waiting for resolution of https://github.com/swig/swig/issues/1783
+    #with self.assertRaises(gum.DuplicateElement):
+    #  pxy=px*py
+
+
+
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)
