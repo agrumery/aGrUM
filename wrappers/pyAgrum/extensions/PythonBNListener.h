@@ -66,7 +66,7 @@ class PythonBNListener : public gum::DiGraphListener {
       if ( pyWhenNodeAdded__ ) {
         PyObject* arglist = Py_BuildValue ( "(ls)", id,
                                             ( *map__ ) [id].name().c_str() );
-        PyEval_CallObject ( pyWhenNodeAdded__, arglist );
+        PyObject_Call ( pyWhenNodeAdded__, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }
@@ -75,7 +75,7 @@ class PythonBNListener : public gum::DiGraphListener {
       // we could check if source==_digraph !!!
       if ( pyWhenNodeDeleted__ ) {
         PyObject* arglist = Py_BuildValue ( "(l)", id );
-        PyEval_CallObject ( pyWhenNodeDeleted__, arglist );
+        PyObject_Call ( pyWhenNodeDeleted__, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }
@@ -84,7 +84,7 @@ class PythonBNListener : public gum::DiGraphListener {
       // we could check if source==_digraph !!!
       if ( pyWhenArcAdded__ ) {
         PyObject* arglist = Py_BuildValue ( "(ll)", src, dst );
-        PyEval_CallObject ( pyWhenArcAdded__, arglist );
+        PyObject_Call ( pyWhenArcAdded__, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }
@@ -93,7 +93,7 @@ class PythonBNListener : public gum::DiGraphListener {
       // we could check if source==_digraph !!!
       if ( pyWhenArcDeleted__ ) {
         PyObject* arglist = Py_BuildValue ( "(ll)", src, dst );
-        PyEval_CallObject ( pyWhenArcDeleted__, arglist );
+        PyObject_Call ( pyWhenArcDeleted__, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }

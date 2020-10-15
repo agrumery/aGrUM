@@ -48,7 +48,7 @@ class PythonDatabaseGeneratorListener : public gum::ProgressListener {
   void whenProgress(const void* src, const gum::Size step, const double duration) {
     if (pyWhenProgress__) {
       PyObject* arglist = Py_BuildValue("(ld)", step, duration);
-      PyEval_CallObject(pyWhenProgress__, arglist);
+      PyObject_Call(pyWhenProgress__, arglist, NULL);
       Py_DECREF(arglist);
     }
   };
@@ -56,7 +56,7 @@ class PythonDatabaseGeneratorListener : public gum::ProgressListener {
   void whenStop(const void* src, const std::string& message) {
     if (pyWhenStop__) {
       PyObject* arglist = Py_BuildValue("(s)", message.c_str());
-      PyEval_CallObject(pyWhenStop__, arglist);
+      PyObject_Call(pyWhenStop__, arglist, NULL);
       Py_DECREF(arglist);
     }
   };

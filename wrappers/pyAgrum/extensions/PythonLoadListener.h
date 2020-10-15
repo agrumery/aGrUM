@@ -36,7 +36,7 @@ class PythonLoadListener : public gum::Listener {
     void whenLoading ( const void* buffer, int percent ) {
       if ( whenLoading__ ) {
         PyObject* arglist = Py_BuildValue ( "(i)", percent );
-        PyEval_CallObject ( whenLoading__, arglist );
+        PyObject_Call ( whenLoading__, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }
