@@ -688,19 +688,21 @@ namespace gum_tests {
 
     void testNoForgettingAssumption2() {
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
-         "a->c->e->g->*d4->l->$u4;"
-         "b->d->f->h->k<-*d3->$u2;"
-         "$u1<-*d1->d1;d->e->*d2->i->l;g->i;"
-         "f->d2"
-         "h->j->$u3<-k");
-      try {
-        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&limids);
+         "a->c->e->g->*d4->l->$u4;c<-b->d->f->h->k<-*d3->$u2;$u1<-*d1->d->e->*d2->"
+         "i->l;g->i;f->d2;b->d1;h->j->$u3<-k");
+      auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&limids);
+      auto forgetting = ieid.reducedLIMID();
+      GUM_TRACE_VAR(ieid.partialOrder());
 
-        GUM_TRACE_VAR(ieid.reducedLIMID().toDot());
-        GUM_TRACE_VAR(limids.toDot());
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      std::vector< std::string > order({"d1", "d2", "d3", "d4"});
+      ieid.addNoForgettingAssumption(order);
+      GUM_TRACE_VAR(ieid.partialOrder());
+      auto noForgetting = ieid.reducedLIMID();
+      GUM_TRACE(limids.size()
+                << "-" << forgetting.size() << "-" << noForgetting.size());
+      GUM_TRACE(limids.sizeArcs()
+                << "-" << forgetting.sizeArcs() << "-" << noForgetting.sizeArcs());
+      GUM_TRACE_VAR(noForgetting.toDot());
     }
   };
 }   // namespace gum_tests

@@ -56,10 +56,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onStateChanged_() {}
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
-                                                             bool isHardEvidence) {
-
-  }
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceAdded_(
+     const NodeId id, bool isHardEvidence) {}
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onEvidenceErased_(
      const NodeId id, bool isHardEvidence) {}
@@ -91,7 +89,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
+  Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(
+     NodeId decisionId) {
     GUM_ERROR(NotImplementedYet, "tbd asap")
   }
 
@@ -122,20 +121,21 @@ namespace gum {
 
     // force no forgetting if necessary
     if (isNoForgettingAssumption()) {
+      GUM_CHECKPOINT;
       auto last = *(noForgettingOrder_.begin());
       for (auto node: noForgettingOrder_)
         if (node == last)   // first one
           continue;
         else {   // we dead with last->node
-          // adding the whole family of last as parents of node
-          reduced_.addArc(last, node);
+                 // adding the whole family of last as parents of node
+          if (!reduced_.existsArc(last, node)) reduced_.addArc(last, node);
           for (auto par: reduced_.parents(last))
-            reduced_.addArc(par, node);
+            if (!reduced_.existsArc(par, node)) reduced_.addArc(par, node);
 
           last = node;
         }
     }
-
+    GUM_TRACE_VAR(reduced_.toDot());
     // reducing the graph
 
     gum::Size max_level = 0;
@@ -150,6 +150,7 @@ namespace gum {
         currents.clear();
         currents.insert(node);
         level.insert(node, 0);
+        GUM_TRACE("   adding "<<node<<" (leaf) with level 0")
         while (!currents.empty()) {
           gum::NodeId elt = *(currents.begin());
           currents.erase(elt);
@@ -157,6 +158,7 @@ namespace gum {
           if (infdiag.isDecisionNode(elt)) partialOrder_[level[elt]].insert(elt);
 
           for (auto parent: reduced_.parents(elt)) {
+            GUM_TRACE("   checking "<<parent)
             gum::Size lev = 0;
             gum::Size newl;
             bool      ok_to_add = true;
@@ -168,10 +170,21 @@ namespace gum {
               newl = level[child];
               if (infdiag.isDecisionNode(child)) newl += 1;
               if (lev < newl) lev = newl;
+              GUM_TRACE("        child "<<child<<" => level "<<lev)
             }
             if (ok_to_add) {
               currents.insert(parent);
-              level.insert(parent, lev);
+              if (level.exists(parent)) {
+                if (level[parent] != lev)
+                  GUM_ERROR(InvalidArgument,
+                            "Trying to set level["
+                               << parent << "] to level=" << lev
+                               << " but already is " << level[parent]);
+              } else {
+                GUM_TRACE("   adding "<<parent<<" with level "<<lev)
+                level.insert(parent, lev);
+              }
+
               if (max_level < lev) max_level = lev;
             }
           }
@@ -179,6 +192,7 @@ namespace gum {
       }
     }
     partialOrder_.resize(max_level + 1);
+    GUM_TRACE_VAR(partialOrder_);
 
     // we add utility nodes for finding requisite nodes
     for (auto node: infdiag.nodes()) {
@@ -199,7 +213,6 @@ namespace gum {
     for (auto node: infdiag.nodes()) {
       if (infdiag.isUtilityNode(node)) reduced_.eraseNode(node);
     }
-
 
     this->setState_(
        GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
