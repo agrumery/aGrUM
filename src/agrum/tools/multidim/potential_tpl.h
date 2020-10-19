@@ -240,7 +240,7 @@ namespace gum {
     for (const auto& v: this->variablesSequence()) {
       if (!son.contains(v->name())) {
         GUM_ERROR(InvalidArgument,
-                  "Variable <" << v->name() << "> not present in src.");
+                  "Variable <" << v->name() << "> not present in src ("<<son<<").");
       }
       // we check size, labels and order of labels in the same time
       if (v->toString() != src.variable(v->name()).toString()) {

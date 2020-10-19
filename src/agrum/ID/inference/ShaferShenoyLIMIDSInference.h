@@ -100,7 +100,7 @@ namespace gum {
     Idx optimalDecision(NodeId decisionId);
     Idx optimalDecision(std::string decisionName);
 
-    std::vector<NodeSet> partialOrder() const;
+    std::vector<NodeSet> reversePartialOrder() const;
 
     std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
@@ -119,7 +119,7 @@ namespace gum {
     DAG reduced_;
 
     void createReduced_();
-    std::vector<NodeSet> partialOrder_;
+    std::vector<NodeSet> reversePartialOrder_;
     std::vector<NodeId> noForgettingOrder_;
   };
 } /* namespace gum */

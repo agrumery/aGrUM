@@ -154,8 +154,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
-  InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                Size               domainSize) {
+     InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
+                                                   Size               domainSize) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
 
@@ -219,8 +219,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(
      const InfluenceDiagram< GUM_SCALAR >& source) :
-     DAGmodel(source),
-     variableMap__(source.variableMap__) {
+      DAGmodel(source),
+      variableMap__(source.variableMap__) {
     GUM_CONS_CPY(InfluenceDiagram);
     copyTables_(source);
   }
@@ -345,20 +345,21 @@ namespace gum {
 
     for (const auto node: dag_.nodes()) {
       if (isChanceNode(node))
-        chanceNode << tab << "\"" << variable(node).name() << "\""
+        chanceNode << tab << "\"" << node << "-" << variable(node).name() << "\""
                    << ";";
       else if (isUtilityNode(node))
-        utilityNode << tab << "\"" << variable(node).name() << "\""
+        utilityNode << tab << "\"" << node << "-" << variable(node).name() << "\""
                     << ";";
       else
-        decisionNode << tab << "\"" << variable(node).name() << "\""
+        decisionNode << tab << "\"" << node << "-" << variable(node).name() << "\""
                      << ";";
 
       if (dag_.children(node).size() > 0)
         for (const auto chi: dag_.children(node))
-          arcstream << tab << "\"" << variable(node).name() << "\""
+          arcstream << tab << "\"" << node << "-" << variable(node).name() << "\""
                     << " -> "
-                    << "\"" << variable(chi).name() << "\";" << std::endl;
+                    << "\"" << chi << "-" << variable(chi).name() << "\";"
+                    << std::endl;
     }
 
     output << decisionNode.str() << std::endl
@@ -401,7 +402,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-  InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
+               InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
     return *(potentialMap__[varId]);
   }
 
@@ -410,7 +411,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-  InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
+               InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
     return *(utilityMap__[varId]);
   }
 
@@ -472,7 +473,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE const VariableNodeMap&
-  InfluenceDiagram< GUM_SCALAR >::variableNodeMap() const {
+               InfluenceDiagram< GUM_SCALAR >::variableNodeMap() const {
     return variableMap__;
   }
 
@@ -481,7 +482,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-  InfluenceDiagram< GUM_SCALAR >::variable(NodeId id) const {
+               InfluenceDiagram< GUM_SCALAR >::variable(NodeId id) const {
     return variableMap__[id];
   }
 
@@ -490,14 +491,14 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE NodeId
-  InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+     InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     return variableMap__.get(var);
   }
 
   // Getter by name
   template < typename GUM_SCALAR >
   INLINE NodeId
-  InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
+     InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
     return variableMap__.idFromName(name);
   }
 
@@ -525,8 +526,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   NodeId
-  InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const DiscreteVariable& var,
-                                                 NodeId varId) {
+     InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const DiscreteVariable& var,
+                                                    NodeId varId) {
     auto   newMultiDim = new MultiDimArray< GUM_SCALAR >();
     NodeId res;
 
@@ -546,8 +547,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   NodeId
-  InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const DiscreteVariable& var,
-                                                  NodeId varId) {
+     InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const DiscreteVariable& var,
+                                                     NodeId varId) {
     return addNode_(var, varId);
   }
 
@@ -621,8 +622,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   NodeId
-  InfluenceDiagram< GUM_SCALAR >::addNode_(const DiscreteVariable& variableType,
-                                           NodeId                  DesiredId) {
+     InfluenceDiagram< GUM_SCALAR >::addNode_(const DiscreteVariable& variableType,
+                                              NodeId                  DesiredId) {
     // None thread safe code!
     NodeId proposedId;
 
@@ -910,7 +911,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   const List< NodeSet >&
-  InfluenceDiagram< GUM_SCALAR >::getPartialTemporalOrder(bool clear) const {
+     InfluenceDiagram< GUM_SCALAR >::getPartialTemporalOrder(bool clear) const {
     if (clear) {
       temporalOrder__.clear();
 
