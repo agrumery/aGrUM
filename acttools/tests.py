@@ -56,15 +56,18 @@ def checkTestList(current, alltests):
   for ss in setifyString(current['tests']):
     s = '/' + ss + 'TestSuite.h'
     name = ""
+    if "aGrUM" not in current['targets']:
+      name=s
+      break
     for tryfile in alltests:
       if tryfile.endswith(s):
         name = tryfile
         break
     if name == "":
       if ss != "show" and ss!="quick":
-        error('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
-      printTests(current)
-      sys.exit(1)
+        if current['action']=='test':
+          printTests(current)
+          critic('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
     else:
       res.append(name)
   return res

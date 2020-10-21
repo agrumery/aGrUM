@@ -222,37 +222,37 @@ def configureOptions(current):
                         help="use Microsoft Visual Studio15 C++ compiler 64bits (Windows only).",
                         action="store_true",
                         dest="mvsc",
-                        default=False)
+                        default=current['mvsc'])
   cfg.parser.add_option("", "--mvsc32",
                         help="use Microsoft Visual Studio15 C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc32",
-                        default=False)
+                        default=current['mvsc32'])
   cfg.parser.add_option("", "--mvsc17",
                         help="use Microsoft Visual Studio17 C++ compiler 64bits (Windows only).",
                         action="store_true",
                         dest="mvsc17",
-                        default=False)
+                        default=current['mvsc17'])
   cfg.parser.add_option("", "--mvsc17_32",
                         help="use Microsoft Visual Studio17 C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc17_32",
-                        default=False)
+                        default=current['mvsc17_32'])
   cfg.parser.add_option("", "--mvsc19",
                         help="use Microsoft Visual Studio19 C++ compiler 64bits (Windows only).",
                         action="store_true",
                         dest="mvsc19",
-                        default=False)
+                        default=current['mvsc19'])
   cfg.parser.add_option("", "--mvsc19_32",
                         help="use Microsoft Visual Studio19 C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc19_32",
-                        default=False)
+                        default=current['mvsc19_32'])
   cfg.parser.add_option("", "--mingw64",
                         help="use minGW64 C++ Compiler (Windows only).",
                         action="store_true",
                         dest="mingw64",
-                        default=False)
+                        default=current['mingw64'])
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make}.",
                         type="choice",

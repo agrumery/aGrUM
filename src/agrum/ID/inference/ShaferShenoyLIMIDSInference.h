@@ -92,8 +92,8 @@ namespace gum {
     DAG reducedGraph() const {return reduced_;};
 
     /// Returns the set of non-requisite for node d
-    NodeSet nonRequisiteNodes(NodeId d) const;
-    NodeSet nonRequisiteNodes(const std::string& dname) const;
+    NodeSet nonRequisiteNodes(NodeId d,const InfluenceDiagram<GUM_SCALAR>& infdiag) const;
+    NodeSet nonRequisiteNodes(const std::string& dname,const InfluenceDiagram<GUM_SCALAR>& infdiag) const;
 
     GUM_SCALAR MEU();
 

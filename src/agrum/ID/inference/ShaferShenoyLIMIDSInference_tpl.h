@@ -137,7 +137,7 @@ namespace gum {
         }
     }
 
-    // reducing the graph
+    // creating the partial order
     gum::Size max_level = 0;
     reversePartialOrder_.clear();
     reversePartialOrder_.resize(infdiag.size());
@@ -204,9 +204,11 @@ namespace gum {
     }
 
     for (const auto& sen: reversePartialOrder_) {
-      for (auto n: sen)
+      for (auto n: sen) {
+        GUM_TRACE(infdiag.variable(n).name()<<" : "<<infdiag.names(nonRequisiteNodes(n)))
         for (auto p: nonRequisiteNodes(n))
           reduced_.eraseArc(Arc(p, n));
+      }
     }
 
     // and then we erase them
@@ -255,9 +257,8 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   NodeSet
-     ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d) const {
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d,const InfluenceDiagram<GUM_SCALAR>& infdiag) const {
     NodeSet     res;
-    const auto& infdiag = this->influenceDiagram();
 
     if (!infdiag.isDecisionNode(d))
       GUM_ERROR(TypeError, d << " is not a decision node");

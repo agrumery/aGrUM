@@ -68,7 +68,6 @@ def checkCurrent(current, options, args):
   def update(current, key, val, test):
     if test:
       if current[key] != val:
-        # warn("{0} changed : {1} -> {2}".format(key,current[key],val))
         current[key] = val
     return test
 
@@ -105,7 +104,6 @@ def checkCurrent(current, options, args):
     critic("arg [{0}] unknown".format(arg))
 
   checkConsistency(current)
-
   if options.noSaveParams:
       pass
   else:
