@@ -17,7 +17,7 @@ fh.setFormatter(logging.Formatter(FORMAT))
 log.addHandler(fh)
 log.propagate = False
 
-if __file__[0]=='/' or __file__[:3]=="C:\\":
+if os.path.isabs(__file__):
   os.chdir(os.path.dirname(__file__))
 else:
   os.chdir(os.path.dirname("./" + __file__))
