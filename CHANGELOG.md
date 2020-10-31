@@ -1,87 +1,102 @@
 # aGrUM Changelog
 
+## Changelog for 0.18.2
+
+Mainly bugfixes and internal improvements.
+
+* aGrUM
+  * bugs fixed for `gum::MarkovNet` and `gum::ShaferShenoyMNInference`.
+  * typo in the name of `odbc` library for mac.
+
+* pyAgrum
+  * packages for `python 3.9` (except win32).
+  * better error message for `DuplicateElement` in operations between `gum.Potential`.
+  * [internal] improvements for building wheels.
+  * deprecated `PyEval_CallObject`.
+  * [internal] improvements for `pyAgrum`'s tests.
+
 
 ## Changelog for 0.18.1
 
 * aGrUM
   * Direct access to `gum::<graphicalmodel>::isIndependent(X,Y,Z)`.
-  * Direct access to direct access to `ancestors` and `descendants()`
-  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`
+  * Direct access to direct access to `ancestors` and `descendants()`.
+  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`.
 
 * pyAgrum
-  * bug fixed on wrapped {Edge|Arc}Part (thanks to Arthur Esquerre-Pourtère)
-  * bug fixed for some UTF8 names
+  * bug fixed on wrapped {Edge|Arc}Part (thanks to Arthur Esquerre-Pourtère).
+  * bug fixed for some UTF8 names.
   * Direct access to `gum::<graphicalmodel>::isIndependent(X,Y,Z)`.
-  * Direct access to `ancestors()` and `descendants()`
-  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`
+  * Direct access to `ancestors()` and `descendants()`.
+  * Update API with  node names for `putFirst`/`reorganize`/`VI`/`I`.
 
 ## Changelog for 0.18.0
 
 * aGrUM
-  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy)
-  * Bug fix in `MIIC` learning algorithm
-  * Bug fix in `gum::GammaLog2` approximations for very small values
-  * Updating and enhancing ` gum::GraphicalBNComparator`
-  * Enhancing API for `gum::MixedGraph` (build a MixedGraph from other graphs)
-  * API changes for `gum::MultiDimAggregator` (consistant behavior without parent)
-  * new `gum::MultidimmAggegator` : `Sum`
-  * Minor API changes for `gum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`)
-  * Minor API changes for graphical models (`gum::DAGModel` and `gum::UGModels`)
-  * [internal] adopting more classical convention for naming pr{otected|ivate} methods and attributes
-  * [internal] Updating sources for MVSC 2019
+  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy).
+  * Bug fix in `MIIC` learning algorithm.
+  * Bug fix in `gum::GammaLog2` approximations for very small values.
+  * Updating and enhancing ` gum::GraphicalBNComparator`.
+  * Enhancing API for `gum::MixedGraph` (build a MixedGraph from other graphs).
+  * API changes for `gum::MultiDimAggregator` (consistant behavior without parent).
+  * new `gum::MultidimmAggegator` : `Sum`.
+  * Minor API changes for `gum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`).
+  * Minor API changes for graphical models (`gum::DAGModel` and `gum::UGModels`).
+  * [internal] adopting more classical convention for naming pr{otected|ivate} methods and attributes.
+  * [internal] Updating sources for MVSC 2019.
 
 * pyAgrum
-  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy)
-  * Bug fix in `MIIC` learning algorithm
-  * Updating and enhancing ` pyAgrum.GraphicalBNComparator`
-  * Enhancing API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs)
-  * API changes for `pyAgrum::MultiDimAggregator` (consistant behavior without parent)
-  * new `pyAgrum::MultidimmAggegator` : `Sum`
-  * Minor API changes for `pyAgrum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`)
+  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy).
+  * Bug fix in `MIIC` learning algorithm.
+  * Updating and enhancing ` pyAgrum.GraphicalBNComparator`.
+  * Enhancing API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs).
+  * API changes for `pyAgrum::MultiDimAggregator` (consistant behavior without parent).
+  * new `pyAgrum::MultidimmAggegator` : `Sum`.
+  * Minor API changes for `pyAgrum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`).
   * In `gum.lib.bn2roc` : bugfix for ROC, access to significant_digit for `predict`, add Precision-Recall graph. 
 
 ## Changelog for 0.17.3
 
 * aGrUM
   * improved version of MIIC's learning algorithm.
-  * add access to pseudo count with `gum::BNLearner::pseudoCount`
-  * fix a bug in inference with `gum::InfluenceDiagram`
-  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId)
-  * VS2019's compiler is now supported by `act/CMakeLists.txt`
-  * reorganizing ressources for testsuite
+  * add access to pseudo count with `gum::BNLearner::pseudoCount`.
+  * fix a bug in inference with `gum::InfluenceDiagram`.
+  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
+  * VS2019's compiler is now supported by `act/CMakeLists.txt`.
+  * reorganizing ressources for testsuite.
 
 * pyAgrum
   * improved version of MIIC's learning algorithm.
-  * add access to pseudo count with `gum.BNLearner.pseudoCount`
-  * fix a bug in inference with `gum.InfluenceDiagram`
-  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId)
+  * add access to pseudo count with `gum.BNLearner.pseudoCount`.
+  * fix a bug in inference with `gum.InfluenceDiagram`.
+  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
 
 ## Changelog for 0.17.2
 
 * aGrUM
-  * fix a bug in graphChangeGeneratorOnSubDiGraph (thanks @yurivict for the issue)
-  * fix a bug in LazyPropagation due to a (rare) improper optimization
-  * improve projection and combination codes for `MultiDim` hierarchy
-  * reorganization of source codes and internal structure
-  * refreshing a bit the c++ examples
-  * preliminary works on undirected graphical models
+  * fix a bug in graphChangeGeneratorOnSubDiGraph (thanks @yurivict for the issue).
+  * fix a bug in LazyPropagation due to a (rare) improper optimization.
+  * improve projection and combination codes for `MultiDim` hierarchy.
+  * reorganization of source codes and internal structure.
+  * refreshing a bit the c++ examples.
+  * preliminary works on undirected graphical models.
 
 * pyAgrum
-  * forgotten description for pip packages
-  * typo for special char (':' for instance) with pydotplus
+  * forgotten description for pip packages.
+  * typo for special char (':' for instance) with pydotplus.
 
 
 ## Changelog for 0.17.1
 (really) minor patch
 
 * aGrUM
-  * O3PRMBNReader can now read a BN from an o3prm file with a unique class even it the name of the class is not the name of the file
+  * O3PRMBNReader can now read a BN from an o3prm file with a unique class even it the name of the class is not the name of the file.
 
 * pyAgrum
-  * internal changes for wheel generations
-  * updating description for packages
-  * optimizing loops and inference for ROC and classifiers
-  * minor improvements for pyAgrum's tests (logging and restrictions for python2)
+  * internal changes for wheel generations.
+  * updating description for packages.
+  * optimizing loops and inference for ROC and classifiers.
+  * minor improvements for pyAgrum's tests (logging and restrictions for python2).
 
 ## Changelog for 0.17.0
 
