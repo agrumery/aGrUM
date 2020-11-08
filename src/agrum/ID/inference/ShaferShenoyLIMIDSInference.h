@@ -91,9 +91,6 @@ namespace gum {
     bool isNoForgettingAssumption() const;
     DAG reducedGraph() const {return reduced_;};
 
-    /// Returns the set of non-requisite for node d
-    NodeSet nonRequisiteNodes(NodeId d,const InfluenceDiagram<GUM_SCALAR>& infdiag) const;
-    NodeSet nonRequisiteNodes(const std::string& dname,const InfluenceDiagram<GUM_SCALAR>& infdiag) const;
 
     GUM_SCALAR MEU();
 
@@ -115,6 +112,9 @@ namespace gum {
     void updateOutdatedStructure_() override;
     void updateOutdatedPotentials_() override;
     void makeInference_() override;
+
+    /// Returns the set of non-requisite for node d
+    NodeSet nonRequisiteNodes_(NodeId d) const;
 
     DAG reduced_;
 

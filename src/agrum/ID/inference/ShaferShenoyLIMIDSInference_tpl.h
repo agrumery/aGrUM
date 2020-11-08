@@ -102,22 +102,25 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::createReduced_() {
+    // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
     reduced_.clear();
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (infdiag.decisionNodeSize() == 0U) return;
 
-    gum::NodeProperty< gum::Size > level;
+    NodeProperty< Size > level;
+    NodeSet              utilities;
 
     // build reduced_
-    for (auto node: infdiag.nodes())
-      if (!infdiag.isUtilityNode(node))
-        reduced_.addNodeWithId(node);
-      else
+    for (auto node: infdiag.nodes()) {
+      reduced_.addNodeWithId(node);
+      if (infdiag.isUtilityNode(node)) {
+        utilities.insert(node);
         level.insert(node, 0);   // utility node is level 0
+      }
+    }
 
     for (const auto& arc: infdiag.arcs())
-      if (reduced_.exists(arc.tail()) && reduced_.exists(arc.head()))
-        reduced_.addArc(arc.tail(), arc.head());
+      reduced_.addArc(arc.tail(), arc.head());
 
     // force no forgetting if necessary
     if (isNoForgettingAssumption()) {
@@ -127,9 +130,7 @@ namespace gum {
           continue;
         else {   // we dead with last->node
                  // adding the whole family of last as parents of node
-          if (!reduced_.existsArc(last, node)) {
-            reduced_.addArc(last, node);
-          }
+          if (!reduced_.existsArc(last, node)) { reduced_.addArc(last, node); }
           for (auto par: reduced_.parents(last)) {
             if (!reduced_.existsArc(par, node)) reduced_.addArc(par, node);
           }
@@ -138,28 +139,27 @@ namespace gum {
     }
 
     // creating the partial order
-    gum::Size max_level = 0;
+    Size max_level = 0;
     reversePartialOrder_.clear();
     reversePartialOrder_.resize(infdiag.size());
-    gum::NodeSet currents;
+    NodeSet currents;
     for (auto node: infdiag.nodes()) {
       if (infdiag.isUtilityNode(node)) continue;
-
-      if (reduced_.children(node).empty()) {
+      if (reduced_.children(node).isSubsetOrEqual(utilities)) {
         currents.clear();
         currents.insert(node);
         level.insert(node, 0);
         while (!currents.empty()) {
-          gum::NodeId elt = *(currents.begin());
+          NodeId elt = *(currents.begin());
           currents.erase(elt);
 
           if (infdiag.isDecisionNode(elt))
             reversePartialOrder_[level[elt]].insert(elt);
 
           for (auto parent: reduced_.parents(elt)) {
-            gum::Size lev = 0;
-            gum::Size newl;
-            bool      ok_to_add = true;
+            Size lev = 0;
+            Size newl;
+            bool ok_to_add = true;
             for (auto child: reduced_.children(parent)) {
               if (!level.exists(child)) {
                 ok_to_add = false;
@@ -173,7 +173,7 @@ namespace gum {
               currents.insert(parent);
               if (level.exists(parent)) {
                 if (level[parent] != lev)
-                  GUM_ERROR(InvalidArgument,
+                  GUM_ERROR(FatalError,
                             "Trying to set level["
                                << parent << "] to level=" << lev
                                << " but already is " << level[parent]);
@@ -194,26 +194,11 @@ namespace gum {
     }
     reversePartialOrder_.resize(levmax);
 
-    // we add utility nodes for finding requisite nodes
-    for (auto node: infdiag.nodes()) {
-      if (infdiag.isUtilityNode(node)) {
-        reduced_.addNodeWithId(node);
-        for (auto par: infdiag.parents(node))
-          reduced_.addArc(par, node);
-      }
-    }
-
     for (const auto& sen: reversePartialOrder_) {
       for (auto n: sen) {
-        GUM_TRACE(infdiag.variable(n).name()<<" : "<<infdiag.names(nonRequisiteNodes(n)))
-        for (auto p: nonRequisiteNodes(n))
+        for (auto p: nonRequisiteNodes_(n))
           reduced_.eraseArc(Arc(p, n));
       }
-    }
-
-    // and then we erase them
-    for (auto node: infdiag.nodes()) {
-      if (infdiag.isUtilityNode(node)) reduced_.eraseNode(node);
     }
 
     this->setState_(
@@ -256,28 +241,28 @@ namespace gum {
     createReduced_();
   }
   template < typename GUM_SCALAR >
-  NodeSet
-     ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(NodeId d,const InfluenceDiagram<GUM_SCALAR>& infdiag) const {
-    NodeSet     res;
+  NodeSet ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes_(
+     NodeId d) const {
+    const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
 
     if (!infdiag.isDecisionNode(d))
       GUM_ERROR(TypeError, d << " is not a decision node");
 
-    if (infdiag.parents(d).empty()) return res;
+    NodeSet res;
+    if (reduced_.parents(d).empty()) return res;
 
-    const DAG dag = reducedGraph();
-    NodeSet   descUs;
-    for (const auto n: dag.descendants(d))
+    NodeSet descUs;
+    for (const auto n: reduced_.descendants(d))
       if (infdiag.isUtilityNode(n)) descUs.insert(n);
 
     NodeSet cumul{descUs};
     cumul << d;
-    auto g = dag.moralizedAncestralGraph(cumul);
+    auto g = reduced_.moralizedAncestralGraph(cumul);
 
-    NodeSet family{dag.parents(d)};
+    NodeSet family{reduced_.parents(d)};
     family << d;
     bool notReq;
-    for (const auto p: dag.parents(d)) {
+    for (const auto p: reduced_.parents(d)) {
       notReq = true;
       for (const auto u: descUs) {
         if (g.hasUndirectedPath(p, u, family)) {
@@ -287,21 +272,15 @@ namespace gum {
       }
       if (notReq) res << p;
     }
-
     return res;
   }
 
   template < typename GUM_SCALAR >
-  gum::Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(
+  Idx ShaferShenoyLIMIDSInference< GUM_SCALAR >::optimalDecision(
      std::string decisionName) {
     return optimalDecision(this->influenceDiagram().idFromName(decisionName));
   }
 
-  template < typename GUM_SCALAR >
-  NodeSet ShaferShenoyLIMIDSInference< GUM_SCALAR >::nonRequisiteNodes(
-     const std::string& dname) const {
-    return nonRequisiteNodes(this->influenceDiagram().idFromName(dname));
-  }
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
      ShaferShenoyLIMIDSInference< GUM_SCALAR >::reducedLIMID() const {
@@ -312,18 +291,14 @@ namespace gum {
         res.addChanceNode(infdiag.variable(node), node);
       else if (infdiag.isDecisionNode(node))
         res.addDecisionNode(infdiag.variable(node), node);
+      else if (infdiag.isUtilityNode(node))
+        res.addUtilityNode(infdiag.variable(node), node);
+      else
+        GUM_ERROR(FatalError, "Type of node " << node << "is unknown.")
     }
 
     for (const auto& arc: reduced_.arcs()) {
       res.addArc(arc.tail(), arc.head());
-    }
-
-    for (auto node: infdiag.nodes()) {
-      if (infdiag.isUtilityNode(node)) {
-        res.addUtilityNode(infdiag.variable(node), node);
-        for (auto par: infdiag.parents(node))
-          res.addArc(par, node);
-      }
     }
 
     // Potentials !!!

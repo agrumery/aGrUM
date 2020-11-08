@@ -687,33 +687,40 @@ namespace gum_tests {
     }
 
     void testNoForgettingAssumption2() {
+      // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
+      // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
          "a->c->e->g->*d4->l->$u4;c<-b->d->f->h->k<-*d3->$u2;$u1<-*d1->d->e->*d2->"
          "i->l;g->i;f->d2;b->d1;h->j->$u3<-k");
-      auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&limids);
+      std::vector< std::string > order({"d1", "d2", "d3", "d4"});
+
+      auto       ieid = gum::ShaferShenoyLIMIDSInference< double >(&limids);
       const auto revord1 = ieid.reversePartialOrder();
       TS_ASSERT_EQUALS(revord1.size(), gum::Size(2))
-      TS_ASSERT_EQUALS(revord1[0],limids.nodeset({"d4","d2","d3"}))
-      TS_ASSERT_EQUALS(revord1[1],limids.nodeset({"d1"}))
+      TS_ASSERT_EQUALS(revord1[0], limids.nodeset({"d4", "d2", "d3"}))
+      TS_ASSERT_EQUALS(revord1[1], limids.nodeset({"d1"}))
 
-      GUM_TRACE_VAR(revord1);
-      std::vector< std::string > order({"d1", "d2", "d3", "d4"});
+      auto forgetting = ieid.reducedLIMID();
+      TS_ASSERT_EQUALS(forgetting.parents("d1"),limids.nodeset({"b"}))
+      TS_ASSERT_EQUALS(forgetting.parents("d2"),limids.nodeset({"e"}))
+      TS_ASSERT_EQUALS(forgetting.parents("d3"),limids.nodeset({}))
+      TS_ASSERT_EQUALS(forgetting.parents("d4"),limids.nodeset({"g"}))
+
       ieid.addNoForgettingAssumption(order);
       const auto revord2 = ieid.reversePartialOrder();
-      GUM_TRACE_VAR(revord2);
       TS_ASSERT_EQUALS(revord2.size(), gum::Size(4))
       for (gum::Idx i = 0; i < gum::Size(4); i++) {
         TS_ASSERT_EQUALS(revord2[i].size(), gum::Size(1));
         TS_ASSERT_EQUALS(limids.variable(*(revord2[i].begin())).name(),
                          order[3 - i]);
       }
-
       auto noForgetting = ieid.reducedLIMID();
-      for(const auto& dec : order) {
-        GUM_TRACE(dec<<" : "<<limids.names(noForgetting.parents(dec)));
-      }
 
-      //GUM_TRACE_VAR(noForgetting.toDot());
+      TS_ASSERT_EQUALS(noForgetting.parents("d1"), limids.nodeset({"b"}))
+      TS_ASSERT_EQUALS(noForgetting.parents("d2"), limids.nodeset({"e"}))
+      TS_ASSERT_EQUALS(noForgetting.parents("d3"), limids.nodeset({"f"}))
+      TS_ASSERT_EQUALS(noForgetting.parents("d4"), limids.nodeset({"d2", "g"}))
+      // GUM_TRACE_VAR(noForgetting.toDot());
     }
   };
 }   // namespace gum_tests

@@ -1516,7 +1516,7 @@ namespace gum {
 
     for (const auto& cliknode: propagator__->nodes()) {
       const auto clique=propagator__->clique(cliknode);
-      if (vars.isSubsetOf(clique)) return clique;
+      if (vars.isProperSubsetOf(clique)) return clique;
     }
 
 
