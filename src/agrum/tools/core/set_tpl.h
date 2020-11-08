@@ -586,7 +586,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   INLINE bool
-     Set< Key, Alloc >::isSubsetOf(const Set< Key, OtherAlloc >& s) const {
+     Set< Key, Alloc >::isProperSubsetOf(const Set< Key, OtherAlloc >& s) const {
     if (this->size() >= s.size()) { return false; }
 
     for (const auto& elt: *this) {
@@ -598,8 +598,28 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   INLINE bool
-     Set< Key, Alloc >::isSupersetOf(const Set< Key, OtherAlloc >& s) const {
-    return s.isSubsetOf(*this);
+     Set< Key, Alloc >::isProperSupersetOf(const Set< Key, OtherAlloc >& s) const {
+    return s.isProperSubsetOf(*this);
+  }
+
+
+  template < typename Key, typename Alloc >
+  template < typename OtherAlloc >
+  INLINE bool
+     Set< Key, Alloc >::isSubsetOrEqual(const Set< Key, OtherAlloc >& s) const {
+    if (this->size() > s.size()) { return false; }
+
+    for (const auto& elt: *this) {
+      if (!s.contains(elt)) { return false; }
+    }
+    return true;
+  }
+
+  template < typename Key, typename Alloc >
+  template < typename OtherAlloc >
+  INLINE bool
+     Set< Key, Alloc >::isSupersetOrEqual(const Set< Key, OtherAlloc >& s) const {
+    return s.isLargeSubsetOf(*this);
   }
 
   // indicates whether a given elements belong to the set

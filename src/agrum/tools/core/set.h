@@ -420,16 +420,28 @@ namespace gum {
     bool contains(const Key& k) const;
 
     /**
-     * @return Returns true if *this is a strict subset of s
+     * @return Returns true if *this is a proper subset of s
      */
     template < typename OtherAlloc >
-    bool isSubsetOf(const Set< Key, OtherAlloc >& s) const;
+    bool isProperSubsetOf(const Set< Key, OtherAlloc >& s) const;
 
     /**
-     * @return Returns true if *this is a strict superset of s
+     * @return Returns true if *this is a proper superset of s
      */
     template < typename OtherAlloc >
-    bool isSupersetOf(const Set< Key, OtherAlloc >& s) const;
+    bool isProperSupersetOf(const Set< Key, OtherAlloc >& s) const;
+
+    /**
+     * @return Returns true if *this is a subset of s (or equal to s)
+     */
+    template < typename OtherAlloc >
+    bool isSubsetOrEqual(const Set< Key, OtherAlloc >& s) const;
+
+    /**
+     * @return Returns true if *this is a superset of s (or equal to s)
+     */
+    template < typename OtherAlloc >
+    bool isSupersetOrEqual(const Set< Key, OtherAlloc >& s) const;
 
     /**
      * @brief Indicates whether a given elements belong to the set.

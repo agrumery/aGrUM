@@ -137,7 +137,7 @@ namespace gum {
 
     // check if joint_target is a subset of an already existing target
     for (const auto& target: joint_targets__) {
-      if (target.isSupersetOf(joint_target)) return;
+      if (target.isProperSupersetOf(joint_target)) return;
     }
 
     // check if joint_target is not a superset of an already existing target
@@ -145,7 +145,7 @@ namespace gum {
     for (auto iter = joint_targets__.beginSafe();
          iter != joint_targets__.endSafe();
          ++iter) {
-      if (iter->isSubsetOf(joint_target)) eraseJointTarget(*iter);
+      if (iter->isProperSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
     this->setTargetedMode_();   // does nothing if already in targeted mode
@@ -219,7 +219,7 @@ namespace gum {
       found_exact_target = true;
     } else {
       for (const auto& target: joint_targets__) {
-        if (nodes.isSubsetOf(target)) {
+        if (nodes.isProperSubsetOf(target)) {
           set = target;
           break;
         }
