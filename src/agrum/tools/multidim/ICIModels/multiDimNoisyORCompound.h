@@ -108,7 +108,7 @@ namespace gum {
     public:
     virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    const std::string toString() const;
+    std::string toString() const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a

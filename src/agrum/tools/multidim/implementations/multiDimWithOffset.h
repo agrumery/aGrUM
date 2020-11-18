@@ -98,7 +98,7 @@ namespace gum {
 
     virtual void fill(const GUM_SCALAR& d) const = 0;
 
-    virtual const std::string toString(const Instantiation* i) const;
+    virtual std::string toString(const Instantiation* i) const;
 
     virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,

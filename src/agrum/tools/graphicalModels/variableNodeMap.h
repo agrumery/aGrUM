@@ -111,7 +111,7 @@ namespace gum {
     void clear();
 
     /// friendly displays the content of the VariableNodeMap
-    const std::string toString() const;
+    std::string toString() const;
 
     /**
      * Returns the name of a variable given its id.

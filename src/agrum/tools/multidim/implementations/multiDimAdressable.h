@@ -166,7 +166,7 @@ namespace gum {
      * @param i The Instantiation to represent.
      * @return Return a string representation of internal data about i in this.
      */
-    virtual const std::string toString(const Instantiation* i) const = 0;
+    virtual std::string toString(const Instantiation* i) const = 0;
 
     /// @}
   };

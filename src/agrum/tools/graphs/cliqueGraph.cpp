@@ -258,7 +258,7 @@ namespace gum {
     return true;
   }
 
-  const std::string CliqueGraph::toString() const {
+  std::string CliqueGraph::toString() const {
     std::stringstream stream;
     stream << "list of nodes:" << std::endl;
 
@@ -306,7 +306,7 @@ namespace gum {
     return stream.str();
   }
 
-  const std::string CliqueGraph::toDot() const {
+  std::string CliqueGraph::toDot() const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
     stream << "  node [style=\"filled\", fontcolor=\"black\"];" << std::endl;

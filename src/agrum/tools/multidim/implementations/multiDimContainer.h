@@ -323,13 +323,13 @@ namespace gum {
      * @brief Returns a representation of this MultiDimContainer.
      * @return Returns a representation of this MultiDimContainer.
      */
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /**
      * @brief Display the internal representation of i.
      * @return Returns an internal representation of i.
      */
-    virtual const std::string toString(const Instantiation* i) const = 0;
+    virtual std::string toString(const Instantiation* i) const = 0;
 
     /**
      * @brief Test if this MultiDimContainer is equal to p.

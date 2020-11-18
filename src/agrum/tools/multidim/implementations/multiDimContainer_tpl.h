@@ -104,7 +104,7 @@ namespace gum {
   // display the content of an array
 
   template < typename GUM_SCALAR >
-  const std::string MultiDimContainer< GUM_SCALAR >::toString() const {
+  std::string MultiDimContainer< GUM_SCALAR >::toString() const {
     // we create a new instantiation and iterate over it to display the whole
     // content of the array
     if (this->nbrDim() == 0) { return "[]"; }

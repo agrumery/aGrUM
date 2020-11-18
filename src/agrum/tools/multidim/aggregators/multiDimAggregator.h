@@ -113,7 +113,7 @@ namespace gum {
       virtual GUM_SCALAR get(const Instantiation& i) const override;
 
       virtual std::string aggregatorName() const = 0;
-      const std::string   toString() const override;
+      std::string toString() const override;
 
       void changeNotification(const gum::Instantiation&,
                               const gum::DiscreteVariable* const,
@@ -130,7 +130,7 @@ namespace gum {
 
       void setChangeNotification(const gum::Instantiation&) override{};
 
-      const std::string toString(const gum::Instantiation* i) const override {
+      std::string toString(const gum::Instantiation* i) const override {
         return i->toString();
       };
 

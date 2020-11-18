@@ -71,7 +71,7 @@ namespace gum {
     GUM_DESTRUCTOR(MixedGraph);
   }
 
-  const std::string MixedGraph::toString() const {
+  std::string MixedGraph::toString() const {
     std::string s = NodeGraphPart::toString();
     s += " , ";
     s += ArcGraphPart::toString();
@@ -224,7 +224,7 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found");
   }
 
-  const std::string MixedGraph::toDot() const {
+  std::string MixedGraph::toDot() const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;

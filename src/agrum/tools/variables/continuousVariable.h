@@ -166,10 +166,10 @@ namespace gum {
     virtual VarType varType() const;
 
     /// string version of *this
-    const std::string toString() const;
+    std::string toString() const;
 
     /// string version of *this using description attribute instead of name.
-    const std::string toStringWithDescription() const;
+    std::string toStringWithDescription() const;
 
     /// @}
 

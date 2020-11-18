@@ -255,7 +255,7 @@ namespace gum {
 
     virtual const MultiDimAdressable& getMasterRef() const override;
 
-    virtual const std::string toString(const Instantiation* i) const override;
+    virtual std::string toString(const Instantiation* i) const override;
 
     /// @}
 

@@ -115,7 +115,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const std::string MultiDimICIModel< GUM_SCALAR >::toString() const {
+  std::string MultiDimICIModel< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << this->variable(0) << "=CIModel([" << externalWeight() << "],";
 

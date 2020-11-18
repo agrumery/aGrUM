@@ -214,9 +214,9 @@ namespace gum {
 
     virtual void endMultipleChanges(const GUM_SCALAR&) final;
 
-    virtual const std::string toString(const Instantiation* i) const;
+    virtual std::string toString(const Instantiation* i) const;
 
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /// @}
     // =========================================================================

@@ -255,7 +255,7 @@ namespace gum {
 
   /// string version of *this
   template < typename GUM_SCALAR >
-  INLINE const std::string ContinuousVariable< GUM_SCALAR >::toString() const {
+  INLINE std::string ContinuousVariable< GUM_SCALAR >::toString() const {
     std::string str(this->name());
     str += domain();
     return str;
@@ -264,8 +264,8 @@ namespace gum {
 
   /// string version of *this using description attribute instead of name.
   template < typename GUM_SCALAR >
-  INLINE const std::string
-               ContinuousVariable< GUM_SCALAR >::toStringWithDescription() const {
+  INLINE std::string
+         ContinuousVariable< GUM_SCALAR >::toStringWithDescription() const {
     std::string str(this->description());
     str += domain();
     return str;

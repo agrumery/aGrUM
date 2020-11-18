@@ -38,7 +38,6 @@ namespace gum {
      const InfluenceDiagram< GUM_SCALAR >* infDiag) :
       InfluenceDiagramInference< GUM_SCALAR >(infDiag) {
     GUM_CONSTRUCTOR(ShaferShenoyLIMIDSInference);
-
     createReduced_();
   }
 
@@ -49,8 +48,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
-    reduced_.clear();
     noForgettingOrder_.clear();
+    reduced_.clear();
+    solvabiltyOrder_.clear();
     reversePartialOrder().clear();
   }
   template < typename GUM_SCALAR >
@@ -69,7 +69,9 @@ namespace gum {
      const NodeId id, bool hasChangedSoftHard) {}
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* model) {}
+     const GraphicalModel* model) {
+    createReduced_();
+  }
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::updateOutdatedStructure_() {
@@ -101,34 +103,48 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  bool ShaferShenoyLIMIDSInference< GUM_SCALAR >::isSolvable() const {
+    return (!solvabiltyOrder_.empty());
+  }
+
+  template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDSInference< GUM_SCALAR >::createReduced_() {
     // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
     reduced_.clear();
+    solvabiltyOrder_.clear();
+    reversePartialOrder_.clear();
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (infdiag.decisionNodeSize() == 0U) return;
 
-    NodeProperty< Size > level;
-    NodeSet              utilities;
+    NodeSet utilities;
 
     // build reduced_
     for (auto node: infdiag.nodes()) {
       reduced_.addNodeWithId(node);
-      if (infdiag.isUtilityNode(node)) {
-        utilities.insert(node);
-        level.insert(node, 0);   // utility node is level 0
-      }
+      if (infdiag.isUtilityNode(node)) { utilities.insert(node); }
     }
 
     for (const auto& arc: infdiag.arcs())
       reduced_.addArc(arc.tail(), arc.head());
 
+    completingNoForgettingAssumption__();
+    creatingPartialOrder__(utilities);
+    checkingSolvability__(utilities);
+    if (isSolvable()) reducingLIMID__();
+
+    this->setState_(
+       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::completingNoForgettingAssumption__() {
     // force no forgetting if necessary
-    if (isNoForgettingAssumption()) {
+    if (hasNoForgettingAssumption()) {
       auto last = *(noForgettingOrder_.begin());
       for (auto node: noForgettingOrder_)
         if (node == last)   // first one
           continue;
-        else {   // we dead with last->node
+        else {   // we deal with last->node
                  // adding the whole family of last as parents of node
           if (!reduced_.existsArc(last, node)) { reduced_.addArc(last, node); }
           for (auto par: reduced_.parents(last)) {
@@ -137,6 +153,66 @@ namespace gum {
           last = node;
         }
     }
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::checkingSolvability__(
+     const NodeSet& utilities) {
+    const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
+    if (hasNoForgettingAssumption()) {
+      solvabiltyOrder_=noForgettingOrder_;
+      return;
+    }
+
+    solvabiltyOrder_.clear();
+    for (const auto& sen: reversePartialOrder()) {
+      NodeSet tobetested = sen;
+      while (!tobetested.empty()) {
+        bool foundOne = false;
+        for (const auto& node: tobetested) {
+          const auto us = utilities * reduced_.descendants(node);
+          NodeSet    decs;
+          for (const auto dec: tobetested)
+            if (dec != node)
+              decs += reduced_.family(dec);
+          if (reduced_.isIndependent(decs,us,reduced_.family(node))) {
+            solvabiltyOrder_.push_back(node);
+            foundOne = true;
+            tobetested.erase(node);
+            break;
+          }
+        }
+        if (!foundOne) {   // no solvability
+          solvabiltyOrder_.clear();
+          return;
+        }
+      }
+    }
+    /*for(const auto& sen:reversePartialOrder()) {
+      GUM_TRACE("Partial order : "<<infdiag.names(sen));
+    }
+    GUM_TRACE("Solvability order : "<<infdiag.names(solvabiltyOrder_));
+     */
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::reducingLIMID__() {
+    for (const auto& sen: reversePartialOrder_) {
+      for (auto n: sen) {
+        for (auto p: nonRequisiteNodes_(n))
+          reduced_.eraseArc(Arc(p, n));
+      }
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDSInference< GUM_SCALAR >::creatingPartialOrder__(
+     const NodeSet& utilities) {
+    const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
+    NodeProperty< Size >                  level;
+
+    for (const auto& node: utilities)
+      level.insert(node, 0);   // utility node is level 0
 
     // creating the partial order
     Size max_level = 0;
@@ -193,16 +269,6 @@ namespace gum {
       levmax++;
     }
     reversePartialOrder_.resize(levmax);
-
-    for (const auto& sen: reversePartialOrder_) {
-      for (auto n: sen) {
-        for (auto p: nonRequisiteNodes_(n))
-          reduced_.eraseArc(Arc(p, n));
-      }
-    }
-
-    this->setState_(
-       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
   template < typename GUM_SCALAR >
@@ -212,8 +278,8 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   bool
-     ShaferShenoyLIMIDSInference< GUM_SCALAR >::isNoForgettingAssumption() const {
-    return (!noForgettingOrder_.empty());
+     ShaferShenoyLIMIDSInference< GUM_SCALAR >::hasNoForgettingAssumption() const {
+    return !noForgettingOrder_.empty();
   }
 
   template < typename GUM_SCALAR >

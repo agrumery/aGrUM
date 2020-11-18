@@ -87,7 +87,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const std::string MultiDimLogit< GUM_SCALAR >::toString() const {
+  std::string MultiDimLogit< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << this->variable(0) << "=logit(" << this->externalWeight();
 

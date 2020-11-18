@@ -412,8 +412,7 @@ namespace gum {
 
   // string representation of internal data about i in this.
   template < typename GUM_SCALAR >
-  INLINE const std::string
-               MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
+  INLINE std::string MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
     return content_->toString(i);
   }
 
@@ -426,7 +425,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const std::string MultiDimDecorator< GUM_SCALAR >::toString() const {
+  INLINE std::string MultiDimDecorator< GUM_SCALAR >::toString() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->empty()) {
       std::stringstream ss;
       ss << "<> :: " << empty_value_;

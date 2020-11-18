@@ -507,7 +507,7 @@ namespace gum {
       return !operator==(r);
     }
 
-    virtual const std::string toString() const {
+    virtual std::string toString() const {
       return MultiDimDecorator< GUM_SCALAR >::toString();
     }
 

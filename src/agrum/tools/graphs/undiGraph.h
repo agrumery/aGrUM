@@ -166,28 +166,31 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    virtual void addEdge(const NodeId first, const NodeId second);
+    void addEdge(NodeId first, NodeId second) override;
 
     /// remove a node and its adjacent edges from the graph
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode(const NodeId id);
+    void eraseNode(NodeId id) override;
 
     /// removes all the nodes and edges from the graph
-    virtual void clear();
+    void clear() override;
 
     /// to friendly display the content of the graph
-    virtual const std::string toString() const;
+    std::string toString() const override;
 
     /// to friendly display graph in DOT format
-    virtual const std::string toDot() const;
+    virtual std::string toDot() const;
 
     /// checks whether the graph contains cycles
     bool hasUndirectedCycle() const;
 
     /// returns the partial graph formed by the nodes given in parameter
-    virtual UndiGraph partialUndiGraph(NodeSet nodesSet);
+    virtual UndiGraph partialUndiGraph(NodeSet nodes);
+
+    /// returns a property {node:id of connected component}
+    NodeProperty<NodeId> nodes2ConnectedComponent() const;
 
     /// @}
   };

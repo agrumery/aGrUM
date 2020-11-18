@@ -58,14 +58,14 @@ namespace gum {
     if (mutableTopologicalOrder__ != nullptr) { delete mutableTopologicalOrder__; }
   }
 
-  const std::string DiGraph::toString() const {
+  std::string DiGraph::toString() const {
     std::string s = NodeGraphPart::toString();
     s += " , ";
     s += ArcGraphPart::toString();
     return s;
   }
 
-  const std::string DiGraph::toDot() const {
+  std::string DiGraph::toDot() const {
     std::stringstream strBuff;
     std::string       tab = "     ";
     strBuff << "digraph {" << std::endl;

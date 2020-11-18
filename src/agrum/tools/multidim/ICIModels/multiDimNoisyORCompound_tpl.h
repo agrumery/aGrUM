@@ -101,7 +101,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const std::string MultiDimNoisyORCompound< GUM_SCALAR >::toString() const {
+  std::string MultiDimNoisyORCompound< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << MultiDimImplementation< GUM_SCALAR >::variable(0) << "=noisyORCompound(["
       << this->externalWeight() << "],";

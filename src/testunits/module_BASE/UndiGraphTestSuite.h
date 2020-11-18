@@ -385,5 +385,43 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(graph.undirectedPath(1, 5), gum::NotFound);
     }
+
+    void testConnexComponents() {
+      gum::UndiGraph g;
+      g.addNodes(6);
+
+      g.addEdge(0, 1);
+      g.addEdge(2, 1);
+      g.addEdge(3, 4);
+
+      auto cc = g.nodes2ConnectedComponent();
+
+      TS_ASSERT_EQUALS(cc.size(), 6U);
+      TS_ASSERT_DIFFERS(cc[0], cc[3]);
+      TS_ASSERT_DIFFERS(cc[0], cc[5]);
+      TS_ASSERT_DIFFERS(cc[5], cc[3]);
+      TS_ASSERT_EQUALS(cc[0], cc[1]);
+      TS_ASSERT_EQUALS(cc[0], cc[2]);
+      TS_ASSERT_EQUALS(cc[3], cc[4]);
+    }
+    void testConnexComponents2() {
+      gum::UndiGraph g;
+      g.addNodes(6);
+
+      g.addEdge(0, 1);
+      g.addEdge(1, 2);
+      g.addEdge(2, 3);
+      g.addEdge(1, 4);
+      g.addEdge(2, 5);
+
+      auto cc = g.nodes2ConnectedComponent();
+
+      TS_ASSERT_EQUALS(cc.size(), 6U);
+      TS_ASSERT_EQUALS(cc[0], cc[1]);
+      TS_ASSERT_EQUALS(cc[0], cc[2]);
+      TS_ASSERT_EQUALS(cc[0], cc[3]);
+      TS_ASSERT_EQUALS(cc[0], cc[4]);
+      TS_ASSERT_EQUALS(cc[0], cc[5]);
+    }
   };
 }   // namespace gum_tests

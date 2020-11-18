@@ -380,5 +380,18 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(g2, graph);
       TS_ASSERT_DIFFERS(g3, graph);
     }
+
+    void testFamily() {
+// The graph used for the tests:
+//          0   1_          0 -> 2
+//         / \ / /          0 -> 3
+//        2   3 /           2 -> 4
+//         \ / /            3 -> 5
+//          4_/             1 -> 3
+//                          1 -> 4
+      gum::DAG graph = buildGraph();
+      TS_ASSERT_EQUALS(graph.family(0),gum::NodeSet({0}))
+      TS_ASSERT_EQUALS(graph.family(4),gum::NodeSet({1,2,3,4}));
+    }
   };
 }   // namespace gum_tests

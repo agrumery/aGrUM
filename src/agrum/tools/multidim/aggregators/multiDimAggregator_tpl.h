@@ -93,7 +93,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const std::string MultiDimAggregator< GUM_SCALAR >::toString() const {
+    std::string MultiDimAggregator< GUM_SCALAR >::toString() const {
       std::stringstream s;
       s << this->variable(0) << "=" << aggregatorName() << "(";
 

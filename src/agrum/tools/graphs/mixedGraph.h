@@ -216,10 +216,10 @@ namespace gum {
                                                     const NodeId node2) const;
 
     /// to friendly display mixed graph in DOT format
-    virtual const std::string toDot() const;
+    virtual std::string toDot() const;
 
     /// to friendly display the content of the MixedGraph
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /// @}
   };

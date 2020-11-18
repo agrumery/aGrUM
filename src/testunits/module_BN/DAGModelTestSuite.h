@@ -138,5 +138,27 @@ namespace gum_tests {
       TS_ASSERT(!bn.isIndependent("I", "H", {"C", "E", "B"}));
       TS_ASSERT(bn.isIndependent("I", "H", {"C", "E", "B", "G"}));
     }
+
+    void testMultiIndependence() {
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
+
+      TS_ASSERT_THROWS(
+         bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
+         gum::InvalidArgument);
+
+      // clang-format off
+      TS_ASSERT( bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {"B"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A","B"}    , {"D"}        , {"B"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A"}        , {"D","B"}    , {"B"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {"E"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {"G"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G"}    , {}));
+      TS_ASSERT( bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G"}    , {"B"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G"}    , {"C","D"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A","E","C"}, {"F","G"}    , {"C","D"}));
+      TS_ASSERT(!bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G","C"}, {"C","D"}));
+      // clang-format on
+    }
   };
 }   // namespace gum_tests

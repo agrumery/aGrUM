@@ -132,7 +132,7 @@ namespace gum {
     return *this;
   }
 
-  const std::string ArcGraphPart::toString() const {
+  std::string ArcGraphPart::toString() const {
     std::stringstream s;
     bool              first = true;
     s << "{";

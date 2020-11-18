@@ -97,7 +97,7 @@ namespace gum {
     /// @{
 
     public:
-    const std::string toString() const override;
+    std::string toString() const override;
 
     virtual void changeNotification(const gum::Instantiation&,
                                     const gum::DiscreteVariable* const,
@@ -114,7 +114,7 @@ namespace gum {
 
     virtual void setChangeNotification(const gum::Instantiation&) override{};
 
-    const std::string toString(const gum::Instantiation* i) const override {
+    std::string toString(const gum::Instantiation* i) const override {
       return i->toString();
     };
 

@@ -60,7 +60,8 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyLIMIDSInference: public InfluenceDiagramInference< GUM_SCALAR > {
+  class ShaferShenoyLIMIDSInference:
+      public InfluenceDiagramInference< GUM_SCALAR > {
     public:
     // ====================================================================
     /// @name Constructor & destructor
@@ -84,24 +85,29 @@ namespace gum {
     }
 
     void clear() override;
+
     ///@{
     /// No forgetting rule assumption
-    void addNoForgettingAssumption(const std::vector<NodeId>& ids);
-    void addNoForgettingAssumption(const std::vector<std::string>& names);
-    bool isNoForgettingAssumption() const;
-    DAG reducedGraph() const {return reduced_;};
+    void addNoForgettingAssumption(const std::vector< NodeId >& ids);
+    void addNoForgettingAssumption(const std::vector< std::string >& names);
+    bool hasNoForgettingAssumption() const;
+    ///@}
 
+    DAG  reducedGraph() const { return reduced_; };
 
     GUM_SCALAR MEU();
 
     Idx optimalDecision(NodeId decisionId);
     Idx optimalDecision(std::string decisionName);
 
-    std::vector<NodeSet> reversePartialOrder() const;
+    std::vector< NodeSet > reversePartialOrder() const;
 
     std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
-    InfluenceDiagram<GUM_SCALAR> reducedLIMID() const;
+    InfluenceDiagram< GUM_SCALAR > reducedLIMID() const;
+
+    bool isSolvable() const;
+
     protected:
     void onStateChanged_() override;
     void onEvidenceAdded_(NodeId id, bool isHardEvidence) override;
@@ -118,9 +124,16 @@ namespace gum {
 
     DAG reduced_;
 
-    void createReduced_();
-    std::vector<NodeSet> reversePartialOrder_;
-    std::vector<NodeId> noForgettingOrder_;
+    void                   createReduced_();
+    std::vector< NodeSet > reversePartialOrder_;
+    std::vector< NodeId >  solvabiltyOrder_;
+    std::vector< NodeId >  noForgettingOrder_;
+
+    private:
+    void completingNoForgettingAssumption__();
+    void reducingLIMID__();
+    void creatingPartialOrder__(const NodeSet& utilities);
+    void checkingSolvability__(const NodeSet& utilities);
   };
 } /* namespace gum */
 

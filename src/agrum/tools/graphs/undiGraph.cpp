@@ -99,14 +99,14 @@ namespace gum {
     return false;
   }
 
-  const std::string UndiGraph::toString() const {
+  std::string UndiGraph::toString() const {
     std::string s = NodeGraphPart::toString();
     s += " , ";
     s += EdgeGraphPart::toString();
     return s;
   }
 
-  const std::string UndiGraph::toDot() const {
+  std::string UndiGraph::toDot() const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;
@@ -136,18 +136,42 @@ namespace gum {
   }
 
   /// returns the partial graph formed by the nodes given in parameter
-  UndiGraph UndiGraph::partialUndiGraph(NodeSet nodesSet) {
+  UndiGraph UndiGraph::partialUndiGraph(NodeSet nodes) {
     UndiGraph partialGraph;
 
-    for (const auto node: nodesSet) {
+    for (const auto node: nodes) {
       partialGraph.addNodeWithId(node);
 
       for (const auto nei: neighbours(node))
-        if (nodesSet.contains(nei) && partialGraph.existsNode(nei))
+        if (nodes.contains(nei) && partialGraph.existsNode(nei))
           partialGraph.addEdge(node, nei);
     }
 
     return partialGraph;
+  }
+
+  NodeProperty<NodeId> UndiGraph::nodes2ConnectedComponent() const {
+    NodeProperty<NodeId> res;
+
+    NodeId numCC=0;
+    for(const auto node:nodes()) {
+      if (res.exists(node))
+        continue;
+      NodeSet nodes{node};
+      while (! nodes.empty()) {
+        auto actual=*(nodes.begin());
+        nodes.erase(actual);
+        res.insert(actual,numCC);
+        for(const auto nei:neighbours(actual)) {
+          if (!res.exists(nei))
+            if (!nodes.exists(nei))
+              nodes.insert(nei);
+        }
+      }
+      numCC+=1;
+    }
+
+    return res;
   }
 
   /// for friendly displaying the content of undirected graphs

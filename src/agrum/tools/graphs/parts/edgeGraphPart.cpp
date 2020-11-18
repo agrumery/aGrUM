@@ -104,7 +104,7 @@ namespace gum {
     return *this;
   }
 
-  const std::string EdgeGraphPart::toString() const {
+  std::string EdgeGraphPart::toString() const {
     std::stringstream s;
     bool              first = true;
     s << "{";

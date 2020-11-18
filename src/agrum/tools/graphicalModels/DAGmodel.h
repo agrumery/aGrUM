@@ -139,6 +139,15 @@ namespace gum {
     const NodeSet& parents(const NodeId id) const;
     const NodeSet& parents(const std::string& name) const;
 
+    /// returns theparents of a node and the node
+    /** Note that the set of nodes returned may be empty if no arc within the
+     * ArcGraphPart is ingoing into the given node.
+     * @param id the node which is the head of an arc with the returned nodes
+     * @param name the name of the node the node which is the head of an arc with
+     * the returned nodes*/
+    NodeSet family(const NodeId id) const;
+    NodeSet family(const std::string& name) const;
+
     /// returns the set of nodes with arc outgoing from a given node
     /** Note that the set of nodes returned may be empty if no node
      * is outgoing from the given node.
@@ -182,11 +191,18 @@ namespace gum {
     UndiGraph
        moralizedAncestralGraph(const std::vector< std::string >& nodenames) const;
 
-    /** check if X and Y are independent given Z
+    /** check if node X and node Y are independent given nodes Z
      */
     bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
     bool isIndependent(const std::string&                Xname,
                        const std::string&                Yname,
+                       const std::vector< std::string >& Zanmes) const;
+
+    /** check if nodes X and nodes Y are independent given nodes Z
+     */
+    bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
+    bool isIndependent(const std::vector< std::string >& Xname,
+                       const std::vector< std::string >& Yname,
                        const std::vector< std::string >& Zanmes) const;
 
     /**

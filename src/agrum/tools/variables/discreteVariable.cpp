@@ -31,7 +31,7 @@
 
 namespace gum {
 
-  const std::string DiscreteVariable::toStringWithDescription() const {
+  std::string DiscreteVariable::toStringWithDescription() const {
     std::stringstream s;
     s << description();
     s << domain();
@@ -39,7 +39,7 @@ namespace gum {
     return s.str();
   }
 
-  const std::string DiscreteVariable::toString() const {
+  std::string DiscreteVariable::toString() const {
     std::stringstream s;
     s << name();
     s << domain();

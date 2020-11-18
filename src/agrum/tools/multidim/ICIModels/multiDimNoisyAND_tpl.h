@@ -94,7 +94,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const std::string MultiDimNoisyAND< GUM_SCALAR >::toString() const {
+  std::string MultiDimNoisyAND< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << MultiDimImplementation< GUM_SCALAR >::variable(0) << "=noisyAND(["
       << this->externalWeight() << "],";

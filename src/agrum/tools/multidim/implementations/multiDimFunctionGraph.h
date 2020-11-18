@@ -194,7 +194,7 @@ namespace gum {
 
     virtual void setChangeNotification(const Instantiation& i);
 
-    virtual const std::string toString(const Instantiation* i) const;
+    virtual std::string toString(const Instantiation* i) const;
 
     /// @}
     // =========================================================================

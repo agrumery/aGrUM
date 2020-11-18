@@ -72,7 +72,7 @@ namespace gum {
   }
 
   /// friendly displays the content of the VariableNodeMap
-  const std::string VariableNodeMap::toString() const {
+  std::string VariableNodeMap::toString() const {
     std::stringstream stream;
 
     stream << "list of associations:" << std::endl;

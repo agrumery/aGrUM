@@ -49,5 +49,4 @@ namespace gum {
     // within class DiGraph
     DiGraph::addArc(tail, head);
   }
-
 } /* namespace gum */

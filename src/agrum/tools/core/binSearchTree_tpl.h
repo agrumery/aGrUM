@@ -561,7 +561,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  const std::string BinSearchTree< Val, Cmp, Node >::toString() const {
+  std::string BinSearchTree< Val, Cmp, Node >::toString() const {
     bool              deja = false;
     std::stringstream stream;
     stream << "[";

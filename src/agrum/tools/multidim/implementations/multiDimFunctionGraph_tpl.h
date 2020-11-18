@@ -198,8 +198,7 @@ namespace gum {
      setChangeNotification(const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
-  INLINE const std::string
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toString(
+  INLINE std::string MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toString(
         const Instantiation* i) const {
     std::stringstream sBuff;
     sBuff << (*i) << " = " << this->get(*i);

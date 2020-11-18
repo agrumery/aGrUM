@@ -210,11 +210,11 @@ namespace gum {
 
     /// friendly displays the content of the CliqueGraph
 
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /// friendly displays the content of the CliqueGraph in DOT format
 
-    virtual const std::string toDot() const;
+    virtual std::string toDot() const;
 
     /// @}
 

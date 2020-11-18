@@ -420,7 +420,7 @@ namespace gum {
     /// NodeGraphPart
     const node_iterator& end() const noexcept;
 
-    /// a function to display the set of nodes
+    virtual   /// a function to display the set of nodes
     std::string toString() const;
 
     /// a method to create a HashTable with key:NodeId and value:VAL

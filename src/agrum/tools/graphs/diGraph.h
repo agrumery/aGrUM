@@ -178,12 +178,12 @@ namespace gum {
     virtual void clear();
 
     /// to friendly display the content of the graph
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /// to friendly display the content of the graph in the DOT syntax
     /** @param name The graph name in the dot syntax. Default is G.
      * @return Returns a string describing the graph in the dot syntax */
-    virtual const std::string toDot() const;
+    virtual std::string toDot() const;
 
     /**
      * The topological order stays the same as long as no variable or arcs are

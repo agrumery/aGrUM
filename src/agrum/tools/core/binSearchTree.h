@@ -257,7 +257,7 @@ namespace gum {
      * Cmp.
      * @return Returns the content of the tree in a string.
      */
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
     /// @}
     // ============================================================================

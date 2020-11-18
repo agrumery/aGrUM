@@ -60,6 +60,14 @@ namespace gum {
     return parents(idFromName(name));
   }
 
+  INLINE NodeSet DAGmodel::family(const NodeId id) const {
+    return dag_.family(id);
+  }
+
+  INLINE NodeSet DAGmodel::family(const std::string& name) const {
+    return dag_.family(idFromName(name));
+  }
+
   INLINE const NodeSet& DAGmodel::children(const NodeId id) const {
     return dag_.children(id);
   }
@@ -111,5 +119,17 @@ namespace gum {
                              const std::string&                Yname,
                              const std::vector< std::string >& Znames) const {
     return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
+  }
+  INLINE bool DAGmodel::isIndependent(const NodeSet& X,
+                                      const NodeSet& Y,
+                                      const NodeSet& Z) const {
+    return dag().isIndependent(X, Y, Z);
+  }
+
+  INLINE bool
+     DAGmodel::isIndependent(const std::vector< std::string >& Xname,
+                             const std::vector< std::string >& Yname,
+                             const std::vector< std::string >& Znames) const {
+    return isIndependent(nodeset(Xname), nodeset(Yname), nodeset(Znames));
   }
 } /* namespace gum */

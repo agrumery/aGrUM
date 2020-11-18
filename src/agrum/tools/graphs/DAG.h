@@ -158,7 +158,6 @@ namespace gum {
     void addArc(NodeId tail, NodeId head) final;
     /// @}
 
-
     /// returns the set of nodes with directed path outgoing from a given node
     /** Note that the set of nodes returned may be empty if no path within the
      * ArcGraphPart is outgoing from the given node.
@@ -189,9 +188,13 @@ namespace gum {
      */
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
 
-    /** check if X and Y are independent given Z (in the sense of d-separation)*/
+    /** check if node X and node Y are independent given nodes Z (in the sense of
+     * d-separation)*/
     bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
 
+    /** check if nodes X andnodes  Y are independent given Z (in the sense of
+     * d-separation)*/
+    bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
   };
 
 } /* namespace gum */

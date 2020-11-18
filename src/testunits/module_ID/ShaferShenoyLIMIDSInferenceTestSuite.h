@@ -654,20 +654,40 @@ namespace gum_tests {
       }
     }
 
+    void testSolvability() {
+      {
+        auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+           "*D1->Z->*D2->X->$U<-Y");
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
+        TS_ASSERT(ieid.isSolvable());
+      }
+      {
+        auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+           "*D1->Z->*D2->X->$U<-Y<-*D3");
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
+        TS_ASSERT(!ieid.isSolvable());
+      }
+    }
+
     void testNoForgettingAssumption() {
+      // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
          "R4->D4<-*D3<-D2<-D1;"
          "D3->$U1<-R2;R3->$U2");
       auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
 
-      TS_ASSERT(!ieid.isNoForgettingAssumption());
+      TS_ASSERT(!ieid.hasNoForgettingAssumption());
+      const auto revord = ieid.reversePartialOrder();
+      auto       dag = ieid.reducedGraph();
 
-      auto dag = ieid.reducedGraph();
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")).size(), 0u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")).size(), 1u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")).size(), 1u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")).size(), 2u);
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")),
+                       infdiag.nodeset({"D1"}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")),
+                       infdiag.nodeset({"D2"}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")),
+                       infdiag.nodeset({"D3", "R4"}))
 
       TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D11"}), gum::NotFound);
       TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
@@ -677,13 +697,17 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"}));
-      TS_ASSERT(ieid.isNoForgettingAssumption());
+      TS_ASSERT(ieid.hasNoForgettingAssumption());
 
       dag = ieid.reducedGraph();
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")).size(), 0u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")).size(), 1u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")).size(), 1u);
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")).size(), 2u);
+
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")),
+                       infdiag.nodeset({"D1"}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")),
+                       infdiag.nodeset({"D2"}))
+      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")),
+                       infdiag.nodeset({"D2", "R4"}))
     }
 
     void testNoForgettingAssumption2() {
@@ -700,13 +724,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(revord1[0], limids.nodeset({"d4", "d2", "d3"}))
       TS_ASSERT_EQUALS(revord1[1], limids.nodeset({"d1"}))
 
-      auto forgetting = ieid.reducedLIMID();
-      TS_ASSERT_EQUALS(forgetting.parents("d1"),limids.nodeset({"b"}))
-      TS_ASSERT_EQUALS(forgetting.parents("d2"),limids.nodeset({"e"}))
-      TS_ASSERT_EQUALS(forgetting.parents("d3"),limids.nodeset({}))
-      TS_ASSERT_EQUALS(forgetting.parents("d4"),limids.nodeset({"g"}))
+      TS_ASSERT(! ieid.isSolvable());
 
       ieid.addNoForgettingAssumption(order);
+      TS_ASSERT(ieid.isSolvable());
       const auto revord2 = ieid.reversePartialOrder();
       TS_ASSERT_EQUALS(revord2.size(), gum::Size(4))
       for (gum::Idx i = 0; i < gum::Size(4); i++) {

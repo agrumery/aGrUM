@@ -147,10 +147,10 @@ namespace gum {
     virtual std::string label(Idx i) const = 0;
 
     /// string version of *this
-    const std::string toString() const;
+    std::string toString() const;
 
     /// string version of *this using description attribute instead of name.
-    const std::string toStringWithDescription() const;
+    std::string toStringWithDescription() const;
 
     /// string represent the domain of the variable
     virtual const std::string domain() const = 0;
