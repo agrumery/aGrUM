@@ -18,7 +18,7 @@
  *
  */
 
-#include <cstdio>git c
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -27,6 +27,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/ID/inference/tools/decisionPotential.h>
 
 namespace gum_tests {
@@ -38,10 +39,37 @@ namespace gum_tests {
       TS_ASSERT(d1 == d2);
       TS_ASSERT(d1 == d1 * d2);
 
-/*      d1=std::move<gum::DecisionPotential< double >>(
-         static_cast< gum::DecisionPotential< double >&& >(d2));
+      d1 = std::move(d2);
+      d2 = std::move(d1);
 
-      gum::DecisionPotential<double> d3(static_cast< gum::DecisionPotential< double >&& >(d2));*/
+      gum::DecisionPotential<double> d3(std::move(d2));
+
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4);
+      gum::LabelizedVariable c("c", "first var", 2), d("d", "second var", 4);
+      gum::Potential< double > P1, U1;
+      P1 << a << b;
+      U1 << c << d;
+
+      gum::DecisionPotential<double> d4(P1,U1);
+      gum::DecisionPotential<double> d5(d4);
+      TS_ASSERT(d4 == d5);
+
+      gum::DecisionPotential<double> d6 = d5;
+      TS_ASSERT(d6 == d4);
+
+      gum::DecisionPotential<double> d7(std::move(d4));
+      TS_ASSERT(d7 == d6);
+
+      d1 = std::move(d7);
+      TS_ASSERT(d1 == d6);
+
+      d5 = d1;
+      TS_ASSERT(d1 == d5);
+
+      /*
+      d4 = d1;
+      TS_ASSERT(d1 == d4);
+      */
     }
     void testConstruction2() {
 

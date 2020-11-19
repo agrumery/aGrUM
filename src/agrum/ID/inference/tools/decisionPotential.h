@@ -51,6 +51,10 @@ namespace gum {
       probPot.fillWith(GUM_SCALAR(1));
       utilPot.fillWith(GUM_SCALAR(0));
     }
+    
+    ~DecisionPotential() {
+      GUM_DESTRUCTOR(DecisionPotential);
+    }
 
     DecisionPotential(const Potential< GUM_SCALAR >& prob,
                       const Potential< GUM_SCALAR >& util) :
@@ -60,7 +64,8 @@ namespace gum {
     }
 
     DecisionPotential(const DecisionPotential< GUM_SCALAR >& dp) :
-        probPot(dp.probPot, dp.utilPot) {
+      probPot(dp.probPot),
+      utilPot(dp.utilPot) {
       GUM_CONS_CPY(DecisionPotential);
     }
 
@@ -73,9 +78,9 @@ namespace gum {
       return *this;
     }
 
-    DecisionPotential(const DecisionPotential< GUM_SCALAR >&& dp) :
-        probPot(std::forward< Potential< GUM_SCALAR > >(dp.probPot),
-                std::forward< Potential< GUM_SCALAR > >(dp.utilPot)) {
+    DecisionPotential(DecisionPotential< GUM_SCALAR >&& dp) :
+      probPot(std::forward< Potential< GUM_SCALAR > >(dp.probPot)),
+      utilPot(std::forward< Potential< GUM_SCALAR > >(dp.utilPot)) {
       GUM_CONS_MOV(DecisionPotential);
     }
 
@@ -84,7 +89,7 @@ namespace gum {
     }
 
     DecisionPotential< GUM_SCALAR >&
-       operator=(const DecisionPotential< GUM_SCALAR >&& src) {
+       operator=(DecisionPotential< GUM_SCALAR >&& src) {
       GUM_OP_MOV(DecisionPotential);
       if (&src == this) return *this;
       probPot = std::forward< Potential< GUM_SCALAR > >(src.probPot);
