@@ -97,6 +97,13 @@ namespace gum {
       return *this;
     }
 
+    void insertProba(const gum::Potential<GUM_SCALAR>& proba) {
+      propPot*=proba;
+    }
+
+    void insertUtility(const gum::Potential<GUM_SCALAR>& util) {
+      utilPot+=util;
+    }
 
     DecisionPotential< GUM_SCALAR >
        operator*(const DecisionPotential< GUM_SCALAR >& dp1) const {

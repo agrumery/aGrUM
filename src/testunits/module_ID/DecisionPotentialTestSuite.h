@@ -29,6 +29,7 @@
 
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/ID/inference/tools/decisionPotential.h>
+#include <agrum/ID/influenceDiagram.h>
 
 namespace gum_tests {
 
@@ -39,8 +40,13 @@ namespace gum_tests {
       TS_ASSERT(d1 == d2);
       TS_ASSERT(d1 == d1 * d2);
 
+<<<<<<< HEAD
       d1 = std::move(d2);
       d2 = std::move(d1);
+=======
+      /*d1=std::move<gum::DecisionPotential< double >>(
+         static_cast< gum::DecisionPotential< double >&& >(d2));
+>>>>>>> 2e488ee65 ([aGrUM] working on DecisionPotential tests)
 
       gum::DecisionPotential<double> d3(std::move(d2));
 
@@ -72,6 +78,11 @@ namespace gum_tests {
       */
     }
     void testConstruction2() {
+      auto infdiag=gum::InfluenceDiagram<double>::fastPrototype("A->$B<-*C");
+
+      gum::DecisionPotential< double > d1;
+      d1.insertProba(infdiag.cpt("A"));
+      d1.insertUtility(infdiag.utility("B"));
 
     }
   };
