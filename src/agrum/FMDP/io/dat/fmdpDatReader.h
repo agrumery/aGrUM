@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -88,7 +87,7 @@ namespace gum {
    * @class FMDPDatReader
    * @brief Definition of templatized reader of FMDPDat files for Factored
    * Markov Decision Processes.
-   * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
    */
   template < typename GUM_SCALAR >
   class FMDPDatReader: public FMDPReader< GUM_SCALAR > {

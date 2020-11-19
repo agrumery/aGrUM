@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +23,7 @@
  * @file
  * @brief Headers of the ITerminalNodePolicy
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H

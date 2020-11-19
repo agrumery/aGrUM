@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -656,8 +655,8 @@ namespace gum_tests {
 
     void testSolvability() {
       {
-        auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
-           "*D1->Z->*D2->X->$U<-Y");
+        auto infdiag =
+           gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
         auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
         TS_ASSERT(ieid.isSolvable());
       }
@@ -666,6 +665,13 @@ namespace gum_tests {
            "*D1->Z->*D2->X->$U<-Y<-*D3");
         auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
         TS_ASSERT(!ieid.isSolvable());
+      }
+      {
+        auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+           "*D1->Z->*D2->X->$U<-Y<-*D3");
+        auto ieid = gum::ShaferShenoyLIMIDSInference< double >(&infdiag);
+        ieid.addNoForgettingAssumption({"D1","D3","D2"});
+        TS_ASSERT(ieid.isSolvable());
       }
     }
 
@@ -680,6 +686,7 @@ namespace gum_tests {
       TS_ASSERT(!ieid.hasNoForgettingAssumption());
       const auto revord = ieid.reversePartialOrder();
       auto       dag = ieid.reducedGraph();
+      TS_ASSERT(ieid.isSolvable());
 
       TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}))
       TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")),
@@ -724,7 +731,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(revord1[0], limids.nodeset({"d4", "d2", "d3"}))
       TS_ASSERT_EQUALS(revord1[1], limids.nodeset({"d1"}))
 
-      TS_ASSERT(! ieid.isSolvable());
+      TS_ASSERT(!ieid.isSolvable());
 
       ieid.addNoForgettingAssumption(order);
       TS_ASSERT(ieid.isSolvable());

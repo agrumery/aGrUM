@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +24,7 @@
  * @brief Template methods of gum::MultiDimFunctionGraphManager.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
  *
  */
 #include <agrum/tools/core/sequence.h>

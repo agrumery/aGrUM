@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -68,7 +67,7 @@ between 0 and 100
  * @endcode
  *
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
  */
 #ifndef GUM_BIF_XML_ID_READER_H
 #define GUM_BIF_XML_ID_READER_H

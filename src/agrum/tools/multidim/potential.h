@@ -1,7 +1,6 @@
-
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -76,7 +75,7 @@ namespace gum {
      * @brief Creates an potential around aContent.
      * @param aContent The implementation of this Potential.
      */
-    Potential(MultiDimImplementation< GUM_SCALAR >* aContent);
+    explicit Potential(MultiDimImplementation< GUM_SCALAR >* aContent);
 
     /**
      * @brief Copy constructor.
