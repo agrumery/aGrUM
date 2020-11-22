@@ -122,6 +122,9 @@ namespace gum {
     initPotentialOperators___< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
     empty_value_ = from.empty_value_;
+    if (content_ == nullptr)
+      content_ = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
+         from.content()->newFactory());
     MultiDimDecorator< GUM_SCALAR >::content()->copy(*from.content());
     return *this;
   }
@@ -248,8 +251,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimDecorator< GUM_SCALAR >::erase(const DiscreteVariable& d) {
-    static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->erase(d);
+  INLINE void MultiDimDecorator< GUM_SCALAR >::erase(const DiscreteVariable& var) {
+    static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->erase(var);
   }
 
   template < typename GUM_SCALAR >
@@ -272,14 +275,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Idx
-     MultiDimDecorator< GUM_SCALAR >::pos(const DiscreteVariable& d) const {
-    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->pos(d);
+     MultiDimDecorator< GUM_SCALAR >::pos(const DiscreteVariable& var) const {
+    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->pos(var);
   }
 
   template < typename GUM_SCALAR >
   INLINE bool
-     MultiDimDecorator< GUM_SCALAR >::contains(const DiscreteVariable& d) const {
-    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->contains(d);
+     MultiDimDecorator< GUM_SCALAR >::contains(const DiscreteVariable& var) const {
+    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->contains(var);
   }
 
   template < typename GUM_SCALAR >

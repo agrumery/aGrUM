@@ -323,17 +323,20 @@ namespace gum {
     const Potential< GUM_SCALAR >& log2_inplace() const;
 
     /**
-    * @brief Create a new potential and apply abs on every element of the container
-    */
+     * @brief Create a new potential and apply abs on every element of the
+     * container
+     */
     const Potential< GUM_SCALAR > abs() const;
 
     /**
-     * @brief Create a new potential and apply $x^2$ on every element of the container
+     * @brief Create a new potential and apply $x^2$ on every element of the
+     * container
      */
     const Potential< GUM_SCALAR > sq() const;
 
     /**
-     * @brief Create a new potential and apply $log_2(x)$ on every element of the container
+     * @brief Create a new potential and apply $log_2(x)$ on every element of the
+     * container
      */
     const Potential< GUM_SCALAR > log2() const;
 
@@ -504,6 +507,11 @@ namespace gum {
 
     bool operator!=(const Potential< GUM_SCALAR >& r) const {
       return !operator==(r);
+    }
+
+    Potential< GUM_SCALAR >& operator<<(const DiscreteVariable& v) {
+      this->add(v);
+      return *this;
     }
 
     virtual std::string toString() const {

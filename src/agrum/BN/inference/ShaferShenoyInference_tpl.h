@@ -716,7 +716,7 @@ namespace gum {
     }
 
     // now, in clique_potentials__, for each clique, we have the list of
-    // potentials that must be comined in order to produce the Shafer-Shenoy's
+    // potentials that must be combined in order to produce the Shafer-Shenoy's
     // potential stored into the clique. So, perform this combination and
     // store the result in clique_ss_potential__
     clique_ss_potential__.clear();

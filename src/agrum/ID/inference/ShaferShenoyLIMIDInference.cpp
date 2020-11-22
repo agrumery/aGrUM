@@ -19,4 +19,4 @@
  */
 
 
-#include <agrum/ID/inference/ShaferShenoyLIMIDSInference.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>

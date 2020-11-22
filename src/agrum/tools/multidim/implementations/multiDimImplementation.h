@@ -157,8 +157,8 @@ namespace gum {
     virtual const Sequence< const DiscreteVariable* >&
        variablesSequence() const override;
 
-    virtual const DiscreteVariable& variable(Idx i) const override;
-    virtual const DiscreteVariable&
+    const DiscreteVariable& variable(Idx i) const override;
+    const DiscreteVariable&
        variable(const std::string& name) const override;
 
     virtual Idx pos(const DiscreteVariable& v) const override;
@@ -187,11 +187,11 @@ namespace gum {
 
     virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override = 0;
 
-    virtual void beginMultipleChanges() override;
+    void beginMultipleChanges() override;
 
-    virtual void endMultipleChanges() override;
+    void endMultipleChanges() override;
 
-    virtual void endMultipleChanges(const GUM_SCALAR&) override;
+    void endMultipleChanges(const GUM_SCALAR&) override;
 
     /// @}
 

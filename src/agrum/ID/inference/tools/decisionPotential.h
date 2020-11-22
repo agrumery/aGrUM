@@ -51,10 +51,8 @@ namespace gum {
       probPot.fillWith(GUM_SCALAR(1));
       utilPot.fillWith(GUM_SCALAR(0));
     }
-    
-    ~DecisionPotential() {
-      GUM_DESTRUCTOR(DecisionPotential);
-    }
+
+    ~DecisionPotential() { GUM_DESTRUCTOR(DecisionPotential); }
 
     DecisionPotential(const Potential< GUM_SCALAR >& prob,
                       const Potential< GUM_SCALAR >& util) :
@@ -64,8 +62,7 @@ namespace gum {
     }
 
     DecisionPotential(const DecisionPotential< GUM_SCALAR >& dp) :
-      probPot(dp.probPot),
-      utilPot(dp.utilPot) {
+        probPot(dp.probPot), utilPot(dp.utilPot) {
       GUM_CONS_CPY(DecisionPotential);
     }
 
@@ -79,13 +76,9 @@ namespace gum {
     }
 
     DecisionPotential(DecisionPotential< GUM_SCALAR >&& dp) :
-      probPot(std::forward< Potential< GUM_SCALAR > >(dp.probPot)),
-      utilPot(std::forward< Potential< GUM_SCALAR > >(dp.utilPot)) {
+        probPot(std::forward< Potential< GUM_SCALAR > >(dp.probPot)),
+        utilPot(std::forward< Potential< GUM_SCALAR > >(dp.utilPot)) {
       GUM_CONS_MOV(DecisionPotential);
-    }
-
-    bool operator==(const DecisionPotential< GUM_SCALAR >& p) {
-      return ((p.probPot == this->probPot) && (p.utilPot == this->utilPot));
     }
 
     DecisionPotential< GUM_SCALAR >&
@@ -97,12 +90,34 @@ namespace gum {
       return *this;
     }
 
-    void insertProba(const gum::Potential<GUM_SCALAR>& proba) {
-      propPot*=proba;
+    bool operator==(const DecisionPotential< GUM_SCALAR >& p) const {
+      // @see Evaluating Influence Diagrams using LIMIDS (2000) - section 3.3
+      return ((p.probPot == this->probPot)
+              && (p.probPot * p.utilPot == this->probPot * this->utilPot));
     }
 
-    void insertUtility(const gum::Potential<GUM_SCALAR>& util) {
-      utilPot+=util;
+    bool operator!=(const DecisionPotential< GUM_SCALAR >& p) const {
+      return !operator==(p);
+    }
+
+    const DiscreteVariable* variable(const std::string& name) const {
+      for (const auto& v: probPot.variablesSequence()) {
+        if (v->name() == name) return v;
+      }
+      for (const auto& v: utilPot.variablesSequence()) {
+        if (v->name() == name) return v;
+      }
+
+      GUM_ERROR(NotFound,
+                "'" << name << "' can not be found in DecisionPotential.")
+    }
+
+    void insertProba(const gum::Potential< GUM_SCALAR >& proba) {
+      probPot *= proba;
+    }
+
+    void insertUtility(const gum::Potential< GUM_SCALAR >& util) {
+      utilPot += util;
     }
 
     DecisionPotential< GUM_SCALAR >
@@ -117,8 +132,13 @@ namespace gum {
     }
 
     DecisionPotential< GUM_SCALAR >
-       operator^(const Set< DiscreteVariable* >& onto) const {
+       operator^(const Set< const DiscreteVariable* >& onto) const {
       return DecisionPotential< GUM_SCALAR >::marginalization(*this, onto);
+    }
+
+    DecisionPotential< GUM_SCALAR >
+       operator^(const std::vector< std::string >& ontonames) const {
+      return DecisionPotential< GUM_SCALAR >::marginalization(*this, ontonames);
     }
 
 
@@ -128,7 +148,7 @@ namespace gum {
       Potential< GUM_SCALAR > res(p1);
       Instantiation           I(res);
       for (I.setFirst(); !I.end(); I.inc()) {
-        if (res[I] != 0) res[I] /= p2[I];
+        if (res[I] != 0) res.set(I, res[I] / p2[I]);
       }
       return res;
     }
@@ -142,12 +162,33 @@ namespace gum {
 
     static DecisionPotential< GUM_SCALAR >
        marginalization(const DecisionPotential< GUM_SCALAR >& dp,
-                       const Set< DiscreteVariable* >&        onto) {
+                       const Set< const DiscreteVariable* >&  onto) {
       const auto pr = dp.probPot.margSumIn(onto);
       return DecisionPotential(
-         pr, divideEvenZero((pr.probPot * pr.utilPot).margSumIn(onto), pr));
+         pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
+    }
+
+    static DecisionPotential< GUM_SCALAR >
+       marginalization(const DecisionPotential< GUM_SCALAR >& dp,
+                       const std::vector< std::string >&      ontonames) {
+      Set< const DiscreteVariable* > onto;
+      for (const auto& varname: ontonames) {
+        onto.insert(dp.variable(varname));
+      }
+      return marginalization(dp, onto);
+    }
+
+    virtual std::string toString() const {
+      return "prob : " + probPot.toString() + "    util:" + utilPot.toString();
     }
   };
+
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                          out,
+                           const DecisionPotential< GUM_SCALAR >& array) {
+    out << array.toString();
+    return out;
+  }
 }   // namespace gum
 
 #endif   // AGRUM_DECISIONPOTENTIAL_H

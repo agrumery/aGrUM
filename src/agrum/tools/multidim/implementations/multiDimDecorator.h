@@ -123,7 +123,7 @@ namespace gum {
 
     /// @}
     // ========================================================================
-    /// @name MultiDimAdressable implementation
+    /// @name MultiDimAddressable implementation
     // ========================================================================
     /// @{
 

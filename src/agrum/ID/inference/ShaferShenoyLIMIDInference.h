@@ -43,8 +43,11 @@
 
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>
 #include <agrum/tools/multidim/implementations/multiDimSparse.h>
+#include <agrum/ID/inference/tools/decisionPotential.h>
 
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+
 
 namespace gum {
 
@@ -59,8 +62,12 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyLIMIDSInference:
+  class ShaferShenoyLIMIDInference:
       public InfluenceDiagramInference< GUM_SCALAR > {
+    using PhiNodeProperty = NodeProperty< DecisionPotential< double > >;
+    using PsiArcProperty = ArcProperty< DecisionPotential< double > >;
+
+
     public:
     // ====================================================================
     /// @name Constructor & destructor
@@ -71,17 +78,15 @@ namespace gum {
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    explicit ShaferShenoyLIMIDSInference(
+    explicit ShaferShenoyLIMIDInference(
        const InfluenceDiagram< GUM_SCALAR >* infDiag);
 
     /**
      * Destructor.
      */
-    virtual ~ShaferShenoyLIMIDSInference();
+    virtual ~ShaferShenoyLIMIDInference();
 
-    const JunctionTree* junctionTree() const {
-      GUM_ERROR(NotImplementedYet, "tbd asap")
-    }
+    const JunctionTree* junctionTree() const;
 
     void clear() override;
 
@@ -92,7 +97,7 @@ namespace gum {
     bool hasNoForgettingAssumption() const;
     ///@}
 
-    DAG  reducedGraph() const { return reduced_; };
+    DAG reducedGraph() const { return reduced_; };
 
     GUM_SCALAR MEU();
 
@@ -121,7 +126,9 @@ namespace gum {
     /// Returns the set of non-requisite for node d
     NodeSet nonRequisiteNodes_(NodeId d) const;
 
-    DAG reduced_;
+    DAG                    reduced_;
+    CliqueGraph            reducedJunctionTree_;
+    NodeProperty< NodeId > node_to_clique_;
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;
@@ -133,9 +140,28 @@ namespace gum {
     void reducingLIMID__();
     void creatingPartialOrder__(const NodeSet& utilities);
     void checkingSolvability__(const NodeSet& utilities);
+    void creatingJunctionTree__();
+    void findingCliqueForEachNode__(DefaultTriangulation& triangulation);
+    void collectingMessage_(const PhiNodeProperty& phi,
+                            const PsiArcProperty&  psi,
+                            NodeId                 rootClique);
+    void collectingToFollowingRoot_(const PhiNodeProperty& phi,
+                                    const PsiArcProperty&  psi,
+                                    NodeId                 fromClique,
+                                    NodeId                 toClique);
+    void deciding_(const PhiNodeProperty& phi,
+                   const PsiArcProperty&  psi,
+                   NodeId                 decisionNode);
+    void transmittingMessage_(const PhiNodeProperty& phi,
+                              const PsiArcProperty&  psi,
+                              NodeId                 fromClique,
+                              NodeId                 toClique);
+    void distributingMessage_(const PhiNodeProperty& table,
+                              const PsiArcProperty&  table1,
+                              NodeId                 rootClique);
   };
 } /* namespace gum */
 
-#include <agrum/ID/inference/ShaferShenoyLIMIDSInference_tpl.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDInference_tpl.h>
 
 #endif /* GUM_SHAFERSHENOY_LIMIDS_H */
