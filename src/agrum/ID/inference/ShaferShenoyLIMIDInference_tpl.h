@@ -143,7 +143,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::creatingJunctionTree__() {
-    const auto& infdiag = influenceDiagram();
+    const auto& infdiag = this->influenceDiagram();
     auto        moral = reduced_.moralGraph();
 
     // once the moral graph is completed, we remove the utility nodes before
