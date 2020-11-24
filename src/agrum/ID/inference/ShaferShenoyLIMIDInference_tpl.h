@@ -87,19 +87,50 @@ namespace gum {
     if (!isSolvable()) {
       GUM_ERROR(FatalError, "This LIMID/Influence Diagram is not solvable.")
     }
-    // the junction tree has been created during createReduced_()
-    const auto& jt = *junctionTree();
-
-    const auto& infdiag = this->influenceDiagram();
 
     PhiNodeProperty phi;
     PsiArcProperty  psi;
 
-    // init JT potentials
+    initializingInference_(phi, psi);
+
+    // message passing (using reverse order of solvabilityOrder)
+    // first collect of phis into root
+    const auto firstRootIndice = 0;
+    collectingMessage_(
+       phi, psi, node_to_clique_[solvabiltyOrder_[firstRootIndice]]);
+    deciding_(phi, psi, solvabiltyOrder_[firstRootIndice]);
+
+    for (Idx nextRootIndice = 1; nextRootIndice < solvabiltyOrder_.size(); nextRootIndice++) {
+      collectingToFollowingRoot_(
+         phi,
+         psi,
+         node_to_clique_[solvabiltyOrder_[nextRootIndice - 1]],
+         node_to_clique_[solvabiltyOrder_[nextRootIndice]]);
+      deciding_(phi, psi, solvabiltyOrder_[nextRootIndice]);
+    }
+
+    // last distribution
+    distributingMessage_(phi, psi, node_to_clique_[solvabiltyOrder_[0]]);
+    computingPosteriors_(phi, psi);
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >::initializingInference_(
+     PhiNodeProperty& phi, PsiArcProperty& psi) {
+    const auto& jt = *junctionTree();
+    const auto& infdiag = this->influenceDiagram();
+
+    // init JT potentials and separators
     for (const auto node: jt.nodes()) {
       phi.insert(node, DecisionPotential< GUM_SCALAR >());
       for (const auto nei: jt.neighbours(node)) {
         psi.insert(Arc(node, nei), DecisionPotential< GUM_SCALAR >());
+        if (node < nei) {   // to do it only once by edge
+          // we create the set of vars in node and nei  (cached in varsSeparators_)
+          for (const auto n: jt.clique(node) * jt.clique(nei))
+            varsSeparator_.getWithDefault(Edge(node, nei), SetOfVars())
+               .insert(&(infdiag.variable(n)));
+        }
       }
     }
     for (const auto node: infdiag.nodes()) {
@@ -108,37 +139,17 @@ namespace gum {
            (Potential< GUM_SCALAR >() << infdiag.variable(node))
               .fillWith(1)
               .normalize());
+
+        if (hasEvidence(node)) {
+          phi[node_to_clique_[node]].insertProba(*(this->evidence()[node]));
+        }
       } else if (infdiag.isChanceNode(node)) {
         phi[node_to_clique_[node]].insertProba(infdiag.cpt(node));
       } else if (infdiag.isUtilityNode(node)) {
         phi[node_to_clique_[node]].insertUtility(infdiag.utility(node));
       } else
         GUM_ERROR(FatalError, "Node " << node << " has no type.");
-
-      if (this->hasEvidence(node)) {
-        phi[node_to_clique_[node]].insertProba(*(this->evidence()[node]));
-      }
     }
-
-    // message passing (using reverse order of solvabilityOrder)
-    // first collect of phis into root
-    const auto firstRootIndice = solvabiltyOrder_.size() - 1;
-    collectingMessage_(
-       phi, psi, node_to_clique_[solvabiltyOrder_[firstRootIndice]]);
-    deciding_(phi, psi, solvabiltyOrder_[firstRootIndice]);
-
-    for (Idx i = firstRootIndice; i >= 1; i--) {
-      const auto newRootIndice = i - 1;
-      collectingToFollowingRoot_(
-         phi,
-         psi,
-         node_to_clique_[solvabiltyOrder_[newRootIndice + 1]],
-         node_to_clique_[solvabiltyOrder_[newRootIndice]]);
-      deciding_(phi, psi, solvabiltyOrder_[newRootIndice]);
-    }
-
-    // last distribution
-    distributingMessage_(phi, psi, node_to_clique_[solvabiltyOrder_[0]]);
   }
 
   template < typename GUM_SCALAR >
@@ -283,6 +294,7 @@ namespace gum {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (hasNoForgettingAssumption()) {
       solvabiltyOrder_ = noForgettingOrder_;
+      std::reverse(solvabiltyOrder_.begin(), solvabiltyOrder_.end());
       return;
     }
 
@@ -309,6 +321,8 @@ namespace gum {
         }
       }
     }
+
+    GUM_TRACE_VAR("SOLVABILITY ORDER : " << infdiag.names(solvabiltyOrder_))
   }
 
   template < typename GUM_SCALAR >
@@ -499,9 +513,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::collectingMessage_(
-     const PhiNodeProperty& phi,
-     const PsiArcProperty&  psi,
-     const NodeId           rootClique) {
+     PhiNodeProperty& phi, PsiArcProperty& psi, const NodeId rootClique) {
     const auto& jt = *junctionTree();
 
     std::function< void(NodeId, NodeId) > parcours = [&](NodeId node,
@@ -518,10 +530,10 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::collectingToFollowingRoot_(
-     const PhiNodeProperty& phi,
-     const PsiArcProperty&  psi,
-     NodeId                 fromClique,
-     NodeId                 toClique) {
+     PhiNodeProperty& phi,
+     PsiArcProperty&  psi,
+     NodeId           fromClique,
+     NodeId           toClique) {
     const auto& jt = *junctionTree();
 
     std::function< bool(NodeId, NodeId, NodeId) > revparcours =
@@ -546,25 +558,59 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::deciding_(
-     const PhiNodeProperty& phi, const PsiArcProperty& psi, NodeId decisionNode) {
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >::deciding_(PhiNodeProperty& phi,
+                                                           PsiArcProperty&  psi,
+                                                           NodeId decisionNode) {
     const auto& infdiag = this->influenceDiagram();
     const auto& jt = *junctionTree();
-    GUM_TRACE("=> integration in " << node_to_clique_[decisionNode] << " for "
-                                   << infdiag.variable(decisionNode).name())
+
+    GUM_TRACE("=> integration in "
+              << node_to_clique_[decisionNode] << "("
+              << infdiag.names(jt.clique(node_to_clique_[decisionNode]))
+              << ") for " << infdiag.variable(decisionNode).name())
+    auto& decision =
+       decisions_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
+    if (this->hasHardEvidence(decisionNode)) {
+      decision = *(this->evidence()[decisionNode]);
+    } else {
+      auto dp = integrating_(phi, psi, node_to_clique_[decisionNode]);
+
+      SetOfVars sev;
+      sev.insert(&infdiag.variable(decisionNode));
+      for (const auto parent: reduced_.parents(decisionNode)) {
+        GUM_TRACE("    parent : " << infdiag.variable(parent).name())
+        if (!this->hasHardEvidence(parent)) sev.insert(&infdiag.variable(parent));
+      }
+      dp = dp ^ sev;
+      decision = dp.utilPot.putFirst(&infdiag.variable(decisionNode));
+      GUM_TRACE_VAR(decision);
+
+      // compute the decisions (as maxEU)
+      Instantiation I(decision);
+      const auto& firstvar=decision.variable(0);
+      for(I.setFirst();! I.end();I.incNotVar(firstvar)) {
+        I.setFirstVar(firstvar);
+        Idx argm=I.val(firstvar);
+        GUM_SCALAR umax=decision[I];
+        for(I.incVar(firstvar);! I.end();I.incVar(firstvar)) {
+          if (umax<decision[I]) {
+            umax=decision[I];
+            argm=I.val(firstvar);
+          }
+        }
+        for(I.setFirstVar(firstvar);! I.end();I.incVar(firstvar))
+          decision.set(I,0);
+        I.chgVal(firstvar,argm);
+        decision.set(I,1);
+      }
+      GUM_TRACE_VAR(decision)
+    }
+    phi[node_to_clique_[decisionNode]].insertProba(decision);
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::transmittingMessage_(
-     const PhiNodeProperty& phi,
-     const PsiArcProperty&  psi,
-     NodeId                 fromClique,
-     NodeId                 toClique) {
-    GUM_TRACE("Computing message : " << fromClique << "->" << toClique)
-  }
-  template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::distributingMessage_(
-     const PhiNodeProperty& phi, const PsiArcProperty& psi, NodeId rootClique) {
+     PhiNodeProperty& phi, PsiArcProperty& psi, NodeId rootClique) {
     const auto& jt = *junctionTree();
 
     std::function< void(NodeId, NodeId) > parcours = [&](NodeId node,
@@ -578,6 +624,47 @@ namespace gum {
     for (const auto nei: jt.neighbours(rootClique)) {
       parcours(nei, rootClique);
     }
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >::transmittingMessage_(
+     PhiNodeProperty& phi,
+     PsiArcProperty&  psi,
+     NodeId           fromClique,
+     NodeId           toClique) {
+    DecisionPotential< double > res = integrating_(phi, psi, fromClique, toClique);
+    res = res ^ varsSeparator_[Edge(fromClique, toClique)];
+    GUM_TRACE("Computing message : " << fromClique << "->" << toClique)
+  }
+
+  template < typename GUM_SCALAR >
+  DecisionPotential< double >
+     ShaferShenoyLIMIDInference< GUM_SCALAR >::integrating_(
+        const PhiNodeProperty& phi,
+        const PsiArcProperty&  psi,
+        NodeId                 clique,
+        NodeId                 except) const {
+    const auto&                 jt = *junctionTree();
+    DecisionPotential< double > res = phi[clique];
+    for (const auto nei: jt.neighbours(clique))
+      if (nei != except) res *= psi[Arc(nei, clique)];
+
+    return res;
+  }
+
+  template < typename GUM_SCALAR >
+  DecisionPotential< double >
+     ShaferShenoyLIMIDInference< GUM_SCALAR >::integrating_(
+        const PhiNodeProperty& phi,
+        const PsiArcProperty&  psi,
+        NodeId                 clique) const {
+    return integrating_(phi, psi, clique, junctionTree()->size() + 1);
+  }
+
+  template < typename GUM_SCALAR >
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >::computingPosteriors_(
+     const PhiNodeProperty& phi, const PsiArcProperty& psi) {
+    GUM_TRACE_VAR(decisions_)
   }
 
 } /* namespace gum */

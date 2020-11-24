@@ -64,8 +64,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   class ShaferShenoyLIMIDInference:
       public InfluenceDiagramInference< GUM_SCALAR > {
-    using PhiNodeProperty = NodeProperty< DecisionPotential< double > >;
-    using PsiArcProperty = ArcProperty< DecisionPotential< double > >;
+    using PhiNodeProperty = NodeProperty< DecisionPotential< GUM_SCALAR > >;
+    using PsiArcProperty = ArcProperty< DecisionPotential< GUM_SCALAR > >;
+    using SetOfVars = Set< const DiscreteVariable* >;
 
 
     public:
@@ -126,9 +127,11 @@ namespace gum {
     /// Returns the set of non-requisite for node d
     NodeSet nonRequisiteNodes_(NodeId d) const;
 
-    DAG                    reduced_;
-    CliqueGraph            reducedJunctionTree_;
-    NodeProperty< NodeId > node_to_clique_;
+    DAG                                     reduced_;
+    CliqueGraph                             reducedJunctionTree_;
+    NodeProperty< NodeId >                  node_to_clique_;
+    EdgeProperty< SetOfVars >               varsSeparator_;
+    NodeProperty< Potential< GUM_SCALAR > > decisions_;
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;
@@ -142,23 +145,32 @@ namespace gum {
     void checkingSolvability__(const NodeSet& utilities);
     void creatingJunctionTree__();
     void findingCliqueForEachNode__(DefaultTriangulation& triangulation);
-    void collectingMessage_(const PhiNodeProperty& phi,
-                            const PsiArcProperty&  psi,
-                            NodeId                 rootClique);
-    void collectingToFollowingRoot_(const PhiNodeProperty& phi,
-                                    const PsiArcProperty&  psi,
-                                    NodeId                 fromClique,
-                                    NodeId                 toClique);
-    void deciding_(const PhiNodeProperty& phi,
-                   const PsiArcProperty&  psi,
-                   NodeId                 decisionNode);
-    void transmittingMessage_(const PhiNodeProperty& phi,
-                              const PsiArcProperty&  psi,
-                              NodeId                 fromClique,
-                              NodeId                 toClique);
-    void distributingMessage_(const PhiNodeProperty& table,
-                              const PsiArcProperty&  table1,
-                              NodeId                 rootClique);
+
+    void initializingInference_(PhiNodeProperty& phi, PsiArcProperty& psi);
+    void collectingMessage_(PhiNodeProperty& phi,
+                            PsiArcProperty&  psi,
+                            NodeId           rootClique);
+    void collectingToFollowingRoot_(PhiNodeProperty& phi,
+                                    PsiArcProperty&  psi,
+                                    NodeId           fromClique,
+                                    NodeId           toClique);
+    void deciding_(PhiNodeProperty& phi, PsiArcProperty& psi, NodeId decisionNode);
+    void transmittingMessage_(PhiNodeProperty& phi,
+                              PsiArcProperty&  psi,
+                              NodeId           fromClique,
+                              NodeId           toClique);
+    void distributingMessage_(PhiNodeProperty& phi,
+                              PsiArcProperty&  psi,
+                              NodeId           rootClique);
+    void computingPosteriors_(const PhiNodeProperty& phi,
+                              const PsiArcProperty&  psi);
+    DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
+                                             const PsiArcProperty&  psi,
+                                             NodeId                 clique,
+                                             NodeId                 except) const;
+    DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
+                                             const PsiArcProperty&  psi,
+                                             NodeId                 clique) const;
   };
 } /* namespace gum */
 

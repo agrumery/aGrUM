@@ -18,9 +18,6 @@
  *
  */
 
-
-#define TIXML_USE_TICPP
-
 #include <fstream>
 #include <iostream>
 #include <iostream>

@@ -34,6 +34,7 @@
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 
 // The graph used for the tests:
 //           D1
@@ -361,9 +362,9 @@ namespace gum_tests {
       id.addArc(idList[14], idList[18]);
       id.addArc(idList[15], idList[19]);
 
-      gum::NullStream                            devnull;
+      gum::NullStream                           devnull;
       gum::ShaferShenoyLIMIDInference< double > dIDI(&id);
-      auto                                       jt = dIDI.junctionTree();
+      auto                                      jt = dIDI.junctionTree();
       GUM_TRACE_VAR(jt);
     }
 
@@ -499,7 +500,7 @@ namespace gum_tests {
       }
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&tst_id);
-        gum::Potential< double >                   evidence;
+        gum::Potential< double >                  evidence;
         evidence.add(tst_id.variableFromName("c"));
         evidence.populate({1, 0});
         gum::List< const gum::Potential< double >* > l;
@@ -777,7 +778,9 @@ namespace gum_tests {
          "R4->D4<-*D3<-D2<-D1;"
          "D3->$U1<-R2;R3->$U2");
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
+
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
+      GUM_TRACE_VAR(ieid.reducedLIMID().toDot())
 
       auto jt = ieid.junctionTree();
       TS_ASSERT_EQUALS(jt->size(), gum::Size(5));
@@ -787,9 +790,21 @@ namespace gum_tests {
       }
       try {
         ieid.makeInference();
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
+
+    void testPinball() {
+      std::string                     file = GET_RESSOURCES_PATH("ID/Pinball.xml");
+      gum::InfluenceDiagram< double > net;
+      gum::BIFXMLIDReader< double >   reader(&net, file);
+      reader.proceed();
+
+      auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
+      GUM_TRACE_VAR(ieid.reversePartialOrder())
+      //ieid.addNoForgettingAssumption({std::string()})
+      try {
+        ieid.makeInference();
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };
 }   // namespace gum_tests

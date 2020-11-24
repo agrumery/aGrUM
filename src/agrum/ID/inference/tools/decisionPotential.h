@@ -66,6 +66,14 @@ namespace gum {
       GUM_CONS_CPY(DecisionPotential);
     }
 
+    void clear() {
+      gum::Potential< GUM_SCALAR > p;
+      p.fillWith(GUM_SCALAR(1));
+      probPot = p;
+      p.fillWith(GUM_SCALAR(0));
+      utilPot = p;
+    }
+
     DecisionPotential< GUM_SCALAR >&
        operator=(const DecisionPotential< GUM_SCALAR >& src) {
       GUM_OP_CPY(DecisionPotential);
