@@ -140,7 +140,7 @@ namespace gum {
               .fillWith(1)
               .normalize());
 
-        if (hasEvidence(node)) {
+        if (this->hasEvidence(node)) {
           phi[node_to_clique_[node]].insertProba(*(this->evidence()[node]));
         }
       } else if (infdiag.isChanceNode(node)) {
