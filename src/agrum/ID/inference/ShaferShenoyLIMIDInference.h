@@ -131,7 +131,8 @@ namespace gum {
     CliqueGraph                             reducedJunctionTree_;
     NodeProperty< NodeId >                  node_to_clique_;
     EdgeProperty< SetOfVars >               varsSeparator_;
-    NodeProperty< Potential< GUM_SCALAR > > decisions_;
+    NodeProperty< Potential< GUM_SCALAR > > strategies_;
+    NodeProperty< Potential< GUM_SCALAR > > posteriors_;
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;

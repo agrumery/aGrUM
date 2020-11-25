@@ -23,7 +23,8 @@
  * @file
  * @brief Template implementation of InfluenceDiagram/InfluenceDiagram.h classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #include <cstdio>
@@ -334,11 +335,11 @@ namespace gum {
       output << this->property("name") << "\" {" << std::endl;
     } catch (NotFound&) { output << "no_name\" {" << std::endl; }
 
-    output << "  node [bgcolor=\"#AAAAAA\", style=filled];" << std::endl;
+    output << "  node [bgcolor=\"#AAAAAA\", style=filled, height=0];" << std::endl;
 
     decisionNode << "node [shape = box];" << std::endl;
 
-    utilityNode << "node [shape = diamond];" << std::endl;
+    utilityNode << "node [shape =  hexagon, margin=0];" << std::endl;
     chanceNode << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
@@ -354,16 +355,19 @@ namespace gum {
                      << ";";
 
       if (dag_.children(node).size() > 0)
-        for (const auto chi: dag_.children(node))
-          arcstream << tab << "\"" << node << "-" << variable(node).name() << "\""
+        for (const auto chi: dag_.children(node)) {
+          arcstream << "\"" << node << "-" << variable(node).name() << "\""
                     << " -> "
-                    << "\"" << chi << "-" << variable(chi).name() << "\";"
-                    << std::endl;
+                    << "\"" << chi << "-" << variable(chi).name();
+          if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
+          arcstream << "\";" << std::endl;
+        }
     }
 
     output << decisionNode.str() << std::endl
            << utilityNode.str() << std::endl
            << chanceNode.str() << std::endl
+           << std::endl
            << arcstream.str() << std::endl
            << "}" << std::endl;
 

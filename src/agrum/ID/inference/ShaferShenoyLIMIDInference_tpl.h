@@ -569,7 +569,7 @@ namespace gum {
               << infdiag.names(jt.clique(node_to_clique_[decisionNode]))
               << ") for " << infdiag.variable(decisionNode).name())
     auto& decision =
-       decisions_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
+       strategies_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
     if (this->hasHardEvidence(decisionNode)) {
       decision = *(this->evidence()[decisionNode]);
     } else {
@@ -664,7 +664,20 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::computingPosteriors_(
      const PhiNodeProperty& phi, const PsiArcProperty& psi) {
-    GUM_TRACE_VAR(decisions_)
+    const auto& infdiag = this->influenceDiagram();
+    posteriors_.clear();
+    for(const auto node:infdiag.nodes()) {
+      SetOfVars sev;
+      sev.insert(&infdiag.variable(node));
+      auto dp=phi[node_to_clique_[node]] ^ sev;
+      auto& res=posteriors_.getWithDefault(node,Potential<GUM_SCALAR>());
+      if (infdiag.isChanceNode(node)) {
+        res=dp.probPot.normalize();
+      } else {
+        res=dp.utilPot;
+      }
+      GUM_TRACE(res);
+    }
   }
 
 } /* namespace gum */
