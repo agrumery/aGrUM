@@ -24,7 +24,8 @@
  * @brief This file contains abstract class definitions influence diagrams
  *        inference classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
@@ -42,7 +43,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class InfluenceDiagramInference: public GraphicalModelInference<GUM_SCALAR> {
+  class InfluenceDiagramInference: public GraphicalModelInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor
@@ -56,9 +57,9 @@ namespace gum {
     virtual ~InfluenceDiagramInference();
 
     /// assigns a new influence diagram to the inference engine
-    /** Assigns a new influence diagram to the o,fere,ce e,go,e engine and sends messages
-     * to the descendants of ShaferShenoyLIMIDInference to inform them that the ID has
-     * changed.
+    /** Assigns a new influence diagram to the o,fere,ce e,go,e engine and sends
+     * messages to the descendants of ShaferShenoyLIMIDInference to inform them
+     * that the ID has changed.
      * @warning note that, by aGrUM's rule, the influence Diagram is not copied
      * into the inference engine but only referenced. */
     virtual void
@@ -68,6 +69,9 @@ namespace gum {
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
      * the inference. */
     virtual const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const final;
+
+    virtual const Potential< GUM_SCALAR >& posterior(NodeId node) = 0;
+    virtual const Potential< GUM_SCALAR >& posterior(const std::string& name) = 0;
 
     private:
     /// assigns a influence diagram during the inference engine construction

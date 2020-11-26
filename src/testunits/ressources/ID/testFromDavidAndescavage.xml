@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+
+<BIF VERSION="0.3">
+<NETWORK>
+
+<!-- Variables -->
+<VARIABLE TYPE="decision">
+	<NAME>DoTest</NAME>
+	<PROPERTY>which tests to run</PROPERTY>
+	<OUTCOME>None</OUTCOME>
+	<OUTCOME>First</OUTCOME>
+	<OUTCOME>Both</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="decision">
+	<NAME>Buy</NAME>
+	<PROPERTY>Buy the car</PROPERTY>
+	<OUTCOME>No</OUTCOME>
+	<OUTCOME>Yes</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="nature">
+	<NAME>Condition</NAME>
+	<PROPERTY>Car Condition</PROPERTY>
+	<OUTCOME>Good</OUTCOME>
+	<OUTCOME>Lemon</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="nature">
+	<NAME>FirstTest</NAME>
+	<PROPERTY>Test Results</PROPERTY>
+	<OUTCOME>NotDone</OUTCOME>
+	<OUTCOME>Positive</OUTCOME>
+	<OUTCOME>Negative</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="nature">
+	<NAME>SecondTest</NAME>
+	<PROPERTY>Test Results</PROPERTY>
+	<OUTCOME>NotDone</OUTCOME>
+	<OUTCOME>Positive</OUTCOME>
+	<OUTCOME>Negative</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="utility">
+	<NAME>U</NAME>
+	<PROPERTY>test satisfaction</PROPERTY>
+	<OUTCOME>0</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="utility">
+	<NAME>V</NAME>
+	<PROPERTY>car satisfaction</PROPERTY>
+	<OUTCOME>0</OUTCOME>
+</VARIABLE>
+
+<!-- Probability distributions -->
+<DEFINITION>
+	<FOR>Buy</FOR>
+	<GIVEN>SecondTest</GIVEN>
+	<GIVEN>FirstTest</GIVEN>
+</DEFINITION>
+<DEFINITION>
+	<FOR>Condition</FOR>
+	<TABLE>0.8 0.2 </TABLE>
+</DEFINITION>
+<DEFINITION>
+	<FOR>FirstTest</FOR>
+	<GIVEN>DoTest</GIVEN>
+	<GIVEN>Condition</GIVEN>
+	<TABLE>1 0 0 1 0 0 0 0.9 0.1 0 0.4 0.6 0 0.9 0.1 0 0.4 0.6 </TABLE>
+</DEFINITION>
+<DEFINITION>
+	<FOR>SecondTest</FOR>
+	<GIVEN>DoTest</GIVEN>
+	<GIVEN>Condition</GIVEN>
+	<GIVEN>FirstTest</GIVEN>
+	<TABLE>1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 0 0 0 0.888889 0.111111 0 1 0 0 0 0 0 0.333333 0.666667 0 0.444444 0.555556 </TABLE>
+</DEFINITION>
+<DEFINITION>
+	<FOR>U</FOR>
+	<GIVEN>DoTest</GIVEN>
+	<TABLE>0 -9 -13 </TABLE>
+</DEFINITION>
+<DEFINITION>
+	<FOR>V</FOR>
+	<GIVEN>Condition</GIVEN>
+	<GIVEN>Buy</GIVEN>
+	<TABLE>0 0 60 -100 </TABLE>
+</DEFINITION>
+
+</NETWORK>
+</BIF>

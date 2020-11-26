@@ -801,10 +801,27 @@ namespace gum_tests {
 
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
       GUM_TRACE_VAR(ieid.reversePartialOrder())
-      //ieid.addNoForgettingAssumption({std::string()})
+      // ieid.addNoForgettingAssumption({std::string()})
       try {
         ieid.makeInference();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
+
+    void testDavidAndescavage() {
+      std::string file = GET_RESSOURCES_PATH("ID/testFromDavidAndescavage.xml");
+      gum::InfluenceDiagram< double > net;
+      gum::BIFXMLIDReader< double >   reader(&net, file);
+      reader.proceed();
+
+      auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
+      GUM_TRACE_VAR(ieid.reversePartialOrder())
+      // ieid.addNoForgettingAssumption({std::string()})
+      ieid.addEvidence("DoTest", "Both");
+      ieid.addEvidence("FirstTest", "Positive");
+      ieid.addEvidence("SecondTest", "Positive");
+      ieid.makeInference();
+      GUM_TRACE_VAR(ieid.posterior("DoTest"))
+      GUM_TRACE_VAR(ieid.MEU())
     }
   };
 }   // namespace gum_tests

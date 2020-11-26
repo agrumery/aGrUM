@@ -113,6 +113,9 @@ namespace gum {
 
     bool isSolvable() const;
 
+    virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
+    virtual const Potential< GUM_SCALAR >& posterior(const std::string& name) final;
+
     protected:
     void onStateChanged_() override;
     void onEvidenceAdded_(NodeId id, bool isHardEvidence) override;
