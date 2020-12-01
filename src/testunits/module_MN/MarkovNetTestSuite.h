@@ -282,7 +282,7 @@ namespace gum_tests {
 
       gum::Potential< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
-      auto diff = (pbn - ppmn).abs();
+      auto diff = (pbn - ppmn).new_abs();
       TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize());
       TS_ASSERT_LESS_THAN(diff.max(), 1e-10);
 

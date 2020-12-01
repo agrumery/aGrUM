@@ -27,6 +27,7 @@
  */
 
 #include <limits>
+#include <cmath>
 
 #include <agrum/BN/IBayesNet.h>
 
@@ -236,7 +237,7 @@ namespace gum {
         return (GUM_SCALAR)(-std::numeric_limits< double >::infinity());
       }
 
-      value += log2(cpt(node)[i]);
+      value += std::log2(cpt(node)[i]);
     }
 
     return value;

@@ -21,7 +21,7 @@
 %ignore *::getTriangulation();
 
 // copy: M indicates the modifications
-%feature("shadow") gum::ShaferShenoyIDInference<double>::setEvidence %{
+%feature("shadow") gum::ShaferShenoyLIMIDInference<double>::setEvidence %{
 def setEvidence(self, evidces):
     """
     Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -106,7 +106,7 @@ def setEvidence(self, evidces):
 
 
 // these void class extensions are rewritten by "shadow" declarations
-%extend gum::ShaferShenoyIDInference<double> {
+%extend gum::ShaferShenoyLIMIDInference<double> {
     void setEvidence(PyObject *evidces) {}
 
     // evidences is a python list of potentials*

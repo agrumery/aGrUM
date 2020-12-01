@@ -1,15 +1,15 @@
-%feature("docstring") gum::ShaferShenoyIDInference::optimalDecisions
+%feature("docstring") gum::ShaferShenoyLIMIDInference::optimalDecisions
 "
 Displays the result of an inference.
 "
 
 
-%feature("docstring") gum::ShaferShenoyIDInference::eraseAllEvidence
+%feature("docstring") gum::ShaferShenoyLIMIDInference::eraseAllEvidence
 "
 Removes all the evidence entered into the diagram.
 "
 
-%feature("docstring") gum::ShaferShenoyIDInference::eraseEvidence
+%feature("docstring") gum::ShaferShenoyLIMIDInference::eraseEvidence
 "
 Parameters
 ----------
@@ -22,7 +22,7 @@ gum.IndexError
 	If the evidence does not belong to the influence diagram
 "
 
-%feature("docstring") gum::ShaferShenoyIDInference::optimalDecision
+%feature("docstring") gum::ShaferShenoyLIMIDInference::optimalDecision
 "
 Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -39,7 +39,7 @@ gum.InvalidNode
 	If node given in parmaeter is not a decision node 
 "
 
-%feature("docstring") gum::ShaferShenoyIDInference::MEU
+%feature("docstring") gum::ShaferShenoyLIMIDInference::MEU
 "
 Returns maximum expected utility obtained from inference.
 
@@ -49,7 +49,7 @@ gum.OperationNotAllowed
 	If no inference have yet been made 
 "
 
-%feature("docstring") gum::ShaferShenoyIDInference::influenceDiagram
+%feature("docstring") gum::ShaferShenoyLIMIDInference::influenceDiagram
 "
 Returns a constant reference over the InfluenceDiagram on which this class work.
 
@@ -59,7 +59,7 @@ pyAgrum.InfluenceDiagram
 	the InfluenceDiagram on which this class work
 "
 
-%feature("docstring") gum::ShaferShenoyIDInference::insertEvidence
+%feature("docstring") gum::ShaferShenoyLIMIDInference::insertEvidence
 "
 Insert new evidence in the graph.
 
@@ -79,7 +79,7 @@ gum.OperationNotAllowed
 "
 
 
-%feature("docstring") gum::ShaferShenoyIDInference::makeInference
+%feature("docstring") gum::ShaferShenoyLIMIDInference::makeInference
 "
 Makes the inference. 
 "

@@ -143,11 +143,11 @@ namespace gum {
           /// check_rate=true;
           this->enableMinEpsilonRate();   // replace check_rate=true;
           ratio = pq / pp;
-          delta = (GUM_SCALAR)log2(ratio);
+          delta = (GUM_SCALAR)std::log2(ratio);
           klPQ_ += delta;
 
           // pmid!=0
-          jsd_ -= log2(pp / pmid) + ratio * log2(pq / pmid);
+          jsd_ -= std::log2(pp / pmid) + ratio * std::log2(pq / pmid);
         } else {
           errorPQ_++;
         }

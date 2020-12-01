@@ -2323,7 +2323,7 @@ class IncompatibleEvidence(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(IncompatibleEvidence self, std::string const & aMsg, std::string const & aType="several evidence/CPT are incompatible together (proba=0)") -> IncompatibleEvidence
+        __init__(IncompatibleEvidence self, std::string const & aMsg, std::string const & aType="Several evidence/CPT are incompatible together (proba=0)") -> IncompatibleEvidence
         __init__(IncompatibleEvidence self, IncompatibleEvidence src) -> IncompatibleEvidence
         """
         _pyAgrum.IncompatibleEvidence_swiginit(self, _pyAgrum.new_IncompatibleEvidence(*args))
@@ -2340,7 +2340,7 @@ class FactoryError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(FactoryError self, std::string const & aMsg, std::string const & aType="factory error") -> FactoryError
+        __init__(FactoryError self, std::string const & aMsg, std::string const & aType="Factory error") -> FactoryError
         __init__(FactoryError self, FactoryError src) -> FactoryError
         """
         _pyAgrum.FactoryError_swiginit(self, _pyAgrum.new_FactoryError(*args))
@@ -2357,7 +2357,7 @@ class FactoryInvalidState(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(FactoryInvalidState self, std::string const & aMsg, std::string const & aType="invalid state error") -> FactoryInvalidState
+        __init__(FactoryInvalidState self, std::string const & aMsg, std::string const & aType="Invalid state error") -> FactoryInvalidState
         __init__(FactoryInvalidState self, FactoryInvalidState src) -> FactoryInvalidState
         """
         _pyAgrum.FactoryInvalidState_swiginit(self, _pyAgrum.new_FactoryInvalidState(*args))
@@ -2366,22 +2366,22 @@ class FactoryInvalidState(FactoryError):
 # Register FactoryInvalidState in _pyAgrum:
 _pyAgrum.FactoryInvalidState_swigregister(FactoryInvalidState)
 
-class WrongType(FactoryError):
-    r"""Proxy of C++ gum::WrongType class."""
+class TypeError(FactoryError):
+    r"""Proxy of C++ gum::TypeError class."""
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
         r"""
-        __init__(WrongType self, std::string const & aMsg, std::string const & aType="wrong type for this operation") -> WrongType
-        __init__(WrongType self, WrongType src) -> WrongType
+        __init__(TypeError self, std::string const & aMsg, std::string const & aType="Wrong type") -> TypeError
+        __init__(TypeError self, TypeError src) -> TypeError
         """
-        _pyAgrum.WrongType_swiginit(self, _pyAgrum.new_WrongType(*args))
-    __swig_destroy__ = _pyAgrum.delete_WrongType
+        _pyAgrum.TypeError_swiginit(self, _pyAgrum.new_TypeError(*args))
+    __swig_destroy__ = _pyAgrum.delete_TypeError
 
-# Register WrongType in _pyAgrum:
-_pyAgrum.WrongType_swigregister(WrongType)
+# Register TypeError in _pyAgrum:
+_pyAgrum.TypeError_swigregister(TypeError)
 
 class WrongClassElement(FactoryError):
     r"""Proxy of C++ gum::WrongClassElement class."""
@@ -2400,22 +2400,22 @@ class WrongClassElement(FactoryError):
 # Register WrongClassElement in _pyAgrum:
 _pyAgrum.WrongClassElement_swigregister(WrongClassElement)
 
-class TypeError(FactoryError):
-    r"""Proxy of C++ gum::TypeError class."""
+class PRMTypeError(FactoryError):
+    r"""Proxy of C++ gum::PRMTypeError class."""
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
         r"""
-        __init__(TypeError self, std::string const & aMsg, std::string const & aType="Wrong subtype or subclass") -> TypeError
-        __init__(TypeError self, TypeError src) -> TypeError
+        __init__(PRMTypeError self, std::string const & aMsg, std::string const & aType="Wrong subtype or subclass") -> PRMTypeError
+        __init__(PRMTypeError self, PRMTypeError src) -> PRMTypeError
         """
-        _pyAgrum.TypeError_swiginit(self, _pyAgrum.new_TypeError(*args))
-    __swig_destroy__ = _pyAgrum.delete_TypeError
+        _pyAgrum.PRMTypeError_swiginit(self, _pyAgrum.new_PRMTypeError(*args))
+    __swig_destroy__ = _pyAgrum.delete_PRMTypeError
 
-# Register TypeError in _pyAgrum:
-_pyAgrum.TypeError_swigregister(TypeError)
+# Register PRMTypeError in _pyAgrum:
+_pyAgrum.PRMTypeError_swigregister(PRMTypeError)
 
 class LearningError(GumException):
     r"""Proxy of C++ gum::LearningError class."""
@@ -2442,7 +2442,7 @@ class IncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(IncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Incompatbile (maybe implicit) priors") -> IncompatibleScoreApriori
+        __init__(IncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Incompatible (maybe implicit) priors") -> IncompatibleScoreApriori
         __init__(IncompatibleScoreApriori self, IncompatibleScoreApriori src) -> IncompatibleScoreApriori
         """
         _pyAgrum.IncompatibleScoreApriori_swiginit(self, _pyAgrum.new_IncompatibleScoreApriori(*args))
@@ -2459,7 +2459,7 @@ class PossiblyIncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(PossiblyIncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Possible incompatibilty between score and prior") -> PossiblyIncompatibleScoreApriori
+        __init__(PossiblyIncompatibleScoreApriori self, std::string const & aMsg, std::string const & aType="Possible incompatibility between score and prior") -> PossiblyIncompatibleScoreApriori
         __init__(PossiblyIncompatibleScoreApriori self, PossiblyIncompatibleScoreApriori src) -> PossiblyIncompatibleScoreApriori
         """
         _pyAgrum.PossiblyIncompatibleScoreApriori_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args))
@@ -3013,9 +3013,9 @@ class DiscreteVariable(Variable):
         """
         return _pyAgrum.DiscreteVariable_label(self, i)
 
-    def toStringWithDescription(self) -> "std::string const":
+    def toStringWithDescription(self) -> "std::string":
         r"""
-        toStringWithDescription(DiscreteVariable self) -> std::string const
+        toStringWithDescription(DiscreteVariable self) -> std::string
 
         Returns
         -------
@@ -3850,9 +3850,9 @@ class UndiGraph(object):
         r"""__ne__(UndiGraph self, UndiGraph g) -> bool"""
         return _pyAgrum.UndiGraph___ne__(self, g)
 
-    def eraseNode(self, id: "gum::NodeId const") -> "void":
+    def eraseNode(self, id: "gum::NodeId") -> "void":
         r"""
-        eraseNode(UndiGraph self, gum::NodeId const id)
+        eraseNode(UndiGraph self, gum::NodeId id)
 
         Erase the node and all the adjacent edges.
 
@@ -3873,9 +3873,9 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_clear(self)
 
-    def toDot(self) -> "std::string const":
+    def toDot(self) -> "std::string":
         r"""
-        toDot(UndiGraph self) -> std::string const
+        toDot(UndiGraph self) -> std::string
 
         Returns
         -------
@@ -3899,9 +3899,9 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
 
-    def partialUndiGraph(self, nodesSet: "gum::NodeSet") -> "gum::UndiGraph":
+    def partialUndiGraph(self, nodes: "gum::NodeSet") -> "gum::UndiGraph":
         r"""
-        partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph
+        partialUndiGraph(UndiGraph self, gum::NodeSet nodes) -> UndiGraph
 
         Parameters
         ----------
@@ -3914,7 +3914,11 @@ class UndiGraph(object):
             The partial graph formed by the nodes given in parameter
 
         """
-        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
+        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodes)
+
+    def nodes2ConnectedComponent(self) -> "gum::NodeProperty< gum::NodeId >":
+        r"""nodes2ConnectedComponent(UndiGraph self) -> gum::NodeProperty< gum::NodeId >"""
+        return _pyAgrum.UndiGraph_nodes2ConnectedComponent(self)
 
     def __repr__(self) -> "std::string":
         r"""__repr__(UndiGraph self) -> std::string"""
@@ -4106,8 +4110,9 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_empty(self)
 
-    def addEdge(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+    def addEdge(self, *args) -> "void":
         r"""
+        addEdge(UndiGraph self, gum::NodeId first, gum::NodeId second)
         addEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
 
         Insert a new edge into the graph.
@@ -4125,7 +4130,7 @@ class UndiGraph(object):
           If n1 or n2 does not belong to the graph nodes.
 
         """
-        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
+        return _pyAgrum.UndiGraph_addEdge(self, *args)
 
     def eraseEdge(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
         r"""
@@ -4262,9 +4267,9 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_clear(self)
 
-    def toDot(self) -> "std::string const":
+    def toDot(self) -> "std::string":
         r"""
-        toDot(DiGraph self) -> std::string const
+        toDot(DiGraph self) -> std::string
 
         Returns
         -------
@@ -4660,13 +4665,32 @@ class DAG(DiGraph):
         _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
     __swig_destroy__ = _pyAgrum.delete_DAG
 
+    def descendants(self, id: "gum::NodeId const") -> "gum::NodeSet":
+        r"""descendants(DAG self, gum::NodeId const id) -> gum::NodeSet"""
+        return _pyAgrum.DAG_descendants(self, id)
+
+    def ancestors(self, id: "gum::NodeId const") -> "gum::NodeSet":
+        r"""ancestors(DAG self, gum::NodeId const id) -> gum::NodeSet"""
+        return _pyAgrum.DAG_ancestors(self, id)
+
     def moralGraph(self) -> "gum::UndiGraph":
         r"""moralGraph(DAG self) -> UndiGraph"""
         return _pyAgrum.DAG_moralGraph(self)
 
+    def moralizedAncestralGraph(self, nodes: "gum::NodeSet const &") -> "gum::UndiGraph":
+        r"""moralizedAncestralGraph(DAG self, gum::NodeSet const & nodes) -> UndiGraph"""
+        return _pyAgrum.DAG_moralizedAncestralGraph(self, nodes)
+
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(DAG self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        isIndependent(DAG self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
+        """
+        return _pyAgrum.DAG_isIndependent(self, *args)
+
     def addArc(self, *args) -> "void":
         r"""
-        addArc(DAG self, gum::NodeId const tail, gum::NodeId const head)
+        addArc(DAG self, gum::NodeId tail, gum::NodeId head)
         addArc(DAG self, gum::NodeId const n1, gum::NodeId const n2)
 
         Add an arc from tail to head.
@@ -4820,9 +4844,9 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
-    def toDot(self) -> "std::string const":
+    def toDot(self) -> "std::string":
         r"""
-        toDot(MixedGraph self) -> std::string const
+        toDot(MixedGraph self) -> std::string
 
         Returns
         -------
@@ -5392,9 +5416,9 @@ class CliqueGraph(UndiGraph):
         """
         return _pyAgrum.CliqueGraph_isJoinTree(self)
 
-    def toDot(self) -> "std::string const":
+    def toDot(self) -> "std::string":
         r"""
-        toDot(CliqueGraph self) -> std::string const
+        toDot(CliqueGraph self) -> std::string
 
         Returns
         -------
@@ -6228,9 +6252,27 @@ class GraphicalModel(object):
         r"""empty(GraphicalModel self) -> bool"""
         return _pyAgrum.GraphicalModel_empty(self)
 
-    def exists(self, node: "gum::NodeId") -> "bool":
-        r"""exists(GraphicalModel self, gum::NodeId node) -> bool"""
-        return _pyAgrum.GraphicalModel_exists(self, node)
+    def exists(self, *args) -> "bool":
+        r"""
+        exists(GraphicalModel self, gum::NodeId node) -> bool
+        exists(GraphicalModel self, std::string const & name) -> bool
+        """
+        return _pyAgrum.GraphicalModel_exists(self, *args)
+
+    def names(self, *args) -> "std::vector< std::string,std::allocator< std::string > >":
+        r"""
+        names(GraphicalModel self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & ids) -> Vector_string
+        names(GraphicalModel self, gum::NodeSet const & ids) -> Vector_string
+        """
+        return _pyAgrum.GraphicalModel_names(self, *args)
+
+    def ids(self, names: "Vector_string") -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
+        r"""ids(GraphicalModel self, Vector_string names) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >"""
+        return _pyAgrum.GraphicalModel_ids(self, names)
+
+    def nodeset(self, names: "Vector_string") -> "gum::NodeSet":
+        r"""nodeset(GraphicalModel self, Vector_string names) -> gum::NodeSet"""
+        return _pyAgrum.GraphicalModel_nodeset(self, names)
 
     def nodes(self) -> "gum::NodeGraphPart const &":
         r"""nodes(GraphicalModel self) -> NodeGraphPart"""
@@ -6456,6 +6498,13 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_parents(self, *args)
 
+    def family(self, *args) -> "gum::NodeSet":
+        r"""
+        family(DAGmodel self, gum::NodeId const id) -> gum::NodeSet
+        family(DAGmodel self, std::string const & name) -> gum::NodeSet
+        """
+        return _pyAgrum.DAGmodel_family(self, *args)
+
     def children(self, *args) -> "gum::NodeSet const &":
         r"""
         children(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
@@ -6488,6 +6537,8 @@ class DAGmodel(GraphicalModel):
         r"""
         isIndependent(DAGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
         isIndependent(DAGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Zanmes) -> bool
+        isIndependent(DAGmodel self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
+        isIndependent(DAGmodel self, Vector_string Xname, Vector_string Yname, Vector_string Zanmes) -> bool
         """
         return _pyAgrum.DAGmodel_isIndependent(self, *args)
 
@@ -7919,10 +7970,10 @@ class MultiDimContainer(object):
         r"""newFactory(MultiDimContainer self) -> MultiDimContainer"""
         return _pyAgrum.MultiDimContainer_newFactory(self)
 
-    def toString(self, *args) -> "std::string const":
+    def toString(self, *args) -> "std::string":
         r"""
-        toString(MultiDimContainer self) -> std::string const
-        toString(MultiDimContainer self, Instantiation i) -> std::string const
+        toString(MultiDimContainer self) -> std::string
+        toString(MultiDimContainer self, Instantiation i) -> std::string
         """
         return _pyAgrum.MultiDimContainer_toString(self, *args)
 
@@ -8238,26 +8289,6 @@ class Potential(object):
         return val
 
 
-    def normalize(self) -> "gum::Potential< double > const &":
-        r"""
-        normalize(Potential self) -> Potential
-
-        Normalize the Potential (do nothing if sum is 0)
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a reference to the normalized Potential
-
-        """
-        val = _pyAgrum.Potential_normalize(self)
-
-        return self
-
-
-        return val
-
-
     def sq(self) -> "gum::Potential< double > const &":
         r"""
         sq(Potential self) -> Potential
@@ -8285,6 +8316,38 @@ class Potential(object):
 
         """
         val = _pyAgrum.Potential_log2(self)
+
+        return self
+
+
+        return val
+
+
+    def new_abs(self) -> "gum::Potential< double > const":
+        r"""new_abs(Potential self) -> Potential"""
+        return _pyAgrum.Potential_new_abs(self)
+
+    def new_sq(self) -> "gum::Potential< double > const":
+        r"""new_sq(Potential self) -> Potential"""
+        return _pyAgrum.Potential_new_sq(self)
+
+    def new_log2(self) -> "gum::Potential< double > const":
+        r"""new_log2(Potential self) -> Potential"""
+        return _pyAgrum.Potential_new_log2(self)
+
+    def normalize(self) -> "gum::Potential< double > const &":
+        r"""
+        normalize(Potential self) -> Potential
+
+        Normalize the Potential (do nothing if sum is 0)
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the normalized Potential
+
+        """
+        val = _pyAgrum.Potential_normalize(self)
 
         return self
 
@@ -25542,31 +25605,46 @@ def InfluenceDiagram_fastPrototype(dotlike: "std::string const &", domainSize: "
     """
     return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
 
-class ShaferShenoyIDInference(object):
+class ShaferShenoyLIMIDInference(object):
     r"""
-    Proxy of C++ gum::ShaferShenoyIDInference< double > class.
-    Proxy of C++ gum::ShaferShenoyIDInference< double > class.
+    Proxy of C++ gum::ShaferShenoyLIMIDInference< double > class.
+    Proxy of C++ gum::ShaferShenoyLIMIDInference< double > class.
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, infDiag: "InfluenceDiagram"):
-        r"""__init__(ShaferShenoyIDInference self, InfluenceDiagram infDiag) -> ShaferShenoyIDInference"""
-        _pyAgrum.ShaferShenoyIDInference_swiginit(self, _pyAgrum.new_ShaferShenoyIDInference(infDiag))
-    __swig_destroy__ = _pyAgrum.delete_ShaferShenoyIDInference
+        r"""__init__(ShaferShenoyLIMIDInference self, InfluenceDiagram infDiag) -> ShaferShenoyLIMIDInference"""
+        _pyAgrum.ShaferShenoyLIMIDInference_swiginit(self, _pyAgrum.new_ShaferShenoyLIMIDInference(infDiag))
+    __swig_destroy__ = _pyAgrum.delete_ShaferShenoyLIMIDInference
 
     def junctionTree(self) -> "gum::JunctionTree const *":
-        r"""junctionTree(ShaferShenoyIDInference self) -> CliqueGraph"""
-        return _pyAgrum.ShaferShenoyIDInference_junctionTree(self)
+        r"""junctionTree(ShaferShenoyLIMIDInference self) -> CliqueGraph"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_junctionTree(self)
 
     def clear(self) -> "void":
-        r"""clear(ShaferShenoyIDInference self)"""
-        return _pyAgrum.ShaferShenoyIDInference_clear(self)
+        r"""clear(ShaferShenoyLIMIDInference self)"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_clear(self)
+
+    def addNoForgettingAssumption(self, *args) -> "void":
+        r"""
+        addNoForgettingAssumption(ShaferShenoyLIMIDInference self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & ids)
+        addNoForgettingAssumption(ShaferShenoyLIMIDInference self, Vector_string names)
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_addNoForgettingAssumption(self, *args)
+
+    def hasNoForgettingAssumption(self) -> "bool":
+        r"""hasNoForgettingAssumption(ShaferShenoyLIMIDInference self) -> bool"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
+
+    def reducedGraph(self) -> "gum::DAG":
+        r"""reducedGraph(ShaferShenoyLIMIDInference self) -> DAG"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_reducedGraph(self)
 
     def MEU(self) -> "double":
         r"""
-        MEU(ShaferShenoyIDInference self) -> double
+        MEU(ShaferShenoyLIMIDInference self) -> double
 
         Returns maximum expected utility obtained from inference.
 
@@ -25576,12 +25654,12 @@ class ShaferShenoyIDInference(object):
         	If no inference have yet been made 
 
         """
-        return _pyAgrum.ShaferShenoyIDInference_MEU(self)
+        return _pyAgrum.ShaferShenoyLIMIDInference_MEU(self)
 
     def optimalDecision(self, *args) -> "gum::Idx":
         r"""
-        optimalDecision(ShaferShenoyIDInference self, gum::NodeId decisionId) -> gum::Idx
-        optimalDecision(ShaferShenoyIDInference self, std::string decisionName) -> gum::Idx
+        optimalDecision(ShaferShenoyLIMIDInference self, gum::NodeId decisionId) -> gum::Idx
+        optimalDecision(ShaferShenoyLIMIDInference self, std::string decisionName) -> gum::Idx
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -25598,16 +25676,35 @@ class ShaferShenoyIDInference(object):
         	If node given in parmaeter is not a decision node 
 
         """
-        return _pyAgrum.ShaferShenoyIDInference_optimalDecision(self, *args)
+        return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
+
+    def reversePartialOrder(self) -> "std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >":
+        r"""reversePartialOrder(ShaferShenoyLIMIDInference self) -> std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
     def optimalDecisions(self) -> "std::vector< std::pair< gum::NodeId,gum::Idx >,std::allocator< std::pair< gum::NodeId,gum::Idx > > >":
         r"""
-        optimalDecisions(ShaferShenoyIDInference self) -> std::vector< std::pair< gum::NodeId,gum::Idx >,std::allocator< std::pair< gum::NodeId,gum::Idx > > >
+        optimalDecisions(ShaferShenoyLIMIDInference self) -> std::vector< std::pair< gum::NodeId,gum::Idx >,std::allocator< std::pair< gum::NodeId,gum::Idx > > >
 
         Displays the result of an inference.
 
         """
-        return _pyAgrum.ShaferShenoyIDInference_optimalDecisions(self)
+        return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecisions(self)
+
+    def reducedLIMID(self) -> "gum::InfluenceDiagram< double >":
+        r"""reducedLIMID(ShaferShenoyLIMIDInference self) -> InfluenceDiagram"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_reducedLIMID(self)
+
+    def isSolvable(self) -> "bool":
+        r"""isSolvable(ShaferShenoyLIMIDInference self) -> bool"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_isSolvable(self)
+
+    def posterior(self, *args) -> "gum::Potential< double > const &":
+        r"""
+        posterior(ShaferShenoyLIMIDInference self, gum::NodeId node) -> Potential
+        posterior(ShaferShenoyLIMIDInference self, std::string const & name) -> Potential
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_posterior(self, *args)
 
     def setEvidence(self, evidces):
         """
@@ -25693,11 +25790,11 @@ class ShaferShenoyIDInference(object):
 
 
     def _setEvidence(self, evidences: "PyObject *") -> "void":
-        r"""_setEvidence(ShaferShenoyIDInference self, PyObject * evidences)"""
-        return _pyAgrum.ShaferShenoyIDInference__setEvidence(self, evidences)
+        r"""_setEvidence(ShaferShenoyLIMIDInference self, PyObject * evidences)"""
+        return _pyAgrum.ShaferShenoyLIMIDInference__setEvidence(self, evidences)
 
-# Register ShaferShenoyIDInference in _pyAgrum:
-_pyAgrum.ShaferShenoyIDInference_swigregister(ShaferShenoyIDInference)
+# Register ShaferShenoyLIMIDInference in _pyAgrum:
+_pyAgrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 
 class BNLearner(object):
     r"""

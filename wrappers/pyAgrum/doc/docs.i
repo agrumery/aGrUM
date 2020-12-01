@@ -61,7 +61,7 @@
 %include "doc_CNLoopyPropagation.i"
 
 %include "doc_InfluenceDiagram.i"
-%include "doc_ShaferShenoyIDInference.i"
+%include "doc_ShaferShenoyLIMIDInference.i"
 
 %include "doc_miscellaneous.i"
 %include "doc_JunctionTreeGenerator.i"

@@ -308,7 +308,7 @@ namespace gum {
                     "and P(X,Y)>0");
         }
 
-        res += vXY * (log2(vXY) - log2(vX) - log2(vY));
+        res += vXY * (std::log2(vXY) - std::log2(vX) - std::log2(vY));
       }
     }
 

@@ -16,6 +16,14 @@ def InfluenceDiagramInference(infdiag):
   print("** A pyAgrum.ShaferShenoyIDInference has been created.")
   return ShaferShenoyIDInference(bn)
 
+def ShaferShenoyIDInference(infdiag):
+  """
+  Deprecated class. Use pyAgrum.ShaferShenoyIDInference instead.
+  """
+  print("** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.")
+  print("** A pyAgrum.ShaferShenoyLIMIDInference has been created.")
+  return ShaferShenoyLIMIDInference(bn)
+
 def GibbsInference(bn):
   """
   Deprecated class. Use pyAgrum.GibbsSampling instead.

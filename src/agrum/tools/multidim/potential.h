@@ -310,35 +310,35 @@ namespace gum {
     /**
      * @brief Apply abs on every element of the container
      */
-    const Potential< GUM_SCALAR >& abs_inplace() const;
+    const Potential< GUM_SCALAR >& abs() const;
 
     /**
      * @brief apply $x^2$ on every element of the container
      */
-    const Potential< GUM_SCALAR >& sq_inplace() const;
+    const Potential< GUM_SCALAR >& sq() const;
 
     /**
      * @brief apply $log_2(x)$ on every element of the container
      */
-    const Potential< GUM_SCALAR >& log2_inplace() const;
+    const Potential< GUM_SCALAR >& log2() const;
 
     /**
      * @brief Create a new potential and apply abs on every element of the
      * container
      */
-    const Potential< GUM_SCALAR > abs() const;
+    const Potential< GUM_SCALAR > new_abs() const;
 
     /**
      * @brief Create a new potential and apply $x^2$ on every element of the
      * container
      */
-    const Potential< GUM_SCALAR > sq() const;
+    const Potential< GUM_SCALAR > new_sq() const;
 
     /**
      * @brief Create a new potential and apply $log_2(x)$ on every element of the
      * container
      */
-    const Potential< GUM_SCALAR > log2() const;
+    const Potential< GUM_SCALAR > new_log2() const;
 
 
     /**
@@ -525,11 +525,24 @@ namespace gum {
        complementVars_(const Set< const DiscreteVariable* >& del_vars) const;
   };
 
-
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class Potential< double >;
 #endif
 
+  template<typename GUM_SCALAR>
+  inline Potential<GUM_SCALAR> log2(const Potential<GUM_SCALAR>& arg) {
+    return arg.new_log2();
+  }
+
+  template<typename GUM_SCALAR>
+  inline Potential<GUM_SCALAR> abs(const Potential<GUM_SCALAR>& arg) {
+    return arg.new_abs();
+  }
+
+  template<typename GUM_SCALAR>
+  inline Potential<GUM_SCALAR> sq(const Potential<GUM_SCALAR>& arg) {
+    return arg.new_sq();
+  }
 
 } /* namespace gum */
 

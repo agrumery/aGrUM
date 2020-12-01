@@ -145,7 +145,7 @@
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
-#include <agrum/ID/inference/ShaferShenoyIDInference.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
@@ -332,7 +332,7 @@ namespace std {
 %include <agrum/CN/CNLoopyPropagation.h>
 
 %include <agrum/ID/influenceDiagram.h>
-%include <agrum/ID/inference/ShaferShenoyIDInference.h>
+%include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 
 /* TEMPLATES INSTANTIATIONS */
 
@@ -380,7 +380,7 @@ namespace std {
 %template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
 
 %template ( InfluenceDiagram) gum::InfluenceDiagram<double>;
-%template ( ShaferShenoyIDInference) gum::ShaferShenoyIDInference<double>;
+%template ( ShaferShenoyLIMIDInference) gum::ShaferShenoyLIMIDInference<double>;
 
 %template ( BNLearner) gum::learning::BNLearner<double>;
 %template ( BNDatabaseGenerator) gum::learning::BNDatabaseGenerator<double>;
