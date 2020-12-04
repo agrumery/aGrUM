@@ -12507,37 +12507,6 @@ class ShaferShenoyMNInference(object):
         """
         return _pyAgrum.ShaferShenoyMNInference_makeInference(self)
 
-    def posterior(self, *args) -> "gum::Potential< double > const":
-        r"""
-        posterior(ShaferShenoyMNInference self, gum::NodeId const var) -> Potential
-        posterior(ShaferShenoyMNInference self, std::string const nodeName) -> Potential
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyAgrum.ShaferShenoyMNInference_posterior(self, *args)
-
-    def MN(self) -> "gum::IMarkovNet< double > const &":
-        r"""MN(ShaferShenoyMNInference self) -> IMarkovNet"""
-        return _pyAgrum.ShaferShenoyMNInference_MN(self)
-
     def addEvidence(self, *args) -> "void":
         r"""
         addEvidence(ShaferShenoyMNInference self, gum::NodeId const id, gum::Idx const val)
@@ -12883,6 +12852,38 @@ class ShaferShenoyMNInference(object):
 
         """
         return _pyAgrum.ShaferShenoyMNInference_H(self, *args)
+
+    def MN(self) -> "gum::IMarkovNet< double > const &":
+        r"""MN(ShaferShenoyMNInference self) -> IMarkovNet"""
+        return _pyAgrum.ShaferShenoyMNInference_MN(self)
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        r"""
+        posterior(ShaferShenoyMNInference self, gum::NodeId const var) -> Potential
+        posterior(ShaferShenoyMNInference self, std::string const & nodeName) -> Potential
+        posterior(ShaferShenoyMNInference self, std::string const nodeName) -> Potential
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> "void":
         r"""
@@ -13364,50 +13365,6 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_makeInference(self)
 
-    def posterior(self, *args) -> "gum::Potential< double > const":
-        r"""
-        posterior(LazyPropagation self, gum::NodeId const var) -> Potential
-        posterior(LazyPropagation self, std::string const nodeName) -> Potential
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyAgrum.LazyPropagation_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LazyPropagation self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LazyPropagation_BN(self)
-
     def addEvidence(self, *args) -> "void":
         r"""
         addEvidence(LazyPropagation self, gum::NodeId const id, gum::Idx const val)
@@ -13753,6 +13710,51 @@ class LazyPropagation(object):
 
         """
         return _pyAgrum.LazyPropagation_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LazyPropagation self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LazyPropagation_BN(self)
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        r"""
+        posterior(LazyPropagation self, gum::NodeId const var) -> Potential
+        posterior(LazyPropagation self, std::string const & nodeName) -> Potential
+        posterior(LazyPropagation self, std::string const nodeName) -> Potential
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyAgrum.LazyPropagation_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> "void":
         r"""
@@ -14210,50 +14212,6 @@ class ShaferShenoyInference(object):
         """
         return _pyAgrum.ShaferShenoyInference_makeInference(self)
 
-    def posterior(self, *args) -> "gum::Potential< double > const":
-        r"""
-        posterior(ShaferShenoyInference self, gum::NodeId const var) -> Potential
-        posterior(ShaferShenoyInference self, std::string const nodeName) -> Potential
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyAgrum.ShaferShenoyInference_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(ShaferShenoyInference self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.ShaferShenoyInference_BN(self)
-
     def addEvidence(self, *args) -> "void":
         r"""
         addEvidence(ShaferShenoyInference self, gum::NodeId const id, gum::Idx const val)
@@ -14599,6 +14557,51 @@ class ShaferShenoyInference(object):
 
         """
         return _pyAgrum.ShaferShenoyInference_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(ShaferShenoyInference self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.ShaferShenoyInference_BN(self)
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        r"""
+        posterior(ShaferShenoyInference self, gum::NodeId const var) -> Potential
+        posterior(ShaferShenoyInference self, std::string const & nodeName) -> Potential
+        posterior(ShaferShenoyInference self, std::string const nodeName) -> Potential
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyAgrum.ShaferShenoyInference_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> "void":
         r"""
@@ -15089,7 +15092,7 @@ class VariableElimination(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(VariableElimination self, gum::NodeId const var) -> Potential
-        posterior(VariableElimination self, std::string const nodeName) -> Potential
+        posterior(VariableElimination self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -15112,23 +15115,6 @@ class VariableElimination(object):
 
         """
         return _pyAgrum.VariableElimination_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(VariableElimination self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.VariableElimination_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -15475,6 +15461,23 @@ class VariableElimination(object):
 
         """
         return _pyAgrum.VariableElimination_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(VariableElimination self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.VariableElimination_BN(self)
 
 # Register VariableElimination in _pyAgrum:
 _pyAgrum.VariableElimination_swigregister(VariableElimination)
@@ -15913,7 +15916,7 @@ class GibbsSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(GibbsSampling self, gum::NodeId const var) -> Potential
-        posterior(GibbsSampling self, std::string const nodeName) -> Potential
+        posterior(GibbsSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -15936,23 +15939,6 @@ class GibbsSampling(object):
 
         """
         return _pyAgrum.GibbsSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(GibbsSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.GibbsSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -16299,6 +16285,23 @@ class GibbsSampling(object):
 
         """
         return _pyAgrum.GibbsSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(GibbsSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.GibbsSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -16773,435 +16776,6 @@ class ImportanceSampling(object):
         r"""_asIApproximationSchemeConfiguration(ImportanceSampling self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.ImportanceSampling__asIApproximationSchemeConfiguration(self)
 
-    def makeInference(self) -> "void":
-        r"""
-        makeInference(ImportanceSampling self)
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
-        return _pyAgrum.ImportanceSampling_makeInference(self)
-
-    def posterior(self, *args) -> "gum::Potential< double > const":
-        r"""
-        posterior(ImportanceSampling self, gum::NodeId const var) -> Potential
-        posterior(ImportanceSampling self, std::string const nodeName) -> Potential
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyAgrum.ImportanceSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(ImportanceSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.ImportanceSampling_BN(self)
-
-    def addEvidence(self, *args) -> "void":
-        r"""
-        addEvidence(ImportanceSampling self, gum::NodeId const id, gum::Idx const val)
-        addEvidence(ImportanceSampling self, std::string const & nodeName, gum::Idx const val)
-        addEvidence(ImportanceSampling self, gum::NodeId const id, std::string const & val)
-        addEvidence(ImportanceSampling self, std::string const & nodeName, std::string const & val)
-        addEvidence(ImportanceSampling self, gum::NodeId const id, Vector vals)
-        addEvidence(ImportanceSampling self, std::string const & nodeName, Vector vals)
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        gum.InvalidArgument
-          If the node already has an evidence
-        gum.InvalidArgument
-          If val is not a value for the node
-        gum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        gum.FatalError
-          If vals is a vector of 0s
-        gum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_addEvidence(self, *args)
-
-    def chgEvidence(self, *args) -> "void":
-        r"""
-        chgEvidence(ImportanceSampling self, gum::NodeId const id, gum::Idx const val)
-        chgEvidence(ImportanceSampling self, std::string const & nodeName, gum::Idx const val)
-        chgEvidence(ImportanceSampling self, gum::NodeId const id, std::string const & val)
-        chgEvidence(ImportanceSampling self, std::string const & nodeName, std::string const & val)
-        chgEvidence(ImportanceSampling self, gum::NodeId const id, Vector vals)
-        chgEvidence(ImportanceSampling self, std::string const & nodeName, Vector vals)
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        gum.InvalidArgument
-          If the node does not already have an evidence
-        gum.InvalidArgument
-          If val is not a value for the node
-        gum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        gum.FatalError
-          If vals is a vector of 0s
-        gum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_chgEvidence(self, *args)
-
-    def hasEvidence(self, *args) -> "bool":
-        r"""
-        hasEvidence(ImportanceSampling self, gum::NodeId const id) -> bool
-        hasEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        gum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_hasEvidence(self, *args)
-
-    def eraseAllEvidence(self) -> "void":
-        r"""
-        eraseAllEvidence(ImportanceSampling self)
-
-        Removes all the evidence entered into the network.
-
-        """
-        return _pyAgrum.ImportanceSampling_eraseAllEvidence(self)
-
-    def eraseEvidence(self, *args) -> "void":
-        r"""
-        eraseEvidence(ImportanceSampling self, gum::NodeId const id)
-        eraseEvidence(ImportanceSampling self, std::string const & nodeName)
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        gum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_eraseEvidence(self, *args)
-
-    def hasHardEvidence(self, nodeName: "std::string const &") -> "bool":
-        r"""
-        hasHardEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        gum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_hasHardEvidence(self, nodeName)
-
-    def hasSoftEvidence(self, *args) -> "bool":
-        r"""
-        hasSoftEvidence(ImportanceSampling self, gum::NodeId const id) -> bool
-        hasSoftEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        gum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_hasSoftEvidence(self, *args)
-
-    def nbrEvidence(self) -> "gum::Size":
-        r"""
-        nbrEvidence(ImportanceSampling self) -> gum::Size
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_nbrEvidence(self)
-
-    def nbrHardEvidence(self) -> "gum::Size":
-        r"""
-        nbrHardEvidence(ImportanceSampling self) -> gum::Size
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_nbrHardEvidence(self)
-
-    def nbrSoftEvidence(self) -> "gum::Size":
-        r"""
-        nbrSoftEvidence(ImportanceSampling self) -> gum::Size
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_nbrSoftEvidence(self)
-
-    def eraseAllTargets(self) -> "void":
-        r"""
-        eraseAllTargets(ImportanceSampling self)
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
-        return _pyAgrum.ImportanceSampling_eraseAllTargets(self)
-
-    def addAllTargets(self) -> "void":
-        r"""
-        addAllTargets(ImportanceSampling self)
-
-        Add all the nodes as targets.
-
-        """
-        return _pyAgrum.ImportanceSampling_addAllTargets(self)
-
-    def addTarget(self, *args) -> "void":
-        r"""
-        addTarget(ImportanceSampling self, gum::NodeId const target)
-        addTarget(ImportanceSampling self, std::string const & nodeName)
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
-        return _pyAgrum.ImportanceSampling_addTarget(self, *args)
-
-    def eraseTarget(self, *args) -> "void":
-        r"""
-        eraseTarget(ImportanceSampling self, gum::NodeId const target)
-        eraseTarget(ImportanceSampling self, std::string const & nodeName)
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        gum.IndexError
-          If one of the node does not belong to the Bayesian network
-        gum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_eraseTarget(self, *args)
-
-    def isTarget(self, *args) -> "bool":
-        r"""
-        isTarget(ImportanceSampling self, gum::NodeId const variable) -> bool
-        isTarget(ImportanceSampling self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        gum.IndexError
-          If the node does not belong to the Bayesian network
-        gum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyAgrum.ImportanceSampling_isTarget(self, *args)
-
-    def nbrTargets(self) -> "gum::Size":
-        r"""
-        nbrTargets(ImportanceSampling self) -> gum::Size
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
-        return _pyAgrum.ImportanceSampling_nbrTargets(self)
-
-    def H(self, *args) -> "double":
-        r"""
-        H(ImportanceSampling self, gum::NodeId const X) -> double
-        H(ImportanceSampling self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        double
-          the computed Shanon's entropy of a node given the observation
-
-        """
-        return _pyAgrum.ImportanceSampling_H(self, *args)
-
-    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
-        r"""
-        currentPosterior(ImportanceSampling self, gum::NodeId const id) -> Potential
-        currentPosterior(ImportanceSampling self, std::string const & name) -> Potential
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyAgrum.ImportanceSampling_currentPosterior(self, *args)
-
 # Register ImportanceSampling in _pyAgrum:
 _pyAgrum.ImportanceSampling_swigregister(ImportanceSampling)
 
@@ -17615,7 +17189,7 @@ class WeightedSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(WeightedSampling self, gum::NodeId const var) -> Potential
-        posterior(WeightedSampling self, std::string const nodeName) -> Potential
+        posterior(WeightedSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -17638,23 +17212,6 @@ class WeightedSampling(object):
 
         """
         return _pyAgrum.WeightedSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(WeightedSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.WeightedSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -18001,6 +17558,23 @@ class WeightedSampling(object):
 
         """
         return _pyAgrum.WeightedSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(WeightedSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.WeightedSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -18442,7 +18016,7 @@ class MonteCarloSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(MonteCarloSampling self, gum::NodeId const var) -> Potential
-        posterior(MonteCarloSampling self, std::string const nodeName) -> Potential
+        posterior(MonteCarloSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -18465,23 +18039,6 @@ class MonteCarloSampling(object):
 
         """
         return _pyAgrum.MonteCarloSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(MonteCarloSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.MonteCarloSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -18828,6 +18385,23 @@ class MonteCarloSampling(object):
 
         """
         return _pyAgrum.MonteCarloSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(MonteCarloSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.MonteCarloSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -19283,7 +18857,7 @@ class LoopyImportanceSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(LoopyImportanceSampling self, gum::NodeId const var) -> Potential
-        posterior(LoopyImportanceSampling self, std::string const nodeName) -> Potential
+        posterior(LoopyImportanceSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -19306,23 +18880,6 @@ class LoopyImportanceSampling(object):
 
         """
         return _pyAgrum.LoopyImportanceSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LoopyImportanceSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LoopyImportanceSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -19669,6 +19226,23 @@ class LoopyImportanceSampling(object):
 
         """
         return _pyAgrum.LoopyImportanceSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LoopyImportanceSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyImportanceSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -20124,7 +19698,7 @@ class LoopyWeightedSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(LoopyWeightedSampling self, gum::NodeId const var) -> Potential
-        posterior(LoopyWeightedSampling self, std::string const nodeName) -> Potential
+        posterior(LoopyWeightedSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -20147,23 +19721,6 @@ class LoopyWeightedSampling(object):
 
         """
         return _pyAgrum.LoopyWeightedSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LoopyWeightedSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LoopyWeightedSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -20510,6 +20067,23 @@ class LoopyWeightedSampling(object):
 
         """
         return _pyAgrum.LoopyWeightedSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LoopyWeightedSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyWeightedSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -20965,7 +20539,7 @@ class LoopyGibbsSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(LoopyGibbsSampling self, gum::NodeId const var) -> Potential
-        posterior(LoopyGibbsSampling self, std::string const nodeName) -> Potential
+        posterior(LoopyGibbsSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -20988,23 +20562,6 @@ class LoopyGibbsSampling(object):
 
         """
         return _pyAgrum.LoopyGibbsSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LoopyGibbsSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LoopyGibbsSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -21351,6 +20908,23 @@ class LoopyGibbsSampling(object):
 
         """
         return _pyAgrum.LoopyGibbsSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LoopyGibbsSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyGibbsSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -21878,7 +21452,7 @@ class LoopyMonteCarloSampling(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(LoopyMonteCarloSampling self, gum::NodeId const var) -> Potential
-        posterior(LoopyMonteCarloSampling self, std::string const nodeName) -> Potential
+        posterior(LoopyMonteCarloSampling self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -21901,23 +21475,6 @@ class LoopyMonteCarloSampling(object):
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LoopyMonteCarloSampling self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LoopyMonteCarloSampling_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -22264,6 +21821,23 @@ class LoopyMonteCarloSampling(object):
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LoopyMonteCarloSampling self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_BN(self)
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -22705,7 +22279,7 @@ class LoopyBeliefPropagation(object):
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
         posterior(LoopyBeliefPropagation self, gum::NodeId const var) -> Potential
-        posterior(LoopyBeliefPropagation self, std::string const nodeName) -> Potential
+        posterior(LoopyBeliefPropagation self, std::string const & nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -22728,23 +22302,6 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyAgrum.LoopyBeliefPropagation_posterior(self, *args)
-
-    def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""
-        BN(LoopyBeliefPropagation self) -> IBayesNet
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-        gum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
-
-        """
-        return _pyAgrum.LoopyBeliefPropagation_BN(self)
 
     def addEvidence(self, *args) -> "void":
         r"""
@@ -23091,6 +22648,23 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyAgrum.LoopyBeliefPropagation_H(self, *args)
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        r"""
+        BN(LoopyBeliefPropagation self) -> IBayesNet
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_BN(self)
 
 # Register LoopyBeliefPropagation in _pyAgrum:
 _pyAgrum.LoopyBeliefPropagation_swigregister(LoopyBeliefPropagation)
@@ -25792,6 +25366,29 @@ class ShaferShenoyLIMIDInference(object):
     def _setEvidence(self, evidences: "PyObject *") -> "void":
         r"""_setEvidence(ShaferShenoyLIMIDInference self, PyObject * evidences)"""
         return _pyAgrum.ShaferShenoyLIMIDInference__setEvidence(self, evidences)
+
+    def makeInference(self) -> "void":
+        r"""
+        makeInference(ShaferShenoyLIMIDInference self)
+
+        Makes the inference. 
+
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_makeInference(self)
+
+    def influenceDiagram(self) -> "gum::InfluenceDiagram< double > const &":
+        r"""
+        influenceDiagram(ShaferShenoyLIMIDInference self) -> InfluenceDiagram
+
+        Returns a constant reference over the InfluenceDiagram on which this class work.
+
+        Returns
+        -------
+        pyAgrum.InfluenceDiagram
+        	the InfluenceDiagram on which this class work
+
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_influenceDiagram(self)
 
 # Register ShaferShenoyLIMIDInference in _pyAgrum:
 _pyAgrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)

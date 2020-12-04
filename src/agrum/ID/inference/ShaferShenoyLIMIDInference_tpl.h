@@ -694,7 +694,7 @@ namespace gum {
       if (infdiag.isChanceNode(node)) {
         res = dp.probPot.normalize();
       } else {
-        res = dp.utilPot;
+        res = dp.utilPot*dp.probPot/dp.probPot.sum();
       }
       GUM_TRACE(res);
     }

@@ -113,20 +113,20 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
-    self.assertEqual(ie.getBestDecisionChoice(d),1)
-    self.assertEqual(ie.getMEU(),110.5)
+    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.MEU(),110.5)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 0})
     ie.makeInference()
-    self.assertEqual(ie.getBestDecisionChoice(d),1)
-    self.assertEqual(ie.getMEU(),21)
+    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.MEU(),21)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
-    self.assertEqual(ie.getBestDecisionChoice(d),1)
-    self.assertEqual(ie.getMEU(),200)
+    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.MEU(),200)
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)
