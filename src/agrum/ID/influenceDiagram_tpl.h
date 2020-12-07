@@ -358,9 +358,9 @@ namespace gum {
         for (const auto chi: dag_.children(node)) {
           arcstream << "\"" << node << "-" << variable(node).name() << "\""
                     << " -> "
-                    << "\"" << chi << "-" << variable(chi).name();
+                    << "\"" << chi << "-" << variable(chi).name()<<"\"";
           if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
-          arcstream << "\";" << std::endl;
+          arcstream << ";" << std::endl;
         }
     }
 

@@ -186,6 +186,14 @@ namespace gum {
       return marginalization(dp, onto);
     }
 
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar() {
+      auto       tmp = probPot * utilPot;
+      GUM_SCALAR s = probPot.sum();
+      double     m = tmp.sum() / s;
+      double     m2 = (tmp * utilPot).sum() / s;
+      return std::pair< GUM_SCALAR, GUM_SCALAR >(m, m2 - m * m);
+    }
+
     virtual std::string toString() const {
       return "prob : " + probPot.toString() + "    util:" + utilPot.toString();
     }

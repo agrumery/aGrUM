@@ -73,6 +73,12 @@ namespace gum {
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) = 0;
     virtual const Potential< GUM_SCALAR >& posterior(const std::string& name) = 0;
 
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) = 0;
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& name) = 0;
+
+    virtual std::pair<GUM_SCALAR,GUM_SCALAR> meanVar(NodeId node) =0;
+    virtual std::pair<GUM_SCALAR,GUM_SCALAR> meanVar(const std::string& name) =0;
+
     private:
     /// assigns a influence diagram during the inference engine construction
     void setIDDuringConstruction__(const InfluenceDiagram< GUM_SCALAR >* infdiag);

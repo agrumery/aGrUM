@@ -104,17 +104,37 @@ namespace gum {
 
     Idx optimalDecision(NodeId decisionId);
     Idx optimalDecision(std::string decisionName);
+    std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
     std::vector< NodeSet > reversePartialOrder() const;
-
-    std::vector< std::pair< NodeId, Idx > > optimalDecisions();
 
     InfluenceDiagram< GUM_SCALAR > reducedLIMID() const;
 
     bool isSolvable() const;
 
+    /**
+     * Return the posterior probability of a node
+     *
+     * @param node
+     * @return the posterior probability for a chance or decision node. The
+     * variance for a utility node.
+     */
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
-    virtual const Potential< GUM_SCALAR >& posterior(const std::string& name) final;
+    virtual const Potential< GUM_SCALAR >&
+       posterior(const std::string& name) final;
+
+    /**
+     * Return the posterior utility of a node
+     *
+     * @param node
+     * @return the posterior utility of a node (or the mean for a utility node)
+     */
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) final;
+    virtual const Potential< GUM_SCALAR >&
+       posteriorUtility(const std::string& name) final;
+
+    virtual std::pair<GUM_SCALAR,GUM_SCALAR> meanVar(NodeId node) final;
+    virtual std::pair<GUM_SCALAR,GUM_SCALAR> meanVar(const std::string& name) final;
 
     protected:
     void onStateChanged_() override;
@@ -130,12 +150,12 @@ namespace gum {
     /// Returns the set of non-requisite for node d
     NodeSet nonRequisiteNodes_(NodeId d) const;
 
-    DAG                                     reduced_;
-    CliqueGraph                             reducedJunctionTree_;
-    NodeProperty< NodeId >                  node_to_clique_;
-    EdgeProperty< SetOfVars >               varsSeparator_;
-    NodeProperty< Potential< GUM_SCALAR > > strategies_;
-    NodeProperty< Potential< GUM_SCALAR > > posteriors_;
+    DAG                                             reduced_;
+    CliqueGraph                                     reducedJunctionTree_;
+    NodeProperty< NodeId >                          node_to_clique_;
+    EdgeProperty< SetOfVars >                       varsSeparator_;
+    NodeProperty< Potential< GUM_SCALAR > >         strategies_;
+    NodeProperty< DecisionPotential< GUM_SCALAR > > posteriors_;
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;

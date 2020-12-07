@@ -90,43 +90,53 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
       self.assertEqual(self.diag.variable(i).__str__(), newone.variable(i).__str__())
 
   def testBugInference(self):
-    tst_id = gum.InfluenceDiagram()
+    tst_id =gum.fastID("c1<-c->$u<-*d")
+    
+    tst_id.cpt("c").fillWith([0.5, 0.5])
 
-    c = tst_id.add(gum.LabelizedVariable('c', 'chance variable', 2))
-    d = tst_id.addDecisionNode(gum.LabelizedVariable('d', 'decision variable', 2))
-    u = tst_id.addUtilityNode(gum.LabelizedVariable('u', 'decision variable', 1))
-    c1 = tst_id.add(gum.LabelizedVariable('c1', 'chance variable 1', 2))
+    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
+    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
 
-    tst_id.addArc(c, u)
-    tst_id.addArc(d, u)
-
-    tst_id.cpt(c).fillWith([0.5, 0.5])
-
-    tst_id.addArc(c, c1)
-    tst_id.cpt(c1)[{'c': 0}] = [1, 0]
-    tst_id.cpt(c1)[{'c': 1}] = [0, 1]
-
-    tst_id.utility(u)[{'c': 0, 'd': 0}] = [10]
-    tst_id.utility(u)[{'c': 0, 'd': 1}] = [21]
-    tst_id.utility(u)[{'c': 1, 'd': 0}] = [100]
-    tst_id.utility(u)[{'c': 1, 'd': 1}] = [200]
+    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
+    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
+    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
+    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.optimalDecision("d"),1)
     self.assertEqual(ie.MEU(),110.5)
+    print(ie.MEU())
+
+  def testBugInferenceWithEvidence(self):
+    tst_id =gum.fastID("c1<-c->$u<-*d")
+    
+    tst_id.cpt("c").fillWith([0.5, 0.5])
+
+    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
+    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
+
+    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
+    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
+    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
+    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
+    print("evidence")
     ie.setEvidence({'c': 0})
+    print(ie)
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.optimalDecision("d"),1)
     self.assertEqual(ie.MEU(),21)
+    print(ie)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision(d),1)
+    self.assertEqual(ie.optimalDecision("d"),1)
     self.assertEqual(ie.MEU(),200)
+    print(ie)
+    print("done")
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)
