@@ -24,9 +24,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/tools/multidim/potential.h>
+
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
@@ -100,13 +104,12 @@ namespace gum_tests {
         } catch (gum::Exception e) { TS_ASSERT(false); }
 
         try {
-          TS_ASSERT_EQUALS(
-             inf.posterior(idList[0]).toString(),
-             "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-             "0.144495 /<var1:3> :: 0.117649");
-          TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
-                           "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
-                           "/<var2:3> :: 0.7");
+          TS_ASSERT_EQUALS(inf.posterior(idList[0]),
+                           (gum::Potential< double >() << bn.variable(idList[0]))
+                              .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
+          TS_ASSERT_EQUALS(inf.posterior(idList[1]),
+                           (gum::Potential< double >() << bn.variable(idList[1]))
+                              .fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (gum::Exception e) { TS_ASSERT(false); }
       }
 
@@ -119,13 +122,12 @@ namespace gum_tests {
         } catch (gum::Exception e) { TS_ASSERT(false); }
 
         try {
-          TS_ASSERT_EQUALS(
-             inf.posterior(idList[0]).toString(),
-             "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-             "0.144495 /<var1:3> :: 0.117649");
-          TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
-                           "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
-                           "/<var2:3> :: 0.7");
+          TS_ASSERT_EQUALS(inf.posterior(idList[0]),
+                           (gum::Potential< double >() << bn.variable(idList[0]))
+                              .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
+          TS_ASSERT_EQUALS(inf.posterior(idList[1]),
+                           (gum::Potential< double >() << bn.variable(idList[1]))
+                              .fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (gum::Exception) { TS_ASSERT(false); }
       }
     }

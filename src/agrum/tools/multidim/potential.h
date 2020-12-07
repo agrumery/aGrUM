@@ -515,7 +515,85 @@ namespace gum {
     }
 
     virtual std::string toString() const {
-      return MultiDimDecorator< GUM_SCALAR >::toString();
+      auto table = this->content();
+      if (table->nbrDim() == 0) { return "[]"; }
+      const Size colwidth = 6;
+      const Size numberwidth = 9;
+      const Size nbrLigMax = 6;
+
+      std::stringstream ss;
+      ss << std::left << std::fixed << std::endl;
+      ss.precision(numberwidth - 5);
+
+      const auto& var = table->variable(0);
+
+      const Size        nbparents = table->nbrDim() - 1;
+      const Size        nbcol = var.domainSize();
+      const std::string maskparent(colwidth, '-');
+      const std::string masknumber(numberwidth, '-');
+
+      if (nbparents > 0)
+        ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
+           << "||";
+      ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
+         << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << "|";
+      ss << std::endl;
+
+      if (nbparents > 0) {
+        for (Idx i = 1; i <= nbparents; i++)
+          ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth)
+             << "|";
+        ss << "|";
+      }
+      for (Idx i = 0; i < nbcol; i++)
+        ss << std::setw(numberwidth) << var.label(i).substr(0, numberwidth) << "|";
+      ss << std::endl;
+
+
+      if (nbparents > 0) {
+        for (Idx i = 1; i <= nbparents; i++)
+          ss << maskparent << "|";
+        ss << "|";
+      }
+      for (Idx i = 0; i < nbcol; i++)
+        ss << masknumber << "|";
+      ss << std::endl;
+      Instantiation I(*table);
+
+      auto drawligne = [&]() {
+        if (nbparents > 0) {
+          for (Idx i = 1; i <= nbparents; i++)
+            ss << std::setw(colwidth)
+               << table->variable(i).label(I.val(i)).substr(0, colwidth) << "|";
+          ss << "|";
+        }
+        for (I.setFirstVar(var); !I.end(); I.incVar(var))
+          ss << " " << std::setw(numberwidth - 1) << table->get(I) << "|";
+        I.setFirstVar(var);
+        ss << std::endl;
+      };
+
+      Size nbrLig = table->domainSize() / var.domainSize();
+      if (nbrLig < nbrLigMax * 2 + 1) {
+        for (I.setFirst(); !I.end(); I.incNotVar(var))
+          drawligne();
+      } else {
+        Size cpt = 0;
+        for (I.setFirst(); !I.end(); I.incNotVar(var)) {
+          cpt++;
+          if (cpt > nbrLigMax) break;
+          drawligne();
+        }
+        ss << "[..."<< nbrLig-nbrLigMax*2 <<" more line(s) ...]" << std::endl;
+        I.setLast();
+        for (Idx revi = 1; revi < nbrLigMax; revi++)
+          I.decNotVar(var);
+        for (I.setFirstVar(var); !I.end(); I.incNotVar(var)) {
+          drawligne();
+        }
+      }
+
+      return ss.str();
     }
 
     ///@}
@@ -529,18 +607,18 @@ namespace gum {
   extern template class Potential< double >;
 #endif
 
-  template<typename GUM_SCALAR>
-  inline Potential<GUM_SCALAR> log2(const Potential<GUM_SCALAR>& arg) {
+  template < typename GUM_SCALAR >
+  inline Potential< GUM_SCALAR > log2(const Potential< GUM_SCALAR >& arg) {
     return arg.new_log2();
   }
 
-  template<typename GUM_SCALAR>
-  inline Potential<GUM_SCALAR> abs(const Potential<GUM_SCALAR>& arg) {
+  template < typename GUM_SCALAR >
+  inline Potential< GUM_SCALAR > abs(const Potential< GUM_SCALAR >& arg) {
     return arg.new_abs();
   }
 
-  template<typename GUM_SCALAR>
-  inline Potential<GUM_SCALAR> sq(const Potential<GUM_SCALAR>& arg) {
+  template < typename GUM_SCALAR >
+  inline Potential< GUM_SCALAR > sq(const Potential< GUM_SCALAR >& arg) {
     return arg.new_sq();
   }
 

@@ -238,71 +238,36 @@ namespace gum_tests {
 
       // just checking memory allocation (what else ?)
       auto pA = p1 * p2;
-      TS_ASSERT_EQUALS(pA.toString(),
-                       "<b:0|c:0|a:0> :: 5 /"
-                       "<b:1|c:0|a:0> :: 18 /"
-                       "<b:0|c:1|a:0> :: 7 /"
-                       "<b:1|c:1|a:0> :: 24 /"
-                       "<b:0|c:0|a:1> :: 10 /"
-                       "<b:1|c:0|a:1> :: 24 /"
-                       "<b:0|c:1|a:1> :: 14 /"
-                       "<b:1|c:1|a:1> :: 32");
+
+      TS_ASSERT_EQUALS(pA,
+                       (gum::Potential< int >() << b << c << a)
+                          .fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
 
       auto pB = p1 + p2;
-      TS_ASSERT_EQUALS(pB.toString(),
-                       "<b:0|c:0|a:0> :: 6 /"
-                       "<b:1|c:0|a:0> :: 9 /"
-                       "<b:0|c:1|a:0> :: 8 /"
-                       "<b:1|c:1|a:0> :: 11 /"
-                       "<b:0|c:0|a:1> :: 7 /"
-                       "<b:1|c:0|a:1> :: 10 /"
-                       "<b:0|c:1|a:1> :: 9 /"
-                       "<b:1|c:1|a:1> :: 12");
+      TS_ASSERT_EQUALS(pB,
+                       (gum::Potential< int >() << b << c << a)
+                          .fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
 
       auto pC = p2 / p1;
-      TS_ASSERT_EQUALS(pC.toString(),
-                       "<b:0|a:0|c:0> :: 5 /"
-                       "<b:1|a:0|c:0> :: 2 /"
-                       "<b:0|a:1|c:0> :: 2 /"
-                       "<b:1|a:1|c:0> :: 1 /"
-                       "<b:0|a:0|c:1> :: 7 /"
-                       "<b:1|a:0|c:1> :: 2 /"
-                       "<b:0|a:1|c:1> :: 3 /"
-                       "<b:1|a:1|c:1> :: 2");
+      TS_ASSERT_EQUALS(pC,
+                       (gum::Potential< int >() << b << a << c)
+                          .fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
 
       auto pD = p2 - p1;
-      TS_ASSERT_EQUALS(pD.toString(),
-                       "<b:0|a:0|c:0> :: 4 /"
-                       "<b:1|a:0|c:0> :: 3 /"
-                       "<b:0|a:1|c:0> :: 3 /"
-                       "<b:1|a:1|c:0> :: 2 /"
-                       "<b:0|a:0|c:1> :: 6 /"
-                       "<b:1|a:0|c:1> :: 5 /"
-                       "<b:0|a:1|c:1> :: 5 /"
-                       "<b:1|a:1|c:1> :: 4");
+      TS_ASSERT_EQUALS(pD,
+                       (gum::Potential< int >() << b << a << c)
+                          .fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
 
-      TS_ASSERT_EQUALS(((p1 * p2) - (p2 / p1) + p1).toString(),
-                       "<b:0|a:0|c:0> :: 1 /"
-                       "<b:1|a:0|c:0> :: 19 /"
-                       "<b:0|a:1|c:0> :: 10 /"
-                       "<b:1|a:1|c:0> :: 27 /"
-                       "<b:0|a:0|c:1> :: 1 /"
-                       "<b:1|a:0|c:1> :: 25 /"
-                       "<b:0|a:1|c:1> :: 13 /"
-                       "<b:1|a:1|c:1> :: 34");
+      TS_ASSERT_EQUALS(((p1 * p2) - (p2 / p1) + p1),
+                       (gum::Potential< int >() << b << a << c)
+                          .fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
 
       p = p1 * p2;
       p -= (p2 / p1);
       p += p1;
-      TS_ASSERT_EQUALS(p.toString(),
-                       "<b:0|a:0|c:0> :: 1 /"
-                       "<b:1|a:0|c:0> :: 19 /"
-                       "<b:0|a:1|c:0> :: 10 /"
-                       "<b:1|a:1|c:0> :: 27 /"
-                       "<b:0|a:0|c:1> :: 1 /"
-                       "<b:1|a:0|c:1> :: 25 /"
-                       "<b:0|a:1|c:1> :: 13 /"
-                       "<b:1|a:1|c:1> :: 34");
+      TS_ASSERT_EQUALS(p,
+                       (gum::Potential< int >() << b << a << c)
+                          .fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
     }
 
     void testMargOutFunctions() {
@@ -339,20 +304,20 @@ namespace gum_tests {
         TS_ASSERT((q == margCD));
 
         p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-        TS_ASSERT_EQUALS(p.margProdOut({&a}).toString(),
-                         "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504");
-        TS_ASSERT_EQUALS(p.margProdOut({&b}).toString(),
-                         "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162");
+        TS_ASSERT_EQUALS(p.margProdOut({&a}),
+                         (gum::Potential< double >() << b).fillWith({6, 120, 504}))
+        TS_ASSERT_EQUALS(p.margProdOut({&b}),
+                         (gum::Potential< double >() << a).fillWith({28, 80, 162}))
 
-        TS_ASSERT_EQUALS(p.margMaxOut({&a}).toString(),
-                         "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9");
-        TS_ASSERT_EQUALS(p.margMaxOut({&b}).toString(),
-                         "<a:0> :: 7 /<a:1> :: 8 /<a:2> :: 9");
+        TS_ASSERT_EQUALS(p.margMaxOut({&a}),
+                         (gum::Potential< double >() << b).fillWith({3, 6, 9}))
+        TS_ASSERT_EQUALS(p.margMaxOut({&b}),
+                         (gum::Potential< double >() << a).fillWith({7, 8, 9}))
 
-        TS_ASSERT_EQUALS(p.margMinOut({&a}).toString(),
-                         "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7");
-        TS_ASSERT_EQUALS(p.margMinOut({&b}).toString(),
-                         "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3");
+        TS_ASSERT_EQUALS(p.margMinOut({&a}),
+                         (gum::Potential< double >() << b).fillWith({1, 4, 7}))
+        TS_ASSERT_EQUALS(p.margMinOut({&b}),
+                         (gum::Potential< double >() << a).fillWith({1, 2, 3}))
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -394,12 +359,12 @@ namespace gum_tests {
       q << a << b;
       q.fillWith({0, 3, 0, 3});
 
-      TS_ASSERT_EQUALS((p - q).abs().toString(),
-                       "<a:0|b:0> :: 0 /<a:1|b:0> :: 2 /"
-                       "<a:0|b:1> :: 2 /<a:1|b:1> :: 0");
-      TS_ASSERT_EQUALS((q - p).abs().toString(),
-                       "<a:0|b:0> :: 0 /<a:1|b:0> :: 2 /"
-                       "<a:0|b:1> :: 2 /<a:1|b:1> :: 0");
+      TS_ASSERT_EQUALS(
+         (p - q).abs(),
+         (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
+      TS_ASSERT_EQUALS(
+         (q - p).abs(),
+         (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
       TS_ASSERT_EQUALS((q - p).abs().max(), 2);
       TS_ASSERT_EQUALS((q - p).abs().min(), 0);
     }
@@ -416,12 +381,12 @@ namespace gum_tests {
       q << b << a;
       q.fillWith({0, 0, 3, 3});
 
-      TS_ASSERT_EQUALS((p - q).sq().toString(),
-                       "<a:0|b:0> :: 0 /<a:1|b:0> :: 4 /"
-                       "<a:0|b:1> :: 4 /<a:1|b:1> :: 0");
-      TS_ASSERT_EQUALS((q - p).sq().toString(),
-                       "<b:0|a:0> :: 0 /<b:1|a:0> :: 4 /"
-                       "<b:0|a:1> :: 4 /<b:1|a:1> :: 0");
+      TS_ASSERT_EQUALS(
+         (p - q).sq(),
+         (gum::Potential< double >() << a << b).fillWith({0, 4, 4, 0}))
+      TS_ASSERT_EQUALS(
+         (q - p).sq(),
+         (gum::Potential< double >() << b << a).fillWith({0, 4, 4, 0}))
       TS_ASSERT_EQUALS((q - p).sq().max(), 4);
       TS_ASSERT_EQUALS((q - p).sq().min(), 0);
     }
@@ -701,7 +666,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(a, 0.0f);
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate({33.0f}));
-      TS_ASSERT_EQUALS(p.toString(), "<> :: 33");
+      TS_ASSERT_EQUALS(p.domainSize(), 1)
+      TS_ASSERT_EQUALS(p.get(gum::Instantiation()), 33.0f)
 
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double)3.0f););
@@ -1330,8 +1296,8 @@ namespace gum_tests {
       auto                     b = gum::LabelizedVariable("b", "b", 2);
       auto                     c = gum::LabelizedVariable("c", "c", 2);
       px << a1 << b;
-      py<<a2<<c;
-      TS_ASSERT_THROWS(px*py,gum::DuplicateElement)
+      py << a2 << c;
+      TS_ASSERT_THROWS(px * py, gum::DuplicateElement)
     }
   };
 }   // namespace gum_tests
