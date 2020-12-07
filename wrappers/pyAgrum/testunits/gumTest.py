@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os
 import platform
 import sys
@@ -9,13 +7,6 @@ import logging
 
 cwd = os.getcwd()
 FORMAT = '[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
-
-log = logging.getLogger("gumTestLog")
-log.setLevel(logging.DEBUG)  # better to have too much log than not enough
-fh = logging.FileHandler('../../pyAgrumTests.log', mode='w', encoding=None, delay=False)
-fh.setFormatter(logging.Formatter(FORMAT))
-log.addHandler(fh)
-log.propagate = False
 
 if os.path.isabs(__file__):
   os.chdir(os.path.dirname(__file__))
@@ -31,6 +22,20 @@ for cde in sys.argv:
   elif cde in ["all"]:
     testNotebooks = (cde == "all")
 
+logfilename="/pyAgrumTests.log"
+if mod!="standAlone":
+  logfilename="/../.."+logfilename
+logfilename=cwd+logfilename
+print(logfilename)
+
+log = logging.getLogger("gumTestLog")
+log.setLevel(logging.DEBUG)  # better to have too much log than not enough
+fh = logging.FileHandler(logfilename, mode='w', encoding=None, delay=False)
+fh.setFormatter(logging.Formatter(FORMAT))
+log.addHandler(fh)
+log.propagate = False
+
+
 log.info("Mode detected : " + mod)
 log.info("Testing notebooks : " + str(testNotebooks))
 
@@ -39,7 +44,7 @@ if sys.version_info < (3, 0):
     log.warning("+ No notebook tests in python2")
     testNotebooks = False
 
-if mod != "standalone":
+if mod != "standAlone":
   if mod == "debug":
     libagrum = os.path.abspath("../../../build/debug/wrappers")
   else:
@@ -86,7 +91,7 @@ os.chdir(cwd)
 print("-" * 70)
 print(" log file ")
 print("-" * 70)
-with open("../../pyAgrumTests.log", "r") as logfile:
+with open(logfilename, "r") as logfile:
   for f in logfile.readlines():
     if "[pyAgrum]" in f:
       print(f, end='')
