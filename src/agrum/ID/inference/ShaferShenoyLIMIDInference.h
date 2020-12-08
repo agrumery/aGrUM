@@ -100,8 +100,6 @@ namespace gum {
 
     DAG reducedGraph() const { return reduced_; };
 
-    GUM_SCALAR MEU();
-
     std::vector< NodeSet > reversePartialOrder() const;
 
     InfluenceDiagram< GUM_SCALAR > reducedLIMID() const;
@@ -148,6 +146,13 @@ namespace gum {
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) {
       return meanVar(this->influenceDiagram().idFromName(name));
     };
+
+    /**
+     * Return the pair (mean,variance) for the total utility (MEU)
+     *
+     * @return the pair (mean,variance) for MEU
+     */
+    std::pair< GUM_SCALAR, GUM_SCALAR > MEU();
 
     protected:
     void onStateChanged_() override;
@@ -209,6 +214,7 @@ namespace gum {
     DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
                                              const PsiArcProperty&  psi,
                                              NodeId                 clique) const;
+    void binarizingMax_(Potential< GUM_SCALAR >& decision) const;
   };
 } /* namespace gum */
 

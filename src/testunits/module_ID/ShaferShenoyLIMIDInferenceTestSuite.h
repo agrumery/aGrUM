@@ -56,146 +56,7 @@ std::string toTab(const gum::Potential< double >& p);
 namespace gum_tests {
 
   class ShaferShenoyLIMIDInferenceTestSuite: public CxxTest::TestSuite {
-    private:
-    void fillTopoDecAsia(gum::InfluenceDiagram< double >& id,
-                         gum::List< gum::NodeId >&        idList) const {
-      try {
-        idList.insert(id.addDecisionNode(*HospitalizeVar));             // 0
-        idList.insert(id.addDecisionNode(*TakeXRayVar));                // 1
-        idList.insert(id.addChanceNode(*SmokingVar));                   // 2
-        idList.insert(id.addChanceNode(*BronchitisVar));                // 3
-        idList.insert(id.addChanceNode(*LungCancerVar));                // 4
-        idList.insert(id.addChanceNode(*EitherVar));                    // 5
-        idList.insert(id.addChanceNode(*DyspnoeaVar));                  // 6
-        idList.insert(id.addChanceNode(*PositiveXRayVar));              // 7
-        idList.insert(id.addChanceNode(*TubercolisisVar));              // 8
-        idList.insert(id.addChanceNode(*VisitAsiaVar));                 // 9
-        idList.insert(id.addUtilityNode(*HospitalizationUtilityVar));   // 10
-        idList.insert(id.addUtilityNode(*TakingXRayUtilityVar));        // 11
-
-        id.addArc(idList[0], idList[10]);
-        id.addArc(idList[0], idList[1]);
-
-        id.addArc(idList[1], idList[7]);
-        id.addArc(idList[1], idList[11]);
-
-        id.addArc(idList[2], idList[3]);
-        id.addArc(idList[2], idList[4]);
-
-        id.addArc(idList[3], idList[6]);
-
-        id.addArc(idList[4], idList[10]);
-        id.addArc(idList[4], idList[5]);
-
-        id.addArc(idList[5], idList[6]);
-        id.addArc(idList[5], idList[7]);
-
-        id.addArc(idList[8], idList[10]);
-        id.addArc(idList[8], idList[5]);
-        id.addArc(idList[8], idList[11]);
-
-        id.addArc(idList[9], idList[8]);
-
-      } catch (gum::Exception& e) {
-        std::cerr << std::endl << e.errorCallStack() << std::endl;
-        throw;
-      }
-    }
-
-    void populateDecAsia(gum::InfluenceDiagram< double >& id,
-                         gum::List< gum::NodeId >&        idList) {
-      fillTopoDecAsia(id, idList);
-
-      try {
-        id.cpt(idList[9]).populate({0.01f, 0.99f});
-        id.cpt(idList[4]).populate({0.1f, 0.9f, 0.01f, 0.99f});
-        id.cpt(idList[3]).populate({0.6f, 0.4f, 0.3f, 0.7f});
-        id.cpt(idList[2]).populate({0.5f, 0.5f});
-        id.cpt(idList[6]).populate(
-           {0.9f, 0.1f, 0.7f, 0.3f, 0.8f, 0.2f, 0.1f, 0.9f});
-        id.cpt(idList[8]).populate({0.05f, 0.95f, 0.01f, 0.99f});
-        id.cpt(idList[5]).populate({1, 0, 1, 0, 1, 0, 0, 1});
-        id.cpt(idList[7]).populate(
-           {0.98f, 0.02f, 0.5f, 0.5f, 0.05f, 0.95f, 0.5f, 0.5f});
-
-        id.utility(idList[10]).populate({180, 2, 120, 4, 160, 0, 15, 40});
-        id.utility(idList[11]).populate({0, 10, 1, 10});
-      } catch (gum::Exception& e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
-        throw;
-      }
-    }
-
     public:
-    // Dec-Asia test variable
-    gum::LabelizedVariable *HospitalizeVar, *TakeXRayVar;
-    gum::LabelizedVariable *SmokingVar, *BronchitisVar, *LungCancerVar, *EitherVar,
-       *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar, *VisitAsiaVar;
-    gum::LabelizedVariable *HospitalizationUtilityVar, *TakingXRayUtilityVar;
-
-    void setUp() final {
-      HospitalizeVar = new gum::LabelizedVariable("H", "Hospitalize?", 2);
-      HospitalizeVar->eraseLabels();
-      HospitalizeVar->addLabel("Yes");
-      HospitalizeVar->addLabel("No");
-      TakeXRayVar = new gum::LabelizedVariable("Ta", "Take X-Ray?", 2);
-      TakeXRayVar->eraseLabels();
-      TakeXRayVar->addLabel("Yes");
-      TakeXRayVar->addLabel("No");
-      SmokingVar = new gum::LabelizedVariable("S", "Smoking?", 2);
-      SmokingVar->eraseLabels();
-      SmokingVar->addLabel("Yes");
-      SmokingVar->addLabel("No");
-      BronchitisVar = new gum::LabelizedVariable("B", "Bronchitis?", 2);
-      BronchitisVar->eraseLabels();
-      BronchitisVar->addLabel("Yes");
-      BronchitisVar->addLabel("No");
-      LungCancerVar = new gum::LabelizedVariable("L", "Lung Cancer?", 2);
-      LungCancerVar->eraseLabels();
-      LungCancerVar->addLabel("Yes");
-      LungCancerVar->addLabel("No");
-      EitherVar =
-         new gum::LabelizedVariable("E", "Either tuberculosis or lung cancer?", 2);
-      EitherVar->eraseLabels();
-      EitherVar->addLabel("Yes");
-      EitherVar->addLabel("No");
-      DyspnoeaVar = new gum::LabelizedVariable("D", "Dyspnoea?", 2);
-      DyspnoeaVar->eraseLabels();
-      DyspnoeaVar->addLabel("Yes");
-      DyspnoeaVar->addLabel("No");
-      PositiveXRayVar = new gum::LabelizedVariable("P", "Positive X-Ray?", 2);
-      PositiveXRayVar->eraseLabels();
-      PositiveXRayVar->addLabel("Yes");
-      PositiveXRayVar->addLabel("No");
-      TubercolisisVar = new gum::LabelizedVariable("Tu", "Tuberculosis?", 2);
-      TubercolisisVar->eraseLabels();
-      TubercolisisVar->addLabel("Yes");
-      TubercolisisVar->addLabel("No");
-      VisitAsiaVar = new gum::LabelizedVariable("A", "Visit to Asia?", 2);
-      VisitAsiaVar->eraseLabels();
-      VisitAsiaVar->addLabel("Yes");
-      VisitAsiaVar->addLabel("No");
-      HospitalizationUtilityVar =
-         new gum::LabelizedVariable("Uh", "Utility of Hospitalization", 1);
-      TakingXRayUtilityVar =
-         new gum::LabelizedVariable("Ut", "Utility of Taking XRay", 1);
-    }
-
-    void tearDown() final {
-      delete HospitalizeVar;
-      delete TakeXRayVar;
-      delete SmokingVar;
-      delete BronchitisVar;
-      delete LungCancerVar;
-      delete EitherVar;
-      delete DyspnoeaVar;
-      delete PositiveXRayVar;
-      delete TubercolisisVar;
-      delete VisitAsiaVar;
-      delete HospitalizationUtilityVar;
-      delete TakingXRayUtilityVar;
-    }
-
     void testConstructor() {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
@@ -217,77 +78,72 @@ namespace gum_tests {
       gum::BIFXMLIDReader< double >   reader(&net, file);
       reader.proceed();
 
-      gum::ShaferShenoyLIMIDInference< double >* dIDI;
-      dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net);
+      gum::ShaferShenoyLIMIDInference< double > dIDI(&net);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
 
       TS_ASSERT_EQUALS(
-         dIDI->posterior("OilContents"),
+         dIDI.posterior("OilContents"),
          (gum::Potential< double >() << net.variableFromName("OilContents"))
             .fillWith({0.5, 0.3, 0.2}))
       TS_ASSERT_EQUALS(
-         dIDI->posteriorUtility("OilContents"),
+         dIDI.posteriorUtility("OilContents"),
          (gum::Potential< double >() << net.variableFromName("OilContents"))
             .fillWith({-38, 25, 170}))
 
       TS_ASSERT_EQUALS(
-         dIDI->posterior("TestResult"),
+         dIDI.posterior("TestResult"),
          (gum::Potential< double >() << net.variableFromName("TestResult"))
             .fillWith({0.24, 0.35, 0.41}))
       TS_ASSERT_EQUALS(
-         dIDI->posteriorUtility("TestResult"),
+         dIDI.posteriorUtility("TestResult"),
          (gum::Potential< double >() << net.variableFromName("TestResult"))
             .fillWith({77.5, 22.8571, -10}))
 
       TS_ASSERT_EQUALS(
-         dIDI->posterior("Testing"),
+         dIDI.posterior("Testing"),
          (gum::Potential< double >() << net.variableFromName("Testing"))
             .fillWith({1, 0}))
       TS_ASSERT_EQUALS(
-         dIDI->posteriorUtility("Testing"),
+         dIDI.posteriorUtility("Testing"),
          (gum::Potential< double >() << net.variableFromName("Testing"))
             .fillWith({22.5, 20}))
 
       TS_ASSERT_EQUALS(
-         dIDI->posterior("Drilling"),
+         dIDI.posterior("Drilling"),
          (gum::Potential< double >() << net.variableFromName("Drilling"))
             .fillWith({0.59, 0.41}))
       TS_ASSERT_EQUALS(
-         dIDI->posteriorUtility("Drilling"),
+         dIDI.posteriorUtility("Drilling"),
          (gum::Potential< double >() << net.variableFromName("Drilling"))
             .fillWith({45.0847, -10}))
 
-      TS_ASSERT_DELTA(dIDI->meanVar("Cost").first, -10, 1e-5)
-      TS_ASSERT_DELTA(dIDI->meanVar("Cost").second, 0, 1e-5)
-      TS_ASSERT_DELTA(dIDI->meanVar("Reward").first, 32.5, 1e-5)
-      TS_ASSERT_DELTA(dIDI->meanVar("Reward").second, 7648.750, 1e-5)
-
-      delete dIDI;
+      TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, 1e-5)
+      TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, 1e-5)
+      TS_ASSERT_DELTA(dIDI.meanVar("Reward").first, 32.5, 1e-5)
+      TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 7648.750, 1e-5)
     }
 
-    /* void XXXXInferenceWithDecAsia() {
-      gum::InfluenceDiagram< double >* topology;
-      gum::List< gum::NodeId >         idList;
-      topology = new gum::InfluenceDiagram< double >();
-      populateDecAsia(*topology, idList);
-      gum::NullStream devnull;
+    void testInferenceWithDecAsia() {
+      std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
+      gum::InfluenceDiagram< double > net;
+      gum::BIFXMLIDReader< double >   reader(&net, file);
+      reader.proceed();
+
 
       gum::ShaferShenoyLIMIDInference< double >* dIDI;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::ShaferShenoyLIMIDInference< double >(topology))
+         dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
 
       TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dIDI->optimalDecision(0), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(idList[0]))
-      TS_ASSERT_THROWS(dIDI->optimalDecision(idList[2]), gum::InvalidNode)
-
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(0))
+      TS_ASSERT_THROWS(dIDI->optimalDecision(2), gum::InvalidNode)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
 
       delete dIDI;
-      delete topology;
     }
 
     /* void XXXXInferenceWithOilWildCaterAndEvidence() {
@@ -492,8 +348,8 @@ namespace gum_tests {
         GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }
     }
-
-    /* void XXXXNewStructure() {
+*/
+    void testNewStructure() {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
@@ -532,7 +388,7 @@ namespace gum_tests {
       }
     }
 
-    /* void XXXXSolvability() {
+    void testSolvability() {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
@@ -554,7 +410,7 @@ namespace gum_tests {
       }
     }
 
-    /* void XXXXNoForgettingAssumption() {
+    void testNoForgettingAssumption() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -615,7 +471,7 @@ namespace gum_tests {
                        infdiag.nodeset({"R4", "D4"}))
     }
 
-    /* void XXXXNoForgettingAssumption2() {
+    void testNoForgettingAssumption2() {
       // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
       // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
@@ -649,7 +505,7 @@ namespace gum_tests {
       // GUM_TRACE_VAR(noForgetting.toDot());
     }
 
-    /* void XXXXJunctionTree() {
+    void testJunctionTree() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -670,7 +526,8 @@ namespace gum_tests {
         ieid.makeInference();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-    /* void XXXXPinball() {
+
+    void testPinball() {
       std::string                     file = GET_RESSOURCES_PATH("ID/Pinball.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -684,7 +541,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    /* void XXXXDavidAndescavage() {
+    void testDavidAndescavage() {
       std::string file = GET_RESSOURCES_PATH("ID/testFromDavidAndescavage.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -701,7 +558,7 @@ namespace gum_tests {
       GUM_TRACE_VAR(ieid.MEU())
     }
 
-    /* void XXXXBugWithEvidence() {
+    void testBugWithEvidence() {
       auto tst_id =
          gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
 
@@ -711,8 +568,11 @@ namespace gum_tests {
       {
         auto ie = gum::ShaferShenoyLIMIDInference< double >(&tst_id);
         ie.makeInference();
-        TS_ASSERT_EQUALS(ie.optimalDecision("d"), 1);
-        TS_ASSERT_EQUALS(ie.MEU(), 110.5);
+        TS_ASSERT_EQUALS(
+           ie.optimalDecision("d"),
+           (gum::Potential< double >() << tst_id.variableFromName("d"))
+              .fillWith({0, 1}))
+        TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
         TS_ASSERT_EQUALS(
            ie.posterior("c1"),
            (gum::Potential< double >() << tst_id.variableFromName("c1"))
@@ -726,24 +586,29 @@ namespace gum_tests {
         auto ie = gum::ShaferShenoyLIMIDInference< double >(&tst_id);
         ie.addEvidence("c", 1);
         ie.makeInference();
-        TS_ASSERT_EQUALS(ie.optimalDecision("d"), 1);
-        TS_ASSERT_EQUALS(ie.MEU(), 200);
-        GUM_TRACE_VAR(ie.MEU())
+        TS_ASSERT_EQUALS_SHOW(
+           ie.optimalDecision("d"),
+           (gum::Potential< double >() << tst_id.variableFromName("d"))
+              .fillWith({0, 1}))
+        TS_ASSERT_EQUALS(ie.MEU().first, 200);
         TS_ASSERT_EQUALS(
            ie.posterior("c1"),
            (gum::Potential< double >() << tst_id.variableFromName("c1"))
               .fillWith({0, 1}))
         TS_ASSERT_EQUALS(
-           ie.posterior("d"),
+           ie.posteriorUtility("d"),
            (gum::Potential< double >() << tst_id.variableFromName("d"))
-              .fillWith({0, 200}))
+              .fillWith({21, 200}))
       }
-      {
+      try {
         auto ie = gum::ShaferShenoyLIMIDInference< double >(&tst_id);
         ie.addEvidence("d", 1);
         ie.makeInference();
-        TS_ASSERT_EQUALS(ie.optimalDecision("d"), 1);
-        TS_ASSERT_EQUALS(ie.MEU(), 110.5);
+        TS_ASSERT_EQUALS(
+           ie.optimalDecision("d"),
+           (gum::Potential< double >() << tst_id.variableFromName("d"))
+              .fillWith({0, 1}))
+        TS_ASSERT_EQUALS(ie.MEU().first, 110.5);
         TS_ASSERT_EQUALS(
            ie.posterior("c1"),
            (gum::Potential< double >() << tst_id.variableFromName("c1"))
@@ -752,13 +617,18 @@ namespace gum_tests {
            ie.posterior("d"),
            (gum::Potential< double >() << tst_id.variableFromName("d"))
               .fillWith({0, 110.5}))
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e)
       }
       {
         auto ie = gum::ShaferShenoyLIMIDInference< double >(&tst_id);
         ie.addEvidence("c1", std::vector< double >{0.8, 0.2});
         ie.makeInference();
-        TS_ASSERT_EQUALS(ie.optimalDecision("d"), 1);
-        TS_ASSERT_EQUALS(ie.MEU(), 56.8);
+        TS_ASSERT_EQUALS(
+           ie.optimalDecision("d"),
+           (gum::Potential< double >() << tst_id.variableFromName("d"))
+              .fillWith({0, 1}))
+        TS_ASSERT_EQUALS(ie.MEU().first, 56.8);
         GUM_TRACE_VAR(ie.MEU())
         TS_ASSERT_EQUALS(
            ie.posterior("c"),
@@ -770,6 +640,5 @@ namespace gum_tests {
               .fillWith({0, 56.8}))
       }
     }
-     */
   };
 }   // namespace gum_tests
