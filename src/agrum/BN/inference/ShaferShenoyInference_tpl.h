@@ -163,7 +163,7 @@ namespace gum {
       delete pot.second;
 
     // indicate that new messages need be computed
-    if (this->isInferenceReady() || this->isDone())
+    if (this->isInferenceReady() || this->isInferenceDone())
       this->setOutdatedPotentialsState_();
   }
 

@@ -155,15 +155,13 @@ namespace gum {
     /// returns whether the inference object is in a OutdatedPotential state
     virtual bool isInferenceOutdatedPotentials() const noexcept final;
     /// returns whether the inference object is in a InferenceDone state
-    virtual bool isInferenceDone() const noexcept final;
-
-    /// returns whether the inference object is in a done state
     /** The inference object is in a done state when the posteriors can be
      * retrieved without performing a new inference, i.e., all the heavy
      * computations have already been performed. Typically, in a junction tree
      * algorithm, this corresponds to a situation in which all the messages
      * needed in the JT have been computed and sent. */
-    virtual bool isDone() const noexcept final;
+    virtual bool isInferenceDone() const noexcept final;
+
 
     /// prepare the internal inference structures for the next inference
     virtual void prepareInference() final;

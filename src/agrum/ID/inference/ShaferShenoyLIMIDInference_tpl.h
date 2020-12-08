@@ -218,6 +218,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< GUM_SCALAR, GUM_SCALAR >
      ShaferShenoyLIMIDInference< GUM_SCALAR >::MEU() {
+    if (!this->isInferenceDone())
+      GUM_ERROR(OperationNotAllowed, "Call MakeInference first")
+
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
 
     GUM_SCALAR resmean = 0;
@@ -236,6 +239,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   gum::Potential< GUM_SCALAR >
      ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
+    if (!this->isInferenceDone())
+      GUM_ERROR(OperationNotAllowed, "Call MakeInference first")
+
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (!infdiag.isDecisionNode(decisionId))
       GUM_ERROR(InvalidNode,
@@ -587,7 +593,7 @@ namespace gum {
       SetOfVars sev;
       sev.insert(&infdiag.variable(decisionNode));
       for (const auto parent: reduced_.parents(decisionNode)) {
-        GUM_TRACE("    parent : " << infdiag.variable(parent).name())
+        // GUM_TRACE("    parent : " << infdiag.variable(parent).name())
         sev.insert(&infdiag.variable(parent));
       }
       dp = dp ^ sev;
@@ -597,9 +603,8 @@ namespace gum {
       }
       decision =
          (dp.utilPot * dp.probPot).putFirst(&infdiag.variable(decisionNode));
-      GUM_TRACE_VAR(decision);
+
       binarizingMax_(decision);
-      GUM_TRACE_VAR(decision)
     }
     phi[node_to_clique_[decisionNode]].insertProba(decision);
   }

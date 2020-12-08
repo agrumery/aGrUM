@@ -91,13 +91,6 @@ namespace gum {
   }
 
 
-  // returns whether the inference object is in a done state
-  template < typename GUM_SCALAR >
-  INLINE bool GraphicalModelInference< GUM_SCALAR >::isDone() const noexcept {
-    return (state__ == StateOfInference::Done);
-  }
-
-
   // returns the state of the inference engine
   template < typename GUM_SCALAR >
   INLINE typename GraphicalModelInference< GUM_SCALAR >::StateOfInference
@@ -690,7 +683,7 @@ namespace gum {
   // prepare the internal inference structures for the next inference
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::prepareInference() {
-    if (isInferenceReady() || isDone()) { return; }
+    if (isInferenceReady() || isInferenceDone()) { return; }
 
     if (model__ == nullptr)
       GUM_ERROR(NullElement,
@@ -709,7 +702,7 @@ namespace gum {
   // perform the heavy computations needed to compute the targets' posteriors
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::makeInference() {
-    if (isDone()) { return; }
+    if (isInferenceDone()) { return; }
 
     if (!isInferenceReady()) { prepareInference(); }
 

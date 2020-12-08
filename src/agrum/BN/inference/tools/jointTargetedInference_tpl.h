@@ -231,7 +231,7 @@ namespace gum {
                                                << joint_targets__);
     }
 
-    if (!this->isDone()) { this->makeInference(); }
+    if (!this->isInferenceDone()) { this->makeInference(); }
 
     if (found_exact_target)
       return jointPosterior_(nodes);

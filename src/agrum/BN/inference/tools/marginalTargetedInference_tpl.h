@@ -248,7 +248,7 @@ namespace gum {
       GUM_ERROR(UndefinedElement, node << " is not a target node");
     }
 
-    if (!this->isDone()) { this->makeInference(); }
+    if (!this->isInferenceDone()) { this->makeInference(); }
 
     return posterior_(node);
   }
