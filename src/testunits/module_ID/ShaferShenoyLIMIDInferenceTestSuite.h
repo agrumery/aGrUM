@@ -514,17 +514,10 @@ namespace gum_tests {
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
 
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
-      GUM_TRACE_VAR(ieid.reducedLIMID().toDot())
 
       auto jt = ieid.junctionTree();
       TS_ASSERT_EQUALS(jt->size(), gum::Size(5));
-      GUM_TRACE_VAR(jt->toString())
-      for (const auto& n: jt->nodes()) {
-        GUM_TRACE(n << " : " << infdiag.names(jt->clique(n)))
-      }
-      try {
-        ieid.makeInference();
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      ieid.makeInference();
     }
 
     void testPinball() {
@@ -534,11 +527,23 @@ namespace gum_tests {
       reader.proceed();
 
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
-      GUM_TRACE_VAR(ieid.reversePartialOrder())
-      // ieid.addNoForgettingAssumption({std::string()})
-      try {
-        ieid.makeInference();
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      ieid.makeInference();
+
+      TS_ASSERT_EQUALS(
+         ieid.posteriorUtility("BusinessDecision"),
+         (gum::Potential< double >() << net.variableFromName("BusinessDecision"))
+            .fillWith({181.0879, 276.25, 200}))
+
+
+      TS_ASSERT_EQUALS(
+         ieid.posterior("RentalRate"),
+         (gum::Potential< double >() << net.variableFromName("RentalRate"))
+            .fillWith({0.25,0.75}))
+
+      TS_ASSERT_EQUALS(
+         ieid.posterior("RevenueLevel"),
+         (gum::Potential< double >() << net.variableFromName("RevenueLevel"))
+            .fillWith({0.185,0.63,0.185}))
     }
 
     void testDavidAndescavage() {
@@ -548,7 +553,6 @@ namespace gum_tests {
       reader.proceed();
 
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
-      GUM_TRACE_VAR(ieid.reversePartialOrder())
       // ieid.addNoForgettingAssumption({std::string()})
       ieid.addEvidence("DoTest", "Both");
       ieid.addEvidence("FirstTest", "Positive");
@@ -617,9 +621,7 @@ namespace gum_tests {
            ie.posterior("d"),
            (gum::Potential< double >() << tst_id.variableFromName("d"))
               .fillWith({0, 110.5}))
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e)
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       {
         auto ie = gum::ShaferShenoyLIMIDInference< double >(&tst_id);
         ie.addEvidence("c1", std::vector< double >{0.8, 0.2});

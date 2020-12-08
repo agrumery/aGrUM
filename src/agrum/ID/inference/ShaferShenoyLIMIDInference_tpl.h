@@ -710,7 +710,7 @@ namespace gum {
         SetOfVars sev;
         sev.insert(&infdiag.variable(node));
         SetOfVars family = sev;
-        for (const auto par: infdiag.parents(node)) {
+        for (const auto par: reduced_.parents(node)) {
           if (infdiag.isChanceNode(par)) family.insert(&infdiag.variable(par));
         }
         const auto               dp = phi[node_to_clique_[node]] ^ family;
@@ -718,13 +718,17 @@ namespace gum {
         binarizingMax_(decision);
         strategies_.insert(node, decision);
         res = dp ^ sev;
-        if (family.size() == 1) {   // unconditional decision
+        if (reduced_.parents(node).size() == 0) {   // unconditional decision
+          if (!unconditionalDecisions_.exists(node))
+            GUM_ERROR(InvalidNode,
+                      "Node " << infdiag.variable(node).name()
+                              << " should have an unconditionaldecision")
           res.utilPot = unconditionalDecisions_[node].utilPot;
         }
       } else {
         SetOfVars family;
         family.insert(&infdiag.variable(node));
-        for (const auto par: infdiag.parents(node)) {
+        for (const auto par: reduced_.parents(node)) {
           family.insert(&infdiag.variable(par));
         }
         res = phi[node_to_clique_[node]] ^ family;
