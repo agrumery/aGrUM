@@ -196,99 +196,18 @@ namespace gum_tests {
       delete TakingXRayUtilityVar;
     }
 
-    void /*test*/ Constructor() {
-      gum::InfluenceDiagram< double >* topology;
-      gum::List< gum::NodeId >         idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology =
-                                      new gum::InfluenceDiagram< double >())
-      TS_GUM_ASSERT_THROWS_NOTHING(populateDecAsia(*topology, idList))
+    void testConstructor() {
+      std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
+      gum::InfluenceDiagram< double > net;
+      gum::BIFXMLIDReader< double >   reader(&net, file);
+      reader.proceed();
 
       gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dIDI = new gum::ShaferShenoyLIMIDInference< double >(topology))
+         dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
       TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
-      if (topology != nullptr) delete topology;
     }
 
-    void /*test*/ StrongJunctionTree() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      gum::LabelizedVariable dVar1("decisionVar1", "D1", 2);
-      gum::LabelizedVariable dVar2("decisionVar2", "D2", 2);
-      gum::LabelizedVariable dVar3("decisionVar3", "D3", 2);
-      gum::LabelizedVariable dVar4("decisionVar4", "D4", 2);
-      gum::LabelizedVariable cVar1("A", "a", 2);
-      gum::LabelizedVariable cVar2("B", "b", 2);
-      gum::LabelizedVariable cVar3("C", "c", 2);
-      gum::LabelizedVariable cVar4("D", "d", 2);
-      gum::LabelizedVariable cVar5("E", "e", 2);
-      gum::LabelizedVariable cVar6("F", "f", 2);
-      gum::LabelizedVariable cVar7("G", "g", 2);
-      gum::LabelizedVariable cVar8("H", "h", 2);
-      gum::LabelizedVariable cVar9("I", "i", 2);
-      gum::LabelizedVariable cVar10("J", "j", 2);
-      gum::LabelizedVariable cVar11("K", "k", 2);
-      gum::LabelizedVariable cVar12("L", "l", 2);
-      gum::LabelizedVariable uVar1("utilityVar1", "U1", 1);
-      gum::LabelizedVariable uVar2("utilityVar2", "U2", 1);
-      gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
-      gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
-
-      idList.insert(id.addDecisionNode(dVar1));   // 0
-      idList.insert(id.addDecisionNode(dVar2));   // 1
-      idList.insert(id.addDecisionNode(dVar3));   // 2
-      idList.insert(id.addDecisionNode(dVar4));   // 3
-      idList.insert(id.addChanceNode(cVar1));     // 4
-      idList.insert(id.addChanceNode(cVar2));     // 5
-      idList.insert(id.addChanceNode(cVar3));     // 6
-      idList.insert(id.addChanceNode(cVar4));     // 7
-      idList.insert(id.addChanceNode(cVar5));     // 8
-      idList.insert(id.addChanceNode(cVar6));     // 9
-      idList.insert(id.addChanceNode(cVar7));     // 10
-      idList.insert(id.addChanceNode(cVar8));     // 11
-      idList.insert(id.addChanceNode(cVar9));     // 12
-      idList.insert(id.addChanceNode(cVar10));    // 13
-      idList.insert(id.addChanceNode(cVar11));    // 14
-      idList.insert(id.addChanceNode(cVar12));    // 15
-      idList.insert(id.addUtilityNode(uVar1));    // 16
-      idList.insert(id.addUtilityNode(uVar2));    // 17
-      idList.insert(id.addUtilityNode(uVar3));    // 18
-      idList.insert(id.addUtilityNode(uVar4));    // 19
-
-      id.addArc(idList[4], idList[6]);
-      id.addArc(idList[5], idList[6]);
-      id.addArc(idList[5], idList[7]);
-      id.addArc(idList[5], idList[0]);
-      id.addArc(idList[0], idList[7]);
-      id.addArc(idList[0], idList[16]);
-      id.addArc(idList[6], idList[8]);
-      id.addArc(idList[7], idList[8]);
-      id.addArc(idList[7], idList[9]);
-      id.addArc(idList[8], idList[10]);
-      id.addArc(idList[8], idList[1]);
-      id.addArc(idList[9], idList[1]);
-      id.addArc(idList[9], idList[11]);
-      id.addArc(idList[10], idList[3]);
-      id.addArc(idList[10], idList[12]);
-      id.addArc(idList[1], idList[12]);
-      id.addArc(idList[1], idList[2]);
-      id.addArc(idList[3], idList[15]);
-      id.addArc(idList[12], idList[15]);
-      id.addArc(idList[11], idList[13]);
-      id.addArc(idList[11], idList[14]);
-      id.addArc(idList[2], idList[14]);
-      id.addArc(idList[2], idList[17]);
-      id.addArc(idList[2], idList[3]);
-      id.addArc(idList[13], idList[18]);
-      id.addArc(idList[14], idList[18]);
-      id.addArc(idList[15], idList[19]);
-
-      gum::NullStream                           devnull;
-      gum::ShaferShenoyLIMIDInference< double > dIDI(&id);
-      auto                                      jt = dIDI.junctionTree();
-      TS_ASSERT_EQUALS(jt->size(), 13u);
-    }
 #define TS_ASSERT_EQUALS_SHOW(x, y) \
   { GUM_TRACE_VAR((x)) GUM_TRACE_VAR(y) TS_ASSERT_EQUALS(x, y) }
 
@@ -328,7 +247,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(
          dIDI->posteriorUtility("Testing"),
          (gum::Potential< double >() << net.variableFromName("Testing"))
-            .fillWith({22.5, 0}))   // todo should be 22.5,20
+            .fillWith({22.5, 20}))
 
       TS_ASSERT_EQUALS(
          dIDI->posterior("Drilling"),
@@ -344,20 +263,10 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI->meanVar("Reward").first, 32.5, 1e-5)
       TS_ASSERT_DELTA(dIDI->meanVar("Reward").second, 7648.750, 1e-5)
 
-      /* for (auto node: net.nodes()) {
-         if (net.isUtilityNode(node)) {
-           GUM_TRACE(net.variable(node).name() << ":" << dIDI->meanVar(node));
-         } else {
-           GUM_TRACE(net.variable(node).name() << ":" << dIDI->posterior(node));
-           GUM_TRACE(net.variable(node).name()
-                     << ":" << dIDI->posteriorUtility(node));
-         }
-       }*/
-
       delete dIDI;
     }
 
-    void /*test*/ InferenceWithDecAsia() {
+    /* void XXXXInferenceWithDecAsia() {
       gum::InfluenceDiagram< double >* topology;
       gum::List< gum::NodeId >         idList;
       topology = new gum::InfluenceDiagram< double >();
@@ -370,21 +279,18 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(dIDI->optimalDecision(idList[0]), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->optimalDecisions(), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(idList[0]))
       TS_ASSERT_THROWS(dIDI->optimalDecision(idList[2]), gum::InvalidNode)
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecisions())
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecisions())
 
       delete dIDI;
       delete topology;
     }
 
-    void /*test*/ InferenceWithOilWildCaterAndEvidence() {
+    /* void XXXXInferenceWithOilWildCaterAndEvidence() {
       auto                     topology = new gum::InfluenceDiagram< double >();
       gum::List< gum::NodeId > idList;
       // populateOilWildcater(*topology, idList);
@@ -421,7 +327,7 @@ namespace gum_tests {
       delete evidence2;
     }
 
-    void /*test*/ WithNames() {
+    /* void XXXXWithNames() {
       gum::InfluenceDiagram< double > diag;
       diag.add(gum::LabelizedVariable("A", "A", 2));
       diag.addDecisionNode(gum::LabelizedVariable("D", "D", 2));
@@ -449,7 +355,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(diag.addArc("foo", "bar"), gum::NotFound)
     }
 
-    void /*test*/ FromBug() {
+    /* void XXXXFromBug() {
       gum::InfluenceDiagram< double > tst_id;
 
       auto c = tst_id.add(gum::LabelizedVariable("c", "chance variable", 2));
@@ -486,7 +392,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ BugFromNeapolitan() {
+    /* void XXXXBugFromNeapolitan() {
       gum::InfluenceDiagram< double > model;
 
       model.addDecisionNode(gum::LabelizedVariable(
@@ -557,7 +463,6 @@ namespace gum_tests {
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&model);
         inf.makeInference();
-        GUM_TRACE_VAR(inf.optimalDecisions())
         GUM_TRACE_VAR(inf.MEU())
         GUM_TRACE_VAR(inf.optimalDecision("Buy"))
       }
@@ -583,13 +488,12 @@ namespace gum_tests {
         inf.addListOfEvidence(l);
 
         inf.makeInference();
-        GUM_TRACE_VAR(inf.optimalDecisions())
         GUM_TRACE_VAR(inf.MEU())
         GUM_TRACE_VAR(inf.optimalDecision("Buy"))
-      }*/
+      }
     }
 
-    void /*test*/ NewStructure() {
+    /* void XXXXNewStructure() {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
@@ -628,7 +532,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ Solvability() {
+    /* void XXXXSolvability() {
       {
         auto infdiag =
            gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
@@ -650,7 +554,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ NoForgettingAssumption() {
+    /* void XXXXNoForgettingAssumption() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -711,7 +615,7 @@ namespace gum_tests {
                        infdiag.nodeset({"R4", "D4"}))
     }
 
-    void /*test*/ NoForgettingAssumption2() {
+    /* void XXXXNoForgettingAssumption2() {
       // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
       // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
@@ -745,7 +649,7 @@ namespace gum_tests {
       // GUM_TRACE_VAR(noForgetting.toDot());
     }
 
-    void /*test*/ JunctionTree() {
+    /* void XXXXJunctionTree() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -766,7 +670,7 @@ namespace gum_tests {
         ieid.makeInference();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-    void /*test*/ Pinball() {
+    /* void XXXXPinball() {
       std::string                     file = GET_RESSOURCES_PATH("ID/Pinball.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -780,7 +684,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ DavidAndescavage() {
+    /* void XXXXDavidAndescavage() {
       std::string file = GET_RESSOURCES_PATH("ID/testFromDavidAndescavage.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -797,7 +701,7 @@ namespace gum_tests {
       GUM_TRACE_VAR(ieid.MEU())
     }
 
-    void /*test*/ BugWithEvidence() {
+    /* void XXXXBugWithEvidence() {
       auto tst_id =
          gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
 
@@ -866,5 +770,6 @@ namespace gum_tests {
               .fillWith({0, 56.8}))
       }
     }
+     */
   };
 }   // namespace gum_tests

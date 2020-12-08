@@ -53,7 +53,10 @@ namespace gum {
     reduced_.clear();
     reducedJunctionTree_.clear();
     solvabiltyOrder_.clear();
-    reversePartialOrder().clear();
+    posteriors_.clear();
+    unconditionalDecisions_.clear();
+    strategies_.clear();
+    reversePartialOrder_.clear();
   }
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onStateChanged_() {}
@@ -223,32 +226,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Idx ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(
-     NodeId decisionId) {
-    /*
+  gum::Potential< GUM_SCALAR >
+     ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (!infdiag.isDecisionNode(decisionId))
       GUM_ERROR(InvalidArgument,
-                "Node " << infdiag.variable(decisionId).name()
-                        << " is not a decision node");
+                infdiag.variable(decisionId).name()
+                   << "(" << decisionId << ") is not a decision node.")
 
-    const auto&   pot = posteriors_[decisionId];
-    Instantiation I(pot);
-    for (I.setFirst(); !I.end(); I.inc())
-      if (pot.get(I) > 0.0) return I.val(0);
-    return 0;*/
+    return strategies_[decisionId];
   }
 
-  template < typename GUM_SCALAR >
-  std::vector< std::pair< NodeId, Idx > >
-     ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecisions() { /*
-     std::vector< std::pair< NodeId, Idx > > res;
-     const InfluenceDiagram< GUM_SCALAR >&   infdiag = this->influenceDiagram();
-     for (auto node: infdiag.nodes())
-       if (infdiag.isDecisionNode(node))
-         res.push_back(std::pair< NodeId, Idx >(node, optimalDecision(node)));
-     return res;*/
-  }
 
   template < typename GUM_SCALAR >
   bool ShaferShenoyLIMIDInference< GUM_SCALAR >::isSolvable() const {
@@ -262,6 +250,9 @@ namespace gum {
     reducedJunctionTree_.clear();
     solvabiltyOrder_.clear();
     reversePartialOrder_.clear();
+    posteriors_.clear();
+    unconditionalDecisions_.clear();
+    strategies_.clear();
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
 
     NodeSet utilities;
@@ -489,12 +480,6 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Idx ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(
-     std::string decisionName) {
-    return optimalDecision(this->influenceDiagram().idFromName(decisionName));
-  }
-
-  template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
      ShaferShenoyLIMIDInference< GUM_SCALAR >::reducedLIMID() const {
     const auto&                    infdiag = this->influenceDiagram();
@@ -599,6 +584,10 @@ namespace gum {
         sev.insert(&infdiag.variable(parent));
       }
       dp = dp ^ sev;
+      if (sev.size() == 1) {   // unconditionnal => we keep the utility before
+                               // inserting hard decision
+        unconditionalDecisions_.set(decisionNode, dp);
+      }
       decision =
          (dp.utilPot * dp.probPot).putFirst(&infdiag.variable(decisionNode));
       GUM_TRACE_VAR(decision);
@@ -707,6 +696,9 @@ namespace gum {
         const auto dp = phi[node_to_clique_[node]] ^ family;
         strategies_.insert(node, dp.utilPot);
         res = dp ^ sev;
+        if (family.size() == 1) {   // unconditional decision
+          res.utilPot = unconditionalDecisions_[node].utilPot;
+        }
       } else {
         SetOfVars family;
         family.insert(&infdiag.variable(node));
@@ -727,32 +719,15 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     ShaferShenoyLIMIDInference< GUM_SCALAR >::posterior(const std::string& name) {
-    return posterior(this->influenceDiagram().idFromName(name));
-  }
-  template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
      ShaferShenoyLIMIDInference< GUM_SCALAR >::posteriorUtility(NodeId node) {
     return posteriors_[node].utilPot;
   }
 
-  template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
-     ShaferShenoyLIMIDInference< GUM_SCALAR >::posteriorUtility(
-        const std::string& name) {
-    return posteriorUtility(this->influenceDiagram().idFromName(name));
-  }
 
   template < typename GUM_SCALAR >
   std::pair< GUM_SCALAR, GUM_SCALAR >
      ShaferShenoyLIMIDInference< GUM_SCALAR >::meanVar(NodeId node) {
     return posteriors_[node].meanVar();
-  }
-
-  template < typename GUM_SCALAR >
-  std::pair< GUM_SCALAR, GUM_SCALAR >
-     ShaferShenoyLIMIDInference< GUM_SCALAR >::meanVar(const std::string& name) {
-    return meanVar(this->influenceDiagram().idFromName(name));
   }
 
 } /* namespace gum */
