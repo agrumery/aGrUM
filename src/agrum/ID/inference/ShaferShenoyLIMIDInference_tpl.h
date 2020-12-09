@@ -62,7 +62,16 @@ namespace gum {
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onStateChanged_() {}
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceAdded_(
-     const NodeId id, bool isHardEvidence) {}
+     const NodeId id, bool isHardEvidence) {
+    const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
+    if (infdiag.isUtilityNode(id)) {
+      GUM_ERROR(InvalidNode, "No evidence on a utility node.");
+    }
+    if (infdiag.isDecisionNode(id)) {
+      if (!isHardEvidence)
+        GUM_ERROR(InvalidNode, "No soft evidence on a decision node.");
+    }
+  }
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceErased_(
      const NodeId id, bool isHardEvidence) {}
@@ -225,7 +234,6 @@ namespace gum {
 
     GUM_SCALAR resmean = 0;
     GUM_SCALAR resvar = 0;
-
     for (auto node: infdiag.nodes()) {
       if (infdiag.isUtilityNode(node)) {
         auto p = meanVar(node);
@@ -718,12 +726,15 @@ namespace gum {
         binarizingMax_(decision);
         strategies_.insert(node, decision);
         res = dp ^ sev;
+        res.probPot.normalize();
         if (reduced_.parents(node).size() == 0) {   // unconditional decision
-          if (!unconditionalDecisions_.exists(node))
-            GUM_ERROR(InvalidNode,
-                      "Node " << infdiag.variable(node).name()
-                              << " should have an unconditionaldecision")
-          res.utilPot = unconditionalDecisions_[node].utilPot;
+          if (!this->hasHardEvidence(node)) {
+            if (!unconditionalDecisions_.exists(node))
+              GUM_ERROR(InvalidNode,
+                        "Node " << infdiag.variable(node).name()
+                                << " should have an unconditionaldecision")
+            res.utilPot = unconditionalDecisions_[node].utilPot;
+          }
         }
       } else {
         SetOfVars family;

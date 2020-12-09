@@ -158,7 +158,6 @@ namespace gum {
                                                    Size               domainSize) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
-
     for (const auto& chaine: split(dotlike, ";")) {
       NodeId lastId = 0;
       bool   notfirst = false;
@@ -185,8 +184,9 @@ namespace gum {
     for (const auto n: infdiag.nodes()) {
       if (infdiag.isChanceNode(n))
         infdiag.cpt(n).randomCPT();
-      else if (infdiag.isUtilityNode(n))
+      else if (infdiag.isUtilityNode(n)) {
         infdiag.utility(n).random().scale(50).translate(-10);
+      }
     }
 
     infdiag.setProperty("name", "fastPrototype");
@@ -218,11 +218,9 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(
-     const InfluenceDiagram< GUM_SCALAR >& source) :
-      DAGmodel(source),
-      variableMap__(source.variableMap__) {
+     const InfluenceDiagram< GUM_SCALAR >& source) {
     GUM_CONS_CPY(InfluenceDiagram);
-    copyTables_(source);
+    copyStructureAndTables_(source);
   }
 
   /*
@@ -232,19 +230,22 @@ namespace gum {
   InfluenceDiagram< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::operator=(
      const InfluenceDiagram< GUM_SCALAR >& source) {
     if (this != &source) {
-      DAGmodel::operator=(source);
-      // Removing previous potentials
-      removeTables_();
-      potentialMap__.clear();
-      utilityMap__.clear();
-
-      variableMap__ = source.variableMap__;
-
-      // Copying tables
-      copyTables_(source);
+      clear();
+      // Copying tables and structure
+      copyStructureAndTables_(source);
     }
 
     return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  void InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram::clear() {
+    // Removing previous potentials
+    removeTables_();
+    variableMap__.clear();
+    dag_.clear();
+    potentialMap__.clear();
+    utilityMap__.clear();
   }
 
   /*
@@ -264,61 +265,40 @@ namespace gum {
    * Copying tables from another influence diagram
    */
   template < typename GUM_SCALAR >
-  void InfluenceDiagram< GUM_SCALAR >::copyTables_(
+  void InfluenceDiagram< GUM_SCALAR >::copyStructureAndTables_(
      const InfluenceDiagram< GUM_SCALAR >& IDsource) {
-    // Copying potentials
-    for (const auto& pot: IDsource.potentialMap__) {
-      // Instantiation of the node's CPT
-      auto potentialCpy = new Potential< GUM_SCALAR >;
-      (*potentialCpy) << variable(pot.first);
-
-      // Addition of the parents
-      for (const auto par: dag_.parents(pot.first))
-        (*potentialCpy) << variable(par);
-
-      // Filling up of the table
-      Instantiation srcInst(*pot.second);
-      Instantiation cpyInst(*potentialCpy);
-
-      for (cpyInst.setFirst(); !cpyInst.end(); cpyInst.inc()) {
-        for (Idx i = 0; i < cpyInst.nbrDim(); i++) {
-          NodeId id = nodeId(cpyInst.variable(i));
-          srcInst.chgVal(IDsource.variable(id), cpyInst.val(i));
-        }
-
-        potentialCpy->set(cpyInst, (*pot.second)[srcInst]);
+    for (auto node: IDsource.nodes()) {
+      if (IDsource.isChanceNode(node))
+        addChanceNode(IDsource.variable(node), node);
+      else if (IDsource.isUtilityNode(node))
+        addUtilityNode(IDsource.variable(node), node);
+      else   // decision node
+        addDecisionNode(IDsource.variable(node), node);
+    }
+    // we add arc in the same order of the potentials
+    for (auto node: IDsource.nodes()) {
+      const auto& s = IDsource.variable(node).name();
+      if (IDsource.isChanceNode(node)) {
+        for (Idx par = 1; par <= IDsource.parents(node).size(); par++)
+          addArc(IDsource.cpt(node).variable(par).name(), s);
+      } else if (IDsource.isUtilityNode(node)) {
+        for (Idx par = 1; par <= IDsource.parents(node).size(); par++)
+          addArc(IDsource.utility(node).variable(par).name(), s);
+      } else {   // decision node
+        // here the order does not depends on a Potential
+        for (NodeId par: IDsource.parents(node))
+          addArc(par, node);
       }
-
-      // Adding cpt to cpt map
-      potentialMap__.set(pot.first, potentialCpy);
     }
 
-    // Copying Utilities
-    for (const auto& uti: IDsource.utilityMap__) {
-      // Instantiation of the node's CPT
-      auto utilityCpy = new Potential< GUM_SCALAR >;
-      (*utilityCpy) << variable(uti.first);
-
-      // Addition of the parents
-      for (const auto par: dag_.parents(uti.first))
-        (*utilityCpy) << variable(par);
-
-      // Filling up of the table
-      Instantiation srcInst(*uti.second);
-
-      Instantiation cpyInst(*utilityCpy);
-
-      for (cpyInst.setFirst(); !cpyInst.end(); cpyInst.inc()) {
-        for (Idx i = 0; i < cpyInst.nbrDim(); i++) {
-          NodeId id = nodeId(cpyInst.variable(i));
-          srcInst.chgVal(IDsource.variable(id), cpyInst.val(i));
-        }
-
-        utilityCpy->set(cpyInst, (*uti.second)[srcInst]);
+    // Copying potentials
+    for (auto node: IDsource.nodes()) {
+      const auto& s = IDsource.variable(node).name();
+      if (IDsource.isChanceNode(node)) {
+        cpt(node).fillWith(IDsource.cpt(s));
+      } else if (IDsource.isUtilityNode(node)) {
+        utility(node).fillWith(IDsource.utility(s));
       }
-
-      // Adding cpt to cpt map
-      utilityMap__.set(uti.first, utilityCpy);
     }
   }
 
@@ -358,7 +338,7 @@ namespace gum {
         for (const auto chi: dag_.children(node)) {
           arcstream << "\"" << node << "-" << variable(node).name() << "\""
                     << " -> "
-                    << "\"" << chi << "-" << variable(chi).name()<<"\"";
+                    << "\"" << chi << "-" << variable(chi).name() << "\"";
           if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
           arcstream << ";" << std::endl;
         }
@@ -706,9 +686,10 @@ namespace gum {
     if (isChanceNode(head))
       // Add parent in the child's CPT
       (*(potentialMap__[head])) << variable(tail);
-    else if (isUtilityNode(head))
+    else if (isUtilityNode(head)) {
       // Add parent in the child's UT
       (*(utilityMap__[head])) << variable(tail);
+    }
   }
 
   /*

@@ -23,7 +23,8 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  *
  */
 
@@ -79,7 +80,7 @@ namespace gum {
      * @return the resulting influence diagram
      */
     static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                        Size               domainSize = 2);
+                                                        Size domainSize = 2);
 
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -105,7 +106,7 @@ namespace gum {
      * Copy Operator
      */
     InfluenceDiagram< GUM_SCALAR >&
-    operator=(const InfluenceDiagram< GUM_SCALAR >& source);
+       operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
@@ -114,6 +115,8 @@ namespace gum {
 
     /// @return Returns a string representation of this Influence Diagram.
     std::string toString() const;
+
+    void clear();
 
     // ===========================================================================
     /// @name Variable manipulation methods.
@@ -199,8 +202,7 @@ namespace gum {
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    const DiscreteVariable&
-    variableFromName(const std::string& name) const final;
+    const DiscreteVariable& variableFromName(const std::string& name) const final;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -418,7 +420,7 @@ namespace gum {
     /**
      * Copying tables from another influence diagram
      */
-    void copyTables_(const InfluenceDiagram< GUM_SCALAR >& IDsource);
+    void copyStructureAndTables_(const InfluenceDiagram< GUM_SCALAR >& IDsource);
 
     /**
      * Add a node
