@@ -302,7 +302,7 @@ namespace gum_tests {
         asia.cpt(hasLungCancer).fillWith({0.10f, 0.90f, 0.01f, 0.99f});
         asia.cpt(tubOrCancer)
            .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f})
-           .translate(1e-5)
+           .translate(TS_GUM_SMALL_ERROR)
            .normalizeAsCPT();
         asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
         asia.cpt(dyspnea).fillWith(

@@ -104,7 +104,7 @@ namespace gum_tests {
     bool equal__(const double x, const double y) const {
       double dev = x >= y ? (x - y) / x : (y - x) / y;
       if (dev < 0) dev = -dev;
-      return dev <= 1e-5;
+      return dev <= TS_GUM_SMALL_ERROR;
     }
 
 

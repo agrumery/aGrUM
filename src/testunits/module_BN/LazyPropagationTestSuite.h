@@ -334,7 +334,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, 1e-5);
+      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR);
     }
 
     void testEvidenceProbability2() {
@@ -349,7 +349,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, 1e-5);
+      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR);
     }
 
     void testEvidenceProbabilityAsia() {
@@ -375,7 +375,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, 1e-5);
+      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR);
     }
 
 

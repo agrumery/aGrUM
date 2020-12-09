@@ -122,7 +122,7 @@ namespace gum_tests {
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), 1e-5);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR);
       }
     }
 
@@ -153,7 +153,7 @@ namespace gum_tests {
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), 1e-5);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR);
       }
     }
 

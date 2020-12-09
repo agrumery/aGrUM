@@ -1,0 +1,251 @@
+<?xml version="1.0" ?>
+
+<BIF VERSION="0.3">
+  <NETWORK>
+
+    <!-- Variables -->
+    <VARIABLE TYPE="decision">
+      <NAME>Testing</NAME>
+      <PROPERTY>Test</PROPERTY>
+      <OUTCOME>Yes</OUTCOME>
+      <OUTCOME>No</OUTCOME>
+    </VARIABLE>
+
+    <!--
+// ~->[DNET-1]->~
+
+   // File created by Norsys using Netica 1.06b on Mar 29, 1998 at 05:45:30.
+
+   bnet Oil_Wildcatter_Extended {
+   comment = "A decision network based on the 'Oil Wildcatter' influence \
+   diagram of Raiffa68, but this network includes drilling for \
+   gas, has multiple value nodes, and eliminates some \
+   no-forgetting links. \n\
+   This network shows only dependencies, and does not include \
+   any numerical relationships. \n\
+   From Zhang94, p. 21.";
+   whenchanged = 789009251;
+
+   visual V1 {
+   defdispform = LABELBOX;
+   nodelabeling = TITLE;
+   nodefont = font {shape= "Arial"; size= 10;};
+   linkfont = font {shape= "Arial"; size= 9;};
+   commentfont = font {shape= "Arial"; size= 10;};
+   windowposn = (45, 2, 565, 475);
+   resolution = 72;
+   drawingbounds = (1104, 730);
+   showpagebreaks = FALSE;
+   usegrid = TRUE;
+   gridspace = (6, 6);
+   };
+
+   node Oil {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   states = (Dry, Wet, Soaking);
+   parents = ();
+   title = "Amount of Oil\nUnderground";
+   visual V1 {
+   center = (66, 48);
+   height = 1;
+   };
+   };
+
+   node Gas {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   states = (None, Little, Much);
+   parents = ();
+   title = "Amount of Gas\nUnderground";
+   visual V1 {
+   center = (408, 48);
+   height = 3;
+   };
+   };
+
+   node Structure {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   states = (None, Open, Closed);
+   parents = (Oil, Gas);
+   title = "Seismic\nStructure";
+   visual V1 {
+   center = (240, 48);
+   height = 2;
+   };
+   };
+
+   node Test {
+   kind = DECISION;
+   discrete = TRUE;
+   chance = DETERMIN;
+   states = (Do_test, No_test);
+   parents = ();
+   title = "Test?";
+   visual V1 {
+   center = (108, 126);
+   height = 4;
+   };
+   };
+
+   node Result {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = DETERMIN;
+   states = (None, Open, Closed, No_result);
+   parents = (Test, Structure);
+   title = "Test Result";
+   visual V1 {
+   center = (240, 126);
+   height = 5;
+   };
+   };
+
+   node Drill {
+   kind = DECISION;
+   discrete = TRUE;
+   chance = DETERMIN;
+   states = (Drill, Dont_drill);
+   parents = (Test, Result);
+   title = "Drill?";
+   visual V1 {
+   center = (240, 192);
+   height = 7;
+   };
+   };
+
+   node OP {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   numstates = 2;
+   parents = (Oil, Drill);
+   title = "Oil Produced";
+   visual V1 {
+   center = (66, 264);
+   height = 8;
+   };
+   };
+
+   node OM {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   numstates = 2;
+   parents = ();
+   title = "Oil Market";
+   visual V1 {
+   center = (156, 264);
+   height = 9;
+   };
+   };
+
+   node OSP {
+   kind = DECISION;
+   discrete = TRUE;
+   chance = DETERMIN;
+   numstates = 2;
+   parents = (OM);
+   title = "Oil Sale\nPrice";
+   visual V1 {
+   center = (156, 330);
+   height = 13;
+   };
+   };
+
+   node OPr {
+   kind = UTILITY;
+   discrete = FALSE;
+   measure = RATIO;
+   chance = DETERMIN;
+   parents = (OP, OM, OSP);
+   title = "Oil Profit";
+   visual V1 {
+   center = (66, 378);
+   height = 16;
+   };
+   };
+
+   node GP {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   numstates = 2;
+   parents = (Gas, Drill);
+   title = "Gas Produced";
+   visual V1 {
+   center = (408, 264);
+   height = 12;
+   };
+   };
+
+   node DC {
+   kind = UTILITY;
+   discrete = FALSE;
+   measure = RATIO;
+   chance = DETERMIN;
+   parents = (Drill);
+   title = "Drill\nCost";
+   visual V1 {
+   center = (240, 252);
+   height = 10;
+   };
+   };
+
+   node GM {
+   kind = NATURE;
+   discrete = TRUE;
+   chance = CHANCE;
+   numstates = 2;
+   parents = ();
+   title = "Gas Market";
+   visual V1 {
+   center = (318, 264);
+   height = 11;
+   };
+   };
+
+   node GSP {
+   kind = DECISION;
+   discrete = TRUE;
+   chance = DETERMIN;
+   numstates = 2;
+   parents = (GM);
+   title = "Gas Sale\nPrice";
+   visual V1 {
+   center = (318, 330);
+   height = 14;
+   };
+   };
+
+   node GPr {
+   kind = UTILITY;
+   discrete = FALSE;
+   measure = RATIO;
+   chance = DETERMIN;
+   parents = (GP, GM, GSP);
+   title = "Gas Profit";
+   visual V1 {
+   center = (408, 378);
+   height = 15;
+   };
+   };
+
+   node TC {
+   kind = UTILITY;
+   discrete = FALSE;
+   measure = RATIO;
+   chance = DETERMIN;
+   parents = (Test);
+   title = "Test\nCost";
+   visual V1 {
+   center = (108, 186);
+   height = 6;
+   };
+   };
+   };
+-->

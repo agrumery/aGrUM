@@ -201,8 +201,8 @@ namespace gum_tests {
         gum::GibbsBNdistance< double > kl(netP, netQ);
         kl.setVerbosity(true);
         // very rough approximation in order to not penalize TestSuite
-        kl.setEpsilon(1e-5);
-        kl.setMinEpsilonRate(1e-5);
+        kl.setEpsilon(TS_GUM_SMALL_ERROR);
+        kl.setMinEpsilonRate(TS_GUM_SMALL_ERROR);
         if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
         if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;         // next try
         if (kl.errorPQ() != (gum::Size)0) continue;                  // next try

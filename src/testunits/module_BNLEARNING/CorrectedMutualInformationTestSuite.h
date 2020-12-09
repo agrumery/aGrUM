@@ -219,7 +219,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(4, 7), I__(parser, 4, 7) - cst, 1e-4);
       TS_ASSERT_DELTA(score.score(4, 7, std::vector< gum::NodeId >{5}),
                       I__(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst,
-                      1e-5);
+                      TS_GUM_SMALL_ERROR);
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
                       I__(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst,
                       1e-4);

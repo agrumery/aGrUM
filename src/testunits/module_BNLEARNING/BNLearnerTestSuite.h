@@ -1251,11 +1251,11 @@ namespace gum_tests {
 
       stat = learner2.chi2("A", "B");
       TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-5);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
 
       stat = learner2.chi2("B", "A");
       TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-5);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
 
       stat = learner2.chi2("B", "D");
       TS_ASSERT_DELTA(stat.first, 0.903, 1e-3);
@@ -1331,22 +1331,22 @@ namespace gum_tests {
       learner.useNoApriori();
 
       auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.99943499, 1e-5);
+      TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.9986032, 1e-5);
+      TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.9668973, 1e-5);
+      TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, 1e-5);
+      TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR);
 
       stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.99860302, 1e-5);
+      TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.40217919, 1e-5);
+      TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.40077995, 1e-5);
+      TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR);
       stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, 1e-5);
+      TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR);
     }
 
     void test_errorFromPyagrum() {

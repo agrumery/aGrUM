@@ -13,4 +13,17 @@
        GUM_SHOWERROR(e);                     \
        TS_FAIL("gum::Exception thrown");     \
      })
+
+#define TS_GUM_POTENTIAL_DELTA(x, y, delta) \
+  TS_ASSERT_LESS_THAN(((x) - (y)).abs().max(), delta)
+
+#define TS_GUM_POTENTIAL_SHOW_DELTA(x, y, delta)           \
+  {                                                        \
+    GUM_TRACE_NEWLINE GUM_TRACE_VAR(x) GUM_TRACE_VAR(y)    \
+       TS_ASSERT_LESS_THAN(((x) - (y)).abs().max(), delta) \
+  }
+
+#define TS_GUM_SMALL_ERROR (1e-5)
+#define TS_GUM_VERY_SMALL_ERROR (1e-10)
+
 #endif   // AGRUM_TEST_SUITE_H

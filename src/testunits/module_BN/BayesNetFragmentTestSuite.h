@@ -292,7 +292,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, 1e-5);
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -301,8 +301,8 @@ namespace gum_tests {
       while (!I.end()) {
         double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
                    * bn.cpt(bn.idFromName("v6"))[I];
-        TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
-        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
+        TS_ASSERT_DELTA(frag.jointProbability(I), p, TS_GUM_SMALL_ERROR);
+        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), TS_GUM_SMALL_ERROR);
         ++I;
       }
 
@@ -356,7 +356,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, 1e-5);
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -364,8 +364,8 @@ namespace gum_tests {
 
       while (!I.end()) {
         double p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
-        TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
-        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
+        TS_ASSERT_DELTA(frag.jointProbability(I), p, TS_GUM_SMALL_ERROR);
+        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), TS_GUM_SMALL_ERROR);
         ++I;
       }
 

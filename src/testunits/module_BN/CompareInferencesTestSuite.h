@@ -322,9 +322,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
           }
 
           inf.eraseAllEvidence();
@@ -334,9 +334,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
           }
         }
 
@@ -346,9 +346,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, 1e-5f);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, 1e-5f);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
           }
 
           inf.eraseAllEvidence();
@@ -358,9 +358,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
           }
         }
 
@@ -370,9 +370,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, 1e-5f);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, 1e-5f);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
           }
 
           inf.eraseAllEvidence();
@@ -382,9 +382,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, 1e-7f);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
           }
         }
       } catch (gum::Exception& e) {

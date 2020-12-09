@@ -1183,7 +1183,7 @@ namespace gum_tests {
                 f += (*(jter.val())).cpf().get(i);
               }
 
-              TS_ASSERT_DELTA(f, 1.0, 1e-5);
+              TS_ASSERT_DELTA(f, 1.0, TS_GUM_SMALL_ERROR);
               i.unsetOverflow();
             }
           }

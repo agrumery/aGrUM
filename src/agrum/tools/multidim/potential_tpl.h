@@ -168,9 +168,9 @@ namespace gum {
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
-           return (p == static_cast< GUM_SCALAR >(1))
-                     ? z
-                     : (z == static_cast< GUM_SCALAR >(1)) ? p : (p > z ? p : z);
+           return (p == static_cast< GUM_SCALAR >(1))   ? z
+                  : (z == static_cast< GUM_SCALAR >(1)) ? p
+                                                        : (p > z ? p : z);
          },
          static_cast< GUM_SCALAR >(1));
     }
@@ -189,9 +189,9 @@ namespace gum {
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
-           return (p == static_cast< GUM_SCALAR >(0))
-                     ? z
-                     : (z == static_cast< GUM_SCALAR >(0)) ? p : (p < z ? p : z);
+           return (p == static_cast< GUM_SCALAR >(0))   ? z
+                  : (z == static_cast< GUM_SCALAR >(0)) ? p
+                                                        : (p < z ? p : z);
          },
          static_cast< GUM_SCALAR >(0));
     }
@@ -214,7 +214,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               Potential< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& v) const {
+     Potential< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& v) const {
     this->populate(v);
     return *this;
   }
@@ -228,7 +228,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
+     Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
       GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
     }
@@ -239,7 +239,8 @@ namespace gum {
     for (const auto& v: this->variablesSequence()) {
       if (!son.contains(v->name())) {
         GUM_ERROR(InvalidArgument,
-                  "Variable <" << v->name() << "> not present in src ("<<son<<").");
+                  "Variable <" << v->name() << "> not present in src (" << son
+                               << ").");
       }
       // we check size, labels and order of labels in the same time
       if (v->toString() != src.variable(v->name()).toString()) {

@@ -781,11 +781,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(3, 5)), gum::InvalidArc);
       TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(2, 4)), gum::InvalidArc);
 
-      float        epsilon = 1e-5f;
       unsigned int j;
-
       for (j = 0, i.setFirst(); !i.end(); i.inc(), ++j) {
-        TS_ASSERT(fabs(bn.jointProbability(i) - joint[j]) <= epsilon);
+        TS_ASSERT_DELTA(bn.jointProbability(i) , joint[j], TS_GUM_SMALL_ERROR);
       }
     }
 

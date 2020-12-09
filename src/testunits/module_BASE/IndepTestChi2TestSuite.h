@@ -183,11 +183,11 @@ namespace gum_tests {
 
       stat = score.statistics(1, 0);
       TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-5);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
 
       stat = score.statistics(0, 1);
       TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-5);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
 
       stat = score.statistics(1, 3);
       TS_ASSERT_DELTA(stat.first, 0.903, 1e-3);

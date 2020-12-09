@@ -913,18 +913,18 @@ namespace gum_tests {
       TS_ASSERT_THROWS(res = s.KL(p), gum::InvalidArgument);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(q));
-      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.5), 1e-5);
+      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.5), TS_GUM_SMALL_ERROR);
       TS_ASSERT_THROWS(res = q.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(r));
-      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.3), 1e-5);
+      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.3), TS_GUM_SMALL_ERROR);
       TS_ASSERT_THROWS(res = r.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r));
-      TS_ASSERT_DELTA(res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), 1e-5);
+      TS_ASSERT_DELTA(res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = r.KL(q));
-      TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), 1e-5);
+      TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR);
     }
 
     void testPotentialDraw() {
