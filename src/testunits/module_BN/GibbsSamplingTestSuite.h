@@ -22,8 +22,8 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsSampling.h>
@@ -33,7 +33,7 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <cxxtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
 
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1

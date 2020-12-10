@@ -27,7 +27,7 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 
 namespace gum_tests {
   class StructuredBayesBallTestSuite: public CxxTest::TestSuite {

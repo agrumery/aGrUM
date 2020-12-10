@@ -19,8 +19,8 @@
  */
 
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
 #include <agrum/BN/learning/scores_and_tests/scoringCache.h>

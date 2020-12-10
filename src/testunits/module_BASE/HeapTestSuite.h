@@ -19,8 +19,8 @@
  */
 
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/core/set.h>

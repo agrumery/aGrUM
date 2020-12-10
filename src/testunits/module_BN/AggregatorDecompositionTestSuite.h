@@ -23,8 +23,8 @@
 #include <ctime>
 // #include <experimental/filesystem>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/core/math/math.h>
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>

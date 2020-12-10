@@ -22,8 +22,8 @@
 #include <iostream>
 #include <vector>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <agrum/tools/graphs/graphElements.h>

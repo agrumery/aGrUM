@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
@@ -32,7 +32,7 @@
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/testsuite_utils.h>
 
 // The graph used for the tests:
 //           D1

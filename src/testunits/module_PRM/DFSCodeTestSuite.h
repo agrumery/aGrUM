@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include "testsuite_utils.h"
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 
 #include <agrum/PRM/gspan/DFSCode.h>
 

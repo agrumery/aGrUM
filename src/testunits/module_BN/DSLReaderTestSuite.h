@@ -27,8 +27,8 @@
 #include <agrum/BN/io/DSL/DSLReader.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>
 #include <agrum/tools/variables/labelizedVariable.h>
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4

@@ -27,13 +27,13 @@
 #include <agrum/BN/inference/weightedSampling.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
-#include <cxxtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
 
 #define EPSILON_FOR_WEIGHTED_SIMPLE_TEST 15e-2

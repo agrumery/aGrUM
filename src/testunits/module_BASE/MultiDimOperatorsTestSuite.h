@@ -27,8 +27,8 @@
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/utils_random.h>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>

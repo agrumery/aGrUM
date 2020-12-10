@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMType.h>

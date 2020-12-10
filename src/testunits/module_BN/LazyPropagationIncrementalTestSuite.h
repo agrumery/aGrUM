@@ -19,7 +19,7 @@
  */
 
 
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <memory>
 #include <vector>

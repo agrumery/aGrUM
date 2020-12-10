@@ -2,7 +2,7 @@
 #define AGRUM_TEST_SUITE_H
 
 #include <agrum/config.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <cxxtest/TestSuite.h>
 

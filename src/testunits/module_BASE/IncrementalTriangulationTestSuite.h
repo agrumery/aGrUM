@@ -23,8 +23,8 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/tools/graphs/algorithms/triangulations/incrementalTriangulation.h>

@@ -21,8 +21,8 @@
 
 #include <sstream>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleCombinationBasic.h>
 #include <agrum/tools/multidim/potential.h>

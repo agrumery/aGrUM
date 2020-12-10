@@ -21,8 +21,8 @@
 
 #include <iostream>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>

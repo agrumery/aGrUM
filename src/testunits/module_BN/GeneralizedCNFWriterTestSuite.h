@@ -22,14 +22,14 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
 #include <agrum/tools/core/approximations/linearApproximationPolicy.h>
 #include <agrum/tools/variables/labelizedVariable.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/testsuite_utils.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

@@ -21,7 +21,7 @@
 
 #include <agrum/tools/graphs/diGraph.h>
 #include <agrum/tools/graphs/graphElements.h>
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 #include <iostream>
 
 // The graph used for the tests:

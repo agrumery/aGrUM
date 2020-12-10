@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 // ==============================================================================
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
 #include <agrum/FMDP/SDyna/sdyna.h>

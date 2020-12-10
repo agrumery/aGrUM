@@ -27,7 +27,7 @@
 #include <vector>
 // =========================================================================
 #include "testsuite_utils.h"
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 // =========================================================================
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>

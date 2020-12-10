@@ -2,9 +2,11 @@
 find_package(PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION})
 
 set(CXXTESTPATH ${AGRUM_SOURCE_DIR}/testunits/cxxtest-3.10-1)
+set(GUMTESTPATH ${AGRUM_SOURCE_DIR}/testunits/gumtest)
 set(CXXTESTGEN ${CXXTESTPATH}/cxxtestgen.py)
 
 include_directories(${CXXTESTPATH})
+include_directories(${GUMTESTPATH})
 include_directories(${AGRUM_SOURCE_DIR}/testunits/cxxtest)
 include_directories(${AGRUM_SOURCE_DIR}/testunits)
 

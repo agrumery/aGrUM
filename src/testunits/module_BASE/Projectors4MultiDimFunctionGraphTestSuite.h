@@ -22,7 +22,7 @@
 // ==========================================================================
 #include <fstream>
 // ==========================================================================
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==========================================================================
 #include <agrum/tools/core/math/math.h>

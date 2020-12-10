@@ -23,8 +23,8 @@
 #include <sstream>
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/variables/discretizedVariable.h>

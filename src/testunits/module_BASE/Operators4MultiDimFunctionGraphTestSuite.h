@@ -27,7 +27,7 @@
 #include <sstream>
 #include <string>
 // =============================================================================
-#include <cxxtest/AgrumTestSuite.h>
+#include <gumtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // =============================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>

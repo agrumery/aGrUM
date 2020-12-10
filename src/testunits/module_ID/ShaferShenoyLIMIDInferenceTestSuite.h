@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
@@ -114,6 +114,68 @@ namespace gum_tests {
          dIDI.posteriorUtility("Drilling"),
          (gum::Potential< double >() << net.variableFromName("Drilling"))
             .fillWith({45.0847, -10}))
+
+      TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, TS_GUM_SMALL_ERROR)
+      TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
+      TS_ASSERT_DELTA(dIDI.meanVar("Reward").first, 32.5, TS_GUM_SMALL_ERROR)
+      TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 7648.750, TS_GUM_SMALL_ERROR)
+    }
+
+
+    void testInferenceWithOilWildCaterWithEvidenceOnChanceNode() {
+      std::string file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
+      gum::InfluenceDiagram< double > net;
+      gum::BIFXMLIDReader< double >   reader(&net, file);
+      reader.proceed();
+
+      gum::ShaferShenoyLIMIDInference< double > dIDI(&net);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
+      dIDI.addEvidence("OilContents", "Wet");
+
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posterior("OilContents"),
+         (gum::Potential< double >() << net.variableFromName("OilContents"))
+            .fillWith({0.5, 0.3, 0.2}),
+         TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posteriorUtility("OilContents"),
+         (gum::Potential< double >() << net.variableFromName("OilContents"))
+            .fillWith({-38, 25, 170}),
+         TS_GUM_SMALL_ERROR)
+
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posterior("TestResult"),
+         (gum::Potential< double >() << net.variableFromName("TestResult"))
+            .fillWith({0.24, 0.35, 0.41}),
+         TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posteriorUtility("TestResult"),
+         (gum::Potential< double >() << net.variableFromName("TestResult"))
+            .fillWith({77.5, 22.8571, -10}),
+         TS_GUM_SMALL_ERROR)
+
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posterior("Testing"),
+         (gum::Potential< double >() << net.variableFromName("Testing"))
+            .fillWith({1, 0}),
+         TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posteriorUtility("Testing"),
+         (gum::Potential< double >() << net.variableFromName("Testing"))
+            .fillWith({22.5, 20}),
+         TS_GUM_SMALL_ERROR)
+
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posterior("Drilling"),
+         (gum::Potential< double >() << net.variableFromName("Drilling"))
+            .fillWith({0.59, 0.41}),
+         TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_SHOW_DELTA(
+         dIDI.posteriorUtility("Drilling"),
+         (gum::Potential< double >() << net.variableFromName("Drilling"))
+            .fillWith({45.0847, -10}),
+         TS_GUM_SMALL_ERROR)
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)

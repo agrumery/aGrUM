@@ -22,8 +22,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/variables/labelizedVariable.h>
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>

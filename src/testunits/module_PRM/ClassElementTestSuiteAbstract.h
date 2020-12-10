@@ -21,8 +21,8 @@
 #ifndef GUM_CLASSELEMENT_TEST_SUITE_H
 #define GUM_CLASSELEMENT_TEST_SUITE_H
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/testsuite_utils.h>
 
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
