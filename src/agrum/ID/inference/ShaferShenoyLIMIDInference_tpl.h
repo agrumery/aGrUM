@@ -132,8 +132,8 @@ namespace gum {
      PhiNodeProperty& phi, PsiArcProperty& psi) {
     const auto& jt = *junctionTree();
     const auto& infdiag = this->influenceDiagram();
-
     // init JT potentials and separators
+
     for (const auto node: jt.nodes()) {
       phi.insert(node, DecisionPotential< GUM_SCALAR >());
       for (const auto nei: jt.neighbours(node)) {
@@ -147,17 +147,21 @@ namespace gum {
       }
     }
     for (const auto node: infdiag.nodes()) {
-      if (this->hasEvidence(node))
-        phi[node_to_clique_[node]].insertProba(*(this->evidence()[node]));
+      const auto clik = node_to_clique_[node];
+      if (this->hasEvidence(node)) {
+        phi[clik].insertProba(*(this->evidence()[node]));
+      }
 
-      if (infdiag.isDecisionNode(node))
-        phi[node_to_clique_[node]].insertProba(
-           (Potential< GUM_SCALAR >() << infdiag.variable(node))
-              .fillWith(1));   // WITHOUT NORMALIZATION !!!
-      else if (infdiag.isChanceNode(node))
-        phi[node_to_clique_[node]].insertProba(infdiag.cpt(node));
+      if (infdiag.isDecisionNode(node)) {
+        if (!this->hasEvidence(node)) {
+          auto p =
+             (Potential< GUM_SCALAR >() << infdiag.variable(node)).fillWith(1);
+          phi[clik].insertProba(p);   // WITHOUT NORMALIZATION !!!
+        }
+      } else if (infdiag.isChanceNode(node))
+        phi[clik].insertProba(infdiag.cpt(node));
       else if (infdiag.isUtilityNode(node))
-        phi[node_to_clique_[node]].insertUtility(infdiag.utility(node));
+        phi[clik].insertUtility(infdiag.utility(node));
       else
         GUM_ERROR(FatalError, "Node " << node << " has no type.");
     }
@@ -190,7 +194,6 @@ namespace gum {
     const auto& infdiag = this->influenceDiagram();
     NodeId      first_eliminated_node;
     Idx         elim_number;
-
     node_to_clique_.clear();
     const std::vector< NodeId >& JT_elim_order = triangulation.eliminationOrder();
     NodeProperty< Idx >          elim_order(Size(JT_elim_order.size()));
@@ -198,8 +201,8 @@ namespace gum {
       elim_order.insert(JT_elim_order[i], (int)i);
     for (const auto node: reduced_.nodes()) {
       if (infdiag.isUtilityNode(node)) {
-        // utility nodes are not in the junction but we want to associate a clique
-        // as well
+        // utility nodes are not in the junction tree but we want to associate a
+        // clique as well
         first_eliminated_node = node;
         elim_number = infdiag.size() + 1;   // an impossible elim_number;
       } else {
@@ -593,6 +596,7 @@ namespace gum {
               << ") for " << infdiag.variable(decisionNode).name())*/
     auto& decision =
        strategies_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
+
     if (this->hasHardEvidence(decisionNode)) {
       decision = *(this->evidence()[decisionNode]);
     } else {
@@ -605,6 +609,7 @@ namespace gum {
         sev.insert(&infdiag.variable(parent));
       }
       dp = dp ^ sev;
+
       if (sev.size() == 1) {   // unconditionnal => we keep the utility before
                                // inserting hard decision
         unconditionalDecisions_.set(decisionNode, dp);
@@ -722,7 +727,7 @@ namespace gum {
           if (infdiag.isChanceNode(par)) family.insert(&infdiag.variable(par));
         }
         const auto               dp = phi[node_to_clique_[node]] ^ family;
-        gum::Potential< double > decision = dp.utilPot;
+        gum::Potential< double > decision = dp.utilPot.putFirst(&infdiag.variable(node));
         binarizingMax_(decision);
         strategies_.insert(node, decision);
         res = dp ^ sev;

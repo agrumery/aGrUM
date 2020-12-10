@@ -814,13 +814,42 @@ namespace gum_tests {
       }
     }
 
+    void testWithNames() {
+      gum::InfluenceDiagram< double > diag;
+      diag.add(gum::LabelizedVariable("A", "A", 2));
+      diag.addDecisionNode(gum::LabelizedVariable("D", "D", 2));
+      diag.addUtilityNode(gum::LabelizedVariable("U", "U", 1));
+
+      diag.changeVariableName(0, "O");
+      TS_ASSERT_EQUALS(diag.variable(0).name(), "O")
+      diag.changeVariableName("O", "I");
+      TS_ASSERT_EQUALS(diag.variable(0).name(), "I")
+
+      diag.addArc(0, 1);
+      TS_ASSERT(diag.existsPathBetween(0, 1))
+      TS_ASSERT(diag.existsPathBetween("I", "D"))
+      diag.eraseArc(0, 1);
+      TS_ASSERT(!diag.existsPathBetween(0, 1))
+      TS_ASSERT(!diag.existsPathBetween("I", "D"))
+
+      diag.addArc("I", "D");
+      TS_ASSERT(diag.existsPathBetween(0, 1))
+      TS_ASSERT(diag.existsPathBetween("I", "D"))
+      diag.eraseArc("I", "D");
+      TS_ASSERT(!diag.existsPathBetween(0, 1))
+      TS_ASSERT(!diag.existsPathBetween("I", "D"))
+
+      TS_ASSERT_THROWS(diag.addArc("foo", "bar"), gum::NotFound)
+    }
+
     void testFastPrototype() {
-      auto infdiag=gum::InfluenceDiagram<double>::fastPrototype("A->*B<-C;E<-B->$D");
-      TS_ASSERT_EQUALS(infdiag.size(),gum::Size(5))
-      TS_ASSERT_EQUALS(infdiag.chanceNodeSize(),gum::Size(3))
-      TS_ASSERT_EQUALS(infdiag.utilityNodeSize(),gum::Size(1))
-      TS_ASSERT_EQUALS(infdiag.decisionNodeSize(),gum::Size(1))
-      TS_ASSERT_EQUALS(infdiag.sizeArcs(),gum::Size(4))
+      auto infdiag =
+         gum::InfluenceDiagram< double >::fastPrototype("A->*B<-C;E<-B->$D");
+      TS_ASSERT_EQUALS(infdiag.size(), gum::Size(5))
+      TS_ASSERT_EQUALS(infdiag.chanceNodeSize(), gum::Size(3))
+      TS_ASSERT_EQUALS(infdiag.utilityNodeSize(), gum::Size(1))
+      TS_ASSERT_EQUALS(infdiag.decisionNodeSize(), gum::Size(1))
+      TS_ASSERT_EQUALS(infdiag.sizeArcs(), gum::Size(4))
     }
   };
 }   // namespace gum_tests
