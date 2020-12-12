@@ -24528,6 +24528,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_toDot(self)
 
+    def clear(self):
+        r"""clear(InfluenceDiagram self)"""
+        return _pyAgrum.InfluenceDiagram_clear(self)
+
     def cpt(self, *args):
         r"""
         cpt(InfluenceDiagram self, gum::NodeId varId) -> Potential
@@ -25191,6 +25195,11 @@ class ShaferShenoyLIMIDInference(object):
     def __init__(self, infDiag):
         r"""__init__(ShaferShenoyLIMIDInference self, InfluenceDiagram infDiag) -> ShaferShenoyLIMIDInference"""
         _pyAgrum.ShaferShenoyLIMIDInference_swiginit(self, _pyAgrum.new_ShaferShenoyLIMIDInference(infDiag))
+
+        self._infdiag=infDiag
+
+
+
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyLIMIDInference
 
     def junctionTree(self):
@@ -25216,24 +25225,22 @@ class ShaferShenoyLIMIDInference(object):
         r"""reducedGraph(ShaferShenoyLIMIDInference self) -> DAG"""
         return _pyAgrum.ShaferShenoyLIMIDInference_reducedGraph(self)
 
-    def MEU(self):
-        r"""
-        MEU(ShaferShenoyLIMIDInference self) -> double
+    def reversePartialOrder(self):
+        r"""reversePartialOrder(ShaferShenoyLIMIDInference self) -> std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
-        Returns maximum expected utility obtained from inference.
+    def reducedLIMID(self):
+        r"""reducedLIMID(ShaferShenoyLIMIDInference self) -> InfluenceDiagram"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_reducedLIMID(self)
 
-        Raises
-        ------
-        gum.OperationNotAllowed
-        	If no inference have yet been made 
-
-        """
-        return _pyAgrum.ShaferShenoyLIMIDInference_MEU(self)
+    def isSolvable(self):
+        r"""isSolvable(ShaferShenoyLIMIDInference self) -> bool"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_isSolvable(self)
 
     def optimalDecision(self, *args):
         r"""
-        optimalDecision(ShaferShenoyLIMIDInference self, gum::NodeId decisionId) -> gum::Idx
-        optimalDecision(ShaferShenoyLIMIDInference self, std::string decisionName) -> gum::Idx
+        optimalDecision(ShaferShenoyLIMIDInference self, gum::NodeId decisionId) -> Potential
+        optimalDecision(ShaferShenoyLIMIDInference self, std::string const & decisionName) -> Potential
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -25252,33 +25259,12 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
 
-    def reversePartialOrder(self):
-        r"""reversePartialOrder(ShaferShenoyLIMIDInference self) -> std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >"""
-        return _pyAgrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
-
-    def optimalDecisions(self):
+    def posteriorUtility(self, *args):
         r"""
-        optimalDecisions(ShaferShenoyLIMIDInference self) -> std::vector< std::pair< gum::NodeId,gum::Idx >,std::allocator< std::pair< gum::NodeId,gum::Idx > > >
-
-        Displays the result of an inference.
-
+        posteriorUtility(ShaferShenoyLIMIDInference self, gum::NodeId node) -> Potential
+        posteriorUtility(ShaferShenoyLIMIDInference self, std::string const & name) -> Potential
         """
-        return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecisions(self)
-
-    def reducedLIMID(self):
-        r"""reducedLIMID(ShaferShenoyLIMIDInference self) -> InfluenceDiagram"""
-        return _pyAgrum.ShaferShenoyLIMIDInference_reducedLIMID(self)
-
-    def isSolvable(self):
-        r"""isSolvable(ShaferShenoyLIMIDInference self) -> bool"""
-        return _pyAgrum.ShaferShenoyLIMIDInference_isSolvable(self)
-
-    def posterior(self, *args):
-        r"""
-        posterior(ShaferShenoyLIMIDInference self, gum::NodeId node) -> Potential
-        posterior(ShaferShenoyLIMIDInference self, std::string const & name) -> Potential
-        """
-        return _pyAgrum.ShaferShenoyLIMIDInference_posterior(self, *args)
+        return _pyAgrum.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
 
     def setEvidence(self, evidces):
         """
@@ -25298,74 +25284,77 @@ class ShaferShenoyLIMIDInference(object):
         gum.FatalError
             If one value is a vector of 0s
         gum.UndefinedElement
+            If one node does not belong to the influence diagram
+        """
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Raises
+        ------
+        gum.InvalidArgument
+            If one value is not a value for the node
+        gum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+        gum.FatalError
+            If one value is a vector of 0s
+        gum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-        bn = self.influenceDiagram()
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-    # set evidences
-        self.list_pot = []
-
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
-
-        for var_name, evidce in items:
-            pot = Potential()
-
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
             else:
-                raise TypeError('values of the dict must be int or string')
-
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
-    # determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    try:
-                        cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
-                        elif isinstance(evidce, str):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be int or string')
-                    except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
-
-        self.eraseAllEvidence()
-        self._setEvidence(self.list_pot)
+                self.addEvidence(k,v)
 
 
 
-    def _setEvidence(self, evidences):
-        r"""_setEvidence(ShaferShenoyLIMIDInference self, PyObject * evidences)"""
-        return _pyAgrum.ShaferShenoyLIMIDInference__setEvidence(self, evidences)
+    def hardEvidenceNodes(self):
+        r"""hardEvidenceNodes(ShaferShenoyLIMIDInference self) -> PyObject *"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
+
+    def softEvidenceNodes(self):
+        r"""softEvidenceNodes(ShaferShenoyLIMIDInference self) -> PyObject *"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
+
+    def MEU(self, *args):
+        r"""
+        MEU(ShaferShenoyLIMIDInference self) -> std::pair< double,double >
+        MEU(ShaferShenoyLIMIDInference self) -> PyObject *
+
+        Returns maximum expected utility obtained from inference.
+
+        Raises
+        ------
+        gum.OperationNotAllowed
+        	If no inference have yet been made 
+
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_MEU(self, *args)
+
+    def meanVar(self, *args):
+        r"""
+        meanVar(ShaferShenoyLIMIDInference self, gum::NodeId node) -> std::pair< double,double >
+        meanVar(ShaferShenoyLIMIDInference self, std::string const & name) -> std::pair< double,double >
+        meanVar(ShaferShenoyLIMIDInference self, gum::NodeId node) -> PyObject *
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_meanVar(self, *args)
 
     def makeInference(self):
         r"""
@@ -25375,6 +25364,94 @@ class ShaferShenoyLIMIDInference(object):
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_makeInference(self)
+
+    def posterior(self, *args):
+        r"""
+        posterior(ShaferShenoyLIMIDInference self, gum::NodeId node) -> Potential
+        posterior(ShaferShenoyLIMIDInference self, std::string const & name) -> Potential
+        posterior(ShaferShenoyLIMIDInference self, gum::NodeId const var) -> Potential
+        posterior(ShaferShenoyLIMIDInference self, std::string const & nodeName) -> Potential
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_posterior(self, *args)
+
+    def addEvidence(self, *args):
+        r"""
+        addEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, std::string const & val)
+        addEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, std::string const & val)
+        addEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, Vector vals)
+        addEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, Vector vals)
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_addEvidence(self, *args)
+
+    def chgEvidence(self, *args):
+        r"""
+        chgEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, std::string const & val)
+        chgEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, std::string const & val)
+        chgEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id, Vector vals)
+        chgEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName, Vector vals)
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_chgEvidence(self, *args)
+
+    def hasEvidence(self, *args):
+        r"""
+        hasEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id) -> bool
+        hasEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName) -> bool
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_hasEvidence(self, *args)
+
+    def eraseAllEvidence(self):
+        r"""
+        eraseAllEvidence(ShaferShenoyLIMIDInference self)
+
+        Removes all the evidence entered into the diagram.
+
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_eraseAllEvidence(self)
+
+    def eraseEvidence(self, *args):
+        r"""
+        eraseEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id)
+        eraseEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        evidence : pyAgrum.Potential
+        	the evidence to remove
+
+        Raises
+        ------
+        gum.IndexError
+        	If the evidence does not belong to the influence diagram
+
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
+
+    def hasHardEvidence(self, nodeName):
+        r"""hasHardEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName) -> bool"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
+
+    def hasSoftEvidence(self, *args):
+        r"""
+        hasSoftEvidence(ShaferShenoyLIMIDInference self, gum::NodeId const id) -> bool
+        hasSoftEvidence(ShaferShenoyLIMIDInference self, std::string const & nodeName) -> bool
+        """
+        return _pyAgrum.ShaferShenoyLIMIDInference_hasSoftEvidence(self, *args)
+
+    def nbrEvidence(self):
+        r"""nbrEvidence(ShaferShenoyLIMIDInference self) -> gum::Size"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_nbrEvidence(self)
+
+    def nbrHardEvidence(self):
+        r"""nbrHardEvidence(ShaferShenoyLIMIDInference self) -> gum::Size"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_nbrHardEvidence(self)
+
+    def nbrSoftEvidence(self):
+        r"""nbrSoftEvidence(ShaferShenoyLIMIDInference self) -> gum::Size"""
+        return _pyAgrum.ShaferShenoyLIMIDInference_nbrSoftEvidence(self)
 
     def influenceDiagram(self):
         r"""

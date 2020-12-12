@@ -108,11 +108,11 @@ namespace gum {
 
 
     gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
-
-    virtual gum::Potential< GUM_SCALAR >
-       optimalDecision(const std::string& decisionName) {
+    gum::Potential< GUM_SCALAR >
+       optimalDecision(const std::string& decisionName) final {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
+
     /**
      * Return the posterior probability of a node
      *
@@ -120,7 +120,7 @@ namespace gum {
      * @return the posterior probability
      */
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
-    virtual const Potential< GUM_SCALAR >& posterior(const std::string& name) {
+    const Potential< GUM_SCALAR >& posterior(const std::string& name) final {
       return posterior(this->influenceDiagram().idFromName(name));
     };
 
@@ -132,7 +132,7 @@ namespace gum {
      */
     virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) final;
     virtual const Potential< GUM_SCALAR >&
-       posteriorUtility(const std::string& name) {
+       posteriorUtility(const std::string& name) final {
       return posteriorUtility(this->influenceDiagram().idFromName(name));
     };
 
@@ -143,7 +143,7 @@ namespace gum {
      * @return the pair (mean,variance) for a node
      */
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) final;
-    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) {
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) final {
       return meanVar(this->influenceDiagram().idFromName(name));
     };
 
@@ -152,7 +152,7 @@ namespace gum {
      *
      * @return the pair (mean,variance) for MEU
      */
-    std::pair< GUM_SCALAR, GUM_SCALAR > MEU();
+    std::pair< GUM_SCALAR, GUM_SCALAR > MEU() final;
 
     protected:
     void onStateChanged_() override;

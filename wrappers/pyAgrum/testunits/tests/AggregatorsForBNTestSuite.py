@@ -16,7 +16,6 @@ class AggregatorsForBNTestCase(pyAgrumTestCase):
     a = bn.addAND(gum.LabelizedVariable('a', 'a', 2))
     bn.addArc(c1, a)
     bn.addArc(c2, a)
-    self.assertEqual(str(bn.cpt(a)), "a<0,1>=and(C1<0,1>,C2<0,1>)")
 
     for i in range(2):
       bn.cpt(c1)[:] = [i, 1 - i]
@@ -37,8 +36,6 @@ class AggregatorsForBNTestCase(pyAgrumTestCase):
     a = bn.addOR(gum.LabelizedVariable('a', 'a', 2))
     bn.addArc(c1, a)
     bn.addArc(c2, a)
-
-    self.assertEqual(str(bn.cpt(a)), "a<0,1>=or(C1<0,1>,C2<0,1>)")
 
     for i in range(2):
       bn.cpt(c1)[:] = [i, 1 - i]

@@ -277,6 +277,13 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PyDictFromPairMeanVar(std::pair<double,double> mv) {
+    PyObject* q = PyDict_New();
+    PyDict_SetItemString(q,"mean",PyFloat_FromDouble(mv.first));
+    PyDict_SetItemString(q,"variance",PyFloat_FromDouble(mv.second));
+    return q;
+  }
+
   PyObject*
      PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
     PyObject* q = PyList_New(0);

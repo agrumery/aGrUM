@@ -623,6 +623,7 @@ ADD_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
 
 #################
 %define ADD_ID_INFERENCE_API(classname...)
+ADD_INFERENCE_API(classname,classname)
 %extend classname {
    void makeInference(void) {
      self->gum::InfluenceDiagramInference<double>::makeInference();

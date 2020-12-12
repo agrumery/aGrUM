@@ -90,8 +90,8 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
       self.assertEqual(self.diag.variable(i).__str__(), newone.variable(i).__str__())
 
   def testBugInference(self):
-    tst_id =gum.fastID("c1<-c->$u<-*d")
-    
+    tst_id = gum.fastID("c1<-c->$u<-*d")
+
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
     tst_id.cpt("c1")[{'c': 0}] = [1, 0]
@@ -104,13 +104,13 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"),1)
-    self.assertEqual(ie.MEU(),110.5)
     print(ie.MEU())
+    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()['mean'], 110.5)
 
   def testBugInferenceWithEvidence(self):
-    tst_id =gum.fastID("c1<-c->$u<-*d")
-    
+    tst_id = gum.fastID("c1<-c->$u<-*d")
+
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
     tst_id.cpt("c1")[{'c': 0}] = [1, 0]
@@ -122,21 +122,16 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
-    print("evidence")
     ie.setEvidence({'c': 0})
-    print(ie)
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"),1)
-    self.assertEqual(ie.MEU(),21)
-    print(ie)
+    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()['mean'], 21)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"),1)
-    self.assertEqual(ie.MEU(),200)
-    print(ie)
-    print("done")
+    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()['mean'], 200)
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)
