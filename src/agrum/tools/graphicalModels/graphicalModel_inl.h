@@ -26,6 +26,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
+#include <algorithm>
+#include <iterator>
 
 #include <agrum/tools/core/math/math.h>
 #include <agrum/tools/graphicalModels/graphicalModel.h>

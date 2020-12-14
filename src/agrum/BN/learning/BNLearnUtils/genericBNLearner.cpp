@@ -29,6 +29,7 @@
  */
 
 #include <algorithm>
+#include <iterator>
 
 #include <agrum/agrum.h>
 #include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
