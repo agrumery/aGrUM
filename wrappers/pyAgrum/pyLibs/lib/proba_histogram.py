@@ -91,7 +91,7 @@ def __limits(p):
   return res, [v[i] for i in res], lres
 
 
-def _getProbaV(p, scale=1.0):
+def _getProbaV(p, scale=1.0,util=None):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -103,7 +103,12 @@ def _getProbaV(p, scale=1.0):
     ra, v, lv = __limits(p)
   else:
     var = p.variable(0)
-    lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
+    if util is not None:
+      lu=util.toarray()
+      fmt=gum.config["influenceDiagram", "utility_format_number"]
+      lv= ["{} [{:."+fmt+"f}]".format(var.label(int(i)),lu[i]) for i in np.arange(var.domainSize())] 
+    else:  
+      lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
     v = p.tolist()
     ra = range(len(v))
 
@@ -137,7 +142,7 @@ def _getProbaV(p, scale=1.0):
   return fig
 
 
-def _getProbaH(p, scale=1.0):
+def _getProbaH(p, scale=1.0,util=None):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -148,7 +153,12 @@ def _getProbaH(p, scale=1.0):
   ra = np.arange(var.domainSize())
 
   ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
+  
+  if util is not None:
+    lu=util.toarray()
+    vx= ["{} [{:.1f}]".format(var.label(int(i)),lu[i]) for i in ra_reverse] 
+  else:  
+    vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
 
   fig = plt.figure()
   fig.set_figheight(scale * var.domainSize() / 4.0)
@@ -183,20 +193,28 @@ def _getProbaH(p, scale=1.0):
   return fig
 
 
-def proba2histo(p, scale=1.0):
+def proba2histo(p, scale=1.0,util=None):
   """
   compute the representation of an histogram for a mono-dim Potential
 
   :param pyAgrum.Potential p: the mono-dim Potential
   :return: a matplotlib histogram for a Potential p.
   """
-  if p.variable(0).domainSize() > 8:
+  if util is None and p.variable(0).domainSize() > 8:
     return _getProbaV(p, scale)
   else:
-    return _getProbaH(p, scale)
+    return _getProbaH(p, scale,util=util)
 
-def saveFigProba(p, filename):
-  fig = proba2histo(p)
-  fig.savefig(filename, bbox_inches='tight', transparent=True,
+def saveFigProba(p, filename,util=None,bgcol=None):
+  fig = proba2histo(p,util=util)
+
+  if bgcol is None:
+    transp=True
+    fc="white"
+  else:
+    transp=False
+    fc=bgcol
+
+  fig.savefig(filename, bbox_inches='tight', transparent=transp,facecolor=fc,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
   plt.close(fig)

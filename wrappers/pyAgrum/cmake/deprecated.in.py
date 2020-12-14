@@ -4,7 +4,8 @@ Deprecated for older pyAgrum
 """
 from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket,InfluenceDiagram
+from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import ExactBNdistance,GibbsBNdistance
 from .pyAgrum import BNLearner
 
@@ -13,8 +14,8 @@ def InfluenceDiagramInference(infdiag):
   Deprecated class. Use pyAgrum.ShaferShenoyIDInference instead.
   """
   print("** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.")
-  print("** A pyAgrum.ShaferShenoyIDInference has been created.")
-  return ShaferShenoyIDInference(bn)
+  print("** A pyAgrum.ShaferShenoyLIMIDInference has been created.")
+  return ShaferShenoyLIMIDInference(infdiag)
 
 def ShaferShenoyIDInference(infdiag):
   """
@@ -22,7 +23,7 @@ def ShaferShenoyIDInference(infdiag):
   """
   print("** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.")
   print("** A pyAgrum.ShaferShenoyLIMIDInference has been created.")
-  return ShaferShenoyLIMIDInference(bn)
+  return ShaferShenoyLIMIDInference(infdiag)
 
 def GibbsInference(bn):
   """

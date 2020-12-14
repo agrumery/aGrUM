@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<BIF VERSION="0.3">
+  <NETWORK>
+
+    <!-- Variables -->
+    <VARIABLE TYPE="decision">
+      <NAME>Accept2B</NAME>
+      <PROPERTY>Accept2B</PROPERTY>
+      <OUTCOME>Accept_2</OUTCOME>
+      <OUTCOME>Counter_5</OUTCOME>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Texaco_Reaction</NAME>
+      <PROPERTY>Texaco_Reaction</PROPERTY>
+      <OUTCOME>Accept_5</OUTCOME>
+      <OUTCOME>Refuse</OUTCOME>
+      <OUTCOME>Counter_3</OUTCOME>
+    </VARIABLE>
+    <VARIABLE TYPE="decision">
+      <NAME>Pennzoil_Reaction</NAME>
+      <PROPERTY>Pennzoil_Reaction</PROPERTY>
+      <OUTCOME>Refuse</OUTCOME>
+      <OUTCOME>Accept_3</OUTCOME>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Court_Decision</NAME>
+      <PROPERTY>Court_Decision</PROPERTY>
+      <OUTCOME>High</OUTCOME>
+      <OUTCOME>Medium</OUTCOME>
+      <OUTCOME>Low</OUTCOME>
+    </VARIABLE>
+    <VARIABLE TYPE="utility">
+      <NAME>Settlement</NAME>
+      <PROPERTY>Settlement</PROPERTY>
+      <OUTCOME>0</OUTCOME>
+    </VARIABLE>
+
+
+    <!-- Probability distributions -->
+    <DEFINITION>
+      <FOR>Pennzoil_Reaction</FOR>
+      <GIVEN>Accept2B</GIVEN>
+      <GIVEN>Texaco_Reaction</GIVEN>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Court_Decision</FOR>
+      <TABLE>
+        0.2 0.5 0.3
+      </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Texaco_Reaction</FOR>
+      <TABLE>
+        0.17 0.5 0.33
+      </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Settlement</FOR>
+      <GIVEN>Accept2B</GIVEN>
+      <GIVEN>Texaco_Reaction</GIVEN>
+      <GIVEN>Pennzoil_Reaction</GIVEN>
+      <GIVEN>Court_Decision</GIVEN>
+      <TABLE>
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 5 5 5 5 5 5 10.3 5 0 10.3 5 0 10.3 5 0 3 3 3
+      </TABLE>
+    </DEFINITION>
+  </NETWORK>
+</BIF>  

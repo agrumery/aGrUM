@@ -22,9 +22,6 @@
 
 import pickle
 
-
-from os import remove
-
 from .configuration import cfg
 from .invocation import showInvocation
 from .modules import check_modules
@@ -63,7 +60,7 @@ def setCurrent(current):
     pickle.dump(shlv, fp)
 
 
-def checkCurrent(current, options, args):
+def checkCurrent(current, options, args): 
   # helper
   def update(current, key, val, test):
     if test:
@@ -79,6 +76,9 @@ def checkCurrent(current, options, args):
       error("Options not known : {0} in {1}".format(opt, current.keys()))
 
     update(current, opt, value, current[opt] != value)
+    
+  # fixing possible "\" from windows
+  current['destination']=current['destination'].replace('\\','/')
 
   bT = bA = bM = False
   # fixing args
@@ -104,12 +104,12 @@ def checkCurrent(current, options, args):
     critic("arg [{0}] unknown".format(arg))
 
   checkConsistency(current)
+
   if options.noSaveParams:
       pass
   else:
       setCurrent(current)
   showInvocation(current)
-
 
 def checkConsistency(current):
   has_notif = False

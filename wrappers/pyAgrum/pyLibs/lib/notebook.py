@@ -42,6 +42,7 @@ from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
+from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
@@ -293,84 +294,6 @@ def getJunctionTree(bn, withNames=True, size=None):
   else:
     return getDot(jt.toDot(), size)
 
-
-def _infdiag_todot(diag):
-  res = "digraph {"
-
-  # chance node
-  res += '''
-    node [fillcolor="{}",
-          fontcolor="{}",
-          style=filled,shape={}];
-  '''.format(gum.config["influenceDiagram", "default_chance_bgcolor"],
-             gum.config["influenceDiagram", "default_chance_fgcolor"],
-             gum.config["influenceDiagram", "default_chance_shape"])
-  for node in diag.nodes():
-    if diag.isChanceNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # decision node
-  res += '''
-    node [fillcolor="{}",
-          fontcolor="{}",
-          style=filled,shape={}];
-  '''.format(gum.config["influenceDiagram", "default_decision_bgcolor"],
-             gum.config["influenceDiagram", "default_decision_fgcolor"],
-             gum.config["influenceDiagram", "default_decision_shape"])
-  for node in diag.nodes():
-    if diag.isDecisionNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # utility node
-  res += '''
-    node [fillcolor="{}",
-          fontcolor="{}",
-          style=filled,shape={}];
-  '''.format(gum.config["influenceDiagram", "default_utility_bgcolor"],
-             gum.config["influenceDiagram", "default_utility_fgcolor"],
-             gum.config["influenceDiagram", "default_utility_shape"])
-  for node in diag.nodes():
-    if diag.isUtilityNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # arcs
-  res += "\n"
-  for node in diag.nodes():
-    for chi in diag.children(node):
-      res += '  "' + diag.variable(node).name() + '"->"' + \
-             diag.variable(chi).name() + '";' + "\n"
-  res += "}"
-  return res
-
-
-def showInfluenceDiagram(diag, size=None):
-  """
-  show an influence diagram as a graph
-
-  :param diag: the influence diagram
-  :param size: size of the rendered graph
-  :return: the representation of the influence diagram
-  """
-  if size is None:
-    size = gum.config["notebook", "default_graph_size"]
-
-  return showDot(_infdiag_todot(diag), size)
-
-
-def getInfluenceDiagram(diag, size=None):
-  """
-  get a HTML string for an influence diagram as a graph
-
-  :param diag: the influence diagram
-  :param size: size of the rendered graph
-  :return: the HTML representation of the influence diagram
-  """
-  if size is None:
-    size = gum.config["notebook", "default_graph_size"]
-
-  return getDot(_infdiag_todot(diag), size)
-
-
 def showProba(p, scale=1.0):
   """
   Show a mono-dim Potential
@@ -491,6 +414,33 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
 
   return showGraph(dottxt, size)
 
+def showInfluenceDiagram(diag, size=None):
+  """
+  show an influence diagram as a graph
+
+  :param diag: the influence diagram
+  :param size: size of the rendered graph
+  :return: the representation of the influence diagram
+  """
+  if size is None:
+    size = gum.config["influenceDiagram", "default_id_size"]
+
+  return showGraph(ID2dot(diag), size)
+
+
+def getInfluenceDiagram(diag, size=None):
+  """
+  get a HTML string for an influence diagram as a graph
+
+  :param diag: the influence diagram
+  :param size: size of the rendered graph
+  :return: the HTML representation of the influence diagram
+  """
+  if size is None:
+    size = gum.config["influenceDiagram", "default_id_size"]
+
+  return getGraph(ID2dot(diag), size)
+
 
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
@@ -569,7 +519,6 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
     cmapArc = cmap
 
   return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
-
 
 def _normalizeVals(vals, hilightExtrema=False):
   """
@@ -713,8 +662,12 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
                                  cmapArc)
       else:
         return MNinference2FactorGraphdot(model, size, engine, evs, targets, nodeColor, factorColor, cmap)
-    else:
-      raise gum.InvalidArgument("Argument model should be a PGM (BayesNet or MarkovNet")
+  elif isinstance(model,gum.InfluenceDiagram):
+    if engine is None:
+      engine = gum.ShaferShenoyLIMIDInference(model)
+    return LIMIDinference2dot(model, size, engine, evs, targets)
+  else:
+    raise gum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
 def showInference(model, engine=None, evs=None, targets=None, size=None,
@@ -741,7 +694,7 @@ def showInference(model, engine=None, evs=None, targets=None, size=None,
   """
   grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
                              view)
-  return showGraph(grinf, size)
+  showGraph(grinf, size)
 
 
 def getInference(model, engine=None, evs=None, targets=None, size=None,
@@ -766,8 +719,7 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
 
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph,
-                             view=view)
+  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph,view=view)
   return getGraph(grinf, size)
 
 
@@ -1063,6 +1015,7 @@ def getInferenceEngine(ie, inferenceCaption):
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.MarkovNet._repr_html_ = lambda self: getMN(self)
 gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
+gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
 
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
@@ -1075,7 +1028,6 @@ gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
-gum.InfluenceDiagram._repr_html_ = lambda self: getDot(_infdiag_todot(self))
 
 mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
 IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])

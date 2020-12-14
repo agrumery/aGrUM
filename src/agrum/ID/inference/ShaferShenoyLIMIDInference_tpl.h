@@ -614,17 +614,16 @@ namespace gum {
                                // inserting hard decision
         unconditionalDecisions_.set(decisionNode, dp);
       }
-      decision =
-         (dp.utilPot * dp.probPot).putFirst(&infdiag.variable(decisionNode));
+      decision = dp.utilPot.putFirst(&infdiag.variable(decisionNode));
 
-      binarizingMax_(decision);
+      binarizingMax_(decision, dp.utilPot);
     }
     phi[node_to_clique_[decisionNode]].insertProba(decision);
   }
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::binarizingMax_(
-     Potential< GUM_SCALAR >& decision)
+     const Potential< GUM_SCALAR >& decision, const Potential< GUM_SCALAR >& proba)
      const {   // compute the decisions (as maxEU)
     Instantiation I(decision);
     const auto&   firstvar = decision.variable(0);
@@ -632,9 +631,12 @@ namespace gum {
       I.setFirstVar(firstvar);
       Idx        argm = I.val(firstvar);
       GUM_SCALAR umax = decision[I];
+      GUM_SCALAR pmax = proba[I];
       for (I.incVar(firstvar); !I.end(); I.incVar(firstvar)) {
-        if (umax < decision[I]) {
+        // lexicographical order on (u,p)
+        if ((umax < decision[I]) || ((umax == decision[I]) && (pmax < proba[I]))) {
           umax = decision[I];
+          pmax = proba[I];
           argm = I.val(firstvar);
         }
       }
@@ -727,8 +729,9 @@ namespace gum {
           if (infdiag.isChanceNode(par)) family.insert(&infdiag.variable(par));
         }
         const auto               dp = phi[node_to_clique_[node]] ^ family;
-        gum::Potential< double > decision = dp.utilPot.putFirst(&infdiag.variable(node));
-        binarizingMax_(decision);
+        gum::Potential< double > decision =
+           dp.utilPot.putFirst(&infdiag.variable(node));
+        binarizingMax_(decision, dp.probPot);
         strategies_.insert(node, decision);
         res = dp ^ sev;
         res.probPot.normalize();

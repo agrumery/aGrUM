@@ -36,7 +36,7 @@ import shutil
 
 from .proba_histogram import proba2histo,saveFigProba
 
-def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
   create a pydotplus representation of the BN
 
