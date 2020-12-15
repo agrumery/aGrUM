@@ -32,6 +32,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyAgrum as gum
 
+
 def _stats(p):
   mu = 0.0
   mu2 = 0.0
@@ -43,9 +44,9 @@ def _stats(p):
   return (mu, math.sqrt(mu2 - mu * mu))
 
 
-def _getTitleHisto(p):
+def _getTitleHisto(p, showMuSigma=True):
   var = p.variable(0)
-  if var.varType() == 1:  # Labelized
+  if var.varType() == 1 or not(showMuSigma):  # Labelized
     return "{}".format(var.name())
 
   (mu, std) = _stats(p)
@@ -91,7 +92,7 @@ def __limits(p):
   return res, [v[i] for i in res], lres
 
 
-def _getProbaV(p, scale=1.0,util=None):
+def _getProbaV(p, scale=1.0, util=None,txtcolor="black"):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -104,10 +105,11 @@ def _getProbaV(p, scale=1.0,util=None):
   else:
     var = p.variable(0)
     if util is not None:
-      lu=util.toarray()
-      fmt=gum.config["influenceDiagram", "utility_format_number"]
-      lv= ["{} [{:."+fmt+"f}]".format(var.label(int(i)),lu[i]) for i in np.arange(var.domainSize())] 
-    else:  
+      lu = util.toarray()
+      fmt = gum.config["influenceDiagram", "utility_format_number"]
+      lv = ["{} [{:."+fmt+"f}]".format(var.label(int(i)), lu[i])
+            for i in np.arange(var.domainSize())]
+    else:
       lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
     v = p.tolist()
     ra = range(len(v))
@@ -134,15 +136,16 @@ def _getProbaV(p, scale=1.0,util=None):
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
-  ax.set_xticklabels(lv, rotation='vertical')
-  ax.set_title(_getTitleHisto(p))
+  ax.set_xticklabels(lv, rotation='vertical', color=txtcolor)
+  # if utility, we do not show the mean/sigma of the proba.
+  ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
   ax.get_yaxis().grid(True)
   ax.margins(0)
 
   return fig
 
 
-def _getProbaH(p, scale=1.0,util=None):
+def _getProbaH(p, scale=1.0, util=None,txtcolor="black"):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -153,11 +156,11 @@ def _getProbaH(p, scale=1.0,util=None):
   ra = np.arange(var.domainSize())
 
   ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  
+
   if util is not None:
-    lu=util.toarray()
-    vx= ["{} [{:.1f}]".format(var.label(int(i)),lu[i]) for i in ra_reverse] 
-  else:  
+    lu = util.toarray()
+    vx = ["{} [{:.1f}]".format(var.label(int(i)), lu[i]) for i in ra_reverse]
+  else:
     vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
 
   fig = plt.figure()
@@ -183,17 +186,18 @@ def _getProbaH(p, scale=1.0,util=None):
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
-  ax.set_yticklabels(vx)
+  ax.set_yticklabels(vx, color=txtcolor)
   ax.set_xticklabels([])
   # ax.set_xlabel('Probability')
-  ax.set_title(_getTitleHisto(p))
+  # if utility, we do not show the mean/sigma of the proba.
+  ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
   ax.get_xaxis().grid(True)
   ax.margins(0)
 
   return fig
 
 
-def proba2histo(p, scale=1.0,util=None):
+def proba2histo(p, scale=1.0, util=None,txtcolor="Black"):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -201,20 +205,21 @@ def proba2histo(p, scale=1.0,util=None):
   :return: a matplotlib histogram for a Potential p.
   """
   if util is None and p.variable(0).domainSize() > 8:
-    return _getProbaV(p, scale)
+    return _getProbaV(p, scale,txtcolor=txtcolor)
   else:
-    return _getProbaH(p, scale,util=util)
+    return _getProbaH(p, scale, util=util,txtcolor=txtcolor)
 
-def saveFigProba(p, filename,util=None,bgcol=None):
-  fig = proba2histo(p,util=util)
+
+def saveFigProba(p, filename, util=None, bgcol=None,txtcolor="Black"):
+  fig = proba2histo(p, util=util,txtcolor=txtcolor)
 
   if bgcol is None:
-    transp=True
-    fc="white"
+    transp = True
+    fc = "white"
   else:
-    transp=False
-    fc=bgcol
+    transp = False
+    fc = bgcol
 
-  fig.savefig(filename, bbox_inches='tight', transparent=transp,facecolor=fc,
+  fig.savefig(filename, bbox_inches='tight', transparent=transp, facecolor=fc,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
   plt.close(fig)

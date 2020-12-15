@@ -37,7 +37,7 @@ import shutil
 from .proba_histogram import proba2histo,saveFigProba
 
 def ID2dot(diag, size=None):
-  res = "digraph {"
+  res = "digraph  { \n graph [bgcolor=transparent];\n"
 
   # chance node
   res += '''
@@ -162,7 +162,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
         filename = temp_dir + \
             hashlib.md5(name.encode()).hexdigest() + "." + \
             gum.config["notebook", "graph_format"]
-        saveFigProba(ie.posterior(name), filename,bgcol=bgcolor,util=ie.posteriorUtility(nid))
+        saveFigProba(ie.posterior(name), filename,bgcol=bgcolor,util=ie.posteriorUtility(nid),txtcolor=fgcolor)
         dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
       else:
         dotstr += ' "{0}" [{1},shape={2},{3}]'.format(name, colorattribute,shape,styleattribute)
@@ -184,7 +184,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
         dotstr+=' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
       dotstr += ";\n"
   dotstr += "}"
-
+  
   g = dot.graph_from_dot_data(dotstr)
   
   if size is None:
