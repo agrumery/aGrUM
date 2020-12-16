@@ -513,14 +513,19 @@ namespace gum {
         res.addChanceNode(infdiag.variable(node), node);
       else if (infdiag.isDecisionNode(node))
         res.addDecisionNode(infdiag.variable(node), node);
-      else if (infdiag.isUtilityNode(node))
+      else // (infdiag.isUtilityNode(node))
         res.addUtilityNode(infdiag.variable(node), node);
-      else
-        GUM_ERROR(FatalError, "Type of node " << node << "is unknown.")
     }
 
     for (const auto& arc: reduced_.arcs()) {
       res.addArc(arc.tail(), arc.head());
+    }
+
+    for (auto node: infdiag.nodes()) {
+      if (infdiag.isChanceNode(node))
+        res.cpt(node).fillWith(infdiag.cpt(node));
+      else if (infdiag.isUtilityNode(node))
+        res.utility(node).fillWith(infdiag.utility(node));
     }
 
     // Potentials !!!

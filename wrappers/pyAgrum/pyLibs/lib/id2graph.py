@@ -89,7 +89,7 @@ def ID2dot(diag, size=None):
   res += "}"
 
   g = dot.graph_from_dot_data(res)
-  
+
   if size is None:
     size = gum.config["influenceDiagram", "default_id_size"]
   g.set_size(size)
@@ -106,7 +106,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   :param set targets: set of targets. If targets={} then each node is a target
 
   :return: the desired representation of the inference
-  """    
+  """
   startTime = time.time()
   if engine is None:
     ie = gum.ShaferShenoyLIMIDInference(diag)
@@ -122,9 +122,13 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
       gum.getBlackInTheme()+"\";bgcolor=\"transparent\";"
-      
+
   fmt=gum.config["influenceDiagram", "utility_format_number"]
-  titut=("MEU {:."+fmt+"f} (stdev={:."+fmt+"f})").format(meu['mean'],math.sqrt(meu['variance']))
+
+  titut=("MEU {:."+fmt+"f}").format(meu['mean'])
+  if gum.config["influenceDiagram", "utility_show_stdev"]=="True":
+      titut+=(" (stdev={:."+fmt+"f})").format(math.sqrt(meu['variance']))
+
   dotstr += "label=\"{}\nInference in {:6.2f}ms\";\n".format(titut,1000 * (stopTime - startTime))
 
   for nid in diag.nodes():
@@ -134,16 +138,16 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
     bgcolor = gum.config["notebook", "default_node_bgcolor"]
     fgcolor = gum.config["notebook", "default_node_fgcolor"]
     shape="ellipse"
-    
+
     if diag.isChanceNode(nid):
       bgcolor=gum.config["influenceDiagram", "default_chance_bgcolor"]
       fgcolor=gum.config["influenceDiagram", "default_chance_fgcolor"]
       shape=gum.config["influenceDiagram", "chance_shape"]
-    elif diag.isDecisionNode(nid):  
+    elif diag.isDecisionNode(nid):
       bgcolor=gum.config["influenceDiagram", "default_decision_bgcolor"]
       fgcolor=gum.config["influenceDiagram", "default_decision_fgcolor"]
       shape=gum.config["influenceDiagram", "decision_shape"]
-    else: # diag.isUtilityNode(nid):  
+    else: # diag.isUtilityNode(nid):
       bgcolor=gum.config["influenceDiagram", "default_utility_bgcolor"]
       fgcolor=gum.config["influenceDiagram", "default_utility_fgcolor"]
       shape=gum.config["influenceDiagram", "utility_shape"]
@@ -169,7 +173,10 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
     else: #utility node
       mv=ie.meanVar(name)
       fmt=gum.config["influenceDiagram", "utility_format_number"]
-      labut=("{} : {:."+fmt+"f} ({:."+fmt+"f})").format(name,mv["mean"],math.sqrt(mv["variance"]))
+      labut=("{} : {:."+fmt+"f}").format(name,mv["mean"])
+      if gum.config["influenceDiagram", "utility_show_stdev"]=="True":
+        labut+=(" ({:."+fmt+"f})").format(math.sqrt(mv["variance"]))
+
       dotstr += ' "{0}" [label="{1}",{2},{3},shape={4}]'.format(name,labut, colorattribute,styleattribute,shape)
 
   # arcs
@@ -184,9 +191,9 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
         dotstr+=' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
       dotstr += ";\n"
   dotstr += "}"
-  
+
   g = dot.graph_from_dot_data(dotstr)
-  
+
   if size is None:
     size = gum.config["influenceDiagram", "default_id_inference_size"]
   g.set_size(size)
