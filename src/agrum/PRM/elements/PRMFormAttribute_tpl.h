@@ -211,8 +211,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMFormAttribute< GUM_SCALAR >::
-       setAsCastDescendant(
+    void PRMFormAttribute< GUM_SCALAR >::setAsCastDescendant(
        PRMAttribute< GUM_SCALAR >* cast) {
       try {
         type().setSuper(cast->type());

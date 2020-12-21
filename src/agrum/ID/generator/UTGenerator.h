@@ -22,7 +22,8 @@
 /** @file
  * @brief Abstract class for generating Utility Tables.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_UT_GENERATOR_H
 #define GUM_UT_GENERATOR_H

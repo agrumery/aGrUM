@@ -495,6 +495,7 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname
 ADD_SAMPLING_INFERENCE_API(gum::GibbsSampling<double>)
 ADD_SAMPLING_INFERENCE_API(gum::MonteCarloSampling<double>)
 ADD_SAMPLING_INFERENCE_API(gum::WeightedSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::ImportanceSampling<double>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)

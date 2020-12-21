@@ -23,13 +23,14 @@
 
 from __future__ import print_function
 
-import csv
 import os
 import sys
+import numpy as np
 
 import matplotlib.pylab as pylab
 
 import pyAgrum as gum
+import pyAgrum.skbn as skbn
 
 try:
   from ._utils.progress_bar import ProgressBar
@@ -68,7 +69,7 @@ def _checkCompatibility(bn, fields, csv_name):
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   fields : list
     a list of fields
   csv_name : str
@@ -124,7 +125,7 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   csv_name : str
     a csv filename
   target : str
@@ -153,81 +154,27 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
         break
     assert (idLabel >= 0)
 
-  engine = gum.LazyPropagation(bn)
-  engine.eraseAllEvidence()
-  mbvars = [bn.variable(i).name()
-            for i in gum.MarkovBlanket(bn, target).nodes()
-            if bn.variable(i).name()!=target]
-  e = {}
-  for var in bn.names():
-    if not var.__eq__(target):
-      e[var] = 0
-  engine.setEvidence(e)
-  engine.addTarget(idTarget)
+  Classifier = skbn.BNClassifier(significant_digit = significant_digits)  
 
   if visible:
     nbr_lines = _lines_count(csv_name) - 1
-
-  if (sys.version_info >= (3, 0)):  # python 3
-    csvfile = open(csv_name, "r")
-    dialect = csv.Sniffer().sniff(csvfile.readline())
-    csvfile.seek(0)
-    batchReader = csv.reader(open(csv_name, 'r'), dialect)
-    titre = batchReader.__next__()
-  else:  # python2
-    csvfile = open(csv_name, "rb")
-    dialect = csv.Sniffer().sniff(csvfile.readline())
-    csvfile.seek(0)
-    batchReader = csv.reader(open(csv_name, 'rb'), dialect)
-    titre = batchReader.next()
-  fields = {}
-  for i, nom in enumerate(titre):
-    fields[nom] = i
-
-  positions = _checkCompatibility(bn, fields, csv_name)
-
-  if positions is None:
-    sys.exit(1)
 
   if visible:
     prog = ProgressBar(csv_name + ' : ', 0, nbr_lines,
                        77, mode='static', char='#')
     prog.display()
+        
+  Classifier.fromTrainedModel(bn, target, label)  
+  X, y = Classifier.XYfromCSV(csv_name, with_labels = with_labels, target = target)
+  predictions = Classifier.predict_proba(X)
 
-  totalP = 0
-  totalN = 0
+  totalP = np.count_nonzero(y)
+  totalN = len(y) - totalP
   res = []
-  for data in batchReader:
-    if with_labels:
-      if str(data[positions[idTarget]]) == label:
-        totalP += 1
-      else:
-        totalN += 1
-    else:
-      idTargetLine = int(data[positions[idTarget]])
-      if idTargetLine == idLabel:
-        totalP += 1
-      else:
-        totalN += 1
-
-    if with_labels:
-      for var in mbvars:
-        engine.chgEvidence(var, str(data[positions[bn.idFromName(var)]]))
-    else:
-      for var in mbvars:
-        engine.chgEvidence(var, int(data[positions[bn.idFromName(var)]]))
-
-    try:
-      engine.makeInference()
-      px = round(engine.posterior(idTarget)[{target: label}],significant_digits)
-      if with_labels:
-        res.append((px, str(data[positions[idTarget]])))
-      else:
-        res.append((px, int(data[positions[idTarget]])))
-    except gum.OutOfBounds as err:
-      print(err)
-      print("erreur : " + str(e))
-
+  for i in range(len(X)) :
+    px = predictions[i][1]
+    res.append((px, y[i]))
+        
     if visible:
       prog.increment_amount()
       prog.display()
@@ -236,9 +183,9 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
     print
 
   if with_labels:
-    return (res, totalP, totalN, label)
+    return (res, totalP, totalN, True)
   else:
-    return (res, totalP, totalN, idLabel)
+    return (res, totalP, totalN, True)
 
 
 def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
@@ -246,9 +193,9 @@ def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   values :
-    the ROC curve values
+    the curve values
   totalP : int
     the number of positive values
   totalN : int
@@ -311,7 +258,7 @@ def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
       old_seuil = res[i][0]
 
     res_id = res[i][1]
-    if res_id == idLabel:
+    if res_id == idLabel :
       vp += 1.0
     else:
       fp += 1.0
@@ -326,7 +273,7 @@ def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   values :
     the ROC curve values
   totalP : int
@@ -353,7 +300,7 @@ def _computePR(bn, values, totalP, totalN, idLabel, modalite):
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   values :
     the ROC curve values
   totalP : int
@@ -573,7 +520,7 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   csv_name : str
     a csv filename
   target : str
@@ -650,7 +597,7 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_la
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   csv_name : str
     a csv filename
   target : str
@@ -672,7 +619,7 @@ def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_lab
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a bayesian network
+    a Bayesian network
   csv_name : str
     a csv filename
   target : str

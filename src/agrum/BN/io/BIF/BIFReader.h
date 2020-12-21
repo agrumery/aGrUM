@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Definition of templatized reader of BIF files for Bayesian Networks.
+ * @brief Definition of templatized reader of BIF files for Bayesian networks.
  *
  * how to use it :
  * @code
@@ -82,7 +82,7 @@ namespace gum {
 * @class BIFReader
 * @headerfile BIFReader.h <agrum/BN/io/BIF/BIFReader.h>
    * @ingroup bn_io
-   * @brief Definition of templatized reader of BIF files for Bayesian Networks.
+   * @brief Definition of templatized reader of BIF files for Bayesian networks.
    *
    * how to use it :
    * @code

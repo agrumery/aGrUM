@@ -23,6 +23,7 @@
  * @file
  * @brief Source implementations for the ContingencyTable class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #include <agrum/FMDP/learning/core/contingencyTable.h>

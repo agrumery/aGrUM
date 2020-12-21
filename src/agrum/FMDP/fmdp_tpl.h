@@ -23,7 +23,8 @@
  * @file
  * @brief Template implementation of FMDP/FMDP.h classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 //======================================================================
@@ -234,8 +235,8 @@ namespace gum {
       return (*actionTransitionTable__[actionId])[v];
     else
       return (*actionTransitionTable__[0]).exists(v)
-                ? (*actionTransitionTable__[0])[v]
-                : nullptr;
+                          ? (*actionTransitionTable__[0])[v]
+                          : nullptr;
   }
 
 

@@ -91,13 +91,13 @@ namespace gum {
      *
      * @param dotlike the string containing the specification
      * @param domainSize the default domain size for variables
-     * @return the resulting bayesian network
+     * @return the resulting Bayesian network
      */
     static MarkovNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
                                                  Size domainSize = 2);
 
     /**
-     * build a Markov Network from a Bayesian Network
+     * build a Markov Network from a Bayesian network
      * @param bn the Bayesian network
      * @return a markov network
      */

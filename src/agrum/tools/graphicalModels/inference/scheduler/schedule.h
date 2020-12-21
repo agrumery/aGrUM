@@ -159,7 +159,7 @@ namespace gum {
 
     /// returns the set of operations involving a given multidim table
     const NodeSet&
-                   operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
+       operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
     const NodeSet& operationsInvolving(MultiDimId table_id) const;
 
     /// returns the set of ScheduleOperations that can be executed at once

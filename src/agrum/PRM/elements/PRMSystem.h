@@ -121,8 +121,8 @@ namespace gum {
       bool isArray(const std::string& name) const;
 
       /**
-       * Returns the grounded Bayesian Network of this system.
-       * @param factory The factory used to build the grounded Bayesian Network.
+       * Returns the grounded Bayesian network of this system.
+       * @param factory The factory used to build the grounded Bayesian network.
        */
       void groundedBN(BayesNetFactory< GUM_SCALAR >& factory) const;
 
@@ -314,7 +314,7 @@ namespace gum {
 
       /// @brief Method which copy node's Potential of an PRMInstance to the
       /// grounded
-      ///        Bayesian Network.
+      ///        Bayesian network.
       /// @param instance The PRMInstance currently grounded.
       /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Potential
       /// is

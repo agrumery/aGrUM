@@ -244,7 +244,7 @@ namespace gum {
   // string representation of internal data about i in this.
   template < typename GUM_SCALAR >
   INLINE std::string
-               MultiDimWithOffset< GUM_SCALAR >::toString(const Instantiation* i) const {
+         MultiDimWithOffset< GUM_SCALAR >::toString(const Instantiation* i) const {
     if (i->isMaster(this)) {
       std::stringstream s;
       s << offsets_[i];

@@ -23,7 +23,8 @@
  * @file
  * @brief Headers of the IFMDPFactory interface-like class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #ifndef GUM_ABSTRACT_FMDP_FACTORY_H

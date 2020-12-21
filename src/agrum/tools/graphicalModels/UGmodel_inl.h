@@ -58,9 +58,7 @@ namespace gum {
     return neighbours(idFromName(name));
   }
 
-  INLINE bool UGmodel::exists(NodeId node) const {
-    return graph_.exists(node);
-  }
+  INLINE bool UGmodel::exists(NodeId node) const { return graph_.exists(node); }
 
   INLINE const NodeGraphPart& UGmodel::nodes() const {
     return (NodeGraphPart&)graph_;

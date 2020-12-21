@@ -1,6 +1,6 @@
 %feature("docstring") JunctionTreeGenerator
 "
-JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+JunctionTreeGenerator is use to generate junction tree or binary junction tree from Bayesian networks.
 
 JunctionTreeGenerator() -> JunctionTreeGenerator
     default constructor

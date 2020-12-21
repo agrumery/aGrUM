@@ -25,7 +25,8 @@
  *
  * Writes an bayes net in XML files with BIF format
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #ifndef GUM_BIF_XML_BN_WRITER_H

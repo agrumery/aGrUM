@@ -114,7 +114,7 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    explicit Exception(std::string  aMsg = "", std::string  aType = "Generic error");
+    explicit Exception(std::string aMsg = "", std::string aType = "Generic error");
 
     Exception(const Exception& e);
 

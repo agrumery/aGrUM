@@ -49,7 +49,7 @@ namespace gum {
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                           nodeId2columns,
+          nodeId2columns,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         NH__(parser, apriori, ranges, nodeId2columns, alloc),
         k_NML__(parser, apriori, ranges, nodeId2columns, alloc),
@@ -65,7 +65,7 @@ namespace gum {
        const DBRowGeneratorParser< ALLOC >& parser,
        const Apriori< ALLOC >&              apriori,
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                           nodeId2columns,
+          nodeId2columns,
        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         NH__(parser, apriori, nodeId2columns, alloc),
         k_NML__(parser, apriori, nodeId2columns, alloc),

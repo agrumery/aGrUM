@@ -38,7 +38,7 @@ namespace gum {
    * @ingroup bn_io
    * @brief Writes a IBayesNet in the DSL format.
    *
-   * This class servers to write the content of a Bayesian Network in
+   * This class servers to write the content of a Bayesian network in
    * the DSL format. See
    * http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/Old/xmlDSL02.html
    * for information on this format.
@@ -65,20 +65,20 @@ namespace gum {
     /// @}
 
     /**
-     * Writes a Bayesian Network in the output stream using the DSL format.
+     * Writes a Bayesian network in the output stream using the DSL format.
      *
      * @param output The output stream.
-     * @param bn The Bayesian Network writen in output.
+     * @param bn The Bayesian network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
     void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
-     * Writes a Bayesian Network in the referenced file using the DSL format.
+     * Writes a Bayesian network in the referenced file using the DSL format.
      * If the files doesn't exists, it is created.
      *
-     * @param filePath The path to the file used to write the Bayesian Network.
-     * @param bn The Bayesian Network writed in the file.
+     * @param filePath The path to the file used to write the Bayesian network.
+     * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
     void write(const std::string&             filePath,

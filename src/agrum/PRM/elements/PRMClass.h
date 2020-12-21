@@ -56,7 +56,7 @@ namespace gum {
      * @class PRMClass
      * @headerfile PRMClass.h <agrum/PRM/elements/PRMClass.h>
      * @brief A PRMClass is an object of a PRM representing a fragment
-     *        of a Bayesian Network which can be instantiated in PRMInstance.
+     *        of a Bayesian network which can be instantiated in PRMInstance.
      *
      * @see PRMClassElement
      * @ingroup prm_group

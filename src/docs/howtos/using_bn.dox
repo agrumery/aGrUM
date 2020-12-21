@@ -1,20 +1,20 @@
 /*!
- * \page using_bn How to use Bayesian Networks
+ * \page using_bn How to use Bayesian networks
  * \tableofcontents
  *
- * Bayesian Networks are a probabilistic graphical model in which nodes are
+ * Bayesian networks are a probabilistic graphical model in which nodes are
  * random variables and the probability distribution is defined by the product:
  *
  * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i | \pi(X_i))\f$,</center>
  *
  * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
  *
- * The Bayesian Network module in aGrUM can help you do the following operations:
- *  - Model Bayesian Networks, from graph to local distributions.
+ * The Bayesian network module in aGrUM can help you do the following operations:
+ *  - Model Bayesian networks, from graph to local distributions.
  *  - Execute probabilistic inference from a wide range of algorithms.
- *  - Load and save Bayesian Networks in different file formats.
+ *  - Load and save Bayesian networks in different file formats.
  *
- * The \ref bn_group module list all classes for using Bayesian Networks with
+ * The \ref bn_group module list all classes for using Bayesian networks with
  * aGrUM.
  *
  * We will use the classic Asia network to illustrate how the
@@ -42,10 +42,10 @@
  * }
  * \enddot
  *
- * \section bn_class Creating Bayesian Networks
+ * \section bn_class Creating Bayesian networks
  *
  * The following code illustrates how to create the Asia network using the
- * gum::BayesNet class. To create an instance of a Bayesian Network, you simply
+ * gum::BayesNet class. To create an instance of a Bayesian network, you simply
  * need to call the gum::BayesNet class constructor.
  *
  * \code{.cpp}
@@ -53,7 +53,7 @@
  * \endcode
  *
  * Use the gum::BayesNet::add( const gum::DiscreteVariable& ) method to add variables
- * in the Bayesian Network. The following variables are available in aGrUM:
+ * in the Bayesian network. The following variables are available in aGrUM:
  *  - gum::LabelizedVariable: for classic discrete random variables;
  *  - gum::DiscretizedVariable: for discretized continuous random variables;
  *  - gum::RangeVariable: for discrete random variables over an integer interval.
@@ -62,7 +62,7 @@
  * // Variables are added by copy to the BayesNet, so you can use a single
  * // gum::LabelizedVariable to add all varaibles with the same domain
  * auto var = gum::LabelizedVariable(
- *     "template", "A variable of the Asia Bayesian Network", 0 );
+ *     "template", "A variable of the Asia Bayesian network", 0 );
  * var.addLabel( "True" );
  * var.addLabel( "False" );
  *

@@ -94,7 +94,7 @@ namespace gum {
     return *mutableMoralGraph__;
   }
 
-   bool DAGmodel::hasSameStructure(const DAGmodel& other) {
+  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
     if (this == &other) return true;
 
     if (size() != other.size()) return false;

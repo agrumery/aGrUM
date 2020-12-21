@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of Shafer-Shenoy's propagation for inference in
- * Bayesian Networks.
+ * Bayesian networks.
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -687,7 +687,7 @@ namespace gum {
 
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential >
-                           combine_and_project(combination_op__, SSNewprojPotential);
+               combine_and_project(combination_op__, SSNewprojPotential);
             PotentialSet__ new_cpt_list =
                combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
 

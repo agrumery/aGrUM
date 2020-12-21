@@ -24,7 +24,8 @@
  * @brief Headers of the InternalNode class.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H

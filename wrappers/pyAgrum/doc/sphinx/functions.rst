@@ -13,7 +13,7 @@ Useful functions in pyAgrum
 
 .. autofunction:: pyAgrum.getPosterior
 
-Input/Output for bayesian networks
+Input/Output for Bayesian networks
 ----------------------------------
 
 .. autofunction:: pyAgrum.availableBNExts

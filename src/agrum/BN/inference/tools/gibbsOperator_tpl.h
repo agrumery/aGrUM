@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Implementation of Gibbs inference methods in Bayesian Networks.
+ * @brief Implementation of Gibbs inference methods in Bayesian networks.
  *
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */

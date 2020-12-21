@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin (LIP6), 2020  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -72,7 +72,7 @@ def exists_unblocked_directed_path(bn: gum.BayesNet, x: str, y: str, zset: NameS
 
 def is_frontdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
   """
-  Tests whether or not ``zset`` satisifies the front door criterion for ``x`` and ``y``, in the Bayesian Network ``bn``
+  Tests whether or not ``zset`` satisifies the front door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
   :param bn:
   :param x:
@@ -97,7 +97,7 @@ def is_frontdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
 
 def is_backdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
   """
-  Tests whether or not ``zset`` satisifies the back door criterion for ``x`` and ``y``, in the Bayesian Network ``bn``
+  Tests whether or not ``zset`` satisifies the back door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
   :param bn:
   :param x:

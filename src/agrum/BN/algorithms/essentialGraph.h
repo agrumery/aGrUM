@@ -43,7 +43,7 @@ namespace gum {
    * @ingroup bn_group
    *
    * Essential graph is a mixed graph (Chain Graph) that represents the class of
-   * markov equivalent Bayesian Networks (with the same independency model).
+   * markov equivalent Bayesian networks (with the same independency model).
    *
    * The main goal of this class is to nest the algorithm to build the essential
    * graph

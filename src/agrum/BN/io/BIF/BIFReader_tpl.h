@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Definition of templatized reader of BIF files for Bayesian Networks.
+ * @brief Definition of templatized reader of BIF files for Bayesian networks.
  *
  * @author Pierre-Henri WUILLEMIN
  */

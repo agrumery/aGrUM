@@ -225,7 +225,7 @@ namespace gum_tests {
       }
 
       gum::MultiDimCombinationDefault< double, gum::MultiDimImplementation >
-                                                               comb11(schedule_comb_myadd);
+         comb11(schedule_comb_myadd);
       gum::Set< const gum::MultiDimImplementation< double >* > set2;
       set2 << pot1.content() << pot2.content() << pot3.content() << pot4.content();
       gum::MultiDimImplementation< double >* res11 = comb11.combine(set2);

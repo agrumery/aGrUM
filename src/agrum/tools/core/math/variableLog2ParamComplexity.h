@@ -61,7 +61,7 @@ namespace gum {
    * base 2 of the C_N^r term used by NML scores in Bayesian network
    * structure learning algorithm (see, e.g., Silander, Roos,
    * Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
-   * Likelihood Criterion for Learning Bayesian Network Structures)"
+   * Likelihood Criterion for Learning Bayesian network Structures)"
    */
   template < template < typename > class ALLOC = std::allocator >
   class VariableLog2ParamComplexity: private ALLOC< double > {
@@ -149,7 +149,7 @@ namespace gum {
     // approximation.
     // The formula for the approximation given in Silander, Roos,
     // Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
-    // Likelihood Criterion for Learning Bayesian Network Structures" paper
+    // Likelihood Criterion for Learning Bayesian network Structures" paper
     // is incorrect. However, the one in Kontkanen, Buntine, Myllymaki,
     // Rissanen and Tirri (2003) "Efficient Computation of Stochastic
     // Complexity" is correct. So we use the latter and simplify it. Thus,

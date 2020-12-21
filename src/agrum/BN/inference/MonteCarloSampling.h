@@ -69,7 +69,7 @@ namespace gum {
     /**
      * @param w the weight of sample being generated
      * @param prev the previous sample generated
-     * @param bn the bayesian network containing the evidence
+     * @param bn the Bayesian network containing the evidence
      * @param hardEvNodes hard evidence nodes
      * @param hardEv hard evidences values
      *

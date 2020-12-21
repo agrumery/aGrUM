@@ -67,7 +67,8 @@ between 0 and 100
  * @endcode
  *
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+GONZALES(@AMU)
  */
 #ifndef GUM_BIF_XML_ID_READER_H
 #define GUM_BIF_XML_ID_READER_H

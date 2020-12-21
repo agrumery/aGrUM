@@ -666,7 +666,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(a, 0.0f);
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate({33.0f}));
-      TS_ASSERT_EQUALS(p.domainSize(), 1)
+      TS_ASSERT_EQUALS(p.domainSize(), 1u)
       TS_ASSERT_EQUALS(p.get(gum::Instantiation()), 33.0f)
 
 
@@ -921,10 +921,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(res = r.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r));
-      TS_ASSERT_DELTA(res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(
+         res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = r.KL(q));
-      TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(
+         res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR);
     }
 
     void testPotentialDraw() {

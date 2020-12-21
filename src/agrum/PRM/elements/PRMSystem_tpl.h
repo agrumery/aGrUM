@@ -508,7 +508,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
-                 PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
+       PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
       try {
         return *(arrayMap_[name].first);
       } catch (NotFound&) {

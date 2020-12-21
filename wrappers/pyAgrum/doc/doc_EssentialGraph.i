@@ -2,7 +2,7 @@
 "
 Class building the essential graph from a BN.
 
-Essential graph is a mixed graph (Chain Graph) that represents the class of markov equivalent Bayesian Networks (with the same independency model).
+Essential graph is a mixed graph (Chain Graph) that represents the class of markov equivalent Bayesian networks (with the same independency model).
 
 EssentialGraph(m) -> EssentialGraph
     Parameters:

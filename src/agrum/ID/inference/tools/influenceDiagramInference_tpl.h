@@ -37,7 +37,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   InfluenceDiagramInference< GUM_SCALAR >::InfluenceDiagramInference(
      const InfluenceDiagram< GUM_SCALAR >* infDiag) :
-      GraphicalModelInference<GUM_SCALAR>(infDiag) {
+      GraphicalModelInference< GUM_SCALAR >(infDiag) {
     GUM_CONSTRUCTOR(InfluenceDiagramInference);
   }
 
@@ -55,7 +55,8 @@ namespace gum {
 
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
-  void InfluenceDiagramInference< GUM_SCALAR >::setInfluenceDiagram(const InfluenceDiagram<GUM_SCALAR >* infdiag) {
+  void InfluenceDiagramInference< GUM_SCALAR >::setInfluenceDiagram(
+     const InfluenceDiagram< GUM_SCALAR >* infdiag) {
     this->setModel_(infdiag);
   }
 

@@ -42,7 +42,7 @@ namespace gum {
   /**
    * @class SamplingInference samplingInference.h
    * <agrum/BN/inference/samplingInference.h>
-   * @brief A generic class for making sampling inference in bayesian networks
+   * @brief A generic class for making sampling inference in Bayesian networks
    * adapted
    *
    * @ingroup bn_approximation
@@ -131,10 +131,10 @@ namespace gum {
     /// @}
 
 
-    /// Simplifying the bayesian network with relevance reasonning to lighten the
+    /// Simplifying the Bayesian network with relevance reasonning to lighten the
     /// computational charge
     /**
-     * Sets the reference Bayesian Network as a BayesNetFragment after having
+     * Sets the reference Bayesian network as a BayesNetFragment after having
      * eliminated nodes
      * that are idle for simulation and computation, such as barren or d-separated
      * nodes.
@@ -180,13 +180,13 @@ namespace gum {
     /// whether the Estimator object has been initialized
     bool isSetEstimator = false;
 
-    /// whether the referenced Bayesian Network has been "contextualized"
+    /// whether the referenced Bayesian network has been "contextualized"
     bool isContextualized = false;
 
     /// draws samples without updating the estimators
     virtual Instantiation burnIn_() = 0;
 
-    /// draws a sample in the bayesian network given a previous one
+    /// draws a sample in the Bayesian network given a previous one
     /**
      * @param w the weight of sample being generated
      * @param prev the previous sample generated

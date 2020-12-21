@@ -68,7 +68,7 @@ namespace gum {
     /**
      * Disturb a CPT using GUM_SCALAR when removing parent varIdi.
      * @param node The variable on the CPT owner.
-     * @param bayesNet the Bayesian Network.
+     * @param bayesNet the Bayesian network.
      * @param src copy of the CPT before reduction.
      * @param marg of the inference before reduction on the node varIdi.
      */
@@ -80,7 +80,7 @@ namespace gum {
     /**
      * Disturb a CPT using GUM_SCALAR when inserting a new parent new_parent.
      * @param node A reference on the CPT owner.
-     * @param bayesNet the Bayesian Network.
+     * @param bayesNet the Bayesian network.
      * @param src copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability.
      */

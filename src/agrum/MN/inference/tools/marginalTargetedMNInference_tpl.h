@@ -126,8 +126,8 @@ namespace gum {
     if (!targets__.contains(target)) {
       targets__.insert(target);
       onMarginalTargetAdded_(target);
-      this->setState_(MarkovNetInference<
-                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      this->setState_(
+         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -147,8 +147,8 @@ namespace gum {
       if (!targets__.contains(target)) {
         targets__.insert(target);
         onMarginalTargetAdded_(target);
-        this->setState_(MarkovNetInference<
-                         GUM_SCALAR >::StateOfInference::OutdatedStructure);
+        this->setState_(
+           MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
       }
     }
   }
@@ -188,8 +188,8 @@ namespace gum {
                                 // want to clear the targets
       onMarginalTargetErased_(target);
       targets__.erase(target);
-      this->setState_(MarkovNetInference<
-                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      this->setState_(
+         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -211,7 +211,7 @@ namespace gum {
   // returns the list of single targets
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-               MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
+     MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
     return targets__;
   }
 
@@ -227,7 +227,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedMNInference< GUM_SCALAR >::setAllMarginalTargets__() {
     targets__.clear();
-    if (! this->hasNoModel_()) {
+    if (!this->hasNoModel_()) {
       targets__ = this->MN().graph().asNodeSet();
       onAllMarginalTargetsAdded_();
     }

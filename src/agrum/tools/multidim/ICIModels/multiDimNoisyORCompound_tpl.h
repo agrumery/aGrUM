@@ -122,7 +122,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::ostream&
-         operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
+     operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 

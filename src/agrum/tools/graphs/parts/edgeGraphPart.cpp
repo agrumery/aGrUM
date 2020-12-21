@@ -180,12 +180,13 @@ namespace gum {
     return false;
   }
 
-  bool EdgeGraphPart::hasUndirectedPath(const NodeId n1, const NodeId n2,const NodeSet& except) const {
+  bool EdgeGraphPart::hasUndirectedPath(const NodeId   n1,
+                                        const NodeId   n2,
+                                        const NodeSet& except) const {
     NodeSet visited;
     NodeSet temp;
 
-    if (except.contains(n2))
-      return false;
+    if (except.contains(n2)) return false;
 
     temp.insert(n1);
     while (!temp.empty()) {
@@ -194,7 +195,9 @@ namespace gum {
       temp.erase(current);
       visited.insert(current);
       for (auto next: neighbours(current)) {
-        if (!temp.contains(next) && !visited.contains(next) && !except.contains(next)) temp.insert(next);
+        if (!temp.contains(next) && !visited.contains(next)
+            && !except.contains(next))
+          temp.insert(next);
       }
     }
     return false;

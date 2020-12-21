@@ -25,7 +25,8 @@
  *
  * All classes used to export ID must inherit from IDWriter
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_ID_WRITER_H
 #define GUM_ID_WRITER_H

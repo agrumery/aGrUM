@@ -420,7 +420,8 @@ namespace gum {
     const node_iterator& end() const noexcept;
 
     virtual   /// a function to display the set of nodes
-    std::string toString() const;
+       std::string
+       toString() const;
 
     /// a method to create a HashTable with key:NodeId and value:VAL
     /** VAL are computed from the nodes using for all node x, VAL f(x).

@@ -43,7 +43,7 @@ namespace gum {
    * @class LoopySamplingInference LoopySamplingInference.h
    *<agrum/BN/inference/loopySamplingInference.h>
    * @brief class for making hybrid sampling inference with loopy belief
-   *propagation and an approximation inference method in bayesian networks.
+   *propagation and an approximation inference method in Bayesian networks.
    * @ingroup bn_approximation
    *
    * This class inherits of template class APPROX, which SHOULD be one of the 4

@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief Class for generating bayesian networks.using MC algorithm
+ * @brief Class for generating Bayesian networks.using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) and Ariele-Paolo MAESANO
@@ -58,14 +58,14 @@ namespace gum {
    * @class MCBayesNetGenerator
    * @headerfile MCBayesNetGenerator.h
    * <agrum/BN/generator/MCayesNetGenerator.h>
-   * @brief Class for generating bayesian networks with Markov chains.
+   * @brief Class for generating Bayesian networks with Markov chains.
    * @ingroup bn_generator
    *
-   * This class randomly generates a bayesian network given 6 parameters: the
+   * This class randomly generates a Bayesian network given 6 parameters: the
    * number of nodes, the maximum number of arcs the and of iterations the
    * maximum modality.
    * @warning  Be Careful when entering the parameters, high Values may cause
-   * the density of the Bayesian Network to be too high resulting in the
+   * the density of the Bayesian network to be too high resulting in the
    * failure of most of the inference Methods.
    *
    * \anchor probability_p_q
@@ -220,17 +220,17 @@ namespace gum {
     // ############################################################################
     /// @{
     /**
-     * Generates a random bayesian network.
+     * Generates a random Bayesian network.
      * @param bayesNet empty IBayesNet to generate.
-     * @return null but modify inputed Bayesian Network
+     * @return null but modify inputed Bayesian network
      */
     void generateBN(BayesNet< GUM_SCALAR >& bayesNet) override;
 
     /**
-     * Change randomly the topology of a specific bayesian networks.
+     * Change randomly the topology of a specific Bayesian networks.
      * @param bayesNetinit IBayesNet to be modify
      * @param iteration The number of iterations wanted to repeat the algorithm
-     * @return null but modify inputed Bayesian Network
+     * @return null but modify inputed Bayesian network
      * @throws OperationNotAllow if the initial state of the IBayesNet is not
      * respecting the wanted conditions
      * if iteration = 0, it is assumed that the number of iteration wanted is the

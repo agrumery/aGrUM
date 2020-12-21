@@ -39,7 +39,7 @@ namespace gum {
   /**
    * @class GibbsSampling gibbsSampling.h
    *<agrum/BN/inference/gibbsSampling.h>
-   * @brief class for making Gibbs sampling inference in bayesian networks.
+   * @brief class for making Gibbs sampling inference in Bayesian networks.
    * @ingroup bn_approximation
    *
    * This class overrides pure function declared in the inherited class
@@ -86,7 +86,7 @@ namespace gum {
     /**
      * @param w the weight of sample being generated
      * @param prev the previous sample generated
-     * @param bn the bayesian network containing the evidence
+     * @param bn the Bayesian network containing the evidence
      * @param hardEvNodes hard evidence nodes
      * @param hardEv hard evidences values
      *
@@ -100,7 +100,7 @@ namespace gum {
 
     /// draws a Monte Carlo sample
     /**
-     * @param bn the reference bayesian network
+     * @param bn the reference Bayesian network
      *
      * This Monte Carlo sample generates a good starting point for Gibbs sampling,
      * because it returns

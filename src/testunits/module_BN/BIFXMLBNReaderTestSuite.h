@@ -119,7 +119,7 @@ namespace gum_tests {
     }
 
     void testRead_dog_double() {
-      // from Charniak, Bayesian Networks Without Tears, AI Magazine, 1991
+      // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
       std::string              file = GET_RESSOURCES_PATH("bifxml/dog.bifxml");
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);

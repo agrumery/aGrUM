@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
  * @file
- * @brief Bayesian Network module documentation.
+ * @brief Bayesian network module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
@@ -27,10 +27,10 @@
 
 
 /**
- * \defgroup bn_group Bayesian Networks
+ * \defgroup bn_group Bayesian networks
  * @{
- * \defgroup bn_inference Inference Algorithms for Bayesian Networks
- * \defgroup bn_io Serialization of Bayesian Networks
+ * \defgroup bn_inference Inference Algorithms for Bayesian networks
+ * \defgroup bn_io Serialization of Bayesian networks
  * \defgroup bn_generator Generators
  * \defgroup bn_particles Particles Algorithms
  * @}

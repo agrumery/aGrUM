@@ -28,6 +28,7 @@ import pandas as pd
 import logging
 
 import pyAgrum as gum
+import pyAgrum.skbn as skbn
 from pyAgrum.lib.bn2roc import __computepoints, _computeROC
 from sklearn.metrics import accuracy_score
 
@@ -36,7 +37,7 @@ def get_threshold(bn, csv_name, target, label):
   """
   Get threshold by computing ROC
 
-  :param bn: a bayesian network
+  :param bn: a Bayesian network
   :type bn: gum.BayesNet
   :param csv_name: a csv filename
   :type csv_name: str
@@ -52,7 +53,7 @@ def get_threshold(bn, csv_name, target, label):
                                                     label, visible=False, with_labels=True)
 
   points, opt, threshold = _computeROC(
-      bn, res, totalP, totalN, idTarget, label)
+    bn, res, totalP, totalN, idTarget, label)
 
   return threshold
 
@@ -80,9 +81,13 @@ class BNClassifier:
     :return: self
 
     """
-    self._bn = gum.BayesNet() if bn is None else bn
+
+    print("** pyAgrum.lib.classifier.BNClassifier is deprecated in pyAgrum>0.18.1.")
+    print("** A pyAgrum.skbn.BNClassifier will be used.")
+
     self.learning_method = learning_method
     self.prior = prior
+
     self.prior_weight = 1
     self.class_name = None
     self.positif_label = None
@@ -90,9 +95,11 @@ class BNClassifier:
     self.nb_classes = 2
     self.bins = bins
 
+    self.bnclassifier = None
+
   def fit_from_csv(self, csv_name, variable):
     """
-    Fit the Bayesian Network model according to the given training data from a csv file.
+    Fit the Bayesian network model according to the given training data from a csv file.
 
     :param csv_name: filename of the training data
     :type csv_name: str
@@ -102,96 +109,80 @@ class BNClassifier:
     :return: self
 
     """
-    df = pd.read_csv(csv_name)
-
-    template = gum.BayesNet()
-    if 'int' in str(df[variable].dtype):
-      self.positif_label = 1
-    elif 'bool' in str(df[variable].dtype):
-      self.positif_label = True
-    else:
-      self.positif_label = 'true'
-
-    # template creation (with discretization if needed)
-    for varname in df:
-      if varname != variable:
-        if 'float' in str(df[varname].dtype) and len(df[varname].unique()) / len(df[varname]) > 0.95:
-                                                                              # less than 5% duplicate
-          nb = min(len(df[varname]), self.bins)
-          # , duplicates = 'drop')
-          _, bins = pd.qcut(df[varname], nb, retbins=True)
-          amplitude = bins[-1]-bins[0]
-          bins[0] -= 100*amplitude
-          bins[-1] += 100*amplitude
-          template.add(gum.DiscretizedVariable(varname, varname, bins))
-        else:
-          varname_values = []
-          for k in df[varname].unique():
-            if pd.isna(k):
-              varname_values.append('')
-            else:
-              varname_values.append(str(k))
-
-          template.add(gum.LabelizedVariable(varname, varname, varname_values))
-
-    variable_values = []
-    for k in df[variable].unique():
-      if pd.isna(k):
-        variable_values.append('')
-      else:
-        variable_values.append(str(k))
-
-    template.add(gum.LabelizedVariable(
-        variable, variable, sorted(variable_values)))
-
-    self.class_name = variable
-    self.nb_classes = 2
-
-    learner = gum.BNLearner(csv_name, template)
-
     if self.learning_method == 'greedy':
-      learner.useGreedyHillClimbing()
-    else:  # miic for now
-      learner.useMIIC()
-
-    if self.prior == "laplace":
-      learner.useAprioriSmoothing(self.prior_weight)
+      learning_method = 'GHC'
+    elif self.learning_method == "miic":
+      learning_method = "MIIC"
     else:
-      learner.useNoApriori()
+      learning_method = self.learning_method
 
-    self._bn = learner.learnBN()
+    if self.prior == 'laplace':
+      prior = 'Laplace'
+    elif self.prior == 'likelihood':
+      prior = None
+    else:
+      prior = self.prior
 
-    self.threshold = get_threshold(
-        self._bn, csv_name, self.class_name, self.positif_label)
+    if self.bnclassifier is None:
+      self.bnclassifier = skbn.BNClassifier(learning_method, prior, aPrioriWeight=self.prior_weight,
+                                            discretizationStrategy="quantile", discretizationNbBins=self.bins,
+                                            discretizationThreshold=0.95, usePR=False, significant_digit=13)
+    else:
+      self.bnclassifier.aPriori = prior
+      self.bnclassifier.learningMethod = learning_method
+      self.bnclassifier.aPrioriWeight = self.prior_weight
+      self.bnclassifier.discretizer.setDiscretizationParameters(None, None, self.bins)
+
+    self.bnclassifier.fit(filename=csv_name, targetName=variable)
+
+    self.class_name = self.bnclassifier.target
+    self.positif_label = self.bnclassifier.label
+    self.threshold = self.bnclassifier.threshold
 
     return self
 
   def fit(self, Xtrain, Ytrain, nb_bins=10):
     """
-    Fit the Bayesian Network model according to the given training data.
+    Fit the Bayesian network model according to the given training data.
 
     :param Xtrain: dataframe, shape (n_samples, n_features) - training dataframe
     :param Ytrain: dataframe, shape (n_samples,) - target values/class labels
 
     :return: self
     """
-    if type(Ytrain) is np.ndarray:
-      Ytrain = pd.DataFrame(Ytrain, columns=["Y"])
-      Xtrain = pd.DataFrame(
-          Xtrain, columns=[f"X{i}" for i in range(Xtrain.shape[1])])
-    if hasattr(Ytrain, "name"):
-      self.class_name = Ytrain.name
+    if self.learning_method == 'greedy':
+      learning_method = 'GHC'
+    elif self.learning_method == "miic":
+      learning_method = "MIIC"
     else:
-      self.class_name = "Y"
+      learning_method = self.learning_method
 
-    self.nb_classes = 2
+    if self.prior == 'laplace':
+      prior = 'Laplace'
+    elif self.prior == 'likelihood':
+      prior = None
+    else:
+      prior = self.prior
+    if self.bnclassifier is None:
+      self.bnclassifier = skbn.BNClassifier(learning_method,
+                                            prior,
+                                            aPrioriWeight=self.prior_weight,
+                                            discretizationStrategy="quantile",
+                                            discretizationNbBins=self.bins,
+                                            discretizationThreshold=0.95,
+                                            usePR=False)
 
-    train_file = pd.concat([Xtrain, Ytrain], axis=1)
-    train_file.to_csv('temp_trainFile.csv', index=False)
+    else:
+      self.bnclassifier.aPriori = prior
+      self.bnclassifier.learningMethod = learning_method
+      self.bnclassifier.aPrioriWeight = self.prior_weight
+      self.bnclassifier.discretizer.setDiscretizationParameters(None, None, self.bins)
 
-    self.fit_from_csv('temp_trainFile.csv', self.class_name)
+    self.bnclassifier.fit(Xtrain, Ytrain)
 
-    os.remove("temp_trainFile.csv")
+    self.class_name = self.bnclassifier.target
+    self.positif_label = self.bnclassifier.label
+    self.threshold = self.bnclassifier.threshold
 
     return self
 
@@ -204,42 +195,11 @@ class BNClassifier:
     :return: Yscores - array, shape (n_samples, n_classes) - returns the probability of the sample for each class in the model.
 
     """
-    if type(Xtest) is np.ndarray:
-      Xtest = pd.DataFrame(
-          Xtest, columns=[f"X{i}" for i in range(Xtest.shape[1])])
+    if self.bnclassifier is None:
+      raise ValueError(
+        "This model has not been fitted and can therefore not be used to predict. Please fit the model to your training data before attempting to use the predict method")
 
-    Yscores = np.empty([Xtest.shape[0], self.nb_classes])
-    Yscores[:] = np.nan
-
-    mbnames = [self._bn.variable(i).name()
-               for i in gum.MarkovBlanket(self._bn, self.class_name).nodes()
-               if self._bn.variable(i).name() != self.class_name]
-    ie = gum.LazyPropagation(self._bn)
-    for var in ie.BN().names():  # ici que var de mb
-      if var != self.class_name:
-        ie.addEvidence(var, 0)
-    ie.addTarget(self.class_name)
-
-    Xtest = Xtest.reset_index(drop=True)
-
-    for line in Xtest.itertuples():
-      for var in mbnames:
-          try:
-            idx = self._bn.variable(var).index(str(getattr(line, var)))
-            ie.chgEvidence(var, idx)
-
-          except gum.GumException:
-            # this can happend when value is missing is the test base.
-            logging.warning(
-                f"[pyAgrum] ** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
-            pass
-
-      ie.makeInference()
-
-      marginal = ie.posterior(self.class_name)
-      Yscores[line[0]] = marginal.toarray()
-
-    return Yscores
+    return self.bnclassifier.predict_proba(Xtest)
 
   def predict(self, Xtest):
     """
@@ -250,28 +210,19 @@ class BNClassifier:
     :return: Ypred - array, shape (n_samples,) - class labels for samples in Xtest.
 
     """
-    if type(Xtest) is np.ndarray:
-      Xtest = pd.DataFrame(
-          X_test, columns=[f"X{i}" for i in range(Xtest.shape[1])])
+    if self.bnclassifier is None:
+      raise ValueError(
+        "This model has not been fitted and can therefore not be used to predict. Please fit the model to your training data before attempting to use the predict method")
 
-    Yscores = self.predict_proba(Xtest)
-
-    if self.positif_label == True:
-      Ypred = np.where(Yscores[:, 1] >= self.threshold, True, False)
-    if self.positif_label == 'true':
-      Ypred = np.where(Yscores[:, 1] >= self.threshold, 'true', 'false')
-    else:
-      Ypred = np.where(Yscores[:, 1] >= self.threshold, 1, 0)
-
-    return Ypred
+    return self.bnclassifier.predict(Xtest)
 
   def bn(self):
     """
-    Show the Bayesian Network.
+    Show the Bayesian network.
 
     :return: BayesNet model
     """
-    return self._bn
+    return self.bnclassifier.bn
 
   def MarkovBlanket(self):
     """
@@ -279,12 +230,11 @@ class BNClassifier:
 
     :return: the Markov Blanket of the model
     """
-    return gum.MarkovBlanket(self._bn, self.class_name)
+    return self.bnclassifier.MarkovBlanket
 
   def score(self, X_test, Y_test):
-    if type(Y_test) is np.ndarray:
-      Y_test = pd.DataFrame(Y_test, columns=["Y"])
-      X_test = pd.DataFrame(
-          X_test, columns=[f"X{i}" for i in range(X_test.shape[1])])
 
-    return accuracy_score(Y_test, self.predict(X_test))
+    if self.bnclassifier is None:
+      raise ValueError(
+        "This model has not been fitted and can therefore not be used to predict. Please fit the model to your training data before attempting to use the predict method")
+    return self.bnclassifier.score(X_test, Y_test)

@@ -24,7 +24,8 @@
  * @brief Headers of gum::MultiDimFunctionGraphGenerator.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H

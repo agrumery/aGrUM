@@ -23,7 +23,8 @@
  * @file Template Implementations of the IMDDI datastructure learner
  * @brief
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 // =======================================================
 #include <agrum/tools/core/math/math.h>

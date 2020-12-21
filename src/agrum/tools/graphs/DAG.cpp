@@ -143,26 +143,29 @@ namespace gum {
     return !g.hasUndirectedPath(X, Y);
   }
 
-  bool DAG::isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
+  bool DAG::isIndependent(const NodeSet& X,
+                          const NodeSet& Y,
+                          const NodeSet& Z) const {
     if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument,"NodeSets "<<X<<", "<<Y<<" should have no intersection")
+      GUM_ERROR(InvalidArgument,
+                "NodeSets " << X << ", " << Y << " should have no intersection")
 
     NodeSet cumul{Z};
-    cumul+=X;
-    cumul+=Y;
+    cumul += X;
+    cumul += Y;
     auto g = moralizedAncestralGraph(cumul);
     for (auto node: Z)
       g.eraseNode(node);
-    auto cc=g.nodes2ConnectedComponent();
+    auto cc = g.nodes2ConnectedComponent();
 
-    NodeSet Xcc,Ycc;
-    for (const auto node:X)
-      if (g.existsNode(node)) // it may be in Z too
-        if (! Xcc.exists(cc[node])) Xcc.insert(cc[node]);
-    for(const auto node:Y)
-      if (g.existsNode(node)) // it may be in Z too
-        if (! Ycc.exists(cc[node])) Ycc.insert(cc[node]);
+    NodeSet Xcc, Ycc;
+    for (const auto node: X)
+      if (g.existsNode(node))   // it may be in Z too
+        if (!Xcc.exists(cc[node])) Xcc.insert(cc[node]);
+    for (const auto node: Y)
+      if (g.existsNode(node))   // it may be in Z too
+        if (!Ycc.exists(cc[node])) Ycc.insert(cc[node]);
 
-    return (Xcc*Ycc).empty();
+    return (Xcc * Ycc).empty();
   }
 } /* namespace gum */

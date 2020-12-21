@@ -772,7 +772,7 @@ namespace gum {
     /// returns the name of the kth column of the database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const std::string&
-                 IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
+       IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
       if (variable_names_.size() <= k)
         GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k);
       return variable_names_[k];

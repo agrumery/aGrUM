@@ -92,7 +92,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIMNWriter< GUM_SCALAR >::preambule__(const IMarkovNet< GUM_SCALAR >& MN) {
+     UAIMNWriter< GUM_SCALAR >::preambule__(const IMarkovNet< GUM_SCALAR >& MN) {
     std::stringstream str;
 
     str << "MARKOV" << std::endl;

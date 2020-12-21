@@ -23,7 +23,8 @@
  * @file
  * @brief Headers of the MDDOperatorStrategy planer class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 // =========================================================================
@@ -177,8 +178,8 @@ namespace gum {
     INLINE const DiscreteVariable*
                  lastVar_(const MultiDimFunctionGraph< GUM_SCALAR >* function) {
       return function->variablesSequence().size() == 0
-                ? nullptr
-                : function->variablesSequence().atPos(
+                          ? nullptr
+                          : function->variablesSequence().atPos(
                    function->variablesSequence().size() - 1);
     }
   };

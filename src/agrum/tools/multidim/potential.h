@@ -541,8 +541,8 @@ namespace gum {
 
       if (nbparents > 0) {
         for (Idx i = 1; i <= nbparents; i++)
-          ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth)
-             << "|";
+          ss << std::setw(colwidth)
+             << table->variable(i).name().substr(0, colwidth) << "|";
         ss << "|";
       }
       for (Idx i = 0; i < nbcol; i++)
@@ -584,7 +584,8 @@ namespace gum {
           if (cpt > nbrLigMax) break;
           drawligne();
         }
-        ss << "[..."<< nbrLig-nbrLigMax*2 <<" more line(s) ...]" << std::endl;
+        ss << "[..." << nbrLig - nbrLigMax * 2 << " more line(s) ...]"
+           << std::endl;
         I.setLast();
         for (Idx revi = 1; revi < nbrLigMax; revi++)
           I.decNotVar(var);

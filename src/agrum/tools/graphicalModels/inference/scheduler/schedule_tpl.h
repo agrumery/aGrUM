@@ -322,7 +322,7 @@ namespace gum {
   /// returns the set of operations involving a given multidim table
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-               Schedule< GUM_SCALAR >::operationsInvolving(MultiDimId table_id) const {
+     Schedule< GUM_SCALAR >::operationsInvolving(MultiDimId table_id) const {
     return *(multidim2operations__[table_id]);
   }
 

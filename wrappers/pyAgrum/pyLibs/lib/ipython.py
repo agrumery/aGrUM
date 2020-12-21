@@ -66,7 +66,7 @@ def showJunctionTree(bn, withNames=True, size="4", format="png"):
   """
   Show a junction tree
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
@@ -83,7 +83,7 @@ def showBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=None):
   """
   show a Bayesian network
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   :param vals: a nodeMap of values to be shown as color nodes

@@ -278,14 +278,14 @@ namespace gum {
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T1&
-               BijectionImplementation< T1, T2, Alloc, Gen >::first(const T2& second) const {
+     BijectionImplementation< T1, T2, Alloc, Gen >::first(const T2& second) const {
     return *(secondToFirst__[second]);
   }
 
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T2&
-               BijectionImplementation< T1, T2, Alloc, Gen >::second(const T1& first) const {
+     BijectionImplementation< T1, T2, Alloc, Gen >::second(const T1& first) const {
     return *(firstToSecond__[first]);
   }
 
@@ -737,14 +737,14 @@ namespace gum {
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc >
   INLINE const T1&
-               BijectionImplementation< T1, T2, Alloc, true >::first(T2 second) const {
+     BijectionImplementation< T1, T2, Alloc, true >::first(T2 second) const {
     return secondToFirst__[second];
   }
 
   // returns the value associated to the element passed in argument
   template < typename T1, typename T2, typename Alloc >
   INLINE const T2&
-               BijectionImplementation< T1, T2, Alloc, true >::second(T1 first) const {
+     BijectionImplementation< T1, T2, Alloc, true >::second(T1 first) const {
     return firstToSecond__[first];
   }
 

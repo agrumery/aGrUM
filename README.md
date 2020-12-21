@@ -1,3 +1,4 @@
+
 aGrUM is a C++ library designed for easily building applications using graphical 
 models such as Bayesian networks, influence diagrams, decision trees or Markov 
 decision processes.
@@ -14,11 +15,11 @@ For a less technical introduction, checkout
 
 # Philosophy & Design
 
-aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and Decision team at [LIP6](http://www.lip6.fr): [Christophe Gonzales](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P37&LANG=en), [Pierre-Henri Wuillemin](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P67) and [students and former students](http://agrum.gitlab.io/pages/hall-of-fame.html). aGrUM then took the form of a generic framework designed to ease the emergence and experimentation of new ideas. More and more, as a consequence, it began to fulfill all the requirements for providing a complete library to build applications using Graphical Models, with a strong emphasis on Bayesian Networks. Once the prohect reached this state, the team decided to provide it as an open source contribution for the decision support and data science communities. The last move in that direction has been to port its main code repository at gitlab.
+aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and Decision team at [LIP6](http://www.lip6.fr): [Christophe Gonzales](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P37&LANG=en), [Pierre-Henri Wuillemin](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P67) and [students and former students](http://agrum.gitlab.io/pages/hall-of-fame.html). aGrUM then took the form of a generic framework designed to ease the emergence and experimentation of new ideas. More and more, as a consequence, it began to fulfill all the requirements for providing a complete library to build applications using Probabilistic Graphical Models, with a strong emphasis on Bayesian networks. Once the prohect reached this state, the team decided to provide it as an open source contribution for the decision support and data science communities. The last move in that direction has been to port its main code repository at gitlab.
 
 aGrUM main goals include code quality, code reuse and performance: aGrUM is written in modern C++11/17 (cross-platform : gcc>=4.8, clang and visual C++); tests and continuous integration are at the core of aGrUM's development; many classical algorithms have been reimplemented and multi-threaded to speed up learning and inference.
 
-Moreover, aGrUM allows its users to very finely tune learning (choosing priors, score, constraints, algorithms and more), inference (choosing their algorithms but also their components like message passing algorithms, triangulation algorithms, etc.) and modeling (choosing the type of discrete variables, making qualitative and quantitative introspection in the model, etc.). The different frameworks (Bayesian networks, credal networks, FMDP, etc.) are treated in the same way (see [here](http://agrum.gitlab.io/pages/agrum.html) for a more exhaustive list of features).
+Moreover, aGrUM allows its users to very finely tune learning (choosing priors, score, constraints, algorithms and more), inference (choosing their algorithms but also their components like message passing algorithms, triangulation algorithms, etc.) and modeling (choosing the type of discrete variables, making qualitative and quantitative introspection in the model, etc.). The different frameworks (Bayesian networks, influence diagram, credal networks, FMDP, etc.) are treated in the same way (see [here](http://agrum.gitlab.io/pages/agrum.html) for a more exhaustive list of features).
 
 ## Wrappers
 

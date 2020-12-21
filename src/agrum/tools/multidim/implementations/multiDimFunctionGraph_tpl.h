@@ -24,7 +24,8 @@
  * @brief Template methods of MultiDimFunctionGraph.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 
@@ -78,7 +79,7 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimContainer< GUM_SCALAR >*
-         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::newFactory() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::newFactory() const {
     if (isReduced__)
       return MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::
          getReducedAndOrderedInstance();
@@ -89,7 +90,7 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const std::string&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::name() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::name() const {
     return name__;
   }
 
@@ -197,7 +198,8 @@ namespace gum {
      setChangeNotification(const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
-  INLINE std::string MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toString(
+  INLINE std::string
+         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toString(
         const Instantiation* i) const {
     std::stringstream sBuff;
     sBuff << (*i) << " = " << this->get(*i);
@@ -531,7 +533,7 @@ namespace gum {
   // Returns a const reference to the manager of this diagram
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const NodeGraphPart&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::model() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::model() const {
     return model__;
   }
 
@@ -555,7 +557,7 @@ namespace gum {
   // Returns the id of the root node from the diagram
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const NodeId&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::root() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::root() const {
     return root__;
   }
 
@@ -600,7 +602,7 @@ namespace gum {
   // Returns the list of node associated to given variable
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const LinkedList< NodeId >*
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::varNodeListe(
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::varNodeListe(
         const DiscreteVariable* var) const {
     if (!this->variablesSequence().exists(var))
       GUM_ERROR(InvalidArgument,
@@ -612,7 +614,7 @@ namespace gum {
   // Returns the name of the table represented by this structure.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const std::string&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::tableName() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::tableName() const {
     return tableName__;
   }
 
@@ -643,7 +645,7 @@ namespace gum {
   // Returns an arborescent instance
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance() {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance() {
     return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >(false);
   }
 

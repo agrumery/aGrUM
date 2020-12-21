@@ -22,7 +22,8 @@
 /** @file
  * @brief Templates implementation of IDWriter.h classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #include "IDWriter.h"
 

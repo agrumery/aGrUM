@@ -240,7 +240,7 @@ namespace gum {
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
-           GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }
 

@@ -22,7 +22,8 @@
 /** @file
  * @brief Templates implementation of FMDP/io/FMDPReader.h classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

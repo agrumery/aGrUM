@@ -23,7 +23,8 @@
  * @file
  * @brief Sources of the Link and LinkedList classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  *
  */
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/link.h>

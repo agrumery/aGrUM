@@ -161,7 +161,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-               ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::multiDimResults() const {
+     ScheduleSeparatorStoreMultiDim< GUM_SCALAR >::multiDimResults() const {
     static Sequence< const ScheduleMultiDim< GUM_SCALAR >* > empty_seq;
 #  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that

@@ -1,6 +1,6 @@
 %feature("docstring") gum::BayesNet
 "
-BayesNet represents a Bayesian Network.
+BayesNet represents a Bayesian network.
 
 BayesNet(name='') -> BayesNet
     Parameters:
@@ -543,7 +543,7 @@ domainSize : int
 Returns
 -------
 pyAgrum.BayesNet
-        the resulting bayesian network 
+        the resulting Bayesian network
 "
 
 %feature("docstring") gum::BayesNet::generateCPT

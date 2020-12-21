@@ -222,8 +222,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* bn) {}
+  void SamplingInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {
+  }
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::updateOutdatedStructure_() {}

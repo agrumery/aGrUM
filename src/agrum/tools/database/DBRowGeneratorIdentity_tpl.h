@@ -45,7 +45,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                                       column_types,
+          column_types,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(
            column_types,

@@ -61,7 +61,7 @@ namespace gum {
   INLINE NodeSet ArcGraphPart::family(const NodeId id) const {
     checkParents__(id);
     NodeSet res{id};
-    return res+parents(id);
+    return res + parents(id);
   }
 
   INLINE const NodeSet& ArcGraphPart::children(const NodeId id) const {

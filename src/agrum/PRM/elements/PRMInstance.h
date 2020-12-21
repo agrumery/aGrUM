@@ -45,7 +45,7 @@ namespace gum {
      * @class PRMInstance
      * @headerfile instance.h <agrum/PRM/elements/instance.h>
      *
-     * @brief An PRMInstance is a Bayesian Network fragment defined by a Class
+     * @brief An PRMInstance is a Bayesian network fragment defined by a Class
      * and used in a PRMSystem.
      *
      * Before using an PRMInstance for inference YOU MUST call

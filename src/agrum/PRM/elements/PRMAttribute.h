@@ -45,7 +45,7 @@ namespace gum {
      * Potential).
      *
      * An attribute in a PRM is the equivalent of a random variable in a
-     * bayesian network.
+     * Bayesian network.
      *
      * This class is constructed by a gum::PRMFactory and is deleted by its
      * gum::Class.

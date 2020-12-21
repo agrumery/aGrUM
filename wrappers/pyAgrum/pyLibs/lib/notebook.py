@@ -259,7 +259,7 @@ def showJunctionTree(bn, withNames=True, size=None):
   """
   Show a junction tree
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
   :return: the representation of the graph
@@ -279,7 +279,7 @@ def getJunctionTree(bn, withNames=True, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
   :return: the HTML representation of the graph
@@ -446,7 +446,7 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   """
   show a Bayesian network
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
@@ -502,7 +502,7 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
   """
   get a HTML string for a Bayesian network
 
-  :param bn: the bayesian network
+  :param bn: the Bayesian network
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs

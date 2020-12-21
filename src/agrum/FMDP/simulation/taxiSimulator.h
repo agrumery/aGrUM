@@ -23,7 +23,8 @@
  * @file
  * @brief Class for simulating a markov decision process.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_TAXI_SIMULATOR_H
 #define GUM_TAXI_SIMULATOR_H

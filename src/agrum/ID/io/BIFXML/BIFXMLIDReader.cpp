@@ -22,7 +22,8 @@
 /** @file
  * @brief Outlined implementation of BIFXMLIDReader
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 

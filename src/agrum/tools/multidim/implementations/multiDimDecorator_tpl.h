@@ -268,7 +268,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               MultiDimDecorator< GUM_SCALAR >::variable(const std::string& name) const {
+     MultiDimDecorator< GUM_SCALAR >::variable(const std::string& name) const {
     return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->variable(
        name);
   }
@@ -282,7 +282,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool
      MultiDimDecorator< GUM_SCALAR >::contains(const DiscreteVariable& var) const {
-    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->contains(var);
+    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->contains(
+       var);
   }
 
   template < typename GUM_SCALAR >
@@ -414,7 +415,8 @@ namespace gum {
 
   // string representation of internal data about i in this.
   template < typename GUM_SCALAR >
-  INLINE std::string MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
+  INLINE std::string
+         MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
     return content_->toString(i);
   }
 

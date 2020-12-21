@@ -23,7 +23,8 @@
  * @file
  * @brief Headers of gum::SmallObjectAllocator
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  *
  */
 #ifndef GUM_SMALL_OBJECT_ALLOCATOR_H

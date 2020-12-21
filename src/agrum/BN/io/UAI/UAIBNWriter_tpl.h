@@ -90,7 +90,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIBNWriter< GUM_SCALAR >::preambule__(const IBayesNet< GUM_SCALAR >& bn) {
+     UAIBNWriter< GUM_SCALAR >::preambule__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;

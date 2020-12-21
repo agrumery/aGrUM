@@ -389,7 +389,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-               MultiDimBucket< GUM_SCALAR >::toString(const Instantiation* i) const {
+         MultiDimBucket< GUM_SCALAR >::toString(const Instantiation* i) const {
     std::stringstream sBuff;
     sBuff << (*i) << " = " << get(*i);
     return sBuff.str();

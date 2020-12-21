@@ -23,7 +23,8 @@
  * @file
  * @brief Class for implementation of factored markov decision process.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 #define GUM_FACTORED_MARKOV_DECISION_PROCESS_H

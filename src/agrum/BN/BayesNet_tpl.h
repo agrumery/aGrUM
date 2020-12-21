@@ -317,7 +317,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+     BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return varMap__.variableFromName(name);
   }
 

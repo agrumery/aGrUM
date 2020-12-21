@@ -23,7 +23,8 @@
  * @file
  * @brief
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/iti.h>

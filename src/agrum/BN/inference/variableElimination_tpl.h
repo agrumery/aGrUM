@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of Variable Elimination for inference in
- * Bayesian Networks.
+ * Bayesian networks.
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -207,8 +207,9 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* bn) {}
+  INLINE void
+     VariableElimination< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {
+  }
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >

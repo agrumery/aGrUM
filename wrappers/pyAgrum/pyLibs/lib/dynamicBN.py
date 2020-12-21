@@ -22,7 +22,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-Basic implementation for dynamic Bayesian Networks in pyAgrum
+Basic implementation for dynamic Bayesian networks in pyAgrum
 """
 
 import matplotlib.pyplot as plt

@@ -1,6 +1,6 @@
 %feature("docstring") gum::BayesNetFragment
 "
-BayesNetFragment represents a part of a Bayesian Network (subset of nodes). By default, the arcs and the CPTs are the same as the BN but local CPTs can be build to express different local dependencies. All the non local CPTs are not copied. Therefore a BayesNetFragment is a light object. 
+BayesNetFragment represents a part of a Bayesian network (subset of nodes). By default, the arcs and the CPTs are the same as the BN but local CPTs can be build to express different local dependencies. All the non local CPTs are not copied. Therefore a BayesNetFragment is a light object.
 
 BayesNetFragment(BayesNet bn) -> BayesNetFragment
     Parameters:

@@ -100,7 +100,7 @@ namespace gum {
   wchar_t* coco_string_create_upper(const wchar_t* data);
   wchar_t* coco_string_create_lower(const wchar_t* data);
   wchar_t*
-           coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
+     coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
   wchar_t* coco_string_create_append(const wchar_t* data1, const wchar_t* data2);
   wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
   void     coco_string_delete(wchar_t*& data);

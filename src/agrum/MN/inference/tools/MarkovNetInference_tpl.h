@@ -34,7 +34,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   MarkovNetInference< GUM_SCALAR >::MarkovNetInference(
      const IMarkovNet< GUM_SCALAR >* mn) :
-     GraphicalModelInference< GUM_SCALAR >(mn) {
+      GraphicalModelInference< GUM_SCALAR >(mn) {
     GUM_CONSTRUCTOR(MarkovNetInference);
   }
 
@@ -51,7 +51,6 @@ namespace gum {
   MarkovNetInference< GUM_SCALAR >::~MarkovNetInference() {
     GUM_DESTRUCTOR(MarkovNetInference);
   }
-
 
 
   // Returns a constant reference over the IMarkovNet referenced by this class

@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of Shafer-Shenoy's algorithm for inference
- * in Bayesian Networks.
+ * in Bayesian networks.
  */
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
 #define GUM_SHAFER_SHENOY_INFERENCE_H
@@ -60,7 +60,7 @@ namespace gum {
    * @class ShaferShenoyInference ShaferShenoyInference.h
    * <agrum/BN/inference/ShaferShenoyInference.h>
    * @brief Implementation of Shafer-Shenoy's propagation algorithm
-   * for inference in Bayesian Networks
+   * for inference in Bayesian networks
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >

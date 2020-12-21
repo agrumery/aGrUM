@@ -23,7 +23,8 @@
  * @file
  * @brief Headers of the FMDPFactory class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #ifndef GUM_FMDP_FACTORY_H

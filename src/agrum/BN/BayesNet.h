@@ -46,10 +46,10 @@ namespace gum {
   /**
    * @class BayesNet
    * @headerfile BayesNet.h <agrum/BN/BayesNet.h>
-   * @brief Class representing a Bayesian Network.
+   * @brief Class representing a Bayesian network.
    * @ingroup bn_group
    *
-   * Bayesian Networks are a probabilistic graphical model in which nodes are
+   * Bayesian networks are a probabilistic graphical model in which nodes are
    * random variables and the probability distribution is defined by the
    * product:
    *
@@ -68,7 +68,7 @@ namespace gum {
    * are added, the data in its CPT are lost.
    *
    * You should look a the gum::BayesNetFactory class which can help build
-   * Bayesian Networks.
+   * Bayesian networks.
    *
    * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
@@ -98,7 +98,7 @@ namespace gum {
      *
      * @param dotlike the string containing the specification
      * @param domainSize the default domain size for variables
-     * @return the resulting bayesian network
+     * @return the resulting Bayesian network
      */
     static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
                                                 Size               domainSize = 2);

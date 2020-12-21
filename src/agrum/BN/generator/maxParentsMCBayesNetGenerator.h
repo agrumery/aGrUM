@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief Class for generating bayesian networks using MC algorithm
+ * @brief Class for generating Bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
  * @author Ariele MAESANO and Pierre-Henri WUILLEMIN(@LIP6)
@@ -55,12 +55,12 @@ namespace gum {
   /**
    * @class MaxParentsMCBayesNetGenerator maxParentsMCBayesNetGenerator.h
    *<agrum/BN/generator/SimpleMCayesNetGenerator.h>
-   * @brief Class for generating bayesian networks with Markov chains.
+   * @brief Class for generating Bayesian networks with Markov chains.
    * @ingroup bn_generator
    *
    * This class is inherited from MCBayesNetGenerator and is an example of
    *Markov
-   *Chain Bayesian Network Generator that can be implemented.
+   *Chain Bayesian network Generator that can be implemented.
    * Here a constraint is added which is the maximum number of parents that a
    *node
    *can have.
@@ -80,7 +80,7 @@ namespace gum {
    *
    * @warning  Be Careful when entering the parameters, high Values may cause
    *the
-   *density of the Bayesian Network to be too high
+   *density of the Bayesian network to be too high
    * resulting in the failure of most of the inference Methods. \n
    * */
   template < typename GUM_SCALAR,

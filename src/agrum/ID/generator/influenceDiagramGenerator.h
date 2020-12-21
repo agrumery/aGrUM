@@ -20,9 +20,10 @@
 
 
 /** @file
- * @brief Class for generating bayesian networks.
+ * @brief Class for generating Bayesian networks.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_INF_DIAG_GENERATOR_H
 #define GUM_INF_DIAG_GENERATOR_H

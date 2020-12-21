@@ -292,7 +292,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(
+         pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -356,7 +357,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(
+         pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -466,46 +468,47 @@ namespace gum_tests {
       // an inference for all the bn with an hard evidence and an inference for
       // the right fragment with a local CPT should be the same
       try {
-      gum::BayesNet< double > bn;
-      fill(bn);
+        gum::BayesNet< double > bn;
+        fill(bn);
 
-      // propagation in the full BN
-      gum::LazyPropagation< double > inf_complete(&bn);
+        // propagation in the full BN
+        gum::LazyPropagation< double > inf_complete(&bn);
 
-      gum::Potential< double > ev;
-      ev << bn.variable(bn.idFromName("v3"));
-      ev.fillWith({0.0, 1.0});
+        gum::Potential< double > ev;
+        ev << bn.variable(bn.idFromName("v3"));
+        ev.fillWith({0.0, 1.0});
 
-      gum::List< const gum::Potential< double >* > l{&ev};
-      inf_complete.addEvidence(ev);
-      inf_complete.makeInference();
+        gum::List< const gum::Potential< double >* > l{&ev};
+        inf_complete.addEvidence(ev);
+        inf_complete.makeInference();
 
         auto p = inf_complete.posterior(bn.idFromName("v6"));
-      const gum::Potential< double >& p1 =
-         inf_complete.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p1 =
+           inf_complete.posterior(bn.idFromName("v6"));
 
-      // propagation in the fragment
-      gum::BayesNetFragment< double > frag(bn);
-      frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
+        // propagation in the fragment
+        gum::BayesNetFragment< double > frag(bn);
+        frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
 
-      gum::Potential< double > newV3;
-      newV3 << bn.variable(bn.idFromName("v3"));
-      newV3.fillWith({0.0, 1.0});
-      frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
-      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)1);
+        gum::Potential< double > newV3;
+        newV3 << bn.variable(bn.idFromName("v3"));
+        newV3.fillWith({0.0, 1.0});
+        frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
+        TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)1);
 
-      gum::LazyPropagation< double > inf_frag(&frag);
-      inf_frag.makeInference();
+        gum::LazyPropagation< double > inf_frag(&frag);
+        inf_frag.makeInference();
 
-      const gum::Potential< double >& p2 = inf_frag.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p2 =
+           inf_frag.posterior(bn.idFromName("v6"));
 
-      // comparison
-      gum::Instantiation I(p1);
-      gum::Instantiation J(p2);
+        // comparison
+        gum::Instantiation I(p1);
+        gum::Instantiation J(p2);
 
-      for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
-        TS_ASSERT_DELTA(p1[I], p2[J], 1e-6);
+        for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
+          TS_ASSERT_DELTA(p1[I], p2[J], 1e-6);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 

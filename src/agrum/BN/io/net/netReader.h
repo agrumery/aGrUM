@@ -45,7 +45,7 @@ namespace gum {
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
-   * Every class used to read the content of a Bayesian Network from a stream,
+   * Every class used to read the content of a Bayesian network from a stream,
    * or a file must be a subclass of NetReader.
    */
   template < typename GUM_SCALAR >

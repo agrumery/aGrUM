@@ -513,7 +513,7 @@ namespace gum {
         res.addChanceNode(infdiag.variable(node), node);
       else if (infdiag.isDecisionNode(node))
         res.addDecisionNode(infdiag.variable(node), node);
-      else // (infdiag.isUtilityNode(node))
+      else   // (infdiag.isUtilityNode(node))
         res.addUtilityNode(infdiag.variable(node), node);
     }
 

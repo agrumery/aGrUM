@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Implementation of Loopy Belief Propagation in Bayesian Networks.
+ * @brief Implementation of Loopy Belief Propagation in Bayesian networks.
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

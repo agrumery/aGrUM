@@ -288,7 +288,7 @@ namespace gum {
        */
       void storeVertices(const bool value);
       /**
-       * @param value \c True if optimal bayesian networks are to be stored for
+       * @param value \c True if optimal Bayesian networks are to be stored for
        * each
        * variable and each modality.
        */

@@ -102,7 +102,7 @@ namespace gum {
     setTargetedMode_();   // does nothing if already in targeted mode
 
     this->setState_(
-       GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
 
@@ -124,8 +124,8 @@ namespace gum {
     if (!targets__.contains(target)) {
       targets__.insert(target);
       onMarginalTargetAdded_(target);
-      this->setState_(
-         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+      this->setState_(GraphicalModelInference<
+                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -145,8 +145,8 @@ namespace gum {
       if (!targets__.contains(target)) {
         targets__.insert(target);
         onMarginalTargetAdded_(target);
-        this->setState_(
-           GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+        this->setState_(GraphicalModelInference<
+                        GUM_SCALAR >::StateOfInference::OutdatedStructure);
       }
     }
   }
@@ -185,8 +185,8 @@ namespace gum {
                                 // want to clear the targets
       onMarginalTargetErased_(target);
       targets__.erase(target);
-      this->setState_(
-         GraphicalModelInference<   GUM_SCALAR>::StateOfInference::OutdatedStructure);
+      this->setState_(GraphicalModelInference<
+                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 

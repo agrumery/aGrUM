@@ -214,7 +214,8 @@ namespace gum {
     DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
                                              const PsiArcProperty&  psi,
                                              NodeId                 clique) const;
-    void binarizingMax_(const Potential< GUM_SCALAR >& decision,const Potential< GUM_SCALAR >& proba) const;
+    void binarizingMax_(const Potential< GUM_SCALAR >& decision,
+                        const Potential< GUM_SCALAR >& proba) const;
   };
 } /* namespace gum */
 

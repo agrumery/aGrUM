@@ -259,9 +259,10 @@ namespace gum {
 
 
     protected:
-    /// check if the vars form a possible computable joint (can be redefined by subclass)
-    virtual bool isExactJointComputable_(const NodeSet& vars) ;
-    virtual NodeSet superForJointComputable_(const NodeSet& vars) ;
+    /// check if the vars form a possible computable joint (can be redefined by
+    /// subclass)
+    virtual bool    isExactJointComputable_(const NodeSet& vars);
+    virtual NodeSet superForJointComputable_(const NodeSet& vars);
 
     /// fired after a new Markov net has been assigned to the engine
     virtual void onModelChanged_(const GraphicalModel* mn);

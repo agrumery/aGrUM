@@ -180,7 +180,7 @@ namespace gum {
      * the end of the function ( the memory used by the resulting table ).
      */
     virtual std::pair< long, long >
-                                    memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const;
+       memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const;
     virtual std::pair< long, long > memoryUsage(
        const Set< const Sequence< const DiscreteVariable* >* >& set) const;
 

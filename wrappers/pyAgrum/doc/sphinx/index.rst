@@ -13,10 +13,11 @@ Introduction to pyAgrum
     :target: http://agrum.org
 
 `pyAgrum <http://agrum.org>`_ a scientific C++ and Python library dedicated to 
-Bayesian Networks and other Probabilistic Graphical Models. Based on the C++ 
+Bayesian networks and other Probabilistic Graphical Models. Based on the C++
 `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to 
 the C++ part of aGrUM allowing to create, manage and perform efficient computations 
-with Bayesian Networks.
+with Bayesian networks  and others probabilsitic graphical models (Markov networks, 
+influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
 
 .. image::  _static/fastBNwithPyAgrum.png
 

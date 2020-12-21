@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin (LIP6), 2020  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -36,7 +36,7 @@ class CausalModel:
   From an observational BNs and the description of latent variables, this class represent a complet causal model
   obtained by adding the latent variables specified in ``latentVarsDescriptor`` to the Bayesian network ``bn``.
 
-  :param bn: a observational bayesian network
+  :param bn: a observational Bayesian network
   :param latentVarsDescriptor:  list of couples (<latent variable name>, <list of affected variables' ids>).
   :param keepArcs: By default, the arcs between variables affected by a common latent variable will be removed but
          this can be avoided by setting ``keepArcs`` to ``True``

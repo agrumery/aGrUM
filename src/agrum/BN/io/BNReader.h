@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Definition of abstract classes for file input  manipulation
- * of Bayesian Networks.
+ * of Bayesian networks.
  *
  * Every classe used to read a BN from a file, must inherit from
  * BNWriter or BNReader.
@@ -47,7 +47,7 @@ namespace gum {
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
-   * Every class used to read the content of a Bayesian Network from a stream,
+   * Every class used to read the content of a Bayesian network from a stream,
    * or a file must be a subclass of BNReader.
    */
   template < typename GUM_SCALAR >
@@ -68,7 +68,7 @@ namespace gum {
     virtual ~BNReader();
 
     /**
-     * Reads a Bayesian Network from the file referenced by filePath into`
+     * Reads a Bayesian network from the file referenced by filePath into`
      * parameter bayesNet.
      * @return Returns the number of error during the parsing (0 if none).
      */

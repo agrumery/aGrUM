@@ -175,7 +175,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string
-           ScoreBIC< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
+       ScoreBIC< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 

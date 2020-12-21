@@ -151,7 +151,7 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual float
-                  nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+       nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
     virtual float nbOperations(
        const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
@@ -168,7 +168,7 @@ namespace gum {
      * by the resulting table ).
      */
     virtual std::pair< long, long >
-                                    memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+       memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
     virtual std::pair< long, long > memoryUsage(
        const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 

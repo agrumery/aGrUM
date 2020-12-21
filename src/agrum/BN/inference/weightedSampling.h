@@ -37,7 +37,7 @@ namespace gum {
   /**
    * @class WeightedInference weightedInference.h
    *<agrum/BN/inference/weightedInference.h>
-   * @brief class for making Weighted sampling inference in bayesian networks.
+   * @brief class for making Weighted sampling inference in Bayesian networks.
    * @ingroup bn_approximation
    *
    * This class overrides pure function declared in the inherited class
@@ -67,7 +67,7 @@ namespace gum {
     /**
      * @param w the weight of sample being generated
      * @param prev the previous sample generated
-     * @param bn the bayesian network containing the evidence
+     * @param bn the Bayesian network containing the evidence
      * @param hardEvNodes hard evidence nodes
      * @param hardEv hard evidences values
      *

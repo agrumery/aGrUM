@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Implementation of Gibbs Sampling for inference in Bayesian Networks.
+ * @brief Implementation of Gibbs Sampling for inference in Bayesian networks.
  *
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */

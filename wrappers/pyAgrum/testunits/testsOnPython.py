@@ -22,12 +22,14 @@ import pyAgrum as gum
 
 try:
   import sklearn
+
   sklearnFound = True
 except ImportError:
   sklearnFound = False
 
 try:
   import pandas
+
   pandasFound = True
 except ImportError:
   pandasFound = False
@@ -39,7 +41,7 @@ from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
 from tests import BayesNetFragmentTestSuite
 
-if sys.version_info >= (3,6) and pandasFound and sklearnFound:
+if sys.version_info >= (3, 6) and pandasFound and sklearnFound:
   from tests import BNClassifierTestSuite
 else:
   logging.warning("[pyAgrum] pyAgrum.lib.classifier needs python>=3.6, pandas and sklearn")
@@ -81,7 +83,7 @@ tl.append(AllIncrementalInferenceTestSuite.ts)
 tl.append(BayesNetTestSuite.ts)
 tl.append(BayesNetFragmentTestSuite.ts)
 
-if  sys.version_info >= (3,6) and pandasFound and sklearnFound:
+if sys.version_info >= (3, 6) and pandasFound and sklearnFound:
   tl.append(BNClassifierTestSuite.ts)
 
 tl.append(BNDatabaseGeneratorTestSuite.ts)

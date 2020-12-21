@@ -24,10 +24,10 @@ for cde in sys.argv:
   elif cde in ["all"]:
     testNotebooks = (cde == "all")
 
-logfilename="/pyAgrumTests.log"
-if mod!="standAlone":
-  logfilename="/../.."+logfilename
-logfilename=cwd+logfilename
+logfilename = "/pyAgrumTests.log"
+if mod != "standAlone":
+  logfilename = "/../.." + logfilename
+logfilename = cwd + logfilename
 print(logfilename)
 
 log = logging.getLogger("gumTestLog")
@@ -36,7 +36,6 @@ fh = logging.FileHandler(logfilename, mode='w', encoding=None, delay=False)
 fh.setFormatter(logging.Formatter(FORMAT))
 log.addHandler(fh)
 log.propagate = False
-
 
 log.info("Mode detected : " + mod)
 log.info("Testing notebooks : " + str(testNotebooks))
@@ -63,7 +62,7 @@ log.info("path : {}".format(gum.__file__))
 print("*****************")
 print("Python Test Suite")
 print("*****************")
-if True: 
+if True:
   import testsOnPython
 
   try:

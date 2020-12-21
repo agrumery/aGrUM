@@ -138,7 +138,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::get__(const std::string& name) const {
+       ClassBayesNet< GUM_SCALAR >::get__(const std::string& name) const {
       try {
         return class__->get(name);
       } catch (NotFound&) {

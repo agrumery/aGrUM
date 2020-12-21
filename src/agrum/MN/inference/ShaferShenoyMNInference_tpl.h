@@ -1488,7 +1488,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   bool ShaferShenoyMNInference< GUM_SCALAR >::isExactJointComputable_(
-     const NodeSet& vars)  {
+     const NodeSet& vars) {
     if (JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(vars))
       return true;
 
@@ -1496,7 +1496,7 @@ namespace gum {
 
     for (const auto& cliknode: this->propagator__->nodes()) {
       GUM_TRACE_VAR(cliknode);
-      const auto clique=propagator__->clique(cliknode);
+      const auto clique = propagator__->clique(cliknode);
       GUM_TRACE_VAR(clique);
       if (vars == clique) return true;
       GUM_CHECKPOINT;
@@ -1515,7 +1515,7 @@ namespace gum {
     this->prepareInference();
 
     for (const auto& cliknode: propagator__->nodes()) {
-      const auto clique=propagator__->clique(cliknode);
+      const auto clique = propagator__->clique(cliknode);
       if (vars.isProperSubsetOf(clique)) return clique;
     }
 

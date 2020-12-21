@@ -22,7 +22,8 @@
 /** @file
  * @brief Source implementation of InfluenceDiagramGenerator
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  *
  */
 #include <agrum/ID/generator/influenceDiagramGenerator.h>

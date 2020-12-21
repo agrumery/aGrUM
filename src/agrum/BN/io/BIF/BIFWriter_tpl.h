@@ -44,10 +44,10 @@ namespace gum {
   }
 
   //
-  // Writes a Bayesian Network in the output stream using the BIF format.
+  // Writes a Bayesian network in the output stream using the BIF format.
   //
   // @param ouput The output stream.
-  // @param bn The Bayesian Network writen in output.
+  // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
   INLINE void BIFWriter< GUM_SCALAR >::write(std::ostream&                  output,
@@ -74,12 +74,12 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
-  // Writes a Bayesian Network in the referenced file using the BIF format.
+  // Writes a Bayesian network in the referenced file using the BIF format.
   // If the file doesn't exists, it is created.
   // If the file exists, it's content will be erased.
   //
-  // @param filePath The path to the file used to write the Bayesian Network.
-  // @param bn The Bayesian Network writed in the file.
+  // @param filePath The path to the file used to write the Bayesian network.
+  // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
   INLINE void BIFWriter< GUM_SCALAR >::write(const std::string& filePath,
@@ -112,7 +112,7 @@ namespace gum {
   // Returns a bloc defining a variable's CPT in the BIF format.
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFWriter< GUM_SCALAR >::variableCPT__(const Potential< GUM_SCALAR >& cpt) {
+     BIFWriter< GUM_SCALAR >::variableCPT__(const Potential< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 

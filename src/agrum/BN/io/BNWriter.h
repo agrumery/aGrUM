@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Definition of abstract classes for file output manipulation
- * of Bayesian Networks.
+ * of Bayesian networks.
  *
  * Every classe used to read or write a BN from a file, must inherit from
  * BNWriter or BNReader.
@@ -48,7 +48,7 @@ namespace gum {
    * @brief Pure virtual class for writting a BN to a file.
    * @ingroup bn_io
    *
-   * Every class used to write the content of a Bayesian Network in a stream, or
+   * Every class used to write the content of a Bayesian network in a stream, or
    * a file must be a subclass of BNWriter.
    */
   template < typename GUM_SCALAR >
@@ -66,22 +66,22 @@ namespace gum {
     virtual ~BNWriter();
 
     /**
-     * Writes a Bayesian Network in the ouput stream.
+     * Writes a Bayesian network in the ouput stream.
      *
      * @param output The output stream.
-     * @param bn The Bayesian Network writed in output.
+     * @param bn The Bayesian network writed in output.
      * @throws IOError Raised if an I/O error occurs.
      */
     virtual void write(std::ostream&                  output,
                        const IBayesNet< GUM_SCALAR >& bn) = 0;
 
     /**
-     * Writes a Bayesian Network in the file referenced by filePath.
+     * Writes a Bayesian network in the file referenced by filePath.
      * If the file doesn't exists, it is created.
      * If the file exists, it's content will be erased.
      *
-     * @param filePath The path to the file used to write the Bayesian Network.
-     * @param bn The Bayesian Network writen in the file.
+     * @param filePath The path to the file used to write the Bayesian network.
+     * @param bn The Bayesian network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void write(const std::string&             filePath,

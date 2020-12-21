@@ -118,7 +118,7 @@ namespace gum {
     virtual void setParentModality(const std::string& parent,
                                    const std::string& modality) = 0;
     virtual void
-                 setVariableValuesUnchecked(const std::vector< float >& values) = 0;
+       setVariableValuesUnchecked(const std::vector< float >& values) = 0;
     virtual void setVariableValues(const std::vector< float >& values) = 0;
     virtual void endFactorizedProbabilityDeclaration() = 0;
     virtual void setVariable(const DiscreteVariable& var) = 0;

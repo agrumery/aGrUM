@@ -721,7 +721,7 @@ namespace gum {
       fflush(stdout);
 #ifdef _MSC_VER
       freopen("NUL", "w", stdout);
-#else    // _MSC_VER
+#else   // _MSC_VER
       oldCout__ = dup(1);
 
       int new_cout = open("/dev/null", O_WRONLY);
@@ -735,7 +735,7 @@ namespace gum {
       fflush(stdout);
 #ifdef _MSC_VER
       freopen("CON", "w", stdout);
-#else    // _MSC_VER
+#else   // _MSC_VER
       dup2(oldCout__, 1);
       close(oldCout__);
 #endif   // _MSC_VER

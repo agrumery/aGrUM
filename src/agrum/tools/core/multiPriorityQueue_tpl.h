@@ -229,7 +229,7 @@ namespace gum {
   // returns the priority of the top element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
-               MultiPriorityQueue< Val, Priority, Cmp, Alloc >::topPriority() const {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::topPriority() const {
     if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return heap__[0].first;

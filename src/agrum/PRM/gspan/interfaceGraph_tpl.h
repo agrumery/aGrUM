@@ -344,7 +344,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE NodeData< GUM_SCALAR >&
-             InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) {
+         InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) {
         return node(id(i));
       }
 

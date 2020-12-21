@@ -149,25 +149,23 @@ namespace gum {
     return partialGraph;
   }
 
-  NodeProperty<NodeId> UndiGraph::nodes2ConnectedComponent() const {
-    NodeProperty<NodeId> res;
+  NodeProperty< NodeId > UndiGraph::nodes2ConnectedComponent() const {
+    NodeProperty< NodeId > res;
 
-    NodeId numCC=0;
-    for(const auto node:nodes()) {
-      if (res.exists(node))
-        continue;
+    NodeId numCC = 0;
+    for (const auto node: nodes()) {
+      if (res.exists(node)) continue;
       NodeSet nodes{node};
-      while (! nodes.empty()) {
-        auto actual=*(nodes.begin());
+      while (!nodes.empty()) {
+        auto actual = *(nodes.begin());
         nodes.erase(actual);
-        res.insert(actual,numCC);
-        for(const auto nei:neighbours(actual)) {
+        res.insert(actual, numCC);
+        for (const auto nei: neighbours(actual)) {
           if (!res.exists(nei))
-            if (!nodes.exists(nei))
-              nodes.insert(nei);
+            if (!nodes.exists(nei)) nodes.insert(nei);
         }
       }
-      numCC+=1;
+      numCC += 1;
     }
 
     return res;

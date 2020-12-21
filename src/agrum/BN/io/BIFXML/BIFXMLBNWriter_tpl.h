@@ -104,7 +104,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFXMLBNWriter< GUM_SCALAR >::heading__(const IBayesNet< GUM_SCALAR >& bn) {
+     BIFXMLBNWriter< GUM_SCALAR >::heading__(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -150,7 +150,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFXMLBNWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var) {
+     BIFXMLBNWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>

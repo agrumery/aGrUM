@@ -77,7 +77,7 @@ namespace gum {
       virtual void addTick(double tick) = 0;
       virtual void endDiscretizedType() = 0;
       virtual void
-                   addRangeType(const std::string& name, long minVal, long maxVal) = 0;
+         addRangeType(const std::string& name, long minVal, long maxVal) = 0;
       virtual void startClass(const std::string&        c,
                               const std::string&        extends = "",
                               const Set< std::string >* implements = nullptr,
@@ -130,7 +130,7 @@ namespace gum {
                                const std::string&                      name,
                                const HashTable< std::string, double >& params) = 0;
       virtual void
-                   addArray(const std::string& type, const std::string& name, Size size) = 0;
+         addArray(const std::string& type, const std::string& name, Size size) = 0;
       virtual void incArray(const std::string& l_i, const std::string& r_i) = 0;
       virtual void setReferenceSlot(const std::string& left_instance,
                                     const std::string& left_reference,

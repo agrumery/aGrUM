@@ -189,7 +189,7 @@ namespace gum {
     virtual UndiGraph partialUndiGraph(NodeSet nodes);
 
     /// returns a property {node:id of connected component}
-    NodeProperty<NodeId> nodes2ConnectedComponent() const;
+    NodeProperty< NodeId > nodes2ConnectedComponent() const;
 
     /// @}
   };

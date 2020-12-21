@@ -261,7 +261,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const Val&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::top() const {
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::top() const {
     if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return *(heap__[0].second);
@@ -274,7 +274,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::topPriority()
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::topPriority()
         const {
     if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
 
@@ -419,7 +419,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const HashTable< Val, Size >&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::allValues()
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::allValues()
         const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(indices__);
   }
@@ -717,7 +717,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priority(
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priority(
         const Val& elt) const {
     return heap__[indices__[elt]].first;
   }
@@ -729,7 +729,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priorityByPos(
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priorityByPos(
         Size index) const {
     if (index > nb_elements__) {
       GUM_ERROR(NotFound,
@@ -913,7 +913,7 @@ namespace gum {
   // returns the element at the top of the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Val&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::top() const {
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::top() const {
     if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return heap__[0].second;
@@ -922,7 +922,7 @@ namespace gum {
   // returns the priority of the top element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::topPriority()
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::topPriority()
         const {
     if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
 
@@ -1034,7 +1034,7 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const HashTable< Val, Size >&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::allValues()
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::allValues()
         const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(indices__);
   }
@@ -1280,7 +1280,7 @@ namespace gum {
   // returns the priority of a given element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priority(
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priority(
         Val elt) const {
     return heap__[indices__[elt]].first;
   }
@@ -1288,7 +1288,7 @@ namespace gum {
   // returns the priority of a given element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priorityByPos(
+     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priorityByPos(
         Size index) const {
     if (index > nb_elements__) {
       GUM_ERROR(NotFound,

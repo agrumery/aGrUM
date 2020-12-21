@@ -1,4 +1,4 @@
-Module dynamic bayesian network
+Module dynamic Bayesian network
 ===============================
 
 .. image:: _static/dBN.png

@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief Class for generating bayesian networks.
+ * @brief Class for generating Bayesian networks.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) and Ariele-Paolo MAESANO
  */

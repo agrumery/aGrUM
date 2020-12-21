@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of lazy propagation for inference in
- * Bayesian Networks.
+ * Bayesian networks.
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -328,8 +328,8 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* bn) {}
+  INLINE void
+     LazyPropagation< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
 
   /// fired after a new target is inserted
@@ -721,7 +721,7 @@ namespace gum {
 
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential >
-                           combine_and_project(combination_op__, LPNewprojPotential);
+               combine_and_project(combination_op__, LPNewprojPotential);
             PotentialSet__ new_cpt_list =
                combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
 

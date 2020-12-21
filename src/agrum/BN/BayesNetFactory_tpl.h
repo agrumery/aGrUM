@@ -129,7 +129,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
+     BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
     try {
       return bn__->variable(variableId(name));
     } catch (NotFound&) { GUM_ERROR(NotFound, name); }
@@ -137,7 +137,7 @@ namespace gum {
 
   // Returns the domainSize of the cpt for the node n.
   // @throw NotFound raised if no such NodeId exists.
-  // @throw OperationNotAllowed if there is no bayesian networks.
+  // @throw OperationNotAllowed if there is no Bayesian networks.
   template < typename GUM_SCALAR >
   INLINE Size BayesNetFactory< GUM_SCALAR >::cptDomainSize(const NodeId n) const {
     return bn__->cpt(n).domainSize();
@@ -236,7 +236,7 @@ namespace gum {
         case VarType::Continuous:
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + stringBag__[0]
-                       + ") are not supported in bayesian networks.");
+                       + ") are not supported in Bayesian networks.");
         case VarType::Labelized: stringBag__[2] = "L"; break;
       }
     }

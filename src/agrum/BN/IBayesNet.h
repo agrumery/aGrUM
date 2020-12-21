@@ -46,7 +46,7 @@ namespace gum {
   /**
    * @class IBayesNet
    * @headerfile IBayesNet.h <agrum/BN/IBayesNet.h>
-   * @brief Class representing the minimal interface for Bayesian Network.
+   * @brief Class representing the minimal interface for Bayesian network.
    * @ingroup bn_group
    *
    * This class is used as a base class for different versions of Bayesian

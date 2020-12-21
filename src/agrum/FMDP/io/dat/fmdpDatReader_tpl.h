@@ -24,7 +24,8 @@
  * @brief Definition of templatized reader of dat files for Factored Markov
  * Decision Process.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

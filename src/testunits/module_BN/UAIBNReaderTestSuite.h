@@ -116,7 +116,7 @@ namespace gum_tests {
     }
 
     void testRead_dog_double() {
-      // from Charniak, Bayesian Networks Without Tears, AI Magazine, 1991
+      // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
       std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
       gum::BayesNet< double >*   net = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);

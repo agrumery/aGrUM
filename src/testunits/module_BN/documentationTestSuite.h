@@ -43,7 +43,7 @@ namespace gum_tests {
         // Variables are added by copy to the BayesNet, so you can use a single
         // gum::LabelizedVariable to add all varaibles with the same domain
         auto var = gum::LabelizedVariable(
-           "template", "A variable of the Asia Bayesian Network", 0);
+           "template", "A variable of the Asia Bayesian network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -268,7 +268,7 @@ namespace gum_tests {
       // Constructing the BayesNet...
       {
         auto var = gum::LabelizedVariable(
-           "template", "A variable of the Asia Bayesian Network", 0);
+           "template", "A variable of the Asia Bayesian network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -358,7 +358,7 @@ namespace gum_tests {
         // Constructing BayesNet...
         {
           auto var = gum::LabelizedVariable(
-             "template", "A variable of the Asia Bayesian Network", 0);
+             "template", "A variable of the Asia Bayesian network", 0);
           var.addLabel("True");
           var.addLabel("False");
 

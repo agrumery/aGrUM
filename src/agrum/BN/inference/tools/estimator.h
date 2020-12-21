@@ -52,7 +52,7 @@ namespace gum {
     Estimator();
 
     /**
-     * Constructor with Bayesian Network
+     * Constructor with Bayesian network
      */
     explicit Estimator(const IBayesNet< GUM_SCALAR >* bn);
 
@@ -123,7 +123,7 @@ namespace gum {
     /// number of generated samples
     Size ntotal_;
 
-    /// bayesian network on which approximation is done
+    /// Bayesian network on which approximation is done
     const IBayesNet< GUM_SCALAR >* bn_;
 
     /// returns expected value of Bernouilli variable (called by it's name) of

@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief Class for generating bayesian networks.
+ * @brief Class for generating Bayesian networks.
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6) and
  *Ariele-Paolo MAESANO
@@ -42,15 +42,15 @@ namespace gum {
   /**
    * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h
    *<agrum/BN/generator/simpleBayesNetGenerator.h>
-   * @brief Class for generating bayesian networks.
+   * @brief Class for generating Bayesian networks.
    * @ingroup bn_generator
    *
-   * This class randomly generates a bayesian network given three parameters:
+   * This class randomly generates a Bayesian network given three parameters:
    * the number of nodes and the max number of arcs and the number of maximum
    *modality for each nodes.
    * @warning  Be Careful when entering the parameters, high Values may cause
    *the
-   *density of the Bayesian Network to be too high
+   *density of the Bayesian network to be too high
    * resulting in the failure of most of the inference Methods.
    */
   template < typename GUM_SCALAR,
@@ -83,9 +83,9 @@ namespace gum {
     // ############################################################################
     /// @{
     /**
-     * function that generates a bayesian networks.
-     * @param bayesNet Bayesian Network to be completed after initialisation
-     * @return null but modify inputed Bayesian Network
+     * function that generates a Bayesian networks.
+     * @param bayesNet Bayesian network to be completed after initialisation
+     * @return null but modify inputed Bayesian network
      */
     void generateBN(BayesNet< GUM_SCALAR >& bayesNet) override;
 

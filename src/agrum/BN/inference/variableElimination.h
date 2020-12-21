@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of a variable elimination algorithm
- * for inference in Bayesian Networks.
+ * for inference in Bayesian networks.
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -62,7 +62,7 @@ namespace gum {
    * @class VariableElimination VariableElimination.h
    * <agrum/BN/inference/variableElimination.h>
    * @brief Implementation of a Shafer-Shenoy's-like version of lazy
-   * propagation for inference in Bayesian Networks
+   * propagation for inference in Bayesian networks
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >

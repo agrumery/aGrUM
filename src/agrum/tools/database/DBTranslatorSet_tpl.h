@@ -450,7 +450,7 @@ namespace gum {
     /// returns the kth translator
     template < template < typename > class ALLOC >
     INLINE const DBTranslator< ALLOC >&
-                 DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) const {
+       DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found");
       return *(translators__[k]);
@@ -486,7 +486,7 @@ namespace gum {
     /// returns the variable stored into the kth translator
     template < template < typename > class ALLOC >
     INLINE const Variable&
-                 DBTranslatorSet< ALLOC >::variableSafe(const std::size_t k) const {
+       DBTranslatorSet< ALLOC >::variableSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return *(translators__[k]->variable());

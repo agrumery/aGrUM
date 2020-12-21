@@ -27,7 +27,8 @@
  * Every classe used to read a FMDP from a file, must inherit from
  * FMDPReader.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 #ifndef GUM_FMDP_READER_H
 #define GUM_FMDP_READER_H

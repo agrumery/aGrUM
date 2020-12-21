@@ -104,7 +104,6 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
-    print(ie.MEU())
     self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 110.5)
 

@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief Interface-like class for generating bayesian networks.
+ * @brief Interface-like class for generating Bayesian networks.
  *
  * @author Christophe GONZALES(@AMU), Pierre-Henri WUILLEMIN(@LIP6), Lionel TORTI
  * and Ariele-Paolo MAESANO
@@ -47,7 +47,7 @@ namespace gum {
   /**
    * @class IBayesNetGenerator
    * @headerfile IBayesNetGenerator.h <agrum/BN/generator/IBayesNetGenerator.h>
-   * @brief Class for generating bayesian networks.
+   * @brief Class for generating Bayesian networks.
    * @ingroup bn_generator
    *
    * This class is the abstract class for randomly generating a bayesian
@@ -55,7 +55,7 @@ namespace gum {
    * number of arcs and the maximum number of modality for each node.
    *
    * @warning  Be Careful when entering the parameters, high Values may cause
-   * the density of the Bayesian Network to be too high resulting in the
+   * the density of the Bayesian network to be too high resulting in the
    * failure of most of the inference Methods.
    */
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
@@ -93,9 +93,9 @@ namespace gum {
     /// @{
 
     /**
-     * Virtual function that Generates a bayesian networks.
-     * @param bayesNet Bayesian Network to be completed after initialisation
-     * @return null but modify inputed empty Bayesian Network
+     * Virtual function that Generates a Bayesian networks.
+     * @param bayesNet Bayesian network to be completed after initialisation
+     * @return null but modify inputed empty Bayesian network
      */
 
     virtual void generateBN(BayesNet< GUM_SCALAR >& bayesNet) = 0;
@@ -104,7 +104,7 @@ namespace gum {
      * function that insert random values in the CPT of each nodes according to
      * the
      * @a CPTGenerator.
-     * @return null but modify inputed empty Bayesian Network
+     * @return null but modify inputed empty Bayesian network
      */
 
     void fillCPT();

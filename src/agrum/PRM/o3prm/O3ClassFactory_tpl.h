@@ -934,7 +934,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE const PRMType*
-                   O3ClassFactory< GUM_SCALAR >::checkAggParents__(O3Class&     o3class,
+         O3ClassFactory< GUM_SCALAR >::checkAggParents__(O3Class&     o3class,
                                                          O3Aggregate& agg) {
         const auto& c = prm__->getClass(o3class.name().label());
         auto        t = (const PRMType*)nullptr;

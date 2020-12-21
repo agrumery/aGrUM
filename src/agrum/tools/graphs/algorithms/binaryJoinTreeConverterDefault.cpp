@@ -263,7 +263,8 @@ namespace gum {
       if (mark[root])
         GUM_ERROR(InvalidNode,
                   "several roots have been specified for a given "
-                  "connected component (last : "<<root<<")");
+                  "connected component (last : "
+                     << root << ")");
 
       markConnectedComponent__(JT, root, mark);
     }

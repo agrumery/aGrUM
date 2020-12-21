@@ -23,7 +23,8 @@
  * @file
  * @brief Sources for Leaf Aggregator class
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe
+ * GONZALES(@AMU)
  */
 // =======================================================
 #include <agrum/tools/core/math/math.h>

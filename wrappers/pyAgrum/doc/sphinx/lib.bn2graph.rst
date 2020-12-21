@@ -30,7 +30,7 @@ Visualization of Potentials
 
 .. autofunction:: pyAgrum.lib.bn2graph.proba2histo
 
-Visualization of Bayesian Networks
+Visualization of Bayesian networks
 ----------------------------------
 
 .. autofunction:: pyAgrum.lib.bn2graph.BN2dot

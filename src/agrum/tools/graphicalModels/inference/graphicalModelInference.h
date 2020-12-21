@@ -44,8 +44,9 @@ namespace gum {
    * @ingroup gm_group
    *
    * The goal of the graphicalModelInference class is twofold:
-   * i) handling the common resources of graphical Model inference (model, soft/hard evidence);
-   * ii) propose a general high-level scheme for all the inference methods.
+   * i) handling the common resources of graphical Model inference (model,
+   * soft/hard evidence); ii) propose a general high-level scheme for all the
+   * inference methods.
    *
    * A specialized inference just has to specify how to prepare inference, how
    * to make inference and how to get the posteriors for nodes and set of nodes.
@@ -66,7 +67,7 @@ namespace gum {
    *   to be applied because some events changed the "logical" structure of the
    *   model: for instance a node received a hard evidence, which implies that
    *   its outgoing arcs can be removed from the model, hence involving a
-   *   structural change in the model. 
+   *   structural change in the model.
    * - OutdatedPotentials: in this state, the structure of the model remains
    *   unchanged, only some potentials stored in it have changed. Therefore,
    *   the inference probably just needs to invalidate some already computed
@@ -76,7 +77,7 @@ namespace gum {
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
-   *   potentials we need. 
+   *   potentials we need.
    */
 
   template < typename GUM_SCALAR >
@@ -86,21 +87,21 @@ namespace gum {
      * current state of the inference
      *
      * graphicalModelInference can be in one of 4 different states:
-   * - OutdatedStructure: in this state, the inference is fully unprepared
-   *   to be applied because some events changed the "logical" structure of the
-   *   model: for instance a node received a hard evidence, which implies that
-   *   its outgoing arcs can be removed from the model, hence involving a
-   *   structural change in the model. 
-   * - OutdatedPotentials: in this state, the structure of the model remains
-   *   unchanged, only some potentials stored in it have changed. Therefore,
-   *   the inference probably just needs to invalidate some already computed
-   *   potentials to be ready. Only a light amount of preparation is needed to
-   *   be able to perform inference.
-   * - Ready4Inference: in this state, all the data structures are ready for
-   *   inference. There just remains to perform the inference computations.
-   * - Done: the heavy computations of inference have been done. There might
-   *   still remain a few light computations to perform to get the posterior
-   *   potentials we need. 
+     * - OutdatedStructure: in this state, the inference is fully unprepared
+     *   to be applied because some events changed the "logical" structure of the
+     *   model: for instance a node received a hard evidence, which implies that
+     *   its outgoing arcs can be removed from the model, hence involving a
+     *   structural change in the model.
+     * - OutdatedPotentials: in this state, the structure of the model remains
+     *   unchanged, only some potentials stored in it have changed. Therefore,
+     *   the inference probably just needs to invalidate some already computed
+     *   potentials to be ready. Only a light amount of preparation is needed to
+     *   be able to perform inference.
+     * - Ready4Inference: in this state, all the data structures are ready for
+     *   inference. There just remains to perform the inference computations.
+     * - Done: the heavy computations of inference have been done. There might
+     *   still remain a few light computations to perform to get the posterior
+     *   potentials we need.
      */
     enum class StateOfInference {
       OutdatedStructure,
@@ -123,9 +124,10 @@ namespace gum {
     /// default constructor with a null model (useful for virtual inheritance)
     /** @warning graphicalModelInference is virtually inherited by
      * MarginalTargetedInference. As a result, the lowest descendant of
-     * graphicalModelInference will create the latter. To avoid requiring developers
-     * to add in the constructors of their inference algorithms a call to
-     * graphicalModelInference( model ), we added constructor graphicalModelInference(),
+     * graphicalModelInference will create the latter. To avoid requiring
+     * developers to add in the constructors of their inference algorithms a call
+     * to graphicalModelInference( model ), we added constructor
+     * graphicalModelInference(),
      * which will be called automatically by the lowest descendant.  */
     GraphicalModelInference();
 
@@ -274,7 +276,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
+       addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
@@ -460,17 +462,16 @@ namespace gum {
      * ready for the next inference. In a Lazy propagation, for instance, this
      * step amounts to compute a new join tree, hence a new structure in which
      * inference will be applied. Note that classes that inherit from
-     * graphicalModelInference may be smarter than graphicalModelInference and may, in some
-     * situations, find out that their
-     * data structures are still ok for inference and, therefore, only resort to
-     * perform the actions related to the OutdatedPotentials state. As an
-     * example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
-     * in which C has received hard evidence e_C and E is the only target. In
-     * this case, A and B are not needed for inference, the only potentials that
-     * matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
-     * inference contains only one clique DE. Now, adding new evidence e_A on A
-     * has no impact on E given hard evidence e_C. In this case, LazyPropagation
-     * can be smart and not update its join tree.*/
+     * graphicalModelInference may be smarter than graphicalModelInference and may,
+     * in some situations, find out that their data structures are still ok for
+     * inference and, therefore, only resort to perform the actions related to the
+     * OutdatedPotentials state. As an example, consider a LazyPropagation
+     * inference in Bayes Net A->B->C->D->E in which C has received hard evidence
+     * e_C and E is the only target. In this case, A and B are not needed for
+     * inference, the only potentials that matter are P(D|e_C) and P(E|D). So the
+     * smallest join tree needed for inference contains only one clique DE. Now,
+     * adding new evidence e_A on A has no impact on E given hard evidence e_C. In
+     * this case, LazyPropagation can be smart and not update its join tree.*/
     void setOutdatedStructureState_();
 
     /** @brief puts the inference into an OutdatedPotentials state if it is
@@ -528,7 +529,7 @@ namespace gum {
     /// assigns a model during the inference engine construction
     void setModelDuringConstruction_(const GraphicalModel* model);
 
-    bool hasNoModel_() const { return model__==nullptr;};
+    bool hasNoModel_() const { return model__ == nullptr; };
   };
 }   // namespace gum
 

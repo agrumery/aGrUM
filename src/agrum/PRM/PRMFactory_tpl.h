@@ -1185,7 +1185,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMType*
-           PRMFactory< GUM_SCALAR >::retrieveType__(const std::string& name) const {
+       PRMFactory< GUM_SCALAR >::retrieveType__(const std::string& name) const {
       PRMType*    type = nullptr;
       std::string full_name;
 

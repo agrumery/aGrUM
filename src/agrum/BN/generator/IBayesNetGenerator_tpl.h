@@ -108,7 +108,7 @@ namespace gum {
     maxArcs_ = maxArcs;
   }
 
-  // Generates a bayesian network using floats.
+  // Generates a Bayesian network using floats.
   // @param nbrNodes The number of nodes in the generated BN.
   // @param density The probability of adding an arc between two nodes.
   // @return A BNs randomly generated.

@@ -276,7 +276,7 @@ namespace gum {
     for (double n = 2; n < VariableLog2ParamComplexityCTableNSize; ++n) {
       // here, note that, in  Silander, Roos, Kontkanen and Myllymaki (2007)
       // "Factorized Normalized Maximum Likelihood Criterion for Learning
-      // Bayesian Network Structures" paper, there is an uppercase N in the
+      // Bayesian network Structures" paper, there is an uppercase N in the
       // formula, but this should be a lowercase n. In addition, we will loop
       // only on h=1 to n-1 and add to 2.0 the value computed to take into
       // account of h=0 and h=n.

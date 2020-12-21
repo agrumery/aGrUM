@@ -87,7 +87,8 @@ namespace gum {
    * @class FMDPDatReader
    * @brief Definition of templatized reader of FMDPDat files for Factored
    * Markov Decision Processes.
-   * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and Christophe GONZALES(@AMU)
+   * @author Pierre-Henri WUILLEMIN(@LIP6) and Jean-Christophe MAGNAN and
+   * Christophe GONZALES(@AMU)
    */
   template < typename GUM_SCALAR >
   class FMDPDatReader: public FMDPReader< GUM_SCALAR > {

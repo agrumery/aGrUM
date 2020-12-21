@@ -33,7 +33,7 @@ namespace gum {
   /**
    * @class LoopyBeliefPropagation loopyBeliefPropagation.h
    *<agrum/BN/inference/loopyBeliefPropagation.h>
-   * @brief class for making Loopy Belief Propagation in bayesian networks.
+   * @brief class for making Loopy Belief Propagation in Bayesian networks.
    * @ingroup bn_inference
    *
    */

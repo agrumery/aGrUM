@@ -158,8 +158,7 @@ namespace gum {
        variablesSequence() const override;
 
     const DiscreteVariable& variable(Idx i) const override;
-    const DiscreteVariable&
-       variable(const std::string& name) const override;
+    const DiscreteVariable& variable(const std::string& name) const override;
 
     virtual Idx pos(const DiscreteVariable& v) const override;
 

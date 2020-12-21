@@ -783,7 +783,7 @@ namespace gum_tests {
 
       unsigned int j;
       for (j = 0, i.setFirst(); !i.end(); i.inc(), ++j) {
-        TS_ASSERT_DELTA(bn.jointProbability(i) , joint[j], TS_GUM_SMALL_ERROR);
+        TS_ASSERT_DELTA(bn.jointProbability(i), joint[j], TS_GUM_SMALL_ERROR);
       }
     }
 
