@@ -484,7 +484,7 @@ epub_exclude_files = ['search.html']
 #
 # epub_use_index = True
 
-autodoc_member_order = 'alphabetically'
+autodoc_member_order = 'alphabetical'
 autoclass_content = 'class'
 
 inheritance_alias = {

@@ -29,6 +29,23 @@ import pandas
 
 
 class BNDiscretizer():
+  """
+  Represents a tool to discretize some variables in a database in order to obtain  a way to learn a pyAgrum's (discrete) Bayesian networks.
+  
+  parameters:
+      defaultDiscretizationMethod: str
+          sets the default method of discretization for this discretizer. This method will be used if the user has not specified another method for that specific variable using the setDiscretizationParameters method
+          possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
+      defaultNumberOfBins: str or int
+          sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
+          if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal number of bins. In this case this parameter must be an int
+          If any other discetization method is used, this parameter is ignored.
+      discretizationThreshold: int or float
+          When using default parameters a variable will be treated as continous only if it has more unique values than this number (if the number is an int greater than 1)
+          If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than this number. For example if you have entered 0.95, the variable will be treated as continous only if more than 95% of its values are unique.
+
+  """
+
   def __init__(self, defaultDiscretizationMethod='quantile', defaultNumberOfBins=10, discretizationThreshold=25):
     """
     parameters:

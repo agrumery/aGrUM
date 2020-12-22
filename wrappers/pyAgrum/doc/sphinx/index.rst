@@ -19,7 +19,7 @@ the C++ part of aGrUM allowing to create, manage and perform efficient computati
 with Bayesian networks  and others probabilsitic graphical models (Markov networks, 
 influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
 
-.. image::  _static/fastBNwithPyAgrum.png
+.. image::  _static/fastModelsWithPyAgrum.png
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface 
 generator. Custom-written code was added to make the interface more 
@@ -53,11 +53,18 @@ pyAgrum contains
   influenceDiagram
 
 .. toctree::
-  :caption: Causality in pyAgrum
+  :caption: Causality
   :maxdepth: 2
   :titlesonly:
 
   Causal
+
+.. toctree::
+  :caption: sklearn-like classifier
+  :maxdepth: 2
+  :titlesonly:
+
+  Classifier
 
 .. toctree::
   :caption: pyAgrum.lib modules
