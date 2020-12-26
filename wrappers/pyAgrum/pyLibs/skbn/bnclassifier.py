@@ -52,18 +52,21 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
       parameters:
             learningMethod: str
-                A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes, TAN, MIIC + (MDL ou NML), GHC, 3off2 + (MDL ou NML), Tabu.
+                A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes,
+                TAN, MIIC + (MDL ou NML), GHC, 3off2 + (MDL ou NML), Tabu.
                 GHC designates Greedy Hill Climbing.
                 MIIC designates Multivariate Information based Inductive Causation
                 TAN designates Tree-augmented NaiveBayes
                 Tabu designated Tabu list searching
 
             aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu , Dirichlet and None.
+                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
+                Dirichlet and None.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
             scoringType: str
-                A string designating the type of scoring we want to use. Since scoring is used while constructing the network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
+                A string designating the type of scoring we want to use. Since scoring is used while constructing the
+                network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
                 with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
                 possible values are:  AIC, BIC, BD, BDeu, K2, Log2
                 AIC means Akaike information criterion
@@ -73,10 +76,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Log2 means log2 likelihood ratio test
 
             constraints: dict()
-                A dictionary designating the constraints that we want to put on the structure of the Bayesian network. Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
-                the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs". The format of the values should be a tuple of strings (tail,head) which
-                designates the string arc from tail to head. For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have an arc going from x0 to y.
-                Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network, while the others are not symmetric.
+                A dictionary designating the constraints that we want to put on the structure of the Bayesian network.
+                Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
+                the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs".
+                The format of the values should be a tuple of strings (tail,head) which designates the string arc from
+                tail to head. For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have
+                an arc going from x0 to y.
+                Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network,
+                while the others are not symmetric.
 
             aPrioriWeight: double
                 The weight used for a priori smoothing.
@@ -85,26 +92,35 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
-                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not set to Dirichlet.
+                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not
+                set to Dirichlet.
 
-            defaultDiscretizationMethod: str
-                sets the default method of discretization for this discretizer. This method will be used if the user has not specified another method for that specific variable using the setDiscretizationParameters method
+            discretizationStrategy: str
+                sets the default method of discretization for this discretizer. This method will be used if the user has
+                not specified another method for that specific variable using the setDiscretizationParameters method
                 possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
 
             defaultNumberOfBins: str or int
-                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-                if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal number of bins. In this case this parameter must be an int
+                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
+                also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
+                If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
+                algorithm searches for the optimal number of bins. In this case this parameter must be an int
                 If any other discetization method is used, this parameter is ignored.
 
             discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continous only if it has more unique values than this number (if the number is an int greater than 1)
-                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than this number.
-                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95% of its values are unique.
+                When using default parameters a variable will be treated as continous only if it has more unique values
+                than this number (if the number is an int greater than 1).
+                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
+                this number.
+                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95%
+                of its values are unique.
 
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by default.
+                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by
+                default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
-                Precision-Recall curves should be used when there is a moderate to large class imbalance especially for the target's class.
+                Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
+                the target's class.
 
             significant_digit:
                 number of significant digits when computing probabilities
@@ -115,18 +131,21 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                discretizationThreshold=25, usePR=False, significant_digit=10):
     """ parameters:
             learningMethod: str
-                A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes, TAN, MIIC + (MDL ou NML), GHC, 3off2 + (MDL ou NML), Tabu.
+                A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes,
+                TAN, MIIC + (MDL ou NML), GHC, 3off2 + (MDL ou NML), Tabu.
                 GHC designates Greedy Hill Climbing.
                 MIIC designates Multivariate Information based Inductive Causation
                 TAN designates Tree-augmented NaiveBayes
                 Tabu designated Tabu list searching
 
             aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu , Dirichlet and None.
+                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
+                Dirichlet and None.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
             scoringType: str
-                A string designating the type of scoring we want to use. Since scoring is used while constructing the network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
+                A string designating the type of scoring we want to use. Since scoring is used while constructing the
+                network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
                 with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
                 possible values are:  AIC, BIC, BD, BDeu, K2, Log2
                 AIC means Akaike information criterion
@@ -136,10 +155,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Log2 means log2 likelihood ratio test
 
             constraints: dict()
-                A dictionary designating the constraints that we want to put on the structure of the Bayesian network. Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
-                the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs". The format of the values should be a tuple of strings (tail,head) which
-                designates the string arc from tail to head. For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have an arc going from x0 to y.
-                Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network, while the others are not symmetric.
+                A dictionary designating the constraints that we want to put on the structure of the Bayesian network.
+                Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
+                the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs".
+                The format of the values should be a tuple of strings (tail,head) which designates the string arc from
+                tail to head. For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have
+                an arc going from x0 to y.
+                Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network,
+                while the others are not symmetric.
 
             aPrioriWeight: double
                 The weight used for a priori smoothing.
@@ -148,26 +171,35 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
-                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not set to Dirichlet.
+                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not
+                set to Dirichlet.
 
-            defaultDiscretizationMethod: str
-                sets the default method of discretization for this discretizer. This method will be used if the user has not specified another method for that specific variable using the setDiscretizationParameters method
+            discretizationStrategy: str
+                sets the default method of discretization for this discretizer. This method will be used if the user has
+                not specified another method for that specific variable using the setDiscretizationParameters method
                 possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
 
             defaultNumberOfBins: str or int
-                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-                if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal number of bins. In this case this parameter must be an int
+                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
+                also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
+                If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
+                algorithm searches for the optimal number of bins. In this case this parameter must be an int
                 If any other discetization method is used, this parameter is ignored.
 
             discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continous only if it has more unique values than this number (if the number is an int greater than 1)
-                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than this number.
-                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95% of its values are unique.
+                When using default parameters a variable will be treated as continous only if it has more unique values
+                than this number (if the number is an int greater than 1).
+                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
+                this number.
+                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95%
+                of its values are unique.
 
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by default.
+                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by
+                default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
-                Precision-Recall curves should be used when there is a moderate to large class imbalance especially for the target's class.
+                Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
+                the target's class.
 
             significant_digit:
                 number of significant digits when computing probabilities
@@ -182,7 +214,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # Used to stock the Bayesian network learned
     self.bn = None
 
-    # The threshold used for predicting the class. THe algorithm calculates the probability of a certain class, the classifier designates it as that class only if the probability is higher than the threshold.
+    # The threshold used for predicting the class. THe algorithm calculates the probability of a certain class, the
+    # classifier designates it as that class only if the probability is higher than the threshold.
     # The ROC curve is used to calculate the optimal threshold
     self.threshold = 0.5
     self.usePR = usePR
@@ -211,7 +244,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     # AJOUT FROM MODEL
 
-    # boolean that tells us whether this classifier is obtained from an already trained model (using the function fromTrainedModel) or not
+    # boolean that tells us whether this classifier is obtained from an already trained model (using the function
+    # fromTrainedModel) or not
     self.fromModel = False
 
     self.label = '1.0'
@@ -219,7 +253,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # the name of the target variable
     self.target = 'y'
 
-    # dict(str:int) The keys of this dictionary are the names of the variables. The value associeted to each name is the index of the variable.
+    # the type of the target variable
+    self.targetType = None
+
+    # dict(str:int) The keys of this dictionary are the names of the variables. The value associeted to each name is
+    # the index of the variable.
     self.variableNameIndexDictionary = None
 
   """------------------methodes fit---------------------"""
@@ -228,33 +266,42 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     parameters:
         X: {array-like, sparse matrix} of shape (n_samples, n_features)
-            training data. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError if y is None.
+            training data. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            if y is None.
         y: array-like of shape (n_samples)
-            Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError if X is None
+            Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            if X is None
         filename: str
-            specifies the csv file where the training data and target values are located. Warning: Raises ValueError if either X or y is not None. Raises ValueError if targetName is None
+            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
+            if either X or y is not None. Raises ValueError if targetName is None
         targetName: str
-            specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is not None. Raises ValueError if filename is None.
+            specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
+            not None. Raises ValueError if filename is None.
     returns:
         void
 
-    Fits the model to the training data provided. The two possible uses of this function are fit(X,y) and fit(filename,targetName). Any other combination will raise a ValueError
+    Fits the model to the training data provided. The two possible uses of this function are fit(X,y) and fit(filename,
+    targetName). Any other combination will raise a ValueError
     """
 
     if filename is None:
       if targetName is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have set filename to None, but have entered a targetName")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have set "
+          "filename to None, but have entered a targetName")
       if X is None or y is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have not entered a csv file name and not specified the X and y matrices that should be used")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have not "
+          "entered a csv file name and not specified the X and y matrices that should be used")
     else:
       if targetName is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). The name of the target must be specified if using this function with a csv file.")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). The name of the "
+          "target must be specified if using this function with a csv file.")
       if X is not None or y is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have entered a filename and the X and y matrices at the same time.")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have entered "
+          "a filename and the X and y matrices at the same time.")
       X, y = self.XYfromCSV(filename, True, targetName)
 
     self.fromModel = False
@@ -263,10 +310,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
-
     elif type(y) == pandas.core.series.Series:
       self.target = y.name
-
     else:
       self.target = 'y'
 
@@ -336,13 +381,16 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         targetAttribute: str
             the attribute that will be the target in this classifier
         targetModality: str
-            Since this is a binary classifier we have to specify which modality we are looking at if the target attribute has more than 2 possible values
+            Since this is a binary classifier we have to specify which modality we are looking at if the target
+            attribute has more than 2 possible values
         copy: bool
             Indicates whether we want to put a copy of bn in the classifier, or bn itself.
         threshold: double
-            The classification threshold. If the probability that the target modality is true is larger than this threshold we predict that modality
+            The classification threshold. If the probability that the target modality is true is larger than this
+            threshold we predict that modality
         variableList: list(str)
-            A list of strings. variableList[i] is the name of the variable that has the index i. We use this information when calling predict to know which column corresponds to which variable.
+            A list of strings. variableList[i] is the name of the variable that has the index i. We use this information
+            when calling predict to know which column corresponds to which variable.
             If this list is set to none, then we use the order in which the variables were added to the network.
 
     returns:
@@ -378,7 +426,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # if the user specified an order for the variables then we use this order
     if variableList is not None:
 
-      if (len(namesSet) - 1 != len(variableList)):
+      if len(namesSet) - 1 != len(variableList):
         raise ValueError("variableList should include all variables in the Bayesian network except the target")
 
       i = 0
@@ -398,38 +446,36 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         self.variableNameIndexDictionary[name] = i
         i = i + 1
 
-  """------------------methode pour factoriser le code---------------------"""
+    def changeVariableName(self, oldName, newName):
+      """
+      parameters:
+          oldName: str
+              the old name of the variable
+          newName: str
+              the new name of the variable
+      returns:
+          void
 
-  def changeVariableName(self, oldName, newName):
-    """
-    parameters:
-        oldName: str
-            the old name of the variable
-        newName: str
-            the new name of the variable
-    returns:
-        void
+      changes the name of a variable inside the Bayesian network
+      """
+      if oldName == self.target:
+        self.bn.changeVariableName(oldName, newName)
+        self.target = newName
+        self.MarkovBlanket.changeVariableName(oldName, newName)
+        return
 
-    changes the name of a variable inside the Bayesian network
-    """
-    if oldName == self.target:
+      if oldName not in self.variableNameIndexDictionary:
+        raise ValueError("The oldName you have specified is not a name of a variable in the Bayesian network")
+      index = self.variableNameIndexDictionary.pop(oldName)
+
+      self.variableNameIndexDictionary[newName] = index
+
       self.bn.changeVariableName(oldName, newName)
-      self.target = newName
-      self.MarkovBlanket.changeVariableName(oldName, newName)
-      return
 
-    if oldName not in self.variableNameIndexDictionary:
-      raise ValueError("The oldName you have specified is not a name of a variable in the Bayesian network")
-    index = self.variableNameIndexDictionary.pop(oldName)
+      if oldName in self.MarkovBlanket.names():
+        self.MarkovBlanket.changeVariableName(oldName, newName)
 
-    self.variableNameIndexDictionary[newName] = index
-
-    self.bn.changeVariableName(oldName, newName)
-
-    if oldName in self.MarkovBlanket.names():
-      self.MarkovBlanket.changeVariableName(oldName, newName)
-
-  """------------------methode Markov Blanket et predict---------------------"""
+  # ------------------methode Markov Blanket et predict---------------------
 
   def predict(self, X):
     """
@@ -494,7 +540,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         returned_list = returned_list.astype('float')
     return returned_list
 
-  """------------------methode pour utiliser sklearn, pour ROC et Precision-Recall ---------------------"""
+  # ------------------interaction with sklearn, pour ROC et Precision-Recall ---------------------
 
   def predict_proba(self, X):
     """
@@ -539,7 +585,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       returned_list.append([1 - res, res])
     return numpy.array(returned_list)
 
-  """------------------methode pour rendre BNClassifier compatible de pyAgrum à sklearn ---------------------"""
+  # ------------------ BNClassifier compatible from pyAgrum to sklearn ---------------------
 
   def XYfromCSV(self, filename, with_labels=True, target=None):
     """
@@ -594,4 +640,4 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       y = y.astype('str')
       y = y == self.label
 
-    return (X, y)
+    return X, y

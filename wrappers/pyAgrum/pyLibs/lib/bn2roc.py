@@ -113,12 +113,12 @@ def _computeAUC(points):
   # computes the integral from 0 to 1
   somme = 0
   for i in range(1, len(points)):
-    somme += (points[i][0] - points[i-1][0]) * (points[i-1][1]+points[i][1])
+    somme += (points[i][0] - points[i - 1][0]) * (points[i - 1][1] + points[i][1])
 
-  return somme/2
+  return somme / 2
 
 
-def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True,significant_digits=10):
+def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=True, significant_digits=10):
   """
   Compute the ROC curve points.
 
@@ -132,7 +132,7 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
     the target
   label : str
     the target's label
-  visible : bool
+  show_progress : bool
     indicates if the resulting curve must be printed
   significant_digits:
     number of significant digits when computing probabilities
@@ -154,32 +154,30 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
         break
     assert (idLabel >= 0)
 
-  Classifier = skbn.BNClassifier(significant_digit = significant_digits)  
+  Classifier = skbn.BNClassifier(significant_digit=significant_digits)
 
-  if visible:
+  if show_progress:
     nbr_lines = _lines_count(csv_name) - 1
-
-  if visible:
     prog = ProgressBar(csv_name + ' : ', 0, nbr_lines,
                        77, mode='static', char='#')
     prog.display()
-        
-  Classifier.fromTrainedModel(bn, target, label)  
-  X, y = Classifier.XYfromCSV(csv_name, with_labels = with_labels, target = target)
+
+  Classifier.fromTrainedModel(bn, target, label)
+  X, y = Classifier.XYfromCSV(csv_name, with_labels=with_labels, target=target)
   predictions = Classifier.predict_proba(X)
 
   totalP = np.count_nonzero(y)
   totalN = len(y) - totalP
   res = []
-  for i in range(len(X)) :
+  for i in range(len(X)):
     px = predictions[i][1]
     res.append((px, y[i]))
-        
-    if visible:
+
+    if show_progress:
       prog.increment_amount()
       prog.display()
 
-  if visible:
+  if show_progress:
     print
 
   if with_labels:
@@ -211,62 +209,62 @@ def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
     (points, opt, seuil)
   """
 
-  res = sorted(values, key=lambda x: x[0], reverse = True)
-  
-  vp = 0.0      # Number of True Positives
-  fp = 0.0      # Number of False Positives
-  
-  xopt = 0.0    # True Postives Rate value for the best threshold
-  yopt = 0.0    # False Postives Rate value for the best threshold
-  seuilopt = 100.0   # temporal value for knowing the best threshold
+  res = sorted(values, key=lambda x: x[0], reverse=True)
+
+  vp = 0.0  # Number of True Positives
+  fp = 0.0  # Number of False Positives
+
+  xopt = 0.0  # True Postives Rate value for the best threshold
+  yopt = 0.0  # False Postives Rate value for the best threshold
+  seuilopt = 100.0  # temporal value for knowing the best threshold
   seuil = 0  # best threshold (euclidian distance)
-  
-  zf1 = 0.0     # Recall value of f1 max
-  yf1 = 0.0     # Precision value of f1 max
-  f1opt = 0.0   # temporal value for knowing f1 max
-  seuilf1 = 0   # threshold of f1 max 
-  
-  
+
+  zf1 = 0.0  # Recall value of f1 max
+  yf1 = 0.0  # Precision value of f1 max
+  f1opt = 0.0  # temporal value for knowing f1 max
+  seuilf1 = 0  # threshold of f1 max
+
   pointsROC = [(0, 0)]  # first one
-  pointsPR = [(0,1)]
-  
+  pointsPR = [(0, 1)]
+
   old_seuil = res[0][0]
   for i in range(len(res)):
     # we add a point only if the seuil has changed
-    if res[i][0]<old_seuil:  # the seuil allows to take computation variation into account
-      x = fp / totalN   # false positives rate
-      y = vp / totalP   # true positives rate and recall
-      z = vp / (vp + fp)        # precision
-      
-      d = x * x + (1 - y) * (1 - y)     #euclidian distance to know the best threshold
+    if res[i][0] < old_seuil:  # the seuil allows to take computation variation into account
+      x = fp / totalN  # false positives rate
+      y = vp / totalP  # true positives rate and recall
+      z = vp / (vp + fp)  # precision
+
+      d = x * x + (1 - y) * (1 - y)  # euclidian distance to know the best threshold
       if d < seuilopt:
         seuilopt = d
         xopt = x
         yopt = y
         seuil = (res[i][0] + old_seuil) / 2
-        
+
       if z + y > 0:
-        f = 2 * z * y / (z + y)           # f1
+        f = 2 * z * y / (z + y)  # f1
         if f > f1opt:
           f1opt = f
           zf1 = z
           yf1 = y
           seuilf1 = (res[i][0] + old_seuil) / 2
-        
+
       pointsROC.append((x, y))
       pointsPR.append((y, z))
       old_seuil = res[i][0]
 
     res_id = res[i][1]
-    if res_id == idLabel :
+    if res_id == idLabel:
       vp += 1.0
     else:
       fp += 1.0
 
   pointsROC.append((1, 1))  # last one
-  pointsPR.append((1,0))
-  
+  pointsPR.append((1, 0))
+
   return pointsROC, (xopt, yopt), seuil, pointsPR, (yf1, zf1), seuilf1
+
 
 def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
   """
@@ -290,10 +288,11 @@ def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
   tuple
     (points, opt, seuil)
   """
-  
+
   points, opt, seuil, _, _, _ = _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite)
-  
+
   return (points, opt, seuil)
+
 
 def _computePR(bn, values, totalP, totalN, idLabel, modalite):
   """
@@ -317,26 +316,27 @@ def _computePR(bn, values, totalP, totalN, idLabel, modalite):
   tuple
     (points, opt, seuil)
   """
-  
+
   _, _, _, points, opt, seuil = _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite)
-  
+
   return (points, opt, seuil)
+
 
 def module_help(exit_value=1, message=""):
   """
   defines help viewed if args are not OK on command line, and exit with exit_value
   """
   print(os.path.basename(
-      sys.argv[0]), "src.{" + gum.availableBNExts() + "} data[.csv] variable label")
+    sys.argv[0]), "src.{" + gum.availableBNExts() + "} data[.csv] variable label")
   print()
   print(message)
   print()
   sys.exit(exit_value)
 
 
-def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
-             special_point=None, special_value=None, special_label=None, 
-             rate = None, showROC = True, showPR = True, ax = None):
+def _drawROC_PR(points, zeTitle, zeFilename, show_progress=True, show_fig=True, save_fig=False,
+                special_point=None, special_value=None, special_label=None,
+                rate=None, showROC=True, showPR=True, ax=None):
   """
   Draw the ROC curve and save (or not) the curve into zeFilename as a png
 
@@ -348,8 +348,8 @@ def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     the title of the curve
   zeFilename : str
     the name of the file
-  visible : bool
-    unnecessary ?
+  show_progress : bool
+    indicates if the progress bar must be printed
   show_fig : bool
     indicates if the resulting curve must be printed
   save_fig : bool
@@ -370,21 +370,21 @@ def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     where the curve will be plot (use only whe  both are shown)
   """
   ax = ax or pylab.gca()
-  
+
   AUC = _computeAUC(points)
-  
+
   ax.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
 
   ax.plot([x[0] for x in points], [y[1] for y in points], '-',
-           linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3)
+          linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3)
   ax.fill_between([x[0] for x in points],
-                   [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
-  
-  if showROC :
+                  [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
+
+  if showROC:
     ax.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
-  if showPR :
+  if showPR:
     ax.plot([0.0, 1.0], [rate, rate], '-', color="#AAAAAA")
-  
+
   ax.set_ylim((-0.01, 1.01))
   ax.set_xlim((-0.01, 1.01))
   ax.set_xticks(pylab.arange(0, 1.1, .1))
@@ -401,25 +401,25 @@ def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     for i in range(1, len(points) - 1):
       ax.plot(points[i][0], points[i][1], 'o', color="#000066", zorder=6)
 
-  if showPR :
+  if showPR:
     ax.set_xlabel('Recall')
     ax.set_ylabel('Precision')
-  if showROC :
+  if showROC:
     ax.set_xlabel('False positive rate')
     ax.set_ylabel('True positive rate')
 
   if special_point is not None:
     ax.plot(special_point[0], special_point[1],
-               'o', color="#DD9999", zorder=6)
+            'o', color="#DD9999", zorder=6)
     if special_value is not None:
       horadj = "left" if showROC else "right"
       incadj = 0.01 if showROC else -0.01
       ax.text(special_point[0] + incadj, special_point[1] - 0.01, special_value,
-                 {'color': '#DD5555', 'fontsize': 10},
-                 horizontalalignment=horadj,
-                 verticalalignment='top',
-                 rotation=0,
-                 clip_on=False)
+              {'color': '#DD5555', 'fontsize': 10},
+              horizontalalignment=horadj,
+              verticalalignment='top',
+              rotation=0,
+              clip_on=False)
   if special_label is not None:
     if special_label != "":
       labels = [special_label]
@@ -430,11 +430,11 @@ def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
 
   if showPR and special_point is not None:
     f1 = 2 * special_point[0] * special_point[1] / (special_point[0] + special_point[1])
-    ax.text(0.5, 0.2, 'AUC=%f\nf1=%f' % (AUC,f1),
+    ax.text(0.5, 0.2, 'AUC=%f\nf1=%f' % (AUC, f1),
             horizontalalignment='center',
             verticalalignment='center',
             fontsize=18)
-  else : 
+  else:
     ax.text(0.5, 0.2, 'AUC=%f' % AUC,
             horizontalalignment='center',
             verticalalignment='center',
@@ -447,11 +447,12 @@ def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
 
   if show_fig:
     pylab.show()
-    
-  if save_fig:   
+
+  if save_fig:
     return zeFilename
 
-def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
+
+def _drawROC(points, zeTitle, zeFilename, show_progress, show_fig, save_fig=False,
              special_point=None, special_value=None, special_label=None):
   """
   Draw the ROC curve and save (or not) the curve into zeFilename as a png
@@ -464,8 +465,8 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     the title of the curve
   zeFilename : str
     the name of the file
-  visible : bool
-    unnecessary ?
+  show_progress : bool
+    indicates if the progress bar must be printed
   show_fig : bool
     indicates if the resulting curve must be printed
   save_fig : bool
@@ -476,13 +477,14 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     a special value to be highlighted
   special_label :
     a special label to be highlighted
-  """  
-  _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig = show_fig, save_fig = save_fig, 
-              special_point = special_point, special_value = special_value, special_label = special_label, 
-              showROC = True, showPR = False)
-  
-def _drawPR(points, rate,zeTitle, zeFilename, visible, show_fig, save_fig=True,
-             special_point=None, special_value=None, special_label=None):
+  """
+  _drawROC_PR(points, zeTitle, zeFilename, show_progress, show_fig=show_fig, save_fig=save_fig,
+              special_point=special_point, special_value=special_value, special_label=special_label,
+              showROC=True, showPR=False)
+
+
+def _drawPR(points, rate, zeTitle, zeFilename, show_progress, show_fig, save_fig=False,
+            special_point=None, special_value=None, special_label=None):
   """
   Draw the ROC curve and save (or not) the curve into zeFilename as a png
 
@@ -496,8 +498,8 @@ def _drawPR(points, rate,zeTitle, zeFilename, visible, show_fig, save_fig=True,
     the title of the curve
   zeFilename : str
     the name of the file
-  visible : bool
-    unnecessary ?
+  show_progress : bool
+    indicates if the progress bar must be printed
   show_fig : bool
     indicates if the resulting curve must be printed
   save_fig : bool
@@ -509,11 +511,14 @@ def _drawPR(points, rate,zeTitle, zeFilename, visible, show_fig, save_fig=True,
   special_label :
     a special label to be highlighted
   """
-  _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig = save_fig, 
-              special_point = special_point, special_value = special_value, special_label = special_label, 
-              rate = rate, showROC = False, showPR = True)
+  _drawROC_PR(points, zeTitle, zeFilename, show_progress, show_fig, save_fig=save_fig,
+              special_point=special_point, special_value=special_value, special_label=special_label,
+              rate=rate, showROC=False, showPR=True)
 
-def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True, showROC = True, showPR = True,significant_digits=10 ):
+
+def showROC_PR(bn, csv_name, variable, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+               showROC=True, showPR=True,
+               significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -527,12 +532,14 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
     the target
   label : str
     the target label
-  visible : bool
-    indicates if the resulting curve must be printed 
-  showROC : bool
-    indicates if the curve is ROC
-  showPR : bool
-    indicates if the curve is Precision-Recall curve
+  show_progress : bool
+    indicates if the progress bar must be printed
+  save_fig:
+    save the result ?
+  show_fig:
+    plot the resuls ?
+  with_labels:
+    labels in csv ?
   significant_digits:
     number of significant digits when computing probabilitie
     
@@ -542,55 +549,55 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
     (pointsROC, seuilROC, pointsPR, seuilPR)
 
   """
-  
-  (res, totalP, totalN, idTarget) = __computepoints(
-      bn, csv_name, variable, label, visible, with_labels,significant_digits)
+
+  (res, totalP, totalN, idTarget) = _computepoints(
+    bn, csv_name, variable, label, show_progress, with_labels, significant_digits)
   pointsROC, optROC, seuilROC, pointsPR, optPR, seuilPR = _computeROC_PR(bn, res, totalP, totalN, idTarget, label)
-    
+
   try:
     shortname = os.path.basename(bn.property("name"))
   except gum.NotFound:
     shortname = "unnamed"
-  
-  title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)    
-  rate = totalP / (totalP + totalN)
-  
-  if showROC and showPR :  
-    figname = csv_name + "-" + 'ROCandPR_' + shortname + \
-        "-" + variable + "-" + str(label) + '.png'
-    fig = pylab.figure(figsize=(10,4))
-    fig.suptitle(title)
-    pylab.gcf().subplots_adjust(wspace = 0.1)
 
-    ax1 = fig.add_subplot(1,2,1)
-   
-    _drawROC_PR(pointsROC, "ROC", figname, not visible, False,
+  title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
+  rate = totalP / (totalP + totalN)
+
+  if showROC and showPR:
+    figname = csv_name + "-" + 'ROCandPR_' + shortname + \
+              "-" + variable + "-" + str(label) + '.png'
+    fig = pylab.figure(figsize=(10, 4))
+    fig.suptitle(title)
+    pylab.gcf().subplots_adjust(wspace=0.1)
+
+    ax1 = fig.add_subplot(1, 2, 1)
+
+    _drawROC_PR(pointsROC, "ROC", figname, show_progress=False, show_fig=False,
                 special_point=optROC, special_value=seuilROC, showROC=True, showPR=False, ax=ax1)
-    
-    
-    ax2 = fig.add_subplot(1,2,2)
+
+    ax2 = fig.add_subplot(1, 2, 2)
     ax2.yaxis.tick_right()
     ax2.yaxis.set_label_position("right")
-    _drawROC_PR(pointsPR, "Precision-Recall", figname, not visible, show_fig, 
-                special_point=optPR, special_value=seuilPR, rate = rate, showROC = False, showPR = True, ax = ax2)
-        
-  elif showROC : 
+    _drawROC_PR(pointsPR, "Precision-Recall", figname, show_progress=show_progress, show_fig=show_fig,
+                special_point=optPR, special_value=seuilPR, rate=rate, showROC=False, showPR=True, ax=ax2)
+
+  elif showROC:
     figname = csv_name + "-" + 'ROC_' + shortname + \
-        "-" + variable + "-" + str(label) + '.png'
+              "-" + variable + "-" + str(label) + '.png'
 
-    _drawROC(pointsROC, title, figname, not visible, show_fig,
+    _drawROC(pointsROC, title, figname, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
              special_point=optROC, special_value=seuilROC)
-     
-  elif showPR :
+
+  elif showPR:
     figname = csv_name + "-" + 'PrecisionRecall_' + shortname + \
-        "-" + variable + "-" + str(label) + '.png'
-    _drawPR(pointsPR, rate, title, figname, not visible, show_fig,
+              "-" + variable + "-" + str(label) + '.png'
+    _drawPR(pointsPR, rate, title, figname, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
             special_point=optPR, special_value=seuilPR)
-    
+
   return (_computeAUC(pointsROC), seuilROC, _computeAUC(pointsPR), seuilPR)
-    
 
-def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True,significant_digits=10):
+
+def showROC(bn, csv_name, target, label, show_progress=True, show_fig=False, save_fig=False, with_labels=True,
+            significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -604,15 +611,24 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_la
     the target
   label : str
     the target label
-  visible : bool
-    indicates if the resulting curve must be printed
+  show_progress : bool
+    indicates if the progress bar must be printed
+  save_fig:
+    save the result ?
+  show_fig:
+    plot the resuls ?
+  with_labels:
+    labels in csv ?
   significant_digits:
     number of significant digits when computing probabilities
   """
-  
-  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, True, False,significant_digits)
-  
-def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True,significant_digits=10):
+
+  return showROC_PR(bn, csv_name, variable, label, show_progress, show_fig, save_fig, with_labels, True, False,
+                    significant_digits)
+
+
+def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+           significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -626,13 +642,21 @@ def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_lab
     the target
   label : str
     the target label
-  visible : bool
-    indicates if the resulting curve must be printed
+  show_progress : bool
+    indicates if the progress bar must be printed
+  save_fig:
+    save the result ?
+  show_fig:
+    plot the resuls ?
+  with_labels:
+    labels in csv ?
   significant_digits:
     number of significant digits when computing probabilities
   """
-  
-  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, False, True,significant_digits)  
+
+  return showROC_PR(bn, csv_name, variable, label, show_progress, show_fig, save_fig, with_labels, False, True,
+                    significant_digits)
+
 
 def _checkROCargs():
   pyAgrum_header("2011-13")
@@ -655,7 +679,7 @@ def _checkROCargs():
   else:
     if variable not in bn.names():
       module_help(message=" Variable '" + variable +
-                  "'not found.\n Variables : " + str(bn.names()))
+                          "'not found.\n Variables : " + str(bn.names()))
 
     if label.__eq__(""):
       module_help(message=" Labels : " + str(bn.variableFromName(variable)))
@@ -664,10 +688,10 @@ def _checkROCargs():
         bn.variableFromName(variable)[label]
       except gum.OutOfBounds:
         module_help(message=" Label '" + label +
-                    "' not found.\n Labels : " + str(bn.variableFromName(variable)))
+                            "' not found.\n Labels : " + str(bn.variableFromName(variable)))
 
   return (bn, csv_name, variable, label)
-  
+
 
 if __name__ == "__main__":
   pyAgrum_header("2011-19")

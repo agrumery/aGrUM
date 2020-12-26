@@ -51,10 +51,10 @@ def _CalculateThreshold(bn, targetName, usePR, significant_digits):
 
   if usePR:
     _, _, _, threshold = bn2roc.showROC_PR(bn, 'tempBNClassifier.csv', targetName, target.labels()[1], showROC=False,
-                                           showPR=False, significant_digits=significant_digits,visible=False)
+                                           showPR=False, significant_digits=significant_digits, show_progress=False)
   else:
     _, threshold, _, _ = bn2roc.showROC_PR(bn, 'tempBNClassifier.csv', targetName, target.labels()[1], showROC=False,
-                                           showPR=False, significant_digits=significant_digits,visible=False)
+                                           showPR=False, significant_digits=significant_digits, show_progress=False)
 
   return threshold
 

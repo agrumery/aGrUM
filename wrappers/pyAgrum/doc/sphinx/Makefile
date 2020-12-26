@@ -1,9 +1,20 @@
 # Makefile for Sphinx documentation
 #
+WINKEYWORD=MINGW
+
+TOTALUNAME := $(shell uname)
+UNAME := $(findstring $(WINKEYWORD),$(TOTALUNAME))
+
+ifeq ($(UNAME), $(WINKEYWORD))
+  SPHINXBUILD   = sphinx-build.exe
+endif
+ifneq ($(UNAME), $(WINKEYWORD))
+  SPHINXBUILD   = python3 `which sphinx-build`
+endif
 
 # You can set these variables from the command line.
 SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
-SPHINXBUILD   = python3 `which sphinx-build`
+
 PAPER         =
 BUILDDIR      = ../../../../build/release/wrappers/pyAgrum/docs
 AGRUMBUILDDIR = "{agrum}/build/release/wrappers/pyAgrum/docs"
@@ -17,6 +28,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 .PHONY: help
 help:
+	@echo "SPHINX Makefile for '$(UNAME)' using '$(SPHINXBUILD)'"
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
