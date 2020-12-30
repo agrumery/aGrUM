@@ -78,7 +78,7 @@ __all__=[
   'about',
   'availableBNExts', 'loadBN', 'saveBN',
   'availableMNExts', 'loadMN', 'saveMN',
-  'loadID',
+  'availableIDExts', 'loadID', 'saveID',
   'getPosterior',
   'statsObj',
 
@@ -246,6 +246,13 @@ def availableMNExts():
   """
   return "uai"
 
+def availableIDExts():
+  """ Give the list of all formats known by pyAgrum to save a influence diagram.
+
+  :return: a string which lists all suffixes for supported ID file formats.
+  """
+  return "bifxml"
+
 def loadMN(filename, listeners=None, verbose=False):
   """load a MN from a file with optional listeners and arguments
 
@@ -306,16 +313,17 @@ def saveMN(mn, filename):
   :param filename(str): the name of the output file
   """
   extension = filename.split('.')[-1].upper()
-  if extension == "UAI":
-    mn.saveUAI(filename)
-  else:
+  if extension not in availableMNExts():
     raise InvalidArgument("[pyAgrum] extension "+filename.split('.')
                           [-1]+" unknown. Please use among "+availableMNExts())
+
+  # for now, just one format
+  mn.saveUAI(filename)
 
 
 def loadID(filename):
   """
-  read a gum.InfluenceDiagram from a bifxml file
+  read a gum.InfluenceDiagram from a ID file
 
   :param filename: the name of the input file
   :return: an InfluenceDiagram
@@ -327,6 +335,7 @@ def loadID(filename):
                           " unknown. Please use bifxml.")
 
   diag = InfluenceDiagram()
+  # for now, just one format
   res = diag.loadBIFXML(filename)
 
   if not res:
@@ -335,22 +344,27 @@ def loadID(filename):
   diag.setProperty("name", filename)
   return diag
 
+
+def saveID(infdiag, filename):
+  """
+  save an ID into a file using the format corresponding to one of the availableWriteIDExts() suffixes.
+
+  :param ID(gum.InfluenceDiagram): the ID to save
+  :param filename(str): the name of the output file
+  """
+  extension = filename.split('.')[-1].upper()
+  if extension not in availableIDExts():
+    raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
+    [-1] + " unknown. Please use among " + availableIDExts())
+
+  # for now, just one format
+  infdiag.saveBIFXML(filename)
+
 def fastBN(structure, domain_size=2):
   """
 Create a Bayesian network with a dot-like syntax which specifies:
-    - the structure 'a->b->c;b->d<-e;'.
-    - the type of the variables with different syntax:
-
-      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-
-Note 
-----
-  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-  - the CPTs are randomly generated.
+    - the structure 'a->b->c;b->d<-e;',
+    - the type of the variables with different syntax (cf documentation).
     
 Examples
 --------
@@ -361,7 +375,7 @@ Parameters
 ----------
 structure : str
         the string containing the specification
-domainSize : int
+domain_size : int
         the default domain size for variables
 
 Returns
@@ -373,21 +387,10 @@ pyAgrum.BayesNet
 
 def fastMN(structure, domain_size=2):
   """
-Create a Markov network with a dot-like syntax which specifies:
-    - the structure 'a-b-c;b-d;c-e;'.
-    - the type of the variables with different syntax:
+Create a Markov network with a modified dot-like syntax which specifies:
+    - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
+    - the type of the variables with different syntax (cf documentation).
 
-      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-
-Note 
-----
-  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-  - the potentials are randomly generated.
-    
 Examples
 --------
 >>> import pyAgrum as gum
@@ -395,9 +398,9 @@ Examples
 
 Parameters
 ----------
-dotlike : str
+structure : str
         the string containing the specification
-domainSize : int
+domain_size : int
         the default domain size for variables
 
 Returns
@@ -411,26 +414,14 @@ pyAgrum.MarkovNet
 
 def fastID(structure, domain_size=2):
   """
-Create an Influence Diagram with a dot-like syntax which specifies:
-    - the structure 'a->b<-c;b->d;c<-e;'.
+Create an Influence Diagram with a modified dot-like syntax which specifies:
+    - the structure 'a->b<-c;b->d;c<-e;',
+    - the type of the variables with different syntax (cf documentation),
     - a prefix for the type of node (chance/decision/utiliy nodes):
 
-      - 'a' : a chance node named 'a' (by default)
-      - '$a' : a utility node named 'a'
-      - '*a' : a decision node named 'a'
-
-    - the type of the variables with different syntax as postfix:
-
-      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-
-Note 
-----
-  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-  - the potentials (probabilities, utilities) are randomly generated.
+      - ``a`` : a chance node named 'a' (by default)
+      - ``$a`` : a utility node named 'a'
+      - ``*a`` : a decision node named 'a'
     
 Examples
 --------
@@ -439,9 +430,9 @@ Examples
 
 Parameters
 ----------
-dotlike : str
+structure : str
         the string containing the specification
-domainSize : int
+domain_size : int
         the default domain size for variables
 
 Returns
@@ -472,7 +463,7 @@ def getPosterior(model, evs, target):
 
   Returns
   -------
-    posterior (gum::Potential)
+    posterior (pyAgrum.Potential or other)
   """
   if isinstance(model,BayesNet):
     inf = VariableElimination(model)

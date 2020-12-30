@@ -29,18 +29,19 @@ from .utils import notif, safe_cd
 
 
 def callSphinx(current):
-  cmd = '{0} act lib pyAgrum release --no-fun'.format(cfg.python)
-  notif("Compiling pyAgrum")
-  if not current['dry_run']:
-    proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
-    out = proc.stdout.readlines()
-    for line in out:
-      try:
-        print(line.decode('utf-8'),end="")
-      except ValueError:
-        print(str(line),end="")
-  else:
-    notif('[' + cmd + ']')
+  if current['build']!='doc-only':
+    cmd = '{0} act lib pyAgrum release --no-fun'.format(cfg.python)
+    notif("Compiling pyAgrum")
+    if not current['dry_run']:
+      proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+      out = proc.stdout.readlines()
+      for line in out:
+        try:
+          print(line.decode('utf-8'),end="")
+        except ValueError:
+          print(str(line),end="")
+    else:
+      notif('[' + cmd + ']')
 
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")

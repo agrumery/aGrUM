@@ -254,9 +254,9 @@ def configureOptions(current):
                         dest="mingw64",
                         default=current['mingw64'])
   cfg.parser.add_option("", "--build",
-                        help="build options : {all|no-cmake|no-make}.",
+                        help="build options : {all|no-cmake|no-make|doc-only}.",
                         type="choice",
-                        choices=["all", "no-cmake", "no-make"],
+                        choices=["all", "no-cmake", "no-make","doc-only"],
                         dest="build",
                         default="all")
   cfg.parser.add_option("", "--no-saveParams",

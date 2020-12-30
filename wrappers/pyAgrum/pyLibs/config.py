@@ -35,17 +35,26 @@ from configparser import ConfigParser
 import os
 
 
-class Singleton(type):
+class GumSingleton(type):
   _instances = {}
 
   def __call__(cls, *args, **kwargs):
     if cls not in cls._instances:
-      cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+      cls._instances[cls] = super(GumSingleton, cls).__call__(*args, **kwargs)
     return cls._instances[cls]
 
 
-class PyAgrumConfiguration(with_metaclass(Singleton)):
-  """ PyAgrumConfiguration is a the pyAgrum configuration singleton
+class PyAgrumConfiguration(with_metaclass(GumSingleton)):
+  """ PyAgrumConfiguration is a the pyAgrum configuration singleton.  The configuration is build
+  as a classical ConfigParser with read-only structure. Then a value is adressable using a double key: ``[section,key]``.
+
+  See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/99-Tools_configForPyAgrum.ipynb.html>`_.
+
+  Examples
+  --------
+    >>> gum.config['dynamicBN','default_graph_size']=10
+    >>> gum.config['dynamicBN','default_graph_size']
+    "10"
   """
 
   def __init__(self):
@@ -56,7 +65,13 @@ class PyAgrumConfiguration(with_metaclass(Singleton)):
     self.__defaults = self.__str__()
 
   def set(self, section, option, value):
-    """set a property in a section
+    """set a property in a section. Preferably use ``__getitem__`` and ``__setitem__``.
+
+    Examples
+    --------
+      >>> gum.config['dynamicBN','default_graph_size']=10
+      >>> gum.config['dynamicBN','default_graph_size']
+      "10"
 
     Arguments:
         section {str} -- the section name (has to exist in defaults)
@@ -78,7 +93,13 @@ class PyAgrumConfiguration(with_metaclass(Singleton)):
                         section + "' in pyAgrum configuration")
 
   def get(self, section, option):
-    """ Give the value associated to section.option
+    """ Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
+
+    Examples
+    --------
+      >>> gum.config['dynamicBN','default_graph_size']=10
+      >>> gum.config['dynamicBN','default_graph_size']
+      "10"
 
     Arguments:
         section {str} -- the section
@@ -98,7 +119,7 @@ class PyAgrumConfiguration(with_metaclass(Singleton)):
     return "\n".join([sec for sec in [aff_sec(section) for section in mine.sections()] if "=" in sec])
 
   def save(self):
-    """Save the diff with the defaults in 'pyagrum.ini' in the current directory
+    """Save the diff with the defaults in ``pyagrum.ini`` in the current directory
     """
     with open("pyagrum.ini", "w") as configfile:
       print(self.__diff(), file=configfile)
@@ -143,7 +164,7 @@ class PyAgrumConfiguration(with_metaclass(Singleton)):
                      for section in mine.sections()] if "=" in sec]))
 
   def diff(self):
-    """ print the diff between actual configuration and the defaults. This is what is saved in the file 'pyagrum.ini' by the method `PyAgrumConfiguration.save()`
+    """ print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `PyAgrumConfiguration.save()`
     """
     print(self.__diff())
 

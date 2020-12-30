@@ -48,9 +48,9 @@ pyAgrum contains
 
   bayesianNetwork
   markovNetwork
+  influenceDiagram
   PRM
   credalNetwork
-  influenceDiagram
 
 .. toctree::
   :caption: Causality
@@ -60,7 +60,7 @@ pyAgrum contains
   Causal
 
 .. toctree::
-  :caption: sklearn-like classifier
+  :caption: sklearn-like BN Classifiers
   :maxdepth: 2
   :titlesonly:
 
@@ -74,7 +74,6 @@ pyAgrum contains
   lib.notebook
   lib.bn2graph
   lib.dBN
-  lib.classifier
   pyAgrum.lib
 
 .. toctree::
@@ -84,6 +83,12 @@ pyAgrum contains
   functions
   miscellaneous
   exceptions
+
+.. toctree::
+  :caption: Customizing pyAgrum
+  :maxdepth: 2
+
+  PyAgrumConfiguration
 
 Indices and tables
 ==================

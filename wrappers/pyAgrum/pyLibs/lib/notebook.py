@@ -658,10 +658,9 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
         engine = gum.ShaferShenoyMNInference(model)
 
       if view == "graph":
-        return MNinference2UGdot(model, size, engine, evs, targets, nodeColor, factorColor, arcWidth, arcColor, cmap,
-                                 cmapArc)
+        return MNinference2UGdot(model, size, engine, evs, targets,  nodeColor=nodeColor, factorColor=factorColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap,cmapArc=cmapArc)
       else:
-        return MNinference2FactorGraphdot(model, size, engine, evs, targets, nodeColor, factorColor, cmap)
+        return MNinference2FactorGraphdot(model, size, engine, evs, targets,  nodeColor=nodeColor, factorColor=factorColor, cmap=cmap)
   elif isinstance(model,gum.InfluenceDiagram):
     if engine is None:
       engine = gum.ShaferShenoyLIMIDInference(model)
@@ -677,19 +676,21 @@ def showInference(model, engine=None, evs=None, targets=None, size=None,
   """
   show pydot graph for an inference in a notebook
 
-  :param gum.{Bayes|Markov}Net model: the model in which to infer
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used for BayesNet and ShaferShenoy for Markov net
+  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
+          pyAgrum.InfluenceDiagram)
+  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
+          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
-  :param graph : only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: 'graph' | 'factorgraph’ | None (default) for Markov network
-
+  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
+  :param view: graph | factorgraph | None (default) for Markov network
   :return: the desired representation of the inference
   """
   grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
@@ -704,18 +705,21 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
   """
   get a HTML string for an inference in a notebook
 
-  :param gum.{Bayes|Markov}Net model: the model in which to infer
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used for BayesNet and ShaferShenoy for Markov net
+  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
+          pyAgrum.InfluenceDiagram)
+  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
+          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
-  :param graph : only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: 'graph' | 'factorgraph’ | None (default) for Markov network
+  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
+  :param view: graph | factorgraph | None (default) for Markov network
 
   :return: the desired representation of the inference
   """
@@ -728,12 +732,12 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   return a representation of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-
   :param pot: the potential to get
   :param digits: number of digits to show
-  :param: withColors : bgcolor for proba cells or not
+  :param withColors: bgcolor for proba cells or not
   :param varnames: the aliases for variables name in the table
   :param asString: display the table or a HTML string
+
   :return: the representation
   """
   from IPython.core.display import HTML

@@ -11720,21 +11720,9 @@ class MarkovNet(IMarkovNet):
         r"""
         fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet
 
-        Create a Markov network with a dot-like syntax which specifies:
-            - the structure 'a-b-c;b-d-e;'. The substring 'a-b-c' indicates a factor with the scope (a,b,c).
-            - the type of the variables with different syntax:
-
-              - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-              - with 'a[10]', the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-              - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-              - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-              - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-
-        Note 
-        ----
-          - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-          - the CPTs are randomly generated.
-          - see also pyAgrum.fastBN.
+        Create a Markov network with a modified dot-like syntax which specifies:
+            - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
+            - the type of the variables with different syntax (cf documentation).
 
         Examples
         --------
@@ -12137,21 +12125,9 @@ def MarkovNet_fastPrototype(dotlike: "std::string const &", domainSize: "gum::Si
     r"""
     MarkovNet_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet
 
-    Create a Markov network with a dot-like syntax which specifies:
-        - the structure 'a-b-c;b-d-e;'. The substring 'a-b-c' indicates a factor with the scope (a,b,c).
-        - the type of the variables with different syntax:
-
-          - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-          - with 'a[10]', the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-          - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-          - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-          - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-
-    Note 
-    ----
-      - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-      - the CPTs are randomly generated.
-      - see also pyAgrum.fastBN.
+    Create a Markov network with a modified dot-like syntax which specifies:
+        - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
+        - the type of the variables with different syntax (cf documentation).
 
     Examples
     --------
@@ -23509,14 +23485,14 @@ class CredalNet(object):
         default constructor
 
     CredalNet(src_min_num,src_max_den) -> CredalNet
-        Parameters:
-            * **src_min_num** (*str*) -- the path to a BayesNet which contains lower probabilities.
-            * **src_max_den** (*str*) -- the (optional) path to a BayesNet which contains upper probabilities.
 
-    CredalNet(src_min_num,src_max_den) -> CredalNet
-        Parameters:
-            * **src_min_num (*pyAgrum.BayesNet*) -- the BayesNet which contains lower probabilities.
-            * **src_max_den (*pyAgrum.BayesNet*) -- the (optional) BayesNet which contains upper probabilities. 
+    Parameters
+    ----------
+    src_min_num : str or pyAgrum.BayesNet
+                The path to a BayesNet or the BN itself which contains lower probabilities.
+    src_max_den : str or pyAgrum.BayesNet
+                The (optional) path to a BayesNet or the BN itself which contains upper probabilities.
+
 
     """
 
@@ -24899,17 +24875,17 @@ class InfluenceDiagram(DAGmodel):
             - the structure 'a->b<-c;b->d;c<-e;'.
             - a prefix for the type of node (chance/decision/utiliy nodes):
 
-              - 'a' : a chance node named 'a' (by default)
-              - '$a' : a utility node named 'a'
-              - '*a' : a decision node named 'a'
+              - `a` : a chance node named 'a' (by default)
+              - `$a` : a utility node named 'a'
+              - `*a` : a decision node named 'a'
 
             - the type of the variables with different syntax as postfix:
 
               - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
               - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-              - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-              - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-              - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+              - with `'a[3,7]'`, the variable is a gum.RangeVariable using a domainSize from 3 to 7
+              - with `'a[1,3.14,5,6.2]'`, the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+              - with `'a{top|middle|bottom}'`, the variable is a gum.LabelizedVariable using the given labels.
 
         Note 
         ----
@@ -25574,17 +25550,17 @@ def InfluenceDiagram_fastPrototype(dotlike: "std::string const &", domainSize: "
         - the structure 'a->b<-c;b->d;c<-e;'.
         - a prefix for the type of node (chance/decision/utiliy nodes):
 
-          - 'a' : a chance node named 'a' (by default)
-          - '$a' : a utility node named 'a'
-          - '*a' : a decision node named 'a'
+          - `a` : a chance node named 'a' (by default)
+          - `$a` : a utility node named 'a'
+          - `*a` : a decision node named 'a'
 
         - the type of the variables with different syntax as postfix:
 
           - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
           - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-          - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-          - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-          - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+          - with `'a[3,7]'`, the variable is a gum.RangeVariable using a domainSize from 3 to 7
+          - with `'a[1,3.14,5,6.2]'`, the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+          - with `'a{top|middle|bottom}'`, the variable is a gum.LabelizedVariable using the given labels.
 
     Note 
     ----

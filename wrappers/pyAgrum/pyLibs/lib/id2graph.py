@@ -197,4 +197,6 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   if size is None:
     size = gum.config["influenceDiagram", "default_id_inference_size"]
   g.set_size(size)
+  g.temp_dir=temp_dir
+
   return g

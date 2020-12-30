@@ -6,14 +6,14 @@ CredalNet() -> CredalNet
     default constructor
 
 CredalNet(src_min_num,src_max_den) -> CredalNet
-    Parameters:
-        * **src_min_num** (*str*) -- the path to a BayesNet which contains lower probabilities.
-        * **src_max_den** (*str*) -- the (optional) path to a BayesNet which contains upper probabilities.
 
-CredalNet(src_min_num,src_max_den) -> CredalNet
-    Parameters:
-        * **src_min_num (*pyAgrum.BayesNet*) -- the BayesNet which contains lower probabilities.
-        * **src_max_den (*pyAgrum.BayesNet*) -- the (optional) BayesNet which contains upper probabilities. 
+Parameters
+----------
+src_min_num : str or pyAgrum.BayesNet
+            The path to a BayesNet or the BN itself which contains lower probabilities.
+src_max_den : str or pyAgrum.BayesNet
+            The (optional) path to a BayesNet or the BN itself which contains upper probabilities.
+
 "
 
 %feature("docstring") gum::credal::CredalNet::addArc

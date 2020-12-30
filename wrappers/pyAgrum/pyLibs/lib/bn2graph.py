@@ -36,20 +36,35 @@ import shutil
 
 from .proba_histogram import proba2histo,saveFigProba
 
+
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
   create a pydotplus representation of the BN
 
-  :param pyAgrum.BayesNet bn:
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the vals of Nodes
-  :param cmapArc: color map to show the vals of Arcs.
-  :param showMsg: a nodeMap of values to be shown as tooltip
+  Parameters
+  ----------
+    bn : pyAgrum.BayesNet
+      the Bayesian network
+    size: str
+      size of the rendered graph
+    nodeColor: dict
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict
+      a arcMap of values to be shown as bold arcs
+    arcColor: dict
+      a arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: ColorMap
+      color map to show the vals of Nodes
+    cmapArc: ColorMap
+      color map to show the vals of Arcs
+    dag : pyAgrum.DAG
+      only shows nodes that have their id in the dag (and not in the whole BN)
+    showMsg: dict
+      a nodeMap of values to be shown as tooltip
 
-  :return: the desired representation of the BN as a dot graph
+  Returns
+  -------
+    the desired representation of the Bayesian network
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
@@ -116,19 +131,34 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   """
   create a pydotplus representation of an inference in a BN
 
-  :param pyAgrum.BayesNet bn:
-  :param string size: size of the rendered graph
-  :param pyAgrum Inference engine: inference algorithm used. If None, LazyPropagation will be used
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets. If targets={} then each node is a target
-  :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as bold arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the vals of Nodes
-  :param cmapArc: color map to show the vals of Arcs
-  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
+  Parameters
+  ----------
+    bn : pyAgrum.BayesNet
+      the Bayesian network
+    size: str
+      size of the rendered graph
+    engine:  pyAgrum.Inference
+      inference algorithm used. If None, LazyPropagation will be used
+    evs: dict
+      map of evidence
+    targets: set
+      set of targets. If targets={} then each node is a target
+    nodeColor: dict
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict
+      a arcMap of values to be shown as bold arcs
+    arcColor: dict
+      a arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: ColorMap
+      color map to show the vals of Nodes
+    cmapArc: ColorMap
+      color map to show the vals of Arcs
+    dag : pyAgrum.DAG
+      only shows nodes that have their id in the dag (and not in the whole BN)
 
-  :return: the desired representation of the inference
+  Returns
+  -------
+    the desired representation of the inference
   """    
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
@@ -227,6 +257,8 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
+  g.temp_dir=temp_dir
+
   return g
 
 

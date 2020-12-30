@@ -46,7 +46,7 @@ def _stats(p):
 
 def _getTitleHisto(p, showMuSigma=True):
   var = p.variable(0)
-  if var.varType() == 1 or not(showMuSigma):  # Labelized
+  if var.varType() == 1 or not (showMuSigma):  # Labelized
     return "{}".format(var.name())
 
   (mu, std) = _stats(p)
@@ -56,34 +56,36 @@ def _getTitleHisto(p, showMuSigma=True):
 def __limits(p):
   """return vals and labs to show in the histograme
 
-  Arguments:
-      p {gum.Potential} -- the marginal to analyze
+  Parameters
+  ----------
+    p : gum.Potential
+      the marginal to analyze
   """
   var = p.variable(0)
   la = [var.label(int(i)) for i in np.arange(var.domainSize())]
   v = p.tolist()
   nzmin = None
   nzmax = None
-  l = len(v)-1
-  for i in range(l+1):
+  l = len(v) - 1
+  for i in range(l + 1):
     if v[i] != 0:
       if nzmin is None:
         if i > 0:
-          nzmin = i-1
+          nzmin = i - 1
         else:
           nzmin = -1
-    if v[l-i] != 0:
+    if v[l - i] != 0:
       if nzmax is None:
         if i > 0:
-          nzmax = l-i+1
+          nzmax = l - i + 1
         else:
           nzmax = -1
 
   mi = 0 if nzmin in [-1, None] else nzmin
   ma = l if nzmax in [-1, None] else nzmax
 
-  res = range(mi, ma+1)
-  lres = la[mi:ma+1]
+  res = range(mi, ma + 1)
+  lres = la[mi:ma + 1]
   if nzmin not in [-1, None]:
     lres[0] = "..."
   if nzmax not in [-1, None]:
@@ -92,12 +94,23 @@ def __limits(p):
   return res, [v[i] for i in res], lres
 
 
-def _getProbaV(p, scale=1.0, util=None,txtcolor="black"):
+def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   """
-  compute the representation of an histogram for a mono-dim Potential
+  compute the representation of a vertical histogram for a mono-dim Potential
 
-  :param p: the mono-dim Potential
-  :return: a matplotlib bar (vertical histogram) for a Potential p.
+  Parameters
+  ----------
+    p : pyAgrum.Potential
+      the mono-dimensional Potential
+    util : pyAgrum.Potential
+      an (optional) secondary Potential (values in labels)
+    txtcolor : str
+      color for text
+
+  Returns
+  -------
+  matplotlib.Figure
+    a matplotlib histogram for a Potential p.
 
   """
   if gum.config['notebook', 'histogram_mode'] == "compact":
@@ -107,7 +120,7 @@ def _getProbaV(p, scale=1.0, util=None,txtcolor="black"):
     if util is not None:
       lu = util.toarray()
       fmt = gum.config["influenceDiagram", "utility_format_number"]
-      lv = ["{} [{:."+fmt+"f}]".format(var.label(int(i)), lu[i])
+      lv = ["{} [{:." + fmt + "f}]".format(var.label(int(i)), lu[i])
             for i in np.arange(var.domainSize())]
     else:
       lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
@@ -129,8 +142,8 @@ def _getProbaV(p, scale=1.0, util=None,txtcolor="black"):
     if bar.get_height() != 0:
       # ".2%" for instance
       txt_format = "{:." + \
-          str(
-              int(gum.config['notebook', 'vertical_histogram_visible_digits']))+"%}"
+                   str(
+                     int(gum.config['notebook', 'vertical_histogram_visible_digits'])) + "%}"
       txt = txt_format.format(bar.get_height())
       ax.text(bar.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
 
@@ -145,12 +158,23 @@ def _getProbaV(p, scale=1.0, util=None,txtcolor="black"):
   return fig
 
 
-def _getProbaH(p, scale=1.0, util=None,txtcolor="black"):
+def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   """
-  compute the representation of an histogram for a mono-dim Potential
+  compute the representation of an horizontal histogram for a mono-dim Potential
 
-  :param p: the mono-dim Potential
-  :return: a matplotlib barh (horizontal histogram) for a Potential p.
+  Parameters
+  ----------
+    p : pyAgrum.Potential
+      the mono-dimensional Potential
+    util : pyAgrum.Potential
+      an (optional) secondary Potential (values in labels)
+    txtcolor : str
+      color for text
+
+  Returns
+  -------
+  matplotlib.Figure
+    a matplotlib histogram for a Potential p.
   """
   var = p.variable(0)
   ra = np.arange(var.domainSize())
@@ -179,8 +203,8 @@ def _getProbaH(p, scale=1.0, util=None,txtcolor="black"):
     if bar.get_width() != 0:
       # ".2%" for instance
       txt_format = "{:." + \
-          str(
-              int(gum.config['notebook', 'horizontal_histogram_visible_digits']))+"%}"
+                   str(
+                     int(gum.config['notebook', 'horizontal_histogram_visible_digits'])) + "%}"
       txt = txt_format.format(bar.get_width())
       ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
@@ -197,21 +221,46 @@ def _getProbaH(p, scale=1.0, util=None,txtcolor="black"):
   return fig
 
 
-def proba2histo(p, scale=1.0, util=None,txtcolor="Black"):
+def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   """
   compute the representation of an histogram for a mono-dim Potential
 
-  :param pyAgrum.Potential p: the mono-dim Potential
-  :return: a matplotlib histogram for a Potential p.
+  Parameters
+  ----------
+    p : pyAgrum.Potential
+      the mono-dimensional Potential
+    util : pyAgrum.Potential
+      an (optional) secondary Potential (values in labels)
+    txtcolor : str
+      color for text
+
+  Returns
+  -------
+  matplotlib.Figure
+    a matplotlib histogram for a Potential p.
   """
   if util is None and p.variable(0).domainSize() > 8:
-    return _getProbaV(p, scale,txtcolor=txtcolor)
+    return _getProbaV(p, scale, txtcolor=txtcolor)
   else:
-    return _getProbaH(p, scale, util=util,txtcolor=txtcolor)
+    return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
 
-def saveFigProba(p, filename, util=None, bgcol=None,txtcolor="Black"):
-  fig = proba2histo(p, util=util,txtcolor=txtcolor)
+def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
+  """
+  save a figure  which is the representation of an histogram for a mono-dim Potential
+
+  Parameters
+  ----------
+    p : pyAgrum.Potential
+      the mono-dimensional Potential
+    util : pyAgrum.Potential
+      an (optional) secondary Potential (values in labels)
+    bgcolor: str
+      color for background (transparent if None)
+    txtcolor : str
+      color for text
+  """
+  fig = proba2histo(p, util=util, txtcolor=txtcolor)
 
   if bgcol is None:
     transp = True

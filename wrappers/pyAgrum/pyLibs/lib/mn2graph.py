@@ -297,6 +297,8 @@ def MNinference2UGdot(mn, size=None, engine=None, evs={}, targets={}, nodeColor=
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
+  g.temp_dir=temp_dir
+
   return g
 
 
@@ -395,6 +397,8 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs={}, targets={},
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
+  g.temp_dir=temp_dir
+
   return g
 
 

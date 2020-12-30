@@ -43,9 +43,9 @@ class GraphicalBNComparator:
   Parameters
   ----------
   name1 : str or pyAgrum.BayesNet
-  	a BN or a filename for reference
+    a BN or a filename for reference
   name2 : str or pyAgrum.BayesNet
-  	another BN or antoher filename for comparison
+    another BN or antoher filename for comparison
   """
 
   def __init__(self, name1, name2, delta=1e-6):
@@ -379,9 +379,9 @@ class GraphicalBNComparator:
   def hamming(self):
     """
     Compute hamming and structural hamming distance
-    Hamming distance is the difference of edges comparing the 2 skeletons,
-    and Structural Hamming difference is the difference comparing the cpdags,
-	including the arcs' orientation.   
+
+    Hamming distance is the difference of edges comparing the 2 skeletons, and Structural Hamming difference is the
+    difference comparing the cpdags,	including the arcs' orientation.
 
     Returns
     -------

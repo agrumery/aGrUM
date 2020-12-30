@@ -20,7 +20,7 @@
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2018-20, aGrUM/pyAgrum Team'
+copyright = '2018-21, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -29,7 +29,7 @@ author = 'Pierre-henri Wuillemin'
 #
 import os
 import sys
-sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
+#sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
 
 import pyAgrum as gum
 
@@ -37,11 +37,14 @@ import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 
-print(gum.__file__)
-print("GUM VERSION =" + gum.__version__)
+print("** "+gum.__file__)
+print("** AGRUM VERSION =" + gum.__version__)
 # The short X.Y version.
-ma, mi, pa, *_ = gum.__version__.split(".")
-version = ma + "." + mi + "." + pa
+v = gum.__version__.split(".")
+version = ".".join(v[0:3])
+if len(v) > 3:
+  version += " [dev+]"
+
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -79,8 +82,7 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
-mathjax_path="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js"
-
+mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

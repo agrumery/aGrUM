@@ -1,28 +1,34 @@
 Module bn2graph
 ===============
 
-.. automodule:: pyAgrum.lib.bn2graph
+A module to graphically display Bayesian networks using `pydotplus <https://pypi.org/project/pydotplus/>`_ (and then `graphviz <https://graphviz.org/>`_).
 
 .. figure:: _static/bn2graph_test.png
     :align: right
-    :alt: test.png
-    :width: 250
+    :alt: bn2graph_test.png
+    :width: 170
 
 .. code-block:: python
   :linenos:
 
-  bn = gum.fastBN("a->b->d;a->c->d->e;f->b")
-  g = BNinference2dot(bn,
-                      targets=['f', 'd'],
-                      vals={'a': 1,
-                            'b': 0.3,
-                            'c': 0.3,
-                            'd': 0.1,
-                            'e': 0.1,
-                            'f': 0.3},
-                      arcvals={(0, 1): 2,
-                               (0, 2): 0.5})
-  g.write("test.png", format='png')
+  import pyAgrum as gum
+  from pyAgrum.lib.bn2graph import BN2dot
+
+  bn = gum.fastBN("a->b->d;a->c->d[3]->e;f->b")
+  g = BN2dot(bn,
+             nodeColor={'a': 1,
+                        'b': 0.3,
+                        'c': 0.4,
+                        'd': 0.1,
+                        'e': 0.2,
+                        'f': 0.5},
+             arcColor={(0, 1): 0.2,
+                       (1, 2): 0.5},
+             arcWidth={(0, 3): 0.4,
+                       (3, 2): 0.5,
+                       (2,4) :0.6})
+
+  g.write("bn2graph_test.png", format='png')
 
 
 Visualization of Potentials

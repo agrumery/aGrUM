@@ -10,14 +10,6 @@ bn2roc
     :show-inheritance:
     :noindex:
 
-bn2csv
--------------
-
-.. automodule:: pyAgrum.lib.bn2csv
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
 
 bn2scores
 ----------------------------
