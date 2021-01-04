@@ -197,7 +197,10 @@ IMPROVE_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
 // create a reference to python BN into python inference
 %define IMPROVE_EXACT_MN_INFERENCE_API(classname)
 %pythonappend gum::classname<double>::classname %{
-  self._mn=MN # first arg of the constructor
+  self._model=MN # first arg of the constructor
+%}
+%pythonappend gum::classname<double>::junctionTree %{
+   val._engine=self
 %}
 %enddef
 IMPROVE_EXACT_MN_INFERENCE_API(ShaferShenoyMNInference)

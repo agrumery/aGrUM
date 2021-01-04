@@ -479,7 +479,7 @@ def getPosterior(model, evs, target):
   return Potential(inf.posterior(target))
 
 
-def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=True):
+def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_order=True):
   """
   generate a CSV file of samples from a bn.
 
@@ -489,8 +489,8 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=
   :type name_out: string
   :param n: the number of samples
   :type n: int
-  :param visible: if True, show a progress bar
-  :type visible: boolean
+  :param show_progress: if True, show a progress bar
+  :type show_progress: boolean
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
   :type with_labels: boolean
   :param random_order: if True, the columns in the csv are randomized sorted
@@ -499,7 +499,7 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=
   """
 
   genere = BNDatabaseGenerator(bn)
-  if visible:
+  if show_progress:
     from pyAgrum.lib._utils.progress_bar import ProgressBar
     prog = ProgressBar(name_out + ' : ', 0, 100, 77, mode='static', char='#')
     prog.display()
@@ -523,7 +523,7 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=
 
   genere.toCSV(name_out, with_labels)
 
-  if visible:
+  if show_progress:
     print("Log2-Likelihood : {}".format(ll))
 
   return ll

@@ -29,7 +29,7 @@ import logging
 
 import pyAgrum as gum
 import pyAgrum.skbn as skbn
-from pyAgrum.lib.bn2roc import __computepoints, _computeROC
+from pyAgrum.lib.bn2roc import _computepoints, _computeROC
 from sklearn.metrics import accuracy_score
 
 
@@ -49,8 +49,8 @@ def get_threshold(bn, csv_name, target, label):
   :return: the threshold
 
   """
-  (res, totalP, totalN, idTarget) = __computepoints(bn, csv_name, target,
-                                                    label, visible=False, with_labels=True)
+  (res, totalP, totalN, idTarget) = _computepoints(bn, csv_name, target,
+                                                   label, visible=False, with_labels=True)
 
   points, opt, threshold = _computeROC(
     bn, res, totalP, totalN, idTarget, label)

@@ -32,7 +32,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyAgrum as gum
 
-
 def _stats(p):
   mu = 0.0
   mu2 = 0.0
@@ -154,6 +153,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
   ax.get_yaxis().grid(True)
   ax.margins(0)
+  ax.set_facecolor('w')
 
   return fig
 
@@ -192,6 +192,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   fig.set_figwidth(scale * 2)
 
   ax = fig.add_subplot(111)
+  ax.set_facecolor('white')
 
   vals = p.tolist()
   vals.reverse()
@@ -263,12 +264,10 @@ def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
   fig = proba2histo(p, util=util, txtcolor=txtcolor)
 
   if bgcol is None:
-    transp = True
-    fc = "white"
+    fc = gum.config["notebook", "figure_facecolor"]
   else:
-    transp = False
     fc = bgcol
 
-  fig.savefig(filename, bbox_inches='tight', transparent=transp, facecolor=fc,
+  fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
   plt.close(fig)

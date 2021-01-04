@@ -199,7 +199,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
     bgcol = gum.config["notebook", "default_node_bgcolor"]
     fgcol = gum.config["notebook", "default_node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = "white"
+      bgcol = gum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None:
       if name in nodeColor or nid in nodeColor:
@@ -217,7 +217,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       filename = temp_dir + \
           hashlib.md5(name.encode()).hexdigest() + "." + \
           gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename)
+      saveFigProba(ie.posterior(name), filename,bgcol=bgcol)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
           name, filename, colorattribute)
     else:

@@ -1,8 +1,11 @@
-%feature("docstring") gum::ShaferShenoyLIMIDInference::optimalDecisions
+%feature("docstring") gum::ShaferShenoyLIMIDInference
 "
-Displays the result of an inference.
+This inference considers the provided model as a LIMID rather than an influence diagram. It is an optimized
+implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
+by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
+decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
+cf. pyAgrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption).
 "
-
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::eraseAllEvidence
 "

@@ -27,7 +27,12 @@ import time
 
 import IPython.display
 import re
-import base64
+
+# fix DeprecationWarning of base64.encodestring()
+try:
+  from base64 import encodebytes
+except ImportError:  # 3+
+  from base64 import encodestring as encodebytes
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -275,24 +280,23 @@ def showJunctionTree(bn, withNames=True, size=None):
     return showDot(jt.toDot(), size)
 
 
-def getJunctionTree(bn, withNames=True, size=None):
+def getJunctionTree(bn, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
   :param bn: the Bayesian network
-  :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
   :return: the HTML representation of the graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = gum.config["notebook", "junctiontree_graph_size"]
 
   jtg = gum.JunctionTreeGenerator()
+  jtg._model = bn
   jt = jtg.junctionTree(bn)
-  if withNames:
-    return getDot(jt.toDotWithNames(bn), size)
-  else:
-    return getDot(jt.toDot(), size)
+  jt._engine = jtg
+  return getDot(getJT(jt, size), size)
+
 
 def showProba(p, scale=1.0):
   """
@@ -302,7 +306,7 @@ def showProba(p, scale=1.0):
   :return:
   """
   fig = proba2histo(p, scale)
-  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
+  #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
     gum.config["notebook", "graph_format"])
   plt.show()
@@ -414,6 +418,7 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
 
   return showGraph(dottxt, size)
 
+
 def showInfluenceDiagram(diag, size=None):
   """
   show an influence diagram as a graph
@@ -520,6 +525,7 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
+
 def _normalizeVals(vals, hilightExtrema=False):
   """
   normalisation if vals is not a proba (max>1)
@@ -578,7 +584,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
                                   orientation='horizontal')
   cb1.set_label('Entropy')
   png = print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
-  png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % base64.encodestring(png).decode(
+  png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
     'ascii')
 
   gsvg = SVG(gr.create_svg())
@@ -650,7 +656,8 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
   if isinstance(model, gum.BayesNet):
     if engine is None:
       engine = gum.LazyPropagation(model)
-    return BNinference2dot(model, size, engine, evs, targets, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc)
+    return BNinference2dot(model, size, engine, evs, targets, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor,
+                           cmapNode=cmap, cmapArc=cmapArc)
   elif isinstance(model, gum.MarkovNet):
     if view is None:
       view = gum.config["notebook", "default_markovnetwork_view"]
@@ -658,10 +665,12 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
         engine = gum.ShaferShenoyMNInference(model)
 
       if view == "graph":
-        return MNinference2UGdot(model, size, engine, evs, targets,  nodeColor=nodeColor, factorColor=factorColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap,cmapArc=cmapArc)
+        return MNinference2UGdot(model, size, engine, evs, targets, nodeColor=nodeColor, factorColor=factorColor,
+                                 arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc)
       else:
-        return MNinference2FactorGraphdot(model, size, engine, evs, targets,  nodeColor=nodeColor, factorColor=factorColor, cmap=cmap)
-  elif isinstance(model,gum.InfluenceDiagram):
+        return MNinference2FactorGraphdot(model, size, engine, evs, targets, nodeColor=nodeColor,
+                                          factorColor=factorColor, cmapNode=cmap)
+  elif isinstance(model, gum.InfluenceDiagram):
     if engine is None:
       engine = gum.ShaferShenoyLIMIDInference(model)
     return LIMIDinference2dot(model, size, engine, evs, targets)
@@ -723,7 +732,8 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
 
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph,view=view)
+  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth,
+                             arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph, view=view)
   return getGraph(grinf, size)
 
 
@@ -1015,11 +1025,77 @@ def getInferenceEngine(ie, inferenceCaption):
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
+def getJT(jt, size=None):
+  if gum.config["notebook", "junctiontree_with_names"] == "True":
+    cliqlabels = lambda c: " ".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
+    cliqnames = lambda c: "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
+    seplabels = lambda c1, c2: " ".join(sorted([model.variable(n).name() for n in jt.separator(c1, c2)]))
+    sepnames = lambda c1, c2: cliqnames(c1) + '+' + cliqnames(c2)
+  else:
+    cliqlabels = lambda c: " ".join([str(n) for n in sorted(jt.clique(c))])
+    cliqnames = lambda c: "-".join([str(n) for n in sorted(jt.clique(c))])
+    seplabels = lambda c1, c2: " ".join([str(n) for n in sorted(jt.separator(c1, c2))])
+    sepnames = lambda c1, c2: cliqnames(c1) + '^' + cliqnames(c2)
+
+  model = jt._engine._model
+  name = model.propertyWithDefault("name", str(type(model)).split(".")[-1][:-2])
+  graph = dot.Dot(graph_type='graph', graph_name=name, bgcolor="transparent")
+  for c in jt.nodes():
+    graph.add_node(dot.Node('"' + cliqnames(c) + '"',
+                            label='"' + cliqlabels(c) + '"',
+                            style="filled",
+                            fillcolor=gum.config["notebook", "junctiontree_clique_bgcolor"],
+                            fontcolor=gum.config["notebook", "junctiontree_clique_fgcolor"],
+                            fontsize=gum.config["notebook", "junctiontree_clique_fontsize"]))
+  for c1, c2 in jt.edges():
+    graph.add_node(dot.Node('"' + sepnames(c1, c2) + '"',
+                            label='"' + seplabels(c1, c2) + '"',
+                            style="filled",
+                            shape="box", width="0", height="0", margin="0.02",
+                            fillcolor=gum.config["notebook", "junctiontree_separator_bgcolor"],
+                            fontcolor=gum.config["notebook", "junctiontree_separator_fgcolor"],
+                            fontsize=gum.config["notebook", "junctiontree_separator_fontsize"]))
+  for c1, c2 in jt.edges():
+    graph.add_edge(dot.Edge('"' + cliqnames(c1) + '"', '"' + sepnames(c1, c2) + '"'))
+    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) + '"', '"' + cliqnames(c2) + '"'))
+
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+  graph.set_size(gum.config["notebook", "junctiontree_graph_size"])
+
+  return graph.to_string()
+
+
+def getCliqueGraph(cg, size=None):
+  """get a representation for clique graph. Special case for junction tree
+  (clique graph with an attribute `_engine`)
+
+  Args:
+      cg (gum.CliqueGraph): the clique graph (maybe junction tree for a _model) to
+                            represent
+  """
+  if hasattr(cg, "_engine"):
+    return getDot(getJT(cg), size)
+  else:
+    return getDot(cg.toDot())
+
+
+# hook to control some parameters for notebook
+def _update_config():
+  mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
+  IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
+
+
+gum.config.add_hook(_update_config)
+gum.config.run_hooks()
+
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.MarkovNet._repr_html_ = lambda self: getMN(self)
 gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
 gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
+
+gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
@@ -1029,9 +1105,5 @@ gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
-gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
-
-mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
-IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])

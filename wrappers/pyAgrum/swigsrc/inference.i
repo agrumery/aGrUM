@@ -211,7 +211,10 @@ IMPROVE_JOINT_INFERENCE_API(gum::VariableElimination<double>)
 // create a reference to python BN into python inference
 %define IMPROVE_EXACT_INFERENCE_API(classname)
 %pythonappend gum::classname<double>::classname %{
-  self._bn=args[0]
+  self._model=args[0]
+%}
+%pythonappend gum::classname<double>::junctionTree %{
+   val._engine=self
 %}
 %enddef
 IMPROVE_EXACT_INFERENCE_API(LazyPropagation)
@@ -221,7 +224,7 @@ IMPROVE_EXACT_INFERENCE_API(VariableElimination)
 
 %define IMPROVE_APPROX_INFERENCE_API(constructor,classname...)
 %pythonappend gum::classname::constructor %{
-  self._bn=bn  #BN
+  self._model=bn  #BN
 %}
 %enddef
 IMPROVE_APPROX_INFERENCE_API(GibbsSampling,GibbsSampling<double>)

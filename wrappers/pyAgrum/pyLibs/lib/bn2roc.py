@@ -516,7 +516,7 @@ def _drawPR(points, rate, zeTitle, zeFilename, show_progress, show_fig, save_fig
               rate=rate, showROC=False, showPR=True)
 
 
-def showROC_PR(bn, csv_name, variable, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
                showROC=True, showPR=True,
                significant_digits=10):
   """
@@ -551,7 +551,7 @@ def showROC_PR(bn, csv_name, variable, label, show_progress=True, show_fig=True,
   """
 
   (res, totalP, totalN, idTarget) = _computepoints(
-    bn, csv_name, variable, label, show_progress, with_labels, significant_digits)
+    bn, csv_name, target, label, show_progress, with_labels, significant_digits)
   pointsROC, optROC, seuilROC, pointsPR, optPR, seuilPR = _computeROC_PR(bn, res, totalP, totalN, idTarget, label)
 
   try:
@@ -559,12 +559,12 @@ def showROC_PR(bn, csv_name, variable, label, show_progress=True, show_fig=True,
   except gum.NotFound:
     shortname = "unnamed"
 
-  title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
+  title = shortname + " vs " + csv_name + " - " + target + "=" + str(label)
   rate = totalP / (totalP + totalN)
 
   if showROC and showPR:
     figname = csv_name + "-" + 'ROCandPR_' + shortname + \
-              "-" + variable + "-" + str(label) + '.png'
+              "-" + target + "-" + str(label) + '.png'
     fig = pylab.figure(figsize=(10, 4))
     fig.suptitle(title)
     pylab.gcf().subplots_adjust(wspace=0.1)
@@ -582,14 +582,14 @@ def showROC_PR(bn, csv_name, variable, label, show_progress=True, show_fig=True,
 
   elif showROC:
     figname = csv_name + "-" + 'ROC_' + shortname + \
-              "-" + variable + "-" + str(label) + '.png'
+              "-" + target + "-" + str(label) + '.png'
 
     _drawROC(pointsROC, title, figname, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
              special_point=optROC, special_value=seuilROC)
 
   elif showPR:
     figname = csv_name + "-" + 'PrecisionRecall_' + shortname + \
-              "-" + variable + "-" + str(label) + '.png'
+              "-" + target + "-" + str(label) + '.png'
     _drawPR(pointsPR, rate, title, figname, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
             special_point=optPR, special_value=seuilPR)
 
@@ -623,7 +623,7 @@ def showROC(bn, csv_name, target, label, show_progress=True, show_fig=False, sav
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, csv_name, variable, label, show_progress, show_fig, save_fig, with_labels, True, False,
+  return showROC_PR(bn, csv_name, target, label, show_progress, show_fig, save_fig, with_labels, True, False,
                     significant_digits)
 
 
@@ -654,7 +654,7 @@ def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, csv_name, variable, label, show_progress, show_fig, save_fig, with_labels, False, True,
+  return showROC_PR(bn, csv_name, target, label, show_progress, show_fig, save_fig, with_labels, False, True,
                     significant_digits)
 
 

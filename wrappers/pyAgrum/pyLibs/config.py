@@ -25,10 +25,11 @@ configuration tool for pyAgrum
 # for metaclass both in python2 and 3
 from __future__ import print_function
 from six import with_metaclass
+
 try:
-    FileNotFoundError
+  FileNotFoundError
 except NameError:
-    FileNotFoundError = IOError
+  FileNotFoundError = IOError
 ## end for python2's compatibility
 
 from configparser import ConfigParser
@@ -63,8 +64,16 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     defaultsfn = os.path.dirname(__file__) + "/defaults.ini"
     self.__parser.read(defaultsfn)
     self.__defaults = self.__str__()
+    self.__hooks = []
 
-  def set(self, section, option, value):
+  def add_hook(self, fn):
+    self.__hooks.append(fn)
+
+  def run_hooks(self):
+    for fn in self.__hooks:
+      fn()
+
+  def set(self, section, option, value, no_hook=False):
     """set a property in a section. Preferably use ``__getitem__`` and ``__setitem__``.
 
     Examples
@@ -77,6 +86,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
         section {str} -- the section name (has to exist in defaults)
         option {str} -- the option/property name (has to exist in defaults)
         value {str} -- the value (will be store as string)
+        no_hook {bool} -- (optional) should this call trigger the hooks ?
 
     Raises:
         SyntaxError: if the secion name or the property name does not exist
@@ -84,9 +94,11 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     if section in self.__parser.sections():
       if option in self.__parser[section]:
         self.__parser.set(section, option, str(value))
+        if not no_hook:
+          self.run_hooks()
         return
       else:
-        raise SyntaxError("You can not add option '"+section +
+        raise SyntaxError("You can not add option '" + section +
                           "," + option + "' in pyAgrum configuration")
     else:
       raise SyntaxError("You can not add section '" +
@@ -114,8 +126,11 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     mine = self.__parser
     c = ConfigParser()
     c.read_string(self.__defaults)
-    def aff_sec(section): return "["+section+"]\n"+"\n".join(
-        ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if mine.get(section, key) != c.get(section, key)])
+
+    def aff_sec(section): return "[" + section + "]\n" + "\n".join(
+      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if
+       mine.get(section, key) != c.get(section, key)])
+
     return "\n".join([sec for sec in [aff_sec(section) for section in mine.sections()] if "=" in sec])
 
   def save(self):
@@ -128,6 +143,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     """ back to defaults
     """
     self.__parser.read_string(self.__defaults)
+    self.run_hooks()
 
   def load(self):
     """load pyagrum.ini in the current directory, and change the properties if needed
@@ -144,9 +160,10 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
           print("[pyagrum.ini] Section '{}' does not exist.".format(section))
         for option in c[section]:
           try:
-            self.set(section, option, c[section][option])
+            self.set(section, option, c[section][option],no_hooks=True)
           except SyntaxError:
-            print("[pyagrum.ini] Option '{}.{}' does not exist.".format(section,option))
+            print("[pyagrum.ini] Option '{}.{}' does not exist.".format(section, option))
+        self.run_hooks()
     else:
       raise FileNotFoundError("No file 'pyagrum.ini' in current directory.")
 
@@ -158,10 +175,12 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     """
     mine = self.__parser
     lowsearch = search.lower()
-    def aff_sec(section, all): return "["+section+"]\n"+"\n".join(
-        ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if all or lowsearch in key])
+
+    def aff_sec(section, all): return "[" + section + "]\n" + "\n".join(
+      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if all or lowsearch in key])
+
     print("\n".join([sec for sec in [aff_sec(section, lowsearch in section)
-                     for section in mine.sections()] if "=" in sec]))
+                                     for section in mine.sections()] if "=" in sec]))
 
   def diff(self):
     """ print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `PyAgrumConfiguration.save()`
@@ -170,8 +189,10 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
 
   def __str__(self):
     mine = self.__parser
-    def aff_sec(section): return "["+section+"]\n"+"\n".join(
-        ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys()])
+
+    def aff_sec(section): return "[" + section + "]\n" + "\n".join(
+      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys()])
+
     return "\n".join([aff_sec(section) for section in mine.sections()])
 
   def __repr__(self):

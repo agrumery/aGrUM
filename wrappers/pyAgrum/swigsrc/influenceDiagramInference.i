@@ -99,8 +99,13 @@ def updateEvidence(self, evidces):
 }
 
 %pythonappend gum::classname<double>::classname %{
-   self._infdiag=infDiag
+   self._model=infDiag
 %}
+
+%pythonappend gum::classname<double>::junctionTree %{
+   val._engine=self
+%}
+
 %enddef
 
 IMPROVE_LIMID_INFERENCE_API(ShaferShenoyLIMIDInference)

@@ -12173,7 +12173,7 @@ class ShaferShenoyMNInference(object):
         r"""__init__(ShaferShenoyMNInference self, IMarkovNet MN, bool use_binary_join_tree=True) -> ShaferShenoyMNInference"""
         _pyAgrum.ShaferShenoyMNInference_swiginit(self, _pyAgrum.new_ShaferShenoyMNInference(MN, use_binary_join_tree))
 
-        self._mn=MN#first arg of the constructor
+        self._model=MN#first arg of the constructor
 
 
 
@@ -12205,7 +12205,13 @@ class ShaferShenoyMNInference(object):
           the current junction tree
 
         """
-        return _pyAgrum.ShaferShenoyMNInference_junctionTree(self)
+        val = _pyAgrum.ShaferShenoyMNInference_junctionTree(self)
+
+        val._engine=self
+
+
+        return val
+
 
     def evidenceProbability(self) -> "double":
         r"""
@@ -12981,7 +12987,7 @@ class LazyPropagation(object):
         r"""__init__(LazyPropagation self, IBayesNet BN, gum::RelevantPotentialsFinderType arg3=DSEP_BAYESBALL_POTENTIALS, gum::FindBarrenNodesType arg4=FIND_BARREN_NODES, bool use_binary_join_tree=True) -> LazyPropagation"""
         _pyAgrum.LazyPropagation_swiginit(self, _pyAgrum.new_LazyPropagation(*args))
 
-        self._bn=args[0]
+        self._model=args[0]
 
 
 
@@ -13063,7 +13069,13 @@ class LazyPropagation(object):
           the current junction tree
 
         """
-        return _pyAgrum.LazyPropagation_junctionTree(self)
+        val = _pyAgrum.LazyPropagation_junctionTree(self)
+
+        val._engine=self
+
+
+        return val
+
 
     def evidenceProbability(self) -> "double":
         r"""
@@ -13854,7 +13866,7 @@ class ShaferShenoyInference(object):
         r"""__init__(ShaferShenoyInference self, IBayesNet BN, gum::FindBarrenNodesType barren_type=FIND_BARREN_NODES, bool use_binary_join_tree=True) -> ShaferShenoyInference"""
         _pyAgrum.ShaferShenoyInference_swiginit(self, _pyAgrum.new_ShaferShenoyInference(*args))
 
-        self._bn=args[0]
+        self._model=args[0]
 
 
 
@@ -13910,7 +13922,13 @@ class ShaferShenoyInference(object):
           the current junction tree
 
         """
-        return _pyAgrum.ShaferShenoyInference_junctionTree(self)
+        val = _pyAgrum.ShaferShenoyInference_junctionTree(self)
+
+        val._engine=self
+
+
+        return val
+
 
     def evidenceProbability(self) -> "double":
         r"""
@@ -14701,7 +14719,7 @@ class VariableElimination(object):
         r"""__init__(VariableElimination self, IBayesNet BN, gum::RelevantPotentialsFinderType relevant_type=DSEP_BAYESBALL_POTENTIALS, gum::FindBarrenNodesType arg4=FIND_BARREN_NODES) -> VariableElimination"""
         _pyAgrum.VariableElimination_swiginit(self, _pyAgrum.new_VariableElimination(*args))
 
-        self._bn=args[0]
+        self._model=args[0]
 
 
 
@@ -14771,7 +14789,13 @@ class VariableElimination(object):
           the current junction tree
 
         """
-        return _pyAgrum.VariableElimination_junctionTree(self, id)
+        val = _pyAgrum.VariableElimination_junctionTree(self, id)
+
+        val._engine=self
+
+
+        return val
+
 
     def setEvidence(self, evidces):
         """
@@ -15478,7 +15502,7 @@ class GibbsSampling(object):
         r"""__init__(GibbsSampling self, IBayesNet bn) -> GibbsSampling"""
         _pyAgrum.GibbsSampling_swiginit(self, _pyAgrum.new_GibbsSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -16377,7 +16401,7 @@ class ImportanceSampling(object):
         r"""__init__(ImportanceSampling self, IBayesNet bn) -> ImportanceSampling"""
         _pyAgrum.ImportanceSampling_swiginit(self, _pyAgrum.new_ImportanceSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -17204,7 +17228,7 @@ class WeightedSampling(object):
         r"""__init__(WeightedSampling self, IBayesNet bn) -> WeightedSampling"""
         _pyAgrum.WeightedSampling_swiginit(self, _pyAgrum.new_WeightedSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -18031,7 +18055,7 @@ class MonteCarloSampling(object):
         r"""__init__(MonteCarloSampling self, IBayesNet bn) -> MonteCarloSampling"""
         _pyAgrum.MonteCarloSampling_swiginit(self, _pyAgrum.new_MonteCarloSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -18856,7 +18880,7 @@ class LoopyImportanceSampling(object):
         r"""__init__(LoopyImportanceSampling self, IBayesNet bn) -> LoopyImportanceSampling"""
         _pyAgrum.LoopyImportanceSampling_swiginit(self, _pyAgrum.new_LoopyImportanceSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -19697,7 +19721,7 @@ class LoopyWeightedSampling(object):
         r"""__init__(LoopyWeightedSampling self, IBayesNet bn) -> LoopyWeightedSampling"""
         _pyAgrum.LoopyWeightedSampling_swiginit(self, _pyAgrum.new_LoopyWeightedSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -20538,7 +20562,7 @@ class LoopyGibbsSampling(object):
         r"""__init__(LoopyGibbsSampling self, IBayesNet bn) -> LoopyGibbsSampling"""
         _pyAgrum.LoopyGibbsSampling_swiginit(self, _pyAgrum.new_LoopyGibbsSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -21451,7 +21475,7 @@ class LoopyMonteCarloSampling(object):
         r"""__init__(LoopyMonteCarloSampling self, IBayesNet bn) -> LoopyMonteCarloSampling"""
         _pyAgrum.LoopyMonteCarloSampling_swiginit(self, _pyAgrum.new_LoopyMonteCarloSampling(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -22294,7 +22318,7 @@ class LoopyBeliefPropagation(object):
         r"""__init__(LoopyBeliefPropagation self, IBayesNet bn) -> LoopyBeliefPropagation"""
         _pyAgrum.LoopyBeliefPropagation_swiginit(self, _pyAgrum.new_LoopyBeliefPropagation(bn))
 
-        self._bn=bn#BN
+        self._model=bn#BN
 
 
 
@@ -25590,8 +25614,15 @@ def InfluenceDiagram_fastPrototype(dotlike: "std::string const &", domainSize: "
 
 class ShaferShenoyLIMIDInference(object):
     r"""
-    Proxy of C++ gum::ShaferShenoyLIMIDInference< double > class.
-    Proxy of C++ gum::ShaferShenoyLIMIDInference< double > class.
+
+
+
+    This inference considers the provided model as a LIMID rather than an influence diagram. It is an optimized
+    implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
+    by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
+    decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
+    cf. pyAgrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption).
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -25601,7 +25632,7 @@ class ShaferShenoyLIMIDInference(object):
         r"""__init__(ShaferShenoyLIMIDInference self, InfluenceDiagram infDiag) -> ShaferShenoyLIMIDInference"""
         _pyAgrum.ShaferShenoyLIMIDInference_swiginit(self, _pyAgrum.new_ShaferShenoyLIMIDInference(infDiag))
 
-        self._infdiag=infDiag
+        self._model=infDiag
 
 
 
@@ -25609,7 +25640,13 @@ class ShaferShenoyLIMIDInference(object):
 
     def junctionTree(self) -> "gum::JunctionTree const *":
         r"""junctionTree(ShaferShenoyLIMIDInference self) -> CliqueGraph"""
-        return _pyAgrum.ShaferShenoyLIMIDInference_junctionTree(self)
+        val = _pyAgrum.ShaferShenoyLIMIDInference_junctionTree(self)
+
+        val._engine=self
+
+
+        return val
+
 
     def clear(self) -> "void":
         r"""clear(ShaferShenoyLIMIDInference self)"""
