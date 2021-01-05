@@ -6,4 +6,5 @@ IPython
 numpy
 ipykernel
 sphinx_rtd_theme
+sklearn
 #sphinx-autodoc-typehints
