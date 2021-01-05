@@ -6,3 +6,4 @@ numpy
 scipy
 configparser
 six
+sklearn
