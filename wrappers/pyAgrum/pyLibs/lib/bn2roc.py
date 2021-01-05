@@ -30,7 +30,6 @@ import numpy as np
 import matplotlib.pylab as pylab
 
 import pyAgrum as gum
-import pyAgrum.skbn as skbn
 
 try:
   from ._utils.progress_bar import ProgressBar
@@ -154,6 +153,8 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
         break
     assert (idLabel >= 0)
 
+  # just in time 'import' for python3.6
+  import pyAgrum.skbn as skbn
   Classifier = skbn.BNClassifier(significant_digit=significant_digits)
 
   if show_progress:
