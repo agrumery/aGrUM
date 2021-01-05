@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 0.19.0
+
+*Mainly* : important changes for Influence Diagram (aGrUM and pyAgrum) and for BayesNet classifiers compliant to scikit-learn's API (pyAgrum). 
+
+* aGrUM
+  * new and better inference for Influence Diagrams and LIMIDs (`gum::ShafeShenoyLIMIDInference`)
+  * new builder for Influence Diagram `gum::InfluenceDiagram::fastPrototype`
+  * bugfixes
+  
+* pyAgrum
+  * wrapper and notebook functions for new inference and new methods for influence diagram
+  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learning for `fit` (Naive Bayes, TAN, Chow-Liu tree, and others learning aGrUM's algorithms). Several discretization methods are implemented.
+  * minor graphical improvements
+  * remove old deprecated class/method (since pyAgrum 0.12.0)
+  * Improving documentation (readthebook)
+  * bugfixes
+
 ## Changelog for 0.18.2
 
 Mainly bugfixes and internal improvements.
