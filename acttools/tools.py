@@ -65,17 +65,17 @@ def check_tools(options):
 
   if version == "2":
     if options.python == "3":
-      notif('python3 not found. Using python2 instead')
+      notif('python3 not found. Using [python2] instead')
       options.python = "2"
   elif version == "3":
     if options.python == "2":
-      notif('python2 not found. Using python3 instead')
+      notif('python2 not found. Using [python3] instead')
       options.python = "3"
   else:
-    critic("No version found for python. Found version : <{}>".format(version))
+    critic("No version found for python. Found version : [{}]".format(version))
 
   if options.python == "running":
-    notif("Python's running version : python{}".format(version))
+    notif("Python's running version : [python{}]²".format(version))
     options.python = version
 
   exe_cmake = is_tool("cmake")

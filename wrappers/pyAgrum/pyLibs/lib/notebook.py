@@ -24,6 +24,7 @@ tools for BN analysis in jupyter notebook
 from __future__ import print_function
 
 import time
+import sys
 
 import IPython.display
 import re
@@ -52,6 +53,13 @@ from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
+
+# check if an instance of ipython exists
+try:
+  get_ipython
+except NameError as e:
+  raise ImportError(
+    "[pyAgrum ERROR] pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).") from None
 
 _cdict = {
   'red': ((0.0, 0.1, 0.3),

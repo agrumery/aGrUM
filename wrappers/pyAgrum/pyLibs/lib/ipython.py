@@ -18,6 +18,13 @@ import pyAgrum as gum
 import pyAgrum.lib.bn2graph as bng
 from pyAgrum.lib.pretty_print import cpt2txt
 
+# check if an instance of ipython exists
+try:
+  get_ipython
+except NameError as e:
+  raise ImportError(
+    "[pyAgrum ERROR] pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).") from None
+
 def configuration():
   """
   Display the collection of dependance and versions
