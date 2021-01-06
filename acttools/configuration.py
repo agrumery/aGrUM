@@ -40,9 +40,9 @@ except:
     cfg.withColour = True
     pass
 
-cfg.__version_major="2"
-cfg.__version_minor="2"
-cfg.__version = cfg.__version_major+"."+cfg.__version_minor
+cfg.__version_major = "2"
+cfg.__version_minor = "2"
+cfg.__version = cfg.__version_major + "." + cfg.__version_minor
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.configFile = ".options.act2.pickle"  #
@@ -97,16 +97,17 @@ def initParams():
   cfg.moduleLabels = parseModulesTxt()
   cfg.modules = set(cfg.moduleLabels)
 
-  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage","noSaveParams","correction"]
+  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage",
+                        "noSaveParams", "correction"]
   cfg.mains = ["action", "targets", "mode"]
   cfg.specialActions = ["show", "clean", "guideline"]
   cfg.swapOptions = {
     "verbose": {
-      True : "verbose",
+      True: "verbose",
       False: "quiet"
     },
     "withSQL": {
-      True : "withSQL",
+      True: "withSQL",
       False: "withoutSQL"
     }
   }
@@ -114,7 +115,7 @@ def initParams():
 
 def configureOptions(current):
   us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
-      cfg.targets) + "]"
+    cfg.targets) + "]"
   cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
                             version="%prog v" + cfg.__version)
   cfg.parser.add_option("", "--no-fun",
@@ -185,7 +186,7 @@ def configureOptions(current):
   cfg.parser.add_option("", "--python",
                         help="defines against wich version of python to build: {2|3}.",
                         type="choice",
-                        choices=["2", "3"],
+                        choices=["2", "3", "running"],
                         dest="python",
                         default="3")
   cfg.parser.add_option("", "--python2lib",
@@ -256,7 +257,7 @@ def configureOptions(current):
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make|doc-only}.",
                         type="choice",
-                        choices=["all", "no-cmake", "no-make","doc-only"],
+                        choices=["all", "no-cmake", "no-make", "doc-only"],
                         dest="build",
                         default="all")
   cfg.parser.add_option("", "--no-saveParams",

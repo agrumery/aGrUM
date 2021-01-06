@@ -19,6 +19,7 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
 import os
+import sys
 from subprocess import PIPE, Popen
 
 from .utils import notif, critic
@@ -26,9 +27,9 @@ from .utils import notif, critic
 
 def cmdline(command):
   process = Popen(
-      args=command,
-      stdout=PIPE,
-      shell=True
+    args=command,
+    stdout=PIPE,
+    shell=True
   )
   return process.communicate()[0].decode()
 
@@ -47,13 +48,20 @@ def is_tool(prog, longpath=False):
 
 def check_tools(options):
   notif("options.python={}".format(options.python))
-  exe_py=None
-  if options.python == "3":
+  exe_py = None
+  if options.python == "running":
+    exe_py = sys.executable
+  elif options.python == "3":
     exe_py = is_tool('python3', True)
-  else:
+  elif options.python == "2":
     exe_py = is_tool('python2', True)
   if exe_py is None:
     exe_py = is_tool('python', True)
+  if exe_py is None:
+    exe_py = sys.executable
+  if exe_py is None:
+    critic("No python has been found")
+  notif("Found python: [{}]".format(exe_py))
 
   version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
 
@@ -67,6 +75,9 @@ def check_tools(options):
       options.python = "3"
   else:
     critic("No version found for python. Found version : <{}>".format(version))
+
+  # removing "running"
+  options.python = version
 
   exe_cmake = is_tool("cmake")
   if exe_cmake is None:
@@ -83,7 +94,7 @@ def check_tools(options):
   exe_clangformat = None
   if is_tool("clang-format"):
     exe_clangformat = "clang-format"
-  for version in ['6.0','7.0']:
+  for version in ['6.0', '7.0']:
     if is_tool("clang-format-{}".format(version)):
       exe_clangformat = "clang-format-{}".format(version)
       break
