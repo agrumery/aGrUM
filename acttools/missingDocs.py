@@ -25,7 +25,8 @@ import inspect
 import sys
 from os.path import join, dirname
 
-gumPath=join(dirname(sys.argv[0]), "build/release/wrappers")
+gumPath = join(dirname(sys.argv[0]), "build/release/wrappers")
+
 
 class PyAgrumDocCoverage:
   def __init__(self, verbose):
@@ -42,13 +43,13 @@ class PyAgrumDocCoverage:
     self.partialDocFunc = []
     self.partialDocMeth = []
 
-  def _isNotValid(self,msg):
+  def _isNotValid(self, msg):
     # deprecated does not follow the rules of validity for documentation
     if msg.strip().startswith("Deprecated"):
       return False
 
     # msg les than 3 lines are not valid
-    if msg.count("\n")<3:
+    if msg.count("\n") < 3:
       return True
 
     if "'PyObject *'" in msg:
@@ -75,7 +76,7 @@ class PyAgrumDocCoverage:
         self.undocFunc.append(name)
       res = "no doc"
     else:
-      
+
       if self._isNotValid(func.__doc__):
         if is_meth:
           self.partialDocMeth.append(name)
@@ -147,7 +148,6 @@ class PyAgrumDocCoverage:
 
     self._traversal(dir(gum), "gum")
 
-
     pc = 1.0 - (len(self.undocClass) + len(self.partialDocClass)) / (1.0 * self.nbClass)
     pm = 1.0 - (len(self.undocMeth) + len(self.partialDocMeth)) / (1.0 * self.nbMeth)
     pf = 1.0 - (len(self.undocFunc) + len(self.partialDocFunc)) / (1.0 * self.nbFunc)
@@ -155,7 +155,7 @@ class PyAgrumDocCoverage:
     print()
     print('Documentation in pyAgrum {}'.format(gum.__version__))
 
-    print("  Classes   : coverage={:6.2f}% [{}]".format(pc * 100.0,self.nbClass))
+    print("  Classes   : coverage={:6.2f}% [{}]".format(pc * 100.0, self.nbClass))
     if self._verbose:
       print("---------")
       print("  - nbr of classes : " + str(self.nbClass))
@@ -165,7 +165,7 @@ class PyAgrumDocCoverage:
       print("  - nbr of undocumented classes : " + str(len(self.undocClass)))
       print("\n    + ".join([""] + self.undocClass))
 
-    print("  Methods   : coverage={:6.2f}% [{}]".format(pm * 100.0,self.nbMeth))
+    print("  Methods   : coverage={:6.2f}% [{}]".format(pm * 100.0, self.nbMeth))
     if self._verbose:
       print("---------")
       print("  - nbr of methods: " + str(self.nbMeth))
@@ -175,7 +175,7 @@ class PyAgrumDocCoverage:
       print("  - nbr of undocumented methods : " + str(len(self.undocMeth)))
       print("\n    + ".join([""] + self.undocMeth))
 
-    print("  Functions : coverage={:6.2f}% [{}]".format(pf * 100.0,self.nbFunc))
+    print("  Functions : coverage={:6.2f}% [{}]".format(pf * 100.0, self.nbFunc))
     if self._verbose:
       print("-----------")
       print("  - nbr of functions: " + str(self.nbFunc))

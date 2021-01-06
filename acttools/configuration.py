@@ -41,7 +41,7 @@ except:
     pass
 
 cfg.__version_major = "2"
-cfg.__version_minor = "2"
+cfg.__version_minor = "3"
 cfg.__version = cfg.__version_major + "." + cfg.__version_minor
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules

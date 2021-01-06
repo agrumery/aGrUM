@@ -47,7 +47,6 @@ def is_tool(prog, longpath=False):
 
 
 def check_tools(options):
-  notif("options.python={}".format(options.python))
   exe_py = None
   if options.python == "running":
     exe_py = sys.executable
@@ -57,11 +56,10 @@ def check_tools(options):
     exe_py = is_tool('python2', True)
   if exe_py is None:
     exe_py = is_tool('python', True)
-  if exe_py is None:
-    exe_py = sys.executable
-  if exe_py is None:
-    critic("No python has been found")
-  notif("Found python: [{}]".format(exe_py))
+    if exe_py is None:
+      exe_py = sys.executable
+      if exe_py is None:
+        critic("No python has been found")
 
   version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
 
@@ -76,8 +74,9 @@ def check_tools(options):
   else:
     critic("No version found for python. Found version : <{}>".format(version))
 
-  # removing "running"
-  options.python = version
+  if options.python == "running":
+    notif("Python's running version : python{}".format(version))
+    options.python = version
 
   exe_cmake = is_tool("cmake")
   if exe_cmake is None:
@@ -94,10 +93,11 @@ def check_tools(options):
   exe_clangformat = None
   if is_tool("clang-format"):
     exe_clangformat = "clang-format"
-  for version in ['6.0', '7.0']:
-    if is_tool("clang-format-{}".format(version)):
-      exe_clangformat = "clang-format-{}".format(version)
-      break
+  if exe_clangformat is None:
+    for version in ['11.0', '10.0', '9.0', '8.0']:
+      if is_tool("clang-format-{}".format(version)):
+        exe_clangformat = "clang-format-{}".format(version)
+        break
 
   exe_msbuild = is_tool("msbuild")
 
