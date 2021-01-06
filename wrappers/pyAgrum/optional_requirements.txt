@@ -1,0 +1,6 @@
+nbformat
+nbconvert
+jupyter
+scipy
+sklearn
+pandas

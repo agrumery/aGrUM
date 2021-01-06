@@ -1,7 +1,5 @@
 matplotlib
 pydotplus
 numpy
-pandas
-tqdm
 configparser
 six
