@@ -32,13 +32,13 @@ def checkTests(current):
   cde = current['tests']
   if cde == "quick":
     if 'aGrUM' in current['targets']:
-      current['tests']='all'
-      current['modules']='BASE+BN+BNLEARNING'
-      cde='all'
+      current['tests'] = 'all'
+      current['modules'] = 'BASE+BN+BNLEARNING'
+      cde = 'all'
 
   alltests = allTests(setifyString(current['modules']))
 
-  if cde == "all" or cde=='quick':
+  if cde == "all" or cde == 'quick':
     return alltests
   elif cde == 'list':
     printTests(current)
@@ -57,15 +57,15 @@ def checkTestList(current, alltests):
     s = '/' + ss + 'TestSuite.h'
     name = ""
     if "aGrUM" not in current['targets']:
-      name=s
+      name = s
       break
     for tryfile in alltests:
       if tryfile.endswith(s):
         name = tryfile
         break
     if name == "":
-      if ss != "show" and ss!="quick":
-        if current['action']=='test':
+      if ss != "show" and ss != "quick":
+        if current['action'] == 'test':
           printTests(current)
           critic('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
     else:

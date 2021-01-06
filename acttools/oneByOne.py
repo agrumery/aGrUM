@@ -64,4 +64,4 @@ def checkAgrumMemoryLeaks(current):
       res.append(msg)
 
   print("\n" + cfg.C_WARNING + "Test(s) with problem(s) :\n -{0}\n".format(
-      "\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none") + cfg.C_END)
+    "\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none") + cfg.C_END)

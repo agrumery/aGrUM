@@ -24,11 +24,11 @@ from __future__ import print_function
 import os.path
 from subprocess import call
 
-
 from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
 from .configuration import cfg
 
 from .missingDocs import computeNbrError
+
 
 def guideline(current, modif=False):
   if modif:
@@ -62,7 +62,7 @@ def _checkForFormat(current, modif):
           continue
 
         line = cfg.clangformat + " " + src + " | cmp " + src + " -"
-        if call(line, shell=True, stderr=blackhole, stdout=blackhole)==1:
+        if call(line, shell=True, stderr=blackhole, stdout=blackhole) == 1:
           nbrError += 1
           if modif:
             line = cfg.clangformat + " -i " + src
@@ -72,17 +72,18 @@ def _checkForFormat(current, modif):
             notif("    [" + src + "] not correctly formatted")
   return nbrError
 
+
 def __addLGPLatTop(filename):
   with open(filename, "r") as origine:
     codes = origine.read().split("***********/")
 
   # removing old license if any
-  if len(codes)==1:
-    code=codes[0]
-  elif len(codes)==2:
-    code=codes[1]
+  if len(codes) == 1:
+    code = codes[0]
+  elif len(codes) == 2:
+    code = codes[1]
   else:
-    code="***********/".join(codes[1:])
+    code = "***********/".join(codes[1:])
 
   with open(filename, "w") as dest:
     dest.write(_template_license)
@@ -149,14 +150,16 @@ def _checkCppFileExists(current, modif):
 
   return nbrError
 
+
 def _checkForMissingDocs(modif):
   nbrError = computeNbrError(modif)
-  if(nbrError>0):
-    if(nbrError==1):
-      error(str(nbrError)+" documentation error")
+  if (nbrError > 0):
+    if (nbrError == 1):
+      error(str(nbrError) + " documentation error")
     else:
-      error(str(nbrError)+" documentation errors")
+      error(str(nbrError) + " documentation errors")
   return nbrError
+
 
 _template_license = """
 /**

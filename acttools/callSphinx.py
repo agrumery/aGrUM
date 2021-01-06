@@ -29,7 +29,7 @@ from .utils import notif, safe_cd
 
 
 def callSphinx(current):
-  if current['build']!='doc-only':
+  if current['build'] != 'doc-only':
     cmd = '{0} act lib pyAgrum release --no-fun'.format(cfg.python)
     notif("Compiling pyAgrum")
     if not current['dry_run']:
@@ -37,9 +37,9 @@ def callSphinx(current):
       out = proc.stdout.readlines()
       for line in out:
         try:
-          print(line.decode('utf-8'),end="")
+          print(line.decode('utf-8'), end="")
         except ValueError:
-          print(str(line),end="")
+          print(str(line), end="")
     else:
       notif('[' + cmd + ']')
 
@@ -53,9 +53,9 @@ def callSphinx(current):
     out = proc.stdout.readlines()
     for line in out:
       try:
-        print(line.decode('utf-8'),end="")
+        print(line.decode('utf-8'), end="")
       except ValueError:
-        print(str(line),end="")
+        print(str(line), end="")
   else:
     notif('[' + cmd + ']')
   safe_cd(current, "..")

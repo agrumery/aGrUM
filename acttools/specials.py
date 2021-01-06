@@ -69,8 +69,8 @@ def specialActions(current):
       if not current['correction']:
         critic(("{} Guideline error(s) found.\n" +
                 "Please consider using [act guideline --correction] in order to correct those errors.").format(
-            nbrError),
-            None, nbrError)
+          nbrError),
+          None, nbrError)
       else:
         critic(("{} Guideline error(s) found.").format(nbrError), None, nbrError)
     else:

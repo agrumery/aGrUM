@@ -34,7 +34,7 @@ def parseCommandLine(current):
 
 
 def getCurrent():
-  current={}
+  current = {}
   try:
     with open(cfg.configFile, "rb") as fp:
       shlv = pickle.load(fp)
@@ -60,7 +60,7 @@ def setCurrent(current):
     pickle.dump(shlv, fp)
 
 
-def checkCurrent(current, options, args): 
+def checkCurrent(current, options, args):
   # helper
   def update(current, key, val, test):
     if test:
@@ -76,9 +76,9 @@ def checkCurrent(current, options, args):
       error("Options not known : {0} in {1}".format(opt, current.keys()))
 
     update(current, opt, value, current[opt] != value)
-    
+
   # fixing possible "\" from windows
-  current['destination']=current['destination'].replace('\\','/')
+  current['destination'] = current['destination'].replace('\\', '/')
 
   bT = bA = bM = False
   # fixing args
@@ -106,10 +106,11 @@ def checkCurrent(current, options, args):
   checkConsistency(current)
 
   if options.noSaveParams:
-      pass
+    pass
   else:
-      setCurrent(current)
+    setCurrent(current)
   showInvocation(current)
+
 
 def checkConsistency(current):
   has_notif = False
