@@ -2,5 +2,5 @@ nbformat
 nbconvert
 jupyter
 scipy
-sklearn
+scikit-learn
 pandas

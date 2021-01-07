@@ -60,7 +60,7 @@ pyAgrum contains
   Causal
 
 .. toctree::
-  :caption: sklearn-like BN Classifiers
+  :caption: scikit-learn-like BN Classifiers
   :maxdepth: 2
   :titlesonly:
 
