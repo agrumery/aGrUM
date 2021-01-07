@@ -15,15 +15,34 @@ For a less technical introduction, checkout
 
 # Philosophy & Design
 
-aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and Decision team at [LIP6](http://www.lip6.fr): [Christophe Gonzales](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P37&LANG=en), [Pierre-Henri Wuillemin](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P67) and [students and former students](http://agrum.gitlab.io/pages/hall-of-fame.html). aGrUM then took the form of a generic framework designed to ease the emergence and experimentation of new ideas. More and more, as a consequence, it began to fulfill all the requirements for providing a complete library to build applications using Probabilistic Graphical Models, with a strong emphasis on Bayesian networks. Once the prohect reached this state, the team decided to provide it as an open source contribution for the decision support and data science communities. The last move in that direction has been to port its main code repository at gitlab.
+aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and 
+Decision team at 
+[LIP6](http://www.lip6.fr): [Christophe Gonzales](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P37&LANG=en), 
+[Pierre-Henri Wuillemin](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P67) and 
+[students and former students](http://agrum.gitlab.io/pages/hall-of-fame.html). aGrUM then took the form of a 
+generic framework designed to ease the emergence and experimentation of new ideas. More and more, as a consequence, 
+it began to fulfill all the requirements for providing a complete library to build applications using Probabilistic 
+Graphical Models, with a strong emphasis on Bayesian networks. Once the prohect reached this state, the team decided 
+to provide it as an open source contribution for the decision support and data science communities. The last move in 
+that direction has been to port its main code repository at gitlab.
 
-aGrUM main goals include code quality, code reuse and performance: aGrUM is written in modern C++11/17 (cross-platform : gcc>=4.8, clang and visual C++); tests and continuous integration are at the core of aGrUM's development; many classical algorithms have been reimplemented and multi-threaded to speed up learning and inference.
+aGrUM main goals include code quality, code reuse and performance: aGrUM is written in modern C++11/17 
+(cross-platform: gcc>=4.8, clang and visual C++); tests and continuous integration are at the core of aGrUM's 
+development; many classical algorithms have been reimplemented and multi-threaded to speed up learning and inference.
 
-Moreover, aGrUM allows its users to very finely tune learning (choosing priors, score, constraints, algorithms and more), inference (choosing their algorithms but also their components like message passing algorithms, triangulation algorithms, etc.) and modeling (choosing the type of discrete variables, making qualitative and quantitative introspection in the model, etc.). The different frameworks (Bayesian networks, influence diagram, credal networks, FMDP, etc.) are treated in the same way (see [here](http://agrum.gitlab.io/pages/agrum.html) for a more exhaustive list of features).
+Moreover, aGrUM allows its users to very finely tune learning (choosing priors, score, constraints, algorithms and 
+more), inference (choosing their algorithms but also their components like message passing algorithms, triangulation 
+algorithms, etc.) and modeling (choosing the type of discrete variables, making qualitative and quantitative 
+introspection in the model, etc.). The different frameworks (Bayesian networks, influence diagram, credal networks, 
+FMDP, etc.) are treated in the same way (see [here](http://agrum.gitlab.io/pages/agrum.html) for a more exhaustive 
+list of features).
 
 ## Wrappers
 
-The main drawback of such a complex toolbox is of course the long and arduous learning curve associated to its inherent complexities. It is the reason why it has been decided to ship wrappers in easier language with easier APIs together with aGrUM. pyAgrum (for python) is the main wrapper of aGrUM. jAgrum and other experimental wrappers could be shipped soon (if needed or asked).
+The main drawback of such a complex toolbox is of course the long and arduous learning curve associated to its 
+inherent complexities. It is the reason why it has been decided to ship wrappers in easier language with easier APIs 
+together with aGrUM. pyAgrum (for python) is the main wrapper of aGrUM. jAgrum and other experimental wrappers could 
+be shipped soon (if needed or asked).
 
 aGrUM uses [swig](http://www.swig.org/) to build these wrappers.
 
@@ -39,11 +58,15 @@ those documentations and tutorials.
 
 ## Dependencies
 
-aGrUM's team tries its best to not introduce external dependencies with aGrUM (understand no external dependencies for the C++ code of aGrUM). All external dependencies are included in aGrUM's source. At the moment the external programs shipped with aGrUM are:
+aGrUM's team tries its best to not introduce external dependencies with aGrUM  (understand no external dependencies 
+for the C++ code of aGrUM). All external dependencies are included in aGrUM's source. At the moment the external 
+programs shipped with aGrUM are:
 - [nanodbc](https://github.com/lexicalunit/nanodbc)
 - [lrs](http://cgm.cs.mcgill.ca/~avis/C/lrs.html)
 - [tinyxml](http://www.grinninglizard.com/tinyxml/)
 - [CxxTest](http://cxxtest.com/)
+
+pyAgrum's dependencies can be found in `wrappers/pyAgrum/requirements.txt` and `wrappers/pyAgrum/optional_requirements.txt`.
 
 # Project Structure
 
