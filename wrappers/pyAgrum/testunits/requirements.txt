@@ -1,0 +1,18 @@
+################################
+# generated : do not change it !
+################################
+matplotlib
+pydotplus
+numpy
+configparser
+six
+#### optional requirements #####
+nbformat
+nbconvert
+jupyter
+scipy
+scikit-learn
+pandas
+################################
+### Specific requirements for notebooks
+
