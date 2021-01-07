@@ -1,9 +1,22 @@
+################################
+# generated : do not change it !
+################################
 matplotlib
-pandas
-pyAgrum
 pydotplus
 numpy
-scipy
 configparser
 six
+<<<<<<< HEAD
 sklearn
+=======
+#### optional requirements #####
+nbformat
+nbconvert
+jupyter
+scipy
+sklearn
+pandas
+################################
+### Specific requirements for binder
+
+>>>>>>> 64c14dbb0 ([pyAgrum] automatic generation of requirements.txt for binder, sphinx and notebooks)

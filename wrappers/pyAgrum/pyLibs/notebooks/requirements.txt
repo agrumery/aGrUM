@@ -1,5 +1,18 @@
+################################
+# generated : do not change it !
+################################
 matplotlib
-pandas
-pyAgrum
 pydotplus
 numpy
+configparser
+six
+#### optional requirements #####
+nbformat
+nbconvert
+jupyter
+scipy
+sklearn
+pandas
+################################
+### Specific requirements for notebooks
+

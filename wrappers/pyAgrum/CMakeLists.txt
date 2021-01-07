@@ -133,6 +133,30 @@ add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
 
+# updating generated cat requirements.txt from pyAgrum/requirements.txt and pyAgrum/optional_requirements.txt
+set(PYAGRUM_REQUIREMENTS_LIST
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../binder
+        ${CMAKE_CURRENT_SOURCE_DIR}/doc/sphinx
+        ${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/notebooks
+        )
+
+FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt PYAGRUM_REQ_CONTENT)
+FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/optional_requirements.txt PYAGRUM_OPT_REQ_CONTENT)
+
+FOREACH(reqdir ${PYAGRUM_REQUIREMENTS_LIST})
+  message(STATUS "** act Notification: updating requirements.txt in ${reqdir}")
+  FILE(READ ${reqdir}/specific_requirements.txt PYAGRUM_SPECIFIC_REQ_CONTENT)
+  FILE(WRITE  ${reqdir}/requirements.txt "################################\n")
+  FILE(APPEND ${reqdir}/requirements.txt "# generated : do not change it !\n")
+  FILE(APPEND ${reqdir}/requirements.txt "################################\n")
+  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_REQ_CONTENT}\n")
+  FILE(APPEND ${reqdir}/requirements.txt "#### optional requirements #####\n")
+  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_OPT_REQ_CONTENT}\n")
+  FILE(APPEND ${reqdir}/requirements.txt "################################\n")
+  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_SPECIFIC_REQ_CONTENT}\n")
+ENDFOREACH()
+# REQUIRMENTS files updated
+
 
 file(GLOB GUMPY_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.py")
 file(GLOB GUMPY_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.ini")
