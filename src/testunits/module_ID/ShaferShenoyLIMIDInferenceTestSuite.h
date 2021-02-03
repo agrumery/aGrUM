@@ -739,5 +739,20 @@ namespace gum_tests {
            TS_GUM_SMALL_ERROR)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+
+    void testNegativeUtilityNonRegression() {
+      auto fs=gum::InfluenceDiagram<double>::fastPrototype("ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
+      fs.cpt("ActualUtility").fillWith(1).normalize();
+      fs.utility("Utility").fillWith({-10,-10,-50,-50});
+
+      auto ie=gum::ShaferShenoyLIMIDInference<double>(&fs);
+      ie.makeInference();
+
+      TS_GUM_POTENTIAL_DELTA(
+         ie.optimalDecision("Options"),
+         (gum::Potential< double >() << fs.variableFromName("Options"))
+            .fillWith({1,0}),
+         TS_GUM_SMALL_ERROR)
+    }
   };
 }   // namespace gum_tests

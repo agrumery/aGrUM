@@ -621,7 +621,7 @@ namespace gum {
       }
       decision = dp.utilPot.putFirst(&infdiag.variable(decisionNode));
 
-      binarizingMax_(decision, dp.utilPot);
+      binarizingMax_(decision, dp.probPot);
     }
     phi[node_to_clique_[decisionNode]].insertProba(decision);
   }
@@ -634,15 +634,26 @@ namespace gum {
     const auto&   firstvar = decision.variable(0);
     for (I.setFirst(); !I.end(); I.incNotVar(firstvar)) {
       I.setFirstVar(firstvar);
+      while (proba[I] == 0) {
+        I.incVar(firstvar);
+        if (I.end()) { // for non valid proba, we keep the first value (by default)²
+          I.setFirstVar(firstvar);
+          break;
+        }
+      }
+      // we found a non null value of proba
       Idx        argm = I.val(firstvar);
       GUM_SCALAR umax = decision[I];
       GUM_SCALAR pmax = proba[I];
       for (I.incVar(firstvar); !I.end(); I.incVar(firstvar)) {
         // lexicographical order on (u,p)
-        if ((umax < decision[I]) || ((umax == decision[I]) && (pmax < proba[I]))) {
-          umax = decision[I];
-          pmax = proba[I];
-          argm = I.val(firstvar);
+        if (proba[I] > 0) {
+          if ((umax < decision[I])
+              || ((umax == decision[I]) && (pmax < proba[I]))) {
+            umax = decision[I];
+            pmax = proba[I];
+            argm = I.val(firstvar);
+          }
         }
       }
       for (I.setFirstVar(firstvar); !I.end(); I.incVar(firstvar))
