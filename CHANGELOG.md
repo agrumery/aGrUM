@@ -1,21 +1,26 @@
 # aGrUM Changelog
+## Changelog for 0.19.1
+
+* aGrUM
+  * bugfix for Influence Diagram with all-negative utilities (thanks to B.Enderle).
+  * (internal) typos and reorganization for `act`'s modules.
 
 ## Changelog for 0.19.0
 
 *Mainly* : important changes for Influence Diagram (aGrUM and pyAgrum) and for BayesNet classifiers compliant to scikit-learn's API (pyAgrum). 
 
 * aGrUM
-  * new and better inference for Influence Diagrams and LIMIDs (`gum::ShafeShenoyLIMIDInference`)
-  * new builder for Influence Diagram `gum::InfluenceDiagram::fastPrototype`
-  * bugfixes
+  * new and better inference for Influence Diagrams and LIMIDs (`gum::ShafeShenoyLIMIDInference`).
+  * new builder for Influence Diagram `gum::InfluenceDiagram::fastPrototype`.
+  * bugfixes.
   
 * pyAgrum
-  * wrapper and notebook functions for new inference and new methods for influence diagram
-  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learning for `fit` (Naive Bayes, TAN, Chow-Liu tree, and others learning aGrUM's algorithms). Several discretization methods are implemented.
-  * minor graphical improvements
-  * remove old deprecated class/method (since pyAgrum 0.12.0)
-  * Improving documentation (readthebook)
-  * bugfixes
+  * wrapper and notebook functions for new inference and new methods for influence diagram.
+  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learning for `fit` (Naïve Bayes, TAN, Chow-Liu tree, and others learning aGrUM's algorithms). Several discretization methods are implemented.
+  * minor graphical improvements.
+  * remove old deprecated class/method (since pyAgrum 0.12.0).
+  * Improving documentation (readthebook).
+  * bugfixes.
 
 ## Changelog for 0.18.2
 
@@ -50,7 +55,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.18.0
 
 * aGrUM
-  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy).
+  * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
   * Bug fix in `MIIC` learning algorithm.
   * Bug fix in `gum::GammaLog2` approximations for very small values.
   * Updating and enhancing ` gum::GraphicalBNComparator`.
@@ -63,11 +68,11 @@ Mainly bugfixes and internal improvements.
   * [internal] Updating sources for MVSC 2019.
 
 * pyAgrum
-  * MarkovNet'model, UAI file format and inference (incremental ShaferShenoy).
+  * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
   * Bug fix in `MIIC` learning algorithm.
-  * Updating and enhancing ` pyAgrum.GraphicalBNComparator`.
+  * Updating and enhancing `pyAgrum.GraphicalBNComparator`.
   * Enhancing API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs).
-  * API changes for `pyAgrum::MultiDimAggregator` (consistant behavior without parent).
+  * API changes for `pyAgrum::MultiDimAggregator` (consistent behavior without parent).
   * new `pyAgrum::MultidimmAggegator` : `Sum`.
   * Minor API changes for `pyAgrum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`).
   * In `gum.lib.bn2roc` : bugfix for ROC, access to significant_digit for `predict`, add Precision-Recall graph. 
@@ -80,7 +85,7 @@ Mainly bugfixes and internal improvements.
   * fix a bug in inference with `gum::InfluenceDiagram`.
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
   * VS2019's compiler is now supported by `act/CMakeLists.txt`.
-  * reorganizing ressources for testsuite.
+  * reorganizing resources for testsuite.
 
 * pyAgrum
   * improved version of MIIC's learning algorithm.
