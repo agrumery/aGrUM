@@ -5,7 +5,6 @@ option (USE_SWIG "use swig to generate bindings" ON)
 
 if (USE_SWIG)
 
-  # https://github.com/swig/swig/issues/817 for NodeProperty
   find_package(SWIG 4.0)
   if (SWIG_FOUND)
     message(STATUS "** aGrUM notification : Swig 4 found")
