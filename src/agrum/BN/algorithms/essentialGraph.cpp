@@ -51,7 +51,7 @@ namespace gum {
     return *this;
   }
 
-  EssentialGraph::~EssentialGraph() {}
+  EssentialGraph::~EssentialGraph() = default;
 
   void EssentialGraph::buildEssentialGraph__() {
     mg__.clear();
@@ -69,12 +69,13 @@ namespace gum {
       v.clear();
       for (const auto x: dagmodel__->topologicalOrder())
         for (const auto y: mg__.children(x))
-          if (!strongly_protected__(x, y)) v.push_back(Arc(x, y));
+          if (!strongly_protected__(x, y)) v.emplace_back(x, y);
+
       for (const auto& arc: v) {
         mg__.eraseArc(arc);
         mg__.addEdge(arc.tail(), arc.head());
       }
-    } while (v.size() > 0);
+    } while (!v.empty());
   }
 
   bool EssentialGraph::strongly_protected__(NodeId a, NodeId b) {
@@ -82,31 +83,45 @@ namespace gum {
     // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
-    // condition (c)
-    if ((mg__.parents(a) - mg__.parents(b)).size() > 0) { return true; }
-
-    NodeSet cs;
-    for (const auto& c: mg__.parents(b)) {
-      // condition (b) & (c)
-      if (c == a) { continue; }
-      if (!mg__.existsEdge(c, a)) {
+    // condition (a)
+    for (const auto& c: mg__.parents(a)) {
+      if (!mg__.existsArc(c, b)) {
+        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (a)")
         return true;
-      } else {
-        cs.insert(c);
+      }
+    }
+
+
+    for (const auto& c: mg__.parents(b)) {
+      if (c == a) { continue; }
+      // condition (c)
+      if (mg__.existsArc(a, c)) {
+        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (c)")
+        return true;
+      }
+
+      // condition (b) knowing that a can not be a parent of c (condition below)
+      if (!mg__.existsEdge(a,c) && !mg__.existsArc(c,a)) {
+        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (b)")
+        return true;
       }
     }
 
     // condition (d)
-    NodeSet ss(cs);
-    if (cs.size() < 2) {
-      return false;
-    } else {
-      for (const auto& i: cs) {
-        ss = ss - mg__.neighbours(i);
-        if (ss.size() < 2) { return false; }
+    bool oneFound = false;
+    for (const auto& c: mg__.parents(b)) {
+      if (c == a) { continue; }
+      // condition (d)
+      if (mg__.existsEdge(c, a)) {
+        if (oneFound) {   // this is the second found
+          //GUM_TRACE(a << "->" << b << " : (d)")
+          return true;
+        }
+        oneFound = true;
       }
-      return true;
     }
+
+    return false;
   }
 
   std::string EssentialGraph::toDot() const {
