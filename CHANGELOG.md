@@ -1,9 +1,15 @@
 # aGrUM Changelog
+
+## Changelog for 0.19.2
+
+* aGrUM
+  * bugfix for `EssentialGraph` (thanks to M.Lasserre).
+
 ## Changelog for 0.19.1
 
 * aGrUM
-  * bugfix for Influence Diagram with all-negative utilities (thanks to B.Enderle).
-  * (internal) typos and reorganization for `act`'s modules.
+  * bugfix for `InfluenceDiagram` with all-negative utilities (thanks to B.Enderle).
+  * [internal] typos and reorganization for `act`'s modules.
 
 ## Changelog for 0.19.0
 
