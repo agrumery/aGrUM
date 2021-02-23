@@ -19,8 +19,6 @@
  */
 
 // macro from graphs.i
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
-
 %ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
 
 %ignore *::beginNodes;
@@ -40,14 +38,6 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
 
 %define IMPROVE_BAYESNET_API(classname)
 %extend classname {
-  PyObject *names() const {
-    PyObject* q=PyList_New(0);
-
-    for ( auto node : self->dag().nodes()) {
-      PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
-    }
-    return q;
-  };
 
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
@@ -65,32 +55,6 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 
-   PyObject *arcs() const {
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   };
-
-  PyObject *parents(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-  PyObject *children(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-  PyObject *family(PyObject* norid) const {
-   return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-  PyObject *descendants(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-  PyObject *ancestors(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-
-  gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
-    gum::NodeSet sonodes;
-    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
-    return self->moralizedAncestralGraph(sonodes);
-  };
-
   bool isIndependent(PyObject* X,PyObject* Y,PyObject* Z) {
     gum::NodeId nx=PyAgrumHelper::nodeIdFromNameOrIndex(X,self->variableNodeMap());
     gum::NodeId ny=PyAgrumHelper::nodeIdFromNameOrIndex(Y,self->variableNodeMap());
@@ -99,7 +63,10 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
     return self->isIndependent(nx,ny,nz);
   }
 }
+
+IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(classname);
 %enddef
+
 IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNetFragment);
@@ -322,7 +289,3 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       writer.write( name, *self );
   };
 }
-
-%pythonappend gum::DAGmodel::dag %{
-    val = DAG(val) # copying the DAG
-%}

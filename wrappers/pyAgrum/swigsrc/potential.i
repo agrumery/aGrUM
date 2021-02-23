@@ -66,10 +66,6 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 %rename ("$ignore", fullname=1) gum::Potential<double>::reorganize(const Set<const DiscreteVariable*>& vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
 
-/* Convert from C --> Python */
-%typemap(out) gum::Set<gum::Instantiation> {
-    $result = PyAgrumHelper::PySeqFromSetOfInstantiation($1);
-}
 
 %extend gum::Potential<double> {
     Potential<double> extract(PyObject* dict) {

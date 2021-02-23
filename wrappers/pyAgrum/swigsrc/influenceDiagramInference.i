@@ -109,8 +109,3 @@ def updateEvidence(self, evidces):
 %enddef
 
 IMPROVE_LIMID_INFERENCE_API(ShaferShenoyLIMIDInference)
-
-
-%typemap(out) std::pair<double,double> {
-$result=PyAgrumHelper::PyDictFromPairMeanVar($1) ;
-}

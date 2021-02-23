@@ -18,30 +18,10 @@
  *
  */
 
-// macro from graphs.i
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
-
-
-// for gum::IMarkovNet::factors
-%typemap(out) const gum::FactorTable<double> & {
-  $result = PyList_New(0);
-
-  for (auto kv : *$1) {
-    PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
-  }
-}
-
 %define IMPROVE_MARKOVNET_API(classname)
+IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
+
 %extend classname {
-  PyObject *names() const {
-    PyObject* q=PyList_New(0);
-
-    for ( auto node : self->graph().nodes()) {
-      PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
-    }
-    return q;
-  };
-
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
@@ -58,12 +38,6 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 
-  PyObject *neighbours(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-  };
-  PyObject *edges() const {
-    return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
-  };
 
   const gum::Potential<double>& factor(PyObject* nodeseq) const {
     gum::NodeSet idx;

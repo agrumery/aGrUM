@@ -23,14 +23,6 @@
 %ignore gum::InfluenceDiagram::getPartialTemporalOrder;
 %ignore gum::InfluenceDiagram:: addUtilityNode ( const gum::DiscreteVariable& variable,gum::MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
-%typemap(out) const gum::Sequence<gum::NodeId>& {
-  PyObject *q=PyList_New(0);
-  for(auto i : *$1) {
-    PyList_Append(q,PyInt_FromLong(i));
-  }
-  $result=q;
-}
-
 %include "extensions/IDGenerator.h"
 
 %{
@@ -39,47 +31,6 @@
 
 
 %extend gum::InfluenceDiagram {
-    PyObject *names() const {
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
-      }
-      return q;
-    };
-
-    PyObject *nodes() {
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyInt_FromLong(*node_iter));
-      }
-
-      return q;
-    };
-
-   PyObject *arcs() const {
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   };
-
-   PyObject *parents(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyObject *children(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyObject *family(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyObject *descendants(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyObject *ancestors(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0) {
     try {
         gum::BIFXMLIDReader<GUM_SCALAR> reader(self,name);
@@ -98,3 +49,4 @@
   };
 }
 
+IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);

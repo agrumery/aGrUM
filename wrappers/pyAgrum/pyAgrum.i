@@ -57,7 +57,8 @@
 %include "exceptions.i"
 %include "pythonize.i"
 
-
+%include "gum_typemaps.i"
+%include "pgm.i"
 
 //////////////////////////////////////////////////////////////////
 /* declaration of code enhancers for pyAgrum */
