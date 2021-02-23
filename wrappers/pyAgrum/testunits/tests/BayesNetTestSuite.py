@@ -228,41 +228,41 @@ class TestFeatures(BayesNetTestCase):
     idList = []
     self.fillBN(bn, idList)
 
-    self.assertEquals(bn.maxVarDomainSize(), 3)
-    self.assertEquals(bn.minParam(), 0.0)
-    self.assertEquals(bn.maxParam(), 1.0)
-    self.assertEquals(bn.minNonZeroParam(), 0.1)
-    self.assertEquals(bn.maxNonOneParam(), 0.9)
+    self.assertEqual(bn.maxVarDomainSize(), 3)
+    self.assertEqual(bn.minParam(), 0.0)
+    self.assertEqual(bn.maxParam(), 1.0)
+    self.assertEqual(bn.minNonZeroParam(), 0.1)
+    self.assertEqual(bn.maxNonOneParam(), 0.9)
 
   def test_fastBN(self):
     bn = gum.fastBN("a->b->c;a->c")
-    self.assertEquals(bn.size(), 3)
-    self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(len(bn.arcs()), 3)
-    self.assertEquals(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
+    self.assertEqual(bn.size(), 3)
+    self.assertEqual(bn.sizeArcs(), 3)
+    self.assertEqual(len(bn.arcs()), 3)
+    self.assertEqual(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
 
     bn = gum.fastBN("a->b->c;a->c", 3)
-    self.assertEquals(bn.size(), 3)
-    self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(bn.dim(), (3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1)))
+    self.assertEqual(bn.size(), 3)
+    self.assertEqual(bn.sizeArcs(), 3)
+    self.assertEqual(bn.dim(), (3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1)))
 
     bn = gum.fastBN("a->b[5]->c;a->c")
-    self.assertEquals(bn.size(), 3)
-    self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(bn.dim(), (2 - 1) + (2 * (5 - 1)) + (2 * 5 * (2 - 1)))
+    self.assertEqual(bn.size(), 3)
+    self.assertEqual(bn.sizeArcs(), 3)
+    self.assertEqual(bn.dim(), (2 - 1) + (2 * (5 - 1)) + (2 * 5 * (2 - 1)))
 
     bn = gum.fastBN("a->b->c;a[1000]->c")
-    self.assertEquals(bn.size(), 3)
-    self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
+    self.assertEqual(bn.size(), 3)
+    self.assertEqual(bn.sizeArcs(), 3)
+    self.assertEqual(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
 
     with self.assertRaises(gum.InvalidDirectedCycle):
       bn = gum.fastBN("a->b->c->a")
 
     bn = gum.fastBN("a{yes|maybe|no}->b->c;a->c")
-    self.assertEquals(bn.size(), 3)
-    self.assertEquals(bn.sizeArcs(), 3)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 3)
+    self.assertEqual(bn.sizeArcs(), 3)
+    self.assertEqual(bn.dim(),
                       (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)))
 
     with self.assertRaises(gum.InvalidArgument):
@@ -272,53 +272,53 @@ class TestFeatures(BayesNetTestCase):
       bn = gum.fastBN("a{yes|no|yes}->b->c;a->c")
 
     bn = gum.fastBN("a->b->c->d->e->f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       1 + 5 * 2)
 
     bn = gum.fastBN("a<-b<-c<-d<-e<-f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       1 + 5 * 2)
 
     bn = gum.fastBN("a<-b->c<-d->e<-f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c->d<-e->f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c;c->d<-e->f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c->d;d<-e->f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f")
-    self.assertEquals(bn.size(), 6)
-    self.assertEquals(bn.sizeArcs(), 5)
-    self.assertEquals(bn.dim(),
+    self.assertEqual(bn.size(), 6)
+    self.assertEqual(bn.sizeArcs(), 5)
+    self.assertEqual(bn.dim(),
                       3 * 1 + 2 + 2 * 4)
 
   def testFastPrototypeVarType(self):
     bn = gum.fastBN("a")
-    self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
+    self.assertEqual(bn.variable("a").__str__(), "a[0,1]")
 
     bn = gum.fastBN("a[0,1]")
-    self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
+    self.assertEqual(bn.variable("a").__str__(), "a[0,1]")
 
     with self.assertRaises(gum.InvalidArgument):
       bn = gum.fastBN("a[0,0]")
@@ -328,16 +328,16 @@ class TestFeatures(BayesNetTestCase):
       bn = gum.fastBN("a[1,1]")
 
     bn = gum.fastBN("a[5]")
-    self.assertEquals(bn.variable("a").__str__(), "a[0,4]")
+    self.assertEqual(bn.variable("a").__str__(), "a[0,4]")
 
     bn = gum.fastBN("a[2,5]")
-    self.assertEquals(bn.variable("a").__str__(), "a[2,5]")
+    self.assertEqual(bn.variable("a").__str__(), "a[2,5]")
 
     bn = gum.fastBN("a[-2,2]")
-    self.assertEquals(bn.variable("a").__str__(), "a[-2,2]")
+    self.assertEqual(bn.variable("a").__str__(), "a[-2,2]")
 
     bn = gum.fastBN("a[-0.4,0.1,0.5,3.14,10]")
-    self.assertEquals(bn.variable("a").__str__(),
+    self.assertEqual(bn.variable("a").__str__(),
                       "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
 
   def test_minimalCondSet(self):
@@ -649,12 +649,12 @@ class TestSaveBN(BayesNetTestCase):
     bn2 = gum.loadBN(self.agrumSrcDir(
         "src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
 
-    self.assertEquals(bn.dim(), bn2.dim())
-    self.assertEquals(bn.log10DomainSize(), bn2.log10DomainSize())
+    self.assertEqual(bn.dim(), bn2.dim())
+    self.assertEqual(bn.log10DomainSize(), bn2.log10DomainSize())
     for n in bn.names():
-      self.assertEquals(bn.variable(n).name(), bn2.variable(n).name())
-      self.assertEquals(bn.variable(n).varType(), bn2.variable(n).varType())
-      self.assertEquals(bn.variable(n).domainSize(),
+      self.assertEqual(bn.variable(n).name(), bn2.variable(n).name())
+      self.assertEqual(bn.variable(n).varType(), bn2.variable(n).varType())
+      self.assertEqual(bn.variable(n).domainSize(),
                         bn2.variable(n).domainSize())
 
 
@@ -664,50 +664,50 @@ class TestScore(BayesNetTestCase):
     bn = gum.fastBN("A->B;C->B;A->C")
     precision = bvb.GraphicalBNComparator(
         true_bn, bn).skeletonScores()['precision']
-    self.assertEquals(2./3., precision)
+    self.assertEqual(2./3., precision)
 
   def testSkeletonRecall(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     recall = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['recall']
-    self.assertEquals(1., recall)
+    self.assertEqual(1., recall)
 
   def testSkeletonFscore(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['fscore']
-    self.assertEquals(4./5., fscore)
+    self.assertEqual(4./5., fscore)
 
   def testPrecision(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
-    self.assertEquals(1./3., precision)
+    self.assertEqual(1./3., precision)
 
   def testRecall(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
-    self.assertEquals(1./2., recall)
+    self.assertEqual(1./2., recall)
 
   def testFscore(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
-    self.assertEquals(2./5., fscore)
+    self.assertEqual(2./5., fscore)
 
   def testHamming(self):
     true_bn = gum.fastBN("A->B->C;B->D")
     bn = gum.fastBN("A->B;C->B;D->C")
     hamming = bvb.GraphicalBNComparator(true_bn, bn).hamming()['hamming']
-    self.assertEquals(2, hamming)
+    self.assertEqual(2, hamming)
 
   def testStructuralHamming(self):
     true_bn = gum.fastBN("A->B->C;B->D")
     bn = gum.fastBN("A->B;C->B;D->C")
     shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()[
         'structural hamming']
-    self.assertEquals(4, shd)
+    self.assertEqual(4, shd)
 
 
 ts = unittest.TestSuite()

@@ -77,17 +77,17 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertTrue(not frag.empty())
     frag.installNode("v6")
 
-    self.assertEquals(frag.dag().sizeArcs(), 0)
-    self.assertEquals(frag.size(), 2)
-    self.assertEquals(frag.dim(), (3 - 1) + (2 - 1))
-    self.assertEquals(pow(10, frag.log10DomainSize()), 2 * 3)
+    self.assertEqual(frag.dag().sizeArcs(), 0)
+    self.assertEqual(frag.size(), 2)
+    self.assertEqual(frag.dim(), (3 - 1) + (2 - 1))
+    self.assertEqual(pow(10, frag.log10DomainSize()), 2 * 3)
 
     frag.installAscendants("v6")
 
-    self.assertEquals(frag.dag().sizeArcs(), 2)
-    self.assertEquals(frag.size(), 3)
-    self.assertEquals(frag.dim(), (2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))
-    self.assertAlmostEquals(
+    self.assertEqual(frag.dag().sizeArcs(), 2)
+    self.assertEqual(frag.size(), 3)
+    self.assertEqual(frag.dim(), (2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))
+    self.assertAlmostEqual(
       pow(10, frag.log10DomainSize()), 2 * 2 * 3, delta=1e-5)
 
     I = frag.completeInstantiation()

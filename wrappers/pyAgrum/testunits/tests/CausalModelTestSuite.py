@@ -159,7 +159,7 @@ class TestCausalModel(pyAgrumTestCase):
     c = csl.CausalModel(bn, [("Z0", ("X", "Z1", "Z3"))], False)
     _, pot, explanation = csl.causalImpact(c, "Y", "X")
     self.assertIsNotNone(pot)
-    self.assertEquals(explanation, "Do-calculus computations")
+    self.assertEqual(explanation, "Do-calculus computations")
 
   def testCounterfactual(self):
     # experience=10-4*education+Ux

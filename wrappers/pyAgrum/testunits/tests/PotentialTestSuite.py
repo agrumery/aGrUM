@@ -354,28 +354,28 @@ class TestOperators(pyAgrumTestCase):
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     z = p + q
     p += q
-    self.assertEquals(z.tolist(), p.tolist())
+    self.assertEqual(z.tolist(), p.tolist())
 
     p = gum.Potential()
     p.add(a).add(b)
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     z = p - q
     p -= q
-    self.assertEquals(z.tolist(), p.tolist())
+    self.assertEqual(z.tolist(), p.tolist())
 
     p = gum.Potential()
     p.add(a).add(b)
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     z = p * q
     p *= q
-    self.assertEquals(z.tolist(), p.tolist())
+    self.assertEqual(z.tolist(), p.tolist())
 
     p = gum.Potential()
     p.add(a).add(b)
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     z = p / q
     p /= q
-    self.assertEquals(z.tolist(), p.tolist())
+    self.assertEqual(z.tolist(), p.tolist())
 
   def testMargOutOperators(self):
     a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "abcd"]
@@ -392,21 +392,21 @@ class TestOperators(pyAgrumTestCase):
     joint = p * q
 
     margAB = joint.margSumOut(["c", "d"])
-    self.assertEquals(margAB.var_names, p.var_names)
-    self.assertEquals(margAB.tolist(), p.tolist())
+    self.assertEqual(margAB.var_names, p.var_names)
+    self.assertEqual(margAB.tolist(), p.tolist())
 
     margCD = joint.margSumOut(
         ["b", "a", "x"])  # note the vars in a different order and with one not present in the potential
-    self.assertEquals(margCD.var_names, q.var_names)
-    self.assertEquals(margCD.tolist(), q.tolist())
+    self.assertEqual(margCD.var_names, q.var_names)
+    self.assertEqual(margCD.tolist(), q.tolist())
 
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    self.assertEquals(p.margProdOut(["a"]).tolist(), [6, 120, 504])
-    self.assertEquals(p.margProdOut(["b"]).tolist(), [28, 80, 162])
-    self.assertEquals(p.margMaxOut(["a"]).tolist(), [3, 6, 9])
-    self.assertEquals(p.margMaxOut(["b"]).tolist(), [7, 8, 9])
-    self.assertEquals(p.margMinOut(["a"]).tolist(), [1, 4, 7])
-    self.assertEquals(p.margMinOut(["b"]).tolist(), [1, 2, 3])
+    self.assertEqual(p.margProdOut(["a"]).tolist(), [6, 120, 504])
+    self.assertEqual(p.margProdOut(["b"]).tolist(), [28, 80, 162])
+    self.assertEqual(p.margMaxOut(["a"]).tolist(), [3, 6, 9])
+    self.assertEqual(p.margMaxOut(["b"]).tolist(), [7, 8, 9])
+    self.assertEqual(p.margMinOut(["a"]).tolist(), [1, 4, 7])
+    self.assertEqual(p.margMinOut(["b"]).tolist(), [1, 2, 3])
 
   def testMargInOperators(self):
     a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "abcd"]
@@ -420,22 +420,22 @@ class TestOperators(pyAgrumTestCase):
 
     joint = p * q
 
-    self.assertEquals(joint.margSumIn(
+    self.assertEqual(joint.margSumIn(
         ['a', 'b']), joint.margSumOut(['c', 'd']))
-    self.assertEquals(joint.margSumIn(
+    self.assertEqual(joint.margSumIn(
         ['b', 'a']), joint.margSumOut(['c', 'd']))
-    self.assertEquals(joint.margSumIn(
+    self.assertEqual(joint.margSumIn(
         ['a', 'b']), joint.margSumOut(['d', 'c']))
-    self.assertEquals(joint.margSumIn(
+    self.assertEqual(joint.margSumIn(
         ['b', 'a']), joint.margSumOut(['d', 'c']))
 
-    self.assertEquals(joint.margProdIn(
+    self.assertEqual(joint.margProdIn(
         ['a', 'b']), joint.margProdOut(['c', 'd']))
 
-    self.assertEquals(joint.margMaxIn(
+    self.assertEqual(joint.margMaxIn(
         ['a', 'b']), joint.margMaxOut(['c', 'd']))
 
-    self.assertEquals(joint.margMinIn(
+    self.assertEqual(joint.margMinIn(
         ['a', 'b']), joint.margMinOut(['c', 'd']))
 
     # one can not margIn on an invalid variable
@@ -451,10 +451,10 @@ class TestOperators(pyAgrumTestCase):
     p = gum.Potential().add(a).add(b).fillWith([0, 1, 2, 3])
     q = gum.Potential().add(a).add(b).fillWith([0, 3, 0, 3])
 
-    self.assertEquals((p - q).abs().tolist(), [[0, 2], [2, 0]])
-    self.assertEquals((q - p).abs().tolist(), [[0, 2], [2, 0]])
-    self.assertEquals((q - p).abs().max(), 2)
-    self.assertEquals((q - p).abs().min(), 0)
+    self.assertEqual((p - q).abs().tolist(), [[0, 2], [2, 0]])
+    self.assertEqual((q - p).abs().tolist(), [[0, 2], [2, 0]])
+    self.assertEqual((q - p).abs().max(), 2)
+    self.assertEqual((q - p).abs().min(), 0)
 
   def testLog2Potential(self):
     a, b = [gum.LabelizedVariable(s, s, 2) for s in "ab"]
@@ -471,18 +471,18 @@ class TestOperators(pyAgrumTestCase):
     p = gum.Potential().add(a).add(b).fillWith([0, 1, 2, 3])
     q = gum.Potential().add(a).add(b).fillWith([0, 3, 0, 3])
 
-    self.assertEquals((p - q).sq().tolist(), [[0, 4], [4, 0]])
-    self.assertEquals((q - p).sq().tolist(), [[0, 4], [4, 0]])
-    self.assertEquals((q - p).sq().max(), 4)
-    self.assertEquals((q - p).sq().min(), 0)
+    self.assertEqual((p - q).sq().tolist(), [[0, 4], [4, 0]])
+    self.assertEqual((q - p).sq().tolist(), [[0, 4], [4, 0]])
+    self.assertEqual((q - p).sq().max(), 4)
+    self.assertEqual((q - p).sq().min(), 0)
 
   def testEntropyPotential(self):
     a = gum.LabelizedVariable("a", "a", 2)
     p = gum.Potential().add(a)
 
-    self.assertEquals(p.fillWith([0, 1]).entropy(), 0.0)
-    self.assertEquals(p.fillWith([1, 0]).entropy(), 0.0)
-    self.assertEquals(p.fillWith([0.5, 0.5]).entropy(), 1.0)
+    self.assertEqual(p.fillWith([0, 1]).entropy(), 0.0)
+    self.assertEqual(p.fillWith([1, 0]).entropy(), 0.0)
+    self.assertEqual(p.fillWith([0.5, 0.5]).entropy(), 1.0)
 
   def testReorganizePotential(self):
     a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "abcd"]
@@ -720,8 +720,8 @@ class TestOperators(pyAgrumTestCase):
     v = gum.LabelizedVariable("v", "v", 2)
     w = gum.LabelizedVariable("w", "w", 2)
     p = gum.Potential().add(v).add(w)
-    self.assertEquals(p.variable(0), p.variable('v'))
-    self.assertEquals(p.variable(1), p.variable('w'))
+    self.assertEqual(p.variable(0), p.variable('v'))
+    self.assertEqual(p.variable(1), p.variable('w'))
     self.assertNotEqual(p.variable(1), p.variable('v'))
     self.assertNotEqual(p.variable(0), p.variable('w'))
 
@@ -738,9 +738,9 @@ class TestOperators(pyAgrumTestCase):
     bn2.cpt("C").fillWith(pABC.margSumIn(["B", "C"]) / pABC.margSumIn(["B"]))
     pABC2 = (bn2.cpt("A") * bn2.cpt("B") * bn2.cpt("C"))
 
-    self.assertAlmostEquals(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -
+    self.assertAlmostEqual(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -
                                    pABC.reorganize(['A', 'B', 'C']).toarray()), 0)
-    self.assertAlmostEquals(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
+    self.assertAlmostEqual(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
                                    pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
 
   def testFillWithPotentialAndMap(self):
@@ -753,7 +753,7 @@ class TestOperators(pyAgrumTestCase):
     ww = gum.LabelizedVariable("ww", "ww", 3)
     pp = gum.Potential().add(ww).add(vv)
     pp.fillWith(p, ["w", "v"])
-    self.assertAlmostEquals(np.max(p.reorganize(['v', 'w']).toarray() -
+    self.assertAlmostEqual(np.max(p.reorganize(['v', 'w']).toarray() -
                                    pp.reorganize(['vv', 'ww']).toarray()), 0)
 
     vvv = gum.LabelizedVariable("vvv", "vvv", 2)
@@ -773,7 +773,7 @@ class TestOperators(pyAgrumTestCase):
       v = 3 * I.val(1) + 2
       if v >= I.variable(0).domainSize():
         v = I.variable(0).domainSize()-1
-      self.assertEquals(bn.cpt("D").get(I), 1 if I.val(0) == v else 0)
+      self.assertEqual(bn.cpt("D").get(I), 1 if I.val(0) == v else 0)
       I.inc()
 
     with self.assertRaises(gum.InvalidArgument):
@@ -806,55 +806,55 @@ class TestOperators(pyAgrumTestCase):
     # === LabelizedVariable
     v = gum.LabelizedVariable("v", "v", 0)
     p = gum.Potential()
-    self.assertEquals(v.domainSize(), 0)
+    self.assertEqual(v.domainSize(), 0)
     with self.assertRaises(gum.InvalidArgument):
       p.add(v)
 
     v.addLabel("first")
-    self.assertEquals(v.domainSize(), 1)
+    self.assertEqual(v.domainSize(), 1)
     p.add(v)
 
     p = gum.Potential()
     v.addLabel("second")
-    self.assertEquals(v.domainSize(), 2)
+    self.assertEqual(v.domainSize(), 2)
     p.add(v)
 
     # === RangeVariable
     v = gum.RangeVariable("v", "v", 1, 0)
     p = gum.Potential()
-    self.assertEquals(v.domainSize(), 0)
+    self.assertEqual(v.domainSize(), 0)
     with self.assertRaises(gum.InvalidArgument):
       p.add(v)
 
     v.setMaxVal(1)
-    self.assertEquals(v.domainSize(), 1)
+    self.assertEqual(v.domainSize(), 1)
     p.add(v)
 
     p = gum.Potential()
     v.setMaxVal(2)
-    self.assertEquals(v.domainSize(), 2)
+    self.assertEqual(v.domainSize(), 2)
     p.add(v)
 
     # === DiscretizedVariable
     v = gum.DiscretizedVariable("v", "v")
     p = gum.Potential()
 
-    self.assertEquals(v.domainSize(), 0)
+    self.assertEqual(v.domainSize(), 0)
     with self.assertRaises(gum.InvalidArgument):
       p.add(v)
 
     v.addTick(1)
-    self.assertEquals(v.domainSize(), 0)
+    self.assertEqual(v.domainSize(), 0)
     with self.assertRaises(gum.InvalidArgument):
       p.add(v)
 
     v.addTick(2)
-    self.assertEquals(v.domainSize(), 1)
+    self.assertEqual(v.domainSize(), 1)
     p.add(v)
 
     p = gum.Potential()
     v.addTick(3)
-    self.assertEquals(v.domainSize(), 2)
+    self.assertEqual(v.domainSize(), 2)
     p.add(v)
 
   def testRandomPotential(self):
@@ -988,7 +988,7 @@ class TestOperators(pyAgrumTestCase):
     p = gum.Potential().add(u).add(v).add(w)
     p.random()
 
-    self.assertAlmostEqual(gum.Potential(p).translate(2), p + 2, 1e-10)    
+    self.assertAlmostEqual(gum.Potential(p).translate(2), p + 2, 1e-10)
     self.assertAlmostEqual(gum.Potential(p).translate(2), 2 + p, 1e-10)
     
 

@@ -22,46 +22,46 @@ class MarkovNetTestCase(pyAgrumTestCase):
     mn = gum.MarkovNet()
     self._fill(mn)
 
-    self.assertEquals(mn.size(), 5)
-    self.assertEquals(mn.sizeEdges(), 6)
-    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
-    self.assertEquals(mn.__str__(),
+    self.assertEqual(mn.size(), 5)
+    self.assertEqual(mn.sizeEdges(), 6)
+    self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
+    self.assertEqual(mn.__str__(),
                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
-    self.assertEquals(mn.neighbours("41"), {0, 1, 4})
-    self.assertEquals(mn.neighbours(3), {0, 1, 4})
+    self.assertEqual(mn.neighbours("41"), {0, 1, 4})
+    self.assertEqual(mn.neighbours(3), {0, 1, 4})
 
-    self.assertEquals(mn.variable(1).name(), "21")
-    self.assertEquals(mn.nodeId(mn.variable(2)), 2)
-    self.assertEquals(mn.idFromName("31"), 2)
-    self.assertEquals(mn.variableFromName("41").name(), "41")
+    self.assertEqual(mn.variable(1).name(), "21")
+    self.assertEqual(mn.nodeId(mn.variable(2)), 2)
+    self.assertEqual(mn.idFromName("31"), 2)
+    self.assertEqual(mn.variableFromName("41").name(), "41")
 
-    self.assertEquals(mn.maxVarDomainSize(), 7)
-    self.assertEquals(mn.minParam(), 0.0)
-    self.assertEquals(mn.minNonZeroParam(), 0.03)
-    self.assertEquals(mn.maxParam(), 1.0)
-    self.assertEquals(mn.maxNonOneParam(), 0.97)
+    self.assertEqual(mn.maxVarDomainSize(), 7)
+    self.assertEqual(mn.minParam(), 0.0)
+    self.assertEqual(mn.minNonZeroParam(), 0.03)
+    self.assertEqual(mn.maxParam(), 1.0)
+    self.assertEqual(mn.maxNonOneParam(), 0.97)
 
   def testCopyConstructor(self):
     mn = gum.MarkovNet()
     self._fill(mn)
     mn2 = gum.MarkovNet(mn)
-    self.assertEquals(
+    self.assertEqual(
         mn2.__str__(), "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
     for n in mn.nodes():
-      self.assertEquals(mn.variable(n).name(), mn2.variable(n).name())
-      self.assertEquals(mn.neighbours(n), mn2.neighbours(n))
+      self.assertEqual(mn.variable(n).name(), mn2.variable(n).name())
+      self.assertEqual(mn.neighbours(n), mn2.neighbours(n))
 
   def testCopyOperator(self):
     mn = gum.MarkovNet()
     mn2 = gum.MarkovNet()
     self._fill(mn)
     mn2 = mn
-    self.assertEquals(mn2.__str__(),
+    self.assertEqual(mn2.__str__(),
                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
     for n in mn.nodes():
-      self.assertEquals(mn.variable(n).name(), mn2.variable(n).name())
-      self.assertEquals(mn.neighbours(n), mn2.neighbours(n))
+      self.assertEqual(mn.variable(n).name(), mn2.variable(n).name())
+      self.assertEqual(mn.neighbours(n), mn2.neighbours(n))
 
   def testEqualityOperators(self):
     mn1 = gum.MarkovNet()
@@ -69,7 +69,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     mn2 = gum.MarkovNet()
     self.assertNotEqual(mn1, mn2)
     self._fill(mn2)
-    self.assertEquals(mn1, mn2)
+    self.assertEqual(mn1, mn2)
     mn2.generateFactors()
     self.assertNotEqual(mn1, mn2)
 
@@ -88,7 +88,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     pot = gum.Potential().add(mn1.variable("11")).add(mn1.variable("21"))
     pot.randomDistribution()
     mn1.addFactor(pot)
-    self.assertEquals(pot.__str__(), mn1.factor({"11", "21"}).__str__())
+    self.assertEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
     mn1 = gum.MarkovNet()
     self._fill(mn1)
@@ -114,12 +114,12 @@ class MarkovNetTestCase(pyAgrumTestCase):
     cpt = 0
     for node in mn.nodes():
       cpt += 1
-    self.assertEquals(cpt, mn.size())
+    self.assertEqual(cpt, mn.size())
 
     cpt = 0
     for edg in mn.edges():
       cpt += 1
-    self.assertEquals(cpt, mn.sizeEdges())
+    self.assertEqual(cpt, mn.sizeEdges())
 
   def testEraseFactor(self):
     mn = gum.MarkovNet()
@@ -128,10 +128,10 @@ class MarkovNetTestCase(pyAgrumTestCase):
       mn.eraseFactor({12, 14})
     mn.eraseFactor({2, 4})
 
-    self.assertEquals(mn.size(), 5)
-    self.assertEquals(mn.sizeEdges(), 5)
-    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
-    self.assertEquals(mn.__str__(),
+    self.assertEqual(mn.size(), 5)
+    self.assertEqual(mn.sizeEdges(), 5)
+    self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
+    self.assertEqual(mn.__str__(),
                       "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testEraseFactorWithNames(self):
@@ -141,10 +141,10 @@ class MarkovNetTestCase(pyAgrumTestCase):
       mn.eraseFactor({"31", "21"})
     mn.eraseFactor({"31", "51"})
 
-    self.assertEquals(mn.size(), 5)
-    self.assertEquals(mn.sizeEdges(), 5)
-    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
-    self.assertEquals(mn.__str__(),
+    self.assertEqual(mn.size(), 5)
+    self.assertEqual(mn.sizeEdges(), 5)
+    self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
+    self.assertEqual(mn.__str__(),
                       "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testErase(self):
@@ -153,10 +153,10 @@ class MarkovNetTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       mn.erase(36)
     mn.erase(3)
-    self.assertEquals(mn.size(), 4)
-    self.assertEquals(mn.sizeEdges(), 3)
-    self.assertEquals(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
-    self.assertEquals(mn.__str__(),
+    self.assertEqual(mn.size(), 4)
+    self.assertEqual(mn.sizeEdges(), 3)
+    self.assertEqual(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
+    self.assertEqual(mn.__str__(),
                       "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testEraseWithNames(self):
@@ -165,10 +165,10 @@ class MarkovNetTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.NotFound):
       mn.erase("36")
     mn.erase("41")
-    self.assertEquals(mn.size(), 4)
-    self.assertEquals(mn.sizeEdges(), 3)
-    self.assertEquals(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
-    self.assertEquals(mn.__str__(),
+    self.assertEqual(mn.size(), 4)
+    self.assertEqual(mn.sizeEdges(), 3)
+    self.assertEqual(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
+    self.assertEqual(mn.__str__(),
                       "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testToDot(self):
@@ -183,7 +183,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     pbn = gum.Potential()
     pbn.fillWith(1)
     for nod in bn.nodes():
-      self.assertEquals(bn.variable(nod).__str__(), mn.variable(nod).__str__())
+      self.assertEqual(bn.variable(nod).__str__(), mn.variable(nod).__str__())
       pbn *= bn.cpt(nod)
 
     pmn = gum.Potential()
@@ -195,9 +195,9 @@ class MarkovNetTestCase(pyAgrumTestCase):
     ppmn = gum.Potential(pbn)
     ppmn.fillWith(pmn)  # copy of pmn using pbn's variables
     diff = (pbn - ppmn).abs()
-    self.assertEquals(pbn.domainSize(), diff.domainSize())
+    self.assertEqual(pbn.domainSize(), diff.domainSize())
     self.assertLessEqual(diff.max(), 1e-10)
-    self.assertEquals(mn.graph(), bn.moralGraph())
+    self.assertEqual(mn.graph(), bn.moralGraph())
 
   def testExistsEdge(self):
     mn = gum.fastMN("A-B-C;C-D;E-F-G")

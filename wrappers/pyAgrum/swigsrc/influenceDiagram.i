@@ -60,39 +60,25 @@
       return q;
     };
 
-    PyObject *arcs() {
-      PyObject* q=PyList_New(0);
+   PyObject *arcs() const {
+     return PyAgrumHelper::PySetFromArcSet(self->arcs());
+   };
 
-      const gum::DAG& dag=self->dag();
-      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
-        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
-      }
-
-      return q;
-    };
-
-
-    PyObject *parents(const NodeId id) const {
-    PyObject* q=PyList_New(0);
-
-    const gum::NodeSet& p=self->dag().parents(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
-    }
-
-    return q;
-  };
-
-    PyObject *children(const NodeId id) const {
-    PyObject* q=PyList_New(0);
-
-    const gum::NodeSet& p=self->dag().children(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
-    }
-
-    return q;
-  };
+   PyObject *parents(PyObject* norid) const {
+     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+   };
+   PyObject *children(PyObject* norid) const {
+     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+   };
+   PyObject *family(PyObject* norid) const {
+     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+   };
+   PyObject *descendants(PyObject* norid) const {
+     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+   };
+   PyObject *ancestors(PyObject* norid) const {
+     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
+   };
 
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0) {
     try {

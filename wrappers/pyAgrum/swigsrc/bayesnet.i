@@ -21,7 +21,7 @@
 // macro from graphs.i
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
 
- %ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
+%ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
 
 %ignore *::beginNodes;
 %ignore *::endNodes;
@@ -65,16 +65,19 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 
+   PyObject *arcs() const {
+     return PyAgrumHelper::PySetFromArcSet(self->arcs());
+   };
+
   PyObject *parents(PyObject* norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
   PyObject *children(PyObject* norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
-  PyObject *arcs() const {
-    return PyAgrumHelper::PySetFromArcSet(self->arcs());
+  PyObject *family(PyObject* norid) const {
+   return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
-
   PyObject *descendants(PyObject* norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };

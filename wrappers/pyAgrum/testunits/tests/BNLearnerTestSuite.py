@@ -94,8 +94,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     bn2 = learner.learnParameters()
     for i in range(bn.size()):
-      # self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
-      self.assertEquals(set(bn2.variable(i).labels()), set(
+      # self.assertEqual(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
+      self.assertEqual(set(bn2.variable(i).labels()), set(
           bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
 
     bn = gum.loadBN(self.agrumSrcDir(
@@ -146,7 +146,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     I1.setFirst()
     I2.setFirst()
     while not I1.end():
-      self.assertEquals(p1.get(I1), p2.get(I2))
+      self.assertEqual(p1.get(I1), p2.get(I2))
       I1.inc()
       I2.inc()
 
@@ -173,7 +173,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       bn = learner.learnBN()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(bn.arcs()), 9)
+    self.assertEqual(len(bn.arcs()), 9)
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
 
@@ -181,11 +181,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       mg = learner.learnMixedStructure()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(mg.sizeArcs(), 8)
-    self.assertEquals(mg.sizeEdges(), 1)
+    self.assertEqual(mg.sizeArcs(), 8)
+    self.assertEqual(mg.sizeEdges(), 1)
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
-    self.assertEquals(len(learner.latentVariables()), 2)
+    self.assertEqual(len(learner.latentVariables()), 2)
 
   def test_setSliceOrder_with_names(self):
     learner = gum.BNLearner(self.agrumSrcDir(
@@ -226,7 +226,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     bn3 = learner.learnBN()
 
-    self.assertEquals(bn.size(), 5)
+    self.assertEqual(bn.size(), 5)
 
   def test_EM(self):
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), ["#"])
@@ -475,31 +475,31 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setRecordWeight(1, 2.0)
     learner.setRecordWeight(2, 4.0)
 
-    self.assertEquals(learner.recordWeight(0), 1.0)
-    self.assertEquals(learner.recordWeight(1), 2.0)
-    self.assertEquals(learner.recordWeight(2), 4.0)
-    self.assertEquals(learner.recordWeight(3), 1.0)
+    self.assertEqual(learner.recordWeight(0), 1.0)
+    self.assertEqual(learner.recordWeight(1), 2.0)
+    self.assertEqual(learner.recordWeight(2), 4.0)
+    self.assertEqual(learner.recordWeight(3), 1.0)
 
-    self.assertEquals(learner.databaseWeight(), 8)
+    self.assertEqual(learner.databaseWeight(), 8)
 
     learner.setDatabaseWeight(3.0 * learner.nbRows())
 
-    self.assertEquals(learner.recordWeight(0), 3.0)
-    self.assertEquals(learner.recordWeight(1), 3.0)
-    self.assertEquals(learner.recordWeight(2), 3.0)
-    self.assertEquals(learner.recordWeight(3), 3.0)
+    self.assertEqual(learner.recordWeight(0), 3.0)
+    self.assertEqual(learner.recordWeight(1), 3.0)
+    self.assertEqual(learner.recordWeight(2), 3.0)
+    self.assertEqual(learner.recordWeight(3), 3.0)
 
-    self.assertEquals(learner.databaseWeight(), 3.0 * learner.nbRows())
+    self.assertEqual(learner.databaseWeight(), 3.0 * learner.nbRows())
 
     learner.setRecordWeight(1, 1.0)
     learner.setRecordWeight(2, 1.0)
 
-    self.assertEquals(learner.recordWeight(0), 3.0)
-    self.assertEquals(learner.recordWeight(1), 1.0)
-    self.assertEquals(learner.recordWeight(2), 1.0)
-    self.assertEquals(learner.recordWeight(3), 3.0)
+    self.assertEqual(learner.recordWeight(0), 3.0)
+    self.assertEqual(learner.recordWeight(1), 1.0)
+    self.assertEqual(learner.recordWeight(2), 1.0)
+    self.assertEqual(learner.recordWeight(3), 3.0)
 
-    self.assertEquals(learner.databaseWeight(), 8)
+    self.assertEqual(learner.databaseWeight(), 8)
 
     learner = gum.BNLearner(filename)
 

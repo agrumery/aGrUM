@@ -39,7 +39,7 @@ class TestInstantiation(pyAgrumTestCase):
     j = bn.completeInstantiation()
     self.assertEqual(i, j)
     while not i.end():
-      self.assertEquals(i, j)
+      self.assertEqual(i, j)
       i.inc()
       self.assertNotEqual(i, j)
       j.inc()
@@ -47,7 +47,7 @@ class TestInstantiation(pyAgrumTestCase):
     k = gum.Instantiation()
     self.assertNotEqual(i, k)  # not the same size
     k.inc()
-    self.assertEquals(i, k)  # both are in overflow => equals
+    self.assertEqual(i, k)  # both are in overflow => equals
 
 
 ts = unittest.TestSuite()
