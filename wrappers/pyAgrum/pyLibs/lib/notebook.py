@@ -54,13 +54,6 @@ from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
 
-# check if an instance of ipython exists
-try:
-  get_ipython
-except NameError as e:
-  raise ImportError(
-    "[pyAgrum ERROR] pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).") from None
-
 _cdict = {
   'red': ((0.0, 0.1, 0.3),
           (1.0, 0.6, 1.0)),
@@ -1094,24 +1087,34 @@ def _update_config():
   IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
 
 
-gum.config.add_hook(_update_config)
-gum.config.run_hooks()
+# check if an instance of ipython exists
+try:
+  get_ipython
+except NameError as e:
+  import warnings
 
-# adding _repr_html_ to some pyAgrum classes !
-gum.BayesNet._repr_html_ = lambda self: getBN(self)
-gum.MarkovNet._repr_html_ = lambda self: getMN(self)
-gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
-gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
+  warnings.warn("""
+  ** pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).
+  """)
+else:
+  gum.config.add_hook(_update_config)
+  gum.config.run_hooks()
 
-gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
+  # adding _repr_html_ to some pyAgrum classes !
+  gum.BayesNet._repr_html_ = lambda self: getBN(self)
+  gum.MarkovNet._repr_html_ = lambda self: getMN(self)
+  gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
+  gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
 
-gum.Potential._repr_html_ = lambda self: getPotential(self)
-gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
-  self, "Lazy Propagation on this BN")
+  gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
-gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
-gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+  gum.Potential._repr_html_ = lambda self: getPotential(self)
+  gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
+    self, "Lazy Propagation on this BN")
+
+  gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
+  gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
+  gum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
+  gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
+  gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
+  gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())

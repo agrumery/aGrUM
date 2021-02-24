@@ -12,18 +12,12 @@ import numpy as np
 import pyAgrum as gum
 import pydotplus as dot
 
-from IPython.display import Image,display
+from IPython.display import Image, display
 
 import pyAgrum as gum
 import pyAgrum.lib.bn2graph as bng
 from pyAgrum.lib.pretty_print import cpt2txt
 
-# check if an instance of ipython exists
-try:
-  get_ipython
-except NameError as e:
-  raise ImportError(
-    "[pyAgrum ERROR] pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).") from None
 
 def configuration():
   """
@@ -55,8 +49,9 @@ def showGraph(gr, size="4", format="png"):
   """
   gr.set_size(size)
   if format == "svg":
-      print("pyAgrum warning : svg is not possible without HTML rendering. Please use notebooks")
+    print("pyAgrum warning : svg is not possible without HTML rendering. Please use notebooks")
   display(Image(gr.create_png()))
+
 
 def showDot(dotstring, size="4", format="png"):
   """
@@ -68,6 +63,7 @@ def showDot(dotstring, size="4", format="png"):
   :return: the representation of the graph
   """
   return showGraph(dot.graph_from_dot_data(dotstring), size, format)
+
 
 def showJunctionTree(bn, withNames=True, size="4", format="png"):
   """
@@ -97,9 +93,10 @@ def showBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=None):
   :param arcvals: a arcMap of values to be shown as bold arcs
   :param cmap: color map to show the vals
   """
-  gr=bng.BN2dot(bn, size, arcvals, vals, cmap)
+  gr = bng.BN2dot(bn, size, arcvals, vals, cmap)
   display(Image(gr.create_png()))
-    
+
+
 def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', vals=None, arcvals=None, cmap=None):
   """
   show pydot graph for an inference in a notebook
@@ -114,17 +111,18 @@ def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', v
   :param arcvals: a arcMap of values to be shown as bold arcs
   :param cmap: color map to show the vals
   """
-  gr=bng.BNinference2dot(bn, 
-                          size, 
-                          engine, 
-                          evs, 
-                          targets, 
-                          format, 
-                          vals, 
-                          arcvals, 
-                          cmap)
+  gr = bng.BNinference2dot(bn,
+                           size,
+                           engine,
+                           evs,
+                           targets,
+                           format,
+                           vals,
+                           arcvals,
+                           cmap)
   display(Image(gr.create_png()))
-  
+
+
 def showInfluenceDiagram(diag, size="4", format="png"):
   """
   show an influence diagram as a graph
@@ -136,6 +134,17 @@ def showInfluenceDiagram(diag, size="4", format="png"):
   """
   return showDot(diag.toDot(), size, format)
 
-def showPotential(p,digits=4):
-    print(cpt2txt(p,digits=digits))
-    
+
+def showPotential(p, digits=4):
+  print(cpt2txt(p, digits=digits))
+
+
+# check if an instance of ipython exists
+try:
+  get_ipython
+except NameError as e:
+  import warnings
+
+  warnings.warn("""
+  ** pyAgrum.lib.notebook has to be import from an IPython's instance.
+  """)
