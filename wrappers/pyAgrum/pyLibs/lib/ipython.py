@@ -27,7 +27,6 @@ import IPython.display
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import pyAgrum as gum
 import pydotplus as dot
 
 from IPython.display import Image, display
@@ -61,21 +60,18 @@ def configuration():
     print("%s : %s" % (name, packages[name]))
 
 
-def showGraph(gr, size="4"):
+def showGraph(gr, size=None):
   """
   show a pydot graph in a notebook
 
   :param gr: pydot graph
   :param size:  size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
   gr.set_size(size)
-  if format == "svg":
-    print("pyAgrum warning : svg is not possible without HTML rendering. Please use notebooks")
   display(Image(gr.create_png()))
 
 
@@ -259,7 +255,7 @@ def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', v
   display(Image(gr.create_png()))
 
 
-def showInfluenceDiagram(diag, size="4", format="png"):
+def showInfluenceDiagram(diag, size=None):
   """
   show an influence diagram as a graph
 
@@ -268,11 +264,35 @@ def showInfluenceDiagram(diag, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the representation of the influence diagram
   """
-  return showDot(diag.toDot(), size, format)
+  if size is None:
+    size = gum.config["influenceDiagram", "default_id_size"]
+
+  return showGraph(ID2dot(diag), size)
 
 
-def showPotential(p, digits=4):
-  print(cpt2txt(p, digits=digits))
+def showPotential(p):
+  print(p)
+
+
+def show(model, size=None):
+  """
+  propose a (visual) representation of a model in ipython console
+
+  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+
+  :param int size: optional size for the graphical model (no effect for Potential)
+  """
+  if isinstance(model, gum.BayesNet):
+    showBN(model, size)
+  elif isinstance(model, gum.MarkovNet):
+    showMN(model, size)
+  elif isinstance(model, gum.InfluenceDiagram):
+    showInfluenceDiagram(model, size)
+  elif isinstance(model, gum.Potential):
+    showPotential(model)
+  else:
+    raise gum.InvalidArgument(
+        "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
 # check if an instance of ipython exists

@@ -55,12 +55,12 @@ from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
 
 _cdict = {
-  'red': ((0.0, 0.1, 0.3),
-          (1.0, 0.6, 1.0)),
-  'green': ((0.0, 0.0, 0.0),
-            (1.0, 0.6, 0.8)),
-  'blue': ((0.0, 0.0, 0.0),
-           (1.0, 1, 0.8))
+    'red': ((0.0, 0.1, 0.3),
+            (1.0, 0.6, 1.0)),
+    'green': ((0.0, 0.0, 0.0),
+              (1.0, 0.6, 0.8)),
+    'blue': ((0.0, 0.0, 0.0),
+             (1.0, 1, 0.8))
 }
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
 
@@ -87,7 +87,7 @@ def configuration():
     res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
 
   res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
-    '%a %b %d %H:%M:%S %Y %Z')
+      '%a %b %d %H:%M:%S %Y %Z')
 
   display(HTML(res))
 
@@ -149,7 +149,7 @@ def _reprGraph(gr, size, asString):
   else:
     i = Image(format="png", data=gr.create_png())
     if asString:
-      return '<img style="margin:0" src="data:image/png;base64,{}"/>'.format(base64.encodebytes(i.data).decode())
+      return '<img style="margin:0" src="data:image/png;base64,{}"/>'.format(encodebytes(i.data).decode())
     else:
       display_png(i)
 
@@ -309,7 +309,7 @@ def showProba(p, scale=1.0):
   fig = proba2histo(p, scale)
   #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
-    gum.config["notebook", "graph_format"])
+      gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -350,15 +350,15 @@ def animApproximationScheme(apsc, scale=np.log10):
   f = plt.gcf()
 
   h = gum.PythonApproximationListener(
-    apsc._asIApproximationSchemeConfiguration())
+      apsc._asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 
   def stopper(x):
     clear_output(True)
     plt.title(
-      "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
-                                                                      apsc.epsilon()))
+        "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
+                                                                        apsc.epsilon()))
 
   def progresser(x, y, z):
     if len(apsc.history()) < 10:
@@ -380,9 +380,9 @@ def showApproximationScheme(apsc, scale=np.log10):
     else:
       plt.xlim(1, len(apsc.history()))
     plt.title(
-      "Time : {} s | Iterations : {} | Espilon : {}".format(apsc.currentTime(),
-                                                            apsc.nbrIterations(),
-                                                            apsc.epsilon()))
+        "Time : {} s | Iterations : {} | Espilon : {}".format(apsc.currentTime(),
+                                                              apsc.nbrIterations(),
+                                                              apsc.epsilon()))
     plt.plot(scale(apsc.history()), 'g')
 
 
@@ -586,7 +586,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
   cb1.set_label('Entropy')
   png = print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
-    'ascii')
+      'ascii')
 
   gsvg = SVG(gr.create_svg())
 
@@ -676,7 +676,8 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
       engine = gum.ShaferShenoyLIMIDInference(model)
     return LIMIDinference2dot(model, size, engine, evs, targets)
   else:
-    raise gum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
+    raise gum.InvalidArgument(
+        "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
 def showInference(model, engine=None, evs=None, targets=None, size=None,
@@ -776,12 +777,12 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   html.append('<table style="border:1px solid black;">')
   if pot.empty():
     html.append(
-      "<tr><th>&nbsp;</th></tr>")
+        "<tr><th>&nbsp;</th></tr>")
     html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
       raise ValueError(
-        "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
+          "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
 
     nparents = pot.nbrDim() - 1
     var = pot.variable(0)
@@ -790,14 +791,14 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
     # first line
     if nparents > 0:
       html.append(
-        "<tr><th colspan='{}'></th><th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{"
-        "}</center></th></tr>".format(
-          nparents, var.domainSize(), varname))
+          "<tr><th colspan='{}'></th><th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{"
+          "}</center></th></tr>".format(
+              nparents, var.domainSize(), varname))
     else:
       html.append(
-        "<tr style='border:1px solid black;color:black;background-color:#808080'><th colspan='{}'><center>{}</center></th></tr>".format(
-          var.domainSize(),
-          varname))
+          "<tr style='border:1px solid black;color:black;background-color:#808080'><th colspan='{}'><center>{}</center></th></tr>".format(
+              var.domainSize(),
+              varname))
     # second line
     s = "<tr>"
     if nparents > 0:
@@ -809,10 +810,10 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
       for par in range(pmin, pmax, pinc):
         parent = pot.var_names[par] if varnames is None else varnames[par]
         s += "<th style='border:1px solid black;color:black;background-color:#808080'><center>{}</center></th>".format(
-          parent)
+            parent)
     for label in var.labels():
       s += "<th style='border:1px solid black;border-bottom-style: double;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
-        label)
+          label)
     s += '</tr>'
 
     html.append(s)
@@ -836,11 +837,11 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
         label = inst.variable(par).label(inst.val(par))
         if par == 1 or gum.config["notebook", "potential_parent_values"] == "nomerge":
           s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
-            label)
+              label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
             s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(
-              offset[par], label)
+                offset[par], label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
@@ -902,7 +903,7 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
       withColors = __isKindOfProba(pot)
 
   display(_reprPotential(
-    pot, digits, withColors, varnames, asString=False))
+      pot, digits, withColors, varnames, asString=False))
 
 
 def getPotential(pot, digits=None, withColors=None, varnames=None):
@@ -936,7 +937,7 @@ def getSideBySide(*args, **kwargs):
 
   if not set(kwargs.keys()).issubset(set(['captions', 'valign'])):
     raise TypeError("sideBySide() got unexpected keyword argument(s) : '{}'".format(
-      set(kwargs.keys()).difference(set(['captions', 'valign']))))
+        set(kwargs.keys()).difference(set(['captions', 'valign']))))
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
@@ -963,14 +964,14 @@ def getSideBySide(*args, **kwargs):
   s += (
       '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
       v_align + '">').join(
-    [reprHTML(arg)
-     for arg in args])
+      [reprHTML(arg)
+       for arg in args])
   s += '</div></td></tr>'
 
   if captions is not None:
     s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
     s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(
-      captions)
+        captions)
     s += '</small></div></td></tr>'
 
   s += '</table>'
@@ -1028,37 +1029,51 @@ def getInferenceEngine(ie, inferenceCaption):
 
 def getJT(jt, size=None):
   if gum.config["notebook", "junctiontree_with_names"] == "True":
-    cliqlabels = lambda c: " ".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
-    cliqnames = lambda c: "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
-    seplabels = lambda c1, c2: " ".join(sorted([model.variable(n).name() for n in jt.separator(c1, c2)]))
-    sepnames = lambda c1, c2: cliqnames(c1) + '+' + cliqnames(c2)
+    def cliqlabels(c): return " ".join(
+        sorted([model.variable(n).name() for n in jt.clique(c)]))
+
+    def cliqnames(
+        c): return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
+    def seplabels(c1, c2): return " ".join(
+        sorted([model.variable(n).name() for n in jt.separator(c1, c2)]))
+
+    def sepnames(c1, c2): return cliqnames(c1) + '+' + cliqnames(c2)
   else:
-    cliqlabels = lambda c: " ".join([str(n) for n in sorted(jt.clique(c))])
-    cliqnames = lambda c: "-".join([str(n) for n in sorted(jt.clique(c))])
-    seplabels = lambda c1, c2: " ".join([str(n) for n in sorted(jt.separator(c1, c2))])
-    sepnames = lambda c1, c2: cliqnames(c1) + '^' + cliqnames(c2)
+    def cliqlabels(c): return " ".join([str(n) for n in sorted(jt.clique(c))])
+    def cliqnames(c): return "-".join([str(n) for n in sorted(jt.clique(c))])
+    def seplabels(c1, c2): return " ".join(
+        [str(n) for n in sorted(jt.separator(c1, c2))])
+
+    def sepnames(c1, c2): return cliqnames(c1) + '^' + cliqnames(c2)
 
   model = jt._engine._model
-  name = model.propertyWithDefault("name", str(type(model)).split(".")[-1][:-2])
+  name = model.propertyWithDefault(
+      "name", str(type(model)).split(".")[-1][:-2])
   graph = dot.Dot(graph_type='graph', graph_name=name, bgcolor="transparent")
   for c in jt.nodes():
     graph.add_node(dot.Node('"' + cliqnames(c) + '"',
                             label='"' + cliqlabels(c) + '"',
                             style="filled",
-                            fillcolor=gum.config["notebook", "junctiontree_clique_bgcolor"],
-                            fontcolor=gum.config["notebook", "junctiontree_clique_fgcolor"],
+                            fillcolor=gum.config["notebook",
+                                                 "junctiontree_clique_bgcolor"],
+                            fontcolor=gum.config["notebook",
+                                                 "junctiontree_clique_fgcolor"],
                             fontsize=gum.config["notebook", "junctiontree_clique_fontsize"]))
   for c1, c2 in jt.edges():
     graph.add_node(dot.Node('"' + sepnames(c1, c2) + '"',
                             label='"' + seplabels(c1, c2) + '"',
                             style="filled",
                             shape="box", width="0", height="0", margin="0.02",
-                            fillcolor=gum.config["notebook", "junctiontree_separator_bgcolor"],
-                            fontcolor=gum.config["notebook", "junctiontree_separator_fgcolor"],
+                            fillcolor=gum.config["notebook",
+                                                 "junctiontree_separator_bgcolor"],
+                            fontcolor=gum.config["notebook",
+                                                 "junctiontree_separator_fgcolor"],
                             fontsize=gum.config["notebook", "junctiontree_separator_fontsize"]))
   for c1, c2 in jt.edges():
-    graph.add_edge(dot.Edge('"' + cliqnames(c1) + '"', '"' + sepnames(c1, c2) + '"'))
-    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) + '"', '"' + cliqnames(c2) + '"'))
+    graph.add_edge(dot.Edge('"' + cliqnames(c1) +
+                            '"', '"' + sepnames(c1, c2) + '"'))
+    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) +
+                            '"', '"' + cliqnames(c2) + '"'))
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -1081,10 +1096,32 @@ def getCliqueGraph(cg, size=None):
     return getDot(cg.toDot())
 
 
-# hook to control some parameters for notebook
+def show(model, size=None):
+  """
+  propose a (visual) representation of a model in a notebook
+
+  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+
+  :param int size: optional size for the graphical model (no effect for Potential)
+  """
+  if isinstance(model, gum.BayesNet):
+    showBN(model, size)
+  elif isinstance(model, gum.MarkovNet):
+    showMN(model, size)
+  elif isinstance(model, gum.InfluenceDiagram):
+    showInfluenceDiagram(model, size)
+  elif isinstance(model, gum.Potential):
+    showPotential(model)
+  else:
+    raise gum.InvalidArgument(
+        "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
+
+
 def _update_config():
+  # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
-  IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  IPython.display.set_matplotlib_formats(
+      gum.config["notebook", "graph_format"])
 
 
 # check if an instance of ipython exists
@@ -1110,7 +1147,7 @@ else:
 
   gum.Potential._repr_html_ = lambda self: getPotential(self)
   gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
-    self, "Lazy Propagation on this BN")
+      self, "Lazy Propagation on this BN")
 
   gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())

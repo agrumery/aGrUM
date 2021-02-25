@@ -28,12 +28,3 @@ bn_vs_bn
     :undoc-members:
     :show-inheritance:
     :noindex:
-
-pretty_print
--------------------------------
-
-.. automodule:: pyAgrum.lib.pretty_print
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
