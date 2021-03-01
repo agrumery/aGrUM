@@ -166,7 +166,7 @@ def showProba(p, scale=1.0):
   fig = proba2histo(p, scale)
   #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
-      gum.config["notebook", "graph_format"])
+    gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -229,30 +229,12 @@ def showInfluenceDiagram(diag, size=None):
   return showGraph(ID2dot(diag), size)
 
 
-def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', vals=None, arcvals=None, cmap=None):
-  """
-  show pydot graph for an inference in a notebook
-
-  :param gum.BayesNet bn:
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets
-  :param string size: size of the rendered graph
-  :param string format: render as "png" or "svg"
-  :param vals: a nodeMap of values to be shown as color nodes
-  :param arcvals: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
-  """
-  gr = bng.BNinference2dot(bn,
-                           size,
-                           engine,
-                           evs,
-                           targets,
-                           format,
-                           vals,
-                           arcvals,
-                           cmap)
-  display(Image(gr.create_png()))
+def showInference(model, engine=None, evs=None, targets=None, size=None,
+                  nodeColor=None, factorColor=None,
+                  arcWidth=None, arcColor=None,
+                  cmap=None, cmapArc=None, graph=None, view=None):
+  import warnings
+  warnings.warn("gum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder).")
 
 
 def showInfluenceDiagram(diag, size=None):
@@ -261,7 +243,6 @@ def showInfluenceDiagram(diag, size=None):
 
   :param diag: the influence diagram
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the influence diagram
   """
   if size is None:
@@ -292,7 +273,7 @@ def show(model, size=None):
     showPotential(model)
   else:
     raise gum.InvalidArgument(
-        "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
+      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
 # check if an instance of ipython exists
