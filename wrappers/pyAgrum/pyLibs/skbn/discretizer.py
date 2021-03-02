@@ -533,8 +533,7 @@ class BNDiscretizer():
     for index in binEdgesIndex:
       binEdges.append(B[index])
     binEdges.append(xAndY[-1][0])
-    # print(binEdges)
-    # self.numberOfContinuous+=1
+
     return binEdges
 
   def discretizationNML(self, X, possibleValuesX, kMax=10, epsilon=None):

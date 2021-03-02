@@ -26,6 +26,7 @@ import sklearn
 import pandas
 import numpy
 import os
+import tempfile
 
 from .discretizer import BNDiscretizer
 from ._utils import _ImplementPrior as IPrior
@@ -256,7 +257,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # the type of the target variable
     self.targetType = None
 
-    # dict(str:int) The keys of this dictionary are the names of the variables. The value associeted to each name is
+    # dict(str:int)
+    # The keys of this dictionary are the names of the variables. The value associeted to each name is
     # the index of the variable.
     self.variableNameIndexDictionary = None
 
@@ -350,9 +352,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       var = self.discretizer.createVariable(variableNames[i], X[:, i], y, possibleValuesY)
       self.bn.add(var)
 
-    CSV(X, y, self.target, self.variableNameIndexDictionary)
+    csvfile = tempfile.NamedTemporaryFile(delete=False)
+    csvfilename = csvfile.name + ".csv"
+    csvfile.close()
 
-    self.learner = gum.BNLearner('tempBNClassifier.csv', self.bn)
+    CSV(X, y, self.target, self.variableNameIndexDictionary, csvfilename)
+
+    self.learner = gum.BNLearner(csvfilename, self.bn)
 
     IPrior(self.aPriori, self.learner, self.aPrioriWeight, self.DirichletCsv)
 
@@ -369,9 +375,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.label = self.bn.variableFromName(self.target).labels()[1]
 
     self.MarkovBlanket = compileMarkovBlanket(self.bn, self.target)
-    self.threshold = CThreshold(self.MarkovBlanket, self.target, self.usePR, self.significant_digit)
+    self.threshold = CThreshold(self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
 
-    os.remove('tempBNClassifier.csv')
+    os.remove(csvfilename)
 
   def fromTrainedModel(self, bn, targetAttribute, targetModality, copy=True, threshold=0.5, variableList=None):
     """
@@ -559,13 +565,16 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if type(X) == pandas.DataFrame:
       dictName = DFNames(X)
+      vals = X.to_numpy()
     elif type(X) == str:
-      X, _ = self.XYfromCSV(X, target=self.target)
+      vals, _ = self.XYfromCSV(X, target=self.target)
+    else:
+      vals = X
 
     if self.fromModel:
-      X = sklearn.utils.check_array(X, dtype='str', ensure_2d=False)
+      vals = sklearn.utils.check_array(vals, dtype='str', ensure_2d=False)
     else:
-      sklearn.utils.check_array(X, dtype=None, ensure_2d=False)
+      sklearn.utils.check_array(vals, dtype=None, ensure_2d=False)
 
     returned_list = []
 
@@ -580,7 +589,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     I = self.MarkovBlanket.completeInstantiation()
 
     # read through data base's ligns
-    for x in X:
+    for x in vals:
       res = round(calcul_proba(x, label1, labels, I, dictName, self.MarkovBlanket, self.target), self.significant_digit)
       returned_list.append([1 - res, res])
     return numpy.array(returned_list)

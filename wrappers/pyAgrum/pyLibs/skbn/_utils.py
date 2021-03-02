@@ -27,13 +27,15 @@ import pandas as pd
 import tempfile
 
 
-def _CalculateThreshold(bn, targetName, usePR, significant_digits):
+def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
   """
   parameters:
       bn: gum.BayesNet
           Bayesian network to work on
       targetName: str
           Name of the target
+      csvfilename: str
+          Name of the csv file
       usePR: bool
           indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by default.
           ROC curves should be used when there are roughly equal numbers of observations for each class.
@@ -50,10 +52,10 @@ def _CalculateThreshold(bn, targetName, usePR, significant_digits):
   target = bn.variableFromName(targetName)
 
   if usePR:
-    _, _, _, threshold = bn2roc.showROC_PR(bn, 'tempBNClassifier.csv', targetName, target.labels()[1], showROC=False,
+    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], showROC=False,
                                            showPR=False, significant_digits=significant_digits, show_progress=False)
   else:
-    _, threshold, _, _ = bn2roc.showROC_PR(bn, 'tempBNClassifier.csv', targetName, target.labels()[1], showROC=False,
+    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], showROC=False,
                                            showPR=False, significant_digits=significant_digits, show_progress=False)
 
   return threshold
@@ -212,7 +214,7 @@ def _listIdtoName(bn, liste):
   return liste
 
 
-def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, name='tempBNClassifier.csv'):
+def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilename):
   """
   parameters:
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
@@ -222,15 +224,15 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, name='temp
       target: str
           Name of the target
       variableNameIndexDictionary: dict[str : int]
-          dictionnary of the name of a variable and his column in the data base
-      name: str
+          dictionnary of the csvfilename of a variable and his column in the data base
+      csvfilename: str
           csv's title
 
   returns:
       void
 
   Creates a csv file from the matrices passed as parameters.
-  The name of the csv file is tempBNClassifier.csv and is used by the fit function to learn the network structure and its parameters
+  csvfilename  is used by the fit function to learn the network structure and its parameters
   """
 
   # verifies if the shape of
@@ -239,7 +241,7 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, name='temp
   variableList = [k for k, v in sorted(variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
   X = pd.DataFrame(X, columns=variableList)
 
-  # We construct the list of variable names. This will serve as the first line in the csv file since it is needed by pyAgrum to function properly
-
+  # We construct the list of variable names.
+  # This will serve as the first line in the csv file since it is needed by pyAgrum to function properly
   training_file = pd.concat([y, X], axis=1)
-  training_file.to_csv(name, index=False)
+  training_file.to_csv(csvfilename, index=False)

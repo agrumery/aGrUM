@@ -22,9 +22,12 @@
 Created on Thu Jun 11 14:08:14 2020
 
 """
-import pyAgrum as gum
 import numpy
 import math
+import warnings
+
+import pyAgrum as gum
+
 from ._utils import _ImplementConstraints as implementConstraints
 from ._utils import _ImplementScore as implementScore
 
@@ -263,7 +266,7 @@ def _fitNaiveBayes(X, y, bn, learner, variableList, target, constraints):
   for variableName in variableList:
     bn.addArc(target, variableName)
   if constraints is not None:
-    print("The structure of Naive Bayes is fixed, so it is impossible to add any new constraints")
+    warnings.warn("The structure of Naive Bayes is fixed, so it is impossible to add any new constraints")
 
   bn = learner.learnParameters(bn.dag())
   return bn
