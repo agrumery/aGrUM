@@ -1,5 +1,15 @@
 # aGrUM Changelog
 
+## Changelog for 0.19.3
+
+* pyAgrum
+  * missing graphical  (not correctly wrapped) methods in `gum::InfluenceDiagram` 
+  * fix falsely raised exception leading to incomplete generation of documentation and wheels.
+  * ` pyAgrum.lib.ipython` improved.
+  * pyAgrum's documentation refreshed a bit.
+  * `pyAgrum.skbn` improved.
+  * several typos in notebooks and testsuites.
+
 ## Changelog for 0.19.2
 
 * aGrUM
