@@ -253,8 +253,9 @@ namespace gum {
      *
      * @param src The MultiDimContainer src which datas are copied.
      * @param mask partial instantiation of variables of the Potential : the
+     *
      * extraction will concern every variable not in the instantiation and the
-     * copy of data will use the values in this instantiation.
+     * copy of data will use the (relevant) values in this instantiation.
      */
     virtual void extractFrom(const MultiDimContainer< GUM_SCALAR >& src,
                              const Instantiation&                   mask);

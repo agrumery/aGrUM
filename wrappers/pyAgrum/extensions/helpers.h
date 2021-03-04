@@ -98,7 +98,7 @@ namespace PyAgrumHelper {
         }
         if (!namesToVars.exists(name)) {
           GUM_ERROR(gum::InvalidArgument,
-                    "Argument is a not a name of a variable in this potential");
+                    "Argument is not a name of a variable in this potential");
         }
         s.push_back(namesToVars[name]);
       }
@@ -126,7 +126,7 @@ namespace PyAgrumHelper {
     }
     if (!isOK) {
       GUM_ERROR(gum::InvalidArgument,
-                "Argument is a not a name of a variable in this potential");
+                "Argument is not a name of a variable in this potential");
     }
   }
 
@@ -143,17 +143,16 @@ namespace PyAgrumHelper {
       namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
 
 
-    PyObject * key, *value;
+    PyObject*  key;
+    PyObject*  value;
     Py_ssize_t pos = 0;
     inst.clear();
     while (PyDict_Next(dict, &pos, &key, &value)) {
       std::string name = stringFromPyObject(key);
       if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
       if (!namesToVars.exists(name)) {
-        GUM_ERROR(gum::InvalidArgument,
-                  "The key "
-                     << name
-                     << " is a not a name of a variable in this potential");
+        // not relevant name. we just skip it
+        continue;
       }
       if (!(PyInt_Check(value))) {
         GUM_ERROR(gum::InvalidArgument, "A value is not an int");
@@ -277,10 +276,10 @@ namespace PyAgrumHelper {
     return q;
   }
 
-  PyObject* PyDictFromPairMeanVar(std::pair<double,double> mv) {
+  PyObject* PyDictFromPairMeanVar(std::pair< double, double > mv) {
     PyObject* q = PyDict_New();
-    PyDict_SetItemString(q,"mean",PyFloat_FromDouble(mv.first));
-    PyDict_SetItemString(q,"variance",PyFloat_FromDouble(mv.second));
+    PyDict_SetItemString(q, "mean", PyFloat_FromDouble(mv.first));
+    PyDict_SetItemString(q, "variance", PyFloat_FromDouble(mv.second));
     return q;
   }
 

@@ -247,7 +247,6 @@ namespace gum {
     this->beginMultipleChanges();
 
     Size nbr = this->nbrDim();
-
     for (Idx i = 0; i < nbr; i++) {
       this->erase(this->variable(0));
     }
@@ -256,9 +255,9 @@ namespace gum {
       if (!imask.contains(src.variable(i))) this->add(src.variable(i));
     }
 
-    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty potential"); }
-
     this->endMultipleChanges();
+
+    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty potential"); }
 
     Instantiation inst(src);
     inst.setVals(imask);
