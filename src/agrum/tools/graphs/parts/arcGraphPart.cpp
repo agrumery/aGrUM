@@ -151,8 +151,44 @@ namespace gum {
     return s.str();
   }
 
-  const std::vector< NodeId > ArcGraphPart::directedPath(const NodeId n1,
-                                                         const NodeId n2) const {
+  NodeSet ArcGraphPart::descendants(NodeId id) const {
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: children(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: children(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
+
+  NodeSet ArcGraphPart::ancestors(NodeId id) const {
+    NodeSet res;
+    NodeSet tmp;
+    for (auto next: parents(id))
+      tmp.insert(next);
+
+    while (!tmp.empty()) {
+      auto current = *(tmp.begin());
+      tmp.erase(current);
+      res.insert(current);
+      for (auto next: parents(current)) {
+        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
+      }
+    }
+    return res;
+  }
+
+
+  std::vector< NodeId > ArcGraphPart::directedPath(NodeId n1,
+                                                   NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -193,8 +229,8 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found");
   }
 
-  const std::vector< NodeId >
-     ArcGraphPart::directedUnorientedPath(const NodeId n1, const NodeId n2) const {
+  std::vector< NodeId >
+     ArcGraphPart::directedUnorientedPath(NodeId n1, NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

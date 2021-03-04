@@ -49,41 +49,6 @@ namespace gum {
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
 
-  NodeSet DAG::descendants(const NodeId id) const {
-    NodeSet res;
-    NodeSet tmp;
-    for (auto next: children(id))
-      tmp.insert(next);
-
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-      res.insert(current);
-      for (auto next: children(current)) {
-        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
-      }
-    }
-    return res;
-  }
-
-
-  NodeSet DAG::ancestors(const NodeId id) const {
-    NodeSet res;
-    NodeSet tmp;
-    for (auto next: parents(id))
-      tmp.insert(next);
-
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-      res.insert(current);
-      for (auto next: parents(current)) {
-        if (!tmp.contains(next) && !res.contains(next)) { tmp.insert(next); }
-      }
-    }
-    return res;
-  }
-
   UndiGraph DAG::moralGraph() const {
     UndiGraph moralgraph;
     moralgraph.populateNodes(*this);

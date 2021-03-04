@@ -18,13 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <iostream>
-#include <ressources/include/myalloc.h>
 #include <string>
+
+#include <agrum/tools/database/nanodbcParser.h>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <agrum/tools/database/nanodbcParser.h>
+#include <ressources/include/myalloc.h>
+
 
 
 namespace gum_tests {

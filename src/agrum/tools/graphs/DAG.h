@@ -157,22 +157,6 @@ namespace gum {
     void addArc(NodeId tail, NodeId head) final;
     /// @}
 
-    /// returns the set of nodes with directed path outgoing from a given node
-    /** Note that the set of nodes returned may be empty if no path within the
-     * ArcGraphPart is outgoing from the given node.
-     * @param id the node which is the tail of a directed path with the returned
-     * nodes
-     **/
-    NodeSet descendants(const NodeId id) const;
-
-
-    /// returns the set of nodes with directed path ingoing to a given node
-    /** Note that the set of nodes returned may be empty if no path within the
-     * ArcGraphPart is ingoing to the given node.
-     * @param id the node which is the head of a directed path with the returned
-     * nodes
-     **/
-    NodeSet ancestors(const NodeId id) const;
 
     /** build a UndiGraph by moralizing the dag
      *

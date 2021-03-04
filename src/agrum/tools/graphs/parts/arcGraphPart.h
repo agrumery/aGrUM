@@ -131,7 +131,7 @@ namespace gum {
      * @param head the id of the head of the new arc to be inserted
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised. */
-    virtual void addArc(const NodeId tail, const NodeId head);
+    virtual void addArc(NodeId tail, NodeId head);
 
     /// removes an arc from the ArcGraphPart
     /** @param arc the arc to be removed
@@ -150,7 +150,7 @@ namespace gum {
      * ArcGraphPart
      * @param head the head of the arc we test the existence in the ArcGraphPart
      */
-    bool existsArc(const NodeId tail, const NodeId head) const;
+    bool existsArc(NodeId tail, NodeId head) const;
 
     /// indicates wether the ArcGraphPart contains any arc
     bool emptyArcs() const;
@@ -168,7 +168,7 @@ namespace gum {
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
      * @param id the node toward which the arcs returned are pointing */
-    const NodeSet& parents(const NodeId id) const;
+    const NodeSet& parents(NodeId id) const;
 
     /// returns the set of nodes which consists in the node and its parents
     /** Note that the set of nodes returned may be empty if no path within the
@@ -176,13 +176,40 @@ namespace gum {
      * @param id the node which is the tail of a directed path with the returned
      * nodes
      **/
-    NodeSet family(const NodeId id) const;
+    NodeSet family(NodeId id) const;
+
+    /// returns the set of nodes with directed path outgoing from a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is outgoing from the given node.
+     * @param id the node which is the tail of a directed path with the returned
+     * nodes
+     **/
+    NodeSet descendants(NodeId id) const;
+
+
+    /// returns the set of nodes with directed path ingoing to a given node
+    /** Note that the set of nodes returned may be empty if no path within the
+     * ArcGraphPart is ingoing to the given node.
+     * @param id the node which is the head of a directed path with the returned
+     * nodes
+     **/
+    NodeSet ancestors(NodeId id) const;
+
+    /// returns the set of children of a set of nodes
+    NodeSet children(const NodeSet& ids) const;
+
+    /// returns the set of parents of a set of nodes
+    NodeSet parents(const NodeSet& ids) const;
+
+    /// returns the set of family nodes of a set of nodes
+    NodeSet family(const NodeSet& ids) const;
+
 
     /// returns the set of nodes with arc outgoing from a given node
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is outgoing from the given node.
      * @param id the node which is the tail of the arcs returned */
-    const NodeSet& children(const NodeId id) const;
+    const NodeSet& children(NodeId id) const;
 
     /// erase all the parents of a given node
     /** @param id the node all the parents of which will be removed
@@ -192,11 +219,11 @@ namespace gum {
      * method @ref unvirtualizedEraseParents
      * @warning if no arc is a parent of id, nothing is done. In particular, no
      * exception is thrown. */
-    void eraseParents(const NodeId id);
+    void eraseParents(NodeId id);
 
     /// same function as eraseParents but without any virtual call to an erase
     /** @param id the node whose ingoing arcs will be removed */
-    void unvirtualizedEraseParents(const NodeId id);
+    void unvirtualizedEraseParents(NodeId id);
 
     /// removes all the children of a given node
     /** @param id the node all the children of which will be removed
@@ -206,11 +233,11 @@ namespace gum {
      * method @ref unvirtualizedEraseChildren
      * @warning if no arc is a parent of id, nothing is done. In particular, no
      * exception is thrown. */
-    void eraseChildren(const NodeId id);
+    void eraseChildren(NodeId id);
 
     /// same function as eraseChildren but without any virtual call to an erase
     /** @param id the node whose outgoing arcs will be removed */
-    void unvirtualizedEraseChildren(const NodeId id);
+    void unvirtualizedEraseChildren(NodeId id);
 
     /// to friendly display the content of the ArcGraphPart
     std::string toString() const;
@@ -246,16 +273,14 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > directedPath(const NodeId node1,
-                                             const NodeId node2) const;
+    std::vector< NodeId > directedPath(NodeId node1, NodeId node2) const;
 
     /// returns an unoriented (directed) path from node1 to node2 in the arc set
     /** @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > directedUnorientedPath(const NodeId node1,
-                                                       const NodeId node2) const;
+    std::vector< NodeId > directedUnorientedPath(NodeId node1, NodeId node2) const;
 
     /// @}
 
@@ -284,12 +309,12 @@ namespace gum {
     /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
      * this function adds an empty set entry to parents__[id]
      * @param id the node whose parents__[id] is checked */
-    void checkParents__(const NodeId id) const;
+    void checkParents__(NodeId id) const;
 
     /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
      * this function adds an empty set entry to children__[id]
      * @param id the node whose children__[id] is checked */
-    void checkChildren__(const NodeId id) const;
+    void checkChildren__(NodeId id) const;
   };
 
   /// for friendly displaying the content of arc set

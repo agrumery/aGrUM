@@ -41,35 +41,59 @@ namespace gum {
     return arcs__.contains(arc);
   }
 
-  INLINE bool ArcGraphPart::existsArc(const NodeId tail, const NodeId head) const {
+  INLINE bool ArcGraphPart::existsArc(NodeId tail, NodeId head) const {
     return parents__.exists(head) && parents__[head]->exists(tail);
   }
 
-  INLINE void ArcGraphPart::checkParents__(const NodeId id) const {
+  INLINE void ArcGraphPart::checkParents__(NodeId id) const {
     if (!parents__.exists(id)) { parents__.insert(id, new NodeSet); }
   }
 
-  INLINE void ArcGraphPart::checkChildren__(const NodeId id) const {
+  INLINE void ArcGraphPart::checkChildren__(NodeId id) const {
     if (!children__.exists(id)) { children__.insert(id, new NodeSet); }
   }
 
-  INLINE const NodeSet& ArcGraphPart::parents(const NodeId id) const {
+  INLINE const NodeSet& ArcGraphPart::parents(NodeId id) const {
     checkParents__(id);
     return *(parents__[id]);
   }
 
-  INLINE NodeSet ArcGraphPart::family(const NodeId id) const {
+  INLINE NodeSet ArcGraphPart::family(NodeId id) const {
     checkParents__(id);
     NodeSet res{id};
     return res + parents(id);
   }
 
-  INLINE const NodeSet& ArcGraphPart::children(const NodeId id) const {
+  /// returns the set of children of a set of nodes
+  INLINE NodeSet ArcGraphPart::children(const NodeSet& ids) const {
+    NodeSet res;
+    for (const auto node: ids)
+      res += children(node);
+    return res;
+  }
+
+  /// returns the set of parents of a set of nodes
+  INLINE NodeSet ArcGraphPart::parents(const NodeSet& ids) const {
+    NodeSet res;
+    for (const auto node: ids)
+      res += parents(node);
+    return res;
+  }
+
+  /// returns the set of family nodes of a set of nodes
+  INLINE NodeSet ArcGraphPart::family(const NodeSet& ids) const {
+    NodeSet res;
+    for (const auto node: ids)
+      res += family(node);
+    return res;
+  }
+
+  INLINE const NodeSet& ArcGraphPart::children(NodeId id) const {
     checkChildren__(id);
     return *(children__[id]);
   }
 
-  INLINE void ArcGraphPart::addArc(const NodeId tail, const NodeId head) {
+  INLINE void ArcGraphPart::addArc(NodeId tail, NodeId head) {
     Arc arc(tail, head);
 
     arcs__.insert(arc);
@@ -98,7 +122,7 @@ namespace gum {
       eraseArc(arc);
   }
 
-  INLINE void ArcGraphPart::eraseParents(const NodeId id) {
+  INLINE void ArcGraphPart::eraseParents(NodeId id) {
     if (parents__.exists(id)) {
       NodeSet& parents = *(parents__[id]);
 
@@ -112,7 +136,7 @@ namespace gum {
     }
   }
 
-  INLINE void ArcGraphPart::eraseChildren(const NodeId id) {
+  INLINE void ArcGraphPart::eraseChildren(NodeId id) {
     if (children__.exists(id)) {
       NodeSet& children = *(children__[id]);
 
@@ -131,7 +155,7 @@ namespace gum {
       ArcGraphPart::eraseArc(arc);
   }
 
-  INLINE void ArcGraphPart::unvirtualizedEraseParents(const NodeId id) {
+  INLINE void ArcGraphPart::unvirtualizedEraseParents(NodeId id) {
     if (parents__.exists(id)) {
       NodeSet& parents = *(parents__[id]);
 
@@ -143,7 +167,7 @@ namespace gum {
     }
   }
 
-  INLINE void ArcGraphPart::unvirtualizedEraseChildren(const NodeId id) {
+  INLINE void ArcGraphPart::unvirtualizedEraseChildren(NodeId id) {
     if (children__.exists(id)) {
       NodeSet& children = *(children__[id]);
 
