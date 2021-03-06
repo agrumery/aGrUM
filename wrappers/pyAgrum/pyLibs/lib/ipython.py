@@ -39,15 +39,13 @@ from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
 
-<<<<<<< HEAD
-=======
 # check if an instance of ipython exists
 try:
   get_ipython
 except NameError as e:
   raise ImportError(
-    "[pyAgrum ERROR] pyAgrum.lib.ipython has to be imported from an IPython's instance (mainly ipython's console).") from None
->>>>>>> a7acfdb7c ([pyAgrum] typos in lib.ipython and lib.notebook. New (optional) requirements.txt in pyAgrum.)
+      "[pyAgrum ERROR] pyAgrum.lib.ipython has to be imported from an IPython's instance (mainly ipython's console).") from None
+
 
 def configuration():
   """
@@ -175,7 +173,7 @@ def showProba(p, scale=1.0):
   fig = proba2histo(p, scale)
   #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
-    gum.config["notebook", "graph_format"])
+      gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -243,7 +241,8 @@ def showInference(model, engine=None, evs=None, targets=None, size=None,
                   arcWidth=None, arcColor=None,
                   cmap=None, cmapArc=None, graph=None, view=None):
   import warnings
-  warnings.warn("gum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder).")
+  warnings.warn(
+      "gum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder).")
 
 
 def showInfluenceDiagram(diag, size=None):
@@ -282,7 +281,7 @@ def show(model, size=None):
     showPotential(model)
   else:
     raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
+        "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
 # check if an instance of ipython exists

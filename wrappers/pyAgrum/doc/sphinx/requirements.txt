@@ -19,12 +19,4 @@ sphinx
 IPython
 ipykernel
 sphinx_rtd_theme
-<<<<<<< HEAD
-scikit-learn
-=======
-<<<<<<< HEAD
-sklearn
-=======
->>>>>>> 64c14dbb0 ([pyAgrum] automatic generation of requirements.txt for binder, sphinx and notebooks)
->>>>>>> d0f9222f7 ([pyAgrum] automatic generation of requirements.txt for binder, sphinx and notebooks)
 #sphinx-autodoc-typehints

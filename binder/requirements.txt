@@ -6,9 +6,6 @@ pydotplus
 numpy
 configparser
 six
-<<<<<<< HEAD
-sklearn
-=======
 #### optional requirements #####
 nbformat
 nbconvert
@@ -20,4 +17,3 @@ pandas
 ### Specific requirements for binder
 pyAgrum
 
->>>>>>> 64c14dbb0 ([pyAgrum] automatic generation of requirements.txt for binder, sphinx and notebooks)

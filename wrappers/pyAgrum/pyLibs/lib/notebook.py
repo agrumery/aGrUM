@@ -54,16 +54,6 @@ from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
 
-<<<<<<< HEAD
-=======
-# check if an instance of ipython exists
-try:
-  get_ipython
-except NameError as e:
-  raise ImportError(
-    "[pyAgrum ERROR] pyAgrum.lib.notebook has to be imported from an IPython's instance (mainly notebook).") from None
-
->>>>>>> a7acfdb7c ([pyAgrum] typos in lib.ipython and lib.notebook. New (optional) requirements.txt in pyAgrum.)
 _cdict = {
     'red': ((0.0, 0.1, 0.3),
             (1.0, 0.6, 1.0)),
