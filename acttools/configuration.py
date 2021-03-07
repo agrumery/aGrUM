@@ -80,18 +80,13 @@ def initParams():
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
-  cfg.default['mvsc'] = False
-  cfg.default['mvsc32'] = False
-  cfg.default['mvsc17'] = False
-  cfg.default['mvsc17_32'] = False
-  cfg.default['mvsc19'] = False
-  cfg.default['mvsc19_32'] = False
-  cfg.default['mingw64'] = False
+  cfg.default['windows'] = "mvsc19"
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
 
-  cfg.actions = set("lib test install doc clean show uninstall package guideline wheel nightly_wheel".split())
+  cfg.actions = set(
+      "lib test install doc clean show uninstall package guideline wheel nightly_wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = set("aGrUM pyAgrum jAgrum".split())
   cfg.moduleLabels = parseModulesTxt()
@@ -102,20 +97,20 @@ def initParams():
   cfg.mains = ["action", "targets", "mode"]
   cfg.specialActions = ["show", "clean", "guideline"]
   cfg.swapOptions = {
-    "verbose": {
-      True: "verbose",
-      False: "quiet"
-    },
-    "withSQL": {
-      True: "withSQL",
-      False: "withoutSQL"
-    }
+      "verbose": {
+          True: "verbose",
+          False: "quiet"
+      },
+      "withSQL": {
+          True: "withSQL",
+          False: "withoutSQL"
+      }
   }
 
 
 def configureOptions(current):
   us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
-    cfg.targets) + "]"
+      cfg.targets) + "]"
   cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
                             version="%prog v" + cfg.__version)
   cfg.parser.add_option("", "--no-fun",
@@ -149,7 +144,8 @@ def configureOptions(current):
                         dest="fixed_seed",
                         default=False)
   cfg.parser.add_option("", "--stats",
-                        help="consolidation on " + str(cfg.nbr_tests_for_stats) + " runs.",
+                        help="consolidation on " +
+                        str(cfg.nbr_tests_for_stats) + " runs.",
                         action="store_true",
                         dest="stats",
                         default=False)
@@ -219,41 +215,13 @@ def configureOptions(current):
                         action="store_true",
                         dest="coverage",
                         default=False)
-  cfg.parser.add_option("", "--mvsc",
-                        help="use Microsoft Visual Studio15 C++ compiler 64bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc",
-                        default=current['mvsc'])
-  cfg.parser.add_option("", "--mvsc32",
-                        help="use Microsoft Visual Studio15 C++ compiler 32bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc32",
-                        default=current['mvsc32'])
-  cfg.parser.add_option("", "--mvsc17",
-                        help="use Microsoft Visual Studio17 C++ compiler 64bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc17",
-                        default=current['mvsc17'])
-  cfg.parser.add_option("", "--mvsc17_32",
-                        help="use Microsoft Visual Studio17 C++ compiler 32bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc17_32",
-                        default=current['mvsc17_32'])
-  cfg.parser.add_option("", "--mvsc19",
-                        help="use Microsoft Visual Studio19 C++ compiler 64bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc19",
-                        default=current['mvsc19'])
-  cfg.parser.add_option("", "--mvsc19_32",
-                        help="use Microsoft Visual Studio19 C++ compiler 32bits (Windows only).",
-                        action="store_true",
-                        dest="mvsc19_32",
-                        default=current['mvsc19_32'])
-  cfg.parser.add_option("", "--mingw64",
-                        help="use minGW64 C++ Compiler (Windows only).",
-                        action="store_true",
-                        dest="mingw64",
-                        default=current['mingw64'])
+  cfg.parser.add_option("", "--windows",
+                        help="windows compilers : {mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
+                        type="choice",
+                        choices=["mvsc19", "mvsc19_32",
+                                 "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
+                        dest="windows",
+                        default="mvsc19")
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make|doc-only}.",
                         type="choice",
@@ -293,4 +261,5 @@ def configureOutputs(options):
 
 
 def configureTools(options):
-  (cfg.python, cfg.cmake, cfg.make, cfg.clangformat, cfg.msbuild) = check_tools(options)
+  (cfg.python, cfg.cmake, cfg.make, cfg.clangformat,
+   cfg.msbuild) = check_tools(options)

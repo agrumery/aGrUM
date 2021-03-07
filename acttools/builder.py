@@ -25,7 +25,7 @@ import os
 
 from .configuration import cfg
 from .multijobs import execCde
-from .utils import trace, setifyString, critic,notif
+from .utils import trace, setifyString, critic, notif
 
 
 def getCmake(current, target):
@@ -78,7 +78,7 @@ def getCmake(current, target):
 
   line += " -DPYTHON_TARGET=" + cfg.python
 
-  if current['python']=='2':
+  if current['python'] == '2':
     if current["python2lib"] != "":
       line += " -DPYTHON_LIBRARY=" + current["python2lib"]
 
@@ -92,19 +92,19 @@ def getCmake(current, target):
       line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
 
   if platform.system() == "Windows":
-    if current["mvsc"]:
-      line += ' -G "Visual Studio 14 2015 Win64"'
-    elif current["mvsc32"]:
-      line += ' -G "Visual Studio 14 2015"'
-    elif current["mvsc17"]:
-      line += ' -G "Visual Studio 15 2017 Win64"'
-    elif current["mvsc17_32"]:
-      line += ' -G "Visual Studio 15 2017"'
-    elif current["mvsc19"]:
+    if current["windows"] == "mvsc19":
       line += ' -G "Visual Studio 16 2019" -A x64'
-    elif current["mvsc19_32"]:
+    elif current["windows"] == "mvsc19_32":
       line += ' -G "Visual Studio 16 2019" -A Win32'
-    elif current["mingw64"]:
+    elif current["windows"] == "mvsc17":
+      line += ' -G "Visual Studio 15 2017 Win64"'
+    elif current["windows"] == "mvsc17_32":
+      line += ' -G "Visual Studio 15 2017"'
+    elif current["windows"] == "mvsc15":
+      line += ' -G "Visual Studio 14 2015 Win64"'
+    elif current["windows"] == "mvsc15_32":
+      line += ' -G "Visual Studio 14 2015"'
+    elif current["windows"] == "mingw64":
       line += ' -G "MinGW Makefiles"'
 
   return line
@@ -116,7 +116,7 @@ def buildCmake(current, target):
 
 
 def getMake(current, target):
-  if current["mvsc"] or current["mvsc32"] or current["mvsc17"] or current["mvsc17_32"] or current["mvsc19"] or current["mvsc19_32"]:
+  if platform.system() == "Windows":
     return getForMsBuildSystem(current, target)
   else:
     return getForMakeSystem(current, target)
@@ -142,8 +142,8 @@ def getNbrOfJobs(jobrequest):
     else:
       try:
         nbrJob = int(jobrequest)
-        if nbrJob<1:
-          nbrJob=1
+        if nbrJob < 1:
+          nbrJob = 1
         if nbrJob > nbrProc:
           return str(nbrProc)
         else:
@@ -157,7 +157,7 @@ def getForMsBuildSystem(current, target):
   if cfg.msbuild is None:
     critic("MsBuild not found")
   else:
-    nbrJobs=getNbrOfJobs(current['jobs'])
+    nbrJobs = getNbrOfJobs(current['jobs'])
     notif("Compilation using ["+nbrJobs+"] jobs.")
     if current["action"] == "test":
       if target == "aGrUM":
@@ -167,11 +167,12 @@ def getForMsBuildSystem(current, target):
       else:  # if target!= "pyAgrum":
         critic(
             "Action '" + current[
-              "action"] + "' not treated for target '" + target + "' for now in windows weird world.")
+                "action"] + "' not treated for target '" + target + "' for now in windows weird world.")
     elif current["action"] == "install":
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
-      critic("Action '" + current["action"] + "' not treated for now in windows weird world.")
+      critic("Action '" + current["action"] +
+             "' not treated for now in windows weird world.")
     line += ' /p:BuildInParallel=true /maxcpucount:' + nbrJobs
   return line
 
@@ -179,14 +180,15 @@ def getForMsBuildSystem(current, target):
 def getForMakeSystem(current, target):
   line = cfg.make
 
-  nbrJobs=str(getNbrOfJobs(current['jobs']))
+  nbrJobs = str(getNbrOfJobs(current['jobs']))
   notif("Compilation using  ["+nbrJobs+"] jobs.")
 
   if current["action"] == "test":
     if target == "aGrUM":
       line += " gumTest"
     elif target != "pyAgrum":
-      critic("Action '" + current["action"] + "' not treated for target '" + target + "'.")
+      critic("Action '" + current["action"] +
+             "' not treated for target '" + target + "'.")
   elif current["action"] == "install":
     line += " install"
   elif current["action"] == "uninstall":
@@ -215,7 +217,7 @@ def getPost(current, target):
   if current["action"] == "test":
     if target == "aGrUM":
       if cfg.os_platform == "win32":
-        if current["mingw64"]:
+        if current["windows"] == "mingw64":
           line = "src\\gumTest.exe"
         else:
           line = "src\\Release\\gumTest.exe"  # debug or release create Release folder
@@ -231,7 +233,8 @@ def getPost(current, target):
         critic("Only [-t all] or [-t quick] for testing pyAgrum.")
 
       if cfg.os_platform == "win32":
-        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
+            cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
       else:
         line = cfg.python + " ../../wrappers/pyAgrum/testunits/" + gumTest
       line += " " + current['mode']

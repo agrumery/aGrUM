@@ -59,8 +59,10 @@ def wheel(current):
     this = sys.version_info[0]
     target = current["python"]
     if str(this) != str(target):
-      warn("Cannot build pyAgrum's wheel for Python{0} when invoking act with Python{1}.".format(target, this))
-      critic("Please call act with Python{0} to build pyAgrum under Python{0}.".format(target))
+      warn("Cannot build pyAgrum's wheel for Python{0} when invoking act with Python{1}.".format(
+          target, this))
+      critic(
+          "Please call act with Python{0} to build pyAgrum under Python{0}.".format(target))
 
     go(current)
   else:
@@ -74,8 +76,10 @@ def nightly_wheel(current):
     this = sys.version_info[0]
     target = current["python"]
     if str(this) != str(target):
-      warn("Cannot build pyAgrum's wheel for Python{0} when invoking act with Python{1}.".format(target, this))
-      critic("Please call act with Python{0} to build pyAgrum under Python{0}.".format(target))
+      warn("Cannot build pyAgrum's wheel for Python{0} when invoking act with Python{1}.".format(
+          target, this))
+      critic(
+          "Please call act with Python{0} to build pyAgrum under Python{0}.".format(target))
 
     go(current, True)
   else:
@@ -95,7 +99,8 @@ def go(current, nightly=False):
     zip_file = zip_wheel(tmp, install_dir, version, nightly)
     notif("Finished zipping wheel.")
     move(join(tmp, zip_file), join(current['destination'], zip_file))
-    notif("Wheel moved to: {0}.".format(join(current['destination'], zip_file)))
+    notif("Wheel moved to: {0}.".format(
+        join(current['destination'], zip_file)))
   except CalledProcessError as err:
     critic("Failed building pyAgrum", rc=err.returncode)
   finally:
@@ -125,23 +130,11 @@ def install_pyAgrum(current, tmp, nightly=False):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]
-  options = '--no-fun --withoutSQL -m all -d "{0}" --python={1}'.format(safe_windows_path(tmp), version)
+  options = '--no-fun --withoutSQL -m all -d "{0}" --python={1}'.format(
+      safe_windows_path(tmp), version)
   if platform.system() == "Windows":
     cmd = "python"
-    if current['mvsc']:
-      options = "{0} --mvsc".format(options)
-    elif current['mvsc32']:
-      options = "{0} --mvsc32".format(options)
-    elif current['mvsc17']:
-      options = "{0} --mvsc17".format(options)
-    elif current['mvsc17_32']:
-      options = "{0} --mvsc17_32".format(options)
-    elif current['mvsc19']:
-      options = "{0} --mvsc19".format(options)
-    elif current['mvsc19_32']:
-      options = "{0} --mvsc19_32".format(options)
-    elif current['mingw64']:
-      options = "{0} --mingw64".format(options)
+    options = "--windows="+current['windows']
   else:
     cmd = sys.executable
   cmd = '{0} act {1} {2}'.format(cmd, targets, options)
@@ -157,10 +150,12 @@ def get_python_version(out):
     m = ""
     encoding = sys.stdout.encoding if sys.stdout.encoding else 'utf-8'
     try:
-      m = re.match('^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode(encoding))
+      m = re.match(
+          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode(encoding))
     except UnicodeDecodeError:
       # Windows may use latin-1 without saying it
-      m = re.match('^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode('latin-1'))
+      m = re.match(
+          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode('latin-1'))
     if m:
       version = m.group(1)
   if version == None:
@@ -168,7 +163,8 @@ def get_python_version(out):
     minor = sys.version_info[1]
     micro = sys.version_info[2]
     version = "{0}.{1}.{2}".format(major, minor, micro)
-    notif("Could not find Python version, opting for current Python version: {0})".format(version))
+    notif("Could not find Python version, opting for current Python version: {0})".format(
+        version))
   return version
 
 
@@ -190,9 +186,9 @@ def build_wheel(tmp, nightly=False):
   if (nightly):
     rename(join(install_dir, "pyAgrum-{0}.dist-info".format(version)), join(install_dir,
                                                                             "pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(
-                                                                              version,
-                                                                              datetime.today().strftime('%Y%m%d'),
-                                                                              commit_time)))
+                                                                                version,
+                                                                                datetime.today().strftime('%Y%m%d'),
+                                                                                commit_time)))
 
   update_wheel_file(dist_info)
   clean_up(install_dir)
@@ -240,7 +236,8 @@ def update_wheel_file(dist_info):
   lines = []
   try:
     with open(path) as f:
-      lines = [l.replace("#PYAGRUM_WHEEL_TAGS#", tags).replace("#ACT_VERSION#", act_version) for l in f.readlines()]
+      lines = [l.replace("#PYAGRUM_WHEEL_TAGS#", tags).replace(
+          "#ACT_VERSION#", act_version) for l in f.readlines()]
     with open(path, "wt") as f:
       for line in lines:
         f.write(line)
@@ -314,7 +311,8 @@ def sha256_checksum(filename, block_size=65536):
 
 
 def update_metadata(dist_info_dir, version):
-  replace(join(dist_info_dir, 'METADATA'), 'Name: pyagrum', 'Name: pyagrum-nightly')
+  replace(join(dist_info_dir, 'METADATA'),
+          'Name: pyagrum', 'Name: pyagrum-nightly')
   commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
   replace(join(dist_info_dir, 'METADATA'), 'Version: {0}'.format(version),
           'Version: {0}.dev{1}{2}'.format(version, datetime.today().strftime('%Y%m%d'), commit_time))
@@ -342,7 +340,9 @@ def zip_wheel(tmp, install_dir, version, nightly=False):
   for root, dirs, files in walk(install_dir):
     for f in files:
       try:
-        zipf.write(join(install_dir, root, f), relpath(join(root, f), install_dir))
+        zipf.write(join(install_dir, root, f),
+                   relpath(join(root, f), install_dir))
       except:
-        critic("Could not archive file: {0}".format(join(install_dir, root, f)))
+        critic("Could not archive file: {0}".format(
+            join(install_dir, root, f)))
   return zip_name

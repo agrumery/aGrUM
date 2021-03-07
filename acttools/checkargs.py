@@ -123,14 +123,16 @@ def checkConsistency(current):
         has_notif = True
         notif(prefix + " on target [aGrUM].")
       if current['action'] != 'test':
-        critic(prefix + " on action [test] (not on [{0}]).".format(current['action']))
+        critic(
+            prefix + " on action [test] (not on [{0}]).".format(current['action']))
 
   # end of helper
 
   # test for only one target
   if current['action'] == 'test':
     if len(current['targets']) > 1:
-      first = "aGrUM" if "aGrUM" in current['targets'] else list(current['targets'])[0]
+      first = "aGrUM" if "aGrUM" in current['targets'] else list(current['targets'])[
+          0]
       has_notif = True
       notif("Action [test] on only one target : selecting [" + first + "]")
       current['targets'] = [first]

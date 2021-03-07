@@ -20,7 +20,10 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
 from __future__ import print_function
+import sys
+import traceback
 import time
+import platform
 
 from acttools import *
 from acttools.utils import notif
@@ -35,15 +38,14 @@ def main():
   configureOptions(current)
 
   (options, args) = parseCommandLine(current)
-
-  msvcForced = False
-  if options.mvsc or options.mvsc32 or options.mvsc17 or options.mvsc17_32 or options.mvsc19 or options.mvsc19_32:
+  mvscForced = False
+  if platform.system() == "Windows" and options.windows[:4] == "mvsc":
     options.static_lib = True
     options.no_fun = True
-    msvcForced = True
+    mvscForced = True
 
   mingwForced = False
-  if options.mingw64:
+  if platform.system() == "Windows" and options.windows == "mingw64":
     options.no_fun = True
     mingwForced = True
 
@@ -57,7 +59,7 @@ def main():
 
   about()
 
-  if msvcForced:
+  if mvscForced:
     notif("Options [static] and [no-fun] forced by option [mvsc*]")
 
   if mingwForced:
@@ -101,14 +103,12 @@ def main():
   return (gc, gm, gb)
 
 
-import traceback
-import sys
-
 if __name__ == "__main__":
   try:
     tc, tm, tp = main()
     if tc + tm + tp != 0:
-      notif("Time spent in cmake : [{0:0.3f}]s , make : [{1:0.3f}]s and post : [{2:0.3f}]s ".format(tc, tm, tp))
+      notif("Time spent in cmake : [{0:0.3f}]s , make : [{1:0.3f}]s and post : [{2:0.3f}]s ".format(
+          tc, tm, tp))
   except KeyboardInterrupt:
     print("\n Shutdown requested...exiting \n")
     sys.exit(1)
