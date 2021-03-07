@@ -74,6 +74,23 @@ namespace gum {
     return dag_.children(idFromName(name));
   }
 
+  INLINE NodeSet DAGmodel::children(const NodeSet& ids) const {
+    return dag_.children(ids);
+  }
+
+  INLINE NodeSet
+     DAGmodel::children(const std::vector< std::string >& names) const {
+    return children(nodeset(names));
+  }
+
+  INLINE NodeSet DAGmodel::parents(const NodeSet& ids) const {
+    return dag_.children(ids);
+  }
+
+  INLINE NodeSet DAGmodel::parents(const std::vector< std::string >& names) const {
+    return parents(nodeset(names));
+  }
+
   INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const {

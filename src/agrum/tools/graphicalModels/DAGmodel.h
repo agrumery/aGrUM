@@ -139,7 +139,11 @@ namespace gum {
     const NodeSet& parents(const NodeId id) const;
     const NodeSet& parents(const std::string& name) const;
 
-    /// returns theparents of a node and the node
+    /// returns the parents of a set of nodes
+    NodeSet parents(const NodeSet& ids) const;
+    NodeSet parents(const std::vector< std::string >& names) const;
+
+    /// returns the parents of a node and the node
     /** Note that the set of nodes returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
      * @param id the node which is the head of an arc with the returned nodes
@@ -156,6 +160,10 @@ namespace gum {
      * returned nodes */
     const NodeSet& children(const NodeId id) const;
     const NodeSet& children(const std::string& name) const;
+
+    /// returns the children of a set of nodes
+    NodeSet children(const NodeSet& ids) const;
+    NodeSet children(const std::vector< std::string >& names) const;
 
     /// returns the set of nodes with directed path outgoing from a given node
     /** Note that the set of nodes returned may be empty if no path within the

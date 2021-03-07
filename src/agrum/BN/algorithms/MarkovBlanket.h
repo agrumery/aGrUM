@@ -37,7 +37,7 @@ namespace gum {
 
   /**
 * @class MarkovBlanket
-* @headerfile MarkovBlanket.h <agrum/BN/algorithms/MarokovBlanket.h>
+* @headerfile MarkovBlanket.h <agrum/BN/algorithms/MarkovBlanket.h>
    * @brief Class building the markov Blanket from a BN and a nodeName.
    * @ingroup bn_group
 
@@ -62,10 +62,16 @@ namespace gum {
     std::string toDot() const;
 
     /// wrapping @ref DAG::parents(id)
-    const NodeSet& parents(const NodeId id) const;
+    const NodeSet& parents(NodeId id) const;
 
-    /// wrapping @ref DAG::parents(id)
-    const NodeSet& children(const NodeId id) const;
+    /// wrapping @ref DAG::children(id)
+    const NodeSet& children(NodeId id) const;
+
+    /// wrapping @ref DAG::parents(ids)
+    NodeSet parents(const NodeSet& ids) const;
+
+    /// wrapping @ref DAG::children(ids)
+    NodeSet children(const NodeSet& ids) const;
 
     /// wrapping @ref DAG::sizeArcs()
     Size sizeArcs() const;

@@ -70,13 +70,19 @@ namespace gum {
     std::string toDot() const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& parents(const NodeId id) const;
+    const NodeSet& parents(NodeId id) const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& children(const NodeId id) const;
+    const NodeSet& children(NodeId id) const;
+
+    /// wrapping @ref MixedGraph::parents(ids)
+    NodeSet parents(const NodeSet& ids) const;
+
+    /// wrapping @ref MixedGraph::parents(ids)
+    NodeSet children(const NodeSet& ids) const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& neighbours(const NodeId id) const;
+    const NodeSet& neighbours(NodeId id) const;
 
     /// wrapping @ref MixedGraph::sizeArcs()
     Size sizeArcs() const;

@@ -33,12 +33,20 @@ namespace gum {
 
   INLINE DAG MarkovBlanket::dag() { return mb__; }
 
-  INLINE const NodeSet& MarkovBlanket::parents(const NodeId id) const {
+  INLINE const NodeSet& MarkovBlanket::parents(NodeId id) const {
     return mb__.parents(id);
   }
 
-  INLINE const NodeSet& MarkovBlanket::children(const NodeId id) const {
+  INLINE const NodeSet& MarkovBlanket::children(NodeId id) const {
     return mb__.children(id);
+  }
+
+  INLINE NodeSet MarkovBlanket::parents(const NodeSet& ids) const {
+    return mb__.parents(ids);
+  }
+
+  INLINE NodeSet MarkovBlanket::children(const NodeSet& ids) const {
+    return mb__.children(ids);
   }
 
   INLINE Size MarkovBlanket::sizeArcs() const { return mb__.sizeArcs(); }

@@ -419,7 +419,7 @@ namespace gum {
        * consequently, the latter should not be taken into account (in this
        * case, parameter from_external_object is equal to true). As an
        * example, imagine that the database table is created from a CSV file
-       * with 5 columns named X0, X1, X2, X3 and X4 respectivly. Suppose that
+       * with 5 columns named X0, X1, X2, X3 and X4 respectively. Suppose that
        * we asked the database table to ignore columns X1 and X3. Then
        * setVariableNames( { "X0", "X1", "X2", "X3", "X4" }, true ) will
        * set the columns of the database table as { "X0", "X2", "X4" }. The
