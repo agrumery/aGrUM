@@ -250,7 +250,7 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
       reader.proceed();
-      gum::ShaferShenoyLIMIDInference< double >* dIDI;
+      gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
          dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
 
@@ -741,17 +741,18 @@ namespace gum_tests {
     }
 
     void testNegativeUtilityNonRegression() {
-      auto fs=gum::InfluenceDiagram<double>::fastPrototype("ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
+      auto fs = gum::InfluenceDiagram< double >::fastPrototype(
+         "ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
       fs.cpt("ActualUtility").fillWith(1).normalize();
-      fs.utility("Utility").fillWith({-10,-10,-50,-50});
+      fs.utility("Utility").fillWith({-10, -10, -50, -50});
 
-      auto ie=gum::ShaferShenoyLIMIDInference<double>(&fs);
+      auto ie = gum::ShaferShenoyLIMIDInference< double >(&fs);
       ie.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
          ie.optimalDecision("Options"),
          (gum::Potential< double >() << fs.variableFromName("Options"))
-            .fillWith({1,0}),
+            .fillWith({1, 0}),
          TS_GUM_SMALL_ERROR)
     }
   };

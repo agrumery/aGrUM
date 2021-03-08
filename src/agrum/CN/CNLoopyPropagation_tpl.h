@@ -309,9 +309,11 @@ namespace gum {
         combi_den++;
         combi_num++;
 
-        if (combi_den % pp == 0) {
-          combi_den += pp;
-          combi_num += pp;
+        if (pp != 0) {
+          if (combi_den % pp == 0) {
+            combi_den += pp;
+            combi_num += pp;
+          }
         }
 
         // incrementation
@@ -399,7 +401,8 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp parallel
+#pragma omp parallel default(none) \
+   shared(msg_p_min, msg_p_max, taille, msgs_p, msgPerm, id)
       {
         GUM_SCALAR msg_pmin = msg_p_min;
         GUM_SCALAR msg_pmax = msg_p_max;
@@ -487,7 +490,8 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp parallel
+#pragma omp parallel default(none) \
+   shared(msg_l_min, msg_l_max, taille, msgs_p, msgPerm, id, pos, lx)
       {
         GUM_SCALAR                               msg_lmin = msg_l_min;
         GUM_SCALAR                               msg_lmax = msg_l_max;
@@ -966,8 +970,7 @@ namespace gum {
           }
 
           // compute probability distribution to avoid doing it multiple times
-          // (at
-          // each combination of messages)
+          // (at each combination of messages)
           distri[1] = ArcsP_min_[Arc(bnet__->nodeId(**jt), Y)];
           distri[0] = GUM_SCALAR(1.) - distri[1];
           msg_p.push_back(distri);

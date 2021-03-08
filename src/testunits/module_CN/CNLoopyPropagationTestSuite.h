@@ -69,7 +69,7 @@ namespace gum_tests {
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  class L2UInferenceTestSuite: public CxxTest::TestSuite {
+  class CNLooopyPropagationTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:
@@ -279,6 +279,40 @@ namespace gum_tests {
 
       clearCNet();
     }   // end of : testL2UListener
+
+    // not dynamic (2U network) - with evidence
+    void testL2UInferenceFromBug() {
+      initCNet();
+
+      gum::credal::CNLoopyPropagation< double > lp =
+         gum::credal::CNLoopyPropagation< double >(*cn);
+
+      // evidence from file
+      lp.eraseAllEvidence();
+      try {
+        lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
+      } catch (gum::Exception&) { TS_ASSERT(false); }
+
+      try {
+        lp.makeInference();
+      } catch (gum::Exception&) { TS_ASSERT(false); }
+
+      try {
+        for (const auto node: cn->current_bn().nodes()) {
+          std::vector< double > inf(lp.marginalMin(node));
+          std::vector< double > sup(lp.marginalMax(node));
+          // double e_inf = lp.expectationMin ( node_idIt );
+          // double e_sup = lp.expectationMax ( node_idIt );
+        }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
+
+      try {
+        lp.eraseAllEvidence();
+      } catch (gum::Exception&) { TS_ASSERT(false); }
+
+      clearCNet();
+    }
+
 
   };   // end of : class L2UInferenceTestSuite
 
