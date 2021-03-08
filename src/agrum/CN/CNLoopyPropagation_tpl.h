@@ -383,7 +383,7 @@ namespace gum {
     }
 
     /**
-     * enumere combinaisons messages parents, pour message vers enfant
+     * enumerate combinations messages parents, pour message vers enfant
      */
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::enum_combi_(
@@ -401,8 +401,7 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp parallel default(none) \
-   shared(msg_p_min, msg_p_max, taille, msgs_p, msgPerm, id)
+#pragma omp parallel
       {
         GUM_SCALAR msg_pmin = msg_p_min;
         GUM_SCALAR msg_pmax = msg_p_max;
@@ -490,8 +489,7 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp parallel default(none) \
-   shared(msg_l_min, msg_l_max, taille, msgs_p, msgPerm, id, pos, lx)
+#pragma omp parallel
       {
         GUM_SCALAR                               msg_lmin = msg_l_min;
         GUM_SCALAR                               msg_lmax = msg_l_max;
