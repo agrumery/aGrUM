@@ -511,9 +511,8 @@ class TestOperators(pyAgrumTestCase):
     except gum.InvalidArgument:
       self.assertTrue(True)
 
-  
   def testReorganizePotentialWithAccents(self):
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
       a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "éèàû"]
       p = gum.Potential()
       p.add(a).add(b)
@@ -524,7 +523,8 @@ class TestOperators(pyAgrumTestCase):
       q.fillWith([4, 5, 6, 3, 2, 1, 4, 3, 2])
 
       self.assertNotEqual(str(p * q), str(q * p))
-      self.assertEqual(str(p * q), str((q * p).reorganize(['à', 'û', 'é', 'è'])))
+      self.assertEqual(
+          str(p * q), str((q * p).reorganize(['à', 'û', 'é', 'è'])))
       self.assertNotEqual(
           str(p * q), str((q * p).reorganize(['à', 'é', 'û', 'è'])))
 
@@ -585,10 +585,10 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual(pot.reorganize(['b', 'c', 'a']).extract({"c": 2}), r)
 
     try:
-      pot.extract({"x": 1})
-      self.assertTrue(False)
+      q = pot.extract({"x": 1})
+      self.assertEquals(pot, q)
     except gum.InvalidArgument:
-      self.assertTrue(True)
+      self.assertTrue(False)
 
     try:
       pot.extract({"c": 16})
@@ -739,9 +739,9 @@ class TestOperators(pyAgrumTestCase):
     pABC2 = (bn2.cpt("A") * bn2.cpt("B") * bn2.cpt("C"))
 
     self.assertAlmostEqual(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -
-                                   pABC.reorganize(['A', 'B', 'C']).toarray()), 0)
+                                  pABC.reorganize(['A', 'B', 'C']).toarray()), 0)
     self.assertAlmostEqual(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
-                                   pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
+                                  pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
 
   def testFillWithPotentialAndMap(self):
     v = gum.LabelizedVariable("v", "v", 2)
@@ -754,7 +754,7 @@ class TestOperators(pyAgrumTestCase):
     pp = gum.Potential().add(ww).add(vv)
     pp.fillWith(p, ["w", "v"])
     self.assertAlmostEqual(np.max(p.reorganize(['v', 'w']).toarray() -
-                                   pp.reorganize(['vv', 'ww']).toarray()), 0)
+                                  pp.reorganize(['vv', 'ww']).toarray()), 0)
 
     vvv = gum.LabelizedVariable("vvv", "vvv", 2)
     www = gum.LabelizedVariable("www", "www", 2)
@@ -990,28 +990,27 @@ class TestOperators(pyAgrumTestCase):
 
     self.assertAlmostEqual(gum.Potential(p).translate(2), p + 2, 1e-10)
     self.assertAlmostEqual(gum.Potential(p).translate(2), 2 + p, 1e-10)
-    
 
     self.assertAlmostEqual(gum.Potential(p).translate(-2), p - 2, 1e-10)
-  
 
     self.assertAlmostEqual((p + (3.45 - p)).max(), 3.45, 1e-10)
     self.assertAlmostEqual((p + (3.45 - p)).min(), 3.45, 1e-10)
 
     self.assertAlmostEqual(gum.Potential(p).scale(2.5), p * 2.5, 1e-10)
     self.assertAlmostEqual(gum.Potential(p).scale(2.5), 2.5 * p, 1e-10)
-    
+
     self.assertAlmostEqual(gum.Potential(p).scale(1/2.5), p / 2.5, 1e-10)
-    self.assertAlmostEqual(gum.Potential(p).inverse().scale(2.5), 2.5 / p, 1e-7)
+    self.assertAlmostEqual(gum.Potential(
+        p).inverse().scale(2.5), 2.5 / p, 1e-7)
 
     r = gum.Potential(p)
     r += 4.3
     self.assertAlmostEqual(gum.Potential(p).translate(4.3), r, 1e-10)
-    
+
     r = gum.Potential(p)
     r -= 4.3
     self.assertAlmostEqual(gum.Potential(p).translate(-4.3), r, 1e-10)
-    
+
     r = gum.Potential(p)
     r *= 4.3
     self.assertAlmostEqual(gum.Potential(p).scale(4.3), r, 1e-10)
@@ -1019,7 +1018,7 @@ class TestOperators(pyAgrumTestCase):
     r = gum.Potential(p)
     r /= 4.3
     self.assertAlmostEqual(gum.Potential(p).scale(1 / 4.3), r, 1e-10)
-    
+
     self.assertAlmostEqual(gum.Potential(p).log2(), gum.log2(p), 1e-10)
     self.assertAlmostEqual(gum.Potential(p-0.5).log2(), abs(p-0.5), 1e-10)
 
@@ -1034,11 +1033,8 @@ class TestOperators(pyAgrumTestCase):
       py.add(gum.LabelizedVariable(s, s, 2))
 
     # @todo waiting for resolution of https://github.com/swig/swig/issues/1783
-    #with self.assertRaises(gum.DuplicateElement):
+    # with self.assertRaises(gum.DuplicateElement):
     #  pxy=px*py
-
-
-
 
 
 ts = unittest.TestSuite()
