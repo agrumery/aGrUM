@@ -51,7 +51,7 @@
 
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>

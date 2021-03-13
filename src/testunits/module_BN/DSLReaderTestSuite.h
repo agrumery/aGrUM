@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>

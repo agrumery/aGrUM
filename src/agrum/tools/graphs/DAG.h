@@ -173,11 +173,11 @@ namespace gum {
 
     /** check if node X and node Y are independent given nodes Z (in the sense of
      * d-separation)*/
-    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
+    bool dSeparation(NodeId X, NodeId Y, const NodeSet& Z) const;
 
-    /** check if nodes X andnodes  Y are independent given Z (in the sense of
+    /** check if nodes X and nodes  Y are independent given Z (in the sense of
      * d-separation)*/
-    bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
+    bool dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
   };
 
 } /* namespace gum */

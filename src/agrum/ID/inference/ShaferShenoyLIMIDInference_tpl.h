@@ -342,7 +342,7 @@ namespace gum {
           NodeSet    decs;
           for (const auto dec: tobetested)
             if (dec != node) decs += reduced_.family(dec);
-          if (reduced_.isIndependent(decs, us, reduced_.family(node))) {
+          if (reduced_.dSeparation(decs, us, reduced_.family(node))) {
             solvabiltyOrder_.push_back(node);
             foundOne = true;
             tobetested.erase(node);

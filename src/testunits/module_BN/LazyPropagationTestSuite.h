@@ -25,7 +25,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 

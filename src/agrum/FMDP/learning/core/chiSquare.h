@@ -31,7 +31,7 @@
 #ifndef GUM_CHI_SQUARE_H
 #  define GUM_CHI_SQUARE_H
 
-#  include <agrum/tools/core/math/math.h>
+#  include <agrum/tools/core/math/math_utils.h>
 #  include <agrum/tools/core/hashTable.h>
 
 

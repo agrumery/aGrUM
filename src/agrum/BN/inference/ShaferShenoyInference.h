@@ -29,7 +29,7 @@
 
 #include <utility>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>

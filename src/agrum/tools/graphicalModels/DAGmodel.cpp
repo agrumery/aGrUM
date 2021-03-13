@@ -37,32 +37,9 @@ namespace gum {
 
   DAGmodel::~DAGmodel() {
     GUM_DESTRUCTOR(DAGmodel);
-    if (mutableMoralGraph__) { delete mutableMoralGraph__; }
+    if (mutableMoralGraph__ != nullptr) { delete mutableMoralGraph__; }
   }
 
-  void DAGmodel::moralGraph__() const {
-    mutableMoralGraph__->populateNodes(dag());
-    // transform the arcs into edges
-
-    for (const auto& arc: arcs())
-      mutableMoralGraph__->addEdge(arc.first(), arc.second());
-
-    //}
-
-    // marry the parents
-    for (const auto node: nodes()) {
-      const auto& par = parents(node);
-
-      for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-        auto it2 = it1;
-
-        for (++it2; it2 != par.end(); ++it2) {
-          // will automatically check if this edge already exists
-          mutableMoralGraph__->addEdge(*it1, *it2);
-        }
-      }
-    }
-  }
 
   DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
     if (this != &source) {
@@ -80,15 +57,15 @@ namespace gum {
 
   const UndiGraph& DAGmodel::moralGraph(bool clear) const {
     if (clear
-        || (mutableMoralGraph__ == nullptr)) {   // we have to call moralGraph_
+        || (mutableMoralGraph__
+            == nullptr)) {   // we have to call dag().moralGraph()
       if (mutableMoralGraph__ == nullptr) {
         mutableMoralGraph__ = new UndiGraph();
       } else {
         // clear is True ,__mutableMoralGraph exists
         mutableMoralGraph__->clear();
       }
-
-      moralGraph__();
+      *mutableMoralGraph__ = dag().moralGraph();
     }
 
     return *mutableMoralGraph__;

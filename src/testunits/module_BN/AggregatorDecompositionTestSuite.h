@@ -26,7 +26,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prm.h>

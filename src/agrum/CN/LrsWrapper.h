@@ -31,7 +31,7 @@
 #define __LRSWrapper_WRAPPER__H__
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 
 
 #ifdef HAVE_UNISTD_H

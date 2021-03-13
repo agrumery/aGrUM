@@ -99,7 +99,7 @@ namespace gum {
     return res;
   }
 
-  bool DAG::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+  bool DAG::dSeparation(NodeId X, NodeId Y, const NodeSet& Z) const {
     NodeSet cumul{Z};
     cumul << X << Y;
     auto g = moralizedAncestralGraph(cumul);
@@ -108,7 +108,7 @@ namespace gum {
     return !g.hasUndirectedPath(X, Y);
   }
 
-  bool DAG::isIndependent(const NodeSet& X,
+  bool DAG::dSeparation(const NodeSet& X,
                           const NodeSet& Y,
                           const NodeSet& Z) const {
     if (!(X * Y).empty())

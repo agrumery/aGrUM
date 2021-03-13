@@ -34,7 +34,7 @@
 #include <fstream>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/hashTable.h>
 
 namespace gum {

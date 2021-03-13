@@ -31,7 +31,7 @@
 #define GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
 
 #include <agrum/config.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <vector>
 
 #include <agrum/tools/stattests/kNML.h>

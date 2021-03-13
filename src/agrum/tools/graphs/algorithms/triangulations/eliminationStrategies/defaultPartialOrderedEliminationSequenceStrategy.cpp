@@ -26,7 +26,7 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
 #include <agrum/tools/graphs/undiGraph.h>

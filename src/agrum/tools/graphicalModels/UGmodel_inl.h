@@ -27,7 +27,7 @@
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/UGmodel.h>
 
 namespace gum {

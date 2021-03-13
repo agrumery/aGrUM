@@ -26,7 +26,7 @@
  * @author Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 
 

@@ -26,7 +26,7 @@
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 // =========================================================================
 

@@ -25,7 +25,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==========================================================================
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/timer.h>
 // ==========================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>

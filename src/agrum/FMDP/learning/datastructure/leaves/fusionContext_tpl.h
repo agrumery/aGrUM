@@ -27,7 +27,7 @@
  * GONZALES(@AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>
 // =======================================================
 

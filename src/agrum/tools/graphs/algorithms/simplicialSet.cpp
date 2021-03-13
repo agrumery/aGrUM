@@ -24,7 +24,7 @@
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphs/algorithms/simplicialSet.h>
 #include <agrum/tools/graphs/graphElements.h>
 #include <limits>

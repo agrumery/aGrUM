@@ -44,7 +44,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string>
 #include <vector>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/utils_dir.h>
 #include <agrum/tools/core/math/formula.h>
 

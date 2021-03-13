@@ -30,7 +30,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/OMPThreads.h>
 
 #include <agrum/tools/stattests/recordCounter.h>

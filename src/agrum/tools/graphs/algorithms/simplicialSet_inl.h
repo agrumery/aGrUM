@@ -30,7 +30,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease IDE parser
-#  include <agrum/tools/core/math/math.h>
+#  include <agrum/tools/core/math/math_utils.h>
 #  include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
 
 namespace gum {

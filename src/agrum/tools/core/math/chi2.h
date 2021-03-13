@@ -33,7 +33,7 @@
 #define GUM_LEARNING_CHI2_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/hashTable.h>
 
 #define GUM_LEARNING_CONFIDENCE_PROBA 0.05

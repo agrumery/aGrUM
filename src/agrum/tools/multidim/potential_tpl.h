@@ -26,7 +26,7 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {

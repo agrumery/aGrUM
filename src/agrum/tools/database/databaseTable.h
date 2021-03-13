@@ -38,7 +38,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/core/thread.h>
 #include <agrum/tools/database/DBCell.h>

@@ -29,7 +29,7 @@
 // =======================================================
 #include <queue>
 // =======================================================
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/multiPriorityQueue.h>
 #include <agrum/tools/core/types.h>
 // =======================================================

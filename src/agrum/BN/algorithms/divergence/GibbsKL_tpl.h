@@ -26,7 +26,7 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>

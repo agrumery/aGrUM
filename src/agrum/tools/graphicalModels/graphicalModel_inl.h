@@ -29,7 +29,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/graphicalModel.h>
 
 namespace gum {

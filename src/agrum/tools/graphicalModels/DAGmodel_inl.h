@@ -27,7 +27,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/DAGmodel.h>
 
 namespace gum {
@@ -117,17 +117,10 @@ namespace gum {
     return ancestors(idFromName(name));
   }
 
-  INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
-    return dag().moralizedAncestralGraph(nodes);
-  }
 
   INLINE UndiGraph DAGmodel::moralizedAncestralGraph(
      const std::vector< std::string >& nodenames) const {
     return moralizedAncestralGraph(nodeset(nodenames));
-  }
-
-  INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    return dag().isIndependent(X, Y, Z);
   }
 
   INLINE bool
@@ -136,16 +129,27 @@ namespace gum {
                              const std::vector< std::string >& Znames) const {
     return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
   }
-  INLINE bool DAGmodel::isIndependent(const NodeSet& X,
-                                      const NodeSet& Y,
-                                      const NodeSet& Z) const {
-    return dag().isIndependent(X, Y, Z);
-  }
 
   INLINE bool
-     DAGmodel::isIndependent(const std::vector< std::string >& Xname,
-                             const std::vector< std::string >& Yname,
+     DAGmodel::isIndependent(const std::vector< std::string >& Xnames,
+                             const std::vector< std::string >& Ynames,
                              const std::vector< std::string >& Znames) const {
-    return isIndependent(nodeset(Xname), nodeset(Yname), nodeset(Znames));
+    return isIndependent(nodeset(Xnames), nodeset(Ynames), nodeset(Znames));
+  }
+
+
+
+  INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
+    return dag().moralizedAncestralGraph(nodes);
+  }
+
+  INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+    return dag().dSeparation(X,Y,Z);
+  }
+
+  INLINE bool DAGmodel::isIndependent(const NodeSet& X,
+                               const NodeSet& Y,
+                               const NodeSet& Z) const {
+    return dag().dSeparation(X,Y,Z);
   }
 } /* namespace gum */

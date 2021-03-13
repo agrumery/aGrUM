@@ -33,7 +33,7 @@
 //#include <algorithm>
 //#include <utility>
 // =========================================================================
-#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/functors.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
