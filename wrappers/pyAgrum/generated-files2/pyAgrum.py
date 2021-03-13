@@ -4665,14 +4665,6 @@ class DAG(DiGraph):
         _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
     __swig_destroy__ = _pyAgrum.delete_DAG
 
-    def descendants(self, id):
-        r"""descendants(DAG self, gum::NodeId const id) -> gum::NodeSet"""
-        return _pyAgrum.DAG_descendants(self, id)
-
-    def ancestors(self, id):
-        r"""ancestors(DAG self, gum::NodeId const id) -> gum::NodeSet"""
-        return _pyAgrum.DAG_ancestors(self, id)
-
     def moralGraph(self):
         r"""moralGraph(DAG self) -> UndiGraph"""
         return _pyAgrum.DAG_moralGraph(self)
@@ -4681,12 +4673,12 @@ class DAG(DiGraph):
         r"""moralizedAncestralGraph(DAG self, gum::NodeSet const & nodes) -> UndiGraph"""
         return _pyAgrum.DAG_moralizedAncestralGraph(self, nodes)
 
-    def isIndependent(self, *args):
+    def dSeparation(self, *args):
         r"""
-        isIndependent(DAG self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
-        isIndependent(DAG self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
+        dSeparation(DAG self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        dSeparation(DAG self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
         """
-        return _pyAgrum.DAG_isIndependent(self, *args)
+        return _pyAgrum.DAG_dSeparation(self, *args)
 
     def addArc(self, *args):
         r"""
@@ -6494,7 +6486,9 @@ class DAGmodel(GraphicalModel):
     def parents(self, *args):
         r"""
         parents(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
-        parents(DAGmodel self, std::string const & name) -> gum::NodeSet const &
+        parents(DAGmodel self, std::string const & name) -> gum::NodeSet const
+        parents(DAGmodel self, gum::NodeSet const & ids) -> gum::NodeSet
+        parents(DAGmodel self, Vector_string names) -> gum::NodeSet
         """
         return _pyAgrum.DAGmodel_parents(self, *args)
 
@@ -6508,7 +6502,9 @@ class DAGmodel(GraphicalModel):
     def children(self, *args):
         r"""
         children(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
-        children(DAGmodel self, std::string const & name) -> gum::NodeSet const &
+        children(DAGmodel self, std::string const & name) -> gum::NodeSet const
+        children(DAGmodel self, gum::NodeSet const & ids) -> gum::NodeSet
+        children(DAGmodel self, Vector_string names) -> gum::NodeSet
         """
         return _pyAgrum.DAGmodel_children(self, *args)
 
