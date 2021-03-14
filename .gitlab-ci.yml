@@ -172,7 +172,7 @@ windows_agrum_2015:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun --Windows -d build -j except1 test release aGrUM 
@@ -199,7 +199,7 @@ windows_pyagrum_2015:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --Windows -d build -j except1 -t quick
@@ -226,7 +226,7 @@ windows_agrum_2017:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun test release aGrUM --no-fun --Windows -d build -j except1
@@ -253,7 +253,7 @@ windows_pyagrum_2017:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --Windows -d build -j except1 -t quick
@@ -282,7 +282,7 @@ windows_agrum_2019:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun test release aGrUM --no-fun --Windows -d build -j halfexcept1
@@ -309,7 +309,7 @@ windows_pyagrum_2019:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install --yes --file wrappers\pyAgrum\testunits\requirements.txt -c conda-forge
+    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call conda.bat install -y -c conda-forge cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --Windows -d build -j halfexcept1 -t quick
