@@ -7,5 +7,9 @@ if (NOT DEFINED AGRUM_INSTALLATION_DIRECTORY)
   set(AGRUM_INSTALLATION_DIRECTORY "~/virtualenvs/devAgrum")
 endif ()
 
+if (MSVC)
+  add_compile_definitions(NOMINMAX)
+endif()
+
 message(STATUS "aGrUM installation path : ${AGRUM_INSTALLATION_DIRECTORY} ")
 
