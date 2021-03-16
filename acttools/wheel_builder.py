@@ -134,7 +134,7 @@ def install_pyAgrum(current, tmp, nightly=False):
       safe_windows_path(tmp), version)
   if platform.system() == "Windows":
     cmd = "python"
-    options = "--windows="+current['windows']
+    options = '{0} --windows={1}'.format(options,current['windows'])
   else:
     cmd = sys.executable
   cmd = '{0} act {1} {2}'.format(cmd, targets, options)
