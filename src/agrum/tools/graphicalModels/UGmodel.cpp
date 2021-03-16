@@ -65,19 +65,4 @@ namespace gum {
 
     return true;
   }
-
-  /** check if X and Y are independent given Z
-   */
-  bool UGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    UndiGraph g(graph());
-    for (auto node: Z)
-      g.eraseNode(node);
-    return !g.hasUndirectedPath(X, Y);
-  }
-
-  bool UGmodel::isIndependent(const std::string&                Xname,
-                              const std::string&                Yname,
-                              const std::vector< std::string >& Znames) const {
-    return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
-  }   // namespace gum
 }   // namespace gum

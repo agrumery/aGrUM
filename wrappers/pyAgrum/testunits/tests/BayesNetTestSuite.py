@@ -263,7 +263,7 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(bn.size(), 3)
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertEqual(bn.dim(),
-                      (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)))
+                     (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)))
 
     with self.assertRaises(gum.InvalidArgument):
       bn = gum.fastBN("a{yes}->b->c;a->c")
@@ -275,43 +275,43 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      1 + 5 * 2)
+                     1 + 5 * 2)
 
     bn = gum.fastBN("a<-b<-c<-d<-e<-f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      1 + 5 * 2)
+                     1 + 5 * 2)
 
     bn = gum.fastBN("a<-b->c<-d->e<-f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      3 * 1 + 2 + 2 * 4)
+                     3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c->d<-e->f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      3 * 1 + 2 + 2 * 4)
+                     3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c;c->d<-e->f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      3 * 1 + 2 + 2 * 4)
+                     3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b<-c->d;d<-e->f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      3 * 1 + 2 + 2 * 4)
+                     3 * 1 + 2 + 2 * 4)
 
     bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f")
     self.assertEqual(bn.size(), 6)
     self.assertEqual(bn.sizeArcs(), 5)
     self.assertEqual(bn.dim(),
-                      3 * 1 + 2 + 2 * 4)
+                     3 * 1 + 2 + 2 * 4)
 
   def testFastPrototypeVarType(self):
     bn = gum.fastBN("a")
@@ -338,7 +338,7 @@ class TestFeatures(BayesNetTestCase):
 
     bn = gum.fastBN("a[-0.4,0.1,0.5,3.14,10]")
     self.assertEqual(bn.variable("a").__str__(),
-                      "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
+                     "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
@@ -655,7 +655,7 @@ class TestSaveBN(BayesNetTestCase):
       self.assertEqual(bn.variable(n).name(), bn2.variable(n).name())
       self.assertEqual(bn.variable(n).varType(), bn2.variable(n).varType())
       self.assertEqual(bn.variable(n).domainSize(),
-                        bn2.variable(n).domainSize())
+                       bn2.variable(n).domainSize())
 
 
 class TestScore(BayesNetTestCase):
@@ -710,6 +710,13 @@ class TestScore(BayesNetTestCase):
     self.assertEqual(4, shd)
 
 
+class TestGraphicalConcepts(BayesNetTestCase):
+  def testChildren(self):
+    bn = gum.fastBN("A->B->C<-D->E;D->F->G<-A")
+    self.assertEquals(bn.children(1), {2})
+    self.assertEquals(bn.children("A"), {1, 6})
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestConstructors)
 addTests(ts, TestInsertions)
@@ -717,3 +724,4 @@ addTests(ts, TestFeatures)
 addTests(ts, TestLoadBN)
 addTests(ts, TestSaveBN)
 addTests(ts, TestScore)
+addTests(ts, TestGraphicalConcepts)

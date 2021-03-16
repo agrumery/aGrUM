@@ -203,6 +203,29 @@ namespace gum {
     return false;
   }
 
+  bool EdgeGraphPart::hasUndirectedPath(const NodeSet& n1,
+                                        const NodeSet& n2,
+                                        const NodeSet& except) const {
+    NodeSet visited;
+    NodeSet temp;
+
+    for (auto n: n1)
+      temp.insert(n);
+
+    while (!temp.empty()) {
+      NodeId current = *(temp.begin());
+      if (n2.contains(current)) return true;
+      temp.erase(current);
+      visited.insert(current);
+      for (auto next: neighbours(current)) {
+        if (!temp.contains(next) && !visited.contains(next)
+            && !except.contains(next))
+          temp.insert(next);
+      }
+    }
+    return false;
+  }
+
   std::ostream& operator<<(std::ostream& stream, const EdgeGraphPart& set) {
     stream << set.toString();
     return stream;

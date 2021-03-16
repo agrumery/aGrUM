@@ -63,4 +63,15 @@ namespace gum {
   INLINE const NodeGraphPart& UGmodel::nodes() const {
     return (NodeGraphPart&)graph_;
   }
+
+  INLINE bool UGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
+    return ! graph().hasUndirectedPath(X, Y, Z);
+  }
+
+  INLINE bool UGmodel::isIndependent(const NodeSet& X,
+                                     const NodeSet& Y,
+                                     const NodeSet& Z) const {
+    return ! graph().hasUndirectedPath(X, Y, Z);
+  }
+
 } /* namespace gum */

@@ -167,6 +167,16 @@ namespace gum {
 
     double log10DomainSize() const;
 
+    /** check if node X and node Y are independent given nodes Z
+     */
+    virtual bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const = 0;
+
+    /** check if nodes X and nodes Y are independent given nodes Z
+     */
+    virtual bool isIndependent(const NodeSet& X,
+                               const NodeSet& Y,
+                               const NodeSet& Z) const = 0;
+
     protected:
     /**
      * Private copy operator.

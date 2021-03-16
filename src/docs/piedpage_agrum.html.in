@@ -3,7 +3,7 @@
      <table width="100%"><tr><td width="150">
         <A href="$projectname.lip6.fr">$projectname</A> <b>$projectnumber</b> <br/> $datetime <br/>
     </td><td>
-        &copy; CG&amp;PHW&amp;others - LIP6 2005-2007-2012 <br/>
+        &copy; PHW&amp;CG&amp;others - 2021 <br/>
     </td><td align="right">
         <a href="http://www.doxygen.org/index.html">DoXyGeN $doxygenversion</a>
     </td></tr></table>

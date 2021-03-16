@@ -85,33 +85,12 @@ namespace gum {
      */
     Size sizeEdges() const;
 
-    const NodeGraphPart& nodes() const;
+    const NodeGraphPart& nodes() const final;
 
     /**
      * Return true if this node exists in this graphical model.
      */
     bool exists(NodeId node) const final;
-
-    /**
-     * Returns a constant reference over a variable given it's node id.
-     * @throw NotFound If no variable's id matches varId.
-     */
-    virtual const DiscreteVariable& variable(NodeId id) const = 0;
-
-    /**
-     * Return id node src discrete var pointer.
-     * @throw NotFound If no variable matches var.
-     */
-    virtual NodeId nodeId(const DiscreteVariable& var) const = 0;
-
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    virtual NodeId idFromName(const std::string& name) const = 0;
-
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const = 0;
 
     /// @}
 
@@ -138,10 +117,29 @@ namespace gum {
 
     /** check if X and Y are independent given Z
      */
-    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const;
+    virtual bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const final;
+    /** check if nodes X and nodes Y are independent given nodes Z
+     */
+    bool isIndependent(const NodeSet& X,
+                       const NodeSet& Y,
+                       const NodeSet& Z) const final;
+
     bool isIndependent(const std::string&                Xname,
                        const std::string&                Yname,
-                       const std::vector< std::string >& Znames) const;
+                       const std::vector< std::string >& Znames) const {
+      return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
+    };
+    bool isIndependent(const std::vector< std::string >& Xnames,
+                       const std::vector< std::string >& Ynames,
+                       const std::vector< std::string >& Znames) const {
+      return isIndependent(nodeset(Xnames), nodeset(Ynames), nodeset(Znames));
+    };
+
+    /** check if nodes X and nodes Y are independent given nodes Z
+     */
+    // virtual bool isIndependent(const NodeSet& X, const NodeSet& Y, const
+    // NodeSet& Z) const;
+
     /// @}
 
     /// @return true if all the named node are the same and all the named arcs are
