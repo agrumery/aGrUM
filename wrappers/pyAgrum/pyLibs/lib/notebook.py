@@ -1142,6 +1142,7 @@ else:
   gum.MarkovNet._repr_html_ = lambda self: getMN(self)
   gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
+  gum.CredalNet._repr_html_ = lambda self: getBN(self.current_bn())
 
   gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
