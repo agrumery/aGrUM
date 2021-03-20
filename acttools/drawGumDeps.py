@@ -66,20 +66,26 @@ def _gumScan(file: Path):
 
 def drawGumDeps():
   colors = {
-    "core": "tomato",
-    "variables": "lightpink",
-    "graphicalModels": "darkgoldenrod",
-    "graphs": "darksalmon",
-    "multidim": "sandybrown",
+    "tools/core": "#e3670b",
+    "tools/database": "#e07839",
+    "tools/variables": "#dd9282",
+    "tools/graphicalModels": "#e08254",
+    "tools/graphs": "darksalmon",
+    "tools/multidim": "sandybrown",
+    "tools/stattests": "#b7410e",
 
-    "BN": "yellow",
-    "PRM": "orchid",
+    "BN": "#EA80E6",
+    "PRM": "#cc41ff",
     "CN": "yellowgreen",
     "learning": "lightskyblue",
-    "FMDP": "darkseagreen",
+    "FMDP": "#006447",
     "ID": "aquamarine",
+    "MN": "yellow",
 
-    "legend": "white"
+    "tools/external": "white",
+
+    "legend": "white",
+    "legend_tools": "white"
   }
 
   def _getNode(name, label=None, theme=None):
@@ -111,14 +117,21 @@ def drawGumDeps():
 
   oldcol = "legend"
   for col in colors:
-    if col != "legend":
-      agru.add_node(_getNode(col))
+    if col[:6]!="legend":
+      if col[:5]=="tools":
+        agru.add_node(_getNode(col, col[6:]))
+      else:
+        agru.add_node(_getNode(col))
     else:
-      agru.add_node(_getNode(col, "pyAgrum"))
+      agru.add_node(_getNode("legend", "pyAgrum"))
+      agru.add_node(_getNode("legend_tools", label="tools"))
 
   for col in colors:
     if col != "legend":
-      agru.add_edge(pdp.Edge("legend", col))
+      if col[:5] == "tools":
+        agru.add_edge(pdp.Edge("legend_tools", col))
+      else:
+        agru.add_edge(pdp.Edge("legend", col))
 
   arcsiz = 0
   nodsiz = 0
@@ -128,7 +141,7 @@ def drawGumDeps():
   for file in p.glob('**/*.h'):
     if _filter(file.parts):
       key = "/".join(file.parts[3:])
-      # deps[key] = _gumScan(file)
+      deps[key] = _gumScan(file)
 
   agru.set_name("gum")
   agru.set_type("digraph")
@@ -138,7 +151,10 @@ def drawGumDeps():
 
   for k in deps.keys():
     parts = k.split("/")
-    nod = _getNode(k, parts[-1][:-2], parts[0])
+    theme = parts[0]
+    if theme == "tools":
+      theme+="/"+parts[1]
+    nod = _getNode(k, parts[-1][:-2], theme)
     agru.add_node(nod)
     nodsiz += 1
 
@@ -147,9 +163,10 @@ def drawGumDeps():
       agru.add_edge(pdp.Edge(l, k))
       arcsiz += 1
 
-  print("aGrUM headers map")
-  print(f" + Nbr of nodes : {nodsiz}")
-  print(f" + Nbr of arcs : {arcsiz}")
+  print("# aGrUM headers map")
+  print(f"#  + Nbr of nodes : {nodsiz}")
+  print(f"#  + Nbr of arcs : {arcsiz}")
+  print(agru.to_string())
   agru.write_pdf("agrum-map.pdf", prog="fdp")
 
 
