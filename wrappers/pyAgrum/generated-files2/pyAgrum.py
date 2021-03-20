@@ -6294,6 +6294,13 @@ class GraphicalModel(object):
         r"""log10DomainSize(GraphicalModel self) -> double"""
         return _pyAgrum.GraphicalModel_log10DomainSize(self)
 
+    def isIndependent(self, *args):
+        r"""
+        isIndependent(GraphicalModel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        isIndependent(GraphicalModel self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
+        """
+        return _pyAgrum.GraphicalModel_isIndependent(self, *args)
+
 # Register GraphicalModel in _pyAgrum:
 _pyAgrum.GraphicalModel_swigregister(GraphicalModel)
 cvar = _pyAgrum.cvar
@@ -6372,98 +6379,6 @@ class DAGmodel(GraphicalModel):
         r"""exists(DAGmodel self, gum::NodeId node) -> bool"""
         return _pyAgrum.DAGmodel_exists(self, node)
 
-    def variable(self, id):
-        r"""
-        variable(DAGmodel self, gum::NodeId id) -> DiscreteVariable
-
-        Parameters
-        ----------
-        id : int
-        	a variable's id
-        name : str
-        	a variable's name
-
-        Returns
-        -------
-        pyAgrum.DiscreteVariable
-        	the variable
-
-        Raises
-        ------
-        gum.IndexError
-        	If the graph does not contain the variable
-
-        """
-        return _pyAgrum.DAGmodel_variable(self, id)
-
-    def nodeId(self, var):
-        r"""
-        nodeId(DAGmodel self, DiscreteVariable var) -> gum::NodeId
-
-        Parameters
-        ----------
-        var : pyAgrum.DiscreteVariable
-        	a variable
-
-        Returns
-        -------
-        int
-        	the id of the variable
-
-        Raises
-        ------
-        gum.IndexError
-        	If the graph does not contain the variable
-
-        """
-        return _pyAgrum.DAGmodel_nodeId(self, var)
-
-    def idFromName(self, name):
-        r"""
-        idFromName(DAGmodel self, std::string const & name) -> gum::NodeId
-
-        Returns a variable's id given its name in the graph.
-
-        Parameters
-        ----------
-        name : str
-        	The variable's name from which the id is returned.
-
-        Returns
-        -------
-        int :
-        	The variable's node id.
-
-        Raises
-        ------
-        gum.NotFound
-        	If name does not match a variable in the graph
-
-        """
-        return _pyAgrum.DAGmodel_idFromName(self, name)
-
-    def variableFromName(self, name):
-        r"""
-        variableFromName(DAGmodel self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name : str
-        	a variable's name
-
-        Returns
-        -------
-        pyAgrum.DiscreteVariable
-        	the variable
-
-        Raises
-        ------
-        gum.IndexError
-        	If the graph does not contain the variable
-
-        """
-        return _pyAgrum.DAGmodel_variableFromName(self, name)
-
     def arcs(self):
         r"""
         arcs(DAGmodel self) -> gum::ArcSet const &
@@ -6532,9 +6447,9 @@ class DAGmodel(GraphicalModel):
     def isIndependent(self, *args):
         r"""
         isIndependent(DAGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
-        isIndependent(DAGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Zanmes) -> bool
         isIndependent(DAGmodel self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
-        isIndependent(DAGmodel self, Vector_string Xname, Vector_string Yname, Vector_string Zanmes) -> bool
+        isIndependent(DAGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Znames) -> bool
+        isIndependent(DAGmodel self, Vector_string Xnames, Vector_string Ynames, Vector_string Znames) -> bool
         """
         return _pyAgrum.DAGmodel_isIndependent(self, *args)
 
@@ -6619,22 +6534,6 @@ class UGmodel(GraphicalModel):
         r"""exists(UGmodel self, gum::NodeId node) -> bool"""
         return _pyAgrum.UGmodel_exists(self, node)
 
-    def variable(self, id):
-        r"""variable(UGmodel self, gum::NodeId id) -> DiscreteVariable"""
-        return _pyAgrum.UGmodel_variable(self, id)
-
-    def nodeId(self, var):
-        r"""nodeId(UGmodel self, DiscreteVariable var) -> gum::NodeId"""
-        return _pyAgrum.UGmodel_nodeId(self, var)
-
-    def idFromName(self, name):
-        r"""idFromName(UGmodel self, std::string const & name) -> gum::NodeId"""
-        return _pyAgrum.UGmodel_idFromName(self, name)
-
-    def variableFromName(self, name):
-        r"""variableFromName(UGmodel self, std::string const & name) -> DiscreteVariable"""
-        return _pyAgrum.UGmodel_variableFromName(self, name)
-
     def edges(self):
         r"""edges(UGmodel self) -> gum::EdgeSet const &"""
         return _pyAgrum.UGmodel_edges(self)
@@ -6656,7 +6555,9 @@ class UGmodel(GraphicalModel):
     def isIndependent(self, *args):
         r"""
         isIndependent(UGmodel self, gum::NodeId X, gum::NodeId Y, gum::NodeSet const & Z) -> bool
+        isIndependent(UGmodel self, gum::NodeSet const & X, gum::NodeSet const & Y, gum::NodeSet const & Z) -> bool
         isIndependent(UGmodel self, std::string const & Xname, std::string const & Yname, Vector_string Znames) -> bool
+        isIndependent(UGmodel self, Vector_string Xnames, Vector_string Ynames, Vector_string Znames) -> bool
         """
         return _pyAgrum.UGmodel_isIndependent(self, *args)
 
@@ -24211,6 +24112,11 @@ class CNMonteCarloSampling(object):
     def __init__(self, credalNet):
         r"""__init__(CNMonteCarloSampling self, CredalNet credalNet) -> CNMonteCarloSampling"""
         _pyAgrum.CNMonteCarloSampling_swiginit(self, _pyAgrum.new_CNMonteCarloSampling(credalNet))
+
+        self._model=credalNet
+
+
+
     __swig_destroy__ = _pyAgrum.delete_CNMonteCarloSampling
 
     def makeInference(self):
@@ -24476,8 +24382,8 @@ class CNMonteCarloSampling(object):
 
     def marginalMax(self, *args):
         r"""
-        marginalMax(CNMonteCarloSampling self, gum::NodeId const id) -> Vector
-        marginalMax(CNMonteCarloSampling self, std::string const name) -> Vector
+        marginalMax(CNMonteCarloSampling self, gum::NodeId const id) -> Potential
+        marginalMax(CNMonteCarloSampling self, std::string const name) -> Potential
 
         Get the upper marginals of a given node id.
 
@@ -24503,8 +24409,8 @@ class CNMonteCarloSampling(object):
 
     def marginalMin(self, *args):
         r"""
-        marginalMin(CNMonteCarloSampling self, gum::NodeId const id) -> Vector
-        marginalMin(CNMonteCarloSampling self, std::string const name) -> Vector
+        marginalMin(CNMonteCarloSampling self, gum::NodeId const id) -> Potential
+        marginalMin(CNMonteCarloSampling self, std::string const name) -> Potential
 
         Get the lower marginals of a given node id.
 
@@ -24579,6 +24485,10 @@ class CNMonteCarloSampling(object):
 
         """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMin(self, varName)
+
+    def CN(self):
+        r"""CN(CNMonteCarloSampling self) -> CredalNet"""
+        return _pyAgrum.CNMonteCarloSampling_CN(self)
 
 # Register CNMonteCarloSampling in _pyAgrum:
 _pyAgrum.CNMonteCarloSampling_swigregister(CNMonteCarloSampling)
@@ -24655,6 +24565,11 @@ class CNLoopyPropagation(object):
     def __init__(self, cnet):
         r"""__init__(CNLoopyPropagation self, CredalNet cnet) -> CNLoopyPropagation"""
         _pyAgrum.CNLoopyPropagation_swiginit(self, _pyAgrum.new_CNLoopyPropagation(cnet))
+
+        self._model=cnet
+
+
+
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation
 
     def insertEvidenceFile(self, path):
@@ -24911,8 +24826,8 @@ class CNLoopyPropagation(object):
 
     def marginalMax(self, *args):
         r"""
-        marginalMax(CNLoopyPropagation self, gum::NodeId const id) -> Vector
-        marginalMax(CNLoopyPropagation self, std::string const name) -> Vector
+        marginalMax(CNLoopyPropagation self, gum::NodeId const id) -> Potential
+        marginalMax(CNLoopyPropagation self, std::string const name) -> Potential
 
         Get the upper marginals of a given node id.
 
@@ -24938,8 +24853,8 @@ class CNLoopyPropagation(object):
 
     def marginalMin(self, *args):
         r"""
-        marginalMin(CNLoopyPropagation self, gum::NodeId const id) -> Vector
-        marginalMin(CNLoopyPropagation self, std::string const name) -> Vector
+        marginalMin(CNLoopyPropagation self, gum::NodeId const id) -> Potential
+        marginalMin(CNLoopyPropagation self, std::string const name) -> Potential
 
         Get the lower marginals of a given node id.
 
@@ -25014,6 +24929,10 @@ class CNLoopyPropagation(object):
 
         """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMin(self, varName)
+
+    def CN(self):
+        r"""CN(CNLoopyPropagation self) -> CredalNet"""
+        return _pyAgrum.CNLoopyPropagation_CN(self)
 
 # Register CNLoopyPropagation in _pyAgrum:
 _pyAgrum.CNLoopyPropagation_swigregister(CNLoopyPropagation)
