@@ -139,11 +139,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
   for bar in bars:
     if bar.get_height() != 0:
-      # ".2%" for instance
-      txt_format = "{:." + \
-                   str(
-                     int(gum.config['notebook', 'vertical_histogram_visible_digits'])) + "%}"
-      txt = txt_format.format(bar.get_height())
+      txt = txt = f"{bar.get_height():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
       ax.text(bar.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
@@ -202,11 +198,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   for bar in bars:
     if bar.get_width() != 0:
-      # ".2%" for instance
-      txt_format = "{:." + \
-                   str(
-                     int(gum.config['notebook', 'horizontal_histogram_visible_digits'])) + "%}"
-      txt = txt_format.format(bar.get_width())
+      txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
       ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
@@ -262,6 +254,89 @@ def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
       color for text
   """
   fig = proba2histo(p, util=util, txtcolor=txtcolor)
+
+  if bgcol is None:
+    fc = gum.config["notebook", "figure_facecolor"]
+  else:
+    fc = bgcol
+
+  fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
+              pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
+  plt.close(fig)
+
+def probaMinMaxH(pmin,pmax, scale=1.0, txtcolor="black"):
+  """
+  compute the representation of an horizontal histogram for a mono-dim Potential
+
+  Parameters
+  ----------
+    pmin,pmax : pyAgrum.Potential
+      two mono-dimensional Potential
+    txtcolor : str
+      color for text
+
+  Returns
+  -------
+  matplotlib.Figure
+    a matplotlib histogram for a bi-Potential pmin,pmax.
+  """
+  var = pmin.variable(0)
+  ra = np.arange(var.domainSize())
+
+  ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
+  vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
+
+  fig = plt.figure()
+  fig.set_figheight(scale * var.domainSize() / 4.0)
+  fig.set_figwidth(scale * 2)
+
+  ax = fig.add_subplot(111)
+  ax.set_facecolor('white')
+
+  vmin = pmin.tolist()
+  vmin.reverse()
+  vmax = pmax.tolist()
+  vmax.reverse()
+  barsmax = ax.barh(ra, vmax,
+                 align='center',
+                 color="#BBFFAA")
+  barsmin = ax.barh(ra, vmin,
+                 align='center',
+                 color=gum.config['notebook', 'histogram_color'])
+
+  for bar in barsmax:
+    txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+    ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
+  for bar in barsmin:
+    txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+    ax.text(0, bar.get_y(), txt, ha='left', va='bottom')
+
+  ax.set_xlim(0, 1)
+  ax.set_yticks(np.arange(var.domainSize()))
+  ax.set_yticklabels(vx, color=txtcolor)
+  ax.set_xticklabels([])
+  ax.set_title(pmin.variable(0).name(), color=txtcolor)
+  ax.get_xaxis().grid(True)
+  ax.margins(0)
+
+  return fig
+
+def saveFigProbaMinMax(pmin,pmax, filename, bgcol=None, txtcolor="Black"):
+  """
+  save a figure  which is the representation of an histogram for a bi-Potential (min,max)
+
+  Parameters
+  ----------
+    pmin : pyAgrum.Potential
+      the mono-dimensional Potential for min values
+    pmax : pyAgrum.Potential
+      the mono-dimensional Potential for max value
+    bgcolor: str
+      color for background (transparent if None)
+    txtcolor : str
+      color for text
+  """
+  fig = probaMinMaxH(pmin,pmax, txtcolor=txtcolor)
 
   if bgcol is None:
     fc = gum.config["notebook", "figure_facecolor"]

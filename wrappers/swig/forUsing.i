@@ -250,16 +250,16 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
   void setRepetitiveInd(const bool flag) {
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
- const std::vector< double >& marginalMax ( const NodeId id ) const {
+ Potential<double> marginalMax ( const NodeId id ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMax(id);
   }
- const std::vector< double >& marginalMin ( const NodeId id ) const {
+  Potential<double> marginalMin ( const NodeId id ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMin(id);
   }
- const std::vector< double >& marginalMax ( const std::string name ) const {
+  Potential<double> marginalMax ( const std::string name ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMax(name);
   }
- const std::vector< double >& marginalMin ( const std::string name) const {
+  Potential<double> marginalMin ( const std::string name) const {
     return self->gum::credal::InferenceEngine<double>::marginalMin(name);
   }
   void insertModalsFile ( const std::string& path ) {
@@ -634,3 +634,14 @@ ADD_INFERENCE_API(classname,classname)
 }
 %enddef
 ADD_ID_INFERENCE_API(gum::ShaferShenoyLIMIDInference<double >)
+
+
+
+###################
+%define ADD_CN_INFERENCE_API(classname...)
+%extend classname {
+  const CredalNet< double >& CN() const { return self->gum::credal::InferenceEngine<double>::credalNet(); }
+}
+%enddef
+ADD_CN_INFERENCE_API(gum::credal::CNMonteCarloSampling<double>)
+ADD_CN_INFERENCE_API(gum::credal::CNLoopyPropagation<double>)

@@ -48,11 +48,12 @@ from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
+from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
-from pyAgrum.lib.proba_histogram import proba2histo
+from pyAgrum.lib.proba_histogram import proba2histo,probaMinMaxH
 
 _cdict = {
     'red': ((0.0, 0.1, 0.3),
@@ -304,14 +305,25 @@ def showProba(p, scale=1.0):
   Show a mono-dim Potential
 
   :param p: the mono-dim Potential
-  :return:
+  :param scale: the scale (zoom)
   """
   fig = proba2histo(p, scale)
-  #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
       gum.config["notebook", "graph_format"])
   plt.show()
 
+def showProbaMinMax(pmin,pmax,scale=1.0):
+  """
+  Show a bi-Potential (min,max
+
+  :param pmin: the mono-dim Potential for min values
+  :param pmin: the mono-dim Potential for max values
+  :param scale: the scale (zoom)
+  """
+  fig = probaMinMaxH(pmin,pmax, scale)
+  IPython.display.set_matplotlib_formats(
+      gum.config["notebook", "graph_format"])
+  plt.show()
 
 def getPosterior(bn, evs, target):
   """
@@ -470,6 +482,28 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
+def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+  """
+  show a credal network
+
+  :param cn: the credal network
+  :param size: size of the rendered graph
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmap: color map to show the colors
+  :param cmapArc: color map to show the arc color if distinction is needed
+  :return: the graph
+  """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if cmapArc is None:
+    cmapArc = cmap
+
+  return showGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+
+
 def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
           cmapEdge=None):
   """
@@ -525,6 +559,29 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
     cmapArc = cmap
 
   return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+
+
+def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+  """
+  get a HTML string for a credal network
+
+  :param cn: the credal network
+  :param size: size of the rendered graph
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmap: color map to show the colors
+  :param cmapArc: color map to show the arc color if distinction is needed
+
+  :return: the graph
+  """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if cmapArc is None:
+    cmapArc = cmap
+
+  return getGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -673,8 +730,12 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
                                           factorColor=factorColor, cmapNode=cmap)
   elif isinstance(model, gum.InfluenceDiagram):
     if engine is None:
-      engine = gum.ShaferShenoyLIMIDInference(model)
+      engine = gum.CNMonteCarloSampling(model)
     return LIMIDinference2dot(model, size, engine, evs, targets)
+  elif isinstance(model,gum.CredalNet):
+    if engine is None:
+      engine = gum.ShaferShenoyLIMIDInference(model)
+    return CNinference2dot(model, size, engine, evs, targets, nodeColor, arcWidth, arcColor,cmap)
   else:
     raise gum.InvalidArgument(
         "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
@@ -1110,6 +1171,8 @@ def show(model, size=None):
     showMN(model, size)
   elif isinstance(model, gum.InfluenceDiagram):
     showInfluenceDiagram(model, size)
+  elif isinstance(model, gum.CredalNet):
+    showCN(model, size)
   elif isinstance(model, gum.Potential):
     showPotential(model)
   else:
@@ -1142,7 +1205,7 @@ else:
   gum.MarkovNet._repr_html_ = lambda self: getMN(self)
   gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
-  gum.CredalNet._repr_html_ = lambda self: getBN(self.current_bn())
+  gum.CredalNet._repr_html_ = lambda self: getCN(self)
 
   gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 

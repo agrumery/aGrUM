@@ -58,11 +58,12 @@
 %include "pythonize.i"
 
 %include "gum_typemaps.i"
-%include "pgm.i"
 
 //////////////////////////////////////////////////////////////////
 /* declaration of code enhancers for pyAgrum */
 //////////////////////////////////////////////////////////////////
+%include "pgm.i"
+
 %include "core.i"
 %include "variables.i"
 %include "instantiation.i"
@@ -82,6 +83,7 @@
 %include "MNinference.i"
 
 %include "credalnet.i"
+%include "CNinference.i"
 
 %include "influenceDiagram.i"
 %include "influenceDiagramInference.i"
