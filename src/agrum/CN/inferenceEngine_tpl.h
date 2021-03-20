@@ -55,7 +55,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const CredalNet< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::credalNet() {
+    const CredalNet< GUM_SCALAR >&
+       InferenceEngine< GUM_SCALAR >::credalNet() const {
       return *credalNet_;
     }
 
@@ -418,34 +419,36 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin(
+    INLINE Potential< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMin(
        const std::string& varName) const {
-      try {
-        return marginalMin_[credalNet_->current_bn().idFromName(varName)];
-      } catch (NotFound& err) { throw(err); }
+      return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax(
+    INLINE Potential< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMax(
        const std::string& varName) const {
-      try {
-        return marginalMax_[credalNet_->current_bn().idFromName(varName)];
-      } catch (NotFound& err) { throw(err); }
+      return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >&
+    gum::Potential< GUM_SCALAR >
        InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
       try {
-        return marginalMin_[id];
+        Potential< GUM_SCALAR > res;
+        res.add(credalNet_->current_bn().variable(id));
+        res.fillWith(marginalMin_[id]);
+        return res;
       } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >&
+    gum::Potential< GUM_SCALAR >
        InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
       try {
-        return marginalMax_[id];
+        Potential< GUM_SCALAR > res;
+        res.add(credalNet_->current_bn().variable(id));
+        res.fillWith(marginalMax_[id]);
+        return res;
       } catch (NotFound& err) { throw(err); }
     }
 

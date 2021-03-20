@@ -178,10 +178,10 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          std::vector< double > inf(mcs.marginalMin(node));
-          std::vector< double > sup(mcs.marginalMax(node));
-          double                e_inf = mcs.expectationMin(node);
-          double                e_sup = mcs.expectationMax(node);
+          auto   pmin = mcs.marginalMin(node);
+          auto   pmax = mcs.marginalMax(node);
+          double e_inf = mcs.expectationMin(node);
+          double e_sup = mcs.expectationMax(node);
         }
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -224,8 +224,8 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          exp    inf(mcs.marginalMin(node));
-          exp    sup(mcs.marginalMax(node));
+          auto    inf(mcs.marginalMin(node));
+          auto    sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);
           double e_sup = mcs.expectationMax(node);
         }
@@ -280,8 +280,8 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          exp    inf(mcs.marginalMin(node));
-          exp    sup(mcs.marginalMax(node));
+          auto    inf(mcs.marginalMin(node));
+          auto    sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);
           double e_sup = mcs.expectationMax(node);
         }

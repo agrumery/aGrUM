@@ -262,7 +262,7 @@ namespace gum {
        * Get this creadal network.
        * @return A constant reference to this CredalNet.
        */
-      const CredalNet< GUM_SCALAR >& credalNet();
+      const CredalNet< GUM_SCALAR >& credalNet() const;
 
       /**
        * Get the t0_ cluster.
@@ -382,30 +382,28 @@ namespace gum {
        * @param id The node id which lower marginals we want.
        * @return A constant reference to this node lower marginals.
        */
-      const std::vector< GUM_SCALAR >& marginalMin(const NodeId id) const;
+      Potential< GUM_SCALAR > marginalMin(const NodeId id) const;
 
       /**
        * Get the upper marginals of a given node id.
        * @param id The node id which upper marginals we want.
        * @return A constant reference to this node upper marginals.
        */
-      const std::vector< GUM_SCALAR >& marginalMax(const NodeId id) const;
+       Potential< GUM_SCALAR > marginalMax(const NodeId id) const;
 
       /**
        * Get the lower marginals of a given variable name.
        * @param varName The variable name which lower marginals we want.
        * @return A constant reference to this variable lower marginals.
        */
-      const std::vector< GUM_SCALAR >&
-         marginalMin(const std::string& varName) const;
+      Potential< GUM_SCALAR > marginalMin(const std::string& varName) const;
 
       /**
        * Get the upper marginals of a given variable name.
        * @param varName The variable name which upper marginals we want.
        * @return A constant reference to this variable upper marginals.
        */
-      const std::vector< GUM_SCALAR >&
-         marginalMax(const std::string& varName) const;
+      Potential< GUM_SCALAR > marginalMax(const std::string& varName) const;
 
       /**
        * Get the lower expectation of a given node id.
