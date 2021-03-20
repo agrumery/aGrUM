@@ -29,8 +29,8 @@
  */
 #include <map>
 
-#include <agrum/CN/LrsWrapper.h>
-#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/CN/polytope/LrsWrapper.h>
+#include <agrum/CN/tools/varMod2BNsMap.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/core/math/pow.h>
@@ -519,6 +519,6 @@ namespace gum {
   }   // namespace credal
 }   // namespace gum
 
-#include <agrum/CN/inferenceEngine_tpl.h>
+#include <agrum/CN/inference/inferenceEngine_tpl.h>
 
 #endif

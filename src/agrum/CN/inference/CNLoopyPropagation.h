@@ -34,7 +34,7 @@
 #include <limits>
 
 #include <agrum/CN/credalNet.h>
-#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/math/pow.h>
 #include <agrum/tools/core/sequence.h>
@@ -390,6 +390,6 @@ namespace gum {
   }   // namespace credal
 }   // namespace gum
 
-#include <agrum/CN/CNLoopyPropagation_tpl.h>
+#include <agrum/CN/inference/CNLoopyPropagation_tpl.h>
 
 #endif

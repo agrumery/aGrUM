@@ -21,27 +21,18 @@
 
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief Implementation of the BayesNetFactory class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/CN/LpInterface.h>
+#include <agrum/CN/inference/CNMonteCarloSampling.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::credal::CNMonteCarloSampling< float,
+                                                  gum::LazyPropagation< float > >;
 
-  INLINE Size
-     HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
-    return Size(key.id());
-  }
-
-  INLINE Size HashFunc< credal::lp::LpCol >::operator()(
-     const credal::lp::LpCol& key) const {
-    return (castToSize(key) * gum::HashFuncConst::gold) & this->hash_mask_;
-  }
-
-} /* namespace gum */
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+template class gum::credal::CNMonteCarloSampling< double,
+                                                  gum::LazyPropagation< double > >;
+#endif

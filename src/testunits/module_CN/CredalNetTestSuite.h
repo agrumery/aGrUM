@@ -27,7 +27,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <agrum/CN/LpInterface.h>
+#include <agrum/CN/polytope/LpInterface.h>
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/tools/core/OMPThreads.h>

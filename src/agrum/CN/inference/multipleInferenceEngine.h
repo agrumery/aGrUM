@@ -32,7 +32,7 @@
 /// class
 
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/inference/inferenceEngine.h>
 
 namespace gum {
   namespace credal {
@@ -240,6 +240,6 @@ namespace gum {
   }   // namespace credal
 }   // namespace gum
 
-#include <agrum/CN/multipleInferenceEngine_tpl.h>
+#include <agrum/CN/inference/multipleInferenceEngine_tpl.h>
 
 #endif

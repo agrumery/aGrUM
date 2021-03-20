@@ -21,13 +21,14 @@
 
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief Implementation of the Multiple Inference Engine for credal networks
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/CN/LpInterface.h>
+#include <agrum/CN/tools/varMod2BNsMap.h>
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/CN/LpInterface_inl.h>
-#endif /* GUM_NO_INLINE */
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::credal::VarMod2BNsMap< double >;
+#endif

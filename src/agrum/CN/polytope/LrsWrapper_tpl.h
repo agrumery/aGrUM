@@ -21,7 +21,7 @@
 
 #include <string.h>
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/polytope/LrsWrapper.h>
 #include <agrum/agrum.h>
 
 namespace gum {

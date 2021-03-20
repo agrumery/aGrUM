@@ -21,18 +21,9 @@
 
 /**
  * @file
- * @brief Implementation of the Multiple Inference Engine for credal networks
+ * @brief Class to include at least once this header
  *
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
-#include <agrum/CN/multipleInferenceEngine.h>
-
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::credal::
-   MultipleInferenceEngine< float, gum::LazyPropagation< float > >;
-
-template class gum::credal::
-   MultipleInferenceEngine< double, gum::LazyPropagation< double > >;
-#endif
+#include <agrum/CN/polytope/LrsWrapper.h>

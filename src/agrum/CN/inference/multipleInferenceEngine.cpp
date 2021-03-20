@@ -21,14 +21,18 @@
 
 /**
  * @file
- * @brief Implementation of the Inference Engine for credal networks
+ * @brief Implementation of the Multiple Inference Engine for credal networks
  *
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/inference/multipleInferenceEngine.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::credal::InferenceEngine< double >;
+template class gum::credal::
+   MultipleInferenceEngine< float, gum::LazyPropagation< float > >;
+
+template class gum::credal::
+   MultipleInferenceEngine< double, gum::LazyPropagation< double > >;
 #endif

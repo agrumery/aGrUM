@@ -450,6 +450,6 @@ namespace gum {
   }   // namespace credal
 }   // namespace gum
 
-#include <agrum/CN/LrsWrapper_tpl.h>
+#include <agrum/CN/polytope/LrsWrapper_tpl.h>
 
 #endif

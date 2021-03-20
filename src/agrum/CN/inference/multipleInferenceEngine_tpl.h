@@ -19,8 +19,8 @@
  */
 
 
-#include <agrum/CN/inferenceEngine.h>
-#include <agrum/CN/multipleInferenceEngine.h>
+#include <agrum/CN/inference/inferenceEngine.h>
+#include <agrum/CN/inference/multipleInferenceEngine.h>
 
 namespace gum {
   namespace credal {

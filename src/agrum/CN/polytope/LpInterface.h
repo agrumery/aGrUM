@@ -33,7 +33,7 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/polytope/LrsWrapper.h>
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/utils_misc.h>
@@ -1029,10 +1029,10 @@ namespace gum {
 
 }   // end of namespace gum
 
-#include <agrum/CN/LpInterface_tpl.h>
+#include <agrum/CN/polytope/LpInterface_tpl.h>
 
 #ifndef GUM_NO_INLINE
-#  include <agrum/CN/LpInterface_inl.h>
+#  include <agrum/CN/polytope/LpInterface_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif

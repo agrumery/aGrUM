@@ -21,9 +21,14 @@
 
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief Implementation of the BayesNetFactory class.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/inference/CNLoopyPropagation.h>
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::credal::CNLoopyPropagation< double >;
+#endif

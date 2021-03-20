@@ -24,7 +24,7 @@
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
-#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/agrum.h>
 
 namespace gum {

@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/CN/CNMonteCarloSampling.h>
+#include <agrum/CN/inference/CNMonteCarloSampling.h>
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/BN/BayesNet.h>

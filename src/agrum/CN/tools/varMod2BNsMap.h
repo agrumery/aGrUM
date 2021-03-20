@@ -199,6 +199,6 @@ namespace gum {
   }   // namespace credal
 }   // namespace gum
 
-#include <agrum/CN/varMod2BNsMap_tpl.h>
+#include <agrum/CN/tools/varMod2BNsMap_tpl.h>
 
 #endif

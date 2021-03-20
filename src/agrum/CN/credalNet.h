@@ -60,7 +60,7 @@
 #include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
 #include <agrum/tools/core/math/rational.h>   // custom decimal to rational
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/polytope/LrsWrapper.h>
 
 #include <agrum/tools/core/OMPThreads.h>
 
@@ -317,39 +317,28 @@ namespace gum {
 
       /**
        * Perturbates the BayesNet provided as input for this CredalNet by
-       *generating
-       *intervals instead of point probabilities and then computes each vertex
-       *of
-       *each credal set.
+       *generating intervals instead of point probabilities and then computes each
+       *vertex of each credal set.
        *
        * The perturbations are done according to the number of cases met for
-       *each
-       *node and each of it's parent instantiation, i.e. \f$ \epsilon =
+       *each node and each of it's parent instantiation, i.e. \f$ \epsilon =
        *\beta^{ln(N_{pa(X) = j} + 1)} \f$ is the imprecision introduced which
-       *leads
-       *to \f$ \underline{p}(X = i \mid pa(X) = j) = (1 - \epsilon) p(X = i \mid
-       *pa(X) = j) \f$ and \f$ \overline{p}(X = i \mid pa(X) = j) =
-       *\underline{p}(X =
-       *i \mid pa(X) = j) + \epsilon \f$.
-       * Use this method when using a single BayesNet storing counts of events
-       *with
-       *\c oneNet set to \c TRUE or when using two BayesNet, one with lower
-       *probabilities and one with upper probabilities, with \c oneNet set to \c
-       *FALSE.
+       *leads to \f$ \underline{p}(X = i \mid pa(X) = j) = (1 - \epsilon) p(X = i
+       *\mid pa(X) = j) \f$ and \f$ \overline{p}(X = i \mid pa(X) = j)
+       *=\underline{p}(X =i \mid pa(X) = j) + \epsilon \f$. Use this method when
+       *using a single BayesNet storing counts of events with \c oneNet set to \c
+       *TRUE or when using two BayesNet, one with lower probabilities and one with
+       *upper probabilities, with \c oneNet set to \c FALSE.
        *
        * @param beta The beta used to perturbate the network. \f$ 0 \leq \beta
-       *\leq 1
-       *\f$.
+       *\leq 1 \f$.
        * @param oneNet Boolean used as a flag. %Set to \c TRUE if one BayesNet
-       *if
-       *provided with counts, to \c FALSE if two BayesNet are provided; one with
-       *probabilities (the lower net) and one with denominators over the first
+       * if provided with counts, to \c FALSE if two BayesNet are provided; one
+       *with probabilities (the lower net) and one with denominators over the first
        *modalities (the upper net).
        * @param keepZeroes Boolean used as a flag as whether or not -
-       *respectively \c
-       *TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c FALSE, i.e.
-       *zeroes
-       *are not kept.
+       *respectively \c TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c
+       *FALSE, i.e. zeroes are not kept.
        */
       void bnToCredal(const GUM_SCALAR beta,
                       const bool       oneNet,
@@ -357,8 +346,7 @@ namespace gum {
 
       /**
        * @deprecated Use intervalToCredal ( lrsWrapper with no input / output
-       *files
-       *needed ).
+       *files needed ).
        *
        * Computes the vertices of each credal set according to their interval
        *definition (uses lrs).
@@ -372,25 +360,21 @@ namespace gum {
        *definition (uses lrs).
        *
        * Use this method when using two BayesNet, one with lower probabilities
-       *and
-       *one with upper probabilities.
+       *and one with upper probabilities.
        */
       void intervalToCredal();
 
       /**
        * Normalize counts of a BayesNet storing counts of each events such that
-       *no
-       *probability is 0.
+       *no probability is 0.
        *
        * Use this method when using a single BayesNet storing counts of events.
        * Lagrange normalization. This call is irreversible and modify counts
-       *stored
-       *by \c src_bn__.
+       *stored by \c src_bn__.
        *
        * Doest not performs computations of the parameters but keeps normalized
        *counts of events only. Call \c idmLearning to compute the probabilities
-       *(with
-       *any parameter value).
+       *(with any parameter value).
        */
       void lagrangeNormalization();
 
@@ -399,25 +383,21 @@ namespace gum {
        *
        * Use this method when using a single BayesNet storing counts of events.
        * IDM model if \c s > 0, standard point probability if \c s = 0 (default
-       *value
-       *if none precised).
+       *value if none precised).
        * @param s The IDM parameter.
        * @param keepZeroes Boolean used as a flag as whether or not -
-       *respectively \c
-       *TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c FALSE, i.e.
-       *zeroes
-       *are not kept.
+       *respectively \c TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c
+       *FALSE, i.e. zeroes are not kept.
        */
       void idmLearning(const Idx s = 0, const bool keepZeroes = false);
 
       /**
        * Approximate binarization. Each bit has a lower and upper probability
-       *which
-       *is the lowest - resp. highest - over all vertices of the credal set.
-       * Enlarge the orignal credal sets and may induce huge imprecision.
+       * which is the lowest - resp. highest - over all vertices of the credal set.
+       * Enlarge the original credal sets and may induce huge imprecision.
        *
-       * @warning Enlarge the orignal credal sets and therefor induce huge
-       *imprecision by propagation. Not recommanded, use MCSampling or something
+       * @warning Enlarge the original credal sets and therefore induce huge
+       *imprecision by propagation. Not recommended, use MCSampling or something
        *else
        *instead.
        */

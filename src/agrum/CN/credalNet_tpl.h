@@ -977,31 +977,31 @@ namespace gum {
     template < typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::approximatedBinarization() {
       // don't forget to delete the old one (current__), if necessary at the end
-      BayesNet< GUM_SCALAR >* bin_bn__ = new BayesNet< GUM_SCALAR >();
+      auto bin_bn = new BayesNet< GUM_SCALAR >();
 
       //__bnCopy ( *bin_bn__ );
       // delete old one too
-      auto credalNet_bin_cpt__ = new NodeProperty<
+      auto credalNet_bin_cpt = new NodeProperty<
          std::vector< std::vector< std::vector< GUM_SCALAR > > > >();
 
       // delete old one too
-      NodeProperty< NodeType >* bin_nodeType__ = new NodeProperty< NodeType >();
+      auto bin_nodeType = new NodeProperty< NodeType >();
 
-      const BayesNet< GUM_SCALAR >* current_bn__;
+      const BayesNet< GUM_SCALAR >* current_bn;
       // const NodeProperty< nodeType > *current_nodeType__;
       const NodeProperty<
          std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-         credalNet_current_cpt__;
+         credalNet_current_cpt;
 
       if (this->current_bn__ == nullptr)
-        current_bn__ = &this->src_bn__;
+        current_bn = &this->src_bn__;
       else
-        current_bn__ = this->current_bn__;
+        current_bn = this->current_bn__;
 
       if (this->credalNet_current_cpt__ == nullptr)
-        credalNet_current_cpt__ = &this->credalNet_src_cpt__;
+        credalNet_current_cpt = &this->credalNet_src_cpt__;
       else
-        credalNet_current_cpt__ = this->credalNet_current_cpt__;
+        credalNet_current_cpt = this->credalNet_current_cpt__;
 
       /*if ( this->current_nodeType__ == nullptr )
         current_nodeType__ = & this->nodeType__;
@@ -1010,10 +1010,10 @@ namespace gum {
 
       if (!var_bits__.empty()) var_bits__.clear();
 
-      bin_bn__->beginTopologyTransformation();
+      bin_bn->beginTopologyTransformation();
 
-      for (auto node: current_bn__->nodes()) {
-        auto var_dSize = current_bn__->variable(node).domainSize();
+      for (auto node: current_bn->nodes()) {
+        auto var_dSize = current_bn->variable(node).domainSize();
 
         if (var_dSize != 2) {
           unsigned long b, c;
@@ -1024,13 +1024,13 @@ namespace gum {
           std::vector< NodeId > bits(nb_bits);
 
           for (Size bit = 0; bit < nb_bits; bit++) {
-            bit_name = current_bn__->variable(node).name() + " - bit - ";
+            bit_name = current_bn->variable(node).name() + " - bit - ";
             std::stringstream ss;
             ss << bit;
             bit_name += ss.str();
 
             LabelizedVariable var_bit(bit_name, "node " + bit_name, 2);
-            NodeId            iD = bin_bn__->add(var_bit);
+            NodeId            iD = bin_bn->add(var_bit);
 
             bits[bit] = iD;
           }   // end of : for each bit
@@ -1039,28 +1039,28 @@ namespace gum {
 
         }   // end of : if variable is not binary
         else {
-          std::string       bit_name = current_bn__->variable(node).name();
+          std::string       bit_name = current_bn->variable(node).name();
           LabelizedVariable var_bit(bit_name, "node " + bit_name, 2);
-          NodeId            iD = bin_bn__->add(var_bit);
+          NodeId            iD = bin_bn->add(var_bit);
 
           var_bits__.insert(node, std::vector< NodeId >(1, iD));
         }
 
       }   // end of : for each original variable
 
-      for (auto node: current_bn__->nodes()) {
-        NodeSet parents = current_bn__->parents(node);
+      for (auto node: current_bn->nodes()) {
+        NodeSet parents = current_bn->parents(node);
 
         if (!parents.empty()) {
-          for (auto par: current_bn__->parents(node)) {
+          for (auto par: current_bn->parents(node)) {
             for (Size parent_bit = 0, spbits = Size(var_bits__[par].size());
                  parent_bit < spbits;
                  parent_bit++)
               for (Size var_bit = 0, mbits = Size(var_bits__[node].size());
                    var_bit < mbits;
                    var_bit++)
-                bin_bn__->addArc(var_bits__[par][parent_bit],
-                                 var_bits__[node][var_bit]);
+                bin_bn->addArc(var_bits__[par][parent_bit],
+                               var_bits__[node][var_bit]);
           }
         }
 
@@ -1069,22 +1069,22 @@ namespace gum {
 
         for (Size bit_c = 1; bit_c < bitsize; bit_c++)
           for (Size bit_p = 0; bit_p < bit_c; bit_p++)
-            bin_bn__->addArc(var_bits__[node][bit_p], var_bits__[node][bit_c]);
+            bin_bn->addArc(var_bits__[node][bit_p], var_bits__[node][bit_c]);
 
       }   // end of : for each original variable
 
-      bin_bn__->endTopologyTransformation();
+      bin_bn->endTopologyTransformation();
 
       // binarization of cpts
 
-      auto varsize = current_bn__->size();
+      auto varsize = current_bn->size();
 
       for (Size var = 0; var < varsize; var++) {
         auto bitsize = var_bits__[var].size();
 
         for (Size i = 0; i < bitsize; i++) {
           Potential< GUM_SCALAR > const* potential(
-             &bin_bn__->cpt(var_bits__[var][i]));
+             &bin_bn->cpt(var_bits__[var][i]));
           Instantiation ins(potential);
           ins.setFirst();
 
@@ -1096,18 +1096,17 @@ namespace gum {
 
           for (Size conf = 0; conf < entry_size; conf++) {
             std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
-            auto verticessize = (*credalNet_current_cpt__)[var][old_conf].size();
+            auto verticessize = (*credalNet_current_cpt)[var][old_conf].size();
 
             for (Size old_distri = 0; old_distri < verticessize; old_distri++) {
               const std::vector< GUM_SCALAR >& vertex =
-                 (*credalNet_current_cpt__)[var][old_conf][old_distri];
+                 (*credalNet_current_cpt)[var][old_conf][old_distri];
               auto vertexsize = vertex.size();
 
               std::vector< Idx > incc(vertexsize, 0);
 
               for (Size preced = 0; preced < i; preced++) {
-                auto bit_pos =
-                   ins.pos(bin_bn__->variable(var_bits__[var][preced]));
+                auto bit_pos = ins.pos(bin_bn->variable(var_bits__[var][preced]));
                 auto val = ins.val(bit_pos);
 
                 Size pas = Size(int2Pow((unsigned long)preced));
@@ -1180,17 +1179,17 @@ namespace gum {
 
             old_conf++;
 
-            if (old_conf == (*credalNet_current_cpt__)[var].size()) old_conf = 0;
+            if (old_conf == (*credalNet_current_cpt)[var].size()) old_conf = 0;
 
           }   // end of new parent conf
 
-          credalNet_bin_cpt__->insert(var_bits__[var][i], var_cpt);
+          credalNet_bin_cpt->insert(var_bits__[var][i], var_cpt);
 
         }   // end of bit i
 
       }   // end of old variable
 
-      bin_bn__->beginTopologyTransformation();
+      bin_bn->beginTopologyTransformation();
 
       /* indicatrices variables */
       auto old_varsize = var_bits__.size();
@@ -1213,11 +1212,11 @@ namespace gum {
           s += ss.str();
 
           LabelizedVariable var(s, "node " + s, 2);
-          const NodeId      indic = bin_bn__->add(var);
+          const NodeId      indic = bin_bn->add(var);
 
           // arcs from one's bits
           for (Size bit = 0; bit < bitsize; bit++)
-            bin_bn__->addArc(var_bits__[i][bit], indic);
+            bin_bn->addArc(var_bits__[i][bit], indic);
 
           // cpt
           Size num = Size(int2Pow(long(bitsize)));
@@ -1236,26 +1235,26 @@ namespace gum {
             icpt[entry] = vertices;
           }
 
-          credalNet_bin_cpt__->insert(indic, icpt);
+          credalNet_bin_cpt->insert(indic, icpt);
 
-          bin_nodeType__->insert(indic, NodeType::Indic);
+          bin_nodeType->insert(indic, NodeType::Indic);
         }   // end of each modality, i.e. as many indicatrice
       }
 
-      bin_bn__->endTopologyTransformation();
+      bin_bn->endTopologyTransformation();
 
       if (this->current_bn__ != nullptr) delete this->current_bn__;
 
-      this->current_bn__ = bin_bn__;
+      this->current_bn__ = bin_bn;
 
       if (this->credalNet_current_cpt__ != nullptr)
         delete this->credalNet_current_cpt__;
 
-      this->credalNet_current_cpt__ = credalNet_bin_cpt__;
+      this->credalNet_current_cpt__ = credalNet_bin_cpt;
 
       if (this->current_nodeType__ != nullptr) delete this->current_nodeType__;
 
-      this->current_nodeType__ = bin_nodeType__;
+      this->current_nodeType__ = bin_nodeType;
 
       sort_varType__();   // will fill bin_nodeType__ except for NodeType::Indic
                           // variables

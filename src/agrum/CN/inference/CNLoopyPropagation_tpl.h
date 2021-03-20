@@ -19,7 +19,7 @@
  */
 
 
-#include <agrum/CN/CNLoopyPropagation.h>
+#include <agrum/CN/inference/CNLoopyPropagation.h>
 
 namespace gum {
   namespace credal {

@@ -19,7 +19,7 @@
  */
 
 
-#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/CN/tools/varMod2BNsMap.h>
 
 namespace gum {
   namespace credal {

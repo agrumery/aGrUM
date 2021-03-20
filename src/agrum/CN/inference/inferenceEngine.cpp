@@ -21,18 +21,14 @@
 
 /**
  * @file
- * @brief Implementation of the BayesNetFactory class.
+ * @brief Implementation of the Inference Engine for credal networks
  *
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/CN/CNMonteCarloSampling.h>
+#include <agrum/CN/inference/inferenceEngine.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::credal::CNMonteCarloSampling< float,
-                                                  gum::LazyPropagation< float > >;
-
-template class gum::credal::CNMonteCarloSampling< double,
-                                                  gum::LazyPropagation< double > >;
+template class gum::credal::InferenceEngine< double >;
 #endif

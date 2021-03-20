@@ -25,7 +25,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <agrum/CN/CNLoopyPropagation.h>
+#include <agrum/CN/inference/CNLoopyPropagation.h>
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/BN/BayesNet.h>

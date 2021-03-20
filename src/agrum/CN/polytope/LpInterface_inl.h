@@ -21,14 +21,27 @@
 
 /**
  * @file
- * @brief Implementation of the Multiple Inference Engine for credal networks
+ * @brief Class to include at least once this header
  *
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
-#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/CN/polytope/LpInterface.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::credal::VarMod2BNsMap< double >;
-#endif
+namespace gum {
+
+  INLINE Size
+     HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
+    return Size(key.id());
+  }
+
+  INLINE Size HashFunc< credal::lp::LpCol >::operator()(
+     const credal::lp::LpCol& key) const {
+    return (castToSize(key) * gum::HashFuncConst::gold) & this->hash_mask_;
+  }
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
