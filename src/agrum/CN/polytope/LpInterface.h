@@ -453,7 +453,7 @@ namespace gum {
          * on
          * the first empty side met, starting at left.
          */
-        inline void addSide__(const LpCol& from);
+        void addSide__(const LpCol& from);
 
         /**
          * @brief Copy an expression to a side of the calling expression, from
@@ -463,7 +463,7 @@ namespace gum {
          * copy
          * on the first empty side met, starting at left.
          */
-        inline void addSide__(const LpExpr& from);
+        void addSide__(const LpExpr& from);
 
         /**
          * @brief Move an expression to a side of the calling expression, from
@@ -473,7 +473,7 @@ namespace gum {
          * side
          * met, starting at left.
          */
-        inline void addSide__(LpExpr&& from);
+        void addSide__(LpExpr&& from);
 
         /**
          * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L
@@ -485,7 +485,7 @@ namespace gum {
          * first empty side met, starting at left.
          */
         template < typename SCALAR >
-        inline void addSide__(const SCALAR& from);
+        void addSide__(const SCALAR& from);
 
         /// @}
       };
@@ -772,7 +772,7 @@ namespace gum {
        * @param a the address of the first pointer.
        * @param b the address of the second pointer.
        */
-      inline void swap(HashTable< LpCol, double >*& a,
+      void swap(HashTable< LpCol, double >*& a,
                        HashTable< LpCol, double >*& b);
 
       /// @name Non-members operators +
