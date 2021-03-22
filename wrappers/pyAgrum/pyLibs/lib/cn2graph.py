@@ -93,7 +93,7 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
     node = dot.Node('"' + n + '"', style="filled",
                     shape="polygon",
                     sides="7",
-                    peripheries="2",
+                    peripheries="1",
                     fillcolor=bgcol,
                     fontcolor=fgcol,
                     tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n), n, res))
@@ -228,7 +228,7 @@ def CNinference2dot(cn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
         name, filename, colorattribute)
     else:
-      dotstr += ' "{0}" [shape=polygon,sides=7,peripheries=2,{1}]'.format(name, colorattribute)
+      dotstr += ' "{0}" [shape=polygon,sides=7,peripheries=1,{1}]'.format(name, colorattribute)
 
   for a in showdag.arcs():
     (n, j) = a

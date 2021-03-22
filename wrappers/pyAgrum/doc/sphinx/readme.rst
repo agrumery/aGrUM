@@ -23,9 +23,9 @@ CredalNet.credalNet_currentCpt (issue with return type)
 
 CredalNet.credalNet_srcCPt (issue with return type)
 
-CredalNet.get_CPT_max (issue with return type)
+CredalNet.get_binaryCPT_max (issue with return type)
 
-CredalNet.get_CPT_min (issue with return type)
+CredalNet.get_binaryCPT_max (issue with return type)
 
 CredalNet.setCPT (issue with parameter type)
 

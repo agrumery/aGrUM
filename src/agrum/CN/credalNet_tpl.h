@@ -1024,7 +1024,7 @@ namespace gum {
           std::vector< NodeId > bits(nb_bits);
 
           for (Size bit = 0; bit < nb_bits; bit++) {
-            bit_name = current_bn->variable(node).name() + " - bit - ";
+            bit_name = current_bn->variable(node).name() + "-b";
             std::stringstream ss;
             ss << bit;
             bit_name += ss.str();
@@ -1203,15 +1203,12 @@ namespace gum {
         auto old_card = src_bn__.variable(i).domainSize();
 
         for (Size mod = 0; mod < old_card; mod++) {
-          std::string s;
-          s = "I-";
           std::stringstream ss;
           ss << src_bn__.variable(i).name();
-          ss << "-";
+          ss << "-v";
           ss << mod;
-          s += ss.str();
 
-          LabelizedVariable var(s, "node " + s, 2);
+          LabelizedVariable var(ss.str(), "node " + ss.str(), 2);
           const NodeId      indic = bin_bn->add(var);
 
           // arcs from one's bits
@@ -1227,7 +1224,7 @@ namespace gum {
             std::vector< std::vector< GUM_SCALAR > > vertices(
                1, std::vector< GUM_SCALAR >(2, 0));
 
-            if (i == entry)
+            if (mod == entry)
               vertices[0][1] = 1;
             else
               vertices[0][0] = 1;
@@ -1258,6 +1255,8 @@ namespace gum {
 
       sort_varType__();   // will fill bin_nodeType__ except for NodeType::Indic
                           // variables
+
+      computeBinaryCPTMinMax();
     }
 
     template < typename GUM_SCALAR >
@@ -1294,13 +1293,13 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const bool CredalNet< GUM_SCALAR >::hasComputedCPTMinMax() const {
-      return hasComputedCPTMinMax__;
+    const bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
+      return hasComputedBinaryCPTMinMax__;
     }
 
     // only if CN is binary !!
     template < typename GUM_SCALAR >
-    void CredalNet< GUM_SCALAR >::computeCPTMinMax() {
+    void CredalNet< GUM_SCALAR >::computeBinaryCPTMinMax() {
       binCptMin__.resize(current_bn().size());
       binCptMax__.resize(current_bn().size());
 
@@ -1327,18 +1326,18 @@ namespace gum {
         binCptMax__[node] = max;
       }
 
-      hasComputedCPTMinMax__ = true;
+      hasComputedBinaryCPTMinMax__ = true;
     }
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
-       CredalNet< GUM_SCALAR >::get_CPT_min() const {
+       CredalNet< GUM_SCALAR >::get_binaryCPT_min() const {
       return binCptMin__;
     }
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
-       CredalNet< GUM_SCALAR >::get_CPT_max() const {
+       CredalNet< GUM_SCALAR >::get_binaryCPT_max() const {
       return binCptMax__;
     }
 
@@ -1440,7 +1439,7 @@ namespace gum {
       credalNet_current_cpt__ = nullptr;
       current_nodeType__ = nullptr;
 
-      hasComputedCPTMinMax__ = false;
+      hasComputedBinaryCPTMinMax__ = false;
     }
 
     template < typename GUM_SCALAR >

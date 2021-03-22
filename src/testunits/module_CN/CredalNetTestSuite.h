@@ -312,6 +312,38 @@ namespace gum_tests {
       clearCNet();
     }
 
+    void testBinarization() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
+      for (const auto nod: bn.nodes())
+        bn.cpt(nod).translate(1).scale(0.25).normalizeAsCPT();
+
+      auto bnmin = gum::BayesNet< double >(bn);
+      auto bnmax = gum::BayesNet< double >(bn);
+
+      for (const auto nod: bn.nodes()) {
+        bnmin.cpt(nod).scale(0.9);
+        bnmax.cpt(nod).scale(1.1);
+      }
+
+      gum::credal::CredalNet< double > cnet(bnmin, bnmax);
+      cnet.intervalToCredal();
+      cnet.approximatedBinarization();
+      cnet.computeCPTMinMax();
+
+      const auto& current = cnet.current_bn();
+      const auto& valsmin = cnet.get_binaryCPT_min();
+      const auto& valsmax = cnet.get_binaryCPT_max();
+
+      for(gum::Idx i=0;i<4;i++) {
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i], (i==0?1.0:0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i], (i==0?1.0:0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i], (i==1?1.0:0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i], (i==1?1.0:0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i], (i==2?1.0:0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i], (i==2?1.0:0.0))
+      }
+
+    }
   };   // end of class CredalNetTestSuite
 
 }   // end of namespace gum_tests

@@ -221,7 +221,7 @@ Warning
 DOES change the BayesNet (s) associated to this credal net !
 "
 
-%feature("docstring") gum::credal::CredalNet::get_CPT_max
+%feature("docstring") gum::credal::CredalNet::get_binaryCPT_max
 "
 Warnings
 --------
@@ -233,7 +233,7 @@ tbw
 	a constant reference to the upper probabilities of each node X over the 'True' modality
 "
 
-%feature("docstring") gum::credal::CredalNet::get_CPT_min
+%feature("docstring") gum::credal::CredalNet::get_binaryCPT_min
 "
 Warnings
 --------

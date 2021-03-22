@@ -5,9 +5,9 @@ CredalNet.credalNet_currentCpt (pb de type de retour)
 
 CredalNet.credalNet_srcCPt (pb de type de retour)
 
-CredalNet.get_CPT_max (pb de type de retour)
+CredalNet.get_binaryCPT_max (pb de type de retour)
 
-CredalNet.get_CPT_min (pb de type de retour)
+CredalNet.get_binaryCPT_max (pb de type de retour)
 
 CredalNet.setCPT (pb de type de param)
 

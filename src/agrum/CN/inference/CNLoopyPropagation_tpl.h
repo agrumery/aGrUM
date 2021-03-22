@@ -300,11 +300,11 @@ namespace gum {
           prod *= *it[k];
         }
 
-        den_min += (cn__->get_CPT_min()[id][combi_den] * prod);
-        den_max += (cn__->get_CPT_max()[id][combi_den] * prod);
+        den_min += (cn__->get_binaryCPT_max()[id][combi_den] * prod);
+        den_max += (cn__->get_binaryCPT_max()[id][combi_den] * prod);
 
-        num_min += (cn__->get_CPT_min()[id][combi_num] * prod);
-        num_max += (cn__->get_CPT_max()[id][combi_num] * prod);
+        num_min += (cn__->get_binaryCPT_max()[id][combi_num] * prod);
+        num_max += (cn__->get_binaryCPT_max()[id][combi_num] * prod);
 
         combi_den++;
         combi_num++;
@@ -361,8 +361,8 @@ namespace gum {
           prod *= *it[k];
         }
 
-        min += (cn__->get_CPT_min()[id][combi] * prod);
-        max += (cn__->get_CPT_max()[id][combi] * prod);
+        min += (cn__->get_binaryCPT_max()[id][combi] * prod);
+        max += (cn__->get_binaryCPT_max()[id][combi] * prod);
 
         combi++;
 
@@ -395,8 +395,8 @@ namespace gum {
 
       // source node
       if (taille == 0) {
-        msg_p_min = cn__->get_CPT_min()[id][0];
-        msg_p_max = cn__->get_CPT_max()[id][0];
+        msg_p_min = cn__->get_binaryCPT_max()[id][0];
+        msg_p_max = cn__->get_binaryCPT_max()[id][0];
         return;
       }
 
@@ -476,10 +476,10 @@ namespace gum {
 
       // one parent node, the one receiving the message
       if (taille == 0) {
-        GUM_SCALAR num_min = cn__->get_CPT_min()[id][1];
-        GUM_SCALAR num_max = cn__->get_CPT_max()[id][1];
-        GUM_SCALAR den_min = cn__->get_CPT_min()[id][0];
-        GUM_SCALAR den_max = cn__->get_CPT_max()[id][0];
+        GUM_SCALAR num_min = cn__->get_binaryCPT_max()[id][1];
+        GUM_SCALAR num_max = cn__->get_binaryCPT_max()[id][1];
+        GUM_SCALAR den_min = cn__->get_binaryCPT_max()[id][0];
+        GUM_SCALAR den_max = cn__->get_binaryCPT_max()[id][0];
 
         compute_ext_(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
 
@@ -1383,7 +1383,7 @@ namespace gum {
 
           GUM_SCALAR lmin = NodesL_min_[node];
           GUM_SCALAR lmax;
-
+          GUM_TRACE_VAR(NodesL_max_.exists(node))
           if (NodesL_max_.exists(node)) {
             lmax = NodesL_max_[node];
           } else {
@@ -1450,6 +1450,8 @@ namespace gum {
         infE__::marginalMax_[node][0] = 1 - msg_p_min;
         infE__::marginalMin_[node][1] = msg_p_min;
         infE__::marginalMax_[node][1] = msg_p_max;
+        GUM_TRACE_VAR(node << ":" << infE__::marginalMin_[node]);
+        GUM_TRACE_VAR(node << ":" << infE__::marginalMax_[node]);
       }
     }
 
@@ -1523,10 +1525,10 @@ namespace gum {
         }
 
       // test if compute CPTMinMax has been called
-      if (!cnet.hasComputedCPTMinMax()) {
+      if (!cnet.hasComputedBinaryCPTMinMax()) {
         GUM_ERROR(OperationNotAllowed,
                   "CNLoopyPropagation only works when "
-                  "\"computeCPTMinMax()\" has been called for "
+                  "\"computeBinaryCPTMinMax()\" has been called for "
                   "this credal net");
       }
 

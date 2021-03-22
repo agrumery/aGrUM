@@ -219,8 +219,7 @@ namespace gum {
        *parents )
        *
        * Use this with either \c LRSWrapper or \c LpInterface to get the
-       *vertices of
-       *a credal set represented by linear constraints.
+       *vertices of a credal set represented by linear constraints.
        * @warning : Does not change the \c BayesNet (s) associated to this
        *credal net
        *!
@@ -234,8 +233,7 @@ namespace gum {
 
       /**
        * @brief %Set the interval constraints of the credal sets of a given node
-       *(
-       *all instantiations )
+       *(all instantiations )
        * @param id The \c NodeId of the node
        * @param lower The lower value for each probability in correct order
        * @param upper The upper value for each probability in correct order
@@ -245,7 +243,7 @@ namespace gum {
        * @warning : DOES change the \c BayesNet (s) associated to this credal
        *net !
        * @note we forget the master ref of \c ins to check variable order in the
-       *instantiation ( to get index ), therefor we pass it by value
+       *instantiation ( to get index ), therefore we pass it by value
        */
       void fillConstraints(const NodeId&                    id,
                            const std::vector< GUM_SCALAR >& lower,
@@ -253,12 +251,10 @@ namespace gum {
 
       /**
        * @brief %Set the interval constraints of a credal set of a given node (
-       *from
-       *an instantiation index )
+       *from an instantiation index )
        * @param id The \c NodeId of the node
        * @param entry The index of the instantiation excluding the given node (
-       *only
-       *the parents are used to compute the index of the credal set )
+       * only the parents are used to compute the index of the credal set )
        * @param lower The lower value for each probability in correct order
        * @param upper The upper value for each probability in correct order
        *
@@ -267,7 +263,7 @@ namespace gum {
        * @warning : DOES change the \c BayesNet (s) associated to this credal
        *net !
        * @note we forget the master ref of \c ins to check variable order in the
-       *instantiation ( to get index ), therefor we pass it by value
+       *instantiation ( to get index ), therefore we pass it by value
        */
       void fillConstraint(const NodeId&                    id,
                           const Idx&                       entry,
@@ -445,7 +441,7 @@ namespace gum {
        *and
        *\f$ \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      void computeCPTMinMax();   // REDO THIS IN PRIVATE !!!
+      void computeBinaryCPTMinMax();   // REDO THIS IN PRIVATE !!!
 
       /// @name Getters and setters
       /// @{
@@ -520,7 +516,7 @@ namespace gum {
       const bool isSeparatelySpecified() const;
 
       /**
-       * @return Returns \c TRUE if this CredalNet has called computeCPTMinMax()
+       * @return Returns \c TRUE if this CredalNet has called computeBinaryCPTMinMax()
        * to
        * speed-up inference with binary networks and L2U. This needs to be
        * reworked
@@ -528,7 +524,7 @@ namespace gum {
        * the
        * inference engine (constness).
        */
-      const bool hasComputedCPTMinMax() const;
+      const bool hasComputedBinaryCPTMinMax() const;
 
       /**
        * Used with binary networks to speed-up L2U inference.
@@ -538,7 +534,7 @@ namespace gum {
        *X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j)
        *\f$.
        */
-      const std::vector< std::vector< GUM_SCALAR > >& get_CPT_min() const;
+      const std::vector< std::vector< GUM_SCALAR > >& get_binaryCPT_min() const;
 
       /**
        * Used with binary networks to speed-up L2U inference.
@@ -548,7 +544,7 @@ namespace gum {
        *X over the "true" modality, i.e. \f$ \overline{p}(X = 1 \mid pa(X) = j)
        *\f$.
        */
-      const std::vector< std::vector< GUM_SCALAR > >& get_CPT_max() const;
+      const std::vector< std::vector< GUM_SCALAR > >& get_binaryCPT_max() const;
 
       // PH const std::vector< std::vector< NodeId > > & var_bits() const;
 
@@ -625,7 +621,7 @@ namespace gum {
 
       /** @brief Used by L2U, to know if lower and upper probabilities over the
        * second modality has been stored in order to speed-up the algorithm. */
-      bool hasComputedCPTMinMax__;
+      bool hasComputedBinaryCPTMinMax__;
       /**
        * @brief Used with binary networks to speed-up L2U inference. Store the
        * lower

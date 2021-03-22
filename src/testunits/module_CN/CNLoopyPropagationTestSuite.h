@@ -93,7 +93,7 @@ namespace gum_tests {
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
 
       cn->intervalToCredal();
-      cn->computeCPTMinMax();
+      cn->computeBinaryCPTMinMax();
     }
 
     // dynamic (dynaCheese network - slow)
@@ -114,7 +114,7 @@ namespace gum_tests {
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
 
       cn->intervalToCredal();
-      cn->computeCPTMinMax();
+      cn->computeBinaryCPTMinMax();
     }
 
     void clearCNet() { delete cn; }
@@ -302,8 +302,11 @@ namespace gum_tests {
         for (const auto node: cn->current_bn().nodes()) {
           auto inf(lp.marginalMin(node));
           auto sup(lp.marginalMax(node));
-          // double e_inf = lp.expectationMin ( node_idIt );
-          // double e_sup = lp.expectationMax ( node_idIt );
+          //double e_inf = lp.expectationMin ( node );
+          //double e_sup = lp.expectationMax ( node );
+          GUM_TRACE("===============")
+          GUM_TRACE_VAR(inf)
+          GUM_TRACE_VAR(inf)
         }
       } catch (gum::Exception&) { TS_ASSERT(false); }
 
