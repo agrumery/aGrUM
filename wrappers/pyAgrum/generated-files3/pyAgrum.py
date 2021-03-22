@@ -23889,16 +23889,9 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_saveBNsMinMax(self, min_path, max_path)
 
-    def computeCPTMinMax(self) -> "void":
-        r"""
-        computeCPTMinMax(CredalNet self)
-
-        Used with binary networks to speed-up L2U inference.
-
-        Store the lower and upper probabilities of each node X over the 'True' modality.
-
-        """
-        return _pyAgrum.CredalNet_computeCPTMinMax(self)
+    def computeBinaryCPTMinMax(self) -> "void":
+        r"""computeBinaryCPTMinMax(CredalNet self)"""
+        return _pyAgrum.CredalNet_computeBinaryCPTMinMax(self)
 
     def src_bn(self) -> "gum::BayesNet< double > const &":
         r"""
@@ -24038,24 +24031,40 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_isSeparatelySpecified(self)
 
-    def hasComputedCPTMinMax(self) -> "bool const":
+    def hasComputedBinaryCPTMinMax(self) -> "bool const":
+        r"""hasComputedBinaryCPTMinMax(CredalNet self) -> bool const"""
+        return _pyAgrum.CredalNet_hasComputedBinaryCPTMinMax(self)
+
+    def get_binaryCPT_min(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
         r"""
-        hasComputedCPTMinMax(CredalNet self) -> bool const
+        get_binaryCPT_min(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
 
         Returns
         -------
-        bool
-            True this CredalNet has called computeCPTMinMax() to speed-up inference with binary networks and L2U.
+        tbw
+        	a constant reference to the lower probabilities of each node X over the 'True' modality
 
         """
-        return _pyAgrum.CredalNet_hasComputedCPTMinMax(self)
-
-    def get_binaryCPT_min(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
-        r"""get_binaryCPT_min(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CredalNet_get_binaryCPT_min(self)
 
     def get_binaryCPT_max(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
-        r"""get_binaryCPT_max(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
+        r"""
+        get_binaryCPT_max(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
+
+        Returns
+        -------
+        tbw
+        	a constant reference to the upper probabilities of each node X over the 'True' modality
+
+        """
         return _pyAgrum.CredalNet_get_binaryCPT_max(self)
 
     def __repr__(self) -> "std::string":

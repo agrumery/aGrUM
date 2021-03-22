@@ -306,7 +306,7 @@ namespace gum_tests {
           //double e_sup = lp.expectationMax ( node );
           GUM_TRACE("===============")
           GUM_TRACE_VAR(inf)
-          GUM_TRACE_VAR(inf)
+          GUM_TRACE_VAR(sup)
         }
       } catch (gum::Exception&) { TS_ASSERT(false); }
 

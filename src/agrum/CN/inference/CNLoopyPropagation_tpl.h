@@ -300,10 +300,10 @@ namespace gum {
           prod *= *it[k];
         }
 
-        den_min += (cn__->get_binaryCPT_max()[id][combi_den] * prod);
+        den_min += (cn__->get_binaryCPT_min()[id][combi_den] * prod);
         den_max += (cn__->get_binaryCPT_max()[id][combi_den] * prod);
 
-        num_min += (cn__->get_binaryCPT_max()[id][combi_num] * prod);
+        num_min += (cn__->get_binaryCPT_min()[id][combi_num] * prod);
         num_max += (cn__->get_binaryCPT_max()[id][combi_num] * prod);
 
         combi_den++;
@@ -361,7 +361,7 @@ namespace gum {
           prod *= *it[k];
         }
 
-        min += (cn__->get_binaryCPT_max()[id][combi] * prod);
+        min += (cn__->get_binaryCPT_min()[id][combi] * prod);
         max += (cn__->get_binaryCPT_max()[id][combi] * prod);
 
         combi++;
@@ -395,7 +395,7 @@ namespace gum {
 
       // source node
       if (taille == 0) {
-        msg_p_min = cn__->get_binaryCPT_max()[id][0];
+        msg_p_min = cn__->get_binaryCPT_min()[id][0];
         msg_p_max = cn__->get_binaryCPT_max()[id][0];
         return;
       }
@@ -476,9 +476,9 @@ namespace gum {
 
       // one parent node, the one receiving the message
       if (taille == 0) {
-        GUM_SCALAR num_min = cn__->get_binaryCPT_max()[id][1];
+        GUM_SCALAR num_min = cn__->get_binaryCPT_min()[id][1];
         GUM_SCALAR num_max = cn__->get_binaryCPT_max()[id][1];
-        GUM_SCALAR den_min = cn__->get_binaryCPT_max()[id][0];
+        GUM_SCALAR den_min = cn__->get_binaryCPT_min()[id][0];
         GUM_SCALAR den_max = cn__->get_binaryCPT_max()[id][0];
 
         compute_ext_(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
