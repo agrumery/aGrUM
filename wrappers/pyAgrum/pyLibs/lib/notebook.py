@@ -730,11 +730,11 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
                                           factorColor=factorColor, cmapNode=cmap)
   elif isinstance(model, gum.InfluenceDiagram):
     if engine is None:
-      engine = gum.CNMonteCarloSampling(model)
+      engine = gum.ShaferShenoyLIMIDInference(model)
     return LIMIDinference2dot(model, size, engine, evs, targets)
   elif isinstance(model,gum.CredalNet):
     if engine is None:
-      engine = gum.ShaferShenoyLIMIDInference(model)
+      engine = gum.CNMonteCarloSampling(model)
     return CNinference2dot(model, size, engine, evs, targets, nodeColor, arcWidth, arcColor,cmap)
   else:
     raise gum.InvalidArgument(
