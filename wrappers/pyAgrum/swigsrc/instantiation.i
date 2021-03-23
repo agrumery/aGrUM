@@ -94,5 +94,32 @@
 
   def __getitem__(self,key):
     return self.val(self.variable(key))
+
+  def addVarsFromModel(self,model,names):
+    r"""
+    From a graphical model, add all the variable whose names are in the iterable
+
+    Parameters
+    ----------
+    model : pyAgrum.GraphicalModel
+    a (discrete) graphical model such as Bayesian network, Markov network, Influence Diagram, etc.
+
+    names : iterable of strings
+    a list/set/etc of names of variables (as string)
+
+    Returns
+    -------
+    pyAgrum.Instantiation
+    the current instantiation (self) in order to chain methods.
+    """
+    for name in names:
+      self.add(model.variable(name))
+    return self
+
   }
 };
+
+%pythonappend gum::Instantiation::add %{
+  return self
+%}
+
