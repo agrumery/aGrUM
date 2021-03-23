@@ -328,7 +328,7 @@ namespace gum_tests {
       gum::credal::CredalNet< double > cnet(bnmin, bnmax);
       cnet.intervalToCredal();
       cnet.approximatedBinarization();
-      cnet.computeCPTMinMax();
+      cnet.computeBinaryCPTMinMax();
 
       const auto& current = cnet.current_bn();
       const auto& valsmin = cnet.get_binaryCPT_min();
