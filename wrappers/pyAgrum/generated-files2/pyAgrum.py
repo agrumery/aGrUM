@@ -5573,7 +5573,13 @@ class Instantiation(object):
 
 
         """
-        return _pyAgrum.Instantiation_add(self, v)
+        val = _pyAgrum.Instantiation_add(self, v)
+
+        return self
+
+
+        return val
+
 
     def erase(self, *args):
         r"""
@@ -6203,6 +6209,28 @@ class Instantiation(object):
 
     def __getitem__(self,key):
       return self.val(self.variable(key))
+
+    def addVarsFromModel(self,model,names):
+      r"""
+      From a graphical model, add all the variable whose names are in the iterable
+
+      Parameters
+      ----------
+      model : pyAgrum.GraphicalModel
+      a (discrete) graphical model such as Bayesian network, Markov network, Influence Diagram, etc.
+
+      names : iterable of strings
+      a list/set/etc of names of variables (as string)
+
+      Returns
+      -------
+      pyAgrum.Instantiation
+      the current instantiation (self) in order to chain methods.
+      """
+      for name in names:
+        self.add(model.variable(name))
+      return self
+
 
 
 # Register Instantiation in _pyAgrum:
@@ -18909,7 +18937,7 @@ class MonteCarloSampling(object):
 # Register MonteCarloSampling in _pyAgrum:
 _pyAgrum.MonteCarloSampling_swigregister(MonteCarloSampling)
 
-class LoopyImportanceSampling(object):
+class LoopyImportanceSampling(ImportanceSampling):
     r"""
 
     Class used for inferences using a loopy version of importance sampling.
@@ -19750,7 +19778,7 @@ class LoopyImportanceSampling(object):
 # Register LoopyImportanceSampling in _pyAgrum:
 _pyAgrum.LoopyImportanceSampling_swigregister(LoopyImportanceSampling)
 
-class LoopyWeightedSampling(object):
+class LoopyWeightedSampling(WeightedSampling):
     r"""
 
     Class used for inferences using a loopy version of weighted sampling.
@@ -20591,7 +20619,7 @@ class LoopyWeightedSampling(object):
 # Register LoopyWeightedSampling in _pyAgrum:
 _pyAgrum.LoopyWeightedSampling_swigregister(LoopyWeightedSampling)
 
-class LoopyGibbsSampling(object):
+class LoopyGibbsSampling(GibbsSampling):
     r"""
 
     Class used for inferences using a loopy version of Gibbs sampling.
@@ -21504,7 +21532,7 @@ class LoopyGibbsSampling(object):
 # Register LoopyGibbsSampling in _pyAgrum:
 _pyAgrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
 
-class LoopyMonteCarloSampling(object):
+class LoopyMonteCarloSampling(MonteCarloSampling):
     r"""
 
     Class used for inferences using a loopy version of Monte Carlo sampling.
@@ -23889,16 +23917,9 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_saveBNsMinMax(self, min_path, max_path)
 
-    def computeCPTMinMax(self):
-        r"""
-        computeCPTMinMax(CredalNet self)
-
-        Used with binary networks to speed-up L2U inference.
-
-        Store the lower and upper probabilities of each node X over the 'True' modality.
-
-        """
-        return _pyAgrum.CredalNet_computeCPTMinMax(self)
+    def computeBinaryCPTMinMax(self):
+        r"""computeBinaryCPTMinMax(CredalNet self)"""
+        return _pyAgrum.CredalNet_computeBinaryCPTMinMax(self)
 
     def src_bn(self):
         r"""
@@ -24038,21 +24059,13 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_isSeparatelySpecified(self)
 
-    def hasComputedCPTMinMax(self):
+    def hasComputedBinaryCPTMinMax(self):
+        r"""hasComputedBinaryCPTMinMax(CredalNet self) -> bool const"""
+        return _pyAgrum.CredalNet_hasComputedBinaryCPTMinMax(self)
+
+    def get_binaryCPT_min(self):
         r"""
-        hasComputedCPTMinMax(CredalNet self) -> bool const
-
-        Returns
-        -------
-        bool
-            True this CredalNet has called computeCPTMinMax() to speed-up inference with binary networks and L2U.
-
-        """
-        return _pyAgrum.CredalNet_hasComputedCPTMinMax(self)
-
-    def get_CPT_min(self):
-        r"""
-        get_CPT_min(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+        get_binaryCPT_min(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         Warnings
         --------
@@ -24064,11 +24077,11 @@ class CredalNet(object):
         	a constant reference to the lower probabilities of each node X over the 'True' modality
 
         """
-        return _pyAgrum.CredalNet_get_CPT_min(self)
+        return _pyAgrum.CredalNet_get_binaryCPT_min(self)
 
-    def get_CPT_max(self):
+    def get_binaryCPT_max(self):
         r"""
-        get_CPT_max(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+        get_binaryCPT_max(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         Warnings
         --------
@@ -24080,7 +24093,7 @@ class CredalNet(object):
         	a constant reference to the upper probabilities of each node X over the 'True' modality
 
         """
-        return _pyAgrum.CredalNet_get_CPT_max(self)
+        return _pyAgrum.CredalNet_get_binaryCPT_max(self)
 
     def __repr__(self):
         r"""__repr__(CredalNet self) -> std::string"""

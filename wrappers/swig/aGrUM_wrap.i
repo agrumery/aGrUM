@@ -325,11 +325,11 @@ namespace std {
 %include <agrum/BN/database/BNDatabaseGenerator.h>
 
 %include <agrum/CN/credalNet.h>
-%include <agrum/CN/varMod2BNsMap.h>
-%include <agrum/CN/inferenceEngine.h>
-%include <agrum/CN/multipleInferenceEngine.h>
-%include <agrum/CN/CNMonteCarloSampling.h>
-%include <agrum/CN/CNLoopyPropagation.h>
+%include <agrum/CN/tools/varMod2BNsMap.h>
+%include <agrum/CN/inference/inferenceEngine.h>
+%include <agrum/CN/inference/multipleInferenceEngine.h>
+%include <agrum/CN/inference/CNMonteCarloSampling.h>
+%include <agrum/CN/inference/CNLoopyPropagation.h>
 
 %include <agrum/ID/influenceDiagram.h>
 %include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
