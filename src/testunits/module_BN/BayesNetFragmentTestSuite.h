@@ -653,5 +653,17 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(&minibn.cpt("B").variable(1), &minibn.variable("A"));
       TS_ASSERT_DIFFERS(&minibn.cpt("B").variable(1), &frag.variable("A"));
     }
+
+    void testGraphicalMethods() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
+      TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"));
+
+      gum::BayesNetFragment< double > frag(bn);
+      frag.installNode("A");
+      frag.installNode("B");
+      frag.installNode("C");
+
+      GUM_TRACE_VAR(frag.children("B"))
+    }
   };
 }   // namespace gum_tests

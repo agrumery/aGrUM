@@ -36,79 +36,49 @@ def compileMarkovBlanket(bn, target):
 
   Create a Bayesian network with the children, their parents and the parents of the node target
   """
+  mb = gum.BayesNetFragment(bn)
+  mb.installNode(target)
+  for i in bn.children(target):
+    mb.installNode(i)
+    for j in bn.parents(i):
+      mb.installNode(j)
 
-  MarkovBlanket = gum.BayesNet('MarkovBlanket')
+  return mb
 
-  # add target to Markov Blanket
-  MarkovBlanket.add(bn.variable(target))
 
-  # list of target's children
-  children = listIdtoName(bn, list(bn.children(target)))
+def _calcul_most_probable_for_nary_class(row,Inst,dictName,MarkovBlanket, target):
+  """
+  parameters:
+      row: numpyArray shape: (n features)
+          test data
+      Inst: Potential
+          Instanciation of the Markov Blanket
+      dictName: dict[str : int]
+          dictionnary of the name of a variable and his column in the data base
+      MarkovBlanket: gum.BayesNet
+          Markov Blanket to work on
+      target: str
+          Name of the target
+  returns:
+      probable_class,proba:
+          the index of probable class (from the variable target) and its probability
 
-  # list of target's parents
-  parents = listIdtoName(bn, list(bn.parents(target)))
-
-  for c in children:
-
-    # list of c's parents
-    parents_child = listIdtoName(bn, list(bn.parents(c)))
-
-    # if c is not already in Markov Blanket
-    if (c not in MarkovBlanket.names()):
-      # add c in Markov Blanket
-      MarkovBlanket.add(bn.variable(c))
-
-      # create arc between target and his child c
-      MarkovBlanket.addArc(target, c)
-
-    # add c's parents in Markov Blanket
-
-    for pc in parents_child:
-
-      # if pc is a target's parent
-      if (pc in MarkovBlanket.names()):
-        if (pc != target):
-          MarkovBlanket.addArc(pc, c)
-        continue
-
-      # add pc in Markov Blanket
-      MarkovBlanket.add(bn.variable(pc))
-
-      # if pc is not a children, his cpt doesn't matter (use for predict)
-      if pc not in children:
-        MarkovBlanket.cpt(pc).fillWith(1).normalize()
-      else:
-        MarkovBlanket.addArc(target, pc)
-
-      # create arc between c and his parent pc
-      MarkovBlanket.addArc(pc, c)
-
-  for p in parents:
-
-    # if p is not already in Markov Blanket
-    if (p in MarkovBlanket.names()):
-      # create arc between target and his parent p
-      MarkovBlanket.addArc(p, target)
+  Calculate the most probable class for variable target
+  """
+  # create Instantiation with Markov Blanket's variables
+  for n in MarkovBlanket.names():
+    if n == target:
       continue
+    Inst.chgVal(n, str(row[dictName.get(n)]))
 
-    # add p in Markov Blanket
-    MarkovBlanket.add(bn.variable(p))
+  p = self.bn.cpt(target).extract(Inst)
+  for i in MarkovBlanket.children(target):
+    p *= MarkovBlanket.cpt(i).extract(Inst)
+  p.normalize()
 
-    # cpt doesn't matter for parents
-    MarkovBlanket.cpt(p).fillWith(1).normalize()
+  return p.argmax(),p.max()
 
-    # create arc between target and his parent p
-    MarkovBlanket.addArc(p, target)
-
-  # update cpt for target and his children
-  MarkovBlanket.cpt(target).fillWith(bn.cpt(target))
-  for i in children:
-    MarkovBlanket.cpt(i).fillWith(bn.cpt(i))
-
-  return MarkovBlanket
-
-
-def _calcul_proba(row, label1, labels, Inst, dictName, MarkovBlanket, target):
+def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBlanket, target):
   """
   parameters:
       row: numpyArray shape: (n features)
@@ -129,7 +99,7 @@ def _calcul_proba(row, label1, labels, Inst, dictName, MarkovBlanket, target):
       res: double
           probability of getting label1 to the variable y
 
-  Calculate the probability of having label1 to the variable y
+  Calculate the probability of having label1 to the binary variable y
   """
 
   # create Instantiation with Markov Blanket's variables

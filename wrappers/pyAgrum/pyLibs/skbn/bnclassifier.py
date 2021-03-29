@@ -35,7 +35,7 @@ from ._utils import _DFNames as DFNames
 from ._utils import _createCSVfromNDArrays as CSV
 
 from ._MBCalcul import compileMarkovBlanket
-from ._MBCalcul import _calcul_proba as calcul_proba
+from ._MBCalcul import _calcul_proba_for_binary_class,_calcul_most_probable_for_nary_class
 
 from ._learningMethods import _fitStandard as BN_fitStandard
 from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
@@ -241,7 +241,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     self.significant_digit = significant_digit
 
-    self.discretizer = BNDiscretizer(discretizationStrategy, discretizationNbBins)
+    self.discretizationNbBins = discretizationNbBins
+    self.discretizationStrategy = discretizationStrategy
+    self.discretizationThreshold = discretizationThreshold
+    self.discretizer = BNDiscretizer(discretizationStrategy, discretizationNbBins, discretizationThreshold)
 
     # AJOUT FROM MODEL
 
@@ -261,8 +264,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # The keys of this dictionary are the names of the variables. The value associeted to each name is
     # the index of the variable.
     self.variableNameIndexDictionary = None
-
-  """------------------methodes fit---------------------"""
 
   def fit(self, X=None, y=None, filename=None, targetName=None):
     """
@@ -337,9 +338,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     possibleValuesY = numpy.unique(y)
 
-    if len(possibleValuesY) > 2:
-      raise ValueError(
-        "BNClassifier is a binary classifier! There are more than 2 possible values for y in the data provided")
+    if len(possibleValuesY) == 1:
+      raise ValueError("There is only 1 possible values for Y in the data provided")
+    if len(possibleValuesY) > 5:
+      raise ValueError("A classifier with too many possible values for Y in the data provided is not meaningfull ("
+                       "please use regression methods instead).")
+
+    self.isBinaryClassifier = (len(possibleValuesY) == 2)
 
     self.bn = gum.BayesNet('Template')
 
@@ -375,11 +380,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.label = self.bn.variableFromName(self.target).labels()[1]
 
     self.MarkovBlanket = compileMarkovBlanket(self.bn, self.target)
-    self.threshold = CThreshold(self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
+
+    if self.isBinaryClassifier:
+      self.threshold = CThreshold(self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
 
     os.remove(csvfilename)
 
-  def fromTrainedModel(self, bn, targetAttribute, targetModality, copy=True, threshold=0.5, variableList=None):
+  def fromTrainedModel(self, bn, targetAttribute, targetModality, copy=False, threshold=0.5, variableList=None):
     """
     parameters:
         bn: pyagrum.BayesNet
@@ -402,7 +409,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     returns:
         void
 
-    Creates a BN classifier from an already trained pyagrum Bayesian network
+    Creates a BN classifier from an already trained pyAgrum Bayesian network
     """
 
     self.fromModel = True
@@ -451,6 +458,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           continue
         self.variableNameIndexDictionary[name] = i
         i = i + 1
+
+    self.isBinaryClassifier = self.bn.variableFromName(self.target).domainSize() == 2
 
     def changeVariableName(self, oldName, newName):
       """
@@ -508,10 +517,45 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     else:
       X = sklearn.utils.check_array(X, dtype=None, ensure_2d=False)
 
-    returned_list = []
+    if self.isBinaryClassifier:
+      returned_list= self._binary_predict(X, dictName)
+    else:
+      returned_list= self._nary_predict(X, dictName)
 
-    # label of the target
-    label1 = self.label
+    returned_list = numpy.array(returned_list)
+    if not self.fromModel:
+      if self.targetType == "bool":
+        returned_list = returned_list == "True"
+      elif numpy.issubdtype(self.targetType, numpy.number):
+        returned_list = returned_list.astype('float')
+
+    return returned_list
+
+  def _nary_predict(self,X,dictName):
+    """
+     For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
+
+    :param X: data
+    :param dictName: dictionnary of the name of a variable and his column in the data base
+    :return:
+    """
+    returned_list = []
+    I = self.MarkovBlanket.completeInstantiation()
+    for x in X:
+      returned_list.append(_calcul_most_probable_for_nary_class(x,I,dictName,self.MarkovBlanket, self.target))
+
+    return returned_list
+
+
+  def _binary_predict(self, X, dictName):
+    """
+     For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
+
+    :param X: data
+    :param dictName: dictionnary of the name of a variable and his column in the data base
+    :return:
+    """
+    returned_list = []
     # list of other labels of the target
     labels = [self.bn.variable(self.target).label(i)
               for i in range(self.bn.variable(self.target).domainSize())
@@ -519,13 +563,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     # negative value to add to the list returned
     label0 = labels[0]
-
+    # label of the target
+    label1 = self.label
     # Instantiation use to apply values of the data base
     I = self.MarkovBlanket.completeInstantiation()
-
     # read through data base's ligns
     for x in X:
-      res = round(calcul_proba(x, label1, labels, I, dictName, self.MarkovBlanket, self.target), self.significant_digit)
+      res = round(_calcul_proba_for_binary_class(x, label1, labels, I, dictName, self.MarkovBlanket, self.target),
+                  self.significant_digit)
 
       if res >= self.threshold:  # Positive value predicted
         if self.fromModel:
@@ -537,13 +582,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           returned_list.append(False)
         else:
           returned_list.append(label0)
-    returned_list = numpy.array(returned_list)
 
-    if not self.fromModel:
-      if self.targetType == "bool":
-        returned_list = returned_list == "True"
-      elif numpy.issubdtype(self.targetType, numpy.number):
-        returned_list = returned_list.astype('float')
     return returned_list
 
   # ------------------interaction with sklearn, pour ROC et Precision-Recall ---------------------

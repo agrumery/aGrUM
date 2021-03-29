@@ -1202,6 +1202,7 @@ else:
 
   # adding _repr_html_ to some pyAgrum classes !
   gum.BayesNet._repr_html_ = lambda self: getBN(self)
+  gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   gum.MarkovNet._repr_html_ = lambda self: getMN(self)
   gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
