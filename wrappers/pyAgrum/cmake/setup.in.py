@@ -48,6 +48,11 @@ setup(
     version='@PYAGRUM_VERSION@',
     description='Bayesian networks and other Probabilistic Graphical Models',
     url='https://agrum.gitlab.io/',
+    project_urls={
+      "Bug Tracker" = 'https://gitlab.com/agrumery/aGrUM/-/issues',
+      "Documentation" = 'https://pyagrum.readthedocs.io/',
+      "Source Code" = 'https://gitlab.com/agrumery/aGrUM',
+    }
     maintainer='Lionel Torti and Gaspard Ducamp',
     maintainer_email='info@agrum.org',
     platforms=['any'],

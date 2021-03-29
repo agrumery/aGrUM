@@ -7,6 +7,9 @@ Author: Pierre-Henri Wuillemin and Christophe Gonzales
 Author-email: info@agrum.org
 License: LGPLv3
 Keywords: probabilities probabilistic-graphical-models inference diagnosis
+Project-URL: Bug Tracker, https://gitlab.com/agrumery/aGrUM/-/issues
+Project-URL: Documentation, https://pyagrum.readthedocs.io/
+Project-URL: Source Code, https://gitlab.com/agrumery/aGrUM
 Platform: any
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
