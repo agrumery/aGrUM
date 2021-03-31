@@ -154,7 +154,7 @@ namespace gum {
         if (isInstalledNode(pa)) this->dag_.addArc(pa, id);
       }
 
-      // addin arcs with id as a head
+      // adding arcs with id as a head
       for (auto son: this->bn__.children(id))
         if (isInstalledNode(son)) this->dag_.addArc(id, son);
     }
