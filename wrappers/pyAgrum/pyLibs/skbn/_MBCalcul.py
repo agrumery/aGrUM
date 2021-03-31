@@ -36,23 +36,83 @@ def compileMarkovBlanket(bn, target):
 
   Create a Bayesian network with the children, their parents and the parents of the node target
   """
-  mb = gum.BayesNetFragment(bn)
-  mb.installNode(target)
-  for i in bn.children(target):
-    mb.installNode(i)
-    for j in bn.parents(i):
-      mb.installNode(j)
+  mb = gum.BayesNet('MarkovBlanket')
+
+  # add target to Markov Blanket
+  mb.add(bn.variable(target))
+
+  # list of target's children
+  children = listIdtoName(bn, list(bn.children(target)))
+
+  # list of target's parents
+  parents = listIdtoName(bn, list(bn.parents(target)))
+
+  for c in children:
+    # list of c's parents
+    parents_child = listIdtoName(bn, list(bn.parents(c)))
+
+    # if c is not already in Markov Blanket
+    if (c not in mb.names()):
+      # add c in Markov Blanket
+      mb.add(bn.variable(c))
+
+      # create arc between target and his child c
+      mb.addArc(target, c)
+
+    # add c's parents in Markov Blanket
+    for pc in parents_child:
+      # if pc is a target's parent
+      if (pc in mb.names()):
+        if (pc != target):
+          mb.addArc(pc, c)
+        continue
+
+      # add pc in Markov Blanket
+      mb.add(bn.variable(pc))
+
+      # if pc is not a children, his cpt doesn't matter (use for predict)
+      if pc not in children:
+        mb.cpt(pc).fillWith(1).normalize()
+      else:
+        mb.addArc(target, pc)
+
+      # create arc between c and his parent pc
+      mb.addArc(pc, c)
+
+  for p in parents:
+    # if p is not already in Markov Blanket
+    if (p in mb.names()):
+      # create arc between target and his parent p
+      mb.addArc(p, target)
+      continue
+
+    # add p in Markov Blanket
+    mb.add(bn.variable(p))
+
+    # cpt doesn't matter for parents
+    mb.cpt(p).fillWith(1).normalize()
+
+    # create arc between target and his parent p
+    mb.addArc(p, target)
+
+  # update cpt for target and his children
+  mb.cpt(target).fillWith(bn.cpt(target))
+  for i in children:
+    mb.cpt(i).fillWith(bn.cpt(i))
 
   return mb
 
 
-def _calcul_most_probable_for_nary_class(row,Inst,dictName,MarkovBlanket, target):
+
+def _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target):
   """
+  Calculate the posterior distribution of variable target (given its Markov blanket)
+
   parameters:
       row: numpyArray shape: (n features)
           test data
-      Inst: Potential
-          Instanciation of the Markov Blanket
+      local_inst: Potential
+          Instanciation of the Markov Blanket EXCEPT the target
       dictName: dict[str : int]
           dictionnary of the name of a variable and his column in the data base
       MarkovBlanket: gum.BayesNet
@@ -60,23 +120,45 @@ def _calcul_most_probable_for_nary_class(row,Inst,dictName,MarkovBlanket, target
       target: str
           Name of the target
   returns:
-      probable_class,proba:
-          the index of probable class (from the variable target) and its probability
-
-  Calculate the most probable class for variable target
+      proba:
+          the probability distribution for target
   """
   # create Instantiation with Markov Blanket's variables
   for n in MarkovBlanket.names():
     if n == target:
       continue
-    Inst.chgVal(n, str(row[dictName.get(n)]))
+    local_inst.chgVal(n, str(row[dictName.get(n)]))
 
-  p = self.bn.cpt(target).extract(Inst)
+  p = MarkovBlanket.cpt(target).extract(local_inst)
   for i in MarkovBlanket.children(target):
-    p *= MarkovBlanket.cpt(i).extract(Inst)
+    p *= MarkovBlanket.cpt(i).extract(local_inst)
   p.normalize()
 
-  return p.argmax(),p.max()
+  return p
+
+
+def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanket, target):
+  """
+  Calculate the most probable class for variable target
+
+  parameters:
+      row: numpyArray shape: (n features)
+          test data
+      local_inst: Potential
+          Instanciation of the Markov Blanket EXCEPT the target
+      dictName: dict[str : int]
+          dictionnary of the name of a variable and his column in the data base
+      MarkovBlanket: gum.BayesNet
+          Markov Blanket to work on
+      target: str
+          Name of the target
+  returns:
+      proba:
+          the probability distribution for target
+  """
+  p = _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target)
+  return p.argmax(), p.max()
+
 
 def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBlanket, target):
   """

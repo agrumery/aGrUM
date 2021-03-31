@@ -27,6 +27,7 @@ import pandas
 import numpy
 import os
 import tempfile
+import warnings
 
 from .discretizer import BNDiscretizer
 from ._utils import _ImplementPrior as IPrior
@@ -35,7 +36,7 @@ from ._utils import _DFNames as DFNames
 from ._utils import _createCSVfromNDArrays as CSV
 
 from ._MBCalcul import compileMarkovBlanket
-from ._MBCalcul import _calcul_proba_for_binary_class,_calcul_most_probable_for_nary_class
+from ._MBCalcul import _calcul_proba_for_binary_class,_calcul_most_probable_for_nary_class,_calcul_proba_for_nary_class
 
 from ._learningMethods import _fitStandard as BN_fitStandard
 from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
@@ -340,8 +341,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if len(possibleValuesY) == 1:
       raise ValueError("There is only 1 possible values for Y in the data provided")
-    if len(possibleValuesY) > 5:
-      raise ValueError("A classifier with too many possible values for Y in the data provided is not meaningfull ("
+    if len(possibleValuesY) > 10:
+      warnings.warn(f"A classifier with too many possible values for Y (here : {possibleValuesY}) in the data provided is not meaningfull ("
                        "please use regression methods instead).")
 
     self.isBinaryClassifier = (len(possibleValuesY) == 2)
@@ -541,8 +542,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     returned_list = []
     I = self.MarkovBlanket.completeInstantiation()
+    I.erase(self.target)
     for x in X:
-      returned_list.append(_calcul_most_probable_for_nary_class(x,I,dictName,self.MarkovBlanket, self.target))
+      vals,_=_calcul_most_probable_for_nary_class(x,I,dictName,self.MarkovBlanket, self.target)
+      returned_list.append(vals[0][self.target])
 
     return returned_list
 
@@ -628,9 +631,16 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     I = self.MarkovBlanket.completeInstantiation()
 
     # read through data base's ligns
-    for x in vals:
-      res = round(calcul_proba(x, label1, labels, I, dictName, self.MarkovBlanket, self.target), self.significant_digit)
-      returned_list.append([1 - res, res])
+    if self.isBinaryClassifier:
+      for x in vals:
+        res = round(_calcul_proba_for_binary_class(x, label1, labels, I, dictName, self.MarkovBlanket, self.target), self.significant_digit)
+        returned_list.append([1 - res, res])
+    else:
+      local_inst=gum.Instantiation(I)
+      local_inst.erase(self.target)
+      for x in vals:
+        returned_list.append(_calcul_proba_for_nary_class(x,local_inst, dictName, self.MarkovBlanket, self.target).tolist())
+
     return numpy.array(returned_list)
 
   # ------------------ BNClassifier compatible from pyAgrum to sklearn ---------------------

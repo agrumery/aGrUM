@@ -208,10 +208,7 @@ def _listIdtoName(bn, liste):
 
   Return a list of names of the variable which have their id in liste
   """
-  for i in range(len(liste)):
-    liste[i] = bn.variable(liste[i]).name()
-
-  return liste
+  return [bn.variable(i).name() for i in liste]
 
 
 def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilename):
