@@ -89,8 +89,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const VariableNodeMap&
                BayesNetFragment< GUM_SCALAR >::variableNodeMap() const {
-    GUM_ERROR(FatalError,
-              "VariableNodeMap not implemented yet. please use referent bayesnet method");
+    return this->bn__.variableNodeMap();
   }
 
   template < typename GUM_SCALAR >

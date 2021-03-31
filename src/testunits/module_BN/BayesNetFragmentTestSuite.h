@@ -664,6 +664,12 @@ namespace gum_tests {
       frag.installNode("C");
 
       GUM_TRACE_VAR(frag.children("B"))
+      GUM_TRACE_VAR(frag.variableNodeMap())
+
+      for(const auto & n:frag.nodes())
+        GUM_TRACE_VAR(n)
+
+      GUM_TRACE_VAR(frag.names(std::vector<gum::NodeId>({0,1,2,3})))
     }
   };
 }   // namespace gum_tests
