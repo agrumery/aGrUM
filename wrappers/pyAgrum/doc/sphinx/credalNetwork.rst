@@ -5,7 +5,7 @@ Credal networks are probabilistic graphical models based on imprecise probabilit
 
 **Tutorial**
 
-* `Tutorial on Credal Networks <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/33-credalNetworks.ipynb.html>`_
+* `Tutorial on Credal Networks <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/14-Models_credalNetworks.ipynb.html>`_
 
 **Reference**
 
