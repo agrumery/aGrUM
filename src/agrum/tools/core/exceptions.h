@@ -123,7 +123,7 @@ namespace gum {
 /// @}
 #ifdef GUM_FOR_SWIG
     std::string what() const { return "[pyAgrum] " + type_ + ": " + msg_; }
-#else   // GUM_FOR_SWIG
+#else    // GUM_FOR_SWIG
     std::string what() const { return type_ + " : " + msg_; }
 #endif   // GUM_FOR_SWIG
 

@@ -108,9 +108,8 @@ namespace gum {
     return !g.hasUndirectedPath(X, Y);
   }
 
-  bool DAG::dSeparation(const NodeSet& X,
-                          const NodeSet& Y,
-                          const NodeSet& Z) const {
+  bool
+     DAG::dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
     if (!(X * Y).empty())
       GUM_ERROR(InvalidArgument,
                 "NodeSets " << X << ", " << Y << " should have no intersection")

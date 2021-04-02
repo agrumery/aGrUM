@@ -516,13 +516,10 @@ namespace gum {
       const bool isSeparatelySpecified() const;
 
       /**
-       * @return Returns \c TRUE if this CredalNet has called computeBinaryCPTMinMax()
-       * to
-       * speed-up inference with binary networks and L2U. This needs to be
-       * reworked
-       * as it is too easy to forget to call it and it can't be called within
-       * the
-       * inference engine (constness).
+       * @return Returns \c TRUE if this CredalNet has called
+       * computeBinaryCPTMinMax() to speed-up inference with binary networks and
+       * L2U. This needs to be reworked as it is too easy to forget to call it and
+       * it can't be called within the inference engine (constness).
        */
       const bool hasComputedBinaryCPTMinMax() const;
 

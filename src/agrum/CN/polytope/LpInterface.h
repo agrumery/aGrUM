@@ -772,8 +772,7 @@ namespace gum {
        * @param a the address of the first pointer.
        * @param b the address of the second pointer.
        */
-      void swap(HashTable< LpCol, double >*& a,
-                       HashTable< LpCol, double >*& b);
+      void swap(HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b);
 
       /// @name Non-members operators +
       /// @{

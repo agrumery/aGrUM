@@ -129,10 +129,12 @@ namespace gum {
   }
 
   INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    return dag().dSeparation(X,Y,Z);
+    return dag().dSeparation(X, Y, Z);
   }
 
-  INLINE bool DAGmodel::isIndependent(const NodeSet&  X, const NodeSet&  Y, const NodeSet& Z) const {
-    return dag().dSeparation(X,Y,Z);
+  INLINE bool DAGmodel::isIndependent(const NodeSet& X,
+                                      const NodeSet& Y,
+                                      const NodeSet& Z) const {
+    return dag().dSeparation(X, Y, Z);
   }
 } /* namespace gum */

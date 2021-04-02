@@ -334,15 +334,20 @@ namespace gum_tests {
       const auto& valsmin = cnet.get_binaryCPT_min();
       const auto& valsmax = cnet.get_binaryCPT_max();
 
-      for(gum::Idx i=0;i<4;i++) {
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i], (i==0?1.0:0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i], (i==0?1.0:0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i], (i==1?1.0:0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i], (i==1?1.0:0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i], (i==2?1.0:0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i], (i==2?1.0:0.0))
+      for (gum::Idx i = 0; i < 4; i++) {
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i],
+                         (i == 0 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i],
+                         (i == 0 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i],
+                         (i == 1 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i],
+                         (i == 1 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i],
+                         (i == 2 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i],
+                         (i == 2 ? 1.0 : 0.0))
       }
-
     }
   };   // end of class CredalNetTestSuite
 

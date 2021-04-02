@@ -51,11 +51,17 @@ namespace gum {
 
       INLINE unsigned int LpCol::id() const { return id__; }
 
-      INLINE bool LpCol::operator<(const LpCol& col) const { return (id__ < col.id()); }
+      INLINE bool LpCol::operator<(const LpCol& col) const {
+        return (id__ < col.id());
+      }
 
-      INLINE bool LpCol::operator==(const LpCol& col) const { return (id__ == col.id()); }
+      INLINE bool LpCol::operator==(const LpCol& col) const {
+        return (id__ == col.id());
+      }
 
-      INLINE bool LpCol::operator!=(const LpCol& col) const { return (id__ != col.id()); }
+      INLINE bool LpCol::operator!=(const LpCol& col) const {
+        return (id__ != col.id());
+      }
 
       INLINE LpCol& LpCol::operator=(const LpCol& col) {
         id__ = col.id__;
@@ -68,10 +74,13 @@ namespace gum {
         return out;
       }
 
-      INLINE std::string LpCol::toString() const { return "V" + std::to_string(id__); }
+      INLINE std::string LpCol::toString() const {
+        return "V" + std::to_string(id__);
+      }
 
 
-      INLINE void swap(HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b) {
+      INLINE void swap(HashTable< LpCol, double >*& a,
+                       HashTable< LpCol, double >*& b) {
         HashTable< LpCol, double >* tmp(a);
         a = b;
         b = tmp;

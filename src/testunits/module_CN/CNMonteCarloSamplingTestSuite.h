@@ -224,8 +224,8 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto    inf(mcs.marginalMin(node));
-          auto    sup(mcs.marginalMax(node));
+          auto   inf(mcs.marginalMin(node));
+          auto   sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);
           double e_sup = mcs.expectationMax(node);
         }
@@ -280,8 +280,8 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto    inf(mcs.marginalMin(node));
-          auto    sup(mcs.marginalMax(node));
+          auto   inf(mcs.marginalMin(node));
+          auto   sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);
           double e_sup = mcs.expectationMax(node);
         }

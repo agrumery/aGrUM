@@ -187,8 +187,7 @@ namespace gum {
   }
 
 
-  std::vector< NodeId > ArcGraphPart::directedPath(NodeId n1,
-                                                   NodeId n2) const {
+  std::vector< NodeId > ArcGraphPart::directedPath(NodeId n1, NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -229,8 +228,8 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found");
   }
 
-  std::vector< NodeId >
-     ArcGraphPart::directedUnorientedPath(NodeId n1, NodeId n2) const {
+  std::vector< NodeId > ArcGraphPart::directedUnorientedPath(NodeId n1,
+                                                             NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

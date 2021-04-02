@@ -269,7 +269,7 @@ namespace gum {
           for (std::size_t i = std::size_t(0); i < target_domsize; ++i, ++k) {
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
             N_ijk[k] /= N_ij[j];
-#  else   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
+#  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
             if (N_ij[j] != 0) {
               N_ijk[k] /= N_ij[j];
             } else {
@@ -302,7 +302,7 @@ namespace gum {
               << ". It is impossible to estimate the parameters by maximum "
                  "likelihood";
           GUM_ERROR(DatabaseError, str.str());
-#  else   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
+#  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           for (double& n_ijk: N_ijk)
             n_ijk = 1.0 / N_ijk.size();
 #  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL

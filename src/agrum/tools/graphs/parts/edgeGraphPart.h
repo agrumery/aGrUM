@@ -246,8 +246,8 @@ namespace gum {
      * @param except NodeSet
      * @return bool
      */
-    bool hasUndirectedPath(const NodeSet&   n1,
-                           const NodeSet&   n2,
+    bool hasUndirectedPath(const NodeSet& n1,
+                           const NodeSet& n2,
                            const NodeSet& except) const;
     /// @}
 

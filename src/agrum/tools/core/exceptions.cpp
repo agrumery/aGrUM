@@ -75,12 +75,12 @@ namespace gum {
 
     free(strings);
     callstack_ = stream.str();
-#    else   // HAVE_EXECINFO_H
+#    else    // HAVE_EXECINFO_H
     callstack_ = "Callstack only in linux debug mode when execinfo.h available";
 #    endif   // HAVE_EXECINFO_H
-#  else   // GUM_DEBUG_MODE
+#  else      // GUM_DEBUG_MODE
     callstack_ = "Callstack only in linux debug mod ewhen execinfo.h available";
-#  endif   // GUM_DEBUG_MODE
+#  endif     // GUM_DEBUG_MODE
   }
 
 } /* namespace gum */

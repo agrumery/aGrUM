@@ -86,7 +86,7 @@ namespace gum {
     // condition (a)
     for (const auto& c: mg__.parents(a)) {
       if (!mg__.existsArc(c, b)) {
-        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (a)")
+        // GUM_TRACE(a << "->" << b << " with "<<c<<" : (a)")
         return true;
       }
     }
@@ -96,13 +96,13 @@ namespace gum {
       if (c == a) { continue; }
       // condition (c)
       if (mg__.existsArc(a, c)) {
-        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (c)")
+        // GUM_TRACE(a << "->" << b << " with "<<c<<" : (c)")
         return true;
       }
 
       // condition (b) knowing that a can not be a parent of c (condition below)
-      if (!mg__.existsEdge(a,c) && !mg__.existsArc(c,a)) {
-        //GUM_TRACE(a << "->" << b << " with "<<c<<" : (b)")
+      if (!mg__.existsEdge(a, c) && !mg__.existsArc(c, a)) {
+        // GUM_TRACE(a << "->" << b << " with "<<c<<" : (b)")
         return true;
       }
     }
@@ -114,7 +114,7 @@ namespace gum {
       // condition (d)
       if (mg__.existsEdge(c, a)) {
         if (oneFound) {   // this is the second found
-          //GUM_TRACE(a << "->" << b << " : (d)")
+          // GUM_TRACE(a << "->" << b << " : (d)")
           return true;
         }
         oneFound = true;

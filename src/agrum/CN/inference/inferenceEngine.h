@@ -389,7 +389,7 @@ namespace gum {
        * @param id The node id which upper marginals we want.
        * @return A constant reference to this node upper marginals.
        */
-       Potential< GUM_SCALAR > marginalMax(const NodeId id) const;
+      Potential< GUM_SCALAR > marginalMax(const NodeId id) const;
 
       /**
        * Get the lower marginals of a given variable name.

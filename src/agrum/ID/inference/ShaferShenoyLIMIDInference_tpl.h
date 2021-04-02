@@ -636,7 +636,8 @@ namespace gum {
       I.setFirstVar(firstvar);
       while (proba[I] == 0) {
         I.incVar(firstvar);
-        if (I.end()) { // for non valid proba, we keep the first value (by default)²
+        if (I.end()) {   // for non valid proba, we keep the first value (by
+                         // default)²
           I.setFirstVar(firstvar);
           break;
         }
