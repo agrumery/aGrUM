@@ -103,7 +103,6 @@ def compileMarkovBlanket(bn, target):
   return mb
 
 
-
 def _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target):
   """
   Calculate the posterior distribution of variable target (given its Markov blanket)
@@ -156,7 +155,8 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
       proba:
           the probability distribution for target
   """
-  p = _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target)
+  p = _calcul_proba_for_nary_class(
+      row, local_inst, dictName, MarkovBlanket, target)
   return p.argmax(), p.max()
 
 
