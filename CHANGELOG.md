@@ -1,5 +1,40 @@
 # aGrUM Changelog
 
+
+## Changelog for 0.20.0
+
+0.20.0 is the last minor release before 1.0.0. 
+
+* aGrUM
+  * Workaround for OMP with MVSC
+  * Refreshing doxygen configuration file
+  * Graph methods for `children`and `parents` of sets of nodes.
+  * Renaming `core/math/math.h` to `core/math/math_utils.h` to avoid clash names and false warnings from linters
+  * work on CIs
+  * Fix and typos from F.Keidel
+  * Improving API of `gum::BayesNetFragment` (for instance, non-implemented `gum::BayesNetFragment::VariableNodeMap`).
+  * Major changes (and typos and bug fixes) in `gum::CN::CredalNetwork`'s API
+  * Fixing minor bugs in inference for `gum::CN::CredalNet`
+  * (internal) re-organizing files and folders for Credal Networks
+  * (internal) fixing bug in organization of inline/tpl/source files for `gum::credal::lp::LpInterface`
+
+
+* pyAgrum
+  * (internal) Better logic and automatic generation for the multiple "requirements.txt".
+  * Graph methods for `children`and `parents` of sets of nodes.
+  * Fix several tests
+  * Fix and typos from F.Keidel
+  * Adding `gum.Instantiation.addVarsFromModel` and allowing chained `gum.Instantiation.add()`.
+  * Fixing some broken links in documentation.
+  * Updating `gum.skbn` for non-binary classifier (see notebooks).
+  * Improving notebooks for classifiers.
+  * Major changes in `gum.CredalNetwork`'s API
+  * Specific visualisation for credal networks
+  * Graphical visualisation of inference with credal networks (![Visual Credal networks](https://gitlab.com/agrumery/aGrUM/-/blob/master/wrappers/pyAgrum/doc/sphinx/_static/fastModelsSource/5-fastCNWithPyAgrum.png "Credal Networks"))
+  * Adding some example for credal networks in notebooks
+
+
+
 ## Changelog for 0.19.3
 
 * pyAgrum
