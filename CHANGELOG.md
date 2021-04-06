@@ -1,6 +1,5 @@
 # aGrUM Changelog
 
-
 ## Changelog for 0.20.0
 
 0.20.0 is the last minor release before 1.0.0. 
@@ -18,10 +17,10 @@
   * (internal) re-organizing files and folders for Credal Networks
   * (internal) fixing bug in organization of inline/tpl/source files for `gum::credal::lp::LpInterface`
 
-
 * pyAgrum
   * (internal) Better logic and automatic generation for the multiple "requirements.txt".
   * Graph methods for `children`and `parents` of sets of nodes.
+  * `pyAgrum.notebook.export` and `pyAgrum.notebook.exportInference` to export as png, pdf(, etc.) PGM and inference in PGM
   * Fix several tests
   * Fix and typos from F.Keidel
   * Adding `gum.Instantiation.addVarsFromModel` and allowing chained `gum.Instantiation.add()`.
@@ -32,8 +31,6 @@
   * Specific visualisation for credal networks
   * Graphical visualisation of inference with credal networks (![Visual Credal networks](https://gitlab.com/agrumery/aGrUM/-/blob/master/wrappers/pyAgrum/doc/sphinx/_static/fastModelsSource/5-fastCNWithPyAgrum.png "Credal Networks"))
   * Adding some example for credal networks in notebooks
-
-
 
 ## Changelog for 0.19.3
 
