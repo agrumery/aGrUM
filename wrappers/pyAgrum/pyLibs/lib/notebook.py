@@ -1218,7 +1218,7 @@ def show(model, **kwargs):
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ...")
 
 
-def export(filename, model, **kwargs):
+def export(model, filename, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
@@ -1252,7 +1252,7 @@ def export(filename, model, **kwargs):
   fig.write(filename, format=format)
 
 
-def exportInference(filename, model, engine=None, evs=None, targets=None, size=None,
+def exportInference(model, filename, engine=None, evs=None, targets=None, size=None,
                     nodeColor=None, factorColor=None,
                     arcWidth=None, arcColor=None,
                     cmap=None, cmapArc=None, graph=None, view=None):
