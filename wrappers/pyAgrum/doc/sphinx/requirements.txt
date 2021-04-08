@@ -15,6 +15,7 @@ scikit-learn
 pandas
 ################################
 ### Specific requirements for sphinx
+pyAgrum
 sphinx
 IPython
 ipykernel

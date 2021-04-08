@@ -1,4 +1,5 @@
 ### Specific requirements for sphinx
+pyAgrum
 sphinx
 IPython
 ipykernel
