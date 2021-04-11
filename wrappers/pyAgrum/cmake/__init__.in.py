@@ -6,7 +6,7 @@ The module is generated using the `SWIG <https://www.swig.org>`_ interface gener
 
 pyAgrum includes :
   * API documentation <https://pyagrum.readthedocs.io>,
-  * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
+  * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_,
   * a `website <http://agrum.org>`_.
 """
 

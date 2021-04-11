@@ -11,7 +11,7 @@ PyAgrum's so-called influence diagram represents both influence diagrams and LIM
 
 **Tutorial**
 
-* `Tutorial on Influence Diagram <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/11-Models_InfluenceDiagram.ipynb.html>`_
+* `Tutorial on Influence Diagram <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/InfluenceDiagram.ipynb.html>`_
 
 **Reference**
 

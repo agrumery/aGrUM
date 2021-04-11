@@ -23,7 +23,7 @@ the computations. Finally, the Bayesian networks can be learnt from data.
 
 **Tutorial**
 
-* `Tutorial on Bayesian network <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_
+* `Tutorial on Bayesian network <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_
 
 **Reference**
 

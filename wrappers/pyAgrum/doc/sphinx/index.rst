@@ -30,7 +30,7 @@ Bayesian network and other graphical models.
 
 pyAgrum contains
   * a `comprehensive API documentation <https://pyagrum.readthedocs.io>`_,
-  * `tutorials as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
+  * `tutorials as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_,
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_,
   * and a `website <http://agrum.org>`_.
 

@@ -49,7 +49,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
   """ PyAgrumConfiguration is a the pyAgrum configuration singleton.  The configuration is build
   as a classical ConfigParser with read-only structure. Then a value is adressable using a double key: ``[section,key]``.
 
-  See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/99-Tools_configForPyAgrum.ipynb.html>`_.
+  See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
 
   Examples
   --------
