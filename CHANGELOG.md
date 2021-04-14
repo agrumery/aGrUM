@@ -1,5 +1,15 @@
 # aGrUM Changelog
 
+## Changelog for 0.20.1
+
+* aGrUM
+  * Fix an infamous bug: monocycle in DAG (thanks to Guy, GabF and Joanne). This bug did not propagate to graphical models (especially BNs).
+
+* pyAgrum
+  * new site for tutorials. 
+  * renaming and reorganizing many tutorials
+  * sync'ed documentation (readthedocs) with the new URLs for notebooks
+
 ## Changelog for 0.20.0
 
 0.20.0 is the last minor release before 1.0.0. 
