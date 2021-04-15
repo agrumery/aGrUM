@@ -24,14 +24,13 @@
 """
 Basic implementation for dynamic Bayesian networks in pyAgrum
 """
+import numpy as np
+import pydotplus as dot
 
 import matplotlib.pyplot as plt
-import numpy as np
-import pyAgrum as gum
-import pydotplus as dot
 from matplotlib.patches import Rectangle
 
-from .notebook import showGraph, getGraph
+import pyAgrum as gum
 
 noTimeCluster = "void"
 
@@ -177,6 +176,7 @@ def showTimeSlices(dbn, size=None):
   :param size: size of the figue
   :param format: png/svg
   """
+  from pyAgrum.lib.notebook import showGraph
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
 
@@ -191,6 +191,7 @@ def getTimeSlices(dbn, size=None):
   :param size: size of the figue
   :param format: png/svg
   """
+  from pyAgrum.lib.notebook import getGraph
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
 

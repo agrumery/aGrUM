@@ -1302,7 +1302,7 @@ except NameError as e:
   import warnings
 
   warnings.warn("""
-  ** pyAgrum.lib.notebook has to be import from an IPython's instance (mainly notebook).
+  ** pyAgrum.lib.notebook has to be imported from an IPython's instance (mainly notebook).
   """)
 else:
   gum.config.add_hook(_update_config)
