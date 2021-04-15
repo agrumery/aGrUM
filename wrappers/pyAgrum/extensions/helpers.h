@@ -190,6 +190,12 @@ namespace PyAgrumHelper {
       return;
     }
 
+    // if seq is just a nodeId
+    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+      nodeset.insert(gum::NodeId(PyLong_AsLong(seq)));
+      return;
+    }
+
     // seq really is a sequence
     PyObject* iter = PyObject_GetIter(seq);
     if (iter != NULL) {

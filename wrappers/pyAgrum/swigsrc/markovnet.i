@@ -47,10 +47,16 @@ IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
   };
 
    bool isIndependent(PyObject* X,PyObject* Y,PyObject* Z) {
-     gum::NodeId nx=PyAgrumHelper::nodeIdFromNameOrIndex(X,self->variableNodeMap());
-     gum::NodeId ny=PyAgrumHelper::nodeIdFromNameOrIndex(Y,self->variableNodeMap());
-     gum::NodeSet nz;
+     gum::NodeSet nx,ny,nz;
+     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nx,X,self->variableNodeMap());
+     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(ny,Y,self->variableNodeMap());
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nz,Z,self->variableNodeMap());
+     return self->isIndependent(nx,ny,nz);
+   }
+   bool isIndependent(PyObject* X,PyObject* Y) {
+     gum::NodeSet nx,ny,nz;
+     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nx,X,self->variableNodeMap());
+     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(ny,Y,self->variableNodeMap());
      return self->isIndependent(nx,ny,nz);
    }
 }

@@ -9434,9 +9434,12 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_minimalCondSet(self, *args)
 
-    def isIndependent(self, X: "PyObject *", Y: "PyObject *", Z: "PyObject *") -> "bool":
-        r"""isIndependent(IBayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
-        return _pyAgrum.IBayesNet_isIndependent(self, X, Y, Z)
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(IBayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool
+        isIndependent(IBayesNet self, PyObject * X, PyObject * Y) -> bool
+        """
+        return _pyAgrum.IBayesNet_isIndependent(self, *args)
 
     def names(self) -> "PyObject *":
         r"""
@@ -10516,9 +10519,12 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_minimalCondSet(self, *args)
 
-    def isIndependent(self, X: "PyObject *", Y: "PyObject *", Z: "PyObject *") -> "bool":
-        r"""isIndependent(BayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
-        return _pyAgrum.BayesNet_isIndependent(self, X, Y, Z)
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(BayesNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool
+        isIndependent(BayesNet self, PyObject * X, PyObject * Y) -> bool
+        """
+        return _pyAgrum.BayesNet_isIndependent(self, *args)
 
     def names(self) -> "PyObject *":
         r"""
@@ -11376,9 +11382,12 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_minimalCondSet(self, *args)
 
-    def isIndependent(self, X: "PyObject *", Y: "PyObject *", Z: "PyObject *") -> "bool":
-        r"""isIndependent(BayesNetFragment self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
-        return _pyAgrum.BayesNetFragment_isIndependent(self, X, Y, Z)
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(BayesNetFragment self, PyObject * X, PyObject * Y, PyObject * Z) -> bool
+        isIndependent(BayesNetFragment self, PyObject * X, PyObject * Y) -> bool
+        """
+        return _pyAgrum.BayesNetFragment_isIndependent(self, *args)
 
     def names(self) -> "PyObject *":
         r"""
@@ -11710,9 +11719,12 @@ class IMarkovNet(UGmodel):
         """
         return _pyAgrum.IMarkovNet_factor(self, *args)
 
-    def isIndependent(self, X: "PyObject *", Y: "PyObject *", Z: "PyObject *") -> "bool":
-        r"""isIndependent(IMarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
-        return _pyAgrum.IMarkovNet_isIndependent(self, X, Y, Z)
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(IMarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool
+        isIndependent(IMarkovNet self, PyObject * X, PyObject * Y) -> bool
+        """
+        return _pyAgrum.IMarkovNet_isIndependent(self, *args)
 
     def __repr__(self) -> "std::string":
         r"""__repr__(IMarkovNet self) -> std::string"""
@@ -12093,9 +12105,12 @@ class MarkovNet(IMarkovNet):
         """
         return _pyAgrum.MarkovNet_factor(self, *args)
 
-    def isIndependent(self, X: "PyObject *", Y: "PyObject *", Z: "PyObject *") -> "bool":
-        r"""isIndependent(MarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool"""
-        return _pyAgrum.MarkovNet_isIndependent(self, X, Y, Z)
+    def isIndependent(self, *args) -> "bool":
+        r"""
+        isIndependent(MarkovNet self, PyObject * X, PyObject * Y, PyObject * Z) -> bool
+        isIndependent(MarkovNet self, PyObject * X, PyObject * Y) -> bool
+        """
+        return _pyAgrum.MarkovNet_isIndependent(self, *args)
 
     def loadUAI(self, *args) -> "std::string":
         r"""
