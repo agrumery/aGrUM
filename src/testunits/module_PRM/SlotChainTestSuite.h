@@ -58,9 +58,9 @@ namespace gum_tests {
     public:
     void setUp() {
       classEltTestSuite__ = new ClassElementTestSuiteAbstract();
-      A__ = new gum::prm::PRMClass< double >("A");
-      B__ = new gum::prm::PRMClass< double >("B");
-      C__ = new gum::prm::PRMClass< double >("C");
+      A__                 = new gum::prm::PRMClass< double >("A");
+      B__                 = new gum::prm::PRMClass< double >("B");
+      C__                 = new gum::prm::PRMClass< double >("C");
 
       refI__ = new gum::prm::PRMReferenceSlot< double >("refA", *B__);
       A__->add(refI__);
@@ -70,8 +70,8 @@ namespace gum_tests {
       B__->add(refK__);
 
       boolean__ = gum::prm::PRMType::boolean();
-      boolAttr__ =
-         new gum::prm::PRMScalarAttribute< double >("myBool", *boolean__);
+      boolAttr__
+         = new gum::prm::PRMScalarAttribute< double >("myBool", *boolean__);
       C__->add(boolAttr__);
 
       gum::LabelizedVariable state{"state", "A state variable", 0};
@@ -81,8 +81,8 @@ namespace gum_tests {
       map.push_back(1);
       map.push_back(0);
       state__ = new gum::prm::PRMType(*boolean__, map, state);
-      stateAttr__ =
-         new gum::prm::PRMScalarAttribute< double >("myState", *state__);
+      stateAttr__
+         = new gum::prm::PRMScalarAttribute< double >("myState", *state__);
       C__->add(stateAttr__);
 
       booleanChain__ = new gum::Sequence< gum::prm::PRMClassElement< double >* >();
@@ -229,7 +229,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain                               simple("simple", *booleanChain__);
       const auto&                                const_simple = simple;
-      gum::prm::PRMClassElement< double > const* elt = nullptr;
+      gum::prm::PRMClassElement< double > const* elt          = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(elt = &(const_simple.lastElt()));
       // Assert

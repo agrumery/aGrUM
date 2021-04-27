@@ -41,7 +41,7 @@ namespace gum {
        StructuralConstraintDiGraph::checkArcAdditionAlone(NodeId x,
                                                           NodeId y) const {
       return DiGraph__graph_.existsNode(x) && DiGraph__graph_.existsNode(y)
-             && !DiGraph__graph_.existsArc(x, y);
+          && !DiGraph__graph_.existsArc(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)

@@ -188,9 +188,10 @@ namespace gum {
 
         // get the column types
         const auto&       database = score_database__.databaseTable();
-        const std::size_t nb_vars = database.nbVariables();
+        const std::size_t nb_vars  = database.nbVariables();
         const std::vector< gum::learning::DBTranslatedValueType > col_types(
-           nb_vars, gum::learning::DBTranslatedValueType::DISCRETE);
+           nb_vars,
+           gum::learning::DBTranslatedValueType::DISCRETE);
 
         // create the bootstrap estimator
         DBRowGenerator4CompleteRows<> generator_bootstrap(col_types);
@@ -212,8 +213,9 @@ namespace gum {
            createParamEstimator__(parser_EM, take_into_account_score));
 
         Dag2BN__.setEpsilon(EMepsilon__);
-        return Dag2BN__.createBN< GUM_SCALAR >(
-           *(param_estimator_bootstrap.get()), *(param_estimator_EM.get()), dag);
+        return Dag2BN__.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
+                                               *(param_estimator_EM.get()),
+                                               dag);
       }
     }
 

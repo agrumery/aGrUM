@@ -26,10 +26,10 @@ namespace gum {
 
     // Decompose a string in a vector of strings using "." as separators.
     void decomposePath(const std::string& path, std::vector< std::string >& v) {
-      size_t prev = 0;
+      size_t prev   = 0;
       size_t length = 0;
-      size_t idx_1 = path.find(".");
-      size_t idx_2 = path.find(PRMObject::LEFT_CAST());
+      size_t idx_1  = path.find(".");
+      size_t idx_2  = path.find(PRMObject::LEFT_CAST());
 
       if (idx_2 == std::string::npos) {
         // ignore safe names
@@ -39,7 +39,7 @@ namespace gum {
           length = idx - prev;
           v.push_back(path.substr(prev, length));
           prev = idx + 1;
-          idx = path.find(".", prev);
+          idx  = path.find(".", prev);
         }
       } else {
         size_t tmp = 0;
@@ -48,10 +48,10 @@ namespace gum {
           if (idx_1 < idx_2) {
             length = idx_1 - prev;
             v.push_back(path.substr(prev, length));
-            prev = idx_1 + 1;
+            prev  = idx_1 + 1;
             idx_1 = path.find(".", prev);
           } else if (idx_2 < idx_1) {
-            tmp = path.find(PRMObject::RIGHT_CAST(), idx_2);
+            tmp   = path.find(PRMObject::RIGHT_CAST(), idx_2);
             idx_1 = path.find(".", tmp);
             idx_2 = path.find(PRMObject::LEFT_CAST(), tmp);
           }

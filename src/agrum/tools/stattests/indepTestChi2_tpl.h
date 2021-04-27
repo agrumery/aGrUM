@@ -175,7 +175,7 @@ namespace gum {
 
       // compute the domain sizes of X and Y
       const auto& nodeId2cols = this->counter_.nodeId2Columns();
-      const auto& database = this->counter_.database();
+      const auto& database    = this->counter_.database();
       Idx         var_x, var_y;
       if (nodeId2cols.empty()) {
         var_x = idset[0];
@@ -196,12 +196,12 @@ namespace gum {
         const std::size_t Z_size = all_size / (X_size * Y_size);
 
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_xz =
-           this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
-        std::vector< double, ALLOC< double > > N_yz =
-           this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
-        std::vector< double, ALLOC< double > > N_z =
-           this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
+        std::vector< double, ALLOC< double > > N_xz
+           = this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
+        std::vector< double, ALLOC< double > > N_yz
+           = this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
+        std::vector< double, ALLOC< double > > N_z
+           = this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
 
         // indicate to the chi2 distribution the set of conditioning nodes
         std::vector< Idx > cond_nodes;
@@ -221,10 +221,10 @@ namespace gum {
 
         // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
         // (#ZX * #ZY / #Z )
-        for (std::size_t z = std::size_t(0),
+        for (std::size_t z      = std::size_t(0),
                          beg_xz = std::size_t(0),
                          beg_yz = std::size_t(0),
-                         xyz = std::size_t(0);
+                         xyz    = std::size_t(0);
              z < Z_size;
              ++z, beg_xz += X_size, beg_yz += Y_size) {
           if (N_z[z] > 0) {
@@ -252,10 +252,18 @@ namespace gum {
         // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
 
         // get the counts for all the targets and for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_x = this->marginalize_(
-           std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
-        std::vector< double, ALLOC< double > > N_y = this->marginalize_(
-           std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
+        std::vector< double, ALLOC< double > > N_x
+           = this->marginalize_(std::size_t(1),
+                                X_size,
+                                Y_size,
+                                std::size_t(1),
+                                N_xyz);
+        std::vector< double, ALLOC< double > > N_y
+           = this->marginalize_(std::size_t(0),
+                                X_size,
+                                Y_size,
+                                std::size_t(1),
+                                N_xyz);
 
         // count N
         double N = 0.0;
@@ -274,7 +282,7 @@ namespace gum {
         }
       }
 
-      Size   df = chi2__.degreesOfFreedom(var_x, var_y);
+      Size   df     = chi2__.degreesOfFreedom(var_x, var_y);
       double pValue = chi2__.probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }
@@ -293,7 +301,7 @@ namespace gum {
         var_y = nodeId2cols.second(idset[1]);
       }
 
-      auto   stat = statistics_(idset);   // stat contains pair(Chi2stat,pValue)
+      auto   stat  = statistics_(idset);   // stat contains pair(Chi2stat,pValue)
       double score = stat.first;
 
       // ok, here, score contains the value of the chi2 formula.
@@ -301,7 +309,7 @@ namespace gum {
       // for the Chi2 distribution and assign as the score of
       // (score - alpha ) / alpha, where alpha is the critical value
       const double alpha = chi2__.criticalValue(var_x, var_y);
-      score = (score - alpha) / alpha;
+      score              = (score - alpha) / alpha;
 
       return score;
     }

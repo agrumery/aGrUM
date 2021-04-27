@@ -101,8 +101,8 @@ namespace gum {
   bool FusionContext< isInitial >::updateAllAssociatedLeaves__(Int2Type< false >) {
     LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
     ;
-    for (HashTableConstIteratorSafe< AbstractLeaf*, LeafPair* > pairIter =
-            leaf2Pair__.cbeginSafe();
+    for (HashTableConstIteratorSafe< AbstractLeaf*, LeafPair* > pairIter
+         = leaf2Pair__.cbeginSafe();
          pairIter != leaf2Pair__.cendSafe();
          ++pairIter) {
       pairIter.val()->updateLikelyhood();

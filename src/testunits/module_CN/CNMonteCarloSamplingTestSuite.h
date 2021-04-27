@@ -136,7 +136,7 @@ namespace gum_tests {
       std::vector< double >                          evi0(2, 0);
       evi0[0] = 1;
       std::vector< double > evi1(2, 0);
-      evi1[1] = 1;
+      evi1[1]     = 1;
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 
@@ -178,8 +178,8 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto   pmin = mcs.marginalMin(node);
-          auto   pmax = mcs.marginalMax(node);
+          auto   pmin  = mcs.marginalMin(node);
+          auto   pmax  = mcs.marginalMax(node);
           double e_inf = mcs.expectationMin(node);
           double e_sup = mcs.expectationMax(node);
         }

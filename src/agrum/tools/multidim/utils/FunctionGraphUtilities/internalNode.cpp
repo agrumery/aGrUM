@@ -50,7 +50,7 @@ namespace gum {
 
   InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons) {
     GUM_CONSTRUCTOR(InternalNode);
-    nodeVar__ = v;
+    nodeVar__  = v;
     nodeSons__ = sons;
   }
 
@@ -66,8 +66,8 @@ namespace gum {
   // Allocates a table of nodeid of the size given in parameter
   // ============================================================================
   NodeId* InternalNode::allocateNodeSons(const DiscreteVariable* v) {
-    NodeId* sons =
-       static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * v->domainSize()));
+    NodeId* sons
+       = static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * v->domainSize()));
     for (gum::Idx i = 0; i < v->domainSize(); ++i)
       sons[i] = 0;
     return sons;
@@ -85,7 +85,7 @@ namespace gum {
   // ============================================================================
   void InternalNode::setNode(const DiscreteVariable* v, NodeId* sons) {
     if (nodeVar__ != nullptr) deallocateNodeSons(nodeVar__, nodeSons__);
-    nodeVar__ = v;
+    nodeVar__  = v;
     nodeSons__ = sons;
   }
 
@@ -98,7 +98,7 @@ namespace gum {
   }
 
   void InternalNode::setNodeVar__(const DiscreteVariable* v) {
-    nodeVar__ = v;
+    nodeVar__  = v;
     nodeSons__ = allocateNodeSons(v);
   }
 

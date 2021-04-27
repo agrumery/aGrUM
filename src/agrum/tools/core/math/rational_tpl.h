@@ -38,14 +38,14 @@ namespace gum {
                                      const int64_t&    den_max,
                                      const GUM_SCALAR& zero) {
     bool       isNegative = (number < 0) ? true : false;
-    GUM_SCALAR pnumber = (isNegative) ? -number : number;
+    GUM_SCALAR pnumber    = (isNegative) ? -number : number;
 
     if (std::abs(pnumber - GUM_SCALAR(1.)) < zero) {
-      numerator = (isNegative) ? -1 : 1;
+      numerator   = (isNegative) ? -1 : 1;
       denominator = 1;
       return;
     } else if (pnumber < zero) {
-      numerator = 0;
+      numerator   = 0;
       denominator = 1;
       return;
     }
@@ -58,15 +58,15 @@ namespace gum {
 
       if (std::fabs(pnumber - mediant) < zero) {
         if (b + d <= den_max) {
-          numerator = (isNegative) ? -(a + c) : (a + c);
+          numerator   = (isNegative) ? -(a + c) : (a + c);
           denominator = b + d;
           return;
         } else if (d > b) {
-          numerator = (isNegative) ? -c : c;
+          numerator   = (isNegative) ? -c : c;
           denominator = d;
           return;
         } else {
-          numerator = (isNegative) ? -a : a;
+          numerator   = (isNegative) ? -a : a;
           denominator = b;
           return;
         }
@@ -80,11 +80,11 @@ namespace gum {
     }
 
     if (b > den_max) {
-      numerator = (isNegative) ? -c : c;
+      numerator   = (isNegative) ? -c : c;
       denominator = d;
       return;
     } else {
-      numerator = (isNegative) ? -a : a;
+      numerator   = (isNegative) ? -a : a;
       denominator = b;
       return;
     }
@@ -146,11 +146,11 @@ namespace gum {
     /// p.size() - 2
     /// for ( ; i < p.size() - 1; ++i ) {
     // Test n = a[i-1]/2 ( when a[i-1] is even )
-    n = a[i - 1] / 2;
+    n     = a[i - 1] / 2;
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
-    delta = std::fabs(pnumber - ((double)p[i]) / q[i]);
+    delta     = std::fabs(pnumber - ((double)p[i]) / q[i]);
     delta_tmp = std::fabs(pnumber - ((double)p_tmp) / q_tmp);
 
     if (delta < zero) {
@@ -194,8 +194,8 @@ namespace gum {
                                                  const int64_t&    den_max) {
     const GUM_SCALAR pnumber = (number > 0) ? number : -number;
 
-    const uint64_t denMax =
-       (uint64_t)den_max;   /// signed and unsigned comparison resolution ...
+    const uint64_t denMax
+       = (uint64_t)den_max;   /// signed and unsigned comparison resolution ...
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;
@@ -257,12 +257,12 @@ namespace gum {
     }   // end of for
 
     // Test n = a[i-1]/2
-    n = a[i - 1] / 2;
+    n     = a[i - 1] / 2;
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
     delta_tmp = std::fabs(pnumber - ((double)p_tmp) / q_tmp);
-    delta = std::fabs(pnumber - ((double)p[i]) / q[i]);
+    delta     = std::fabs(pnumber - ((double)p[i]) / q[i]);
 
     if (delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax) {
       numerator = (int64_t)p_tmp;

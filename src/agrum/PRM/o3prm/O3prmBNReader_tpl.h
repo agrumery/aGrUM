@@ -69,10 +69,10 @@ namespace gum {
                                              const std::string&      classpath) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(O3prmBNReader);
-    bn__ = bn;
-    filename__ = filename;
+    bn__         = bn;
+    filename__   = filename;
     entityName__ = entityName == "" ? getEntityName__(filename) : entityName;
-    classpath__ = classpath;
+    classpath__  = classpath;
   }
 
   template < typename GUM_SCALAR >
@@ -89,7 +89,7 @@ namespace gum {
     if (classpath__ != "") { reader.addClassPath(classpath__); }
     reader.readFile(filename__);
     gum::prm::PRM< GUM_SCALAR >* prm = reader.prm();
-    errors__ = reader.errorsContainer();
+    errors__                         = reader.errorsContainer();
 
 
     if (errors() == 0) {
@@ -106,8 +106,9 @@ namespace gum {
         errors__.add(warn);
         gum::prm::PRMSystem< GUM_SCALAR > s("S_" + entityName__);
         instanceName = getInstanceName__(entityName__);
-        auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
-           instanceName, prm->getClass(entityName__));
+        auto i
+           = new gum::prm::PRMInstance< GUM_SCALAR >(instanceName,
+                                                     prm->getClass(entityName__));
         s.add(i);
         generateBN__(s);
         instanceName += ".";   // to be removed in getVariableName__
@@ -122,8 +123,9 @@ namespace gum {
 
         gum::prm::PRMSystem< GUM_SCALAR > s("S_" + entityName);
         instanceName = getInstanceName__(entityName);
-        auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
-           instanceName, prm->getClass(entityName));
+        auto i
+           = new gum::prm::PRMInstance< GUM_SCALAR >(instanceName,
+                                                     prm->getClass(entityName));
         s.add(i);
         generateBN__(s);
 
@@ -149,14 +151,14 @@ namespace gum {
 
         // trying to simplify the
         auto start = nn.find_first_of('(');
-        auto end = nn.find_first_of(')');
+        auto end   = nn.find_first_of(')');
         if (0 < start && start < end && end < nn.size()) {
           auto path = nn.substr(0, start);
           auto type = nn.substr(start + 1, end - start - 1);
           auto name = nn.substr(end + 1, std::string::npos);
 
-          std::string newNameRadical =
-             getVariableName__(path, type, name, instanceName);
+          std::string newNameRadical
+             = getVariableName__(path, type, name, instanceName);
 
           std::string newName = newNameRadical;
           // forcing newName to be unique
@@ -168,8 +170,10 @@ namespace gum {
           names.insert(newName);
           bn__->changeVariableName(node, newName);
         } else {
-          ParseError warn(
-             false, "Name " + nn + " cannot be simplified.", filename__, 0);
+          ParseError warn(false,
+                          "Name " + nn + " cannot be simplified.",
+                          filename__,
+                          0);
           errors__.add(warn);
         }
       }

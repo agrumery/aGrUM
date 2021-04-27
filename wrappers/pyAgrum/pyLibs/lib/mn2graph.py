@@ -226,8 +226,10 @@ def MNinference2UGdot(mn, size=None, engine=None, evs={}, targets={}, nodeColor=
 
   dotstr = "graph structs {\n  fontcolor=\"" + \
            gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
-  dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
-    1000 * (stopTime - startTime))
+
+  if gum.config["notebook", "show_inference_time"]:
+    dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
+
   dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \
             '", style=filled,color="' + \
             gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
@@ -258,7 +260,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs={}, targets={}, nodeColor=
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename,bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
         name, filename, colorattribute)
     else:
@@ -297,7 +299,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs={}, targets={}, nodeColor=
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
-  g.temp_dir=temp_dir
+  g.temp_dir = temp_dir
 
   return g
 
@@ -335,7 +337,10 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs={}, targets={},
 
   dotstr = "graph {\n  layout=\"neato\";\n  fontcolor=\"" + \
            gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
-  dotstr += '  label="Inference in {:6.2f}ms";\n'.format(1000 * (stopTime - startTime))
+
+  if gum.config["notebook", "show_inference_time"]:
+    dotstr += '  label="Inference in {:6.2f}ms";\n'.format(1000 * (stopTime - startTime))
+
   dotstr += '  node [fillcolor="' + gum.config["notebook", 'default_node_bgcolor'] + \
             '", style=filled,color="' + \
             gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
@@ -366,7 +371,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs={}, targets={},
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename,bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
         name, filename, colorattribute)
     else:
@@ -397,7 +402,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs={}, targets={},
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
-  g.temp_dir=temp_dir
+  g.temp_dir = temp_dir
 
   return g
 

@@ -60,12 +60,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
                                                       Instantiation prev) {
-    *w = 1.0f;
+    *w              = 1.0f;
     bool wrongValue = false;
     do {
       prev.clear();
       wrongValue = false;
-      *w = 1.0f;
+      *w         = 1.0f;
 
       for (const auto nod: this->BN().topologicalOrder()) {
         if (this->hardEvidenceNodes().contains(nod)) {

@@ -1,10 +1,10 @@
 #
-# aGrUM clang-format specification (version clang-format-9)
-# Pierre-Henri Wuillemin - 2016-2020
+# aGrUM clang-format specification (version clang-format-11)
+# Pierre-Henri Wuillemin - 2016-2021
 #
 BasedOnStyle: LLVM
 
-Standard: Cpp11
+Standard: c++14
 
 ColumnLimit: 83
 MaxEmptyLinesToKeep: 2
@@ -14,15 +14,15 @@ CommentPragmas: "\\@headerfile"
 
 IndentPPDirectives: AfterHash
 BreakBeforeBraces: Attach
-AlwaysBreakTemplateDeclarations: true
-BreakBeforeBinaryOperators: NonAssignment
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBinaryOperators: All
 BreakBeforeInheritanceComma: true
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: true
 BreakStringLiterals: true
 BreakConstructorInitializers: AfterColon
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: true
+AlwaysBreakAfterReturnType: None
 BreakInheritanceList: AfterColon
 
 CompactNamespaces: false
@@ -36,11 +36,9 @@ IndentCaseLabels: true
 IndentWrappedFunctionNames: true
 NamespaceIndentation: All
 
-SpacesBeforeTrailingComments: 2
 SpacesInAngles: true
 Cpp11BracedListStyle: true
 SpacesInParentheses: false
-SpaceInEmptyParentheses: false
 SpacesInSquareBrackets: false
 SpaceAfterCStyleCast: false
 SpacesInCStyleCastParentheses: false
@@ -59,14 +57,17 @@ SpaceAfterLogicalNot: false
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveMacros: true
-AlignConsecutiveDeclarations: true
-AlignOperands: true
-AlignEscapedNewlinesLeft: true
+AlignConsecutiveAssignments: true #clang-format12 =>Consecutive
+AlignConsecutiveMacros: true # clang-format 12  => Consecutive
+AlignConsecutiveDeclarations: true # clange-format 12 => Consecutive
+AlignOperands: AlignAfterOperator
+
 AlignTrailingComments: true
-AllowAllParametersOfDeclarationOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AlignEscapedNewlines: Left
 
 BinPackArguments: false
 BinPackParameters: false
@@ -74,13 +75,14 @@ BinPackParameters: false
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
-AllowShortBlocksOnASingleLine: true
-AllowShortCaseLabelsOnASingleLine: true
-AllowShortLambdasOnASingleLine: All
+AllowShortBlocksOnASingleLine: Always
+AllowShortLambdasOnASingleLine: Inline
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
 
 
 SortUsingDeclarations: false
-SortIncludes: false
+SortIncludes: false # clang-format 12 => Never
 IncludeBlocks: Regroup
 # see https://www.regextester.com/
 IncludeCategories:

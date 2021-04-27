@@ -37,7 +37,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree));
       gum::BinSearchTree< int > tree3;
       gum::BinSearchTree< int > tree4 = *tree;
-      tree3 = tree4;
+      tree3                           = tree4;
 
       tree->insert(3);
       tree->insert(4);
@@ -147,17 +147,29 @@ namespace gum_tests {
            iter != tree.end();
            ++iter, ++i) {
         switch (i) {
-          case 0: TS_ASSERT(*iter == 1); break;
+          case 0:
+            TS_ASSERT(*iter == 1);
+            break;
 
-          case 1: TS_ASSERT(*iter == 3); break;
+          case 1:
+            TS_ASSERT(*iter == 3);
+            break;
 
-          case 2: TS_ASSERT(*iter == 4); break;
+          case 2:
+            TS_ASSERT(*iter == 4);
+            break;
 
-          case 3: TS_ASSERT(*iter == 5); break;
+          case 3:
+            TS_ASSERT(*iter == 5);
+            break;
 
-          case 4: TS_ASSERT(*iter == 5); break;
+          case 4:
+            TS_ASSERT(*iter == 5);
+            break;
 
-          case 5: TS_ASSERT(*iter == 7); break;
+          case 5:
+            TS_ASSERT(*iter == 7);
+            break;
         }
       }
 
@@ -167,17 +179,29 @@ namespace gum_tests {
            iter != tree.rend();
            --iter, --i) {
         switch (i) {
-          case 0: TS_ASSERT(*iter == 1); break;
+          case 0:
+            TS_ASSERT(*iter == 1);
+            break;
 
-          case 1: TS_ASSERT(*iter == 3); break;
+          case 1:
+            TS_ASSERT(*iter == 3);
+            break;
 
-          case 2: TS_ASSERT(*iter == 4); break;
+          case 2:
+            TS_ASSERT(*iter == 4);
+            break;
 
-          case 3: TS_ASSERT(*iter == 5); break;
+          case 3:
+            TS_ASSERT(*iter == 5);
+            break;
 
-          case 4: TS_ASSERT(*iter == 5); break;
+          case 4:
+            TS_ASSERT(*iter == 5);
+            break;
 
-          case 5: TS_ASSERT(*iter == 7); break;
+          case 5:
+            TS_ASSERT(*iter == 7);
+            break;
         }
       }
 

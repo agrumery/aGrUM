@@ -53,7 +53,7 @@ namespace gum_tests {
     void setUp() {
       boolean__ = PRMType::boolean();
       nodeMap__ = new gum::HashTable< std::string, gum::NodeId >();
-      asia__ = new PRMClass("asia");
+      asia__    = new PRMClass("asia");
       buildAsiaBN__();
     }
 
@@ -77,7 +77,7 @@ namespace gum_tests {
     void visitToAsia__() {
       std::string           name = "visitToAsia";
       auto                  attr = new PRMAttribute(name, *boolean__);
-      auto                  id = asia__->add(attr);
+      auto                  id   = asia__->add(attr);
       std::vector< double > values{0.99, 0.01};
       attr->cpf().fillWith(values);
       nodeMap__->insert(name, id);
@@ -86,7 +86,7 @@ namespace gum_tests {
     void tuberculosis__() {
       std::string name = "tuberculosis";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("visitToAsia", "tuberculosis");
       std::vector< double > values{0.99, 0.95, 0.01, 0.05};
       attr->cpf().fillWith(values);
@@ -96,7 +96,7 @@ namespace gum_tests {
     void smoking__() {
       std::string           name = "smoking";
       auto                  attr = new PRMAttribute(name, *boolean__);
-      auto                  id = asia__->add(attr);
+      auto                  id   = asia__->add(attr);
       std::vector< double > values{0.50, 0.50};
       attr->cpf().fillWith(values);
       nodeMap__->insert(name, id);
@@ -105,7 +105,7 @@ namespace gum_tests {
     void lungCancer__() {
       std::string name = "lungCancer";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("smoking", "lungCancer");
       std::vector< double > values{0.99, 0.90, 0.01, 0.10};
       attr->cpf().fillWith(values);
@@ -115,7 +115,7 @@ namespace gum_tests {
     void bronchitis__() {
       std::string name = "bronchitis";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("smoking", "bronchitis");
       std::vector< double > values{0.70, 0.40, 0.30, 0.60};
       attr->cpf().fillWith(values);
@@ -125,7 +125,7 @@ namespace gum_tests {
     void tubOrCancer__() {
       std::string name = "tubOrCancer";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("tuberculosis", "tubOrCancer");
       asia__->addArc("lungCancer", "tubOrCancer");
       std::vector< double > values{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
@@ -136,7 +136,7 @@ namespace gum_tests {
     void positiveXRay__() {
       std::string name = "positiveXRay";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("tubOrCancer", "positiveXRay");
       std::vector< double > values{0.95, 0.02, 0.05, 0.98};
       attr->cpf().fillWith(values);
@@ -146,7 +146,7 @@ namespace gum_tests {
     void dyspnea__() {
       std::string name = "dyspnea";
       auto        attr = new PRMAttribute(name, *boolean__);
-      auto        id = asia__->add(attr);
+      auto        id   = asia__->add(attr);
       asia__->addArc("tubOrCancer", "dyspnea");
       asia__->addArc("bronchitis", "dyspnea");
       std::vector< double > values{0.9, 0.2, 0.3, 0.1, 0.1, 0.8, 0.7, 0.9};
@@ -210,7 +210,7 @@ namespace gum_tests {
 
     void testGroundBNAfterDelete() {
       // Arrange
-      PRMSystem* sys = new PRMSystem("asia");
+      PRMSystem* sys  = new PRMSystem("asia");
       auto       inst = new PRMInstance("asia", *asia__);
       sys->add(inst);
       sys->instantiate();
@@ -259,7 +259,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)visitToAsia");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("visitToAsia").cpf();
+      const auto&           cpf           = asia__->get("visitToAsia").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -283,7 +283,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)tuberculosis");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("tuberculosis").cpf();
+      const auto&           cpf           = asia__->get("tuberculosis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -331,7 +331,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)lungCancer");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("lungCancer").cpf();
+      const auto&           cpf           = asia__->get("lungCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -355,7 +355,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)bronchitis");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("bronchitis").cpf();
+      const auto&           cpf           = asia__->get("bronchitis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -379,7 +379,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)tubOrCancer");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("tubOrCancer").cpf();
+      const auto&           cpf           = asia__->get("tubOrCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
@@ -403,7 +403,7 @@ namespace gum_tests {
       sys.groundedBN(factory);
       auto                  id = bn->idFromName("asia.(boolean)positiveXRay");
       std::vector< double > values;
-      const auto&           cpf = asia__->get("positiveXRay").cpf();
+      const auto&           cpf           = asia__->get("positiveXRay").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));

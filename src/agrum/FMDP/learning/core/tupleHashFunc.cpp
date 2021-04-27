@@ -37,7 +37,7 @@ namespace gum {
      castToSize(
         const std::tuple< unsigned int, unsigned int, unsigned int >& key) {
     return HashFuncConst::pi * Size(std::get< 0 >(key)) * Size(2)
-           * Size(std::get< 1 >(key)) * Size(3) * Size(std::get< 2 >(key));
+         * Size(std::get< 1 >(key)) * Size(3) * Size(std::get< 2 >(key));
   }
 
   // the hash function for tuple (unsigned int, unsigned int, unsigned int)

@@ -82,14 +82,14 @@ namespace gum {
       INLINE bool EdgeData< GUM_SCALAR >::operator==(
          const EdgeData< GUM_SCALAR >& from) const {
         return (u == from.u) && (l_u == from.l_u) && (v == from.v)
-               && (l_v == from.l_v) && (l == from.l);
+            && (l_v == from.l_v) && (l == from.l);
       }
 
       template < typename GUM_SCALAR >
       INLINE bool EdgeData< GUM_SCALAR >::operator!=(
          const EdgeData< GUM_SCALAR >& from) const {
         return (u != from.u) && (l_u != from.l_u) && (v != from.v)
-               && (l_v != from.l_v) && (l != from.l);
+            && (l_v != from.l_v) && (l != from.l);
       }
 
       // InterfaceGraph
@@ -106,7 +106,7 @@ namespace gum {
         // We need to add each instance in graph__
         for (auto iter = sys.begin(); iter != sys.end(); ++iter) {
           NodeData< GUM_SCALAR >* node = new NodeData< GUM_SCALAR >();
-          node->n = iter.val();
+          node->n                      = iter.val();
           label__(node, label_map);
           graph__.addNodeWithId(iter.key());
           idMap__.insert(node->n, iter.key());
@@ -127,10 +127,10 @@ namespace gum {
 
               if (!graph__.existsEdge(idMap__[u->n], idMap__[v->n])) {
                 EdgeData< GUM_SCALAR >* edge = new EdgeData< GUM_SCALAR >();
-                edge->u = u->n;
-                edge->l_u = u->l;
-                edge->v = v->n;
-                edge->l_v = v->l;
+                edge->u                      = u->n;
+                edge->l_u                    = u->l;
+                edge->v                      = v->n;
+                edge->l_v                    = v->l;
                 label__(edge, label_map);
                 graph__.addEdge(idMap__[u->n], idMap__[v->n]);
                 edges__.insert(Edge(idMap__[u->n], idMap__[v->n]), edge);
@@ -197,7 +197,7 @@ namespace gum {
             sBuff << "-" << node->n->getInstances(chain->id()).size();
             sBuff << chain->name();
             size *= node->n->getInstances(chain->id()).size()
-                    * chain->lastElt().type().variable().domainSize();
+                  * chain->lastElt().type().variable().domainSize();
           } else {
             size *= chain->lastElt().type().variable().domainSize();
           }
@@ -220,9 +220,9 @@ namespace gum {
         if (!label_map.exists(sBuff.str())) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
-          label->id = ++counter__;
+          label->id         = ++counter__;
           label->tree_width = size;
-          label->l = sBuff.str();
+          label->l          = sBuff.str();
           labels__->insert(label->id, label);
           nodeMap__.insert(label, new Set< NodeData< GUM_SCALAR >* >());
         }
@@ -260,8 +260,8 @@ namespace gum {
         if (!label_map.exists(sBuff.str())) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
-          label->id = ++counter__;
-          label->l = sBuff.str();
+          label->id         = ++counter__;
+          label->l          = sBuff.str();
           label->tree_width = size;
           labels__->insert(label->id, label);
           edgeMap__.insert(label, new Set< EdgeData< GUM_SCALAR >* >());

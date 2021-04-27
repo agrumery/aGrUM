@@ -58,9 +58,9 @@ namespace gum {
   INLINE BarrenNodesFinder&
      BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
     if (this != &from) {
-      dag__ = from.dag__;
+      dag__            = from.dag__;
       observed_nodes__ = from.observed_nodes__;
-      target_nodes__ = from.target_nodes__;
+      target_nodes__   = from.target_nodes__;
     }
     return *this;
   }
@@ -70,9 +70,9 @@ namespace gum {
   INLINE BarrenNodesFinder&
      BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
     if (this != &from) {
-      dag__ = from.dag__;
+      dag__            = from.dag__;
       observed_nodes__ = from.observed_nodes__;
-      target_nodes__ = from.target_nodes__;
+      target_nodes__   = from.target_nodes__;
     }
     return *this;
   }

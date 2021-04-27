@@ -340,14 +340,22 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerOperator< GUM_SCALAR >(
-         "+", MultiDimArrayString, MultiDimArrayString, &add2MultiDimArrays);
-      registerOperator< GUM_SCALAR >(
-         "-", MultiDimArrayString, MultiDimArrayString, &subtract2MultiDimArrays);
-      registerOperator< GUM_SCALAR >(
-         "*", MultiDimArrayString, MultiDimArrayString, &multiply2MultiDimArrays);
-      registerOperator< GUM_SCALAR >(
-         "/", MultiDimArrayString, MultiDimArrayString, &divide2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("+",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &add2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("-",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &subtract2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("*",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &multiply2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("/",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &divide2MultiDimArrays);
 
       // register base functions for multiDimFunctionGraphs
       registerOperator< GUM_SCALAR >("+",
@@ -368,14 +376,22 @@ namespace gum {
                                      &divide2MultiDimFunctionGraphs);
 
       // register default basename functions
-      registerOperator< GUM_SCALAR >(
-         "+", BaseNameString, BaseNameString, &add2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >(
-         "-", BaseNameString, BaseNameString, &subtract2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >(
-         "*", BaseNameString, BaseNameString, &multiply2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >(
-         "/", BaseNameString, BaseNameString, &divide2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("+",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &add2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("-",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &subtract2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("*",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &multiply2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("/",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &divide2MultiDimImplementations);
     }
   }
 

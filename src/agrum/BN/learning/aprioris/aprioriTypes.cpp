@@ -34,7 +34,7 @@ namespace gum {
     const std::string AprioriDirichletType::type = "Dirichlet";
     const std::string AprioriSmoothingType::type = "Smoothing";
     const std::string AprioriNoAprioriType::type = "NoApriori";
-    const std::string AprioriBDeuType::type = "BDeu";
+    const std::string AprioriBDeuType::type      = "BDeu";
 
   } /* namespace learning */
 

@@ -81,11 +81,11 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(
           const typename IDatabaseTable< T_DATA, ALLOC >::Handler& h) {
-      db__ = h.db__;
-      row__ = h.row__;
-      index__ = h.index__;
+      db__          = h.db__;
+      row__         = h.row__;
+      index__       = h.index__;
       begin_index__ = h.begin_index__;
-      end_index__ = h.end_index__;
+      end_index__   = h.end_index__;
       return *this;
     }
 
@@ -95,11 +95,11 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(
           typename IDatabaseTable< T_DATA, ALLOC >::Handler&& h) {
-      db__ = h.db__;
-      row__ = h.row__;
-      index__ = h.index__;
+      db__          = h.db__;
+      row__         = h.row__;
+      index__       = h.index__;
       begin_index__ = h.begin_index__;
-      end_index__ = h.end_index__;
+      end_index__   = h.end_index__;
       return *this;
     }
 
@@ -299,8 +299,8 @@ namespace gum {
       }
 
       begin_index__ = begin;
-      end_index__ = end;
-      index__ = begin;
+      end_index__   = end;
+      index__       = begin;
     }
 
 
@@ -582,10 +582,10 @@ namespace gum {
       // indicate to all the handlers that we are destructing the database
       safe_handlers_mutex__.lock();
       for (auto handler: list_of_safe_handlers__) {
-        handler->db__ = nullptr;
-        handler->row__ = nullptr;
+        handler->db__        = nullptr;
+        handler->row__       = nullptr;
         handler->end_index__ = 0;
-        handler->index__ = 0;
+        handler->index__     = 0;
       }
       safe_handlers_mutex__.unlock();
 
@@ -609,27 +609,27 @@ namespace gum {
         // invalidate the current handlers
         safe_handlers_mutex__.lock();
         for (auto handler: list_of_safe_handlers__) {
-          handler->db__ = nullptr;
-          handler->row__ = nullptr;
+          handler->db__        = nullptr;
+          handler->row__       = nullptr;
           handler->end_index__ = 0;
-          handler->index__ = 0;
+          handler->index__     = 0;
         }
         list_of_safe_handlers__.clear();
         safe_handlers_mutex__.unlock();
 
-        rows_ = from.rows_;
-        variable_names_ = from.variable_names_;
-        missing_symbols_ = from.missing_symbols_;
-        has_row_missing_val_ = from.has_row_missing_val_;
-        max_nb_threads_ = from.max_nb_threads_;
+        rows_                   = from.rows_;
+        variable_names_         = from.variable_names_;
+        missing_symbols_        = from.missing_symbols_;
+        has_row_missing_val_    = from.has_row_missing_val_;
+        max_nb_threads_         = from.max_nb_threads_;
         min_nb_rows_per_thread_ = from.min_nb_rows_per_thread_;
 
         // update the end iterators
         const std::size_t db_size = rows_.size();
-        end__->index__ = db_size;
-        end__->end_index__ = db_size;
-        end_safe__->index__ = db_size;
-        end_safe__->end_index__ = db_size;
+        end__->index__            = db_size;
+        end__->end_index__        = db_size;
+        end_safe__->index__       = db_size;
+        end_safe__->end_index__   = db_size;
       }
 
       return *this;
@@ -644,26 +644,26 @@ namespace gum {
         // invalidate the current handlers
         safe_handlers_mutex__.lock();
         for (auto handler: list_of_safe_handlers__) {
-          handler->db__ = nullptr;
-          handler->row__ = nullptr;
+          handler->db__        = nullptr;
+          handler->row__       = nullptr;
           handler->end_index__ = 0;
-          handler->index__ = 0;
+          handler->index__     = 0;
         }
         safe_handlers_mutex__.unlock();
 
-        rows_ = std::move(from.rows_);
-        variable_names_ = std::move(from.variable_names_);
-        missing_symbols_ = std::move(from.missing_symbols_);
-        has_row_missing_val_ = std::move(from.has_row_missing_val_);
-        max_nb_threads_ = from.max_nb_threads_;
+        rows_                   = std::move(from.rows_);
+        variable_names_         = std::move(from.variable_names_);
+        missing_symbols_        = std::move(from.missing_symbols_);
+        has_row_missing_val_    = std::move(from.has_row_missing_val_);
+        max_nb_threads_         = from.max_nb_threads_;
         min_nb_rows_per_thread_ = from.min_nb_rows_per_thread_;
 
         // update the end iterators
         const std::size_t db_size = rows_.size();
-        end__->index__ = db_size;
-        end__->end_index__ = db_size;
-        end_safe__->index__ = db_size;
-        end_safe__->end_index__ = db_size;
+        end__->index__            = db_size;
+        end__->end_index__        = db_size;
+        end_safe__->index__       = db_size;
+        end_safe__->end_index__   = db_size;
       }
 
       return *this;
@@ -859,9 +859,9 @@ namespace gum {
       safe_handlers_mutex__.unlock();
 
       // update the end iterators
-      end__->index__ = new_size;
-      end__->end_index__ = new_size;
-      end_safe__->index__ = new_size;
+      end__->index__          = new_size;
+      end__->end_index__      = new_size;
+      end_safe__->index__     = new_size;
       end_safe__->end_index__ = new_size;
     }
 
@@ -1262,7 +1262,7 @@ namespace gum {
       else if (nb_threads > max_nb_threads_)
         nb_threads = max_nb_threads_;
       std::size_t nb_rows_per_thread = db_size / nb_threads;
-      std::size_t rest_rows = db_size - nb_rows_per_thread * nb_threads;
+      std::size_t rest_rows          = db_size - nb_rows_per_thread * nb_threads;
 
       // assign to threads the ranges over which they should change the
       // rows weights
@@ -1288,7 +1288,7 @@ namespace gum {
         // get the number of the thread
         const std::size_t this_thread = getThreadNumber();
         const std::size_t begin_index = ranges[this_thread].first;
-        const std::size_t end_index = ranges[this_thread].second;
+        const std::size_t end_index   = ranges[this_thread].second;
 
         for (std::size_t i = begin_index; i < end_index; ++i) {
           rows_[i].setWeight(new_weight);
@@ -1305,9 +1305,14 @@ namespace gum {
       if (i >= dbsize) {
         std::string str;
         switch (i) {
-          case 1: str = "st"; break;
-          case 2: str = "nd"; break;
-          default: str = "th";
+          case 1:
+            str = "st";
+            break;
+          case 2:
+            str = "nd";
+            break;
+          default:
+            str = "th";
         }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to set the weight of the "
@@ -1319,9 +1324,14 @@ namespace gum {
       if (weight < 0) {
         std::string str;
         switch (i) {
-          case 1: str = "st"; break;
-          case 2: str = "nd"; break;
-          default: str = "th";
+          case 1:
+            str = "st";
+            break;
+          case 2:
+            str = "nd";
+            break;
+          default:
+            str = "th";
         }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to set "
@@ -1341,9 +1351,14 @@ namespace gum {
       if (i >= dbsize) {
         std::string str;
         switch (i) {
-          case 1: str = "st"; break;
-          case 2: str = "nd"; break;
-          default: str = "th";
+          case 1:
+            str = "st";
+            break;
+          case 2:
+            str = "nd";
+            break;
+          default:
+            str = "th";
         }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to get the weight of the "

@@ -98,17 +98,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Key;
-    using reference = Key&;
-    using const_reference = const Key&;
-    using pointer = Key*;
-    using const_pointer = const Key*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = SequenceIterator< Key >;
-    using const_iterator = SequenceIterator< Key >;
-    using iterator_safe = SequenceIteratorSafe< Key >;
+    using value_type          = Key;
+    using reference           = Key&;
+    using const_reference     = const Key&;
+    using pointer             = Key*;
+    using const_pointer       = const Key*;
+    using size_type           = std::size_t;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = SequenceIterator< Key >;
+    using const_iterator      = SequenceIterator< Key >;
+    using iterator_safe       = SequenceIteratorSafe< Key >;
     using const_iterator_safe = SequenceIteratorSafe< Key >;
     /// @}
 
@@ -569,13 +569,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Key;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = SequenceIterator< Key >;
-    using const_iterator = SequenceIterator< Key >;
-    using iterator_safe = SequenceIteratorSafe< Key >;
+    using value_type          = Key;
+    using size_type           = std::size_t;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = SequenceIterator< Key >;
+    using const_iterator      = SequenceIterator< Key >;
+    using iterator_safe       = SequenceIteratorSafe< Key >;
     using const_iterator_safe = SequenceIteratorSafe< Key >;
     /// @}
 
@@ -1023,23 +1023,23 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Key;
-    using reference = Key&;
-    using const_reference = const Key&;
-    using pointer = Key*;
-    using const_pointer = const Key*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = SequenceIterator< Key >;
-    using const_iterator = SequenceIterator< Key >;
-    using iterator_safe = SequenceIteratorSafe< Key >;
+    using value_type          = Key;
+    using reference           = Key&;
+    using const_reference     = const Key&;
+    using pointer             = Key*;
+    using const_pointer       = const Key*;
+    using size_type           = std::size_t;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = SequenceIterator< Key >;
+    using const_iterator      = SequenceIterator< Key >;
+    using iterator_safe       = SequenceIteratorSafe< Key >;
     using const_iterator_safe = SequenceIteratorSafe< Key >;
     /// @}
 
     /// The gum::Sequence implementation.
-    using Implementation =
-       SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >;
+    using Implementation
+       = SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -1211,12 +1211,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = Key;
-    using reference = Key&;
-    using const_reference = const Key&;
-    using pointer = Key*;
-    using const_pointer = const Key*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Key;
+    using reference         = Key&;
+    using const_reference   = const Key&;
+    using pointer           = Key*;
+    using const_pointer     = const Key*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     private:

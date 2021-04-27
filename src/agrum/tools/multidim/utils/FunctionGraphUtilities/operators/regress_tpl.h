@@ -55,13 +55,12 @@ namespace gum {
       DG1InstantiationNeeded__(DG1->realSize(), true, false),
       DG2InstantiationNeeded__(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(Regress);
-    rd__ =
-       MultiDimFunctionGraph< GUM_SCALAR,
-                              TerminalNodePolicy >::getReducedAndOrderedInstance();
-    nbVar__ = 0;
-    default__ = nullptr;
+    rd__ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::
+       getReducedAndOrderedInstance();
+    nbVar__      = 0;
+    default__    = nullptr;
     primedVars__ = primedVars;
-    targetVar__ = targetVar;
+    targetVar__  = targetVar;
   }
 
   template < typename GUM_SCALAR,
@@ -140,10 +139,10 @@ namespace gum {
   INLINE void
      Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
         establishVarOrder__() {
-    SequenceIteratorSafe< const DiscreteVariable* > fite =
-       DG1__->variablesSequence().beginSafe();
-    SequenceIteratorSafe< const DiscreteVariable* > site =
-       DG2__->variablesSequence().beginSafe();
+    SequenceIteratorSafe< const DiscreteVariable* > fite
+       = DG1__->variablesSequence().beginSafe();
+    SequenceIteratorSafe< const DiscreteVariable* > site
+       = DG2__->variablesSequence().beginSafe();
 
     while (fite != DG1__->variablesSequence().endSafe()
            && site != DG2__->variablesSequence().endSafe()) {
@@ -240,14 +239,14 @@ namespace gum {
 
       const Link< NodeId >* nodeIter = dg->varNodeListe(*varIter)->list();
       while (nodeIter != nullptr) {
-        short int* instantiationNeeded =
-           static_cast< short int* >(ALLOCATE(tableSize));
+        short int* instantiationNeeded
+           = static_cast< short int* >(ALLOCATE(tableSize));
         dgInstNeed.insert(nodeIter->element(), instantiationNeeded);
         short int* varDescendant = static_cast< short int* >(ALLOCATE(tableSize));
         nodesVarDescendant.insert(nodeIter->element(), varDescendant);
         for (Idx j = 0; j < nbVar__; j++) {
           instantiationNeeded[j] = (short int)0;
-          varDescendant[j] = (short int)0;
+          varDescendant[j]       = (short int)0;
         }
 
 
@@ -255,8 +254,8 @@ namespace gum {
         for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons();
              ++modality) {
           if (!dg->isTerminalNode(dg->node(nodeIter->element())->son(modality))) {
-            short int* sonVarDescendant =
-               nodesVarDescendant[dg->node(nodeIter->element())->son(modality)];
+            short int* sonVarDescendant
+               = nodesVarDescendant[dg->node(nodeIter->element())->son(modality)];
             for (Idx varIdx = 0; varIdx < nbVar__; varIdx++) {
               varDescendant[varIdx] += sonVarDescendant[varIdx];
               if (varDescendant[varIdx] && varIdx < varPos)
@@ -334,7 +333,7 @@ namespace gum {
         && DG2__->isTerminalNode(currentSituation.DG2Node())) {
       // We have to compute new valueand we insert a new node in diagram with
       // this value, ...
-      GUM_SCALAR newVal = neutral__;
+      GUM_SCALAR newVal  = neutral__;
       GUM_SCALAR tempVal = combine__(DG1__->nodeValue(currentSituation.DG1Node()),
                                      DG2__->nodeValue(currentSituation.DG2Node()));
       for (Idx targetModa = 0; targetModa < targetVar__->domainSize();
@@ -348,27 +347,25 @@ namespace gum {
 
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
-    short int* dg1NeededVar =
-       DG1InstantiationNeeded__.exists(currentSituation.DG1Node())
+    short int* dg1NeededVar
+       = DG1InstantiationNeeded__.exists(currentSituation.DG1Node())
           ? DG1InstantiationNeeded__[currentSituation.DG1Node()]
           : default__;
-    Idx dg1CurrentVarPos =
-       DG1__->isTerminalNode(currentSituation.DG1Node())
-          ? nbVar__
-          : rd__->variablesSequence().pos(
-             DG1__->node(currentSituation.DG1Node())->nodeVar());
-    short int* dg2NeededVar =
-       DG2InstantiationNeeded__.exists(currentSituation.DG2Node())
+    Idx        dg1CurrentVarPos = DG1__->isTerminalNode(currentSituation.DG1Node())
+                                   ? nbVar__
+                                   : rd__->variablesSequence().pos(
+                               DG1__->node(currentSituation.DG1Node())->nodeVar());
+    short int* dg2NeededVar
+       = DG2InstantiationNeeded__.exists(currentSituation.DG2Node())
           ? DG2InstantiationNeeded__[currentSituation.DG2Node()]
           : default__;
-    Idx dg2CurrentVarPos =
-       DG2__->isTerminalNode(currentSituation.DG2Node())
-          ? nbVar__
-          : rd__->variablesSequence().pos(
-             DG2__->node(currentSituation.DG2Node())->nodeVar());
+    Idx dg2CurrentVarPos = DG2__->isTerminalNode(currentSituation.DG2Node())
+                            ? nbVar__
+                            : rd__->variablesSequence().pos(
+                               DG2__->node(currentSituation.DG2Node())->nodeVar());
 
-    short int* instNeeded =
-       static_cast< short int* >(ALLOCATE(sizeof(short int) * nbVar__));
+    short int* instNeeded
+       = static_cast< short int* >(ALLOCATE(sizeof(short int) * nbVar__));
 
     for (Idx i = 0; i < nbVar__; i++) {
       instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
@@ -387,8 +384,8 @@ namespace gum {
     NodeId origDG1 = currentSituation.DG1Node(),
            origDG2 = currentSituation.DG2Node();
 
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg =
-       nullptr;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg
+       = nullptr;
     NodeId leadNodeId = 0;
     Idx    leadVarPos = rd__->variablesSequence().size();
     typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
@@ -414,9 +411,9 @@ namespace gum {
         return newNode;
       }
 
-      leaddg = DG1__;
-      leadNodeId = currentSituation.DG1Node();
-      leadVarPos = dg1CurrentVarPos;
+      leaddg       = DG1__;
+      leadNodeId   = currentSituation.DG1Node();
+      leadVarPos   = dg1CurrentVarPos;
       leadFunction = &O4DGContext::setDG1Node;
     }
 
@@ -441,9 +438,9 @@ namespace gum {
       if (leadVarPos == dg2CurrentVarPos) { sameVar = true; }
 
       if (leadVarPos > dg2CurrentVarPos) {
-        leaddg = DG2__;
-        leadNodeId = currentSituation.DG2Node();
-        leadVarPos = dg2CurrentVarPos;
+        leaddg       = DG2__;
+        leadNodeId   = currentSituation.DG2Node();
+        leadVarPos   = dg2CurrentVarPos;
         leadFunction = &O4DGContext::setDG2Node;
       }
     }
@@ -455,9 +452,9 @@ namespace gum {
     // exploration is done
     for (Idx varPos = lastInstVarPos + 1; varPos < leadVarPos; ++varPos) {
       if (instNeeded[varPos]) {
-        const DiscreteVariable* curVar = rd__->variablesSequence().atPos(varPos);
-        NodeId*                 sonsIds =
-           static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+        const DiscreteVariable* curVar  = rd__->variablesSequence().atPos(varPos);
+        NodeId*                 sonsIds = static_cast< NodeId* >(
+           ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
         for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
           currentSituation.chgVarModality(varPos, modality + 1);
@@ -537,8 +534,8 @@ namespace gum {
 
       const DiscreteVariable* curVar = dg1Node->nodeVar();
       Idx                     varPos = rd__->variablesSequence().pos(curVar);
-      NodeId*                 sonsIds =
-         static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+      NodeId*                 sonsIds
+         = static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
       for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
         currentSituation.chgVarModality(varPos, modality + 1);
@@ -564,8 +561,8 @@ namespace gum {
       const InternalNode* leaddgNode = leaddg->node(leadNodeId);
 
       const DiscreteVariable* curVar = leaddgNode->nodeVar();
-      NodeId*                 sonsIds =
-         static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+      NodeId*                 sonsIds
+         = static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
       for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
         currentSituation.chgVarModality(leadVarPos, modality + 1);

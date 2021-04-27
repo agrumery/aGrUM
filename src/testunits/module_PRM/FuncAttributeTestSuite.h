@@ -45,7 +45,7 @@ namespace gum_tests {
     public:
     void setUp() {
       classEltTestSuite__ = new ClassElementTestSuiteAbstract;
-      boolean__ = gum::prm::PRMType::boolean();
+      boolean__           = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
@@ -147,13 +147,16 @@ namespace gum_tests {
 
     void testCast() {
       // Arrange
-      gum::LabelizedVariable boolean_var{
-         "boolean", "A boolean discrete variable", 0};
+      gum::LabelizedVariable boolean_var{"boolean",
+                                         "A boolean discrete variable",
+                                         0};
       boolean_var.addLabel("False");
       boolean_var.addLabel("True");
 
       gum::LabelizedVariable state_var{
-         "state", "A binary discete variable to represent a state", 0};
+         "state",
+         "A binary discete variable to represent a state",
+         0};
       state_var.addLabel("OK");
       state_var.addLabel("NOK");
 
@@ -203,7 +206,7 @@ namespace gum_tests {
       // Arrange
       PRMAttribute attr("attr", *boolean__);
       const auto&  attr_const = attr;
-      const auto&  expected = *boolean__;
+      const auto&  expected   = *boolean__;
       // Act
       const auto& actual = attr_const.type();
       // Assert

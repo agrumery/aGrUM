@@ -134,7 +134,7 @@ namespace gum {
        ScorefNML< ALLOC >::operator=(const ScorefNML< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -145,7 +145,7 @@ namespace gum {
     ScorefNML< ALLOC >& ScorefNML< ALLOC >::operator=(ScorefNML< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -243,7 +243,7 @@ namespace gum {
         // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
         // equivalent to:
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-        double N = 0.0;
+        double N     = 0.0;
         double score = 0.0;
         for (const auto n_ijk: N_ijk) {
           if (n_ijk) {

@@ -150,7 +150,7 @@ namespace gum {
        const RawDatabaseTable< ALLOC >& from) {
       if (this != &from) {
         IDatabaseTable< DBCell, ALLOC >::operator=(from);
-        ignored_cols__ = from.ignored_cols__;
+        ignored_cols__                           = from.ignored_cols__;
       }
       return *this;
     }
@@ -162,7 +162,7 @@ namespace gum {
        RawDatabaseTable< ALLOC >::operator=(RawDatabaseTable< ALLOC >&& from) {
       if (this != &from) {
         IDatabaseTable< DBCell, ALLOC >::operator=(std::move(from));
-        ignored_cols__ = std::move(from.ignored_cols__);
+        ignored_cols__                           = std::move(from.ignored_cols__);
       }
       return *this;
     }
@@ -173,7 +173,7 @@ namespace gum {
     void RawDatabaseTable< ALLOC >::setVariableNames(
        const std::vector< std::string, ALLOC< std::string > >& names,
        const bool from_external_object) {
-      const std::size_t size = names.size();
+      const std::size_t size              = names.size();
       const std::size_t ignored_cols_size = ignored_cols__.size();
 
       if (!from_external_object || !ignored_cols_size) {
@@ -234,7 +234,7 @@ namespace gum {
       // first, compute the value that k would have in an external database
       // and compute where the new value should be inserted
       std::size_t       i;   // where to insert the new k into the ignored colums
-      std::size_t       kk = k;   // kk = k value for an external database
+      std::size_t       kk   = k;   // kk = k value for an external database
       const std::size_t size = ignored_cols__.size();
 
       if (from_external_object) {
@@ -310,7 +310,7 @@ namespace gum {
       const auto& data = IDatabaseTable< DBCell, ALLOC >::content();
       if (data.empty()) { return DBVector< std::size_t >(); }
 
-      const std::size_t       size = data[0].size();
+      const std::size_t       size              = data[0].size();
       const std::size_t       ignored_cols_size = ignored_cols__.size();
       DBVector< std::size_t > cols(size);
 
@@ -358,9 +358,9 @@ namespace gum {
        const std::vector< std::string, ALLOC< std::string > >& new_row) {
       // check that the size of the row (after removing the ignored columns) is
       // the same as the rest of the database
-      const std::size_t row_size = new_row.size();
+      const std::size_t row_size          = new_row.size();
       const std::size_t ignored_cols_size = ignored_cols__.size();
-      std::size_t       ignored_size = std::size_t(0);
+      std::size_t       ignored_size      = std::size_t(0);
       if (ignored_cols_size) {
         // find the number of ignored cols
         for (auto iter = ignored_cols__.rbegin(), rend = ignored_cols__.rend();
@@ -411,7 +411,8 @@ namespace gum {
       }
 
       IDatabaseTable< DBCell, ALLOC >::insertRow(
-         std::move(dbrow), has_missing_val ? IsMissing::True : IsMissing::False);
+         std::move(dbrow),
+         has_missing_val ? IsMissing::True : IsMissing::False);
     }
 
 

@@ -72,7 +72,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "Illegal state to proceed make a copy.");
     } else {
       states__ = source.states__;
-      bn__ = new BayesNet< GUM_SCALAR >(*(source.bn__));
+      bn__     = new BayesNet< GUM_SCALAR >(*(source.bn__));
     }
   }
 
@@ -158,7 +158,8 @@ namespace gum {
   // Tells the factory to add a property to the current network.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::addNetworkProperty(
-     const std::string& propName, const std::string& propValue) {
+     const std::string& propName,
+     const std::string& propValue) {
     bn__->setProperty(propName, propValue);
   }
 
@@ -201,7 +202,7 @@ namespace gum {
         GUM_ERROR(DuplicateElement, "Name already used: " << name);
       }
 
-      foo_flag__ = true;
+      foo_flag__     = true;
       stringBag__[0] = name;
       VERBOSITY("  -- variable " << name);
     }
@@ -214,7 +215,7 @@ namespace gum {
     if (state() != factory_state::VARIABLE) {
       illegalStateError__("variableDescription");
     } else {
-      bar_flag__ = true;
+      bar_flag__     = true;
       stringBag__[1] = desc;
     }
   }
@@ -231,13 +232,19 @@ namespace gum {
       illegalStateError__("variableType");
     } else {
       switch (type) {
-        case VarType::Discretized: stringBag__[2] = "D"; break;
-        case VarType::Range: stringBag__[2] = "R"; break;
+        case VarType::Discretized:
+          stringBag__[2] = "D";
+          break;
+        case VarType::Range:
+          stringBag__[2] = "R";
+          break;
         case VarType::Continuous:
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + stringBag__[0]
                        + ") are not supported in Bayesian networks.");
-        case VarType::Labelized: stringBag__[2] = "L"; break;
+        case VarType::Labelized:
+          stringBag__[2] = "L";
+          break;
       }
     }
   }
@@ -304,8 +311,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::setVariableCPTImplementation(
      MultiDimAdressable* adressable) {
-    MultiDimImplementation< GUM_SCALAR >* impl =
-       dynamic_cast< MultiDimImplementation< GUM_SCALAR >* >(adressable);
+    MultiDimImplementation< GUM_SCALAR >* impl
+       = dynamic_cast< MultiDimImplementation< GUM_SCALAR >* >(adressable);
 
     if (state() != factory_state::VARIABLE) {
       illegalStateError__("setVariableCPTImplementation");
@@ -332,8 +339,10 @@ namespace gum {
 
       // if the current variable is a LabelizedVariable
       if (stringBag__[2] == "L") {
-        LabelizedVariable* l = new LabelizedVariable(
-           stringBag__[0], (bar_flag__) ? stringBag__[1] : "", 0);
+        LabelizedVariable* l
+           = new LabelizedVariable(stringBag__[0],
+                                   (bar_flag__) ? stringBag__[1] : "",
+                                   0);
 
         for (size_t i = 3; i < stringBag__.size(); ++i) {
           l->addLabel(stringBag__[i]);
@@ -350,9 +359,10 @@ namespace gum {
         var = r;
         // if the current variable is a DiscretizedVariable
       } else if (stringBag__[2] == "D") {
-        DiscretizedVariable< GUM_SCALAR >* d =
-           new DiscretizedVariable< GUM_SCALAR >(
-              stringBag__[0], (bar_flag__) ? stringBag__[1] : "");
+        DiscretizedVariable< GUM_SCALAR >* d
+           = new DiscretizedVariable< GUM_SCALAR >(stringBag__[0],
+                                                   (bar_flag__) ? stringBag__[1]
+                                                                : "");
 
         for (size_t i = 3; i < stringBag__.size(); ++i) {
           d->addTick(std::stof(stringBag__[i]));
@@ -562,7 +572,7 @@ namespace gum {
     // the main loop is on the first variables. The others are in the right
     // order.
     const DiscreteVariable& first = table.variable(0);
-    Idx                     j = 0;
+    Idx                     j     = 0;
 
     for (cptInst.setFirstVar(first); !cptInst.end(); cptInst.incVar(first)) {
       for (cptInst.setFirstNotVar(first); !cptInst.end(); cptInst.incNotVar(first))
@@ -595,7 +605,7 @@ namespace gum {
     do {
       if (modCounter[i] == (varList[i]->domainSize() - 1)) {
         modCounter[i] = 0;
-        add = true;
+        add           = true;
       } else {
         modCounter[i] += 1;
         add = false;
@@ -664,7 +674,8 @@ namespace gum {
   // variable's parent.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::setParentModality(
-     const std::string& parent, const std::string& modality) {
+     const std::string& parent,
+     const std::string& modality) {
     if (state() != factory_state::FACT_ENTRY) {
       illegalStateError__("string");
     } else {
@@ -708,7 +719,7 @@ namespace gum {
     if (state() != factory_state::FACT_ENTRY) {
       illegalStateError__("setVariableValues");
     } else {
-      const DiscreteVariable& var = bn__->variable(varNameMap__[stringBag__[0]]);
+      const DiscreteVariable& var   = bn__->variable(varNameMap__[stringBag__[0]]);
       NodeId                  varId = varNameMap__[stringBag__[0]];
 
       if (parents__->domainSize() > 0) {
@@ -831,15 +842,17 @@ namespace gum {
   //                            is not a valid CPT for var in the current state
   //                            of the BayesNet.
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFactory< GUM_SCALAR >::setVariableCPT(
-     const std::string& varName, MultiDimAdressable* table, bool redefineParents) {
+  INLINE void
+     BayesNetFactory< GUM_SCALAR >::setVariableCPT(const std::string&  varName,
+                                                   MultiDimAdressable* table,
+                                                   bool redefineParents) {
     auto pot = dynamic_cast< Potential< GUM_SCALAR >* >(table);
 
     if (state() != factory_state::NONE) {
       illegalStateError__("setVariableCPT");
     } else {
       checkVariableName__(varName);
-      const DiscreteVariable& var = bn__->variable(varNameMap__[varName]);
+      const DiscreteVariable& var   = bn__->variable(varNameMap__[varName]);
       NodeId                  varId = varNameMap__[varName];
       // If we have to change the structure of the BayesNet, then we call a sub
       // method.
@@ -933,7 +946,8 @@ namespace gum {
   // NotFound exception.
   template < typename GUM_SCALAR >
   INLINE Idx BayesNetFactory< GUM_SCALAR >::checkVariableModality__(
-     const std::string& name, const std::string& mod) {
+     const std::string& name,
+     const std::string& mod) {
     checkVariableName__(name);
     const DiscreteVariable& var = bn__->variable(varNameMap__[name]);
 
@@ -959,7 +973,8 @@ namespace gum {
   // respect to table.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::setCPTAndParents__(
-     const DiscreteVariable& var, Potential< GUM_SCALAR >* table) {
+     const DiscreteVariable&  var,
+     Potential< GUM_SCALAR >* table) {
     NodeId varId = varNameMap__[var.name()];
     bn__->dag_.eraseParents(varId);
 

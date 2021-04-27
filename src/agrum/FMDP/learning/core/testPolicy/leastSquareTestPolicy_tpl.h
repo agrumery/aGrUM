@@ -82,14 +82,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   void LeastSquareTestPolicy< GUM_SCALAR >::computeScore() {
     ITestPolicy< GUM_SCALAR >::computeScore();
-    double mean = sumO__ / (double)this->nbObservation();
-    double errorO = 0.0;
+    double mean         = sumO__ / (double)this->nbObservation();
+    double errorO       = 0.0;
     double sumErrorAttr = 0.0;
     for (auto attrIter = sumAttrTable__.cbeginSafe();
          attrIter != sumAttrTable__.cendSafe();
          ++attrIter) {
-      Idx    key = attrIter.key();
-      double meanAttr = sumAttrTable__[key] / (double)nbObsTable__[key];
+      Idx    key       = attrIter.key();
+      double meanAttr  = sumAttrTable__[key] / (double)nbObsTable__[key];
       double errorAttr = 0.0;
 
       const Link< double >* linky = obsTable__[key]->list();
@@ -99,8 +99,8 @@ namespace gum {
         linky = linky->nextLink();
       }
 
-      sumErrorAttr +=
-         ((double)nbObsTable__[key] / (double)this->nbObservation()) * errorAttr;
+      sumErrorAttr += ((double)nbObsTable__[key] / (double)this->nbObservation())
+                    * errorAttr;
     }
     score__ = errorO - sumErrorAttr;
   }

@@ -45,36 +45,32 @@ namespace gum_tests {
     void testCreationDeletionFloat() {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MaxParentsMCBayesNetGenerator< double >(
-            30, 70, 3, 4, 30, 40, 50));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::MaxParentsMCBayesNetGenerator<
+                                      double >(30, 70, 3, 4, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionFloatCPT() {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MaxParentsMCBayesNetGenerator< double >(
-            30, 70, 4, 4, 20, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::MaxParentsMCBayesNetGenerator<
+                                      double >(30, 70, 4, 4, 20, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionDouble() {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MaxParentsMCBayesNetGenerator< double >(
-            30, 70, 4, 4, 20, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::MaxParentsMCBayesNetGenerator<
+                                      double >(30, 70, 4, 4, 20, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionDoubleCPT() {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MaxParentsMCBayesNetGenerator< double >(
-            30, 70, 4, 4, 20, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::MaxParentsMCBayesNetGenerator<
+                                      double >(30, 70, 4, 4, 20, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 

@@ -58,8 +58,12 @@ namespace CxxTest {
     if (!equals(x, y)) {
       if (message) tracker().failedTest(file, line, message);
 
-      tracker().failedAssertEquals(
-         file, line, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+      tracker().failedAssertEquals(file,
+                                   line,
+                                   xExpr,
+                                   yExpr,
+                                   TS_AS_STRING(x),
+                                   TS_AS_STRING(y));
       TS_ABORT();
     }
   }
@@ -111,8 +115,12 @@ namespace CxxTest {
     if (!lessThan(x, y)) {
       if (message) tracker().failedTest(file, line, message);
 
-      tracker().failedAssertLessThan(
-         file, line, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+      tracker().failedAssertLessThan(file,
+                                     line,
+                                     xExpr,
+                                     yExpr,
+                                     TS_AS_STRING(x),
+                                     TS_AS_STRING(y));
       TS_ABORT();
     }
   }
@@ -133,8 +141,12 @@ namespace CxxTest {
     if (!lessThanEquals(x, y)) {
       if (message) tracker().failedTest(file, line, message);
 
-      tracker().failedAssertLessThanEquals(
-         file, line, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+      tracker().failedAssertLessThanEquals(file,
+                                           line,
+                                           xExpr,
+                                           yExpr,
+                                           TS_AS_STRING(x),
+                                           TS_AS_STRING(y));
       TS_ABORT();
     }
   }
@@ -168,8 +180,13 @@ namespace CxxTest {
     if (!r(x, y)) {
       if (message) tracker().failedTest(file, line, message);
 
-      tracker().failedAssertRelation(
-         file, line, rExpr, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+      tracker().failedAssertRelation(file,
+                                     line,
+                                     rExpr,
+                                     xExpr,
+                                     yExpr,
+                                     TS_AS_STRING(x),
+                                     TS_AS_STRING(y));
       TS_ABORT();
     }
   }
@@ -665,11 +682,13 @@ namespace CxxTest {
   CXXTEST_INTEGRAL(_CXXTEST_LONGLONG)
 #endif   // _CXXTEST_LONGLONG
 
-#define CXXTEST_SMALL_BIG(CXXTEST_SMALL, CXXTEST_BIG)                  \
-  CXXTEST_COMPARISONS(                                                 \
-     signed CXXTEST_SMALL, unsigned CXXTEST_BIG, unsigned CXXTEST_BIG) \
-  CXXTEST_COMPARISONS(                                                 \
-     signed CXXTEST_BIG, unsigned CXXTEST_SMALL, unsigned CXXTEST_BIG)
+#define CXXTEST_SMALL_BIG(CXXTEST_SMALL, CXXTEST_BIG) \
+  CXXTEST_COMPARISONS(signed   CXXTEST_SMALL,         \
+                      unsigned CXXTEST_BIG,           \
+                      unsigned CXXTEST_BIG)           \
+  CXXTEST_COMPARISONS(signed   CXXTEST_BIG,           \
+                      unsigned CXXTEST_SMALL,         \
+                      unsigned CXXTEST_BIG)
 
   CXXTEST_SMALL_BIG(char, short)
   CXXTEST_SMALL_BIG(char, int)

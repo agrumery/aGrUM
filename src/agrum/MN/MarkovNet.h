@@ -428,9 +428,9 @@ namespace gum {
     /// the factors
     FactorTable< GUM_SCALAR > factors__;
 
-    const Potential< GUM_SCALAR >*
-       addFactor__(const NodeSet&                 vars,
-                   const Potential< GUM_SCALAR >* src = nullptr);
+    const Potential< GUM_SCALAR >* addFactor__(const NodeSet&                 vars,
+                                               const Potential< GUM_SCALAR >* src
+                                               = nullptr);
 
     void eraseFactor__(const NodeSet& vars);
 

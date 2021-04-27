@@ -51,13 +51,14 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-     std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
+     std::ostream&                  output,
+     const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good())
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
 
     std::stringstream strfile, strfile2;
 
-    Idx num = 0;
+    Idx num      = 0;
     Idx numparam = 0;
 
     for (auto node: bn.nodes())
@@ -145,7 +146,8 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-     const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) {
+     const std::string&             filePath,
+     const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
@@ -157,7 +159,7 @@ namespace gum {
     if (!outputvar.good())
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
 
-    Idx num = 0;
+    Idx num      = 0;
     Idx numparam = 0;
 
     for (auto node: bn.nodes())

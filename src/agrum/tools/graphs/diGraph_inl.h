@@ -57,8 +57,8 @@ namespace gum {
       }
 
       if (g.mutableTopologicalOrder__ != nullptr) {
-        mutableTopologicalOrder__ =
-           new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
+        mutableTopologicalOrder__
+           = new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
       }
     }
 

@@ -128,8 +128,10 @@ namespace gum {
        instantiateVarLearner__(MultiDimFunctionGraph< double >* target,
                                Set< const DiscreteVariable* >&  mainVariables,
                                const DiscreteVariable*          learnedVar) {
-      return instantiateVarLearner__(
-         target, mainVariables, learnedVar, Int2Type< LearnerSelection >());
+      return instantiateVarLearner__(target,
+                                     mainVariables,
+                                     learnedVar,
+                                     Int2Type< LearnerSelection >());
     }
 
     VariableLearnerType*
@@ -149,8 +151,10 @@ namespace gum {
                                Set< const DiscreteVariable* >&  mainVariables,
                                const DiscreteVariable*          learnedVar,
                                Int2Type< ITILEARNER >) {
-      return new VariableLearnerType(
-         target, learningThreshold__, mainVariables, learnedVar);
+      return new VariableLearnerType(target,
+                                     learningThreshold__,
+                                     mainVariables,
+                                     learnedVar);
     }
 
 
@@ -160,16 +164,19 @@ namespace gum {
     RewardLearnerType*
        instantiateRewardLearner__(MultiDimFunctionGraph< double >* target,
                                   Set< const DiscreteVariable* >&  mainVariables) {
-      return instantiateRewardLearner__(
-         target, mainVariables, Int2Type< LearnerSelection >());
+      return instantiateRewardLearner__(target,
+                                        mainVariables,
+                                        Int2Type< LearnerSelection >());
     }
 
     RewardLearnerType*
        instantiateRewardLearner__(MultiDimFunctionGraph< double >* target,
                                   Set< const DiscreteVariable* >&  mainVariables,
                                   Int2Type< IMDDILEARNER >) {
-      return new RewardLearnerType(
-         target, learningThreshold__, similarityThreshold__, mainVariables);
+      return new RewardLearnerType(target,
+                                   learningThreshold__,
+                                   similarityThreshold__,
+                                   mainVariables);
     }
 
     RewardLearnerType*

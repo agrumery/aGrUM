@@ -181,8 +181,10 @@ namespace gum {
        std::size_t                              max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
+                              max_dico_entries,
+                              alloc),
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
@@ -217,8 +219,10 @@ namespace gum {
        std::size_t                 max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
+                              max_dico_entries,
+                              alloc),
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
@@ -277,7 +281,7 @@ namespace gum {
         DBTranslator< ALLOC >(std::move(from), alloc),
         variable__(std::move(from.variable__)) {
       // moves the copy of the variable, that should be used by method variable ()
-      real_variable__ = from.real_variable__;
+      real_variable__      = from.real_variable__;
       from.real_variable__ = nullptr;
 
       GUM_CONS_MOV(DBTranslator4DiscretizedVariable);
@@ -299,8 +303,8 @@ namespace gum {
           const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
              alloc) const {
       ALLOC< DBTranslator4DiscretizedVariable< ALLOC > > allocator(alloc);
-      DBTranslator4DiscretizedVariable< ALLOC >*         translator =
-         allocator.allocate(1);
+      DBTranslator4DiscretizedVariable< ALLOC >*         translator
+         = allocator.allocate(1);
       try {
         allocator.construct(translator, *this, alloc);
       } catch (...) {
@@ -336,7 +340,7 @@ namespace gum {
           const DBTranslator4DiscretizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        variable__ = from.variable__;
+        variable__                     = from.variable__;
 
         if (real_variable__ != nullptr) delete real_variable__;
         real_variable__ = from.real_variable__->clone();
@@ -353,10 +357,10 @@ namespace gum {
           DBTranslator4DiscretizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        variable__ = std::move(from.variable__);
+        variable__                     = std::move(from.variable__);
 
         if (real_variable__ != nullptr) delete real_variable__;
-        real_variable__ = from.real_variable__;
+        real_variable__      = from.real_variable__;
         from.real_variable__ = nullptr;
       }
 

@@ -214,7 +214,7 @@ namespace gum {
     bool    found_exact_target = false;
 
     if (joint_targets__.contains(nodes)) {
-      set = nodes;
+      set                = nodes;
       found_exact_target = true;
     } else {
       for (const auto& target: joint_targets__) {
@@ -304,8 +304,8 @@ namespace gum {
 
     for (i.setFirst(); !i.end(); ++i) {
       GUM_SCALAR vXY = (*pXY)[i];
-      GUM_SCALAR vX = pX[i];
-      GUM_SCALAR vY = pY[i];
+      GUM_SCALAR vX  = pX[i];
+      GUM_SCALAR vY  = pY[i];
 
       if (vXY > (GUM_SCALAR)0) {
         if (vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0) {
@@ -339,7 +339,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-        const NodeSet& targets, const NodeSet& evs) {
+        const NodeSet& targets,
+        const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs
@@ -392,7 +393,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
      const NodeSet& targets) {
-    const auto& bn = this->BN();
+    const auto& bn  = this->BN();
     const Size  siz = targets.size();
     if (siz <= 1) {
       GUM_ERROR(InvalidArgument,
@@ -410,7 +411,7 @@ namespace gum {
     gum::Instantiation variables;
     for (const auto nod: targets) {
       const auto& var = bn.variable(nod);
-      auto        pv = new gum::RangeVariable(var.name(), "", 0, 1);
+      auto        pv  = new gum::RangeVariable(var.name(), "", 0, 1);
       caracteristic.add(*pv);
       variables.add(var);
     }

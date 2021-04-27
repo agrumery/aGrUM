@@ -127,7 +127,8 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool DefaultPartialOrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes) {
     if (PartialOrderedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       createSimplicialSet__();
       return true;
@@ -150,7 +151,7 @@ namespace gum {
   /// returns the best possible node to be eliminated
   NodeId DefaultPartialOrderedEliminationSequenceStrategy::nodeToEliminate__(
      const PriorityQueue< NodeId, double >& possibleNodes) {
-    bool   found = false;
+    bool   found     = false;
     double min_score = 0;
     NodeId best_node = 0;
 
@@ -159,7 +160,7 @@ namespace gum {
         double score = possibleNodes.priority(node);
 
         if (!found || (score < min_score)) {
-          found = true;
+          found     = true;
           min_score = score;
           best_node = node;
         }
@@ -199,7 +200,7 @@ namespace gum {
     } catch (NotFound&) {}
 
     // here: select the node through Kjaerulff's heuristic
-    auto   iter = nodeset_.cbegin();
+    auto   iter      = nodeset_.cbegin();
     double min_score = log_weights__[*iter];
     NodeId best_node = *iter;
 
@@ -276,7 +277,8 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy*
      DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(
-       simplicial_ratio__, simplicial_threshold__);
+       simplicial_ratio__,
+       simplicial_threshold__);
   }
 
   /// virtual copy constructor

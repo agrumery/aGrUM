@@ -42,8 +42,8 @@ namespace gum_tests {
   class MarginalTargetedInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testAddTarget() {
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > lazy(&bn);
       TS_ASSERT(lazy.targets() == gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));

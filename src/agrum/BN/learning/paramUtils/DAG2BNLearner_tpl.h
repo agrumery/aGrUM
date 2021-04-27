@@ -167,7 +167,7 @@ namespace gum {
 
       // create a bn with dummy parameters corresponding to the dag
       const auto& node2cols = estimator.nodeId2Columns();
-      const auto& database = estimator.database();
+      const auto& database  = estimator.database();
       if (node2cols.empty()) {
         for (const auto id: dag) {
           bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(id)),
@@ -234,8 +234,8 @@ namespace gum {
           xdag.children(node);
         }
 
-        BayesNet< GUM_SCALAR > new_bn =
-           createBN< GUM_SCALAR >(general_estimator, dag);
+        BayesNet< GUM_SCALAR > new_bn
+           = createBN< GUM_SCALAR >(general_estimator, dag);
         updateApproximationScheme();
 
         delta = GUM_SCALAR(0.0);
@@ -250,9 +250,9 @@ namespace gum {
             const GUM_SCALAR old_val = old_cpt.get(old_inst);
             if (old_val > 0.0) {
               const GUM_SCALAR new_val = new_cpt.get(new_inst);
-              const GUM_SCALAR diff = new_val - old_val;
-              const auto       diffrel =
-                 (diff < 0.0) ? (-diff / old_val) : (diff / old_val);
+              const GUM_SCALAR diff    = new_val - old_val;
+              const auto       diffrel
+                 = (diff < 0.0) ? (-diff / old_val) : (diff / old_val);
               if (delta < diffrel) delta = diffrel;
             }
           }

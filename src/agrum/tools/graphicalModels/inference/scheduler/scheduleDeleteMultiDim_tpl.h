@@ -80,7 +80,7 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table__ = from.table__;
+      table__                                  = from.table__;
 
       if (args__) {
         args__->clear();
@@ -97,8 +97,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
-    const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
     return table__ == real_op.table__;
   }
 
@@ -108,8 +108,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
-    const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
     return table__ != real_op.table__;
   }
 
@@ -167,15 +167,21 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+      __debug__::inc_deletion__("Sequence",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&empty_seq);
       __debug__::inc_deletion__("SequenceImplementation",
                                 __FILE__,
                                 __LINE__,
                                 "destructor of",
                                 (void*)&empty_seq);
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&empty_seq);
       __debug__::inc_deletion__("SequenceIteratorSafe",
                                 __FILE__,
                                 __LINE__,

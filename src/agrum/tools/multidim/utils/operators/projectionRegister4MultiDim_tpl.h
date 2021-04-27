@@ -51,8 +51,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
       theset = set__[projection_name];
@@ -64,7 +67,8 @@ namespace gum {
   // removes a given entry from the register
   template < typename GUM_SCALAR >
   void ProjectionRegister4MultiDim< GUM_SCALAR >::erase(
-     const std::string& projection_name, const std::string& type_multidim) {
+     const std::string& projection_name,
+     const std::string& type_multidim) {
     if (!set__.exists(projection_name)) return;
 
     ProjectionSet* theset = set__[projection_name];
@@ -75,7 +79,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_SCALAR >
   INLINE bool ProjectionRegister4MultiDim< GUM_SCALAR >::exists(
-     const std::string& projection_name, const std::string& type_multidim) const {
+     const std::string& projection_name,
+     const std::string& type_multidim) const {
     if (!set__.exists(projection_name)) return false;
 
     return set__[projection_name].exists(type_multidim);
@@ -127,8 +132,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   ProjectionRegister4MultiDim< GUM_SCALAR >::~ProjectionRegister4MultiDim() {
     // remove all the sets
-    for (typename HashTable< std::string, ProjectionSet* >::iterator_safe iter =
-            set__.beginSafe();
+    for (typename HashTable< std::string, ProjectionSet* >::iterator_safe iter
+         = set__.beginSafe();
          iter != set__.endSafe();
          ++iter)
       delete iter.val();
@@ -140,8 +145,9 @@ namespace gum {
      const std::string& projection_name,
      const std::string& type_multidim,
      typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr function) {
-    ProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(
-       projection_name, type_multidim, function);
+    ProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(projection_name,
+                                                                 type_multidim,
+                                                                 function);
   }
 
 } /* namespace gum */

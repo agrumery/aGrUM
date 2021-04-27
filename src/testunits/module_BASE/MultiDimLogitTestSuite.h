@@ -83,13 +83,13 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
 
-      std::string witness_age[] = {
-         "50", "49", "46", "49", "62", "35", "67", "65", "47"};
-      std::string witness_taux[] = {
-         "126", "126", "144", "139", "154", "156", "160", "140", "143"};
+      std::string witness_age[]
+         = {"50", "49", "46", "49", "62", "35", "67", "65", "47"};
+      std::string witness_taux[]
+         = {"126", "126", "144", "139", "154", "156", "160", "140", "143"};
       std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
-      std::string witness_coeur[] = {
-         "OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
+      std::string witness_coeur[]
+         = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
       float witness_proba[] = {0.8786f,
                                0.5807f,
                                0.3912f,
@@ -99,7 +99,7 @@ namespace gum_tests {
                                1 - 0.0163f,
                                1 - 0.0710f,
                                1 - 0.3765f};
-      int   nbr = 9;
+      int   nbr             = 9;
 
       for (int l = 0; l < nbr; l++) {
         try {

@@ -72,7 +72,7 @@ namespace gum {
     if (this->burnIn() == 0) return Ip;
 
     GUM_SCALAR w = 1.0f;
-    Ip = monteCarloSample_();
+    Ip           = monteCarloSample_();
     for (Size i = 1; i < this->burnIn(); i++)
       Ip = this->draw_(&w, Ip);
 

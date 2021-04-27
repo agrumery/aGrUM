@@ -96,9 +96,9 @@ namespace gum {
     INLINE DBRowGenerator< ALLOC >&
        DBRowGenerator< ALLOC >::operator=(const DBRowGenerator< ALLOC >& from) {
       nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
-      column_types_ = from.column_types_;
-      columns_of_interest_ = from.columns_of_interest_;
-      goal_ = from.goal_;
+      column_types_             = from.column_types_;
+      columns_of_interest_      = from.columns_of_interest_;
+      goal_                     = from.goal_;
       return *this;
     }
 
@@ -108,9 +108,9 @@ namespace gum {
     INLINE DBRowGenerator< ALLOC >&
        DBRowGenerator< ALLOC >::operator=(DBRowGenerator< ALLOC >&& from) {
       nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
-      column_types_ = std::move(from.column_types_);
-      columns_of_interest_ = std::move(from.columns_of_interest_);
-      goal_ = from.goal_;
+      column_types_             = std::move(from.column_types_);
+      columns_of_interest_      = std::move(from.columns_of_interest_);
+      goal_                     = from.goal_;
       return *this;
     }
 

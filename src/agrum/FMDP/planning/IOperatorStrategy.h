@@ -69,12 +69,15 @@ namespace gum {
     /// @{
 
     virtual MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >*
-       getFunctionInstance() = 0;
+       getFunctionInstance()
+       = 0;
     virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                    SetTerminalNodePolicy >*
-       getArgMaxFunctionInstance() = 0;
+       getArgMaxFunctionInstance()
+       = 0;
     virtual MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-       getAggregatorInstance() = 0;
+       getAggregatorInstance()
+       = 0;
 
     /// @}
 
@@ -94,7 +97,8 @@ namespace gum {
        regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
                Idx                                        actionId,
                const FMDP< GUM_SCALAR >*                  fmdp,
-               const Set< const DiscreteVariable* >&      elVarSeq) = 0;
+               const Set< const DiscreteVariable* >&      elVarSeq)
+       = 0;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -102,7 +106,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
        maximize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3) = 0;
+                Idx                                        del = 3)
+       = 0;
 
     // ==========================================================================
     /// @warning Minimze the two given functions
@@ -110,7 +115,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
        minimize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3) = 0;
+                Idx                                        del = 3)
+       = 0;
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
@@ -118,7 +124,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
        multiply(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3) = 0;
+                Idx                                        del = 3)
+       = 0;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -129,7 +136,8 @@ namespace gum {
                                                 SetTerminalNodePolicy >* f1,
                    const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                                 SetTerminalNodePolicy >* f2,
-                   Idx del = 3) = 0;
+                   Idx                                                   del = 3)
+       = 0;
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
@@ -137,7 +145,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
        add(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
            const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-           Idx                                        del = 1) = 0;
+           Idx                                        del = 1)
+       = 0;
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
@@ -145,7 +154,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
        subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 0) = 0;
+                Idx                                        del = 0)
+       = 0;
 
 
     /// @}

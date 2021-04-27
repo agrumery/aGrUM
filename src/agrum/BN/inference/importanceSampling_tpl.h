@@ -91,7 +91,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::unsharpenBN_(
-     BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
+     BayesNetFragment< GUM_SCALAR >* bn,
+     float                           epsilon) {
     for (const auto nod: bn->nodes().asNodeSet()) {
       auto p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
       p.normalizeAsCPT();
@@ -108,7 +109,7 @@ namespace gum {
       // we keep the variables with hard evidence but alone
       // bn->uninstallNode( sid[i] );
     }
-    GUM_SCALAR minParam = bn->minNonZeroParam();
+    GUM_SCALAR minParam    = bn->minNonZeroParam();
     GUM_SCALAR minAccepted = GUM_SCALAR(this->epsilon() / bn->maxVarDomainSize());
     if (minParam < minAccepted) this->unsharpenBN_(bn, float(minAccepted));
   }

@@ -161,16 +161,16 @@ namespace gum {
        CorrectedMutualInformation< ALLOC >::operator=(
           const CorrectedMutualInformation< ALLOC >& from) {
       if (this != &from) {
-        NH__ = from.NH__;
-        k_NML__ = from.k_NML__;
-        score_MDL__ = from.score_MDL__;
-        kmode__ = from.kmode__;
-        use_ICache__ = from.use_ICache__;
-        use_HCache__ = from.use_HCache__;
-        use_KCache__ = from.use_KCache__;
+        NH__           = from.NH__;
+        k_NML__        = from.k_NML__;
+        score_MDL__    = from.score_MDL__;
+        kmode__        = from.kmode__;
+        use_ICache__   = from.use_ICache__;
+        use_HCache__   = from.use_HCache__;
+        use_KCache__   = from.use_KCache__;
         use_CnrCache__ = from.use_CnrCache__;
-        ICache__ = from.ICache__;
-        KCache__ = from.KCache__;
+        ICache__       = from.ICache__;
+        KCache__       = from.KCache__;
       }
       return *this;
     }
@@ -182,16 +182,16 @@ namespace gum {
        CorrectedMutualInformation< ALLOC >::operator=(
           CorrectedMutualInformation< ALLOC >&& from) {
       if (this != &from) {
-        NH__ = std::move(from.NH__);
-        k_NML__ = std::move(from.k_NML__);
-        score_MDL__ = std::move(from.score_MDL__);
-        kmode__ = from.kmode__;
-        use_ICache__ = from.use_ICache__;
-        use_HCache__ = from.use_HCache__;
-        use_KCache__ = from.use_KCache__;
+        NH__           = std::move(from.NH__);
+        k_NML__        = std::move(from.k_NML__);
+        score_MDL__    = std::move(from.score_MDL__);
+        kmode__        = from.kmode__;
+        use_ICache__   = from.use_ICache__;
+        use_HCache__   = from.use_HCache__;
+        use_KCache__   = from.use_KCache__;
         use_CnrCache__ = from.use_CnrCache__;
-        ICache__ = std::move(from.ICache__);
-        KCache__ = std::move(from.KCache__);
+        ICache__       = std::move(from.ICache__);
+        KCache__       = std::move(from.KCache__);
       }
       return *this;
     }
@@ -411,7 +411,7 @@ namespace gum {
        NodeId                                        var2,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       return NI_score__(var1, var2, conditioning_ids)
-             - K_score__(var1, var2, conditioning_ids);
+           - K_score__(var1, var2, conditioning_ids);
     }
 
 
@@ -432,7 +432,7 @@ namespace gum {
        NodeId                                        var3,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       return NI_score__(var1, var2, var3, conditioning_ids)
-             + K_score__(var1, var2, var3, conditioning_ids);
+           + K_score__(var1, var2, var3, conditioning_ids);
     }
 
 
@@ -504,8 +504,12 @@ namespace gum {
 
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
-        const double NHxy = -NH__.score(IdCondSet< ALLOC >(
-           var_x, var_y, empty_conditioning_set__, true, false));
+        const double NHxy
+           = -NH__.score(IdCondSet< ALLOC >(var_x,
+                                            var_y,
+                                            empty_conditioning_set__,
+                                            true,
+                                            false));
         const double NHx = -NH__.score(var_x);
         const double NHy = -NH__.score(var_y);
 
@@ -573,7 +577,7 @@ namespace gum {
       size_t rx, ry, rui;
       switch (kmode__) {
         case KModeTypes::MDL: {
-          const auto& database = NH__.database();
+          const auto& database  = NH__.database();
           const auto& node2cols = NH__.nodeId2Columns();
 
           rui = 1;
@@ -593,8 +597,8 @@ namespace gum {
 
           // compute the size of the database, including the a priori
           if (!use_KCache__) {
-            idset =
-               std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
+            idset = std::move(
+               IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
           }
           const double N = score_MDL__.N(idset);
 

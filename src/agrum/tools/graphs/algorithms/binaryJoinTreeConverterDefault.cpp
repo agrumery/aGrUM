@@ -46,7 +46,9 @@ namespace gum {
   /** @brief a function used to mark the nodes belonging to a given
    * connected component */
   void BinaryJoinTreeConverterDefault::markConnectedComponent__(
-     const CliqueGraph& JT, NodeId root, NodeProperty< bool >& mark) const {
+     const CliqueGraph&    JT,
+     NodeId                root,
+     NodeProperty< bool >& mark) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
     // stack => depth first search
@@ -133,7 +135,7 @@ namespace gum {
     PriorityQueue< std::pair< NodeId, NodeId >, float > queue;
 
     for (NodeId i = 0; i < cliques.size(); ++i) {
-      pair.first = i;
+      pair.first            = i;
       const NodeSet& nodes1 = JT.separator(cliques[i], clique);
 
       for (NodeId j = i + 1; j < cliques.size(); ++j) {
@@ -151,14 +153,14 @@ namespace gum {
     // available.
     for (NodeId k = 2; k < cliques.size(); ++k) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair      = queue.pop();
       NodeId ti = pair.first;
       NodeId tj = pair.second;
 
       // create a new clique that will become adjacent to ti and tj
       // and remove the edges between ti, tj and clique
-      const NodeSet& nodes1 = JT.separator(cliques[ti], clique);
-      const NodeSet& nodes2 = JT.separator(cliques[tj], clique);
+      const NodeSet& nodes1   = JT.separator(cliques[ti], clique);
+      const NodeSet& nodes2   = JT.separator(cliques[tj], clique);
       NodeId         new_node = JT.addNode(nodes1 + nodes2);
       JT.addEdge(cliques[ti], new_node);
       JT.addEdge(cliques[tj], new_node);
@@ -167,7 +169,7 @@ namespace gum {
       JT.eraseEdge(Edge(cliques[tj], clique));
 
       // substitute cliques[pair.first] by the result
-      cliques[ti] = new_node;
+      cliques[ti]             = new_node;
       is_cliques_relevant[tj] = false;   // now tj is no more a neighbor of clique
 
       // remove all the pairs involving tj in the priority queue
@@ -191,14 +193,15 @@ namespace gum {
       // update the "combined" size of all the pairs involving "new_node"
       {
         const NodeSet& nodes1 = JT.separator(cliques[ti], clique);
-        pair.second = ti;
+        pair.second           = ti;
         float newsize;
 
         for (NodeId ind = 0; ind < ti; ++ind) {
           if (is_cliques_relevant[ind]) {
             pair.first = ind;
-            newsize = combinedSize__(
-               nodes1, JT.separator(cliques[ind], clique), domain_sizes);
+            newsize    = combinedSize__(nodes1,
+                                     JT.separator(cliques[ind], clique),
+                                     domain_sizes);
             queue.setPriority(pair, newsize);
           }
         }
@@ -208,8 +211,9 @@ namespace gum {
         for (NodeId ind = ti + 1; ind < cliques.size(); ++ind) {
           if (is_cliques_relevant[ind]) {
             pair.second = ind;
-            newsize = combinedSize__(
-               nodes1, JT.separator(cliques[ind], clique), domain_sizes);
+            newsize     = combinedSize__(nodes1,
+                                     JT.separator(cliques[ind], clique),
+                                     domain_sizes);
             queue.setPriority(pair, newsize);
           }
         }

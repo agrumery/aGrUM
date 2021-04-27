@@ -71,7 +71,7 @@ namespace gum {
       DG1ExploredNode__(0), DG2ExploredNode__(0), key__(0) {
     GUM_CONSTRUCTOR(O4DGContext);
     varInstantiation__ = varInst;
-    nbVar__ = nbVar;
+    nbVar__            = nbVar;
   }
 
   // Default Destructor.

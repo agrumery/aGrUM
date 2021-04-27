@@ -41,10 +41,16 @@ namespace gum {
     static bool first_use = true;
     if (first_use) {
       first_use = false;
-      __debug__::dec_creation__(
-         "Set", "__empty_edge_set", 0, "static variable correction", 0);
-      __debug__::dec_creation__(
-         "HashTable", "__empty_edge_set", 0, "static variable correction", 0);
+      __debug__::dec_creation__("Set",
+                                "__empty_edge_set",
+                                0,
+                                "static variable correction",
+                                0);
+      __debug__::dec_creation__("HashTable",
+                                "__empty_edge_set",
+                                0,
+                                "static variable correction",
+                                0);
     }
 #endif
     static EdgeSet empty_fill_ins;
@@ -59,7 +65,8 @@ namespace gum {
 
   // constructor for an a priori non empty graph
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes) {
     EliminationSequenceStrategy::setGraph(graph, domain_sizes);
 
     // for debugging purposes
@@ -103,7 +110,7 @@ namespace gum {
 
   // clears the sequence (to prepare, for instance, a new elimination sequence)
   void EliminationSequenceStrategy::clear() {
-    graph_ = nullptr;
+    graph_        = nullptr;
     domain_sizes_ = nullptr;
     log_domain_sizes_.clear();
   }
@@ -136,7 +143,7 @@ namespace gum {
       clear();
 
       // assign a new graph
-      graph_ = graph;
+      graph_        = graph;
       domain_sizes_ = dom_sizes;
 
       if (graph_ != nullptr) {

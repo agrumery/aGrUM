@@ -75,8 +75,8 @@ namespace gum_tests {
     }
 
     void testMarkovBlanketStructure() {
-      const auto bn =
-         gum::BayesNet< float >::fastPrototype("a->b->c->d->e;f->d->g;h->i->g");
+      const auto bn
+         = gum::BayesNet< float >::fastPrototype("a->b->c->d->e;f->d->g;h->i->g");
       TS_ASSERT(!gum::MarkovBlanket(bn, "a").hasSameStructure(
          gum::BayesNet< float >::fastPrototype("b->a")));
 

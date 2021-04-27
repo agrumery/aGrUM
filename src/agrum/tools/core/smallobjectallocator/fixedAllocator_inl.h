@@ -104,8 +104,8 @@ namespace gum {
     *toRelease = firstAvailableBlock__;
 
     // So that first available block points to it
-    firstAvailableBlock__ =
-       static_cast< unsigned char >((toRelease - pData__) / blockSize);
+    firstAvailableBlock__
+       = static_cast< unsigned char >((toRelease - pData__) / blockSize);
 
     // Truncation check
     GUM_ASSERT(firstAvailableBlock__ == (toRelease - pData__) / blockSize);
@@ -130,9 +130,9 @@ namespace gum {
   INLINE FixedAllocator::FixedAllocator(const std::size_t&   blockSize,
                                         const unsigned char& numBlocks) {
     //    GUM_CONSTRUCTOR(FixedAllocator)
-    blockSize__ = blockSize;
-    numBlocks__ = numBlocks;
-    allocChunk__ = chunks__.begin();
+    blockSize__    = blockSize;
+    numBlocks__    = numBlocks;
+    allocChunk__   = chunks__.begin();
     deallocChunk__ = chunks__.begin();
   }
 

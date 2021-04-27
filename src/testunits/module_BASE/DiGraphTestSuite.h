@@ -172,7 +172,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsArc(id1, id1));
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
@@ -188,7 +188,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_ASSERT_EQUALS(nodeCount, (gum::Size)5);
       TS_ASSERT_EQUALS(arcCount, (gum::Size)6);
@@ -214,7 +214,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(id5, id2));
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
 
@@ -283,8 +283,8 @@ namespace gum_tests {
     void testHashMapNodes() {
       gum::DiGraph graph = buildGraph();
 
-      gum::NodeProperty< gum::Size > hashmap =
-         graph.nodesProperty(&simpleDoubleFunction);
+      gum::NodeProperty< gum::Size > hashmap
+         = graph.nodesProperty(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
@@ -302,8 +302,8 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap =
-                                   graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap
+                                = graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -329,8 +329,8 @@ namespace gum_tests {
     void testHashMapArcs() {
       gum::DiGraph graph = buildGraph();
 
-      gum::ArcProperty< gum::Size > hashmap =
-         graph.arcsProperty(&simpleArcMapFunction);
+      gum::ArcProperty< gum::Size > hashmap
+         = graph.arcsProperty(&simpleArcMapFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;
@@ -350,7 +350,7 @@ namespace gum_tests {
     void testNodeId() {
       gum::DiGraph graph = buildGraph();
 
-      gum::NodeId id = graph.nextNodeId();
+      gum::NodeId id  = graph.nextNodeId();
       gum::NodeId id2 = graph.addNode();
       TS_ASSERT_EQUALS(id, id2);
     }

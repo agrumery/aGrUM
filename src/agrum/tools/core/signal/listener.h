@@ -55,8 +55,8 @@ namespace gum {
       public:
       virtual ~ISignaler(){};
       virtual void detachFromTarget(Listener* target) = 0;
-      virtual void duplicateTarget(const Listener* oldtarget,
-                                   Listener*       newtarget) = 0;
+      virtual void duplicateTarget(const Listener* oldtarget, Listener* newtarget)
+         = 0;
       virtual bool hasListener() = 0;
     };
   }   // namespace __sig__

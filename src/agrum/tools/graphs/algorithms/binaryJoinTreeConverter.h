@@ -68,7 +68,8 @@ namespace gum {
      * and used for the binarization. */
     virtual CliqueGraph convert(const CliqueGraph&          JT,
                                 const NodeProperty< Size >& domain_sizes,
-                                const NodeSet&              roots) = 0;
+                                const NodeSet&              roots)
+       = 0;
 
     /// returns all the roots considered for all the connected components
     virtual const NodeSet& roots() const = 0;

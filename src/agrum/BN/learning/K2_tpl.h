@@ -76,8 +76,9 @@ namespace gum {
       generator.setOrder(order__);
 
       // use the greedy hill climbing algorithm to perform the search
-      return GreedyHillClimbing::learnBN< GUM_SCALAR >(
-         selector, estimator, initial_dag);
+      return GreedyHillClimbing::learnBN< GUM_SCALAR >(selector,
+                                                       estimator,
+                                                       initial_dag);
     }
 
   } /* namespace learning */

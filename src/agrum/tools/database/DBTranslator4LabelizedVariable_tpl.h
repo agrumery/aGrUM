@@ -62,8 +62,10 @@ namespace gum {
        std::size_t max_dico_entries,
        const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              true,
+                              max_dico_entries,
+                              alloc),
         variable__("var", "", 0) {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
@@ -220,7 +222,7 @@ namespace gum {
           const DBTranslator4LabelizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        variable__ = from.variable__;
+        variable__                     = from.variable__;
       }
 
       return *this;
@@ -234,7 +236,7 @@ namespace gum {
           DBTranslator4LabelizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        variable__ = std::move(from.variable__);
+        variable__                     = std::move(from.variable__);
       }
 
       return *this;
@@ -297,7 +299,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     bool DBTranslator4LabelizedVariable< ALLOC >::needsReordering() const {
       // if the variable contains only numbers, they should be increasing
-      const auto& labels = variable__.labels();
+      const auto& labels      = variable__.labels();
       float       last_number = std::numeric_limits< float >::lowest();
       float       number;
       bool        only_numbers = true;
@@ -333,7 +335,7 @@ namespace gum {
       // check whether the variable contains only numeric values. In this
       // case, we have to sort the values by increasing number
       const auto&       labels = variable__.labels();
-      const std::size_t size = labels.size();
+      const std::size_t size   = labels.size();
 
       bool only_numbers = true;
       for (const auto& label: labels) {

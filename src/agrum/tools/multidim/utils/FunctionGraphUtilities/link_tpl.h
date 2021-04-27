@@ -124,7 +124,7 @@ namespace gum {
   template < typename T >
   void LinkedList< T >::clear() {
     Link< T >* curLink = firstLink__;
-    Link< T >* nl = nullptr;
+    Link< T >* nl      = nullptr;
     while (curLink) {
       nl = curLink->nextLink();
       delete curLink;
@@ -135,16 +135,16 @@ namespace gum {
   template < typename T >
   INLINE void LinkedList< T >::addLink(const T& elem) {
     Link< T >* newLink = new Link< T >(elem, firstLink__);
-    firstLink__ = newLink;
+    firstLink__        = newLink;
   }
 
   template < typename T >
   INLINE void LinkedList< T >::searchAndRemoveLink(const T& elem) {
-    Link< T >* curLink = firstLink__;
+    Link< T >* curLink  = firstLink__;
     Link< T >* prevLink = nullptr;
     while (curLink && curLink->element() != elem) {
       prevLink = curLink;
-      curLink = curLink->nextLink();
+      curLink  = curLink->nextLink();
     }
     if (curLink) {
       if (prevLink)

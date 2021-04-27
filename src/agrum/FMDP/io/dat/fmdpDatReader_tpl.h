@@ -40,9 +40,9 @@ namespace gum {
       FMDPReader< GUM_SCALAR >(fmdp, filename) {
     GUM_CONSTRUCTOR(FMDPDatReader);
 
-    fmdp__ = fmdp;
+    fmdp__       = fmdp;
     streamName__ = filename;
-    parseDone__ = false;
+    parseDone__  = false;
     //    ddf->putOnNoVariableCheckMode();
     factory__ = new FMDPFactory< GUM_SCALAR >(fmdp__);
     //~ factory__->setVerbose();
@@ -50,7 +50,7 @@ namespace gum {
 
     try {
       scanner__ = new MDPDAT::Scanner(streamName__.c_str());
-      parser__ = new MDPDAT::Parser(scanner__);
+      parser__  = new MDPDAT::Parser(scanner__);
       parser__->setFactory((AbstractFMDPFactory*)factory__);
     } catch (IOError e) { ioerror__ = true; }
   }

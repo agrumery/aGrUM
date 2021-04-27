@@ -88,7 +88,13 @@ namespace gum {
     class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
-      enum class NodeType : char { Precise, Credal, Vacuous, Indic };
+      enum class NodeType : char
+      {
+        Precise,
+        Credal,
+        Vacuous,
+        Indic
+      };
 
       /// @name Constructors / Destructors
       /// @{
@@ -133,9 +139,9 @@ namespace gum {
        * @param src_max_den The ( optional ) BayesNet which contains upper
        *probabilities.
        */
-      CredalNet(
-         const BayesNet< GUM_SCALAR >& src_min_num,
-         const BayesNet< GUM_SCALAR >& src_max_den = BayesNet< GUM_SCALAR >());
+      CredalNet(const BayesNet< GUM_SCALAR >& src_min_num,
+                const BayesNet< GUM_SCALAR >& src_max_den
+                = BayesNet< GUM_SCALAR >());
 
       /**
        * Destructor.

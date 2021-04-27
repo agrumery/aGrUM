@@ -44,7 +44,7 @@ namespace gum_tests {
        std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
       const std::size_t size = best_nodes.size();
       for (std::size_t i = std::size_t(0); i < size; ++i) {
-        sorted_nodes[i].first = gum::NodeId(i);
+        sorted_nodes[i].first  = gum::NodeId(i);
         sorted_nodes[i].second = all_scores[i][best_nodes[i]];
       }
 
@@ -92,17 +92,17 @@ namespace gum_tests {
       }
 
       double best_xscore = std::numeric_limits< double >::lowest();
-      best_node = 0;
+      best_node          = 0;
       for (std::size_t i = 0; i < size; ++i) {
-        double best = all_scores[i][0];
+        double best   = all_scores[i][0];
         best_nodes[i] = 0;
         for (std::size_t j = 1; j < size; ++j) {
           if (all_scores[i][j] > best) {
-            best = all_scores[i][j];
+            best          = all_scores[i][j];
             best_nodes[i] = j;
             if (best_xscore < best) {
               best_xscore = best;
-              best_node = i;
+              best_node   = i;
             }
           }
         }
@@ -181,7 +181,9 @@ namespace gum_tests {
       }
 
       gum::learning::GraphChange change(
-         gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
+         gum::learning::GraphChangeType::ARC_DELETION,
+         0,
+         1);
       TS_ASSERT(!selector.isChangeValid(change));
 
       for (const auto node: graph) {
@@ -217,7 +219,9 @@ namespace gum_tests {
       TS_ASSERT(best_score == all_scores[best_node][best_nodes[best_node]]);
 
       gum::learning::GraphChange change2(
-         gum::learning::GraphChangeType::ARC_ADDITION, 3, 1);
+         gum::learning::GraphChangeType::ARC_ADDITION,
+         3,
+         1);
       graph.addArc(change2.node1(), change2.node2());
       selector.applyChangeWithoutScoreUpdate(change2);
       selector.updateScoresAfterAppliedChanges();
@@ -237,7 +241,9 @@ namespace gum_tests {
       scores[1] = selector.bestScore(1);
       scores[3] = selector.bestScore(3);
       gum::learning::GraphChange change3(
-         gum::learning::GraphChangeType::ARC_ADDITION, 3, 2);
+         gum::learning::GraphChangeType::ARC_ADDITION,
+         3,
+         2);
       graph.addArc(change3.node1(), change3.node2());
       selector.applyChange(change3);
 
@@ -256,7 +262,9 @@ namespace gum_tests {
       scores[2] = selector.bestScore(2);
       scores[3] = selector.bestScore(3);
       gum::learning::GraphChange change4(
-         gum::learning::GraphChangeType::ARC_DELETION, 3, 1);
+         gum::learning::GraphChangeType::ARC_DELETION,
+         3,
+         1);
       graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
       selector.applyChange(change4);
 

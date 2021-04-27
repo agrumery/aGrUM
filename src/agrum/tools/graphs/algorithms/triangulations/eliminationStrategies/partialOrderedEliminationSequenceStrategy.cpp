@@ -92,7 +92,8 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool PartialOrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setPartialOrder(subsets_);
       return true;

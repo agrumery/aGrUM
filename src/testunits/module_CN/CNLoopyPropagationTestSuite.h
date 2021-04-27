@@ -123,8 +123,8 @@ namespace gum_tests {
     void testL2UInference() {
       initCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp =
-         gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp
+         = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
@@ -140,7 +140,7 @@ namespace gum_tests {
       std::vector< double >                          evi0(2, 0);
       evi0[0] = 1;
       std::vector< double > evi1(2, 0);
-      evi1[1] = 1;
+      evi1[1]     = 1;
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 
@@ -194,8 +194,8 @@ namespace gum_tests {
     void testL2UInferenceD() {
       initDCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp =
-         gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp
+         = gum::credal::CNLoopyPropagation< double >(*cn);
 
       //////////////////////////////////////////////////////
       // strong independence
@@ -256,8 +256,8 @@ namespace gum_tests {
     // with dynamic network
     void testL2UListener() {
       initDCNet();
-      gum::credal::CNLoopyPropagation< double > lp =
-         gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp
+         = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
@@ -285,8 +285,8 @@ namespace gum_tests {
     void testL2UInferenceFromBug() {
       initCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp =
-         gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp
+         = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       lp.eraseAllEvidence();

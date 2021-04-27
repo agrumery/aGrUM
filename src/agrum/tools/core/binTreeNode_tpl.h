@@ -59,16 +59,16 @@ namespace gum {
 
     // update the tree accordingly to the removal of this
     if (parent_)
-      parent_->children_[static_cast< int >(parent_dir_)] =
-         nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
+      parent_->children_[static_cast< int >(parent_dir_)]
+         = nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
 
     if (children_[0]) {
-      children_[0]->parent_ = nullptr;
+      children_[0]->parent_     = nullptr;
       children_[0]->parent_dir_ = BinTreeDir::NO_PARENT;
     }
 
     if (children_[1]) {
-      children_[1]->parent_ = nullptr;
+      children_[1]->parent_     = nullptr;
       children_[1]->parent_dir_ = BinTreeDir::NO_PARENT;
     }
   }
@@ -134,8 +134,8 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child.parent_ = this;
-    new_child.parent_dir_ = BinTreeDir::LEFT_CHILD;
+    new_child.parent_                                     = this;
+    new_child.parent_dir_                                 = BinTreeDir::LEFT_CHILD;
     children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] = &new_child;
   }
 
@@ -148,8 +148,8 @@ namespace gum {
     BinTreeNode< Val >* new_child = new BinTreeNode< Val >(val);
 
     // proceed to the chaining
-    new_child->parent_ = this;
-    new_child->parent_dir_ = BinTreeDir::LEFT_CHILD;
+    new_child->parent_                                    = this;
+    new_child->parent_dir_                                = BinTreeDir::LEFT_CHILD;
     children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] = new_child;
 
     return new_child;
@@ -166,7 +166,7 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child.parent_ = this;
+    new_child.parent_     = this;
     new_child.parent_dir_ = BinTreeDir::RIGHT_CHILD;
     children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] = &new_child;
   }
@@ -180,7 +180,7 @@ namespace gum {
     BinTreeNode< Val >* new_child = new BinTreeNode< Val >(val);
 
     // proceed to the chaining
-    new_child->parent_ = this;
+    new_child->parent_     = this;
     new_child->parent_dir_ = BinTreeDir::RIGHT_CHILD;
     children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] = new_child;
 
@@ -199,8 +199,8 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child.parent_ = this;
-    new_child.parent_dir_ = child_dir;
+    new_child.parent_                        = this;
+    new_child.parent_dir_                    = child_dir;
     children_[static_cast< int >(child_dir)] = &new_child;
   }
 
@@ -214,8 +214,8 @@ namespace gum {
     BinTreeNode< Val >* new_child = new BinTreeNode< Val >(val);
 
     // proceed to the chaining
-    new_child->parent_ = this;
-    new_child->parent_dir_ = child_dir;
+    new_child->parent_                       = this;
+    new_child->parent_dir_                   = child_dir;
     children_[static_cast< int >(child_dir)] = new_child;
 
     return new_child;
@@ -225,8 +225,8 @@ namespace gum {
   INLINE void BinTreeNode< Val >::eraseLeftLink() {
     if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
       children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]->parent_ = nullptr;
-      children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]->parent_dir_ =
-         BinTreeDir::NO_PARENT;
+      children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]->parent_dir_
+         = BinTreeDir::NO_PARENT;
       children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] = nullptr;
     }
   }
@@ -235,8 +235,8 @@ namespace gum {
   INLINE void BinTreeNode< Val >::eraseRightLink() {
     if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
       children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->parent_ = nullptr;
-      children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->parent_dir_ =
-         BinTreeDir::NO_PARENT;
+      children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->parent_dir_
+         = BinTreeDir::NO_PARENT;
       children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] = nullptr;
     }
   }
@@ -244,9 +244,9 @@ namespace gum {
   template < typename Val >
   INLINE void BinTreeNode< Val >::eraseLink(BinTreeDir tree_dir) {
     if (children_[static_cast< int >(tree_dir)]) {
-      children_[static_cast< int >(tree_dir)]->parent_ = nullptr;
+      children_[static_cast< int >(tree_dir)]->parent_     = nullptr;
       children_[static_cast< int >(tree_dir)]->parent_dir_ = BinTreeDir::NO_PARENT;
-      children_[static_cast< int >(tree_dir)] = nullptr;
+      children_[static_cast< int >(tree_dir)]              = nullptr;
     }
   }
 

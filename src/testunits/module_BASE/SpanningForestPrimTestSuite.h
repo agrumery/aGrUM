@@ -35,15 +35,15 @@ namespace gum_tests {
     void test1() {
       gum::UndiGraph g;
 
-      gum::NodeId id1 = g.addNode();
-      gum::NodeId id2 = g.addNode();
-      gum::NodeId id3 = g.addNode();
-      gum::NodeId id4 = g.addNode();
-      gum::NodeId id5 = g.addNode();
-      gum::NodeId id6 = g.addNode();
-      gum::NodeId id7 = g.addNode();
-      gum::NodeId id8 = g.addNode();
-      gum::NodeId id9 = g.addNode();
+      gum::NodeId id1  = g.addNode();
+      gum::NodeId id2  = g.addNode();
+      gum::NodeId id3  = g.addNode();
+      gum::NodeId id4  = g.addNode();
+      gum::NodeId id5  = g.addNode();
+      gum::NodeId id6  = g.addNode();
+      gum::NodeId id7  = g.addNode();
+      gum::NodeId id8  = g.addNode();
+      gum::NodeId id9  = g.addNode();
       gum::NodeId id10 = g.addNode();
       gum::NodeId id11 = g.addNode();
       g.addNode();

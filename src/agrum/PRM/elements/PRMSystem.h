@@ -259,8 +259,8 @@ namespace gum {
       PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
       /// Copy operator. Don't use it.
-      PRMSystem< GUM_SCALAR >&
-         operator=(const PRMSystem< GUM_SCALAR >& from) = delete;
+      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from)
+         = delete;
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.

@@ -61,7 +61,12 @@ namespace gum {
   class DAGCycleDetector {
     public:
     // the type of modification that can be applied to the graph
-    enum class ChangeType { ARC_ADDITION, ARC_DELETION, ARC_REVERSAL };
+    enum class ChangeType
+    {
+      ARC_ADDITION,
+      ARC_DELETION,
+      ARC_REVERSAL
+    };
 
     /// the base class indicating the possible changes
     class Change {

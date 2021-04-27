@@ -50,8 +50,8 @@ namespace gum {
         agg_type__(aggType), type__(new PRMType(rvType)),
         label__(std::shared_ptr< Idx >(new Idx(INT_MAX))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ =
-         PRMObject::LEFT_CAST() + type__->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+                      + PRMObject::RIGHT_CAST() + name;
       this->type__->variable().setName(name);
     }
 
@@ -64,8 +64,8 @@ namespace gum {
         agg_type__(aggType), type__(new PRMType(rvType)),
         label__(std::shared_ptr< Idx >(new Idx(label))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ =
-         PRMObject::LEFT_CAST() + type__->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+                      + PRMObject::RIGHT_CAST() + name;
       this->type__->variable().setName(name);
     }
 
@@ -244,15 +244,15 @@ namespace gum {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
-        cast =
-           new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
+        cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(),
+                                                    type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "this PRMAggregate can not have cast descendant");
       }
 
       cast->addParent(*this);
-      const DiscreteVariable& my_var = type().variable();
+      const DiscreteVariable& my_var   = type().variable();
       DiscreteVariable&       cast_var = cast->type().variable();
       Instantiation           inst(cast->cpf());
 

@@ -41,35 +41,39 @@
 namespace gum {
 
 
-  enum TaxiSimulationLandmark : Idx {
-    HOME = 0,
-    WORK = 1,
+  enum TaxiSimulationLandmark : Idx
+  {
+    HOME    = 0,
+    WORK    = 1,
     THEATER = 2,
-    CLUB = 3,
-    TAXI = 4
+    CLUB    = 3,
+    TAXI    = 4
   };
-  enum TaxiSimulationLandmarkX : Idx {
-    HOMEX = 0,
-    WORKX = 0,
+  enum TaxiSimulationLandmarkX : Idx
+  {
+    HOMEX    = 0,
+    WORKX    = 0,
     THEATERX = 3,
-    CLUBX = 4,
+    CLUBX    = 4,
     STATIONX = 2
   };
-  enum TaxiSimulationLandmarkY : Idx {
-    HOMEY = 0,
-    WORKY = 4,
+  enum TaxiSimulationLandmarkY : Idx
+  {
+    HOMEY    = 0,
+    WORKY    = 4,
     THEATERY = 0,
-    CLUBY = 4,
+    CLUBY    = 4,
     STATIONY = 1
   };
-  enum TaxiSimulationAction : Idx {
+  enum TaxiSimulationAction : Idx
+  {
     GoNorth = 1,
-    GoEast = 2,
+    GoEast  = 2,
     GoSouth = 3,
-    GoWest = 4,
-    PickUp = 5,
+    GoWest  = 4,
+    PickUp  = 5,
     PutDown = 6,
-    FillUp = 7
+    FillUp  = 7
   };
 
   // clang-format off

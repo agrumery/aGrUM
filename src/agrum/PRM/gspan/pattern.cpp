@@ -42,7 +42,8 @@ namespace gum {
 
         for (NodeId node = 1; node <= source.size(); ++node) {
           node_map.insert(
-             node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
+             node,
+             addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
         for (const auto& edge: source.code().codes)
@@ -197,8 +198,8 @@ namespace gum {
 
         while (!stack.empty()) {
           bool go = true;
-          u = stack.back().first;
-          v = stack.back().second;
+          u       = stack.back().first;
+          v       = stack.back().second;
           stack.pop_back();
 
           if ((u == 0) && (v == 0)) {

@@ -76,8 +76,8 @@ namespace gum {
         }
       }
 
-      Bijection< Idx, gspan::LabelData* >* new_labels =
-         new Bijection< Idx, gspan::LabelData* >();
+      Bijection< Idx, gspan::LabelData* >* new_labels
+         = new Bijection< Idx, gspan::LabelData* >();
       GSpan< GUM_SCALAR >::LabelSort my_sort(this);
       std::sort(nodes__.begin(), nodes__.end(), my_sort);
       std::sort(edges__.begin(), edges__.end(), my_sort);
@@ -100,23 +100,24 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void GSpan< GUM_SCALAR >::subgraph_mining__(
-       gspan::InterfaceGraph< GUM_SCALAR >& ig, gspan::Pattern& pat) {
+       gspan::InterfaceGraph< GUM_SCALAR >& ig,
+       gspan::Pattern&                      pat) {
       std::vector< gspan::Pattern* > stack;
       stack.push_back(&pat);
       // Pointers used in the following while
       gspan::Pattern*                                             p = nullptr;
-      HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* edge_count =
-         nullptr;
+      HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* edge_count
+         = nullptr;
       gspan::EdgeGrowth< GUM_SCALAR >*        edge_growth = nullptr;
-      Sequence< PRMInstance< GUM_SCALAR >* >* seq = nullptr;
-      PRMInstance< GUM_SCALAR >*              current = nullptr;
-      PRMInstance< GUM_SCALAR >*              neighbor = nullptr;
+      Sequence< PRMInstance< GUM_SCALAR >* >* seq         = nullptr;
+      PRMInstance< GUM_SCALAR >*              current     = nullptr;
+      PRMInstance< GUM_SCALAR >*              neighbor    = nullptr;
 
       // Neighbor_id is the neighbor's id in the interface graph and
       // neighbor_node
       // is its id in the rightmost path in the case of a backward edge growth
-      NodeId            current_id = 0;
-      NodeId            neighbor_node = 0;
+      NodeId            current_id     = 0;
+      NodeId            neighbor_node  = 0;
       gspan::LabelData* neighbor_label = 0;
 
       typename gspan::EdgeData< GUM_SCALAR >* edge_data = nullptr;
@@ -154,7 +155,7 @@ namespace gum {
             for (const auto node: r_path) {
               edge_count = count_vector[idx];
               // Retrieving the equivalent instance in the current match
-              current = seq->atPos((Idx)(node - 1));
+              current    = seq->atPos((Idx)(node - 1));
               current_id = ig.id(current);
               // Checking for edges not in p
 
@@ -168,21 +169,26 @@ namespace gum {
                   // Things we need to know: the LabelData data of the neighbour
                   // and,
                   // if it's a backward edge, its node id in the rightmost path
-                  edge_data = &(ig.edge(current_id, neighbor_id));
-                  neighbor_label =
-                     (neighbor == edge_data->u) ? edge_data->l_u : edge_data->l_v;
-                  neighbor_node =
-                     (seq->exists(neighbor)) ? seq->pos(neighbor) + 1 : 0;
+                  edge_data      = &(ig.edge(current_id, neighbor_id));
+                  neighbor_label = (neighbor == edge_data->u) ? edge_data->l_u
+                                                              : edge_data->l_v;
+                  neighbor_node
+                     = (seq->exists(neighbor)) ? seq->pos(neighbor) + 1 : 0;
                   // Adding the edge growth to the edge_growth hashtable
-                  gspan::EdgeGrowth< GUM_SCALAR > temp_growth(
-                     node, edge_data->l, neighbor_label, neighbor_node);
+                  gspan::EdgeGrowth< GUM_SCALAR > temp_growth(node,
+                                                              edge_data->l,
+                                                              neighbor_label,
+                                                              neighbor_node);
 
                   try {
                     edge_growth = (*edge_count)[temp_growth.toString()];
                     edge_growth->insert(current, neighbor);
                   } catch (NotFound&) {
-                    edge_growth = new gspan::EdgeGrowth< GUM_SCALAR >(
-                       node, edge_data->l, neighbor_label, neighbor_node);
+                    edge_growth
+                       = new gspan::EdgeGrowth< GUM_SCALAR >(node,
+                                                             edge_data->l,
+                                                             neighbor_label,
+                                                             neighbor_node);
                     edge_growth->insert(current, neighbor);
                     edge_count->insert(edge_growth->toString(), edge_growth);
                   }
@@ -211,8 +217,8 @@ namespace gum {
           // Calling subgraph_mining__ over children of p
           children = &(tree__.children(*p));
 
-          for (std::list< NodeId >::const_reverse_iterator child =
-                  children->rbegin();
+          for (std::list< NodeId >::const_reverse_iterator child
+               = children->rbegin();
                child != children->rend();
                ++child)
             stack.push_back(&(tree__.pattern(*child)));
@@ -230,7 +236,7 @@ namespace gum {
            ++root)
         stack.push_back(*root);
 
-      NodeId               id = 0;
+      NodeId               id       = 0;
       std::list< NodeId >* children = nullptr;
 
       while (!stack.empty()) {
@@ -252,8 +258,8 @@ namespace gum {
         // Now we need to find all the matches we can, using patterns__.
         // We start by the best Pattern and add it's maximal independent set to
         // chosen__
-        GSpan< GUM_SCALAR >::MatchedInstances* matches =
-           new GSpan< GUM_SCALAR >::MatchedInstances();
+        GSpan< GUM_SCALAR >::MatchedInstances* matches
+           = new GSpan< GUM_SCALAR >::MatchedInstances();
         Sequence< PRMInstance< GUM_SCALAR >* >* match = nullptr;
 
         for (const auto node: tree().max_indep_set(*(patterns__.front()))) {
@@ -434,8 +440,8 @@ namespace gum {
     INLINE bool
        GSpan< GUM_SCALAR >::isEdgeEligible__(gspan::EdgeData< GUM_SCALAR >* e) {
       return (graph__->edges(e->l).size() >= 2)
-             && (graph__->nodes(e->l_u).size() >= 2)
-             && (graph__->nodes(e->l_v).size() >= 2);
+          && (graph__->nodes(e->l_u).size() >= 2)
+          && (graph__->nodes(e->l_v).size() >= 2);
     }
 
     // LalbeSort

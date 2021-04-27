@@ -94,11 +94,11 @@ namespace gum {
       // save E(X) if we don't save vertices
       if (!infE__::storeVertices_ && !l_modal_[tId].empty()) {
         std::string var_name = workingSet_[tId]->variable(id).name();
-        auto        delim = var_name.find_first_of("_");
-        var_name = var_name.substr(0, delim);
+        auto        delim    = var_name.find_first_of("_");
+        var_name             = var_name.substr(0, delim);
 
         if (l_modal_[tId].exists(var_name)) {
-          GUM_SCALAR exp = 0;
+          GUM_SCALAR exp   = 0;
           Size       vsize = Size(vertex.size());
 
           for (Size mod = 0; mod < vsize; mod++)
@@ -111,7 +111,7 @@ namespace gum {
       }   // end of : if modal (map) not empty
 
       bool newOne = false;
-      bool added = false;
+      bool added  = false;
       bool result = false;
       // for burn in, we need to keep checking on local marginals and not global
       // ones
@@ -124,7 +124,7 @@ namespace gum {
       for (Size mod = 0; mod < vsize; mod++) {
         if (vertex[mod] < l_marginalMin_[tId][id][mod]) {
           l_marginalMin_[tId][id][mod] = vertex[mod];
-          newOne = true;
+          newOne                       = true;
 
           if (infE__::storeBNOpt_ && !infE__::evidence_.exists(id)) {
             std::vector< Size > key(3);
@@ -138,7 +138,7 @@ namespace gum {
 
         if (vertex[mod] > l_marginalMax_[tId][id][mod]) {
           l_marginalMax_[tId][id][mod] = vertex[mod];
-          newOne = true;
+          newOne                       = true;
 
           if (infE__::storeBNOpt_ && !infE__::evidence_.exists(id)) {
             std::vector< Size > key(3);
@@ -192,9 +192,9 @@ namespace gum {
        updateThreadCredalSets__(const NodeId&                    id,
                                 const std::vector< GUM_SCALAR >& vertex,
                                 const bool&                      elimRedund) {
-      int   tId = getThreadNumber();
+      int   tId           = getThreadNumber();
       auto& nodeCredalSet = l_marginalSets_[tId][id];
-      Size  dsize = Size(vertex.size());
+      Size  dsize         = Size(vertex.size());
 
       bool eq = true;
 
@@ -231,11 +231,11 @@ namespace gum {
          nodeCredalSet.begin(),
          nodeCredalSet.end(),
          [&](const std::vector< GUM_SCALAR >& v) -> bool {
-           for (auto jt = v.cbegin(),
-                     jtEnd = v.cend(),
-                     minIt = l_marginalMin_[tId][id].cbegin(),
+           for (auto jt       = v.cbegin(),
+                     jtEnd    = v.cend(),
+                     minIt    = l_marginalMin_[tId][id].cbegin(),
                      minItEnd = l_marginalMin_[tId][id].cend(),
-                     maxIt = l_marginalMax_[tId][id].cbegin(),
+                     maxIt    = l_marginalMax_[tId][id].cbegin(),
                      maxItEnd = l_marginalMax_[tId][id].cend();
                 jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
                 ++jt, ++minIt, ++maxIt) {
@@ -274,7 +274,7 @@ namespace gum {
 #pragma omp parallel
       {
         int  threadId = getThreadNumber();
-        long nsize = long(workingSet_[threadId]->size());
+        long nsize    = long(workingSet_[threadId]->size());
 
 #pragma omp for
 
@@ -307,7 +307,7 @@ namespace gum {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        int  tId = getThreadNumber();
+        int  tId   = getThreadNumber();
         long nsize = long(workingSet_[tId]->size());
 
 #pragma omp for
@@ -319,12 +319,12 @@ namespace gum {
             // on min
             delta = this->marginalMin_[i][j] - this->oldMarginalMin_[i][j];
             delta = (delta < 0) ? (-delta) : delta;
-            tEps = (tEps < delta) ? delta : tEps;
+            tEps  = (tEps < delta) ? delta : tEps;
 
             // on max
             delta = this->marginalMax_[i][j] - this->oldMarginalMax_[i][j];
             delta = (delta < 0) ? (-delta) : delta;
-            tEps = (tEps < delta) ? delta : tEps;
+            tEps  = (tEps < delta) ? delta : tEps;
 
             this->oldMarginalMin_[i][j] = this->marginalMin_[i][j];
             this->oldMarginalMax_[i][j] = this->marginalMax_[i][j];
@@ -347,7 +347,7 @@ namespace gum {
 #pragma omp parallel
       {
         int  threadId = getThreadNumber();
-        long nsize = long(workingSet_[threadId]->size());
+        long nsize    = long(workingSet_[threadId]->size());
 
 #pragma omp for
 
@@ -379,7 +379,7 @@ namespace gum {
 #pragma omp parallel
       {
         int  threadId = getThreadNumber();
-        Size nsize = Size(workingSet_[threadId]->size());
+        Size nsize    = Size(workingSet_[threadId]->size());
 
 #pragma omp for
 
@@ -425,13 +425,13 @@ namespace gum {
                  i++) {   // i needs to be signed (due to omp with visual c++
                           // 15)
               std::string var_name = workingSet_[threadId]->variable(i).name();
-              auto        delim = var_name.find_first_of("_");
-              var_name = var_name.substr(0, delim);
+              auto        delim    = var_name.find_first_of("_");
+              var_name             = var_name.substr(0, delim);
 
               if (!l_modal_[threadId].exists(var_name)) continue;
 
               for (const auto& vertex: infE__::marginalSets_[i]) {
-                GUM_SCALAR exp = 0;
+                GUM_SCALAR exp   = 0;
                 Size       vsize = Size(vertex.size());
 
                 for (Size mod = 0; mod < vsize; mod++)
@@ -459,8 +459,8 @@ namespace gum {
           for (long i = 0; i < long(nsize);
                i++) {   // long instead of Idx due to omp for visual C++15
             std::string var_name = workingSet_[threadId]->variable(i).name();
-            auto        delim = var_name.find_first_of("_");
-            var_name = var_name.substr(0, delim);
+            auto        delim    = var_name.find_first_of("_");
+            var_name             = var_name.substr(0, delim);
 
             if (!l_modal_[threadId].exists(var_name)) continue;
 
@@ -504,8 +504,8 @@ namespace gum {
 
           for (Size tId = 0; tId < tsize; tId++) {
             if (l_marginalMin_[tId][i][j] == this->marginalMin_[i][j]) {
-              const std::vector< dBN* >& tOpts =
-                 l_optimalNet_[tId]->getBNOptsFromKey(keymin);
+              const std::vector< dBN* >& tOpts
+                 = l_optimalNet_[tId]->getBNOptsFromKey(keymin);
               Size osize = Size(tOpts.size());
 
               for (Size bn = 0; bn < osize; bn++) {
@@ -514,8 +514,8 @@ namespace gum {
             }
 
             if (l_marginalMax_[tId][i][j] == this->marginalMax_[i][j]) {
-              const std::vector< dBN* >& tOpts =
-                 l_optimalNet_[tId]->getBNOptsFromKey(keymax);
+              const std::vector< dBN* >& tOpts
+                 = l_optimalNet_[tId]->getBNOptsFromKey(keymax);
               Size osize = Size(tOpts.size());
 
               for (Size bn = 0; bn < osize; bn++) {

@@ -120,7 +120,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string UAIMNWriter< GUM_SCALAR >::factorBloc__(
-     const IMarkovNet< GUM_SCALAR >& MN, const Potential< GUM_SCALAR >& clikpot) {
+     const IMarkovNet< GUM_SCALAR >& MN,
+     const Potential< GUM_SCALAR >&  clikpot) {
     std::stringstream str;
 
     str << clikpot.domainSize() << " # {";

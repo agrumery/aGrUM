@@ -184,8 +184,8 @@ namespace gum {
      * @param x The variable to replace in
      * @param y The second variable to swap.
      */
-    virtual void replace_(const DiscreteVariable* x,
-                          const DiscreteVariable* y) = 0;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y)
+       = 0;
   };
 
   /**

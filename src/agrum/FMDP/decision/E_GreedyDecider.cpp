@@ -104,8 +104,8 @@ namespace gum {
   // ###################################################################
   ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
     double explo = (double)std::rand() / (double)RAND_MAX;
-    double temp =
-       std::pow((sss__ - (double)statecpt__.nbVisitedStates()) / sss__, 3.0);
+    double temp
+       = std::pow((sss__ - (double)statecpt__.nbVisitedStates()) / sss__, 3.0);
     double exploThreshold = temp < 0.1 ? 0.1 : temp;
 
     //      std::cout << exploThreshold << std::endl;

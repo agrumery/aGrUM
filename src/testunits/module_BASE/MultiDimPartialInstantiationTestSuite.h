@@ -170,8 +170,8 @@ namespace gum_tests {
       // construction of the output table
       gum::Potential< T >* t_out = new gum::Potential< T >;
       gum::Instantiation   partial_inst;
-      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars =
-         t_in.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars
+         = t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
@@ -210,8 +210,8 @@ namespace gum_tests {
       // construction of the output table
       gum::Potential< T* >* t_out = new gum::Potential< T* >;
       gum::Instantiation    partial_inst;
-      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars =
-         t_in.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars
+         = t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
@@ -250,8 +250,8 @@ namespace gum_tests {
       // construction of the output table
       gum::MultiDimArray< T >* t_out = new gum::MultiDimArray< T >;
       gum::Instantiation       partial_inst;
-      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars =
-         t_in.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars
+         = t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
@@ -290,8 +290,8 @@ namespace gum_tests {
       // construction of the output table
       gum::MultiDimArray< T* >* t_out = new gum::MultiDimArray< T* >;
       gum::Instantiation        partial_inst;
-      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars =
-         t_in.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& tin_vars
+         = t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
@@ -329,7 +329,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double > t1;
@@ -345,8 +345,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray< double >* t2 =
-         partialInstantiationMultiDimArray(&t1, inst_set);
+      gum::MultiDimArray< double >* t2
+         = partialInstantiationMultiDimArray(&t1, inst_set);
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
@@ -387,7 +387,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double > t1;
@@ -403,8 +403,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< double >* t2 =
-         partialInstantiationMultiDimImplementation(&t1, inst_set);
+      gum::MultiDimImplementation< double >* t2
+         = partialInstantiationMultiDimImplementation(&t1, inst_set);
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
@@ -445,7 +445,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double* > t1;
@@ -461,8 +461,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray< double* >* t2 =
-         partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
+      gum::MultiDimArray< double* >* t2
+         = partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
@@ -503,7 +503,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double* > t1;
@@ -519,8 +519,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< double* >* t2 =
-         partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
+      gum::MultiDimImplementation< double* >* t2
+         = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
@@ -563,7 +563,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double > t1;
@@ -579,8 +579,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< double >* t2 =
-         partialInstantiation(t1, inst_set);
+      gum::MultiDimImplementation< double >* t2
+         = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
@@ -622,7 +622,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimArray< double* > t1;
@@ -638,8 +638,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< double* >* t2 =
-         partialInstantiation(t1, inst_set);
+      gum::MultiDimImplementation< double* >* t2
+         = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
@@ -679,7 +679,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< double > t1;
@@ -695,8 +695,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential< double >* t2 =
-         new gum::Potential< double >(partialInstantiation(t1, inst_set));
+      gum::Potential< double >* t2
+         = new gum::Potential< double >(partialInstantiation(t1, inst_set));
       gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
@@ -736,7 +736,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< double* > t1;
@@ -752,8 +752,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential< double* >* t2 =
-         new gum::Potential< double* >(partialInstantiation(t1, inst_set));
+      gum::Potential< double* >* t2
+         = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
       gum::Potential< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
@@ -793,7 +793,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::MultiDimPartialInstantiation< double, gum::Potential > MDPI;

@@ -72,8 +72,8 @@ namespace gum {
      * @param MN The Markov Network writed in output.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream&                   output,
-                       const IMarkovNet< GUM_SCALAR >& MN) = 0;
+    virtual void write(std::ostream& output, const IMarkovNet< GUM_SCALAR >& MN)
+       = 0;
 
     /**
      * Writes a Markov Network in the file referenced by filePath.
@@ -85,7 +85,8 @@ namespace gum {
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void write(const std::string&              filePath,
-                       const IMarkovNet< GUM_SCALAR >& MN) = 0;
+                       const IMarkovNet< GUM_SCALAR >& MN)
+       = 0;
   };
 
 

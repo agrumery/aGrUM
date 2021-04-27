@@ -65,8 +65,8 @@ namespace gum {
   class ShaferShenoyLIMIDInference:
       public InfluenceDiagramInference< GUM_SCALAR > {
     using PhiNodeProperty = NodeProperty< DecisionPotential< GUM_SCALAR > >;
-    using PsiArcProperty = ArcProperty< DecisionPotential< GUM_SCALAR > >;
-    using SetOfVars = Set< const DiscreteVariable* >;
+    using PsiArcProperty  = ArcProperty< DecisionPotential< GUM_SCALAR > >;
+    using SetOfVars       = Set< const DiscreteVariable* >;
 
 
     public:
@@ -178,7 +178,7 @@ namespace gum {
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;
-    std::vector< NodeId >  solvabiltyOrder_;
+    std::vector< NodeId >  solvabilityOrder_;
     std::vector< NodeId >  noForgettingOrder_;
 
     private:
@@ -202,6 +202,10 @@ namespace gum {
                               PsiArcProperty&  psi,
                               NodeId           fromClique,
                               NodeId           toClique);
+    void transmittingFinalMessage_(PhiNodeProperty& phi,
+                                   PsiArcProperty&  psi,
+                                   NodeId           fromClique,
+                                   NodeId           toClique);
     void distributingMessage_(PhiNodeProperty& phi,
                               PsiArcProperty&  psi,
                               NodeId           rootClique);

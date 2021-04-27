@@ -7,7 +7,7 @@
 #define xstrfy( s ) strfy( s )
 #define strfy( x ) #x
 
-#define GET_RESSOURCES_PATH( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" x
+#define GET_RESSOURCES_PATH( relpath ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" relpath
 #define XGET_RESSOURCES_PATH( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" xstrfy( x )
 

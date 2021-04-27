@@ -102,8 +102,8 @@ namespace gum {
     Bijection< const DiscreteVariable*,
                const MultiDimFunctionGraph< GUM_SCALAR >* >
        pxi;
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            Vold->variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = Vold->variablesSequence().beginSafe();
          varIter != Vold->variablesSequence().endSafe();
          ++varIter) {
       pxi.insert(
@@ -112,7 +112,8 @@ namespace gum {
     }
 
     TreeRegress< GUM_SCALAR, std::multiplies, std::plus > tr(
-       Vold, pxi);   //, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
+       Vold,
+       pxi);   //, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
     return tr.compute();
   }
 
@@ -178,7 +179,8 @@ namespace gum {
                   SetTerminalNodePolicy >
        argmaxope(f1, f2);
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       ret = argmaxope.compute();
+       ret
+       = argmaxope.compute();
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }

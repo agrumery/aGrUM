@@ -96,7 +96,7 @@ namespace gum {
   void LazyPropagation< GUM_SCALAR >::setTriangulation(
      const Triangulation& new_triangulation) {
     delete triangulation__;
-    triangulation__ = new_triangulation.newFactory();
+    triangulation__    = new_triangulation.newFactory();
     is_new_jt_needed__ = true;
     this->setOutdatedStructureState_();
   }
@@ -141,8 +141,8 @@ namespace gum {
           break;
 
         case RelevantPotentialsFinderType::FIND_ALL:
-          findRelevantPotentials__ =
-             &LazyPropagation< GUM_SCALAR >::findRelevantPotentialsGetAll__;
+          findRelevantPotentials__
+             = &LazyPropagation< GUM_SCALAR >::findRelevantPotentialsGetAll__;
           break;
 
         default:
@@ -214,7 +214,8 @@ namespace gum {
       // be updated as well, in particular its step 2.
       switch (type) {
         case FindBarrenNodesType::FIND_BARREN_NODES:
-        case FindBarrenNodesType::FIND_NO_BARREN_NODES: break;
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES:
+          break;
 
         default:
           GUM_ERROR(InvalidArgument,
@@ -540,8 +541,8 @@ namespace gum {
     // indicate, for each node of the moral graph a clique in JT__ that can
     // contain its conditional probability table
     node_to_clique__.clear();
-    const std::vector< NodeId >& JT_elim_order =
-       triangulation__->eliminationOrder();
+    const std::vector< NodeId >& JT_elim_order
+       = triangulation__->eliminationOrder();
     NodeProperty< int > elim_order(Size(JT_elim_order.size()));
     for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size;
          ++i)
@@ -550,11 +551,11 @@ namespace gum {
     for (const auto node: graph__) {
       // get the variables in the potential of node (and its parents)
       NodeId first_eliminated_node = node;
-      int    elim_number = elim_order[first_eliminated_node];
+      int    elim_number           = elim_order[first_eliminated_node];
 
       for (const auto parent: dag.parents(node)) {
         if (graph__.existsNode(parent) && (elim_order[parent] < elim_number)) {
-          elim_number = elim_order[parent];
+          elim_number           = elim_order[parent];
           first_eliminated_node = parent;
         }
       }
@@ -564,7 +565,8 @@ namespace gum {
       // contains node and all of its parents => it can contain the potential
       // assigned to the node in the BN
       node_to_clique__.insert(
-         node, triangulation__->createdJunctionTreeClique(first_eliminated_node));
+         node,
+         triangulation__->createdJunctionTreeClique(first_eliminated_node));
     }
 
     // do the same for the nodes that received evidence. Here, we only store
@@ -578,11 +580,11 @@ namespace gum {
 
       if (!pars.empty()) {
         NodeId first_eliminated_node = *(pars.begin());
-        int    elim_number = elim_order[first_eliminated_node];
+        int    elim_number           = elim_order[first_eliminated_node];
 
         for (const auto parent: pars) {
           if (elim_order[parent] < elim_number) {
-            elim_number = elim_order[parent];
+            elim_number           = elim_order[parent];
             first_eliminated_node = parent;
           }
         }
@@ -610,16 +612,17 @@ namespace gum {
         // the clique we are looking for is the one that was created when
         // the first element of nodeset was eliminated
         NodeId first_eliminated_node = *(nodeset.begin());
-        int    elim_number = elim_order[first_eliminated_node];
+        int    elim_number           = elim_order[first_eliminated_node];
         for (const auto node: nodeset) {
           if (elim_order[node] < elim_number) {
-            elim_number = elim_order[node];
+            elim_number           = elim_order[node];
             first_eliminated_node = node;
           }
         }
 
         joint_target_to_clique__.insert(
-           set, triangulation__->createdJunctionTreeClique(first_eliminated_node));
+           set,
+           triangulation__->createdJunctionTreeClique(first_eliminated_node));
       }
     }
 
@@ -678,7 +681,7 @@ namespace gum {
     // here, beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
     // removed from the potential
-    const auto& evidence = this->evidence();
+    const auto& evidence      = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
     for (const auto node: dag) {
       if (graph__.exists(node) || hard_ev_nodes__.contains(node)) {
@@ -722,8 +725,9 @@ namespace gum {
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential >
                combine_and_project(combination_op__, LPNewprojPotential);
-            PotentialSet__ new_cpt_list =
-               combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
+            PotentialSet__ new_cpt_list
+               = combine_and_project.combineAndProject(marg_cpt_set,
+                                                       hard_variables);
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
@@ -773,7 +777,9 @@ namespace gum {
   /// invalidate all the messages sent from a given clique
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::diffuseMessageInvalidations__(
-     NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques) {
+     NodeId   from_id,
+     NodeId   to_id,
+     NodeSet& invalidated_cliques) {
     // invalidate the current clique
     invalidated_cliques.insert(to_id);
 
@@ -918,7 +924,7 @@ namespace gum {
     // performing the new projections. Idem for hard_ev_projected_CPTs__
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
       const auto&                    variables = cpt.variablesSequence();
       Set< const DiscreteVariable* > hard_variables;
       PotentialSet__                 marg_cpt_set{&cpt};
@@ -933,8 +939,8 @@ namespace gum {
       // perform the combination of those potentials and their projection
       MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential >
                      combine_and_project(combination_op__, LPNewprojPotential);
-      PotentialSet__ new_cpt_list =
-         combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
+      PotentialSet__ new_cpt_list
+         = combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
 
       // there should be only one potential in new_cpt_list
       if (new_cpt_list.size() != 1) {
@@ -954,7 +960,7 @@ namespace gum {
     // update the constants
     const auto& hard_evidence = this->hardEvidence();
     for (auto& node_cst: constants__) {
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node_cst.first);
+      const Potential< GUM_SCALAR >& cpt       = bn.cpt(node_cst.first);
       const auto&                    variables = cpt.variablesSequence();
       Instantiation                  inst;
       for (const auto var: variables)
@@ -989,9 +995,9 @@ namespace gum {
     // put in a vector these cliques and their size
     std::vector< std::pair< NodeId, Size > > possible_roots(clique_targets.size());
     const auto&                              bn = this->BN();
-    std::size_t                              i = 0;
+    std::size_t                              i  = 0;
     for (const auto clique_id: clique_targets) {
-      const auto& clique = JT__->clique(clique_id);
+      const auto& clique   = JT__->clique(clique_id);
       Size        dom_size = 1;
       for (const auto node: clique) {
         dom_size *= bn.variable(node).domainSize();
@@ -1010,14 +1016,14 @@ namespace gum {
 
     // pick up the clique with the smallest size in each connected component
     NodeProperty< bool >                  marked = JT__->nodesProperty(false);
-    std::function< void(NodeId, NodeId) > diffuse_marks =
-       [&marked, &diffuse_marks, this](NodeId node, NodeId from) {
-         if (!marked[node]) {
-           marked[node] = true;
-           for (const auto neigh: JT__->neighbours(node))
-             if ((neigh != from) && !marked[neigh]) diffuse_marks(neigh, node);
-         }
-       };
+    std::function< void(NodeId, NodeId) > diffuse_marks
+       = [&marked, &diffuse_marks, this](NodeId node, NodeId from) {
+           if (!marked[node]) {
+             marked[node] = true;
+             for (const auto neigh: JT__->neighbours(node))
+               if ((neigh != from) && !marked[neigh]) diffuse_marks(neigh, node);
+           }
+         };
     roots__.clear();
     for (const auto xclique: possible_roots) {
       NodeId clique = xclique.first;
@@ -1071,8 +1077,8 @@ namespace gum {
                               this->softEvidenceNodes(),
                               requisite_nodes);
     for (auto iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter) {
-      const Sequence< const DiscreteVariable* >& vars =
-         (**iter).variablesSequence();
+      const Sequence< const DiscreteVariable* >& vars
+         = (**iter).variablesSequence();
       bool found = false;
       for (const auto var: vars) {
         if (requisite_nodes.exists(bn.nodeId(*var))) {
@@ -1151,7 +1157,8 @@ namespace gum {
         findRelevantPotentialsGetAll__(pot_list, kept_vars);
         break;
 
-      default: GUM_ERROR(FatalError, "not implemented yet");
+      default:
+        GUM_ERROR(FatalError, "not implemented yet");
     }
   }
 
@@ -1160,7 +1167,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Set< const Potential< GUM_SCALAR >* >
      LazyPropagation< GUM_SCALAR >::removeBarrenVariables__(
-        PotentialSet__& pot_list, Set< const DiscreteVariable* >& del_vars) {
+        PotentialSet__&                 pot_list,
+        Set< const DiscreteVariable* >& del_vars) {
     // remove from del_vars the variables that received some evidence:
     // only those that did not received evidence can be barren variables
     Set< const DiscreteVariable* > the_del_vars = del_vars;
@@ -1245,9 +1253,10 @@ namespace gum {
     // create a combine and project operator that will perform the
     // marginalization
     MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(
-       combination_op__, projection_op__);
-    PotentialSet__ new_pot_list =
-       combine_and_project.combineAndProject(pot_list, del_vars);
+       combination_op__,
+       projection_op__);
+    PotentialSet__ new_pot_list
+       = combine_and_project.combineAndProject(pot_list, del_vars);
 
     // remove all the potentials that were created due to projections of
     // barren nodes and that are not part of the new_pot_list: these
@@ -1291,7 +1300,7 @@ namespace gum {
 
     // get the set of variables that need be removed from the potentials
     const NodeSet&                 from_clique = JT__->clique(from_id);
-    const NodeSet&                 separator = JT__->separator(from_id, to_id);
+    const NodeSet&                 separator   = JT__->separator(from_id, to_id);
     Set< const DiscreteVariable* > del_vars(from_clique.size());
     Set< const DiscreteVariable* > kept_vars(separator.size());
     const auto&                    bn = this->BN();
@@ -1356,7 +1365,7 @@ namespace gum {
     }
 
     separator_potentials__[arc] = std::move(new_pot_list);
-    messages_computed__[arc] = true;
+    messages_computed__[arc]    = true;
   }
 
 
@@ -1534,24 +1543,24 @@ namespace gum {
 
       // 2/ the clique created by the first eliminated node among target is the
       // one we are looking for
-      const std::vector< NodeId >& JT_elim_order =
-         triangulation__->eliminationOrder();
+      const std::vector< NodeId >& JT_elim_order
+         = triangulation__->eliminationOrder();
 
       NodeProperty< int > elim_order(Size(JT_elim_order.size()));
       for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size;
            ++i)
         elim_order.insert(JT_elim_order[i], (int)i);
       NodeId first_eliminated_node = *(targets.begin());
-      int    elim_number = elim_order[first_eliminated_node];
+      int    elim_number           = elim_order[first_eliminated_node];
       for (const auto node: targets) {
         if (elim_order[node] < elim_number) {
-          elim_number = elim_order[node];
+          elim_number           = elim_order[node];
           first_eliminated_node = node;
         }
       }
 
-      clique_of_set =
-         triangulation__->createdJunctionTreeClique(first_eliminated_node);
+      clique_of_set
+         = triangulation__->createdJunctionTreeClique(first_eliminated_node);
 
 
       // 3/ check that clique_of_set contains the all the nodes in the target
@@ -1666,7 +1675,8 @@ namespace gum {
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& LazyPropagation< GUM_SCALAR >::jointPosterior_(
-     const NodeSet& wanted_target, const NodeSet& declared_target) {
+     const NodeSet& wanted_target,
+     const NodeSet& declared_target) {
     // check if we have already computed the posterior of wanted_target
     if (joint_target_posteriors__.exists(wanted_target))
       return *(joint_target_posteriors__[wanted_target]);
@@ -1698,15 +1708,15 @@ namespace gum {
   GUM_SCALAR LazyPropagation< GUM_SCALAR >::evidenceProbability() {
     // here, we should check that find_relevant_potential_type__ is equal to
     // FIND_ALL. Otherwise, the computations could be wrong.
-    RelevantPotentialsFinderType old_relevant_type =
-       find_relevant_potential_type__;
+    RelevantPotentialsFinderType old_relevant_type
+       = find_relevant_potential_type__;
 
     // if the relevant potentials finder is not equal to FIND_ALL, all the
     // current computations may lead to incorrect results, so we shall
     // discard them
     if (old_relevant_type != RelevantPotentialsFinderType::FIND_ALL) {
       find_relevant_potential_type__ = RelevantPotentialsFinderType::FIND_ALL;
-      is_new_jt_needed__ = true;
+      is_new_jt_needed__             = true;
       this->setOutdatedStructureState_();
     }
 
@@ -1723,8 +1733,8 @@ namespace gum {
     for (const auto root: roots__) {
       // get a node in the clique
       NodeId                   node = *(JT__->clique(root).begin());
-      Potential< GUM_SCALAR >* tmp = unnormalizedJointPosterior_(node);
-      GUM_SCALAR               sum = 0;
+      Potential< GUM_SCALAR >* tmp  = unnormalizedJointPosterior_(node);
+      GUM_SCALAR               sum  = 0;
       for (Instantiation iter(*tmp); !iter.end(); ++iter)
         sum += tmp->get(iter);
 

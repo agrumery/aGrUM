@@ -44,7 +44,7 @@ namespace gum_tests {
         target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 
-      const auto xrow = row.row();
+      const auto xrow     = row.row();
       const auto row_size = xrow.size();
       for (std::size_t col = std::size_t(0); col < row_size; ++col) {
         if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
@@ -227,7 +227,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
 
       gum::learning::RecordCounter<>* counter4 = counter.clone();
-      counts = counter4->counts(ids7);
+      counts                                   = counter4->counts(ids7);
       TS_ASSERT(counts.size() == std::size_t(9));
       TS_ASSERT(counts[0] == double(0));     // A=0, B=0
       TS_ASSERT(counts[1] == double(0));     // A=1, B=0
@@ -240,7 +240,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
       counter.clearRanges();
       counter3 = counter;
-      counts = counter3.counts(ids7);
+      counts   = counter3.counts(ids7);
       TS_ASSERT(counts.size() == std::size_t(9));
       TS_ASSERT(counts[0] == double(200));    // A=0, B=0
       TS_ASSERT(counts[1] == double(75));     // A=1, B=0
@@ -465,7 +465,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
 
       gum::learning::RecordCounter<>* counter4 = counter.clone();
-      counts = counter4->counts(ids7);
+      counts                                   = counter4->counts(ids7);
       TS_ASSERT(counts.size() == std::size_t(9));
       TS_ASSERT(counts[0] == double(0));     // A=0, B=0
       TS_ASSERT(counts[1] == double(0));     // A=1, B=0
@@ -762,7 +762,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
 
       gum::learning::RecordCounter<>* counter4 = counter.clone();
-      counts = counter4->counts(ids7);
+      counts                                   = counter4->counts(ids7);
       TS_ASSERT(counts.size() == std::size_t(9));
       TS_ASSERT(counts[0] == double(0));     // A=0, B=0
       TS_ASSERT(counts[1] == double(0));     // A=1, B=0
@@ -775,7 +775,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
       counter.clearRanges();
       counter3 = counter;
-      counts = counter3.counts(ids7);
+      counts   = counter3.counts(ids7);
       TS_ASSERT(counts.size() == std::size_t(9));
       TS_ASSERT(counts[0] == double(200));    // A=0, B=0
       TS_ASSERT(counts[1] == double(75));     // A=1, B=0
@@ -977,7 +977,7 @@ namespace gum_tests {
         TS_ASSERT(counts[8] == double(0));     // A=2, B=2
 
         gum::learning::RecordCounter<>* counter4 = counter.clone();
-        counts = counter4->counts(ids7);
+        counts                                   = counter4->counts(ids7);
         TS_ASSERT(counts.size() == std::size_t(9));
         TS_ASSERT(counts[0] == double(0));     // A=0, B=0
         TS_ASSERT(counts[1] == double(0));     // A=1, B=0
@@ -990,7 +990,7 @@ namespace gum_tests {
         TS_ASSERT(counts[8] == double(0));     // A=2, B=2
         counter.clearRanges();
         counter3 = counter;
-        counts = counter3.counts(ids7);
+        counts   = counter3.counts(ids7);
         TS_ASSERT(counts.size() == std::size_t(9));
         TS_ASSERT(counts[0] == double(200));    // A=0, B=0
         TS_ASSERT(counts[1] == double(75));     // A=1, B=0
@@ -1099,8 +1099,8 @@ namespace gum_tests {
       std::vector< double > xcounts(4, 0.0);
       int                   nb_row = 0;
       for (const auto& row: database) {
-        gum::Potential< double > proba =
-           infer__(bn, {std::size_t(0), std::size_t(1)}, row);
+        gum::Potential< double > proba
+           = infer__(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

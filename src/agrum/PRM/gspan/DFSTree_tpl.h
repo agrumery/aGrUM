@@ -51,8 +51,8 @@ namespace gum {
 
         for (const auto& edge: graph__->edges(&label)) {
           bool u_first = (edge->l_u->id < edge->l_v->id);
-          Idx  u_idx = (u_first) ? edge->l_u->id : edge->l_v->id;
-          Idx  v_idx = (!u_first) ? edge->l_u->id : edge->l_v->id;
+          Idx  u_idx   = (u_first) ? edge->l_u->id : edge->l_v->id;
+          Idx  v_idx   = (!u_first) ? edge->l_u->id : edge->l_v->id;
 
           bool found = false;
 
@@ -69,8 +69,8 @@ namespace gum {
             roots.insert(p, std::make_pair(u_idx, v_idx));
             roots_edges.insert(p, new Sequence< EdgeData< GUM_SCALAR >* >());
             roots_edges[p]->insert(edge);
-            DFSTree< GUM_SCALAR >::PatternData* data =
-               new DFSTree< GUM_SCALAR >::PatternData(p);
+            DFSTree< GUM_SCALAR >::PatternData* data
+               = new DFSTree< GUM_SCALAR >::PatternData(p);
             NodeId u = p->addNodeWithLabel((u_first) ? *edge->l_u : *edge->l_v);
             NodeId v = p->addNodeWithLabel((!u_first) ? *edge->l_u : *edge->l_v);
             p->addArc(u, v, label);
@@ -90,14 +90,15 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void DFSTree< GUM_SCALAR >::initialiaze_root__(
-         Pattern* p, Sequence< EdgeData< GUM_SCALAR >* >& edge_seq) {
+         Pattern*                             p,
+         Sequence< EdgeData< GUM_SCALAR >* >& edge_seq) {
         DFSTree< GUM_SCALAR >::PatternData* data = data__[p];
         std::vector< NodeId >               degree_list;
 
         for (auto iter = edge_seq.begin(); iter != edge_seq.end(); ++iter) {
           const auto&                             edge = *iter;
-          Sequence< PRMInstance< GUM_SCALAR >* >* seq =
-             new Sequence< PRMInstance< GUM_SCALAR >* >();
+          Sequence< PRMInstance< GUM_SCALAR >* >* seq
+             = new Sequence< PRMInstance< GUM_SCALAR >* >();
 
           // Creating the multiset of instances matching p
           bool u_first = (edge->l_u->id < edge->l_v->id);
@@ -157,8 +158,10 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      void DFSTree< GUM_SCALAR >::addChild__(
-         Pattern& p, Pattern* child, EdgeGrowth< GUM_SCALAR >& edge_growth) {
+      void
+         DFSTree< GUM_SCALAR >::addChild__(Pattern&                  p,
+                                           Pattern*                  child,
+                                           EdgeGrowth< GUM_SCALAR >& edge_growth) {
         // Adding child to the tree
         NodeId node = DiGraph::addNode();
         node_map__.insert(node, child);
@@ -185,7 +188,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void DFSTree< GUM_SCALAR >::checkGrowth__(
-         Pattern& p, Pattern* child, EdgeGrowth< GUM_SCALAR >& edge_growth) {
+         Pattern&                  p,
+         Pattern*                  child,
+         EdgeGrowth< GUM_SCALAR >& edge_growth) {
         NodeId v = edge_growth.v;
 
         // First we check if the edge is legal
@@ -224,8 +229,10 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      Pattern& DFSTree< GUM_SCALAR >::growPattern(
-         Pattern& p, EdgeGrowth< GUM_SCALAR >& edge_growth, Size min_freq) {
+      Pattern&
+         DFSTree< GUM_SCALAR >::growPattern(Pattern&                  p,
+                                            EdgeGrowth< GUM_SCALAR >& edge_growth,
+                                            Size                      min_freq) {
         Pattern* child = new Pattern(p);
 
         try {
@@ -236,11 +243,11 @@ namespace gum {
         }
 
         // Now we need to build the pattern data about child
-        DFSTree< GUM_SCALAR >::PatternData* data =
-           new DFSTree< GUM_SCALAR >::PatternData(child);
+        DFSTree< GUM_SCALAR >::PatternData* data
+           = new DFSTree< GUM_SCALAR >::PatternData(child);
         std::vector< NodeId >                                    degree_list;
-        NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& p_iso_map =
-           data__[&p]->iso_map;
+        NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& p_iso_map
+           = data__[&p]->iso_map;
         typename NodeProperty<
            std::pair< PRMInstance< GUM_SCALAR >*,
                       PRMInstance< GUM_SCALAR >* > >::iterator_safe match;
@@ -256,8 +263,8 @@ namespace gum {
               if (elt.second->exists(match.val().first)
                   && !(elt.second->exists(match.val().second))) {
                 // Let's see if the new match is already matched
-                Sequence< PRMInstance< GUM_SCALAR >* >* new_seq =
-                   new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
+                Sequence< PRMInstance< GUM_SCALAR >* >* new_seq
+                   = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
                 new_seq->insert(match.val().second);
 
                 if (is_new_seq__(*new_seq, data->iso_map)) {
@@ -272,8 +279,8 @@ namespace gum {
             } else {
               if (elt.second->exists(match.val().first)
                   && elt.second->exists(match.val().second)) {
-                Sequence< PRMInstance< GUM_SCALAR >* >* new_seq =
-                   new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
+                Sequence< PRMInstance< GUM_SCALAR >* >* new_seq
+                   = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
 
                 if (is_new_seq__(*new_seq, data->iso_map)) {
                   id = data->iso_graph.addNode();

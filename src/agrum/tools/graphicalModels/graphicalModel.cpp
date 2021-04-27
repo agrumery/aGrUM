@@ -35,8 +35,8 @@ namespace gum {
     GUM_CONS_CPY(GraphicalModel);
 
     if (from.propertiesMap__) {
-      propertiesMap__ =
-         new HashTable< std::string, std::string >(*(from.propertiesMap__));
+      propertiesMap__
+         = new HashTable< std::string, std::string >(*(from.propertiesMap__));
     }
   }
 
@@ -53,8 +53,8 @@ namespace gum {
       }
 
       if (source.propertiesMap__ != 0) {
-        propertiesMap__ =
-           new HashTable< std::string, std::string >(*(source.propertiesMap__));
+        propertiesMap__
+           = new HashTable< std::string, std::string >(*(source.propertiesMap__));
       }
     }
     return *this;

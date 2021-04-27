@@ -61,8 +61,8 @@ namespace gum_tests {
 
     void testStaticBoolean() {
       // Arrange
-      std::string labels[] = {"false", "true"};
-      std::string name = "boolean";
+      std::string labels[]   = {"false", "true"};
+      std::string name       = "boolean";
       std::string decription = "Boolean variable";
       // Act
       auto boolean = PRMType::boolean();
@@ -130,7 +130,7 @@ namespace gum_tests {
       // Arrange
       PRMType                      boolean{*boolean__};
       const PRMType&               const_boolean = boolean;
-      gum::DiscreteVariable const* variable = nullptr;
+      gum::DiscreteVariable const* variable      = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(const_boolean.variable()));
       // Assert
@@ -163,7 +163,7 @@ namespace gum_tests {
       // Arrange
       PRMType                      boolean{*boolean__};
       const PRMType&               const_boolean = boolean;
-      gum::DiscreteVariable const* variable = nullptr;
+      gum::DiscreteVariable const* variable      = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(*const_boolean));
       // Assert

@@ -115,7 +115,7 @@ namespace gum {
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Edge >::castToSize(const Edge& key) {
     return Size(key.first()) * HashFuncConst::pi
-           + Size(key.second()) * HashFuncConst::gold;
+         + Size(key.second()) * HashFuncConst::gold;
   }
 
   // Computes the hashed value of a key.
@@ -218,15 +218,15 @@ namespace gum {
 
   INLINE void Arc::operator-() {
     NodeId n_temp = n1;
-    n1 = n2;
-    n2 = n_temp;
+    n1            = n2;
+    n2            = n_temp;
   }
 
 
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Arc >::castToSize(const Arc& key) {
     return Size(key.first()) * HashFuncConst::pi
-           + Size(key.second()) * HashFuncConst::gold;
+         + Size(key.second()) * HashFuncConst::gold;
   }
 
   // Computes the hashed value of a key.

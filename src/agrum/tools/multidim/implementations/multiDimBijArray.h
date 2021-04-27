@@ -52,8 +52,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   class MultiDimBijArray: public MultiDimWithOffset< GUM_SCALAR > {
     public:
-    using VarBijection =
-       Bijection< const DiscreteVariable*, const DiscreteVariable* >;
+    using VarBijection
+       = Bijection< const DiscreteVariable*, const DiscreteVariable* >;
 
     // =========================================================================
     /// @name Constructors / Destructors

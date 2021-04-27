@@ -34,7 +34,7 @@ import pyAgrum as gum
 import pydotplus as dot
 import shutil
 
-from .proba_histogram import proba2histo,saveFigProba
+from .proba_histogram import proba2histo, saveFigProba
 
 
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
@@ -87,7 +87,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
       bgcol = gum._proba2bgcolor(nodeColor[n], cmapNode)
       fgcol = gum._proba2fgcolor(nodeColor[n], cmapNode)
       res = " : {0:2.5f}".format(
-          nodeColor[n] if showMsg is None else showMsg[n])
+        nodeColor[n] if showMsg is None else showMsg[n])
 
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
@@ -124,10 +124,12 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  graph.set_size(size)  
+  graph.set_size(size)
   return graph
 
-def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,dag=None):
+
+def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None,
+                    cmapNode=None, cmapArc=None, dag=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -159,7 +161,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   Returns
   -------
     the desired representation of the inference
-  """    
+  """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
@@ -183,14 +185,16 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
-      gum.getBlackInTheme()+"\";bgcolor=\"transparent\";"
-  dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
-      1000 * (stopTime - startTime))
-  dotstr += '  node [fillcolor="'+gum.config["notebook", "default_node_bgcolor"] + \
-      '", style=filled,color="' + \
-      gum.config["notebook", "default_node_fgcolor"]+'"];'+"\n"
-  dotstr += '  edge [color="'+gum.getBlackInTheme()+'"];'+"\n"
-  
+           gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+
+  if gum.config["notebook", "show_inference_time"]:
+    dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
+
+  dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \
+            '", style=filled,color="' + \
+            gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
+  dotstr += '  edge [color="' + gum.getBlackInTheme() + '"];' + "\n"
+
   showdag = bn.dag() if dag is None else dag
   for nid in showdag.nodes():
     name = bn.variable(nid).name()
@@ -212,14 +216,14 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
-        bgcol, fgcol)
+      bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + \
-          hashlib.md5(name.encode()).hexdigest() + "." + \
-          gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename,bgcol=bgcol)
+                 hashlib.md5(name.encode()).hexdigest() + "." + \
+                 gum.config["notebook", "graph_format"]
+      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
-          name, filename, colorattribute)
+        name, filename, colorattribute)
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
@@ -248,16 +252,15 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
         col = gum.getBlackInTheme()
 
     dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(
-        bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)
+      bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
 
-  
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
-  g.temp_dir=temp_dir
+  g.temp_dir = temp_dir
 
   return g
 
@@ -272,7 +275,7 @@ def dotize(aBN, name, format='pdf'):
   """
   if format not in ['pdf', 'png', 'fig', 'jpg', 'svg']:
     raise Exception(
-        "<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
+      "<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
 
   if isinstance(aBN, str):
     bn = gum.loadBN(aBN)

@@ -113,8 +113,8 @@ namespace gum {
      * new table which is the result of the combination of the two tables
      * passed in argument.
      */
-    MultiDimCombinationDefault(TABLE< GUM_SCALAR >* (*combine)(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+    MultiDimCombinationDefault(TABLE< GUM_SCALAR >* (
+       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /// Copy constructor
     MultiDimCombinationDefault(
@@ -153,8 +153,8 @@ namespace gum {
                          const Set< const TABLE< GUM_SCALAR >* >& set);
 
     /// Changes the function used for combining two TABLES.
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
+       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /// Returns the combination function currently used by the combinator.
     virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,

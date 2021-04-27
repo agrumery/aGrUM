@@ -106,11 +106,15 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_SCALAR >(
-         "i", MultiDimArrayString, &partialInstantiationMultiDimArray);
+         "i",
+         MultiDimArrayString,
+         &partialInstantiationMultiDimArray);
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR >(
-         "i", BaseNameString, &partialInstantiationMultiDimImplementation);
+         "i",
+         BaseNameString,
+         &partialInstantiationMultiDimImplementation);
     }
   }
 
@@ -127,7 +131,9 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_SCALAR* >(
-         "i", MultiDimArrayString, &partialInstantiationMultiDimArray4Pointers);
+         "i",
+         MultiDimArrayString,
+         &partialInstantiationMultiDimArray4Pointers);
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR* >(

@@ -74,14 +74,14 @@ namespace gum {
       INLINE O3NameSolver< GUM_SCALAR >& O3NameSolver< GUM_SCALAR >::operator=(
          const O3NameSolver< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
-        prm__ = src.prm__;
-        o3_prm__ = src.o3_prm__;
-        errors__ = src.errors__;
-        typeName__ = src.typeName__;
-        eltName__ = src.eltName__;
-        refName__ = src.refName__;
+        prm__           = src.prm__;
+        o3_prm__        = src.o3_prm__;
+        errors__        = src.errors__;
+        typeName__      = src.typeName__;
+        eltName__       = src.eltName__;
+        refName__       = src.refName__;
         interfaceName__ = src.interfaceName__;
-        className__ = src.className__;
+        className__     = src.className__;
         return *this;
       }
 
@@ -89,14 +89,14 @@ namespace gum {
       INLINE O3NameSolver< GUM_SCALAR >&
          O3NameSolver< GUM_SCALAR >::operator=(O3NameSolver< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
-        prm__ = std::move(src.prm__);
-        o3_prm__ = std::move(src.o3_prm__);
-        errors__ = std::move(src.errors__);
-        typeName__ = std::move(src.typeName__);
-        eltName__ = std::move(src.eltName__);
-        refName__ = std::move(src.refName__);
+        prm__           = std::move(src.prm__);
+        o3_prm__        = std::move(src.o3_prm__);
+        errors__        = std::move(src.errors__);
+        typeName__      = std::move(src.typeName__);
+        eltName__       = std::move(src.eltName__);
+        refName__       = std::move(src.refName__);
         interfaceName__ = std::move(src.interfaceName__);
-        className__ = std::move(src.className__);
+        className__     = std::move(src.className__);
         return *this;
       }
 
@@ -146,8 +146,8 @@ namespace gum {
           }
         }
 
-        auto lookup = "." + name.label();
-        auto found = Set< std::string >();
+        auto lookup  = "." + name.label();
+        auto found   = Set< std::string >();
         auto matches = std::vector< std::string >();
 
         // Trying with types
@@ -253,8 +253,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set< std::string >();
+        auto lookup  = "." + name.label();
+        auto found   = Set< std::string >();
         auto matches = std::vector< std::string >();
 
         // Trying with types
@@ -322,8 +322,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set< std::string >();
+        auto lookup  = "." + name.label();
+        auto found   = Set< std::string >();
         auto matches = std::vector< std::string >();
 
         // Trying with interfaces
@@ -392,9 +392,9 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
+        auto lookup  = "." + name.label();
         auto matches = std::vector< std::string >();
-        auto found = Set< std::string >();
+        auto found   = Set< std::string >();
 
         // Try to complete with Class
         for (auto c: prm__->classes()) {
@@ -469,8 +469,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set< std::string >();
+        auto lookup  = "." + name.label();
+        auto found   = Set< std::string >();
         auto matches = std::vector< std::string >();
 
         // Trying with interfaces

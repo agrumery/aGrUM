@@ -199,7 +199,7 @@ namespace gum {
     INLINE DBRow< T_DATA, ALLOC >&
        DBRow< T_DATA, ALLOC >::operator=(const DBRow< T_DATA, ALLOC >& from) {
       if (this != &from) {
-        row_ = from.row_;
+        row_    = from.row_;
         weight_ = from.weight_;
       }
       return *this;
@@ -211,7 +211,7 @@ namespace gum {
     INLINE DBRow< T_DATA, ALLOC >&
        DBRow< T_DATA, ALLOC >::operator=(DBRow< T_DATA, ALLOC >&& from) {
       if (this != &from) {
-        row_ = std::move(from.row_);
+        row_    = std::move(from.row_);
         weight_ = from.weight_;
       }
       return *this;

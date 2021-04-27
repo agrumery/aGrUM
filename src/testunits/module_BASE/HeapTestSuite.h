@@ -100,8 +100,8 @@ namespace gum_tests {
       gum::Heap< int, std::greater< int > > heap3{1, 10, 20};
 
       gum::Heap< int, std::greater< int > > heap4 = std::move(heap3);
-      heap3 = std::move(heap2);
-      heap2 = std::move(heap1);
+      heap3                                       = std::move(heap2);
+      heap2                                       = std::move(heap1);
       TS_ASSERT(heap2.size() == 4);
       TS_ASSERT(heap2.top() == 5);
     }

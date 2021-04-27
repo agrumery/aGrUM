@@ -55,8 +55,9 @@ namespace gum_tests {
     }
 
     void testConstructorWithTicks() {
-      gum::DiscretizedVariable< double > d(
-         "d", "Discretized variable", {3.1, 2.0, 4.0});
+      gum::DiscretizedVariable< double > d("d",
+                                           "Discretized variable",
+                                           {3.1, 2.0, 4.0});
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfLowerBound);

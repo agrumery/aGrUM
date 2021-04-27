@@ -99,8 +99,8 @@ namespace gum {
       double p1yz = std::get< 3 >(e1);
       double p2xz = std::get< 2 >(e2);
       double p2yz = std::get< 3 >(e2);
-      double I1 = std::get< 1 >(e1);
-      double I2 = std::get< 1 >(e2);
+      double I1   = std::get< 1 >(e1);
+      double I2   = std::get< 1 >(e2);
       // First, we look at the sign of information.
       // Then, the probility values
       // and finally the abs value of information.
@@ -167,12 +167,12 @@ namespace gum {
                      double >,
           GreaterPairOn2nd >& rank_) {
       NodeId  x, y;
-      EdgeSet edges = graph.edges();
+      EdgeSet edges      = graph.edges();
       Size    steps_init = edges.size();
 
       for (const Edge& edge: edges) {
-        x = edge.first();
-        y = edge.second();
+        x          = edge.first();
+        y          = edge.second();
         double Ixy = I.score(x, y);
 
         if (Ixy <= 0) {   //< K
@@ -184,8 +184,10 @@ namespace gum {
 
         ++current_step_;
         if (onProgress.hasListener()) {
-          GUM_EMIT3(
-             onProgress, (current_step_ * 33) / steps_init, 0., timer_.step());
+          GUM_EMIT3(onProgress,
+                    (current_step_ * 33) / steps_init,
+                    0.,
+                    timer_.step());
         }
       }
     }
@@ -216,9 +218,9 @@ namespace gum {
         while (rank_.top().second > 0.5) {
           best = rank_.pop();
 
-          const NodeId          x = std::get< 0 >(*(best.first));
-          const NodeId          y = std::get< 1 >(*(best.first));
-          const NodeId          z = std::get< 2 >(*(best.first));
+          const NodeId          x  = std::get< 0 >(*(best.first));
+          const NodeId          y  = std::get< 1 >(*(best.first));
+          const NodeId          z  = std::get< 2 >(*(best.first));
           std::vector< NodeId > ui = std::move(std::get< 3 >(*(best.first)));
 
           ui.push_back(z);
@@ -259,9 +261,9 @@ namespace gum {
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
           sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-           triples = getUnshieldedTriples_(graph, I, sep_set);
+           triples      = getUnshieldedTriples_(graph, I, sep_set);
       Size steps_orient = triples.size();
-      Size past_steps = current_step_;
+      Size past_steps   = current_step_;
 
       // marks always correspond to the head of the arc/edge. - is for a forbidden
       // arc, > for a mandatory arc
@@ -282,15 +284,15 @@ namespace gum {
       // has been applied
       while (i < triples.size()) {
         // if i not in do_not_reread
-        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple =
-           triples[i];
+        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple
+           = triples[i];
         NodeId x, y, z;
         x = std::get< 0 >(*triple.first);
         y = std::get< 1 >(*triple.first);
         z = std::get< 2 >(*triple.first);
 
         std::vector< NodeId >       ui;
-        std::pair< NodeId, NodeId > key = {x, y};
+        std::pair< NodeId, NodeId > key     = {x, y};
         std::pair< NodeId, NodeId > rev_key = {y, x};
         if (sep_set.exists(key)) {
           ui = sep_set[key];
@@ -320,8 +322,9 @@ namespace gum {
                 graph.eraseEdge(Edge(x, z));
                 // if we find a cycle, we force the competing edge
                 graph.addArc(z, x);
-                if (std::find(
-                       latent_couples__.begin(), latent_couples__.end(), Arc(z, x))
+                if (std::find(latent_couples__.begin(),
+                              latent_couples__.end(),
+                              Arc(z, x))
                     == latent_couples__.end()) {
                   latent_couples__.push_back(Arc(z, x));
                 }
@@ -340,8 +343,9 @@ namespace gum {
                 graph.eraseEdge(Edge(y, z));
                 // if we find a cycle, we force the competing edge
                 graph.addArc(z, y);
-                if (std::find(
-                       latent_couples__.begin(), latent_couples__.end(), Arc(z, y))
+                if (std::find(latent_couples__.begin(),
+                              latent_couples__.end(),
+                              Arc(z, y))
                     == latent_couples__.end()) {
                   latent_couples__.push_back(Arc(z, y));
                 }
@@ -389,8 +393,9 @@ namespace gum {
               graph.eraseEdge(Edge(z, y));
               // if we find a cycle, we force the competing edge
               graph.addArc(y, z);
-              if (std::find(
-                     latent_couples__.begin(), latent_couples__.end(), Arc(y, z))
+              if (std::find(latent_couples__.begin(),
+                            latent_couples__.end(),
+                            Arc(y, z))
                   == latent_couples__.end()) {
                 latent_couples__.push_back(Arc(y, z));
               }
@@ -411,8 +416,9 @@ namespace gum {
               graph.eraseEdge(Edge(z, x));
               // if we find a cycle, we force the competing edge
               graph.addArc(x, z);
-              if (std::find(
-                     latent_couples__.begin(), latent_couples__.end(), Arc(x, z))
+              if (std::find(latent_couples__.begin(),
+                            latent_couples__.end(),
+                            Arc(x, z))
                   == latent_couples__.end()) {
                 latent_couples__.push_back(Arc(x, z));
               }
@@ -447,9 +453,9 @@ namespace gum {
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
           sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-           triples = getUnshieldedTriples_(graph, I, sep_set);
+           triples      = getUnshieldedTriples_(graph, I, sep_set);
       Size steps_orient = triples.size();
-      Size past_steps = current_step_;
+      Size past_steps   = current_step_;
 
       NodeId i = 0;
       // list of elements that we shouldnt read again, ie elements that are
@@ -458,15 +464,15 @@ namespace gum {
       // has been applied
       while (i < triples.size()) {
         // if i not in do_not_reread
-        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple =
-           triples[i];
+        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple
+           = triples[i];
         NodeId x, y, z;
         x = std::get< 0 >(*triple.first);
         y = std::get< 1 >(*triple.first);
         z = std::get< 2 >(*triple.first);
 
         std::vector< NodeId >       ui;
-        std::pair< NodeId, NodeId > key = {x, y};
+        std::pair< NodeId, NodeId > key     = {x, y};
         std::pair< NodeId, NodeId > rev_key = {y, x};
         if (sep_set.exists(key)) {
           ui = sep_set[key];
@@ -619,7 +625,7 @@ namespace gum {
          proba_triples = getUnshieldedTriplesMIIC_(graph, I, sep_set, marks);
 
       Size steps_orient = proba_triples.size();
-      Size past_steps = current_step_;
+      Size past_steps   = current_step_;
 
       std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >
          best;
@@ -916,7 +922,7 @@ namespace gum {
           double Pb;
 
           // Computing Pnv
-          const double Ixyz_ui = I.score(x, y, z, ui);
+          const double Ixyz_ui    = I.score(x, y, z, ui);
           double       calc_expo1 = -Ixyz_ui * M_LN2;
           // if exponentials are too high or to low, crop them at |__maxLog|
           if (calc_expo1 > maxLog__) {
@@ -931,7 +937,7 @@ namespace gum {
           const double Ixz_ui = I.score(x, z, ui);
           const double Iyz_ui = I.score(y, z, ui);
 
-          calc_expo1 = -(Ixz_ui - Ixy_ui) * M_LN2;
+          calc_expo1        = -(Ixz_ui - Ixy_ui) * M_LN2;
           double calc_expo2 = -(Iyz_ui - Ixy_ui) * M_LN2;
 
           // if exponentials are too high or to low, crop them at maxLog__
@@ -966,9 +972,12 @@ namespace gum {
       std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
                  double >
            final;
-      auto tup = new std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >{
-         x, y, maxZ, ui};
-      final.first = tup;
+      auto tup
+         = new std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >{x,
+                                                                           y,
+                                                                           maxZ,
+                                                                           ui};
+      final.first  = tup;
       final.second = maxP;
       rank_.insert(final);
     }
@@ -988,7 +997,7 @@ namespace gum {
           for (NodeId y: graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
               std::vector< NodeId >       ui;
-              std::pair< NodeId, NodeId > key = {x, y};
+              std::pair< NodeId, NodeId > key     = {x, y};
               std::pair< NodeId, NodeId > rev_key = {y, x};
               if (sep_set.exists(key)) {
                 ui = sep_set[key];
@@ -1001,8 +1010,8 @@ namespace gum {
 
               double Ixyz_ui = I.score(x, y, z, ui);
               std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple;
-              auto tup = new std::tuple< NodeId, NodeId, NodeId >{x, y, z};
-              triple.first = tup;
+              auto tup      = new std::tuple< NodeId, NodeId, NodeId >{x, y, z};
+              triple.first  = tup;
               triple.second = Ixyz_ui;
               triples.push_back(triple);
             }
@@ -1034,7 +1043,7 @@ namespace gum {
           for (NodeId y: graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
               std::vector< NodeId >       ui;
-              std::pair< NodeId, NodeId > key = {x, y};
+              std::pair< NodeId, NodeId > key     = {x, y};
               std::pair< NodeId, NodeId > rev_key = {y, x};
               if (sep_set.exists(key)) {
                 ui = sep_set[key];
@@ -1078,16 +1087,16 @@ namespace gum {
                                    double > > proba_triples) {
       for (auto& triple: proba_triples) {
         NodeId x, y, z;
-        x = std::get< 0 >(*std::get< 0 >(triple));
-        y = std::get< 1 >(*std::get< 0 >(triple));
-        z = std::get< 2 >(*std::get< 0 >(triple));
+        x                 = std::get< 0 >(*std::get< 0 >(triple));
+        y                 = std::get< 1 >(*std::get< 0 >(triple));
+        z                 = std::get< 2 >(*std::get< 0 >(triple));
         const double Ixyz = std::get< 1 >(triple);
-        double       Pxz = std::get< 2 >(triple);
-        double       Pyz = std::get< 3 >(triple);
+        double       Pxz  = std::get< 2 >(triple);
+        double       Pyz  = std::get< 3 >(triple);
 
         if (Ixyz <= 0) {
           const double expo = std::exp(Ixyz);
-          const double P0 = (1 + expo) / (1 + 3 * expo);
+          const double P0   = (1 + expo) / (1 + 3 * expo);
           // distinguish betweeen the initialization and the update process
           if (Pxz == Pyz && Pyz == 0.5) {
             std::get< 2 >(triple) = P0;
@@ -1237,7 +1246,8 @@ namespace gum {
                                          PARAM_ESTIMATOR&        estimator,
                                          DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-         estimator, learnStructure(selector, initial_dag));
+         estimator,
+         learnStructure(selector, initial_dag));
     }
 
     void Miic::setMiicBehaviour() { this->usemiic__ = true; }

@@ -58,7 +58,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -77,8 +77,9 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {

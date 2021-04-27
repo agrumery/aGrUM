@@ -61,8 +61,8 @@ namespace gum {
     for (auto attrIter = conTab__.attrABeginSafe();
          attrIter != conTab__.attrAEndSafe();
          ++attrIter) {
-      double semiExpected =
-         (double)(attrIter.val()) / (double)this->nbObservation();
+      double semiExpected
+         = (double)(attrIter.val()) / (double)this->nbObservation();
       for (auto valIter = conTab__.attrBBeginSafe();
            valIter != conTab__.attrBEndSafe();
            ++valIter) {
@@ -81,10 +81,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   double Chi2TestPolicy< GUM_SCALAR >::score() const {
     if (this->isModified_()) computeScore();
-    double score =
-       1
-       - ChiSquare::probaChi2(
-          chi2Score__, (conTab__.attrASize() - 1) * (conTab__.attrBSize() - 1));
+    double score = 1
+                 - ChiSquare::probaChi2(chi2Score__,
+                                        (conTab__.attrASize() - 1)
+                                           * (conTab__.attrBSize() - 1));
     return score;
   }
 

@@ -51,8 +51,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
       theset = set__[operation_name];
@@ -105,10 +108,10 @@ namespace gum {
   OperatorRegister4MultiDim< GUM_SCALAR >&
      OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim< GUM_SCALAR >* container = nullptr;
-    static bool                                     first = true;
+    static bool                                     first     = true;
 
     if (first) {
-      first = false;
+      first     = false;
       container = new OperatorRegister4MultiDim< GUM_SCALAR >;
 
 #  ifdef GUM_DEBUG_MODE
@@ -135,8 +138,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >::~OperatorRegister4MultiDim() {
     // remove all the sets
-    for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter =
-            set__.beginSafe();
+    for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter
+         = set__.beginSafe();
          iter != set__.endSafe();
          ++iter)
       delete iter.val();
@@ -149,8 +152,10 @@ namespace gum {
      const std::string&                                            type1,
      const std::string&                                            type2,
      typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function) {
-    OperatorRegister4MultiDim< GUM_SCALAR >::Register().insert(
-       operation_name, type1, type2, function);
+    OperatorRegister4MultiDim< GUM_SCALAR >::Register().insert(operation_name,
+                                                               type1,
+                                                               type2,
+                                                               function);
   }
 
 } /* namespace gum */

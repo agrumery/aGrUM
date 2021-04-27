@@ -74,9 +74,9 @@ namespace gum {
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
           const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
-        graph_ = from.graph_;
-        constraint_ = from.constraint_;
-        legal_changes_ = from.legal_changes_;
+        graph_               = from.graph_;
+        constraint_          = from.constraint_;
+        legal_changes_       = from.legal_changes_;
         max_threads_number__ = from.max_threads_number__;
       }
       return *this;
@@ -88,9 +88,9 @@ namespace gum {
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
           GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
-        graph_ = std::move(from.graph_);
-        constraint_ = std::move(from.constraint_);
-        legal_changes_ = std::move(from.legal_changes_);
+        graph_               = std::move(from.graph_);
+        constraint_          = std::move(from.constraint_);
+        legal_changes_       = std::move(from.legal_changes_);
         max_threads_number__ = from.max_threads_number__;
       }
       return *this;

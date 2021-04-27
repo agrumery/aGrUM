@@ -160,8 +160,8 @@ namespace gum {
        DatabaseTable< ALLOC >::operator=(const DatabaseTable< ALLOC >& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(from);
-        translators__ = from.translators__;
-        ignored_cols__ = from.ignored_cols__;
+        translators__                                       = from.translators__;
+        ignored_cols__                                      = from.ignored_cols__;
       }
 
       return *this;
@@ -174,7 +174,7 @@ namespace gum {
        DatabaseTable< ALLOC >::operator=(DatabaseTable< ALLOC >&& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(std::move(from));
-        translators__ = std::move(from.translators__);
+        translators__  = std::move(from.translators__);
         ignored_cols__ = std::move(from.ignored_cols__);
       }
 
@@ -192,14 +192,14 @@ namespace gum {
       // would remain after each thread has processed its N rows. For instance,
       // if the database has 105 rows and there are 10 threads, each thread
       // should process 10 rows and there would remain 5 rows
-      const std::size_t db_size = this->rows_.size();
+      const std::size_t db_size    = this->rows_.size();
       std::size_t       nb_threads = db_size / this->min_nb_rows_per_thread_;
       if (nb_threads < 1)
         nb_threads = 1;
       else if (nb_threads > this->max_nb_threads_)
         nb_threads = this->max_nb_threads_;
       std::size_t nb_rows_par_thread = db_size / nb_threads;
-      std::size_t rest_rows = db_size - nb_rows_par_thread * nb_threads;
+      std::size_t rest_rows          = db_size - nb_rows_par_thread * nb_threads;
 
       // if there is just one thread, let it process all the rows
       if (nb_threads == 1) {
@@ -239,8 +239,9 @@ namespace gum {
       }
 
       // wait for the threads to complete their executions
-      std::for_each(
-         threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+      std::for_each(threads.begin(),
+                    threads.end(),
+                    std::mem_fn(&std::thread::join));
 
       // now, check if one exception has been raised
       bool exception_raised = false;
@@ -283,8 +284,9 @@ namespace gum {
         }
 
         // wait for the threads to complete their executions
-        std::for_each(
-           threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(),
+                      threads.end(),
+                      std::mem_fn(&std::thread::join));
 
         // rethrow the exception
         for (const auto& exc: func_exceptions) {
@@ -314,20 +316,21 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin,
-                                             std::size_t end) -> void {
+      auto reserve_lambda
+         = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {};
+      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      };
 
       // launch the threads executing the lambdas
       this->threadProcessDatabase__(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos =
-         translators__.insertTranslator(translator, input_column, unique_column);
+      const std::size_t pos
+         = translators__.insertTranslator(translator, input_column, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
@@ -343,8 +346,8 @@ namespace gum {
         const DBTranslatedValue missing = translators__[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda = [this, missing](std::size_t begin,
-                                           std::size_t end) -> void {
+        auto fill_lambda
+           = [this, missing](std::size_t begin, std::size_t end) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -358,8 +361,8 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda = [this](std::size_t begin,
-                                       std::size_t end) -> void {
+        auto undo_fill_lambda
+           = [this](std::size_t begin, std::size_t end) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
@@ -404,20 +407,21 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin,
-                                             std::size_t end) -> void {
+      auto reserve_lambda
+         = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {};
+      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      };
 
       // launch the threads executing the lambdas
       this->threadProcessDatabase__(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos =
-         translators__.insertTranslator(var, input_column, unique_column);
+      const std::size_t pos
+         = translators__.insertTranslator(var, input_column, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
@@ -453,20 +457,23 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin,
-                                             std::size_t end) -> void {
+      auto reserve_lambda
+         = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {};
+      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      };
 
       // launch the threads executing the lambdas
       this->threadProcessDatabase__(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos = translators__.insertTranslator(
-         var, input_column, missing_symbols, unique_column);
+      const std::size_t pos = translators__.insertTranslator(var,
+                                                             input_column,
+                                                             missing_symbols,
+                                                             unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
@@ -482,8 +489,8 @@ namespace gum {
         const DBTranslatedValue missing = translators__[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda = [this, missing](std::size_t begin,
-                                           std::size_t end) -> void {
+        auto fill_lambda
+           = [this, missing](std::size_t begin, std::size_t end) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -497,8 +504,8 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda = [this](std::size_t begin,
-                                       std::size_t end) -> void {
+        auto undo_fill_lambda
+           = [this](std::size_t begin, std::size_t end) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
@@ -551,8 +558,8 @@ namespace gum {
         } else {
           const std::size_t nb_trans = translators__.size();
 
-          auto erase_lambda = [this, nb_trans, kk](std::size_t begin,
-                                                   std::size_t end) -> void {
+          auto erase_lambda
+             = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
             for (std::size_t i = begin; i < end; ++i) {
               auto& row = this->rows_[i].row();
               if (this->translators__.isMissingValue(row[kk], kk)) {
@@ -616,7 +623,7 @@ namespace gum {
       // find the position of the translator that we look for. This
       // is variable kk below
       const std::size_t nb_trans = translators__.size();
-      const std::size_t kk = getKthIndex__(k, k_is_input_col);
+      const std::size_t kk       = getKthIndex__(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -644,7 +651,7 @@ namespace gum {
       // find the position of the translator that contains the variable.
       // This is variable kk below
       const std::size_t nb_trans = translators__.size();
-      const std::size_t kk = getKthIndex__(k, k_is_input_col);
+      const std::size_t kk       = getKthIndex__(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -668,7 +675,7 @@ namespace gum {
     void DatabaseTable< ALLOC >::setVariableNames(
        const std::vector< std::string, ALLOC< std::string > >& names,
        const bool from_external_object) {
-      const std::size_t size = names.size();
+      const std::size_t size     = names.size();
       const std::size_t nb_trans = translators__.size();
       if (!from_external_object) {
         if (nb_trans != size) {
@@ -757,9 +764,9 @@ namespace gum {
       std::iota(ignored_cols.begin(), ignored_cols.end(), 0);
 
       // remove from ignored_cols the elements of cols
-      for (std::size_t i = std::size_t(0),
+      for (std::size_t i  = std::size_t(0),
                        ii = highest - 1,
-                       k = std::size_t(0),
+                       k  = std::size_t(0),
                        kk = nb_trans - 1;
            i < highest;
            ++i, --ii) {
@@ -802,7 +809,7 @@ namespace gum {
                                           const bool        k_is_input_col) const {
       // find the position kk of the translator that contains the variable
       const std::size_t nb_trans = translators__.size();
-      const std::size_t kk = getKthIndex__(k, k_is_input_col);
+      const std::size_t kk       = getKthIndex__(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -841,7 +848,7 @@ namespace gum {
                                                  const bool k_is_input_col) const {
       // find the position kk of the translator that contains the variable
       const std::size_t nb_trans = translators__.size();
-      const std::size_t kk = getKthIndex__(k, k_is_input_col);
+      const std::size_t kk       = getKthIndex__(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -868,7 +875,7 @@ namespace gum {
                                          const bool        k_is_input_col) {
       // find the position kk of the translator that contains the variable
       const std::size_t nb_trans = translators__.size();
-      const std::size_t kk = getKthIndex__(k, k_is_input_col);
+      const std::size_t kk       = getKthIndex__(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -905,8 +912,8 @@ namespace gum {
       }
 
       // apply the translations
-      auto newtrans_lambda = [this, kk, &new_values](std::size_t begin,
-                                                     std::size_t end) -> void {
+      auto newtrans_lambda
+         = [this, kk, &new_values](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i) {
           auto& elt = this->rows_[i][kk].discr_val;
           if (elt != std::numeric_limits< std::size_t >::max())
@@ -984,8 +991,8 @@ namespace gum {
             break;
 
           case DBTranslatedValueType::CONTINUOUS: {
-            const IContinuousVariable& var =
-               static_cast< const IContinuousVariable& >(
+            const IContinuousVariable& var
+               = static_cast< const IContinuousVariable& >(
                   *(translators[i]->variable()));
             if (((var.lowerBoundAsDouble() > (double)row[i].cont_val)
                  || (var.upperBoundAsDouble() < (double)row[i].cont_val))
@@ -1097,7 +1104,8 @@ namespace gum {
       }
 
       IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(
-         std::move(rows), rows_have_missing_vals);
+         std::move(rows),
+         rows_have_missing_vals);
     }
 
 
@@ -1127,7 +1135,8 @@ namespace gum {
       }
 
       IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(
-         new_rows, rows_have_missing_vals);
+         new_rows,
+         rows_have_missing_vals);
     }
 
 

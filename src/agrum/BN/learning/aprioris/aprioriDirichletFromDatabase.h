@@ -81,8 +81,8 @@ namespace gum {
          const DatabaseTable< ALLOC >&        learning_db,
          const DBRowGeneratorParser< ALLOC >& apriori_parser,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            nodeId2columns
+         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor

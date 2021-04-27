@@ -41,14 +41,14 @@ namespace gum {
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
                            gum::Size default_domain_size) {
-    auto                       ds = default_domain_size;
+    auto                       ds        = default_domain_size;
     long                       range_min = 0;
     long                       range_max = long(ds) - 1;
     std::vector< std::string > labels;
     std::vector< GUM_SCALAR >  ticks;
     bool                       isUtil, isDeci, isChanc;
-    isUtil = false;
-    isDeci = false;
+    isUtil  = false;
+    isDeci  = false;
     isChanc = false;
 
     switch (*(node.begin())) {
@@ -60,20 +60,21 @@ namespace gum {
         isUtil = true;
         node.erase(0, 1);
         break;
-      default: isChanc = true;
+      default:
+        isChanc = true;
     }
 
     std::string name = node;
     if (*(node.rbegin()) == ']') {
       auto posBrack = node.find('[');
       if (posBrack != std::string::npos) {
-        name = node.substr(0, posBrack);
+        name               = node.substr(0, posBrack);
         const auto& s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
-        const auto& args = split(s_args, ",");
+        const auto& args   = split(s_args, ",");
         if (args.empty()) {   // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << node)
         } else if (args.size() == 1) {   // n[4]
-          ds = static_cast< Size >(std::stoi(args[0]));
+          ds        = static_cast< Size >(std::stoi(args[0]));
           range_min = 0;
           range_max = long(ds) - 1;
         } else if (args.size() == 2) {   // n[5,10]
@@ -94,7 +95,7 @@ namespace gum {
     } else if (*(node.rbegin()) == '}') {   // node like "n{one|two|three}"
       auto posBrack = node.find('{');
       if (posBrack != std::string::npos) {
-        name = node.substr(0, posBrack);
+        name   = node.substr(0, posBrack);
         labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
         if (labels.size() < 2) {
           GUM_ERROR(InvalidArgument, "Not enough labels in node " << node)
@@ -159,7 +160,7 @@ namespace gum {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
     for (const auto& chaine: split(dotlike, ";")) {
-      NodeId lastId = 0;
+      NodeId lastId   = 0;
       bool   notfirst = false;
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
@@ -174,7 +175,7 @@ namespace gum {
             }
           } else {
             notfirst = true;
-            forward = false;
+            forward  = false;
           }
           lastId = idVar;
         }
@@ -665,7 +666,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(
-     NodeId id, const std::string& new_name) {
+     NodeId             id,
+     const std::string& new_name) {
     variableMap__.changeName(id, new_name);
   }
 
@@ -899,7 +901,7 @@ namespace gum {
     if (clear) {
       temporalOrder__.clear();
 
-      std::vector< NodeId > order = decisionOrder();
+      std::vector< NodeId > order    = decisionOrder();
       NodeSet               nodeList = dag_.asNodeSet();
 
       for (auto i: order) {

@@ -93,8 +93,8 @@ namespace gum {
     /// @{
 
     /// Default constructor
-    MultiDimProjection(TABLE< GUM_SCALAR >* (*proj)(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    MultiDimProjection(TABLE< GUM_SCALAR >* (
+       *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// Copy constructor
     MultiDimProjection(const MultiDimProjection< GUM_SCALAR, TABLE >&);
@@ -135,12 +135,13 @@ namespace gum {
                  const Set< const TABLE< GUM_SCALAR >* >& del_vars);
 
     /// Changes the function used for projecting TABLES
-    void setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void setProjectFunction(TABLE< GUM_SCALAR >* (
+       *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// Returns the projection function currently used by the projector
     TABLE< GUM_SCALAR >* (*projectFunction())(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&);
+       const TABLE< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&);
 
     /**
      * @brief returns a rough estimate of the number of operations that will be

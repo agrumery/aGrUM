@@ -76,8 +76,8 @@ namespace gum {
         project() {
     rd__->copy(*src__);
 
-    for (SetIteratorSafe< const DiscreteVariable* > varIter =
-            delVars__.beginSafe();
+    for (SetIteratorSafe< const DiscreteVariable* > varIter
+         = delVars__.beginSafe();
          varIter != delVars__.endSafe();
          ++varIter) {
       const DiscreteVariable* curVar = *varIter;
@@ -105,11 +105,11 @@ namespace gum {
       // projetée
       if (rd__->node(rd__->root())->nodeVar() == curVar) {
         const InternalNode* curVarNode = rd__->node(rd__->root());
-        GUM_SCALAR          newVal = neutral__;
+        GUM_SCALAR          newVal     = neutral__;
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
              ++curVarModality)
-          newVal =
-             function__(newVal, rd__->nodeValue(curVarNode->son(curVarModality)));
+          newVal = function__(newVal,
+                              rd__->nodeValue(curVarNode->son(curVarModality)));
 
         NodeId newSonId = rd__->manager()->addTerminalNode(newVal);
 
@@ -142,11 +142,12 @@ namespace gum {
                 filo.push_back(oldSonId);
               } else {
                 const InternalNode* curVarNode = rd__->node(oldSonId);
-                GUM_SCALAR          newVal = neutral__;
+                GUM_SCALAR          newVal     = neutral__;
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                      ++curVarModality)
                   newVal = function__(
-                     newVal, rd__->nodeValue(curVarNode->son(curVarModality)));
+                     newVal,
+                     rd__->nodeValue(curVarNode->son(curVarModality)));
 
                 newSonId = rd__->manager()->addTerminalNode(newVal);
 

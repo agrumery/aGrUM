@@ -49,7 +49,8 @@ namespace gum {
       class O3prmrCommand {
         public:
         int line;
-        enum class RequestType : char {
+        enum class RequestType : char
+        {
           Observe,
           Unobserve,
           Query,
@@ -61,7 +62,7 @@ namespace gum {
         O3prmrCommand(const O3prmrCommand& c) : line(c.line) {}
         virtual ~O3prmrCommand() {}
 
-        virtual RequestType type() const = 0;
+        virtual RequestType type() const     = 0;
         virtual std::string toString() const = 0;
       };
 

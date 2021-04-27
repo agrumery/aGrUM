@@ -118,8 +118,8 @@ namespace gum {
 
   /// the function called to initialize the triangulation process
   void PartialOrderedTriangulation::initTriangulation_(UndiGraph& graph) {
-    PartialOrderedEliminationSequenceStrategy* elim =
-       static_cast< PartialOrderedEliminationSequenceStrategy* >(
+    PartialOrderedEliminationSequenceStrategy* elim
+       = static_cast< PartialOrderedEliminationSequenceStrategy* >(
           elimination_sequence_strategy_);
     elim->setGraph(&graph, domain_sizes_);
     elim->setPartialOrder(partial_order__);

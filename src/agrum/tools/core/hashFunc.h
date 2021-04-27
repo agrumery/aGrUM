@@ -72,12 +72,12 @@ namespace gum {
    * should adapt X's definition to 32 and 64 bits architectures.
    */
   struct HashFuncConst {
-    static constexpr Size gold =
-       sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
-    static constexpr Size pi =
-       sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
-    static constexpr Size mask =
-       sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
+    static constexpr Size gold
+       = sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
+    static constexpr Size pi
+       = sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
+    static constexpr Size mask
+       = sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
     static constexpr Size offset = sizeof(Size) == 4 ? Size(32) : Size(64);
   };
 

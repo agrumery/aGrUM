@@ -77,10 +77,10 @@ namespace gum {
        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::operator=(
           const GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
-        constraint_ = from.constraint_;
-        target_nodes_ = from.target_nodes_;
-        tail_nodes_ = from.tail_nodes_;
-        legal_changes_ = from.legal_changes_;
+        constraint_          = from.constraint_;
+        target_nodes_        = from.target_nodes_;
+        tail_nodes_          = from.tail_nodes_;
+        legal_changes_       = from.legal_changes_;
         max_threads_number__ = from.max_threads_number__;
       }
       return *this;
@@ -92,10 +92,10 @@ namespace gum {
        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::operator=(
           GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
-        constraint_ = std::move(from.constraint_);
-        target_nodes_ = std::move(from.target_nodes_);
-        tail_nodes_ = std::move(from.tail_nodes_);
-        legal_changes_ = std::move(from.legal_changes_);
+        constraint_          = std::move(from.constraint_);
+        target_nodes_        = std::move(from.target_nodes_);
+        tail_nodes_          = std::move(from.tail_nodes_);
+        legal_changes_       = std::move(from.legal_changes_);
         max_threads_number__ = from.max_threads_number__;
       }
       return *this;

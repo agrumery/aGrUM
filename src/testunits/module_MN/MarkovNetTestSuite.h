@@ -243,8 +243,8 @@ namespace gum_tests {
     }
 
     void testToDot() {
-      gum::MarkovNet< double > mn =
-         gum::MarkovNet< double >::fastPrototype("A-B-C;B-D;C-E;D-E-F");
+      gum::MarkovNet< double > mn
+         = gum::MarkovNet< double >::fastPrototype("A-B-C;B-D;C-E;D-E-F");
       const auto s1 = mn.toDot();
       const auto s2 = mn.toDotAsFactorGraph();
       GUM_UNUSED(s1);
@@ -252,8 +252,8 @@ namespace gum_tests {
     }
 
     void testFromBN() {
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
       auto mn = gum::MarkovNet< double >::fromBN(bn);
 
       gum::Potential< double > pbn;
@@ -313,8 +313,8 @@ namespace gum_tests {
     }
 
     void testIndependence() {
-      auto mn =
-         gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
+      auto mn
+         = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
       TS_ASSERT(mn.isIndependent("D", "X", {}));
       TS_ASSERT(!mn.isIndependent("D", "A", {"C"}));
       TS_ASSERT(mn.isIndependent("D", "A", {"C", "G"}));

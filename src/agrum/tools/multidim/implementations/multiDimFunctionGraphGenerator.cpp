@@ -38,7 +38,9 @@
 namespace gum {
   // Constructor
   MultiDimFunctionGraphGenerator::MultiDimFunctionGraphGenerator(
-     Idx maxVar, Idx minVar, const Sequence< const DiscreteVariable* >& varSeq) :
+     Idx                                        maxVar,
+     Idx                                        minVar,
+     const Sequence< const DiscreteVariable* >& varSeq) :
       varSeq__(varSeq) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphGenerator);
 
@@ -51,11 +53,11 @@ namespace gum {
   }
 
   MultiDimFunctionGraph< double >* MultiDimFunctionGraphGenerator::generate() {
-    MultiDimFunctionGraph< double >* generatedFunctionGraph =
-       MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+    MultiDimFunctionGraph< double >* generatedFunctionGraph
+       = MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            varSeq__.beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = varSeq__.beginSafe();
          varIter != varSeq__.endSafe();
          ++varIter) {
       generatedFunctionGraph->add(**varIter);
@@ -76,21 +78,21 @@ namespace gum {
       NodeId currentNodeId = filo.back();
       filo.pop_back();
       Idx                 cvp = node2MinVar[currentNodeId];
-      const InternalNode* currentNode =
-         generatedFunctionGraph->node(currentNodeId);
+      const InternalNode* currentNode
+         = generatedFunctionGraph->node(currentNodeId);
 
       LinkedList< NodeId > potentialSons;
       Idx                  nbPotentialSons = 0;
       for (Idx varPos = 0;
            varPos < generatedFunctionGraph->variablesSequence().size();
            varPos++) {
-        const DiscreteVariable* var =
-           generatedFunctionGraph->variablesSequence().atPos(varPos);
+        const DiscreteVariable* var
+           = generatedFunctionGraph->variablesSequence().atPos(varPos);
 
         Idx vsp = varSeq__.pos(var);
         if (vsp > cvp) {
-          const Link< NodeId >* nicleIter =
-             generatedFunctionGraph->varNodeListe(var)->list();
+          const Link< NodeId >* nicleIter
+             = generatedFunctionGraph->varNodeListe(var)->list();
           while (nicleIter) {
             nbPotentialSons++;
             potentialSons.addLink(nicleIter->element());
@@ -111,9 +113,9 @@ namespace gum {
                generatedFunctionGraph->manager()->addTerminalNode(
                   (double)std::rand() / (double)RAND_MAX * 100));
           } else {
-            Idx sonVarPos =
-               generateVarPos__(node2MinVar[currentNodeId] + 1,
-                                nbTotalVar__ - node2MinVar[currentNodeId] - 2);
+            Idx sonVarPos
+               = generateVarPos__(node2MinVar[currentNodeId] + 1,
+                                  nbTotalVar__ - node2MinVar[currentNodeId] - 2);
             generatedFunctionGraph->manager()->setSon(
                currentNodeId,
                modality,
@@ -123,16 +125,17 @@ namespace gum {
             node2MinVar.insert(currentNode->son(modality), sonVarPos);
           }
         } else {
-          Idx sonPos =
-             (Idx)(((double)std::rand() / (double)RAND_MAX) * nbPotentialSons);
+          Idx sonPos
+             = (Idx)(((double)std::rand() / (double)RAND_MAX) * nbPotentialSons);
           sonPos = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
           Link< NodeId >* nicleIter = potentialSons.list();
           while (sonPos) {
             nicleIter = nicleIter->nextLink();
             sonPos--;
           }
-          generatedFunctionGraph->manager()->setSon(
-             currentNodeId, modality, nicleIter->element());
+          generatedFunctionGraph->manager()->setSon(currentNodeId,
+                                                    modality,
+                                                    nicleIter->element());
         }
       }
       ++nbIter;
@@ -145,7 +148,8 @@ namespace gum {
   }
 
   bool MultiDimFunctionGraphGenerator::createLeaf__(
-     NodeId currentNodeId, HashTable< NodeId, Idx >& node2MinVar) {
+     NodeId                    currentNodeId,
+     HashTable< NodeId, Idx >& node2MinVar) {
     return !(currentNodeId == 1
              || ((double)std::rand() / (double)RAND_MAX
                     < 0.9

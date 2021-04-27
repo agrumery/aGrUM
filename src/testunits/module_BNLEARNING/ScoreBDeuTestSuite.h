@@ -48,10 +48,10 @@ namespace gum_tests {
     double score__(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
-      double ess = 2.0;
+      double ess   = 2.0;
 
       if (!N_ij.empty()) {
-        double ess_qi = ess / N_ij.size();
+        double ess_qi   = ess / N_ij.size();
         double ess_riqi = ess / N_ijk.size();
         for (const auto n_ij: N_ij) {
           score += gammalog2__(ess_qi) - gammalog2__(n_ij + ess_qi);
@@ -60,7 +60,7 @@ namespace gum_tests {
           score += gammalog2__(n_ijk + ess_riqi) - gammalog2__(ess_riqi);
         }
       } else {
-        double N = 0.0;
+        double N      = 0.0;
         double ess_ri = ess / N_ijk.size();
         for (const auto n_ijk: N_ijk) {
           score += gammalog2__(n_ijk + ess_ri) - gammalog2__(ess_ri);

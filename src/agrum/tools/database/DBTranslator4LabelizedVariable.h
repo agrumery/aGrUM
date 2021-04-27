@@ -160,7 +160,7 @@ namespace gum {
       DBTranslator4LabelizedVariable(
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc  = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -174,9 +174,10 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4LabelizedVariable
        */
-      DBTranslator4LabelizedVariable(
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+      DBTranslator4LabelizedVariable(std::size_t max_dico_entries
+                                     = std::numeric_limits< std::size_t >::max(),
+                                     const allocator_type& alloc
+                                     = allocator_type());
 
       /// default constructor with a labelized variable as translator
       /** @param var a labelized variable whose labels will be used for
@@ -203,7 +204,7 @@ namespace gum {
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool  editable_dictionary = false,
          std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc  = allocator_type());
 
       /** @brief default constructor with a labelized variable as translator
        * but without missing symbols
@@ -224,11 +225,12 @@ namespace gum {
        * equal to a missing value symbol, the label will be taken into
        * account in the translations, not the missing value.
        */
-      DBTranslator4LabelizedVariable(
-         const LabelizedVariable& var,
-         const bool               editable_dictionary = false,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+      DBTranslator4LabelizedVariable(const LabelizedVariable& var,
+                                     const bool  editable_dictionary = false,
+                                     std::size_t max_dico_entries
+                                     = std::numeric_limits< std::size_t >::max(),
+                                     const allocator_type& alloc
+                                     = allocator_type());
 
       /// copy constructor
       DBTranslator4LabelizedVariable(

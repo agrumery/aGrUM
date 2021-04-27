@@ -446,7 +446,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR* projectProductMultiDimArray4Pointers(
-     const MultiDimArray< GUM_SCALAR* >* table, Instantiation* instantiation = 0);
+     const MultiDimArray< GUM_SCALAR* >* table,
+     Instantiation*                      instantiation = 0);
 
   /**
    * @brief a function for projecting a multiDimArray using a Product operator

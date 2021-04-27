@@ -215,7 +215,7 @@ namespace gum_tests {
 
     void testWithGenerator() {
       gum::Size density[] = {9, 18, 27, 36, 45};
-      int       trial_nb = 5;
+      int       trial_nb  = 5;
 
       for (int i = 0; i < trial_nb; ++i) {
         gum::SimpleBayesNetGenerator< double > bnGen(10, density[i]);
@@ -257,8 +257,8 @@ namespace gum_tests {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
       inf.makeInference();
-      auto p = inf.posterior(0);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(0);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(0, 0);
@@ -272,8 +272,8 @@ namespace gum_tests {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
       inf.makeInference();
-      auto p = inf.posterior(0);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(0);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(0, 0);
@@ -296,8 +296,8 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > inf(&bn);
       inf.makeInference();
-      auto p = inf.posterior(id);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(id);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(id, 0);
@@ -773,8 +773,8 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::ShaferShenoyInference< double > ie(&bn);
       gum::Potential< double >             res;
@@ -792,13 +792,14 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::ShaferShenoyInference< double > ie(&bn);
       ie.addEvidence("B", 0);
-      gum::NodeSet joint{
-         bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
+      gum::NodeSet joint{bn.idFromName("A"),
+                         bn.idFromName("B"),
+                         bn.idFromName("D")};
 
       ie.addJointTarget(joint);
       ie.makeInference();

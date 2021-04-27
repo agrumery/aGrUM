@@ -176,16 +176,16 @@ namespace gum {
     // variable of the table should be increased (that is, this is similar to
     // increasing 9 to 10).
     std::vector< Idx > t1_and_t2_value = t1_and_t2_domain;
-    std::vector< Idx > t1_alone_value = t1_alone_domain;
-    std::vector< Idx > t2_alone_value = t2_alone_domain;
+    std::vector< Idx > t1_alone_value  = t1_alone_domain;
+    std::vector< Idx > t2_alone_value  = t2_alone_domain;
 
     // create a table "result" containing all the variables: the first
     // variables are those that belong to both t1 and t2. The next variables
     // are those that belong to t2 but not to t1. Finally, the last variables
     // are those that belong to t1 but not t2. This order will be used in the
     // next for loops.
-    MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result =
-       new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
+    MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result
+       = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var: t1_vars)

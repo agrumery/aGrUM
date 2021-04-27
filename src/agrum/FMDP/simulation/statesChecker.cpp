@@ -38,15 +38,15 @@ namespace gum {
 
   void StatesChecker::reset(const Instantiation& initialState) {
     checker__->clear();
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            initialState.variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = initialState.variablesSequence().beginSafe();
          varIter != initialState.variablesSequence().endSafe();
          ++varIter)
       checker__->add(**varIter);
 
     nbVisitedStates__ = 1;
-    checkerFalseId__ = checker__->manager()->addTerminalNode(false);
-    checkerTrueId__ = checker__->manager()->addTerminalNode(true);
+    checkerFalseId__  = checker__->manager()->addTerminalNode(false);
+    checkerTrueId__   = checker__->manager()->addTerminalNode(true);
 
     insertState__(initialState, 0, 0);
   }
@@ -54,10 +54,10 @@ namespace gum {
   void StatesChecker::addState(const Instantiation& state) {
     nbVisitedStates__++;
 
-    NodeId parId = checker__->root();
+    NodeId parId   = checker__->root();
     Idx    parModa = state.valFromPtr(checker__->node(parId)->nodeVar());
     while (checker__->node(parId)->son(parModa) != checkerFalseId__) {
-      parId = checker__->node(parId)->son(parModa);
+      parId   = checker__->node(parId)->son(parModa);
       parModa = state.valFromPtr(checker__->node(parId)->nodeVar());
     }
     insertState__(state, parId, parModa);
@@ -68,8 +68,8 @@ namespace gum {
                                     Idx                  parentModa) {
     Idx varIter = 0;
     if (parentId)
-      varIter =
-         state.variablesSequence().pos(checker__->node(parentId)->nodeVar()) + 1;
+      varIter
+         = state.variablesSequence().pos(checker__->node(parentId)->nodeVar()) + 1;
 
 
     for (; varIter < state.variablesSequence().size(); ++varIter) {

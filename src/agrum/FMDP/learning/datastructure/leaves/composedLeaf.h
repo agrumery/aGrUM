@@ -89,7 +89,7 @@ namespace gum {
     // ###################################################################
     bool contains(NodeId testedId) const {
       return AbstractLeaf::contains(testedId) || l1__->contains(testedId)
-             || l2__->contains(testedId);
+          || l2__->contains(testedId);
     }
 
     Idx nbModa() const { return l1__->nbModa(); }

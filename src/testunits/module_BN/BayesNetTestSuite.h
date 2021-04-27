@@ -176,7 +176,7 @@ namespace gum_tests {
         TS_ASSERT(copy->dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
-        const gum::DiscreteVariable& cpVar = copy->variable(node);
+        const gum::DiscreteVariable& cpVar  = copy->variable(node);
         TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
@@ -193,7 +193,7 @@ namespace gum_tests {
         }
 
         const gum::Potential< double >& srcCPT = source.cpt(node);
-        const gum::Potential< double >& cpCPT = copy->cpt(node);
+        const gum::Potential< double >& cpCPT  = copy->cpt(node);
 
         gum::Instantiation srcInst(srcCPT);
         gum::Instantiation cpInst(cpCPT);
@@ -228,7 +228,7 @@ namespace gum_tests {
         TS_ASSERT(copy.dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
-        const gum::DiscreteVariable& cpVar = copy.variable(node);
+        const gum::DiscreteVariable& cpVar  = copy.variable(node);
         TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
@@ -245,7 +245,7 @@ namespace gum_tests {
         }
 
         const gum::Potential< double >& srcCPT = source.cpt(node);
-        const gum::Potential< double >& cpCPT = copy.cpt(node);
+        const gum::Potential< double >& cpCPT  = copy.cpt(node);
         gum::Instantiation              srcInst(srcCPT);
         gum::Instantiation              cpInst(cpCPT);
 
@@ -568,8 +568,8 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[0], idList[3]));
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]));
 
-      gum::Size dmnSize_1 =
-         bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+      gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize()
+                          * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 
@@ -603,8 +603,8 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[0], idList[3]));
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]));
 
-      gum::Size dmnSize_1 =
-         bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+      gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize()
+                          * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 

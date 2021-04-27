@@ -56,13 +56,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
       public:
-      using msg = std::vector< Potential< GUM_SCALAR >* >;
+      using msg   = std::vector< Potential< GUM_SCALAR >* >;
       using cArcP = const Arc*;
 
       /**
        * Inference type to be used by the algorithm.
        */
-      enum class InferenceType : char {
+      enum class InferenceType : char
+      {
         nodeToNeighbours, /**< Uses a node-set so we don't iterate on nodes that
                              can't send a new message. Should be the fastest
                              inference type. A step is going through the

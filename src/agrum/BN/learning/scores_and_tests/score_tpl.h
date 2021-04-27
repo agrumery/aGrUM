@@ -123,7 +123,7 @@ namespace gum {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from.apriori_->clone();
         RecordCounter< ALLOC > new_counter = from.counter_;
-        ScoringCache< ALLOC >  new_cache = from.cache_;
+        ScoringCache< ALLOC >  new_cache   = from.cache_;
 
         if (apriori_ != nullptr) {
           ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
@@ -133,7 +133,7 @@ namespace gum {
 
         apriori_ = new_apriori;
         counter_ = std::move(new_counter);
-        cache_ = std::move(new_cache);
+        cache_   = std::move(new_cache);
 
         use_cache_ = from.use_cache_;
       }
@@ -147,8 +147,8 @@ namespace gum {
       if (this != &from) {
         std::swap(apriori_, from.apriori_);
 
-        counter_ = std::move(from.counter_);
-        cache_ = std::move(from.cache_);
+        counter_   = std::move(from.counter_);
+        cache_     = std::move(from.cache_);
         use_cache_ = from.use_cache_;
       }
       return *this;
@@ -248,7 +248,8 @@ namespace gum {
      * conditioning bar */
     template < template < typename > class ALLOC >
     INLINE double Score< ALLOC >::score(
-       const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+       const NodeId                                  var,
+       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
       IdCondSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
       if (use_cache_) {
         try {
@@ -318,8 +319,8 @@ namespace gum {
       // compute the domain sizes of the varible on the left hand side
       // of the conditioning bar
       const auto&       nodeId2cols = this->counter_.nodeId2Columns();
-      const auto&       database = this->counter_.database();
-      const std::size_t X_size = database.domainSize(
+      const auto&       database    = this->counter_.database();
+      const std::size_t X_size      = database.domainSize(
          nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
 
       // determine the size of the output vector

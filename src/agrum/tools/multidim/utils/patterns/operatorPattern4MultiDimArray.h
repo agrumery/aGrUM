@@ -94,17 +94,17 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
-    const MultiDimArray< T >* t1 =
-       reinterpret_cast< const MultiDimArray< T >* >(tt1);
-    const MultiDimArray< T >* t2 =
-       reinterpret_cast< const MultiDimArray< T >* >(tt2);
+    const MultiDimArray< T >* t1
+       = reinterpret_cast< const MultiDimArray< T >* >(tt1);
+    const MultiDimArray< T >* t2
+       = reinterpret_cast< const MultiDimArray< T >* >(tt2);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
-    const MultiDimArray< T* >* t1 =
-       reinterpret_cast< const MultiDimArray< T* >* >(tt1);
-    const MultiDimArray< T* >* t2 =
-       reinterpret_cast< const MultiDimArray< T* >* >(tt2);
+    const MultiDimArray< T* >* t1
+       = reinterpret_cast< const MultiDimArray< T* >* >(tt1);
+    const MultiDimArray< T* >* t2
+       = reinterpret_cast< const MultiDimArray< T* >* >(tt2);
 #  endif
 
     // get the variables of the tables
@@ -213,7 +213,7 @@ namespace gum {
     // 10). As such the offset of txxx should be decreased by txxx_offset * the
     // domain size of the variable.  This quantity is precisely what is stored
     // into variables txxx_down.
-    std::vector< Idx > t1_and_t2_value = t1_and_t2_domain;
+    std::vector< Idx > t1_and_t2_value  = t1_and_t2_domain;
     std::vector< Idx > t1_and_t2_1_down = t1_and_t2_1_offset;
     std::vector< Idx > t1_and_t2_2_down = t1_and_t2_2_offset;
 
@@ -223,14 +223,14 @@ namespace gum {
     }
 
     std::vector< Idx > t1_alone_value = t1_alone_domain;
-    std::vector< Idx > t1_alone_down = t1_alone_offset;
+    std::vector< Idx > t1_alone_down  = t1_alone_offset;
 
     for (unsigned int i = 0; i < t1_alone_domain.size(); ++i) {
       t1_alone_down[i] *= (t1_alone_domain[i] - 1);
     }
 
     std::vector< Idx > t2_alone_value = t2_alone_domain;
-    std::vector< Idx > t2_alone_down = t2_alone_offset;
+    std::vector< Idx > t2_alone_down  = t2_alone_offset;
 
     for (unsigned int i = 0; i < t2_alone_domain.size(); ++i) {
       t2_alone_down[i] *= (t2_alone_domain[i] - 1);
@@ -241,8 +241,8 @@ namespace gum {
     // are those that belong to t2 but not to t1. Finally, the last variables
     // are those that belong to t1 but not t2. This order will be used in the
     // next for loops.
-    MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result =
-       new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
+    MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result
+       = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var: t1_vars)
@@ -260,12 +260,12 @@ namespace gum {
     // corresponds to the variables that belongs both to t1 and t2.  The middle
     // loop to the variables that belong to t2 but not to t1. Finally, the
     // outer loop corresponds to the variables that belong to t1 but not t2.
-    GUM_MULTI_DIM_OPERATOR_TYPE* pt1 =
-       const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t1->unsafeGet(0)));
-    GUM_MULTI_DIM_OPERATOR_TYPE* pt2 =
-       const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t2->unsafeGet(0)));
-    GUM_MULTI_DIM_OPERATOR_TYPE* pres =
-       const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(result->unsafeGet(0)));
+    GUM_MULTI_DIM_OPERATOR_TYPE* pt1
+       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t1->unsafeGet(0)));
+    GUM_MULTI_DIM_OPERATOR_TYPE* pt2
+       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t2->unsafeGet(0)));
+    GUM_MULTI_DIM_OPERATOR_TYPE* pres
+       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(result->unsafeGet(0)));
     GUM_MULTI_DIM_OPERATOR_TYPE* pt2_deb = pt2;
     GUM_MULTI_DIM_OPERATOR_TYPE* pt1_alone_begin;
 
@@ -274,7 +274,7 @@ namespace gum {
     // incrementation processes
     if (t1_and_t2_begin_vars) {
       for (Idx i = 0; i < t1_alone_domain_size; ++i) {
-        pt2 = pt2_deb;
+        pt2             = pt2_deb;
         pt1_alone_begin = pt1;
 
         for (Idx j = 0; j < t2_alone_domain_size; ++j) {
@@ -291,12 +291,12 @@ namespace gum {
         }
       }
     } else {
-      Idx t1_offset = 0;
-      Idx t2_offset = 0;
+      Idx t1_offset             = 0;
+      Idx t2_offset             = 0;
       Idx t1_alone_begin_offset = 0;
 
       for (Idx i = 0; i < t1_alone_domain_size; ++i) {
-        t2_offset = 0;
+        t2_offset             = 0;
         t1_alone_begin_offset = t1_offset;
 
         for (Idx j = 0; j < t2_alone_domain_size; ++j) {

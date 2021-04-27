@@ -344,8 +344,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement< GUM_SCALAR >&
-         operator[](const std::string& name) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& operator[](const std::string& name)
+         = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -405,7 +405,8 @@ namespace gum {
       /// extensions
       /// and implementations.
       virtual void
-         findAllSubtypes_(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
+         findAllSubtypes_(Set< PRMClassElementContainer< GUM_SCALAR >* >& set)
+         = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
@@ -440,8 +441,8 @@ namespace gum {
       /// output flags can only become true.
       ///
       /// @param elt A PRMClassElement<GUM_SCALAR>.
-      virtual void
-         updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt) = 0;
+      virtual void updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt)
+         = 0;
 
       private:
       /// input / output flags, useful when inheriting or copying.

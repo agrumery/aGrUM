@@ -160,7 +160,7 @@ namespace gum {
                            const std::string&    password,
                            const std::string&    query,
                            long                  timeout = 0L,
-                           const allocator_type& alloc = allocator_type());
+                           const allocator_type& alloc   = allocator_type());
 
       /// default constructor, especially for sqlite databases
       /** This will read the result of query and load it in memory.
@@ -175,7 +175,7 @@ namespace gum {
       DBInitializerFromSQL(const std::string&    connection_string,
                            const std::string&    query,
                            long                  timeout = 0L,
-                           const allocator_type& alloc = allocator_type());
+                           const allocator_type& alloc   = allocator_type());
 
       /// copy constructor
       /** the new initializer points to the same SQL query as from, but

@@ -96,8 +96,8 @@ namespace gum {
                          Set< const DiscreteVariable* >    del_vars);
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
+       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /**
      * @brief changes the class that performs the combinations
@@ -121,8 +121,8 @@ namespace gum {
                                                       const TABLE< GUM_SCALAR >&);
 
     /// Changes the function used for projecting TABLES
-    virtual void setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    virtual void setProjectFunction(TABLE< GUM_SCALAR >* (
+       *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /**
      * @brief Changes the class that performs the projections.
@@ -135,7 +135,8 @@ namespace gum {
 
     /// returns the current projection function
     virtual TABLE< GUM_SCALAR >* (*projectFunction())(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&);
+       const TABLE< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&);
 
     /**
      * @brief returns a rough estimate of the number of operations that will be

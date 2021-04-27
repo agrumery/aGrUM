@@ -193,16 +193,16 @@ namespace gum_tests {
       lps[2][2].addRow(A[2] <= 0.5 * A[0] + 0.5 * A[1]);
       lps[2][2].addProba();
 
-      lps_sols[2][2] = {{2. / 3, 0, 1. / 3},
-                        {0, 2. / 3, 1. / 3}};   // C lp solution A:2 B:0
+      lps_sols[2][2]
+         = {{2. / 3, 0, 1. / 3}, {0, 2. / 3, 1. / 3}};   // C lp solution A:2 B:0
 
       /// C : ins idx = 3, A:0 B:1
       /// vacuous
       A = lps[2][3].addCols(3);
       lps[2][3].addProba();
 
-      lps_sols[2][3] = {
-         {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
+      lps_sols[2][3]
+         = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -244,8 +244,8 @@ namespace gum_tests {
       A = lps[2][7].addCols(3);
       lps[2][7].addProba();
 
-      lps_sols[2][7] = {
-         {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
+      lps_sols[2][7]
+         = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -254,8 +254,8 @@ namespace gum_tests {
       lps[2][8].addRow(1. / 3 * A[0] + 2. / 3 * A[1] <= A[2]);
       lps[2][8].addProba();
 
-      lps_sols[2][8] = {{3. / 4, 0, 1. / 4},
-                        {0, 3. / 5, 2. / 5}};   // C lp solution A:2 B:2
+      lps_sols[2][8]
+         = {{3. / 4, 0, 1. / 4}, {0, 3. / 5, 2. / 5}};   // C lp solution A:2 B:2
 
       /// compute solutions, check bijection
       for (const auto& id: ids) {

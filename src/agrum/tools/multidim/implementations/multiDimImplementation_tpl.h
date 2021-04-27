@@ -38,8 +38,8 @@ namespace gum {
       MultiDimContainer< GUM_SCALAR >(), vars__(), slaveInstantiations__() {
     GUM_CONSTRUCTOR(MultiDimImplementation);
     internalChangeMethod__ = InternalChangeMethod__::DIRECT_CHANGE;
-    internalChangeState__ = InternalChangeState__::NO_CHANGE;
-    domainSize__ = 1;
+    internalChangeState__  = InternalChangeState__::NO_CHANGE;
+    domainSize__           = 1;
   }
 
   // Copy constructor
@@ -62,8 +62,8 @@ namespace gum {
     GUM_DESTRUCTOR(MultiDimImplementation);
     // unregister all remaining slave instantiations
 
-    for (List< Instantiation* >::iterator_safe iter =
-            slaveInstantiations__.beginSafe();
+    for (List< Instantiation* >::iterator_safe iter
+         = slaveInstantiations__.beginSafe();
          iter != slaveInstantiations__.endSafe();
          ++iter)
       (*iter)->forgetMaster();
@@ -92,8 +92,8 @@ namespace gum {
     vars__.insert(&v);
 
     // informs all the slaves that they have to update themselves
-    for (List< Instantiation* >::iterator_safe iter =
-            slaveInstantiations__.beginSafe();
+    for (List< Instantiation* >::iterator_safe iter
+         = slaveInstantiations__.beginSafe();
          iter != slaveInstantiations__.endSafe();
          ++iter) {
       (*iter)->addWithMaster(this, v);
@@ -118,8 +118,8 @@ namespace gum {
     vars__.erase(&v);
 
     // informs all the slaves that they have to update themselves
-    for (List< Instantiation* >::iterator_safe iter =
-            slaveInstantiations__.beginSafe();
+    for (List< Instantiation* >::iterator_safe iter
+         = slaveInstantiations__.beginSafe();
          iter != slaveInstantiations__.endSafe();
          ++iter) {
       (*iter)->eraseWithMaster(this, v);
@@ -145,8 +145,8 @@ namespace gum {
     // check that the Instantiation has the same variables as this
     if (slave.nbrDim() != vars__.size()) return false;
 
-    for (Sequence< const DiscreteVariable* >::iterator_safe iter =
-            vars__.beginSafe();
+    for (Sequence< const DiscreteVariable* >::iterator_safe iter
+         = vars__.beginSafe();
          iter != vars__.endSafe();
          ++iter)
       if (!slave.contains(*iter)) return false;
@@ -303,8 +303,8 @@ namespace gum {
                                                     const DiscreteVariable* y) {
     vars__.setAtPos(vars__.pos(x), y);
 
-    for (List< Instantiation* >::iterator_safe iter =
-            slaveInstantiations__.beginSafe();
+    for (List< Instantiation* >::iterator_safe iter
+         = slaveInstantiations__.beginSafe();
          iter != slaveInstantiations__.endSafe();
          ++iter) {
       (**iter).replace(*x, *y);

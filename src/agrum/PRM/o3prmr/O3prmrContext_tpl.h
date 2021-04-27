@@ -36,13 +36,13 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       O3prmrContext< GUM_SCALAR >::O3prmrContext(const std::string& filename) {
-        m_filename = filename;
+        m_filename   = filename;
         m_mainImport = 0;
       }
 
       template < typename GUM_SCALAR >
       O3prmrContext< GUM_SCALAR >::O3prmrContext(const O3prmrContext& s) {
-        m_filename = s.m_filename;
+        m_filename   = s.m_filename;
         m_mainImport = s.m_mainImport;
         *this += s;
       }
@@ -273,8 +273,8 @@ namespace gum {
       template < typename GUM_SCALAR >
       O3prmrSession< GUM_SCALAR >& O3prmrSession< GUM_SCALAR >::operator+=(
          const O3prmrSession< GUM_SCALAR >& c) {
-        for (std::vector< O3prmrCommand* >::const_iterator i =
-                c.m_commands.begin();
+        for (std::vector< O3prmrCommand* >::const_iterator i
+             = c.m_commands.begin();
              i < c.m_commands.end();
              i++)
           addCommand(*i);

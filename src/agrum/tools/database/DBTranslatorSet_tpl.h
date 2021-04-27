@@ -73,7 +73,7 @@ namespace gum {
       try {
         for (i = std::size_t(0); i < size; ++i) {
           translators__[i] = from.translators__[i]->clone(alloc);
-          columns__[i] = from.columns__[i];
+          columns__[i]     = from.columns__[i];
         }
       } catch (...) {
         translators__.resize(i);
@@ -184,8 +184,8 @@ namespace gum {
        DBTranslatorSet< ALLOC >::operator=(DBTranslatorSet< ALLOC >&& from) {
       if (this != &from) {
         clear();
-        translators__ = std::move(from.translators__);
-        columns__ = std::move(from.columns__);
+        translators__    = std::move(from.translators__);
+        columns__        = std::move(from.columns__);
         highest_column__ = from.highest_column__;
       }
 
@@ -240,7 +240,7 @@ namespace gum {
       translators__.resize(size + 1);
       columns__.resize(size + 1);
       translators__[size] = new_translator;
-      columns__[size] = column;
+      columns__[size]     = column;
 
       // update the highest column
       if (column > highest_column__) highest_column__ = column;
@@ -260,16 +260,16 @@ namespace gum {
       // create the translatator, depending on the type of the variable
       switch (var.varType()) {
         case VarType::Labelized: {
-          const LabelizedVariable& xvar =
-             static_cast< const LabelizedVariable& >(var);
+          const LabelizedVariable& xvar
+             = static_cast< const LabelizedVariable& >(var);
           DBTranslator4LabelizedVariable< ALLOC > translator(xvar,
                                                              missing_symbols);
           return insertTranslator(translator, column, unique_column);
         }
 
         case VarType::Discretized: {
-          const IDiscretizedVariable& xvar =
-             static_cast< const IDiscretizedVariable& >(var);
+          const IDiscretizedVariable& xvar
+             = static_cast< const IDiscretizedVariable& >(var);
           DBTranslator4DiscretizedVariable< ALLOC > translator(xvar,
                                                                missing_symbols);
           return insertTranslator(translator, column, unique_column);
@@ -282,8 +282,8 @@ namespace gum {
         }
 
         case VarType::Continuous: {
-          const IContinuousVariable& xvar =
-             static_cast< const IContinuousVariable& >(var);
+          const IContinuousVariable& xvar
+             = static_cast< const IContinuousVariable& >(var);
           DBTranslator4ContinuousVariable< ALLOC > translator(xvar,
                                                               missing_symbols);
           return insertTranslator(translator, column, unique_column);
@@ -301,8 +301,10 @@ namespace gum {
 
     /// inserts a new translator for a given variable in the translator set
     template < template < typename > class ALLOC >
-    INLINE std::size_t DBTranslatorSet< ALLOC >::insertTranslator(
-       const Variable& var, const std::size_t column, const bool unique_column) {
+    INLINE std::size_t
+           DBTranslatorSet< ALLOC >::insertTranslator(const Variable&   var,
+                                                  const std::size_t column,
+                                                  const bool unique_column) {
       const std::vector< std::string, ALLOC< std::string > > missing;
       return this->insertTranslator(var, column, missing, unique_column);
     }
@@ -335,7 +337,7 @@ namespace gum {
         }
       } else {
         // remove all the translators parsing the kth column
-        auto iter_trans = translators__.rbegin();
+        auto iter_trans       = translators__.rbegin();
         bool translator_found = false;
         for (auto iter_col = columns__.rbegin(); iter_col != columns__.rend();
              ++iter_col, ++iter_trans) {
@@ -386,7 +388,8 @@ namespace gum {
     /// returns the original string that was translated into translated_val
     template < template < typename > class ALLOC >
     INLINE std::string DBTranslatorSet< ALLOC >::translateBack(
-       const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val,
+       const std::size_t       k) const {
       return translators__[k]->translateBack(translated_val);
     }
 
@@ -394,7 +397,8 @@ namespace gum {
     /// returns the original string that was translated into translated_val
     template < template < typename > class ALLOC >
     INLINE std::string DBTranslatorSet< ALLOC >::translateBackSafe(
-       const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val,
+       const std::size_t       k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found");
       return translators__[k]->translateBack(translated_val);
@@ -405,7 +409,8 @@ namespace gum {
     // as a missing value
     template < template < typename > class ALLOC >
     INLINE bool DBTranslatorSet< ALLOC >::isMissingValue(
-       const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val,
+       const std::size_t       k) const {
       return translators__[k]->isMissingValue(translated_val);
     }
 
@@ -414,7 +419,8 @@ namespace gum {
     // as a missing value
     template < template < typename > class ALLOC >
     INLINE bool DBTranslatorSet< ALLOC >::isMissingValueSafe(
-       const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val,
+       const std::size_t       k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found");
       return translators__[k]->isMissingValue(translated_val);

@@ -146,17 +146,17 @@ namespace gum {
         }
 
         if (from.score__ != nullptr) score__ = from.score__->clone();
-        constraint__ = from.constraint__;
-        changes_generator__ = from.changes_generator__;
-        changes__ = from.changes__;
-        change_scores__ = from.change_scores__;
+        constraint__            = from.constraint__;
+        changes_generator__     = from.changes_generator__;
+        changes__               = from.changes__;
+        change_scores__         = from.change_scores__;
         change_queue_per_node__ = from.change_queue_per_node__;
-        node_queue__ = from.node_queue__;
-        illegal_changes__ = from.illegal_changes__;
-        node_current_scores__ = from.node_current_scores__;
-        parents__ = from.parents__;
-        queues_valid__ = from.queues_valid__;
-        queues_to_update__ = from.queues_to_update__;
+        node_queue__            = from.node_queue__;
+        illegal_changes__       = from.illegal_changes__;
+        node_current_scores__   = from.node_current_scores__;
+        parents__               = from.parents__;
+        queues_valid__          = from.queues_valid__;
+        queues_to_update__      = from.queues_to_update__;
       }
 
       return *this;
@@ -177,20 +177,20 @@ namespace gum {
                                                            GRAPH_CHANGES_GENERATOR,
                                                            ALLOC >&& from) {
       if (this != &from) {
-        score__ = from.score__;
+        score__      = from.score__;
         from.score__ = nullptr;
 
-        constraint__ = std::move(from.constraint__);
-        changes_generator__ = std::move(from.changes_generator__);
-        changes__ = std::move(from.changes__);
-        change_scores__ = std::move(from.change_scores__);
+        constraint__            = std::move(from.constraint__);
+        changes_generator__     = std::move(from.changes_generator__);
+        changes__               = std::move(from.changes__);
+        change_scores__         = std::move(from.change_scores__);
         change_queue_per_node__ = std::move(from.change_queue_per_node__);
-        node_queue__ = std::move(from.node_queue__);
-        illegal_changes__ = std::move(from.illegal_changes__);
+        node_queue__            = std::move(from.node_queue__);
+        illegal_changes__       = std::move(from.illegal_changes__);
         node_current_scores__ = std::move(from.node_current_scores__);
-        parents__ = std::move(from.parents__);
-        queues_valid__ = std::move(from.queues_valid__);
-        queues_to_update__ = std::move(from.queues_to_update__);
+        parents__             = std::move(from.parents__);
+        queues_valid__        = std::move(from.queues_valid__);
+        queues_to_update__    = std::move(from.queues_to_update__);
       }
 
       return *this;
@@ -234,7 +234,7 @@ namespace gum {
                                        GRAPH_CHANGES_GENERATOR,
                                        ALLOC >::setGraph(DiGraph& graph) {
       // fill the DAG with all the missing nodes
-      const DatabaseTable< ALLOC >& database = score__->database();
+      const DatabaseTable< ALLOC >& database       = score__->database();
       const auto&                   nodeId2Columns = score__->nodeId2Columns();
 
       if (nodeId2Columns.empty()) {
@@ -292,7 +292,7 @@ namespace gum {
         parents__.resize(nb_nodes);
         for (const auto node: graph) {
           auto&          node_parents = parents__.insert(node, empty_pars).second;
-          const NodeSet& dag_parents = graph.parents(node);
+          const NodeSet& dag_parents  = graph.parents(node);
           if (!dag_parents.empty()) {
             node_parents.resize(dag_parents.size());
             std::size_t j = std::size_t(0);
@@ -350,7 +350,7 @@ namespace gum {
               auto& parents = parents__[change.node2()];
               parents.push_back(change.node1());
               const double delta = score__->score(change.node2(), parents)
-                                   - node_current_scores__[change.node2()];
+                                 - node_current_scores__[change.node2()];
               parents.pop_back();
 
               change_scores__[i].second = delta;
@@ -367,7 +367,7 @@ namespace gum {
                 }
               }
               const double delta = score__->score(change.node2(), parents)
-                                   - node_current_scores__[change.node2()];
+                                 - node_current_scores__[change.node2()];
               parents.push_back(change.node1());
 
               change_scores__[i].second = delta;
@@ -386,17 +386,17 @@ namespace gum {
               }
 
               const double delta2 = score__->score(change.node2(), parents2)
-                                    - node_current_scores__[change.node2()];
+                                  - node_current_scores__[change.node2()];
               parents2.push_back(change.node1());
 
               // add arc ( node2 -> node1 )
               auto& parents1 = parents__[change.node1()];
               parents1.push_back(change.node2());
               const double delta1 = score__->score(change.node1(), parents1)
-                                    - node_current_scores__[change.node1()];
+                                  - node_current_scores__[change.node1()];
               parents1.pop_back();
 
-              change_scores__[i].first = delta1;
+              change_scores__[i].first  = delta1;
               change_scores__[i].second = delta2;
 
               const double delta = delta1 + delta2;
@@ -441,26 +441,26 @@ namespace gum {
       const GraphChange& change = changes__[change_index];
       if (change.type() == GraphChangeType::ARC_REVERSAL) {
         // remove the tail change from its priority queue
-        PriorityQueue< std::size_t, double, std::greater< double > >& queue1 =
-           change_queue_per_node__[change.node1()];
+        PriorityQueue< std::size_t, double, std::greater< double > >& queue1
+           = change_queue_per_node__[change.node1()];
         queue1.erase(change_index);
 
         // recompute the top priority for the changes of the head
         const double new_priority = queue1.empty()
-                                       ? std::numeric_limits< double >::min()
-                                       : queue1.topPriority();
+                                     ? std::numeric_limits< double >::min()
+                                     : queue1.topPriority();
         node_queue__.setPriority(change.node1(), new_priority);
       }
 
       // remove the head change from its priority queue
-      PriorityQueue< std::size_t, double, std::greater< double > >& queue2 =
-         change_queue_per_node__[change.node2()];
+      PriorityQueue< std::size_t, double, std::greater< double > >& queue2
+         = change_queue_per_node__[change.node2()];
       queue2.erase(change_index);
 
       // recompute the top priority for the changes of the head
       const double new_priority = queue2.empty()
-                                     ? std::numeric_limits< double >::min()
-                                     : queue2.topPriority();
+                                   ? std::numeric_limits< double >::min()
+                                   : queue2.topPriority();
       node_queue__.setPriority(change.node2(), new_priority);
 
       // put the change into the illegal set
@@ -596,10 +596,12 @@ namespace gum {
           const GraphChange& change = changes__[*iter];
           if (change.type() == GraphChangeType::ARC_REVERSAL) {
             change_queue_per_node__[change.node1()].insert(
-               *iter, std::numeric_limits< double >::min());
+               *iter,
+               std::numeric_limits< double >::min());
           }
           change_queue_per_node__[change.node2()].insert(
-             *iter, std::numeric_limits< double >::min());
+             *iter,
+             std::numeric_limits< double >::min());
 
           changes_to_recompute.insert(*iter);
           illegal_changes__.erase(iter);
@@ -618,8 +620,8 @@ namespace gum {
                                        ALLOC >::
        findLegalChangesNeedingUpdate__(Set< std::size_t >& changes_to_recompute,
                                        const NodeId        target_node) {
-      const HashTable< std::size_t, Size >& changes =
-         change_queue_per_node__[target_node].allValues();
+      const HashTable< std::size_t, Size >& changes
+         = change_queue_per_node__[target_node].allValues();
       for (auto iter = changes.cbeginSafe(); iter != changes.cendSafe(); ++iter) {
         if (!changes_to_recompute.exists(iter.key())) {
           if (isChangeValid__(iter.key())) {
@@ -652,7 +654,7 @@ namespace gum {
             auto& parents = parents__[change.node2()];
             parents.push_back(change.node1());
             const double delta = score__->score(change.node2(), parents)
-                                 - node_current_scores__[change.node2()];
+                               - node_current_scores__[change.node2()];
             parents.pop_back();
 
             // update the score
@@ -676,7 +678,7 @@ namespace gum {
               }
             }
             const double delta = score__->score(change.node2(), parents)
-                                 - node_current_scores__[change.node2()];
+                               - node_current_scores__[change.node2()];
             parents.push_back(change.node1());
 
             // update the score
@@ -701,18 +703,18 @@ namespace gum {
             }
 
             const double delta2 = score__->score(change.node2(), parents2)
-                                  - node_current_scores__[change.node2()];
+                                - node_current_scores__[change.node2()];
             parents2.push_back(change.node1());
 
             // add arc ( node2 -> node1 )
             auto& parents1 = parents__[change.node1()];
             parents1.push_back(change.node2());
             const double delta1 = score__->score(change.node1(), parents1)
-                                  - node_current_scores__[change.node1()];
+                                - node_current_scores__[change.node1()];
             parents1.pop_back();
 
             // update the scores
-            change_scores__[change_index].first = delta1;
+            change_scores__[change_index].first  = delta1;
             change_scores__[change_index].second = delta2;
 
             // update the queues
@@ -791,8 +793,8 @@ namespace gum {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION: {
           // update the current score
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           parents__[change.node2()].push_back(change.node1());
 
           // inform the constraint that the graph has been modified
@@ -819,8 +821,8 @@ namespace gum {
 
         case GraphChangeType::ARC_DELETION: {
           // update the current score
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           auto& parents = parents__[change.node2()];
           for (auto& par: parents) {
             if (par == change.node1()) {
@@ -854,10 +856,10 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL: {
           // update the current score
-          node_current_scores__[change.node1()] +=
-             change_scores__[change_index].first;
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node1()]
+             += change_scores__[change_index].first;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           parents__[change.node1()].push_back(change.node2());
           auto& parents = parents__[change.node2()];
           for (auto& par: parents) {
@@ -918,8 +920,8 @@ namespace gum {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION: {
           // update the current score
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           parents__[change.node2()].push_back(change.node1());
 
           // inform the constraint that the graph has been modified
@@ -947,8 +949,8 @@ namespace gum {
 
         case GraphChangeType::ARC_DELETION: {
           // update the current score
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           auto& parents = parents__[change.node2()];
           for (auto& par: parents) {
             if (par == change.node1()) {
@@ -983,10 +985,10 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL: {
           // update the current score
-          node_current_scores__[change.node1()] +=
-             change_scores__[change_index].first;
-          node_current_scores__[change.node2()] +=
-             change_scores__[change_index].second;
+          node_current_scores__[change.node1()]
+             += change_scores__[change_index].first;
+          node_current_scores__[change.node2()]
+             += change_scores__[change_index].second;
           parents__[change.node1()].push_back(change.node2());
           auto& parents = parents__[change.node2()];
           for (auto& par: parents) {
@@ -1062,10 +1064,12 @@ namespace gum {
         const GraphChange& change = changes__[change_index];
         if (change.type() == GraphChangeType::ARC_REVERSAL) {
           change_queue_per_node__[change.node1()].insert(
-             change_index, std::numeric_limits< double >::min());
+             change_index,
+             std::numeric_limits< double >::min());
         }
         change_queue_per_node__[change.node2()].insert(
-           change_index, std::numeric_limits< double >::min());
+           change_index,
+           std::numeric_limits< double >::min());
 
         changes_to_recompute.insert(change_index);
       }
@@ -1088,7 +1092,7 @@ namespace gum {
                                      ALLOC >::nodesSortedByBestScore() const {
       std::vector< std::pair< NodeId, double > > result(node_queue__.size());
       for (std::size_t i = std::size_t(0); i < node_queue__.size(); ++i) {
-        result[i].first = node_queue__[i];
+        result[i].first  = node_queue__[i];
         result[i].second = node_queue__.priorityByPos(i);
       }
 
@@ -1114,7 +1118,7 @@ namespace gum {
                                      ALLOC >::nodesUnsortedWithScore() const {
       std::vector< std::pair< NodeId, double > > result(node_queue__.size());
       for (std::size_t i = std::size_t(0); i < node_queue__.size(); ++i) {
-        result[i].first = node_queue__[i];
+        result[i].first  = node_queue__[i];
         result[i].second = node_queue__.priorityByPos(i);
       }
 

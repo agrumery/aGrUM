@@ -51,15 +51,15 @@ namespace gum {
            alloc) {
       // we check that the variables in the learning database also exist in the
       // apriori database and that they are precisely equal.
-      const DatabaseTable< ALLOC >& apriori_db = apriori_parser.database();
+      const DatabaseTable< ALLOC >& apriori_db    = apriori_parser.database();
       const auto&                   apriori_names = apriori_db.variableNames();
-      const std::size_t             apriori_size = apriori_names.size();
+      const std::size_t             apriori_size  = apriori_names.size();
       HashTable< std::string, std::size_t > names2col(apriori_size);
       for (std::size_t i = std::size_t(0); i < apriori_size; ++i)
         names2col.insert(apriori_names[i], i);
 
       const auto&       learning_names = learning_db.variableNames();
-      const std::size_t learning_size = learning_names.size();
+      const std::size_t learning_size  = learning_names.size();
       HashTable< std::size_t, std::size_t > learning2apriori_index(learning_size);
       bool                                  different_index = false;
       for (std::size_t i = std::size_t(0); i < learning_size; ++i) {
@@ -75,7 +75,7 @@ namespace gum {
 
         // check that both variables are the same
         const Variable& learning_var = learning_db.variable(i);
-        const Variable& apriori_var = apriori_db.variable(apriori_col);
+        const Variable& apriori_var  = apriori_db.variable(apriori_col);
         if (learning_var.varType() != apriori_var.varType()) {
           GUM_ERROR(DatabaseError,
                     "Variable "
@@ -120,8 +120,10 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
                              ranges(alloc);
-      RecordCounter< ALLOC > good_counter(
-         apriori_parser, ranges, this->nodeId2columns_, alloc);
+      RecordCounter< ALLOC > good_counter(apriori_parser,
+                                          ranges,
+                                          this->nodeId2columns_,
+                                          alloc);
       counter__ = std::move(good_counter);
 
       if (apriori_db.nbRows() == std::size_t(0))
@@ -215,8 +217,8 @@ namespace gum {
           const AprioriDirichletFromDatabase< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(from);
-        counter__ = from.counter__;
-        internal_weight__ = from.internal_weight__;
+        counter__                 = from.counter__;
+        internal_weight__         = from.internal_weight__;
       }
       return *this;
     }
@@ -229,8 +231,8 @@ namespace gum {
           AprioriDirichletFromDatabase< ALLOC >&& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(std::move(from));
-        counter__ = std::move(from.counter__);
-        internal_weight__ = from.internal_weight__;
+        counter__                 = std::move(from.counter__);
+        internal_weight__         = from.internal_weight__;
       }
       return *this;
     }
@@ -279,7 +281,7 @@ namespace gum {
       if (this->weight_ == 0.0) return;
 
       const auto&       apriori = counter__.counts(idset);
-      const std::size_t size = apriori.size();
+      const std::size_t size    = apriori.size();
       if (internal_weight__ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           counts[i] += apriori[i] * internal_weight__;
@@ -300,7 +302,7 @@ namespace gum {
       if (internal_weight__ == 0.0) return;
 
       const auto&       apriori = counter__.counts(idset.conditionalIdCondSet());
-      const std::size_t size = apriori.size();
+      const std::size_t size    = apriori.size();
       if (internal_weight__ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           counts[i] += apriori[i] * internal_weight__;

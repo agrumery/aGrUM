@@ -134,7 +134,7 @@ namespace gum {
       }
 
       using o3prm_scanner = gum::prm::o3prm::Scanner;
-      using o3prm_parser = gum::prm::o3prm::Parser;
+      using o3prm_parser  = gum::prm::o3prm::Parser;
 
       template < typename GUM_SCALAR >
       INLINE O3prmReader< GUM_SCALAR >::O3prmReader() :
@@ -176,11 +176,11 @@ namespace gum {
       INLINE O3prmReader< GUM_SCALAR >&
          O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
         if (this == &src) { return *this; }
-        prm__ = src.prm__;
-        o3_prm__ = std::unique_ptr< O3PRM >(new O3PRM(*(src.o3_prm__)));
+        prm__        = src.prm__;
+        o3_prm__     = std::unique_ptr< O3PRM >(new O3PRM(*(src.o3_prm__)));
         class_path__ = src.class_path__;
-        imported__ = src.imported__;
-        errors__ = src.errors__;
+        imported__   = src.imported__;
+        errors__     = src.errors__;
         return *this;
       }
 
@@ -188,19 +188,19 @@ namespace gum {
       INLINE O3prmReader< GUM_SCALAR >&
          O3prmReader< GUM_SCALAR >::operator=(O3prmReader&& src) {
         if (this == &src) { return *this; }
-        prm__ = std::move(src.prm__);
-        o3_prm__ = std::move(src.o3_prm__);
+        prm__        = std::move(src.prm__);
+        o3_prm__     = std::move(src.o3_prm__);
         class_path__ = std::move(src.class_path__);
-        imported__ = std::move(src.imported__);
-        errors__ = std::move(src.errors__);
+        imported__   = std::move(src.imported__);
+        errors__     = std::move(src.errors__);
         return *this;
       }
 
       template < typename GUM_SCALAR >
       void O3prmReader< GUM_SCALAR >::setClassPath(const std::string& class_path) {
         class_path__ = std::vector< std::string >();
-        size_t i = 0;
-        size_t j = class_path.find(';');
+        size_t i     = 0;
+        size_t j     = class_path.find(';');
 
         while (j != std::string::npos) {
           addClassPath(class_path.substr(i, j - i));
@@ -316,7 +316,7 @@ namespace gum {
             return errors__.count();
           }
 
-          auto basename = file.substr(lastSlashIndex + 1);
+          auto basename    = file.substr(lastSlashIndex + 1);
           auto absFilename = dir.absolutePath() + basename;
 
           std::ifstream input(absFilename);
@@ -352,7 +352,7 @@ namespace gum {
          O3prmReader< GUM_SCALAR >::parseStream__(std::istream&      input,
                                                   const std::string& filename,
                                                   const std::string& module) {
-        auto sBuff = readStream__(input);
+        auto sBuff  = readStream__(input);
         auto buffer = std::unique_ptr< unsigned char[] >(
            new unsigned char[sBuff.length() + 1]);
         strcpy((char*)buffer.get(), sBuff.c_str());
@@ -436,16 +436,18 @@ namespace gum {
 
         if (errors__.error_count == 0) {
           auto solver = O3NameSolver< GUM_SCALAR >(*prm__, *o3_prm__, errors__);
-          auto type_factory =
-             O3TypeFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
+          auto type_factory
+             = O3TypeFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
 
-          auto interface_factory =
-             O3InterfaceFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
-          auto class_factory =
-             O3ClassFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
+          auto interface_factory = O3InterfaceFactory< GUM_SCALAR >(*prm__,
+                                                                    *o3_prm__,
+                                                                    solver,
+                                                                    errors__);
+          auto class_factory
+             = O3ClassFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
 
-          auto system_factory =
-             O3SystemFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
+          auto system_factory
+             = O3SystemFactory< GUM_SCALAR >(*prm__, *o3_prm__, solver, errors__);
 
           try {
             type_factory.build();

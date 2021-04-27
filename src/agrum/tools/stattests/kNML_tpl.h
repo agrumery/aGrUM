@@ -132,7 +132,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        param_complexity__ = from.param_complexity__;
+        param_complexity__                 = from.param_complexity__;
       }
       return *this;
     }
@@ -143,7 +143,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(KNML< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-        param_complexity__ = std::move(from.param_complexity__);
+        param_complexity__                 = std::move(from.param_complexity__);
       }
       return *this;
     }
@@ -184,7 +184,7 @@ namespace gum {
       const bool informative_external_apriori = this->apriori_->isInformative();
 
       // get the domain sizes of X and Y
-      const auto& db = this->database();
+      const auto& db        = this->database();
       const auto& node2cols = this->nodeId2Columns();
       std::size_t r_x, r_y;
       if (!node2cols.empty()) {
@@ -205,12 +205,12 @@ namespace gum {
         IdCondSet< ALLOC > idset_yui = idset;
         idset_yui.erase(idset[0]);
 
-        std::vector< double, ALLOC< double > > N_ui =
-           this->counter_.counts(idset.conditionalIdCondSet(), false);
-        std::vector< double, ALLOC< double > > N_xui =
-           this->counter_.counts(idset_xui, false);
-        std::vector< double, ALLOC< double > > N_yui =
-           this->counter_.counts(idset_yui, false);
+        std::vector< double, ALLOC< double > > N_ui
+           = this->counter_.counts(idset.conditionalIdCondSet(), false);
+        std::vector< double, ALLOC< double > > N_xui
+           = this->counter_.counts(idset_xui, false);
+        std::vector< double, ALLOC< double > > N_yui
+           = this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->apriori_->addConditioningApriori(idset, N_ui);
@@ -241,10 +241,10 @@ namespace gum {
         IdCondSet< ALLOC > idset_xui(idset[0], this->empty_ids_, true);
         IdCondSet< ALLOC > idset_yui(idset[1], this->empty_ids_, true);
 
-        std::vector< double, ALLOC< double > > N_xui =
-           this->counter_.counts(idset_xui, false);
-        std::vector< double, ALLOC< double > > N_yui =
-           this->counter_.counts(idset_yui, false);
+        std::vector< double, ALLOC< double > > N_xui
+           = this->counter_.counts(idset_xui, false);
+        std::vector< double, ALLOC< double > > N_yui
+           = this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->apriori_->addAllApriori(idset, N_xui);
@@ -255,7 +255,7 @@ namespace gum {
         // so, the formula for kNML is:
         // 0.5 * ( sum_X( log( C^(r_y)_#X ) ) - log( C^(r_y)N_ ) +
         //         sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)N_ ) )
-        double N = 0.0;
+        double N     = 0.0;
         double score = 0.0;
         for (auto n_xui: N_xui) {
           score += param_complexity__.log2Cnr(r_y, n_xui);

@@ -212,7 +212,8 @@ namespace gum {
      * @brief A dummy type for the emplace constructor.
      * This type is used to prevent the Bucket emplace (int,...) to compile.
      */
-    enum class Emplace { EMPLACE };
+    enum class Emplace
+    { EMPLACE };
 
     /**
      * Class constructor.
@@ -305,16 +306,16 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
+    using key_type        = Key;
+    using mapped_type     = Val;
+    using value_type      = std::pair< const Key, Val >;
+    using reference       = value_type&;
     using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using size_type = Size;
-    using allocator_type = Alloc;
-    using Bucket = HashTableBucket< Key, Val >;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using size_type       = Size;
+    using allocator_type  = Alloc;
+    using Bucket          = HashTableBucket< Key, Val >;
     /// @}
 
     /// The Bucket allocator.
@@ -679,19 +680,19 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using size_type = Size;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = HashTableIterator< Key, Val >;
-    using const_iterator = HashTableConstIterator< Key, Val >;
-    using iterator_safe = HashTableIteratorSafe< Key, Val >;
+    using key_type            = Key;
+    using mapped_type         = Val;
+    using value_type          = std::pair< const Key, Val >;
+    using reference           = value_type&;
+    using const_reference     = const value_type&;
+    using pointer             = value_type*;
+    using const_pointer       = const value_type*;
+    using size_type           = Size;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = HashTableIterator< Key, Val >;
+    using const_iterator      = HashTableConstIterator< Key, Val >;
+    using iterator_safe       = HashTableIteratorSafe< Key, Val >;
     using const_iterator_safe = HashTableConstIteratorSafe< Key, Val >;
     /// @}
 
@@ -723,10 +724,10 @@ namespace gum {
      * @param key_uniqueness_pol Uniqueness policy : should we prevent inserting
      * the same key more than once in the table?
      */
-    explicit HashTable(
-       Size size_param = HashTableConst::default_size,
-       bool resize_pol = HashTableConst::default_resize_policy,
-       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy);
+    explicit HashTable(Size size_param = HashTableConst::default_size,
+                       bool resize_pol = HashTableConst::default_resize_policy,
+                       bool key_uniqueness_pol
+                       = HashTableConst::default_uniqueness_policy);
 
     /**
      * @brief Initializer list constructor.
@@ -1593,11 +1594,12 @@ namespace gum {
     template < typename Mount,
                typename OtherAlloc = typename Alloc::template rebind<
                   std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(
-       Mount (*f)(Val),
-       Size size = Size(0),
-       bool resize_pol = HashTableConst::default_resize_policy,
-       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
+    HashTable< Key, Mount, OtherAlloc >
+       map(Mount (*f)(Val),
+           Size size       = Size(0),
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol
+           = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Transforms a hashtable of vals into a hashtable of mountains.
@@ -1622,11 +1624,12 @@ namespace gum {
     template < typename Mount,
                typename OtherAlloc = typename Alloc::template rebind<
                   std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(
-       Mount (*f)(Val&),
-       Size size = Size(0),
-       bool resize_pol = HashTableConst::default_resize_policy,
-       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
+    HashTable< Key, Mount, OtherAlloc >
+       map(Mount (*f)(Val&),
+           Size size       = Size(0),
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol
+           = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Transforms a hashtable of vals into a hashtable of mountains.
@@ -1651,11 +1654,12 @@ namespace gum {
     template < typename Mount,
                typename OtherAlloc = typename Alloc::template rebind<
                   std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(
-       Mount (*f)(const Val&),
-       Size size = Size(0),
-       bool resize_pol = HashTableConst::default_resize_policy,
-       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
+    HashTable< Key, Mount, OtherAlloc >
+       map(Mount (*f)(const Val&),
+           Size size       = Size(0),
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol
+           = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Creates a hashtable of mounts with a given value from a hashtable
@@ -1682,11 +1686,12 @@ namespace gum {
     template < typename Mount,
                typename OtherAlloc = typename Alloc::template rebind<
                   std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(
-       const Mount& val,
-       Size         size = Size(0),
-       bool         resize_pol = HashTableConst::default_resize_policy,
-       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
+    HashTable< Key, Mount, OtherAlloc >
+       map(const Mount& val,
+           Size         size       = Size(0),
+           bool         resize_pol = HashTableConst::default_resize_policy,
+           bool         key_uniqueness_pol
+           = HashTableConst::default_uniqueness_policy) const;
 
     /// @}
 
@@ -1919,14 +1924,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair< const Key, Val >;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2221,14 +2226,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair< const Key, Val >;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2466,14 +2471,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair< const Key, Val >;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2751,14 +2756,14 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair< const Key, Val >;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair< const Key, Val >;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ############################################################################

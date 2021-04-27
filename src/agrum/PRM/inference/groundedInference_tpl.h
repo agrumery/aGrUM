@@ -54,8 +54,8 @@ namespace gum {
       var_name << chain.first->name() << "." << chain.second->safeName();
       bn_obs->add(inf__->BN().variableFromName(var_name.str()));
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
-      const Potential< GUM_SCALAR >* prm_obs =
-         this->evidence(chain.first)[chain.second->id()];
+      const Potential< GUM_SCALAR >* prm_obs
+         = this->evidence(chain.first)[chain.second->id()];
       Instantiation i(*bn_obs), j(*prm_obs);
 
       for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc()) {
@@ -86,7 +86,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
-       const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
+       const PRM< GUM_SCALAR >&       prm,
+       const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system),
         inf__(0) {
       GUM_CONSTRUCTOR(GroundedInference);

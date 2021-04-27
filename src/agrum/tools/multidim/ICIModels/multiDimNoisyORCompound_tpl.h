@@ -33,7 +33,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
-     GUM_SCALAR external_weight, GUM_SCALAR default_weight) :
+     GUM_SCALAR external_weight,
+     GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
   }

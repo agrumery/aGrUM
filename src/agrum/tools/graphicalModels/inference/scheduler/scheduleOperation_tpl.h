@@ -63,7 +63,7 @@ namespace gum {
      ScheduleOperation< GUM_SCALAR >::operator=(
         const ScheduleOperation< GUM_SCALAR >& from) {
     type__ = from.type__;
-    id__ = from.id__;
+    id__   = from.id__;
     return *this;
   }
 

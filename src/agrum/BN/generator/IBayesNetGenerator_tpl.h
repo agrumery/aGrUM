@@ -35,7 +35,9 @@ namespace gum {
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(
-     Size nbrNodes, Size maxArcs, Size maxModality) :
+     Size nbrNodes,
+     Size maxArcs,
+     Size maxModality) :
       bayesNet_() {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
     nbrNodes_ = nbrNodes;
@@ -47,7 +49,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 " maxModality must be at least equal to two ");
 
-    maxArcs_ = maxArcs;
+    maxArcs_     = maxArcs;
     maxModality_ = maxModality;
   }
 

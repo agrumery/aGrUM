@@ -72,7 +72,7 @@ namespace gum {
          O3SystemFactory< GUM_SCALAR >::operator=(
             const O3SystemFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
-        prm__ = src.prm__;
+        prm__    = src.prm__;
         o3_prm__ = src.o3_prm__;
         solver__ = src.solver__;
         errors__ = src.errors__;
@@ -84,7 +84,7 @@ namespace gum {
          O3SystemFactory< GUM_SCALAR >::operator=(
             O3SystemFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
-        prm__ = std::move(src.prm__);
+        prm__    = std::move(src.prm__);
         o3_prm__ = std::move(src.o3_prm__);
         solver__ = std::move(src.solver__);
         errors__ = std::move(src.errors__);
@@ -117,7 +117,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::addInstances__(
-         PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
+         PRMFactory< GUM_SCALAR >& factory,
+         O3System&                 sys) {
         for (auto& i: sys.instances()) {
           if (i.parameters().size() > 0) {
             auto params = HashTable< std::string, double >();
@@ -128,8 +129,9 @@ namespace gum {
 
           } else {
             if (i.size().value() > 1) {
-              factory.addArray(
-                 i.type().label(), i.name().label(), i.size().value());
+              factory.addArray(i.type().label(),
+                               i.name().label(),
+                               i.size().value());
             } else {
               factory.addInstance(i.type().label(), i.name().label());
             }
@@ -139,11 +141,12 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::addAssignments__(
-         PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
+         PRMFactory< GUM_SCALAR >& factory,
+         O3System&                 sys) {
         const auto& real_sys = prm__->getSystem(sys.name().label());
 
         for (auto& ass: sys.assignments()) {
-          auto leftInstance = ass.leftInstance().label();
+          auto leftInstance  = ass.leftInstance().label();
           auto leftReference = ass.leftReference().label();
           auto rightInstance = ass.rightInstance().label();
 
@@ -165,10 +168,11 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::addIncrements__(
-         PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
+         PRMFactory< GUM_SCALAR >& factory,
+         O3System&                 sys) {
         const auto& real_sys = prm__->getSystem(sys.name().label());
         for (auto& inc: sys.increments()) {
-          auto leftInstance = inc.leftInstance().label();
+          auto leftInstance  = inc.leftInstance().label();
           auto leftReference = inc.leftReference().label();
           auto rightInstance = inc.rightInstance().label();
 
@@ -221,7 +225,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::checkParameters__(
-         const PRMClass< GUM_SCALAR >& type, const O3Instance& inst) {
+         const PRMClass< GUM_SCALAR >& type,
+         const O3Instance&             inst) {
         for (const auto& param: inst.parameters()) {
           if (!type.exists(param.name().label())) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND(param, *errors__);
@@ -234,8 +239,8 @@ namespace gum {
             return false;
           }
 
-          const auto& type_param =
-             static_cast< const PRMParameter< GUM_SCALAR >& >(
+          const auto& type_param
+             = static_cast< const PRMParameter< GUM_SCALAR >& >(
                 type.get(param.name().label()));
 
           switch (type_param.valueType()) {
@@ -277,20 +282,21 @@ namespace gum {
             return false;
           }
 
-          auto        i = nameMap__[ass.leftInstance().label()];
+          auto        i    = nameMap__[ass.leftInstance().label()];
           const auto& type = prm__->getClass(i->type().label());
-          const auto& ref = ass.leftReference().label();
+          const auto& ref  = ass.leftReference().label();
 
           if (!(type.exists(ass.leftReference().label())
                 && PRMClassElement< GUM_SCALAR >::isReferenceSlot(
                    type.get(ref)))) {
-            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
-               ass.leftReference(), type.name(), *errors__);
+            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(ass.leftReference(),
+                                             type.name(),
+                                             *errors__);
             return false;
           }
 
-          const auto& real_ref =
-             static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
+          const auto& real_ref
+             = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
 
           if (!nameMap__.exists(ass.rightInstance().label())) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND(ass.rightInstance(), *errors__);
@@ -326,20 +332,21 @@ namespace gum {
             return false;
           }
 
-          auto        i = nameMap__[inc.leftInstance().label()];
+          auto        i    = nameMap__[inc.leftInstance().label()];
           const auto& type = prm__->getClass(i->type().label());
-          const auto& ref = inc.leftReference().label();
+          const auto& ref  = inc.leftReference().label();
 
           if (!(type.exists(inc.leftReference().label())
                 && PRMClassElement< GUM_SCALAR >::isReferenceSlot(
                    type.get(ref)))) {
-            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
-               inc.leftReference(), type.name(), *errors__);
+            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(inc.leftReference(),
+                                             type.name(),
+                                             *errors__);
             return false;
           }
 
-          const auto& real_ref =
-             static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
+          const auto& real_ref
+             = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
 
           if (!real_ref.isArray()) {
             O3PRM_SYSTEM_NOT_AN_ARRAY(inc.leftReference(), *errors__);

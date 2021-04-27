@@ -43,7 +43,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    enum class DBRowGeneratorGoal : char {
+    enum class DBRowGeneratorGoal : char
+    {
       // the generator's goal is only to remove all missing values
       ONLY_REMOVE_MISSING_VALUES,
 
@@ -381,7 +382,8 @@ namespace gum {
       /** @brief the method that computes the set of DBRow instances to output
        * after method setInputRow has been called */
       virtual std::size_t
-         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) = 0;
+         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row)
+         = 0;
     };
 
   } /* namespace learning */

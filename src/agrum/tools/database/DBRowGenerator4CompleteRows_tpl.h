@@ -48,8 +48,9 @@ namespace gum {
           column_types,
        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
           alloc) :
-        DBRowGenerator< ALLOC >(
-           column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES, alloc) {
+        DBRowGenerator< ALLOC >(column_types,
+                                DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
+                                alloc) {
       GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
     }
 
@@ -132,7 +133,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      input_row__ = from.input_row__;
+      input_row__                      = from.input_row__;
       return *this;
     }
 
@@ -143,7 +144,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      input_row__ = from.input_row__;
+      input_row__                      = from.input_row__;
       return *this;
     }
 

@@ -112,7 +112,7 @@ namespace gum {
 
     /// assignment operator
     INLINE DBCell& DBCell::operator=(const float x) {
-      type__ = EltType::REAL;
+      type__     = EltType::REAL;
       val_real__ = x;
       return *this;
     }
@@ -120,7 +120,7 @@ namespace gum {
 
     /// assignment operator
     INLINE DBCell& DBCell::operator=(const int x) {
-      type__ = EltType::INTEGER;
+      type__        = EltType::INTEGER;
       val_integer__ = x;
       return *this;
     }
@@ -144,9 +144,9 @@ namespace gum {
     /// test of equality
     INLINE bool DBCell::operator==(const DBCell& from) const {
       return (type__ == from.type__)
-             && ((type__ == EltType::MISSING)
-                 || ((type__ == EltType::REAL) && (val_real__ == from.val_real__))
-                 || (val_integer__ == from.val_integer__));
+          && ((type__ == EltType::MISSING)
+              || ((type__ == EltType::REAL) && (val_real__ == from.val_real__))
+              || (val_integer__ == from.val_integer__));
     }
 
 
@@ -171,7 +171,7 @@ namespace gum {
 
     /// sets the content of the DBCell
     INLINE void DBCell::setReal(const float x) {
-      type__ = EltType::REAL;
+      type__     = EltType::REAL;
       val_real__ = x;
     }
 
@@ -181,7 +181,7 @@ namespace gum {
       if (!isReal(elt))
         GUM_ERROR(TypeError, "the string does not contain a real number");
       val_real__ = std::stof(elt);
-      type__ = EltType::REAL;
+      type__     = EltType::REAL;
     }
 
 
@@ -196,7 +196,7 @@ namespace gum {
 
     /// sets the content of the DBCell
     INLINE void DBCell::setInteger(const int x) {
-      type__ = EltType::INTEGER;
+      type__        = EltType::INTEGER;
       val_integer__ = x;
     }
 
@@ -206,7 +206,7 @@ namespace gum {
       if (!isInteger(elt))
         GUM_ERROR(TypeError, "the string does not contain an integer");
       val_integer__ = std::stoi(elt);
-      type__ = EltType::INTEGER;
+      type__        = EltType::INTEGER;
     }
 
 

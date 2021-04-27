@@ -156,7 +156,7 @@ namespace gum {
       if (varNameMap__.exists(name))
         GUM_ERROR(DuplicateElement, "Name already used: " + name);
 
-      foo_flag__ = true;
+      foo_flag__     = true;
       stringBag__[0] = name;
       //         VERBOSITY ( "  -- variable " << name );
     }
@@ -171,7 +171,7 @@ namespace gum {
     if (state() != FMDPfactory_state::VARIABLE)
       illegalStateError__("variableDescription");
     else {
-      bar_flag__ = true;
+      bar_flag__     = true;
       stringBag__[1] = desc;
     }
   }
@@ -210,8 +210,10 @@ namespace gum {
     if (state() != FMDPfactory_state::VARIABLE)
       illegalStateError__("endVariableDeclaration");
     else if (foo_flag__ && (stringBag__.size() > 3)) {
-      LabelizedVariable* var = new LabelizedVariable(
-         stringBag__[0], (bar_flag__) ? stringBag__[1] : "", 0);
+      LabelizedVariable* var
+         = new LabelizedVariable(stringBag__[0],
+                                 (bar_flag__) ? stringBag__[1] : "",
+                                 0);
 
       for (size_t i = 2; i < stringBag__.size(); ++i) {
         var->addLabel(stringBag__[i]);
@@ -333,15 +335,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::addTransition(
-     const std::string& var, const MultiDimAdressable* transition) {
-    const MultiDimImplementation< GUM_SCALAR >* t =
-       reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(transition);
+     const std::string&        var,
+     const MultiDimAdressable* transition) {
+    const MultiDimImplementation< GUM_SCALAR >* t
+       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(
+          transition);
 
     if (state() != FMDPfactory_state::TRANSITION)
       illegalStateError__("addTransition");
     else if (foo_flag__)
-      fmdp__->addTransitionForAction(
-         fmdp__->actionId(stringBag__[0]), varNameMap__[var], t);
+      fmdp__->addTransitionForAction(fmdp__->actionId(stringBag__[0]),
+                                     varNameMap__[var],
+                                     t);
     else
       fmdp__->addTransition(varNameMap__[var], t);
   }
@@ -413,8 +418,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::addCost(const MultiDimAdressable* cost) {
-    const MultiDimImplementation< GUM_SCALAR >* c =
-       reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(cost);
+    const MultiDimImplementation< GUM_SCALAR >* c
+       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(cost);
 
     if (state() != FMDPfactory_state::COST)
       illegalStateError__("addCost");
@@ -499,8 +504,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      FMDPFactory< GUM_SCALAR >::addReward(const MultiDimAdressable* reward) {
-    const MultiDimImplementation< GUM_SCALAR >* r =
-       reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(reward);
+    const MultiDimImplementation< GUM_SCALAR >* r
+       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(reward);
 
     if (state() != FMDPfactory_state::REWARD)
       illegalStateError__("addReward");
@@ -544,15 +549,24 @@ namespace gum {
           temp = res;
 
           switch (stringBag__[0][0]) {
-            case '+': res = add2MultiDimFunctionGraphs(res, elt); break;
+            case '+':
+              res = add2MultiDimFunctionGraphs(res, elt);
+              break;
 
-            case '-': res = subtract2MultiDimFunctionGraphs(res, elt); break;
+            case '-':
+              res = subtract2MultiDimFunctionGraphs(res, elt);
+              break;
 
-            case '*': res = multiply2MultiDimFunctionGraphs(res, elt); break;
+            case '*':
+              res = multiply2MultiDimFunctionGraphs(res, elt);
+              break;
 
-            case '/': res = divide2MultiDimFunctionGraphs(res, elt); break;
+            case '/':
+              res = divide2MultiDimFunctionGraphs(res, elt);
+              break;
 
-            default: break;
+            default:
+              break;
           }
 
           delete elt;
@@ -677,27 +691,36 @@ namespace gum {
     msg += ") in state ";
 
     switch (state()) {
-      case FMDPfactory_state::NONE: msg += "FMDPfactory_state::NONE"; break;
+      case FMDPfactory_state::NONE:
+        msg += "FMDPfactory_state::NONE";
+        break;
 
       case FMDPfactory_state::VARIABLE:
         msg += "FMDPfactory_state::VARIABLE";
         break;
 
-      case FMDPfactory_state::ACTION: msg += "FMDPfactory_state::ACTION"; break;
+      case FMDPfactory_state::ACTION:
+        msg += "FMDPfactory_state::ACTION";
+        break;
 
       case FMDPfactory_state::TRANSITION:
         msg += "FMDPfactory_state::TRANSITION";
         break;
 
-      case FMDPfactory_state::COST: msg += "FMDPfactory_state::COST"; break;
+      case FMDPfactory_state::COST:
+        msg += "FMDPfactory_state::COST";
+        break;
 
-      case FMDPfactory_state::REWARD: msg += "FMDPfactory_state::REWARD"; break;
+      case FMDPfactory_state::REWARD:
+        msg += "FMDPfactory_state::REWARD";
+        break;
 
       case FMDPfactory_state::DISCOUNT:
         msg += "FMDPfactory_state::DISCOUNT";
         break;
 
-      default: msg += "Unknown state";
+      default:
+        msg += "Unknown state";
     }
 
     GUM_ERROR(OperationNotAllowed, msg);
@@ -717,8 +740,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::initializeFunctionGraph__() {
-    this->FunctionGraph__ =
-       MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
+    this->FunctionGraph__
+       = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
     // Recopie des variables principales dans le graphe de décision
     for (auto varIter = fmdp__->beginVariables();
          varIter != fmdp__->endVariables();

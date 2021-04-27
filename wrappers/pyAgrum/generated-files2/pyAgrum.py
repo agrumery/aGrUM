@@ -8160,8 +8160,8 @@ class Potential(object):
         r"""
         fillWith(Potential self, Potential src) -> Potential
         fillWith(Potential self, Potential src, Vector_string mapSrc) -> Potential
-        fillWith(Potential self, Vector v) -> Potential
-        fillWith(Potential self, double const & v) -> Potential
+        fillWith(Potential self, Vector data) -> Potential
+        fillWith(Potential self, double const & val) -> Potential
 
         Automatically fills the potential with v.
 

@@ -84,8 +84,8 @@ namespace gum {
        StructuralConstraintMandatoryArcs::operator=(
           StructuralConstraintMandatoryArcs&& from) {
       if (this != &from) {
-        MandatoryArcs__mandatory_arcs_ =
-           std::move(from.MandatoryArcs__mandatory_arcs_);
+        MandatoryArcs__mandatory_arcs_
+           = std::move(from.MandatoryArcs__mandatory_arcs_);
       }
       return *this;
     }

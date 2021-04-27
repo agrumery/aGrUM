@@ -40,7 +40,7 @@ namespace gum {
        StructuralConstraintPossibleEdges::checkArcAdditionAlone(NodeId x,
                                                                 NodeId y) const {
       auto res = PossibleEdges__possible_edges_.empty()
-                 || PossibleEdges__possible_edges_.exists(Edge(x, y));
+              || PossibleEdges__possible_edges_.exists(Edge(x, y));
       return res;
     }
 
@@ -56,7 +56,7 @@ namespace gum {
        StructuralConstraintPossibleEdges::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
       return PossibleEdges__possible_edges_.empty()
-             || PossibleEdges__possible_edges_.exists(Edge(y, x));
+          || PossibleEdges__possible_edges_.exists(Edge(y, x));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -120,7 +120,8 @@ namespace gum {
         case GraphChangeType::ARC_ADDITION:
           return !checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION: return false;
+        case GraphChangeType::ARC_DELETION:
+          return false;
 
         case GraphChangeType::ARC_REVERSAL:
           return !checkArcAdditionAlone(change.node2(), change.node1());

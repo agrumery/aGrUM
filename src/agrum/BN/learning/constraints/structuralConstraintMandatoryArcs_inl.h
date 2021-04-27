@@ -114,7 +114,8 @@ namespace gum {
     INLINE bool StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(
        const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION: return false;
+        case GraphChangeType::ARC_ADDITION:
+          return false;
 
         case GraphChangeType::ARC_DELETION:
           return !checkArcDeletionAlone(change.node1(), change.node2());

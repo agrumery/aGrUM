@@ -85,7 +85,7 @@ namespace gum {
      * DefaultEliminationSequenceStrategy
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
-    DefaultEliminationSequenceStrategy(double theRatio = GUM_QUASI_RATIO,
+    DefaultEliminationSequenceStrategy(double theRatio     = GUM_QUASI_RATIO,
                                        double theThreshold = GUM_WEIGHT_THRESHOLD);
 
     /// constructor for an a priori non empty graph
@@ -104,7 +104,7 @@ namespace gum {
      * not copied but only referenced by the elimination sequence algorithm. */
     DefaultEliminationSequenceStrategy(UndiGraph*                  graph,
                                        const NodeProperty< Size >* dom_sizes,
-                                       double ratio = GUM_QUASI_RATIO,
+                                       double ratio     = GUM_QUASI_RATIO,
                                        double threshold = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor

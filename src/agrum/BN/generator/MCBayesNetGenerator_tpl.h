@@ -68,9 +68,9 @@ namespace gum {
          OperationNotAllowed,
          "the sum of the probabilities p and q must be at most equal to 100");
 
-    iteration_ = iteration;
-    p_ = p;
-    q_ = q;
+    iteration_  = iteration;
+    p_          = p;
+    q_          = q;
     disturbing_ = false;
 
     GUM_CONSTRUCTOR(MCBayesNetGenerator);
@@ -89,9 +89,9 @@ namespace gum {
       MCBayesNetGenerator(bayesNet.size(),
                           (Size)(bayesNet.sizeArcs() * 1.1),
                           getMaxModality(bayesNet)) {
-    iteration_ = iteration;
-    p_ = p;
-    q_ = q;
+    iteration_  = iteration;
+    p_          = p;
+    q_          = q;
     disturbing_ = false;
   }
 
@@ -137,7 +137,7 @@ namespace gum {
      BayesNet< GUM_SCALAR >& bayesNetinit,
      Size                    iteration) {   // insert option for the variation
     disturbing_ = true;
-    Size iter = iteration_;
+    Size iter   = iteration_;
 
     if (iteration) iteration_ = iteration;
 
@@ -174,7 +174,7 @@ namespace gum {
                 "BN is not valid cause it does not respect constraint ");
     }
 
-    iteration_ = iter;
+    iteration_  = iter;
     disturbing_ = false;
   }
 
@@ -386,7 +386,8 @@ namespace gum {
              class ICPTDisturber >
   INLINE void
      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::insertArc__(
-        NodeId i, NodeId j) {
+        NodeId i,
+        NodeId j) {
     if (directedPath__(j, i)) return;
 
     if (disturbing_) {
@@ -405,7 +406,9 @@ namespace gum {
              class ICPTDisturber >
   INLINE void
      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::eraseArc__(
-        NodeId i, NodeId j, bool mustbeconnex) {
+        NodeId i,
+        NodeId j,
+        bool   mustbeconnex) {
     if (disturbing_) {
       const BayesNet< GUM_SCALAR > bayesNet(this->bayesNet_);
       Potential< GUM_SCALAR >      potj;
@@ -447,12 +450,12 @@ namespace gum {
   void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
      chooseCloseNodes__(NodeId& i, NodeId& j) {
     NodeId temp = randomValue(this->bayesNet_.size());
-    Size   co = 0;
+    Size   co   = 0;
 
     if (this->bayesNet_.parents(temp).size()) {
-      j = temp;
+      j       = temp;
       auto it = this->bayesNet_.parents(j).begin();
-      co = randomValue(this->bayesNet_.parents(j).size());
+      co      = randomValue(this->bayesNet_.parents(j).size());
 
       while (co--) {
         ++it;
@@ -460,9 +463,9 @@ namespace gum {
 
       i = *it;
     } else if (this->bayesNet_.children(temp).size()) {
-      i = temp;
+      i       = temp;
       auto it = this->bayesNet_.children(i).begin();
-      co = randomValue(this->bayesNet_.children(i).size());
+      co      = randomValue(this->bayesNet_.children(i).size());
 
       while (co--) {
         ++it;
@@ -482,18 +485,18 @@ namespace gum {
   void
      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::createTree__(
         Size BNSize) {
-    Idx               n = 0;
+    Idx               n      = 0;
     Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root =
-       this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
+    NodeId root
+       = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
     Size maxNodes = BNSize - 1;
-    Size SubG = 0;
+    Size SubG     = 0;
 
     while (maxNodes) {
-      SubG = randomValue(maxNodes) + 1;
-      maxNodes = maxNodes - SubG;
+      SubG         = randomValue(maxNodes) + 1;
+      maxNodes     = maxNodes - SubG;
       NodeId rootS = createPartTree__(SubG, n);
       this->bayesNet_.addArc(root, rootS);
     }
@@ -509,14 +512,14 @@ namespace gum {
     Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root =
-       this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
+    NodeId root
+       = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
     Size maxNodes = BNSize - 1;
-    Size SubG = 0;
+    Size SubG     = 0;
 
     while (maxNodes) {
-      SubG = randomValue(maxNodes) + 1;
-      maxNodes = maxNodes - SubG;
+      SubG         = randomValue(maxNodes) + 1;
+      maxNodes     = maxNodes - SubG;
       NodeId rootS = createPartTree__(SubG, n);
       this->bayesNet_.addArc(root, rootS);
     }
@@ -560,7 +563,8 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::connect__(
-     const NodeId i, const NodeId j) {
+     const NodeId i,
+     const NodeId j) {
     const DAG dag__ = this->bayesNet_.dag();
 
     if (dag__.existsArc(i, j) || dag__.existsArc(j, i))
@@ -587,7 +591,9 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::connect__(
-     const NodeId i, const NodeId j, NodeSet& excluded) {
+     const NodeId i,
+     const NodeId j,
+     NodeSet&     excluded) {
     const DAG dag__ = this->bayesNet_.dag();
 
     if (dag__.existsArc(i, j) || dag__.existsArc(j, i))

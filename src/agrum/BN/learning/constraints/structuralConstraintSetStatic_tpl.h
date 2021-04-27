@@ -118,7 +118,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           isAlwaysInvalid(const GraphChange& change) const {
       return next_constraints::isAlwaysInvalid(change)
-             || first_constraint::isAlwaysInvalidAlone(change);
+          || first_constraint::isAlwaysInvalidAlone(change);
     }
 
     /// checks whether the constraints enable to add arc (x,y)
@@ -127,7 +127,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkArcAddition(NodeId x, NodeId y) const {
       return next_constraints::checkArcAddition(x, y)
-             && first_constraint::checkArcAdditionAlone(x, y);
+          && first_constraint::checkArcAdditionAlone(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -136,7 +136,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkArcDeletion(NodeId x, NodeId y) const {
       return next_constraints::checkArcDeletion(x, y)
-             && first_constraint::checkArcDeletionAlone(x, y);
+          && first_constraint::checkArcDeletionAlone(x, y);
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
@@ -145,7 +145,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkArcReversal(NodeId x, NodeId y) const {
       return next_constraints::checkArcReversal(x, y)
-             && first_constraint::checkArcReversalAlone(x, y);
+          && first_constraint::checkArcReversalAlone(x, y);
     }
 
     /// checks whether the constraints enable to add an arc
@@ -154,7 +154,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkModification(const ArcAddition& change) const {
       return next_constraints::checkModification(change)
-             && first_constraint::checkModificationAlone(change);
+          && first_constraint::checkModificationAlone(change);
     }
 
     /// checks whether the constraints enable to remove an arc
@@ -163,7 +163,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkModification(const ArcDeletion& change) const {
       return next_constraints::checkModification(change)
-             && first_constraint::checkModificationAlone(change);
+          && first_constraint::checkModificationAlone(change);
     }
 
     /// checks whether the constraints enable to reverse an arc
@@ -172,7 +172,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkModification(const ArcReversal& change) const {
       return next_constraints::checkModification(change)
-             && first_constraint::checkModificationAlone(change);
+          && first_constraint::checkModificationAlone(change);
     }
 
     /// checks whether the constraints enable to perform a graph change
@@ -181,7 +181,7 @@ namespace gum {
        StructuralConstraintSetStatic__< CONSTRAINT1, OTHER_CONSTRAINTS... >::
           checkModification(const GraphChange& change) const {
       return next_constraints::checkModification(change)
-             && first_constraint::checkModificationAlone(change);
+          && first_constraint::checkModificationAlone(change);
     }
 
     // ===========================================================================
@@ -258,21 +258,24 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic__< CONSTRAINT >::checkArcAddition(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return first_constraint::checkArcAdditionAlone(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic__< CONSTRAINT >::checkArcDeletion(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return first_constraint::checkArcDeletionAlone(x, y);
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic__< CONSTRAINT >::checkArcReversal(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return first_constraint::checkArcReversalAlone(x, y);
     }
 
@@ -526,21 +529,24 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkArcAddition(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return constraints::checkArcAddition(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkArcDeletion(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return constraints::checkArcDeletion(x, y);
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkArcReversal(
-       NodeId x, NodeId y) const {
+       NodeId x,
+       NodeId y) const {
       return constraints::checkArcReversal(x, y);
     }
 

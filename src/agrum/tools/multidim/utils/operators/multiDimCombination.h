@@ -134,17 +134,21 @@ namespace gum {
      * argument contains less than two elements.
      */
     virtual TABLE< GUM_SCALAR >*
-                 combine(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+       combine(const Set< const TABLE< GUM_SCALAR >* >& set)
+       = 0;
     virtual void combine(TABLE< GUM_SCALAR >&                     container,
-                         const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+                         const Set< const TABLE< GUM_SCALAR >* >& set)
+       = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) = 0;
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
+       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&))
+       = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE< GUM_SCALAR >* (*combineFunction())(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&) = 0;
+    virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
+                                                      const TABLE< GUM_SCALAR >&)
+       = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be

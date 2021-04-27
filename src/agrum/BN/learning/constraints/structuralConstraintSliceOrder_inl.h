@@ -97,7 +97,8 @@ namespace gum {
                     > SliceOrder__order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
-        case GraphChangeType::ARC_DELETION: return false;
+        case GraphChangeType::ARC_DELETION:
+          return false;
 
         case GraphChangeType::ARC_REVERSAL:
           try {

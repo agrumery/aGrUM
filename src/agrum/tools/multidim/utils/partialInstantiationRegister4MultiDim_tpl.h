@@ -44,15 +44,18 @@ namespace gum {
     PartialInstantiationSet* theset;
 
     if (!set__.exists(instantiation_func_name)) {
-      theset =
-         set__.insert(instantiation_func_name, new PartialInstantiationSet).second;
+      theset = set__.insert(instantiation_func_name, new PartialInstantiationSet)
+                  .second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the
       // PartialInstantiationRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
       theset = set__[instantiation_func_name];
@@ -134,7 +137,8 @@ namespace gum {
      GUM_SCALAR >::~PartialInstantiationRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, PartialInstantiationSet* >::iterator_safe
-            iter = set__.beginSafe();
+            iter
+         = set__.beginSafe();
          iter != set__.endSafe();
          ++iter)
       delete iter.val();
@@ -149,7 +153,9 @@ namespace gum {
      typename PartialInstantiationRegister4MultiDim<
         GUM_SCALAR >::PartialInstantiationPtr function) {
     PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().insert(
-       instantiation_func_name, type_multidim, function);
+       instantiation_func_name,
+       type_multidim,
+       function);
   }
 
 } /* namespace gum */

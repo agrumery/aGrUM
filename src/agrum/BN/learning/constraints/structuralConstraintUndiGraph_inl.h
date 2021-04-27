@@ -42,7 +42,7 @@ namespace gum {
        StructuralConstraintUndiGraph::checkEdgeAdditionAlone(NodeId x,
                                                              NodeId y) const {
       return UndiGraph__graph_.existsNode(x) && UndiGraph__graph_.existsNode(y)
-             && !UndiGraph__graph_.existsEdge(x, y);
+          && !UndiGraph__graph_.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to remove edge (x,y)

@@ -49,17 +49,17 @@ namespace gum {
             != PRMClassElement< GUM_SCALAR >::prm_refslot) {
           GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
-          isMultiple__ =
-             isMultiple__
-             || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(chain__->atPos(i))
-                   ->isArray();
+          isMultiple__
+             = isMultiple__
+            || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(chain__->atPos(i))
+                  ->isArray();
         }
       }
 
       copyLastElt__();
 
       this->safeName_ = PRMObject::LEFT_CAST() + lastElt().type().name()
-                        + PRMObject::RIGHT_CAST() + name;
+                      + PRMObject::RIGHT_CAST() + name;
       this->lastElt().type().variable().setName(name);
     }
 
@@ -101,8 +101,8 @@ namespace gum {
 
       switch (chain__->back()->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
-          auto old_attr =
-             static_cast< const PRMAttribute< GUM_SCALAR >* >(chain__->back());
+          auto old_attr
+             = static_cast< const PRMAttribute< GUM_SCALAR >* >(chain__->back());
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
           for (auto var: old_attr->cpf().variablesSequence()) {
@@ -114,10 +114,13 @@ namespace gum {
         }
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
-          const PRMAggregate< GUM_SCALAR >* c_agg =
-             static_cast< const PRMAggregate< GUM_SCALAR >* >(chain__->back());
-          PRMAggregate< GUM_SCALAR >* agg = new PRMAggregate< GUM_SCALAR >(
-             c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id());
+          const PRMAggregate< GUM_SCALAR >* c_agg
+             = static_cast< const PRMAggregate< GUM_SCALAR >* >(chain__->back());
+          PRMAggregate< GUM_SCALAR >* agg
+             = new PRMAggregate< GUM_SCALAR >(c_agg->name(),
+                                              c_agg->agg_type(),
+                                              c_agg->type(),
+                                              c_agg->id());
           new_elt = agg;
           break;
         }

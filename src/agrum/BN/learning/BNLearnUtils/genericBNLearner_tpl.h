@@ -36,7 +36,7 @@ namespace gum {
       genericBNLearner::checkFileName__(filename);
       DBInitializerFromCSV<> initializer(filename);
       const auto&            xvar_names = initializer.variableNames();
-      std::size_t            nb_vars = xvar_names.size();
+      std::size_t            nb_vars    = xvar_names.size();
       HashTable< std::string, std::size_t > var_names(nb_vars);
       for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
         var_names.insert(xvar_names[i], i);
@@ -67,8 +67,8 @@ namespace gum {
         domain_sizes__.push_back(dom);
 
       // create the parser
-      parser__ =
-         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+      parser__
+         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -77,8 +77,8 @@ namespace gum {
       BayesNet< GUM_SCALAR > bn;
       const std::size_t      nb_vars = database__.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
-        const DiscreteVariable& var =
-           dynamic_cast< const DiscreteVariable& >(database__.variable(i));
+        const DiscreteVariable& var
+           = dynamic_cast< const DiscreteVariable& >(database__.variable(i));
         bn.add(var);
       }
       return bn;

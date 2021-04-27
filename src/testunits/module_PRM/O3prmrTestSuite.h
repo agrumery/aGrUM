@@ -39,8 +39,8 @@ namespace gum_tests {
 
     void testParseFile1() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -57,8 +57,8 @@ namespace gum_tests {
 
     void testParseFile2() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -75,8 +75,8 @@ namespace gum_tests {
     // ->
     void testInference() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -92,8 +92,8 @@ namespace gum_tests {
 
     void testObserve() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -104,10 +104,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
         // Observe correctly
-        const auto& c1 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
-        const auto& c2 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
+        const auto& c1
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
+        const auto& c2
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
         TS_ASSERT(si->inference()->hasEvidence(
            gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
@@ -140,8 +140,8 @@ namespace gum_tests {
 
     void testUnobserve() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -152,10 +152,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
         // Unobserve correctly
-        const gum::prm::PRMInstance< double >& c1 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
-        const gum::prm::PRMInstance< double >& c2 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
+        const gum::prm::PRMInstance< double >& c1
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
+        const gum::prm::PRMInstance< double >& c2
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
         TS_ASSERT(!si->inference()->hasEvidence(
            gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
@@ -172,8 +172,8 @@ namespace gum_tests {
 
     void testQuery() {
       try {
-        gum::prm::o3prmr::O3prmrInterpreter* si =
-           new gum::prm::o3prmr::O3prmrInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si
+           = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
@@ -184,10 +184,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(si->errors(), (gum::Size)0);
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
-        const gum::prm::PRMInstance< double >& c1 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
-        const gum::prm::PRMInstance< double >& c2 =
-           si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
+        const gum::prm::PRMInstance< double >& c1
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
+        const gum::prm::PRMInstance< double >& c2
+           = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
         TS_ASSERT(!si->inference()->hasEvidence(
            gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
@@ -201,13 +201,13 @@ namespace gum_tests {
         // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de
         // l'instance c1 est à 1.0
 
-        const gum::prm::PRMInference< double >::EMap& e =
-           si->inference()->evidence(c2);
+        const gum::prm::PRMInference< double >::EMap& e
+           = si->inference()->evidence(c2);
         const gum::Potential< double >* p = e[c1.get("equipState").id()];
 
         gum::Instantiation                      j(*p);
-        const gum::prm::PRMAttribute< double >& c2_equipState =
-           c2.get("equipState");
+        const gum::prm::PRMAttribute< double >& c2_equipState
+           = c2.get("equipState");
 
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(
@@ -230,7 +230,7 @@ namespace gum_tests {
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/Asia/"));
         si->interpretFile(GET_RESSOURCES_PATH("o3prmr/Asia/myRequest.o3prmr"));
-        auto                                prm = si->prm();
+        auto                                prm  = si->prm();
         gum::prm::PRMClass< double > const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia.Asia")));
@@ -250,7 +250,7 @@ namespace gum_tests {
         si->interpretFile(GET_RESSOURCES_PATH("o3prmr/Asia/myRequest.o3prmr"));
         auto                           prm = si->prm();
         const auto&                    sys = prm->getSystem("system.Asia");
-        auto                           bn = new gum::BayesNet< double >("plop");
+        auto                           bn  = new gum::BayesNet< double >("plop");
         gum::BayesNetFactory< double > factory(bn);
         // Act
         TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));
@@ -275,7 +275,7 @@ namespace gum_tests {
         if (!si->count()) {
           auto                           prm = si->prm();
           const auto&                    sys = prm->getSystem("Asia.Asia");
-          auto                           bn = new gum::BayesNet< double >("plop");
+          auto                           bn  = new gum::BayesNet< double >("plop");
           gum::BayesNetFactory< double > factory(bn);
           // Act
           TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));
@@ -299,7 +299,7 @@ namespace gum_tests {
            "o3prmr/ComplexPrinters/fr/lip6/printers/request.o3prmr"));
         auto        prm = si->prm();
         const auto& sys = prm->getSystem("fr.lip6.printers.system.Work");
-        auto        bn = new gum::BayesNet< double >("plop");
+        auto        bn  = new gum::BayesNet< double >("plop");
         gum::BayesNetFactory< double > factory(bn);
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));

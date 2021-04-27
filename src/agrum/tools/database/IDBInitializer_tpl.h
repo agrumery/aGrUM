@@ -108,8 +108,8 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(const IDBInitializer< ALLOC >& from) {
       if (this != &from) {
-        var_names__ = from.var_names__;
-        input_type__ = from.input_type__;
+        var_names__             = from.var_names__;
+        input_type__            = from.input_type__;
         last_insertion_failed__ = false;
       }
       return *this;
@@ -121,8 +121,8 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(IDBInitializer< ALLOC >&& from) {
       if (this != &from) {
-        var_names__ = std::move(from.var_names__);
-        input_type__ = from.input_type__;
+        var_names__             = std::move(from.var_names__);
+        input_type__            = from.input_type__;
         last_insertion_failed__ = false;
       }
       return *this;
@@ -155,7 +155,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
     void IDBInitializer< ALLOC >::fillDatabaseFromStrings__(
-       DATABASE< ALLOC >& database, const bool retry_insertion) {
+       DATABASE< ALLOC >& database,
+       const bool         retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
       if (retry_insertion && last_insertion_failed__) {
         database.insertRow(currentStringRow_());
@@ -179,7 +180,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
     void IDBInitializer< ALLOC >::fillDatabaseFromDBCells__(
-       DATABASE< ALLOC >& database, const bool retry_insertion) {
+       DATABASE< ALLOC >& database,
+       const bool         retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
       if (retry_insertion && last_insertion_failed__) {
         database.insertRow(currentDBCellRow_());

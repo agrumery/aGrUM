@@ -99,8 +99,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   float SchedulerBasic< GUM_SCALAR >::nbOperations(
      const Schedule< GUM_SCALAR >& schedule) const {
-    NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.scheduling_dag();
+    NodeSet available     = schedule.availableOperations();
+    DAG     dag           = schedule.scheduling_dag();
     float   nb_operations = 0;
 
     while (!available.empty()) {
@@ -111,8 +111,8 @@ namespace gum {
         nb_operations += schedule.nbOperations(id);
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children =
-                children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children
+             = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
           if (dag.parents(*iter_children).size() == 1) {
@@ -132,9 +132,10 @@ namespace gum {
    * to perform the k first ScheduleOperations of a given schedule */
   template < typename GUM_SCALAR >
   float SchedulerBasic< GUM_SCALAR >::nbOperations(
-     const Schedule< GUM_SCALAR >& schedule, Size k) const {
-    NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.scheduling_dag();
+     const Schedule< GUM_SCALAR >& schedule,
+     Size                          k) const {
+    NodeSet available     = schedule.availableOperations();
+    DAG     dag           = schedule.scheduling_dag();
     float   nb_operations = 0;
 
     while (!available.empty() && k) {
@@ -145,8 +146,8 @@ namespace gum {
         nb_operations += schedule.nbOperations(id);
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children =
-                children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children
+             = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
           if (dag.parents(*iter_children).size() == 1) {
@@ -166,9 +167,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
      const Schedule< GUM_SCALAR >& schedule) const {
-    NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.scheduling_dag();
-    long    max_memory = 0;
+    NodeSet available      = schedule.availableOperations();
+    DAG     dag            = schedule.scheduling_dag();
+    long    max_memory     = 0;
     long    current_memory = 0;
 
     while (!available.empty()) {
@@ -192,8 +193,8 @@ namespace gum {
 
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children =
-                children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children
+             = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
           if (dag.parents(*iter_children).size() == 1) {
@@ -213,10 +214,11 @@ namespace gum {
    * k first ScheduleOperations of a given schedule */
   template < typename GUM_SCALAR >
   std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
-     const Schedule< GUM_SCALAR >& schedule, Size k) const {
-    NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.scheduling_dag();
-    long    max_memory = 0;
+     const Schedule< GUM_SCALAR >& schedule,
+     Size                          k) const {
+    NodeSet available      = schedule.availableOperations();
+    DAG     dag            = schedule.scheduling_dag();
+    long    max_memory     = 0;
     long    current_memory = 0;
 
     while (!available.empty() && k) {
@@ -240,8 +242,8 @@ namespace gum {
 
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children =
-                children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children
+             = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
           if (dag.parents(*iter_children).size() == 1) {

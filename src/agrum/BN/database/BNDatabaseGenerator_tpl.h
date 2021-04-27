@@ -91,7 +91,7 @@ namespace gum {
       std::uniform_real_distribution<> distro(0.0, 1.0);
 
       // perform the sampling
-      log2likelihood__ = 0;
+      log2likelihood__    = 0;
       const gum::DAG& dag = bn__.dag();
       for (Idx i = 0; i < nbSamples; ++i) {
         if (onProgress.hasListener()) {
@@ -104,14 +104,14 @@ namespace gum {
         std::vector< Idx >& sample = database__.at(i);
         for (Idx j = 0; j < nbVars__; ++j) {
           const gum::NodeId node = topOrder[j];
-          const auto&       var = bn__.variable(node);
-          const auto&       cpt = bn__.cpt(node);
+          const auto&       var  = bn__.variable(node);
+          const auto&       cpt  = bn__.cpt(node);
 
           gum::Instantiation& inst = instantiations[node];
           for (auto par: dag.parents(node))
             inst.chgVal(bn__.variable(par), sample.at(par));
 
-          const double nb = distro(gen);
+          const double nb    = distro(gen);
           double       cumul = 0.0;
           for (inst.chgVal(var, 0); !inst.end(); inst.incVar(var)) {
             cumul += cpt[inst];
@@ -241,7 +241,7 @@ namespace gum {
         std::vector< std::string > xrow(nbVars__);
         for (const auto& row: database__) {
           for (Idx i = 0; i < nbVars__; ++i) {
-            Idx j = varOrder__.at(i);
+            Idx j   = varOrder__.at(i);
             xrow[i] = bn__.variable(j).label(row.at(j));
           }
           db.insertRow(xrow);
@@ -326,7 +326,8 @@ namespace gum {
     /// change columns order according to a csv file
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(
-       const std::string& csvFileURL, const std::string& csvSeparator) {
+       const std::string& csvFileURL,
+       const std::string& csvSeparator) {
       setVarOrder(varOrderFromCSV__(csvFileURL, csvSeparator));
     }
 
@@ -399,7 +400,8 @@ namespace gum {
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrderFromCSV__(
-       const std::string& csvFileURL, const std::string& csvSeparator) const {
+       const std::string& csvFileURL,
+       const std::string& csvSeparator) const {
       std::ifstream      csvFile(csvFileURL);
       std::vector< Idx > varOrder;
       if (csvFile) {
@@ -415,17 +417,18 @@ namespace gum {
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrderFromCSV__(
-       std::ifstream& csvFile, const std::string& csvSeparator) const {
+       std::ifstream&     csvFile,
+       const std::string& csvSeparator) const {
       std::string                line;
       std::vector< std::string > header_found;
       header_found.reserve(nbVars__);
       while (std::getline(csvFile, line)) {
-        std::size_t i = 0;
+        std::size_t i   = 0;
         auto        pos = line.find(csvSeparator);
         while (pos != std::string::npos) {
           header_found.push_back(line.substr(i, pos - i));
           pos += csvSeparator.length();
-          i = pos;
+          i   = pos;
           pos = line.find(csvSeparator, pos);
 
           if (pos == std::string::npos)

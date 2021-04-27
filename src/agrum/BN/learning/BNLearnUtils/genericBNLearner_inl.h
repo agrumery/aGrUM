@@ -482,7 +482,7 @@ namespace gum {
       }
 
       apriori_dbname__ = filename;
-      apriori_type__ = AprioriType::DIRICHLET_FROM_DATABASE;
+      apriori_type__   = AprioriType::DIRICHLET_FROM_DATABASE;
       setAprioriWeight__(weight);
 
       checkScoreAprioriCompatibility();
@@ -505,14 +505,17 @@ namespace gum {
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::getAprioriType__() const {
       switch (apriori_type__) {
-        case AprioriType::NO_APRIORI: return AprioriNoApriori<>::type::type;
+        case AprioriType::NO_APRIORI:
+          return AprioriNoApriori<>::type::type;
 
-        case AprioriType::SMOOTHING: return AprioriSmoothing<>::type::type;
+        case AprioriType::SMOOTHING:
+          return AprioriSmoothing<>::type::type;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
           return AprioriDirichletFromDatabase<>::type::type;
 
-        case AprioriType::BDEU: return AprioriBDeu<>::type::type;
+        case AprioriType::BDEU:
+          return AprioriBDeu<>::type::type;
 
         default:
           GUM_ERROR(OperationNotAllowed,

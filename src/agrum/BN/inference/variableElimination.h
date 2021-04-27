@@ -76,8 +76,8 @@ namespace gum {
     /// default constructor
     explicit VariableElimination(
        const IBayesNet< GUM_SCALAR >* BN,
-       RelevantPotentialsFinderType   relevant_type =
-          RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+       RelevantPotentialsFinderType   relevant_type
+       = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
        FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES);
 
     /// avoid copy constructors
@@ -85,7 +85,8 @@ namespace gum {
 
     /// avoid copy operators
     VariableElimination< GUM_SCALAR >&
-       operator=(const VariableElimination< GUM_SCALAR >&) = delete;
+       operator=(const VariableElimination< GUM_SCALAR >&)
+       = delete;
 
     /// destructor
     ~VariableElimination() final;
@@ -286,30 +287,34 @@ namespace gum {
     void createNewJT__(const NodeSet& targets);
 
     /// sets the operator for performing the projections
-    void setProjectionFunction__(Potential< GUM_SCALAR >* (*proj)(
-       const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void setProjectionFunction__(
+       Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
+                                        const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction__(Potential< GUM_SCALAR >* (*comb)(
-       const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
+    void setCombinationFunction__(Potential< GUM_SCALAR >* (
+       *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void findRelevantPotentialsWithdSeparation__(
-       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       PotentialSet__&                 pot_list,
+       Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void findRelevantPotentialsWithdSeparation2__(
-       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       PotentialSet__&                 pot_list,
+       Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void findRelevantPotentialsWithdSeparation3__(
-       PotentialSet__& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       PotentialSet__&                 pot_list,
+       Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined

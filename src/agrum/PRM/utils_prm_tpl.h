@@ -29,7 +29,7 @@ namespace gum {
        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
        const Potential< GUM_SCALAR >& source) {
       const MultiDimImplementation< GUM_SCALAR >* impl = source.content();
-      Potential< GUM_SCALAR >*                    p = 0;
+      Potential< GUM_SCALAR >*                    p    = 0;
 
       try {
         if (dynamic_cast< const MultiDimReadOnly< GUM_SCALAR >* >(impl)) {
@@ -76,10 +76,12 @@ namespace gum {
         } else {
           if (dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(impl)) {
             p = new Potential< GUM_SCALAR >(new MultiDimBijArray< GUM_SCALAR >(
-               bij, static_cast< const MultiDimArray< GUM_SCALAR >& >(*impl)));
+               bij,
+               static_cast< const MultiDimArray< GUM_SCALAR >& >(*impl)));
           } else if (dynamic_cast< const MultiDimBijArray< GUM_SCALAR >* >(impl)) {
             p = new Potential< GUM_SCALAR >(new MultiDimBijArray< GUM_SCALAR >(
-               bij, static_cast< const MultiDimBijArray< GUM_SCALAR >& >(*impl)));
+               bij,
+               static_cast< const MultiDimBijArray< GUM_SCALAR >& >(*impl)));
           } else if (dynamic_cast< const MultiDimSparse< GUM_SCALAR >* >(impl)) {
             GUM_ERROR(FatalError,
                       "There is no MultiDimSparse in PRMs, normally...");

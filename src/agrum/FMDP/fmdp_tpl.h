@@ -154,8 +154,8 @@ namespace gum {
                                             const std::string& action) {
     if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.");
 
-    for (BijectionIteratorSafe< Idx, const std::string* > actIter =
-            actionMap__.beginSafe();
+    for (BijectionIteratorSafe< Idx, const std::string* > actIter
+         = actionMap__.beginSafe();
          actIter != actionMap__.endSafe();
          ++actIter)
       if (*(actIter.second()) == action)
@@ -235,8 +235,8 @@ namespace gum {
       return (*actionTransitionTable__[actionId])[v];
     else
       return (*actionTransitionTable__[0]).exists(v)
-                          ? (*actionTransitionTable__[0])[v]
-                          : nullptr;
+                        ? (*actionTransitionTable__[0])[v]
+                        : nullptr;
   }
 
 
@@ -255,7 +255,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addCostForAction(
-     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost) {
+     Idx                                         actionId,
+     const MultiDimImplementation< GUM_SCALAR >* cost) {
     if (!actionCostTable__.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -300,7 +301,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addRewardForAction(
-     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward) {
+     Idx                                         actionId,
+     const MultiDimImplementation< GUM_SCALAR >* reward) {
     if (!actionRewardTable__.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -356,8 +358,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE Idx FMDP< GUM_SCALAR >::actionId(const std::string& action) const {
-    for (BijectionIterator< Idx, const std::string* > actIter =
-            actionMap__.begin();
+    for (BijectionIterator< Idx, const std::string* > actIter
+         = actionMap__.begin();
          actIter != actionMap__.end();
          ++actIter)
       if (*(actIter.second()) == action) { return actIter.first(); }

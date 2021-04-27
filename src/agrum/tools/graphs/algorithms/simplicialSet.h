@@ -104,7 +104,7 @@ namespace gum {
     explicit SimplicialSet(UndiGraph*                    graph,
                            const NodeProperty< double >* log_domain_sizes,
                            NodeProperty< double >*       log_weights,
-                           double theRatio = GUM_QUASI_RATIO,
+                           double theRatio     = GUM_QUASI_RATIO,
                            double theThreshold = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor
@@ -284,7 +284,7 @@ namespace gum {
                   const NodeProperty< double >* log_domain_sizes,
                   NodeProperty< double >*       log_weights,
                   double                        theRatio = GUM_QUASI_RATIO,
-                  double theThreshold = GUM_WEIGHT_THRESHOLD);
+                  double theThreshold                    = GUM_WEIGHT_THRESHOLD);
 
     /// reassigns a new set of cliques' log weights (with the same content)
     /** This method is useful for move constructors in elimination sequences.
@@ -317,7 +317,8 @@ namespace gum {
 
     /** @brief indicates for each node to which list (simplicial, almost
      * simplicial, quasi simplicial) it belongs */
-    enum class Belong__ : char {
+    enum class Belong__ : char
+    {
       SIMPLICIAL,
       ALMOST_SIMPLICIAL,
       QUASI_SIMPLICIAL,

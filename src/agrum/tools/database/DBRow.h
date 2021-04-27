@@ -71,7 +71,7 @@ namespace gum {
       /// constructs a row of a given size with missing values
       DBRow(const std::size_t      size,
             const double           weight = 1.0,
-            const ALLOC< T_DATA >& alloc = ALLOC< T_DATA >());
+            const ALLOC< T_DATA >& alloc  = ALLOC< T_DATA >());
 
       /// constructor with a given size for the row
       DBRow(const std::size_t      size,
@@ -82,7 +82,7 @@ namespace gum {
       /// initializer list constructor
       DBRow(std::initializer_list< T_DATA > list,
             const double                    weight = 1.0,
-            const ALLOC< T_DATA >&          alloc = ALLOC< T_DATA >());
+            const ALLOC< T_DATA >&          alloc  = ALLOC< T_DATA >());
 
       /// initializer from a vector of cells
       template < template < typename > class OTHER_ALLOC >
@@ -93,7 +93,7 @@ namespace gum {
       /// initializer with a move from a vector of cells
       DBRow(std::vector< T_DATA, ALLOC< T_DATA > >&& cells,
             const double                             weight = 1.0,
-            const ALLOC< T_DATA >&                   alloc = ALLOC< T_DATA >());
+            const ALLOC< T_DATA >&                   alloc  = ALLOC< T_DATA >());
 
       /// copy constructor
       DBRow(const DBRow< T_DATA, ALLOC >& from);

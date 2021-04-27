@@ -137,7 +137,7 @@ namespace gum {
        const ScoreLog2Likelihood< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -149,7 +149,7 @@ namespace gum {
        ScoreLog2Likelihood< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -158,7 +158,8 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     std::string ScoreLog2Likelihood< ALLOC >::isAprioriCompatible(
-       const std::string& apriori_type, double weight) {
+       const std::string& apriori_type,
+       double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
@@ -238,7 +239,7 @@ namespace gum {
         // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
         // equivalent to:
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-        double N = 0.0;
+        double N     = 0.0;
         double score = 0.0;
         for (const auto n_ijk: N_ijk) {
           if (n_ijk) {

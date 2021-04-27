@@ -130,8 +130,8 @@ namespace gum {
                 "Unable to insert var with the name '" << new_name << "'.");
     }
 
-    DiscreteVariable* var =
-       const_cast< DiscreteVariable* >(nodes2vars__.second(id));
+    DiscreteVariable* var
+       = const_cast< DiscreteVariable* >(nodes2vars__.second(id));
 
     names2nodes__.eraseFirst(var->name());
     var->setName(new_name);

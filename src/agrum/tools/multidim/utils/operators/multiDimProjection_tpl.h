@@ -82,7 +82,7 @@ namespace gum {
      const TABLE< GUM_SCALAR >&               table,
      const Set< const TABLE< GUM_SCALAR >* >& del_vars) {
     TABLE< GUM_SCALAR >* res = project(table, del_vars);
-    container = std::move(*res);
+    container                = std::move(*res);
     delete res;
   }
 
@@ -98,7 +98,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
      *MultiDimProjection< GUM_SCALAR, TABLE >::projectFunction())(
-     const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) {
+     const TABLE< GUM_SCALAR >&,
+     const Set< const DiscreteVariable* >&) {
     return proj_;
   }
 
@@ -119,8 +120,8 @@ namespace gum {
      const Set< const DiscreteVariable* >&      del_vars) const {
     float res = 1.0f;
 
-    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-            vars.beginSafe();
+    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter
+         = vars.beginSafe();
          iter != vars.endSafe();
          ++iter) {
       res *= (*iter)->domainSize();
@@ -136,8 +137,8 @@ namespace gum {
      const Set< const DiscreteVariable* >&      del_vars) const {
     long res = 1;
 
-    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-            vars.beginSafe();
+    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter
+         = vars.beginSafe();
          iter != vars.endSafe();
          ++iter) {
       if (!del_vars.contains(*iter)) {

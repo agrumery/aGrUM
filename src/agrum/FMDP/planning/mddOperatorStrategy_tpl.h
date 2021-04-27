@@ -96,21 +96,24 @@ namespace gum {
      Idx                                        actionId,
      const FMDP< GUM_SCALAR >*                  fmdp,
      const Set< const DiscreteVariable* >&      elVarSeq) {
-    MultiDimFunctionGraph< GUM_SCALAR >* qAction =
-       MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
+    MultiDimFunctionGraph< GUM_SCALAR >* qAction
+       = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
     qAction->copy(*Vold);
 
     const DiscreteVariable* xip = this->lastVar_(qAction);
 
     while (this->shouldEleminateVar_(xip, fmdp)) {
-      const MultiDimFunctionGraph< GUM_SCALAR >* pxi =
-         RECAST(fmdp->transition(actionId, fmdp->mapMainPrime().first(xip)));
-      Regress< GUM_SCALAR, std::multiplies, std::plus > r(
-         qAction, pxi, &elVarSeq, xip, (GUM_SCALAR)0);
-      MultiDimFunctionGraph< GUM_SCALAR >* temp = r.compute();
+      const MultiDimFunctionGraph< GUM_SCALAR >* pxi
+         = RECAST(fmdp->transition(actionId, fmdp->mapMainPrime().first(xip)));
+      Regress< GUM_SCALAR, std::multiplies, std::plus > r(qAction,
+                                                          pxi,
+                                                          &elVarSeq,
+                                                          xip,
+                                                          (GUM_SCALAR)0);
+      MultiDimFunctionGraph< GUM_SCALAR >*              temp = r.compute();
       delete qAction;
       qAction = temp;
-      xip = this->lastVar_(qAction);
+      xip     = this->lastVar_(qAction);
     }
 
     return qAction;
@@ -123,8 +126,8 @@ namespace gum {
      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
      Idx                                        del) {
-    MultiDimFunctionGraph< GUM_SCALAR >* ret =
-       maximize2MultiDimFunctionGraphs(f1, f2);
+    MultiDimFunctionGraph< GUM_SCALAR >* ret
+       = maximize2MultiDimFunctionGraphs(f1, f2);
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
@@ -136,8 +139,8 @@ namespace gum {
      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
      Idx                                        del) {
-    MultiDimFunctionGraph< GUM_SCALAR >* ret =
-       minimize2MultiDimFunctionGraphs(f1, f2);
+    MultiDimFunctionGraph< GUM_SCALAR >* ret
+       = minimize2MultiDimFunctionGraphs(f1, f2);
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
@@ -149,8 +152,8 @@ namespace gum {
      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
      Idx                                        del) {
-    MultiDimFunctionGraph< GUM_SCALAR >* ret =
-       multiply2MultiDimFunctionGraphs(f1, f2);
+    MultiDimFunctionGraph< GUM_SCALAR >* ret
+       = multiply2MultiDimFunctionGraphs(f1, f2);
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
@@ -171,7 +174,8 @@ namespace gum {
                                    SetTerminalNodePolicy >
        argmaxope(f1, f2);
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       ret = argmaxope.compute();
+       ret
+       = argmaxope.compute();
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
@@ -203,8 +207,8 @@ namespace gum {
      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
      Idx                                        del) {
-    MultiDimFunctionGraph< GUM_SCALAR >* ret =
-       subtract2MultiDimFunctionGraphs(f1, f2);
+    MultiDimFunctionGraph< GUM_SCALAR >* ret
+       = subtract2MultiDimFunctionGraphs(f1, f2);
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }

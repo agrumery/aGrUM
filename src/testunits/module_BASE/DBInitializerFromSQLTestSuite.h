@@ -45,9 +45,9 @@ namespace gum_tests {
 #ifdef ODBC_
       try {
         const std::string dataSource = "PostgreSQL";
-        const std::string login = "gonzales";
-        const std::string password = "agrum";
-        const std::string query = "SELECT * FROM testunit.asia";
+        const std::string login      = "gonzales";
+        const std::string password   = "agrum";
+        const std::string query      = "SELECT * FROM testunit.asia";
 
         // the database contains the following rows:
         // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis
@@ -62,11 +62,13 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<> initializer(
-           dataSource, login, password, query);
+        gum::learning::DBInitializerFromSQL<> initializer(dataSource,
+                                                          login,
+                                                          password,
+                                                          query);
 
         const auto&       var_names = initializer.variableNames();
-        const std::size_t nb_vars = var_names.size();
+        const std::size_t nb_vars   = var_names.size();
         TS_ASSERT_EQUALS(nb_vars, std::size_t(8));
 
         gum::learning::DBTranslatorSet<>                 translator_set;
@@ -85,7 +87,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.size(), std::size_t(3));
 
         const auto& content1 = database.content();
-        const auto& xrow10 = content1[0];
+        const auto& xrow10   = content1[0];
         TS_ASSERT(xrow10[5].discr_val == std::size_t(0));
         TS_ASSERT(xrow10[6].discr_val == std::size_t(0));
         TS_ASSERT(xrow10[7].cont_val == -1.2f);
@@ -133,7 +135,8 @@ namespace gum_tests {
 
 
         gum::learning::DBInitializerFromSQL<> initializer3(
-           initializer, std::allocator< std::string >());
+           initializer,
+           std::allocator< std::string >());
         gum::learning::DatabaseTable<> database3;
         database3.ignoreColumn(0);
         database3.ignoreColumn(2);
@@ -179,7 +182,8 @@ namespace gum_tests {
         TS_ASSERT(row31[4].cont_val == 2.45f);
 
         gum::learning::DBInitializerFromSQL<> initializer4(
-           std::move(initializer), std::allocator< std::string >());
+           std::move(initializer),
+           std::allocator< std::string >());
         gum::learning::DatabaseTable<> database4;
         database4.insertTranslator(translator_lab, std::size_t(1));
         database4.insertTranslator(translator_lab, std::size_t(3));
@@ -259,8 +263,8 @@ namespace gum_tests {
 #  endif   // WIN32_
 
       try {
-        const std::string connection_string =
-           "Driver=" + driver_name
+        const std::string connection_string
+           = "Driver=" + driver_name
            + ";Database=" + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
         const std::string query = "select * from asia";
 
@@ -281,7 +285,7 @@ namespace gum_tests {
                                                           query);
 
         const auto&       var_names = initializer.variableNames();
-        const std::size_t nb_vars = var_names.size();
+        const std::size_t nb_vars   = var_names.size();
         TS_ASSERT_EQUALS(nb_vars, std::size_t(8));
 
         gum::learning::DBTranslatorSet<>                 translator_set;
@@ -300,7 +304,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.size(), std::size_t(3));
 
         const auto& content1 = database.content();
-        const auto& xrow10 = content1[0];
+        const auto& xrow10   = content1[0];
         TS_ASSERT(xrow10[5].discr_val == std::size_t(0));
         TS_ASSERT(xrow10[6].discr_val == std::size_t(0));
         TS_ASSERT(xrow10[7].cont_val == -1.2f);

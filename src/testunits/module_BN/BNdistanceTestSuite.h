@@ -49,7 +49,8 @@ namespace gum_tests {
       gum::BayesNet< double > net1;
       {
         gum::BIFReader< double > reader(
-           &net1, GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
+           &net1,
+           GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -57,7 +58,8 @@ namespace gum_tests {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(
-           &net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+           &net2,
+           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -65,7 +67,8 @@ namespace gum_tests {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(
-           &net3, GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
+           &net3,
+           GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -80,7 +83,8 @@ namespace gum_tests {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(
-           &net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+           &net2,
+           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -104,7 +108,8 @@ namespace gum_tests {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(
-           &net3, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+           &net3,
+           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -120,7 +125,8 @@ namespace gum_tests {
       gum::BayesNet< double > net4;
       {
         gum::BIFReader< double > reader(
-           &net4, GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
+           &net4,
+           GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }

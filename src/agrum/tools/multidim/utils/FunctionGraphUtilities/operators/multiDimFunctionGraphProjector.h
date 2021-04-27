@@ -50,8 +50,8 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename >
              class FUNCTOR,
-             template < typename > class TerminalNodePolicy =
-                ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy
+             = ExactTerminalNodePolicy >
   class MultiDimFunctionGraphProjector {
     public:
     // ============================================================================

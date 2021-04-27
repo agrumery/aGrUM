@@ -170,10 +170,10 @@ namespace gum {
       // score internal aprioris
       std::vector< double, ALLOC< double > > N_ijk(
          this->counter_.counts(idset, true));
-      const bool informative_external_apriori =
-         this->external_apriori_->isInformative();
-      const bool informative_score_internal_apriori =
-         this->score_internal_apriori_->isInformative();
+      const bool informative_external_apriori
+         = this->external_apriori_->isInformative();
+      const bool informative_score_internal_apriori
+         = this->score_internal_apriori_->isInformative();
       if (informative_external_apriori)
         this->external_apriori_->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
@@ -206,15 +206,15 @@ namespace gum {
             std::vector< Idx > cond_domsize(cond_nb);
 
             const auto& node2cols = this->counter_.nodeId2Columns();
-            const auto& database = this->counter_.database();
+            const auto& database  = this->counter_.database();
             if (node2cols.empty()) {
               for (std::size_t i = std::size_t(0); i < cond_nb; ++i) {
                 cond_domsize[i] = database.domainSize(conditioning_nodes[i]);
               }
             } else {
               for (std::size_t i = std::size_t(0); i < cond_nb; ++i) {
-                cond_domsize[i] =
-                   database.domainSize(node2cols.second(conditioning_nodes[i]));
+                cond_domsize[i]
+                   = database.domainSize(node2cols.second(conditioning_nodes[i]));
               }
             }
 
@@ -227,7 +227,7 @@ namespace gum {
               offset *= cond_domsize[i];
             }
             std::vector< Idx > values(cond_nb);
-            i = 0;
+            i      = 0;
             offset = j;
             for (Idx jj = cond_nb - 1; i < cond_nb; ++i, --jj) {
               values[jj] = offset / offsets[jj];
@@ -244,14 +244,14 @@ namespace gum {
               else
                 deja = true;
               std::size_t             col = node2cols.empty()
-                                               ? conditioning_nodes[i]
-                                               : node2cols.second(conditioning_nodes[i]);
-              const DiscreteVariable& var =
-                 dynamic_cast< const DiscreteVariable& >(database.variable(col));
+                                             ? conditioning_nodes[i]
+                                             : node2cols.second(conditioning_nodes[i]);
+              const DiscreteVariable& var
+                 = dynamic_cast< const DiscreteVariable& >(database.variable(col));
               str << var.name() << "=" << var.labels()[values[i]];
             }
-            auto target_col =
-               node2cols.empty() ? target_node : node2cols.second(target_node);
+            auto target_col
+               = node2cols.empty() ? target_node : node2cols.second(target_node);
             const Variable& var = database.variable(target_col);
             str << "> for target node " << var.name()
                 << " never appears in the database. Please consider using "
@@ -294,9 +294,9 @@ namespace gum {
           std::stringstream str;
 
           const auto& node2cols = this->counter_.nodeId2Columns();
-          const auto& database = this->counter_.database();
-          auto        target_col =
-             node2cols.empty() ? target_node : node2cols.second(target_node);
+          const auto& database  = this->counter_.database();
+          auto        target_col
+             = node2cols.empty() ? target_node : node2cols.second(target_node);
           const Variable& var = database.variable(target_col);
           str << "No data for target node " << var.name()
               << ". It is impossible to estimate the parameters by maximum "

@@ -77,8 +77,8 @@ namespace gum {
       // create and link properly the children
       children = from.children;
 
-      for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter =
-              children.begin();
+      for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter
+           = children.begin();
            iter != children.end();
            ++iter)
         iter->parent = this;
@@ -113,8 +113,8 @@ namespace gum {
 
         children = from.children;
 
-        for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter =
-                children.begin();
+        for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter
+             = children.begin();
              iter != children.end();
              ++iter)
           iter->parent = this;
@@ -158,11 +158,11 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -179,8 +179,8 @@ namespace gum {
       }
 
       // here, the node to be inserted does not exist, so we must create it
-      IndexedTree< Key, Data >* new_node =
-         new IndexedTree< Key, Data >(index[i], const_cast< Data* >(theData));
+      IndexedTree< Key, Data >* new_node
+         = new IndexedTree< Key, Data >(index[i], const_cast< Data* >(theData));
 
       current_node->children.insert(index[i], new_node);
 
@@ -210,11 +210,11 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -231,8 +231,8 @@ namespace gum {
       }
 
       // here, the node to be inserted does not exist, so we must create it
-      IndexedTree< Key, Data >* new_node =
-         new IndexedTree< Key, Data >(index[i], theData);
+      IndexedTree< Key, Data >* new_node
+         = new IndexedTree< Key, Data >(index[i], theData);
 
       current_node->children.insert(index[i], new_node);
 
@@ -262,11 +262,11 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -286,8 +286,8 @@ namespace gum {
         node->data = theData;
       } else {
         // here, the node tobe set does not exist, so we must create it
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], theData);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], theData);
         current_node->children.insert(index[i], new_node);
         new_node->parent = current_node;
       }
@@ -318,11 +318,11 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -342,8 +342,8 @@ namespace gum {
         node->data = new Data(theData);
       } else {
         // here, the node tobe set does not exist, so we must create it
-        IndexedTree< Key, Data >* new_node =
-           new IndexedTree< Key, Data >(index[i], theData);
+        IndexedTree< Key, Data >* new_node
+           = new IndexedTree< Key, Data >(index[i], theData);
         current_node->children.insert(index[i], new_node);
         new_node->parent = current_node;
       }
@@ -361,8 +361,8 @@ namespace gum {
   template < typename Key, typename Data >
   INLINE Data&
          IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
-    IndexedTree< Key, Data >* current_node =
-       const_cast< IndexedTree< Key, Data >* >(this);
+    IndexedTree< Key, Data >* current_node
+       = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];
@@ -377,8 +377,8 @@ namespace gum {
   template < typename Key, typename Data >
   INLINE IndexedTree< Key, Data >&
          IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
-    IndexedTree< Key, Data >* current_node =
-       const_cast< IndexedTree< Key, Data >* >(this);
+    IndexedTree< Key, Data >* current_node
+       = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];

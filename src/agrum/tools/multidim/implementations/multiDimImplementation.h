@@ -274,10 +274,18 @@ namespace gum {
     List< Instantiation* > slaveInstantiations__;
 
     /// Used to represent in which change method this MultiDimImplementation is.
-    enum class InternalChangeMethod__ : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
+    enum class InternalChangeMethod__ : char
+    {
+      DIRECT_CHANGE,
+      MULTIPLE_CHANGE
+    };
 
     /// Used to represent in which change state this MultiDimImplementation is.
-    enum class InternalChangeState__ : char { NO_CHANGE, NOT_COMMITTED_CHANGE };
+    enum class InternalChangeState__ : char
+    {
+      NO_CHANGE,
+      NOT_COMMITTED_CHANGE
+    };
 
     /// The current change method.
     InternalChangeMethod__ internalChangeMethod__;

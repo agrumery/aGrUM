@@ -109,7 +109,7 @@ namespace gum {
       }
 
       // set the comparison function
-      cmp__ = from.cmp__;
+      cmp__         = from.cmp__;
       nb_elements__ = from.nb_elements__;
 
       // for debugging purposes
@@ -141,7 +141,7 @@ namespace gum {
         throw;
       }
 
-      cmp__ = from.cmp__;
+      cmp__         = from.cmp__;
       nb_elements__ = from.nb_elements__;
 
       // for debugging purposes
@@ -157,9 +157,9 @@ namespace gum {
      Heap< Val, Cmp, Alloc >::operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
-      heap__ = std::move(from.heap__);
+      heap__        = std::move(from.heap__);
       nb_elements__ = std::move(from.nb_elements__);
-      cmp__ = std::move(from.cmp__);
+      cmp__         = std::move(from.cmp__);
     }
 
     return *this;

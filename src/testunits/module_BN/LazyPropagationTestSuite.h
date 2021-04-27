@@ -326,8 +326,8 @@ namespace gum_tests {
       inf.setRelevantPotentialsFinderType(
          gum::RelevantPotentialsFinderType::FIND_ALL);
       inf.makeInference();
-      auto p = inf.posterior(0);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(0);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(0, 0);
@@ -341,8 +341,8 @@ namespace gum_tests {
       fill(*bn);
       gum::LazyPropagation< double > inf(bn);
       inf.makeInference();
-      auto p = inf.posterior(0);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(0);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(0, 0);
@@ -367,8 +367,8 @@ namespace gum_tests {
       inf.setRelevantPotentialsFinderType(
          gum::RelevantPotentialsFinderType::FIND_ALL);
       inf.makeInference();
-      auto p = inf.posterior(id);
-      auto I = gum::Instantiation(p);
+      auto p     = inf.posterior(id);
+      auto I     = gum::Instantiation(p);
       auto proba = p.get(I);
 
       inf.addEvidence(id, 0);
@@ -849,8 +849,8 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
@@ -859,12 +859,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
       try {
         auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D")
-                     * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
+                   * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
         auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
                                       &bn.variableFromName("C"),
                                       &bn.variableFromName("D"),
                                       &bn.variableFromName("E")});
-        auto pADC = pADCE.margSumOut({&bn.variableFromName("E")});
+        auto pADC  = pADCE.margSumOut({&bn.variableFromName("E")});
         TS_ASSERT_EQUALS(res, pADCE / pADC);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -878,13 +878,14 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       ie.addEvidence("B", 0);
-      gum::NodeSet joint{
-         bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
+      gum::NodeSet joint{bn.idFromName("A"),
+                         bn.idFromName("B"),
+                         bn.idFromName("D")};
 
       ie.addJointTarget(joint);
       ie.makeInference();
@@ -905,8 +906,8 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
@@ -915,28 +916,29 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
       try {
         auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D")
-                     * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
+                   * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
         auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
                                       &bn.variableFromName("C"),
                                       &bn.variableFromName("D"),
                                       &bn.variableFromName("E")});
-        auto pAC = pADCE.margSumOut(
+        auto pAC   = pADCE.margSumOut(
            {&bn.variableFromName("D"), &bn.variableFromName("E")});
         TS_ASSERT_EQUALS(res, pADCE / pAC);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testJointMutualInformation() {
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       ie.makeInference();
 
       TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}),
                        gum::InvalidArgument);
-      TS_ASSERT_DELTA(
-         ie.I(0, 1), ie.jointMutualInformation(gum::NodeSet{0, 1}), 1e-7);
+      TS_ASSERT_DELTA(ie.I(0, 1),
+                      ie.jointMutualInformation(gum::NodeSet{0, 1}),
+                      1e-7);
 
       ie.addJointTarget({1, 4, 3});
       ie.makeInference();
@@ -945,10 +947,10 @@ namespace gum_tests {
 
       byHandJMI = -ie.jointPosterior({1, 3, 4}).entropy();
       byHandJMI += ie.jointPosterior({1, 4}).entropy()
-                   + ie.jointPosterior({1, 3}).entropy()
-                   + ie.jointPosterior({4, 3}).entropy();
+                 + ie.jointPosterior({1, 3}).entropy()
+                 + ie.jointPosterior({4, 3}).entropy();
       byHandJMI -= ie.posterior(1).entropy() + ie.posterior(4).entropy()
-                   + ie.posterior(3).entropy();
+                 + ie.posterior(3).entropy();
 
       //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie2(&bn);
@@ -961,17 +963,17 @@ namespace gum_tests {
       ie.makeInference();
       byHandJMI = -ie.jointPosterior({0, 1, 2, 3}).entropy();
       byHandJMI += ie.jointPosterior({0, 1, 2}).entropy()
-                   + ie.jointPosterior({0, 1, 3}).entropy()
-                   + ie.jointPosterior({0, 2, 3}).entropy()
-                   + ie.jointPosterior({1, 2, 3}).entropy();
+                 + ie.jointPosterior({0, 1, 3}).entropy()
+                 + ie.jointPosterior({0, 2, 3}).entropy()
+                 + ie.jointPosterior({1, 2, 3}).entropy();
       byHandJMI -= ie.jointPosterior({0, 1}).entropy()
-                   + ie.jointPosterior({0, 2}).entropy()
-                   + ie.jointPosterior({0, 3}).entropy()
-                   + ie.jointPosterior({1, 2}).entropy()
-                   + ie.jointPosterior({1, 3}).entropy()
-                   + ie.jointPosterior({2, 3}).entropy();
+                 + ie.jointPosterior({0, 2}).entropy()
+                 + ie.jointPosterior({0, 3}).entropy()
+                 + ie.jointPosterior({1, 2}).entropy()
+                 + ie.jointPosterior({1, 3}).entropy()
+                 + ie.jointPosterior({2, 3}).entropy();
       byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy()
-                   + ie.posterior(2).entropy() + ie.posterior(3).entropy();
+                 + ie.posterior(2).entropy() + ie.posterior(3).entropy();
 
       //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie3(&bn);
@@ -991,12 +993,12 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
       gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
 
-      gum::NodeId idCold = bn.add(cold);
-      gum::NodeId idFlu = bn.add(flu);
+      gum::NodeId idCold    = bn.add(cold);
+      gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever = 0;
+      gum::NodeId idFever   = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addLogit(fever, 0.3f));
-      gum::NodeId idOneMore = bn.add(oneMore);
+      gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
 
@@ -1019,7 +1021,7 @@ namespace gum_tests {
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
       const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
-      const gum::Potential< double >& p = bn.cpt(idFever);
+      const gum::Potential< double >& p        = bn.cpt(idFever);
 
       gum::Instantiation i(p);
 

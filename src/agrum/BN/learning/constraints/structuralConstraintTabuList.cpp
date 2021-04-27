@@ -96,7 +96,7 @@ namespace gum {
        const StructuralConstraintTabuList& from) {
       if (this != &from) {
         TabuList__changes_ = from.TabuList__changes_;
-        TabuList__offset_ = from.TabuList__offset_;
+        TabuList__offset_  = from.TabuList__offset_;
       }
       return *this;
     }
@@ -106,7 +106,7 @@ namespace gum {
        StructuralConstraintTabuList&& from) {
       if (this != &from) {
         TabuList__changes_ = std::move(from.TabuList__changes_);
-        TabuList__offset_ = std::move(from.TabuList__offset_);
+        TabuList__offset_  = std::move(from.TabuList__offset_);
       }
       return *this;
     }

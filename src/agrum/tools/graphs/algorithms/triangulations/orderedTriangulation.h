@@ -57,11 +57,11 @@ namespace gum {
      * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
-    OrderedTriangulation(
-       const OrderedEliminationSequenceStrategy& elimSeq =
-          OrderedEliminationSequenceStrategy(),
-       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-       bool                        minimality = false);
+    OrderedTriangulation(const OrderedEliminationSequenceStrategy& elimSeq
+                         = OrderedEliminationSequenceStrategy(),
+                         const JunctionTreeStrategy& JTStrategy
+                         = DefaultJunctionTreeStrategy(),
+                         bool minimality = false);
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -81,14 +81,14 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph, the domain sizes and the
      * elimination sequence are not copied but only referenced by the
      * triangulation algorithm. */
-    OrderedTriangulation(
-       const UndiGraph*                          graph,
-       const NodeProperty< Size >*               domsizes,
-       const std::vector< NodeId >*              sequence,
-       const OrderedEliminationSequenceStrategy& elimSeq =
-          OrderedEliminationSequenceStrategy(),
-       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-       bool                        minimality = false);
+    OrderedTriangulation(const UndiGraph*                          graph,
+                         const NodeProperty< Size >*               domsizes,
+                         const std::vector< NodeId >*              sequence,
+                         const OrderedEliminationSequenceStrategy& elimSeq
+                         = OrderedEliminationSequenceStrategy(),
+                         const JunctionTreeStrategy& JTStrategy
+                         = DefaultJunctionTreeStrategy(),
+                         bool minimality = false);
 
     /// copy constructor
     OrderedTriangulation(const OrderedTriangulation& from);

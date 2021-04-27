@@ -151,9 +151,9 @@ namespace gum {
        */
       DBInitializerFromCSV(const std::string     filename,
                            bool                  fileContainsNames = true,
-                           const std::string     delimiter = ",",
-                           const char            commentmarker = '#',
-                           const char            quoteMarker = '"',
+                           const std::string     delimiter         = ",",
+                           const char            commentmarker     = '#',
+                           const char            quoteMarker       = '"',
                            const allocator_type& alloc = allocator_type());
 
       /// copy constructor

@@ -46,8 +46,8 @@ namespace gum {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       cpf__->add(type__->variable());
 
-      this->safeName_ =
-         PRMObject::LEFT_CAST() + type__->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+                      + PRMObject::RIGHT_CAST() + name;
     }
 
     template < typename GUM_SCALAR >
@@ -72,8 +72,9 @@ namespace gum {
        const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
          this->cpf().content()->newFactory());
-      return new PRMScalarAttribute< GUM_SCALAR >(
-         this->name(), this->type(), impl);
+      return new PRMScalarAttribute< GUM_SCALAR >(this->name(),
+                                                  this->type(),
+                                                  impl);
     }
 
     template < typename GUM_SCALAR >
@@ -168,15 +169,15 @@ namespace gum {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
-        cast =
-           new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
+        cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(),
+                                                    type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "this ScalarAttribute can not have cast descendant");
       }
 
       cast->addParent(*this);
-      const DiscreteVariable& my_var = type().variable();
+      const DiscreteVariable& my_var   = type().variable();
       DiscreteVariable&       cast_var = cast->type().variable();
       Instantiation           inst(cast->cpf());
 

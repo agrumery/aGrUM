@@ -48,7 +48,8 @@ namespace gum {
   // ============================================================================
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::ArgMaxSet(
-     const GUM_SCALAR_VAL& val, const GUM_SCALAR_SEQ& elem) {
+     const GUM_SCALAR_VAL& val,
+     const GUM_SCALAR_SEQ& elem) {
     GUM_CONSTRUCTOR(ArgMaxSet);
     argMaxSeq__ = new Sequence< GUM_SCALAR_SEQ >();
     argMaxSeq__->insert(elem);

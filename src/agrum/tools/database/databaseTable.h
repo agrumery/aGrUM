@@ -195,8 +195,8 @@ namespace gum {
 
       /// the type for the matrices stored into the database
       template < typename TX_DATA >
-      using Matrix =
-         std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >,
+                                  ALLOC< DBRow< TX_DATA, ALLOC > > >;
 
       template < template < typename > class XALLOC >
       using MissingValType = std::vector< std::string, XALLOC< std::string > >;
@@ -213,16 +213,16 @@ namespace gum {
 
       /// Types for STL compliance.
       /// @{
-      using value_type = Row< DBTranslatedValue >;
-      using reference = value_type&;
+      using value_type      = Row< DBTranslatedValue >;
+      using reference       = value_type&;
       using const_reference = const value_type&;
-      using pointer = value_type*;
-      using const_pointer = const value_type*;
-      using size_type = std::size_t;
+      using pointer         = value_type*;
+      using const_pointer   = const value_type*;
+      using size_type       = std::size_t;
       using difference_type = std::ptrdiff_t;
-      using iterator = Handler;
-      using iterator_safe = HandlerSafe;
-      using allocator_type = ALLOC< DBTranslatedValue >;
+      using iterator        = Handler;
+      using iterator_safe   = HandlerSafe;
+      using allocator_type  = ALLOC< DBTranslatedValue >;
       /// @}
 
 
@@ -233,15 +233,15 @@ namespace gum {
 
       /// default constructor
       template < template < typename > class XALLOC >
-      DatabaseTable(
-         const MissingValType< XALLOC >& missing_symbols,
-         const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
-         const allocator_type&           alloc = allocator_type());
+      DatabaseTable(const MissingValType< XALLOC >& missing_symbols,
+                    const DBTranslatorSet< ALLOC >& translators
+                    = DBTranslatorSet< ALLOC >(),
+                    const allocator_type& alloc = allocator_type());
 
       /// default constructor
-      DatabaseTable(
-         const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
-         const allocator_type&           alloc = allocator_type());
+      DatabaseTable(const DBTranslatorSet< ALLOC >& translators
+                    = DBTranslatorSet< ALLOC >(),
+                    const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DatabaseTable(const DatabaseTable< ALLOC >& from);

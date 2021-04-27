@@ -90,7 +90,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >& IdCondSetIterator< ALLOC >::operator=(
        const IdCondSetIterator< ALLOC >& from) {
-      seq__ = from.seq__;
+      seq__   = from.seq__;
       index__ = from.index__;
       return *this;
     }
@@ -100,7 +100,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IdCondSetIterator< ALLOC >&
        IdCondSetIterator< ALLOC >::operator=(IdCondSetIterator< ALLOC >&& from) {
-      seq__ = from.seq__;
+      seq__   = from.seq__;
       index__ = from.index__;
       return *this;
     }
@@ -410,7 +410,7 @@ namespace gum {
     INLINE IdCondSet< ALLOC >&
        IdCondSet< ALLOC >::operator=(const IdCondSet< ALLOC >& from) {
       if (this != &from) {
-        ids__ = from.ids__;
+        ids__        = from.ids__;
         nb_lhs_ids__ = from.nb_lhs_ids__;
         end_safe__.gotoEnd__();
       }
@@ -423,7 +423,7 @@ namespace gum {
     INLINE IdCondSet< ALLOC >&
        IdCondSet< ALLOC >::operator=(IdCondSet< ALLOC >&& from) {
       if (this != &from) {
-        ids__ = std::move(from.ids__);
+        ids__        = std::move(from.ids__);
         nb_lhs_ids__ = from.nb_lhs_ids__;
         end_safe__.gotoEnd__();
       }
@@ -521,7 +521,7 @@ namespace gum {
     void IdCondSet< ALLOC >::erase(const NodeId id) {
       // search for id in Sequence ids__
       const std::size_t size = ids__.size();
-      std::size_t       pos = std::size_t(0);
+      std::size_t       pos  = std::size_t(0);
       for (; pos < size; ++pos) {
         if (ids__[pos] == id) break;
       }
@@ -651,7 +651,7 @@ namespace gum {
   template < template < typename > class ALLOC >
   Size HashFunc< learning::IdCondSet< ALLOC > >::castToSize(
      const learning::IdCondSet< ALLOC >& key) {
-    Size                                       h = Size(key.nbLHSIds());
+    Size                                       h    = Size(key.nbLHSIds());
     const Sequence< NodeId, ALLOC< NodeId > >& vect = key.ids();
     const std::size_t                          size = vect.size();
 

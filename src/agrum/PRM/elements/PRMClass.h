@@ -117,12 +117,12 @@ namespace gum {
       PRMClass(const PRMClass< GUM_SCALAR >&& source) = delete;
 
       /// Copy operator. Don't use it.
-      PRMClass< GUM_SCALAR >&
-         operator=(const PRMClass< GUM_SCALAR >& source) = delete;
+      PRMClass< GUM_SCALAR >& operator=(const PRMClass< GUM_SCALAR >& source)
+         = delete;
 
       /// Move operator. Don't use it.
-      PRMClass< GUM_SCALAR >&
-         operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
+      PRMClass< GUM_SCALAR >& operator=(const PRMClass< GUM_SCALAR >&& source)
+         = delete;
 
       /// Destructor.
       virtual ~PRMClass();

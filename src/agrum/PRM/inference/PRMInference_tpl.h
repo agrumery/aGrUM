@@ -138,7 +138,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInference< GUM_SCALAR >::PRMInference(
-       const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
+       const PRM< GUM_SCALAR >&       prm,
+       const PRMSystem< GUM_SCALAR >& system) :
         prm_(&prm),
         sys_(&system) {
       GUM_CONSTRUCTOR(PRMInference);
@@ -207,8 +208,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const Chain& chain) const {
       return (hasEvidence(chain.first))
-                ? evidence(chain.first).exists(chain.second->id())
-                : false;
+              ? evidence(chain.first).exists(chain.second->id())
+              : false;
     }
 
     template < typename GUM_SCALAR >
@@ -239,16 +240,17 @@ namespace gum {
 
       if (hasEvidence(chain)) {
         m.add(chain.second->type().variable());
-        const Potential< GUM_SCALAR >& e =
-           *(evidence(chain.first)[chain.second->id()]);
+        const Potential< GUM_SCALAR >& e
+           = *(evidence(chain.first)[chain.second->id()]);
         Instantiation i(m), j(e);
 
         for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
           m.set(i, e.get(j));
       } else {
         if (chain.second != &(chain.first->get(chain.second->safeName()))) {
-          typename PRMInference< GUM_SCALAR >::Chain good_chain = std::make_pair(
-             chain.first, &(chain.first->get(chain.second->safeName())));
+          typename PRMInference< GUM_SCALAR >::Chain good_chain
+             = std::make_pair(chain.first,
+                              &(chain.first->get(chain.second->safeName())));
           m.add(good_chain.second->type().variable());
           posterior_(good_chain, m);
         } else {

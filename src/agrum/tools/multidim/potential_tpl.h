@@ -168,9 +168,9 @@ namespace gum {
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
-           return (p == static_cast< GUM_SCALAR >(1))   ? z
-                  : (z == static_cast< GUM_SCALAR >(1)) ? p
-                                                        : (p > z ? p : z);
+           return (p == static_cast< GUM_SCALAR >(1)) ? z
+                : (z == static_cast< GUM_SCALAR >(1)) ? p
+                                                      : (p > z ? p : z);
          },
          static_cast< GUM_SCALAR >(1));
     }
@@ -189,9 +189,9 @@ namespace gum {
     } else {
       res = this->reduce(
          [](GUM_SCALAR z, GUM_SCALAR p) {
-           return (p == static_cast< GUM_SCALAR >(0))   ? z
-                  : (z == static_cast< GUM_SCALAR >(0)) ? p
-                                                        : (p < z ? p : z);
+           return (p == static_cast< GUM_SCALAR >(0)) ? z
+                : (z == static_cast< GUM_SCALAR >(0)) ? p
+                                                      : (p < z ? p : z);
          },
          static_cast< GUM_SCALAR >(0));
     }
@@ -213,16 +213,16 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
-     Potential< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& v) const {
-    this->populate(v);
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::fillWith(
+     const std::vector< GUM_SCALAR >& data) const {
+    this->populate(data);
     return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               Potential< GUM_SCALAR >::fillWith(const GUM_SCALAR& v) const {
-    this->fill(v);
+               Potential< GUM_SCALAR >::fillWith(const GUM_SCALAR& val) const {
+    this->fill(val);
     return *this;
   }
 

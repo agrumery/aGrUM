@@ -43,7 +43,8 @@ namespace gum {
     GUM_CONSTRUCTOR(VariableSelector);
     remainingScores__.insert(0.0, 0.0);
     remainingVarsByScore__.insert(
-       0.0, new Set< const DiscreteVariable* >(remainingVars__));
+       0.0,
+       new Set< const DiscreteVariable* >(remainingVars__));
 
     for (auto varIter = remainingVars__.cbeginSafe();
          varIter != remainingVars__.cendSafe();
@@ -90,8 +91,8 @@ namespace gum {
   // ###################################################################
   const DiscreteVariable* VariableSelector::select() {
     double                          bestScore = remainingScores__.top();
-    Set< const DiscreteVariable* >* bestSet = remainingVarsByScore__[bestScore];
-    const DiscreteVariable*         bestVar = nullptr;
+    Set< const DiscreteVariable* >* bestSet   = remainingVarsByScore__[bestScore];
+    const DiscreteVariable*         bestVar   = nullptr;
 
     for (auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe();
          ++varIter) {
@@ -129,7 +130,7 @@ namespace gum {
   // ###################################################################
   void VariableSelector::removeVar__(const DiscreteVariable* var) {
     double                          varScore = remainingVarsScore__[var];
-    Set< const DiscreteVariable* >* varSet = remainingVarsByScore__[varScore];
+    Set< const DiscreteVariable* >* varSet   = remainingVarsByScore__[varScore];
     *varSet >> var;
     if (varSet->empty()) {
       remainingScores__.erase(varScore);

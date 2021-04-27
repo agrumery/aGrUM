@@ -117,7 +117,11 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    enum class DBTranslatedValueType : char { DISCRETE, CONTINUOUS };
+    enum class DBTranslatedValueType : char
+    {
+      DISCRETE,
+      CONTINUOUS
+    };
 
 
   } /* namespace learning */

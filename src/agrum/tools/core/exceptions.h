@@ -65,12 +65,14 @@
                   << (e).errorContent() << std::endl;                      \
       }
 #  else   // GUM_FOR_SWIG
-#    define GUM_ERROR(type, msg)                                    \
-      {                                                             \
-        std::ostringstream error_stream;                            \
-        error_stream << msg;                                        \
-        throw(type(gum::createMsg__(                                \
-           __FILE__, __FUNCTION__, __LINE__, error_stream.str()))); \
+#    define GUM_ERROR(type, msg)                           \
+      {                                                    \
+        std::ostringstream error_stream;                   \
+        error_stream << msg;                               \
+        throw(type(gum::createMsg__(__FILE__,              \
+                                    __FUNCTION__,          \
+                                    __LINE__,              \
+                                    error_stream.str()))); \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \

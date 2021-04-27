@@ -50,10 +50,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     bool StructuredBayesBall< GUM_SCALAR >::isHardEvidence__(
-       const PRMInstance< GUM_SCALAR >* i, NodeId n) {
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n) {
       try {
-        typename PRMInference< GUM_SCALAR >::Chain chain =
-           std::make_pair(i, &(i->get(n)));
+        typename PRMInference< GUM_SCALAR >::Chain chain
+           = std::make_pair(i, &(i->get(n)));
 
         if (inf__->hasEvidence(chain)) {
           const Potential< GUM_SCALAR >* e = inf__->evidence(i)[n];
@@ -76,7 +77,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredBayesBall< GUM_SCALAR >::compute__(
-       const PRMInstance< GUM_SCALAR >* i, NodeId n) {
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n) {
       clean__();
       /// Key = instance.PRMClassElement<GUM_DATA>
       /// pair = <upper mark, lower mark>
@@ -90,7 +92,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredBayesBall< GUM_SCALAR >::fromChild__(
-       const PRMInstance< GUM_SCALAR >* i, NodeId n, InstanceMap& marks) {
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n,
+       InstanceMap&                     marks) {
       if (!marks.exists(i)) {
         marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
       }
@@ -106,8 +110,9 @@ namespace gum {
             getMark__(marks, i, n).first = true;
 
             for (const auto inst: i->getInstances(n))
-              fromChild__(
-                 inst, inst->get(getSC__(i, n).lastElt().safeName()).id(), marks);
+              fromChild__(inst,
+                          inst->get(getSC__(i, n).lastElt().safeName()).id(),
+                          marks);
           }
 
           if (!getMark__(marks, i, n).second) {
@@ -142,8 +147,9 @@ namespace gum {
               const auto& refs = i->getRefAttr(n);
 
               for (auto iter = refs.begin(); iter != refs.end(); ++iter)
-                fromParent__(
-                   iter->first, iter->first->type().get(iter->second).id(), marks);
+                fromParent__(iter->first,
+                             iter->first->type().get(iter->second).id(),
+                             marks);
             } catch (NotFound&) {
               // Not an inverse sc
             }
@@ -164,7 +170,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredBayesBall< GUM_SCALAR >::fromParent__(
-       const PRMInstance< GUM_SCALAR >* i, NodeId n, InstanceMap& marks) {
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n,
+       InstanceMap&                     marks) {
       if (!marks.exists(i)) {
         marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
       }
@@ -191,8 +199,9 @@ namespace gum {
           for (auto iter = i->getRefAttr(n).begin();
                iter != i->getRefAttr(n).end();
                ++iter)
-            fromParent__(
-               iter->first, iter->first->type().get(iter->second).id(), marks);
+            fromParent__(iter->first,
+                         iter->first->type().get(iter->second).id(),
+                         marks);
         } catch (NotFound&) {
           // Not an inverse sc
         }
@@ -238,14 +247,16 @@ namespace gum {
         } else {
           reqMap__.insert(key, std::pair< Set< NodeId >*, Size >(elt.second, 1));
           keyMap__.insert(
-             elt.first, std::pair< std::string, Set< NodeId >* >(key, elt.second));
+             elt.first,
+             std::pair< std::string, Set< NodeId >* >(key, elt.second));
         }
       }
     }
 
     template < typename GUM_SCALAR >
     std::string StructuredBayesBall< GUM_SCALAR >::buildHashKey__(
-       const PRMInstance< GUM_SCALAR >* i, Set< NodeId >& req_nodes) {
+       const PRMInstance< GUM_SCALAR >* i,
+       Set< NodeId >&                   req_nodes) {
       std::stringstream sBuff;
       sBuff << i->type().name();
 
@@ -326,26 +337,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void StructuredBayesBall< GUM_SCALAR >::compute(
-       const PRMInstance< GUM_SCALAR >* i, NodeId n) {
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n) {
       compute__(i, n);
     }
 
     template < typename GUM_SCALAR >
     INLINE void StructuredBayesBall< GUM_SCALAR >::compute(
-       const PRMInstance< GUM_SCALAR >& i, NodeId n) {
+       const PRMInstance< GUM_SCALAR >& i,
+       NodeId                           n) {
       compute__(&i, n);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMSlotChain< GUM_SCALAR >&
                  StructuredBayesBall< GUM_SCALAR >::getSC__(
-          const PRMInstance< GUM_SCALAR >* i, NodeId n) {
+          const PRMInstance< GUM_SCALAR >* i,
+          NodeId                           n) {
       return static_cast< const PRMSlotChain< GUM_SCALAR >& >(i->type().get(n));
     }
 
     template < typename GUM_SCALAR >
     INLINE std::pair< bool, bool >& StructuredBayesBall< GUM_SCALAR >::getMark__(
-       InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n) {
+       InstanceMap&                     marks,
+       const PRMInstance< GUM_SCALAR >* i,
+       NodeId                           n) {
       return (*(marks[i]))[n];
     }
 

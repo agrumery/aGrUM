@@ -34,10 +34,16 @@ namespace gum {
 
   template < int v >
   struct Int2Type {
-    enum { value = v };
+    enum
+    { value = v };
   };
 
-  enum TESTNAME { GTEST = 1, CHI2TEST = 2, LEASTSQUARETEST = 3 };
+  enum TESTNAME
+  {
+    GTEST           = 1,
+    CHI2TEST        = 2,
+    LEASTSQUARETEST = 3
+  };
   template < TESTNAME, class A, class B, class C >
   struct TestSelect {
     typedef A type;
@@ -60,7 +66,11 @@ namespace gum {
     typedef B type;
   };
 
-  enum LEARNERNAME { IMDDILEARNER = 1, ITILEARNER = 2 };
+  enum LEARNERNAME
+  {
+    IMDDILEARNER = 1,
+    ITILEARNER   = 2
+  };
   template < LEARNERNAME, class A, class B >
   struct LearnerSelect {
     typedef A type;

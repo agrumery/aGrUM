@@ -45,7 +45,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void VarMod2BNsMap< GUM_SCALAR >::setCNet(const CredalNet< GUM_SCALAR >& cn) {
-      auto* cpt = &cn.credalNet_currentCpt();
+      auto* cpt    = &cn.credalNet_currentCpt();
       auto  nNodes = cpt->size();
       sampleDef_.resize(nNodes);
 
@@ -69,8 +69,8 @@ namespace gum {
     bool VarMod2BNsMap< GUM_SCALAR >::insert(const std::vector< bool >& bn,
                                              const std::vector< Size >& key) {
       currentHash_ = Size(vectHash_(bn));
-      std::list< Size >& nets =
-         myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
+      std::list< Size >& nets
+         = myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
 
       for (std::list< Size >::iterator it = nets.begin(); it != nets.end(); ++it) {
         if (*it == currentHash_) return false;
@@ -92,16 +92,16 @@ namespace gum {
                                              const bool                 isBetter) {
       if (isBetter) {
         // get all nets of this key (maybe entry does not exists)
-        std::list< Size >& old_nets =
-           myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
+        std::list< Size >& old_nets
+           = myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
 
         // for each one
         for (std::list< Size >::iterator it = old_nets.begin();
              it != old_nets.end();
              ++it) {
           // get all keys associated to this net
-          std::list< varKey >& netKeys =
-             myHashVars_.getWithDefault(*it, std::list< varKey >());   //[ *it ];
+          std::list< varKey >& netKeys
+             = myHashVars_.getWithDefault(*it, std::list< varKey >());   //[ *it ];
 
           // if we are the sole user, delete the net entry
           if (netKeys.size() == 1) {
@@ -137,8 +137,8 @@ namespace gum {
       // another opt net
       else {
         // check that we didn't add it for this key
-        std::list< Size >& nets =
-           myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
+        std::list< Size >& nets
+           = myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
 
         for (std::list< Size >::iterator it = nets.begin(); it != nets.end();
              ++it) {

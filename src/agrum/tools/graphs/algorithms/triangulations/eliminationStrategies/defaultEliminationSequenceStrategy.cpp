@@ -33,7 +33,8 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-     double theRatio, double theThreshold) :
+     double theRatio,
+     double theThreshold) :
       simplicial_ratio__(theRatio),
       simplicial_threshold__(theThreshold) {
     // for debugging purposes
@@ -132,7 +133,8 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool DefaultEliminationSequenceStrategy::setGraph(
-     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes) {
     if (UnconstrainedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       createSimplicialSet__();
       return true;
@@ -173,13 +175,13 @@ namespace gum {
       if (iter_heuristic == log_weights__.cend())
         GUM_ERROR(NotFound, "there exists no more node to eliminate");
 
-      double min_weight = iter_heuristic.val();
+      double min_weight     = iter_heuristic.val();
       NodeId removable_node = iter_heuristic.key();
       for (++iter_heuristic; iter_heuristic != log_weights__.cend();
            ++iter_heuristic) {
         if (iter_heuristic.val() < min_weight) {
           removable_node = iter_heuristic.key();
-          min_weight = iter_heuristic.val();
+          min_weight     = iter_heuristic.val();
         }
       }
 

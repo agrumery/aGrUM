@@ -107,7 +107,7 @@ namespace gum {
 
     /// Iteration over the variables of the simulated probleme
     virtual SequenceIteratorSafe< const DiscreteVariable* > beginVariables() = 0;
-    virtual SequenceIteratorSafe< const DiscreteVariable* > endVariables() = 0;
+    virtual SequenceIteratorSafe< const DiscreteVariable* > endVariables()   = 0;
 
     /// @}
 
@@ -120,7 +120,7 @@ namespace gum {
 
     /// Iteration over the variables of the simulated probleme
     virtual SequenceIteratorSafe< Idx > beginActions() = 0;
-    virtual SequenceIteratorSafe< Idx > endActions() = 0;
+    virtual SequenceIteratorSafe< Idx > endActions()   = 0;
 
 
     /// @}

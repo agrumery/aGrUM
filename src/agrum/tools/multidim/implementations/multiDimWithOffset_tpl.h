@@ -204,8 +204,8 @@ namespace gum {
      MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
     Idx off = 0;
 
-    for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter =
-            gaps_.beginSafe();
+    for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter
+         = gaps_.beginSafe();
          iter != gaps_.endSafe();
          ++iter)
       if (i.contains(iter.key()))
@@ -230,9 +230,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimWithOffset< GUM_SCALAR >::computeInstantiationValue_(
-     Instantiation& result, Size indice) const {
+     Instantiation& result,
+     Size           indice) const {
     for (Idx i = 0; i < this->nbrDim(); ++i) {
-      const DiscreteVariable& var = this->variable(i);
+      const DiscreteVariable& var        = this->variable(i);
       Idx                     domainSize = var.domainSize();
       result.chgVal(var, indice % domainSize);
       indice = indice / domainSize;

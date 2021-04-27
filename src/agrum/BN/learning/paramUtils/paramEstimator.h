@@ -88,8 +88,8 @@ namespace gum {
                             ALLOC< std::pair< std::size_t, std::size_t > > >&
             ranges,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            nodeId2columns
+         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// default constructor
@@ -110,14 +110,13 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimator(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              external_apriori,
-         const Apriori< ALLOC >&              score_internal__apriori,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
+                     const Apriori< ALLOC >&              external_apriori,
+                     const Apriori< ALLOC >&              score_internal__apriori,
+                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                        nodeId2columns
+                     = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                     const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ParamEstimator(const ParamEstimator< ALLOC >& from);
@@ -205,7 +204,8 @@ namespace gum {
        * order in which they were specified). */
       virtual std::vector< double, ALLOC< double > > parameters(
          const NodeId                                  target_node,
-         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) = 0;
+         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes)
+         = 0;
 
       /// sets the CPT's parameters corresponding to a given Potential
       /** The potential is assumed to be a conditional probability, the first

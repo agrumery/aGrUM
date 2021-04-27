@@ -117,9 +117,9 @@ namespace gum {
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param edges_size the size of the hash table used to store all the edges
      * @param edges_resize_policy the resizing policy of this hash table */
-    explicit UndiGraph(Size nodes_size = HashTableConst::default_size,
+    explicit UndiGraph(Size nodes_size          = HashTableConst::default_size,
                        bool nodes_resize_policy = true,
-                       Size edges_size = HashTableConst::default_size,
+                       Size edges_size          = HashTableConst::default_size,
                        bool edges_resize_policy = true);
 
     /// copy constructor

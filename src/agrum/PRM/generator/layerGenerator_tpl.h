@@ -99,7 +99,7 @@ namespace gum {
        const std::string&                                            type,
        std::vector< typename LayerGenerator< GUM_SCALAR >::MyData >& l) {
       Size               size = 0;
-      GUM_SCALAR         sum = 0.0;
+      GUM_SCALAR         sum  = 0.0;
       Set< std::string > i;
 
       for (Size lvl = 0; lvl < layers__.size(); ++lvl) {
@@ -247,10 +247,11 @@ namespace gum {
 
             if (ref2add.empty())
               factory.setReferenceSlot(
-                 chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()]);
+                 chain.str(),
+                 o[lvl - 1][std::rand() % o[lvl - 1].size()]);
 
             while (ref2add.size() > getMaxParents()) {
-              idx = std::rand() % ref2add.size();
+              idx          = std::rand() % ref2add.size();
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }
@@ -288,7 +289,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE LayerGenerator< GUM_SCALAR >& LayerGenerator< GUM_SCALAR >::operator=(
        const LayerGenerator< GUM_SCALAR >& source) {
-      layers__ = source.layers__;
+      layers__      = source.layers__;
       domain_size__ = source.domain_size__;
       max_parents__ = source.max_parents__;
       return *this;

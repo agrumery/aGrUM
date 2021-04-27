@@ -61,7 +61,8 @@ namespace gum {
     Signaler1< std::string > onStop;
 
     /// The different state of an approximation scheme.
-    enum class ApproximationSchemeSTATE : char {
+    enum class ApproximationSchemeSTATE : char
+    {
       Undefined,
       Continue,
       Epsilon,

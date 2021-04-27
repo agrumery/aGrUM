@@ -39,7 +39,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -50,11 +50,11 @@ namespace gum_tests {
       del_vars << vars[0] << vars[3];
 
       gum::ScheduleProject< double > real_myproj(f1, del_vars, gum::projectMax);
-      const gum::ScheduleMultiDim< double >& res = real_myproj.result();
+      const gum::ScheduleMultiDim< double >& res    = real_myproj.result();
       gum::ScheduleOperation< double >&      myproj = real_myproj;
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims =
-         myproj.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims
+         = myproj.multiDimArgs();
       TS_ASSERT(multidims.size() == 1);
       TS_ASSERT(*(multidims.atPos(0)) == f1);
 
@@ -64,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT(s1.str() == myproj.toString());
 
       gum::ScheduleProject< double >    real_myproj2 = real_myproj;
-      gum::ScheduleOperation< double >& myproj2 = real_myproj2;
+      gum::ScheduleOperation< double >& myproj2      = real_myproj2;
       TS_ASSERT(real_myproj2.result().isAbstract());
       TS_ASSERT(myproj2 == myproj);
       TS_ASSERT(!(myproj2 != myproj));
@@ -100,8 +100,8 @@ namespace gum_tests {
             double                                          neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
 
-      const gum::Sequence< const gum::DiscreteVariable* >& vars =
-         table.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& vars
+         = table.variablesSequence();
       result->beginMultipleChanges();
 
       for (const auto var: vars)

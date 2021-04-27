@@ -50,10 +50,12 @@ namespace gum {
     try {
       // try to find func(ttable,del_vars) in the register
       func = ProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
-         GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.name());
+         GUM_MULTI_DIM_PROJECTION_FUNC_NAME,
+         ttable.name());
     } catch (NotFound&) {
       func = ProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
-         GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.basename());
+         GUM_MULTI_DIM_PROJECTION_FUNC_NAME,
+         ttable.basename());
     }
 
     // perform the projection

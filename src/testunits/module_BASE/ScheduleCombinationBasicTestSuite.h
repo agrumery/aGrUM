@@ -46,7 +46,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -81,8 +81,8 @@ namespace gum_tests {
       const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
-        for (gum::NodeSet::const_iterator_safe iter =
-                available.beginSafe();   // safe iterator needed here
+        for (gum::NodeSet::const_iterator_safe iter
+             = available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -98,8 +98,9 @@ namespace gum_tests {
       gum::ScheduleCombine< double > comb13(result12, f4, schedule_comb_myadd);
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();
-      gum::ScheduleCombine< double >         comb14(
-         result11, result13, schedule_comb_myadd);
+      gum::ScheduleCombine< double >         comb14(result11,
+                                            result13,
+                                            schedule_comb_myadd);
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
@@ -127,7 +128,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -157,8 +158,8 @@ namespace gum_tests {
       const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
-        for (gum::NodeSet::const_iterator_safe iter =
-                available.beginSafe();   // safe iterator needed here
+        for (gum::NodeSet::const_iterator_safe iter
+             = available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -186,7 +187,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -216,8 +217,8 @@ namespace gum_tests {
       const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
-        for (gum::NodeSet::const_iterator_safe iter =
-                available.beginSafe();   // safe iterator needed here
+        for (gum::NodeSet::const_iterator_safe iter
+             = available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -247,7 +248,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< double > t1, t2, t3;

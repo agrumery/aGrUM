@@ -205,14 +205,14 @@ namespace gum {
         // C_n^{r+1} = C_n^r * q_{r+1}
         double log2Cnr1 = VariableLog2ParamComplexityCTable[3][xn];   // log(C_n^5)
         double log2Cnr2 = VariableLog2ParamComplexityCTable[2][xn];   // log(C_n^4)
-        double log2Cnr = 0.0;
-        double k_r = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
-        double q_r = 1.0 + k_r * n / (6.0 - 2.0);   // we first compute C_n^6
+        double log2Cnr  = 0.0;
+        double k_r      = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
+        double q_r      = 1.0 + k_r * n / (6.0 - 2.0);   // we first compute C_n^6
         for (std::size_t i = std::size_t(6); i <= r; ++i) {
-          log2Cnr = log2Cnr1 + std::log2(q_r);
+          log2Cnr  = log2Cnr1 + std::log2(q_r);
           log2Cnr1 = log2Cnr;
-          k_r = 1.0 / q_r;
-          q_r = 1.0 + k_r * (n / (i - 1.0));
+          k_r      = 1.0 / q_r;
+          q_r      = 1.0 + k_r * (n / (i - 1.0));
         }
 
         // if we use a cache, update it
@@ -232,8 +232,8 @@ namespace gum {
 
       // compute the corrected Szpankowski approximation of cn2 (see the
       // documentation of constants cst1, cst2, cst3 in the ScorefNML header)
-      double log2Cnr1 =
-         0.5 * std::log2(n) + cst1__ + cst2__ / std::sqrt(n) + cst3__ / n;
+      double log2Cnr1
+         = 0.5 * std::log2(n) + cst1__ + cst2__ / std::sqrt(n) + cst3__ / n;
       if (r == std::size_t(2)) return log2Cnr1;
 
       // the value of log2(cn1), which is always equal to 0
@@ -241,14 +241,14 @@ namespace gum {
 
       // use Equation (13) of the paper to compute the value of cnr
       // (see the detail of the formulas in the above if statement)
-      double k_r = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
-      double q_r = 1.0 + k_r * n / (3.0 - 2.0);   // we first compute C_n^3
+      double k_r     = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
+      double q_r     = 1.0 + k_r * n / (3.0 - 2.0);   // we first compute C_n^3
       double log2Cnr = 0.0;
       for (std::size_t i = std::size_t(3); i <= r; ++i) {
-        log2Cnr = log2Cnr1 + std::log2(q_r);
+        log2Cnr  = log2Cnr1 + std::log2(q_r);
         log2Cnr1 = log2Cnr;
-        k_r = 1.0 / q_r;
-        q_r = 1.0 + k_r * (n / (i - 1.0));
+        k_r      = 1.0 / q_r;
+        q_r      = 1.0 + k_r * (n / (i - 1.0));
       }
 
       // if we use a cache, update it
@@ -282,8 +282,8 @@ namespace gum {
       // account of h=0 and h=n.
       long double cn2 = 2;
       for (double h = 1; h < n; ++h) {
-        long double elt =
-           (gamma_log2(n + 1) - gamma_log2(h + 1) - gamma_log2((n - h) + 1))
+        long double elt
+           = (gamma_log2(n + 1) - gamma_log2(h + 1) - gamma_log2((n - h) + 1))
               * M_LN2
            + h * std::log(h / n) + (n - h) * std::log((n - h) / n);
         cn2 += std::exp(elt);
@@ -354,8 +354,8 @@ namespace gum {
          i < VariableLog2ParamComplexityCTableNSize;
          ++i) {
       if (i > std::size_t(0)) outfile << ",\n        ";
-      const double logCn5 =
-         (double)std::log2(cn2_table[i] * (1.0 + 5.0 * i / 6.0) + i + i * i / 3.0);
+      const double logCn5 = (double)std::log2(cn2_table[i] * (1.0 + 5.0 * i / 6.0)
+                                              + i + i * i / 3.0);
       outfile << logCn5;
     }
     outfile << " }\n";

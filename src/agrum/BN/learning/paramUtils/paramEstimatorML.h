@@ -84,8 +84,8 @@ namespace gum {
                             ALLOC< std::pair< std::size_t, std::size_t > > >&
             ranges,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            nodeId2columns
+         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// default constructor
@@ -111,8 +111,8 @@ namespace gum {
          const Apriori< ALLOC >&              external_apriori,
          const Apriori< ALLOC >&              score_internal__apriori,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            nodeId2columns
+         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor

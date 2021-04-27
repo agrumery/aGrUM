@@ -28,15 +28,15 @@ namespace gum {
                                          const std::string&      filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(UAIBNReader);
-    bn__ = bn;
+    bn__         = bn;
     streamName__ = filename;
-    parseDone__ = false;
+    parseDone__  = false;
 
     ioerror__ = false;
 
     try {
       scanner__ = new UAIBN::Scanner(streamName__.c_str());
-      parser__ = new UAIBN::Parser(scanner__);
+      parser__  = new UAIBN::Parser(scanner__);
     } catch (IOError&) { ioerror__ = true; }
   }
 
@@ -106,8 +106,12 @@ namespace gum {
     auto isInt = [&]() -> bool {
       return (std::get< 0 >(quartets[current]) == -1);
     };
-    auto lig = [&]() -> int { return std::get< 2 >(quartets[current]); };
-    auto col = [&]() -> int { return std::get< 3 >(quartets[current]); };
+    auto lig = [&]() -> int {
+      return std::get< 2 >(quartets[current]);
+    };
+    auto col = [&]() -> int {
+      return std::get< 3 >(quartets[current]);
+    };
 
     auto getInt = [&]() -> int {
       if (!isInt()) this->addFatalError__(lig(), col(), "int expected");
@@ -123,7 +127,7 @@ namespace gum {
         this->addFatalError__(lig(), col(), "Not enough data in UAI file");
     };
 
-    current = 0;
+    current      = 0;
     Size nbrNode = (Size)getInt();
 
     for (NodeId i = 0; i < nbrNode; i++) {
@@ -137,8 +141,9 @@ namespace gum {
     incCurrent();
     Size nbrPot = (Size)getInt();
     if (nbrPot != nbrNode)
-      addWarning__(
-         lig(), col(), "Number of CPTs should be the same as number of nodes");
+      addWarning__(lig(),
+                   col(),
+                   "Number of CPTs should be the same as number of nodes");
 
     Set< NodeId > s;
     for (NodeId i = 0; i < nbrPot; i++) {
@@ -172,8 +177,9 @@ namespace gum {
       incCurrent();
       Size nbrParam = (Size)getInt();
       if (nbrParam != bn__->cpt(i).domainSize())
-        addFatalError__(
-           lig(), col(), "Size does not fit between parents and parameters");
+        addFatalError__(lig(),
+                        col(),
+                        "Size does not fit between parents and parameters");
       for (Idx j = 0; j < nbrParam; j++) {
         incCurrent();
         v.push_back(getVal());

@@ -37,7 +37,7 @@ namespace gum {
   UGmodel& UGmodel::operator=(const UGmodel& source) {
     if (this != &source) {
       GraphicalModel::operator=(source);
-      graph_ = source.graph_;
+      graph_                  = source.graph_;
     }
 
     return *this;

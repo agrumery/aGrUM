@@ -177,7 +177,7 @@ namespace gum {
     // such neighbor can be included in C_j (and conversely).
     if (size > 0) {
       for (auto i = size; i >= 1; --i) {
-        const NodeId C_i = NodeId(i - 1);
+        const NodeId C_i             = NodeId(i - 1);
         const auto   card_C_i_plus_1 = junction_tree__.clique(C_i).size() + 1;
 
         // search for C_j such that |C_j| = [C_i| + 1

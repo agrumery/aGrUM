@@ -40,7 +40,8 @@ namespace gum {
    * the message computation. So we can discard them and, thereby, speed-up
    * the computations.
    */
-  enum class RelevantPotentialsFinderType {
+  enum class RelevantPotentialsFinderType
+  {
     FIND_ALL,                    // do not perform d-separation analysis
     DSEP_BAYESBALL_NODES,        // BayesBall requisite nodes -> potentials
     DSEP_BAYESBALL_POTENTIALS,   // BayesBall requisite potentials (directly)

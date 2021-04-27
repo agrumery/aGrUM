@@ -35,7 +35,7 @@ namespace gum_tests {
     double score__(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
-      double N = 0;
+      double N     = 0;
       for (const auto n_ijk: N_ijk)
         if (n_ijk) {
           score += n_ijk * std::log2(n_ijk);
@@ -528,8 +528,10 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(1));
 
       gum::learning::AprioriSmoothing<>    apriori(database, nodeId2columns);
-      gum::learning::ScoreLog2Likelihood<> score(
-         parser, apriori, ranges, nodeId2columns);
+      gum::learning::ScoreLog2Likelihood<> score(parser,
+                                                 apriori,
+                                                 ranges,
+                                                 nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(

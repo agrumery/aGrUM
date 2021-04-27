@@ -61,7 +61,7 @@ namespace gum {
    *
    */
   template < typename Val,
-             class Cmp = std::less< Val >,
+             class Cmp  = std::less< Val >,
              class Node = BinTreeNode< Val > >
   class BinSearchTree {
     public:
@@ -334,7 +334,7 @@ namespace gum {
      */
     Node* copy_(Node*      root_from,
                 Node*      parent = 0,
-                BinTreeDir dir = BinTreeDir::LEFT_CHILD);
+                BinTreeDir dir    = BinTreeDir::LEFT_CHILD);
 
     /**
      * @brief Returns the smallest node w.r.t. order Cmp in the subtree rooted

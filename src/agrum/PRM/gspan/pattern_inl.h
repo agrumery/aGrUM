@@ -119,8 +119,8 @@ namespace gum {
           GUM_ERROR(NotFound, "node not found in this pattern");
         }
 
-        EdgeCode* edge =
-           new EdgeCode(i, j, node_map__[i]->id, l.id, node_map__[j]->id);
+        EdgeCode* edge
+           = new EdgeCode(i, j, node_map__[i]->id, l.id, node_map__[j]->id);
 
         if ((code().codes.size() == 0)
             || (DFSCode::validNeighbors(code().codes.back(), edge))) {

@@ -102,11 +102,11 @@ namespace gum {
      */
     MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
                                        Size maxArcs,
-                                       Size maxModality = 2,
+                                       Size maxModality     = 2,
                                        Size maxInducedWidth = 3,
-                                       Idx  iteration = 5000,
-                                       Idx  p = 30,
-                                       Idx  q = 40);
+                                       Idx  iteration       = 5000,
+                                       Idx  p               = 30,
+                                       Idx  q               = 40);
 
     /**
      * Constructor.
@@ -129,9 +129,9 @@ namespace gum {
      */
     explicit MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                                 Size maxInducedWidth = 3,
-                                                Idx  iteration = 5000,
-                                                Idx  p = 30,
-                                                Idx  q = 40);
+                                                Idx  iteration       = 5000,
+                                                Idx  p               = 30,
+                                                Idx  q               = 40);
 
     /**
      * Destructor.

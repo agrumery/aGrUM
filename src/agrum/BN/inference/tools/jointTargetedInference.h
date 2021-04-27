@@ -290,14 +290,16 @@ namespace gum {
      * contains set */
     virtual const Potential< GUM_SCALAR >&
        jointPosterior_(const NodeSet& wanted_target,
-                       const NodeSet& declared_target) = 0;
+                       const NodeSet& declared_target)
+       = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables
      * @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual Potential< GUM_SCALAR >*
-       unnormalizedJointPosterior_(const NodeSet& set) = 0;
+       unnormalizedJointPosterior_(const NodeSet& set)
+       = 0;
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) = 0;

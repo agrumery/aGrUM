@@ -206,7 +206,8 @@ namespace gum {
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void joint_(const std::vector< Chain >& queries,
-                          Potential< GUM_SCALAR >&    j) = 0;
+                          Potential< GUM_SCALAR >&    j)
+         = 0;
 
       /// The PRM<GUM_SCALAR> on which inference is done.
       PRM< GUM_SCALAR > const* prm_;

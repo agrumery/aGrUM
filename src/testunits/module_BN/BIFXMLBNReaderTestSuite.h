@@ -121,7 +121,7 @@ namespace gum_tests {
     void testRead_dog_double() {
       // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
       std::string              file = GET_RESSOURCES_PATH("bifxml/dog.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       gum::Size isOK = gum::Size(0);
@@ -133,8 +133,8 @@ namespace gum_tests {
       if (net != nullptr) {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)5);
 
-        const gum::Potential< double >& proba =
-           net->cpt(net->idFromName("dog-out"));
+        const gum::Potential< double >& proba
+           = net->cpt(net->idFromName("dog-out"));
 
         TS_ASSERT_EQUALS(proba.domainSize(), (gum::Size)8);
 
@@ -549,7 +549,7 @@ namespace gum_tests {
 
     void testAlarm() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/alarm.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       gum::Size isOK = gum::Size(0);
@@ -599,15 +599,15 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HRBP"));
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
-        const gum::DiscreteVariable& errlowoutput =
-           net->variable(idMap["ERRLOWOUTPUT"]);
+        const gum::DiscreteVariable& errlowoutput
+           = net->variable(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
         TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE");
         TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE");
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
 
-        const gum::Potential< double >& errlowoutputCPT =
-           net->cpt(idMap["ERRLOWOUTPUT"]);
+        const gum::Potential< double >& errlowoutputCPT
+           = net->cpt(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
         TS_ASSERT(errlowoutputCPT.contains(errlowoutput));
 
@@ -626,10 +626,10 @@ namespace gum_tests {
 
       if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
           && idMap.exists("LVFAILURE")) {
-        const gum::DiscreteVariable& lvedvolume =
-           net->variable(idMap["LVEDVOLUME"]);
-        const gum::DiscreteVariable& hypovolemia =
-           net->variable(idMap["HYPOVOLEMIA"]);
+        const gum::DiscreteVariable& lvedvolume
+           = net->variable(idMap["LVEDVOLUME"]);
+        const gum::DiscreteVariable& hypovolemia
+           = net->variable(idMap["HYPOVOLEMIA"]);
         const gum::DiscreteVariable& lvfailure = net->variable(idMap["LVFAILURE"]);
         // checking label order
         TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW");
@@ -649,7 +649,7 @@ namespace gum_tests {
         inst.chgVal(hypovolemia, 0);
         inst.chgVal(lvfailure, 0);
         float  array_1[] = {0.95f, 0.04f, 0.01f};
-        size_t i = 0;
+        size_t i         = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001f);
@@ -658,7 +658,7 @@ namespace gum_tests {
         inst.chgVal(hypovolemia, 1);
         inst.chgVal(lvfailure, 0);
         float array_2[] = {0.98f, 0.01f, 0.01f};
-        i = 0;
+        i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001f);
@@ -667,7 +667,7 @@ namespace gum_tests {
         inst.chgVal(hypovolemia, 0);
         inst.chgVal(lvfailure, 1);
         float array_3[] = {0.01f, 0.09f, 0.9f};
-        i = 0;
+        i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001f);
@@ -676,7 +676,7 @@ namespace gum_tests {
         inst.chgVal(hypovolemia, 1);
         inst.chgVal(lvfailure, 1);
         float array_4[] = {0.05f, 0.9f, 0.05f};
-        i = 0;
+        i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001f);
@@ -688,7 +688,7 @@ namespace gum_tests {
 
     void testUnexisting() {
       std::string              file = "Schmurtz";
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::BIFXMLBNReader< double > reader(net, file));
@@ -700,7 +700,7 @@ namespace gum_tests {
 
     void Carpo() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/carpo.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -740,7 +740,7 @@ namespace gum_tests {
 
     void testLink() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/Link.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -750,7 +750,7 @@ namespace gum_tests {
 
     void testMildew() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/Mildew.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -760,7 +760,7 @@ namespace gum_tests {
 
     void testMunin1() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/Munin1.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -770,7 +770,7 @@ namespace gum_tests {
 
     void testPigs() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/Pigs.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -780,7 +780,7 @@ namespace gum_tests {
 
     void testWater() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/Water.bifxml");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());

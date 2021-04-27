@@ -118,7 +118,7 @@ namespace gum {
         external_apriori_(from.external_apriori_),
         score_internal_apriori_(from.score_internal_apriori_),
         counter_(std::move(from.counter_), alloc) {
-      from.external_apriori_ = nullptr;
+      from.external_apriori_       = nullptr;
       from.score_internal_apriori_ = nullptr;
       GUM_CONS_MOV(ParamEstimator);
     }
@@ -167,8 +167,8 @@ namespace gum {
           allocator.deallocate(score_internal_apriori_, 1);
           external_apriori_ = nullptr;
         }
-        score_internal_apriori_ =
-           from.score_internal_apriori_->clone(this->getAllocator());
+        score_internal_apriori_
+           = from.score_internal_apriori_->clone(this->getAllocator());
 
         counter_ = from.counter_;
       }
@@ -181,10 +181,10 @@ namespace gum {
     ParamEstimator< ALLOC >&
        ParamEstimator< ALLOC >::operator=(ParamEstimator< ALLOC >&& from) {
       if (this != &from) {
-        external_apriori_ = from.external_apriori_;
-        score_internal_apriori_ = from.score_internal_apriori_;
-        counter_ = std::move(from.counter_);
-        from.external_apriori_ = nullptr;
+        external_apriori_            = from.external_apriori_;
+        score_internal_apriori_      = from.score_internal_apriori_;
+        counter_                     = std::move(from.counter_);
+        from.external_apriori_       = nullptr;
         from.score_internal_apriori_ = nullptr;
       }
       return *this;
@@ -290,7 +290,7 @@ namespace gum {
         GUM_ERROR(SizeError, "the potential contains no variable");
       }
 
-      const auto& database = counter_.database();
+      const auto& database  = counter_.database();
       const auto& node2cols = counter_.nodeId2Columns();
       if (node2cols.empty()) {
         if (database.domainSize(target_node) != vars[0]->domainSize()) {

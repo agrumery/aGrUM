@@ -91,9 +91,10 @@ namespace gum {
      * DefaultEliminationSequenceStrategy
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
-    DefaultPartialOrderedEliminationSequenceStrategy(
-       double theRatio = GUM_QUASI_RATIO,
-       double theThreshold = GUM_WEIGHT_THRESHOLD);
+    DefaultPartialOrderedEliminationSequenceStrategy(double theRatio
+                                                     = GUM_QUASI_RATIO,
+                                                     double theThreshold
+                                                     = GUM_WEIGHT_THRESHOLD);
 
     /// constructor for an a priori non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -115,7 +116,7 @@ namespace gum {
        UndiGraph*                  graph,
        const NodeProperty< Size >* dom_sizes,
        const List< NodeSet >*      subsets,
-       double                      ratio = GUM_QUASI_RATIO,
+       double                      ratio     = GUM_QUASI_RATIO,
        double                      threshold = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor

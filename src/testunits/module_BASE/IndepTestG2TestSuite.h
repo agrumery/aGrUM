@@ -39,7 +39,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -62,31 +62,37 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(0, 2), 230.7461, 1e-3);
       TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
 
-      TS_ASSERT_DELTA(
-         score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3)
-      TS_ASSERT_DELTA(
-         score.score(0, 2, std::vector< gum::NodeId >{4}), 147.7192, 1e-3);
+      TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}),
+                      -0.5569,
+                      1e-3)
+      TS_ASSERT_DELTA(score.score(0, 2, std::vector< gum::NodeId >{4}),
+                      147.7192,
+                      1e-3);
 
-      TS_ASSERT_DELTA(
-         score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+      TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}),
+                      -0.6153,
+                      1e-3);
 
       TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3);
       TS_ASSERT_DELTA(score.score(1, 3), -0.2345, 1e-3);
-      TS_ASSERT_DELTA(
-         score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+      TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}),
+                      -0.6153,
+                      1e-3);
       TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-      TS_ASSERT_DELTA(
-         score.score(3, 1, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+      TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}),
+                      -0.5569,
+                      1e-3);
       TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-      TS_ASSERT_DELTA(
-         score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+      TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}),
+                      -0.5569,
+                      1e-3);
     }
 
     void test_cache() {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -107,14 +113,17 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < 1000; ++i) {
         TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3);
         TS_ASSERT_DELTA(score.score(1, 3), -0.2345, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+        TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}),
+                        -0.6153,
+                        1e-3);
         TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(3, 1, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+        TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}),
+                        -0.5569,
+                        1e-3);
         TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+        TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}),
+                        -0.5569,
+                        1e-3);
       }
     }
 
@@ -122,7 +131,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -144,14 +153,17 @@ namespace gum_tests {
         score.clearCache();
         TS_ASSERT_DELTA(score.score(0, 1), 61.181, 1e-3);
         TS_ASSERT_DELTA(score.score(1, 3), 0.617, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+        TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}),
+                        -0.6153,
+                        1e-3);
         TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(3, 1, std::vector< gum::NodeId >{4}), 0.778, 1e-3);
+        TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}),
+                        0.778,
+                        1e-3);
         TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
-        TS_ASSERT_DELTA(
-           score.score(1, 3, std::vector< gum::NodeId >{4}), 0.778, 1e-3);
+        TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}),
+                        0.778,
+                        1e-3);
       }
     }
 
@@ -159,7 +171,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;

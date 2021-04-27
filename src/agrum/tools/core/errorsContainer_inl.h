@@ -49,8 +49,11 @@ namespace gum {
   INLINE
   void ErrorsContainer::Exception(const std::wstring& filename,
                                   const wchar_t*      msg) {
-    add(ParseError(
-       true, "Exception : " + narrow(std::wstring(msg)), narrow(filename), 0, 0));
+    add(ParseError(true,
+                   "Exception : " + narrow(std::wstring(msg)),
+                   narrow(filename),
+                   0,
+                   0));
   }
 
   INLINE

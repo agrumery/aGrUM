@@ -122,19 +122,19 @@ namespace gum {
     }
 
     // copy the current content of from
-    *log_weights__ = *from.log_weights__;
-    simplicial_nodes__ = from.simplicial_nodes__;
+    *log_weights__            = *from.log_weights__;
+    simplicial_nodes__        = from.simplicial_nodes__;
     almost_simplicial_nodes__ = from.almost_simplicial_nodes__;
-    quasi_simplicial_nodes__ = from.quasi_simplicial_nodes__;
-    containing_list__ = from.containing_list__;
-    nb_triangles__ = from.nb_triangles__;
-    nb_adjacent_neighbours__ = from.nb_adjacent_neighbours__;
-    log_tree_width__ = from.log_tree_width__;
-    quasi_ratio__ = from.quasi_ratio__;
-    log_threshold__ = from.log_threshold__;
-    changed_status__ = from.changed_status__;
-    we_want_fill_ins__ = from.we_want_fill_ins__;
-    fill_ins_list__ = from.fill_ins_list__;
+    quasi_simplicial_nodes__  = from.quasi_simplicial_nodes__;
+    containing_list__         = from.containing_list__;
+    nb_triangles__            = from.nb_triangles__;
+    nb_adjacent_neighbours__  = from.nb_adjacent_neighbours__;
+    log_tree_width__          = from.log_tree_width__;
+    quasi_ratio__             = from.quasi_ratio__;
+    log_threshold__           = from.log_threshold__;
+    changed_status__          = from.changed_status__;
+    we_want_fill_ins__        = from.we_want_fill_ins__;
+    fill_ins_list__           = from.fill_ins_list__;
 
     // for debugging purposes
     GUM_CONS_CPY(SimplicialSet);
@@ -188,9 +188,9 @@ namespace gum {
       // recall that id is an almost simplicial node if there exists a node,
       // say Y, such that, after deleting Y, id and its adjacent nodes form a
       // clique.
-      const NodeSet& nei = graph__->neighbours(id);
+      const NodeSet& nei    = graph__->neighbours(id);
       Size           nb_adj = nei.size();
-      Size           nb = nb_adjacent_neighbours__[id];
+      Size           nb     = nb_adjacent_neighbours__[id];
 
       // nb_almost = the number of edges that should link the neighbors of
       // node id, after node Y mentioned above has been removed. Recall that
@@ -198,7 +198,7 @@ namespace gum {
       // number of triangles involving id and 2 of its neighbors, after node
       // Y has been removed.
       Size   nb_almost = ((nb_adj - 1) * (nb_adj - 2)) / 2;
-      NodeId node1 = 0;
+      NodeId node1     = 0;
 
       for (const auto current_node: nei) {
         if (nb_almost == nb - nb_triangles__[Edge(current_node, id)]) {
@@ -217,7 +217,7 @@ namespace gum {
       }
 
       double  log_domain_size_node1 = (*log_domain_sizes__)[node1];
-      double& log_weights_node1__ = (*log_weights__)[node1];
+      double& log_weights_node1__   = (*log_weights__)[node1];
 
       // now, to make a clique between id and its neighbors, there just remains
       // to add the missing edges between node1 and the other neighbors of id.
@@ -301,11 +301,11 @@ namespace gum {
       const NodeSet& nei = graph__->neighbours(id);
 
       for (auto iter1 = nei.begin(); iter1 != nei.end(); ++iter1) {
-        NodeId       node1 = *iter1;
+        NodeId       node1                 = *iter1;
         double       log_domain_size_node1 = (*log_domain_sizes__)[node1];
-        double&      log_weights_node1__ = (*log_weights__)[node1];
-        bool         node1_status = false;
-        unsigned int nb_n1 = 0;
+        double&      log_weights_node1__   = (*log_weights__)[node1];
+        bool         node1_status          = false;
+        unsigned int nb_n1                 = 0;
 
         auto iterEdge2 = iter1;
 
@@ -383,9 +383,12 @@ namespace gum {
           almost_simplicial_nodes__.erase(id);
           break;
 
-        case Belong__::QUASI_SIMPLICIAL: quasi_simplicial_nodes__.erase(id); break;
+        case Belong__::QUASI_SIMPLICIAL:
+          quasi_simplicial_nodes__.erase(id);
+          break;
 
-        default: break;
+        default:
+          break;
       }
 
       simplicial_nodes__.insert(id, (*log_weights__)[id]);
@@ -429,13 +432,20 @@ namespace gum {
     log_tree_width__ = std::max(log_tree_width__, (*log_weights__)[id]);
 
     switch (containing_list__[id]) {
-      case Belong__::SIMPLICIAL: simplicial_nodes__.erase(id); break;
+      case Belong__::SIMPLICIAL:
+        simplicial_nodes__.erase(id);
+        break;
 
-      case Belong__::ALMOST_SIMPLICIAL: almost_simplicial_nodes__.erase(id); break;
+      case Belong__::ALMOST_SIMPLICIAL:
+        almost_simplicial_nodes__.erase(id);
+        break;
 
-      case Belong__::QUASI_SIMPLICIAL: quasi_simplicial_nodes__.erase(id); break;
+      case Belong__::QUASI_SIMPLICIAL:
+        quasi_simplicial_nodes__.erase(id);
+        break;
 
-      default: break;
+      default:
+        break;
     }
 
     nb_adjacent_neighbours__.erase(id);
@@ -460,13 +470,20 @@ namespace gum {
       eraseEdge(Edge(*iter, id));
 
     switch (containing_list__[id]) {
-      case Belong__::SIMPLICIAL: simplicial_nodes__.erase(id); break;
+      case Belong__::SIMPLICIAL:
+        simplicial_nodes__.erase(id);
+        break;
 
-      case Belong__::ALMOST_SIMPLICIAL: almost_simplicial_nodes__.erase(id); break;
+      case Belong__::ALMOST_SIMPLICIAL:
+        almost_simplicial_nodes__.erase(id);
+        break;
 
-      case Belong__::QUASI_SIMPLICIAL: quasi_simplicial_nodes__.erase(id); break;
+      case Belong__::QUASI_SIMPLICIAL:
+        quasi_simplicial_nodes__.erase(id);
+        break;
 
-      default: break;
+      default:
+        break;
     }
 
     nb_adjacent_neighbours__.erase(id);
@@ -531,7 +548,7 @@ namespace gum {
     (*log_weights__)[node2] += (*log_domain_sizes__)[node1];
 
     unsigned int nb_triangle_in_new_edge = 0;
-    unsigned int nb_neigh_n1_n2 = 0;
+    unsigned int nb_neigh_n1_n2          = 0;
 
     for (const auto othernode: graph__->neighbours(node1)) {
       if (graph__->existsEdge(node2, othernode)) {
@@ -575,7 +592,7 @@ namespace gum {
     changed_status__.erase(id);
 
     Belong__&      belong = containing_list__[id];
-    const NodeSet& nei = graph__->neighbours(id);
+    const NodeSet& nei    = graph__->neighbours(id);
     Size           nb_adj = nei.size();
 
     // check if the node should belong to the simplicial set
@@ -595,7 +612,7 @@ namespace gum {
 
     // check if the node should belong to the almost simplicial set
     Size nb_almost = ((nb_adj - 1) * (nb_adj - 2)) / 2;
-    Size nb = nb_adjacent_neighbours__[id];
+    Size nb        = nb_adjacent_neighbours__[id];
 
     for (const auto cur: nei) {
       if (nb_almost == nb - nb_triangles__[Edge(cur, id)]) {
@@ -758,10 +775,10 @@ namespace gum {
 
     // initialize the nb_triangles__ so that there is no need to check whether
     // nb_triangles__ need new insertions
-    nb_triangles__ = graph__->edgesProperty(Size(0));
+    nb_triangles__           = graph__->edgesProperty(Size(0));
     nb_adjacent_neighbours__ = graph__->nodesProperty(Size(0));
-    containing_list__ = graph__->nodesProperty(Belong__::NO_LIST);
-    changed_status__ = graph__->asNodeSet();
+    containing_list__        = graph__->nodesProperty(Belong__::NO_LIST);
+    changed_status__         = graph__->asNodeSet();
 
     // set the nb_triangles__ and the nb_adjacent_neighbours__: for each
     // triangle, update the nb_triangles__. To count the triangles only once,
@@ -769,11 +786,11 @@ namespace gum {
     // each other and such that the Id of Y and Z are greater than X.
     for (const auto nodeX: *graph__) {
       Size&          nb_adjacent_neighbors_idX = nb_adjacent_neighbours__[nodeX];
-      const NodeSet& nei = graph__->neighbours(nodeX);
+      const NodeSet& nei                       = graph__->neighbours(nodeX);
 
       for (auto iterY = nei.begin(); iterY != nei.end(); ++iterY)
         if (*iterY > nodeX) {
-          const NodeId node_idY = *iterY;
+          const NodeId node_idY           = *iterY;
           Size& nb_adjacent_neighbors_idY = nb_adjacent_neighbours__[node_idY];
 
           auto iterZ = iterY;
@@ -804,8 +821,8 @@ namespace gum {
     }
 
     // clear the structures used for the previous graph and assign the new graph
-    graph__ = graph;
-    log_weights__ = log_weights;
+    graph__            = graph;
+    log_weights__      = log_weights;
     log_domain_sizes__ = log_domain_sizes;
 
     simplicial_nodes__.clear();
@@ -823,8 +840,8 @@ namespace gum {
     nb_adjacent_neighbours__.resize(graph__->size());
 
     log_tree_width__ = std::numeric_limits< double >::max();
-    quasi_ratio__ = theRatio;
-    log_threshold__ = std::log(1 + theThreshold);
+    quasi_ratio__    = theRatio;
+    log_threshold__  = std::log(1 + theThreshold);
     changed_status__.clear();
     fill_ins_list__.clear();
 

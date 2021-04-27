@@ -156,8 +156,8 @@ namespace gum {
     ///
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
-      for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-              varOrder__.beginSafe();
+      for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+           = varOrder__.beginSafe();
            varIter != varOrder__.endSafe();
            ++varIter)
         ret->add(**varIter);

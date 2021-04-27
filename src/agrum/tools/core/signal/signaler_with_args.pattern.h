@@ -44,11 +44,11 @@ namespace gum {
       public:
       virtual ~MAKE_NAME(IConnector)() {}
 
-      virtual Listener* target() const = 0;
-      virtual void      notify(const void*, LIST_DECL_ARGS) = 0;
+      virtual Listener* target() const                       = 0;
+      virtual void      notify(const void*, LIST_DECL_ARGS)  = 0;
       virtual MAKE_NAME(IConnector)< LIST_CLASSES >* clone() = 0;
-      virtual MAKE_NAME(IConnector)< LIST_CLASSES >* duplicate(
-         Listener* target) = 0;
+      virtual MAKE_NAME(IConnector)< LIST_CLASSES >* duplicate(Listener* target)
+         = 0;
     };
 
     template < LIST_DECL_CLASSES >
@@ -85,8 +85,8 @@ namespace gum {
       bool hasListener() { return (!(connectors_.empty())); }
 
       void detach(Listener* target) {
-        for (ConnectorIterator it =
-                connectors_.reginSafe();   // safe iterator needed here
+        for (ConnectorIterator it
+             = connectors_.reginSafe();   // safe iterator needed here
              it != connectors_.rendSafe();
              --it) {
           if ((*it)->target() == target) {
@@ -111,8 +111,8 @@ namespace gum {
       void detachFromTarget(Listener* target) {
         ConnectorIterator itprev;
 
-        for (ConnectorIterator it =
-                connectors_.rbeginSafe();   // safe iterator needed here
+        for (ConnectorIterator it
+             = connectors_.rbeginSafe();   // safe iterator needed here
              it != connectors_.rendSafe();) {
           itprev = it;
           --it;
@@ -158,8 +158,8 @@ namespace gum {
 
       INLINE virtual MAKE_NAME(IConnector)< LIST_CLASSES >* duplicate(
          Listener* target) {
-        return new MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(
-           (TargetClass*)target, action__);
+        return new MAKE_NAME(
+           Connector)< TargetClass, LIST_CLASSES >((TargetClass*)target, action__);
       }
 
       INLINE virtual void notify(const void* src, LIST_DECL_ARGS) {
@@ -197,9 +197,9 @@ namespace gum {
     template < class TargetClass >
     void attach(TargetClass* target,
                 void (TargetClass::*action)(const void*, LIST_CLASSES)) {
-      __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn =
-         new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target,
-                                                                        action);
+      __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn
+         = new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target,
+                                                                          action);
       this->connectors_.pushBack(conn);
       target->attachSignal__(this);
     }

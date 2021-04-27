@@ -34,7 +34,8 @@ import pyAgrum as gum
 import pydotplus as dot
 import shutil
 
-from .proba_histogram import proba2histo,saveFigProba
+from .proba_histogram import proba2histo, saveFigProba
+
 
 def ID2dot(diag, size=None):
   res = "digraph  { \n graph [bgcolor=transparent];\n"
@@ -82,9 +83,9 @@ def ID2dot(diag, size=None):
       res += '  "' + diag.variable(node).name() + '"->"' + \
              diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        res+=' [style="{}"]'.format(gum.config["influenceDiagram", "decision_arc_style"])
+        res += ' [style="{}"]'.format(gum.config["influenceDiagram", "decision_arc_style"])
       elif diag.isUtilityNode(chi):
-        res+=' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
+        res += ' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
       res += ";\n"
   res += "}"
 
@@ -94,6 +95,7 @@ def ID2dot(diag, size=None):
     size = gum.config["influenceDiagram", "default_id_size"]
   g.set_size(size)
   return g
+
 
 def LIMIDinference2dot(diag, size, engine, evs, targets):
   """
@@ -115,21 +117,27 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   ie.setEvidence(evs)
   ie.makeInference()
   stopTime = time.time()
-  meu=ie.MEU();
+  meu = ie.MEU();
 
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
-      gum.getBlackInTheme()+"\";bgcolor=\"transparent\";"
+           gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
-  fmt=gum.config["influenceDiagram", "utility_format_number"]
+  fmt = gum.config["influenceDiagram", "utility_visible_digits"]
+  if gum.config["influenceDiagram", "utility_show_loss"]=="True":
+    titut = ("mEL {:." + fmt + "f}").format(-meu['mean'])
+  else:
+    titut = ("MEU {:." + fmt + "f}").format(meu['mean'])
+  if gum.config["influenceDiagram", "utility_show_stdev"] == "True":
+    titut += (" (stdev={:." + fmt + "f})").format(math.sqrt(meu['variance']))
 
-  titut=("MEU {:."+fmt+"f}").format(meu['mean'])
-  if gum.config["influenceDiagram", "utility_show_stdev"]=="True":
-      titut+=(" (stdev={:."+fmt+"f})").format(math.sqrt(meu['variance']))
+  slabel = "label=\"{}".format(titut)
 
-  dotstr += "label=\"{}\nInference in {:6.2f}ms\";\n".format(titut,1000 * (stopTime - startTime))
+  if gum.config["notebook", "show_inference_time"]=="True":
+    slabel += "\nInference in {:6.2f}ms".format(1000 * (stopTime - startTime))
+  dotstr += slabel + "\";\n"
 
   for nid in diag.nodes():
     name = diag.variable(nid).name()
@@ -137,58 +145,64 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
     # defaults
     bgcolor = gum.config["notebook", "default_node_bgcolor"]
     fgcolor = gum.config["notebook", "default_node_fgcolor"]
-    shape="ellipse"
+    shape = "ellipse"
 
     if diag.isChanceNode(nid):
-      bgcolor=gum.config["influenceDiagram", "default_chance_bgcolor"]
-      fgcolor=gum.config["influenceDiagram", "default_chance_fgcolor"]
-      shape=gum.config["influenceDiagram", "chance_shape"]
+      bgcolor = gum.config["influenceDiagram", "default_chance_bgcolor"]
+      fgcolor = gum.config["influenceDiagram", "default_chance_fgcolor"]
+      shape = gum.config["influenceDiagram", "chance_shape"]
     elif diag.isDecisionNode(nid):
-      bgcolor=gum.config["influenceDiagram", "default_decision_bgcolor"]
-      fgcolor=gum.config["influenceDiagram", "default_decision_fgcolor"]
-      shape=gum.config["influenceDiagram", "decision_shape"]
-    else: # diag.isUtilityNode(nid):
-      bgcolor=gum.config["influenceDiagram", "default_utility_bgcolor"]
-      fgcolor=gum.config["influenceDiagram", "default_utility_fgcolor"]
-      shape=gum.config["influenceDiagram", "utility_shape"]
+      bgcolor = gum.config["influenceDiagram", "default_decision_bgcolor"]
+      fgcolor = gum.config["influenceDiagram", "default_decision_fgcolor"]
+      shape = gum.config["influenceDiagram", "decision_shape"]
+    else:  # diag.isUtilityNode(nid):
+      bgcolor = gum.config["influenceDiagram", "default_utility_bgcolor"]
+      fgcolor = gum.config["influenceDiagram", "default_utility_fgcolor"]
+      shape = gum.config["influenceDiagram", "utility_shape"]
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
       bgcolor = gum.config["notebook", "evidence_bgcolor"]
       fgcolor = gum.config["notebook", "evidence_fgcolor"]
 
-    styleattribute= 'style=filled, height=0,margin=0.1'
+    styleattribute = 'style=filled, height=0,margin=0.1'
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
-        bgcolor, fgcolor)
+      bgcolor, fgcolor)
     if not diag.isUtilityNode(nid):
       if len(targets) == 0 or name in targets or nid in targets:
-        #shape="rectangle"
+        # shape="rectangle"
         filename = temp_dir + \
-            hashlib.md5(name.encode()).hexdigest() + "." + \
-            gum.config["notebook", "graph_format"]
-        saveFigProba(ie.posterior(name), filename,bgcol=bgcolor,util=ie.posteriorUtility(nid),txtcolor=fgcolor)
+                   hashlib.md5(name.encode()).hexdigest() + "." + \
+                   gum.config["notebook", "graph_format"]
+        saveFigProba(ie.posterior(name), filename, bgcol=bgcolor, util=ie.posteriorUtility(nid), txtcolor=fgcolor)
         dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
       else:
-        dotstr += ' "{0}" [{1},shape={2},{3}]'.format(name, colorattribute,shape,styleattribute)
-    else: #utility node
-      mv=ie.meanVar(name)
-      fmt=gum.config["influenceDiagram", "utility_format_number"]
-      labut=("{} : {:."+fmt+"f}").format(name,mv["mean"])
-      if gum.config["influenceDiagram", "utility_show_stdev"]=="True":
-        labut+=(" ({:."+fmt+"f})").format(math.sqrt(mv["variance"]))
+        dotstr += ' "{0}" [{1},shape={2},{3}]'.format(name, colorattribute, shape, styleattribute)
+    else:  # utility node
+      mv = ie.meanVar(name)
 
-      dotstr += ' "{0}" [label="{1}",{2},{3},shape={4}]'.format(name,labut, colorattribute,styleattribute,shape)
+      if gum.config["influenceDiagram", "utility_show_loss"]=="True":
+        coef=-1
+      else:
+        coef=1
+
+      fmt = gum.config["influenceDiagram", "utility_visible_digits"]
+      labut = ("{} : {:." + fmt + "f}").format(name, coef*mv["mean"])
+      if gum.config["influenceDiagram", "utility_show_stdev"] == "True":
+        labut += (" ({:." + fmt + "f})").format(math.sqrt(mv["variance"]))
+
+      dotstr += ' "{0}" [label="{1}",{2},{3},shape={4}]'.format(name, labut, colorattribute, styleattribute, shape)
 
   # arcs
   dotstr += "\n"
   for node in diag.nodes():
     for chi in diag.children(node):
       dotstr += '  "' + diag.variable(node).name() + '"->"' + \
-             diag.variable(chi).name() + '"'
+                diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        dotstr+=' [style="{}"]'.format(gum.config["influenceDiagram", "decision_arc_style"])
+        dotstr += ' [style="{}"]'.format(gum.config["influenceDiagram", "decision_arc_style"])
       elif diag.isUtilityNode(chi):
-        dotstr+=' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
+        dotstr += ' [style="{}"]'.format(gum.config["influenceDiagram", "utility_arc_style"])
       dotstr += ";\n"
   dotstr += "}"
 
@@ -197,6 +211,6 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   if size is None:
     size = gum.config["influenceDiagram", "default_id_inference_size"]
   g.set_size(size)
-  g.temp_dir=temp_dir
+  g.temp_dir = temp_dir
 
   return g

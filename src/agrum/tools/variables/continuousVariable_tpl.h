@@ -103,8 +103,8 @@ namespace gum {
      ContinuousVariable< GUM_SCALAR >::operator=(
         const ContinuousVariable< GUM_SCALAR >& from) {
     IContinuousVariable::operator=(from);
-    lower_bound__ = from.lower_bound__;
-    upper_bound__ = from.upper_bound__;
+    lower_bound__                = from.lower_bound__;
+    upper_bound__                = from.upper_bound__;
     return *this;
   }
 
@@ -116,8 +116,8 @@ namespace gum {
      ContinuousVariable< GUM_SCALAR >::operator=(
         const ContinuousVariable< TX_VAL >& from) {
     IContinuousVariable::operator=(from);
-    lower_bound__ = GUM_SCALAR(from.lower_bound__);
-    upper_bound__ = GUM_SCALAR(from.upper_bound__);
+    lower_bound__                = GUM_SCALAR(from.lower_bound__);
+    upper_bound__                = GUM_SCALAR(from.upper_bound__);
     return *this;
   }
 
@@ -128,8 +128,8 @@ namespace gum {
      ContinuousVariable< GUM_SCALAR >::operator=(
         ContinuousVariable< GUM_SCALAR >&& from) {
     IContinuousVariable::operator=(std::move(from));
-    lower_bound__ = from.lower_bound__;
-    upper_bound__ = from.upper_bound__;
+    lower_bound__                = from.lower_bound__;
+    upper_bound__                = from.upper_bound__;
     return *this;
   }
 

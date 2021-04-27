@@ -85,9 +85,9 @@ namespace gum {
 
     template < typename CONSTRAINT, typename SET1, typename... SETS >
     struct IsInConstraintSet__< CONSTRAINT, ConstraintSet__< SET1, SETS... > > {
-      constexpr static bool value =
-         std::is_same< CONSTRAINT, SET1 >::value
-         || IsInConstraintSet__< CONSTRAINT, ConstraintSet__< SETS... > >::value;
+      constexpr static bool value
+         = std::is_same< CONSTRAINT, SET1 >::value
+        || IsInConstraintSet__< CONSTRAINT, ConstraintSet__< SETS... > >::value;
     };
 
     // ============================================================================
@@ -111,14 +111,14 @@ namespace gum {
             FIRST_CONSTRAINT,
             typename ConstraintSet__< OTHER_CONSTRAINTS... >::minset >::type >::
          type;
-      using set =
-         StructuralConstraintSetStatic__< FIRST_CONSTRAINT, OTHER_CONSTRAINTS... >;
+      using set = StructuralConstraintSetStatic__< FIRST_CONSTRAINT,
+                                                   OTHER_CONSTRAINTS... >;
     };
 
     template < typename CONSTRAINT >
     struct ConstraintSet__< CONSTRAINT > {
       using minset = ConstraintSet__< CONSTRAINT >;
-      using set = StructuralConstraintSetStatic__< CONSTRAINT >;
+      using set    = StructuralConstraintSetStatic__< CONSTRAINT >;
     };
 
     // ============================================================================
@@ -144,8 +144,8 @@ namespace gum {
     struct ConcatConstraintSet__<
        CONSTRAINT1,
        ConstraintSet__< CONSTRAINT2, OTHER_CONSTRAINT2... > > {
-      using type =
-         ConstraintSet__< CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2... >;
+      using type
+         = ConstraintSet__< CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2... >;
     };
 
     template < typename CONSTRAINT1,
@@ -154,8 +154,8 @@ namespace gum {
     struct ConcatConstraintSet__<
        ConstraintSet__< CONSTRAINT1, OTHER_CONSTRAINT1... >,
        ConstraintSet__< CONSTRAINT2 > > {
-      using type =
-         ConstraintSet__< CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2 >;
+      using type
+         = ConstraintSet__< CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2 >;
     };
 
     template < typename CONSTRAINT1,
@@ -184,8 +184,8 @@ namespace gum {
       using first_constraint = CONSTRAINT1;
 
       /// the type of the next constraints
-      using next_constraints =
-         StructuralConstraintSetStatic__< OTHER_CONSTRAINTS... >;
+      using next_constraints
+         = StructuralConstraintSetStatic__< OTHER_CONSTRAINTS... >;
 
       // determines the set of all constraints in the set (included inherited
       // ones)

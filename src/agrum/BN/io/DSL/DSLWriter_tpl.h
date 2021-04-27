@@ -116,8 +116,8 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-    const Sequence< const DiscreteVariable* >& tmp_vars =
-       bn.cpt(id).variablesSequence();
+    const Sequence< const DiscreteVariable* >& tmp_vars
+       = bn.cpt(id).variablesSequence();
 
     for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
       if (i < tmp_vars.size() - 1) oss << ", ";

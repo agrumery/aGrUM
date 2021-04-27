@@ -34,7 +34,7 @@ namespace gum {
     GUM_CONSTRUCTOR(Estimator);
     wtotal_ = (GUM_SCALAR)0.;
     ntotal_ = (Size)0;
-    bn_ = nullptr;
+    bn_     = nullptr;
   }
 
 
@@ -74,12 +74,14 @@ namespace gum {
 
       if (!hardEvidence.contains(*iter)) {
         if (estimator_.exists(v))
-          estimator_[v] = std::vector< GUM_SCALAR >(
-             bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
+          estimator_[v]
+             = std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(),
+                                         (GUM_SCALAR)0.0);
         else
-          estimator_.insert(v,
-                            std::vector< GUM_SCALAR >(
-                               bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
+          estimator_.insert(
+             v,
+             std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(),
+                                       (GUM_SCALAR)0.0));
       }
     }
   }

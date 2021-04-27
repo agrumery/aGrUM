@@ -39,7 +39,7 @@ namespace gum {
       }
     }
 
-    MixedGraph ref_eg = EssentialGraph(ref).mixedGraph();
+    MixedGraph ref_eg  = EssentialGraph(ref).mixedGraph();
     MixedGraph test_eg = EssentialGraph(test).mixedGraph();
 
     this->compare(ref_eg, test_eg);

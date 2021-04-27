@@ -159,7 +159,7 @@ namespace gum {
       DBTranslator4RangeVariable(
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc  = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -173,9 +173,9 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4RangeVariable
        */
-      DBTranslator4RangeVariable(
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+      DBTranslator4RangeVariable(std::size_t max_dico_entries
+                                 = std::numeric_limits< std::size_t >::max(),
+                                 const allocator_type& alloc = allocator_type());
 
       /// default constructor with a range variable as translator
       /** @param var a range variable which will be used for translations.
@@ -203,7 +203,7 @@ namespace gum {
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool  editable_dictionary = false,
          std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc  = allocator_type());
 
       /** @brief default constructor with a range variable as translator
        * but without missing symbols
@@ -225,11 +225,11 @@ namespace gum {
        * the range that is equal to a missing value symbol, the range value will
        * be taken into account in the translations, not the missing value.
        */
-      DBTranslator4RangeVariable(
-         const RangeVariable& var,
-         const bool           editable_dictionary = false,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+      DBTranslator4RangeVariable(const RangeVariable& var,
+                                 const bool           editable_dictionary = false,
+                                 std::size_t          max_dico_entries
+                                 = std::numeric_limits< std::size_t >::max(),
+                                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4RangeVariable(const DBTranslator4RangeVariable< ALLOC >& from);

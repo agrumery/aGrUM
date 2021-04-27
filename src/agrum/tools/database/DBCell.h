@@ -71,7 +71,13 @@ namespace gum {
     class DBCell {
       public:
       /// the set of types possibly taken by the last element read
-      enum class EltType : unsigned char { REAL, INTEGER, STRING, MISSING };
+      enum class EltType : unsigned char
+      {
+        REAL,
+        INTEGER,
+        STRING,
+        MISSING
+      };
 
       // ##########################################################################
       /// @name Constructors / Destructors

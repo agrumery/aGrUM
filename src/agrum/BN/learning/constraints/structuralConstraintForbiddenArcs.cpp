@@ -84,8 +84,8 @@ namespace gum {
        StructuralConstraintForbiddenArcs::operator=(
           StructuralConstraintForbiddenArcs&& from) {
       if (this != &from) {
-        ForbiddenArcs__forbidden_arcs_ =
-           std::move(from.ForbiddenArcs__forbidden_arcs_);
+        ForbiddenArcs__forbidden_arcs_
+           = std::move(from.ForbiddenArcs__forbidden_arcs_);
       }
       return *this;
     }

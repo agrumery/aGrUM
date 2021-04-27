@@ -263,7 +263,7 @@ namespace gum {
     }
 
     for (const auto& elt: factors()) {
-      const auto& key = elt.first;
+      const auto& key    = elt.first;
       const auto& factor = *elt.second;
 
       NodeSet fromkey;

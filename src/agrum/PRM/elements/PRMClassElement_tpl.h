@@ -75,7 +75,7 @@ namespace gum {
            PRMClassElement< GUM_SCALAR >::cast(const PRMType& t) const {
       if (type().isSubTypeOf(t)) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST()
-               + name();
+             + name();
       } else {
         GUM_ERROR(OperationNotAllowed, "illegal cast");
       }

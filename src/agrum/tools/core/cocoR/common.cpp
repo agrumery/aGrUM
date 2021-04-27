@@ -59,11 +59,11 @@ namespace gum {
 
   wchar_t* coco_string_create(const wchar_t* value, int startIndex) {
     std::size_t valueLen = 0;
-    std::size_t len = 0;
+    std::size_t len      = 0;
 
     if (value) {
       valueLen = wcslen(value);
-      len = valueLen - startIndex;
+      len      = valueLen - startIndex;
     }
 
     return coco_string_create(value, startIndex, (int)len);
@@ -153,9 +153,9 @@ namespace gum {
   wchar_t* coco_string_create_append(const wchar_t* target,
                                      const wchar_t  appendix) {
     int      targetLen = coco_string_length(target);
-    wchar_t* data = new wchar_t[targetLen + 2];
+    wchar_t* data      = new wchar_t[targetLen + 2];
     wcsncpy(data, target, targetLen);
-    data[targetLen] = appendix;
+    data[targetLen]     = appendix;
     data[targetLen + 1] = 0;
     return data;
   }
@@ -173,7 +173,7 @@ namespace gum {
 
   bool coco_string_endswith(const wchar_t* data, const wchar_t* end) {
     std::size_t dataLen = wcslen(data);
-    std::size_t endLen = wcslen(end);
+    std::size_t endLen  = wcslen(end);
     return (endLen <= dataLen) && (wcscmp(data + dataLen - endLen, end) == 0);
   }
 

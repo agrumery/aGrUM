@@ -66,8 +66,8 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
-    const MultiDimFunctionGraph< GUM_SCALAR >* table =
-       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(ttable);
+    const MultiDimFunctionGraph< GUM_SCALAR >* table
+       = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(ttable);
 #  endif
 
     MultiDimFunctionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE,

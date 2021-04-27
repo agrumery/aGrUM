@@ -82,9 +82,9 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table__ = from.table__;
-      tableSet__ = from.tableSet__;
-      separator__ = from.separator__;
+      table__                                  = from.table__;
+      tableSet__                               = from.tableSet__;
+      separator__                              = from.separator__;
 
       if (args__) {
         args__->clear();
@@ -101,8 +101,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
-    const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
     return ((table__ == real_op.table__) && (tableSet__ == real_op.tableSet__)
             && (separator__ == real_op.separator__));
   }
@@ -113,8 +113,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
-    const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >& >(op);
     return ((table__ != real_op.table__) || (tableSet__ != real_op.tableSet__)
             || (separator__ != real_op.separator__));
   }
@@ -171,8 +171,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+      __debug__::inc_deletion__("Sequence",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&empty_seq);
       __debug__::inc_deletion__("SequenceImplementation",
                                 __FILE__,
                                 __LINE__,

@@ -75,7 +75,7 @@ namespace gum {
   INLINE NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::
      addInternalNode(const DiscreteVariable* var) {
     InternalNode* newNodeStruct = new InternalNode(var);
-    NodeId        nid = functionGraph__->model__.addNode();
+    NodeId        nid           = functionGraph__->model__.addNode();
     functionGraph__->internalNodeMap__.insert(nid, newNodeStruct);
     functionGraph__->var2NodeIdMap__[var]->addLink(nid);
 
@@ -86,7 +86,7 @@ namespace gum {
   INLINE NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::
      addInternalNode_(const DiscreteVariable* var, NodeId* sons) {
     InternalNode* newNodeStruct = new InternalNode(var, sons);
-    NodeId        nid = functionGraph__->model__.addNode();
+    NodeId        nid           = functionGraph__->model__.addNode();
     functionGraph__->internalNodeMap__.insert(nid, newNodeStruct);
     functionGraph__->var2NodeIdMap__[var]->addLink(nid);
     for (Idx i = 0; i < newNodeStruct->nbSons(); i++)
@@ -111,7 +111,9 @@ namespace gum {
   // Erases a node from the diagram.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::eraseNode(
-     NodeId eraseId, NodeId replacingId, bool updateParents) {
+     NodeId eraseId,
+     NodeId replacingId,
+     bool   updateParents) {
     if (!functionGraph__->model__.exists(eraseId))
       GUM_ERROR(NotFound, "Node : " << eraseId << " doesn't exists in the graph")
 
@@ -119,8 +121,8 @@ namespace gum {
       for (auto iterVar = functionGraph__->variablesSequence().begin();
            iterVar != functionGraph__->variablesSequence().end();
            ++iterVar) {
-        Link< NodeId >* nodeIter =
-           functionGraph__->var2NodeIdMap__[*iterVar]->list();
+        Link< NodeId >* nodeIter
+           = functionGraph__->var2NodeIdMap__[*iterVar]->list();
         while (nodeIter != nullptr) {
           for (Idx modality = 0; modality < (*iterVar)->domainSize(); ++modality)
             if (functionGraph__->node(nodeIter->element())->son(modality)
@@ -138,8 +140,9 @@ namespace gum {
       if (updateParents) {
         Link< Parent >* picle = eraseNode->parents();
         while (picle != nullptr) {
-          setSon(
-             picle->element().parentId, picle->element().modality, replacingId);
+          setSon(picle->element().parentId,
+                 picle->element().modality,
+                 replacingId);
           picle = picle->nextLink();
         }
       }
@@ -161,7 +164,9 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
      MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::setSon(
-        const NodeId& node, const Idx& modality, const NodeId& sonNode) {
+        const NodeId& node,
+        const Idx&    modality,
+        const NodeId& sonNode) {
     // Ensuring that both nodes exists in the graph
     if (!functionGraph__->model__.exists(node))
       GUM_ERROR(NotFound, "Node : " << node << " doesn't exists in the graph")
@@ -212,12 +217,12 @@ namespace gum {
     // Ordering variables by number of nodes asssociated to them
     Sequence< const DiscreteVariable* >       siftingSeq;
     HashTable< const DiscreteVariable*, Idx > varLvlSize;
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            functionGraph__->variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = functionGraph__->variablesSequence().beginSafe();
          varIter != functionGraph__->variablesSequence().endSafe();
          ++varIter) {
-      const Link< NodeId >* curElem =
-         functionGraph__->var2NodeIdMap__[*varIter]->list();
+      const Link< NodeId >* curElem
+         = functionGraph__->var2NodeIdMap__[*varIter]->list();
       Idx nbElem = 0;
       for (; curElem != nullptr; nbElem++, curElem = curElem->nextLink())
         ;
@@ -231,14 +236,14 @@ namespace gum {
     }
 
     // Sifting var par var
-    for (SequenceIteratorSafe< const DiscreteVariable* > sifIter =
-            siftingSeq.beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > sifIter
+         = siftingSeq.beginSafe();
          sifIter != siftingSeq.endSafe();
          ++sifIter) {
       // Initialization
       Idx currentPos = functionGraph__->variablesSequence().pos(*sifIter);
-      Idx bestSize = functionGraph__->realSize();
-      Idx bestPos = currentPos;
+      Idx bestSize   = functionGraph__->realSize();
+      Idx bestPos    = currentPos;
 
 
       // Sifting towards upper places
@@ -246,7 +251,7 @@ namespace gum {
         moveTo(*sifIter, currentPos - 1);
         currentPos = functionGraph__->variablesSequence().pos(*sifIter);
         if (functionGraph__->realSize() < bestSize) {
-          bestPos = currentPos;
+          bestPos  = currentPos;
           bestSize = functionGraph__->realSize();
         }
       }
@@ -256,7 +261,7 @@ namespace gum {
         moveTo(*sifIter, currentPos + 1);
         currentPos = functionGraph__->variablesSequence().pos(*sifIter);
         if (functionGraph__->realSize() < bestSize) {
-          bestPos = currentPos;
+          bestPos  = currentPos;
           bestSize = functionGraph__->realSize();
         }
       }
@@ -268,15 +273,16 @@ namespace gum {
   // Changes var position in variable sequence
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::moveTo(
-     const DiscreteVariable* movedVar, Idx desiredPos) {
+     const DiscreteVariable* movedVar,
+     Idx                     desiredPos) {
     // First we determine the position of both variable
     // We also determine which one precede the other
     if (functionGraph__->variablesSequence().pos(movedVar) > desiredPos)
       for (Idx currentPos = functionGraph__->variablesSequence().pos(movedVar);
            currentPos != desiredPos;
            currentPos--) {
-        const DiscreteVariable* preVar =
-           functionGraph__->variablesSequence().atPos(currentPos - 1);
+        const DiscreteVariable* preVar
+           = functionGraph__->variablesSequence().atPos(currentPos - 1);
         if (functionGraph__->var2NodeIdMap__[preVar]->list()
             && functionGraph__->var2NodeIdMap__[movedVar]->list())
           adjacentSwap__(preVar, movedVar);
@@ -286,8 +292,8 @@ namespace gum {
       for (Idx currentPos = functionGraph__->variablesSequence().pos(movedVar);
            currentPos != desiredPos;
            currentPos++) {
-        const DiscreteVariable* suiVar =
-           functionGraph__->variablesSequence().atPos(currentPos + 1);
+        const DiscreteVariable* suiVar
+           = functionGraph__->variablesSequence().atPos(currentPos + 1);
         if (functionGraph__->var2NodeIdMap__[suiVar]->list()
             && functionGraph__->var2NodeIdMap__[movedVar]->list())
           adjacentSwap__(movedVar, suiVar);
@@ -299,24 +305,24 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::
      adjacentSwap__(const DiscreteVariable* x, const DiscreteVariable* y) {
-    LinkedList< NodeId >* oldxNodes = functionGraph__->var2NodeIdMap__[x];
+    LinkedList< NodeId >* oldxNodes     = functionGraph__->var2NodeIdMap__[x];
     functionGraph__->var2NodeIdMap__[x] = new LinkedList< NodeId >();
-    LinkedList< NodeId >* oldyNodes = functionGraph__->var2NodeIdMap__[y];
+    LinkedList< NodeId >* oldyNodes     = functionGraph__->var2NodeIdMap__[y];
     functionGraph__->var2NodeIdMap__[y] = new LinkedList< NodeId >();
 
 
-    InternalNode* currentOldXNode = nullptr;
+    InternalNode* currentOldXNode     = nullptr;
     NodeId*       currentNewXNodeSons = nullptr;
-    Idx           indx = 0;
+    Idx           indx                = 0;
 
     NodeId* currentNewYNodeSons = nullptr;
-    NodeId  currentNewYNodeId = 0;
-    Idx     indy = 0;
+    NodeId  currentNewYNodeId   = 0;
+    Idx     indy                = 0;
 
     while (oldxNodes->list()) {
       // Recuperating a node associated to variables x
-      currentOldXNode =
-         functionGraph__->internalNodeMap__[oldxNodes->list()->element()];
+      currentOldXNode
+         = functionGraph__->internalNodeMap__[oldxNodes->list()->element()];
 
       // Creating a new node associated to variable y
       currentNewYNodeSons = InternalNode::allocateNodeSons(y);
@@ -333,8 +339,8 @@ namespace gum {
           currentNewXNodeSons[indx] = currentOldXNode->son(indx);
           if (!functionGraph__->isTerminalNode(currentOldXNode->son(indx))
               && functionGraph__->node(currentOldXNode->son(indx))->nodeVar() == y)
-            currentNewXNodeSons[indx] =
-               functionGraph__->node(currentOldXNode->son(indx))->son(indy);
+            currentNewXNodeSons[indx]
+               = functionGraph__->node(currentOldXNode->son(indx))->son(indy);
         }
 
         // Inserting the new node bound to x
@@ -407,7 +413,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
      MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::migrateNode_(
-        const NodeId& origin, const NodeId& destination) {
+        const NodeId& origin,
+        const NodeId& destination) {
     InternalNode* org = functionGraph__->internalNodeMap__[origin];
     // Upating parents after the change
     Link< Parent >* picle = org->parents();
@@ -454,7 +461,7 @@ namespace gum {
   INLINE NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::
      checkIsomorphism__(const DiscreteVariable* var, NodeId* sons) {
     const InternalNode* nody = nullptr;
-    Idx                 i = 0;
+    Idx                 i    = 0;
 
     // Check abscence of identical node
     Link< NodeId >* currentElem = functionGraph__->var2NodeIdMap__[var]->list();
@@ -476,7 +483,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE bool
      MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::isRedundant__(
-        const DiscreteVariable* var, NodeId* sons) {
+        const DiscreteVariable* var,
+        NodeId*                 sons) {
     for (Idx m = 1; m < var->domainSize(); m++)
       if (sons[m] != sons[0]) return false;
     return true;
@@ -487,19 +495,19 @@ namespace gum {
   INLINE void
      MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::reduce_() {
     Link< NodeId >* currentNodeId = nullptr;
-    Link< NodeId >* nextNodeId = nullptr;
-    InternalNode*   currentNode = nullptr;
-    bool            theSame = true;
+    Link< NodeId >* nextNodeId    = nullptr;
+    InternalNode*   currentNode   = nullptr;
+    bool            theSame       = true;
     Idx             currentInd;
 
-    for (SequenceIterator< const DiscreteVariable* > varIter =
-            functionGraph__->variablesSequence().rbegin();
+    for (SequenceIterator< const DiscreteVariable* > varIter
+         = functionGraph__->variablesSequence().rbegin();
          varIter != functionGraph__->variablesSequence().rend();
          --varIter) {
       currentNodeId = functionGraph__->var2NodeIdMap__[*varIter]->list();
 
       while (currentNodeId != nullptr) {
-        nextNodeId = currentNodeId->nextLink();
+        nextNodeId  = currentNodeId->nextLink();
         currentNode = functionGraph__->internalNodeMap__[currentNodeId->element()];
 
         // First isomorphism to handle is the one where all node children are
@@ -524,12 +532,12 @@ namespace gum {
         // variable and same children
         if (nextNodeId) {
           Link< NodeId >* anotherNodeId = currentNodeId->nextLink();
-          InternalNode*   anotherNode = nullptr;
-          Idx             modality = 0;
+          InternalNode*   anotherNode   = nullptr;
+          Idx             modality      = 0;
           while (anotherNodeId->nextLink() != nullptr) {
             nextNodeId = anotherNodeId->nextLink();
-            anotherNode =
-               functionGraph__->internalNodeMap__[anotherNodeId->element()];
+            anotherNode
+               = functionGraph__->internalNodeMap__[anotherNodeId->element()];
 
             // Check on the other sons
             for (modality = 0; modality < (*varIter)->domainSize(); ++modality) {

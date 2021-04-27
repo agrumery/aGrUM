@@ -478,8 +478,9 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori(
-         database, parser, nodeId2columns);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(database,
+                                                            parser,
+                                                            nodeId2columns);
 
       TS_ASSERT(apriori.weight() == 1.0);
       apriori.setWeight(2.0 * db_size);

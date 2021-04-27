@@ -50,7 +50,8 @@ namespace gum {
    * There is an exception for the delegated CPT definition methods which do
    * not changes the state of the factory.
    */
-  enum class FMDPfactory_state : char {
+  enum class FMDPfactory_state : char
+  {
     NONE,
     VARIABLE,
     ACTION,
@@ -177,7 +178,8 @@ namespace gum {
 
     /// Tells the factory to add a transition table to the current fmdp.
     virtual void addTransition(const std::string&        var,
-                               const MultiDimAdressable* transition) = 0;
+                               const MultiDimAdressable* transition)
+       = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated

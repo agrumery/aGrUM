@@ -42,8 +42,10 @@ namespace gum_tests {
         auto bn = gum::BayesNet< double >("Asia");
         // Variables are added by copy to the BayesNet, so you can use a single
         // gum::LabelizedVariable to add all varaibles with the same domain
-        auto var = gum::LabelizedVariable(
-           "template", "A variable of the Asia Bayesian network", 0);
+        auto var
+           = gum::LabelizedVariable("template",
+                                    "A variable of the Asia Bayesian network",
+                                    0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -124,7 +126,7 @@ namespace gum_tests {
 
     void testBayesNetFactory() {
       try {
-        auto asia = gum::BayesNet< double >();
+        auto asia    = gum::BayesNet< double >();
         auto factory = gum::BayesNetFactory< double >(&asia);
         // Visit to Asia
         factory.startVariableDeclaration();
@@ -227,15 +229,16 @@ namespace gum_tests {
         // CPT of Visit To Asia
         factory.startRawProbabilityDeclaration("Visit To Asia");
         auto variables = std::vector< std::string >{"Visit To Asia"};
-        auto values = std::vector< float >{0.01f, 0.99f};
+        auto values    = std::vector< float >{0.01f, 0.99f};
         factory.rawConditionalTable(variables, values);
         factory.endRawProbabilityDeclaration();
 
         // CPT of Tuberculosis or Cancer
         factory.startRawProbabilityDeclaration("Tuberculosis or Cancer");
-        variables = std::vector< std::string >{
-           "Tuberculosis or Cancer", "Has Tuberculosis", "Has Lung Cancer"};
-        values = std::vector< float >   // clang-format off
+        variables = std::vector< std::string >{"Tuberculosis or Cancer",
+                                               "Has Tuberculosis",
+                                               "Has Lung Cancer"};
+        values    = std::vector< float >   // clang-format off
           //      True     ||    False        => Has Lung Cancer
           //  True | False || True | False    => Has Tuberculosis
           {0.00f,0.00f,0.00f,1.00f,   // False
@@ -267,8 +270,10 @@ namespace gum_tests {
       auto asia = gum::BayesNet< double >("Asia");
       // Constructing the BayesNet...
       {
-        auto var = gum::LabelizedVariable(
-           "template", "A variable of the Asia Bayesian network", 0);
+        auto var
+           = gum::LabelizedVariable("template",
+                                    "A variable of the Asia Bayesian network",
+                                    0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -324,7 +329,7 @@ namespace gum_tests {
         // To prevent warning for unused variable
         gum::LazyPropagation< double > inference(&asia);
         auto                           id = asia.idFromName("Has Lung Cancer");
-        const auto& marginal = inference.posterior("Has Lung Cancer");
+        const auto& marginal              = inference.posterior("Has Lung Cancer");
         TS_ASSERT_EQUALS(marginal.domainSize(), gum::Size(2));
 
 
@@ -343,7 +348,7 @@ namespace gum_tests {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // One implementation of the gum::BNReader class
-        std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
+        std::string file   = GET_RESSOURCES_PATH("bif/asia.bif");
         auto        reader = gum::BIFReader< double >(&asia, file);
         try {
           reader.proceed();
@@ -357,8 +362,10 @@ namespace gum_tests {
         auto asia = gum::BayesNet< double >("Asia");
         // Constructing BayesNet...
         {
-          auto var = gum::LabelizedVariable(
-             "template", "A variable of the Asia Bayesian network", 0);
+          auto var
+             = gum::LabelizedVariable("template",
+                                      "A variable of the Asia Bayesian network",
+                                      0);
           var.addLabel("True");
           var.addLabel("False");
 

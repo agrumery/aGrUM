@@ -83,7 +83,7 @@ namespace gum {
                       int64_t&          denominator,
                       const GUM_SCALAR& number,
                       const int64_t&    den_max = 1000000L,
-                      const GUM_SCALAR& zero = 1e-6);
+                      const GUM_SCALAR& zero    = 1e-6);
 
     /**
      * @brief Find the first best rational approximation.

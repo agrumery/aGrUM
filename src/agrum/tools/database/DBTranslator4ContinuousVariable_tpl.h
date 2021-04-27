@@ -90,8 +90,10 @@ namespace gum {
        const bool fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              fit_range,
+                              1,
+                              alloc),
         variable__("var", ""), fit_range__(fit_range) {
       // if fit_range is true, we shall be able to update the ranges of
       // the continuous variable. To indicate that we did not encountered any
@@ -140,7 +142,7 @@ namespace gum {
           } else
             status_float_missing_symbols__.insert(*iter, false);
         } else if (!non_float_symbol_found) {
-          non_float_symbol_found = true;
+          non_float_symbol_found    = true;
           nonfloat_missing_symbol__ = *iter;
         }
       }
@@ -160,8 +162,10 @@ namespace gum {
        const bool                              fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              fit_range,
+                              1,
+                              alloc),
         variable__(var.name(), var.description()), fit_range__(fit_range) {
       // get the bounds of the range variable
       const float lower_bound = float(var.lowerBound());
@@ -210,7 +214,7 @@ namespace gum {
           } else
             status_float_missing_symbols__.insert(*iter, false);
         } else if (!non_float_symbol_found) {
-          non_float_symbol_found = true;
+          non_float_symbol_found    = true;
           nonfloat_missing_symbol__ = *iter;
         }
       }
@@ -229,8 +233,10 @@ namespace gum {
        const bool                 fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
           alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              fit_range,
+                              1,
+                              alloc),
         variable__(var.name(), var.description()), fit_range__(fit_range) {
       // get the bounds of the range variable
       const float lower_bound = var.lowerBoundAsDouble();
@@ -283,7 +289,7 @@ namespace gum {
         nonfloat_missing_symbol__(std::move(from.nonfloat_missing_symbol__)),
         fit_range__(from.fit_range__) {
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = from.real_variable__;
+      real_variable__      = from.real_variable__;
       from.real_variable__ = nullptr;
 
       GUM_CONS_MOV(DBTranslator4ContinuousVariable);
@@ -341,10 +347,10 @@ namespace gum {
           const DBTranslator4ContinuousVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        variable__ = from.variable__;
+        variable__                     = from.variable__;
         status_float_missing_symbols__ = from.status_float_missing_symbols__;
-        nonfloat_missing_symbol__ = from.nonfloat_missing_symbol__;
-        fit_range__ = from.fit_range__;
+        nonfloat_missing_symbol__      = from.nonfloat_missing_symbol__;
+        fit_range__                    = from.fit_range__;
 
         if (real_variable__ != nullptr) delete real_variable__;
         real_variable__ = from.real_variable__->clone();
@@ -361,14 +367,14 @@ namespace gum {
           DBTranslator4ContinuousVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        variable__ = std::move(from.variable__);
-        status_float_missing_symbols__ =
-           std::move(from.status_float_missing_symbols__);
+        variable__                     = std::move(from.variable__);
+        status_float_missing_symbols__
+           = std::move(from.status_float_missing_symbols__);
         nonfloat_missing_symbol__ = std::move(from.nonfloat_missing_symbol__);
-        fit_range__ = from.fit_range__;
+        fit_range__               = from.fit_range__;
 
         if (real_variable__ != nullptr) delete real_variable__;
-        real_variable__ = from.real_variable__;
+        real_variable__      = from.real_variable__;
         from.real_variable__ = nullptr;
       }
 

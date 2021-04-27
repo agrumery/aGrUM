@@ -51,10 +51,12 @@ namespace gum {
     try {
       // try to find func(ttable,inst_vars) in the register
       func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get(
-         "i", ttable.name());
+         "i",
+         ttable.name());
     } catch (NotFound&) {
       func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get(
-         "i", ttable.basename());
+         "i",
+         ttable.basename());
     }
 
     // perform the partial instantiation

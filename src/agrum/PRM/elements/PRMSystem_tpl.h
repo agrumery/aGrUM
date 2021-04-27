@@ -166,8 +166,8 @@ namespace gum {
           break;
         }
         case VarType::Discretized: {
-          const auto d =
-             static_cast< const DiscretizedVariable< GUM_SCALAR >& >(agg_var);
+          const auto d
+             = static_cast< const DiscretizedVariable< GUM_SCALAR >& >(agg_var);
           for (Idx i = 0; i < d.domainSize(); ++i) {
             factory.addTick(d.tick(i));
           }
@@ -184,8 +184,8 @@ namespace gum {
           break;
       }
 
-      const PRMAggregate< GUM_SCALAR >& agg =
-         static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);
+      const PRMAggregate< GUM_SCALAR >& agg
+         = static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);
 
       switch (agg.agg_type()) {
         case PRMAggregate< GUM_SCALAR >::AggregateType::MIN: {
@@ -278,11 +278,11 @@ namespace gum {
             }
 
             case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
-              std::string parent_name =
-                 static_cast< const PRMSlotChain< GUM_SCALAR >& >(
-                    instance.type().get(par))
-                    .lastElt()
-                    .safeName();
+              std::string parent_name
+                 = static_cast< const PRMSlotChain< GUM_SCALAR >& >(
+                      instance.type().get(par))
+                      .lastElt()
+                      .safeName();
 
               try {
                 for (const auto ref: instance.getInstances(par)) {
@@ -339,8 +339,8 @@ namespace gum {
 
           case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
             std::stringstream                 parent_name;
-            const PRMSlotChain< GUM_SCALAR >& sc =
-               static_cast< const PRMSlotChain< GUM_SCALAR >& >(
+            const PRMSlotChain< GUM_SCALAR >& sc
+               = static_cast< const PRMSlotChain< GUM_SCALAR >& >(
                   instance.type().get(parent));
             parent_name << instance.getInstance(sc.id()).name() << "."
                         << sc.lastElt().safeName();
@@ -536,7 +536,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMSystem< GUM_SCALAR >::addArray(
-       const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type) {
+       const std::string&                      array,
+       PRMClassElementContainer< GUM_SCALAR >& type) {
       if (arrayMap_.exists(array)) {
         GUM_ERROR(DuplicateElement,
                   "an array '" << array << "' is already in this System");
@@ -544,7 +545,8 @@ namespace gum {
 
       arrayMap_.insert(array,
                        PRMSystem< GUM_SCALAR >::model_pair(
-                          &type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
+                          &type,
+                          new Sequence< PRMInstance< GUM_SCALAR >* >()));
     }
 
     template < typename GUM_SCALAR >

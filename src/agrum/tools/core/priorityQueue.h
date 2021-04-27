@@ -92,13 +92,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -459,8 +459,9 @@ namespace gum {
     std::vector< std::pair< Priority, const Val* >, HeapAllocator > heap__;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > indices__{
-       HashTableConst::default_size, true, true};
+    HashTable< Val, Size, IndexAllocator > indices__{HashTableConst::default_size,
+                                                     true,
+                                                     true};
 
     /// The number of elements in the heap.
     Size nb_elements__{0};
@@ -507,13 +508,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -874,8 +875,9 @@ namespace gum {
     std::vector< std::pair< Priority, Val >, HeapAllocator > heap__;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > indices__{
-       HashTableConst::default_size, true, true};
+    HashTable< Val, Size, IndexAllocator > indices__{HashTableConst::default_size,
+                                                     true,
+                                                     true};
 
     /// The number of elements in the heap.
     Size nb_elements__{0};
@@ -954,8 +956,8 @@ namespace gum {
    */
   template < typename Val,
              typename Priority = int,
-             typename Cmp = std::less< Priority >,
-             typename Alloc = std::allocator< Val > >
+             typename Cmp      = std::less< Priority >,
+             typename Alloc    = std::allocator< Val > >
   class PriorityQueue:
       public PriorityQueueImplementation< Val,
                                           Priority,
@@ -965,21 +967,21 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
-    using Implementation =
-       PriorityQueueImplementation< Val,
-                                    Priority,
-                                    Cmp,
-                                    Alloc,
-                                    std::is_scalar< Val >::value >;
+    using Implementation
+       = PriorityQueueImplementation< Val,
+                                      Priority,
+                                      Cmp,
+                                      Alloc,
+                                      std::is_scalar< Val >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -995,7 +997,7 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit PriorityQueue(Cmp  compare = Cmp(),
+    explicit PriorityQueue(Cmp  compare  = Cmp(),
                            Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**

@@ -34,7 +34,7 @@ namespace gum {
                                                   const std::string& filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
-    bn__ = bn;
+    bn__       = bn;
     filePath__ = filePath;
   }
 
@@ -119,11 +119,11 @@ namespace gum {
 
       // Getting variable name
       ticpp::Element* varNameElement = currentVar->FirstChildElement("NAME");
-      std::string     varName = varNameElement->GetTextOrDefault("");
+      std::string     varName        = varNameElement->GetTextOrDefault("");
 
       // Getting variable description
       ticpp::Element* varDescrElement = currentVar->FirstChildElement("PROPERTY");
-      std::string     varDescription = varDescrElement->GetTextOrDefault("");
+      std::string     varDescription  = varDescrElement->GetTextOrDefault("");
 
       // Instanciation de la variable
       auto newVar = new LabelizedVariable(varName, varDescription, 0);
@@ -141,8 +141,8 @@ namespace gum {
       delete (newVar);
 
       // Emitting progress.
-      std::string status =
-         "Network found. Now proceedind variables instanciation...";
+      std::string status
+         = "Network found. Now proceedind variables instanciation...";
       int progress = (int)((float)nbIte / (float)nbVar * 45) + 10;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;
@@ -169,8 +169,8 @@ namespace gum {
       ticpp::Element* currentVar = definitionIte.Get();
 
       // Considered Node
-      std::string currentVarName =
-         currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
+      std::string currentVarName
+         = currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
       NodeId currentVarId = bn__->idFromName(currentVarName);
 
       // Get Node's parents
@@ -180,7 +180,7 @@ namespace gum {
       for (givenIte = givenIte.begin(currentVar); givenIte != givenIte.end();
            ++givenIte) {
         std::string parentNode = givenIte->GetTextOrDefault("");
-        NodeId      parentId = bn__->idFromName(parentNode);
+        NodeId      parentId   = bn__->idFromName(parentNode);
         parentList.pushBack(parentId);
       }
 
@@ -206,8 +206,8 @@ namespace gum {
       bn__->cpt(currentVarId).fillWith(tablevector);
 
       // Emitting progress.
-      std::string status =
-         "All variables have been instancied. Now filling up diagram...";
+      std::string status
+         = "All variables have been instancied. Now filling up diagram...";
       int progress = (int)((float)nbIte / (float)nbDef * 45) + 55;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;

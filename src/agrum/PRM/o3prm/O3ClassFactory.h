@@ -123,7 +123,8 @@ namespace gum {
         bool checkImplementation__(O3Label& o3_type, const PRMType& type);
 
         bool checkImplementation__(
-           O3Label& o3_type, const PRMClassElementContainer< GUM_SCALAR >& type);
+           O3Label&                                      o3_type,
+           const PRMClassElementContainer< GUM_SCALAR >& type);
         /// @}
 
         /// @name Checking and Adding Paramteters

@@ -45,8 +45,8 @@ namespace gum {
       value__(value) {
     GUM_CONSTRUCTOR(NodeDatabase);
 
-    for (SetIteratorSafe< const DiscreteVariable* > varIter =
-            attrSet->cbeginSafe();
+    for (SetIteratorSafe< const DiscreteVariable* > varIter
+         = attrSet->cbeginSafe();
          varIter != attrSet->cendSafe();
          ++varIter)
       attrTable__.insert(*varIter, new TestPolicy< ValueType >());
@@ -89,7 +89,8 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   void NodeDatabase< AttributeSelection, isScalar >::addObservation__(
-     const Observation* newObs, Int2Type< true >) {
+     const Observation* newObs,
+     Int2Type< true >) {
     for (auto varIter = attrTable__.cbeginSafe();
          varIter != attrTable__.cendSafe();
          ++varIter)
@@ -104,7 +105,8 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   void NodeDatabase< AttributeSelection, isScalar >::addObservation__(
-     const Observation* newObs, Int2Type< false >) {
+     const Observation* newObs,
+     Int2Type< false >) {
     for (auto varIter = attrTable__.cbeginSafe();
          varIter != attrTable__.cendSafe();
          ++varIter)

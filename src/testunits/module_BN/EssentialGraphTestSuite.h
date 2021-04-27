@@ -50,8 +50,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 0u);
     }
     void testCaseD() {
-      auto bn =
-         gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+      auto bn
+         = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 4u);
@@ -85,8 +85,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u);
     }
     void testSkeleton() {
-      auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
-      auto eg = gum::EssentialGraph(bn);
+      auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
+      auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
       TS_ASSERT_EQUALS(skel.size(), 5u);
@@ -94,8 +94,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 3u);
     }
     void testNonRegression1() {
-      auto bn = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
-      auto eg = gum::EssentialGraph(bn);
+      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
+      auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
       TS_ASSERT_EQUALS(skel.size(), 3u);
@@ -103,8 +103,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 0u);
     }
     void testNonRegression2() {
-      auto bn = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
-      auto eg = gum::EssentialGraph(bn);
+      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
+      auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
       TS_ASSERT_EQUALS(skel.size(), 4u);
@@ -112,8 +112,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 4u);
     }
     void testNonRegression3() {
-      auto bn = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
-      auto eg = gum::EssentialGraph(bn);
+      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
+      auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
       TS_ASSERT_EQUALS(skel.size(), 6u);
       TS_ASSERT_EQUALS(eg.sizeEdges(), 2u);

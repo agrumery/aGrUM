@@ -62,7 +62,7 @@ namespace gum {
         if (DBCell::isInteger(symbol)) {
           status_int_missing_symbols__.insert(symbol, false);
         } else if (!non_int_symbol_found) {
-          non_int_symbol_found = true;
+          non_int_symbol_found    = true;
           nonint_missing_symbol__ = symbol;
         }
       }
@@ -76,8 +76,10 @@ namespace gum {
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
        std::size_t max_dico_entries,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(
-           DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              true,
+                              max_dico_entries,
+                              alloc),
         variable__("var", "", 1, 0) {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
@@ -143,7 +145,7 @@ namespace gum {
         if (DBCell::isInteger(symbol)) {
           status_int_missing_symbols__.insert(symbol, false);
         } else if (!non_int_symbol_found) {
-          non_int_symbol_found = true;
+          non_int_symbol_found    = true;
           nonint_missing_symbol__ = symbol;
         }
       }
@@ -271,11 +273,11 @@ namespace gum {
        DBTranslator4RangeVariable< ALLOC >::operator=(
           const DBTranslator4RangeVariable< ALLOC >& from) {
       if (this != &from) {
-        DBTranslator< ALLOC >::operator=(from);
-        variable__ = from.variable__;
-        status_int_missing_symbols__ = from.status_int_missing_symbols__;
+        DBTranslator< ALLOC >::operator  =(from);
+        variable__                       = from.variable__;
+        status_int_missing_symbols__     = from.status_int_missing_symbols__;
         translated_int_missing_symbols__ = from.translated_int_missing_symbols__;
-        nonint_missing_symbol__ = from.nonint_missing_symbol__;
+        nonint_missing_symbol__          = from.nonint_missing_symbol__;
       }
 
       return *this;
@@ -289,11 +291,11 @@ namespace gum {
           DBTranslator4RangeVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        variable__ = std::move(from.variable__);
-        status_int_missing_symbols__ =
-           std::move(from.status_int_missing_symbols__);
-        translated_int_missing_symbols__ =
-           std::move(from.translated_int_missing_symbols__);
+        variable__                     = std::move(from.variable__);
+        status_int_missing_symbols__
+           = std::move(from.status_int_missing_symbols__);
+        translated_int_missing_symbols__
+           = std::move(from.translated_int_missing_symbols__);
         nonint_missing_symbol__ = std::move(from.nonint_missing_symbol__);
       }
 
@@ -489,7 +491,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     bool DBTranslator4RangeVariable< ALLOC >::needsReordering() const {
       // if the variable contains only numbers, they should be increasing
-      const auto& labels = variable__.labels();
+      const auto& labels      = variable__.labels();
       std::size_t last_number = std::numeric_limits< std::size_t >::lowest();
       std::size_t number;
       for (const auto& label: labels) {
@@ -510,7 +512,7 @@ namespace gum {
            DBTranslator4RangeVariable< ALLOC >::reorder() {
       // assign to each label the index it had before reordering
       const auto&       labels = variable__.labels();
-      const std::size_t size = labels.size();
+      const std::size_t size   = labels.size();
       std::vector< std::pair< std::size_t, std::string >,
                    ALLOC< std::pair< std::size_t, std::string > > >
          xlabels;

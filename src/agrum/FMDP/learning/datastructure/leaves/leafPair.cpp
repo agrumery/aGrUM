@@ -53,19 +53,17 @@ namespace gum {
     double scaleFactor2 = l2__->total() / (l1__->total() + l2__->total());
     for (Idx moda = 0; moda < l1__->nbModa(); ++moda) {
       if (l1__->effectif(moda)) {
-        double add =
-           l1__->effectif(moda)
-           * std::log(
-              l1__->effectif(moda)
-              / (scaleFactor1 * (l1__->effectif(moda) + l2__->effectif(moda))));
+        double add = l1__->effectif(moda)
+                   * std::log(l1__->effectif(moda)
+                              / (scaleFactor1
+                                 * (l1__->effectif(moda) + l2__->effectif(moda))));
         likelyhood1__ += add;
       }
       if (l2__->effectif(moda)) {
-        double add =
-           l2__->effectif(moda)
-           * std::log(
-              l2__->effectif(moda)
-              / (scaleFactor2 * (l1__->effectif(moda) + l2__->effectif(moda))));
+        double add = l2__->effectif(moda)
+                   * std::log(l2__->effectif(moda)
+                              / (scaleFactor2
+                                 * (l1__->effectif(moda) + l2__->effectif(moda))));
         likelyhood2__ += add;
       }
     }
@@ -77,9 +75,9 @@ namespace gum {
   double LeafPair::likelyhood() {
     //      updateLikelyhood();
     return 1
-           - ChiSquare::probaChi2(likelyhood1__ > likelyhood2__ ? likelyhood1__
-                                                                : likelyhood2__,
-                                  (l1__->nbModa() - 1));
+         - ChiSquare::probaChi2(likelyhood1__ > likelyhood2__ ? likelyhood1__
+                                                              : likelyhood2__,
+                                (l1__->nbModa() - 1));
   }
 
   std::string LeafPair::toString() {

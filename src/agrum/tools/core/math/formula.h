@@ -59,10 +59,26 @@ namespace gum {
   class FormulaPart {
     public:
     /// The tokens constituting a formula.
-    enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
+    enum token_type
+    {
+      NUMBER,
+      OPERATOR,
+      PARENTHESIS,
+      NIL,
+      FUNCTION,
+      ARG_SEP
+    };
 
     /// The functions allowed in a formula.
-    enum token_function { exp, log, ln, pow, sqrt, nil };
+    enum token_function
+    {
+      exp,
+      log,
+      ln,
+      pow,
+      sqrt,
+      nil
+    };
 
     /// The token_type stored by this gum::FormulaPart.
     token_type type;

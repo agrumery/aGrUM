@@ -79,22 +79,22 @@ namespace gum {
           rCoeffs__(nullptr) {
         if (copyLeft) {
           lCoeffs__ = new HashTable< LpCol, double >(*expr.lCoeffs__);
-          lValue__ = expr.lValue__;
-          ileft__ = true;
+          lValue__  = expr.lValue__;
+          ileft__   = true;
         } else
           lCoeffs__ = new HashTable< LpCol, double >();
 
         if (copyMiddle) {
           mCoeffs__ = new HashTable< LpCol, double >(*expr.mCoeffs__);
-          mValue__ = expr.mValue__;
+          mValue__  = expr.mValue__;
           imiddle__ = true;
         } else
           mCoeffs__ = new HashTable< LpCol, double >();
 
         if (copyRight) {
           rCoeffs__ = new HashTable< LpCol, double >(*expr.rCoeffs__);
-          rValue__ = expr.rValue__;
-          iright__ = true;
+          rValue__  = expr.rValue__;
+          iright__  = true;
         } else
           rCoeffs__ = new HashTable< LpCol, double >();
 
@@ -125,13 +125,13 @@ namespace gum {
         if (copyLeft) {
           swap(lCoeffs__, expr.lCoeffs__);
           lValue__ = expr.lValue__;
-          ileft__ = true;
+          ileft__  = true;
         } else
           lCoeffs__ = new HashTable< LpCol, double >();
 
         if (copyMiddle) {
           swap(mCoeffs__, expr.mCoeffs__);
-          mValue__ = expr.mValue__;
+          mValue__  = expr.mValue__;
           imiddle__ = true;
         } else
           mCoeffs__ = new HashTable< LpCol, double >();
@@ -175,9 +175,9 @@ namespace gum {
         mValue__ = rhs.mValue__;
         rValue__ = rhs.rValue__;
 
-        ileft__ = rhs.ileft__;
+        ileft__   = rhs.ileft__;
         imiddle__ = rhs.imiddle__;
-        iright__ = rhs.iright__;
+        iright__  = rhs.iright__;
 
         return *this;
       }
@@ -194,9 +194,9 @@ namespace gum {
         mValue__ = rhs.mValue__;
         rValue__ = rhs.rValue__;
 
-        ileft__ = rhs.ileft__;
+        ileft__   = rhs.ileft__;
         imiddle__ = rhs.imiddle__;
-        iright__ = rhs.iright__;
+        iright__  = rhs.iright__;
 
         return *this;
       }
@@ -238,7 +238,7 @@ namespace gum {
 
         if (!imiddle__) {
           imiddle__ = true;
-          mValue__ = rhs.mValue__;
+          mValue__  = rhs.mValue__;
           swap(mCoeffs__, rhs.mCoeffs__);
 
           return *this;
@@ -311,20 +311,20 @@ namespace gum {
         if (!from.ileft__ && !from.iright__) {
           if (!ileft__) {
             *lCoeffs__ = *from.mCoeffs__;
-            lValue__ = from.mValue__;
-            ileft__ = true;
+            lValue__   = from.mValue__;
+            ileft__    = true;
 
             return;
           } else if (!imiddle__) {
             *mCoeffs__ = *from.mCoeffs__;
-            mValue__ = from.mValue__;
-            imiddle__ = true;
+            mValue__   = from.mValue__;
+            imiddle__  = true;
 
             return;
           } else if (!iright__) {
             *rCoeffs__ = *from.mCoeffs__;
-            rValue__ = from.mValue__;
-            iright__ = true;
+            rValue__   = from.mValue__;
+            iright__   = true;
 
             return;
           } else
@@ -337,22 +337,22 @@ namespace gum {
         else if (from.ileft__ && !from.iright__) {
           if (!ileft__) {
             *lCoeffs__ = *from.lCoeffs__;
-            lValue__ = from.lValue__;
-            ileft__ = true;
+            lValue__   = from.lValue__;
+            ileft__    = true;
 
             *mCoeffs__ = *from.mCoeffs__;
-            mValue__ = from.mValue__;
-            imiddle__ = true;
+            mValue__   = from.mValue__;
+            imiddle__  = true;
 
             return;
           } else if (!imiddle__ && !iright__) {
             *mCoeffs__ = *from.lCoeffs__;
-            mValue__ = from.lValue__;
-            imiddle__ = true;
+            mValue__   = from.lValue__;
+            imiddle__  = true;
 
             *rCoeffs__ = *from.mCoeffs__;
-            rValue__ = from.mValue__;
-            iright__ = true;
+            rValue__   = from.mValue__;
+            iright__   = true;
 
             return;
           } else
@@ -395,13 +395,13 @@ namespace gum {
             ///* lCoeffs__ = * from.mCoeffs__;
             swap(lCoeffs__, from.mCoeffs__);
             lValue__ = from.mValue__;
-            ileft__ = true;
+            ileft__  = true;
 
             return;
           } else if (!imiddle__) {
             ///* mCoeffs__ = * from.mCoeffs__;
             swap(mCoeffs__, from.mCoeffs__);
-            mValue__ = from.mValue__;
+            mValue__  = from.mValue__;
             imiddle__ = true;
 
             return;
@@ -424,18 +424,18 @@ namespace gum {
             ///* lCoeffs__ = * from.lCoeffs__;
             swap(lCoeffs__, from.lCoeffs__);
             lValue__ = from.lValue__;
-            ileft__ = true;
+            ileft__  = true;
 
             ///* mCoeffs__ = * from.mCoeffs__;
             swap(mCoeffs__, from.mCoeffs__);
-            mValue__ = from.mValue__;
+            mValue__  = from.mValue__;
             imiddle__ = true;
 
             return;
           } else if (!imiddle__ && !iright__) {
             ///* mCoeffs__ = * from.lCoeffs__;
             swap(mCoeffs__, from.lCoeffs__);
-            mValue__ = from.lValue__;
+            mValue__  = from.lValue__;
             imiddle__ = true;
 
             ///* rCoeffs__ = * from.mCoeffs__;
@@ -476,9 +476,9 @@ namespace gum {
         mValue__ = 0.;
         rValue__ = 0.;
 
-        ileft__ = false;
+        ileft__   = false;
         imiddle__ = false;
-        iright__ = false;
+        iright__  = false;
       }
 
       std::string LpExpr::toString() const {
@@ -627,7 +627,7 @@ namespace gum {
       }
 
       LpRow& LpRow::operator=(const LpRow& row) {
-        cste__ = row.cste__;
+        cste__    = row.cste__;
         *coeffs__ = *row.coeffs__;
         return *this;
       }

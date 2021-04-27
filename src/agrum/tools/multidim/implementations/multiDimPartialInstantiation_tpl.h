@@ -77,8 +77,8 @@ namespace gum {
      MultiDimPartialInstantiation< GUM_SCALAR, TABLE >::instantiate(
         const TABLE< GUM_SCALAR >&                       table,
         const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
-    MultiDimImplementation< GUM_SCALAR >* new_impl =
-       partialInstantiation(table, inst_vars);
+    MultiDimImplementation< GUM_SCALAR >* new_impl
+       = partialInstantiation(table, inst_vars);
     return new TABLE< GUM_SCALAR >(new_impl);
   }
 
@@ -88,8 +88,8 @@ namespace gum {
      TABLE< GUM_SCALAR >&                             container,
      const TABLE< GUM_SCALAR >&                       table,
      const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
-    MultiDimImplementation< GUM_SCALAR >* new_impl =
-       partialInstantiation(table, inst_vars);
+    MultiDimImplementation< GUM_SCALAR >* new_impl
+       = partialInstantiation(table, inst_vars);
     container = *new_impl;
     delete new_impl;
   }

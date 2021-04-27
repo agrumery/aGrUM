@@ -60,7 +60,7 @@ namespace gum_tests {
       queue1.insert("CCC", 2);
       queue1.emplace("DDD", 23);
       std::string xxx = "EEE";
-      int         nb = 24;
+      int         nb  = 24;
       queue1.insert(xxx, nb);
 
       TS_ASSERT(queue1.size() == 5);
@@ -193,7 +193,7 @@ namespace gum_tests {
       queue1.insert(3, 2);
       queue1.emplace(4, 23);
       int xxx = 5;
-      int nb = 24;
+      int nb  = 24;
       queue1.insert(xxx, nb);
 
       TS_ASSERT(queue1.size() == 5);
@@ -332,8 +332,8 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(queue1.insert(set1, 10), gum::DuplicateElement);
 
-      const gum::HashTable< gum::Set< int >, gum::Size >& vals =
-         queue1.allValues();
+      const gum::HashTable< gum::Set< int >, gum::Size >& vals
+         = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
       queue1.clear();
@@ -344,7 +344,7 @@ namespace gum_tests {
       queue1.insert(set5, 24);
 
       gum::PriorityQueue< gum::Set< int > > queue2 = queue1;
-      queue2 = queue1;
+      queue2                                       = queue1;
       queue2.eraseTop();
       queue2 = queue1;
 
@@ -419,8 +419,8 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable< std::string, std::vector< gum::Size > >& vals =
-         queue1.allValues();
+      const gum::HashTable< std::string, std::vector< gum::Size > >& vals
+         = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
     }
 
@@ -525,8 +525,8 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable< gum::Set< int >, std::vector< gum::Size > >& vals =
-         queue1.allValues();
+      const gum::HashTable< gum::Set< int >, std::vector< gum::Size > >& vals
+         = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
       queue1.clear();
@@ -538,7 +538,7 @@ namespace gum_tests {
       queue1.insert(set1, 10);
 
       gum::MultiPriorityQueue< gum::Set< int > > queue2 = queue1;
-      queue2 = queue1;
+      queue2                                            = queue1;
       queue2.eraseTop();
       queue2 = queue1;
 

@@ -86,11 +86,11 @@ namespace gum {
         delete elt.second;
 
       // fill all the data structures with the elements of from
-      dag__ = from.dag__;
-      operation2node__ = from.operation2node__;
-      created_multidims__ = from.created_multidims__;
+      dag__                           = from.dag__;
+      operation2node__                = from.operation2node__;
+      created_multidims__             = from.created_multidims__;
       operations_with_wrong_parents__ = from.operations_with_wrong_parents__;
-      operations_available__ = from.operations_available__;
+      operations_available__          = from.operations_available__;
 
       node2operation__.clear();
 
@@ -131,7 +131,7 @@ namespace gum {
     for (const auto par: operation->multiDimArgs()) {
       if (par->isAbstract()) {
         // here we shall have a parent in the graph
-        operation_available = false;
+        operation_available    = false;
         MultiDimId multidim_id = par->id();
 
         if (created_multidims__.exists(multidim_id)) {
@@ -187,15 +187,15 @@ namespace gum {
   void Schedule< GUM_SCALAR >::updateWrongParents__() const {
     // parse all the nodes whose parents sets are incorrect
 
-    auto localWrongs =
-       operations_with_wrong_parents__;   // complete copy of NodeSet
+    auto localWrongs
+       = operations_with_wrong_parents__;   // complete copy of NodeSet
 
     for (const auto wrong: localWrongs) {
       // get the arguments passed to wrong and check that those that are
       // abstract
       // multidims belong to the schedule
-      const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& args =
-         node2operation__[wrong]->multiDimArgs();
+      const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& args
+         = node2operation__[wrong]->multiDimArgs();
       bool still_wrong = false;
 
       for (const auto arg: args) {
@@ -305,7 +305,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >&               op_to_force,
      const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_after) {
     for (typename Set< const ScheduleOperation< GUM_SCALAR >* >::const_iterator
-            iter = ops_after.begin();
+            iter
+         = ops_after.begin();
          iter != ops_after.end();
          ++iter) {
       if (**iter != op_to_force) { forceBefore(op_to_force, **iter); }

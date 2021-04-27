@@ -35,7 +35,9 @@ namespace gum {
   // Class constructor
   template < typename GUM_SCALAR >
   LinearApproximationPolicy< GUM_SCALAR >::LinearApproximationPolicy(
-     GUM_SCALAR low, GUM_SCALAR high, GUM_SCALAR eps) :
+     GUM_SCALAR low,
+     GUM_SCALAR high,
+     GUM_SCALAR eps) :
       ApproximationPolicy< GUM_SCALAR >(),
       lowLimit_(low), highLimit_(high), epsilon_(eps) {
     if (eps <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0"); }
@@ -63,11 +65,11 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineAdd(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
       GUM_SCALAR newHighLimit = lowLimit_ + lap->lowLimit();
-      GUM_SCALAR newLowLimit = lowLimit_ + lap->lowLimit();
+      GUM_SCALAR newLowLimit  = lowLimit_ + lap->lowLimit();
 
       GUM_SCALAR newVal = lowLimit_ + lap->highLimit();
 
@@ -93,11 +95,11 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineSub(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
       GUM_SCALAR newHighLimit = lowLimit_ - lap->lowLimit();
-      GUM_SCALAR newLowLimit = lowLimit_ - lap->lowLimit();
+      GUM_SCALAR newLowLimit  = lowLimit_ - lap->lowLimit();
 
       GUM_SCALAR newVal = lowLimit_ - lap->highLimit();
 
@@ -123,11 +125,11 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMult(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
       GUM_SCALAR newHighLimit = lowLimit_ * lap->lowLimit();
-      GUM_SCALAR newLowLimit = lowLimit_ * lap->lowLimit();
+      GUM_SCALAR newLowLimit  = lowLimit_ * lap->lowLimit();
 
       GUM_SCALAR newVal = lowLimit_ * lap->highLimit();
 
@@ -153,11 +155,11 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineDiv(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
       GUM_SCALAR newHighLimit = lowLimit_ / lap->lowLimit();
-      GUM_SCALAR newLowLimit = lowLimit_ / lap->lowLimit();
+      GUM_SCALAR newLowLimit  = lowLimit_ / lap->lowLimit();
 
       GUM_SCALAR newVal = lowLimit_ / lap->highLimit();
 
@@ -183,16 +185,16 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMax(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
-      GUM_SCALAR newHighLimit =
-         lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
-      GUM_SCALAR newLowLimit =
-         lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_SCALAR newHighLimit
+         = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_SCALAR newLowLimit
+         = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
 
-      GUM_SCALAR newVal =
-         lowLimit_ > lap->highLimit() ? lowLimit_ : lap->highLimit();
+      GUM_SCALAR newVal
+         = lowLimit_ > lap->highLimit() ? lowLimit_ : lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -216,16 +218,16 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMin(
      const ApproximationPolicy< GUM_SCALAR >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap =
-         dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_SCALAR >* lap
+         = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
 
-      GUM_SCALAR newHighLimit =
-         lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
-      GUM_SCALAR newLowLimit =
-         lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_SCALAR newHighLimit
+         = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_SCALAR newLowLimit
+         = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
 
-      GUM_SCALAR newVal =
-         lowLimit_ < lap->highLimit() ? lowLimit_ : lap->highLimit();
+      GUM_SCALAR newVal
+         = lowLimit_ < lap->highLimit() ? lowLimit_ : lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -306,12 +308,13 @@ namespace gum {
   // set bounds in a whole
   template < typename GUM_SCALAR >
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::setLimits(
-     const GUM_SCALAR& newLowLimit, const GUM_SCALAR& newHighLimit) {
+     const GUM_SCALAR& newLowLimit,
+     const GUM_SCALAR& newHighLimit) {
     if (newLowLimit > newHighLimit) {
       GUM_ERROR(OutOfBounds, "Asked low value is higher than asked high value");
     }
 
-    lowLimit_ = newLowLimit;
+    lowLimit_  = newLowLimit;
     highLimit_ = newHighLimit;
     computeNbInterval_();
   }

@@ -75,12 +75,13 @@ namespace gum {
        optimalDecision(const std::string& nodename) = 0;
 
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) = 0;
-    virtual const Potential< GUM_SCALAR >&
-       posterior(const std::string& nodename) = 0;
+    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodename)
+       = 0;
 
     virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) = 0;
     virtual const Potential< GUM_SCALAR >&
-       posteriorUtility(const std::string& nodename) = 0;
+       posteriorUtility(const std::string& nodename)
+       = 0;
 
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) = 0;
     virtual std::pair< GUM_SCALAR, GUM_SCALAR >

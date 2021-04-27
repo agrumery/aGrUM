@@ -188,7 +188,7 @@ namespace gum {
     } else {
       // find the element we shall point to src the end of the list
       for (bucket__ = theList.end_list__,
-          ind_elt = theList.nb_elements__ - ind_elt - 1;
+          ind_elt   = theList.nb_elements__ - ind_elt - 1;
            ind_elt;
            --ind_elt, bucket__ = bucket__->prev__) {}
     }
@@ -529,7 +529,8 @@ namespace gum {
   template < typename Val >
   template < typename Alloc >
   ListConstIteratorSafe< Val >::ListConstIteratorSafe(
-     const List< Val, Alloc >& theList, Size ind_elt) :
+     const List< Val, Alloc >& theList,
+     Size                      ind_elt) :
       list__{
          reinterpret_cast< const List< Val, std::allocator< Val > >* >(&theList)} {
     // for debugging purposes
@@ -549,7 +550,7 @@ namespace gum {
     } else {
       // find the element we shall point to src the end of the list
       for (bucket__ = list__->end_list__,
-          ind_elt = list__->nb_elements__ - ind_elt - 1;
+          ind_elt   = list__->nb_elements__ - ind_elt - 1;
            ind_elt;
            --ind_elt, bucket__ = bucket__->prev__) {}
     }
@@ -571,8 +572,8 @@ namespace gum {
 
     if (list__ != nullptr) {
       // substitute src by this in the list of safe iterators
-      std::vector< ListConstIteratorSafe< Val >* >& vect =
-         list__->safe_iterators__;
+      std::vector< ListConstIteratorSafe< Val >* >& vect
+         = list__->safe_iterators__;
 
       for (auto ptr = vect.rbegin(); ptr != vect.rend(); --ptr) {
         if (*ptr == &src) {
@@ -581,8 +582,8 @@ namespace gum {
         }
       }
 
-      src.list__ = nullptr;
-      src.bucket__ = nullptr;
+      src.list__          = nullptr;
+      src.bucket__        = nullptr;
       src.null_pointing__ = false;
     }
   }
@@ -623,18 +624,18 @@ namespace gum {
         try {
           src.list__->safe_iterators__.push_back(this);
         } catch (...) {
-          list__ = nullptr;
-          bucket__ = nullptr;
+          list__          = nullptr;
+          bucket__        = nullptr;
           null_pointing__ = false;
           throw;
         }
       }
 
-      list__ = src.list__;
-      bucket__ = src.bucket__;
+      list__                = src.list__;
+      bucket__              = src.bucket__;
       prev_current_bucket__ = src.prev_current_bucket__;
       next_current_bucket__ = src.next_current_bucket__;
-      null_pointing__ = src.null_pointing__;
+      null_pointing__       = src.null_pointing__;
     }
 
     return *this;
@@ -658,8 +659,8 @@ namespace gum {
 
       // now if src points to a list, put this at its location
       if ((src.list__ != nullptr)) {
-        std::vector< ListConstIteratorSafe< Val >* >& vect =
-           src.list__->safe_iterators__;
+        std::vector< ListConstIteratorSafe< Val >* >& vect
+           = src.list__->safe_iterators__;
         Idx index_src = Size(vect.size()) - 1;
 
         for (;; --index_src) {
@@ -673,14 +674,14 @@ namespace gum {
         }
       }
 
-      list__ = src.list__;
-      bucket__ = src.bucket__;
+      list__                = src.list__;
+      bucket__              = src.bucket__;
       prev_current_bucket__ = src.prev_current_bucket__;
       next_current_bucket__ = src.next_current_bucket__;
-      null_pointing__ = src.null_pointing__;
+      null_pointing__       = src.null_pointing__;
 
-      src.list__ = nullptr;
-      src.bucket__ = nullptr;
+      src.list__          = nullptr;
+      src.bucket__        = nullptr;
       src.null_pointing__ = false;
     }
 
@@ -711,8 +712,8 @@ namespace gum {
     if (list__) removeFromSafeList__();
 
     // set its list as well as the element it points to to nullptr
-    list__ = nullptr;
-    bucket__ = nullptr;
+    list__          = nullptr;
+    bucket__        = nullptr;
     null_pointing__ = false;
   }
 
@@ -924,9 +925,9 @@ namespace gum {
   INLINE bool ListConstIteratorSafe< Val >::operator!=(
      const ListConstIteratorSafe< Val >& src) const {
     return null_pointing__
-              ? (next_current_bucket__ != src.next_current_bucket__)
-                   || (prev_current_bucket__ != src.prev_current_bucket__)
-              : (bucket__ != src.bucket__);
+            ? (next_current_bucket__ != src.next_current_bucket__)
+                 || (prev_current_bucket__ != src.prev_current_bucket__)
+            : (bucket__ != src.bucket__);
   }
 
   // checks whether two iterators point toward the same elements.
@@ -934,9 +935,9 @@ namespace gum {
   INLINE bool ListConstIteratorSafe< Val >::operator==(
      const ListConstIteratorSafe< Val >& src) const {
     return null_pointing__
-              ? (next_current_bucket__ == src.next_current_bucket__)
-                   && (prev_current_bucket__ == src.prev_current_bucket__)
-              : (bucket__ == src.bucket__);
+            ? (next_current_bucket__ == src.next_current_bucket__)
+                 && (prev_current_bucket__ == src.prev_current_bucket__)
+            : (bucket__ == src.bucket__);
   }
 
   // dereferences the value pointed to by the iterator
@@ -1155,7 +1156,7 @@ namespace gum {
     }
 
     // update properly the end of the chained list and the number of elements
-    end_list__ = old_ptr;
+    end_list__    = old_ptr;
     nb_elements__ = src.nb_elements__;
   }
 
@@ -1177,8 +1178,8 @@ namespace gum {
     }
 
     nb_elements__ = 0;
-    deb_list__ = nullptr;
-    end_list__ = nullptr;
+    deb_list__    = nullptr;
+    end_list__    = nullptr;
   }
 
   // A basic constructor that creates an empty list
@@ -1228,8 +1229,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_MOV(List);
 
-    src.deb_list__ = nullptr;
-    src.end_list__ = nullptr;
+    src.deb_list__    = nullptr;
+    src.end_list__    = nullptr;
     src.nb_elements__ = 0;
     src.safe_iterators__.clear();
   }
@@ -1312,14 +1313,14 @@ namespace gum {
       clear();
 
       // perform the move
-      deb_list__ = std::move(src.deb_list__);
-      end_list__ = std::move(src.end_list__);
-      nb_elements__ = std::move(src.nb_elements__);
+      deb_list__       = std::move(src.deb_list__);
+      end_list__       = std::move(src.end_list__);
+      nb_elements__    = std::move(src.nb_elements__);
       safe_iterators__ = std::move(src.safe_iterators__);
-      alloc_bucket__ = std::move(src.alloc_bucket__);
+      alloc_bucket__   = std::move(src.alloc_bucket__);
 
-      src.deb_list__ = nullptr;
-      src.end_list__ = nullptr;
+      src.deb_list__    = nullptr;
+      src.end_list__    = nullptr;
       src.nb_elements__ = 0;
       src.safe_iterators__.clear();
     }
@@ -1636,7 +1637,7 @@ namespace gum {
       for (ptr = deb_list__; i; --i, ptr = ptr->next__) {}
     } else {
       for (ptr = end_list__, i = nb_elements__ - i - 1; i;
-           --i, ptr = ptr->prev__) {}
+           --i, ptr            = ptr->prev__) {}
     }
 
     return ptr;
@@ -1646,8 +1647,8 @@ namespace gum {
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::insertBefore__(ListBucket< Val >* new_elt,
                                                  ListBucket< Val >* current_elt) {
-    new_elt->next__ = current_elt;
-    new_elt->prev__ = current_elt->prev__;
+    new_elt->next__     = current_elt;
+    new_elt->prev__     = current_elt->prev__;
     current_elt->prev__ = new_elt;
 
     if (new_elt->prev__ == nullptr)
@@ -1666,8 +1667,8 @@ namespace gum {
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::insertAfter__(ListBucket< Val >* new_elt,
                                                 ListBucket< Val >* current_elt) {
-    new_elt->prev__ = current_elt;
-    new_elt->next__ = current_elt->next__;
+    new_elt->prev__     = current_elt;
+    new_elt->next__     = current_elt->next__;
     current_elt->next__ = new_elt;
 
     if (new_elt->next__ == nullptr)
@@ -1724,9 +1725,11 @@ namespace gum {
       return pushBack__(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE: return insertBefore__(new_elt, ptr);
+        case location::BEFORE:
+          return insertBefore__(new_elt, ptr);
 
-        case location::AFTER: return insertAfter__(new_elt, ptr);
+        case location::AFTER:
+          return insertAfter__(new_elt, ptr);
 
         default:
           GUM_ERROR(FatalError, "List insertion for this location unimplemented");
@@ -1748,9 +1751,11 @@ namespace gum {
       return pushBack__(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE: return insertBefore__(new_elt, ptr);
+        case location::BEFORE:
+          return insertBefore__(new_elt, ptr);
 
-        case location::AFTER: return insertAfter__(new_elt, ptr);
+        case location::AFTER:
+          return insertAfter__(new_elt, ptr);
 
         default:
           GUM_ERROR(FatalError, "List insertion for this location unimplemented");
@@ -1871,8 +1876,8 @@ namespace gum {
         if (ptr_iter->bucket__ == bucket) {
           ptr_iter->next_current_bucket__ = bucket->prev__;
           ptr_iter->prev_current_bucket__ = bucket->next__;
-          ptr_iter->bucket__ = nullptr;
-          ptr_iter->null_pointing__ = true;
+          ptr_iter->bucket__              = nullptr;
+          ptr_iter->null_pointing__       = true;
         } else {
           if (ptr_iter->null_pointing__) {
             if (ptr_iter->next_current_bucket__ == bucket)

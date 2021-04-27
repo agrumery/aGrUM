@@ -128,7 +128,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        const DBRowGeneratorIdentity< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      input_row__ = from.input_row__;
+      input_row__                      = from.input_row__;
       return *this;
     }
 
@@ -138,7 +138,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        DBRowGeneratorIdentity< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      input_row__ = from.input_row__;
+      input_row__                      = from.input_row__;
       return *this;
     }
 

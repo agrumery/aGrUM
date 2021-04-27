@@ -84,9 +84,9 @@ namespace gum_tests {
       seq << ref << a;
       auto     chain = new PRMSlotChain("rho.a", seq);
       PRMClass super("super");
-      auto     b = new PRMAttribute("b", *boolean__);
+      auto     b    = new PRMAttribute("b", *boolean__);
       auto     b_id = super.add(b);
-      auto     c = new PRMAttribute("c", *boolean__);
+      auto     c    = new PRMAttribute("c", *boolean__);
       auto     c_id = super.add(c);
       super.addArc("b", "c");
       super.add(ref);
@@ -223,7 +223,7 @@ namespace gum_tests {
       // Arra,ge
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
-      gum::NodeId   id = 100;   // Id generation starts at 0
+      gum::NodeId   id   = 100;   // Id generation starts at 0
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(id = c.add(attr));
       TS_ASSERT(c.exists(attr->name()));
@@ -331,8 +331,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable(name, "", 2);
-        auto t = new PRMType(super, map, var);
+        auto var  = gum::LabelizedVariable(name, "", 2);
+        auto t    = new PRMType(super, map, var);
         types.push_back(t);
       }
       PRMClass      c("class");
@@ -391,8 +391,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable(name, "", 2);
-        auto t = new PRMType(super, map, var);
+        auto var  = gum::LabelizedVariable(name, "", 2);
+        auto t    = new PRMType(super, map, var);
         types.push_back(t);
       }
       PRMClass      c("class");
@@ -511,7 +511,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isInputNode(*a);
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true));
       // Assert
@@ -538,7 +538,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isOutputNode(*a);
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true));
       // Assert
@@ -600,8 +600,10 @@ namespace gum_tests {
         PRMClass orGate("OrGate", impl);
         auto     or_inputs = new Reference("inputs", event, true);
         orGate.add(or_inputs);
-        auto or_state = new PRMAggregate(
-           "state", PRMAggregate::AggregateType::EXISTS, *boolean__, 1);
+        auto or_state = new PRMAggregate("state",
+                                         PRMAggregate::AggregateType::EXISTS,
+                                         *boolean__,
+                                         1);
         orGate.add(or_state);
         gum::Sequence< gum::prm::PRMClassElement< double >* > or_seq;
         or_seq << &(orGate.get("inputs")) << &(event.get("state"));
@@ -612,8 +614,10 @@ namespace gum_tests {
         PRMClass andGate("AndGate", impl);
         auto     and_inputs = new Reference("inputs", event, true);
         andGate.add(and_inputs);
-        auto and_state = new PRMAggregate(
-           "state", PRMAggregate::AggregateType::FORALL, *boolean__, 1);
+        auto and_state = new PRMAggregate("state",
+                                          PRMAggregate::AggregateType::FORALL,
+                                          *boolean__,
+                                          1);
         andGate.add(and_state);
         gum::Sequence< gum::prm::PRMClassElement< double >* > and_seq;
         and_seq << and_inputs << &(event.get("state"));
@@ -625,8 +629,10 @@ namespace gum_tests {
         auto     kn_inputs = new Reference("inputs", event, true);
         knGate.add(kn_inputs);
         PRMType intervalle(gum::LabelizedVariable("intervalle", "", 6));
-        auto    nb_true = new PRMAggregate(
-           "Nb_true", PRMAggregate::AggregateType::COUNT, *boolean__, 1);
+        auto    nb_true = new PRMAggregate("Nb_true",
+                                        PRMAggregate::AggregateType::COUNT,
+                                        *boolean__,
+                                        1);
         knGate.add(nb_true);
         gum::Sequence< gum::prm::PRMClassElement< double >* > kn_seq;
         kn_seq << kn_inputs << &(event.get("state"));

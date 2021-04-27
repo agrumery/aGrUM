@@ -82,7 +82,7 @@ namespace gum {
       transit.add(*(this->primeVar(*varIter)));
 
       double proba = (double)std::rand() / (double)RAND_MAX;
-      double cdd = 0.0;
+      double cdd   = 0.0;
       for (transit.setFirstOut(currentState_); !transit.end();
            transit.incOut(currentState_)) {
         cdd += this->transitionProbability_(*varIter, transit, actionId);

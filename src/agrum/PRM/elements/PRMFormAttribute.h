@@ -51,8 +51,8 @@ namespace gum {
       PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,
                        const std::string&                     name,
                        const PRMType&                         type,
-                       MultiDimImplementation< std::string >* impl =
-                          new MultiDimArray< std::string >());
+                       MultiDimImplementation< std::string >* impl
+                       = new MultiDimArray< std::string >());
 
       virtual ~PRMFormAttribute();
 

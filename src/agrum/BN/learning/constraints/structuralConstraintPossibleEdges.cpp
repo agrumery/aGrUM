@@ -84,8 +84,8 @@ namespace gum {
        StructuralConstraintPossibleEdges::operator=(
           StructuralConstraintPossibleEdges&& from) {
       if (this != &from) {
-        PossibleEdges__possible_edges_ =
-           std::move(from.PossibleEdges__possible_edges_);
+        PossibleEdges__possible_edges_
+           = std::move(from.PossibleEdges__possible_edges_);
       }
       return *this;
     }

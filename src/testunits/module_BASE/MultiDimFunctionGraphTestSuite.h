@@ -121,13 +121,13 @@ namespace gum_tests {
 
     void setUp() {
       try {
-        Cvar = new gum::LabelizedVariable("C", "C", 2);
-        PLvar = new gum::LabelizedVariable("PL", "PL", 2);
-        APUvar = new gum::LabelizedVariable("APU", "APU", 2);
-        BPUvar = new gum::LabelizedVariable("BPU", "BPU", 2);
-        ADRvar = new gum::LabelizedVariable("ADR", "ADR", 2);
-        BDRvar = new gum::LabelizedVariable("BDR", "BDR", 2);
-        BOvar = new gum::LabelizedVariable("BO", "BO", 2);
+        Cvar      = new gum::LabelizedVariable("C", "C", 2);
+        PLvar     = new gum::LabelizedVariable("PL", "PL", 2);
+        APUvar    = new gum::LabelizedVariable("APU", "APU", 2);
+        BPUvar    = new gum::LabelizedVariable("BPU", "BPU", 2);
+        ADRvar    = new gum::LabelizedVariable("ADR", "ADR", 2);
+        BDRvar    = new gum::LabelizedVariable("BDR", "BDR", 2);
+        BOvar     = new gum::LabelizedVariable("BO", "BO", 2);
         Cprimevar = new gum::LabelizedVariable("C'", "C'", 2);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -159,8 +159,9 @@ namespace gum_tests {
         // *********************************************************************
         gum::MultiDimFunctionGraph< double >* functionGraph = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph = gum::MultiDimFunctionGraph<
-                                        double >::getReducedAndOrderedInstance());
+        TS_GUM_ASSERT_THROWS_NOTHING(
+           functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
 
         // *********************************************************************
         // Testing the insertion of nodes and arcs in the graph
@@ -187,16 +188,16 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
         // *********************************************************************
         // Tests
         // *********************************************************************
-        gum::LabelizedVariable* Banditovar =
-           new gum::LabelizedVariable("Bandito", "Desperado", 2);
+        gum::LabelizedVariable* Banditovar
+           = new gum::LabelizedVariable("Bandito", "Desperado", 2);
 
         // Test isTerminalNode
         TS_ASSERT_EQUALS(functionGraph->isTerminalNode(16), true);
@@ -246,8 +247,8 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
@@ -284,8 +285,8 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of the multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
@@ -367,8 +368,8 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
@@ -533,8 +534,8 @@ namespace gum_tests {
         // *********************************************************************
         // Testing replace()
         // *********************************************************************
-        gum::LabelizedVariable* lv =
-           new gum::LabelizedVariable("Test", "Cornichon", 2);
+        gum::LabelizedVariable* lv
+           = new gum::LabelizedVariable("Test", "Cornichon", 2);
         TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv),
                          gum::OperationNotAllowed);
         delete lv;
@@ -554,12 +555,12 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of the multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
-        gum::LabelizedVariable* lv =
-           new gum::LabelizedVariable("Test", "Cornichon", 2);
+        gum::LabelizedVariable* lv
+           = new gum::LabelizedVariable("Test", "Cornichon", 2);
 
         // *********************************************************************
         // Test nbrDim(), domainSize(), realSize()
@@ -610,8 +611,8 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
@@ -619,8 +620,8 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of the multidim that we use to make the copy
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph2 =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph2
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
         // *********************************************************************
         // Test on copy of other multidim (must raise OperationNotAllowed)
@@ -649,16 +650,16 @@ namespace gum_tests {
         gum::LabelizedVariable *Bijouvar, *Caillouvar, *Chouvar, *Genouvar,
            *Hibouvar, *Joujouvar, *Pouvar, *Bijouprimevar;
         Bijouvar = new gum::LabelizedVariable("Bijou", "Un bijou, des bijoux", 2);
-        Caillouvar =
-           new gum::LabelizedVariable("Caillou", "Un caillou, des cailloux", 2);
-        Chouvar = new gum::LabelizedVariable("Chouvar", "Un chou, des choux", 2);
+        Caillouvar
+           = new gum::LabelizedVariable("Caillou", "Un caillou, des cailloux", 2);
+        Chouvar  = new gum::LabelizedVariable("Chouvar", "Un chou, des choux", 2);
         Genouvar = new gum::LabelizedVariable("Genou", "Un genou, des genoux", 2);
         Hibouvar = new gum::LabelizedVariable("Hibou", "Un hibou, des hiboux", 2);
-        Joujouvar =
-           new gum::LabelizedVariable("Joujou", "Un joujou, des joujoux", 2);
+        Joujouvar
+           = new gum::LabelizedVariable("Joujou", "Un joujou, des joujoux", 2);
         Pouvar = new gum::LabelizedVariable("Pouvar", "Un pou, des poux", 2);
-        Bijouprimevar =
-           new gum::LabelizedVariable("Bijou'", "Un bijou', des bijou'x", 2);
+        Bijouprimevar
+           = new gum::LabelizedVariable("Bijou'", "Un bijou', des bijou'x", 2);
 
         gum::Bijection< const gum::DiscreteVariable*,
                         const gum::DiscreteVariable* >
@@ -678,8 +679,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
 
         map.eraseFirst(PLvar);
-        gum::LabelizedVariable* failvar =
-           new gum::LabelizedVariable("Fail", "Different domain size", 3);
+        gum::LabelizedVariable* failvar
+           = new gum::LabelizedVariable("Fail", "Different domain size", 3);
         map.insert(PLvar, failvar);
         TS_ASSERT_THROWS(functionGraph2->copyAndReassign(*functionGraph, map),
                          gum::InvalidArgument);
@@ -723,12 +724,12 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of severals multidims
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* dg1 =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
-        gum::MultiDimFunctionGraph< double >* dg2 =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
-        gum::MultiDimFunctionGraph< double >* dg3 =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* dg1
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* dg2
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* dg3
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(dg1, &idList);
         fillFactory__(dg2, &idList);
@@ -773,8 +774,8 @@ namespace gum_tests {
         // *********************************************************************
         // Creation of the multidim
         // *********************************************************************
-        gum::MultiDimFunctionGraph< double >* functionGraph =
-           gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+        gum::MultiDimFunctionGraph< double >* functionGraph
+           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
         fillFactory__(functionGraph, &idList);
 
@@ -784,11 +785,12 @@ namespace gum_tests {
         // TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
         //  Cprimevar, functionGraph->variablesSequence().pos(BOvar)));
         functionGraph->manager()->moveTo(
-           Cprimevar, functionGraph->variablesSequence().pos(BOvar));
+           Cprimevar,
+           functionGraph->variablesSequence().pos(BOvar));
 
         // For comparison with what readers will return
-        std::string dotfile =
-           GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
+        std::string dotfile
+           = GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
         if (!output.good()) {
           GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
@@ -800,11 +802,12 @@ namespace gum_tests {
           GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
         }
 
-        gum::LabelizedVariable* phantomvar =
-           new gum::LabelizedVariable("Phantom", "Not here, nor there", 2);
+        gum::LabelizedVariable* phantomvar
+           = new gum::LabelizedVariable("Phantom", "Not here, nor there", 2);
         functionGraph->add(*phantomvar);
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
-           Cprimevar, functionGraph->variablesSequence().pos(phantomvar)));
+           Cprimevar,
+           functionGraph->variablesSequence().pos(phantomvar)));
 
         delete functionGraph;
         delete phantomvar;
@@ -814,8 +817,8 @@ namespace gum_tests {
     void xtest_Generator() {
       try {
         for (gum::Idx i = 0; i < 100; i++) {
-          gum::Sequence< const gum::DiscreteVariable* >* varList =
-             new gum::Sequence< const gum::DiscreteVariable* >();
+          gum::Sequence< const gum::DiscreteVariable* >* varList
+             = new gum::Sequence< const gum::DiscreteVariable* >();
 
           for (int j = 0; j < 10; j++) {
             std::stringstream varName;
@@ -829,8 +832,8 @@ namespace gum_tests {
           gum::MultiDimFunctionGraph< double >* dg1 = nullptr;
           TS_GUM_ASSERT_THROWS_NOTHING(dg1 = gene.generate());
 
-          gum::MultiDimFunctionGraph< double >* dg2 =
-             gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+          gum::MultiDimFunctionGraph< double >* dg2 = gum::MultiDimFunctionGraph<
+             double >::getReducedAndOrderedInstance();
 
           TS_GUM_ASSERT_THROWS_NOTHING(dg2->copy(*dg1));
           TS_GUM_ASSERT_THROWS_NOTHING(dg2->manager()->reduce());
@@ -849,8 +852,8 @@ namespace gum_tests {
           delete dg1;
           delete dg2;
 
-          for (gum::SequenceIterator< const gum::DiscreteVariable* > ite =
-                  varList->begin();
+          for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
+               = varList->begin();
                ite != varList->end();
                ++ite)
             delete *ite;

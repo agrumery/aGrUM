@@ -49,7 +49,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -88,7 +88,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -133,7 +133,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -180,7 +180,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -216,7 +216,7 @@ namespace gum_tests {
       }
 
 
-      gum::DAG                dag = search.learnStructure(cI, graph);
+      gum::DAG                dag     = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size(9));
       TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
@@ -271,7 +271,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -326,7 +326,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -376,7 +376,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);

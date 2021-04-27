@@ -98,8 +98,8 @@ namespace gum {
       added_fill_ins__(from.added_fill_ins__),
       we_want_fill_ins__(from.we_want_fill_ins__) {
     // copy the strategies
-    elimination_sequence_strategy_ =
-       from.elimination_sequence_strategy_->copyFactory();
+    elimination_sequence_strategy_
+       = from.elimination_sequence_strategy_->copyFactory();
     junction_tree_strategy_ = from.junction_tree_strategy_->copyFactory(this);
 
     // if from has a junction tree, copy it
@@ -136,7 +136,7 @@ namespace gum {
       we_want_fill_ins__(from.we_want_fill_ins__) {
     // move the factories contained in from
     from.elimination_sequence_strategy_ = new DefaultEliminationSequenceStrategy;
-    from.junction_tree_strategy_ = new DefaultJunctionTreeStrategy;
+    from.junction_tree_strategy_        = new DefaultJunctionTreeStrategy;
     junction_tree_strategy_->moveTriangulation(this);
 
     // if from has a junction tree, copy it
@@ -168,7 +168,7 @@ namespace gum {
 
     // remove the current graphs
     original_graph__ = nullptr;
-    junction_tree__ = nullptr;
+    junction_tree__  = nullptr;
     triangulated_graph__.clear();
     elim_tree__.clear();
     max_prime_junction_tree__.clear();
@@ -182,12 +182,12 @@ namespace gum {
     reverse_elim_order__.clear();
 
     // indicates that the junction tree, the max prime tree, etc, are updated
-    has_triangulation__ = true;
-    has_triangulated_graph__ = true;
-    has_elimination_tree__ = true;
-    has_junction_tree__ = true;
+    has_triangulation__           = true;
+    has_triangulated_graph__      = true;
+    has_elimination_tree__        = true;
+    has_junction_tree__           = true;
     has_max_prime_junction_tree__ = true;
-    has_fill_ins__ = true;
+    has_fill_ins__                = true;
   }
 
   // removes redondant fill-ins and compute proper elimination cliques and order
@@ -215,8 +215,8 @@ namespace gum {
           // when R[...] >= j (see the j in the loop below), this means that the
           // node belongs to an extremal edge in R
           for (std::size_t k = 0; k < elim_order__.size(); ++k)
-            R[elim_order__[k]] =
-               0;   // WARNING: do not replace R[elim_order__[k]] by
+            R[elim_order__[k]]
+               = 0;   // WARNING: do not replace R[elim_order__[k]] by
 
           // R[k] because the node ids may not be
           // consecutive numbers
@@ -241,8 +241,8 @@ namespace gum {
               if (triangulated_graph__.neighbours(node2).size()
                   < triangulated_graph__.neighbours(node1).size()) {
                 NodeId tmp = node1;
-                node1 = node2;
-                node2 = tmp;
+                node1      = node2;
+                node2      = tmp;
               }
 
               incomplete = false;
@@ -307,15 +307,16 @@ namespace gum {
     // perform the maximum cardinality search
     if (elim_order__.size() > 0) {
       for (Size i = Size(elim_order__.size()); i >= 1; --i) {
-        NodeId ni = NodeId(i - 1);
-        NodeId node = numbered_neighbours.pop();
-        elim_order__[ni] = node;
+        NodeId ni                  = NodeId(i - 1);
+        NodeId node                = numbered_neighbours.pop();
+        elim_order__[ni]           = node;
         reverse_elim_order__[node] = ni;
 
         for (const auto neighbour: triangulated_graph__.neighbours(node)) {
           try {
             numbered_neighbours.setPriority(
-               neighbour, 1 + numbered_neighbours.priority(neighbour));
+               neighbour,
+               1 + numbered_neighbours.priority(neighbour));
           } catch (NotFound&) {}
         }
       }
@@ -351,8 +352,8 @@ namespace gum {
     // its clique that is eliminated first
     for (NodeId i = NodeId(0); i < size; ++i) {
       NodeId         clique_i_creator = elim_order__[i];
-      const NodeSet& list_of_nodes = elim_cliques__[clique_i_creator];
-      Idx            child = original_graph__->bound() + 1;
+      const NodeSet& list_of_nodes    = elim_cliques__[clique_i_creator];
+      Idx            child            = original_graph__->bound() + 1;
 
       for (const auto node: list_of_nodes) {
         Idx it_elim_step = reverse_elim_order__[node];
@@ -439,8 +440,8 @@ namespace gum {
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
     // Actually clique X will be inserted into clique Y.
     for (unsigned int i = 0; i < merged_cliques.size(); ++i) {
-      T_mpd_cliques[merged_cliques[i].tail()] =
-         T_mpd_cliques[merged_cliques[i].head()];
+      T_mpd_cliques[merged_cliques[i].tail()]
+         = T_mpd_cliques[merged_cliques[i].head()];
     }
 
     // now we can create the max prime junction tree. First, create the cliques
@@ -473,8 +474,8 @@ namespace gum {
 
     // compute for each node which clique of the max prime junction tree was
     // created by the elimination of the node
-    const NodeProperty< NodeId >& node_2_junction_clique =
-       junction_tree_strategy_->createdCliques();
+    const NodeProperty< NodeId >& node_2_junction_clique
+       = junction_tree_strategy_->createdCliques();
 
     for (const auto& elt: node_2_junction_clique)
       node_2_max_prime_clique__.insert(elt.first, T_mpd_cliques[elt.second]);
@@ -538,15 +539,15 @@ namespace gum {
 
     // keep track of the variables passed in argument
     original_graph__ = graph;
-    domain_sizes_ = domsizes;
+    domain_sizes_    = domsizes;
 
     // indicate that no triangulation was performed for this graph
-    has_triangulation__ = false;
-    has_triangulated_graph__ = false;
-    has_elimination_tree__ = false;
-    has_junction_tree__ = false;
+    has_triangulation__           = false;
+    has_triangulated_graph__      = false;
+    has_elimination_tree__        = false;
+    has_junction_tree__           = false;
     has_max_prime_junction_tree__ = false;
-    has_fill_ins__ = false;
+    has_fill_ins__                = false;
   }
 
   /// the function that performs the triangulation
@@ -564,7 +565,7 @@ namespace gum {
     // triangulated graph each time we eliminate a node. Hence, we shall
     // initialize the triangulated graph by a copy of the original graph
     if (minimality_required__) {
-      triangulated_graph__ = *original_graph__;
+      triangulated_graph__     = *original_graph__;
       has_triangulated_graph__ = true;
     }
 
@@ -592,7 +593,7 @@ namespace gum {
 
         for (auto iter_edges1 = nei.begin(); iter_edges1 != nei.end();
              ++iter_edges1) {
-          node1 = *iter_edges1;
+          node1            = *iter_edges1;
           auto iter_edges2 = iter_edges1;
 
           for (++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2) {
@@ -619,7 +620,7 @@ namespace gum {
 
         for (auto iter_edges1 = nei.begin(); iter_edges1 != nei.end();
              ++iter_edges1) {
-          node1 = *iter_edges1;
+          node1            = *iter_edges1;
           auto iter_edges2 = iter_edges1;
 
           for (++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2) {
@@ -646,7 +647,7 @@ namespace gum {
 
         for (auto iter_edges1 = nei.begin(); iter_edges1 != nei.end();
              ++iter_edges1) {
-          node1 = *iter_edges1;
+          node1            = *iter_edges1;
           auto iter_edges2 = iter_edges1;
 
           for (++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2) {
@@ -683,7 +684,7 @@ namespace gum {
       we_want_fill_ins__ = true;
       triangulate__();
       we_want_fill_ins__ = want_fill_ins;
-      has_fill_ins__ = true;
+      has_fill_ins__     = true;
     }
 
     // here, we already computed a triangulation and we already computed

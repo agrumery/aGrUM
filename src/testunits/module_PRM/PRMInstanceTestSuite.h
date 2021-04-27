@@ -123,7 +123,7 @@ namespace gum_tests {
     void testTypeConst() {
       // Arrange
       PRMInstance i("i", *classA__);
-      const auto& const_i = i;
+      const auto& const_i  = i;
       const auto  expected = classA__;
       // Act
       const auto actual = &(const_i.type());
@@ -134,7 +134,7 @@ namespace gum_tests {
     void testExistsById() {
       // Arrange
       PRMInstance i("i", *classA__);
-      auto        id = classA__->get("a").id();
+      auto        id       = classA__->get("a").id();
       bool        expected = true;
       // Act
       bool actual = i.exists(id);
@@ -175,7 +175,7 @@ namespace gum_tests {
     void testGetByName() {
       // Arrange
       PRMInstance                       i("i", *classA__);
-      gum::prm::PRMAttribute< double >* attr = nullptr;
+      gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = classA__->get("a");
       // Act
       TS_ASSERT_THROWS_NOTHING(attr = &(i.get("a")));
@@ -190,8 +190,8 @@ namespace gum_tests {
     void testGetByNameConst() {
       // Arrange
       PRMInstance                             i("i", *classA__);
-      const auto&                             const_i = i;
-      gum::prm::PRMAttribute< double > const* attr = nullptr;
+      const auto&                             const_i    = i;
+      gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = classA__->get("a");
       // Act
       TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get("a")));
@@ -221,7 +221,7 @@ namespace gum_tests {
     void testGetById() {
       // Arrange
       PRMInstance                       i("i", *classA__);
-      gum::prm::PRMAttribute< double >* attr = nullptr;
+      gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = classA__->get("a");
       // Act
       TS_ASSERT_THROWS_NOTHING(attr = &(i.get(class_attr.id())));
@@ -236,8 +236,8 @@ namespace gum_tests {
     void testGetByIdConst() {
       // Arrange
       PRMInstance                             i("i", *classA__);
-      const auto&                             const_i = i;
-      gum::prm::PRMAttribute< double > const* attr = nullptr;
+      const auto&                             const_i    = i;
+      gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = classA__->get("a");
       // Act
       TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get(class_attr.id())));
@@ -287,11 +287,11 @@ namespace gum_tests {
     void testBijection() {
       // Arrange
       PRMInstance      i("i", *classA__);
-      Bijection const* bij = nullptr;
+      Bijection const* bij   = nullptr;
       auto             var_a = &(classA__->get("a").type().variable());
       auto             var_b = &(classA__->get("b").type().variable());
-      auto             i_a = &(i.get("a").type().variable());
-      auto             i_b = &(i.get("b").type().variable());
+      auto             i_a   = &(i.get("a").type().variable());
+      auto             i_b   = &(i.get("b").type().variable());
       // Act
       TS_ASSERT_THROWS_NOTHING(bij = &(i.bijection()));
       // Assert

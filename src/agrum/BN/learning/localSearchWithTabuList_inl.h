@@ -65,7 +65,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
-      MaxNbDecreasing__ = from.MaxNbDecreasing__;
+      MaxNbDecreasing__            = from.MaxNbDecreasing__;
       return *this;
     }
 
@@ -73,7 +73,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
-      MaxNbDecreasing__ = std::move(from.MaxNbDecreasing__);
+      MaxNbDecreasing__            = std::move(from.MaxNbDecreasing__);
       return *this;
     }
 

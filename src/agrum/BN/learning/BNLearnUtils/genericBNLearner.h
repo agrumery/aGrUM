@@ -107,14 +107,24 @@ namespace gum {
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use
-      enum class ScoreType { AIC, BD, BDeu, BIC, K2, LOG2LIKELIHOOD };
+      enum class ScoreType
+      {
+        AIC,
+        BD,
+        BDeu,
+        BIC,
+        K2,
+        LOG2LIKELIHOOD
+      };
 
       /// an enumeration to select the type of parameter estimation we shall
       /// apply
-      enum class ParamEstimatorType { ML };
+      enum class ParamEstimatorType
+      { ML };
 
       /// an enumeration to select the apriori
-      enum class AprioriType {
+      enum class AprioriType
+      {
         NO_APRIORI,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE,
@@ -122,7 +132,8 @@ namespace gum {
       };
 
       /// an enumeration to select easily the learning algorithm to use
-      enum class AlgoType {
+      enum class AlgoType
+      {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST,
@@ -473,10 +484,10 @@ namespace gum {
        * @param knowing list of observed variables
        * @return a std::pair<double,double>
        */
-      std::pair< double, double >
-         chi2(const std::string&                name1,
-              const std::string&                name2,
-              const std::vector< std::string >& knowing = {});
+      std::pair< double, double > chi2(const std::string&                name1,
+                                       const std::string&                name2,
+                                       const std::vector< std::string >& knowing
+                                       = {});
 
       /**
        * Return the <statistic,pvalue> pair for for G2 test in the database
@@ -495,10 +506,10 @@ namespace gum {
        * @param knowing list of observed variables
        * @return a std::pair<double,double>
        */
-      std::pair< double, double >
-         G2(const std::string&                name1,
-            const std::string&                name2,
-            const std::vector< std::string >& knowing = {});
+      std::pair< double, double > G2(const std::string&                name1,
+                                     const std::string&                name2,
+                                     const std::vector< std::string >& knowing
+                                     = {});
 
       /**
        * Return the loglikelihood of vars in the base, conditioned by knowing for
@@ -839,9 +850,9 @@ namespace gum {
       void createScore__();
 
       /// create the parameter estimator used for learning
-      ParamEstimator<>*
-         createParamEstimator__(DBRowGeneratorParser<>& parser,
-                                bool take_into_account_score = true);
+      ParamEstimator<>* createParamEstimator__(DBRowGeneratorParser<>& parser,
+                                               bool take_into_account_score
+                                               = true);
 
       /// returns the DAG learnt
       DAG learnDAG__();

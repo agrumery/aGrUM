@@ -52,7 +52,7 @@ namespace gum {
       maxObjectSize__(GUM_DEFAULT_MAX_OBJECT_SIZE) {
     pool__.setKeyUniquenessPolicy(false);
     GUM_CONSTRUCTOR(SmallObjectAllocator);
-    nbAllocation = 0;
+    nbAllocation   = 0;
     nbDeallocation = 0;
 
     // SmallObjectAllocator::Instance will create a static SmallObjectAllocator and

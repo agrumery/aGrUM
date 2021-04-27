@@ -137,7 +137,7 @@ namespace gum {
        ScoreBDeu< ALLOC >::operator=(const ScoreBDeu< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -148,7 +148,7 @@ namespace gum {
     ScoreBDeu< ALLOC >& ScoreBDeu< ALLOC >::operator=(ScoreBDeu< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -225,8 +225,8 @@ namespace gum {
          this->counter_.counts(idset, true));
       const std::size_t all_size = N_ijk.size();
 
-      double       score = 0.0;
-      const double ess = internal_apriori__.weight();
+      double       score                        = 0.0;
+      const double ess                          = internal_apriori__.weight();
       const bool   informative_external_apriori = this->apriori_->isInformative();
 
 
@@ -237,8 +237,8 @@ namespace gum {
         std::vector< double, ALLOC< double > > N_ij(
            this->marginalize_(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
-        const double      ess_qi = ess / conditioning_size;
-        const double      ess_riqi = ess / all_size;
+        const double      ess_qi            = ess / conditioning_size;
+        const double      ess_riqi          = ess / all_size;
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris
@@ -257,11 +257,11 @@ namespace gum {
           //     - gammalog2 ( N'_ijk + ESS / (r_i * q_i ) ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
             score += gammalog2__(N_prime_ij[j] + ess_qi)
-                     - gammalog2__(N_ij[j] + N_prime_ij[j] + ess_qi);
+                   - gammalog2__(N_ij[j] + N_prime_ij[j] + ess_qi);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + ess_riqi)
-                     - gammalog2__(N_prime_ijk[k] + ess_riqi);
+                   - gammalog2__(N_prime_ijk[k] + ess_riqi);
           }
         } else {
           // the BDeu score can be computed as follows:
@@ -270,7 +270,7 @@ namespace gum {
           // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) )
           // ]
           score = conditioning_size * gammalog2__(ess_qi)
-                  - all_size * gammalog2__(ess_riqi);
+                - all_size * gammalog2__(ess_riqi);
 
           for (const auto n_ij: N_ij) {
             score -= gammalog2__(n_ij + ess_qi);
@@ -295,11 +295,11 @@ namespace gum {
           // gammalog2 ( N' + ess ) - gammalog2 ( N + N' + ess )
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + ESS / ri)
           //                - gammalog2 ( N'_i + ESS / ri ) }
-          double N = 0.0;
+          double N       = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + ess_ri)
-                     - gammalog2__(N_prime_ijk[k] + ess_ri);
+                   - gammalog2__(N_prime_ijk[k] + ess_ri);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
@@ -310,7 +310,7 @@ namespace gum {
           // - gammalog2 ( N + ess )
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
-          score = gammalog2__(ess) - all_size * gammalog2__(ess_ri);
+          score    = gammalog2__(ess) - all_size * gammalog2__(ess_ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
             score += gammalog2__(n_ijk + ess_ri);

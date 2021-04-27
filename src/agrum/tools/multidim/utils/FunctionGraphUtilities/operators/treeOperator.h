@@ -48,8 +48,8 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename >
              class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy =
-                ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy
+             = ExactTerminalNodePolicy >
   class TreeOperator {
     public:
     // ============================================================================

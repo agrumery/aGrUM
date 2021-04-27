@@ -333,7 +333,12 @@ namespace gum {
     NodeSet hard_ev_nodes__;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
+    enum EvidenceChangeType
+    {
+      EVIDENCE_ADDED,
+      EVIDENCE_ERASED,
+      EVIDENCE_MODIFIED
+    };
 
     /** @brief indicates which nodes of the MN have evidence that changed
      * since the last inference */
@@ -350,12 +355,13 @@ namespace gum {
     void createNewJT__();
 
     /// sets the operator for performing the projections
-    void setProjectionFunction__(Potential< GUM_SCALAR >* (*proj)(
-       const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void setProjectionFunction__(
+       Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
+                                        const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction__(Potential< GUM_SCALAR >* (*comb)(
-       const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
+    void setCombinationFunction__(Potential< GUM_SCALAR >* (
+       *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void diffuseMessageInvalidations__(NodeId   from,

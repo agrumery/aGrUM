@@ -96,8 +96,9 @@ namespace gum_tests {
 
 
     void testAndConstructorWithLabels() {
-      gum::LabelizedVariable var1(
-         "var1", "this is var1", {"rouge", "vert", "bleu"});
+      gum::LabelizedVariable var1("var1",
+                                  "this is var1",
+                                  {"rouge", "vert", "bleu"});
       TS_ASSERT_EQUALS(var1.toString(), "var1<rouge,vert,bleu>");
       TS_ASSERT_EQUALS(var1.posLabel("vert"), gum::Idx(1));
     }

@@ -112,7 +112,8 @@ namespace gum {
     virtual ScheduleMultiDim< GUM_SCALAR >
        project(const ScheduleMultiDim< GUM_SCALAR >& table,
                const Set< const DiscreteVariable* >& del_vars,
-               Schedule< GUM_SCALAR >&               schedule) = 0;
+               Schedule< GUM_SCALAR >&               schedule)
+       = 0;
     ScheduleMultiDim< GUM_SCALAR >
        project(const MultiDimImplementation< GUM_SCALAR >& table,
                const Set< const DiscreteVariable* >&       del_vars,
@@ -126,21 +127,24 @@ namespace gum {
     /// changes the function used for projecting tables
     virtual void setProjectFunction(MultiDimImplementation< GUM_SCALAR >* (*proj)(
        const MultiDimImplementation< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&)) = 0;
+       const Set< const DiscreteVariable* >&))
+       = 0;
 
     /// returns the projection function currently used by the projector
     virtual MultiDimImplementation< GUM_SCALAR >* (*projectFunction())(
        const MultiDimImplementation< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&) = 0;
+       const Set< const DiscreteVariable* >&)
+       = 0;
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection */
     virtual float nbOperations(const ScheduleMultiDim< GUM_SCALAR >& table,
                                const Set< const DiscreteVariable* >& del_vars,
-                               const Schedule< GUM_SCALAR >&         schedule) = 0;
-    float         nbOperations(const MultiDimImplementation< GUM_SCALAR >& table,
-                               const Set< const DiscreteVariable* >&       del_vars,
-                               const Schedule< GUM_SCALAR >&               schedule);
+                               const Schedule< GUM_SCALAR >&         schedule)
+       = 0;
+    float nbOperations(const MultiDimImplementation< GUM_SCALAR >& table,
+                       const Set< const DiscreteVariable* >&       del_vars,
+                       const Schedule< GUM_SCALAR >&               schedule);
     template < template < typename > class TABLE >
     float nbOperations(const TABLE< GUM_SCALAR >&            set,
                        const Set< const DiscreteVariable* >& del_vars,
@@ -158,7 +162,8 @@ namespace gum {
     virtual std::pair< long, long >
        memoryUsage(const ScheduleMultiDim< GUM_SCALAR >& table,
                    const Set< const DiscreteVariable* >& del_vars,
-                   const Schedule< GUM_SCALAR >&         schedule) = 0;
+                   const Schedule< GUM_SCALAR >&         schedule)
+       = 0;
     std::pair< long, long >
        memoryUsage(const MultiDimImplementation< GUM_SCALAR >& table,
                    const Set< const DiscreteVariable* >&       del_vars,

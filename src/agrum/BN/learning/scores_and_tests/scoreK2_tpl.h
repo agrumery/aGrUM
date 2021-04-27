@@ -136,7 +136,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(const ScoreK2< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -147,7 +147,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(ScoreK2< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -209,9 +209,9 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
          this->counter_.counts(idset, true));
-      const std::size_t all_size = N_ijk.size();
+      const std::size_t all_size              = N_ijk.size();
       const bool informative_external_apriori = this->apriori_->isInformative();
-      double     score = 0.0;
+      double     score                        = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -220,7 +220,7 @@ namespace gum {
         std::vector< double, ALLOC< double > > N_ij(
            this->marginalize_(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
-        const double      ri = double(all_size / conditioning_size);
+        const double      ri                = double(all_size / conditioning_size);
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
@@ -237,11 +237,11 @@ namespace gum {
           //                             gammalog2 ( N'_ijk + 1 ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
             score += gammalog2__(N_prime_ij[j] + ri)
-                     - gammalog2__(N_ij[j] + N_prime_ij[j] + ri);
+                   - gammalog2__(N_ij[j] + N_prime_ij[j] + ri);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1.0)
-                     - gammalog2__(N_prime_ijk[k] + 1.0);
+                   - gammalog2__(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:
@@ -272,11 +272,11 @@ namespace gum {
           this->apriori_->addAllApriori(idset, N_prime_ijk);
 
           // the K2 score can be computed as follows:
-          double N = 0.0;
+          double N       = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1)
-                     - gammalog2__(N_prime_ijk[k] + 1);
+                   - gammalog2__(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
@@ -284,7 +284,7 @@ namespace gum {
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-          score = gammalog2__(ri);
+          score    = gammalog2__(ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
             score += gammalog2__(n_ijk + 1);

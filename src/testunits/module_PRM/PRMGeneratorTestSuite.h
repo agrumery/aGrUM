@@ -49,11 +49,11 @@ namespace gum_tests {
        size_t                                                        layer_count) {
       for (size_t lvl = 0; lvl < layer_count; ++lvl) {
         v.push_back(gum::prm::LayerGenerator< double >::LayerData());
-        v[lvl].a = 30;
-        v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
-        v[lvl].inner_density = 0.2f;
+        v[lvl].a              = 30;
+        v[lvl].g              = 2;
+        v[lvl].c              = 1;
+        v[lvl].o              = 10;
+        v[lvl].inner_density  = 0.2f;
         v[lvl].outter_density = 0.05f;
       }
     }
@@ -69,8 +69,8 @@ namespace gum_tests {
       gum::prm::PRM< double >* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set =
-         prm->interfaces();
+      const gum::Set< gum::prm::PRMInterface< double >* >& i_set
+         = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
 
       for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
@@ -84,12 +84,12 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30);
         }
 
-        gum::Size                                            six = 0;
-        gum::Size                                            two = 0;
+        gum::Size                                            six  = 0;
+        gum::Size                                            two  = 0;
         const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a =
-                attr.begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+             = attr.begin();
              a != attr.end();
              ++a) {
           if ((**a).type()->domainSize() == (gum::Size)6) {
@@ -109,14 +109,14 @@ namespace gum_tests {
       // testing classes
       const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
 
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c =
-              c_set.begin();
+      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c
+           = c_set.begin();
            c != c_set.end();
            ++c) {
         TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a =
-                (**c).attributes().begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+             = (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
           TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);
@@ -145,12 +145,12 @@ namespace gum_tests {
       gum::prm::PRM< double >* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set =
-         prm->interfaces();
+      const gum::Set< gum::prm::PRMInterface< double >* >& i_set
+         = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
 
-      for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter =
-              i_set.begin();
+      for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter
+           = i_set.begin();
            iter != i_set.end();
            ++iter) {
         const gum::prm::PRMInterface< double >& i = **iter;
@@ -163,12 +163,12 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30);
         }
 
-        gum::Size                                            six = 0;
-        gum::Size                                            two = 0;
+        gum::Size                                            six  = 0;
+        gum::Size                                            two  = 0;
         const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a =
-                attr.begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+             = attr.begin();
              a != attr.end();
              ++a) {
           if ((**a).type()->domainSize() == (gum::Size)6) {
@@ -188,14 +188,14 @@ namespace gum_tests {
       // testing classes
       const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
 
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c =
-              c_set.begin();
+      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c
+           = c_set.begin();
            c != c_set.end();
            ++c) {
         TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a =
-                (**c).attributes().begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+             = (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
           TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);

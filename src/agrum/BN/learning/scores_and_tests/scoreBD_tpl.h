@@ -136,7 +136,7 @@ namespace gum {
     ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(const ScoreBD< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -147,7 +147,7 @@ namespace gum {
     ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(ScoreBD< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -232,22 +232,22 @@ namespace gum {
         //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -
         //                             gammalog2 ( N'_ijk ) } ]
         for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-          score +=
-             gammalog2__(N_prime_ij[j]) - gammalog2__(N_ij[j] + N_prime_ij[j]);
+          score
+             += gammalog2__(N_prime_ij[j]) - gammalog2__(N_ij[j] + N_prime_ij[j]);
         }
         for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-          score +=
-             gammalog2__(N_ijk[k] + N_prime_ijk[k]) - gammalog2__(N_prime_ijk[k]);
+          score += gammalog2__(N_ijk[k] + N_prime_ijk[k])
+                 - gammalog2__(N_prime_ijk[k]);
         }
       } else {
         // the BD score can be computed as follows:
         // gammalog2 ( N' ) - gammalog2 ( N + N' )
         // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
-        double N = 0.0;
+        double N       = 0.0;
         double N_prime = 0.0;
         for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-          score +=
-             gammalog2__(N_ijk[k] + N_prime_ijk[k]) - gammalog2__(N_prime_ijk[k]);
+          score += gammalog2__(N_ijk[k] + N_prime_ijk[k])
+                 - gammalog2__(N_prime_ijk[k]);
           N += N_ijk[k];
           N_prime += N_prime_ijk[k];
         }

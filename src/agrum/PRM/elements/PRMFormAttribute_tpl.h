@@ -48,8 +48,8 @@ namespace gum {
         type__(new PRMType(type)), cpf__(0), formulas__(impl), class__(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       formulas__->add(type__->variable());
-      this->safeName_ =
-         PRMObject::LEFT_CAST() + type__->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+                      + PRMObject::RIGHT_CAST() + name;
     }
 
     template < typename GUM_SCALAR >
@@ -65,15 +65,18 @@ namespace gum {
        const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< std::string >* >(
          this->formulas__->newFactory());
-      return new PRMFormAttribute< GUM_SCALAR >(
-         c, this->name(), this->type(), impl);
+      return new PRMFormAttribute< GUM_SCALAR >(c,
+                                                this->name(),
+                                                this->type(),
+                                                impl);
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::copy(
        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
-      auto copy =
-         new PRMFormAttribute< GUM_SCALAR >(*class__, this->name(), this->type());
+      auto copy = new PRMFormAttribute< GUM_SCALAR >(*class__,
+                                                     this->name(),
+                                                     this->type());
       for (auto var: formulas__->variablesSequence()) {
         if (var != &(type__->variable())) { copy->formulas__->add(*var); }
       }
@@ -100,8 +103,8 @@ namespace gum {
       }
 
       if (dynamic_cast< const PRMFormAttribute< GUM_SCALAR >* >(&source)) {
-        const auto& src =
-           static_cast< const PRMFormAttribute< GUM_SCALAR >& >(source);
+        const auto& src
+           = static_cast< const PRMFormAttribute< GUM_SCALAR >& >(source);
 
         Instantiation inst(formulas__), jnst(src.formulas__);
 
@@ -185,8 +188,8 @@ namespace gum {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
-        cast =
-           new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
+        cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(),
+                                                    type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "this ScalarAttribute can not have cast descendant");
@@ -194,7 +197,7 @@ namespace gum {
 
       cast->addParent(*this);
 
-      const DiscreteVariable& my_var = type().variable();
+      const DiscreteVariable& my_var   = type().variable();
       DiscreteVariable&       cast_var = cast->type().variable();
       Instantiation           inst(cast->cpf());
 

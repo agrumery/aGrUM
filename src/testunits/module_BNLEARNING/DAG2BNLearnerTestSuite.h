@@ -112,8 +112,9 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     extern_apriori(database);
       gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(
-         parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML<> param_estimator(parser,
+                                                        extern_apriori,
+                                                        intern_apriori);
 
       gum::learning::DAG2BNLearner<> learner;
 
@@ -126,11 +127,11 @@ namespace gum_tests {
 
       auto bn1 = learner.createBN(param_estimator, dag);
 
-      auto                  v2 = getProba__(bn1, 2);
+      auto                  v2  = getProba__(bn1, 2);
       std::vector< double > xv2 = normalize__({1401, 1, 1});
       TS_ASSERT(v2 == xv2);
 
-      auto                  v02 = getProba__(bn1, 0);
+      auto                  v02  = getProba__(bn1, 0);
       std::vector< double > xv02 = xnormalize__({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
     }
@@ -196,8 +197,9 @@ namespace gum_tests {
 
       gum::learning::AprioriSmoothing<> extern_apriori(database);
       gum::learning::AprioriNoApriori<> intern_apriori(database);
-      gum::learning::ParamEstimatorML<> param_estimator_id(
-         parser_id, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML<> param_estimator_id(parser_id,
+                                                           extern_apriori,
+                                                           intern_apriori);
 
       gum::learning::DBRowGeneratorEM<> generator_EM(col_types, bn);
       gum::learning::DBRowGenerator<>&  gen_EM = generator_EM;   // fix for g++-4.8
@@ -205,8 +207,9 @@ namespace gum_tests {
       genset_EM.insertGenerator(gen_EM);
       gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(),
                                                       genset_EM);
-      gum::learning::ParamEstimatorML<>     param_estimator_EM(
-         parser_EM, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML<>     param_estimator_EM(parser_EM,
+                                                           extern_apriori,
+                                                           intern_apriori);
 
       gum::learning::DAG2BNLearner<> learner;
 
@@ -221,8 +224,8 @@ namespace gum_tests {
       learner.setEpsilon(1e-3);
       bool ok;
       for (int i = 0; i < 10; i++) {
-        ok = true;
-        auto bn1 = learner.createBN(param_estimator_id, param_estimator_EM, dag);
+        ok         = true;
+        auto bn1   = learner.createBN(param_estimator_id, param_estimator_EM, dag);
         auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
                         .margSumIn(gum::Set< const gum::DiscreteVariable* >(
                            {&bn1.variableFromName("B")}));

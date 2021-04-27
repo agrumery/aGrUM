@@ -64,8 +64,8 @@ namespace gum {
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
     PartialOrderedTriangulation(
-       const PartialOrderedEliminationSequenceStrategy& elimSeq =
-          DefaultPartialOrderedEliminationSequenceStrategy(),
+       const PartialOrderedEliminationSequenceStrategy& elimSeq
+       = DefaultPartialOrderedEliminationSequenceStrategy(),
        const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
        bool                        minimality = false);
 
@@ -90,8 +90,8 @@ namespace gum {
        const UndiGraph*                                 graph,
        const NodeProperty< Size >*                      domsizes,
        const List< NodeSet >*                           partial_order,
-       const PartialOrderedEliminationSequenceStrategy& elimSeq =
-          DefaultPartialOrderedEliminationSequenceStrategy(),
+       const PartialOrderedEliminationSequenceStrategy& elimSeq
+       = DefaultPartialOrderedEliminationSequenceStrategy(),
        const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
        bool                        minimality = false);
 

@@ -55,7 +55,8 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintIndegree::StructuralConstraintIndegree(
-       const DiGraph& graph, Size max_indegree) :
+       const DiGraph& graph,
+       Size           max_indegree) :
         StructuralConstraintDiGraph(graph),
         Indegree__max_indegree_(max_indegree) {
       for (const auto id: graph) {
@@ -92,8 +93,8 @@ namespace gum {
        const StructuralConstraintIndegree& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        Indegree__max_parents_ = from.Indegree__max_parents_;
-        Indegree__max_indegree_ = from.Indegree__max_indegree_;
+        Indegree__max_parents_               = from.Indegree__max_parents_;
+        Indegree__max_indegree_              = from.Indegree__max_indegree_;
       }
 
       return *this;
@@ -104,7 +105,7 @@ namespace gum {
        StructuralConstraintIndegree&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        Indegree__max_parents_ = std::move(from.Indegree__max_parents_);
+        Indegree__max_parents_  = std::move(from.Indegree__max_parents_);
         Indegree__max_indegree_ = std::move(from.Indegree__max_indegree_);
       }
 

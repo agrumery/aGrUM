@@ -63,8 +63,8 @@ namespace gum {
       using Row = DBRow< TX_DATA, ALLOC >;
 
       template < typename TX_DATA >
-      using Matrix =
-         std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >,
+                                  ALLOC< DBRow< TX_DATA, ALLOC > > >;
 
 
       /// insert a new DBRow at the end of the database
@@ -90,8 +90,9 @@ namespace gum {
       /// insert a new row at the end of the database
       /** The new row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns. */
-      virtual void insertRow(
-         const std::vector< std::string, ALLOC< std::string > >& new_row) = 0;
+      virtual void
+         insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row)
+         = 0;
 
       /// insert new rows at the end of the database
       /** The new rows passed in argument are supposed to come from an external
@@ -109,14 +110,15 @@ namespace gum {
       using Row = DBRow< TX_DATA, ALLOC >;
 
       template < typename TX_DATA >
-      using Matrix =
-         std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >,
+                                  ALLOC< DBRow< TX_DATA, ALLOC > > >;
 
       /// insert a new row at the end of the database
       /** The new row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns. */
-      virtual void insertRow(
-         const std::vector< std::string, ALLOC< std::string > >& new_row) = 0;
+      virtual void
+         insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row)
+         = 0;
 
       /// insert new rows at the end of the database
       /** The new rows passed in argument are supposed to come from an external
@@ -269,14 +271,18 @@ namespace gum {
 
       /// the type for the matrices stored into the database
       template < typename TX_DATA >
-      using Matrix =
-         std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >,
+                                  ALLOC< DBRow< TX_DATA, ALLOC > > >;
 
       template < template < typename > class XALLOC >
       using MissingValType = std::vector< std::string, XALLOC< std::string > >;
 
 
-      enum IsMissing : char { False, True };
+      enum IsMissing : char
+      {
+        False,
+        True
+      };
 
 
       /** @class Handler
@@ -375,13 +381,13 @@ namespace gum {
         /// Types for STL compliance.
         /// @{
         using iterator_category = std::random_access_iterator_tag;
-        using value_type = typename DBHandler< T_DATA, ALLOC >::value_type;
-        using reference = value_type&;
-        using const_reference = const value_type&;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-        using difference_type = std::ptrdiff_t;
-        using allocator_type = ALLOC< T_DATA >;
+        using value_type        = typename DBHandler< T_DATA, ALLOC >::value_type;
+        using reference         = value_type&;
+        using const_reference   = const value_type&;
+        using pointer           = value_type*;
+        using const_pointer     = const value_type*;
+        using difference_type   = std::ptrdiff_t;
+        using allocator_type    = ALLOC< T_DATA >;
         /// @}
 
 
@@ -694,13 +700,13 @@ namespace gum {
         /// Types for STL compliance.
         /// @{
         using iterator_category = std::random_access_iterator_tag;
-        using value_type = typename Handler::value_type;
-        using reference = value_type&;
-        using const_reference = const value_type&;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-        using difference_type = std::ptrdiff_t;
-        using allocator_type = ALLOC< T_DATA >;
+        using value_type        = typename Handler::value_type;
+        using reference         = value_type&;
+        using const_reference   = const value_type&;
+        using pointer           = value_type*;
+        using const_pointer     = const value_type*;
+        using difference_type   = std::ptrdiff_t;
+        using allocator_type    = ALLOC< T_DATA >;
         /// @}
 
         // ########################################################################
@@ -761,18 +767,18 @@ namespace gum {
 
       /// Types for STL compliance.
       /// @{
-      using value_type = Row< T_DATA >;
-      using reference = value_type&;
-      using const_reference = const value_type&;
-      using pointer = value_type*;
-      using const_pointer = const value_type*;
-      using size_type = std::size_t;
-      using difference_type = std::ptrdiff_t;
-      using iterator = Handler;
-      using iterator_safe = HandlerSafe;
-      using const_iterator = const Handler;
+      using value_type          = Row< T_DATA >;
+      using reference           = value_type&;
+      using const_reference     = const value_type&;
+      using pointer             = value_type*;
+      using const_pointer       = const value_type*;
+      using size_type           = std::size_t;
+      using difference_type     = std::ptrdiff_t;
+      using iterator            = Handler;
+      using iterator_safe       = HandlerSafe;
+      using const_iterator      = const Handler;
       using const_iterator_safe = const HandlerSafe;
-      using allocator_type = ALLOC< T_DATA >;
+      using allocator_type      = ALLOC< T_DATA >;
       /// @}
 
 
@@ -883,7 +889,8 @@ namespace gum {
        * vector is inadequate. */
       virtual void setVariableNames(
          const std::vector< std::string, ALLOC< std::string > >& names,
-         const bool from_external_object = true) = 0;
+         const bool from_external_object = true)
+         = 0;
 
       /// sets the names of the variables
       /** This method can be called in two different ways: either the names
@@ -979,7 +986,8 @@ namespace gum {
        * column of an original external database or to the current kth column
        * of the database table. */
       virtual void ignoreColumn(const std::size_t k,
-                                const bool        from_external_object = true) = 0;
+                                const bool        from_external_object = true)
+         = 0;
 
       /// returns  the set of columns of the original dataset that are ignored
       virtual const DBVector< std::size_t > ignoredColumns() const = 0;

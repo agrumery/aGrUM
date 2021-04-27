@@ -330,8 +330,8 @@ namespace gum {
         // On vérifie chaque session
         for (const auto session: context->sessions()) {
           std::string              sessionName = session->name();
-          O3prmrSession< double >* new_session =
-             new O3prmrSession< double >(sessionName);
+          O3prmrSession< double >* new_session
+             = new O3prmrSession< double >(sessionName);
 
           if (m_verbose)
             m_log << "## Start session '" << sessionName << "'..." << std::endl
@@ -427,25 +427,25 @@ namespace gum {
       bool O3prmrInterpreter::checkSetGndEngine(SetGndEngineCommand* command) {
         m_bn_engine = command->value;
         return m_bn_engine == "VE" || m_bn_engine == "VEBB"
-               || m_bn_engine == "lazy";
+            || m_bn_engine == "lazy";
       }
 
       bool O3prmrInterpreter::checkObserve(ObserveCommand< double >* command) {
         try {
-          std::string       left_val = command->leftValue;
+          std::string       left_val  = command->leftValue;
           const std::string right_val = command->rightValue;
 
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(left_val);
-          const PRMInstance< double >& instance =
-             sys.get(findInstanceName(left_val, sys));
-          const PRMAttribute< double >& attr =
-             instance.get(findAttributeName(left_val, instance));
-          typename PRMInference< double >::Chain chain =
-             std::make_pair(&instance, &attr);
+          const PRMInstance< double >& instance
+             = sys.get(findInstanceName(left_val, sys));
+          const PRMAttribute< double >& attr
+             = instance.get(findAttributeName(left_val, instance));
+          typename PRMInference< double >::Chain chain
+             = std::make_pair(&instance, &attr);
 
           command->system = &sys;
-          command->chain = std::make_pair(&instance, &attr);
+          command->chain  = std::make_pair(&instance, &attr);
 
           // Check label exists for this type.
           // Potential<double> e;
@@ -483,15 +483,15 @@ namespace gum {
 
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(name);
-          const PRMInstance< double >& instance =
-             sys.get(findInstanceName(name, sys));
-          const PRMAttribute< double >& attr =
-             instance.get(findAttributeName(name, instance));
+          const PRMInstance< double >& instance
+             = sys.get(findInstanceName(name, sys));
+          const PRMAttribute< double >& attr
+             = instance.get(findAttributeName(name, instance));
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
 
           command->system = &sys;
-          command->chain = std::make_pair(&instance, &attr);
+          command->chain  = std::make_pair(&instance, &attr);
 
           return true;
 
@@ -508,15 +508,15 @@ namespace gum {
 
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(name);
-          const PRMInstance< double >& instance =
-             sys.get(findInstanceName(name, sys));
-          const PRMAttribute< double >& attr =
-             instance.get(findAttributeName(name, instance));
+          const PRMInstance< double >& instance
+             = sys.get(findInstanceName(name, sys));
+          const PRMAttribute< double >& attr
+             = instance.get(findAttributeName(name, instance));
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
 
           command->system = &sys;
-          command->chain = std::make_pair(&instance, &attr);
+          command->chain  = std::make_pair(&instance, &attr);
 
           return true;
 
@@ -557,7 +557,7 @@ namespace gum {
             size_t index = o3prmrFilename.find_last_of('/');
 
             if (index != std::string::npos) {
-              std::string dir = o3prmrFilename.substr(0, index + 1);
+              std::string dir     = o3prmrFilename.substr(0, index + 1);
               import_abs_filename = dir + import_name;
 
               if (m_verbose) {
@@ -651,7 +651,7 @@ namespace gum {
           }
 
           // May throw std::IOError if file does't exist
-          Size previousO3prmError = m_reader->errors();
+          Size previousO3prmError  = m_reader->errors();
           Size previousO3prmrError = errors();
 
           try {
@@ -689,7 +689,7 @@ namespace gum {
       }
 
       std::string O3prmrInterpreter::findSystemName(std::string& s) {
-        size_t      dot = s.find_first_of('.');
+        size_t      dot  = s.find_first_of('.');
         std::string name = s.substr(0, dot);
 
         // We look first for real system, next for alias.
@@ -709,7 +709,7 @@ namespace gum {
             return name;
           }
 
-          dot = s.find('.', dot + 1);
+          dot  = s.find('.', dot + 1);
           name = s.substr(0, dot);
         }
 
@@ -720,7 +720,7 @@ namespace gum {
          O3prmrInterpreter::findInstanceName(std::string&               s,
                                              const PRMSystem< double >& sys) {
         // We have found system before, so 's' has been stripped.
-        size_t      dot = s.find_first_of('.');
+        size_t      dot  = s.find_first_of('.');
         std::string name = s.substr(0, dot);
 
         if (!sys.exists(name))
@@ -732,7 +732,8 @@ namespace gum {
       }
 
       std::string O3prmrInterpreter::findAttributeName(
-         const std::string& s, const PRMInstance< double >& instance) {
+         const std::string&           s,
+         const PRMInstance< double >& instance) {
         if (!instance.exists(s))
           throw "'" + s + "' is not an attribute of instance '" + instance.name()
              + "'.";
@@ -789,7 +790,7 @@ namespace gum {
 
       bool O3prmrInterpreter::unobserve(
          const UnobserveCommand< double >* command) try {
-        std::string                            name = command->value;
+        std::string                            name  = command->value;
         typename PRMInference< double >::Chain chain = command->chain;
 
         // Prevent from something
@@ -849,7 +850,7 @@ namespace gum {
 
         QueryResult result;
         result.command = query;
-        result.time = t;
+        result.time    = t;
 
         Instantiation                 j(m);
         const PRMAttribute< double >& attr = *(command->chain.second);
@@ -857,12 +858,12 @@ namespace gum {
         for (j.setFirst(); !j.end(); j.inc()) {
           // auto label_value = j.val ( attr.type().variable() );
           auto        label_value = j.val(0);
-          std::string label = attr.type().variable().label(label_value);
-          float       value = float(m.get(j));
+          std::string label       = attr.type().variable().label(label_value);
+          float       value       = float(m.get(j));
 
           SingleResult singleResult;
           singleResult.label = label;
-          singleResult.p = value;
+          singleResult.p     = value;
 
           result.values.push_back(singleResult);
 

@@ -27,7 +27,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::saveInference(const std::string& path) {
       std::string path_name = path.substr(0, path.size() - 4);
-      path_name = path_name + ".res";
+      path_name             = path_name + ".res";
 
       std::ofstream res(path_name.c_str(), std::ios::out | std::ios::trunc);
 
@@ -210,16 +210,16 @@ namespace gum {
           den_max_tmp = GUM_SCALAR(1.);
         } else if (lx[i] > (GUM_SCALAR)1.) {
           GUM_SCALAR li = GUM_SCALAR(1.) / (lx[i] - GUM_SCALAR(1.));
-          num_min_tmp = num_min + li;
-          den_min_tmp = den_max + li;
-          num_max_tmp = num_max + li;
-          den_max_tmp = den_min + li;
+          num_min_tmp   = num_min + li;
+          den_min_tmp   = den_max + li;
+          num_max_tmp   = num_max + li;
+          den_max_tmp   = den_min + li;
         } else if (lx[i] < (GUM_SCALAR)1.) {
           GUM_SCALAR li = GUM_SCALAR(1.) / (lx[i] - GUM_SCALAR(1.));
-          num_min_tmp = num_max + li;
-          den_min_tmp = den_min + li;
-          num_max_tmp = num_min + li;
-          den_max_tmp = den_max + li;
+          num_min_tmp   = num_max + li;
+          den_min_tmp   = den_min + li;
+          num_max_tmp   = num_min + li;
+          den_max_tmp   = den_max + li;
         }
 
         if (den_min_tmp == 0. && num_min_tmp == 0.) {
@@ -351,7 +351,7 @@ namespace gum {
         it[i] = combi_msg_p[i].begin();
       }
 
-      int  combi = 0;
+      int  combi  = 0;
       auto theEnd = combi_msg_p[taille - 1].end();
 
       while (it[taille - 1] != theEnd) {
@@ -560,9 +560,13 @@ namespace gum {
           makeInferenceNodeToNeighbours_();
           break;
 
-        case InferenceType::ordered: makeInferenceByOrderedArcs_(); break;
+        case InferenceType::ordered:
+          makeInferenceByOrderedArcs_();
+          break;
 
-        case InferenceType::randomOrder: makeInferenceByRandomOrder_(); break;
+        case InferenceType::randomOrder:
+          makeInferenceByRandomOrder_();
+          break;
       }
 
       //_updateMarginals();
@@ -1013,7 +1017,7 @@ namespace gum {
 
         if (min != ArcsL_min_[Arc(X, Y)]) {
           ArcsL_min_[Arc(X, Y)] = min;
-          update = true;
+          update                = true;
         }
 
         if (ArcsL_max_.exists(Arc(X, Y))) {
@@ -1222,7 +1226,7 @@ namespace gum {
 
         if (msg_p_min != ArcsP_min_[Arc(X, demanding_child)]) {
           ArcsP_min_[Arc(X, demanding_child)] = msg_p_min;
-          update = true;
+          update                              = true;
         }
 
         if (ArcsP_max_.exists(Arc(X, demanding_child))) {
@@ -1485,7 +1489,8 @@ namespace gum {
       if (infE__::modal_.empty()) { return; }
 
       std::vector< std::vector< GUM_SCALAR > > vertices(
-         2, std::vector< GUM_SCALAR >(2));
+         2,
+         std::vector< GUM_SCALAR >(2));
 
       for (auto node: bnet__->nodes()) {
         vertices[0][0] = infE__::marginalMin_[node][0];
@@ -1532,10 +1537,10 @@ namespace gum {
                   "this credal net");
       }
 
-      cn__ = &cnet;
+      cn__   = &cnet;
       bnet__ = &cnet.current_bn();
 
-      inferenceType__ = InferenceType::nodeToNeighbours;
+      inferenceType__    = InferenceType::nodeToNeighbours;
       InferenceUpToDate_ = false;
 
       GUM_CONSTRUCTOR(CNLoopyPropagation);

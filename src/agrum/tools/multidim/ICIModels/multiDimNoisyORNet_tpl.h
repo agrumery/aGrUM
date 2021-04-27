@@ -33,7 +33,8 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
-     GUM_SCALAR external_weight, GUM_SCALAR default_weight) :
+     GUM_SCALAR external_weight,
+     GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORNet);
   }

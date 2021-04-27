@@ -191,8 +191,10 @@ def CNinference2dot(cn, size=None, engine=None, evs={}, targets={}, nodeColor=No
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
            gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
-  dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
-    1000 * (stopTime - startTime))
+
+  if gum.config["notebook", "show_inference_time"]:
+    dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
+
   dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \
             '", style=filled,color="' + \
             gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"

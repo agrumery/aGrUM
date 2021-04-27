@@ -46,7 +46,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< double > t1, t2, t3, t4, t5, t6;
@@ -65,7 +65,8 @@ namespace gum_tests {
       randomInitP(t6);
 
       gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb(
-         multPot, mySum);
+         multPot,
+         mySum);
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -73,8 +74,8 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
-        gum::Set< const gum::Potential< double >* > res =
-           projcomb.combineAndProject(to_comb, del_vars);
+        gum::Set< const gum::Potential< double >* > res
+           = projcomb.combineAndProject(to_comb, del_vars);
 
         double nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -86,8 +87,8 @@ namespace gum_tests {
         TS_ASSERT(nb_ops == 416);
         TS_ASSERT(res.size() == 3);
 
-        gum::Set< const gum::Potential< double >* >::const_iterator iter =
-           res.begin();
+        gum::Set< const gum::Potential< double >* >::const_iterator iter
+           = res.begin();
         const gum::Potential< double >* res1 = *iter;
         ++iter;
         const gum::Potential< double >* res2 = *iter;
@@ -123,13 +124,13 @@ namespace gum_tests {
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
         delete tt2;
 
-        gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2 =
-           projcomb;
+        gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2
+           = projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
-        gum::MultiDimCombineAndProjectDefault< double, gum::Potential >*
-           projcomb3 = projcomb.newFactory();
+        gum::MultiDimCombineAndProjectDefault< double, gum::Potential >* projcomb3
+           = projcomb.newFactory();
 
         delete projcomb3;
 
@@ -153,7 +154,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< float > t1, t2, t3, t4, t5, t6;
@@ -172,7 +173,8 @@ namespace gum_tests {
       randomInitP(t6);
 
       gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
-         multPot, mySum);
+         multPot,
+         mySum);
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -180,8 +182,8 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
-        gum::Set< const gum::Potential< float >* > res =
-           projcomb.combineAndProject(to_comb, del_vars);
+        gum::Set< const gum::Potential< float >* > res
+           = projcomb.combineAndProject(to_comb, del_vars);
 
         float nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -193,8 +195,8 @@ namespace gum_tests {
         TS_ASSERT(nb_ops == 416);
         TS_ASSERT(res.size() == 3);
 
-        gum::Set< const gum::Potential< float >* >::const_iterator iter =
-           res.begin();
+        gum::Set< const gum::Potential< float >* >::const_iterator iter
+           = res.begin();
         const gum::Potential< float >* res1 = *iter;
         ++iter;
         const gum::Potential< float >* res2 = *iter;
@@ -231,13 +233,13 @@ namespace gum_tests {
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
         delete tt2;
 
-        gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2 =
-           projcomb;
+        gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2
+           = projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
-        gum::MultiDimCombineAndProjectDefault< float, gum::Potential >* projcomb3 =
-           projcomb.newFactory();
+        gum::MultiDimCombineAndProjectDefault< float, gum::Potential >* projcomb3
+           = projcomb.newFactory();
 
         delete projcomb3;
 
@@ -261,7 +263,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 4);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
       gum::Potential< float > t1, t2, t3;
@@ -273,7 +275,8 @@ namespace gum_tests {
       t3.set(I3, 5.0);
 
       gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
-         multPot, mySum);
+         multPot,
+         mySum);
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3;
@@ -281,12 +284,12 @@ namespace gum_tests {
       del_vars << vars[0] << vars[2];
 
       {
-        gum::Set< const gum::Potential< float >* > res =
-           projcomb.combineAndProject(to_comb, del_vars);
+        gum::Set< const gum::Potential< float >* > res
+           = projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 3);
 
         int   nb_empty = 0;
-        float prod = 1;
+        float prod     = 1;
         for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
@@ -301,12 +304,12 @@ namespace gum_tests {
 
       del_vars << vars[1];
       {
-        gum::Set< const gum::Potential< float >* > res =
-           projcomb.combineAndProject(to_comb, del_vars);
+        gum::Set< const gum::Potential< float >* > res
+           = projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 3);
 
         int   nb_empty = 0;
-        float prod = 1;
+        float prod     = 1;
         for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
@@ -323,12 +326,12 @@ namespace gum_tests {
       to_comb.clear();
       to_comb << &t2 << &t3;
       {
-        gum::Set< const gum::Potential< float >* > res =
-           projcomb.combineAndProject(to_comb, del_vars);
+        gum::Set< const gum::Potential< float >* > res
+           = projcomb.combineAndProject(to_comb, del_vars);
         TS_ASSERT(res.size() == 2);
 
         int   nb_empty = 0;
-        float prod = 1;
+        float prod     = 1;
         for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);

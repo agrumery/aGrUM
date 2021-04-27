@@ -49,7 +49,8 @@ namespace gum {
       // First we add all nodes
       for (const auto ci: prm.classes()) {
         node_map__.insert(
-           ci, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
+           ci,
+           new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
         for (const auto node: ci->containerDag().nodes())
           addNode__(ci, ci->get(node));
@@ -57,7 +58,8 @@ namespace gum {
 
       for (const auto ii: prm.interfaces()) {
         node_map__.insert(
-           ii, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
+           ii,
+           new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
         for (const auto node: ii->containerDag().nodes()) {
           addNode__(ii, ii->get(node));
@@ -78,8 +80,8 @@ namespace gum {
        HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map) {
       switch (c.get(node).elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
-          const PRMSlotChain< GUM_SCALAR >& sc =
-             static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
+          const PRMSlotChain< GUM_SCALAR >& sc
+             = static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
 
           for (const auto chi: c.containerDag().children(node))
             graph__.addArc((*(node_map__[&(sc.end())]))[&(
@@ -97,7 +99,8 @@ namespace gum {
           break;
         }
 
-        default: { /* do nothing */ break;
+        default: { /* do nothing */
+          break;
         }
       }
     }
@@ -157,13 +160,15 @@ namespace gum {
         case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
           NodeId id = graph__.addNode();
           elt_map__.insert(
-             id, new ClassDependencyGraph< GUM_SCALAR >::EltPair(c, &elt));
+             id,
+             new ClassDependencyGraph< GUM_SCALAR >::EltPair(c, &elt));
           node_map__[c]->insert(&elt, id);
           modalitites__.insert(id, elt.type().variable().domainSize());
           break;
         }
 
-        default: { /* do nothing */ break;
+        default: { /* do nothing */
+          break;
         }
       }
     }

@@ -69,7 +69,10 @@ namespace gum {
                                          double      error,
                                          double      time) {
       bnlearner__->distributeProgress(
-         static_cast< const ApproximationScheme* >(src), pourcent, error, time);
+         static_cast< const ApproximationScheme* >(src),
+         pourcent,
+         error,
+         time);
     }
     void BNLearnerListener::whenStop(const void* src, std::string message) {
       bnlearner__->distributeStop(static_cast< const ApproximationScheme* >(src),

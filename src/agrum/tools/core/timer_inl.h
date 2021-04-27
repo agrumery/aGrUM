@@ -30,8 +30,8 @@ namespace gum {
   INLINE
   void Timer::reset() {
     sleeping_ = false;
-    start_ = std::chrono::high_resolution_clock::now();
-    pause_ = std::chrono::high_resolution_clock::now();
+    start_    = std::chrono::high_resolution_clock::now();
+    pause_    = std::chrono::high_resolution_clock::now();
 
     // do start_ = clock(); while ( start_ == k );// to be sure to start at the
     // beginning of a tick
@@ -51,7 +51,7 @@ namespace gum {
   INLINE
   double Timer::pause() {
     if (!sleeping_) {
-      pause_ = std::chrono::high_resolution_clock::now();
+      pause_    = std::chrono::high_resolution_clock::now();
       sleeping_ = true;
     }
 

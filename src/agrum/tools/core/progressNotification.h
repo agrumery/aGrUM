@@ -74,8 +74,8 @@ namespace gum {
      * @param step The advancement in percent.
      * @param time The time.
      */
-    virtual void
-       whenProgress(const void* src, const Size step, const double time) = 0;
+    virtual void whenProgress(const void* src, const Size step, const double time)
+       = 0;
 
     /**
      * @brief When it stops.

@@ -44,9 +44,9 @@ namespace gum {
     }
 
     hash_log2_size_ = hashTableLog2__(new_size);
-    hash_size_ = Size(1) << hash_log2_size_;
-    hash_mask_ = hash_size_ - 1;
-    right_shift_ = HashFuncConst::offset - hash_log2_size_;
+    hash_size_      = Size(1) << hash_log2_size_;
+    hash_mask_      = hash_size_ - 1;
+    right_shift_    = HashFuncConst::offset - hash_log2_size_;
   }
 
   // Returns the hash table size as known by the hash function
@@ -151,7 +151,7 @@ namespace gum {
   INLINE Size HashFunc< std::pair< Key1, Key2 > >::castToSize(
      const std::pair< Key1, Key2 >& key) {
     return HashFunc< Key1 >::castToSize(key.first) * HashFuncConst::pi
-           + HashFunc< Key2 >::castToSize(key.second);
+         + HashFunc< Key2 >::castToSize(key.second);
   }
 
   // Returns the hashed value of a key.

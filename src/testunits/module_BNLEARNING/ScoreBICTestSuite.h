@@ -36,7 +36,7 @@ namespace gum_tests {
                    const std::vector< double >& N_ij,
                    const double                 penalty) const {
       double score = 0;
-      double N = 0;
+      double N     = 0;
       for (const auto n_ijk: N_ijk)
         if (n_ijk) {
           score += n_ijk * std::log2(n_ijk);

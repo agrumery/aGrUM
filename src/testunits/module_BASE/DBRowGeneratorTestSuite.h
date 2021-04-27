@@ -49,7 +49,7 @@ namespace gum_tests {
       TS_ASSERT(generator.hasRows());
       TS_ASSERT(generator.hasRows());
 
-      const auto& output_row1 = generator.generate();
+      const auto& output_row1  = generator.generate();
       const auto& xoutput_row1 = output_row1.row();
       TS_ASSERT(xoutput_row1[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row1[1].discr_val == std::size_t(4));
@@ -61,7 +61,7 @@ namespace gum_tests {
       TS_ASSERT(generator.hasRows());
       TS_ASSERT(generator.hasRows());
 
-      const auto& output_row2 = generator.generate();
+      const auto& output_row2  = generator.generate();
       const auto& xoutput_row2 = output_row2.row();
       TS_ASSERT(xoutput_row2[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row2[1].discr_val == std::size_t(4));
@@ -78,7 +78,7 @@ namespace gum_tests {
       TS_ASSERT(xcols[1] == std::size_t(2));
       generator.setInputRow(input_row1);
       TS_ASSERT(generator.hasRows());
-      const auto& output_row3 = generator.generate();
+      const auto& output_row3  = generator.generate();
       const auto& xoutput_row3 = output_row3.row();
       TS_ASSERT(xoutput_row3[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row3[2].cont_val == 4.5f);
@@ -136,8 +136,8 @@ namespace gum_tests {
       TS_ASSERT(!generator5.hasRows());
       generator5.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<>* generator6 =
-         generator4.clone(alloc);
+      gum::learning::DBRowGeneratorIdentity<>* generator6
+         = generator4.clone(alloc);
       TS_ASSERT(generator6->hasRows());
       TS_ASSERT(generator6->columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator6->columnsOfInterest()[0] == std::size_t(0));
@@ -218,7 +218,7 @@ namespace gum_tests {
       TS_ASSERT(generator.hasRows());
 
       TS_ASSERT(generator.hasRows());
-      const auto& output_row1 = generator.generate();
+      const auto& output_row1  = generator.generate();
       const auto& xoutput_row1 = output_row1.row();
       TS_ASSERT(xoutput_row1[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row1[1].discr_val == std::size_t(4));
@@ -226,7 +226,7 @@ namespace gum_tests {
       TS_ASSERT(xoutput_row1[3].discr_val == std::size_t(7));
 
       TS_ASSERT(generator.hasRows());
-      const auto& output_row2 = generator.generate();
+      const auto& output_row2  = generator.generate();
       const auto& xoutput_row2 = output_row2.row();
       TS_ASSERT(xoutput_row2[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row2[1].discr_val == std::size_t(4));
@@ -234,7 +234,7 @@ namespace gum_tests {
       TS_ASSERT(xoutput_row2[3].discr_val == std::size_t(7));
 
       TS_ASSERT(generator.hasRows());
-      const auto& output_row3 = generator.generate();
+      const auto& output_row3  = generator.generate();
       const auto& xoutput_row3 = output_row3.row();
       TS_ASSERT(xoutput_row3[0].discr_val == std::size_t(0));
       TS_ASSERT(xoutput_row3[1].discr_val == std::size_t(4));

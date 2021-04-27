@@ -49,7 +49,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
-     const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q) :
+     const IBayesNet< GUM_SCALAR >& P,
+     const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q),
       ApproximationScheme(),
       GibbsOperator< GUM_SCALAR >(
@@ -120,7 +121,7 @@ namespace gum {
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
-    GUM_SCALAR oldPQ = 0.0;
+    GUM_SCALAR oldPQ      = 0.0;
     GUM_SCALAR pp, pq, pmid;
 
     do {
@@ -131,8 +132,8 @@ namespace gum {
       //_p.synchroInstantiations( Ip,I);
       Iq.setValsFrom(map, I);
 
-      pp = p_.jointProbability(I);
-      pq = q_.jointProbability(Iq);
+      pp   = p_.jointProbability(I);
+      pq   = q_.jointProbability(Iq);
       pmid = (pp + pq) / 2.0;
 
       if (pp != (GUM_SCALAR)0.0) {
@@ -172,10 +173,10 @@ namespace gum {
       }
     } while (continueApproximationScheme(error));   //
 
-    klPQ_ = -klPQ_ / (nbrIterations());
-    klQP_ = -klQP_ / (nbrIterations());
-    jsd_ = -0.5 * jsd_ / (nbrIterations());
-    hellinger_ = std::sqrt(hellinger_ / nbrIterations());
+    klPQ_         = -klPQ_ / (nbrIterations());
+    klQP_         = -klQP_ / (nbrIterations());
+    jsd_          = -0.5 * jsd_ / (nbrIterations());
+    hellinger_    = std::sqrt(hellinger_ / nbrIterations());
     bhattacharya_ = -std::log(bhattacharya_ / (nbrIterations()));
   }
 

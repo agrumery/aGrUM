@@ -862,7 +862,7 @@ namespace gum_tests {
       gum::Instantiation       inst(p);
       p.fill(3);
 
-      gum::Size cpt = 0;
+      gum::Size cpt   = 0;
       double    total = 0.0;
       for (inst.setFirst(); !inst.end(); ++inst) {
         cpt++;
@@ -871,7 +871,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, gum::Size(1));
       TS_ASSERT_EQUALS(total, 3);
 
-      cpt = 0;
+      cpt   = 0;
       total = 0.0;
       for (inst.setLast(); !inst.end(); --inst) {
         cpt++;
@@ -921,17 +921,19 @@ namespace gum_tests {
       TS_ASSERT_THROWS(res = r.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r));
-      TS_ASSERT_DELTA(
-         res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(res,
+                      0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3),
+                      TS_GUM_SMALL_ERROR);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = r.KL(q));
-      TS_ASSERT_DELTA(
-         res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(res,
+                      0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5),
+                      TS_GUM_SMALL_ERROR);
     }
 
     void testPotentialDraw() {
       try {
-        constexpr int          DELTA = 200;
+        constexpr int          DELTA   = 200;
         constexpr int          NBRITER = 10000;
         gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
 
@@ -1003,7 +1005,7 @@ namespace gum_tests {
       Ipp.setFirst();
       for (Ip.setFirst(); !Ip.end(); ++Ip, ++Ipp)
         try {
-          auto vp = p[Ip];
+          auto vp  = p[Ip];
           auto vpp = pp[Ipp];
           TS_ASSERT_EQUALS(vp, vpp);
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
@@ -1295,8 +1297,8 @@ namespace gum_tests {
       gum::Potential< double > py;
       auto                     a1 = gum::LabelizedVariable("a", "a", 2);
       auto                     a2 = gum::LabelizedVariable("a", "a", 2);
-      auto                     b = gum::LabelizedVariable("b", "b", 2);
-      auto                     c = gum::LabelizedVariable("c", "c", 2);
+      auto                     b  = gum::LabelizedVariable("b", "b", 2);
+      auto                     c  = gum::LabelizedVariable("c", "c", 2);
       px << a1 << b;
       py << a2 << c;
       TS_ASSERT_THROWS(px * py, gum::DuplicateElement)

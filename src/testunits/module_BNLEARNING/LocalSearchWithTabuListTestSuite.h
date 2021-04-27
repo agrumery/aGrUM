@@ -59,7 +59,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -91,8 +91,9 @@ namespace gum_tests {
       struct_constraint.setSliceOrder(slices);
       struct_constraint.setDefaultSlice(1);
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
          op_set(struct_constraint);
@@ -106,8 +107,8 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
-        gum::BayesNet< double > bn2 =
-           search.learnBN< double >(selector, estimator);
+        gum::BayesNet< double > bn2
+           = search.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 10);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

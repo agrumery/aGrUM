@@ -62,8 +62,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(traceAlgoSaveFile__ << fmdp.toString());
       traceAlgoSaveFile__.close();
 
-      int deletedFile =
-         std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
+      int deletedFile
+         = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
       if (deletedFile != 0)
         std::cout << "Couldn't delete output file." << std::endl;
 
@@ -72,12 +72,12 @@ namespace gum_tests {
       for (gum::SequenceIteratorSafe< gum::Idx > actIter = fmdp.beginActions();
            actIter != fmdp.endActions();
            ++actIter)
-        for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
-                fmdp.beginVariables();
+        for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter
+             = fmdp.beginVariables();
              varIter != fmdp.endVariables();
              ++varIter) {
-          gum::MultiDimFunctionGraph< double >* hey =
-             new gum::MultiDimFunctionGraph< double >(
+          gum::MultiDimFunctionGraph< double >* hey
+             = new gum::MultiDimFunctionGraph< double >(
                 *static_cast< const gum::MultiDimFunctionGraph< double >* >(
                    fmdp.transition(*actIter, *varIter)));
           delete hey;

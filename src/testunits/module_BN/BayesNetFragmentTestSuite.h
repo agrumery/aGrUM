@@ -108,8 +108,8 @@ namespace gum_tests {
         for (const auto node: bn.nodes())
           if (node != bn.idFromName("v5")) {
             const gum::Potential< double >& pot = bn.cpt(node);
-            const gum::Potential< double >& src =
-               source.cpt(source.idFromName(bn.variable(node).name()));
+            const gum::Potential< double >& src
+               = source.cpt(source.idFromName(bn.variable(node).name()));
             gum::Instantiation I(pot);
             gum::Instantiation J(src);
 
@@ -292,8 +292,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(
-         pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()),
+                      2 * 2 * 3,
+                      TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -301,7 +302,7 @@ namespace gum_tests {
 
       while (!I.end()) {
         double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
-                   * bn.cpt(bn.idFromName("v6"))[I];
+                 * bn.cpt(bn.idFromName("v6"))[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, TS_GUM_SMALL_ERROR);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), TS_GUM_SMALL_ERROR);
         ++I;
@@ -357,8 +358,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dim(),
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(
-         pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()),
+                      2 * 2 * 3,
+                      TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -483,8 +485,8 @@ namespace gum_tests {
         inf_complete.makeInference();
 
         auto p = inf_complete.posterior(bn.idFromName("v6"));
-        const gum::Potential< double >& p1 =
-           inf_complete.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p1
+           = inf_complete.posterior(bn.idFromName("v6"));
 
         // propagation in the fragment
         gum::BayesNetFragment< double > frag(bn);
@@ -500,8 +502,8 @@ namespace gum_tests {
         gum::LazyPropagation< double > inf_frag(&frag);
         inf_frag.makeInference();
 
-        const gum::Potential< double >& p2 =
-           inf_frag.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p2
+           = inf_frag.posterior(bn.idFromName("v6"));
 
         // comparison
         gum::Instantiation I(p1);

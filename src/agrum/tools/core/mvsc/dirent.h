@@ -345,7 +345,7 @@ static _WDIR* _wopendir(const wchar_t* dirname) {
 
     /* Reset _WDIR structure */
     dirp->handle = INVALID_HANDLE_VALUE;
-    dirp->patt = NULL;
+    dirp->patt   = NULL;
     dirp->cached = 0;
 
     /* Compute the length of full path plus zero terminator */
@@ -380,7 +380,7 @@ static _WDIR* _wopendir(const wchar_t* dirname) {
           }
         }
         *p++ = '*';
-        *p = '\0';
+        *p   = '\0';
 
         /* Open directory stream and retrieve the first entry */
         if (dirent_first(dirp)) {
@@ -462,7 +462,7 @@ static struct _wdirent* _wreaddir(_WDIR* dirp) {
     }
 
     /* Reset dummy fields */
-    entp->d_ino = 0;
+    entp->d_ino    = 0;
     entp->d_reclen = sizeof(struct _wdirent);
 
   } else {
@@ -527,13 +527,13 @@ static WIN32_FIND_DATAW* dirent_first(_WDIR* dirp) {
   dirp->handle = FindFirstFileW(dirp->patt, &dirp->data);
   if (dirp->handle != INVALID_HANDLE_VALUE) {
     /* a directory entry is now waiting in memory */
-    datap = &dirp->data;
+    datap        = &dirp->data;
     dirp->cached = 1;
 
   } else {
     /* Failed to re-open directory: no directory entry in memory */
     dirp->cached = 0;
-    datap = NULL;
+    datap        = NULL;
   }
   return datap;
 }
@@ -545,7 +545,7 @@ static WIN32_FIND_DATAW* dirent_next(_WDIR* dirp) {
   /* Get next directory entry */
   if (dirp->cached != 0) {
     /* A valid directory entry already in memory */
-    p = &dirp->data;
+    p            = &dirp->data;
     dirp->cached = 0;
 
   } else if (dirp->handle != INVALID_HANDLE_VALUE) {
@@ -557,7 +557,7 @@ static WIN32_FIND_DATAW* dirent_next(_WDIR* dirp) {
       /* The very last entry has been processed or an error occured */
       FindClose(dirp->handle);
       dirp->handle = INVALID_HANDLE_VALUE;
-      p = NULL;
+      p            = NULL;
     }
 
   } else {
@@ -648,8 +648,11 @@ static struct dirent* readdir(DIR* dirp) {
     int    error;
 
     /* Attempt to convert file name to multi-byte string */
-    error = dirent_wcstombs_s(
-       &n, dirp->ent.d_name, PATH_MAX, datap->cFileName, PATH_MAX);
+    error = dirent_wcstombs_s(&n,
+                              dirp->ent.d_name,
+                              PATH_MAX,
+                              datap->cFileName,
+                              PATH_MAX);
 
     /*
      * If the file name cannot be represented by a multi-byte string,
@@ -662,8 +665,11 @@ static struct dirent* readdir(DIR* dirp) {
      * VirtualBox shared folders fail to do this.
      */
     if (error && datap->cAlternateFileName[0] != '\0') {
-      error = dirent_wcstombs_s(
-         &n, dirp->ent.d_name, PATH_MAX, datap->cAlternateFileName, PATH_MAX);
+      error = dirent_wcstombs_s(&n,
+                                dirp->ent.d_name,
+                                PATH_MAX,
+                                datap->cAlternateFileName,
+                                PATH_MAX);
     }
 
     if (!error) {
@@ -686,7 +692,7 @@ static struct dirent* readdir(DIR* dirp) {
       }
 
       /* Reset dummy fields */
-      entp->d_ino = 0;
+      entp->d_ino    = 0;
       entp->d_reclen = sizeof(struct dirent);
 
     } else {
@@ -696,13 +702,13 @@ static struct dirent* readdir(DIR* dirp) {
        * we cannot return NULL as that would stop the processing
        * of directory entries completely.
        */
-      entp = &dirp->ent;
+      entp            = &dirp->ent;
       entp->d_name[0] = '?';
       entp->d_name[1] = '\0';
-      entp->d_namlen = 1;
-      entp->d_type = DT_UNKNOWN;
-      entp->d_ino = 0;
-      entp->d_reclen = 0;
+      entp->d_namlen  = 1;
+      entp->d_type    = DT_UNKNOWN;
+      entp->d_ino     = 0;
+      entp->d_reclen  = 0;
     }
 
   } else {
@@ -720,7 +726,7 @@ static int closedir(DIR* dirp) {
   int ok;
   if (dirp) {
     /* Close wide-character directory stream */
-    ok = _wclosedir(dirp->wdirp);
+    ok          = _wclosedir(dirp->wdirp);
     dirp->wdirp = NULL;
 
     /* Release multi-byte character version */

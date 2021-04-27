@@ -36,7 +36,7 @@ namespace gum {
   std::string getUniqueFileName() {
 #ifdef HAVE_MKSTEMP
     char tmpFileName_[] = "fileXXXXXX";
-    int  fd = mkstemp(tmpFileName_);
+    int  fd             = mkstemp(tmpFileName_);
     close(fd);
 #else   // mainly Windows
     char tmpFileName_[] = "fileXXXXXX";
@@ -80,13 +80,13 @@ std::vector<std::string> split( const std::string& orig,
                       const std::string& val,
                       const std::string& new_val) {
     auto retVal = s;
-    auto pos = retVal.find(val);
+    auto pos    = retVal.find(val);
     while (pos != std::string::npos) {
       std::stringstream sBuff;
       sBuff << s.substr(0, pos) << new_val
             << s.substr(pos + val.size(), std::string::npos);
       retVal = sBuff.str();
-      pos = retVal.find(val);
+      pos    = retVal.find(val);
     }
     return retVal;
   }

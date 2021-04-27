@@ -105,7 +105,7 @@ namespace gum {
   Potential< GUM_SCALAR >
      LoopyBeliefPropagation< GUM_SCALAR >::computeProdPi__(NodeId X,
                                                            NodeId except) {
-    const auto& varX = this->BN().variable(X);
+    const auto& varX      = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
     for (const auto& U: this->BN().parents(X)) {
@@ -154,7 +154,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR LoopyBeliefPropagation< GUM_SCALAR >::updateNodeMessage__(NodeId X) {
-    auto piX = computeProdPi__(X);
+    auto piX  = computeProdPi__(X);
     auto lamX = computeProdLambda__(X);
 
     GUM_SCALAR KL = 0;
@@ -162,8 +162,8 @@ namespace gum {
 
     // update lambda_par (for arc U->x)
     for (const auto& U: this->BN().parents(X)) {
-      auto newLambda =
-         (computeProdPi__(X, U) * lamX).margSumIn({&this->BN().variable(U)});
+      auto newLambda
+         = (computeProdPi__(X, U) * lamX).margSumIn({&this->BN().variable(U)});
       newLambda.normalize();
       auto ekl = static_cast< GUM_SCALAR >(0);
       try {
@@ -174,7 +174,7 @@ namespace gum {
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
-        KL = ekl;
+        KL    = ekl;
         argKL = Arc(X, U);
       }
       messages__.set(Arc(X, U), newLambda);
@@ -193,7 +193,7 @@ namespace gum {
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
-        KL = ekl;
+        KL    = ekl;
         argKL = Arc(X, Y);
       }
       messages__.set(Arc(X, Y), newPi);

@@ -41,7 +41,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -68,8 +68,8 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == -16);
       TS_ASSERT(xxx.second == -16);
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-         del2.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq
+         = del2.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == res);
 

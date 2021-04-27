@@ -88,8 +88,8 @@ namespace gum {
                             ALLOC< std::pair< std::size_t, std::size_t > > >&
             ranges,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns =
-               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            nodeId2columns
+         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
 
@@ -111,8 +111,8 @@ namespace gum {
       ScorefNML(const DBRowGeneratorParser< ALLOC >& parser,
                 const Apriori< ALLOC >&              apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                   nodeId2columns =
-                      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                   nodeId2columns
+                = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor

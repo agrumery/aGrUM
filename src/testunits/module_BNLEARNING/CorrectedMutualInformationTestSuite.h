@@ -80,8 +80,8 @@ namespace gum_tests {
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
       const auto v1 = counter.counts(gum::learning::IdCondSet<>(id, cond, true));
-      const auto v2 =
-         counter.counts(gum::learning::IdCondSet<>(cond, false, true));
+      const auto v2
+         = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
       return entropy__(v1) - entropy__(v2);
     }
 
@@ -90,10 +90,10 @@ namespace gum_tests {
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      const auto                     v1 =
-         counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true));
-      const auto v2 =
-         counter.counts(gum::learning::IdCondSet<>(cond, false, true));
+      const auto                     v1
+         = counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true));
+      const auto v2
+         = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
       return entropy__(v1) - entropy__(v2);
     }
 
@@ -101,8 +101,8 @@ namespace gum_tests {
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
-      const auto h1 = H__(parser, id1, cond);
-      const auto h2 = H__(parser, id2, cond);
+      const auto h1  = H__(parser, id1, cond);
+      const auto h2  = H__(parser, id2, cond);
       const auto h12 = H__(parser, id1, id2, cond);
       return h1 + h2 - h12;
     }
@@ -112,7 +112,7 @@ namespace gum_tests {
                const gum::NodeId                            id2,
                const gum::NodeId                            id3) {
       return I__(parser, id1, id2)
-             - I__(parser, id1, id2, std::vector< gum::NodeId >{id3});
+           - I__(parser, id1, id2, std::vector< gum::NodeId >{id3});
     }
 
     double I__(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -131,7 +131,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -192,7 +192,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;

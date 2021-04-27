@@ -42,7 +42,7 @@ namespace gum {
   INLINE void ApproximationScheme::setEpsilon(double eps) {
     if (eps < 0.) { GUM_ERROR(OutOfLowerBound, "eps should be >=0"); }
 
-    eps_ = eps;
+    eps_         = eps;
     enabled_eps_ = true;
   }
 
@@ -65,7 +65,7 @@ namespace gum {
   INLINE void ApproximationScheme::setMinEpsilonRate(double rate) {
     if (rate < 0) { GUM_ERROR(OutOfLowerBound, "rate should be >=0"); }
 
-    min_rate_eps_ = rate;
+    min_rate_eps_         = rate;
     enabled_min_rate_eps_ = true;
   }
 
@@ -93,7 +93,7 @@ namespace gum {
   // stopping criterion on number of iterations
   INLINE void ApproximationScheme::setMaxIter(Size max) {
     if (max < 1) { GUM_ERROR(OutOfLowerBound, "max should be >=1"); }
-    max_iter_ = max;
+    max_iter_         = max;
     enabled_max_iter_ = true;
   }
 
@@ -116,7 +116,7 @@ namespace gum {
   // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime(double timeout) {
     if (timeout <= 0.) { GUM_ERROR(OutOfLowerBound, "timeout should be >0."); }
-    max_time_ = timeout;
+    max_time_         = timeout;
     enabled_max_time_ = true;
   }
 
@@ -184,8 +184,8 @@ namespace gum {
 
   // initialise the scheme
   INLINE void ApproximationScheme::initApproximationScheme() {
-    current_state_ = ApproximationSchemeSTATE::Continue;
-    current_step_ = 0;
+    current_state_   = ApproximationSchemeSTATE::Continue;
+    current_step_    = 0;
     current_epsilon_ = current_rate_ = -1.0;
     history_.clear();
     timer_.reset();
@@ -252,7 +252,7 @@ namespace gum {
       }
     }
 
-    last_epsilon_ = current_epsilon_;
+    last_epsilon_    = current_epsilon_;
     current_epsilon_ = error;   // eps rate isEnabled needs it so affectation was
     // moved from eps isEnabled below
 
@@ -267,8 +267,8 @@ namespace gum {
       if (current_epsilon_ > .0) {
         // ! current_epsilon_ can be 0. AND epsilon
         // isEnabled can be disabled !
-        current_rate_ =
-           std::fabs((current_epsilon_ - last_epsilon_) / current_epsilon_);
+        current_rate_
+           = std::fabs((current_epsilon_ - last_epsilon_) / current_epsilon_);
       }
       // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
       // infinity the else means a return false if we isEnabled the rate below,

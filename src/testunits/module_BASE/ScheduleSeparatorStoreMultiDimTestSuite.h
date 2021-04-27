@@ -40,7 +40,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -53,12 +53,15 @@ namespace gum_tests {
       gum::ArcProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
          set;
       TS_ASSERT(set.size() == 0);
-      gum::ScheduleSeparatorStoreMultiDim< double > store1(
-         f1, set, gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim< double > store2(
-         f2, set, gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim< double > store3(
-         f2, set, gum::Arc(2, 3));
+      gum::ScheduleSeparatorStoreMultiDim< double > store1(f1,
+                                                           set,
+                                                           gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim< double > store2(f2,
+                                                           set,
+                                                           gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim< double > store3(f2,
+                                                           set,
+                                                           gum::Arc(2, 3));
       TS_ASSERT(store1 != store2);
       TS_ASSERT(store2 != store3);
       TS_ASSERT(!(store2 == store3));
@@ -67,8 +70,8 @@ namespace gum_tests {
       std::pair< long, long > xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-         store1.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq
+         = store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 

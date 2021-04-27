@@ -30,9 +30,9 @@ namespace gum {
                                      const std::string&      filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(DSLReader);
-    bn__ = bn;
+    bn__         = bn;
     streamName__ = filename;
-    parseDone__ = false;
+    parseDone__  = false;
 
     factory__ = new BayesNetFactory< GUM_SCALAR >(bn__);
 
@@ -40,7 +40,7 @@ namespace gum {
 
     try {
       scanner__ = new DSL::Scanner(streamName__.c_str());
-      parser__ = new DSL::Parser(scanner__);
+      parser__  = new DSL::Parser(scanner__);
       parser__->setFactory((IBayesNetFactory*)factory__);
     } catch (IOError&) { ioerror__ = true; }
   }

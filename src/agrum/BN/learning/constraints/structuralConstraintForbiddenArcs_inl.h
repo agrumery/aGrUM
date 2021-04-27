@@ -117,7 +117,8 @@ namespace gum {
         case GraphChangeType::ARC_ADDITION:
           return !checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION: return false;
+        case GraphChangeType::ARC_DELETION:
+          return false;
 
         case GraphChangeType::ARC_REVERSAL:
           return !checkArcAdditionAlone(change.node2(), change.node1());

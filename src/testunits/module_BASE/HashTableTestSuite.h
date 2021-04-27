@@ -71,8 +71,8 @@ namespace gum_tests {
       gum::HashTable< int, int > t3{std::pair< int, int >(2, 7)};
 
       gum::HashTable< int, int > t4 = std::move(t3);
-      t3 = std::move(t2);
-      t2 = std::move(t1);
+      t3                            = std::move(t2);
+      t2                            = std::move(t1);
 
       TS_ASSERT(t2.size() == 2);
       TS_ASSERT(t2.exists(5));
@@ -87,7 +87,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "e"));
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "f"));
 
-      int         nb = 7;
+      int         nb  = 7;
       std::string str = "kkk";
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(nb, str));
       TS_ASSERT(table.exists(1));
@@ -175,8 +175,8 @@ namespace gum_tests {
       fill(table);
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6);
 
-      gum::HashTable< int, std::string >::iterator_safe iter =
-         table.beginSafe();   // safe iterator needed here
+      gum::HashTable< int, std::string >::iterator_safe iter
+         = table.beginSafe();   // safe iterator needed here
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5);
@@ -714,10 +714,10 @@ namespace gum_tests {
 
         gum::HashTableConstIterator< int, std::string >     iter1 = table.cbegin();
         gum::HashTableIterator< int, std::string >          iter2 = table.begin();
-        gum::HashTableConstIteratorSafe< int, std::string > iter3 =
-           table.cbeginSafe();   // safe iterator needed here
-        gum::HashTableIteratorSafe< int, std::string > iter4 =
-           table.beginSafe();   // safe iterator needed here
+        gum::HashTableConstIteratorSafe< int, std::string > iter3
+           = table.cbeginSafe();   // safe iterator needed here
+        gum::HashTableIteratorSafe< int, std::string > iter4
+           = table.beginSafe();   // safe iterator needed here
 
         // TS_ASSERT ( *iter1 == *iter2 );
         // TS_ASSERT ( *iter3 == *iter4 );
@@ -732,7 +732,8 @@ namespace gum_tests {
 
     void testInitializer_list() {
       gum::HashTable< unsigned int, std::string, MyAlloc< std::string > > table{
-         std::make_pair(3U, "a"), std::make_pair(2U, "b")};
+         std::make_pair(3U, "a"),
+         std::make_pair(2U, "b")};
 
       TS_ASSERT(table.size() == gum::Size(2));
       TS_ASSERT(table.exists(3U) == true);

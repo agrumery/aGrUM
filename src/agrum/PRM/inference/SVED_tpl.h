@@ -50,7 +50,7 @@ namespace gum {
       ignore.insert(query);
       // Extracting required attributes and slotchains
       Set< NodeId >& attr_set = getAttrSet__(query);
-      Set< NodeId >& sc_set = getSCSet__(query);
+      Set< NodeId >& sc_set   = getSCSet__(query);
       // Downward elimination
       List< const PRMInstance< GUM_SCALAR >* > elim_list;
 
@@ -60,8 +60,12 @@ namespace gum {
                iter != query->getRefAttr(attr).end();
                ++iter)
             if ((!ignore.exists(iter->first)) && (bb__.exists(iter->first)))
-              eliminateNodesDownward__(
-                 query, iter->first, pool, trash, elim_list, ignore);
+              eliminateNodesDownward__(query,
+                                       iter->first,
+                                       pool,
+                                       trash,
+                                       elim_list,
+                                       ignore);
         } catch (NotFound&) {
           // Ok
         }
@@ -81,7 +85,7 @@ namespace gum {
       for (size_t idx = 0; idx < t.eliminationOrder().size(); ++idx) {
         if (t.eliminationOrder()[idx] != node) {
           auto        var_id = t.eliminationOrder()[idx];
-          const auto& var = bn.variable(var_id);
+          const auto& var    = bn.variable(var_id);
           elim_order.push_back(&var);
         }
       }
@@ -95,8 +99,12 @@ namespace gum {
         if (checkElimOrder__(query, elim_list.front())) {
           if ((!ignore.exists(elim_list.front()))
               && (bb__.exists(elim_list.front())))
-            eliminateNodesDownward__(
-               query, elim_list.front(), pool, trash, elim_list, ignore);
+            eliminateNodesDownward__(query,
+                                     elim_list.front(),
+                                     pool,
+                                     trash,
+                                     elim_list,
+                                     ignore);
         } else if (bb__.exists(elim_list.front())) {
           tmp_list.insert(elim_list.front());
         }
@@ -122,7 +130,7 @@ namespace gum {
       ignore.insert(i);
       // Extracting required attributes and slotchains
       Set< NodeId >& attr_set = getAttrSet__(i);
-      Set< NodeId >& sc_set = getSCSet__(i);
+      Set< NodeId >& sc_set   = getSCSet__(i);
       // Calling elimination over child instance
       List< const PRMInstance< GUM_SCALAR >* > my_list;
 
@@ -132,8 +140,12 @@ namespace gum {
                iter != i->getRefAttr(attr).end();
                ++iter)
             if ((!ignore.exists(iter->first)) && (bb__.exists(iter->first)))
-              eliminateNodesDownward__(
-                 i, iter->first, pool, trash, my_list, ignore);
+              eliminateNodesDownward__(i,
+                                       iter->first,
+                                       pool,
+                                       trash,
+                                       my_list,
+                                       ignore);
         } catch (NotFound&) {
           // Ok
         }
@@ -168,8 +180,12 @@ namespace gum {
       while (!my_list.empty()) {
         if (checkElimOrder__(i, my_list.front())) {
           if ((!ignore.exists(my_list.front())) && (bb__.exists(my_list.front())))
-            eliminateNodesDownward__(
-               i, my_list.front(), pool, trash, my_list, ignore);
+            eliminateNodesDownward__(i,
+                                     my_list.front(),
+                                     pool,
+                                     trash,
+                                     my_list,
+                                     ignore);
         } else if (bb__.exists(my_list.front())) {
           elim_list.insert(my_list.front());
         }
@@ -194,7 +210,7 @@ namespace gum {
       ignore.insert(i);
       // Extracting required attributes and slotchains
       Set< NodeId >& attr_set = getAttrSet__(i);
-      Set< NodeId >& sc_set = getSCSet__(i);
+      Set< NodeId >& sc_set   = getSCSet__(i);
 
       // Downward elimination
       for (const auto attr: attr_set) {
@@ -203,8 +219,12 @@ namespace gum {
                iter != i->getRefAttr(attr).end();
                ++iter)
             if ((!ignore.exists(iter->first)) && (bb__.exists(iter->first)))
-              eliminateNodesDownward__(
-                 i, iter->first, pool, trash, elim_list, ignore);
+              eliminateNodesDownward__(i,
+                                       iter->first,
+                                       pool,
+                                       trash,
+                                       elim_list,
+                                       ignore);
         } catch (NotFound&) {
           // Ok
         }
@@ -241,8 +261,12 @@ namespace gum {
         if (checkElimOrder__(i, elim_list.front())) {
           if ((!ignore.exists(elim_list.front()))
               && (bb__.exists(elim_list.front())))
-            eliminateNodesDownward__(
-               i, elim_list.front(), pool, trash, elim_list, ignore);
+            eliminateNodesDownward__(i,
+                                     elim_list.front(),
+                                     pool,
+                                     trash,
+                                     elim_list,
+                                     ignore);
         } else if (bb__.exists(elim_list.front())) {
           ignore.insert(elim_list.front());
         }
@@ -259,7 +283,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::eliminateNodesWithEvidence__(
-       const PRMInstance< GUM_SCALAR >* i, BucketSet& pool, BucketSet& trash) {
+       const PRMInstance< GUM_SCALAR >* i,
+       BucketSet&                       pool,
+       BucketSet&                       trash) {
       // Adding required evidences
       for (const auto& elt: this->evidence(i))
         if (bb__.requisiteNodes(i).exists(elt.first))
@@ -279,8 +305,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVED< GUM_SCALAR >::insertLiftedNodes__(
-       const PRMInstance< GUM_SCALAR >* i, BucketSet& pool, BucketSet& trash) {
+    void
+       SVED< GUM_SCALAR >::insertLiftedNodes__(const PRMInstance< GUM_SCALAR >* i,
+                                               BucketSet& pool,
+                                               BucketSet& trash) {
       BucketSet* lifted_pool = nullptr;
 
       try {
@@ -349,8 +377,9 @@ namespace gum {
       if (ignore.size()) partial_ordering.pushBack(ignore);
 
       GUM_ASSERT(inners.size() || outers.size());
-      PartialOrderedTriangulation t(
-         &(bn.moralGraph()), &(bn.modalities()), &partial_ordering);
+      PartialOrderedTriangulation t(&(bn.moralGraph()),
+                                    &(bn.modalities()),
+                                    &partial_ordering);
 
       for (size_t idx = 0; idx < inners.size(); ++idx)
         eliminateNode(&(c.get(t.eliminationOrder()[idx]).type().variable()),
@@ -395,7 +424,7 @@ namespace gum {
       class_elim_order__ = new Sequence< std::string >();
       for (auto c: class_elim_order) {
         std::string name = c->name();
-        auto        pos = name.find_first_of("<");
+        auto        pos  = name.find_first_of("<");
         if (pos != std::string::npos) { name = name.substr(0, pos); }
         try {
           class_elim_order__->insert(name);
@@ -406,7 +435,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::posterior_(const Chain&             chain,
                                         Potential< GUM_SCALAR >& m) {
-      const PRMInstance< GUM_SCALAR >*  i = chain.first;
+      const PRMInstance< GUM_SCALAR >*  i   = chain.first;
       const PRMAttribute< GUM_SCALAR >* elt = chain.second;
       SVED< GUM_SCALAR >::BucketSet     pool, trash;
       bb__.compute(i, elt->id());
@@ -464,7 +493,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::initReqSets__(const PRMInstance< GUM_SCALAR >* i) {
       Set< NodeId >* attr_set = new Set< NodeId >();
-      Set< NodeId >* sc_set = new Set< NodeId >();
+      Set< NodeId >* sc_set   = new Set< NodeId >();
 
       for (const auto node: bb__.requisiteNodes(i)) {
         switch (i->type().get(node).elt_type()) {
@@ -528,7 +557,7 @@ namespace gum {
        const PRMInstance< GUM_SCALAR >* second) {
       if (class_elim_order__ == 0) { initElimOrder__(); }
 
-      auto first_name = trim__(first->type().name());
+      auto first_name  = trim__(first->type().name());
       auto second_name = trim__(second->type().name());
       return (class_elim_order__->pos(first_name)
               <= class_elim_order__->pos(second_name));
@@ -536,7 +565,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >* SVED< GUM_SCALAR >::getAggPotential__(
-       const PRMInstance< GUM_SCALAR >* i, const PRMAggregate< GUM_SCALAR >* agg) {
+       const PRMInstance< GUM_SCALAR >*  i,
+       const PRMAggregate< GUM_SCALAR >* agg) {
       return &(
          const_cast< Potential< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
@@ -587,8 +617,12 @@ namespace gum {
         if (checkElimOrder__(i, elim_list.front())) {
           if ((!ignore.exists(elim_list.front()))
               && (bb__.exists(elim_list.front()))) {
-            eliminateNodesDownward__(
-               i, elim_list.front(), pool, trash, elim_list, ignore);
+            eliminateNodesDownward__(i,
+                                     elim_list.front(),
+                                     pool,
+                                     trash,
+                                     elim_list,
+                                     ignore);
           }
         } else if (bb__.exists(elim_list.front())) {
           reduced_list.insert(elim_list.front());

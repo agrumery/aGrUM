@@ -92,7 +92,8 @@ namespace gum {
     }
     void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(
-         p, sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
+         p,
+         sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
     }
 
     /// @}

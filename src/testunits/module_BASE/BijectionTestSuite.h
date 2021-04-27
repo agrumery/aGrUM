@@ -57,7 +57,7 @@ namespace gum_tests {
       bijection3->insert(3, 3);
 
       gum::Bijection< int, int > bijection4 = bijection;
-      bijection4 = *bijection3;
+      bijection4                            = *bijection3;
       delete bijection3;
       TS_ASSERT(bijection4.first(2) == 1);
       TS_ASSERT(bijection4.first(3) == 3);
@@ -103,13 +103,13 @@ namespace gum_tests {
       bij_bis.insert("d", "bd");
       TS_ASSERT(bij_bis.size() == 4);
 
-      gum::Bijection< std::string, std::string >* bijection3 =
-         new gum::Bijection< std::string, std::string >;
+      gum::Bijection< std::string, std::string >* bijection3
+         = new gum::Bijection< std::string, std::string >;
       bijection3->insert("a", "b");
       bijection3->insert("b", "a");
 
       gum::Bijection< std::string, std::string > bijection4 = bijection;
-      bijection4 = *bijection3;
+      bijection4                                            = *bijection3;
       delete bijection3;
       TS_ASSERT(bijection4.first("a") == "b");
       TS_ASSERT(bijection4.first("b") == "a");
@@ -330,7 +330,7 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 4);
 
-      nb = 0;
+      nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
@@ -338,8 +338,8 @@ namespace gum_tests {
       TS_ASSERT(nb == 4);
 
       iter = bijection.begin();
-      nb = iter.first();
-      nb = iter.second();
+      nb   = iter.first();
+      nb   = iter.second();
     }
 
     void testIterators2() {
@@ -376,7 +376,7 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 4);
 
-      nb = 0;
+      nb                                        = 0;
       gum::Bijection< int, int >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
@@ -384,8 +384,8 @@ namespace gum_tests {
       TS_ASSERT(nb == 4);
 
       iter = bijection.begin();
-      nb = iter.first();
-      nb = iter.second();
+      nb   = iter.first();
+      nb   = iter.second();
     }
 
     void testIterators3() {
@@ -420,16 +420,16 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 4);
 
-      nb = 0;
+      nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
-      iter = bijection.begin();
+      iter            = bijection.begin();
       std::string str = iter.first();
-      str = iter.second();
+      str             = iter.second();
     }
 
     void testIterators4() {
@@ -444,14 +444,14 @@ namespace gum_tests {
       bijection.insert("9", "7");
       bijection.insert("2", "1");
 
-      gum::Bijection< std::string, std::string >::iterator iter1 =
-         bijection.begin();
+      gum::Bijection< std::string, std::string >::iterator iter1
+         = bijection.begin();
       gum::Bijection< std::string, std::string >::iterator iter2 = bijection.end();
 
       gum::Size nb = 0;
 
-      for (gum::Bijection< std::string, std::string >::iterator iter =
-              bijection.begin();
+      for (gum::Bijection< std::string, std::string >::iterator iter
+           = bijection.begin();
            iter != bijection.end();
            ++iter, ++nb) {}
 
@@ -468,16 +468,16 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 4);
 
-      nb = 0;
+      nb                                                        = 0;
       gum::Bijection< std::string, std::string >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
-      iter = bijection.begin();
+      iter            = bijection.begin();
       std::string str = iter.first();
-      str = iter.second();
+      str             = iter.second();
     }
 
     void test_constructorsStar() {
@@ -499,7 +499,7 @@ namespace gum_tests {
       bijection3->insert((int*)3, (int*)3);
 
       gum::Bijection< int*, int* > bijection4 = bijection;
-      bijection4 = *bijection3;
+      bijection4                              = *bijection3;
       delete bijection3;
       TS_ASSERT(bijection4.first((int*)2) == (int*)1);
       TS_ASSERT(bijection4.first((int*)3) == (int*)3);
@@ -605,7 +605,7 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 4);
 
-      nb = 0;
+      nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}

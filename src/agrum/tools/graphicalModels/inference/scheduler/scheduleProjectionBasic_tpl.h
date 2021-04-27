@@ -147,8 +147,9 @@ namespace gum {
      const MultiDimImplementation< GUM_SCALAR >& table,
      const Set< const DiscreteVariable* >&       del_vars,
      const Schedule< GUM_SCALAR >&               schedule) {
-    return ScheduleProjection< GUM_SCALAR >::nbOperations(
-       table, del_vars, schedule);
+    return ScheduleProjection< GUM_SCALAR >::nbOperations(table,
+                                                          del_vars,
+                                                          schedule);
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -159,8 +160,9 @@ namespace gum {
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars,
      const Schedule< GUM_SCALAR >&         schedule) {
-    return ScheduleProjection< GUM_SCALAR >::nbOperations(
-       table, del_vars, schedule);
+    return ScheduleProjection< GUM_SCALAR >::nbOperations(table,
+                                                          del_vars,
+                                                          schedule);
   }
 
   /// returns the memory consumption used during the projection
@@ -170,7 +172,7 @@ namespace gum {
      const Set< const DiscreteVariable* >& del_vars,
      const Schedule< GUM_SCALAR >&         schedule) {
     const Sequence< const DiscreteVariable* >& vars = table.variablesSequence();
-    long                                       res = 1;
+    long                                       res  = 1;
 
     for (const auto var: vars)
       if (!del_vars.contains(var)) {
@@ -191,8 +193,9 @@ namespace gum {
         const MultiDimImplementation< GUM_SCALAR >& table,
         const Set< const DiscreteVariable* >&       del_vars,
         const Schedule< GUM_SCALAR >&               schedule) {
-    return ScheduleProjection< GUM_SCALAR >::memoryUsage(
-       table, del_vars, schedule);
+    return ScheduleProjection< GUM_SCALAR >::memoryUsage(table,
+                                                         del_vars,
+                                                         schedule);
   }
 
   /// returns the memory consumption used during the projection
@@ -203,8 +206,9 @@ namespace gum {
         const TABLE< GUM_SCALAR >&            table,
         const Set< const DiscreteVariable* >& del_vars,
         const Schedule< GUM_SCALAR >&         schedule) {
-    return ScheduleProjection< GUM_SCALAR >::memoryUsage(
-       table, del_vars, schedule);
+    return ScheduleProjection< GUM_SCALAR >::memoryUsage(table,
+                                                         del_vars,
+                                                         schedule);
   }
 
 } /* namespace gum */

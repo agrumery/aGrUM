@@ -182,7 +182,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::variableDefinition__(
-     const NodeId& varNodeId, const IBayesNet< GUM_SCALAR >& bn) {
+     const NodeId&                  varNodeId,
+     const IBayesNet< GUM_SCALAR >& bn) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>

@@ -144,7 +144,7 @@ namespace gum {
         comment = tab + "% ";
         for (Idx i = 0; i < conds.nbrDim(); i++) {
           comment += conds.variable(i).name() + "="
-                     + conds.variable(i).label(conds.val(i)) + tab;
+                   + conds.variable(i).label(conds.val(i)) + tab;
         }
 
         ++conds;

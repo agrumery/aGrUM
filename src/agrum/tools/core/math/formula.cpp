@@ -120,10 +120,10 @@ namespace gum {
   FormulaPart& FormulaPart::operator=(const FormulaPart& source) {
     if (this == &source) { return *this; }
 
-    type = source.type;
-    number = source.number;
+    type      = source.type;
+    number    = source.number;
     character = source.character;
-    function = source.function;
+    function  = source.function;
 
     return *this;
   }
@@ -131,10 +131,10 @@ namespace gum {
   FormulaPart& FormulaPart::operator=(FormulaPart&& source) {
     if (this == &source) { return *this; }
 
-    type = std::move(source.type);
-    number = std::move(source.number);
+    type      = std::move(source.type);
+    number    = std::move(source.number);
     character = std::move(source.character);
-    function = std::move(source.function);
+    function  = std::move(source.function);
 
     return *this;
   }
@@ -174,12 +174,12 @@ namespace gum {
   // ==========================================================================
 
   void Formula::initialise__() {
-    auto c_str = (unsigned char*)formula__.c_str();
+    auto c_str   = (unsigned char*)formula__.c_str();
     auto scanner = new gum::formula::Scanner(c_str, (int)formula__.size());
-    scanner__ = std::unique_ptr< gum::formula::Scanner >(scanner);
+    scanner__    = std::unique_ptr< gum::formula::Scanner >(scanner);
 
     auto parser = new gum::formula::Parser(scanner);
-    parser__ = std::unique_ptr< gum::formula::Parser >(parser);
+    parser__    = std::unique_ptr< gum::formula::Parser >(parser);
     parser__->formula(this);
   }
 
@@ -273,10 +273,10 @@ namespace gum {
   Formula& Formula::operator=(const Formula& source) {
     if (this == &source) { return *this; }
 
-    formula__ = source.formula__;
+    formula__    = source.formula__;
     last_token__ = source.last_token__;
-    output__ = source.output__;
-    stack__ = source.stack__;
+    output__     = source.output__;
+    stack__      = source.stack__;
 
     initialise__();
 
@@ -288,11 +288,11 @@ namespace gum {
 
     formula__ = std::move(source.formula__);
     scanner__ = std::move(source.scanner__);
-    parser__ = std::move(source.parser__);
+    parser__  = std::move(source.parser__);
     parser__->formula(this);
     last_token__ = std::move(source.last_token__);
-    output__ = std::move(source.output__);
-    stack__ = std::move(source.stack__);
+    output__     = std::move(source.output__);
+    stack__      = std::move(source.stack__);
 
     return *this;
   }

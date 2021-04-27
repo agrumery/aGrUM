@@ -94,8 +94,8 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::FactorisedValuesCNFWriter< double > writer;
-      std::string                              file =
-         GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
+      std::string                              file
+         = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 

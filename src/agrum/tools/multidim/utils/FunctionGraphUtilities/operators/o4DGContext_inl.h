@@ -55,7 +55,7 @@ namespace gum {
   // Returns o4DGContext key
   INLINE const double& O4DGContext::key(short int* instNeeded) {
     key__ = DG1ExploredNode__ * logPrime__[offset1__]
-            + DG2ExploredNode__ * logPrime__[offset2__];
+          + DG2ExploredNode__ * logPrime__[offset2__];
 
     for (Idx varPos = 0, offset = offsetv__; varPos < nbVar__; varPos++, offset--)
       if (instNeeded[varPos])

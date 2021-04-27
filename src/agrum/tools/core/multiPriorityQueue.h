@@ -121,8 +121,8 @@ namespace gum {
    */
   template < typename Val,
              typename Priority = int,
-             typename Cmp = std::less< Priority >,
-             typename Alloc = std::allocator< Val > >
+             typename Cmp      = std::less< Priority >,
+             typename Alloc    = std::allocator< Val > >
   class MultiPriorityQueue {
     /// Making all MultiPriorityQueue friend with themselves.
     template < typename V, typename P, typename C, typename A >
@@ -131,13 +131,13 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     /// The allocator for the indices.
@@ -162,9 +162,9 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit MultiPriorityQueue(
-       Cmp  compare = Cmp(),
-       Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
+    explicit MultiPriorityQueue(Cmp  compare = Cmp(),
+                                Size capacity
+                                = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
      * @brief Initializer list constructor.

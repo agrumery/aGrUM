@@ -119,7 +119,8 @@ namespace gum {
      * argument contains less than two elements */
     virtual ScheduleMultiDim< GUM_SCALAR >
        combine(const Set< const ScheduleMultiDim< GUM_SCALAR >* >& set,
-               Schedule< GUM_SCALAR >&                             schedule) = 0;
+               Schedule< GUM_SCALAR >&                             schedule)
+       = 0;
     ScheduleMultiDim< GUM_SCALAR >
        combine(const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
                Schedule< GUM_SCALAR >&                                   schedule);
@@ -131,18 +132,21 @@ namespace gum {
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction(MultiDimImplementation< GUM_SCALAR >* (
        *combine)(const MultiDimImplementation< GUM_SCALAR >&,
-                 const MultiDimImplementation< GUM_SCALAR >&)) = 0;
+                 const MultiDimImplementation< GUM_SCALAR >&))
+       = 0;
 
     /// returns the combination function currently used by the combinator
     virtual MultiDimImplementation< GUM_SCALAR >* (*combineFunction())(
        const MultiDimImplementation< GUM_SCALAR >&,
-       const MultiDimImplementation< GUM_SCALAR >&) = 0;
+       const MultiDimImplementation< GUM_SCALAR >&)
+       = 0;
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
     virtual float
        nbOperations(const Set< const ScheduleMultiDim< GUM_SCALAR >* >& set,
-                    const Schedule< GUM_SCALAR >& schedule) = 0;
+                    const Schedule< GUM_SCALAR >&                       schedule)
+       = 0;
     float
        nbOperations(const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
                     const Schedule< GUM_SCALAR >& schedule);
@@ -161,7 +165,8 @@ namespace gum {
      * the resulting table ) */
     virtual std::pair< long, long >
        memoryUsage(const Set< const ScheduleMultiDim< GUM_SCALAR >* >& set,
-                   const Schedule< GUM_SCALAR >& schedule) = 0;
+                   const Schedule< GUM_SCALAR >&                       schedule)
+       = 0;
     std::pair< long, long >
        memoryUsage(const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
                    const Schedule< GUM_SCALAR >& schedule);

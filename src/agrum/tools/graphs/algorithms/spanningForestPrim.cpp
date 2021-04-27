@@ -105,8 +105,8 @@ namespace gum {
     // get the next nodes to link to the current spanning tree nodes
 
     while (!edgesToExplore__.empty()) {
-      const Edge   edge = edgesToExplore__.pop();
-      const NodeId first = edge.first();
+      const Edge   edge   = edgesToExplore__.pop();
+      const NodeId first  = edge.first();
       const NodeId second = edge.second();
 
       // consider only the edges that have one extremal node not in the spanning

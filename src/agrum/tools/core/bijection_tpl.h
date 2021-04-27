@@ -59,8 +59,8 @@ namespace gum {
      const HashTable< T1, T2*, OtherAlloc >& f2s) {
     // parse f2s and perform copies
     for (auto iter = f2s.cbegin(); iter != f2s.cend(); ++iter) {
-      typename HashTable12::value_type* val1 =
-         &(firstToSecond__.insert(iter.key(), nullptr));
+      typename HashTable12::value_type* val1
+         = &(firstToSecond__.insert(iter.key(), nullptr));
       typename HashTable21::value_type* val2;
 
       try {
@@ -82,7 +82,8 @@ namespace gum {
   // Default constructor: creates a bijection without association
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE BijectionImplementation< T1, T2, Alloc, Gen >::BijectionImplementation(
-     Size size, bool resize_policy) :
+     Size size,
+     bool resize_policy) :
       // warning: below, we create the internal hashTables with a key
       // uniqueness
       // policy set to false because we will do the uniqueness tests ourselves
@@ -317,8 +318,8 @@ namespace gum {
     }
 
     // insert copies of first and second
-    typename HashTable12::value_type* val1 =
-       &(firstToSecond__.insert(first, nullptr));
+    typename HashTable12::value_type* val1
+       = &(firstToSecond__.insert(first, nullptr));
     typename HashTable21::value_type* val2;
 
     try {
@@ -348,8 +349,8 @@ namespace gum {
     }
 
     // insert copies of first and second
-    typename HashTable12::value_type* val1 =
-       &(firstToSecond__.insert(std::move(first), nullptr));
+    typename HashTable12::value_type* val1
+       = &(firstToSecond__.insert(std::move(first), nullptr));
     typename HashTable21::value_type* val2;
 
     try {
@@ -369,7 +370,8 @@ namespace gum {
    * value is inserted into the bijection */
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T1& BijectionImplementation< T1, T2, Alloc, Gen >::firstWithDefault(
-     const T2& second, const T1& val) const {
+     const T2& second,
+     const T1& val) const {
     try {
       return first(second);
     } catch (NotFound&) { return insert__(val, second)->first; }
@@ -380,7 +382,8 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc, bool Gen >
   INLINE const T2&
                BijectionImplementation< T1, T2, Alloc, Gen >::secondWithDefault(
-        const T1& first, const T2& val) const {
+        const T1& first,
+        const T2& val) const {
     try {
       return second(first);
     } catch (NotFound&) { return *(insert__(first, val)->second); }
@@ -519,7 +522,8 @@ namespace gum {
   // Default constructor: creates a bijection without association
   template < typename T1, typename T2, typename Alloc >
   INLINE BijectionImplementation< T1, T2, Alloc, true >::BijectionImplementation(
-     Size size, bool resize_policy) :
+     Size size,
+     bool resize_policy) :
       // warning: below, we create the internal hashTables with a key
       // uniqueness
       // policy set to false because we will do the uniqueness tests ourselves
@@ -805,7 +809,8 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc >
   INLINE const T1&
                BijectionImplementation< T1, T2, Alloc, true >::firstWithDefault(
-        T2 second, T1 val) const {
+        T2 second,
+        T1 val) const {
     try {
       return first(second);
     } catch (NotFound&) {
@@ -819,7 +824,8 @@ namespace gum {
   template < typename T1, typename T2, typename Alloc >
   INLINE const T2&
                BijectionImplementation< T1, T2, Alloc, true >::secondWithDefault(
-        T1 first, T2 val) const {
+        T1 first,
+        T2 val) const {
     try {
       return second(first);
     } catch (NotFound&) {

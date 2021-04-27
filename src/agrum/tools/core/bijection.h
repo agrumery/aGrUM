@@ -85,23 +85,23 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using type1_type = T1;
-    using type1_reference = T1&;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
     using type1_const_reference = const T1&;
-    using type1_pointer = T1*;
-    using type1_const_pointer = const T1*;
-    using type2_type = T2;
-    using type2_reference = T2&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;
+    using type2_type            = T2;
+    using type2_reference       = T2&;
     using type2_const_reference = const T2&;
-    using type2_pointer = T2*;
-    using type2_const_pointer = const T2*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = BijectionIterator< T1, T2 >;
-    using const_iterator = BijectionIterator< T1, T2 >;
-    using iterator_safe = BijectionIteratorSafe< T1, T2 >;
-    using const_iterator_safe = BijectionIteratorSafe< T1, T2 >;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using size_type             = std::size_t;
+    using difference_type       = std::ptrdiff_t;
+    using allocator_type        = Alloc;
+    using iterator              = BijectionIterator< T1, T2 >;
+    using const_iterator        = BijectionIterator< T1, T2 >;
+    using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
+    using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
     using allocator12_type =
        typename Alloc::template rebind< std::pair< T1, T2* > >::other;
     using allocator21_type =
@@ -724,23 +724,23 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using type1_type = T1;
-    using type1_reference = T1&;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
     using type1_const_reference = const T1&;
-    using type1_pointer = T1*;
-    using type1_const_pointer = const T1*;
-    using type2_type = T2;
-    using type2_reference = T2&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;
+    using type2_type            = T2;
+    using type2_reference       = T2&;
     using type2_const_reference = const T2&;
-    using type2_pointer = T2*;
-    using type2_const_pointer = const T2*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = BijectionIterator< T1, T2 >;
-    using const_iterator = BijectionIterator< T1, T2 >;
-    using iterator_safe = BijectionIteratorSafe< T1, T2 >;
-    using const_iterator_safe = BijectionIteratorSafe< T1, T2 >;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using size_type             = std::size_t;
+    using difference_type       = std::ptrdiff_t;
+    using allocator_type        = Alloc;
+    using iterator              = BijectionIterator< T1, T2 >;
+    using const_iterator        = BijectionIterator< T1, T2 >;
+    using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
+    using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
 
     using allocator12_type =
        typename Alloc::template rebind< std::pair< T1, T2 > >::other;
@@ -1414,18 +1414,18 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using iterator_category = std::forward_iterator_tag;
-    using type1_type = T1;
-    using type1_reference = T1&;
+    using iterator_category     = std::forward_iterator_tag;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
     using type1_const_reference = const T1&;
-    using type1_pointer = T1*;
-    using type1_const_pointer = const T1*;
-    using type2_type = T2;
-    using type2_reference = T2&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;
+    using type2_type            = T2;
+    using type2_reference       = T2&;
     using type2_const_reference = const T2&;
-    using type2_pointer = T2*;
-    using type2_const_pointer = const T2*;
-    using difference_type = std::ptrdiff_t;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using difference_type       = std::ptrdiff_t;
     /// @}
 
     private:
@@ -1612,18 +1612,18 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using iterator_category = std::forward_iterator_tag;
-    using type1_type = T1;
-    using type1_reference = T1&;
+    using iterator_category     = std::forward_iterator_tag;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
     using type1_const_reference = const T1&;
-    using type1_pointer = T1*;
-    using type1_const_pointer = const T1*;
-    using type2_type = T2;
-    using type2_reference = T2&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;
+    using type2_type            = T2;
+    using type2_reference       = T2&;
     using type2_const_reference = const T2&;
-    using type2_pointer = T2*;
-    using type2_const_pointer = const T2*;
-    using difference_type = std::ptrdiff_t;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using difference_type       = std::ptrdiff_t;
     /// @}
 
     private:
@@ -1810,35 +1810,35 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using type1_type = T1;
-    using type1_reference = T1&;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
     using type1_const_reference = const T1&;
-    using type1_pointer = T1*;
-    using type1_const_pointer = const T1*;
-    using type2_type = T2;
-    using type2_reference = T2&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;
+    using type2_type            = T2;
+    using type2_reference       = T2&;
     using type2_const_reference = const T2&;
-    using type2_pointer = T2*;
-    using type2_const_pointer = const T2*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = BijectionIterator< T1, T2 >;
-    using const_iterator = BijectionIterator< T1, T2 >;
-    using iterator_safe = BijectionIteratorSafe< T1, T2 >;
-    using const_iterator_safe = BijectionIteratorSafe< T1, T2 >;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using size_type             = std::size_t;
+    using difference_type       = std::ptrdiff_t;
+    using allocator_type        = Alloc;
+    using iterator              = BijectionIterator< T1, T2 >;
+    using const_iterator        = BijectionIterator< T1, T2 >;
+    using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
+    using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
 
     using allocator1_type = typename Alloc::template rebind< T1* >::other;
     using allocator2_type = typename Alloc::template rebind< T2* >::other;
     /// @}
 
     /// The Implementation of this gum::Bijection.
-    using Implementation =
-       BijectionImplementation< T1,
-                                T2,
-                                Alloc,
-                                std::is_scalar< T1 >::value
-                                   && std::is_scalar< T2 >::value >;
+    using Implementation
+       = BijectionImplementation< T1,
+                                  T2,
+                                  Alloc,
+                                  std::is_scalar< T1 >::value
+                                     && std::is_scalar< T2 >::value >;
 
     // ============================================================================
     /// @name Constructors/destructors
@@ -1852,7 +1852,7 @@ namespace gum {
      * @param resize_policy If tru, the gum::Bijection will be automatically
      * resized.
      */
-    Bijection(Size size = HashTableConst::default_size,
+    Bijection(Size size          = HashTableConst::default_size,
               bool resize_policy = HashTableConst::default_resize_policy);
 
     /**

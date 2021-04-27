@@ -85,7 +85,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::setEstimatorFromLBP_(
-     LoopyBeliefPropagation< GUM_SCALAR >* lbp, GUM_SCALAR virtualLBPSize) {
+     LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+     GUM_SCALAR                            virtualLBPSize) {
     estimator__.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }

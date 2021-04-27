@@ -137,11 +137,11 @@ namespace gum {
      * @param arcs_resize_policy the resizing policy of this hash table
      * @param edges_size the size of the hash table used to store all the edges
      * @param edges_resize_policy the resizing policy of this hash table */
-    explicit MixedGraph(Size nodes_size = HashTableConst::default_size,
+    explicit MixedGraph(Size nodes_size          = HashTableConst::default_size,
                         bool nodes_resize_policy = true,
-                        Size arcs_size = HashTableConst::default_size,
-                        bool arcs_resize_policy = true,
-                        Size edges_size = HashTableConst::default_size,
+                        Size arcs_size           = HashTableConst::default_size,
+                        bool arcs_resize_policy  = true,
+                        Size edges_size          = HashTableConst::default_size,
                         bool edges_resize_policy = true);
 
     explicit MixedGraph(const UndiGraph& g);

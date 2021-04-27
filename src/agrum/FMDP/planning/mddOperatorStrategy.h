@@ -178,9 +178,9 @@ namespace gum {
     INLINE const DiscreteVariable*
                  lastVar_(const MultiDimFunctionGraph< GUM_SCALAR >* function) {
       return function->variablesSequence().size() == 0
-                          ? nullptr
-                          : function->variablesSequence().atPos(
-                   function->variablesSequence().size() - 1);
+                        ? nullptr
+                        : function->variablesSequence().atPos(
+                 function->variablesSequence().size() - 1);
     }
   };
 } /* namespace gum */

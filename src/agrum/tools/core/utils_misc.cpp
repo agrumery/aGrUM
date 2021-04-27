@@ -37,7 +37,7 @@ namespace std {
 namespace gum {
 
   bool Memcmp(const void* const in_, const void* const out_, unsigned long size) {
-    unsigned char* in = (unsigned char*)in_;
+    unsigned char* in  = (unsigned char*)in_;
     unsigned char* out = (unsigned char*)out_;
 
     for (unsigned long i = 0; i < size; ++i)

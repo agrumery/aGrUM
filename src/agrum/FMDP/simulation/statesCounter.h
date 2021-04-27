@@ -116,8 +116,8 @@ namespace gum {
     Idx nodeNbObservation(NodeId ni) const { return counter__->nodeValue(ni); }
 
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
-      for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-              counter__->variablesSequence().beginSafe();
+      for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+           = counter__->variablesSequence().beginSafe();
            varIter != counter__->variablesSequence().endSafe();
            ++varIter)
         ret->add(**varIter);

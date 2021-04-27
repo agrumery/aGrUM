@@ -342,7 +342,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void startClass(const std::string&        c,
-                              const std::string&        ext = "",
+                              const std::string&        ext        = "",
                               const Set< std::string >* implements = nullptr,
                               bool delayInheritance = false) override;
 
@@ -382,7 +382,7 @@ namespace gum {
        */
       virtual void startInterface(const std::string& i,
                                   const std::string& ext = "",
-                                  bool delayInheritance = false) override;
+                                  bool delayInheritance  = false) override;
 
       /**
        * Continue the declaration of an interface.
@@ -864,7 +864,8 @@ namespace gum {
       PRMObject* checkStack__(Idx i, PRMObject::prm_type obj_type);
 
       PRMClassElement< GUM_SCALAR >* checkStack__(
-         Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
+         Idx                                                      i,
+         typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
 
       PRMClassElementContainer< GUM_SCALAR >* checkStackContainter__(Idx i);
 

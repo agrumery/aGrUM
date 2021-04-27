@@ -297,14 +297,14 @@ namespace gum {
      * MultiDimContainer domain size.
      */
     const Potential< GUM_SCALAR >&
-       fillWith(const std::vector< GUM_SCALAR >& v) const;
+       fillWith(const std::vector< GUM_SCALAR >& data) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
      *
      * @param v contains the data.
      */
-    const Potential< GUM_SCALAR >& fillWith(const GUM_SCALAR& v) const;
+    const Potential< GUM_SCALAR >& fillWith(const GUM_SCALAR& val) const;
 
 
     /**
@@ -517,9 +517,9 @@ namespace gum {
     virtual std::string toString() const {
       auto table = this->content();
       if (table->nbrDim() == 0) { return "[]"; }
-      const Size colwidth = 6;
+      const Size colwidth    = 6;
       const Size numberwidth = 9;
-      const Size nbrLigMax = 6;
+      const Size nbrLigMax   = 6;
 
       std::stringstream ss;
       ss << std::left << std::fixed << std::endl;
@@ -528,7 +528,7 @@ namespace gum {
       const auto& var = table->variable(0);
 
       const Size        nbparents = table->nbrDim() - 1;
-      const Size        nbcol = var.domainSize();
+      const Size        nbcol     = var.domainSize();
       const std::string maskparent(colwidth, '-');
       const std::string masknumber(numberwidth, '-');
 

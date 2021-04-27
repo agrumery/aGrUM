@@ -145,7 +145,7 @@ namespace gum {
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool  editable_dictionary = true,
          std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc  = allocator_type());
 
       /// default constructor without missing symbols
       /** @param val_type indicates whether the DBTranslator deals with discrete
@@ -160,11 +160,11 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator
        */
-      DBTranslator(
-         DBTranslatedValueType val_type,
-         const bool            editable_dictionary = true,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc = allocator_type());
+      DBTranslator(DBTranslatedValueType val_type,
+                   const bool            editable_dictionary = true,
+                   std::size_t           max_dico_entries
+                   = std::numeric_limits< std::size_t >::max(),
+                   const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator(const DBTranslator< ALLOC >& from);

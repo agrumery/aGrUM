@@ -61,8 +61,8 @@ namespace gum_tests {
 
     void setUp() {
       try {
-        bn = new gum::BayesNet< double >("Asia");
-        std::string file = GET_RESSOURCES_PATH("bif/survey.bif");
+        bn                 = new gum::BayesNet< double >("Asia");
+        std::string file   = GET_RESSOURCES_PATH("bif/survey.bif");
         auto        reader = gum::BIFReader< double >(bn, file);
         try {
           reader.proceed();
@@ -104,10 +104,10 @@ namespace gum_tests {
 
       std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
       std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
-      std::vector< gum::Idx >    badOrder1 = {5, 1, 0, 3, 2, 5, 4};
-      std::vector< std::string > badOrder2 = {"A", "E", "O", "R", "A", "S", "T"};
-      std::vector< gum::Idx >    badOrder3 = {1, 0, 3, 5, 4};
-      std::vector< std::string > badOrder4 = {"A", "O", "R", "S", "T"};
+      std::vector< gum::Idx >    badOrder1  = {5, 1, 0, 3, 2, 5, 4};
+      std::vector< std::string > badOrder2  = {"A", "E", "O", "R", "A", "S", "T"};
+      std::vector< gum::Idx >    badOrder3  = {1, 0, 3, 5, 4};
+      std::vector< std::string > badOrder4  = {"A", "O", "R", "S", "T"};
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
       auto varOrderNames = dbgen->varOrderNames();
@@ -152,12 +152,12 @@ namespace gum_tests {
     }
 
     void testDrawSamples() {
-      gum::Size domSizeA = 3;
-      gum::Size domSizeS = 2;
-      gum::Size domSizeE = 2;
-      gum::Size domSizeO = 2;
-      gum::Size domSizeR = 2;
-      gum::Size domSizeT = 3;
+      gum::Size domSizeA  = 3;
+      gum::Size domSizeS  = 2;
+      gum::Size domSizeE  = 2;
+      gum::Size domSizeO  = 2;
+      gum::Size domSizeR  = 2;
+      gum::Size domSizeT  = 3;
       gum::Size nbSamples = 100;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
@@ -256,10 +256,10 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/survey_tmp1.csv");
-      bool        useLabels = true;
-      bool        append = false;
-      std::string csvSeparator = " ";
+      std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp1.csv");
+      bool        useLabels     = true;
+      bool        append        = false;
+      std::string csvSeparator  = " ";
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(
@@ -331,10 +331,10 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/survey_tmp2.csv");
-      bool        useLabels = false;
-      bool        append = false;
-      std::string csvSeparator = " ";
+      std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp2.csv");
+      bool        useLabels     = false;
+      bool        append        = false;
+      std::string csvSeparator  = " ";
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(
@@ -392,12 +392,12 @@ namespace gum_tests {
     }
 
     void testToDatabaseTable() {
-      gum::Size domSizeA = 3;
-      gum::Size domSizeS = 2;
-      gum::Size domSizeE = 2;
-      gum::Size domSizeO = 2;
-      gum::Size domSizeR = 2;
-      gum::Size domSizeT = 3;
+      gum::Size domSizeA  = 3;
+      gum::Size domSizeS  = 2;
+      gum::Size domSizeE  = 2;
+      gum::Size domSizeO  = 2;
+      gum::Size domSizeR  = 2;
+      gum::Size domSizeT  = 3;
       gum::Size nbSamples = 100;
 
       std::vector< std::string > domA = {"young", "adult", "old"};

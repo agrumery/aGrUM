@@ -73,10 +73,10 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg1 =
-       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt1);
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg2 =
-       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt2);
+    const MultiDimFunctionGraph< GUM_SCALAR >* dg1
+       = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt1);
+    const MultiDimFunctionGraph< GUM_SCALAR >* dg2
+       = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt2);
 #  endif
     MultiDimFunctionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE,
                                    GUM_MULTI_DIM_OPERATOR >

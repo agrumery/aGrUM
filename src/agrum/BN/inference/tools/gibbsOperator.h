@@ -53,7 +53,7 @@ namespace gum {
      */
     GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
                   const NodeProperty< Idx >*     hardEv,
-                  Size                           nbr = 1,
+                  Size                           nbr      = 1,
                   bool                           atRandom = false);
 
     /**

@@ -72,7 +72,7 @@ namespace gum {
 
     while (!roots.empty()) {
       // get a node and update the ancestors of its children
-      NodeId               node = roots.front();
+      NodeId               node           = roots.front();
       NodeProperty< Size > node_ancestors = ancestors__[node];
       node_ancestors.insert(node, 1);
       const NodeSet& node_children = dag.children(node);
@@ -95,7 +95,7 @@ namespace gum {
 
     while (!leaves.empty()) {
       // get a node and update the descendants of its parents
-      NodeId               node = leaves.front();
+      NodeId               node             = leaves.front();
       NodeProperty< Size > node_descendants = descendants__[node];
       node_descendants.insert(node, 1);
       const NodeSet& node_parents = dag.parents(node);
@@ -157,7 +157,8 @@ namespace gum {
 
           break;
 
-        default: GUM_ERROR(OperationNotAllowed, "undefined change type");
+        default:
+          GUM_ERROR(OperationNotAllowed, "undefined change type");
       }
     }
 
@@ -196,22 +197,22 @@ namespace gum {
 
     for (const auto& modif: modifs) {
       if (!ancestors.exists(modif.tail())) {
-        NodeProperty< Size >& anc =
-           ancestors.insert(modif.tail(), NodeProperty< Size >()).second;
+        NodeProperty< Size >& anc
+           = ancestors.insert(modif.tail(), NodeProperty< Size >()).second;
         restrictWeightedSet__(anc, ancestors__[modif.tail()], extremities);
 
-        NodeProperty< Size >& desc =
-           descendants.insert(modif.tail(), NodeProperty< Size >()).second;
+        NodeProperty< Size >& desc
+           = descendants.insert(modif.tail(), NodeProperty< Size >()).second;
         restrictWeightedSet__(desc, descendants__[modif.tail()], extremities);
       }
 
       if (!ancestors.exists(modif.head())) {
-        NodeProperty< Size >& anc =
-           ancestors.insert(modif.head(), NodeProperty< Size >()).second;
+        NodeProperty< Size >& anc
+           = ancestors.insert(modif.head(), NodeProperty< Size >()).second;
         restrictWeightedSet__(anc, ancestors__[modif.head()], extremities);
 
-        NodeProperty< Size >& desc =
-           descendants.insert(modif.head(), NodeProperty< Size >()).second;
+        NodeProperty< Size >& desc
+           = descendants.insert(modif.head(), NodeProperty< Size >()).second;
         restrictWeightedSet__(desc, descendants__[modif.head()], extremities);
       }
     }
@@ -228,10 +229,10 @@ namespace gum {
     // updated by subtracting the number of paths leading to X and its
     // ancestors.
     for (auto iter = deletions.cbegin(); iter != deletions.cend(); ++iter) {
-      const Arc&                  arc = iter.key();
-      const NodeId                tail = arc.tail();
-      const NodeProperty< Size >& anc_tail = ancestors[tail];
-      const NodeId                head = arc.head();
+      const Arc&                  arc       = iter.key();
+      const NodeId                tail      = arc.tail();
+      const NodeProperty< Size >& anc_tail  = ancestors[tail];
+      const NodeId                head      = arc.head();
       const NodeProperty< Size >& desc_head = descendants[head];
 
       // update the set of descendants
@@ -240,8 +241,9 @@ namespace gum {
       delWeightedSet__(descendants[tail], set_to_del, 1);
 
       for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
-        delWeightedSet__(
-           descendants[iter.key()], set_to_del, descendants[iter.key()][tail]);
+        delWeightedSet__(descendants[iter.key()],
+                         set_to_del,
+                         descendants[iter.key()][tail]);
       }
 
       // update the set of ancestors
@@ -250,8 +252,9 @@ namespace gum {
       delWeightedSet__(ancestors[head], set_to_del, 1);
 
       for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
-        delWeightedSet__(
-           ancestors[iter.key()], set_to_del, ancestors[iter.key()][head]);
+        delWeightedSet__(ancestors[iter.key()],
+                         set_to_del,
+                         ancestors[iter.key()][head]);
       }
     }
 
@@ -267,7 +270,7 @@ namespace gum {
     // its descendants. Finally, an arc (X,Y) can be added if and
     // only if Y does not belong to the ancestor set of X
     for (auto iter = additions.cbegin(); iter != additions.cend(); ++iter) {
-      const Arc& arc = iter.key();
+      const Arc& arc  = iter.key();
       NodeId     tail = arc.tail();
       NodeId     head = arc.head();
 
@@ -283,8 +286,9 @@ namespace gum {
       addWeightedSet__(ancestors[head], set_to_add, 1);
 
       for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
-        addWeightedSet__(
-           ancestors[iter.key()], set_to_add, ancestors[iter.key()][head]);
+        addWeightedSet__(ancestors[iter.key()],
+                         set_to_add,
+                         ancestors[iter.key()][head]);
       }
 
       // update the set of descendants
@@ -293,8 +297,9 @@ namespace gum {
       addWeightedSet__(descendants[tail], set_to_add, 1);
 
       for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
-        addWeightedSet__(
-           descendants[iter.key()], set_to_add, descendants[iter.key()][tail]);
+        addWeightedSet__(descendants[iter.key()],
+                         set_to_add,
+                         descendants[iter.key()][tail]);
       }
     }
 
@@ -316,7 +321,7 @@ namespace gum {
 
     // now we apply the addition of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty< Size >& anc_tail = ancestors__[tail];
+    const NodeProperty< Size >& anc_tail  = ancestors__[tail];
     const NodeProperty< Size >& desc_head = descendants__[head];
 
     // update the set of ancestors
@@ -325,8 +330,9 @@ namespace gum {
     addWeightedSet__(ancestors__[head], set_to_add, 1);
 
     for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
-      addWeightedSet__(
-         ancestors__[iter.key()], set_to_add, ancestors__[iter.key()][head]);
+      addWeightedSet__(ancestors__[iter.key()],
+                       set_to_add,
+                       ancestors__[iter.key()][head]);
     }
 
     // update the set of descendants
@@ -335,8 +341,9 @@ namespace gum {
     addWeightedSet__(descendants__[tail], set_to_add, 1);
 
     for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
-      addWeightedSet__(
-         descendants__[iter.key()], set_to_add, descendants__[iter.key()][tail]);
+      addWeightedSet__(descendants__[iter.key()],
+                       set_to_add,
+                       descendants__[iter.key()][tail]);
     }
   }
 
@@ -349,7 +356,7 @@ namespace gum {
 
     // we apply the deletion of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty< Size >& anc_tail = ancestors__[tail];
+    const NodeProperty< Size >& anc_tail  = ancestors__[tail];
     const NodeProperty< Size >& desc_head = descendants__[head];
 
     // update the set of descendants
@@ -358,8 +365,9 @@ namespace gum {
     delWeightedSet__(descendants__[tail], set_to_del, 1);
 
     for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
-      delWeightedSet__(
-         descendants__[iter.key()], set_to_del, descendants__[iter.key()][tail]);
+      delWeightedSet__(descendants__[iter.key()],
+                       set_to_del,
+                       descendants__[iter.key()][tail]);
     }
 
     // update the set of ancestors
@@ -368,8 +376,9 @@ namespace gum {
     delWeightedSet__(ancestors__[head], set_to_del, 1);
 
     for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
-      delWeightedSet__(
-         ancestors__[iter.key()], set_to_del, ancestors__[iter.key()][head]);
+      delWeightedSet__(ancestors__[iter.key()],
+                       set_to_del,
+                       ancestors__[iter.key()][head]);
     }
   }
 

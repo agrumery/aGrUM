@@ -34,8 +34,8 @@ namespace gum_tests {
     private:
     double score__(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
-      double score = 0;
-      double N = 0;
+      double score   = 0;
+      double N       = 0;
       double penalty = 0;
       for (const auto n_ijk: N_ijk) {
         if (n_ijk) {
@@ -56,16 +56,16 @@ namespace gum_tests {
             for (int h = 1; h < n_ij; h++) {
               double elt = (gamma_log2(n_ij + 1) - gamma_log2(h + 1)
                             - gamma_log2((n_ij - h) + 1))
-                              * M_LN2
-                           + h * std::log(h / n_ij)
-                           + (n_ij - h) * std::log((n_ij - h) / n_ij);
+                            * M_LN2
+                         + h * std::log(h / n_ij)
+                         + (n_ij - h) * std::log((n_ij - h) / n_ij);
               cn2 += std::exp(elt);
             }
             double cnr1 = cn2;   // equal C_n^2
             double cnr2 = 1;     // equal C_n^1
-            double cnr = cnr1;
+            double cnr  = cnr1;
             for (std::size_t i = std::size_t(3); i <= r; ++i) {
-              cnr = cnr1 + (n_ij / (i - 2.0)) * cnr2;
+              cnr  = cnr1 + (n_ij / (i - 2.0)) * cnr2;
               cnr2 = cnr1;
               cnr1 = cnr;
             }
@@ -79,17 +79,17 @@ namespace gum_tests {
         // compute the penalty:
         long double cn2 = 2;
         for (double h = 1; h < N; ++h) {
-          long double elt =
-             (gamma_log2(N + 1) - gamma_log2(h + 1) - gamma_log2((N - h) + 1))
+          long double elt
+             = (gamma_log2(N + 1) - gamma_log2(h + 1) - gamma_log2((N - h) + 1))
                 * M_LN2
              + h * std::log(h / N) + (N - h) * std::log((N - h) / N);
           cn2 += std::exp(elt);
         }
         long double cnr1 = cn2;   // equal C_n^2
         long double cnr2 = 1;     // equal C_n^1
-        long double cnr = cnr1;
+        long double cnr  = cnr1;
         for (std::size_t i = std::size_t(3); i <= r; ++i) {
-          cnr = cnr1 + (N / (i - 2.0)) * cnr2;
+          cnr  = cnr1 + (N / (i - 2.0)) * cnr2;
           cnr2 = cnr1;
           cnr1 = cnr;
         }

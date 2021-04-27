@@ -64,7 +64,8 @@ namespace gum {
   template < typename Key >
   template < typename Alloc, bool Gen >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
-     const SequenceImplementation< Key, Alloc, Gen >& seq, Idx pos) noexcept :
+     const SequenceImplementation< Key, Alloc, Gen >& seq,
+     Idx                                              pos) noexcept :
       seq__{reinterpret_cast<
          const SequenceImplementation< Key,
                                        std::allocator< Key >,
@@ -81,7 +82,8 @@ namespace gum {
   template < typename Key >
   template < typename Alloc >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
-     const Sequence< Key, Alloc >& seq, Idx pos) noexcept :
+     const Sequence< Key, Alloc >& seq,
+     Idx                           pos) noexcept :
       seq__{reinterpret_cast<
          const SequenceImplementation< Key,
                                        std::allocator< Key >,
@@ -123,7 +125,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::operator=(
      const SequenceIteratorSafe< Key >& source) noexcept {
     iterator__ = source.iterator__;
-    seq__ = source.seq__;
+    seq__      = source.seq__;
     return *this;
   }
 
@@ -132,7 +134,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::operator=(
      SequenceIteratorSafe< Key >&& source) noexcept {
     iterator__ = source.iterator__;
-    seq__ = source.seq__;
+    seq__      = source.seq__;
     return *this;
   }
 
@@ -425,8 +427,8 @@ namespace gum {
   template < typename... Args >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::emplace(Args&&... args) {
     Key  key(std::forward< Args >(args)...);
-    Key& new_key =
-       const_cast< Key& >(h__.insert(std::move(key), h__.size()).first);
+    Key& new_key
+       = const_cast< Key& >(h__.insert(std::move(key), h__.size()).first);
     v__.push_back(&new_key);
     update_end__();
   }

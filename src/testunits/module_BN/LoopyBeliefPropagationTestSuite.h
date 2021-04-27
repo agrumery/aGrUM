@@ -313,8 +313,8 @@ namespace gum_tests {
 
     void testLBPSimpleBN() {
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn =
-           gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -330,8 +330,8 @@ namespace gum_tests {
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn =
-           gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -349,8 +349,8 @@ namespace gum_tests {
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn =
-           gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -368,8 +368,8 @@ namespace gum_tests {
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn =
-           gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -389,8 +389,8 @@ namespace gum_tests {
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn =
-           gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -414,7 +414,8 @@ namespace gum_tests {
     void testLBPCplxBN() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -431,7 +432,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -450,7 +452,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -469,7 +472,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -490,7 +494,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -633,14 +638,14 @@ namespace gum_tests {
                             gum::LazyPropagation< GUM_SCALAR >&        lazy,
                             gum::LoopyBeliefPropagation< GUM_SCALAR >& inf,
                             double errmax = 1e-2) {
-      GUM_SCALAR  err = static_cast< GUM_SCALAR >(0);
+      GUM_SCALAR  err    = static_cast< GUM_SCALAR >(0);
       std::string argstr = "";
       for (const auto& node: bn.nodes()) {
         GUM_SCALAR e = lazy.posterior(node).KL(inf.posterior(node));
         if (e > err) {
-          err = e;
-          argstr =
-             bn.variable(node).name() + " (err=" + std::to_string(err) + ") : \n";
+          err    = e;
+          argstr = bn.variable(node).name() + " (err=" + std::to_string(err)
+                 + ") : \n";
           argstr += "  lazy : " + lazy.posterior(node).toString() + "\n";
           argstr += "  inf : " + inf.posterior(node).toString() + " \n";
         }

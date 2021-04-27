@@ -241,7 +241,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
       TS_ASSERT(prm.isType("t_state"));
       const auto& boolean = prm.type("boolean");
-      const auto& state = prm.type("t_state");
+      const auto& state   = prm.type("t_state");
       TS_ASSERT(state.isSubTypeOf(boolean));
       const auto& map = state.label_map();
       TS_ASSERT_EQUALS(map.size(), (gum::Size)2);

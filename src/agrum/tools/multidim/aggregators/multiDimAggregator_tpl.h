@@ -65,8 +65,10 @@ namespace gum {
       bool stop_iteration = false;
 
       for (Idx j = 1; j < this->nbrDim(); j++) {
-        current = fold_(
-           this->variable(j), i.val(this->variable(j)), current, stop_iteration);
+        current = fold_(this->variable(j),
+                        i.val(this->variable(j)),
+                        current,
+                        stop_iteration);
 
         if (stop_iteration) break;
       }
@@ -82,7 +84,7 @@ namespace gum {
                   "Not enough variable for an aggregator : " << *this);
       }
 
-      const DiscreteVariable& agg = this->variable((Idx)0);
+      const DiscreteVariable& agg     = this->variable((Idx)0);
       auto                    current = buildValue_(i);
 
       // truncate to fit in aggreegator domain size

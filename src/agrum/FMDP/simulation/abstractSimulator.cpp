@@ -59,7 +59,7 @@ namespace gum {
     bool hre = true;
     while (hre) {
       currentState_ = randomState_();
-      hre = hasReachEnd();
+      hre           = hasReachEnd();
     }
   }
 

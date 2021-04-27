@@ -78,8 +78,8 @@ namespace gum {
        * RecordCounter.*/
       AprioriBDeu(const DatabaseTable< ALLOC >& database,
                   const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                     nodeId2columns =
-                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                     nodeId2columns
+                  = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                   const allocator_type& alloc = allocator_type());
 
       /// copy constructor

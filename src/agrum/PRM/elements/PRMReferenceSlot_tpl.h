@@ -38,8 +38,8 @@ namespace gum {
         PRMClassElement< GUM_SCALAR >(name),
         slotType__(type), isArray__(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
-      this->safeName_ =
-         PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_
+         = PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
     }
 
     // Destructor.

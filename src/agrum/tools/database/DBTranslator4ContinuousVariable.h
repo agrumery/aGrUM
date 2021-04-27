@@ -153,7 +153,7 @@ namespace gum {
       DBTranslator4ContinuousVariable(
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool            fit_range = false,
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc     = allocator_type());
 
       /// default constructor without any initial variable nor missing symbol
       /** When using this constructor, it is assumed implicitly that the
@@ -167,9 +167,9 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4ContinuousVariable
        */
-      DBTranslator4ContinuousVariable(
-         const bool            fit_range = false,
-         const allocator_type& alloc = allocator_type());
+      DBTranslator4ContinuousVariable(const bool            fit_range = false,
+                                      const allocator_type& alloc
+                                      = allocator_type());
 
       /// default constructor with a continuous variable as translator
       /** @param var a continuous variable that will be used for
@@ -190,7 +190,7 @@ namespace gum {
          const ContinuousVariable< GUM_SCALAR >&                  var,
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool            fit_range = false,
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc     = allocator_type());
 
       /** @brief default constructor with a continuous variable as translator
        * but without missing symbol
@@ -207,10 +207,10 @@ namespace gum {
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
       template < typename GUM_SCALAR >
-      DBTranslator4ContinuousVariable(
-         const ContinuousVariable< GUM_SCALAR >& var,
-         const bool                              fit_range = false,
-         const allocator_type&                   alloc = allocator_type());
+      DBTranslator4ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& var,
+                                      const bool            fit_range = false,
+                                      const allocator_type& alloc
+                                      = allocator_type());
 
       /// default constructor with a IContinuous variable as translator
       /** @param var a IContinuous variable that will be used for
@@ -231,7 +231,7 @@ namespace gum {
          const IContinuousVariable&                               var,
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
          const bool            fit_range = false,
-         const allocator_type& alloc = allocator_type());
+         const allocator_type& alloc     = allocator_type());
 
       /** @brief default constructor with a IContinuous variable as translator
        * but without missing symbol
@@ -247,10 +247,10 @@ namespace gum {
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      DBTranslator4ContinuousVariable(
-         const IContinuousVariable& var,
-         const bool                 fit_range = false,
-         const allocator_type&      alloc = allocator_type());
+      DBTranslator4ContinuousVariable(const IContinuousVariable& var,
+                                      const bool                 fit_range = false,
+                                      const allocator_type&      alloc
+                                      = allocator_type());
 
       /// copy constructor
       DBTranslator4ContinuousVariable(

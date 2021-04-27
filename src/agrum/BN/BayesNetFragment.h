@@ -83,9 +83,9 @@ namespace gum {
     public:
     /// @name Constructors / Destructors
     /// @{
-    BayesNetFragment() = delete;
+    BayesNetFragment()                                               = delete;
     BayesNetFragment(const BayesNetFragment< GUM_SCALAR >& fragment) = delete;
-    BayesNetFragment(BayesNetFragment< GUM_SCALAR >&& fragment) = delete;
+    BayesNetFragment(BayesNetFragment< GUM_SCALAR >&& fragment)      = delete;
 
     explicit BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn);
 

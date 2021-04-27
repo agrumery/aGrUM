@@ -277,7 +277,8 @@ namespace gum_tests {
 
     void testHybridCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+         3);
 
       try {
         gum::LazyPropagation< double > lazy(&bn);

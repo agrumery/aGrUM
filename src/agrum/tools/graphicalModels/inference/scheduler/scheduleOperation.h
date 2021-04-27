@@ -41,7 +41,8 @@ namespace gum {
   class ScheduleOperation {
     public:
     /// the currently supported types of operations
-    enum class Type : char {
+    enum class Type : char
+    {
       /// combine 2 ScheduleMultiDims
       COMBINE_MULTIDIM,
       /// project a ScheduleMultiDim over a subset of its variables

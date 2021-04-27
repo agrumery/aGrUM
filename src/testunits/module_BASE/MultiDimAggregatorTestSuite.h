@@ -134,8 +134,8 @@ namespace gum_tests {
 
       if (m1 > m2) {   // (ll,m2,m1,hh)
         tmp = m2;
-        m2 = m1;
-        m1 = tmp;
+        m2  = m1;
+        m1  = tmp;
       }
 
       // the order is now ll<=m1<=m2<=hh
@@ -205,8 +205,8 @@ namespace gum_tests {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) && (c == (gum::Idx)2) && (d == (gum::Idx)2))
-               ? (gum::Idx)1
-               : (gum::Idx)0;
+             ? (gum::Idx)1
+             : (gum::Idx)0;
 
       return (tmp == a) ? (float)1 : (float)0;
     }
@@ -215,8 +215,8 @@ namespace gum_tests {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) || (c == (gum::Idx)2) || (d == (gum::Idx)2))
-               ? (gum::Idx)1
-               : (gum::Idx)0;
+             ? (gum::Idx)1
+             : (gum::Idx)0;
 
       return (tmp == a) ? (float)1 : (float)0;
     }
@@ -225,8 +225,8 @@ namespace gum_tests {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) || (c == (gum::Idx)1) || (d == (gum::Idx)1))
-               ? (gum::Idx)1
-               : (gum::Idx)0;
+             ? (gum::Idx)1
+             : (gum::Idx)0;
 
       return (tmp == a) ? (float)1 : (float)0;
     }
@@ -235,8 +235,8 @@ namespace gum_tests {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) && (c == (gum::Idx)1) && (d == (gum::Idx)1))
-               ? (gum::Idx)1
-               : (gum::Idx)0;
+             ? (gum::Idx)1
+             : (gum::Idx)0;
 
       return (tmp == a) ? (float)1 : (float)0;
     }
@@ -378,7 +378,8 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           is_median4__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
+           is_median4__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
+           p[i]);
       }
     }
 
@@ -395,7 +396,8 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           is_amplitude__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
+           is_amplitude__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
+           p[i]);
       }
     }
 
@@ -434,7 +436,8 @@ namespace gum_tests {
 
         for (i.setFirst(); !i.end(); ++i) {
           TS_ASSERT_EQUALS(
-             p[i], is_sum__(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8));
+             p[i],
+             is_sum__(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8));
         }
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

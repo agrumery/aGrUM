@@ -71,11 +71,11 @@ namespace gum {
       INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
          const O3TypeFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
-        prm__ = src.prm__;
+        prm__    = src.prm__;
         o3_prm__ = src.o3_prm__;
         solver__ = src.solver__;
         errors__ = src.errors__;
-        build__ = src.build__;
+        build__  = src.build__;
         return *this;
       }
 
@@ -83,11 +83,11 @@ namespace gum {
       INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
          O3TypeFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
-        prm__ = std::move(src.prm__);
+        prm__    = std::move(src.prm__);
         o3_prm__ = std::move(src.o3_prm__);
         solver__ = std::move(src.solver__);
         errors__ = std::move(src.errors__);
-        build__ = std::move(src.build__);
+        build__  = std::move(src.build__);
         return *this;
       }
 
@@ -161,8 +161,9 @@ namespace gum {
         if (checkO3IntTypes__()) {
           PRMFactory< GUM_SCALAR > factory(prm__);
           for (auto type: o3IntTypes__) {
-            factory.addRangeType(
-               type->name().label(), type->start().value(), type->end().value());
+            factory.addRangeType(type->name().label(),
+                                 type->start().value(),
+                                 type->end().value());
           }
         }
       }
@@ -257,8 +258,9 @@ namespace gum {
 
             } catch (InvalidDirectedCycle&) {
               // Cyclic inheritance
-              O3PRM_TYPE_CYCLIC_INHERITANCE(
-                 type->name(), type->superLabel(), *errors__);
+              O3PRM_TYPE_CYCLIC_INHERITANCE(type->name(),
+                                            type->superLabel(),
+                                            *errors__);
               return false;
             }
 
@@ -274,7 +276,7 @@ namespace gum {
       INLINE bool O3TypeFactory< GUM_SCALAR >::checkLabels__(O3Type& type) {
         for (auto& pair: type.labels()) {
           auto super_labels = Set< std::string >();
-          auto super = typeMap__[type.superLabel().label()];
+          auto super        = typeMap__[type.superLabel().label()];
 
           for (auto& label: super->labels()) {
             super_labels.insert(label.first.label());

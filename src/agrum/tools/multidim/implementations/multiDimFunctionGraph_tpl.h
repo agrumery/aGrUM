@@ -96,7 +96,8 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::set(
-     const Instantiation& i, const GUM_SCALAR& value) const {
+     const Instantiation& i,
+     const GUM_SCALAR&    value) const {
     GUM_ERROR(OperationNotAllowed,
               "Function Graph can't be edited so "
               "easily.\nMultiDimFunctionGraphManager "
@@ -208,7 +209,8 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::copyFrom(
-     const MultiDimContainer< GUM_SCALAR >& src, Instantiation* p_i) const {
+     const MultiDimContainer< GUM_SCALAR >& src,
+     Instantiation*                         p_i) const {
     GUM_ERROR(OperationNotAllowed,
               "You cannot copy another type of multiDim "
               "into a MultiDimFunctionGraph.");
@@ -234,8 +236,8 @@ namespace gum {
     this->clear();
 
     // New variables insertion
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            src.variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = src.variablesSequence().beginSafe();
          varIter != src.variablesSequence().endSafe();
          ++varIter)
       this->add(**varIter);
@@ -264,11 +266,11 @@ namespace gum {
         if (!src2dest.existsFirst(currentSrcNode->son(index))) {
           NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
           if (src.isTerminalNode(srcSonNodeId)) {
-            destSonNodeId =
-               this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
+            destSonNodeId
+               = this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
           } else {
-            destSonNodeId =
-               this->manager()->addInternalNode(src.node(srcSonNodeId)->nodeVar());
+            destSonNodeId = this->manager()->addInternalNode(
+               src.node(srcSonNodeId)->nodeVar());
             lifo.push_back(srcSonNodeId);
           }
           src2dest.insert(srcSonNodeId, destSonNodeId);
@@ -298,8 +300,8 @@ namespace gum {
     this->clear();
 
     // New variables insertion
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            src.variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = src.variablesSequence().beginSafe();
          varIter != src.variablesSequence().endSafe();
          ++varIter) {
       if ((*varIter)->domainSize() != reassign.second(*varIter)->domainSize())
@@ -336,8 +338,8 @@ namespace gum {
         if (!src2dest.existsFirst(currentSrcNode->son(index))) {
           NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
           if (src.isTerminalNode(srcSonNodeId)) {
-            destSonNodeId =
-               this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
+            destSonNodeId
+               = this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
           } else {
             destSonNodeId = this->manager()->addInternalNode(
                reassign.second(src.node(srcSonNodeId)->nodeVar()));
@@ -369,8 +371,8 @@ namespace gum {
     this->clear();
 
     // New variables insertion
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            src.variablesSequence().beginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = src.variablesSequence().beginSafe();
          varIter != src.variablesSequence().endSafe();
          ++varIter)
       this->add(**varIter);
@@ -402,8 +404,8 @@ namespace gum {
             destSonNodeId = this->manager()->addTerminalNode(
                gamma * src.nodeValue(srcSonNodeId));
           } else {
-            destSonNodeId =
-               this->manager()->addInternalNode(src.node(srcSonNodeId)->nodeVar());
+            destSonNodeId = this->manager()->addInternalNode(
+               src.node(srcSonNodeId)->nodeVar());
             lifo.push_back(srcSonNodeId);
           }
           src2dest.insert(srcSonNodeId, destSonNodeId);
@@ -427,8 +429,8 @@ namespace gum {
     this->clearAllTerminalNodes();
 
     // Nodes cleaning
-    for (HashTableIterator< NodeId, InternalNode* > nodeIter =
-            internalNodeMap__.begin();
+    for (HashTableIterator< NodeId, InternalNode* > nodeIter
+         = internalNodeMap__.begin();
          nodeIter != internalNodeMap__.end();
          ++nodeIter) {
       delete nodeIter.val();
@@ -437,15 +439,16 @@ namespace gum {
 
     // Cleaning the list of nodes for each variables
     for (HashTableIterator< const DiscreteVariable*, LinkedList< NodeId >* >
-            varIter = var2NodeIdMap__.begin();
+            varIter
+         = var2NodeIdMap__.begin();
          varIter != var2NodeIdMap__.end();
          ++varIter) {
       delete varIter.val();
     }
     var2NodeIdMap__.clear();
 
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-            this->variablesSequence().rbeginSafe();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = this->variablesSequence().rbeginSafe();
          varIter != this->variablesSequence().rendSafe();
          --varIter) {
       this->erase(**varIter);
@@ -543,13 +546,13 @@ namespace gum {
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager() {
     if (manager__ == nullptr) {
       if (isReduced__)
-        manager__ =
-           new MultiDimFunctionGraphROManager< GUM_SCALAR, TerminalNodePolicy >(
+        manager__
+           = new MultiDimFunctionGraphROManager< GUM_SCALAR, TerminalNodePolicy >(
               this);
       else
-        manager__ =
-           new MultiDimFunctionGraphTreeManager< GUM_SCALAR, TerminalNodePolicy >(
-              this);
+        manager__
+           = new MultiDimFunctionGraphTreeManager< GUM_SCALAR,
+                                                   TerminalNodePolicy >(this);
     }
     return manager__;
   }
@@ -652,7 +655,8 @@ namespace gum {
   // Not implemented yet
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::replace_(
-     const DiscreteVariable* x, const DiscreteVariable* y) {
+     const DiscreteVariable* x,
+     const DiscreteVariable* y) {
     GUM_ERROR(OperationNotAllowed, "Not Implemented Yet")
   }
 
@@ -668,9 +672,9 @@ namespace gum {
   INLINE GUM_SCALAR MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::get(
      const Instantiation& inst) const {
     NodeId        currentNodeId = root__;
-    InternalNode* currentNode = nullptr;
+    InternalNode* currentNode   = nullptr;
     while (!isTerminalNode(currentNodeId)) {
-      currentNode = internalNodeMap__[currentNodeId];
+      currentNode   = internalNodeMap__[currentNodeId];
       currentNodeId = currentNode->son(inst.val(*(currentNode->nodeVar())));
     }
     return this->terminalNodeValue(currentNodeId);

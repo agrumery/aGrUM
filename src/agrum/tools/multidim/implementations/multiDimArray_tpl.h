@@ -115,7 +115,7 @@ namespace gum {
       if (!this->isInMultipleChangeMethod_()) values_.clear();
     } else {
       Size v_size = v.domainSize();
-      Size size = this->domainSize();
+      Size size   = this->domainSize();
       // here, the variable does belong to the array.
       // => if pos = variables.size() - 1 then we just have to extract the
       // beginning of the array (actually the first gap of variable v)

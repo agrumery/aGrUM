@@ -49,8 +49,8 @@ namespace gum {
              class COMBINEOPERATOR,
              template < typename >
              class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy =
-                ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy
+             = ExactTerminalNodePolicy >
   class Regress {
     public:
     // ============================================================================

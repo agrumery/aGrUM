@@ -145,7 +145,7 @@ namespace gum_tests {
                 dag.addArc(j, i);
                 double new_score_i = score__(score, i, dag) - current_scores[i];
                 double new_score_j = score__(score, j, dag) - current_scores[j];
-                double new_score = new_score_i + new_score_j;
+                double new_score   = new_score_i + new_score_j;
                 if (new_score > 0) {
                   changes.push_back(
                      std::pair< gum::learning::GraphChange, double >(
@@ -188,13 +188,14 @@ namespace gum_tests {
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
                                 changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
-          current_scores[changes[best_i].first.node1()] =
-             score__(score, changes[best_i].first.node1(), dag);
-          current_scores[changes[best_i].first.node2()] =
-             score__(score, changes[best_i].first.node2(), dag);
+          current_scores[changes[best_i].first.node1()]
+             = score__(score, changes[best_i].first.node1(), dag);
+          current_scores[changes[best_i].first.node2()]
+             = score__(score, changes[best_i].first.node2(), dag);
           break;
 
-        default: break;
+        default:
+          break;
       }
 
       return true;
@@ -206,7 +207,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -244,10 +245,12 @@ namespace gum_tests {
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint) = constraint1;
+         struct_constraint)
+         = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
          op_set(struct_constraint);
@@ -278,7 +281,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -318,10 +321,12 @@ namespace gum_tests {
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint) = constraint1;
+         struct_constraint)
+         = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
          op_set(struct_constraint);
@@ -353,7 +358,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -396,10 +401,12 @@ namespace gum_tests {
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint) = constraint1;
+         struct_constraint)
+         = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
          op_set(struct_constraint);
@@ -430,7 +437,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -476,10 +483,12 @@ namespace gum_tests {
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint) = constraint1;
+         struct_constraint)
+         = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(
-         parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser,
+                                                  apriori,
+                                                  score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
          op_set(struct_constraint);
@@ -512,7 +521,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -529,7 +538,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> dirichlet_initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
-      const std::size_t dirichlet_nb_vars = dirichlet_var_names.size();
+      const std::size_t dirichlet_nb_vars   = dirichlet_var_names.size();
 
       gum::learning::DBTranslatorSet<> dirichlet_translator_set;
       for (std::size_t i = 0; i < dirichlet_nb_vars; ++i) {
@@ -544,7 +553,8 @@ namespace gum_tests {
       // create the score and the apriori
       gum::learning::DBRowGeneratorSet<>    dirichlet_genset;
       gum::learning::DBRowGeneratorParser<> dirichlet_parser(
-         dirichlet_database.handler(), dirichlet_genset);
+         dirichlet_database.handler(),
+         dirichlet_genset);
       gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database,
                                                             dirichlet_parser);
 
@@ -563,8 +573,9 @@ namespace gum_tests {
            gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML<> estimator(
-           parser, apriori, score.internalApriori());
+        gum::learning::ParamEstimatorML<> estimator(parser,
+                                                    apriori,
+                                                    score.internalApriori());
 
         gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
            op_set(struct_constraint);

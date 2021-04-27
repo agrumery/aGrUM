@@ -55,11 +55,12 @@ namespace gum {
     /** It is possible to create ContinuousVariable with lower_bound > upper_bound.
      * In this case, the min and the max are swapped.
      * By default, the range of the variable is (-inf,+inf). */
-    ContinuousVariable(
-       const std::string& aName,
-       const std::string& aDesc,
-       GUM_SCALAR lower_bound = -std::numeric_limits< GUM_SCALAR >::infinity(),
-       GUM_SCALAR upper_bound = std::numeric_limits< GUM_SCALAR >::infinity());
+    ContinuousVariable(const std::string& aName,
+                       const std::string& aDesc,
+                       GUM_SCALAR         lower_bound
+                       = -std::numeric_limits< GUM_SCALAR >::infinity(),
+                       GUM_SCALAR upper_bound
+                       = std::numeric_limits< GUM_SCALAR >::infinity());
 
     /// Copy Constructor.
     ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& from);

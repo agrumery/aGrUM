@@ -63,7 +63,8 @@ namespace gum {
     if (bucket__) { delete bucket__; }
 
     for (HashTableIteratorSafe< const MultiDimContainer< GUM_SCALAR >*,
-                                Instantiation* > iter = multiDims__.beginSafe();
+                                Instantiation* > iter
+         = multiDims__.beginSafe();
          iter != multiDims__.endSafe();
          ++iter) {
       delete iter.val();
@@ -445,7 +446,8 @@ namespace gum {
     bool found = false;
 
     for (HashTableIteratorSafe< const MultiDimContainer< GUM_SCALAR >*,
-                                Instantiation* > iter = multiDims__.beginSafe();
+                                Instantiation* > iter
+         = multiDims__.beginSafe();
          iter != multiDims__.endSafe();
          ++iter) {
       if (iter.key()->contains(*var)) {
@@ -485,8 +487,8 @@ namespace gum {
     }
 
     if (!this->slaves_().empty()) {
-      for (List< Instantiation* >::const_iterator_safe iter =
-              this->slaves_().cbeginSafe();
+      for (List< Instantiation* >::const_iterator_safe iter
+           = this->slaves_().cbeginSafe();
            iter != this->slaves_().cendSafe();
            ++iter) {
         instantiations__.insert(*iter, new Instantiation(*bucket__));
@@ -526,8 +528,8 @@ namespace gum {
         current = (GUM_SCALAR)1;
 
         for (HashTableIteratorSafe< const MultiDimContainer< GUM_SCALAR >*,
-                                    Instantiation* > iter =
-                multiDims__.beginSafe();
+                                    Instantiation* > iter
+             = multiDims__.beginSafe();
              iter != multiDims__.endSafe();
              ++iter) {
           (iter.val())->setVals(allVarsInst__);

@@ -180,8 +180,8 @@ namespace gum {
         }
       } else {
         for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *=
-             this->database_->domainSize(this->nodeId2columns_.second(idset[i]));
+          weight *= this->database_->domainSize(
+             this->nodeId2columns_.second(idset[i]));
         }
       }
 

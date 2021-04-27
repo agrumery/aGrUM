@@ -189,15 +189,15 @@ namespace gum {
     RecordCounter< ALLOC >&
        RecordCounter< ALLOC >::operator=(const RecordCounter< ALLOC >& from) {
       if (this != &from) {
-        parsers__ = from.parsers__;
-        ranges__ = from.ranges__;
-        thread_ranges__ = from.thread_ranges__;
-        nodeId2columns__ = from.nodeId2columns__;
-        last_DB_countings__ = from.last_DB_countings__;
-        last_DB_ids__ = from.last_DB_ids__;
-        last_nonDB_countings__ = from.last_nonDB_countings__;
-        last_nonDB_ids__ = from.last_nonDB_ids__;
-        max_nb_threads__ = from.max_nb_threads__;
+        parsers__                = from.parsers__;
+        ranges__                 = from.ranges__;
+        thread_ranges__          = from.thread_ranges__;
+        nodeId2columns__         = from.nodeId2columns__;
+        last_DB_countings__      = from.last_DB_countings__;
+        last_DB_ids__            = from.last_DB_ids__;
+        last_nonDB_countings__   = from.last_nonDB_countings__;
+        last_nonDB_ids__         = from.last_nonDB_ids__;
+        max_nb_threads__         = from.max_nb_threads__;
         min_nb_rows_per_thread__ = from.min_nb_rows_per_thread__;
       }
       return *this;
@@ -209,15 +209,15 @@ namespace gum {
     RecordCounter< ALLOC >&
        RecordCounter< ALLOC >::operator=(RecordCounter< ALLOC >&& from) {
       if (this != &from) {
-        parsers__ = std::move(from.parsers__);
-        ranges__ = std::move(from.ranges__);
-        thread_ranges__ = std::move(from.thread_ranges__);
-        nodeId2columns__ = std::move(from.nodeId2columns__);
-        last_DB_countings__ = std::move(from.last_DB_countings__);
-        last_DB_ids__ = std::move(from.last_DB_ids__);
-        last_nonDB_countings__ = std::move(from.last_nonDB_countings__);
-        last_nonDB_ids__ = std::move(from.last_nonDB_ids__);
-        max_nb_threads__ = from.max_nb_threads__;
+        parsers__                = std::move(from.parsers__);
+        ranges__                 = std::move(from.ranges__);
+        thread_ranges__          = std::move(from.thread_ranges__);
+        nodeId2columns__         = std::move(from.nodeId2columns__);
+        last_DB_countings__      = std::move(from.last_DB_countings__);
+        last_DB_ids__            = std::move(from.last_DB_ids__);
+        last_nonDB_countings__   = std::move(from.last_nonDB_countings__);
+        last_nonDB_ids__         = std::move(from.last_nonDB_ids__);
+        max_nb_threads__         = from.max_nb_threads__;
         min_nb_rows_per_thread__ = from.min_nb_rows_per_thread__;
       }
       return *this;
@@ -299,7 +299,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::checkDiscreteVariables__(
        const IdCondSet< ALLOC >& ids) const {
-      const std::size_t             size = ids.size();
+      const std::size_t             size     = ids.size();
       const DatabaseTable< ALLOC >& database = parsers__[0].data.database();
 
       if (nodeId2columns__.empty()) {
@@ -372,8 +372,9 @@ namespace gum {
       // check whether we can extract the vector we wish to return from
       // some already computed counting vector
       if (last_nonDB_ids__.contains(ids))
-        return extractFromCountings__(
-           ids, last_nonDB_ids__, last_nonDB_countings__);
+        return extractFromCountings__(ids,
+                                      last_nonDB_ids__,
+                                      last_nonDB_countings__);
       else if (last_DB_ids__.contains(ids))
         return extractFromCountings__(ids, last_DB_ids__, last_DB_countings__);
       else {
@@ -416,7 +417,7 @@ namespace gum {
 
       // we first determine the size of the output vector, the domain of
       // each of its variables and their offsets in the output vector
-      const auto& database = parsers__[0].data.database();
+      const auto& database         = parsers__[0].data.database();
       std::size_t result_vect_size = std::size_t(1);
       for (const auto id: subset_ids) {
         result_vect_size *= database.domainSize(nodeId2columns[id]);
@@ -441,7 +442,7 @@ namespace gum {
 
       if (subset_begin) {
         const std::size_t superset_vect_size = superset_vect.size();
-        std::size_t       i = std::size_t(0);
+        std::size_t       i                  = std::size_t(0);
         while (i < superset_vect_size) {
           for (std::size_t j = std::size_t(0); j < result_vect_size; ++j, ++i) {
             result_vect[j] += superset_vect[i];
@@ -450,7 +451,7 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          last_nonDB_ids__ = subset_ids;
+          last_nonDB_ids__       = subset_ids;
           last_nonDB_countings__ = std::move(result_vect);
           return last_nonDB_countings__;
         } catch (...) {
@@ -464,7 +465,7 @@ namespace gum {
       // check if subset_ids is the end of the sequence of superset_ids.
       // In this case, as above, there are two simple loops to perform the
       // countings
-      bool              subset_end = true;
+      bool              subset_end        = true;
       const std::size_t superset_ids_size = std::size_t(superset_ids.size());
       for (std::size_t i = 0; i < subset_ids_size; ++i) {
         if (superset_ids.pos(subset_ids[i])
@@ -481,8 +482,8 @@ namespace gum {
         for (std::size_t i = std::size_t(0);
              i < superset_ids_size - subset_ids_size;
              ++i)
-          vect_not_subset_size *=
-             database.domainSize(nodeId2columns[superset_ids[i]]);
+          vect_not_subset_size
+             *= database.domainSize(nodeId2columns[superset_ids[i]]);
 
         // perform the two loops
         std::size_t i = std::size_t(0);
@@ -495,7 +496,7 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          last_nonDB_ids__ = subset_ids;
+          last_nonDB_ids__       = subset_ids;
           last_nonDB_countings__ = std::move(result_vect);
           return last_nonDB_countings__;
         } catch (...) {
@@ -537,30 +538,30 @@ namespace gum {
       std::vector< std::size_t > result_offset(subset_ids_size);
       {
         std::size_t                result_domain_size = std::size_t(1);
-        std::size_t                tmp_before_incr = std::size_t(1);
+        std::size_t                tmp_before_incr    = std::size_t(1);
         std::vector< std::size_t > superset_order(subset_ids_size);
 
         for (std::size_t h = std::size_t(0), j = std::size_t(0);
              j < subset_ids_size;
              ++h) {
           if (subset_ids.exists(superset_ids[h])) {
-            before_incr[j] = tmp_before_incr - 1;
+            before_incr[j]                                  = tmp_before_incr - 1;
             superset_order[subset_ids.pos(superset_ids[h])] = j;
-            tmp_before_incr = 1;
+            tmp_before_incr                                 = 1;
             ++j;
           } else {
-            tmp_before_incr *=
-               database.domainSize(nodeId2columns[superset_ids[h]]);
+            tmp_before_incr
+               *= database.domainSize(nodeId2columns[superset_ids[h]]);
           }
         }
 
         // compute the offsets in the order of the superset_ids
         for (std::size_t i = 0; i < subset_ids.size(); ++i) {
-          const std::size_t domain_size =
-             database.domainSize(nodeId2columns[subset_ids[i]]);
+          const std::size_t domain_size
+             = database.domainSize(nodeId2columns[subset_ids[i]]);
           const std::size_t j = superset_order[i];
-          result_domain[j] = domain_size;
-          result_offset[j] = result_domain_size;
+          result_domain[j]    = domain_size;
+          result_offset[j]    = result_domain_size;
           result_domain_size *= domain_size;
         }
       }
@@ -575,7 +576,7 @@ namespace gum {
 
       // now we can loop over the superset_vect to fill result_vect
       const std::size_t superset_vect_size = superset_vect.size();
-      std::size_t       the_result_offset = std::size_t(0);
+      std::size_t       the_result_offset  = std::size_t(0);
       for (std::size_t h = std::size_t(0); h < superset_vect_size; ++h) {
         result_vect[the_result_offset] += superset_vect[h];
 
@@ -604,7 +605,7 @@ namespace gum {
 
       // save the subset_ids and the result vector
       try {
-        last_nonDB_ids__ = subset_ids;
+        last_nonDB_ids__       = subset_ids;
         last_nonDB_countings__ = std::move(result_vect);
         return last_nonDB_countings__;
       } catch (...) {
@@ -634,7 +635,7 @@ namespace gum {
 
       // we first determine the size of the counting vector, the domain of
       // each of its variables and their offsets in the output vector
-      const std::size_t ids_size = ids.size();
+      const std::size_t ids_size           = ids.size();
       std::size_t       counting_vect_size = std::size_t(1);
       std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes(ids_size);
       std::vector< std::pair< std::size_t, std::size_t >,
@@ -644,9 +645,9 @@ namespace gum {
         std::size_t i = std::size_t(0);
         for (const auto id: ids) {
           const std::size_t domain_size = database.domainSize(nodeId2columns[id]);
-          domain_sizes[i] = domain_size;
-          cols_offsets[i].first = nodeId2columns[id];
-          cols_offsets[i].second = counting_vect_size;
+          domain_sizes[i]               = domain_size;
+          cols_offsets[i].first         = nodeId2columns[id];
+          cols_offsets[i].second        = counting_vect_size;
           counting_vect_size *= domain_size;
           ++i;
         }
@@ -663,8 +664,8 @@ namespace gum {
 
       // create parsers if needed
       const std::size_t nb_ranges = thread_ranges__.size();
-      const std::size_t nb_threads =
-         nb_ranges <= max_nb_threads__ ? nb_ranges : max_nb_threads__;
+      const std::size_t nb_threads
+         = nb_ranges <= max_nb_threads__ ? nb_ranges : max_nb_threads__;
       while (parsers__.size() < nb_threads) {
         ThreadData< DBRowGeneratorParser< ALLOC > > new_parser(parsers__[0]);
         parsers__.push_back(std::move(new_parser));
@@ -705,8 +706,8 @@ namespace gum {
             DBRowGeneratorParser< ALLOC >& parser = parsers__[this_thread].data;
             parser.setRange(thread_ranges__[this_thread + i].first,
                             thread_ranges__[this_thread + i].second);
-            std::vector< double, ALLOC< double > >& countings =
-               thread_countings[this_thread].data;
+            std::vector< double, ALLOC< double > >& countings
+               = thread_countings[this_thread].data;
 
             // parse the database
             try {
@@ -717,8 +718,8 @@ namespace gum {
                 // fill the counts for the current row
                 std::size_t offset = std::size_t(0);
                 for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
-                  offset +=
-                     row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+                  offset += row[cols_offsets[i].first].discr_val
+                          * cols_offsets[i].second;
                 }
 
                 countings[offset] += row.weight();
@@ -740,7 +741,7 @@ namespace gum {
       }
 
       // save the final results
-      last_DB_ids__ = ids;
+      last_DB_ids__       = ids;
       last_DB_countings__ = std::move(counting_vect);
 
       return last_DB_countings__;
@@ -768,8 +769,8 @@ namespace gum {
           // fill the counts for the current row
           std::size_t offset = std::size_t(0);
           for (std::size_t i = std::size_t(0); i < nb_columns; ++i) {
-            offset +=
-               row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+            offset
+               += row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
           }
 
           countings[offset] += row.weight();
@@ -826,8 +827,9 @@ namespace gum {
       bool add_range = false;
       if (ranges__.empty()) {
         const auto& database = parsers__[0].data.database();
-        ranges__.push_back(std::pair< std::size_t, std::size_t >(
-           std::size_t(0), database.nbRows()));
+        ranges__.push_back(
+           std::pair< std::size_t, std::size_t >(std::size_t(0),
+                                                 database.nbRows()));
         add_range = true;
       }
 
@@ -887,7 +889,7 @@ namespace gum {
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          ranges(new_size);
       for (std::size_t i = std::size_t(0); i < new_size; ++i) {
-        ranges[i].first = new_ranges[i].first;
+        ranges[i].first  = new_ranges[i].first;
         ranges[i].second = new_ranges[i].second;
       }
 

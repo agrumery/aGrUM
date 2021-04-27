@@ -104,7 +104,8 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool OrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setOrder(order__);
       return true;
@@ -155,7 +156,7 @@ namespace gum {
   void OrderedEliminationSequenceStrategy::clear() {
     EliminationSequenceStrategy::clear();
     order_needed__ = true;
-    order_index__ = std::size_t(0);
+    order_index__  = std::size_t(0);
   }
 
   /// returns the new node to be eliminated within the triangulation algorithm

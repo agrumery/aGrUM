@@ -56,9 +56,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   class FMDP {
     template < typename GUM_SCALAR_O >
-    using VarTransitionTable =
-       HashTable< const DiscreteVariable*,
-                  const MultiDimImplementation< GUM_SCALAR_O >* >;
+    using VarTransitionTable
+       = HashTable< const DiscreteVariable*,
+                    const MultiDimImplementation< GUM_SCALAR_O >* >;
 
     public:
     // ===========================================================================

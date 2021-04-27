@@ -44,7 +44,7 @@ namespace gum {
     static bool first_time = true;
 
     if (first_time) {
-      first_time = false;
+      first_time             = false;
       BijectionIterEndSafe__ = new BijectionIteratorSafe< int, int >;
 #  ifdef GUM_DEBUG_MODE
       __debug__::dec_creation__("BijectionIteratorSafe",
@@ -68,7 +68,7 @@ namespace gum {
     static bool first_time = true;
 
     if (first_time) {
-      first_time = false;
+      first_time         = false;
       BijectionIterEnd__ = new BijectionIterator< int, int >;
 #  ifdef GUM_DEBUG_MODE
       __debug__::dec_creation__("BijectionIterator",
@@ -89,13 +89,13 @@ namespace gum {
 
   // create the end iterator for all Bijections
   const BijectionIteratorSafe< int, int >*
-     BijectionIteratorStaticEnd::BijectionIterEndSafe__ =
-        BijectionIteratorStaticEnd::endSafe4Statics();
+     BijectionIteratorStaticEnd::BijectionIterEndSafe__
+     = BijectionIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Bijections
   const BijectionIterator< int, int >*
-     BijectionIteratorStaticEnd::BijectionIterEnd__ =
-        BijectionIteratorStaticEnd::end4Statics();
+     BijectionIteratorStaticEnd::BijectionIterEnd__
+     = BijectionIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
 

@@ -135,7 +135,7 @@ namespace gum {
        ScoreAIC< ALLOC >::operator=(const ScoreAIC< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__ = from.internal_apriori__;
+        internal_apriori__      = from.internal_apriori__;
       }
       return *this;
     }
@@ -146,7 +146,7 @@ namespace gum {
     ScoreAIC< ALLOC >& ScoreAIC< ALLOC >::operator=(ScoreAIC< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__ = std::move(from.internal_apriori__);
+        internal_apriori__      = std::move(from.internal_apriori__);
       }
       return *this;
     }
@@ -216,8 +216,8 @@ namespace gum {
         // initialize the score: this should be the penalty of the AIC score,
         // i.e., -(ri-1 ) * qi
         const std::size_t target_domsize = all_size / conditioning_size;
-        const double      penalty =
-           conditioning_size * double(target_domsize - std::size_t(1));
+        const double      penalty
+           = conditioning_size * double(target_domsize - std::size_t(1));
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
@@ -249,7 +249,7 @@ namespace gum {
         // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
         // equivalent to:
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-        double N = 0.0;
+        double N     = 0.0;
         double score = 0.0;
         for (const auto n_ijk: N_ijk) {
           if (n_ijk) {

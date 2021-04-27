@@ -173,7 +173,8 @@ namespace gum {
                        const Set< const DiscreteVariable* >&  onto) {
       const auto pr = dp.probPot.margSumIn(onto);
       return DecisionPotential(
-         pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
+         pr,
+         divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
     }
 
     static DecisionPotential< GUM_SCALAR >
@@ -188,9 +189,9 @@ namespace gum {
 
     std::pair< GUM_SCALAR, GUM_SCALAR > meanVar() {
       auto       tmp = probPot * utilPot;
-      GUM_SCALAR s = probPot.sum();
-      double     m = tmp.sum() / s;
-      double     m2 = (tmp * utilPot).sum() / s;
+      GUM_SCALAR s   = probPot.sum();
+      double     m   = tmp.sum() / s;
+      double     m2  = (tmp * utilPot).sum() / s;
       return std::pair< GUM_SCALAR, GUM_SCALAR >(m, m2 - m * m);
     }
 

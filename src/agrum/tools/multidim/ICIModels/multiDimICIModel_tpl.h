@@ -51,9 +51,9 @@ namespace gum {
      const MultiDimICIModel< GUM_SCALAR >& from) :
       MultiDimReadOnly< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimICIModel);
-    default_weight__ = from.default_weight__;
+    default_weight__  = from.default_weight__;
     external_weight__ = from.external_weight__;
-    causal_weights__ = from.causal_weights__;
+    causal_weights__  = from.causal_weights__;
   }
 
   // Copy constructor using a bijection to replace variables from source.
@@ -63,11 +63,11 @@ namespace gum {
      const MultiDimICIModel< GUM_SCALAR >&                                from) :
       MultiDimReadOnly< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MultiDimICIModel);
-    default_weight__ = from.default_weight__;
+    default_weight__  = from.default_weight__;
     external_weight__ = from.external_weight__;
 
-    for (HashTableConstIteratorSafe< const DiscreteVariable*, GUM_SCALAR > iter =
-            from.causal_weights__.beginSafe();
+    for (HashTableConstIteratorSafe< const DiscreteVariable*, GUM_SCALAR > iter
+         = from.causal_weights__.beginSafe();
          iter != from.causal_weights__.endSafe();
          ++iter) {
       try {
@@ -139,7 +139,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit");
       }
       external_weight__ = p->external_weight__;
-      default_weight__ = p->default_weight__;
+      default_weight__  = p->default_weight__;
       for (Idx i = 1; i < this->nbrDim(); i++) {
         causal_weights__.set(
            const_cast< const DiscreteVariable* >(&this->variable(i)),

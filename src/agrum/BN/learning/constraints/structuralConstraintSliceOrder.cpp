@@ -65,7 +65,8 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-       const DiGraph& graph, const NodeProperty< NodeId >& order) :
+       const DiGraph&                graph,
+       const NodeProperty< NodeId >& order) :
         StructuralConstraintDiGraph(graph),
         SliceOrder__order_(order) {
       GUM_CONSTRUCTOR(StructuralConstraintSliceOrder);
@@ -97,7 +98,7 @@ namespace gum {
        const StructuralConstraintSliceOrder& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        SliceOrder__order_ = from.SliceOrder__order_;
+        SliceOrder__order_                   = from.SliceOrder__order_;
       }
       return *this;
     }
@@ -107,7 +108,7 @@ namespace gum {
        StructuralConstraintSliceOrder&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        SliceOrder__order_ = std::move(from.SliceOrder__order_);
+        SliceOrder__order_                   = std::move(from.SliceOrder__order_);
       }
       return *this;
     }

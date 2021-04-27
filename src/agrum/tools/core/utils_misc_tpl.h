@@ -65,8 +65,8 @@ namespace std {
     template < typename... T >
     static typename std::enable_if< (N < sizeof...(T)) >::type
        print(std::ostream& os, const std::tuple< T... >& t) {
-      char quote =
-         (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
+      char quote
+         = (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
             ? '"'
             : 0;
       os << ", " << quote << std::get< N >(t) << quote;
@@ -90,8 +90,12 @@ namespace std {
     if (x.size() <= 1) return true;
     if (x.size() == 2) return x[0] != x[1];
 
-    auto refless = [](T const* l, T const* r) { return *l < *r; };
-    auto refeq = [](T const* l, T const* r) { return *l == *r; };
+    auto refless = [](T const* l, T const* r) {
+      return *l < *r;
+    };
+    auto refeq = [](T const* l, T const* r) {
+      return *l == *r;
+    };
 
     std::vector< T const* > vp;
     vp.reserve(x.size());

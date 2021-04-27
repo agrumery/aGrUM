@@ -89,23 +89,29 @@ namespace gum {
      */
     virtual Set< const TABLE< GUM_SCALAR >* >
        combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
-                         Set< const DiscreteVariable* >    del_vars) = 0;
+                         Set< const DiscreteVariable* >    del_vars)
+       = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) = 0;
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
+       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&))
+       = 0;
 
     /// returns the current combination function
-    virtual TABLE< GUM_SCALAR >* (*combineFunction())(
-       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&) = 0;
+    virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
+                                                      const TABLE< GUM_SCALAR >&)
+       = 0;
 
     /// changes the function used for projecting TABLES
-    virtual void setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&)) = 0;
+    virtual void setProjectFunction(TABLE< GUM_SCALAR >* (
+       *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&))
+       = 0;
 
     /// returns the current projection function
     virtual TABLE< GUM_SCALAR >* (*projectFunction())(
-       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) = 0;
+       const TABLE< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&)
+       = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be

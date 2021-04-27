@@ -53,7 +53,7 @@ namespace gum {
         database__(db) {
       // get the variables names
       const auto&       var_names = database__.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
       for (auto dom: database__.domainSizes())
         domain_sizes__.push_back(dom);
       for (std::size_t i = 0; i < nb_vars; ++i) {
@@ -61,8 +61,8 @@ namespace gum {
       }
 
       // create the parser
-      parser__ =
-         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+      parser__
+         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -79,7 +79,7 @@ namespace gum {
       // assign to each column name in the CSV file its column
       genericBNLearner::checkFileName__(CSV_filename);
       DBInitializerFromCSV<> initializer(CSV_filename);
-      const auto&            apriori_names = initializer.variableNames();
+      const auto&            apriori_names   = initializer.variableNames();
       std::size_t            apriori_nb_vars = apriori_names.size();
       HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
       for (std::size_t i = std::size_t(0); i < apriori_nb_vars; ++i)
@@ -95,8 +95,8 @@ namespace gum {
 
       // get the mapping from the columns of score_database to those of
       // the CSV file
-      const std::vector< std::string >& score_names =
-         score_database.databaseTable().variableNames();
+      const std::vector< std::string >& score_names
+         = score_database.databaseTable().variableNames();
       const std::size_t                     score_nb_vars = score_names.size();
       HashTable< std::size_t, std::size_t > mapping(score_nb_vars);
       for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
@@ -128,8 +128,8 @@ namespace gum {
       nodeId2cols__ = score_database.nodeId2Columns();
 
       // create the parser
-      parser__ =
-         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+      parser__
+         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -137,8 +137,8 @@ namespace gum {
         database__(from.database__), domain_sizes__(from.domain_sizes__),
         nodeId2cols__(from.nodeId2cols__) {
       // create the parser
-      parser__ =
-         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+      parser__
+         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -147,8 +147,8 @@ namespace gum {
         domain_sizes__(std::move(from.domain_sizes__)),
         nodeId2cols__(std::move(from.nodeId2cols__)) {
       // create the parser
-      parser__ =
-         new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+      parser__
+         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -158,13 +158,13 @@ namespace gum {
        genericBNLearner::Database::operator=(const Database& from) {
       if (this != &from) {
         delete parser__;
-        database__ = from.database__;
+        database__     = from.database__;
         domain_sizes__ = from.domain_sizes__;
-        nodeId2cols__ = from.nodeId2cols__;
+        nodeId2cols__  = from.nodeId2cols__;
 
         // create the parser
-        parser__ =
-           new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+        parser__ = new DBRowGeneratorParser<>(database__.handler(),
+                                              DBRowGeneratorSet<>());
       }
 
       return *this;
@@ -174,13 +174,13 @@ namespace gum {
        genericBNLearner::Database::operator=(Database&& from) {
       if (this != &from) {
         delete parser__;
-        database__ = std::move(from.database__);
+        database__     = std::move(from.database__);
         domain_sizes__ = std::move(from.domain_sizes__);
-        nodeId2cols__ = std::move(from.nodeId2cols__);
+        nodeId2cols__  = std::move(from.nodeId2cols__);
 
         // create the parser
-        parser__ =
-           new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+        parser__ = new DBRowGeneratorParser<>(database__.handler(),
+                                              DBRowGeneratorSet<>());
       }
 
       return *this;
@@ -294,27 +294,27 @@ namespace gum {
           mutual_info__ = nullptr;
         }
 
-        score_type__ = from.score_type__;
-        param_estimator_type__ = from.param_estimator_type__;
-        EMepsilon__ = from.EMepsilon__;
-        apriori_type__ = from.apriori_type__;
-        apriori_weight__ = from.apriori_weight__;
-        constraint_SliceOrder__ = from.constraint_SliceOrder__;
-        constraint_Indegree__ = from.constraint_Indegree__;
-        constraint_TabuList__ = from.constraint_TabuList__;
-        constraint_ForbiddenArcs__ = from.constraint_ForbiddenArcs__;
-        constraint_MandatoryArcs__ = from.constraint_MandatoryArcs__;
-        selected_algo__ = from.selected_algo__;
-        K2__ = from.K2__;
-        miic_3off2__ = from.miic_3off2__;
-        kmode_3off2__ = from.kmode_3off2__;
-        greedy_hill_climbing__ = from.greedy_hill_climbing__;
+        score_type__                  = from.score_type__;
+        param_estimator_type__        = from.param_estimator_type__;
+        EMepsilon__                   = from.EMepsilon__;
+        apriori_type__                = from.apriori_type__;
+        apriori_weight__              = from.apriori_weight__;
+        constraint_SliceOrder__       = from.constraint_SliceOrder__;
+        constraint_Indegree__         = from.constraint_Indegree__;
+        constraint_TabuList__         = from.constraint_TabuList__;
+        constraint_ForbiddenArcs__    = from.constraint_ForbiddenArcs__;
+        constraint_MandatoryArcs__    = from.constraint_MandatoryArcs__;
+        selected_algo__               = from.selected_algo__;
+        K2__                          = from.K2__;
+        miic_3off2__                  = from.miic_3off2__;
+        kmode_3off2__                 = from.kmode_3off2__;
+        greedy_hill_climbing__        = from.greedy_hill_climbing__;
         local_search_with_tabu_list__ = from.local_search_with_tabu_list__;
-        score_database__ = from.score_database__;
-        ranges__ = from.ranges__;
-        apriori_dbname__ = from.apriori_dbname__;
-        initial_dag__ = from.initial_dag__;
-        current_algorithm__ = nullptr;
+        score_database__              = from.score_database__;
+        ranges__                      = from.ranges__;
+        apriori_dbname__              = from.apriori_dbname__;
+        initial_dag__                 = from.initial_dag__;
+        current_algorithm__           = nullptr;
       }
 
       return *this;
@@ -342,27 +342,27 @@ namespace gum {
           mutual_info__ = nullptr;
         }
 
-        score_type__ = from.score_type__;
-        param_estimator_type__ = from.param_estimator_type__;
-        EMepsilon__ = from.EMepsilon__;
-        apriori_type__ = from.apriori_type__;
-        apriori_weight__ = from.apriori_weight__;
-        constraint_SliceOrder__ = std::move(from.constraint_SliceOrder__);
-        constraint_Indegree__ = std::move(from.constraint_Indegree__);
-        constraint_TabuList__ = std::move(from.constraint_TabuList__);
+        score_type__               = from.score_type__;
+        param_estimator_type__     = from.param_estimator_type__;
+        EMepsilon__                = from.EMepsilon__;
+        apriori_type__             = from.apriori_type__;
+        apriori_weight__           = from.apriori_weight__;
+        constraint_SliceOrder__    = std::move(from.constraint_SliceOrder__);
+        constraint_Indegree__      = std::move(from.constraint_Indegree__);
+        constraint_TabuList__      = std::move(from.constraint_TabuList__);
         constraint_ForbiddenArcs__ = std::move(from.constraint_ForbiddenArcs__);
         constraint_MandatoryArcs__ = std::move(from.constraint_MandatoryArcs__);
-        selected_algo__ = from.selected_algo__;
-        K2__ = from.K2__;
-        miic_3off2__ = std::move(from.miic_3off2__);
-        kmode_3off2__ = from.kmode_3off2__;
-        greedy_hill_climbing__ = std::move(from.greedy_hill_climbing__);
-        local_search_with_tabu_list__ =
-           std::move(from.local_search_with_tabu_list__);
-        score_database__ = std::move(from.score_database__);
-        ranges__ = std::move(from.ranges__);
-        apriori_dbname__ = std::move(from.apriori_dbname__);
-        initial_dag__ = std::move(from.initial_dag__);
+        selected_algo__            = from.selected_algo__;
+        K2__                       = from.K2__;
+        miic_3off2__               = std::move(from.miic_3off2__);
+        kmode_3off2__              = from.kmode_3off2__;
+        greedy_hill_climbing__     = std::move(from.greedy_hill_climbing__);
+        local_search_with_tabu_list__
+           = std::move(from.local_search_with_tabu_list__);
+        score_database__    = std::move(from.score_database__);
+        ranges__            = std::move(from.ranges__);
+        apriori_dbname__    = std::move(from.apriori_dbname__);
+        initial_dag__       = std::move(from.initial_dag__);
         current_algorithm__ = nullptr;
       }
 
@@ -381,8 +381,10 @@ namespace gum {
       }
 
       std::string extension = filename.substr(filename.size() - 4);
-      std::transform(
-         extension.begin(), extension.end(), extension.begin(), ::tolower);
+      std::transform(extension.begin(),
+                     extension.end(),
+                     extension.begin(),
+                     ::tolower);
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
@@ -393,7 +395,7 @@ namespace gum {
       DBInitializerFromCSV<> initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       DBTranslatorSet<>                translator_set;
       DBTranslator4LabelizedVariable<> translator;
@@ -420,8 +422,10 @@ namespace gum {
       }
 
       std::string extension = filename.substr(filename.size() - 4);
-      std::transform(
-         extension.begin(), extension.end(), extension.begin(), ::tolower);
+      std::transform(extension.begin(),
+                     extension.end(),
+                     extension.begin(),
+                     ::tolower);
 
       if (extension != ".csv") {
         GUM_ERROR(
@@ -440,7 +444,7 @@ namespace gum {
       DBInitializerFromCSV<> initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      const std::size_t nb_vars   = var_names.size();
 
       DBTranslatorSet<>                translator_set;
       DBTranslator4LabelizedVariable<> translator(missing_symbols);
@@ -573,19 +577,19 @@ namespace gum {
       switch (param_estimator_type__) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (score__ != nullptr)) {
-            param_estimator =
-               new ParamEstimatorML<>(parser,
-                                      *apriori__,
-                                      score__->internalApriori(),
-                                      ranges__,
-                                      score_database__.nodeId2Columns());
+            param_estimator
+               = new ParamEstimatorML<>(parser,
+                                        *apriori__,
+                                        score__->internalApriori(),
+                                        ranges__,
+                                        score_database__.nodeId2Columns());
           } else {
-            param_estimator =
-               new ParamEstimatorML<>(parser,
-                                      *apriori__,
-                                      *no_apriori__,
-                                      ranges__,
-                                      score_database__.nodeId2Columns());
+            param_estimator
+               = new ParamEstimatorML<>(parser,
+                                        *apriori__,
+                                        *no_apriori__,
+                                        ranges__,
+                                        score_database__.nodeId2Columns());
           }
 
           break;
@@ -662,11 +666,11 @@ namespace gum {
     void genericBNLearner::createCorrectedMutualInformation__() {
       if (mutual_info__ != nullptr) delete mutual_info__;
 
-      mutual_info__ =
-         new CorrectedMutualInformation<>(score_database__.parser(),
-                                          *no_apriori__,
-                                          ranges__,
-                                          score_database__.nodeId2Columns());
+      mutual_info__
+         = new CorrectedMutualInformation<>(score_database__.parser(),
+                                            *no_apriori__,
+                                            ranges__,
+                                            score_database__.nodeId2Columns());
       switch (kmode_3off2__) {
         case CorrectedMutualInformation<>::KModeTypes::MDL:
           mutual_info__->useMDL();
@@ -735,14 +739,14 @@ namespace gum {
                                          StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
-          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
-             constraint_MandatoryArcs__;
-          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
-             constraint_ForbiddenArcs__;
-          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
-             constraint_PossibleEdges__;
-          static_cast< StructuralConstraintSliceOrder& >(gen_constraint) =
-             constraint_SliceOrder__;
+          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+             = constraint_MandatoryArcs__;
+          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+             = constraint_ForbiddenArcs__;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+             = constraint_PossibleEdges__;
+          static_cast< StructuralConstraintSliceOrder& >(gen_constraint)
+             = constraint_SliceOrder__;
 
           GraphChangesGenerator4DiGraph< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -750,8 +754,8 @@ namespace gum {
           StructuralConstraintSetStatic< StructuralConstraintIndegree,
                                          StructuralConstraintDAG >
              sel_constraint;
-          static_cast< StructuralConstraintIndegree& >(sel_constraint) =
-             constraint_Indegree__;
+          static_cast< StructuralConstraintIndegree& >(sel_constraint)
+             = constraint_Indegree__;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                         decltype(op_set) >
@@ -768,14 +772,14 @@ namespace gum {
                                          StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
-          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
-             constraint_MandatoryArcs__;
-          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
-             constraint_ForbiddenArcs__;
-          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
-             constraint_PossibleEdges__;
-          static_cast< StructuralConstraintSliceOrder& >(gen_constraint) =
-             constraint_SliceOrder__;
+          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+             = constraint_MandatoryArcs__;
+          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+             = constraint_ForbiddenArcs__;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+             = constraint_PossibleEdges__;
+          static_cast< StructuralConstraintSliceOrder& >(gen_constraint)
+             = constraint_SliceOrder__;
 
           GraphChangesGenerator4DiGraph< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -784,10 +788,10 @@ namespace gum {
                                          StructuralConstraintIndegree,
                                          StructuralConstraintDAG >
              sel_constraint;
-          static_cast< StructuralConstraintTabuList& >(sel_constraint) =
-             constraint_TabuList__;
-          static_cast< StructuralConstraintIndegree& >(sel_constraint) =
-             constraint_Indegree__;
+          static_cast< StructuralConstraintTabuList& >(sel_constraint)
+             = constraint_TabuList__;
+          static_cast< StructuralConstraintIndegree& >(sel_constraint)
+             = constraint_Indegree__;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                         decltype(op_set) >
@@ -804,22 +808,22 @@ namespace gum {
                                          StructuralConstraintForbiddenArcs,
                                          StructuralConstraintPossibleEdges >
              gen_constraint;
-          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
-             constraint_MandatoryArcs__;
-          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
-             constraint_ForbiddenArcs__;
-          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
-             constraint_PossibleEdges__;
+          static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+             = constraint_MandatoryArcs__;
+          static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+             = constraint_ForbiddenArcs__;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+             = constraint_PossibleEdges__;
 
           GraphChangesGenerator4K2< decltype(gen_constraint) > op_set(
              gen_constraint);
 
           // if some mandatory arcs are incompatible with the order, use a DAG
           // constraint instead of a DiGraph constraint to avoid cycles
-          const ArcSet& mandatory_arcs =
-             static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-                .arcs();
-          const Sequence< NodeId >& order = K2__.order();
+          const ArcSet& mandatory_arcs
+             = static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+                  .arcs();
+          const Sequence< NodeId >& order            = K2__.order();
           bool                      order_compatible = true;
 
           for (const auto& arc: mandatory_arcs) {
@@ -833,8 +837,8 @@ namespace gum {
             StructuralConstraintSetStatic< StructuralConstraintIndegree,
                                            StructuralConstraintDiGraph >
                sel_constraint;
-            static_cast< StructuralConstraintIndegree& >(sel_constraint) =
-               constraint_Indegree__;
+            static_cast< StructuralConstraintIndegree& >(sel_constraint)
+               = constraint_Indegree__;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                           decltype(op_set) >
@@ -845,8 +849,8 @@ namespace gum {
             StructuralConstraintSetStatic< StructuralConstraintIndegree,
                                            StructuralConstraintDAG >
                sel_constraint;
-            static_cast< StructuralConstraintIndegree& >(sel_constraint) =
-               constraint_Indegree__;
+            static_cast< StructuralConstraintIndegree& >(sel_constraint)
+               = constraint_Indegree__;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                           decltype(op_set) >
@@ -887,7 +891,8 @@ namespace gum {
           return ScoreLog2Likelihood<>::isAprioriCompatible(apriori,
                                                             apriori_weight__);
 
-        default: return "genericBNLearner does not support yet this score";
+        default:
+          return "genericBNLearner does not support yet this score";
       }
     }
 
@@ -917,7 +922,7 @@ namespace gum {
       }
 
       // create the ranges of rows of the test database
-      const std::size_t foldSize = db_size / k_fold;
+      const std::size_t foldSize   = db_size / k_fold;
       const std::size_t unfold_deb = learning_fold * foldSize;
       const std::size_t unfold_end = unfold_deb + foldSize;
 
@@ -939,11 +944,14 @@ namespace gum {
     }
 
 
-    std::pair< double, double > genericBNLearner::chi2(
-       const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+    std::pair< double, double >
+       genericBNLearner::chi2(const NodeId                 id1,
+                              const NodeId                 id2,
+                              const std::vector< NodeId >& knowing) {
       createApriori__();
-      gum::learning::IndepTestChi2<> chi2score(
-         score_database__.parser(), *apriori__, databaseRanges());
+      gum::learning::IndepTestChi2<> chi2score(score_database__.parser(),
+                                               *apriori__,
+                                               databaseRanges());
 
       return chi2score.statistics(id1, id2, knowing);
     }
@@ -961,11 +969,14 @@ namespace gum {
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    std::pair< double, double > genericBNLearner::G2(
-       const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+    std::pair< double, double >
+       genericBNLearner::G2(const NodeId                 id1,
+                            const NodeId                 id2,
+                            const std::vector< NodeId >& knowing) {
       createApriori__();
-      gum::learning::IndepTestG2<> g2score(
-         score_database__.parser(), *apriori__, databaseRanges());
+      gum::learning::IndepTestG2<> g2score(score_database__.parser(),
+                                           *apriori__,
+                                           databaseRanges());
       return g2score.statistics(id1, id2, knowing);
     }
 
@@ -985,8 +996,9 @@ namespace gum {
     double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
       createApriori__();
-      gum::learning::ScoreLog2Likelihood<> ll2score(
-         score_database__.parser(), *apriori__, databaseRanges());
+      gum::learning::ScoreLog2Likelihood<> ll2score(score_database__.parser(),
+                                                    *apriori__,
+                                                    databaseRanges());
 
       std::vector< NodeId > total(vars);
       total.insert(total.end(), knowing.begin(), knowing.end());
@@ -1010,8 +1022,10 @@ namespace gum {
       };
 
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
-      std::transform(
-         knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
+      std::transform(knowing.begin(),
+                     knowing.end(),
+                     std::back_inserter(knowingIds),
+                     mapper);
 
       return logLikelihood(ids, knowingIds);
     }
@@ -1021,8 +1035,9 @@ namespace gum {
       Potential< double > res;
 
       createApriori__();
-      gum::learning::PseudoCount<> count(
-         score_database__.parser(), *apriori__, databaseRanges());
+      gum::learning::PseudoCount<> count(score_database__.parser(),
+                                         *apriori__,
+                                         databaseRanges());
       return count.get(vars);
     }
 

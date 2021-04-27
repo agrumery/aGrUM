@@ -135,10 +135,11 @@ namespace gum_tests {
     void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
       void* pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(
-         pVoid =
-            gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
-      TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance().deallocate(
-         pVoid, 5 * sizeof(gum::Idx)));
+         pVoid
+         = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
+      TS_ASSERT_THROWS_NOTHING(
+         gum::SmallObjectAllocator::instance().deallocate(pVoid,
+                                                          5 * sizeof(gum::Idx)));
     }
 
     // ==============================================================================
@@ -154,7 +155,8 @@ namespace gum_tests {
       std::vector< std::size_t > dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for (int i = 0; i < 12; ++i)
         TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance().deallocate(
-           vVoid[dv[i] - 1], gum::Size(2 * dv[i] * sizeof(gum::Idx))));
+           vVoid[dv[i] - 1],
+           gum::Size(2 * dv[i] * sizeof(gum::Idx))));
     }
 
     // ==============================================================================

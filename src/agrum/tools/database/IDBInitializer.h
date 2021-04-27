@@ -117,7 +117,11 @@ namespace gum {
       public:
       /** @brief the enumeration indicating the type of the data the
        * IDBInitializer expects as input data */
-      enum class InputType : char { STRING, DBCELL };
+      enum class InputType : char
+      {
+        STRING,
+        DBCELL
+      };
 
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< std::string >;
@@ -192,8 +196,8 @@ namespace gum {
       IDBInitializer< ALLOC >& operator=(IDBInitializer< ALLOC >&& from);
 
       /// ask the child class for the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > >
-         variableNames_() = 0;
+      virtual std::vector< std::string, ALLOC< std::string > > variableNames_()
+         = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */

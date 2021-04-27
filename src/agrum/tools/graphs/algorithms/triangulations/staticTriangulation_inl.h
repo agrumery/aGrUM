@@ -74,7 +74,7 @@ namespace gum {
   const CliqueGraph& StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if (!has_junction_tree__) {
-      junction_tree__ = &(junction_tree_strategy_->junctionTree());
+      junction_tree__     = &(junction_tree_strategy_->junctionTree());
       has_junction_tree__ = true;
     }
 

@@ -93,7 +93,7 @@ namespace gum {
             attr.addParent(get(node));
           } catch (NotFound&) {
             auto elt = &(type().get(node));
-            auto sc = static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
+            auto sc  = static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
 
             try {
               const auto& instances = getInstances(sc->id());
@@ -113,8 +113,8 @@ namespace gum {
        PRMSlotChain< GUM_SCALAR >* sc) {
       auto first_id = sc->chain()[0]->id();
       if (!referenceMap__.exists(first_id)) { return; }
-      auto set =
-         new Set< PRMInstance< GUM_SCALAR >* >(*(referenceMap__[first_id]));
+      auto set
+         = new Set< PRMInstance< GUM_SCALAR >* >(*(referenceMap__[first_id]));
       // We proceed with a width-first run of the slot chain
       for (Size idx = 1; idx < sc->chain().size() - 1; ++idx) {
         auto temp = new Set< PRMInstance< GUM_SCALAR >* >();
@@ -166,8 +166,8 @@ namespace gum {
 
       switch (elt->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_refslot: {
-          PRMReferenceSlot< GUM_SCALAR >* ref =
-             static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
+          PRMReferenceSlot< GUM_SCALAR >* ref
+             = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(ref->slotType())) {
@@ -189,8 +189,8 @@ namespace gum {
         }
 
         case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
-          PRMSlotChain< GUM_SCALAR >& sc =
-             static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id));
+          PRMSlotChain< GUM_SCALAR >& sc
+             = static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id));
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(sc.end())) {
@@ -234,8 +234,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::copyAggregates__(
        PRMAggregate< GUM_SCALAR >* source) {
-      auto attr = new PRMScalarAttribute< GUM_SCALAR >(
-         source->name(), source->type(), source->buildImpl());
+      auto attr = new PRMScalarAttribute< GUM_SCALAR >(source->name(),
+                                                       source->type(),
+                                                       source->buildImpl());
       GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
       attr->setId(source->id());
       nodeIdMap__.insert(attr->id(), attr);
@@ -245,8 +246,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::copyAttribute__(
        PRMAttribute< GUM_SCALAR >* source) {
-      auto attr =
-         new PRMScalarAttribute< GUM_SCALAR >(source->name(), source->type());
+      auto attr
+         = new PRMScalarAttribute< GUM_SCALAR >(source->name(), source->type());
       GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
       // The potential is copied when instantiate() is called
       attr->cpf().fill((GUM_SCALAR)0);
@@ -336,8 +337,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::addReferingInstance__(
-       PRMSlotChain< GUM_SCALAR >* sc, PRMInstance< GUM_SCALAR >* i) {
-      NodeId      id = i->get(sc->lastElt().safeName()).id();
+       PRMSlotChain< GUM_SCALAR >* sc,
+       PRMInstance< GUM_SCALAR >*  i) {
+      NodeId      id   = i->get(sc->lastElt().safeName()).id();
       std::string name = sc->lastElt().safeName();
 
       try {

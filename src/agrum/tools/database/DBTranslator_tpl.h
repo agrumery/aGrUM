@@ -141,10 +141,10 @@ namespace gum {
        DBTranslator< ALLOC >::operator=(const DBTranslator< ALLOC >& from) {
       if (this != &from) {
         is_dictionary_dynamic_ = from.is_dictionary_dynamic_;
-        max_dico_entries_ = from.max_dico_entries_;
-        missing_symbols_ = from.missing_symbols_;
-        back_dico_ = from.back_dico_;
-        val_type_ = from.val_type_;
+        max_dico_entries_      = from.max_dico_entries_;
+        missing_symbols_       = from.missing_symbols_;
+        back_dico_             = from.back_dico_;
+        val_type_              = from.val_type_;
       }
       return *this;
     }
@@ -155,10 +155,10 @@ namespace gum {
     INLINE DBTranslator< ALLOC >&
        DBTranslator< ALLOC >::operator=(DBTranslator< ALLOC >&& from) {
       is_dictionary_dynamic_ = from.is_dictionary_dynamic_;
-      max_dico_entries_ = from.max_dico_entries_;
-      missing_symbols_ = std::move(from.missing_symbols_);
-      back_dico_ = std::move(from.back_dico_);
-      val_type_ = from.val_type_;
+      max_dico_entries_      = from.max_dico_entries_;
+      missing_symbols_       = std::move(from.missing_symbols_);
+      back_dico_             = std::move(from.back_dico_);
+      val_type_              = from.val_type_;
 
       return *this;
     }

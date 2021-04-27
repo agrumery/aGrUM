@@ -49,8 +49,8 @@ namespace gum {
       dt2__(dt2), combine__() {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    rd__ =
-       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
+    rd__ = MultiDimFunctionGraph< GUM_SCALAR,
+                                  TerminalNodePolicy >::getTreeInstance();
   }
 
   template < typename GUM_SCALAR,
@@ -67,8 +67,8 @@ namespace gum {
       dt2__(dt2), combine__(), context__(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    rd__ =
-       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
+    rd__ = MultiDimFunctionGraph< GUM_SCALAR,
+                                  TerminalNodePolicy >::getTreeInstance();
   }
 
   template < typename GUM_SCALAR,
@@ -134,8 +134,9 @@ namespace gum {
      TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::xPloreDT2__(
         NodeId currentNodeId) {
     if (dt2__->isTerminalNode(currentNodeId))
-      return rd__->manager()->addTerminalNode(combine__(
-         dt1__->nodeValue(curDT1Leaf__), dt2__->nodeValue(currentNodeId)));
+      return rd__->manager()->addTerminalNode(
+         combine__(dt1__->nodeValue(curDT1Leaf__),
+                   dt2__->nodeValue(currentNodeId)));
 
     const InternalNode* currentNode = dt2__->node(currentNodeId);
 

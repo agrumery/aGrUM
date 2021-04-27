@@ -139,16 +139,16 @@ namespace gum {
 
       /// Types for STL compliance.
       /// @{
-      using value_type = Row< DBCell >;
-      using reference = value_type&;
+      using value_type      = Row< DBCell >;
+      using reference       = value_type&;
       using const_reference = const value_type&;
-      using pointer = value_type*;
-      using const_pointer = const value_type*;
-      using size_type = std::size_t;
+      using pointer         = value_type*;
+      using const_pointer   = const value_type*;
+      using size_type       = std::size_t;
       using difference_type = std::ptrdiff_t;
-      using iterator = Handler;
-      using iterator_safe = HandlerSafe;
-      using allocator_type = ALLOC< DBCell >;
+      using iterator        = Handler;
+      using iterator_safe   = HandlerSafe;
+      using allocator_type  = ALLOC< DBCell >;
       /// @}
 
 

@@ -47,8 +47,8 @@ namespace gum {
       NodeGraphPart(g), ArcGraphPart(g), mutableTopologicalOrder__(nullptr) {
     GUM_CONS_CPY(DiGraph);
     if (g.mutableTopologicalOrder__ != nullptr) {
-      mutableTopologicalOrder__ =
-         new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
+      mutableTopologicalOrder__
+         = new Sequence< NodeId >(*(g.mutableTopologicalOrder__));
     }
   }
 
@@ -105,7 +105,7 @@ namespace gum {
   }
 
   void DiGraph::topologicalOrder__() const {
-    auto dag = *this;
+    auto dag   = *this;
     auto roots = std::vector< NodeId >();
 
     for (const auto node: dag.nodes()) {
@@ -121,7 +121,7 @@ namespace gum {
       roots.pop_back();
 
       while (dag.children(mutableTopologicalOrder__->back()).size()) {
-        auto back = mutableTopologicalOrder__->back();
+        auto back  = mutableTopologicalOrder__->back();
         auto child = *(dag.children(back).begin());
         dag.eraseArc(Arc(back, child));
 

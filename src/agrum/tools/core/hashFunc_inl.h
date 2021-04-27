@@ -55,10 +55,10 @@ namespace gum {
 
   /// returns an unnormalized hashed key for hash tables whose keys are strings
   INLINE Size HashFunc< std::string >::castToSize(const std::string& key) {
-    Size        h = 0;
-    Size        size = Size(key.size());
+    Size        h        = 0;
+    Size        size     = Size(key.size());
     const char* char_ptr = key.c_str();
-    const Size* int_ptr = (const Size*)char_ptr;
+    const Size* int_ptr  = (const Size*)char_ptr;
 
     for (; size >= sizeof(Size); size -= sizeof(Size), ++int_ptr) {
       h = h * HashFuncConst::gold + *int_ptr;
@@ -81,7 +81,7 @@ namespace gum {
   /// returns a hashed key for hash tables whose keys are vectors of Idx
   INLINE Size
      HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
-    Size h = Size(0);
+    Size h    = Size(0);
     Size size = Size(key.size());
     for (Size i = Size(0); i < size; ++i)
       h += i * Size(key[i]);

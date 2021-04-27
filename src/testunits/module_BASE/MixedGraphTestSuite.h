@@ -227,7 +227,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
@@ -246,7 +246,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_ASSERT_EQUALS(nodeCount, (gum::Size)5);
       TS_ASSERT_EQUALS(edgeCount, (gum::Size)3);
@@ -310,7 +310,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(id5, id2));
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
 
@@ -394,8 +394,8 @@ namespace gum_tests {
     void testHashMapNodes() {
       gum::MixedGraph graph = buildGraph();
 
-      gum::NodeProperty< gum::Size > hashmap =
-         graph.nodesProperty(&simpleDoubleFunction);
+      gum::NodeProperty< gum::Size > hashmap
+         = graph.nodesProperty(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
@@ -413,8 +413,8 @@ namespace gum_tests {
       gum::MixedGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap =
-                                   graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap
+                                = graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -446,8 +446,8 @@ namespace gum_tests {
     void testHashMapEdges() {
       gum::MixedGraph graph = buildGraph();
 
-      gum::EdgeProperty< gum::Size > hashmap =
-         graph.edgesProperty(&simpleEdgeMapFunction);
+      gum::EdgeProperty< gum::Size > hashmap
+         = graph.edgesProperty(&simpleEdgeMapFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.sizeEdges());
 
       gum::Size sk = 0;
@@ -488,8 +488,8 @@ namespace gum_tests {
     void testHashMapArcs() {
       gum::MixedGraph graph = buildGraph();
 
-      gum::ArcProperty< gum::Size > hashmap =
-         graph.arcsProperty(&simpleArcMapFunction);
+      gum::ArcProperty< gum::Size > hashmap
+         = graph.arcsProperty(&simpleArcMapFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;

@@ -60,11 +60,11 @@ namespace gum_tests {
          translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
          == "[3;10]");
 
-      const auto& tr_var = *(translator.variable());
+      const auto& tr_var     = *(translator.variable());
       int         good_discr = 1;
       try {
-        const gum::DiscretizedVariable< int >& xvar_discr =
-           dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
+        const gum::DiscretizedVariable< int >& xvar_discr
+           = dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
         TS_ASSERT(xvar_discr.domainSize() == 2);
         TS_ASSERT(xvar_discr.label(0) == "[1;3[");
         TS_ASSERT(xvar_discr.label(1) == "[3;10]");
@@ -92,7 +92,9 @@ namespace gum_tests {
          == "[3;10]");
 
       gum::learning::DBTranslator4DiscretizedVariable< MyAlloc > translator3(
-         var, missing, 3);
+         var,
+         missing,
+         3);
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("1"));
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("10"));
       TS_ASSERT(translator3.translate("1").discr_val == 0);
@@ -122,8 +124,9 @@ namespace gum_tests {
       TS_ASSERT(translator3.domainSize() == 2);
 
       TS_ASSERT_THROWS(
-         gum::learning::DBTranslator4DiscretizedVariable<> translator4(
-            var, missing, 1),
+         gum::learning::DBTranslator4DiscretizedVariable<> translator4(var,
+                                                                       missing,
+                                                                       1),
          gum::SizeError);
     }
 
@@ -242,8 +245,8 @@ namespace gum_tests {
                   == "[3;4]");
         TS_ASSERT(translator6.variable()->toString() == "X2<[1;2[,[2;3[,[3;4]>");
 
-        gum::learning::DBTranslator4DiscretizedVariable< MyAlloc >* translator7 =
-           translator6.clone();
+        gum::learning::DBTranslator4DiscretizedVariable< MyAlloc >* translator7
+           = translator6.clone();
         TS_ASSERT(translator7->translate("1").discr_val == 0);
         TS_ASSERT(translator7->translate("2").discr_val == 1);
         TS_ASSERT(translator7->translate("4").discr_val == 2);
@@ -435,7 +438,8 @@ namespace gum_tests {
         TS_ASSERT(translator6.variable()->toString() == "X2<[1;2[,[2;3[,[3;4]>");
 
         gum::learning::DBTranslator4DiscretizedVariable< LearningAlloc >*
-           translator7 = translator6.clone();
+           translator7
+           = translator6.clone();
         TS_ASSERT(translator7->translate("1").discr_val == 0);
         TS_ASSERT(translator7->translate("2").discr_val == 1);
         TS_ASSERT(translator7->translate("4").discr_val == 2);
@@ -513,8 +517,8 @@ namespace gum_tests {
       var.addTick(7);
       var.addTick(9);
 
-      std::vector< std::string > missing{
-         "[1;3[", "NA", "[7;9]", "1", "4.3", "10", "?"};
+      std::vector< std::string >
+         missing{"[1;3[", "NA", "[7;9]", "1", "4.3", "10", "?"};
 
       gum::learning::DBTranslator4DiscretizedVariable<> translator(var, missing);
 

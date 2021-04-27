@@ -82,7 +82,8 @@ namespace gum {
 
       virtual void copyCpf(
          const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-         const PRMAttribute< GUM_SCALAR >& source) = 0;
+         const PRMAttribute< GUM_SCALAR >& source)
+         = 0;
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
@@ -174,7 +175,7 @@ namespace gum {
       protected:
       PRMAttribute(const PRMAttribute< GUM_SCALAR >& source);
 
-      virtual PRMType* type_() = 0;
+      virtual PRMType* type_()           = 0;
       virtual void     type_(PRMType* t) = 0;
     };
 

@@ -50,11 +50,11 @@ namespace gum {
 
     // compute the variables of the resulting table
     Sequence< const DiscreteVariable* >        vars = table1__.variablesSequence();
-    const Sequence< const DiscreteVariable* >& vars2 =
-       table2__.variablesSequence();
+    const Sequence< const DiscreteVariable* >& vars2
+       = table2__.variablesSequence();
 
-    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-            vars2.beginSafe();
+    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter
+         = vars2.beginSafe();
          iter != vars2.endSafe();
          ++iter) {
       if (!vars.exists(*iter)) { vars.insert(*iter); }
@@ -103,10 +103,10 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table1__ = from.table1__;
-      table2__ = from.table2__;
-      *result__ = *(from.result__);
-      combine__ = from.combine__;
+      table1__                                 = from.table1__;
+      table2__                                 = from.table2__;
+      *result__                                = *(from.result__);
+      combine__                                = from.combine__;
 
       // update args__ and results__ if they were already created
       if (args__) {
@@ -130,8 +130,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
-    const ScheduleCombine< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
+    const ScheduleCombine< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
     return ((((table1__ == real_op.table1__) && (table2__ == real_op.table2__))
              || ((table1__ == real_op.table2__) && (table2__ == real_op.table1__)))
             && (combine__ == real_op.combine__));
@@ -237,7 +237,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string ScheduleCombine< GUM_SCALAR >::toString() const {
     return result__->toString() + " = combine ( " + table1__.toString() + " , "
-           + table2__.toString() + " )";
+         + table2__.toString() + " )";
   }
 
   /// returns the scheduleMultidim resulting from the execution of the operation

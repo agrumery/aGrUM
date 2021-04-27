@@ -39,9 +39,9 @@ namespace gum {
                                                 DAG                     dag) {
       selector.setGraph(dag);
 
-      unsigned int nb_changes_applied = 0;
+      unsigned int nb_changes_applied                 = 0;
       Idx          applied_change_with_positive_score = 0;
-      Idx          current_N = 0;
+      Idx          current_N                          = 0;
 
       initApproximationScheme();
 
@@ -50,17 +50,17 @@ namespace gum {
       std::vector< bool > impacted_queues(dag.size(), false);
 
       // the best dag found so far with its score
-      DAG    best_dag = dag;
-      double best_score = 0;
+      DAG    best_dag      = dag;
+      double best_score    = 0;
       double current_score = 0;
-      double delta_score = 0;
+      double delta_score   = 0;
 
       do {
         applied_change_with_positive_score = 0;
-        delta_score = 0;
+        delta_score                        = 0;
 
-        std::vector< std::pair< NodeId, double > > ordered_queues =
-           selector.nodesSortedByBestScore();
+        std::vector< std::pair< NodeId, double > > ordered_queues
+           = selector.nodesSortedByBestScore();
 
         for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;
@@ -79,7 +79,7 @@ namespace gum {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
                     best_score = current_score;
-                    best_dag = dag;
+                    best_dag   = dag;
                   }
 
                   // std::cout << "apply arc addition " << change.node1()
@@ -104,7 +104,7 @@ namespace gum {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
                     best_score = current_score;
-                    best_dag = dag;
+                    best_dag   = dag;
                   }
 
                   // std::cout << "apply arc deletion " << change.node1()
@@ -130,7 +130,7 @@ namespace gum {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
                     best_score = current_score;
-                    best_dag = dag;
+                    best_dag   = dag;
                   }
 
                   // std::cout << "apply arc reversal " << change.node1()
@@ -172,7 +172,7 @@ namespace gum {
 
         // update current_N
         if (applied_change_with_positive_score) {
-          current_N = 0;
+          current_N          = 0;
           nb_changes_applied = 0;
         } else {
           ++current_N;
@@ -202,7 +202,8 @@ namespace gum {
                                         PARAM_ESTIMATOR&        estimator,
                                         DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-         estimator, learnStructure(selector, initial_dag));
+         estimator,
+         learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

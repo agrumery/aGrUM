@@ -173,7 +173,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsArc(id1, id1));
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
@@ -189,7 +189,7 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_ASSERT_EQUALS(nodeCount, (gum::Size)5);
       TS_ASSERT_EQUALS(arcCount, (gum::Size)6);
@@ -215,7 +215,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(id2, id5));
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id2, id5)));
 
@@ -300,8 +300,8 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap =
-                                   graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap
+                                = graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -373,8 +373,8 @@ namespace gum_tests {
 
     void testMonoCycle() {
       gum::DAG graph;
-      auto x=graph.addNode();
-      TS_ASSERT_THROWS(graph.addArc(x,x),gum::Exception);
+      auto     x = graph.addNode();
+      TS_ASSERT_THROWS(graph.addArc(x, x), gum::Exception);
     }
   };
 }   // namespace gum_tests

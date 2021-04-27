@@ -42,7 +42,12 @@ namespace gum {
    * rate
    * of that very instance.
    */
-  enum class Complexity : char { Heavy, Difficult, Correct };
+  enum class Complexity : char
+  {
+    Heavy,
+    Difficult,
+    Correct
+  };
 
   /**
    * @class KL

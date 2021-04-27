@@ -138,11 +138,11 @@ namespace gum {
        const DBInitializerFromCSV< ALLOC >& from) {
       if (this != &from) {
         IDBInitializer< ALLOC >::operator=(from);
-        filename__ = from.filename__;
-        delimiter__ = from.delimiter__;
-        comment_marker__ = from.comment_marker__;
-        quote_marker__ = from.quote_marker__;
-        first_row_has_names__ = from.first_row_has_names__;
+        filename__                       = from.filename__;
+        delimiter__                      = from.delimiter__;
+        comment_marker__                 = from.comment_marker__;
+        quote_marker__                   = from.quote_marker__;
+        first_row_has_names__            = from.first_row_has_names__;
 
         // open the CSV file
         input_stream__.close();
@@ -154,8 +154,10 @@ namespace gum {
         }
 
         // make the parser use the new input stream
-        parser__.useNewStream(
-           input_stream__, delimiter__, comment_marker__, quote_marker__);
+        parser__.useNewStream(input_stream__,
+                              delimiter__,
+                              comment_marker__,
+                              quote_marker__);
 
         // if the first line contains names, store them into the intializer
         if (first_row_has_names__) {

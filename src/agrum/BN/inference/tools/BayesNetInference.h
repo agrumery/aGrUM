@@ -50,7 +50,8 @@ namespace gum {
    * computation. However, when computing p(evidence), we should not do that
    * because the constant is important and need be computed.
    */
-  enum class FindBarrenNodesType {
+  enum class FindBarrenNodesType
+  {
     FIND_NO_BARREN_NODES,   // do not try to find barren nodes
     FIND_BARREN_NODES       // use a bottom-up algorithm to detect barren nodes
   };

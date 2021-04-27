@@ -32,7 +32,7 @@ namespace gum {
       LpExpr& LpExpr::operator=(const SCALAR& rhs) {
         clear();
 
-        mValue__ = rhs;
+        mValue__  = rhs;
         imiddle__ = true;
 
         return *this;
@@ -68,9 +68,9 @@ namespace gum {
       void LpExpr::addSide__(const SCALAR& from) {
         if (!ileft__) {
           lValue__ = from;
-          ileft__ = true;
+          ileft__  = true;
         } else if (!imiddle__) {
-          mValue__ = from;
+          mValue__  = from;
           imiddle__ = true;
         } else if (!iright__) {
           rValue__ = from;
@@ -87,7 +87,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface() {
         positivity__ = false;
-        sumIsOne__ = false;
+        sumIsOne__   = false;
         GUM_CONSTRUCTOR(LpInterface);
       }
 
@@ -135,9 +135,9 @@ namespace gum {
         for (unsigned int i = 0, end = from.rows__.size(); i < end; i++)
           rows__[i] = new LpRow(*from.rows__[i]);
 
-        cols__ = from.cols__;
+        cols__       = from.cols__;
         positivity__ = from.positivity__;
-        sumIsOne__ = from.sumIsOne__;
+        sumIsOne__   = from.sumIsOne__;
 
         return *this;
       }
@@ -149,7 +149,7 @@ namespace gum {
         cols__.swap(from.cols__);
 
         positivity__ = from.positivity__;
-        sumIsOne__ = from.sumIsOne__;
+        sumIsOne__   = from.sumIsOne__;
 
         return *this;
       }
@@ -225,8 +225,8 @@ namespace gum {
           /// rexpr miss middle side, copy it from lexpr
 
           *rexpr.mCoeffs__ = *lexpr.mCoeffs__;
-          rexpr.mValue__ = lexpr.mValue__;
-          rexpr.imiddle__ = true;
+          rexpr.mValue__   = lexpr.mValue__;
+          rexpr.imiddle__  = true;
 
           rows__.push_back(
              new LpRow(std::move(lexpr),
@@ -285,7 +285,7 @@ namespace gum {
 
         addRow(1 <= std::move(expr) <= 1);
 
-        sumIsOne__ = true;
+        sumIsOne__   = true;
         positivity__ = true;
       }
 
@@ -354,7 +354,7 @@ namespace gum {
         cols__.shrink_to_fit();
 
         positivity__ = false;
-        sumIsOne__ = false;
+        sumIsOne__   = false;
       }
 
       template < typename GUM_SCALAR >
@@ -366,7 +366,7 @@ namespace gum {
         rows__.shrink_to_fit();
 
         positivity__ = false;
-        sumIsOne__ = false;
+        sumIsOne__   = false;
       }
 
       ///////////////////////////////////////////////////////

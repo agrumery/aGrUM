@@ -91,8 +91,8 @@ namespace gum {
     Apriori< ALLOC >& Apriori< ALLOC >::operator=(const Apriori< ALLOC >& from) {
       if (this != &from) {
         nodeId2columns_ = from.nodeId2columns_;
-        weight_ = from.weight_;
-        database_ = from.database_;
+        weight_         = from.weight_;
+        database_       = from.database_;
       }
       return *this;
     }
@@ -103,8 +103,8 @@ namespace gum {
     Apriori< ALLOC >& Apriori< ALLOC >::operator=(Apriori< ALLOC >&& from) {
       if (this != &from) {
         nodeId2columns_ = std::move(from.nodeId2columns_);
-        weight_ = from.weight_;
-        database_ = from.database_;
+        weight_         = from.weight_;
+        database_       = from.database_;
       }
       return *this;
     }

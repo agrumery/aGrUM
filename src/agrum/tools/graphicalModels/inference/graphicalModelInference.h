@@ -103,7 +103,8 @@ namespace gum {
      *   still remain a few light computations to perform to get the posterior
      *   potentials we need.
      */
-    enum class StateOfInference {
+    enum class StateOfInference
+    {
       OutdatedStructure,
       OutdatedPotentials,
       ReadyForInference,

@@ -44,7 +44,7 @@ namespace gum {
 
     while (level > 1) {
       level--;
-      auto todo = mb__.nodes().asNodeSet() - done;
+      auto todo        = mb__.nodes().asNodeSet() - done;
       bool anythingnew = false;
       for (NodeId n: todo) {
         done.insert(n);

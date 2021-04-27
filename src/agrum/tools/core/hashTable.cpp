@@ -40,7 +40,7 @@ namespace gum {
     static bool first_time = true;
 
     if (first_time) {
-      first_time = false;
+      first_time         = false;
       HashTableIterEnd__ = new HashTableIterator< int, int >;
 #  ifdef GUM_DEBUG_MODE
       __debug__::dec_creation__("HashTableIterator",
@@ -70,7 +70,7 @@ namespace gum {
     static bool first_time = true;
 
     if (first_time) {
-      first_time = false;
+      first_time             = false;
       HashTableIterEndSafe__ = new HashTableIteratorSafe< int, int >;
 #  ifdef GUM_DEBUG_MODE
       __debug__::dec_creation__("HashTableIteratorSafe",
@@ -96,12 +96,12 @@ namespace gum {
   }
 
   const HashTableIterator< int, int >*
-     HashTableIteratorStaticEnd::HashTableIterEnd__ =
-        HashTableIteratorStaticEnd::end4Statics();
+     HashTableIteratorStaticEnd::HashTableIterEnd__
+     = HashTableIteratorStaticEnd::end4Statics();
 
   const HashTableIteratorSafe< int, int >*
-     HashTableIteratorStaticEnd::HashTableIterEndSafe__ =
-        HashTableIteratorStaticEnd::endSafe4Statics();
+     HashTableIteratorStaticEnd::HashTableIterEndSafe__
+     = HashTableIteratorStaticEnd::endSafe4Statics();
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

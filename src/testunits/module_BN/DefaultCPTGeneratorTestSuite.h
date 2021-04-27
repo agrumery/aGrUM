@@ -137,8 +137,8 @@ namespace gum_tests {
 
     void testCreationDeletion() {
       gum::SimpleCPTGenerator< double >* aCptGen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(aCptGen =
-                                      new gum::SimpleCPTGenerator< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(aCptGen
+                                   = new gum::SimpleCPTGenerator< double >());
       TS_GUM_ASSERT_THROWS_NOTHING(delete aCptGen);
     }
 

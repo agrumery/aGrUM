@@ -51,8 +51,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
       theset = set__[projection_name];
@@ -64,7 +67,8 @@ namespace gum {
   // removes a given entry from the register
   template < typename GUM_SCALAR >
   void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::erase(
-     const std::string& projection_name, const std::string& type_multidim) {
+     const std::string& projection_name,
+     const std::string& type_multidim) {
     if (!set__.exists(projection_name)) return;
 
     CompleteProjectionSet* theset = set__[projection_name];
@@ -75,7 +79,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_SCALAR >
   INLINE bool CompleteProjectionRegister4MultiDim< GUM_SCALAR >::exists(
-     const std::string& projection_name, const std::string& type_multidim) const {
+     const std::string& projection_name,
+     const std::string& type_multidim) const {
     if (!set__.exists(projection_name)) return false;
 
     return set__[projection_name].exists(type_multidim);
@@ -131,7 +136,8 @@ namespace gum {
      GUM_SCALAR >::~CompleteProjectionRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, CompleteProjectionSet* >::iterator_safe
-            iter = set__.beginSafe();
+            iter
+         = set__.beginSafe();
          iter != set__.endSafe();
          ++iter)
       delete iter.val();
@@ -145,7 +151,9 @@ namespace gum {
                                 typename CompleteProjectionRegister4MultiDim<
                                    GUM_SCALAR >::CompleteProjectionPtr function) {
     CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(
-       projection_name, type_multidim, function);
+       projection_name,
+       type_multidim,
+       function);
   }
 
 } /* namespace gum */

@@ -190,7 +190,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT_(
-     NodeId id, const Potential< GUM_SCALAR >& pot) {
+     NodeId                         id,
+     const Potential< GUM_SCALAR >& pot) {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
@@ -211,7 +212,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT(
-     NodeId id, const Potential< GUM_SCALAR >& pot) {
+     NodeId                         id,
+     const Potential< GUM_SCALAR >& pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
 
@@ -257,7 +259,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installMarginal(
-     NodeId id, const Potential< GUM_SCALAR >& pot) {
+     NodeId                         id,
+     const Potential< GUM_SCALAR >& pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
     }

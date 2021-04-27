@@ -126,7 +126,7 @@ namespace gum {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from.apriori_->clone();
         RecordCounter< ALLOC > new_counter = from.counter_;
-        ScoringCache< ALLOC >  new_cache = from.cache_;
+        ScoringCache< ALLOC >  new_cache   = from.cache_;
 
         if (apriori_ != nullptr) {
           ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
@@ -136,7 +136,7 @@ namespace gum {
 
         apriori_ = new_apriori;
         counter_ = std::move(new_counter);
-        cache_ = std::move(new_cache);
+        cache_   = std::move(new_cache);
 
         use_cache_ = from.use_cache_;
       }
@@ -151,8 +151,8 @@ namespace gum {
       if (this != &from) {
         std::swap(apriori_, from.apriori_);
 
-        counter_ = std::move(from.counter_);
-        cache_ = std::move(from.cache_);
+        counter_   = std::move(from.counter_);
+        cache_     = std::move(from.cache_);
         use_cache_ = from.use_cache_;
       }
       return *this;
@@ -234,8 +234,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
                                                    const NodeId var2) {
-      IdCondSet< ALLOC > idset(
-         var1, var2, empty_ids_, false, true, this->getAllocator());
+      IdCondSet< ALLOC > idset(var1,
+                               var2,
+                               empty_ids_,
+                               false,
+                               true,
+                               this->getAllocator());
       if (use_cache_) {
         try {
           return cache_.score(idset);
@@ -255,8 +259,12 @@ namespace gum {
        const NodeId                                  var1,
        const NodeId                                  var2,
        const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdCondSet< ALLOC > idset(
-         var1, var2, rhs_ids, false, false, this->getAllocator());
+      IdCondSet< ALLOC > idset(var1,
+                               var2,
+                               rhs_ids,
+                               false,
+                               false,
+                               this->getAllocator());
       if (use_cache_) {
         try {
           return cache_.score(idset);
@@ -340,8 +348,8 @@ namespace gum {
           }
         }
       } else if (node_2_marginalize == std::size_t(1)) {   // marginalize Y
-        for (std::size_t z = std::size_t(0),
-                         xyz = std::size_t(0),
+        for (std::size_t z      = std::size_t(0),
+                         xyz    = std::size_t(0),
                          beg_xz = std::size_t(0);
              z < Z_size;
              ++z, beg_xz += X_size) {

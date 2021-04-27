@@ -122,7 +122,7 @@ namespace gum {
        Size                                                                   lvl,
        Set< std::string >&                                                    i) {
       Size                        size = 0;
-      GUM_SCALAR                  sum = 0.0;
+      GUM_SCALAR                  sum  = 0.0;
       std::string                 first, second, third;
       std::vector< std::string >* v = 0;
 
@@ -325,7 +325,7 @@ namespace gum {
        Size                                                                   lvl,
        Set< std::string >&                                                    i) {
       Size       size = 0;
-      GUM_SCALAR sum = 0.0;
+      GUM_SCALAR sum  = 0.0;
       l[lvl].c.push_back(this->name_gen_.nextName(PRMObject::prm_type::CLASS));
       f.startClass(l[lvl].c.back(), "", &i);
 
@@ -442,7 +442,7 @@ namespace gum {
       factory.startSystem(this->name_gen_.nextName(PRMObject::prm_type::SYSTEM));
       std::vector< std::vector< std::string > > o(layers__.size());
       std::string                               name, c, first, second, third;
-      std::vector< std::string >*               v = 0;
+      std::vector< std::string >*               v   = 0;
       size_t                                    idx = 0;
 
       for (size_t lvl = 0; lvl < layers__.size(); ++lvl) {
@@ -508,10 +508,11 @@ namespace gum {
 
             if (ref2add.empty())
               factory.setReferenceSlot(
-                 chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()]);
+                 chain.str(),
+                 o[lvl - 1][std::rand() % o[lvl - 1].size()]);
 
             while (ref2add.size() > getMaxParents()) {
-              idx = std::rand() % ref2add.size();
+              idx          = std::rand() % ref2add.size();
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }
@@ -558,7 +559,7 @@ namespace gum {
     INLINE ClusteredLayerGenerator< GUM_SCALAR >&
        ClusteredLayerGenerator< GUM_SCALAR >::operator=(
           const ClusteredLayerGenerator< GUM_SCALAR >& source) {
-      layers__ = source.layers__;
+      layers__      = source.layers__;
       domain_size__ = source.domain_size__;
       max_parents__ = source.max_parents__;
       return *this;

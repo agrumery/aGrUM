@@ -108,7 +108,8 @@ namespace gum {
      *
      * This type is used to prevent the list emplace (int) to compile.
      */
-    enum class Emplace { EMPLACE };
+    enum class Emplace
+    { EMPLACE };
 
     public:
     // ============================================================================
@@ -372,17 +373,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
-    using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using size_type = Size;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = ListIterator< Val >;
-    using const_iterator = ListConstIterator< Val >;
-    using iterator_safe = ListIteratorSafe< Val >;
+    using value_type          = Val;
+    using reference           = Val&;
+    using const_reference     = const Val&;
+    using pointer             = Val*;
+    using const_pointer       = const Val*;
+    using size_type           = Size;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = ListIterator< Val >;
+    using const_iterator      = ListConstIterator< Val >;
+    using iterator_safe       = ListIteratorSafe< Val >;
     using const_iterator_safe = ListConstIteratorSafe< Val >;
     /// @}
 
@@ -392,7 +393,11 @@ namespace gum {
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
-    enum class location { BEFORE, AFTER };
+    enum class location
+    {
+      BEFORE,
+      AFTER
+    };
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -1509,12 +1514,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = Val;
-    using reference = Val&;
-    using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Val;
+    using reference         = Val&;
+    using const_reference   = const Val&;
+    using pointer           = Val*;
+    using const_pointer     = const Val*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -1795,12 +1800,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = Val;
-    using reference = Val&;
-    using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Val;
+    using reference         = Val&;
+    using const_reference   = const Val&;
+    using pointer           = Val*;
+    using const_pointer     = const Val*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2031,12 +2036,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = Val;
-    using reference = Val&;
-    using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Val;
+    using reference         = Val&;
+    using const_reference   = const Val&;
+    using pointer           = Val*;
+    using const_pointer     = const Val*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2343,12 +2348,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = Val;
-    using reference = Val&;
-    using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Val;
+    using reference         = Val&;
+    using const_reference   = const Val&;
+    using pointer           = Val*;
+    using const_pointer     = const Val*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================

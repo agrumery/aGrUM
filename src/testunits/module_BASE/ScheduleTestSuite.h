@@ -45,7 +45,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -103,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT(comb1 == schedule.operation(3));
       TS_ASSERT(3 == schedule.nodeId(comb1));
 
-      const gum::NodeSet& ops1 = schedule.operationsInvolving(result1);
+      const gum::NodeSet& ops1    = schedule.operationsInvolving(result1);
       gum::NodeId         del1_id = schedule.insert(del1);
       schedule.forceAfter(del1_id, ops1);
 
@@ -111,8 +111,8 @@ namespace gum_tests {
       const gum::NodeSet& ops2 = schedule.operationsInvolving(result2.id());
       gum::Set< const gum::ScheduleOperation< double >* > oops2;
 
-      for (gum::NodeSet::const_iterator_safe iter =
-              ops2.beginSafe();   // safe iterator needed here
+      for (gum::NodeSet::const_iterator_safe iter
+           = ops2.beginSafe();   // safe iterator needed here
            iter != ops2.endSafe();
            ++iter) {
         oops2.insert(&(schedule.operation(*iter)));
@@ -130,8 +130,8 @@ namespace gum_tests {
       const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
-        for (gum::NodeSet::const_iterator_safe iter =
-                available.beginSafe();   // safe iterator needed here
+        for (gum::NodeSet::const_iterator_safe iter
+             = available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -174,7 +174,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
@@ -254,8 +254,8 @@ namespace gum_tests {
       const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
-        for (gum::NodeSet::const_iterator_safe iter =
-                available.beginSafe();   // safe iterator needed here
+        for (gum::NodeSet::const_iterator_safe iter
+             = available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);

@@ -61,8 +61,8 @@ namespace gum_tests {
     /// Génération fixe d'une liste de variable
     // *****************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >* generateFixVarList__() {
-      gum::Sequence< const gum::DiscreteVariable* >* ret =
-         new gum::Sequence< const gum::DiscreteVariable* >();
+      gum::Sequence< const gum::DiscreteVariable* >* ret
+         = new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
       ret->insert(new gum::LabelizedVariable("B", "", 2));
       ret->insert(new gum::LabelizedVariable("C", "", 2));
@@ -76,14 +76,15 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >*
        generateRandomVarList__(gum::Idx i) {
-      gum::Sequence< const gum::DiscreteVariable* >* ret =
-         new gum::Sequence< const gum::DiscreteVariable* >();
+      gum::Sequence< const gum::DiscreteVariable* >* ret
+         = new gum::Sequence< const gum::DiscreteVariable* >();
 
       for (gum::Idx j = 0; j < maxNbVarInDiagram; j++) {
         std::stringstream varName;
         varName << "var" << j;
-        ret->insert(new gum::LabelizedVariable(
-           varName.str(), "", 2 + rand() % maxVarDomainSize));
+        ret->insert(new gum::LabelizedVariable(varName.str(),
+                                               "",
+                                               2 + rand() % maxVarDomainSize));
       }
 
       return ret;
@@ -105,21 +106,21 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::MultiDimFunctionGraph< double >* generateFunctionGraph1__(
        const gum::Sequence< const gum::DiscreteVariable* >* varList) {
-      gum::MultiDimFunctionGraph< double >* generatedFunctionGraph =
-         gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
+         = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
-      for (gum::SequenceIterator< const gum::DiscreteVariable* > varIter =
-              varList->begin();
+      for (gum::SequenceIterator< const gum::DiscreteVariable* > varIter
+           = varList->begin();
            varIter != varList->end();
            ++varIter)
         generatedFunctionGraph->add(**varIter);
 
-      gum::NodeId a =
-         generatedFunctionGraph->manager()->addInternalNode(varList->atPos(0));
-      gum::NodeId b =
-         generatedFunctionGraph->manager()->addInternalNode(varList->atPos(1));
-      gum::NodeId c =
-         generatedFunctionGraph->manager()->addInternalNode(varList->atPos(2));
+      gum::NodeId a
+         = generatedFunctionGraph->manager()->addInternalNode(varList->atPos(0));
+      gum::NodeId b
+         = generatedFunctionGraph->manager()->addInternalNode(varList->atPos(1));
+      gum::NodeId c
+         = generatedFunctionGraph->manager()->addInternalNode(varList->atPos(2));
 
       gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode(6);
       gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode(2);
@@ -145,19 +146,19 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::MultiDimFunctionGraph< double >* generateFunctionGraph2__(
        const gum::Sequence< const gum::DiscreteVariable* >* varList) {
-      gum::MultiDimFunctionGraph< double >* generatedFunctionGraph =
-         gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
+         = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
-      for (gum::SequenceIterator< const gum::DiscreteVariable* > varIter =
-              varList->begin();
+      for (gum::SequenceIterator< const gum::DiscreteVariable* > varIter
+           = varList->begin();
            varIter != varList->end();
            ++varIter)
         generatedFunctionGraph->add(**varIter);
 
-      gum::NodeId a =
-         generatedFunctionGraph->manager()->addInternalNode(varList->atPos(0));
-      gum::NodeId c =
-         generatedFunctionGraph->manager()->addInternalNode(varList->atPos(2));
+      gum::NodeId a
+         = generatedFunctionGraph->manager()->addInternalNode(varList->atPos(0));
+      gum::NodeId c
+         = generatedFunctionGraph->manager()->addInternalNode(varList->atPos(2));
 
       gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode(4);
       gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode(5);
@@ -180,7 +181,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::MultiDimFunctionGraph< double >* generateRandomFunctionGraph__(
        const gum::Sequence< const gum::DiscreteVariable* >* varList,
-       double                                               lowLimit = -100,
+       double                                               lowLimit  = -100,
        double                                               highLimit = 100) {
       gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
 
@@ -202,8 +203,8 @@ namespace gum_tests {
 
       output << std::endl;
 
-      for (gum::SequenceIterator< const gum::DiscreteVariable* > ite =
-              a1->variablesSequence().begin();
+      for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
+           = a1->variablesSequence().begin();
            ite != a1->variablesSequence().end();
            ++ite)
         output << (*ite)->toString() << " - ";
@@ -214,8 +215,8 @@ namespace gum_tests {
 
       output << std::endl;
 
-      for (gum::SequenceIterator< const gum::DiscreteVariable* > ite =
-              a2->variablesSequence().begin();
+      for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
+           = a2->variablesSequence().begin();
            ite != a2->variablesSequence().end();
            ++ite)
         output << (*ite)->toString() << " - ";
@@ -227,8 +228,8 @@ namespace gum_tests {
       if (a3 != nullptr) {
         output << std::endl;
 
-        for (gum::SequenceIterator< const gum::DiscreteVariable* > ite =
-                a3->variablesSequence().begin();
+        for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
+             = a3->variablesSequence().begin();
              ite != a3->variablesSequence().end();
              ++ite)
           output << (*ite)->toString() << " - ";
@@ -258,7 +259,7 @@ namespace gum_tests {
                          double&                               tempsEval,
                          double                                delta = 0.01) {
       bool                                  hasNoError = true;
-      gum::MultiDimFunctionGraph< double >* a3 = nullptr;
+      gum::MultiDimFunctionGraph< double >* a3         = nullptr;
 
       gum::Timer timy;
       timy.reset();
@@ -272,18 +273,18 @@ namespace gum_tests {
           break;
 
         case 2:   // Test Substraction
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 =
-                                          subtract2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3
+                                       = subtract2MultiDimFunctionGraphs(a1, a2));
           break;
 
         case 3:   // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 =
-                                          multiply2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3
+                                       = multiply2MultiDimFunctionGraphs(a1, a2));
           break;
 
         case 4:   // Test Maximum
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 =
-                                          maximize2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3
+                                       = maximize2MultiDimFunctionGraphs(a1, a2));
           break;
 
         default:   // Should not happen
@@ -362,17 +363,17 @@ namespace gum_tests {
     // *****************************************************************************************************
     void test_Operators_Functions_on_MultiDimFunctionGraphs() {
       gum::Timer time;
-      double     tempsGene = 0;
+      double     tempsGene   = 0;
       double     tempsCalcul = 0;
-      double     tempsEval = 0;
+      double     tempsEval   = 0;
 
 
       // First we try with a predefine structure
       {
         time.reset();
 
-        gum::Sequence< const gum::DiscreteVariable* >* varList =
-           generateFixVarList__();
+        gum::Sequence< const gum::DiscreteVariable* >* varList
+           = generateFixVarList__();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(a1 = generateFunctionGraph1__(varList));
@@ -394,8 +395,8 @@ namespace gum_tests {
         delete a1;
         delete a2;
 
-        for (gum::SequenceIterator< const gum::DiscreteVariable* > ite =
-                varList->begin();
+        for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
+             = varList->begin();
              ite != varList->end();
              ++ite)
           delete *ite;
@@ -437,8 +438,8 @@ namespace gum_tests {
          n22;   //,n23, n24, n25, n26;
 
 
-      gum::MultiDimFunctionGraph< double >* dg1 =
-         gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* dg1
+         = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
       dg1->add(*v3);
       dg1->add(*v1);
@@ -510,8 +511,8 @@ namespace gum_tests {
 
       dg1->manager()->setRootNode(n01);
 
-      gum::MultiDimFunctionGraph< double >* dg2 =
-         gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* dg2
+         = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
       dg2->add(*v0);
       dg2->add(*v3);

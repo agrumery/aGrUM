@@ -72,7 +72,8 @@ namespace gum {
     virtual void disturbReducCPT(NodeId                   node,
                                  BayesNet< GUM_SCALAR >&  bayesNet,
                                  Potential< GUM_SCALAR >& src,
-                                 Potential< GUM_SCALAR >& marg) = 0;
+                                 Potential< GUM_SCALAR >& marg)
+       = 0;
 
     /**
      * Disturb a CPT using GUM_SCALAR when inserting a new parent.
@@ -84,7 +85,8 @@ namespace gum {
     virtual void disturbAugmCPT(NodeId                   node,
                                 BayesNet< GUM_SCALAR >&  bayesNet,
                                 Potential< GUM_SCALAR >& src,
-                                GUM_SCALAR               variation) = 0;
+                                GUM_SCALAR               variation)
+       = 0;
   };
 
 

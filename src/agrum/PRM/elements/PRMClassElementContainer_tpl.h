@@ -77,7 +77,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::setInputNode(
-       const PRMClassElement< GUM_SCALAR >& elt, bool b) {
+       const PRMClassElement< GUM_SCALAR >& elt,
+       bool                                 b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound,
                   ": <" + elt.safeName() + "> is not in <" + name() + ">");
@@ -94,7 +95,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::setOutputNode(
-       const PRMClassElement< GUM_SCALAR >& elt, bool b) {
+       const PRMClassElement< GUM_SCALAR >& elt,
+       bool                                 b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">");
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)

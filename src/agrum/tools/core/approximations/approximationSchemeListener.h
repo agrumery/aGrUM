@@ -70,7 +70,8 @@ namespace gum {
     virtual void whenProgress(const void*  src,
                               const Size   step,
                               const double error,
-                              const double time) = 0;
+                              const double time)
+       = 0;
 
     /**
      * @brief When it stops.

@@ -42,12 +42,13 @@ namespace gum {
     /// perform a connection from a connection string
     template < template < typename > class ALLOC >
     void DBInitializerFromSQL< ALLOC >::connect__(
-       const std::string& connection_string, long timeout) {
+       const std::string& connection_string,
+       long               timeout) {
       // analyze the connection string: either this is a user-defined connection
       // string or this is an aGrUM-constructed one derived from a datasource,
       // a login and a password
       bool agrum_connection = (connection_string.size() > 4)
-                              && (connection_string.compare(0, 4, "gum ") == 0);
+                           && (connection_string.compare(0, 4, "gum ") == 0);
 
       // perform the connection to the database
       if (!agrum_connection) {
@@ -67,8 +68,8 @@ namespace gum {
           GUM_ERROR(DatabaseError,
                     "could not determine the datasource from string "
                        << connection_string);
-        std::string dataSource =
-           connection_string.substr(deb_index, end_index - deb_index);
+        std::string dataSource
+           = connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
@@ -81,8 +82,8 @@ namespace gum {
           GUM_ERROR(DatabaseError,
                     "could not determine the database login from string "
                        << connection_string);
-        std::string login =
-           connection_string.substr(deb_index, end_index - deb_index);
+        std::string login
+           = connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
@@ -95,8 +96,8 @@ namespace gum {
           GUM_ERROR(DatabaseError,
                     "could not determine the database password from string "
                        << connection_string);
-        std::string password =
-           connection_string.substr(deb_index, end_index - deb_index);
+        std::string password
+           = connection_string.substr(deb_index, end_index - deb_index);
 
         connection__.connect(dataSource, login, password, timeout);
       }
@@ -158,8 +159,10 @@ namespace gum {
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
        const DBInitializerFromSQL< ALLOC >&                          from,
        const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
-        DBInitializerFromSQL< ALLOC >(
-           from.connection_string__, from.query__, from.timeout__, alloc) {}
+        DBInitializerFromSQL< ALLOC >(from.connection_string__,
+                                      from.query__,
+                                      from.timeout__,
+                                      alloc) {}
 
 
     /// copy constructor
@@ -174,8 +177,10 @@ namespace gum {
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
        DBInitializerFromSQL< ALLOC >&&                               from,
        const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
-        DBInitializerFromSQL< ALLOC >(
-           from.connection_string__, from.query__, from.timeout__, alloc) {}
+        DBInitializerFromSQL< ALLOC >(from.connection_string__,
+                                      from.query__,
+                                      from.timeout__,
+                                      alloc) {}
 
     /// move constructor
     template < template < typename > class ALLOC >
@@ -222,13 +227,13 @@ namespace gum {
       if (this != &from) {
         IDBInitializer< ALLOC >::operator=(from);
         // check if the connection parameters have changed
-        const bool connexion_changed =
-           (connection_string__ != from.connection_string__);
+        const bool connexion_changed
+           = (connection_string__ != from.connection_string__);
 
         // save the new connection parameters
         connection_string__ = from.connection_string__;
-        query__ = from.query__;
-        timeout__ = from.timeout__;
+        query__             = from.query__;
+        timeout__           = from.timeout__;
 
         // recreate the connection if needed
         if (connexion_changed) {

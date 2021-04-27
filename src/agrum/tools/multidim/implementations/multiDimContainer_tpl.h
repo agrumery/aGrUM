@@ -219,7 +219,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimContainer< GUM_SCALAR >::copyFrom(
-     const MultiDimContainer< GUM_SCALAR >& src, Instantiation* p_i) const {
+     const MultiDimContainer< GUM_SCALAR >& src,
+     Instantiation*                         p_i) const {
     if (src.domainSize() != domainSize()) {
       GUM_ERROR(OperationNotAllowed,
                 "Domain sizes do not fit : " << src.domainSize()
@@ -243,7 +244,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimContainer< GUM_SCALAR >::extractFrom(
-     const MultiDimContainer< GUM_SCALAR >& src, const Instantiation& imask) {
+     const MultiDimContainer< GUM_SCALAR >& src,
+     const Instantiation&                   imask) {
     this->beginMultipleChanges();
 
     Size nbr = this->nbrDim();

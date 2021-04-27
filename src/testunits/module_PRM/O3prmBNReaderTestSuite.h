@@ -45,7 +45,8 @@ namespace gum_tests {
       try {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(
-           &bn, GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
+           &bn,
+           GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
         gum::Size res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
         TS_ASSERT_EQUALS(bn.property("name"), "Asia");
@@ -68,7 +69,8 @@ namespace gum_tests {
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(
-         &bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+         &bn2,
+         GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size res2 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
       TS_ASSERT_EQUALS(res2, (gum::Size)0);
@@ -80,7 +82,8 @@ namespace gum_tests {
       gum::BayesNet< double > bn;
       {
         gum::O3prmBNReader< double > reader(
-           &bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+           &bn,
+           GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
         TS_ASSERT_EQUALS(res, (gum::Size)0);
@@ -105,7 +108,9 @@ namespace gum_tests {
     void testWithError() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
-         &bn, GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"), "Asia");
+         &bn,
+         GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
+         "Asia");
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(res, (gum::Size)1);               // file not found
@@ -113,7 +118,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)0);
 
       gum::O3prmBNReader< double > reader2(
-         &bn, GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"), "Asia");
+         &bn,
+         GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"),
+         "Asia");
       res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          res = reader2.proceed())   // class plop not existing
@@ -125,7 +132,9 @@ namespace gum_tests {
     void testWithCplxFile() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
-         &bn, GET_RESSOURCES_PATH("o3prm/inference.o3prm"), "aSys");
+         &bn,
+         GET_RESSOURCES_PATH("o3prm/inference.o3prm"),
+         "aSys");
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(res, (gum::Size)0);
@@ -154,7 +163,8 @@ namespace gum_tests {
       {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(
-           &bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+           &bn,
+           GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
         TS_ASSERT_EQUALS(res, (gum::Size)0);

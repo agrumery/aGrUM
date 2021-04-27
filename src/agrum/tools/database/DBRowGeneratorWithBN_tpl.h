@@ -111,8 +111,8 @@ namespace gum {
           const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(from);
-        bn_ = from.bn_;
-        nodeId2columns_ = from.nodeId2columns_;
+        bn_                              = from.bn_;
+        nodeId2columns_                  = from.nodeId2columns_;
       }
 
       return *this;
@@ -126,8 +126,8 @@ namespace gum {
           DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(std::move(from));
-        bn_ = from.bn_;
-        nodeId2columns_ = std::move(from.nodeId2columns_);
+        bn_                              = from.bn_;
+        nodeId2columns_                  = std::move(from.nodeId2columns_);
       }
 
       return *this;

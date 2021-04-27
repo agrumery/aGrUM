@@ -99,9 +99,9 @@ namespace gum {
     Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
       return jointTable__.exists(
                 std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
-                ? jointTable__[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
-                                                                       valueB)]
-                : 0;
+              ? jointTable__[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
+                                                                     valueB)]
+              : 0;
     }
 
 

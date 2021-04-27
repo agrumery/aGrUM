@@ -42,7 +42,7 @@ namespace gum {
     // sets all the nodes as targets
     if (mn != nullptr) {
       targeted_mode__ = false;
-      targets__ = mn->graph().asNodeSet();
+      targets__       = mn->graph().asNodeSet();
     }
 
     GUM_CONSTRUCTOR(MarginalTargetedMNInference);
@@ -285,7 +285,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
-        NodeId target, const NodeSet& evs) {
+        NodeId         target,
+        const NodeSet& evs) {
     const auto& vtarget = this->MN().variable(target);
 
     if (evs.contains(target)) {
@@ -325,7 +326,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
-        const std::string& target, const std::vector< std::string >& evs) {
+        const std::string&                target,
+        const std::vector< std::string >& evs) {
     const auto& mn = this->MN();
     return evidenceImpact(mn.idFromName(target), mn.nodeset(evs));
   }

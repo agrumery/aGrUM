@@ -42,7 +42,8 @@ namespace gum {
 
     template < class TargetClass >
     Connector0< TargetClass >::Connector0(
-       TargetClass* target, void (TargetClass::*action)(const void*)) {
+       TargetClass* target,
+       void (TargetClass::*action)(const void*)) {
       GUM_CONSTRUCTOR(Connector0);
       target__ = target;
       action__ = action;

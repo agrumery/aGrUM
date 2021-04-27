@@ -310,11 +310,17 @@ namespace gum {
       minimal << node;
     } else {
       for (auto fath: dag_.parents(node))
-        minimalCondSetVisitUp__(
-           fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+        minimalCondSetVisitUp__(fath,
+                                soids,
+                                minimal,
+                                alreadyVisitedUp,
+                                alreadyVisitedDn);
       for (auto chil: dag_.children(node))
-        minimalCondSetVisitDn__(
-           chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+        minimalCondSetVisitDn__(chil,
+                                soids,
+                                minimal,
+                                alreadyVisitedUp,
+                                alreadyVisitedDn);
     }
   }
 
@@ -332,12 +338,18 @@ namespace gum {
     if (soids.contains(node)) {
       minimal << node;
       for (auto fath: dag_.parents(node))
-        minimalCondSetVisitUp__(
-           fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+        minimalCondSetVisitUp__(fath,
+                                soids,
+                                minimal,
+                                alreadyVisitedUp,
+                                alreadyVisitedDn);
     } else {
       for (auto chil: dag_.children(node))
-        minimalCondSetVisitDn__(
-           chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+        minimalCondSetVisitDn__(chil,
+                                soids,
+                                minimal,
+                                alreadyVisitedUp,
+                                alreadyVisitedDn);
     }
   }
 
@@ -354,11 +366,17 @@ namespace gum {
     alreadyVisitedUp << target;
 
     for (auto fath: dag_.parents(target))
-      minimalCondSetVisitUp__(
-         fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
+      minimalCondSetVisitUp__(fath,
+                              soids,
+                              res,
+                              alreadyVisitedUp,
+                              alreadyVisitedDn);
     for (auto chil: dag_.children(target))
-      minimalCondSetVisitDn__(
-         chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
+      minimalCondSetVisitDn__(chil,
+                              soids,
+                              res,
+                              alreadyVisitedUp,
+                              alreadyVisitedDn);
     return res;
   }
 

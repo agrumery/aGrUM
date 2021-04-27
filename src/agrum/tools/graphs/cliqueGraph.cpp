@@ -76,8 +76,8 @@ namespace gum {
                                                    const NodeId node2) const {
     // get a path from a clique__ containing node1 to a clique__ containing
     // node2
-    std::vector< NodeId > path =
-       undirectedPath(container(node1), container(node2));
+    std::vector< NodeId > path
+       = undirectedPath(container(node1), container(node2));
 
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes

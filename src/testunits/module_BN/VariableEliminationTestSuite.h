@@ -117,8 +117,8 @@ namespace gum_tests {
       fill(*bn);
       // Testing the inference
       gum::VariableElimination< double >* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                      new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf
+                                   = new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
@@ -129,8 +129,8 @@ namespace gum_tests {
     void testVariableElimination() {
       fill(*bn);
       gum::VariableElimination< double >* inf = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                      new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf
+                                   = new gum::VariableElimination< double >(bn));
 
       if (inf != nullptr) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
@@ -175,8 +175,8 @@ namespace gum_tests {
       e_list.insert(e_i4);
 
       gum::VariableElimination< double >* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                      new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf
+                                   = new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->addListOfEvidence(e_list));
@@ -788,8 +788,8 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::VariableElimination< double > ie(&bn);
       gum::Potential< double >           res;
@@ -807,13 +807,14 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn
+         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::VariableElimination< double > ie(&bn);
       ie.addEvidence("B", 0);
-      gum::NodeSet joint{
-         bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
+      gum::NodeSet joint{bn.idFromName("A"),
+                         bn.idFromName("B"),
+                         bn.idFromName("D")};
 
       ie.addJointTarget(joint);
       ie.makeInference();

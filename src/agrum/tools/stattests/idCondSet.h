@@ -58,12 +58,12 @@ namespace gum {
       /// types for STL compliance
       /// @{
       using iterator_category = std::forward_iterator_tag;
-      using value_type = NodeId;
-      using reference = NodeId&;
-      using const_reference = const NodeId&;
-      using pointer = NodeId*;
-      using const_pointer = const NodeId*;
-      using difference_type = std::ptrdiff_t;
+      using value_type        = NodeId;
+      using reference         = NodeId&;
+      using const_reference   = const NodeId&;
+      using pointer           = NodeId*;
+      using const_pointer     = const NodeId*;
+      using difference_type   = std::ptrdiff_t;
       /// @}
 
 
@@ -200,9 +200,9 @@ namespace gum {
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
-      using iterator = IdCondSetIterator< ALLOC >;
-      using const_iterator = IdCondSetIterator< ALLOC >;
-      using iterator_safe = IdCondSetIterator< ALLOC >;
+      using iterator            = IdCondSetIterator< ALLOC >;
+      using const_iterator      = IdCondSetIterator< ALLOC >;
+      using iterator_safe       = IdCondSetIterator< ALLOC >;
       using const_iterator_safe = IdCondSetIterator< ALLOC >;
 
       // ##########################################################################
@@ -235,7 +235,7 @@ namespace gum {
       IdCondSet(NodeId                                        var1,
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
                 const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc = allocator_type());
+                const allocator_type& alloc           = allocator_type());
 
       /// default constructor with two variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -254,7 +254,7 @@ namespace gum {
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
                 const bool                                    ordered_lhs_vars,
                 const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc = allocator_type());
+                const allocator_type& alloc           = allocator_type());
 
       /// default constructor with three variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -273,7 +273,7 @@ namespace gum {
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
                 const bool                                    ordered_lhs_vars,
                 const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc = allocator_type());
+                const allocator_type& alloc           = allocator_type());
 
       /// copy constructor
       IdCondSet(const IdCondSet< ALLOC >& from);

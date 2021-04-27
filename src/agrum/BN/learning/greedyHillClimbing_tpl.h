@@ -49,10 +49,10 @@ namespace gum {
 
       do {
         nb_changes_applied = 0;
-        delta_score = 0;
+        delta_score        = 0;
 
-        std::vector< std::pair< NodeId, double > > ordered_queues =
-           selector.nodesSortedByBestScore();
+        std::vector< std::pair< NodeId, double > > ordered_queues
+           = selector.nodesSortedByBestScore();
 
         for (Idx j = 0; j < dag.size(); ++j) {
           Idx i = ordered_queues[j].first;
@@ -137,7 +137,8 @@ namespace gum {
                                    PARAM_ESTIMATOR&        estimator,
                                    DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-         estimator, learnStructure(selector, initial_dag));
+         estimator,
+         learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

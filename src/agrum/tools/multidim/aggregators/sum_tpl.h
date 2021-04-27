@@ -58,8 +58,8 @@ namespace gum {
                                         Idx                     i1,
                                         Idx                     i2,
                                         bool& stop_iteration) const {
-      GUM_SCALAR max_val =
-         this->variable((Idx)0).numerical(this->variable((Idx)0).domainSize() - 1);
+      GUM_SCALAR max_val = this->variable((Idx)0).numerical(
+         this->variable((Idx)0).domainSize() - 1);
       if ((i1 + i2) > max_val) {
         stop_iteration = true;
         return (Idx)max_val;

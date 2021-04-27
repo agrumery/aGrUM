@@ -92,8 +92,8 @@ namespace gum_tests {
       // **************************************************************
       // Définition of final states
       gum::Instantiation theEnd;
-      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
-              sim.beginVariables();
+      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter
+           = sim.beginVariables();
            varIter != sim.endVariables();
            ++varIter) {
         if ((*varIter)->name().compare("huc")) {

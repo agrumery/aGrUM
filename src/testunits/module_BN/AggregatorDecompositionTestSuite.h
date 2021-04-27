@@ -63,10 +63,10 @@ namespace gum_tests {
           GUM_ERROR(gum::FatalError, "could not load ressource file");
         }
       }
-      bn__ = new gum::BayesNet< double >();
-      bn2__ = new gum::BayesNet< double >();
-      inf__ = 0;
-      inf2__ = 0;
+      bn__                      = new gum::BayesNet< double >();
+      bn2__                     = new gum::BayesNet< double >();
+      inf__                     = 0;
+      inf2__                    = 0;
       aggregatorDecomposition__ = new gum::AggregatorDecomposition< double >();
     }
 
@@ -80,14 +80,14 @@ namespace gum_tests {
     }
 
     void testDecomposition() {
-      gum::BayesNetFactory< double >* factory = 0;
+      gum::BayesNetFactory< double >* factory  = 0;
       gum::BayesNetFactory< double >* factory2 = 0;
-      gum::NodeId                     node = 0;
+      gum::NodeId                     node     = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                      new gum::BayesNetFactory< double >(bn__));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory2 =
-                                      new gum::BayesNetFactory< double >(bn2__));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory
+                                   = new gum::BayesNetFactory< double >(bn__));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory2
+                                   = new gum::BayesNetFactory< double >(bn2__));
 
       TS_GUM_ASSERT_THROWS_NOTHING(prm__->getSystem("aSys").groundedBN(*factory));
       TS_GUM_ASSERT_THROWS_NOTHING(prm__->getSystem("aSys").groundedBN(*factory2));
@@ -96,12 +96,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(*bn__ = aggregatorDecomposition__
                                               ->getDecomposedAggregator(*bn__));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf__ =
-                                      new gum::LazyPropagation< double >(bn__))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf__
+                                   = new gum::LazyPropagation< double >(bn__))
       TS_GUM_ASSERT_THROWS_NOTHING(inf__->makeInference();)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf2__ =
-                                      new gum::LazyPropagation< double >(bn2__))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf2__
+                                   = new gum::LazyPropagation< double >(bn2__))
       TS_GUM_ASSERT_THROWS_NOTHING(inf2__->makeInference();)
 
       TS_GUM_ASSERT_THROWS_NOTHING(

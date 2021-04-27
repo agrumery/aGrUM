@@ -32,13 +32,13 @@ namespace gum {
       state__ = states__::none;
 
       vertices__ = 0;
-      card__ = 0;
+      card__     = 0;
 
       volume__ = 0;
 
       getVolume__ = false;
-      hull__ = false;
-      polytope__ = false;
+      hull__      = false;
+      polytope__  = false;
 
       GUM_CONSTRUCTOR(LRSWrapper);
     }
@@ -85,12 +85,13 @@ namespace gum {
       tearDown();
 
       input__ = std::vector< std::vector< GUM_SCALAR > >(
-         card * 2 + 2, std::vector< GUM_SCALAR >(card + 1, 0));
+         card * 2 + 2,
+         std::vector< GUM_SCALAR >(card + 1, 0));
 
-      input__[card * 2] = std::vector< GUM_SCALAR >(card + 1, -1);
+      input__[card * 2]    = std::vector< GUM_SCALAR >(card + 1, -1);
       input__[card * 2][0] = 1;
 
-      input__[card * 2 + 1] = std::vector< GUM_SCALAR >(card + 1, 1);
+      input__[card * 2 + 1]    = std::vector< GUM_SCALAR >(card + 1, 1);
       input__[card * 2 + 1][0] = -1;
 
       output__ = std::vector< std::vector< GUM_SCALAR > >();
@@ -117,13 +118,14 @@ namespace gum {
       tearDown();
 
       input__ = std::vector< std::vector< GUM_SCALAR > >(
-         vertices, std::vector< GUM_SCALAR >(card + 1, 1));
+         vertices,
+         std::vector< GUM_SCALAR >(card + 1, 1));
 
       output__ = std::vector< std::vector< GUM_SCALAR > >();
 
       state__ = states__::Vup;
 
-      card__ = (unsigned int)card;
+      card__     = (unsigned int)card;
       vertices__ = (unsigned int)vertices;
     }
 
@@ -140,11 +142,11 @@ namespace gum {
       volume__ = 0;
 
       state__ = states__::none;
-      card__ = 0;
+      card__  = 0;
 
       getVolume__ = false;
-      hull__ = false;
-      polytope__ = false;
+      hull__      = false;
+      polytope__  = false;
     }
 
     template < typename GUM_SCALAR >
@@ -155,12 +157,12 @@ namespace gum {
       vertex__.clear();
       vertex__.resize(card__, 0);
 
-      volume__ = 0;
+      volume__   = 0;
       vertices__ = 0;
 
       getVolume__ = false;
-      hull__ = false;
-      polytope__ = false;
+      hull__      = false;
+      polytope__  = false;
 
       if (state__ == states__::H2Vready)
         state__ = states__::Hup;
@@ -174,7 +176,7 @@ namespace gum {
       } else {
         input__.clear();
         state__ = states__::none;
-        card__ = 0;
+        card__  = 0;
         vertex__.clear();
       }
     }
@@ -196,10 +198,10 @@ namespace gum {
                   "greater or equal than cardinality : "
                      << modal << " >= " << card__);
 
-      input__[modal * 2][0] = -min;
+      input__[modal * 2][0]         = -min;
       input__[modal * 2][modal + 1] = 1;
 
-      input__[modal * 2 + 1][0] = max;
+      input__[modal * 2 + 1][0]         = max;
       input__[modal * 2 + 1][modal + 1] = -1;
 
       vertex__[modal] = max;
@@ -385,10 +387,10 @@ namespace gum {
           lrs_getsolution(dic__, dat__, lrsOutput__, col);
       } while (lrs_getnextbasis(&dic__, dat__, 0L));
 
-      int64_t Nsize =
-         (dat__->Nvolume[0] > 0) ? dat__->Nvolume[0] : -dat__->Nvolume[0];
-      int64_t Dsize =
-         (dat__->Dvolume[0] > 0) ? dat__->Dvolume[0] : -dat__->Dvolume[0];
+      int64_t Nsize
+         = (dat__->Nvolume[0] > 0) ? dat__->Nvolume[0] : -dat__->Nvolume[0];
+      int64_t Dsize
+         = (dat__->Dvolume[0] > 0) ? dat__->Dvolume[0] : -dat__->Dvolume[0];
 
       int64_t num = 0L, den = 0L;
       int64_t tmp;
@@ -444,7 +446,7 @@ namespace gum {
       auto d = dic__->d;
       /* number of linearities in input */ /* should be 0 ! */
       auto nlinearity = dat__->nlinearity;
-      auto lastdv = dat__->lastdv;
+      auto lastdv     = dat__->lastdv;
 
       /* linearities are not considered for redundancy */
       redineq = (int64_t*)calloc(std::size_t(m + 1), sizeof(int64_t));
@@ -458,9 +460,9 @@ namespace gum {
       for (decltype(m + d) index = lastdv + 1, end = m + d; index <= end;
            index++) {
         /* input inequality number of current index             */
-        auto ineq =
-           dat__->inequality[index - lastdv]; /* the input inequality number corr.
-                                                 to this index */
+        auto ineq
+           = dat__->inequality[index - lastdv]; /* the input inequality number
+                                                   corr. to this index */
 
         redineq[ineq] = checkindex(dic__, dat__, index);
       }
@@ -571,7 +573,9 @@ namespace gum {
       for (int64_t row = 0; row < rows; row++) {
         for (std::size_t col = 0; col < cols; col++) {
           Rational< GUM_SCALAR >::continuedFracFirst(
-             numerator, denominator, input__[std::size_t(row)][col]);
+             numerator,
+             denominator,
+             input__[std::size_t(row)][col]);
 
           num[col] = numerator;
           den[col] = denominator;
@@ -611,7 +615,7 @@ namespace gum {
                   "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_init");
       }
 
-      name = "LRSWrapper globals";
+      name  = "LRSWrapper globals";
       chars = std::vector< char >(name.c_str(), name.c_str() + name.size() + 1u);
 
       dat__ = lrs_alloc_dat(&chars[0]);
@@ -626,8 +630,8 @@ namespace gum {
       dat__->m = Size(input__.size());
 
       dat__->getvolume = (getVolume__) ? 1L : 0L;
-      dat__->hull = (hull__) ? 1L : 0L;
-      dat__->polytope = (polytope__) ? 1L : 0L;
+      dat__->hull      = (hull__) ? 1L : 0L;
+      dat__->polytope  = (polytope__) ? 1L : 0L;
 
       lrsOutput__ = lrs_alloc_mp_vector(dat__->n);
 

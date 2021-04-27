@@ -46,8 +46,8 @@ namespace gum_tests {
       gum::BayesNet< double > net;
 
       gum::UAIBNReader< double >* reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                      new gum::UAIBNReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader
+                                   = new gum::UAIBNReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
@@ -118,7 +118,7 @@ namespace gum_tests {
     void testRead_dog_double() {
       // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
       std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
-      gum::BayesNet< double >*   net = new gum::BayesNet< double >();
+      gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);
 
       gum::Size nbErr = false;

@@ -71,8 +71,8 @@ namespace gum {
        */
       PRMFuncAttribute(const std::string&                    name,
                        const PRMType&                        type,
-                       MultiDimImplementation< GUM_SCALAR >* impl =
-                          new MultiDimArray< GUM_SCALAR >());
+                       MultiDimImplementation< GUM_SCALAR >* impl
+                       = new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
       virtual ~PRMFuncAttribute();

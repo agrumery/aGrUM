@@ -79,9 +79,9 @@ namespace gum_tests {
       toRef.add(a);
       auto         ref = new Reference("rho", toRef);
       PRMInterface super("super");
-      auto         b = new PRMAttribute("b", *boolean__);
+      auto         b    = new PRMAttribute("b", *boolean__);
       auto         b_id = super.add(b);
-      auto         c = new PRMAttribute("c", *boolean__);
+      auto         c    = new PRMAttribute("c", *boolean__);
       auto         c_id = super.add(c);
       super.add(ref);
       PRMInterface* subclass = nullptr;
@@ -190,7 +190,7 @@ namespace gum_tests {
       // Arra,ge
       PRMInterface  c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *boolean__);
-      gum::NodeId   id = 100;   // Id generation starts at 0
+      gum::NodeId   id   = 100;   // Id generation starts at 0
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(id = c.add(attr));
       TS_ASSERT(c.exists(attr->name()));
@@ -298,8 +298,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable(name, "", 2);
-        auto t = new PRMType(super, map, var);
+        auto var  = gum::LabelizedVariable(name, "", 2);
+        auto t    = new PRMType(super, map, var);
         types.push_back(t);
       }
       PRMInterface  c("class");
@@ -358,8 +358,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable(name, "", 2);
-        auto t = new PRMType(super, map, var);
+        auto var  = gum::LabelizedVariable(name, "", 2);
+        auto t    = new PRMType(super, map, var);
         types.push_back(t);
       }
       PRMInterface  c("class");
@@ -449,7 +449,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isInputNode(*a);
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true));
       // Assert
@@ -476,7 +476,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute("attr", *boolean__);
       c.add(a);
       bool before = c.isOutputNode(*a);
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true));
       // Assert

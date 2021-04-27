@@ -618,7 +618,7 @@ namespace gum {
   template < typename OtherAlloc >
   INLINE bool
      Set< Key, Alloc >::isSupersetOrEqual(const Set< Key, OtherAlloc >& s) const {
-    return s.isLargeSubsetOf(*this);
+    return s.isSubsetOrEqual(*this);
   }
 
   // indicates whether a given elements belong to the set
@@ -733,7 +733,7 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator*(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    const HashTable< Key, bool, OtherAlloc >& h2  = s2.inside__;
     HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
     if (size() < h2.size()) {
@@ -791,7 +791,7 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator+(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res = *this;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    const HashTable< Key, bool, OtherAlloc >& h2  = s2.inside__;
     HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
     for (HashTableConstIterator< Key, bool > iter = h2.cbegin(); iter != h2.cend();
@@ -809,7 +809,7 @@ namespace gum {
   Set< Key, Alloc >
      Set< Key, Alloc >::operator-(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
-    const HashTable< Key, bool, OtherAlloc >& h2 = s2.inside__;
+    const HashTable< Key, bool, OtherAlloc >& h2  = s2.inside__;
     HashTable< Key, bool, Alloc >&            h_r = res.inside__;
 
     for (HashTableConstIterator< Key, bool > iter = inside__.cbegin();

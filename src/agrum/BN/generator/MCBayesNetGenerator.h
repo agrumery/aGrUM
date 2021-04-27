@@ -184,9 +184,9 @@ namespace gum {
     MCBayesNetGenerator(Size nbrNodes,
                         Size maxArcs,
                         Idx  maxModality = 2,
-                        Size iteration = 5000,
-                        Idx  p = 30,
-                        Idx  q = 40);
+                        Size iteration   = 5000,
+                        Idx  p           = 30,
+                        Idx  q           = 40);
 
     /**
      * Constructor.
@@ -204,8 +204,8 @@ namespace gum {
      */
     explicit MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                  Size                   iteration = 5000,
-                                 Idx                    p = 30,
-                                 Idx                    q = 40);
+                                 Idx                    p         = 30,
+                                 Idx                    q         = 40);
 
     /**
      * Destructor.

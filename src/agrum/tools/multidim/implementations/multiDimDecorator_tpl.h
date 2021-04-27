@@ -64,7 +64,8 @@ namespace gum {
   // constructors
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-     MultiDimImplementation< GUM_SCALAR >* aContent, GUM_SCALAR empty_value) :
+     MultiDimImplementation< GUM_SCALAR >* aContent,
+     GUM_SCALAR                            empty_value) :
       content_(aContent),
       empty_value_(empty_value) {
     initPotentialOperators___< GUM_SCALAR >();
@@ -92,8 +93,8 @@ namespace gum {
 
     if (this != &from) {
       if (content_ != nullptr) delete (content_);   // should be the case
-      empty_value_ = from.empty_value_;
-      content_ = from.content_;
+      empty_value_  = from.empty_value_;
+      content_      = from.content_;
       from.content_ = nullptr;
     }
 
@@ -108,8 +109,8 @@ namespace gum {
          std::forward< MultiDimContainer< GUM_SCALAR > >(from)) {
     GUM_CONS_MOV(MultiDimDecorator);
 
-    empty_value_ = from.empty_value_;
-    content_ = from.content_;
+    empty_value_  = from.empty_value_;
+    content_      = from.content_;
     from.content_ = nullptr;
   }
 
@@ -121,7 +122,7 @@ namespace gum {
     GUM_OP_CPY(MultiDimDecorator);
     initPotentialOperators___< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
-    empty_value_ = from.empty_value_;
+    empty_value_                             = from.empty_value_;
     if (content_ == nullptr)
       content_ = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
          from.content()->newFactory());
@@ -193,8 +194,8 @@ namespace gum {
      const DiscreteVariable* const var,
      Idx                           oldval,
      Idx                           newval) {
-    static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->changeNotification(
-       i, var, oldval, newval);
+    static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)
+       ->changeNotification(i, var, oldval, newval);
   }
 
   // listen to an assignment of a value in a Instantiation
@@ -406,7 +407,7 @@ namespace gum {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?
       MultiDimImplementation< GUM_SCALAR >* tmp = content_;
-      content_ = aContent;
+      content_                                  = aContent;
       // registers all instantiations
       delete (tmp);
     }

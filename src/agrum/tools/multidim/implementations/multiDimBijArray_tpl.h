@@ -45,7 +45,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
-     const VarBijection& bijection, const MultiDimArray< GUM_SCALAR >& array) :
+     const VarBijection&                bijection,
+     const MultiDimArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
       array__(array), name__("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
@@ -57,7 +58,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
-     const VarBijection& bijection, const MultiDimBijArray< GUM_SCALAR >& array) :
+     const VarBijection&                   bijection,
+     const MultiDimBijArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
       array__(array.array__), name__("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);

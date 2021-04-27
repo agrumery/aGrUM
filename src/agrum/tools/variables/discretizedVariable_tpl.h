@@ -46,7 +46,7 @@ namespace gum {
     if (max - min < 2)
       res = min;
     else {
-      mid = (max + min) / 2;
+      mid         = (max + min) / 2;
       T_TICKS val = ticks__[mid];
 
       if (target == val)
@@ -83,7 +83,8 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(
-     const std::string& aName, const std::string& aDesc) :
+     const std::string& aName,
+     const std::string& aDesc) :
       IDiscretizedVariable(aName, aDesc),
       ticks_size__((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
@@ -168,8 +169,8 @@ namespace gum {
       }
     } else {
       try {
-        Idx zeIdx =
-           pos_(aTick);   // aTick is in [ ticks__[zeIdx],__ticks[zeIdx+1] [
+        Idx zeIdx
+           = pos_(aTick);   // aTick is in [ ticks__[zeIdx],__ticks[zeIdx+1] [
 
         for (Idx i = ticks_size__ - 1; i > zeIdx; --i) {
           ticks__[i + 1] = ticks__[i];

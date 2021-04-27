@@ -34,7 +34,8 @@
 namespace gum {
   template < typename GUM_SCALAR >
   ExactBNdistance< GUM_SCALAR >::ExactBNdistance(
-     const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q) :
+     const IBayesNet< GUM_SCALAR >& P,
+     const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q) {
     GUM_CONSTRUCTOR(ExactBNdistance);
   }
@@ -68,9 +69,9 @@ namespace gum {
     GUM_SCALAR pp, pq, pmid, lpp, lpq, lpmid;
     for (Ip.setFirst(); !Ip.end(); ++Ip) {
       Iq.setValsFrom(map, Ip);
-      pp = p_.jointProbability(Ip);
-      pq = q_.jointProbability(Iq);
-      pmid = (pp + pq) / 2.0;
+      pp    = p_.jointProbability(Ip);
+      pq    = q_.jointProbability(Iq);
+      pmid  = (pp + pq) / 2.0;
       lpmid = lpq = lpp = (GUM_SCALAR)0.0;
       if (pmid != (GUM_SCALAR)0.0) lpmid = std::log2(pmid);
       if (pp != (GUM_SCALAR)0.0) lpp = std::log2(pp);
@@ -96,13 +97,12 @@ namespace gum {
         }
       }
       if (pmid != (GUM_SCALAR)0.0) {
-        jsd_ +=
-           pp * lpp + pq * lpq
-           - (pp + pq) * lpmid;   // pp* log2(pp / pmid) + pq * log2(pq / pmid);
+        jsd_ += pp * lpp + pq * lpq
+              - (pp + pq) * lpmid;   // pp* log2(pp / pmid) + pq * log2(pq / pmid);
       }
     }
     jsd_ /= 2.0;
-    hellinger_ = std::sqrt(hellinger_);
+    hellinger_    = std::sqrt(hellinger_);
     bhattacharya_ = -std::log(bhattacharya_);
   }
 

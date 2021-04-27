@@ -64,7 +64,7 @@ namespace gum {
     void*  array[callStackDepth];
     size_t size;
     char** strings;
-    size = backtrace(array, callStackDepth);
+    size    = backtrace(array, callStackDepth);
     strings = backtrace_symbols(array, size);
 
     std::stringstream stream;

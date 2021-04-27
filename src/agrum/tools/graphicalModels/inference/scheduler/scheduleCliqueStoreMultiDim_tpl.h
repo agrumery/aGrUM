@@ -81,9 +81,9 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table__ = from.table__;
-      tableSet__ = from.tableSet__;
-      clique__ = from.clique__;
+      table__                                  = from.table__;
+      tableSet__                               = from.tableSet__;
+      clique__                                 = from.clique__;
 
       if (args__) {
         args__->clear();
@@ -100,8 +100,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
-    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
     return ((table__ == real_op.table__) && (tableSet__ == real_op.tableSet__)
             && (clique__ == real_op.clique__));
   }
@@ -112,8 +112,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
-    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
+    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
     return ((table__ != real_op.table__) || (tableSet__ != real_op.tableSet__)
             || (clique__ != real_op.clique__));
   }
@@ -170,8 +170,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+      __debug__::inc_deletion__("Sequence",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&empty_seq);
       __debug__::inc_deletion__("SequenceImplementation",
                                 __FILE__,
                                 __LINE__,

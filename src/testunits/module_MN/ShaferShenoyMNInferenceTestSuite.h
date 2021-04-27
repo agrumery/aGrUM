@@ -59,7 +59,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name = bn.variable(n).name();
+        const std::string&              name   = bn.variable(n).name();
         const gum::Potential< double >& postbn = iebn.posterior(name);
 
         gum::Potential< double > postmn;
@@ -80,7 +80,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name = bn.variable(n).name();
+        const std::string&              name   = bn.variable(n).name();
         const gum::Potential< double >& postbn = iebn.posterior(name);
 
         gum::Potential< double > postmn;
@@ -104,7 +104,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name = bn.variable(n).name();
+        const std::string&              name   = bn.variable(n).name();
         const gum::Potential< double >& postbn = iebn.posterior(name);
 
         gum::Potential< double > postmn;
@@ -127,7 +127,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name = bn.variable(n).name();
+        const std::string&              name   = bn.variable(n).name();
         const gum::Potential< double >& postbn = iebn.posterior(name);
 
         gum::Potential< double > postmn;
@@ -150,7 +150,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name = bn.variable(n).name();
+        const std::string&              name   = bn.variable(n).name();
         const gum::Potential< double >& postbn = iebn.posterior(name);
 
         gum::Potential< double > postmn;

@@ -46,8 +46,8 @@ namespace gum_tests {
       gum::MarkovNet< double > net;
 
       gum::UAIMNReader< double >* reader = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                      new gum::UAIMNReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader
+                                   = new gum::UAIMNReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 

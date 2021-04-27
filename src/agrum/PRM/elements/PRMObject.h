@@ -65,7 +65,8 @@ namespace gum {
        * (useful with iterators for example). No PRMObject will ever have
        * "all" as type.
        */
-      enum class prm_type : char {
+      enum class prm_type : char
+      {
         ALL,
         CLASS,
         PRM_INTERFACE,
@@ -81,19 +82,26 @@ namespace gum {
       /// Returns the string representation of a PRMObject.
       static std::string enum2str(prm_type type) {
         switch (type) {
-          case prm_type::CLASS: return "PRMType::CLASS";
+          case prm_type::CLASS:
+            return "PRMType::CLASS";
 
-          case prm_type::CLASS_ELT: return "PRMType::CLASS_ELT";
+          case prm_type::CLASS_ELT:
+            return "PRMType::CLASS_ELT";
 
-          case prm_type::TYPE: return "PRMType::TYPE";
+          case prm_type::TYPE:
+            return "PRMType::TYPE";
 
-          case prm_type::SYSTEM: return "PRMType::SYSTEM";
+          case prm_type::SYSTEM:
+            return "PRMType::SYSTEM";
 
-          case prm_type::INSTANCE: return "PRMType::INSTANCE";
+          case prm_type::INSTANCE:
+            return "PRMType::INSTANCE";
 
-          case prm_type::PRM_INTERFACE: return "PRMType::PRM_INTERFACE";
+          case prm_type::PRM_INTERFACE:
+            return "PRMType::PRM_INTERFACE";
 
-          default: return "unknown";
+          default:
+            return "unknown";
         }
       }
 

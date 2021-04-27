@@ -48,14 +48,26 @@ namespace gum {
       static bool first_time = true;
       if (first_time) {
         first_time = false;
-        __debug__::dec_creation__(
-           "Bijection", "__strings", 0, "BCell string bijection", 0);
-        __debug__::dec_creation__(
-           "BijectionImplementation", "__strings", 0, "BCell string bijection", 0);
-        __debug__::dec_creation__(
-           "HashTable", "__strings", 0, "BCell string bijection", 0);
-        __debug__::dec_creation__(
-           "HashTable", "__strings", 0, "BCell string bijection", 0);
+        __debug__::dec_creation__("Bijection",
+                                  "__strings",
+                                  0,
+                                  "BCell string bijection",
+                                  0);
+        __debug__::dec_creation__("BijectionImplementation",
+                                  "__strings",
+                                  0,
+                                  "BCell string bijection",
+                                  0);
+        __debug__::dec_creation__("HashTable",
+                                  "__strings",
+                                  0,
+                                  "BCell string bijection",
+                                  0);
+        __debug__::dec_creation__("HashTable",
+                                  "__strings",
+                                  0,
+                                  "BCell string bijection",
+                                  0);
       }
 #  endif
       static Bijection< std::string, int > strings;
@@ -69,7 +81,7 @@ namespace gum {
 
       // trim the string
       auto start_iter = str.begin() + str.find_first_not_of(" \t");
-      auto end_iter = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
+      auto end_iter   = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
 
       if (start_iter == end_iter) return false;
 
@@ -91,14 +103,14 @@ namespace gum {
 
       // trim the string
       auto start_iter = str.begin() + str.find_first_not_of(" \t");
-      auto end_iter = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
+      auto end_iter   = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
 
       if (start_iter == end_iter) return false;
 
       // check wether we have a number
-      bool has_dot = false;
+      bool has_dot      = false;
       bool has_exponent = false;
-      bool has_digit = false;
+      bool has_digit    = false;
       bool has_negation = false;
       for (; start_iter != end_iter; ++start_iter) {
         if (*start_iter == '-') {
@@ -129,7 +141,7 @@ namespace gum {
           switch (type__) {
             case EltType::INTEGER:
               val_real__ = float(val_integer__);
-              type__ = EltType::REAL;
+              type__     = EltType::REAL;
               return true;
 
             case EltType::STRING:
@@ -137,11 +149,12 @@ namespace gum {
                 const std::string& str = strings__().first(val_index__);
                 if (!isReal(str)) return false;
                 val_real__ = std::stof(str);
-                type__ = EltType::REAL;
+                type__     = EltType::REAL;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING:
+              return false;
 
             default:
               GUM_ERROR(NotImplementedYet,
@@ -155,7 +168,7 @@ namespace gum {
               const int nb = int(val_real__);
               if (nb == val_real__) {
                 val_integer__ = nb;
-                type__ = EltType::INTEGER;
+                type__        = EltType::INTEGER;
                 return true;
               } else
                 return false;
@@ -166,11 +179,12 @@ namespace gum {
                 const std::string& str = strings__().first(val_index__);
                 if (!isInteger(str)) return false;
                 val_integer__ = std::stoi(str);
-                type__ = EltType::INTEGER;
+                type__        = EltType::INTEGER;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING:
+              return false;
 
             default:
               GUM_ERROR(NotImplementedYet,
@@ -208,7 +222,8 @@ namespace gum {
               type__ = EltType::STRING;
               return true;
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING:
+              return false;
 
             default:
               GUM_ERROR(NotImplementedYet,
@@ -216,7 +231,9 @@ namespace gum {
           }
 
           // ===================================
-        case EltType::MISSING: type__ = EltType::MISSING; return true;
+        case EltType::MISSING:
+          type__ = EltType::MISSING;
+          return true;
 
         default:
           GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType");
@@ -246,7 +263,8 @@ namespace gum {
           str << "The DBCell contains a missing value instead of " << true_type;
           break;
 
-        default: GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet");
+        default:
+          GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet");
       }
 
       return str.str();

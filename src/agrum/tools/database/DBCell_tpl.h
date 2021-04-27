@@ -72,7 +72,8 @@ namespace gum {
     std::string DBCell::toString(
        const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
       switch (type__) {
-        case EltType::STRING: return strings__().first(val_index__);
+        case EltType::STRING:
+          return strings__().first(val_index__);
 
         case EltType::REAL: {
           char buffer[100];
@@ -80,7 +81,8 @@ namespace gum {
           return std::string(buffer);
         }
 
-        case EltType::INTEGER: return std::to_string(val_integer__);
+        case EltType::INTEGER:
+          return std::to_string(val_integer__);
 
         case EltType::MISSING:
           if (missingVals.size())

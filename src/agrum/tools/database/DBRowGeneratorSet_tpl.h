@@ -119,7 +119,7 @@ namespace gum {
       // clear all the internal fields
       generators__.clear();
       nb_generators__ = std::size_t(0);
-      output_row__ = nullptr;
+      output_row__    = nullptr;
       setInputRow_performed__.clear();
     }
 
@@ -155,13 +155,15 @@ namespace gum {
 
         // create the setInputDBrow_performed vector
         std::vector< int, ALLOC< int > > setInputDBrow_performed(
-           from.nb_generators__, 0, getAllocator());
+           from.nb_generators__,
+           0,
+           getAllocator());
 
         // remove the old generators and copy the new ones
         clear();
-        generators__ = std::move(new_generators);
-        nb_generators__ = from.nb_generators__;
-        output_row__ = nullptr;
+        generators__            = std::move(new_generators);
+        nb_generators__         = from.nb_generators__;
+        output_row__            = nullptr;
         setInputRow_performed__ = std::move(setInputDBrow_performed);
       }
 
@@ -176,9 +178,9 @@ namespace gum {
       if (this != &from) {
         // remove the old generators and move the new ones
         clear();
-        generators__ = std::move(from.generators__);
-        nb_generators__ = from.nb_generators__;
-        output_row__ = from.output_row__;
+        generators__            = std::move(from.generators__);
+        nb_generators__         = from.nb_generators__;
+        output_row__            = from.output_row__;
         setInputRow_performed__ = std::move(from.setInputRow_performed__);
       }
       return *this;
@@ -232,7 +234,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Generator >
     void DBRowGeneratorSet< ALLOC >::insertGenerator(
-       const Generator< ALLOC >& generator, const std::size_t i) {
+       const Generator< ALLOC >& generator,
+       const std::size_t         i) {
       // check that no output row generation is still active
       if (output_row__ != nullptr)
         GUM_ERROR(OperationNotAllowed,
@@ -315,7 +318,8 @@ namespace gum {
     // try to produce a new row
     template < template < typename > class ALLOC >
     bool DBRowGeneratorSet< ALLOC >::produceNextRow__(
-       const DBRow< DBTranslatedValue, ALLOC >* input_row, std::size_t i) {
+       const DBRow< DBTranslatedValue, ALLOC >* input_row,
+       std::size_t                              i) {
       // the generation of output rows can be viewed as the traversal of a
       // tree: each node of the tree correspond to the input row received by
       // a generator. So the root node is the row passed in argument to
@@ -358,7 +362,7 @@ namespace gum {
           } else {
             // here, the generator is able to generate output rows
             // so, generate the first one
-            row = &(generator->generate());
+            row                        = &(generator->generate());
             setInputRow_performed__[i] = 1;
 
             // pass to the next generator

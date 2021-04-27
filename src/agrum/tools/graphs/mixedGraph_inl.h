@@ -60,7 +60,7 @@ namespace gum {
 
   INLINE bool MixedGraph::operator==(const MixedGraph& p) const {
     return ArcGraphPart::operator==(p) && EdgeGraphPart::operator==(p)
-           && NodeGraphPart::                            operator==(p);
+        && NodeGraphPart::                               operator==(p);
   }
 
   INLINE bool MixedGraph::operator!=(const MixedGraph& p) const {

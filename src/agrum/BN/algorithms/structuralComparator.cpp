@@ -45,17 +45,17 @@ namespace gum {
     }
     // compute the orientation matrix
     // no edges so these stay null
-    true_edge__ = 0;
-    wrong_edge_arc__ = 0;
+    true_edge__       = 0;
+    wrong_edge_arc__  = 0;
     wrong_edge_none__ = 0;
-    wrong_arc_edge__ = 0;
+    wrong_arc_edge__  = 0;
     wrong_none_edge__ = 0;
     // these will be filled
-    true_arc__ = 0;
-    true_none__ = 0;
+    true_arc__        = 0;
+    true_none__       = 0;
     misoriented_arc__ = 0;
-    wrong_arc_none__ = 0;
-    wrong_none_arc__ = 0;
+    wrong_arc_none__  = 0;
+    wrong_none_arc__  = 0;
 
     for (const Arc& arc: ref.arcs()) {
       if (test.existsArc(arc)) {
@@ -73,7 +73,7 @@ namespace gum {
     }
     // TN = #possible arcs - #existing arcs
     true_none__ = ref.size() * (ref.size() - 1) - true_arc__ - misoriented_arc__
-                  - wrong_arc_none__ - wrong_none_arc__;
+                - wrong_arc_none__ - wrong_none_arc__;
   }
 
   void StructuralComparator::compare(const UndiGraph& ref, const UndiGraph& test) {
@@ -87,15 +87,15 @@ namespace gum {
     }
     // compute the orientation matrix
     // no arcs so these stay null
-    true_arc__ = 0;
+    true_arc__        = 0;
     misoriented_arc__ = 0;
-    wrong_arc_none__ = 0;
-    wrong_none_arc__ = 0;
-    wrong_edge_arc__ = 0;
-    wrong_arc_edge__ = 0;
+    wrong_arc_none__  = 0;
+    wrong_none_arc__  = 0;
+    wrong_edge_arc__  = 0;
+    wrong_arc_edge__  = 0;
     // these will be filled
-    true_edge__ = 0;
-    true_none__ = 0;
+    true_edge__       = 0;
+    true_none__       = 0;
     wrong_edge_none__ = 0;
     wrong_none_edge__ = 0;
 
@@ -111,7 +111,7 @@ namespace gum {
     }
     // TN = #possible edges - #existing edges
     true_none__ = ref.size() * (ref.size() - 1) / 2 - true_edge__
-                  - wrong_edge_none__ - wrong_none_edge__;
+                - wrong_edge_none__ - wrong_none_edge__;
   }
 
   void StructuralComparator::compare(const MixedGraph& ref,
@@ -126,15 +126,15 @@ namespace gum {
     }
 
     // compute the orientation matrix
-    true_arc__ = 0;
-    true_edge__ = 0;
-    true_none__ = 0;
+    true_arc__        = 0;
+    true_edge__       = 0;
+    true_none__       = 0;
     misoriented_arc__ = 0;
-    wrong_arc_edge__ = 0;
-    wrong_arc_none__ = 0;
-    wrong_edge_arc__ = 0;
+    wrong_arc_edge__  = 0;
+    wrong_arc_none__  = 0;
+    wrong_edge_arc__  = 0;
     wrong_edge_none__ = 0;
-    wrong_none_arc__ = 0;
+    wrong_none_arc__  = 0;
     wrong_none_edge__ = 0;
 
     for (const Arc& arc: ref.arcs()) {
@@ -172,15 +172,15 @@ namespace gum {
     }
     // TN = #possible edges - #existing edges
     true_none__ = ref.size() * (ref.size() - 1) / 2 - true_edge__
-                  - wrong_edge_none__ - wrong_none_edge__ - true_arc__
-                  - misoriented_arc__ - wrong_arc_none__ - wrong_none_arc__;
+                - wrong_edge_none__ - wrong_none_edge__ - true_arc__
+                - misoriented_arc__ - wrong_arc_none__ - wrong_none_arc__;
   }
 
   double StructuralComparator::precision_skeleton() const {
     double tp, fp, precision;
     tp = true_arc__ + misoriented_arc__ + true_edge__ + wrong_edge_arc__
-         + wrong_arc_edge__;
-    fp = wrong_arc_none__ + wrong_edge_none__;
+       + wrong_arc_edge__;
+    fp        = wrong_arc_none__ + wrong_edge_none__;
     precision = tp / (tp + fp);
     return precision;
   }
@@ -188,8 +188,8 @@ namespace gum {
   double StructuralComparator::recall_skeleton() const {
     double tp, fn, recall;
     tp = true_arc__ + misoriented_arc__ + true_edge__ + wrong_edge_arc__
-         + wrong_arc_edge__;
-    fn = wrong_none_arc__ + wrong_none_edge__;
+       + wrong_arc_edge__;
+    fn     = wrong_none_arc__ + wrong_none_edge__;
     recall = tp / (tp + fn);
     return recall;
   }
@@ -197,13 +197,13 @@ namespace gum {
   double StructuralComparator::f_score_skeleton() const {
     double tp, fp, fn, precision, recall, f_score;
     tp = true_arc__ + misoriented_arc__ + true_edge__ + wrong_edge_arc__
-         + wrong_arc_edge__;
+       + wrong_arc_edge__;
     fp = wrong_arc_none__ + wrong_edge_none__;
     fn = wrong_none_arc__ + wrong_none_edge__;
 
     precision = tp / (tp + fp);
-    recall = tp / (tp + fn);
-    f_score = 2 * precision * recall / (precision + recall);
+    recall    = tp / (tp + fn);
+    f_score   = 2 * precision * recall / (precision + recall);
     return f_score;
   }
 
@@ -211,15 +211,15 @@ namespace gum {
     double tp, fp, precision;
     tp = true_arc__ + true_edge__;
     fp = wrong_edge_arc__ + wrong_arc_edge__ + wrong_arc_none__ + wrong_edge_none__
-         + misoriented_arc__;
+       + misoriented_arc__;
     precision = tp / (tp + fp);
     return precision;
   }
 
   double StructuralComparator::recall() const {
     double tp, fn, recall;
-    tp = true_arc__ + true_edge__;
-    fn = wrong_none_arc__ + wrong_none_edge__;
+    tp     = true_arc__ + true_edge__;
+    fn     = wrong_none_arc__ + wrong_none_edge__;
     recall = tp / (tp + fn);
     return recall;
   }
@@ -228,11 +228,11 @@ namespace gum {
     double tp, fp, fn, precision, recall, f_score;
     tp = true_arc__ + true_edge__;
     fp = wrong_edge_arc__ + wrong_arc_edge__ + wrong_arc_none__ + wrong_edge_none__
-         + misoriented_arc__;
+       + misoriented_arc__;
     fn = wrong_none_arc__ + wrong_none_edge__;
 
     precision = tp / (tp + fp);
-    recall = tp / (tp + fn);
+    recall    = tp / (tp + fn);
 
     f_score = 2 * precision * recall / (precision + recall);
     return f_score;

@@ -49,9 +49,9 @@ namespace gum {
         BayesNet< GUM_SCALAR >& bn) {
     for (NodeId node: bn.nodes().asNodeSet()) {
       std::string description = bn.cpt(node).toString();
-      auto        p =
-         dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-            bn.cpt(node).content());
+      auto        p           = dynamic_cast<
+         const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+         bn.cpt(node).content());
       if (p != nullptr && p->isDecomposable()) { decomposeAggregator_(bn, node); }
     }
     return bn;
@@ -93,9 +93,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
      AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(
-        BayesNet< GUM_SCALAR >& bn, NodeId initialAggregator) {
-    auto p =
-       static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+        BayesNet< GUM_SCALAR >& bn,
+        NodeId                  initialAggregator) {
+    auto p
+       = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
           bn.cpt(initialAggregator).content());
     auto newAgg = bn.variable(initialAggregator).clone();
 
@@ -113,8 +114,8 @@ namespace gum {
     List< NodeId > newAggParents;
 
     gum::Size arity = getMaximumArity();
-    gum::Size q = 0;
-    gum::Size i = 0;
+    gum::Size q     = 0;
+    gum::Size i     = 0;
 
     long minVal = 0;
     long maxVal = 0;
@@ -122,7 +123,7 @@ namespace gum {
     int j = 1;
 
     std::string newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                          + std::to_string(j);
+                        + std::to_string(j);
     std::string aggType = p->aggregatorName();
 
     for (auto parent: parents) {
@@ -172,7 +173,7 @@ namespace gum {
           maxVal = 0;
 
           newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                    + std::to_string(j);
+                  + std::to_string(j);
 
           delete (newAgg);
           newAgg = bn.variable(initialAggregator).clone();
@@ -180,20 +181,20 @@ namespace gum {
           newAgg->setDescription(aggType);
 
           if (bn.variable(*it).varType() == VarType::Range) {
-            minVal +=
-               static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal +=
-               static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            minVal
+               += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+            maxVal
+               += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
           }
 
           newAggParents.push_back(*it);
           i++;
         } else {
           if (bn.variable(*it).varType() == VarType::Range) {
-            minVal +=
-               static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal +=
-               static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            minVal
+               += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+            maxVal
+               += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
           }
 
           newAggParents.push_back(*it);
@@ -238,11 +239,11 @@ namespace gum {
      Set< NodeId >           nodes,
      NodeId                  initialAggregator,
      int&                    j) {
-    auto p =
-       static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+    auto p
+       = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
           bn.cpt(initialAggregator).content());
 
-    gum::Size   arity = getMaximumArity();
+    gum::Size   arity   = getMaximumArity();
     std::string aggType = p->aggregatorName();
 
     if (nodes.size() <= arity) {
@@ -262,15 +263,15 @@ namespace gum {
 
       orderedParents.sort();
 
-      gum::Size i = 0;
-      gum::Size q = 0;
+      gum::Size i      = 0;
+      gum::Size q      = 0;
       long      minVal = 0;
       long      maxVal = 0;
 
       j++;
 
       std::string newName = std::string(bn.variable(initialAggregator).name())
-                            + "_" + std::to_string(j);
+                          + "_" + std::to_string(j);
 
       newAgg->setName(newName);
       newAgg->setDescription(aggType);
@@ -305,7 +306,7 @@ namespace gum {
             maxVal = 0;
 
             newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                      + std::to_string(j);
+                    + std::to_string(j);
 
             delete (newAgg);
             newAgg = bn.variable(initialAggregator).clone();
@@ -313,20 +314,20 @@ namespace gum {
             newAgg->setDescription(aggType);
 
             if (bn.variable(*it).varType() == VarType::Range) {
-              minVal +=
-                 static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal +=
-                 static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+              minVal
+                 += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+              maxVal
+                 += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
             }
 
             newAggParents.push_back(*it);
             i++;
           } else {
             if (bn.variable(*it).varType() == VarType::Range) {
-              minVal +=
-                 static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal +=
-                 static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+              minVal
+                 += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+              maxVal
+                 += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
             }
 
             newAggParents.push_back(*it);

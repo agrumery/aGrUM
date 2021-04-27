@@ -590,7 +590,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::val(const DiscreteVariable* var) const {
-    Idx  n = 0;
+    Idx  n     = 0;
     Size value = vals__[vars__.pos(var)];
 
     if (vals__[vars__.pos(var)] % 2 == 0) {
@@ -605,7 +605,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::nbrOccurences(const DiscreteVariable& var) const {
-    Idx  n = 0;
+    Idx  n   = 0;
     Size val = vals__[vars__.pos(&var)];
 
     while (val) {
@@ -617,7 +617,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::val(const DiscreteVariable& var) const {
-    Idx  n = 0;
+    Idx  n     = 0;
     Size value = vals__[vars__.pos(&var)];
 
     if (nbrOccurences(var) == 1) {
@@ -667,7 +667,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgValIn(const SetInst& i) {
     overflow__ = false;
-    Idx s = i.nbrDim();
+    Idx s      = i.nbrDim();
 
     for (Size p = 0; p < s; ++p)
       if (contains(i.variable(p)))
@@ -704,7 +704,7 @@ namespace gum {
 
   INLINE void
      SetInst::reorder(const Sequence< const DiscreteVariable* >& original) {
-    Idx max = original.size();
+    Idx max      = original.size();
     Idx position = 0;
 
     for (Idx i = 0; i < max; ++i) {

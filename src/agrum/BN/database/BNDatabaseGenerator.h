@@ -103,9 +103,9 @@ namespace gum {
 
       /// generates csv database according to bn
       void toCSV(const std::string& csvFileURL,
-                 bool               useLabels = true,
-                 bool               append = false,
-                 std::string        csvSeparator = ",",
+                 bool               useLabels     = true,
+                 bool               append        = false,
+                 std::string        csvSeparator  = ",",
                  bool               checkOnAppend = false) const;
 
       /// generates a DatabaseVectInRAM
@@ -168,18 +168,18 @@ namespace gum {
       double log2likelihood__ = 0;
 
       /// returns varOrder from a csv file
-      std::vector< Idx >
-         varOrderFromCSV__(const std::string& csvFileURL,
-                           const std::string& csvSeparator = ",") const;
+      std::vector< Idx > varOrderFromCSV__(const std::string& csvFileURL,
+                                           const std::string& csvSeparator
+                                           = ",") const;
 
       /// returns varOrder from a csv file
-      std::vector< Idx >
-         varOrderFromCSV__(std::ifstream&     csvFile,
-                           const std::string& csvSeparator = ",") const;
+      std::vector< Idx > varOrderFromCSV__(std::ifstream&     csvFile,
+                                           const std::string& csvSeparator
+                                           = ",") const;
 
       // forbidden copies / moves
       BNDatabaseGenerator(const BNDatabaseGenerator&) = delete;
-      BNDatabaseGenerator(BNDatabaseGenerator&&) = delete;
+      BNDatabaseGenerator(BNDatabaseGenerator&&)      = delete;
       BNDatabaseGenerator& operator=(const BNDatabaseGenerator&) = delete;
       BNDatabaseGenerator& operator=(BNDatabaseGenerator&&) = delete;
     };

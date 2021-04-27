@@ -136,7 +136,7 @@ namespace gum_tests {
       const auto& state = bar.get("state");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
       const auto& cpf = state.cpf();
-      auto        i = gum::Instantiation(cpf);
+      auto        i   = gum::Instantiation(cpf);
       i.setFirst();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
       i.inc();
@@ -167,7 +167,7 @@ namespace gum_tests {
       const auto& state = bar.get("state");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
       const auto& cpf = state.cpf();
-      auto        i = gum::Instantiation(cpf);
+      auto        i   = gum::Instantiation(cpf);
       i.setFirst();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
       i.inc();
@@ -687,8 +687,8 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoo"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo));
       TS_ASSERT(!myFoo.isArray());
@@ -723,8 +723,8 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoo"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo));
       TS_ASSERT(myFoo.isArray());
@@ -768,8 +768,8 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoo"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(!myFoo.isArray());
@@ -831,8 +831,8 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoo"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(!myFoo.isArray());
@@ -1045,16 +1045,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::OR);
     }
@@ -1092,16 +1092,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::OR);
     }
@@ -1138,16 +1138,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::AND);
     }
@@ -1186,16 +1186,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::AND);
     }
@@ -1233,16 +1233,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::FORALL);
     }
@@ -1282,16 +1282,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::FORALL);
     }
@@ -1329,16 +1329,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
     }
@@ -1378,16 +1378,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
     }
@@ -1425,16 +1425,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MIN);
     }
@@ -1473,16 +1473,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MIN);
     }
@@ -1520,16 +1520,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MAX);
     }
@@ -1568,16 +1568,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MAX);
     }
@@ -1615,16 +1615,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
     }
@@ -1664,16 +1664,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
     }
@@ -1711,16 +1711,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
     }
@@ -1760,16 +1760,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
     }
@@ -1807,16 +1807,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::COUNT);
     }
@@ -1856,16 +1856,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::COUNT);
     }
@@ -1903,16 +1903,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::SUM);
     }
@@ -1951,16 +1951,16 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("myFoos"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
-      const auto& myFoo =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& myFoo
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("myFoos"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
       TS_ASSERT(myFoo.isArray());
       TS_ASSERT(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
-      const auto& agg =
-         static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
+      const auto& agg
+         = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(),
                        gum::prm::PRMAggregate< double >::AggregateType::SUM);
     }
@@ -2457,8 +2457,8 @@ namespace gum_tests {
       TS_ASSERT(foo.exists("plop"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(foo.get("plop")));
-      const auto& ref_plop =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& ref_plop
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             foo.get("plop"));
       TS_ASSERT_EQUALS(&(ref_plop.slotType()), &plop);
 
@@ -2479,8 +2479,8 @@ namespace gum_tests {
       TS_ASSERT(bar.exists("plop"));
       TS_ASSERT(
          gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("plop")));
-      const auto& ref_subplop =
-         static_cast< const gum::prm::PRMReferenceSlot< double >& >(
+      const auto& ref_subplop
+         = static_cast< const gum::prm::PRMReferenceSlot< double >& >(
             bar.get("plop"));
       TS_ASSERT_EQUALS(&(ref_subplop.slotType()), &sub_plop);
     }

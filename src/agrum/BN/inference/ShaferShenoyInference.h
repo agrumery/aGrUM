@@ -74,10 +74,10 @@ namespace gum {
     /// @{
 
     /// default constructor
-    explicit ShaferShenoyInference(
-       const IBayesNet< GUM_SCALAR >* BN,
-       FindBarrenNodesType barren_type = FindBarrenNodesType::FIND_BARREN_NODES,
-       bool                use_binary_join_tree = true);
+    explicit ShaferShenoyInference(const IBayesNet< GUM_SCALAR >* BN,
+                                   FindBarrenNodesType            barren_type
+                                   = FindBarrenNodesType::FIND_BARREN_NODES,
+                                   bool use_binary_join_tree = true);
 
     /// destructor
     ~ShaferShenoyInference() final;
@@ -349,7 +349,12 @@ namespace gum {
     NodeSet hard_ev_nodes__;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
+    enum EvidenceChangeType
+    {
+      EVIDENCE_ADDED,
+      EVIDENCE_ERASED,
+      EVIDENCE_MODIFIED
+    };
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
@@ -365,12 +370,13 @@ namespace gum {
     /// create a new junction tree as well as its related data structures
     void createNewJT__();
     /// sets the operator for performing the projections
-    void setProjectionFunction__(Potential< GUM_SCALAR >* (*proj)(
-       const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void setProjectionFunction__(
+       Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
+                                        const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction__(Potential< GUM_SCALAR >* (*comb)(
-       const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
+    void setCombinationFunction__(Potential< GUM_SCALAR >* (
+       *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void diffuseMessageInvalidations__(NodeId   from,

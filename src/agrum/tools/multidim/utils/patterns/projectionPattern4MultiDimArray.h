@@ -102,13 +102,13 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
-    const MultiDimArray< GUM_SCALAR >* table =
-       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
+    const MultiDimArray< GUM_SCALAR >* table
+       = reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
-    const MultiDimArray< GUM_SCALAR* >* table =
-       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
+    const MultiDimArray< GUM_SCALAR* >* table
+       = reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
 #  endif
 
     // create the neutral element used to fill the result upon its
@@ -117,8 +117,8 @@ namespace gum {
 
     // first, compute whether we should loop over table or over the projected
     // table first to get a faster algorithm.
-    const Sequence< const DiscreteVariable* >& table_vars =
-       table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars
+       = table->variablesSequence();
     bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
     if (!need_swapping) {
@@ -136,8 +136,8 @@ namespace gum {
       std::vector< Idx >                  before_incr;
       unsigned int                        nb_positive_before_incr = 0;
       Idx                                 table_alone_domain_size = 1;
-      Idx                                 result_domain_size = 1;
-      Idx                                 table_domain_size = 1;
+      Idx                                 result_domain_size      = 1;
+      Idx                                 table_domain_size       = 1;
       Sequence< const DiscreteVariable* > result_varSeq;
       {
         Idx  tmp_before_incr = 1;
@@ -168,8 +168,8 @@ namespace gum {
         }
       }
       std::vector< Idx > table_and_result_value = table_and_result_domain;
-      std::vector< Idx > current_incr = before_incr;
-      std::vector< Idx > table_and_result_down = table_and_result_offset;
+      std::vector< Idx > current_incr           = before_incr;
+      std::vector< Idx > table_and_result_down  = table_and_result_offset;
 
       for (unsigned int i = 0; i < table_and_result_down.size(); ++i) {
         table_and_result_down[i] *= (table_and_result_domain[i] - 1);
@@ -179,8 +179,8 @@ namespace gum {
       // projection: the variables are stored in the order in which they appear
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
-      MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result =
-         new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+      MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result
+         = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
 
       if (!result_varSeq.size()) { return result; }
 
@@ -213,10 +213,10 @@ namespace gum {
 
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
-      GUM_MULTI_DIM_PROJECTION_TYPE* pt =
-         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
-      GUM_MULTI_DIM_PROJECTION_TYPE* pres =
-         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
+      GUM_MULTI_DIM_PROJECTION_TYPE* pt
+         = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
+      GUM_MULTI_DIM_PROJECTION_TYPE* pres
+         = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
       GUM_MULTI_DIM_PROJECTION_TYPE* pres_deb = pres;
 
       if (!nb_positive_before_incr) {
@@ -250,8 +250,8 @@ namespace gum {
           GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #  else
 #    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-          *(pres[result_offset]) =
-             GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
+          *(pres[result_offset])
+             = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    else
           pres[result_offset] = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    endif
@@ -298,7 +298,7 @@ namespace gum {
       // these variables.
       std::vector< Idx >                        table_alone_offset;
       std::vector< Idx >                        table_alone_domain;
-      Idx                                       offset = 1;
+      Idx                                       offset                  = 1;
       Idx                                       table_alone_domain_size = 1;
       HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
@@ -314,7 +314,7 @@ namespace gum {
       }
 
       std::vector< Idx > table_alone_value = table_alone_domain;
-      std::vector< Idx > table_alone_down = table_alone_offset;
+      std::vector< Idx > table_alone_down  = table_alone_offset;
 
       for (unsigned int i = 0; i < table_alone_down.size(); ++i)
         table_alone_down[i] *= (table_alone_domain[i] - 1);
@@ -332,8 +332,8 @@ namespace gum {
       std::vector< Idx >                  table_and_result_offset;
       std::vector< Idx >                  table_and_result_domain;
       Idx                                 result_domain_size = 1;
-      bool                                has_before_incr = false;
-      bool                                found_proj_var = false;
+      bool                                has_before_incr    = false;
+      bool                                found_proj_var     = false;
 
       for (const auto var: table_vars) {
         if (!del_vars.exists(var)) {
@@ -348,7 +348,7 @@ namespace gum {
       }
 
       std::vector< Idx > table_and_result_value = table_and_result_domain;
-      std::vector< Idx > table_and_result_down = table_and_result_offset;
+      std::vector< Idx > table_and_result_down  = table_and_result_offset;
 
       for (unsigned int i = 0; i < table_and_result_down.size(); ++i) {
         table_and_result_down[i] *= (table_and_result_domain[i] - 1);
@@ -358,8 +358,8 @@ namespace gum {
       // projection: the variables are stored in the order in which they appear
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
-      MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result =
-         new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+      MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result
+         = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
       result->beginMultipleChanges();
 
       for (const auto var: result_varSeq)
@@ -389,10 +389,10 @@ namespace gum {
       // next one, and so on. For the inner loop, this is similar except that
       // we shall do these operations only when before_incr[xxx] steps in the
       // loop have already been made.
-      GUM_MULTI_DIM_PROJECTION_TYPE* pt =
-         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
-      GUM_MULTI_DIM_PROJECTION_TYPE* pres =
-         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
+      GUM_MULTI_DIM_PROJECTION_TYPE* pt
+         = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
+      GUM_MULTI_DIM_PROJECTION_TYPE* pres
+         = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
 
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all

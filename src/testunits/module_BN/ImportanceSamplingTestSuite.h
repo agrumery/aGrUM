@@ -283,7 +283,8 @@ namespace gum_tests {
 
     void testImportanceCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+         3);
       unsharpen(bn);
 
       try {
@@ -342,7 +343,8 @@ namespace gum_tests {
 
     void testImportanceEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+         3);
       unsharpen(bn);
 
       try {

@@ -35,8 +35,10 @@ namespace gum {
       sch__(sch) {
     GUM_CONSTRUCTOR(ApproximationSchemeListener);
 
-    GUM_CONNECT(
-       (sch__), onProgress, (*this), ApproximationSchemeListener::whenProgress);
+    GUM_CONNECT((sch__),
+                onProgress,
+                (*this),
+                ApproximationSchemeListener::whenProgress);
     GUM_CONNECT((sch__), onStop, (*this), ApproximationSchemeListener::whenStop);
   }
 

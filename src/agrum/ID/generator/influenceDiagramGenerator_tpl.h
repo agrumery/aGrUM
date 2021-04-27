@@ -36,7 +36,7 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
-    utGenerator__ = new SimpleUTGenerator();
+    utGenerator__  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -48,7 +48,7 @@ namespace gum {
      ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     cptGenerator__ = cptGenerator;
-    utGenerator__ = new SimpleUTGenerator();
+    utGenerator__  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -60,7 +60,7 @@ namespace gum {
      UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
-    utGenerator__ = utGenerator;
+    utGenerator__  = utGenerator;
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -71,10 +71,11 @@ namespace gum {
   // @param utGenerator The policy used to generate UT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-     ICPTGenerator< GUM_SCALAR >* cptGenerator, UTGenerator* utGenerator) {
+     ICPTGenerator< GUM_SCALAR >* cptGenerator,
+     UTGenerator*                 utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     cptGenerator__ = cptGenerator;
-    utGenerator__ = utGenerator;
+    utGenerator__  = utGenerator;
   }
 
   // Destructor.
@@ -100,8 +101,8 @@ namespace gum {
         GUM_SCALAR chanceNodeDensity,
         GUM_SCALAR utilityNodeDensity,
         Size       max_modality) {
-    InfluenceDiagram< GUM_SCALAR >* influenceDiagram =
-       new InfluenceDiagram< GUM_SCALAR >();
+    InfluenceDiagram< GUM_SCALAR >* influenceDiagram
+       = new InfluenceDiagram< GUM_SCALAR >();
     // First we add nodes
     HashTable< Size, NodeId > map;
     std::stringstream         strBuff;

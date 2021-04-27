@@ -89,9 +89,8 @@ namespace gum {
 
     void setOptimalStrategy(
        const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
-      optPol_ =
-         const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(
-            optPol);
+      optPol_ = const_cast<
+         MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(optPol);
     }
 
     virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {

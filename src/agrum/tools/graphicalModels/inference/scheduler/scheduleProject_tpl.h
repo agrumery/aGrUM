@@ -96,10 +96,10 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table__ = from.table__;
-      del_vars__ = from.del_vars__;
-      *result__ = *(from.result__);
-      project__ = from.project__;
+      table__                                  = from.table__;
+      del_vars__                               = from.del_vars__;
+      *result__                                = *(from.result__);
+      project__                                = from.project__;
 
       // update args__ and results__ if they were already created
       if (args__) {
@@ -122,8 +122,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
-    const ScheduleProject< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
+    const ScheduleProject< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
     return ((table__ == real_op.table__) && (del_vars__ == real_op.del_vars__)
             && (project__ == real_op.project__));
   }
@@ -134,8 +134,8 @@ namespace gum {
      const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
-    const ScheduleProject< GUM_SCALAR >& real_op =
-       static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
+    const ScheduleProject< GUM_SCALAR >& real_op
+       = static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
     return ((table__ != real_op.table__) || (del_vars__ != real_op.del_vars__)
             || (project__ != real_op.project__));
   }
@@ -144,7 +144,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ScheduleProject< GUM_SCALAR >::execute() {
     if (result__->isAbstract()) {
-      const MultiDimImplementation< GUM_SCALAR >& t = table__.multiDim();
+      const MultiDimImplementation< GUM_SCALAR >& t   = table__.multiDim();
       MultiDimImplementation< GUM_SCALAR >*       res = project__(t, del_vars__);
       result__->setMultiDim(*res);
     }
@@ -161,7 +161,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< long, long > ScheduleProject< GUM_SCALAR >::memoryUsage() const {
     long                                       size = 1;
-    const Sequence< const DiscreteVariable* >& seq = table__.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq  = table__.variablesSequence();
 
     for (const auto var: seq)
       if (!del_vars__.contains(var)) {
@@ -210,7 +210,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string ScheduleProject< GUM_SCALAR >::toString() const {
     return result__->toString() + " = project ( " + table__.toString() + " , "
-           + del_vars__.toString() + " )";
+         + del_vars__.toString() + " )";
   }
 
 } /* namespace gum */

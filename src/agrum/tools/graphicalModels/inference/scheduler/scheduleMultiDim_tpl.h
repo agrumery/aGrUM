@@ -57,8 +57,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&multidims__);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&multidims__);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -79,8 +82,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&multidim_ids__);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&multidim_ids__);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -99,8 +105,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&ids__);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&ids__);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -120,8 +129,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&vars__);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&vars__);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -140,8 +152,11 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__(
-         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&size__);
+      __debug__::inc_deletion__("HashTable",
+                                __FILE__,
+                                __LINE__,
+                                "destructor of",
+                                (void*)&size__);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -176,8 +191,8 @@ namespace gum {
       id2refs__().insert(id__, 1);
 
       // store the variables of the multidim
-      const Sequence< const DiscreteVariable* >* vars =
-         new Sequence< const DiscreteVariable* >(multidim.variablesSequence());
+      const Sequence< const DiscreteVariable* >* vars
+         = new Sequence< const DiscreteVariable* >(multidim.variablesSequence());
       id2vars__().insert(id__, vars);
 
       // store the domain size of the multidim
@@ -215,8 +230,8 @@ namespace gum {
       id2refs__().insert(id__, 1);
 
       // store the variables of the multidim
-      const Sequence< const DiscreteVariable* >* vars =
-         new Sequence< const DiscreteVariable* >(multidim.variablesSequence());
+      const Sequence< const DiscreteVariable* >* vars
+         = new Sequence< const DiscreteVariable* >(multidim.variablesSequence());
       id2vars__().insert(id__, vars);
 
       // store the domain size of the multidim
@@ -236,8 +251,8 @@ namespace gum {
     id2refs__().insert(id__, 1);
 
     // store the variables of the multidim
-    const Sequence< const DiscreteVariable* >* new_vars =
-       new Sequence< const DiscreteVariable* >(vars);
+    const Sequence< const DiscreteVariable* >* new_vars
+       = new Sequence< const DiscreteVariable* >(vars);
     id2vars__().insert(id__, new_vars);
 
     // compute and store the domain size
@@ -269,7 +284,7 @@ namespace gum {
     GUM_DESTRUCTOR(ScheduleMultiDim);
 
     // get the number of scheduleMultiDims that reference the same id
-    HashTable< Idx, Idx >& refs = id2refs__();
+    HashTable< Idx, Idx >& refs    = id2refs__();
     Idx&                   nb_refs = refs[id__];
 
     if (nb_refs == 1) {
@@ -295,7 +310,7 @@ namespace gum {
     // avoid self assignment
     if (id__ != from.id__) {
       // remove the old id
-      HashTable< Idx, Idx >& refs = id2refs__();
+      HashTable< Idx, Idx >& refs    = id2refs__();
       Idx&                   nb_refs = refs[id__];
 
       if (nb_refs == 1) {
@@ -389,8 +404,8 @@ namespace gum {
       // multidimImplementation
       // we should remove it first and, then, add the new one
       if (id2multidim__().exists(id__)) {
-        const MultiDimImplementation< GUM_SCALAR >* impl =
-           id2multidim__().                         operator[](id__);
+        const MultiDimImplementation< GUM_SCALAR >* impl
+           = id2multidim__().                       operator[](id__);
 
         if (impl == &m) return;
 
@@ -406,8 +421,8 @@ namespace gum {
 
       // update the variables of the scheduleMultiDim
       const Sequence< const DiscreteVariable* >& m_vars = m.variablesSequence();
-      Sequence< const DiscreteVariable* >*       vars =
-         const_cast< Sequence< const DiscreteVariable* >* >(
+      Sequence< const DiscreteVariable* >*       vars
+         = const_cast< Sequence< const DiscreteVariable* >* >(
             id2vars__().operator[](id__));
       *vars = m_vars;
 

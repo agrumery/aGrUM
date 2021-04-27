@@ -32,13 +32,13 @@ namespace gum {
     mn__->clear();
 
     streamName__ = filename;
-    parseDone__ = false;
+    parseDone__  = false;
 
     ioerror__ = false;
 
     try {
       scanner__ = new UAIMN::Scanner(streamName__.c_str());
-      parser__ = new UAIMN::Parser(scanner__);
+      parser__  = new UAIMN::Parser(scanner__);
     } catch (IOError&) { ioerror__ = true; }
   }
 
@@ -108,8 +108,12 @@ namespace gum {
     auto isInt = [&]() -> bool {
       return (std::get< 0 >(quartets[current]) == -1);
     };
-    auto lig = [&]() -> int { return std::get< 2 >(quartets[current]); };
-    auto col = [&]() -> int { return std::get< 3 >(quartets[current]); };
+    auto lig = [&]() -> int {
+      return std::get< 2 >(quartets[current]);
+    };
+    auto col = [&]() -> int {
+      return std::get< 3 >(quartets[current]);
+    };
 
     auto getInt = [&]() -> int {
       if (!isInt()) this->addFatalError__(lig(), col(), "int expected");
@@ -125,7 +129,7 @@ namespace gum {
         this->addFatalError__(lig(), col(), "Not enough data in UAI file");
     };
 
-    current = 0;
+    current      = 0;
     Size nbrNode = (Size)getInt();
 
     for (NodeId i = 0; i < nbrNode; i++) {
@@ -161,8 +165,9 @@ namespace gum {
       incCurrent();
       Size nbrParam = (Size)getInt();
       if (nbrParam != mn__->factor(clicks[i]).domainSize()) {
-        addFatalError__(
-           lig(), col(), "Size does not fit between clique and parameters");
+        addFatalError__(lig(),
+                        col(),
+                        "Size does not fit between clique and parameters");
       }
       std::vector< GUM_SCALAR > v;
       for (Idx j = 0; j < nbrParam; j++) {

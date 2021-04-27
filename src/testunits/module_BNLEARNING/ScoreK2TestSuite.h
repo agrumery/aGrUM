@@ -51,7 +51,7 @@ namespace gum_tests {
 
       if (!N_ij.empty()) {
         const double ri = double(N_ijk.size() / N_ij.size());
-        score = N_ij.size() * gammalog2__(ri);
+        score           = N_ij.size() * gammalog2__(ri);
 
         for (const auto n_ij: N_ij) {
           score -= gammalog2__(n_ij + ri);
@@ -61,8 +61,8 @@ namespace gum_tests {
         }
       } else {
         const double ri = double(N_ijk.size());
-        score = gammalog2__(ri);
-        double N = 0;
+        score           = gammalog2__(ri);
+        double N        = 0;
         for (const auto n_ijk: N_ijk) {
           score += gammalog2__(n_ijk + 1);
           N += n_ijk;

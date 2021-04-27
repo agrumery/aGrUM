@@ -60,7 +60,7 @@ namespace gum_tests {
 
       std::string                 str;
       const double                t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
-      int                         n = 4;
+      int                         n    = 4;
       const std::vector< double > v(t, t + n);
 
       for (int i = 0; i <= nbr; i++) {
@@ -143,11 +143,11 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
       gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
 
-      gum::NodeId idCold = bn.add(cold);
-      gum::NodeId idFlu = bn.add(flu);
-      gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever = bn.addNoisyORNet(fever, 0.0f);
-      gum::NodeId idOneMore = bn.add(oneMore);
+      gum::NodeId idCold           = bn.add(cold);
+      gum::NodeId idFlu            = bn.add(flu);
+      gum::NodeId idMalaria        = bn.add(malaria);
+      gum::NodeId idFever          = bn.addNoisyORNet(fever, 0.0f);
+      gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
 
@@ -227,11 +227,11 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
       gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
 
-      gum::NodeId idCold = bn.add(cold);
-      gum::NodeId idFlu = bn.add(flu);
-      gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever = bn.addNoisyOR(fever, 0.0f);
-      gum::NodeId idOneMore = bn.add(oneMore);
+      gum::NodeId idCold           = bn.add(cold);
+      gum::NodeId idFlu            = bn.add(flu);
+      gum::NodeId idMalaria        = bn.add(malaria);
+      gum::NodeId idFever          = bn.addNoisyOR(fever, 0.0f);
+      gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
 
@@ -314,14 +314,14 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
       gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
 
-      gum::NodeId idCold = bn.add(cold);
-      gum::NodeId idFlu = bn.add(flu);
+      gum::NodeId idCold    = bn.add(cold);
+      gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever = 0;
+      gum::NodeId idFever   = 0;
       TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f),
                        gum::InvalidArgument);
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
-      gum::NodeId idOneMore = bn.add(oneMore);
+      gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
 

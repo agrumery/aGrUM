@@ -112,8 +112,8 @@ namespace gum {
 
   /// the function called to initialize the triangulation process
   void OrderedTriangulation::initTriangulation_(UndiGraph& graph) {
-    OrderedEliminationSequenceStrategy* elim =
-       static_cast< OrderedEliminationSequenceStrategy* >(
+    OrderedEliminationSequenceStrategy* elim
+       = static_cast< OrderedEliminationSequenceStrategy* >(
           elimination_sequence_strategy_);
     elim->setGraph(&graph, domain_sizes_);
     elim->setOrder(order__);
