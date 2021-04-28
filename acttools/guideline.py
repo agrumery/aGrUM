@@ -24,7 +24,7 @@ from __future__ import print_function
 import os.path
 from subprocess import call
 
-from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
+from .utils import trace, notif, critic, warn, error, recglob, srcAgrum, notif_oneline
 from .configuration import cfg
 
 from .missingDocs import computeNbrError
@@ -70,6 +70,8 @@ def _checkForFormat(current, modif):
             notif("    [" + src + "] not correctly formatted : [changed]")
           else:
             notif("    [" + src + "] not correctly formatted")
+        else:
+            notif_oneline("    [" + src.split("/")[-1] + "] OK")
   return nbrError
 
 

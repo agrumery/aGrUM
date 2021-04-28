@@ -58,6 +58,12 @@ def trace(current, cde):
     notif(cde, cfg.prefixe_trace)
 
 
+def notif_oneline(s, pref=None):
+  if pref is None:
+    pref = cfg.prefixe_line
+
+  print(pref + colFormat("** act Notification : " + s , cfg.C_MSG) + cfg.C_END,end="                                       \r")
+
 def notif(s, pref=None):
   if pref is None:
     pref = cfg.prefixe_line
