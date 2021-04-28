@@ -19,9 +19,10 @@
  */
 
 
-#include <agrum/CN/credalNet.h>
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/utils_string.h>
+#include <agrum/CN/credalNet.h>
 
 namespace gum {
   namespace credal {
@@ -402,13 +403,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     CredalNet< GUM_SCALAR >::CredalNet(const std::string& src_min_num,
                                        const std::string& src_max_den) {
-      try {
-        initParams__();
-        initCNNets__(src_min_num, src_max_den);
-      } catch (Exception& err) {
-        GUM_SHOWERROR(err);
-        throw(err);
-      }
+      initParams__();
+      initCNNets__(src_min_num, src_max_den);
 
       GUM_CONSTRUCTOR(CredalNet);
     }
@@ -416,13 +412,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     CredalNet< GUM_SCALAR >::CredalNet(const BayesNet< GUM_SCALAR >& src_min_num,
                                        const BayesNet< GUM_SCALAR >& src_max_den) {
-      try {
-        initParams__();
-        initCNNets__(src_min_num, src_max_den);
-      } catch (Exception& err) {
-        GUM_SHOWERROR(err);
-        throw(err);
-      }
+      initParams__();
+      initCNNets__(src_min_num, src_max_den);
 
       GUM_CONSTRUCTOR(CredalNet);
     }
@@ -821,6 +812,14 @@ namespace gum {
 
         for (Size entry = 0; entry < entry_size; entry++) {
           for (Size modality = 0; modality < var_dSize; modality++) {
+            if (potential_min->get(ins_min) > potential_max->get(ins_max)) {
+              GUM_ERROR(CPTError,
+                        "For variable "
+                           << src_bn__.variable(node).name() << " (at " << ins_min
+                           << "), the min is greater than the max : " << potential_min->get(ins_min)
+                           << ">" << potential_max->get(ins_max)
+                           << ".");
+            }
             lrsWrapper.fillH(potential_min->get(ins_min),
                              potential_max->get(ins_max),
                              modality);
@@ -1462,26 +1461,9 @@ namespace gum {
       BIFReader< GUM_SCALAR > reader_min(&src_bn_min__, src_min_num);
       BIFReader< GUM_SCALAR > reader_max(&src_bn_max__, other);
 
-      try {
-        reader.proceed();
-      } catch (Exception& err) {
-        GUM_SHOWERROR(err);
-        throw(err);
-      }
-
-      try {
-        reader_min.proceed();
-      } catch (Exception& err) {
-        GUM_SHOWERROR(err);
-        throw(err);
-      }
-
-      try {
-        reader_max.proceed();
-      } catch (Exception& err) {
-        GUM_SHOWERROR(err);
-        throw(err);
-      }
+      reader.proceed();
+      reader_min.proceed();
+      reader_max.proceed();
     }
 
     template < typename GUM_SCALAR >

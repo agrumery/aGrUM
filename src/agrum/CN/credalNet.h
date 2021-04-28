@@ -108,20 +108,16 @@ namespace gum {
 
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet
-       *file
-       *path.
-       * One can also provide a single BayesNet in order to perturb it's
-       *probability
-       *distributions into credal sets according to another BayesNet containing
-       *the
-       *number of cases, for each node, of each parent instantiation met during
-       *learning, i.e. \f$ p(X = 0 \mid pa(X) = j) = N_{pa(X) = j} \f$.
+       * file path. One can also provide a single BayesNet in order to perturb it's
+       * probability distributions into credal sets according to another BayesNet
+       * containing the number of cases, for each node, of each parent
+       * instantiation met during learning, i.e. \f$ p(X = 0 \mid pa(X) = j) =
+       * N_{pa(X) = j} \f$.
        *
        * @param src_min_num The path to a BayesNet which contains lower
        *probabilities.
        * @param src_max_den The ( optional ) path to a BayesNet which contains
-       *upper
-       *probabilities.
+       *upper probabilities.
        */
       CredalNet(const std::string& src_min_num,
                 const std::string& src_max_den = "");
@@ -129,11 +125,10 @@ namespace gum {
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet.
        * One can also provide a single BayesNet in order to perturb it's
-       *probability
-       *distributions into credal sets according to another BayesNet containing
-       *the
-       *number of cases, for each node, of each parent instantiation met during
-       *learning, i.e. \f$ p(X = 0 \mid pa(X) = j) = N_{pa(X) = j} \f$.
+       * probability distributions into credal sets according to another BayesNet
+       * containing the number of cases, for each node, of each parent
+       * instantiation met during learning, i.e. \f$ p(X = 0 \mid pa(X) = j) =
+       * N_{pa(X) = j} \f$.
        *
        * @param src_min_num The BayesNet which contains lower probabilities.
        * @param src_max_den The ( optional ) BayesNet which contains upper

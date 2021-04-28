@@ -1,0 +1,50 @@
+network "Explosion" {
+// written by aGrUM 0.17.1
+}
+
+
+variable N {
+   type discrete[2] {0, 1};
+}
+
+variable H {
+   type discrete[2] {0, 1};
+}
+
+variable A {
+   type discrete[2] {0, 1};
+}
+
+variable E {
+   type discrete[2] {0, 1};
+}
+
+variable D {
+   type discrete[2] {0, 1};
+}
+
+probability (N) {   
+default 0.80 0.20;
+}
+probability (H | N) {
+   (0) 0.90 0.10;
+   (1) 0.05 0.95;
+}
+probability (A | N) {
+   (0) 0.993 0.007;
+   (1) 0.08 0.92;
+}
+probability (E | H, A) {
+   (0, 0) 0.9999 0.0001;
+   (1, 0) 0.9999 0.0001;
+   (0, 1) 0.6 0.4;
+   (1, 1) 0.14 0.86;
+}
+probability (D | E) {
+   (0) 0.9998 0.0002;
+   (1) 0.35 0.65;
+}
+
+
+
+

@@ -349,6 +349,24 @@ namespace gum_tests {
                          (i == 2 ? 1.0 : 0.0))
       }
     }
+
+
+    void testBadMinMaxFile() {
+      gum::BayesNet< double >  monBNa;
+      gum::BIFReader< double > readera(
+         &monBNa,
+         GET_RESSOURCES_PATH("cn/errorBN_min.bif"));   // not well defined
+      readera.proceed();
+
+      gum::BayesNet< double >  monBNb;
+      gum::BIFReader< double > readerb(
+         &monBNb,
+         GET_RESSOURCES_PATH("cn/errorBN_max.bif"));   // not well defined
+      readerb.proceed();
+
+      gum::credal::CredalNet< double > cn(monBNa, monBNb);
+      TS_ASSERT_THROWS(cn.intervalToCredal(), gum::CPTError);
+    }
   };   // end of class CredalNetTestSuite
 
 }   // end of namespace gum_tests
