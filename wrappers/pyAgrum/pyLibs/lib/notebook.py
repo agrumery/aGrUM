@@ -22,7 +22,9 @@
 tools for BN analysis in jupyter notebook
 """
 from __future__ import print_function
+from ctypes import ArgumentError
 
+import os
 import time
 import sys
 
@@ -133,15 +135,20 @@ def __insertLinkedSVGs(mainSvg):
   return mainSvg
 
 
-def _reprGraph(gr, size, asString):
+def _reprGraph(gr, size, asString, format=None):
   """
   repr a pydot graph in a notebook
 
   :param string size : size of the rendered graph
   :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
-  gr.set_size(size)
-  if gum.config["notebook", "graph_format"] == "svg":
+  if size is not None:
+    gr.set_size(size)
+
+  if format is None:
+    format = gum.config["notebook", "graph_format"]
+
+  if format == "svg":
     gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
@@ -408,8 +415,10 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
   :param mn: the markov network
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
+  and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when
+  view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
   :param cmap: color map to show the colors
@@ -468,7 +477,8 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
   :param bn: the Bayesian network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -490,7 +500,8 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
   :param cn: the credal network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -514,8 +525,10 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
   :param mn: the markov network
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when
+  view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
   :param cmap: color map to show the colors
@@ -546,7 +559,8 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   :param bn: the Bayesian network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -569,7 +583,8 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   :param cn: the credal network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -716,7 +731,9 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
   if isinstance(model, gum.BayesNet):
     if engine is None:
       engine = gum.LazyPropagation(model)
-    return BNinference2dot(model, size, engine, evs, targets, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor,
+    return BNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
+                           arcWidth=arcWidth,
+                           arcColor=arcColor,
                            cmapNode=cmap, cmapArc=cmapArc)
   elif isinstance(model, gum.MarkovNet):
     if view is None:
@@ -725,28 +742,28 @@ def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
         engine = gum.ShaferShenoyMNInference(model)
 
       if view == "graph":
-        return MNinference2UGdot(model, size, engine, evs, targets, nodeColor=nodeColor, factorColor=factorColor,
+        return MNinference2UGdot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
+                                 factorColor=factorColor,
                                  arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc)
       else:
-        return MNinference2FactorGraphdot(model, size, engine, evs, targets, nodeColor=nodeColor,
+        return MNinference2FactorGraphdot(model, size=size, engine=engine, evs=evs, targets=targets,
+                                          nodeColor=nodeColor,
                                           factorColor=factorColor, cmapNode=cmap)
   elif isinstance(model, gum.InfluenceDiagram):
     if engine is None:
       engine = gum.ShaferShenoyLIMIDInference(model)
-    return LIMIDinference2dot(model, size, engine, evs, targets)
+    return LIMIDinference2dot(model, size=size, engine=engine, evs=evs, targets=targets)
   elif isinstance(model, gum.CredalNet):
     if engine is None:
       engine = gum.CNMonteCarloSampling(model)
-    return CNinference2dot(model, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap)
+    return CNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
+                           arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
 
 
-def showInference(model, engine=None, evs=None, targets=None, size=None,
-                  nodeColor=None, factorColor=None,
-                  arcWidth=None, arcColor=None,
-                  cmap=None, cmapArc=None, graph=None, view=None):
+def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
 
@@ -757,8 +774,10 @@ def showInference(model, engine=None, evs=None, targets=None, size=None,
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet
+  representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -767,15 +786,15 @@ def showInference(model, engine=None, evs=None, targets=None, size=None,
   :param view: graph | factorgraph | None (default) for Markov network
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
-                             view)
-  showGraph(grinf, size)
+  if "size" in kwargs:
+    size = kwargs['size']
+  else:
+    size = gum.config["notebook", "default_graph_inference_size"]
+
+  showGraph(_get_showInference(model, **kwargs), size)
 
 
-def getInference(model, engine=None, evs=None, targets=None, size=None,
-                 nodeColor=None, factorColor=None,
-                 arcWidth=None, arcColor=None,
-                 cmap=None, cmapArc=None, graph=None, view=None):
+def getInference(model, **kw):
   """
   get a HTML string for an inference in a notebook
 
@@ -786,8 +805,10 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
+  1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet
+  representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -797,8 +818,7 @@ def getInference(model, engine=None, evs=None, targets=None, size=None,
 
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor=nodeColor, arcWidth=arcWidth,
-                             arcColor=arcColor, cmap=cmap, cmapArc=cmapArc, graph=graph, view=view)
+  grinf = _get_showInference(model, **kw)
   return getGraph(grinf, size)
 
 
@@ -853,15 +873,15 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
 
     # first line
     if nparents > 0:
-      html.append(
-        "<tr><th colspan='{}'></th><th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{"
-        "}</center></th></tr>".format(
-          nparents, var.domainSize(), varname))
+      s = """<tr><th colspan='{}'></th>
+      <th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{}</center>
+      </th></tr>""".format(
+        nparents, var.domainSize(), varname)
+      html.append(s)
     else:
-      html.append(
-        "<tr style='border:1px solid black;color:black;background-color:#808080'><th colspan='{}'><center>{}</center></th></tr>".format(
-          var.domainSize(),
-          varname))
+      s = """<tr style='border:1px solid black;color:black;background-color:#808080'>
+      <th colspan='{}'><center>{}</center></th></tr>""".format(var.domainSize(), varname)
+      html.append(s)
     # second line
     s = "<tr>"
     if nparents > 0:
@@ -875,8 +895,8 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
         s += "<th style='border:1px solid black;color:black;background-color:#808080'><center>{}</center></th>".format(
           parent)
     for label in var.labels():
-      s += "<th style='border:1px solid black;border-bottom-style: double;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
-        label)
+      s += """<th style='border:1px solid black;border-bottom-style: double;color:black;background-color:#BBBBBB'>
+      <center>{}</center></th>""".format(label)
     s += '</tr>'
 
     html.append(s)
@@ -903,8 +923,8 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
             label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
-            s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(
-              offset[par], label)
+            s += """<th style='border:1px solid black;color:black;background-color:#BBBBBB;' rowspan = '{}'>
+            <center>{}</center></th>""".format(offset[par], label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
@@ -965,8 +985,8 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
     else:
       withColors = __isKindOfProba(pot)
 
-  display(_reprPotential(
-    pot, digits, withColors, varnames, asString=False))
+  s = _reprPotential(pot, digits, withColors, varnames, asString=False)
+  display(s)
 
 
 def getPotential(pot, digits=None, withColors=None, varnames=None):
@@ -997,10 +1017,10 @@ def getSideBySide(*args, **kwargs):
   :param captions: list of strings (captions)
   :return: a string representing the table
   """
-
-  if not set(kwargs.keys()).issubset(set(['captions', 'valign'])):
+  vals = {'captions', 'valign'}
+  if not set(kwargs.keys()).issubset(vals):
     raise TypeError("sideBySide() got unexpected keyword argument(s) : '{}'".format(
-      set(kwargs.keys()).difference(set(['captions', 'valign']))))
+      set(kwargs.keys()).difference(vals)))
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
@@ -1025,8 +1045,8 @@ def getSideBySide(*args, **kwargs):
   s += '<tr><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align \
        + '">'
   s += (
-      '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
-      v_align + '">').join(
+     '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
+     v_align + '">').join(
     [reprHTML(arg)
      for arg in args])
   s += '</div></td></tr>'
@@ -1097,7 +1117,7 @@ def getJT(jt, size=None):
         sorted([model.variable(n).name() for n in jt.clique(c)]))
 
     def cliqnames(
-        c):
+       c):
       return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
 
     def seplabels(c1, c2):
@@ -1170,29 +1190,6 @@ def getCliqueGraph(cg, size=None):
     return getDot(cg.toDot())
 
 
-def show(model, size=None):
-  """
-  propose a (visual) representation of a model in a notebook
-
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
-
-  :param int size: optional size for the graphical model (no effect for Potential)
-  """
-  if isinstance(model, gum.BayesNet):
-    showBN(model, size)
-  elif isinstance(model, gum.MarkovNet):
-    showMN(model, size)
-  elif isinstance(model, gum.InfluenceDiagram):
-    showInfluenceDiagram(model, size)
-  elif isinstance(model, gum.CredalNet):
-    showCN(model, size)
-  elif isinstance(model, gum.Potential):
-    showPotential(model)
-  else:
-    raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
-
-
 def show(model, **kwargs):
   """
   propose a (visual) representation of a model in a notebook
@@ -1222,14 +1219,11 @@ def export(model, filename, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
-  :param filename : the file to write
-
   :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
-
-  :param int size: optional size for the graphical model (no effect for Potential)
+  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps'])
   """
   format = filename.split(".")[-1]
-  if format not in ['pdf', 'png', 'fig', 'jpg', 'svg','ps']:
+  if format not in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']:
     raise Exception(
       f"{filename} in not a correct filename for export : extension '{format}' not in [pdf,png,fig,jpg,svg].")
 
@@ -1252,15 +1246,13 @@ def export(model, filename, **kwargs):
   fig.write(filename, format=format)
 
 
-def exportInference(model, filename, engine=None, evs=None, targets=None, size=None,
-                    nodeColor=None, factorColor=None,
-                    arcWidth=None, arcColor=None,
-                    cmap=None, cmapArc=None, graph=None, view=None):
+def exportInference(model, filename, **kwargs):
   """
   the graphical representation of an inference in a notebook
 
   :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
           pyAgrum.InfluenceDiagram)
+  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'ps'])
   :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
           gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
@@ -1275,17 +1267,28 @@ def exportInference(model, filename, engine=None, evs=None, targets=None, size=N
   :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
   :param view: graph | factorgraph | None (default) for Markov network
   :return: the desired representation of the inference
-
-  warning:: In order to export probability distribution in nodes, exportInference needs that Graphviz includes the Cairo renderer
   """
   format = filename.split(".")[-1]
-  if format not in ['pdf', 'png', 'fig', 'jpg', 'svg']:
+  if format not in ['pdf', 'png', 'ps']:
     raise Exception(
-      f"{filename} in not a correct filename for export : extension '{format}' not in [pdf,png,fig,jpg,svg].")
+      f"{filename} in not a correct filename for export : extension '{format}' not in [pdf,png,ps].")
 
-  fig = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
-                           view)
-  fig.write(filename, format=format)
+  import cairosvg
+
+  if "size" in kwargs:
+    size = kwargs['size']
+  else:
+    size = gum.config["notebook", "default_graph_inference_size"]
+
+  svgtxt = _reprGraph(
+    _get_showInference(model, **kwargs), size=size, asString=True, format="svg")
+
+  if format == "pdf":
+    cairosvg.svg2pdf(bytestring=svgtxt, write_to=filename)
+  elif format == "png":
+    cairosvg.svg2png(bytestring=svgtxt, write_to=filename)
+  else:  # format=="ps"
+    cairosvg.svg2ps(bytestring=svgtxt, write_to=filename)
 
 
 def _update_config():
