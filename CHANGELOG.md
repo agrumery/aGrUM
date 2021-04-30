@@ -1,5 +1,18 @@
 # aGrUM Changelog
 
+## Changelog for 0.20.2
+
+* aGrUM
+  * Add a check on parameters when building a `gum::credal::CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
+  * Fix a bug and a visualisation of results on decision nodes with deterministic optimal strategy in `gum::InfluenceDiagram`.
+  
+* pyAgrum
+  * Add a check on parameters when building a `gum.CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
+  * Fix a bug and a visualisation of results on decision nodes with deterministic optimal strategy in `gum.InfluenceDiagram`.
+  * Add some entries for notebook and influence diagrams in gum.config. Notably, add a `gum.notebook.show_inference_time`
+  * Fixes and typos in notebooks
+  * Finally add a working version of `gum.lib.notebook.exportInference` to create pdf from an inference.<
+
 ## Changelog for 0.20.1
 
 * aGrUM
