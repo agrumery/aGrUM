@@ -794,7 +794,7 @@ def showInference(model, **kwargs):
   showGraph(_get_showInference(model, **kwargs), size)
 
 
-def getInference(model, **kw):
+def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
 
@@ -818,7 +818,12 @@ def getInference(model, **kw):
 
   :return: the desired representation of the inference
   """
-  grinf = _get_showInference(model, **kw)
+  if "size" in kwargs:
+    size = kwargs['size']
+  else:
+    size = gum.config["notebook", "default_graph_inference_size"]
+
+  grinf = _get_showInference(model, **kwargs)
   return getGraph(grinf, size)
 
 
