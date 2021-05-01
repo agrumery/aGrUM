@@ -814,11 +814,11 @@ namespace gum {
           for (Size modality = 0; modality < var_dSize; modality++) {
             if (potential_min->get(ins_min) > potential_max->get(ins_max)) {
               GUM_ERROR(CPTError,
-                        "For variable "
-                           << src_bn__.variable(node).name() << " (at " << ins_min
-                           << "), the min is greater than the max : " << potential_min->get(ins_min)
-                           << ">" << potential_max->get(ins_max)
-                           << ".");
+                        "For variable " << src_bn__.variable(node).name()
+                                        << " (at " << ins_min
+                                        << "), the min is greater than the max : "
+                                        << potential_min->get(ins_min) << ">"
+                                        << potential_max->get(ins_max) << ".");
             }
             lrsWrapper.fillH(potential_min->get(ins_min),
                              potential_max->get(ins_max),
