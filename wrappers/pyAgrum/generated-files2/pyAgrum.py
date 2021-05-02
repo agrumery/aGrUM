@@ -8836,6 +8836,27 @@ class Potential(object):
       return inst,loopvars
 
 
+    def topandas(self):
+      """
+      Returns
+      -------
+      pandas.DataFrame
+         the potential as an pandas.DataFrame
+      """
+      import pandas as pd
+      varnames = self.var_names
+      data = []
+      pname = ""
+      for inst in self.loopIn():
+        d = {k:v for k,v in reversed(inst.todict(True).items())}
+        d[pname] = self.get(inst)
+        d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
+        data.append(d)
+      cols = varnames[:-1] + [pname]
+      return pd.DataFrame(data).set_index(cols).unstack(pname)
+
+
+
     def tolist(self):
         """
         Returns
@@ -8855,6 +8876,17 @@ class Potential(object):
             the potential as an array
         """
         return self.__getitem__({})
+
+
+
+    def tolatex(self):
+      """
+      Returns
+      -------
+      str
+         the potential as LaTeX string
+      """
+      return self.topandas().to_latex()
 
 
 
