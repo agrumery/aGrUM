@@ -393,6 +393,38 @@ CHANGE_THEN_RETURN_SELF(fillWith)
         return self.__getitem__({})
 %}
 
+%feature("shadow") gum::Potential::topandas %{
+  def topandas(self):
+    """
+    Returns
+    -------
+    pandas.DataFrame
+       the potential as an pandas.DataFrame
+    """
+    import pandas as pd
+    varnames = self.var_names
+    data = []
+    pname = ""
+    for inst in self.loopIn():
+      d = {k:v for k,v in reversed(inst.todict(True).items())}
+      d[pname] = self.get(inst)
+      d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
+      data.append(d)
+    cols = varnames[:-1] + [pname]
+    return pd.DataFrame(data).set_index(cols).unstack(pname)
+%}
+
+%feature("shadow") gum::Potential::tolatex %{
+def tolatex(self):
+  """
+  Returns
+  -------
+  str
+     the potential as LaTeX string
+  """
+  return self.topandas().to_latex()
+%}
+
 %feature("shadow") gum::Potential::var_names %{
     @property
     def var_names(self):
@@ -425,8 +457,10 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::Potential<double> {
+    PyObject *topandas() { return NULL; }
     PyObject *tolist() { return NULL; }
     PyObject *toarray() { return NULL; }
+    PyObject *tolatex() { return NULL; }
     void __getitem__(PyObject *id) {}
     void __setitem__(PyObject *id, PyObject *value) {}
     void var_names() {}

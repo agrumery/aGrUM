@@ -14,7 +14,8 @@
     show_inference_time`
   * Fixes and typos in notebooks
   * Finally, add a working version of `gum.lib.notebook.exportInference` to create pdf from an inference. With `gum.
-    lib.notebook.export`, it is now possible to export all kind of pyAgrum's graphs into pdf from a notebook.  
+    lib.notebook.export`, it is now possible to export all kind of pyAgrum's graphs into pdf from a notebook.
+  * new methods: `pyAgrum.Potential.topandas()`,`pyAgrum.Potential.tolatex()`  
 
 ## Changelog for 0.20.1
 
