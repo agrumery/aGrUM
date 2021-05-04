@@ -304,11 +304,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       else:
           raise ValueError("No subscript using '"+str(i)+"'")
       return inst,loopvars
-  }
-}
 
-
-%feature("shadow") gum::Potential::__getitem__ %{
     def __getitem__(self, id):
       if isinstance(id,Instantiation):
           return self.get(id)
@@ -336,10 +332,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
           tab[tuple(indice)]=self.get(inst)
           inst.incIn(loopvars)
       return tab
-%}
 
-
-%feature("shadow") gum::Potential::__setitem__ %{
     def __setitem__(self, id, value):
       if isinstance(id,Instantiation):
           self.set(id,value)
@@ -368,10 +361,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
             indice = tuple([inst.val(name) for name in names])
             self.set(inst,float(value[indice]))
             inst.incIn(loopvars)
-%}
 
-
-%feature("shadow") gum::Potential::tolist %{
     def tolist(self):
         """
         Returns
@@ -380,9 +370,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
             the potential as a list
         """
         return self.__getitem__({}).tolist()
-%}
 
-%feature("shadow") gum::Potential::toarray %{
     def toarray(self):
         """
         Returns
@@ -391,41 +379,45 @@ CHANGE_THEN_RETURN_SELF(fillWith)
             the potential as an array
         """
         return self.__getitem__({})
-%}
 
-%feature("shadow") gum::Potential::topandas %{
-  def topandas(self):
-    """
-    Returns
-    -------
-    pandas.DataFrame
-       the potential as an pandas.DataFrame
-    """
-    import pandas as pd
-    varnames = self.var_names
-    data = []
-    pname = ""
-    for inst in self.loopIn():
-      d = {k:v for k,v in reversed(inst.todict(True).items())}
-      d[pname] = self.get(inst)
-      d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
-      data.append(d)
-    cols = varnames[:-1] + [pname]
-    return pd.DataFrame(data).set_index(cols).unstack(pname)
-%}
+    def topandas(self):
+        """
+        Returns
+        -------
+        pandas.DataFrame
+           the potential as an pandas.DataFrame
+        """
+        import pandas as pd
+        varnames = self.var_names
+        data = []
+        pname = ""
+        for inst in self.loopIn():
+            d = {k:v for k,v in reversed(inst.todict(True).items())}
+            d[pname] = self.get(inst)
+            d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
+            data.append(d)
+        cols = varnames[:-1] + [pname]
+        return pd.DataFrame(data).set_index(cols).unstack(pname)
 
-%feature("shadow") gum::Potential::tolatex %{
-def tolatex(self):
-  """
-  Returns
-  -------
-  str
-     the potential as LaTeX string
-  """
-  return self.topandas().to_latex()
-%}
+    def tolatex(self):
+        """
+        Render object to a LaTeX tabular.
 
-%feature("shadow") gum::Potential::var_names %{
+        Requires to include `booktabs` package in the LaTeX document.
+
+        Returns
+        -------
+        str
+         the potential as LaTeX string
+        """
+        return self.topandas().to_latex()
+
+    def toclipboard(self,**kwargs):
+        """
+        Write a text representation of object to the system clipboard. This can be pasted into spreadsheet, for instance.
+        """
+        return self.topandas().to_clipboard()
+
     @property
     def var_names(self):
         """
@@ -436,13 +428,10 @@ def tolatex(self):
 
         Warnings
         --------
-            Listed in reverse from the variable enumeration order
+            listed in the reverse order of the enumeration order of the variables.
         """
         return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
-%}
 
-
-%feature("shadow") gum::Potential::var_dims %{
     @property
     def var_dims(self):
         """
@@ -452,17 +441,5 @@ def tolatex(self):
             a list containing the dimensions of each variables in the potential
         """
         return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
-%}
-
-
-// these void class extensions are rewritten by "shadow" declarations
-%extend gum::Potential<double> {
-    PyObject *topandas() { return NULL; }
-    PyObject *tolist() { return NULL; }
-    PyObject *toarray() { return NULL; }
-    PyObject *tolatex() { return NULL; }
-    void __getitem__(PyObject *id) {}
-    void __setitem__(PyObject *id, PyObject *value) {}
-    void var_names() {}
-    void var_dims() {}
+  }
 }

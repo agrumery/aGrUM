@@ -22,13 +22,8 @@
 tools for BN analysis in jupyter notebook
 """
 from __future__ import print_function
-from ctypes import ArgumentError
 
-import os
 import time
-import sys
-
-import IPython.display
 import re
 
 # fix DeprecationWarning of base64.encodestring()
@@ -40,13 +35,14 @@ except ImportError:  # 3+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+from matplotlib_inline.backend_inline import set_matplotlib_formats as set_matplotlib_formats
 
 import numpy as np
 import pydotplus as dot
 
-from IPython.core.display import Image, display_png
-from IPython.core.pylabtools import print_figure
-from IPython.display import display, HTML, SVG
+import IPython.core.display
+import IPython.core.pylabtools
+import IPython.display
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
@@ -92,7 +88,7 @@ def configuration():
   res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
     '%a %b %d %H:%M:%S %Y %Z')
 
-  display(HTML(res))
+  IPython.display.display(IPython.display.HTML(res))
 
 
 def __insertLinkedSVGs(mainSvg):
@@ -149,17 +145,17 @@ def _reprGraph(gr, size, asString, format=None):
     format = gum.config["notebook", "graph_format"]
 
   if format == "svg":
-    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
+    gsvg = IPython.display.SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
     else:
-      display(gsvg)
+      IPython.display.display(gsvg)
   else:
-    i = Image(format="png", data=gr.create_png())
+    i = IPython.core.display.Image(format="png", data=gr.create_png())
     if asString:
       return '<img style="margin:0" src="data:image/png;base64,{}"/>'.format(encodebytes(i.data).decode())
     else:
-      display_png(i)
+      IPython.core.display.display_png(i)
 
 
 def showGraph(gr, size=None):
@@ -283,17 +279,22 @@ def showJunctionTree(bn, withNames=True, size=None):
 
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
+
+  jt._engine = jtg
+  jtg._model = bn
+
   if withNames:
     return showDot(jt.toDotWithNames(bn), size)
   else:
     return showDot(jt.toDot(), size)
 
 
-def getJunctionTree(bn, size=None):
+def getJunctionTree(bn, withNames=True, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
   :param bn: the Bayesian network
+  :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
   :return: the HTML representation of the graph
   """
@@ -301,10 +302,15 @@ def getJunctionTree(bn, size=None):
     size = gum.config["notebook", "junctiontree_graph_size"]
 
   jtg = gum.JunctionTreeGenerator()
-  jtg._model = bn
   jt = jtg.junctionTree(bn)
+
   jt._engine = jtg
-  return getDot(getJT(jt, size), size)
+  jtg._model = bn
+
+  if withNames:
+    return getDot(jt.toDotWithNames(bn), size)
+  else:
+    return getDot(jt.toDot(), size)
 
 
 def showProba(p, scale=1.0):
@@ -315,8 +321,7 @@ def showProba(p, scale=1.0):
   :param scale: the scale (zoom)
   """
   fig = proba2histo(p, scale)
-  IPython.display.set_matplotlib_formats(
-    gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -329,8 +334,7 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   :param scale: the scale (zoom)
   """
   fig = probaMinMaxH(pmin, pmax, scale)
-  IPython.display.set_matplotlib_formats(
-    gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -367,7 +371,6 @@ def animApproximationScheme(apsc, scale=np.log10):
   :param apsc: the approximation algorithm
   :param scale: a function to apply to the figure
   """
-  from IPython.display import clear_output, display
   f = plt.gcf()
 
   h = gum.PythonApproximationListener(
@@ -387,8 +390,8 @@ def animApproximationScheme(apsc, scale=np.log10):
     else:
       plt.xlim(1, len(apsc.history()))
     plt.plot(scale(apsc.history()), 'g')
-    clear_output(True)
-    display(f)
+    IPython.display.clear_output(True)
+    IPython.display.display(f)
 
   h.setWhenStop(stopper)
   h.setWhenProgress(progresser)
@@ -415,10 +418,8 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
   :param mn: the markov network
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when
-  view='factorgraph')
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
   :param cmap: color map to show the colors
@@ -477,8 +478,7 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
   :param bn: the Bayesian network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -500,8 +500,7 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
   :param cn: the credal network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -525,10 +524,8 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
   :param mn: the markov network
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when
-  view='factorgraph')
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
   :param cmap: color map to show the colors
@@ -559,8 +556,7 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   :param bn: the Bayesian network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -583,8 +579,7 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   :param cn: the credal network
   :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -658,11 +653,11 @@ def _reprInformation(bn, evs, size, cmap, asString):
                                   norm=norm,
                                   orientation='horizontal')
   cb1.set_label('Entropy')
-  png = print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
+  png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
     'ascii')
 
-  gsvg = SVG(gr.create_svg())
+  gsvg = IPython.display.SVG(gr.create_svg())
 
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
@@ -676,7 +671,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
   if asString:
     return sss
   else:
-    return display(HTML(sss))
+    return IPython.display.display(IPython.display.HTML(sss))
 
 
 def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
@@ -767,17 +762,13 @@ def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
-          pyAgrum.InfluenceDiagram)
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
-          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
+  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet
-  representation)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -805,10 +796,8 @@ def getInference(model, **kwargs):
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and
-  1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet
-  representation)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -941,7 +930,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   if asString:
     return "\n".join(html)
   else:
-    return HTML("".join(html))
+    return IPython.display.HTML("".join(html))
 
 
 def __isKindOfProba(pot):
@@ -991,7 +980,7 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
       withColors = __isKindOfProba(pot)
 
   s = _reprPotential(pot, digits, withColors, varnames, asString=False)
-  display(s)
+  IPython.display.display(s)
 
 
 def getPotential(pot, digits=None, withColors=None, varnames=None):
@@ -1073,7 +1062,7 @@ def sideBySide(*args, **kwargs):
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
   :param captions: list of strings (captions)
   """
-  display(HTML(getSideBySide(*args, **kwargs)))
+  IPython.display.display(IPython.display.HTML(getSideBySide(*args, **kwargs)))
 
 
 def getInferenceEngine(ie, inferenceCaption):
@@ -1299,8 +1288,7 @@ def exportInference(model, filename, **kwargs):
 def _update_config():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
-  IPython.display.set_matplotlib_formats(
-    gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(gum.config["notebook", "graph_format"])
 
 
 # check if an instance of ipython exists
