@@ -198,7 +198,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).line;
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -207,7 +207,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).column;
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -216,7 +216,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).is_error;
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -225,7 +225,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).msg;
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -234,7 +234,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().elegantErrors(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -244,7 +244,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().elegantErrorsAndWarnings(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -253,7 +253,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().simpleErrorsAndWarnings(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -262,7 +262,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().syntheticResults(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
@@ -281,7 +281,7 @@ namespace gum {
                                                          Idx                col,
                                                          const std::string& s) {
     parser__->errors().addError(s, streamName__, lig, col);
-    GUM_ERROR(gum::OperationNotAllowed, "");
+    GUM_ERROR(gum::OperationNotAllowed, "")
   }
   template < typename GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::addError__(Idx                lig,

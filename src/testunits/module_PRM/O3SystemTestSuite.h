@@ -48,7 +48,7 @@ namespace gum_tests {
           factory.readFile(path);
           if (factory.errors() > 0) {
             factory.showElegantErrorsAndWarnings();
-            GUM_ERROR(gum::FatalError, "corrupted ressource file");
+            GUM_ERROR(gum::FatalError, "corrupted ressource file")
           }
         }
         {
@@ -59,7 +59,7 @@ namespace gum_tests {
           factory.readFile(path, "fr.lip6.printers");
           if (factory.errors() > 0) {
             factory.showElegantErrorsAndWarnings();
-            GUM_ERROR(gum::FatalError, "corrupted ressource file");
+            GUM_ERROR(gum::FatalError, "corrupted ressource file")
           }
         }
       } catch (gum::Exception&) { TS_ASSERT(false); }

@@ -79,7 +79,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
     if (!this->BN().dag().exists(node)) {
-      GUM_ERROR(UndefinedElement, node << " is not a NodeId in the bn");
+      GUM_ERROR(UndefinedElement, node << " is not a NodeId in the bn")
     }
 
     return targets__.contains(node);
@@ -116,7 +116,7 @@ namespace gum {
                 "inference algorithm");
 
     if (!this->BN().dag().exists(target)) {
-      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn");
+      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn")
     }
 
     setTargetedMode_();   // does nothing if already in targeted mode
@@ -176,7 +176,7 @@ namespace gum {
                 "inference algorithm");
 
     if (!this->BN().dag().exists(target)) {
-      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn");
+      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn")
     }
 
 
@@ -245,7 +245,7 @@ namespace gum {
 
     if (!isTarget(node)) {
       // throws UndefinedElement if var is not a target
-      GUM_ERROR(UndefinedElement, node << " is not a target node");
+      GUM_ERROR(UndefinedElement, node << " is not a target node")
     }
 
     if (!this->isInferenceDone()) { this->makeInference(); }

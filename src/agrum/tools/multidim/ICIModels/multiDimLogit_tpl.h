@@ -64,7 +64,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimLogit< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) {
-      GUM_ERROR(OperationNotAllowed, "Not enough variable for a Logit");
+      GUM_ERROR(OperationNotAllowed, "Not enough variable for a Logit")
     }
 
     const DiscreteVariable& C = this->variable((Idx)0);

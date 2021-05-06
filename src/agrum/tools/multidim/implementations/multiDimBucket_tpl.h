@@ -427,7 +427,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
          MultiDimBucket< GUM_SCALAR >::get_(const Instantiation& i) const {
-    GUM_ERROR(OperationNotAllowed, "a MultiDimBucket is a read only MultiDim");
+    GUM_ERROR(OperationNotAllowed, "a MultiDimBucket is a read only MultiDim")
   }
 
   template < typename GUM_SCALAR >
@@ -543,7 +543,7 @@ namespace gum {
     } catch (NotFound& e) {
       std::cerr << std::endl << e.errorContent() << std::endl;
       // This happens if the bucket is empty.
-      GUM_ERROR(SizeError, "This MultiDimBucket is empty.");
+      GUM_ERROR(SizeError, "This MultiDimBucket is empty.")
     }
   }
 
@@ -559,7 +559,7 @@ namespace gum {
     if (bucket__) {
       return *bucket__;
     } else {
-      GUM_ERROR(OperationNotAllowed, "bucket not used.");
+      GUM_ERROR(OperationNotAllowed, "bucket not used.")
     }
   }
 

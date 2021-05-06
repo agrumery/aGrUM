@@ -145,7 +145,7 @@ namespace gum {
       if (!pot.variablesSequence()
               .diffSet(other_pot.variablesSequence())
               .empty()) {
-        GUM_ERROR(gum::CPTError, "the potentials do not have the same variables");
+        GUM_ERROR(gum::CPTError, "the potentials do not have the same variables")
       }
 
       // perform the copy

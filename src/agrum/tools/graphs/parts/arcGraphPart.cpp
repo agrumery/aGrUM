@@ -225,7 +225,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR(NotFound, "no path found")
   }
 
   std::vector< NodeId > ArcGraphPart::directedUnorientedPath(NodeId n1,
@@ -287,7 +287,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR(NotFound, "no path found")
   }
 
   std::ostream& operator<<(std::ostream& stream, const ArcGraphPart& set) {

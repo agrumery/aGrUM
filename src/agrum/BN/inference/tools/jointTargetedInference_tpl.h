@@ -76,7 +76,7 @@ namespace gum {
     const auto& dag = this->BN().dag();
     for (const auto var: vars) {
       if (!dag.exists(var)) {
-        GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn");
+        GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn")
       }
     }
 
@@ -283,7 +283,7 @@ namespace gum {
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
     if (X == Y) {
-      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y");
+      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y")
     }
 
     try {

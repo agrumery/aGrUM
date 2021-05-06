@@ -77,7 +77,7 @@ namespace gum {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST()
              + name();
       } else {
-        GUM_ERROR(OperationNotAllowed, "illegal cast");
+        GUM_ERROR(OperationNotAllowed, "illegal cast")
       }
     }
 

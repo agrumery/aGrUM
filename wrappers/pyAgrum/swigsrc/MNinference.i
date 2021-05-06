@@ -147,7 +147,7 @@ IMPROVE_MN_INFERENCE_API(ShaferShenoyMNInference<double>)
     }
     Potential<double> jointPosterior(PyObject *targets) {
       if (! PyAnySet_Check(targets)) {
-        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MN().variableNodeMap());
@@ -156,7 +156,7 @@ IMPROVE_MN_INFERENCE_API(ShaferShenoyMNInference<double>)
 
     void addJointTarget( PyObject* targets ) {
       if (! PyAnySet_Check(targets)) {
-        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MN().variableNodeMap());
@@ -165,7 +165,7 @@ IMPROVE_MN_INFERENCE_API(ShaferShenoyMNInference<double>)
     }
     void eraseJointTarget( PyObject* targets ) {
       if (! PyAnySet_Check(targets)) {
-        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MN().variableNodeMap());
@@ -174,7 +174,7 @@ IMPROVE_MN_INFERENCE_API(ShaferShenoyMNInference<double>)
 
     bool isJointTarget( PyObject* targets ) {
       if (! PyAnySet_Check(targets)) {
-        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MN().variableNodeMap());

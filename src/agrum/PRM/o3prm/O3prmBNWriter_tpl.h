@@ -54,7 +54,7 @@ namespace gum {
      O3prmBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                         const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
     std::string bnName = bn.propertyWithDefault("name", "");
     if (bnName == "") bnName = "bayesnet";
@@ -216,7 +216,7 @@ namespace gum {
       str << ")";
       return str.str();
     }
-    GUM_ERROR(InvalidArgument, "discretized variable does not have enough ticks");
+    GUM_ERROR(InvalidArgument, "discretized variable does not have enough ticks")
   }
 
   template < typename GUM_SCALAR >

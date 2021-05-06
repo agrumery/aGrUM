@@ -184,6 +184,6 @@ namespace gum {
   // in order to keep BNdistance instantiable
   template < typename GUM_SCALAR >
   void BNdistance< GUM_SCALAR >::computeKL_() {
-    GUM_ERROR(OperationNotAllowed, "No default computations");
+    GUM_ERROR(OperationNotAllowed, "No default computations")
   }
 }   // namespace gum

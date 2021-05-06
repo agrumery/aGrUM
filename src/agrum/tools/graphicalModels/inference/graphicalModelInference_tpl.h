@@ -187,7 +187,7 @@ namespace gum {
                 "inference algorithm");
 
     if (!model__->exists(id)) {
-      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model");
+      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
     if (model__->variable(id).domainSize() <= val) {
@@ -231,7 +231,7 @@ namespace gum {
     }
 
     if (!notZero) {   // we met no non-zero value
-      GUM_ERROR(FatalError, "Evidence of impossibility (vector of 0s)");
+      GUM_ERROR(FatalError, "Evidence of impossibility (vector of 0s)")
     }
 
     return true;   // pot is deterministic
@@ -282,7 +282,7 @@ namespace gum {
                 "inference algorithm");
 
     if (!model__->exists(id)) {
-      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model");
+      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
     if (model__->variable(id).domainSize() != vals.size()) {
@@ -311,7 +311,7 @@ namespace gum {
      Potential< GUM_SCALAR >&& pot) {
     // check if the potential corresponds to an evidence
     if (pot.nbrDim() != 1) {
-      GUM_ERROR(InvalidArgument, pot << " is not mono-dimensional.");
+      GUM_ERROR(InvalidArgument, pot << " is not mono-dimensional.")
     }
     if (model__ == nullptr)
       GUM_ERROR(NullElement,
@@ -471,7 +471,7 @@ namespace gum {
                 "inference algorithm");
 
     if (!model__->exists(id)) {
-      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model");
+      GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
     if (model__->variable(id).domainSize() != vals.size()) {
@@ -502,7 +502,7 @@ namespace gum {
      const Potential< GUM_SCALAR >& pot) {
     // check if the potential corresponds to an evidence
     if (pot.nbrDim() != 1) {
-      GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional potential.");
+      GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional potential.")
     }
     if (model__ == nullptr)
       GUM_ERROR(NullElement,

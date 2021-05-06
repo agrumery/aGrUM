@@ -93,11 +93,11 @@ namespace gum {
      MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v,
                                                   GUM_SCALAR w) const {
     if (!this->contains(v)) {
-      GUM_ERROR(InvalidArgument, v.name() << " is not a cause for this CI Model");
+      GUM_ERROR(InvalidArgument, v.name() << " is not a cause for this CI Model")
     }
 
     if (w == (GUM_SCALAR)0) {
-      GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0");
+      GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0")
     }
 
     causal_weights__.set(&v, w);
@@ -136,7 +136,7 @@ namespace gum {
       MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
     else {
       if (src.domainSize() != this->domainSize()) {
-        GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit");
+        GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit")
       }
       external_weight__ = p->external_weight__;
       default_weight__  = p->default_weight__;

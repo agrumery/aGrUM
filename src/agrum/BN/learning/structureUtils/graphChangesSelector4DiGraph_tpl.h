@@ -529,7 +529,7 @@ namespace gum {
       if (!empty())
         return changes__[change_queue_per_node__[node_queue__.top()].top()];
       else
-        GUM_ERROR(NotFound, "there exists no graph change applicable");
+        GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -545,7 +545,7 @@ namespace gum {
       if (!empty(node))
         return changes__[change_queue_per_node__[node].top()];
       else
-        GUM_ERROR(NotFound, "there exists no graph change applicable");
+        GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -560,7 +560,7 @@ namespace gum {
       if (!empty())
         return change_queue_per_node__[node_queue__.top()].topPriority();
       else
-        GUM_ERROR(NotFound, "there exists no graph change applicable");
+        GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -576,7 +576,7 @@ namespace gum {
       if (!empty(node))
         return change_queue_per_node__[node].topPriority();
       else
-        GUM_ERROR(NotFound, "there exists no graph change applicable");
+        GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 

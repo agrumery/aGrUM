@@ -136,7 +136,7 @@ namespace gum {
     long size_table = long(table__.domainSize());
 
     if (size_table < 0) {
-      GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+      GUM_ERROR(OutOfBounds, "memory usage out of long int range")
     }
 
     return std::pair< long, long >(-size_table, -size_table);

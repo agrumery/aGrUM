@@ -99,14 +99,14 @@ namespace gum {
         PRMInference< GUM_SCALAR >(source),
         inf__(0) {
       GUM_CONS_CPY(GroundedInference);
-      GUM_ERROR(FatalError, "illegal to copy constructor");
+      GUM_ERROR(FatalError, "illegal to copy constructor")
     }
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >&
        GroundedInference< GUM_SCALAR >::operator=(
           const GroundedInference< GUM_SCALAR >& source) {
-      GUM_ERROR(FatalError, "illegal call to copy operator");
+      GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
     template < typename GUM_SCALAR >
@@ -115,7 +115,7 @@ namespace gum {
       if (inf__ != 0) {
         return *inf__;
       } else {
-        GUM_ERROR(NotFound, "the inference engine is not yet defined");
+        GUM_ERROR(NotFound, "the inference engine is not yet defined")
       }
     }
 
@@ -132,7 +132,7 @@ namespace gum {
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
       if (inf__ == 0) {
-        GUM_ERROR(OperationNotAllowed, "no inference engine defined");
+        GUM_ERROR(OperationNotAllowed, "no inference engine defined")
       }
 
       std::stringstream sBuff;
@@ -153,7 +153,7 @@ namespace gum {
     INLINE void GroundedInference< GUM_SCALAR >::joint_(
        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
        Potential< GUM_SCALAR >&                                         j) {
-      GUM_ERROR(FatalError, "not yet implemented");
+      GUM_ERROR(FatalError, "not yet implemented")
     }
 
     template < typename GUM_SCALAR >

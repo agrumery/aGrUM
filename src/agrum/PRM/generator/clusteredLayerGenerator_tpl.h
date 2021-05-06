@@ -310,7 +310,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(OperationNotAllowed, "unexpected value");
+          GUM_ERROR(OperationNotAllowed, "unexpected value")
         }
       }
 
@@ -482,7 +482,7 @@ namespace gum {
               }
 
               default: {
-                GUM_ERROR(OperationNotAllowed, "unexpected vector size");
+                GUM_ERROR(OperationNotAllowed, "unexpected vector size")
               }
             }
 

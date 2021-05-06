@@ -40,7 +40,7 @@ namespace gum {
       return properties__()[name];
     } catch (NotFound&) {
       std::string msg = "The following property does not exists: ";
-      GUM_ERROR(NotFound, msg + name);
+      GUM_ERROR(NotFound, msg + name)
     }
   }
 

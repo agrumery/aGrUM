@@ -71,7 +71,7 @@ namespace gum {
       return *this;
     } catch (NotFound&) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
-      GUM_ERROR(NotFound, name + v.name());
+      GUM_ERROR(NotFound, name + v.name())
     }
   }
 
@@ -93,7 +93,7 @@ namespace gum {
       return *this;
     } catch (NotFound&) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
-      GUM_ERROR(NotFound, name + v->name());
+      GUM_ERROR(NotFound, name + v->name())
     }
   }
 
@@ -155,7 +155,7 @@ namespace gum {
 
     // check that the variable does actually belong to the Instantiation
     if (!vars__.exists(&v)) {
-      GUM_ERROR(NotFound, "Var does not exist in this instantiation");
+      GUM_ERROR(NotFound, "Var does not exist in this instantiation")
     }
 
     // actually delete the dimension
@@ -196,7 +196,7 @@ namespace gum {
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(Idx i) const {
     if (i >= vals__.size()) {
-      GUM_ERROR(NotFound, i << " is out of bound index for the instantiation.");
+      GUM_ERROR(NotFound, i << " is out of bound index for the instantiation.")
     }
 
     return vals__[i];
@@ -784,7 +784,7 @@ namespace gum {
   INLINE void Instantiation::addWithMaster(const MultiDimAdressable* m,
                                            const DiscreteVariable&   v) {
     if (m != master__) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
+      GUM_ERROR(OperationNotAllowed, "only master can do this")
     }
 
     add__(v);

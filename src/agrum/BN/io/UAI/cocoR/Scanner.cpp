@@ -281,7 +281,7 @@ void Scanner::Load( const wchar_t* fileName ) {
 
   if ( ( stream = fopen( chFileName, "rb" ) ) == nullptr ) {
     std::string s( "No such file : " ); s+=chFileName;
-    GUM_ERROR( gum::IOError,s );
+    GUM_ERROR( gum::IOError,s )
   }
 
   coco_string_delete( chFileName );

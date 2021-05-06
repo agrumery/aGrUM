@@ -65,7 +65,7 @@ namespace gum {
     if (labels__[pos] == aLabel) return;
 
     if (isLabel(aLabel))
-      GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists");
+      GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists")
 
     labels__.setAtPos(pos, aLabel);
   }

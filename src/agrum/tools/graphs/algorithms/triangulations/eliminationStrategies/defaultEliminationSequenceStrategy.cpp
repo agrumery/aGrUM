@@ -173,7 +173,7 @@ namespace gum {
       auto iter_heuristic = log_weights__.cbegin();
 
       if (iter_heuristic == log_weights__.cend())
-        GUM_ERROR(NotFound, "there exists no more node to eliminate");
+        GUM_ERROR(NotFound, "there exists no more node to eliminate")
 
       double min_weight     = iter_heuristic.val();
       NodeId removable_node = iter_heuristic.key();

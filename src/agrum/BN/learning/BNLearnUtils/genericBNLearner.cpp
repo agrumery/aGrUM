@@ -639,7 +639,7 @@ namespace gum {
 
     MixedGraph genericBNLearner::learnMixedStructure() {
       if (selected_algo__ != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm");
+        GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
       }
       // check that the database does not contain any missing value
       if (score_database__.databaseTable().hasMissingValues()) {
@@ -902,7 +902,7 @@ namespace gum {
        genericBNLearner::useCrossValidationFold(const std::size_t learning_fold,
                                                 const std::size_t k_fold) {
       if (k_fold == 0) {
-        GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden");
+        GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden")
       }
 
       if (learning_fold >= k_fold) {

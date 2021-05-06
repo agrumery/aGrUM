@@ -175,7 +175,7 @@ namespace gum {
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId DefaultPartialOrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if (graph_ == nullptr) GUM_ERROR(NotFound, "the graph is empty");
+    if (graph_ == nullptr) GUM_ERROR(NotFound, "the graph is empty")
 
     if (partial_order_needed_)
       GUM_ERROR(NotFound,

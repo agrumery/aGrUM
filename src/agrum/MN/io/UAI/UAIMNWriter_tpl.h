@@ -53,7 +53,7 @@ namespace gum {
      UAIMNWriter< GUM_SCALAR >::write(std::ostream&                   output,
                                       const IMarkovNet< GUM_SCALAR >& MN) {
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
     output << preambule__(MN) << std::endl;

@@ -53,7 +53,7 @@ namespace gum {
   INLINE void BIFWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                              const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
     output << header__(bn) << std::endl;
@@ -87,7 +87,7 @@ namespace gum {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
     output << header__(bn) << std::endl;

@@ -145,7 +145,7 @@ namespace gum {
                                                   std::string        csvSeparator,
                                                   bool checkOnAppend) const {
       if (!drawnSamples__) {
-        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
+        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.")
       }
 
       if (csvSeparator.find("\n") != std::string::npos) {
@@ -218,7 +218,7 @@ namespace gum {
     DatabaseTable<>
        BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
       if (!drawnSamples__)
-        GUM_ERROR(OperationNotAllowed, "proceed() must be called first.");
+        GUM_ERROR(OperationNotAllowed, "proceed() must be called first.")
 
       DatabaseTable<>            db;
       std::vector< std::string > varNames;
@@ -275,7 +275,7 @@ namespace gum {
     std::vector< std::vector< Idx > >
        BNDatabaseGenerator< GUM_SCALAR >::database() const {
       if (!drawnSamples__)
-        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
+        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.")
 
       auto db(database__);
       for (Idx i = 0; i < database__.size(); ++i) {
@@ -297,15 +297,15 @@ namespace gum {
       std::vector< bool > usedVars(nbVars__, false);
       for (const auto& i: varOrder) {
         if (i >= nbVars__) {
-          GUM_ERROR(FatalError, "varOrder contains invalid variables");
+          GUM_ERROR(FatalError, "varOrder contains invalid variables")
         }
         if (usedVars.at(i))
-          GUM_ERROR(FatalError, "varOrder must not have repeated variables");
+          GUM_ERROR(FatalError, "varOrder must not have repeated variables")
         usedVars.at(i) = true;
       }
 
       if (std::find(usedVars.begin(), usedVars.end(), false) != usedVars.end()) {
-        GUM_ERROR(FatalError, "varOrder must contain all variables");
+        GUM_ERROR(FatalError, "varOrder must contain all variables")
       }
 
       varOrder__ = varOrder;
@@ -392,7 +392,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     double BNDatabaseGenerator< GUM_SCALAR >::log2likelihood() const {
       if (!drawnSamples__) {
-        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
+        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.")
       }
       return log2likelihood__;
     }
@@ -408,7 +408,7 @@ namespace gum {
         varOrder = varOrderFromCSV__(csvFile, csvSeparator);
         csvFile.close();
       } else {
-        GUM_ERROR(NotFound, "csvFileURL does not exist");
+        GUM_ERROR(NotFound, "csvFileURL does not exist")
       }
 
       return varOrder;

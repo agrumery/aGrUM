@@ -287,7 +287,7 @@ namespace gum {
       // check that the nodes passed in arguments correspond to those of pot
       const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();
       if (vars.size() == 0) {
-        GUM_ERROR(SizeError, "the potential contains no variable");
+        GUM_ERROR(SizeError, "the potential contains no variable")
       }
 
       const auto& database  = counter_.database();

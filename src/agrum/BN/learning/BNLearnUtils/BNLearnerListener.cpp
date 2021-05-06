@@ -53,7 +53,7 @@ namespace gum {
     BNLearnerListener::BNLearnerListener(const BNLearnerListener& other) :
         ApproximationSchemeListener(other) {
       GUM_CONS_CPY(BNLearnerListener);
-      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
+      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener")
     }
 
     BNLearnerListener::~BNLearnerListener() { GUM_DESTRUCTOR(BNLearnerListener); }
@@ -61,7 +61,7 @@ namespace gum {
     BNLearnerListener&
        BNLearnerListener::operator=(const BNLearnerListener& other) {
       GUM_CONS_CPY(BNLearnerListener);
-      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
+      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener")
     }
 
     void BNLearnerListener::whenProgress(const void* src,

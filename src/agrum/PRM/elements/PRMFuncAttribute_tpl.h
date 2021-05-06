@@ -60,14 +60,14 @@ namespace gum {
        const PRMFuncAttribute< GUM_SCALAR >& source) :
         PRMScalarAttribute< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMFuncAttribute);
-      GUM_ERROR(FatalError, "illegal call to copy constructor");
+      GUM_ERROR(FatalError, "illegal call to copy constructor")
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >&
        PRMFuncAttribute< GUM_SCALAR >::operator=(
           const PRMFuncAttribute< GUM_SCALAR >& from) {
-      GUM_ERROR(FatalError, "illegal call to copy operator");
+      GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
     template < typename GUM_SCALAR >

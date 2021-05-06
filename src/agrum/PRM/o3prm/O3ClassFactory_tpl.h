@@ -344,7 +344,7 @@ namespace gum {
             }
 
             default: {
-              GUM_ERROR(FatalError, "unknown O3Parameter type");
+              GUM_ERROR(FatalError, "unknown O3Parameter type")
             }
           }
         }
@@ -1054,7 +1054,7 @@ namespace gum {
           }
 
           default: {
-            GUM_ERROR(FatalError, "unknown aggregate type");
+            GUM_ERROR(FatalError, "unknown aggregate type")
           }
         }
 

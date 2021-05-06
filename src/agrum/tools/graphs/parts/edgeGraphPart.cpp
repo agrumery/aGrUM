@@ -160,7 +160,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR(NotFound, "no path found")
   }
 
   bool EdgeGraphPart::hasUndirectedPath(const NodeId n1, const NodeId n2) const {

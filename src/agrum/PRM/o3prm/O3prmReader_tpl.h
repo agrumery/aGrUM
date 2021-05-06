@@ -130,7 +130,7 @@ namespace gum {
 
           return str;
         }
-        GUM_ERROR(OperationNotAllowed, "Could not open file");
+        GUM_ERROR(OperationNotAllowed, "Could not open file")
       }
 
       using o3prm_scanner = gum::prm::o3prm::Scanner;

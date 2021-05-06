@@ -51,7 +51,7 @@ namespace gum_tests {
         reader.showElegantErrorsAndWarnings();
         prm = reader.prm();
         if (reader.errors() > 0) {
-          GUM_ERROR(gum::FatalError, "could not load ressource file");
+          GUM_ERROR(gum::FatalError, "could not load ressource file")
         }
       }
       {
@@ -60,7 +60,7 @@ namespace gum_tests {
         reader.showElegantErrorsAndWarnings();
         small = reader.prm();
         if (reader.errors() > 0) {
-          GUM_ERROR(gum::FatalError, "could not load ressource file");
+          GUM_ERROR(gum::FatalError, "could not load ressource file")
         }
       }
     }

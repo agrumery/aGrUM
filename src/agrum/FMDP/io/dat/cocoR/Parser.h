@@ -108,7 +108,7 @@ class Parser {
                 gum::AbstractFMDPFactory& factory() {
                   if (factory__)
                         return *factory__;
-                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...")
                 }
 
                 bool IsFollowedByIdent() {

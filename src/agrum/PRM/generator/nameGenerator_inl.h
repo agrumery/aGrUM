@@ -86,7 +86,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(FatalError, "unknown PRMObject type");
+          GUM_ERROR(FatalError, "unknown PRMObject type")
         }
       }
 

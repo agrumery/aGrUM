@@ -97,7 +97,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const VariableNodeMap&
                  InstanceBayesNet< GUM_SCALAR >::variableNodeMap() const {
-      GUM_ERROR(NotFound, "no VariableNodeMap in an InstanceBayesNet");
+      GUM_ERROR(NotFound, "no VariableNodeMap in an InstanceBayesNet")
     }
 
     template < typename GUM_SCALAR >
@@ -137,7 +137,7 @@ namespace gum {
       try {
         return inst__->get(name);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no element found with that name");
+        GUM_ERROR(NotFound, "no element found with that name")
       }
     }
 

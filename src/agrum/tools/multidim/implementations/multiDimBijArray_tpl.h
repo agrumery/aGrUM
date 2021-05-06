@@ -77,7 +77,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimBijArray< GUM_SCALAR >& MultiDimBijArray< GUM_SCALAR >::operator=(
      const MultiDimBijArray< GUM_SCALAR >& from) {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray are readonly.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray are readonly.")
   }
 
   template < typename GUM_SCALAR >
@@ -93,12 +93,12 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::add(const DiscreteVariable& v) {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::erase(const DiscreteVariable& v) {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
@@ -108,7 +108,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::fill(const GUM_SCALAR& d) const {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
@@ -129,25 +129,25 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::set(const Instantiation& i,
                                                   const GUM_SCALAR& value) const {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::populate(
      const std::vector< GUM_SCALAR >& v) const {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::populate(
      std::initializer_list< GUM_SCALAR > l) const {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
          MultiDimBijArray< GUM_SCALAR >::get_(const Instantiation& i) const {
-    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.");
+    GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >

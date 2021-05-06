@@ -71,7 +71,7 @@ namespace gum {
     Size lg = this->domainSize();
 
     if (lg > std::numeric_limits< Idx >::max() / v.domainSize()) {
-      GUM_ERROR(OutOfBounds, "Out of bounds !");
+      GUM_ERROR(OutOfBounds, "Out of bounds !")
     }
 
     MultiDimImplementation< GUM_SCALAR >::add(v);

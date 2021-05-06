@@ -61,7 +61,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestSimplicialNode() {
     if (!hasSimplicialNode()) {
-      GUM_ERROR(NotFound, "No simplicial node could be found");
+      GUM_ERROR(NotFound, "No simplicial node could be found")
     }
 
     return simplicial_nodes__.top();
@@ -72,7 +72,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestAlmostSimplicialNode() {
     if (!hasAlmostSimplicialNode()) {
-      GUM_ERROR(NotFound, "no almost simplicial node could be found");
+      GUM_ERROR(NotFound, "no almost simplicial node could be found")
     }
 
     return almost_simplicial_nodes__.top();
@@ -83,7 +83,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestQuasiSimplicialNode() {
     if (!hasQuasiSimplicialNode()) {
-      GUM_ERROR(NotFound, "no quasi simplicial node could be found");
+      GUM_ERROR(NotFound, "no quasi simplicial node could be found")
     }
 
     return quasi_simplicial_nodes__.top();

@@ -38,7 +38,7 @@ namespace gum {
       graph__(*graph), costTable__(*cost), spanning_tree_cost__(0),
       require_computation__(true) {
     if (!graph || !cost) {
-      GUM_ERROR(GraphError, "invalid null graph or edge cost pointer");
+      GUM_ERROR(GraphError, "invalid null graph or edge cost pointer")
     }
 
     // for debugging purposes

@@ -236,7 +236,7 @@ namespace gum {
           return true;
 
         default:
-          GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType");
+          GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
       }
 
       return false;
@@ -264,7 +264,7 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet");
+          GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
       }
 
       return str.str();

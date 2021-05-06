@@ -176,7 +176,7 @@ namespace gum {
 
     // check if the index ind_elt passed as parameter is valid
     if (ind_elt >= theList.nb_elements__) {
-      GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the list");
+      GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the list")
     }
 
     // check if it is faster to find the indexth element from the start or
@@ -328,7 +328,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return &(bucket__->val__);
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
     }
   }
 
@@ -338,7 +338,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return bucket__->val__;
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
     }
   }
 
@@ -538,7 +538,7 @@ namespace gum {
 
     // check if the index ind_elt passed as parameter is valid
     if (ind_elt >= list__->nb_elements__) {
-      GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the list");
+      GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the list")
     }
 
     // check if it is faster to find the indexth element src the start or
@@ -946,7 +946,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return &(bucket__->val__);
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
     }
   }
 
@@ -956,7 +956,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return bucket__->val__;
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
     }
   }
 
@@ -1732,7 +1732,7 @@ namespace gum {
           return insertAfter__(new_elt, ptr);
 
         default:
-          GUM_ERROR(FatalError, "List insertion for this location unimplemented");
+          GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }
@@ -1758,7 +1758,7 @@ namespace gum {
           return insertAfter__(new_elt, ptr);
 
         default:
-          GUM_ERROR(FatalError, "List insertion for this location unimplemented");
+          GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }
@@ -1835,7 +1835,7 @@ namespace gum {
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::front() const {
     if (nb_elements__ == Size(0)) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     return deb_list__->val__;
@@ -1845,7 +1845,7 @@ namespace gum {
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::back() const {
     if (nb_elements__ == Size(0)) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     return end_list__->val__;
@@ -2098,7 +2098,7 @@ namespace gum {
   INLINE Val& List< Val, Alloc >::operator[](const Size i) {
     // check if we can return the element we ask for
     if (i >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     return **getIthBucket__(i);
@@ -2109,7 +2109,7 @@ namespace gum {
   INLINE const Val& List< Val, Alloc >::operator[](const Size i) const {
     // check if we can return the element we ask for
     if (i >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     return **getIthBucket__(i);

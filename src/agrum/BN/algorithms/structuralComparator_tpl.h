@@ -30,7 +30,7 @@ namespace gum {
   void StructuralComparator::compare(const BayesNet< GS1 >& ref,
                                      const BayesNet< GS2 >& test) {
     if (ref.size() != test.size()) {
-      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
+      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
     }
     for (const NodeId node: ref.dag().asNodeSet()) {
       if (!test.dag().existsNode(node)) {

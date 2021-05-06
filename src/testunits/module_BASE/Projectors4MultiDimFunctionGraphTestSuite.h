@@ -155,7 +155,7 @@ namespace gum_tests {
       std::ofstream output(dotfile.c_str(), std::ios::out);
 
       if (!output.good())
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
 
       output << std::endl;
 
@@ -198,7 +198,7 @@ namespace gum_tests {
       output.close();
 
       if (output.fail())
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
     }
 
 
@@ -243,7 +243,7 @@ namespace gum_tests {
           break;
 
         default:   // Should Not Happen
-          GUM_ERROR(gum::OperationNotAllowed, "HEU .....");
+          GUM_ERROR(gum::OperationNotAllowed, "HEU .....")
       }
 
       // ******************************************************************************************************
@@ -358,7 +358,7 @@ namespace gum_tests {
             break;
 
             default:   // Should Not Happen
-              GUM_ERROR(gum::OperationNotAllowed, "HEU .....");
+              GUM_ERROR(gum::OperationNotAllowed, "HEU .....")
           }
         }
 

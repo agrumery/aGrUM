@@ -126,7 +126,7 @@ namespace gum {
   /// dereferencing operator
   INLINE NodeId NodeGraphPartIterator::operator*() const {
     if (!valid_) {
-      GUM_ERROR(UndefinedIteratorValue, "This iterator is not valid !");
+      GUM_ERROR(UndefinedIteratorValue, "This iterator is not valid !")
     }
 
     return pos_;

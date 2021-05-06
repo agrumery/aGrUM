@@ -60,7 +60,7 @@ namespace gum_tests {
         reader.showElegantErrorsAndWarnings();
         prm__ = reader.prm();
         if (reader.errors() > 0) {
-          GUM_ERROR(gum::FatalError, "could not load ressource file");
+          GUM_ERROR(gum::FatalError, "could not load ressource file")
         }
       }
       bn__                      = new gum::BayesNet< double >();

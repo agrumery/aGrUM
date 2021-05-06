@@ -69,7 +69,7 @@ namespace gum {
     GUM_CONS_CPY(BayesNetFactory);
 
     if (source.state() != factory_state::NONE) {
-      GUM_ERROR(OperationNotAllowed, "Illegal state to proceed make a copy.");
+      GUM_ERROR(OperationNotAllowed, "Illegal state to proceed make a copy.")
     } else {
       states__ = source.states__;
       bn__     = new BayesNet< GUM_SCALAR >(*(source.bn__));
@@ -199,7 +199,7 @@ namespace gum {
       illegalStateError__("variableName");
     } else {
       if (varNameMap__.exists(name)) {
-        GUM_ERROR(DuplicateElement, "Name already used: " << name);
+        GUM_ERROR(DuplicateElement, "Name already used: " << name)
       }
 
       foo_flag__     = true;
@@ -322,7 +322,7 @@ namespace gum {
                   "An implementation for this variable is already "
                   "defined.");
       } else if (impl->nbrDim() > 0) {
-        GUM_ERROR(OperationNotAllowed, "This implementation is not empty.");
+        GUM_ERROR(OperationNotAllowed, "This implementation is not empty.")
       }
 
       impl__ = impl;
@@ -408,7 +408,7 @@ namespace gum {
       resetParts__();
 
       states__.pop_back();
-      GUM_ERROR(OperationNotAllowed, msg.str());
+      GUM_ERROR(OperationNotAllowed, msg.str())
     }
 
     // For noisy compilers
@@ -816,7 +816,7 @@ namespace gum {
     } else {
       try {
         checkVariableName__(var.name());
-        GUM_ERROR(DuplicateElement, "Name already used: " << var.name());
+        GUM_ERROR(DuplicateElement, "Name already used: " << var.name())
       } catch (NotFound&) {
         // The var name is unused
         varNameMap__.insert(var.name(), bn__->add(var));
@@ -877,7 +877,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE BayesNetFactory< GUM_SCALAR >& BayesNetFactory< GUM_SCALAR >::operator=(
      const BayesNetFactory< GUM_SCALAR >& source) {
-    GUM_ERROR(OperationNotAllowed, "Illegal!");
+    GUM_ERROR(OperationNotAllowed, "Illegal!")
     // For noisy compilers
     return *this;
   }
@@ -931,7 +931,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(OperationNotAllowed, msg);
+    GUM_ERROR(OperationNotAllowed, msg)
   }
 
   // Check if a variable with the given name exists, if not raise an NotFound
@@ -955,7 +955,7 @@ namespace gum {
       if (mod == var.label(i)) { return i; }
     }
 
-    GUM_ERROR(NotFound, mod);
+    GUM_ERROR(NotFound, mod)
   }
 
   // Check if in stringBag__ there is no other modality with the same name.
@@ -964,7 +964,7 @@ namespace gum {
      BayesNetFactory< GUM_SCALAR >::checkModalityInBag__(const std::string& mod) {
     for (size_t i = 3; i < stringBag__.size(); ++i) {
       if (mod == stringBag__[i]) {
-        GUM_ERROR(DuplicateElement, "Label already used: " << mod);
+        GUM_ERROR(DuplicateElement, "Label already used: " << mod)
       }
     }
   }

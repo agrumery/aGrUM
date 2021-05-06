@@ -71,11 +71,11 @@ namespace gum {
      bool         isHardEvidence) {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     if (infdiag.isUtilityNode(id)) {
-      GUM_ERROR(InvalidNode, "No evidence on a utility node.");
+      GUM_ERROR(InvalidNode, "No evidence on a utility node.")
     }
     if (infdiag.isDecisionNode(id)) {
       if (!isHardEvidence)
-        GUM_ERROR(InvalidNode, "No soft evidence on a decision node.");
+        GUM_ERROR(InvalidNode, "No soft evidence on a decision node.")
     }
   }
   template < typename GUM_SCALAR >
@@ -180,7 +180,7 @@ namespace gum {
       else if (infdiag.isUtilityNode(node))
         phi[clik].insertUtility(infdiag.utility(node));
       else
-        GUM_ERROR(FatalError, "Node " << node << " has no type.");
+        GUM_ERROR(FatalError, "Node " << node << " has no type.")
     }
   }
 
@@ -477,7 +477,7 @@ namespace gum {
      const std::vector< NodeId >& ids) {
     const auto& infdiag = this->influenceDiagram();
     for (const auto node: ids) {
-      if (!infdiag.exists(node)) GUM_ERROR(NotFound, node << " is not a NodeId");
+      if (!infdiag.exists(node)) GUM_ERROR(NotFound, node << " is not a NodeId")
       if (!infdiag.isDecisionNode(node))
         GUM_ERROR(TypeError,
                   "Node " << node << " (" << infdiag.variable(node).name()
@@ -496,7 +496,7 @@ namespace gum {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
 
     if (!infdiag.isDecisionNode(d))
-      GUM_ERROR(TypeError, d << " is not a decision node");
+      GUM_ERROR(TypeError, d << " is not a decision node")
 
     NodeSet res;
     if (reduced_.parents(d).empty()) return res;

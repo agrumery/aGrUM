@@ -248,7 +248,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(OperationNotAllowed, "Aggregator not handled yet");
+          GUM_ERROR(OperationNotAllowed, "Aggregator not handled yet")
           break;
         }
       }
@@ -392,7 +392,7 @@ namespace gum {
       try {
         return *(nodeIdMap_[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id");
+        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
 
@@ -402,7 +402,7 @@ namespace gum {
       try {
         return *(nodeIdMap_[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id");
+        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
 
@@ -412,7 +412,7 @@ namespace gum {
       try {
         return nodeIdMap_.keyByVal(const_cast< PRMInstance< GUM_SCALAR >* >(&i));
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id");
+        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
 
@@ -492,7 +492,7 @@ namespace gum {
       try {
         return *(arrayMap_[name].second);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -502,7 +502,7 @@ namespace gum {
       try {
         return *(arrayMap_[name].first);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -512,7 +512,7 @@ namespace gum {
       try {
         return *(arrayMap_[name].first);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -530,7 +530,7 @@ namespace gum {
                     "Class<GUM_SCALAR> type");
         }
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -579,7 +579,7 @@ namespace gum {
       try {
         return arrayMap_[a].second->begin();
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -589,7 +589,7 @@ namespace gum {
       try {
         return arrayMap_[a].second->end();
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -599,7 +599,7 @@ namespace gum {
       try {
         return arrayMap_[a].second->begin();
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 
@@ -609,7 +609,7 @@ namespace gum {
       try {
         return arrayMap_[a].second->end();
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "found no array matching the given name");
+        GUM_ERROR(NotFound, "found no array matching the given name")
       }
     }
 

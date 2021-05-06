@@ -125,7 +125,7 @@ namespace gum {
                      << entry << " >= " << entry_size);
 
       if (cpt.size() == 0)
-        GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry);
+        GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry)
 
       for (const auto& vertex: cpt) {
         if (vertex.size() != var_dSize)
@@ -217,7 +217,7 @@ namespace gum {
                      << entry << " >= " << entry_size);
 
       if (cpt.size() == 0)
-        GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry);
+        GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry)
 
       for (const auto& vertex: cpt) {
         if (vertex.size() != var_dSize)
@@ -1553,7 +1553,7 @@ namespace gum {
           std::vector< GUM_SCALAR > aRow(cols - 1);
 
           if ( *G->matrix[row][0] != 1 )
-            GUM_ERROR(OperationNotAllowed, "__H2Vcdd : not reading a vertex");
+            GUM_ERROR(OperationNotAllowed, "__H2Vcdd : not reading a vertex")
 
           for ( unsigned int col = 0; col < cols - 1; col++ )
             aRow[col] = *G->matrix[row][ col + 1 ];
@@ -1654,7 +1654,7 @@ namespace gum {
       std::ifstream v_file(extfile.c_str() /*extfilename.c_str()*/, std::ios::in);
 
       if (!v_file.good())
-        GUM_ERROR(IOError, "__H2Vlrs : could not open lrs ouput file : ");
+        GUM_ERROR(IOError, "__H2Vlrs : could not open lrs ouput file : ")
 
       std::string line, tmp;
       char *      cstr, *p;
@@ -1756,10 +1756,10 @@ namespace gum {
       v_file.close();
 
       if (std::remove(sinefile.c_str()) != 0)
-        GUM_ERROR(IOError, "error removing : " + sinefile);
+        GUM_ERROR(IOError, "error removing : " + sinefile)
 
       if (std::remove(extfile.c_str()) != 0)
-        GUM_ERROR(IOError, "error removing : " + extfile);
+        GUM_ERROR(IOError, "error removing : " + extfile)
     }
 
     template < typename GUM_SCALAR >

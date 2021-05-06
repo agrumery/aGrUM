@@ -261,7 +261,7 @@ namespace gum {
             }
 
             default: {
-              GUM_ERROR(FatalError, "unknown parameter type");
+              GUM_ERROR(FatalError, "unknown parameter type")
             }
           }
         }

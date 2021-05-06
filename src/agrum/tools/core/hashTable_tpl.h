@@ -109,7 +109,7 @@ namespace gum {
      HashTableList< Key, Val, Alloc >::erase(HashTableBucket< Key, Val >* ptr) {
     // check that the pointer is not nullptr
     if (ptr == nullptr) {
-      GUM_ERROR(NullElement, "trying to erase a nullptr bucket");
+      GUM_ERROR(NullElement, "trying to erase a nullptr bucket")
     }
 
     // relink properly the doubly chained list
@@ -227,7 +227,7 @@ namespace gum {
   INLINE typename HashTableList< Key, Val, Alloc >::value_type&
      HashTableList< Key, Val, Alloc >::at(Size i) {
     if (i >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     Bucket* ptr;
@@ -241,7 +241,7 @@ namespace gum {
   INLINE const typename HashTableList< Key, Val, Alloc >::value_type&
      HashTableList< Key, Val, Alloc >::at(Size i) const {
     if (i >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the chained list");
+      GUM_ERROR(NotFound, "not enough elements in the chained list")
     }
 
     Bucket* ptr;
@@ -257,7 +257,7 @@ namespace gum {
     for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
-    GUM_ERROR(NotFound, "No element with the key <" << key << ">");
+    GUM_ERROR(NotFound, "No element with the key <" << key << ">")
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -266,7 +266,7 @@ namespace gum {
     for (Bucket* ptr = deb_list__; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
-    GUM_ERROR(NotFound, "No element with the key <" << key << ">");
+    GUM_ERROR(NotFound, "No element with the key <" << key << ">")
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -1056,7 +1056,7 @@ namespace gum {
     for (auto iter = begin(); iter != end(); ++iter)
       if (iter.bucket__->val() == val) return iter.key();
 
-    GUM_ERROR(NotFound, "not enough elements in the chained list");
+    GUM_ERROR(NotFound, "not enough elements in the chained list")
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -1065,7 +1065,7 @@ namespace gum {
     Bucket* bucket = nodes__[hash_func__(key)].bucket(key);
 
     if (bucket == nullptr) {
-      GUM_ERROR(NotFound, "key does not belong to the hashtable");
+      GUM_ERROR(NotFound, "key does not belong to the hashtable")
     }
 
     return bucket->key();
@@ -1579,7 +1579,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return bucket__->key();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -1589,7 +1589,7 @@ namespace gum {
     if (bucket__ != nullptr)
       return bucket__->val();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -1738,7 +1738,7 @@ namespace gum {
     if (bucket__)
       return bucket__->elt();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -2037,7 +2037,7 @@ namespace gum {
     if (bucket__)
       return bucket__->pair.first;
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -2047,7 +2047,7 @@ namespace gum {
     if (bucket__)
       return bucket__->val();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -2164,7 +2164,7 @@ namespace gum {
     if (bucket__)
       return bucket__->elt();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 
@@ -2231,7 +2231,7 @@ namespace gum {
     if (this->bucket__)
       return this->bucket__->val();
     else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object");
+      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
     }
   }
 

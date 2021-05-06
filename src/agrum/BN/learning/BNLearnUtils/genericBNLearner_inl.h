@@ -449,7 +449,7 @@ namespace gum {
     // sets the apriori weight
     INLINE void genericBNLearner::setAprioriWeight__(double weight) {
       if (weight < 0) {
-        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
+        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive")
       }
 
       apriori_weight__ = weight;
@@ -465,7 +465,7 @@ namespace gum {
     // use the apriori smoothing
     INLINE void genericBNLearner::useAprioriSmoothing(double weight) {
       if (weight < 0) {
-        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
+        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive")
       }
 
       apriori_type__ = AprioriType::SMOOTHING;
@@ -478,7 +478,7 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriDirichlet(const std::string& filename,
                                                       double             weight) {
       if (weight < 0) {
-        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
+        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive")
       }
 
       apriori_dbname__ = filename;
@@ -492,7 +492,7 @@ namespace gum {
     // use the apriori BDeu
     INLINE void genericBNLearner::useAprioriBDeu(double weight) {
       if (weight < 0) {
-        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
+        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive")
       }
 
       apriori_type__ = AprioriType::BDEU;

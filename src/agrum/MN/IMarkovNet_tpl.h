@@ -309,7 +309,7 @@ namespace gum {
     try {
       return smallestFactorFromNode(idFromName(name));
     } catch (NotFound) {
-      GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">");
+      GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">")
     }
   }
 

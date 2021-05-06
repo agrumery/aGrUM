@@ -291,7 +291,7 @@ namespace gum {
           msg << name;
         }
       }
-      GUM_ERROR(TypeError, msg.str());
+      GUM_ERROR(TypeError, msg.str())
     }
 
 
@@ -813,7 +813,7 @@ namespace gum {
           str << '[' << range.first << ';' << range.second << ')';
         }
 
-        GUM_ERROR(OutOfBounds, str.str());
+        GUM_ERROR(OutOfBounds, str.str())
       }
     }
 

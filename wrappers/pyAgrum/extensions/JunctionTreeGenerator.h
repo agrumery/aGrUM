@@ -184,7 +184,7 @@ class JunctionTreeGenerator {
         }
       }
     } else {
-      GUM_ERROR(gum::InvalidArgument, "The argument is not a sequence nor a set");
+      GUM_ERROR(gum::InvalidArgument, "The argument is not a sequence nor a set")
     }
     return res;
   }

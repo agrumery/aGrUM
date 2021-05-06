@@ -53,7 +53,7 @@ namespace gum {
      std::ostream&                         output,
      const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
     output << heading__() << std::endl;

@@ -87,7 +87,7 @@ namespace gum {
     else if (id == n2)
       return n1;
     else {
-      GUM_ERROR(IdError, id << " does not belong to this edge");
+      GUM_ERROR(IdError, id << " does not belong to this edge")
     }
   }
 
@@ -190,7 +190,7 @@ namespace gum {
     else if (id == n2)
       return n1;
     else {
-      GUM_ERROR(IdError, id << " does not belong to this arc");
+      GUM_ERROR(IdError, id << " does not belong to this arc")
     }
   }
 

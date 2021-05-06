@@ -176,7 +176,7 @@ namespace gum {
     }
 
     if (verbosity() == false) {
-      GUM_ERROR(OperationNotAllowed, "No history when verbosity=false");
+      GUM_ERROR(OperationNotAllowed, "No history when verbosity=false")
     }
 
     return history_;

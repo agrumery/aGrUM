@@ -481,7 +481,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>");
+          GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>")
         }
       }
     }
@@ -553,7 +553,7 @@ namespace gum {
       bool        is_agg  = PRMClassElement< GUM_SCALAR >::isAggregate(i_elt);
 
       if (!(is_attr || is_agg)) {
-        GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface");
+        GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface")
       }
 
       if (!elt->type().isSubTypeOf(i_elt.type())) {
@@ -571,7 +571,7 @@ namespace gum {
 
       // Node must be reserved by constructor
       if (!dag__.existsNode(i_elt.id())) {
-        GUM_ERROR(FatalError, "Class does not reserved implemented nodes");
+        GUM_ERROR(FatalError, "Class does not reserved implemented nodes")
       }
 
       // Removing unused node and changing to proper node
@@ -605,7 +605,7 @@ namespace gum {
        PRMInterface< GUM_SCALAR >*     i) {
       auto& i_elt = i->get(ref->name());
       if (i_elt.elt_type() != ref->elt_type()) {
-        GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface");
+        GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface")
       }
       auto& i_ref = static_cast< PRMReferenceSlot< GUM_SCALAR >& >(i_elt);
       if (!ref->slotType().isSubTypeOf(i_ref.slotType())) {
@@ -692,7 +692,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type");
+          GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type")
         }
       }
 
@@ -757,7 +757,7 @@ namespace gum {
       }
       // Checking overload legality
       if (!checkOverloadLegality__(overloaded, overloader)) {
-        GUM_ERROR(OperationNotAllowed, "illegal overload");
+        GUM_ERROR(OperationNotAllowed, "illegal overload")
       }
 
       switch (overloader->elt_type()) {
@@ -805,7 +805,7 @@ namespace gum {
           break;
         }
         default: {
-          GUM_ERROR(OperationNotAllowed, "unknown ClassElement<GUM_SCALAR> type");
+          GUM_ERROR(OperationNotAllowed, "unknown ClassElement<GUM_SCALAR> type")
         }
       }
 
@@ -901,7 +901,7 @@ namespace gum {
                 auto& new_type = sc->lastElt().type();
                 attr.swap(old_type, new_type);
               } else {
-                GUM_ERROR(OperationNotAllowed, "unexpected ClassElement");
+                GUM_ERROR(OperationNotAllowed, "unexpected ClassElement")
                 // get( child ).cpf().replace(
                 // slotchain->lastElt().type().variable(),
                 // sc->lastElt().type().variable() );
@@ -1039,7 +1039,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
 
@@ -1170,7 +1170,7 @@ namespace gum {
       if (superClass__) {
         return *superClass__;
       } else {
-        GUM_ERROR(NotFound, "this Class is not a subclass");
+        GUM_ERROR(NotFound, "this Class is not a subclass")
       }
     }
 
@@ -1280,7 +1280,7 @@ namespace gum {
       try {
         return elt.type().name() == get(elt.name()).type().name();
       } catch (OperationNotAllowed&) {
-        GUM_ERROR(NotFound, "no attribute with the given name");
+        GUM_ERROR(NotFound, "no attribute with the given name")
       }
     }
 

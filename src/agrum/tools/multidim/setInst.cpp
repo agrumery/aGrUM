@@ -197,7 +197,7 @@ namespace gum {
       for (const auto var: i.variablesSequence())
         j.chgVal(bij.second(var), i.val(var));
     } catch (gum::NotFound&) {
-      GUM_ERROR(gum::NotFound, "missing variable in bijection or SetInst");
+      GUM_ERROR(gum::NotFound, "missing variable in bijection or SetInst")
     }
   }
 

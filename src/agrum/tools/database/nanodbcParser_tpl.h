@@ -111,7 +111,7 @@ namespace gum {
           return true;
         }
       } catch ( std::runtime_error& e ) {
-        GUM_ERROR( DatabaseError, std::string( e.what() ) );
+        GUM_ERROR( DatabaseError, std::string( e.what() ) )
       }
       data__.clear();
       return false;
@@ -134,7 +134,7 @@ namespace gum {
         return data__;
       }
 
-      GUM_ERROR( NullElement, "No parsed data" );
+      GUM_ERROR( NullElement, "No parsed data" )
     }
 
     

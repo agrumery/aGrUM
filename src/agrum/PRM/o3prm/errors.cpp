@@ -121,7 +121,7 @@ namespace gum {
         msg << "Error : "
             << "Unknown class " << val.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
-        GUM_ERROR(FatalError, msg.str());
+        GUM_ERROR(FatalError, msg.str())
       }
 
       void O3PRM_CLASS_AMBIGUOUS(const O3Label&                    val,

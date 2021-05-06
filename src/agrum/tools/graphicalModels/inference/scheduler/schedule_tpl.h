@@ -378,7 +378,7 @@ namespace gum {
     // before executing an operation, check that the operation is available
 
     if (dag__.parents(id).size() != 0) {
-      GUM_ERROR(OperationNotAllowed, "the operation cannot be executed yet");
+      GUM_ERROR(OperationNotAllowed, "the operation cannot be executed yet")
     }
 
     // actually execute the operation

@@ -312,7 +312,7 @@ namespace gum {
   INLINE const Val& Heap< Val, Cmp, Alloc >::operator[](Size index) const {
     // check if the element exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the heap");
+      GUM_ERROR(NotFound, "not enough elements in the heap")
     }
 
     return heap__[index];

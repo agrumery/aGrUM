@@ -163,7 +163,7 @@ namespace gum {
           // PRMAttribute
           // or
           // PRMSlotChain<GUM_SCALAR>.
-          GUM_ERROR(FatalError, "This case is impossible.");
+          GUM_ERROR(FatalError, "This case is impossible.")
         }
       }
     }
@@ -278,14 +278,14 @@ namespace gum {
        const StructuredBayesBall< GUM_SCALAR >& source) :
         inf__(0) {
       GUM_CONS_CPY(StructuredBayesBall);
-      GUM_ERROR(FatalError, "Not allowed.");
+      GUM_ERROR(FatalError, "Not allowed.")
     }
 
     template < typename GUM_SCALAR >
     INLINE StructuredBayesBall< GUM_SCALAR >&
        StructuredBayesBall< GUM_SCALAR >::operator=(
           const StructuredBayesBall< GUM_SCALAR >& source) {
-      GUM_ERROR(FatalError, "Not allowed.");
+      GUM_ERROR(FatalError, "Not allowed.")
     }
 
     template < typename GUM_SCALAR >

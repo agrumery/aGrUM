@@ -163,7 +163,7 @@ namespace gum {
   NodeId OrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // check that we can return a nodeId
     if (order_needed__ || (order__->size() <= order_index__)) {
-      GUM_ERROR(NotFound, "no node id can be returned");
+      GUM_ERROR(NotFound, "no node id can be returned")
     }
 
     return (*order__)[order_index__];

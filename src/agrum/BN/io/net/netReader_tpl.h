@@ -107,7 +107,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).line;
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -116,7 +116,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).column;
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -125,7 +125,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).is_error;
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -134,7 +134,7 @@ namespace gum {
     if (parseDone__)
       return parser__->errors().error(i).msg;
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -143,7 +143,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().elegantErrors(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -153,7 +153,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().elegantErrorsAndWarnings(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -162,7 +162,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().simpleErrorsAndWarnings(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 
@@ -171,7 +171,7 @@ namespace gum {
     if (parseDone__)
       parser__->errors().syntheticResults(o);
     else {
-      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet");
+      GUM_ERROR(OperationNotAllowed, "Net file not parsed yet")
     }
   }
 

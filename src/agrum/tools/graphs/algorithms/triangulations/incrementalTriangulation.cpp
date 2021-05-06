@@ -1307,7 +1307,7 @@ namespace gum {
 
   Idx IncrementalTriangulation::eliminationOrder(const NodeId node) {
     if (!graph__.existsNode(node)) {
-      GUM_ERROR(NotFound, "the node " << node << " does not exist");
+      GUM_ERROR(NotFound, "the node " << node << " does not exist")
     }
 
     // compute the elimination order

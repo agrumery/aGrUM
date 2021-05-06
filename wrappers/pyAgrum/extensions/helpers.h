@@ -58,14 +58,14 @@ namespace PyAgrumHelper {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
 
         if (name == "")
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
 
         names << name;
       }
     } else {
       std::string name = stringFromPyObject(varnames);
       if (name == "") {
-        GUM_ERROR(gum::InvalidArgument, "Argument is not a list or a string");
+        GUM_ERROR(gum::InvalidArgument, "Argument is not a list or a string")
       } else {
         names << name;
       }
@@ -75,7 +75,7 @@ namespace PyAgrumHelper {
       if (names.contains(v->name())) s << v;
 
     if (s.size() == 0)
-      GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument");
+      GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument")
   }
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
@@ -94,7 +94,7 @@ namespace PyAgrumHelper {
       for (int i = 0; i < siz; i++) {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
         if (name == "") {
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
         }
         if (!namesToVars.exists(name)) {
           GUM_ERROR(gum::InvalidArgument,
@@ -103,7 +103,7 @@ namespace PyAgrumHelper {
         s.push_back(namesToVars[name]);
       }
     } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a list");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a list")
     }
   }
 
@@ -113,7 +113,7 @@ namespace PyAgrumHelper {
                           PyObject*                       varname) {
     const std::string name = stringFromPyObject(varname);
     if (name == "") {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a string");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a string")
     }
 
     bool isOK = false;
@@ -135,7 +135,7 @@ namespace PyAgrumHelper {
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
     if (!PyDict_Check(dict)) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
     }
 
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
@@ -155,7 +155,7 @@ namespace PyAgrumHelper {
         continue;
       }
       if (!(PyInt_Check(value))) {
-        GUM_ERROR(gum::InvalidArgument, "A value is not an int");
+        GUM_ERROR(gum::InvalidArgument, "A value is not an int")
       }
       gum::Idx v = gum::Idx(PyInt_AsLong(value));
       if (v >= namesToVars[name]->domainSize()) {
@@ -204,7 +204,7 @@ namespace PyAgrumHelper {
         nodeset.insert(nodeIdFromNameOrIndex(item, map));
       }
     } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set");
+      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
     }
   }
 

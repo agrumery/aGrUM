@@ -248,7 +248,7 @@ namespace gum {
 
     if (!isTarget(node)) {
       // throws UndefinedElement if var is not a target
-      GUM_ERROR(UndefinedElement, node << " is not a target node");
+      GUM_ERROR(UndefinedElement, node << " is not a target node")
     }
 
     if (!this->isInferenceDone()) { this->makeInference(); }

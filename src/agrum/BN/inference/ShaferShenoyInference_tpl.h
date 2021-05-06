@@ -1468,7 +1468,7 @@ namespace gum {
       // 1/ we should check that all the nodes belong to the join tree
       for (const auto node: targets) {
         if (!graph__.exists(node)) {
-          GUM_ERROR(UndefinedElement, node << " is not a target node");
+          GUM_ERROR(UndefinedElement, node << " is not a target node")
         }
       }
 
@@ -1495,7 +1495,7 @@ namespace gum {
       const NodeSet& clique_nodes = JT__->clique(clique_of_set);
       for (const auto node: targets) {
         if (!clique_nodes.contains(node)) {
-          GUM_ERROR(UndefinedElement, set << " is not a joint target");
+          GUM_ERROR(UndefinedElement, set << " is not a joint target")
         }
       }
 

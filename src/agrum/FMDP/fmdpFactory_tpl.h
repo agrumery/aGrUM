@@ -114,7 +114,7 @@ namespace gum {
     for (const auto& elt: varNameMap__)
       if (elt.first.compare(name) == 0) return elt.second;
 
-    GUM_ERROR(NotFound, name);
+    GUM_ERROR(NotFound, name)
 
     return nullptr;
   }
@@ -154,7 +154,7 @@ namespace gum {
       illegalStateError__("variableName");
     else {
       if (varNameMap__.exists(name))
-        GUM_ERROR(DuplicateElement, "Name already used: " + name);
+        GUM_ERROR(DuplicateElement, "Name already used: " + name)
 
       foo_flag__     = true;
       stringBag__[0] = name;
@@ -199,7 +199,7 @@ namespace gum {
      FMDPFactory< GUM_SCALAR >::checkModalityInBag__(const std::string& mod) {
     for (size_t i = 2; i < stringBag__.size(); ++i)
       if (mod == stringBag__[i])
-        GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.");
+        GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.")
   }
 
 
@@ -248,7 +248,7 @@ namespace gum {
       resetParts__();
       states__.pop_back();
 
-      GUM_ERROR(OperationNotAllowed, msg.str());
+      GUM_ERROR(OperationNotAllowed, msg.str())
     }
   }
 
@@ -723,7 +723,7 @@ namespace gum {
         msg += "Unknown state";
     }
 
-    GUM_ERROR(OperationNotAllowed, msg);
+    GUM_ERROR(OperationNotAllowed, msg)
   }
 
 
@@ -773,7 +773,7 @@ namespace gum {
   //~ void
   //~ FMDPFactory<GUM_SCALAR>::checkVariableName__ ( const std::string& name ) {
   //~ if ( !varNameMap__.exists ( name ) )
-  //~ GUM_ERROR ( NotFound, name );
+  //~ GUM_ERROR ( NotFound, name )
   //~ }
 
 
@@ -782,7 +782,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE FMDPFactory< GUM_SCALAR >& FMDPFactory< GUM_SCALAR >::operator=(
      const FMDPFactory< GUM_SCALAR >& source) {
-    GUM_ERROR(FatalError, "Illegal!");
+    GUM_ERROR(FatalError, "Illegal!")
     // For noisy compilers
     return *this;
   }

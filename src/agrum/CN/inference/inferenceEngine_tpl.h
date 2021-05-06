@@ -497,7 +497,7 @@ namespace gum {
 
       if (!dynamicExpMin_.exists(
              varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
-        GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName);
+        GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
       return dynamicExpMin_[varName];
     }
@@ -515,7 +515,7 @@ namespace gum {
 
       if (!dynamicExpMax_.exists(
              varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
-        GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName);
+        GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
       return dynamicExpMax_[varName];
     }

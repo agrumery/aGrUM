@@ -35,17 +35,17 @@ namespace gum {
 
   DiGraphListener::DiGraphListener(const DiGraphListener& d) {
     GUM_CONS_CPY(DiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy constructor for DiGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy constructor for DiGraphListener")
   }
 
   DiGraphListener& DiGraphListener::operator=(const DiGraphListener& d) {
     GUM_OP_CPY(DiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy operator for DiGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy operator for DiGraphListener")
   }
 
   DiGraphListener::DiGraphListener(const DiGraph* g) {
     if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to");
+      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
     }
 
     GUM_CONSTRUCTOR(DiGraphListener);

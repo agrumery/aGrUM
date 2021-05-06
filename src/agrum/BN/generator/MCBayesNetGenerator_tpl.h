@@ -473,7 +473,7 @@ namespace gum {
 
       j = *it;
     } else {
-      GUM_ERROR(FatalError, "Sorry Misconstructed BN because of isolated node.");
+      GUM_ERROR(FatalError, "Sorry Misconstructed BN because of isolated node.")
     }
   }
 

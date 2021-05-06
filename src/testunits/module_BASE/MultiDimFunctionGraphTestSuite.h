@@ -257,7 +257,7 @@ namespace gum_tests {
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
         if (!output.good()) {
-          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
         }
 
         output << functionGraph->toDot();
@@ -267,7 +267,7 @@ namespace gum_tests {
         output.close();
 
         if (output.fail()) {
-          GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+          GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
         }
 
         delete functionGraph;
@@ -793,13 +793,13 @@ namespace gum_tests {
            = GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
         if (!output.good()) {
-          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
         }
         output << functionGraph->toDot(true);
         output.flush();
         output.close();
         if (output.fail()) {
-          GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
+          GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
         }
 
         gum::LabelizedVariable* phantomvar

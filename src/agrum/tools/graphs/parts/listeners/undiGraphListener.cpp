@@ -35,17 +35,17 @@ namespace gum {
 
   UndiGraphListener::UndiGraphListener(const UndiGraphListener& d) {
     GUM_CONS_CPY(UndiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy constructor for UndiGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy constructor for UndiGraphListener")
   }
 
   UndiGraphListener& UndiGraphListener::operator=(const UndiGraphListener& d) {
     GUM_OP_CPY(UndiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy operator for UndiGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy operator for UndiGraphListener")
   }
 
   UndiGraphListener::UndiGraphListener(UndiGraph* g) {
     if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to");
+      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
     }
 
     GUM_CONSTRUCTOR(UndiGraphListener);

@@ -162,7 +162,7 @@ namespace gum_tests {
             break;
 
           default:
-            GUM_ERROR(gum::OperationNotAllowed, "undefined change type");
+            GUM_ERROR(gum::OperationNotAllowed, "undefined change type")
         }
       }
 
@@ -299,7 +299,7 @@ namespace gum_tests {
                   break;
 
                 default:
-                  GUM_ERROR(gum::NotFound, "del_add_changes");
+                  GUM_ERROR(gum::NotFound, "del_add_changes")
               }
             }
 
@@ -359,7 +359,7 @@ namespace gum_tests {
                 break;
 
               default:
-                GUM_ERROR(gum::NotFound, "del_add_changes");
+                GUM_ERROR(gum::NotFound, "del_add_changes")
             }
             detector2.setDAG(g);
           }
@@ -403,7 +403,7 @@ namespace gum_tests {
                 break;
 
               default:
-                GUM_ERROR(gum::NotFound, "del_add_changes");
+                GUM_ERROR(gum::NotFound, "del_add_changes")
             }
           }
         }

@@ -40,7 +40,7 @@ namespace gum {
        const PRMAttribute< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAttribute);
-      GUM_ERROR(OperationNotAllowed, "Cannot copy Attributes");
+      GUM_ERROR(OperationNotAllowed, "Cannot copy Attributes")
     }
 
     template < typename GUM_SCALAR >

@@ -230,7 +230,7 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >&
      Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
-      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.")
     }
     gum::Set< std::string > son;   // set of names
     for (const auto& v: src.variablesSequence()) {
@@ -266,7 +266,7 @@ namespace gum {
      const Potential< GUM_SCALAR >&    src,
      const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
-      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.")
     }
     if (src.nbrDim() != mapSrc.size()) {
       GUM_ERROR(InvalidArgument,
@@ -317,7 +317,7 @@ namespace gum {
     }
     for (const auto var: this->variablesSequence()) {
       if (!p.contains(*var))
-        GUM_ERROR(InvalidArgument, "A variable does not belong to the argument.");
+        GUM_ERROR(InvalidArgument, "A variable does not belong to the argument.")
     }
 
     Instantiation inst(*this);
@@ -380,7 +380,7 @@ namespace gum {
       }
     } else {
       if (varId >= this->nbrDim()) {
-        GUM_ERROR(FatalError, varId << " is not a position for " << *this);
+        GUM_ERROR(FatalError, varId << " is not a position for " << *this)
       }
       Instantiation inst(*this);
       const auto&   v = this->variable(varId);
@@ -692,7 +692,7 @@ namespace gum {
   const Potential< GUM_SCALAR >&
      Potential< GUM_SCALAR >::noising(GUM_SCALAR alpha) const {
     if ((alpha < GUM_SCALAR(0.0)) || (alpha > GUM_SCALAR(1.0))) {
-      GUM_ERROR(InvalidArgument, "alpha must be in [0,1]");
+      GUM_ERROR(InvalidArgument, "alpha must be in [0,1]")
     }
     Potential< GUM_SCALAR > noise(*this);
     return fillWith(scale(1 - alpha) + noise.randomCPT().scale(alpha))

@@ -775,7 +775,7 @@ namespace gum {
              < comb_memory.first)
             || (std::numeric_limits< long >::max() - current_memory
                 < comb_memory.second)) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
         if (current_memory + comb_memory.first > max_memory) {
@@ -795,7 +795,7 @@ namespace gum {
       if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
           || (std::numeric_limits< long >::max() - current_memory
               < comb_memory.second)) {
-        GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+        GUM_ERROR(OutOfBounds, "memory usage out of long int range")
       }
 
       if (current_memory + comb_memory.first > max_memory) {

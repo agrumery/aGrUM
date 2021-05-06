@@ -99,7 +99,7 @@ namespace gum {
       GUM_EMIT2(onProceed, 100, status);
 
     } catch (ticpp::Exception& tinyexception) {
-      GUM_ERROR(IOError, tinyexception.what());
+      GUM_ERROR(IOError, tinyexception.what())
     }
   }
 

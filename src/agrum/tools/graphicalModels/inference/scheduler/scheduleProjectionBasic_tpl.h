@@ -177,7 +177,7 @@ namespace gum {
     for (const auto var: vars)
       if (!del_vars.contains(var)) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize() < res) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
         res *= long(var->domainSize());

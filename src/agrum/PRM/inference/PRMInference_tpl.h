@@ -157,7 +157,7 @@ namespace gum {
       try {
         return *(evidences__[&i]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.");
+        GUM_ERROR(NotFound, "this instance has no evidence.")
       }
     }
 
@@ -168,7 +168,7 @@ namespace gum {
       try {
         return *(evidences__[&i]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.");
+        GUM_ERROR(NotFound, "this instance has no evidence.")
       }
     }
 
@@ -178,7 +178,7 @@ namespace gum {
       try {
         return *(evidences__[i]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.");
+        GUM_ERROR(NotFound, "this instance has no evidence.")
       }
     }
 
@@ -189,7 +189,7 @@ namespace gum {
       try {
         return *(evidences__[i]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.");
+        GUM_ERROR(NotFound, "this instance has no evidence.")
       }
     }
 
@@ -235,7 +235,7 @@ namespace gum {
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
       if (m.nbrDim() > 0) {
-        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
+        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.")
       }
 
       if (hasEvidence(chain)) {
@@ -265,7 +265,7 @@ namespace gum {
        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
        Potential< GUM_SCALAR >&                                         j) {
       if (j.nbrDim() > 0) {
-        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
+        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.")
       }
 
       for (auto chain = chains.begin(); chain != chains.end(); ++chain) {

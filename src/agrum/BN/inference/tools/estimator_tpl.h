@@ -131,7 +131,7 @@ namespace gum {
     Potential< GUM_SCALAR >* p = nullptr;
 
     if (!estimator_.exists(var.name()))
-      GUM_ERROR(NotFound, "Target variable not found");
+      GUM_ERROR(NotFound, "Target variable not found")
 
     // check if we have already computed the posterior
     if (target_posteriors__.exists(var.name())) {

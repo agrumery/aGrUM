@@ -203,7 +203,7 @@ namespace gum {
       } catch (TypeError&) {
         std::stringstream msg;
         msg << type().name() << " is not a subtype of " << cast->type().name();
-        GUM_ERROR(TypeError, msg.str());
+        GUM_ERROR(TypeError, msg.str())
       }
       cast->becomeCastDescendant(type());
     }
@@ -231,14 +231,14 @@ namespace gum {
     void PRMScalarAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
                                                 const PRMType& new_type) {
       if (&(old_type) == type__) {
-        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
+        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type")
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
                   "Cannot replace types with difference domain size");
       }
       if (!cpf__->contains(old_type.variable())) {
-        GUM_ERROR(NotFound, "could not find variable " + old_type.name());
+        GUM_ERROR(NotFound, "could not find variable " + old_type.name())
       }
 
       auto old = cpf__;

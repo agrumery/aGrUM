@@ -144,7 +144,7 @@ namespace gum {
       if (!del_vars.contains(*iter)) {
         if (std::numeric_limits< long >::max() / (long)(*iter)->domainSize()
             < res) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
         res *= long((*iter)->domainSize());

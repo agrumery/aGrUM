@@ -54,7 +54,7 @@ namespace gum {
         PRMClassElementContainer< GUM_SCALAR >(source.name()),
         dag__(source.dag__), superInterface__(source.superInterface__) {
       GUM_CONS_CPY(PRMInterface);
-      GUM_ERROR(FatalError, "don't copy an interface");
+      GUM_ERROR(FatalError, "don't copy an interface")
     }
 
     template < typename GUM_SCALAR >
@@ -172,7 +172,7 @@ namespace gum {
                   "duplicate ClassElement '" << overloader->name() << "'");
       }
       if (!checkOverloadLegality__(overloaded, overloader)) {
-        GUM_ERROR(OperationNotAllowed, "illegal overload");
+        GUM_ERROR(OperationNotAllowed, "illegal overload")
       }
 
       switch (overloader->elt_type()) {
@@ -197,12 +197,12 @@ namespace gum {
         case PRMClassElement< GUM_SCALAR >::prm_aggregate:
         case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
           auto msg = "element can ! be overloaded";
-          GUM_ERROR(OperationNotAllowed, msg);
+          GUM_ERROR(OperationNotAllowed, msg)
           break;
         }
 
         default: {
-          GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type");
+          GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type")
         }
       }
 
@@ -319,7 +319,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>");
+          GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>")
         }
       }
     }
@@ -366,7 +366,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInterface< GUM_SCALAR >::addArc(const std::string& tail,
                                                    const std::string& head) {
-      GUM_ERROR(OperationNotAllowed, "an Interface does ! have arcs");
+      GUM_ERROR(OperationNotAllowed, "an Interface does ! have arcs")
     }
 
     template < typename GUM_SCALAR >
@@ -374,7 +374,7 @@ namespace gum {
       if (superInterface__)
         return *superInterface__;
       else
-        GUM_ERROR(NotFound, "this Interface is ! a sub interface");
+        GUM_ERROR(NotFound, "this Interface is ! a sub interface")
     }
 
     template < typename GUM_SCALAR >
@@ -383,7 +383,7 @@ namespace gum {
       if (superInterface__)
         return *superInterface__;
       else
-        GUM_ERROR(NotFound, "this Interface is ! a sub interface");
+        GUM_ERROR(NotFound, "this Interface is ! a sub interface")
     }
 
     template < typename GUM_SCALAR >
@@ -444,7 +444,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
 
@@ -454,7 +454,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
 
@@ -464,7 +464,7 @@ namespace gum {
       try {
         return *(nameMap__[name]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
       }
     }
 
@@ -474,7 +474,7 @@ namespace gum {
       try {
         return *(nameMap__[name]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
       }
     }
 

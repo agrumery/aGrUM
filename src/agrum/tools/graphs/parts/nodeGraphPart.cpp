@@ -144,7 +144,7 @@ namespace gum {
       if (inHoles__(id)) {   // we fill a hole
         eraseHole__(id);
       } else {
-        GUM_ERROR(DuplicateElement, "Id " << id << " is already used");
+        GUM_ERROR(DuplicateElement, "Id " << id << " is already used")
       }
     }
 

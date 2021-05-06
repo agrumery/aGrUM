@@ -296,7 +296,7 @@ namespace gum {
     // write the header of the output file
     std::ofstream outfile(filename);
     if (!outfile.is_open()) {
-      GUM_ERROR(IOError, "It is impossible to open file " << filename);
+      GUM_ERROR(IOError, "It is impossible to open file " << filename)
     }
     outfile.precision(20);
     outfile << "namespace gum {\n\n";

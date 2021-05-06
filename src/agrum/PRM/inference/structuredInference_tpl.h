@@ -176,7 +176,7 @@ namespace gum {
     void StructuredInference< GUM_SCALAR >::joint_(
        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
        Potential< GUM_SCALAR >&                                         j) {
-      GUM_ERROR(FatalError, "not implemented");
+      GUM_ERROR(FatalError, "not implemented")
     }
 
     template < typename GUM_SCALAR >
@@ -579,11 +579,11 @@ namespace gum {
                           .type()
                           .variable())) {
                 delete my_pool;
-                GUM_ERROR(OperationNotAllowed, "fake pattern");
+                GUM_ERROR(OperationNotAllowed, "fake pattern")
               }
             } catch (NotFound&) {
               delete my_pool;
-              GUM_ERROR(OperationNotAllowed, "fake pattern");
+              GUM_ERROR(OperationNotAllowed, "fake pattern")
             }
           }
         }
@@ -608,7 +608,7 @@ namespace gum {
             delete pot;
 
           delete my_pool;
-          GUM_ERROR(OperationNotAllowed, "fake pattern");
+          GUM_ERROR(OperationNotAllowed, "fake pattern")
         }
       }
 

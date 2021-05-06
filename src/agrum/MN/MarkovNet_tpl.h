@@ -82,7 +82,7 @@ namespace gum {
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
           if (1 + range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node);
+            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node)
           }
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
@@ -98,17 +98,17 @@ namespace gum {
         name   = node.substr(0, posBrack);
         labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
         if (labels.size() < 2) {
-          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node);
+          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node)
         }
         if (!hasUniqueElts(labels)) {
-          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node);
+          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node)
         }
         ds = static_cast< Size >(labels.size());
       }
     }
 
     if (ds == 0) {
-      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".");
+      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".")
     } else if (ds == 1) {
       GUM_ERROR(InvalidArgument,
                 "Only one value for variable " << name
@@ -226,7 +226,7 @@ namespace gum {
                                                   const std::string& old_label,
                                                   const std::string& new_label) {
     if (variable(id).varType() != VarType::Labelized) {
-      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
+      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
     }
     LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
        const_cast< DiscreteVariable* >(&variable(id)));
@@ -421,7 +421,7 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >&
      MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
     if (factor.nbrDim() == 0) {
-      GUM_ERROR(InvalidArgument, "Empty factor cannot be added.");
+      GUM_ERROR(InvalidArgument, "Empty factor cannot be added.")
     }
 
     NodeSet key;
@@ -430,7 +430,7 @@ namespace gum {
     }
 
     if (factors__.exists(key)) {
-      GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.");
+      GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.")
     }
 
     auto res = addFactor__(key, &factor);

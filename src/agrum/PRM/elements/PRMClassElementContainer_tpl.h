@@ -55,7 +55,7 @@ namespace gum {
     INLINE PRMClassElementContainer< GUM_SCALAR >&
        PRMClassElementContainer< GUM_SCALAR >::operator=(
           const PRMClassElementContainer< GUM_SCALAR >& source) {
-      GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator");
+      GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator")
     }
 
     template < typename GUM_SCALAR >
@@ -98,7 +98,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt,
        bool                                 b) {
       if (!exists(elt.safeName())) {
-        GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">");
+        GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {

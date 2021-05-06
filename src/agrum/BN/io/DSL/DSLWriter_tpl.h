@@ -55,7 +55,7 @@ namespace gum {
   void DSLWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                       const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
     output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl

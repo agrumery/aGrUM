@@ -402,7 +402,7 @@ namespace gum {
   void SimplicialSet::eraseClique(const NodeId id) {
     // check if the node we wish to remove actually belongs to the graph__
     if (!graph__->exists(id)) {
-      GUM_ERROR(NotFound, "Node " << id << " does not belong to the graph");
+      GUM_ERROR(NotFound, "Node " << id << " does not belong to the graph")
     }
 
     const NodeSet nei = graph__->neighbours(id);
@@ -410,7 +410,7 @@ namespace gum {
     // check that node id is actually a clique
     Size nb_adj = nei.size();
     if (nb_adjacent_neighbours__[id] != (nb_adj * (nb_adj - 1)) / 2) {
-      GUM_ERROR(NotFound, "Node " << id << " is not a clique");
+      GUM_ERROR(NotFound, "Node " << id << " is not a clique")
     }
 
     // remove the node and its adjacent edges
@@ -459,7 +459,7 @@ namespace gum {
   void SimplicialSet::eraseNode(const NodeId id) {
     // check if the node we wish to remove actually belongs to the graph__
     if (!graph__->exists(id)) {
-      GUM_ERROR(NotFound, "Node " << id << " does not belong to the graph");
+      GUM_ERROR(NotFound, "Node " << id << " does not belong to the graph")
     }
 
     // remove the node and its adjacent edges
@@ -497,7 +497,7 @@ namespace gum {
   void SimplicialSet::eraseEdge(const Edge& edge) {
     // check if the edge we wish to remove actually belongs to the graph__
     if (!graph__->existsEdge(edge)) {
-      GUM_ERROR(NotFound, "Edge " << edge << " does not belong to the graph");
+      GUM_ERROR(NotFound, "Edge " << edge << " does not belong to the graph")
     }
 
     // get the extremal nodes of the edge
@@ -583,7 +583,7 @@ namespace gum {
   void SimplicialSet::updateList__(const NodeId id) {
     // check if the node belongs to the graph__
     if (!graph__->exists(id)) {
-      GUM_ERROR(NotFound, "Node " << id << " could not be found");
+      GUM_ERROR(NotFound, "Node " << id << " could not be found")
     }
 
     // check if the status of the node has changed
@@ -817,7 +817,7 @@ namespace gum {
     // check that the pointers passed in argument are all different from 0
     if ((graph == nullptr) || (log_domain_sizes == nullptr)
         || (log_weights == nullptr)) {
-      GUM_ERROR(OperationNotAllowed, "SimplicialSet requires non-null pointers");
+      GUM_ERROR(OperationNotAllowed, "SimplicialSet requires non-null pointers")
     }
 
     // clear the structures used for the previous graph and assign the new graph

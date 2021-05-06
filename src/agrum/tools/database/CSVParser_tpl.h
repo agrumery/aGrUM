@@ -256,7 +256,7 @@ namespace gum {
     INLINE const std::vector<std::string,ALLOC<std::string>>&
     CSVParser<ALLOC>::current () const {
       if ( emptyData__ )
-        GUM_ERROR( NullElement, "No parsed data" );
+        GUM_ERROR( NullElement, "No parsed data" )
 
       return data__;
     }
@@ -266,7 +266,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE const std::size_t CSVParser<ALLOC>::nbLine() const {
       if ( nbLine__ == 0 )
-        GUM_ERROR( NullElement, "No parsed data" );
+        GUM_ERROR( NullElement, "No parsed data" )
 
       return nbLine__;
     }

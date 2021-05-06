@@ -50,7 +50,7 @@ namespace gum {
         try {
           return *(node_map__[node]);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "node not found in this Pattern");
+          GUM_ERROR(NotFound, "node not found in this Pattern")
         }
       }
 
@@ -59,7 +59,7 @@ namespace gum {
         try {
           return *(node_map__[node]);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "node not found in this Pattern");
+          GUM_ERROR(NotFound, "node not found in this Pattern")
         }
       }
 
@@ -67,14 +67,14 @@ namespace gum {
       LabelData& Pattern::lastAdded() {
         if (last__) return *last__;
 
-        GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
+        GUM_ERROR(OperationNotAllowed, "there are no LabelData yet")
       }
 
       INLINE
       const LabelData& Pattern::lastAdded() const {
         if (last__) return *last__;
 
-        GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
+        GUM_ERROR(OperationNotAllowed, "there are no LabelData yet")
       }
 
       INLINE
@@ -82,7 +82,7 @@ namespace gum {
         try {
           return *(arc_map__[Arc(i, j)].first);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in this Pattern");
+          GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
       }
 
@@ -91,7 +91,7 @@ namespace gum {
         try {
           return *(arc_map__[Arc(i, j)].first);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in this Pattern");
+          GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
       }
 
@@ -100,7 +100,7 @@ namespace gum {
         try {
           return *(arc_map__[arc].first);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in this Pattern");
+          GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
       }
 
@@ -109,14 +109,14 @@ namespace gum {
         try {
           return *(arc_map__[arc].first);
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in this Pattern");
+          GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
       }
 
       INLINE
       void Pattern::addArc(NodeId i, NodeId j, LabelData& l) {
         if (!(DiGraph::exists(i) && DiGraph::exists(j))) {
-          GUM_ERROR(NotFound, "node not found in this pattern");
+          GUM_ERROR(NotFound, "node not found in this pattern")
         }
 
         EdgeCode* edge
@@ -226,7 +226,7 @@ namespace gum {
           DiGraph::eraseNode(node);
           node_map__.erase(node);
         } else {
-          GUM_ERROR(OperationNotAllowed, "the given node has neighbors");
+          GUM_ERROR(OperationNotAllowed, "the given node has neighbors")
         }
       }
     } /* namespace gspan */

@@ -76,7 +76,7 @@ namespace gum {
   bool MarkovBlanket::buildMarkovBlanket__(const NodeId node) {
     bool change = false;
     if (!model__.nodes().exists(node))
-      GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.");
+      GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.")
 
     if (!mb__.nodes().exists(node)) {
       mb__.addNodeWithId(node);

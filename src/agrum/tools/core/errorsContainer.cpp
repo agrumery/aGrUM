@@ -117,7 +117,7 @@ namespace gum {
     if (count() > i)
       return errors[i];   // May throw an error if i >= count().
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR(OutOfBounds, "Index out of bound.")
     }
   }
 
@@ -125,7 +125,7 @@ namespace gum {
     if (count() > 0)
       return errors[count() - 1];
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR(OutOfBounds, "Index out of bound.")
     }
   }
 

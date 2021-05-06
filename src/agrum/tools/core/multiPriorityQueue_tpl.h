@@ -508,7 +508,7 @@ namespace gum {
   INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp, Alloc >::operator[](
      Size index) const {
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
+      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
     }
 
     return *(heap__[index].second);
@@ -539,7 +539,7 @@ namespace gum {
      const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
+      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
     }
 
     // get the element itself
@@ -602,7 +602,7 @@ namespace gum {
      Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
+      GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
     }
 
     // get the element itself

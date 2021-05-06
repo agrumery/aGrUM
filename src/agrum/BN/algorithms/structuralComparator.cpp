@@ -36,11 +36,11 @@ namespace gum {
 
   void StructuralComparator::compare(const DiGraph& ref, const DiGraph& test) {
     if (ref.size() != test.size()) {
-      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
+      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
     }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
-        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
+        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
     // compute the orientation matrix
@@ -78,11 +78,11 @@ namespace gum {
 
   void StructuralComparator::compare(const UndiGraph& ref, const UndiGraph& test) {
     if (ref.size() != test.size()) {
-      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
+      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
     }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
-        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
+        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
     // compute the orientation matrix
@@ -117,11 +117,11 @@ namespace gum {
   void StructuralComparator::compare(const MixedGraph& ref,
                                      const MixedGraph& test) {
     if (ref.size() != test.size()) {
-      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
+      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
     }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
-        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
+        GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
 

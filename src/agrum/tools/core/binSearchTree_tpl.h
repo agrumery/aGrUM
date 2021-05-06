@@ -494,7 +494,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE const Val& BinSearchTree< Val, Cmp, Node >::rootValue() const {
     if (root_ == 0) {
-      GUM_ERROR(NotFound, "no value in an empty Binary Search tree");
+      GUM_ERROR(NotFound, "no value in an empty Binary Search tree")
     }
 
     return root_->value();
@@ -503,7 +503,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE const Val& BinSearchTree< Val, Cmp, Node >::minValue() const {
     if (root_ == 0) {
-      GUM_ERROR(NotFound, "no minimal value in an empty Binary Search tree");
+      GUM_ERROR(NotFound, "no minimal value in an empty Binary Search tree")
     }
 
     return minNode_(root_)->value();
@@ -512,7 +512,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE const Val& BinSearchTree< Val, Cmp, Node >::maxValue() const {
     if (root_ == 0) {
-      GUM_ERROR(NotFound, "no maximal value in an empty Binary Search tree");
+      GUM_ERROR(NotFound, "no maximal value in an empty Binary Search tree")
     }
 
     return maxNode_(root_)->value();
@@ -790,7 +790,7 @@ namespace gum {
     Node* n = getNode_(val);
 
     if (n == nullptr)
-      GUM_ERROR(gum::NotFound, "Value \"" << val << "\" not found");
+      GUM_ERROR(gum::NotFound, "Value \"" << val << "\" not found")
 
     erase_(n);
   }

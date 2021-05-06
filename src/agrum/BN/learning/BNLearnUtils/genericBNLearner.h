@@ -917,7 +917,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->epsilon();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// Disable stopping criterion on epsilon
@@ -942,7 +942,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->isEnabledEpsilon();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -963,7 +963,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->minEpsilonRate();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// Disable stopping criterion on epsilon rate
@@ -986,7 +986,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->isEnabledMinEpsilonRate();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -1007,7 +1007,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->maxIter();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// Disable stopping criterion on max iterations
@@ -1030,7 +1030,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->isEnabledMaxIter();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -1052,7 +1052,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->maxTime();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// get the current running time in second (double)
@@ -1060,7 +1060,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->currentTime();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// Disable stopping criterion on timeout
@@ -1082,7 +1082,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->isEnabledMaxTime();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -1100,7 +1100,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->periodSize();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -1117,7 +1117,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->verbosity();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
 
@@ -1128,7 +1128,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->stateApproximationScheme();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// @throw OperationNotAllowed if scheme not performed
@@ -1136,7 +1136,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->nbrIterations();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
@@ -1144,7 +1144,7 @@ namespace gum {
         if (current_algorithm__ != nullptr)
           return current_algorithm__->history();
         else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning");
+          GUM_ERROR(FatalError, "No chosen algorithm for learning")
       };
       /// @}
     };

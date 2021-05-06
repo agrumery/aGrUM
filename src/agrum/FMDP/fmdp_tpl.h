@@ -152,7 +152,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addAction(Idx                actionId,
                                             const std::string& action) {
-    if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.");
+    if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.")
 
     for (BijectionIteratorSafe< Idx, const std::string* > actIter
          = actionMap__.beginSafe();
@@ -348,7 +348,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const std::string& FMDP< GUM_SCALAR >::actionName(Idx actionId) const {
     if (!actionMap__.existsFirst(actionId))
-      GUM_ERROR(NotFound, "No action with " << actionId << " as identifiant.");
+      GUM_ERROR(NotFound, "No action with " << actionId << " as identifiant.")
 
     return *(actionMap__.second(actionId));
   }
@@ -364,7 +364,7 @@ namespace gum {
          ++actIter)
       if (*(actIter.second()) == action) { return actIter.first(); }
 
-    GUM_ERROR(NotFound, " Action " << action << " has not been declared before.");
+    GUM_ERROR(NotFound, " Action " << action << " has not been declared before.")
   }
 
 

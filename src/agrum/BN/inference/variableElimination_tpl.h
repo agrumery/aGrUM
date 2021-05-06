@@ -324,7 +324,7 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(FatalError, "not implemented yet");
+          GUM_ERROR(FatalError, "not implemented yet")
       }
 
       // remove all the nodes that are not requisite
@@ -594,7 +594,7 @@ namespace gum {
         break;
 
       default:
-        GUM_ERROR(FatalError, "not implemented yet");
+        GUM_ERROR(FatalError, "not implemented yet")
     }
   }
 

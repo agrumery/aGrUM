@@ -36,7 +36,7 @@ namespace gum {
       if (superType__) {
         return *superType__;
       } else {
-        GUM_ERROR(NotFound, "No super type for this type.");
+        GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
@@ -71,7 +71,7 @@ namespace gum {
       if (superType__) {
         return *superType__;
       } else {
-        GUM_ERROR(NotFound, "No super type for this type.");
+        GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
@@ -83,7 +83,7 @@ namespace gum {
                     "The given type is not a valid super type for this Type");
         }
       } catch (NotFound&) {
-        GUM_ERROR(OperationNotAllowed, "This Type has no super Type");
+        GUM_ERROR(OperationNotAllowed, "This Type has no super Type")
       }
 
       superType__ = &t;
@@ -94,7 +94,7 @@ namespace gum {
       if (label_map__) {
         return *label_map__;
       } else {
-        GUM_ERROR(NotFound, "No super type for this type.");
+        GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 

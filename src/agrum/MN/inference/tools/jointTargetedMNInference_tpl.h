@@ -277,7 +277,7 @@ namespace gum {
   GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
     if (X == Y) {
-      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y");
+      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y")
     }
 
     try {

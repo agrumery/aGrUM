@@ -201,7 +201,7 @@ namespace gum {
   void SamplingInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                          bool isHardEvidence) {
     if (!isHardEvidence) {
-      GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
+      GUM_ERROR(FatalError, "Approximated inference only accept hard evidence")
     }
   }
 
@@ -218,7 +218,7 @@ namespace gum {
      SamplingInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                          bool hasChangedSoftHard) {
     if (hasChangedSoftHard) {
-      GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
+      GUM_ERROR(FatalError, "Approximated inference only accept hard evidence")
     }
   }
 

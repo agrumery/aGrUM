@@ -29,7 +29,7 @@
 class BNGenerator {
 public:
   gum::BayesNet<double> generate(gum::Size n_nodes=10,gum::Size n_arcs=15,gum::Size n_modmax=4) {
-      if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN");
+      if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN")
 
       gum::BayesNet<double> bn;
 

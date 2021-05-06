@@ -139,7 +139,7 @@ IMPROVE_CONCRETEMARKOVNET_API(MarkovNet<double>);
        reader.showElegantErrorsAndWarnings(stream);
        if (nbErr>0) {
          reader.showErrorCounts(stream);
-         GUM_ERROR(gum::FatalError,stream.str());
+         GUM_ERROR(gum::FatalError,stream.str())
        } else {
          return stream.str();
        }

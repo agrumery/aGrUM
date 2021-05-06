@@ -462,7 +462,7 @@ namespace gum {
 
       for (const auto ptrVar: seq1) {
         if (std::numeric_limits< Size >::max() / ptrVar->domainSize() < new_size) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
         new_size *= ptrVar->domainSize();
@@ -474,7 +474,7 @@ namespace gum {
         if (!seq1.exists(ptrVar)) {
           if (std::numeric_limits< Size >::max() / ptrVar->domainSize()
               < new_size) {
-            GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+            GUM_ERROR(OutOfBounds, "memory usage out of long int range")
           }
 
           new_size *= ptrVar->domainSize();
@@ -484,7 +484,7 @@ namespace gum {
       }
 
       if (std::numeric_limits< Size >::max() - current_memory < new_size) {
-        GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+        GUM_ERROR(OutOfBounds, "memory usage out of long int range")
       }
 
       current_memory += new_size;

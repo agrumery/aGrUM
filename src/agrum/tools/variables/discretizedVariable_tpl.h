@@ -67,11 +67,11 @@ namespace gum {
     if (ticks_size__ < 2) { GUM_ERROR(OutOfBounds, "not enough ticks"); }
 
     if (target < ticks__[0]) {
-      GUM_ERROR(OutOfLowerBound, "less than first range");
+      GUM_ERROR(OutOfLowerBound, "less than first range")
     }
 
     if (target > ticks__[ticks_size__ - 1]) {
-      GUM_ERROR(OutOfUpperBound, "more than last range");
+      GUM_ERROR(OutOfUpperBound, "more than last range")
     }
 
     if (target == ticks__[ticks_size__ - 1])   // special case for upper limit
@@ -203,7 +203,7 @@ namespace gum {
     std::stringstream ss;
 
     if (i >= ticks_size__ - 1) {
-      GUM_ERROR(OutOfBounds, "inexisting label index");
+      GUM_ERROR(OutOfBounds, "inexisting label index")
     }
 
     ss << "[" << ticks__[i] << ";" << ticks__[i + 1];
@@ -217,7 +217,7 @@ namespace gum {
   template < typename T_TICKS >
   INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx indice) const {
     if (indice >= ticks_size__ - 1) {
-      GUM_ERROR(OutOfBounds, "inexisting label index");
+      GUM_ERROR(OutOfBounds, "inexisting label index")
     }
 
     return double((ticks__[indice + 1] + ticks__[indice]) / 2);
@@ -232,7 +232,7 @@ namespace gum {
     T_TICKS            target;
 
     if (!(i >> target)) {
-      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this);
+      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }
 
     return pos_(target);

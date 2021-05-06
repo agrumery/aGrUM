@@ -1067,14 +1067,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRow(
        const typename DatabaseTable< ALLOC >::template Row< DBCell >& new_row) {
-      GUM_ERROR(NotImplementedYet, "not implemented yet");
+      GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
     // insert a new DBRow of DBCells at the end of the database
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRow(
        typename DatabaseTable< ALLOC >::template Row< DBCell >&& new_row) {
-      GUM_ERROR(NotImplementedYet, "not implemented yet");
+      GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
 
@@ -1144,7 +1144,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRows(
        typename DatabaseTable< ALLOC >::template Matrix< DBCell >&& new_rows) {
-      GUM_ERROR(NotImplementedYet, "not implemented yet");
+      GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
 
@@ -1153,7 +1153,7 @@ namespace gum {
     void DatabaseTable< ALLOC >::insertRows(
        const typename DatabaseTable< ALLOC >::template Matrix< DBCell >&
           new_rows) {
-      GUM_ERROR(NotImplementedYet, "not implemented yet");
+      GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
 

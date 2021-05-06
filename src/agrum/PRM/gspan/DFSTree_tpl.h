@@ -312,7 +312,7 @@ namespace gum {
         if (data->iso_graph.size() < min_freq) {
           delete data;
           delete child;
-          GUM_ERROR(OperationNotAllowed, "child is not frequent enough");
+          GUM_ERROR(OperationNotAllowed, "child is not frequent enough")
         }
 
         // Now we can compute the maximal independent set of child
@@ -337,7 +337,7 @@ namespace gum {
           data__.erase(child);
           delete data;
           delete child;
-          GUM_ERROR(OperationNotAllowed, "child is not frequent enough");
+          GUM_ERROR(OperationNotAllowed, "child is not frequent enough")
         }
 
         addChild__(p, child, edge_growth);
@@ -408,9 +408,9 @@ namespace gum {
                   .begin())));
         } catch (NotFound&) {
           if (node_map__.existsSecond(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "the given pattern is a root node");
+            GUM_ERROR(NotFound, "the given pattern is a root node")
           } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
           }
         }
       }
@@ -423,9 +423,9 @@ namespace gum {
                   .begin())));
         } catch (NotFound&) {
           if (node_map__.existsSecond(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "the given pattern is a root node");
+            GUM_ERROR(NotFound, "the given pattern is a root node")
           } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
           }
         }
       }
@@ -436,7 +436,7 @@ namespace gum {
         try {
           return data__[const_cast< Pattern* >(&p)]->children;
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
       }
 
@@ -446,7 +446,7 @@ namespace gum {
         try {
           return data__[const_cast< Pattern* >(&p)]->children;
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
       }
 
@@ -455,7 +455,7 @@ namespace gum {
         try {
           return *(node_map__.second(id));
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "no pattern matching the given id");
+          GUM_ERROR(NotFound, "no pattern matching the given id")
         }
       }
 
@@ -464,7 +464,7 @@ namespace gum {
         try {
           return *(node_map__.second(id));
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "no pattern matching the given id");
+          GUM_ERROR(NotFound, "no pattern matching the given id")
         }
       }
 
@@ -473,7 +473,7 @@ namespace gum {
         try {
           return data__[const_cast< Pattern* >(&p)]->iso_graph;
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
       }
 
@@ -484,9 +484,9 @@ namespace gum {
           return *(data__[const_cast< Pattern* >(&p)]->iso_map[node]);
         } catch (NotFound&) {
           if (data__.exists(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph");
+            GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
           } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
           }
         }
       }
@@ -497,7 +497,7 @@ namespace gum {
         try {
           return data__[const_cast< Pattern* >(&p)]->max_indep_set;
         } catch (NotFound&) {
-          GUM_ERROR(NotFound, "pattern not found in this DFSTree");
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
       }
 

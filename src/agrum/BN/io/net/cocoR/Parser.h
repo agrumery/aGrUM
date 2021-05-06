@@ -90,7 +90,7 @@ void setFactory(gum::IBayesNetFactory* f) {
 
 gum::IBayesNetFactory& factory() {
   if (factory__) return *factory__;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...")
 }
 
 void SemErr(std::string s) {

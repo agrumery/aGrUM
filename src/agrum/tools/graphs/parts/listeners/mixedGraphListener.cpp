@@ -35,17 +35,17 @@ namespace gum {
 
   MixedGraphListener::MixedGraphListener(const MixedGraphListener& d) {
     GUM_CONS_CPY(MixedGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy constructor for MixedGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy constructor for MixedGraphListener")
   }
 
   MixedGraphListener& MixedGraphListener::operator=(const MixedGraphListener& d) {
     GUM_OP_CPY(MixedGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy operator for MixedGraphListener");
+    GUM_ERROR(OperationNotAllowed, "No copy operator for MixedGraphListener")
   }
 
   MixedGraphListener::MixedGraphListener(MixedGraph* g) {
     if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to");
+      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
     }
 
     GUM_CONSTRUCTOR(MixedGraphListener);

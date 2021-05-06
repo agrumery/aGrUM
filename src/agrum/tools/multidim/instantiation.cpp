@@ -116,12 +116,12 @@ namespace gum {
     if (master__) {
       if (!aI.isMaster(master__)) {   // aI as the same master.
         if (nbrDim() != aI.nbrDim()) {
-          GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
+          GUM_ERROR(OperationNotAllowed, "in slave Instantiation")
         }
 
         for (Idx i = 0; i < nbrDim(); i++) {
           if ((!contains(aI.variable(i))) || (!aI.contains(variable(i)))) {
-            GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
+            GUM_ERROR(OperationNotAllowed, "in slave Instantiation")
           }
         }
       }
@@ -226,7 +226,7 @@ namespace gum {
   // force the variables sequence order to be the same as the master one
   void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
     if (m != master__) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
+      GUM_ERROR(OperationNotAllowed, "only master can do this")
     }
 
     reorder__(master__->variablesSequence());
@@ -235,7 +235,7 @@ namespace gum {
   void Instantiation::eraseWithMaster(const MultiDimAdressable* m,
                                       const DiscreteVariable&   v) {
     if (m != master__) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
+      GUM_ERROR(OperationNotAllowed, "only master can do this")
     }
 
     erase__(v);
@@ -247,7 +247,7 @@ namespace gum {
   bool Instantiation::actAsSlave(MultiDimAdressable& aMD) {
     // if master__ : not allowed
     if (master__ != nullptr) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
+      GUM_ERROR(OperationNotAllowed, "in slave Instantiation")
     }
 
     master__ = &aMD;

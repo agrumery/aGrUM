@@ -41,10 +41,10 @@ namespace gum {
 
   INLINE void DAG::addArc(const NodeId tail, const NodeId head) {
     if (head == tail) {
-      GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a dag !");
+      GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a dag !")
     }
     if (hasDirectedPath(head, tail)) {
-      GUM_ERROR(InvalidDirectedCycle, "Add a directed cycle in a dag !");
+      GUM_ERROR(InvalidDirectedCycle, "Add a directed cycle in a dag !")
     }
 
     // checking whether tail and head do belong to the graph is performed

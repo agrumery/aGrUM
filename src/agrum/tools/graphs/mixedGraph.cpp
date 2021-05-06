@@ -138,7 +138,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR(NotFound, "no path found")
   }
 
   const std::vector< NodeId >
@@ -220,7 +220,7 @@ namespace gum {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR(NotFound, "no path found")
   }
 
   std::string MixedGraph::toDot() const {

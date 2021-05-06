@@ -197,7 +197,7 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::const_reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::rowSafe() const {
       if (index__ >= end_index__) {
-        GUM_ERROR(OutOfBounds, "the handler has reached its end");
+        GUM_ERROR(OutOfBounds, "the handler has reached its end")
       }
 
       return row__->operator[](index__);
@@ -209,7 +209,7 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::rowSafe() {
       if (index__ >= end_index__) {
-        GUM_ERROR(OutOfBounds, "the handler has reached its end");
+        GUM_ERROR(OutOfBounds, "the handler has reached its end")
       }
 
       return const_cast< Matrix< T_DATA >* >(row__)->operator[](index__);
@@ -289,7 +289,7 @@ namespace gum {
 
       // check that the end belongs to the database, else raise an exception
       if (row__ == nullptr) {
-        GUM_ERROR(NullElement, "the handler does not point to any database");
+        GUM_ERROR(NullElement, "the handler does not point to any database")
       }
       if (end > row__->size()) {
         GUM_ERROR(SizeError,
@@ -774,7 +774,7 @@ namespace gum {
     INLINE const std::string&
        IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
       if (variable_names_.size() <= k)
-        GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k);
+        GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k)
       return variable_names_[k];
     }
 

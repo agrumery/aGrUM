@@ -504,7 +504,7 @@ namespace gum {
       for (const auto var: seq1) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize()
             < new_size)
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
 
         new_size *= long(var->domainSize());
         new_seq->insert(var);
@@ -514,7 +514,7 @@ namespace gum {
         if (!seq1.exists(var)) {
           if (std::numeric_limits< long >::max() / (long)var->domainSize()
               < new_size)
-            GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+            GUM_ERROR(OutOfBounds, "memory usage out of long int range")
 
           new_size *= long(var->domainSize());
           new_seq->insert(var);
@@ -522,7 +522,7 @@ namespace gum {
       }
 
       if (std::numeric_limits< long >::max() - current_memory < new_size) {
-        GUM_ERROR(OutOfBounds, "memory usage out of long int range");
+        GUM_ERROR(OutOfBounds, "memory usage out of long int range")
       }
 
       current_memory += new_size;

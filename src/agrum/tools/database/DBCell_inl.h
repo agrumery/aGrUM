@@ -165,7 +165,7 @@ namespace gum {
       if (type__ == EltType::REAL)
         return val_real__;
       else
-        GUM_ERROR(TypeError, typeErrorMsg__("a real number"));
+        GUM_ERROR(TypeError, typeErrorMsg__("a real number"))
     }
 
 
@@ -179,7 +179,7 @@ namespace gum {
     /// sets the content of the DBCell from a string
     INLINE void DBCell::setReal(const std::string& elt) {
       if (!isReal(elt))
-        GUM_ERROR(TypeError, "the string does not contain a real number");
+        GUM_ERROR(TypeError, "the string does not contain a real number")
       val_real__ = std::stof(elt);
       type__     = EltType::REAL;
     }
@@ -190,7 +190,7 @@ namespace gum {
       if (type__ == EltType::INTEGER)
         return val_integer__;
       else
-        GUM_ERROR(TypeError, typeErrorMsg__("an integer"));
+        GUM_ERROR(TypeError, typeErrorMsg__("an integer"))
     }
 
 
@@ -204,7 +204,7 @@ namespace gum {
     /// sets the content of the DBCell from a string
     INLINE void DBCell::setInteger(const std::string& elt) {
       if (!isInteger(elt))
-        GUM_ERROR(TypeError, "the string does not contain an integer");
+        GUM_ERROR(TypeError, "the string does not contain an integer")
       val_integer__ = std::stoi(elt);
       type__        = EltType::INTEGER;
     }
@@ -215,7 +215,7 @@ namespace gum {
       if (type__ == EltType::STRING)
         return strings__().first(val_index__);
       else
-        GUM_ERROR(TypeError, typeErrorMsg__("a string"));
+        GUM_ERROR(TypeError, typeErrorMsg__("a string"))
     }
 
 
@@ -224,7 +224,7 @@ namespace gum {
       if (type__ == EltType::STRING)
         return val_index__;
       else
-        GUM_ERROR(TypeError, typeErrorMsg__("a string"));
+        GUM_ERROR(TypeError, typeErrorMsg__("a string"))
     }
 
 

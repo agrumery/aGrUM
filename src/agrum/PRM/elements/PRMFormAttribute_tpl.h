@@ -224,7 +224,7 @@ namespace gum {
       } catch (TypeError&) {
         std::stringstream msg;
         msg << type().name() << " is not a subtype of " << cast->type().name();
-        GUM_ERROR(TypeError, msg.str());
+        GUM_ERROR(TypeError, msg.str())
       }
 
       cast->becomeCastDescendant(type());
@@ -260,13 +260,13 @@ namespace gum {
        const PRMFormAttribute& source) :
         PRMAttribute< GUM_SCALAR >(source.name()) {
       GUM_CONS_CPY(PRMFormAttribute);
-      GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute");
+      GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute")
     }
 
     template < typename GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::operator=(
        const PRMFormAttribute< GUM_SCALAR >& source) {
-      GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute");
+      GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute")
     }
 
     template < typename GUM_SCALAR >
@@ -326,14 +326,14 @@ namespace gum {
     void PRMFormAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
                                               const PRMType& new_type) {
       if (&(old_type) == type__) {
-        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
+        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type")
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
                   "Cannot replace types with difference domain size");
       }
       if (!formulas__->contains(old_type.variable())) {
-        GUM_ERROR(NotFound, "could not find variable " + old_type.name());
+        GUM_ERROR(NotFound, "could not find variable " + old_type.name())
       }
 
       auto old = formulas__;

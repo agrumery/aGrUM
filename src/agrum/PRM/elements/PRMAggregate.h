@@ -122,7 +122,7 @@ namespace gum {
         } else {
           std::string msg = "Unknown aggregate: ";
           msg.append(str);
-          GUM_ERROR(NotFound, msg);
+          GUM_ERROR(NotFound, msg)
         }
       }
 

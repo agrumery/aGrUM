@@ -158,7 +158,7 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(OperationNotAllowed, "undefined change type");
+          GUM_ERROR(OperationNotAllowed, "undefined change type")
       }
     }
 

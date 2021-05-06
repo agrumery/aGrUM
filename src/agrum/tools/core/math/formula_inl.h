@@ -46,7 +46,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "A - not an operator");
+        GUM_ERROR(OperationNotAllowed, "A - not an operator")
       }
     }
   }
@@ -85,7 +85,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "B - not an operator");
+        GUM_ERROR(OperationNotAllowed, "B - not an operator")
       }
     }
   }
@@ -102,7 +102,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "expecting a function or an operator");
+        GUM_ERROR(OperationNotAllowed, "expecting a function or an operator")
       }
     }
   }
@@ -122,7 +122,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "C - not an operator");
+        GUM_ERROR(OperationNotAllowed, "C - not an operator")
       }
     }
   }
@@ -147,7 +147,7 @@ namespace gum {
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
       default: {
-        GUM_ERROR(OperationNotAllowed, "unknown function");
+        GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
   }
@@ -182,7 +182,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "D - not an operator");
+        GUM_ERROR(OperationNotAllowed, "D - not an operator")
       }
     }
   }
@@ -209,7 +209,7 @@ namespace gum {
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
       default: {
-        GUM_ERROR(OperationNotAllowed, "unknown function");
+        GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
   }
@@ -227,7 +227,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "cannot evaluate expression");
+        GUM_ERROR(OperationNotAllowed, "cannot evaluate expression")
       }
     }
   }
@@ -328,10 +328,10 @@ namespace gum {
     }
 
     if (stack__.empty()) {
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
+      GUM_ERROR(OperationNotAllowed, "expecting '('")
 
     } else if (stack__.top().character != '(') {
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
+      GUM_ERROR(OperationNotAllowed, "expecting '('")
     }
 
     stack__.pop();
@@ -348,7 +348,7 @@ namespace gum {
   void Formula::finalize__() {
     while (!stack__.empty()) {
       if (stack__.top().character == '(') {
-        GUM_ERROR(OperationNotAllowed, "expecting ')'");
+        GUM_ERROR(OperationNotAllowed, "expecting ')'")
       }
 
       push_output__(stack__.top());
@@ -363,7 +363,7 @@ namespace gum {
     std::vector< FormulaPart > args;
 
     if (stack.size() < item.argc()) {
-      GUM_ERROR(OperationNotAllowed, "not enought inputs ");
+      GUM_ERROR(OperationNotAllowed, "not enought inputs ")
     }
 
     while (item.argc() > args.size()) {
@@ -414,7 +414,7 @@ namespace gum {
       push_stack__(t);
 
     } else {
-      GUM_ERROR(OperationNotAllowed, "unknown function");
+      GUM_ERROR(OperationNotAllowed, "unknown function")
     }
   }
 
@@ -426,7 +426,7 @@ namespace gum {
     }
 
     if (stack__.empty() || stack__.top().character != '(') {
-      GUM_ERROR(OperationNotAllowed, "expecting a '('");
+      GUM_ERROR(OperationNotAllowed, "expecting a '('")
     }
 
     last_token__ = FormulaPart(FormulaPart::token_type::ARG_SEP, ',');
@@ -446,7 +446,7 @@ namespace gum {
       push_number__(variables__[var]);
 
     } else {
-      GUM_ERROR(OperationNotAllowed, "unknonw variable");
+      GUM_ERROR(OperationNotAllowed, "unknonw variable")
     }
   }
 
@@ -460,7 +460,7 @@ namespace gum {
         push_variable__(ident);
 
       } catch (OperationNotAllowed&) {
-        GUM_ERROR(OperationNotAllowed, "unknown identifier");
+        GUM_ERROR(OperationNotAllowed, "unknown identifier")
       }
     }
   }

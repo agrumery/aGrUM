@@ -121,7 +121,7 @@ namespace gum {
     for (const auto& elt: cliques__)
       if (elt.second.contains(id)) return elt.first;
 
-    GUM_ERROR(NotFound, "This node belongs to no clique");
+    GUM_ERROR(NotFound, "This node belongs to no clique")
   }
 
   /// function used to update the separators__ when clique__/edges are modified

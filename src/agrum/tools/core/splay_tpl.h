@@ -426,9 +426,9 @@ namespace gum {
     int val = i;
 
     if (!root) {
-      GUM_ERROR(NotFound, "The tree is empty !");
+      GUM_ERROR(NotFound, "The tree is empty !")
     } else if (val >= root->size) {
-      GUM_ERROR(NotFound, "The index is too large !");
+      GUM_ERROR(NotFound, "The index is too large !")
     } else {
       // The element exists
       // Find it
@@ -463,9 +463,9 @@ namespace gum {
     int val = i;
 
     if (!root) {
-      GUM_ERROR(NotFound, "The tree is empty !");
+      GUM_ERROR(NotFound, "The tree is empty !")
     } else if (val >= root->size) {
-      GUM_ERROR(NotFound, "The index is too large !");
+      GUM_ERROR(NotFound, "The index is too large !")
     } else {
       // The element exists
       // Find it
@@ -738,7 +738,7 @@ namespace gum {
     GUM_ASSERT(root != 0);
 
     if (!addr.exists(e)) {
-      GUM_ERROR(NotFound, "not enough elements in the splay tree");
+      GUM_ERROR(NotFound, "not enough elements in the splay tree")
     }
 
     // We will find the node at position i

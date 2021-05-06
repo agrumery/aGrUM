@@ -91,7 +91,7 @@ void setFactory(gum::IBayesNetFactory* f) {
 
 gum::IBayesNetFactory& factory() {
   if (factory__) return *factory__;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...")
 }
 
 void SemErr(std::string s) {

@@ -218,7 +218,7 @@ namespace gum {
   template < typename Key >
   INLINE Idx SequenceIteratorSafe< Key >::pos() const {
     if (iterator__ >= seq__->size()) {
-      GUM_ERROR(UndefinedIteratorValue, "iterator is end() or rend()");
+      GUM_ERROR(UndefinedIteratorValue, "iterator is end() or rend()")
     }
 
     return iterator__;
@@ -913,7 +913,7 @@ namespace gum {
   INLINE const Key&
                SequenceImplementation< Key, Alloc, true >::atPos(Idx i) const {
     if (i >= h__.size()) {
-      GUM_ERROR(NotFound, "not enough elements in the sequence");
+      GUM_ERROR(NotFound, "not enough elements in the sequence")
     }
 
     return v__[i];

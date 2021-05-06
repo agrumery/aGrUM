@@ -57,21 +57,21 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimReadOnly< GUM_SCALAR >::set(const Instantiation& i,
                                                   const GUM_SCALAR& value) const {
-    GUM_ERROR(OperationNotAllowed, "Write access to an aggregator");
+    GUM_ERROR(OperationNotAllowed, "Write access to an aggregator")
   }
 
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template < typename GUM_SCALAR >
   void MultiDimReadOnly< GUM_SCALAR >::fill(const GUM_SCALAR&) const {
-    GUM_ERROR(OperationNotAllowed, "Write access to an aggregator");
+    GUM_ERROR(OperationNotAllowed, "Write access to an aggregator")
   }
 
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template < typename GUM_SCALAR >
   GUM_SCALAR& MultiDimReadOnly< GUM_SCALAR >::get_(const Instantiation& i) const {
-    GUM_ERROR(OperationNotAllowed, "No (unconst) access to an aggregator");
+    GUM_ERROR(OperationNotAllowed, "No (unconst) access to an aggregator")
   }
 
 } /* namespace gum */

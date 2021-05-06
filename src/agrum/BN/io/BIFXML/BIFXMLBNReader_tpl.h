@@ -96,7 +96,7 @@ namespace gum {
 
       return 0;
     } catch (ticpp::Exception& tinyexception) {
-      GUM_ERROR(IOError, tinyexception.what());
+      GUM_ERROR(IOError, tinyexception.what())
       return 1;
     }
   }

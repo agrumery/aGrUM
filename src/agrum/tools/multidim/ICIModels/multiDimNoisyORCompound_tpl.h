@@ -69,7 +69,7 @@ namespace gum {
   GUM_SCALAR
      MultiDimNoisyORCompound< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) {
-      GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ");
+      GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ")
     }
 
     const DiscreteVariable& C = this->variable((Idx)0);

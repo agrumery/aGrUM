@@ -257,7 +257,7 @@ namespace gum {
                 << " never appears in the database. Please consider using "
                 << "priors such as smoothing.";
 
-            GUM_ERROR(DatabaseError, str.str());
+            GUM_ERROR(DatabaseError, str.str())
           }
         }
 #  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
@@ -301,7 +301,7 @@ namespace gum {
           str << "No data for target node " << var.name()
               << ". It is impossible to estimate the parameters by maximum "
                  "likelihood";
-          GUM_ERROR(DatabaseError, str.str());
+          GUM_ERROR(DatabaseError, str.str())
 #  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           for (double& n_ijk: N_ijk)
             n_ijk = 1.0 / N_ijk.size();

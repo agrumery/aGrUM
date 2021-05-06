@@ -99,7 +99,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const VariableNodeMap&
                  ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
-      GUM_ERROR(FatalError, "Sorry no VarMap in a ClassBayesNet.");
+      GUM_ERROR(FatalError, "Sorry no VarMap in a ClassBayesNet.")
     }
 
     template < typename GUM_SCALAR >
@@ -132,7 +132,7 @@ namespace gum {
       if (this->dag_.exists(id)) {
         return class__->get(id);
       } else {
-        GUM_ERROR(NotFound, "no element found with that id.");
+        GUM_ERROR(NotFound, "no element found with that id.")
       }
     }
 
@@ -142,7 +142,7 @@ namespace gum {
       try {
         return class__->get(name);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no element found with that id.");
+        GUM_ERROR(NotFound, "no element found with that id.")
       }
     }
 

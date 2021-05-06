@@ -47,7 +47,7 @@ namespace gum {
       for (Size i = 0; i < chain__->size() - 1; ++i) {
         if (chain__->atPos(i)->elt_type()
             != PRMClassElement< GUM_SCALAR >::prm_refslot) {
-          GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
+          GUM_ERROR(WrongClassElement, "illegal ClassElement in chain")
         } else {
           isMultiple__
              = isMultiple__
@@ -81,7 +81,7 @@ namespace gum {
       // for (Size i = 0; i < chain__->size() - 1; ++i) {
       //  if (not(chain__->atPos(i)->elt_type() !=
       //          PRMClassElement<GUM_SCALAR>::prm_refslot)) {
-      //    GUM_ERROR(WrongClassElement, "illegal PRMClassElement in chain");
+      //    GUM_ERROR(WrongClassElement, "illegal PRMClassElement in chain")
       //  } else {
       //    isMultiple__ =
       //        isMultiple__ or
@@ -126,7 +126,7 @@ namespace gum {
         }
 
         default: {
-          GUM_ERROR(WrongClassElement, "last element of chain is not valid");
+          GUM_ERROR(WrongClassElement, "last element of chain is not valid")
         }
       }
 
@@ -234,7 +234,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >*
            PRMSlotChain< GUM_SCALAR >::getCastDescendant() const {
-      GUM_ERROR(OperationNotAllowed, "This is a slotchain");
+      GUM_ERROR(OperationNotAllowed, "This is a slotchain")
     }
 
   } /* namespace prm */

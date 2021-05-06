@@ -86,7 +86,7 @@ namespace gum {
     } else {
       std::string msg = "Unknown aggregate: ";
       msg.append(aggType);
-      GUM_ERROR(NotFound, msg);
+      GUM_ERROR(NotFound, msg)
     }
   }
 
@@ -366,7 +366,7 @@ namespace gum {
   INLINE void
      AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
     if (arity < 2) {
-      GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2");
+      GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2")
     }
     arity__ = arity;
   }

@@ -37,11 +37,11 @@ namespace gum {
     if (!contains(x)) { GUM_ERROR(NotFound, "could not find the variable"); }
 
     if (contains(y)) {
-      GUM_ERROR(DuplicateElement, "variable " << y << " already in MultiDim");
+      GUM_ERROR(DuplicateElement, "variable " << y << " already in MultiDim")
     }
 
     if (x.domainSize() != y.domainSize()) {
-      GUM_ERROR(OperationNotAllowed, "incompatible variables");
+      GUM_ERROR(OperationNotAllowed, "incompatible variables")
     }
 
     replace_(&x, &y);

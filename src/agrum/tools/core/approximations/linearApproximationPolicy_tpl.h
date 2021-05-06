@@ -253,11 +253,11 @@ namespace gum {
   INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >::safeFromExact(
      const GUM_SCALAR& value) {
     if (value > this->highLimit_) {
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than high limit");
+      GUM_ERROR(OutOfUpperBound, "Value asked is higher than high limit")
     }
 
     if (value < this->lowLimit_) {
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit");
+      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
     }
 
     return fromExact(value);
@@ -272,13 +272,13 @@ namespace gum {
     if (value > this->highLimit_) {
       GUM_TRACE(value << " not in (" << this->lowLimit_ << "-" << this->highLimit_
                       << ")");
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit");
+      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit")
     }
 
     if (value < this->lowLimit_) {
       GUM_TRACE(value << " not in (" << this->lowLimit_ << "-" << this->highLimit_
                       << ")");
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit");
+      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
     }
 
 #endif   // GUM_DEBUG_MODE
@@ -311,7 +311,7 @@ namespace gum {
      const GUM_SCALAR& newLowLimit,
      const GUM_SCALAR& newHighLimit) {
     if (newLowLimit > newHighLimit) {
-      GUM_ERROR(OutOfBounds, "Asked low value is higher than asked high value");
+      GUM_ERROR(OutOfBounds, "Asked low value is higher than asked high value")
     }
 
     lowLimit_  = newLowLimit;
@@ -324,7 +324,7 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::setLowLimit(
      const GUM_SCALAR& newLowLimit) {
     if (newLowLimit > this->highLimit_) {
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit");
+      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit")
     }
 
     lowLimit_ = newLowLimit;
@@ -344,7 +344,7 @@ namespace gum {
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::setHighLimit(
      const GUM_SCALAR& newHighLimit) {
     if (newHighLimit < this->lowLimit_) {
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit");
+      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
     }
 
     highLimit_ = newHighLimit;

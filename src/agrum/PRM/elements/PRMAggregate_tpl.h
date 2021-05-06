@@ -80,13 +80,13 @@ namespace gum {
        const PRMAggregate< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAggregate);
-      GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy constructor.");
+      GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy constructor.")
     }
 
     template < typename GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::operator=(
        const PRMAggregate< GUM_SCALAR >& source) {
-      GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy operator.");
+      GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy operator.")
     }
 
     template < typename GUM_SCALAR >
@@ -104,7 +104,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Idx PRMAggregate< GUM_SCALAR >::label() const {
       if (*label__ != INT_MAX) return *label__;
-      GUM_ERROR(OperationNotAllowed, "no label defined for this aggregate");
+      GUM_ERROR(OperationNotAllowed, "no label defined for this aggregate")
     }
 
     template < typename GUM_SCALAR >
@@ -161,7 +161,7 @@ namespace gum {
           return aggregator::Sum< GUM_SCALAR >().isDecomposable();
         }
         default: {
-          GUM_ERROR(OperationNotAllowed, "Unknown aggregator.");
+          GUM_ERROR(OperationNotAllowed, "Unknown aggregator.")
         }
       }
     }
@@ -178,12 +178,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() {
-      GUM_ERROR(OperationNotAllowed, "This is an aggregate.");
+      GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() const {
-      GUM_ERROR(OperationNotAllowed, "This is an aggregate.");
+      GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
     template < typename GUM_SCALAR >
@@ -221,7 +221,7 @@ namespace gum {
           return new aggregator::Sum< GUM_SCALAR >();
         }
         default: {
-          GUM_ERROR(OperationNotAllowed, "Unknown aggregator.");
+          GUM_ERROR(OperationNotAllowed, "Unknown aggregator.")
         }
       }
       return nullptr;

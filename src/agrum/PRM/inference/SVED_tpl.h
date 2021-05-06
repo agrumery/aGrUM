@@ -487,7 +487,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
                                     Potential< GUM_SCALAR >&    j) {
-      GUM_ERROR(FatalError, "Not implemented.");
+      GUM_ERROR(FatalError, "Not implemented.")
     }
 
     template < typename GUM_SCALAR >

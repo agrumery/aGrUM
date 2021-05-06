@@ -156,7 +156,7 @@ namespace gum {
             deja = true;
           str << node;
         }
-        GUM_ERROR(MissingVariableInDatabase, str.str());
+        GUM_ERROR(MissingVariableInDatabase, str.str())
       }
 
       // create the apriori
@@ -235,7 +235,7 @@ namespace gum {
       std::ifstream in(filename, std::ifstream::in);
 
       if ((in.rdstate() & std::ifstream::failbit) != 0) {
-        GUM_ERROR(gum::IOError, "File " << filename << " not found");
+        GUM_ERROR(gum::IOError, "File " << filename << " not found")
       }
 
       CSVParser<> parser(in);

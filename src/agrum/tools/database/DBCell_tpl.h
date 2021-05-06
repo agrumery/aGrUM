@@ -88,10 +88,10 @@ namespace gum {
           if (missingVals.size())
             return missingVals[0];
           else
-            GUM_ERROR(UndefinedElement, "no missing value symbol found");
+            GUM_ERROR(UndefinedElement, "no missing value symbol found")
 
         default:
-          GUM_ERROR(NotImplementedYet, "type not supported by DBCell toString");
+          GUM_ERROR(NotImplementedYet, "type not supported by DBCell toString")
       }
     }
 

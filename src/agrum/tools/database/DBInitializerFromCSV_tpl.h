@@ -50,7 +50,7 @@ namespace gum {
         var_names__(alloc) {
       // check that the input file was opened correctly
       if ((input_stream__.rdstate() & std::ifstream::failbit) != 0) {
-        GUM_ERROR(IOError, "File " << filename << " not found");
+        GUM_ERROR(IOError, "File " << filename << " not found")
       }
 
       // if the first line contains names, store them into the intializer
@@ -150,7 +150,7 @@ namespace gum {
 
         // check that the input file was opened correctly
         if ((input_stream__.rdstate() & std::ifstream::failbit) != 0) {
-          GUM_ERROR(IOError, "File " << filename__ << " not found");
+          GUM_ERROR(IOError, "File " << filename__ << " not found")
         }
 
         // make the parser use the new input stream

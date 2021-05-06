@@ -145,7 +145,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
          MultiDimDecorator< GUM_SCALAR >::get_(const Instantiation& i) const {
-    GUM_ERROR(OperationNotAllowed, "_get in the implementation !");
+    GUM_ERROR(OperationNotAllowed, "_get in the implementation !")
   }
 
   template < typename GUM_SCALAR >
@@ -313,7 +313,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::notifyChange() const {
     /*( (MultiDimContainer<GUM_SCALAR> *) content_)->notifyChange();*/
-    GUM_ERROR(OperationNotAllowed, "Not implemented yet");
+    GUM_ERROR(OperationNotAllowed, "Not implemented yet")
   }
 
   // give a const ref to the sequence of DiscreteVariable*. final method.

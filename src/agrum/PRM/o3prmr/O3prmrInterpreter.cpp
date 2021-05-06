@@ -98,7 +98,7 @@ namespace gum {
         if (Directory::isDir(path)) {
           m_paths.push_back(path);
         } else {
-          GUM_ERROR(NotFound, "not a directory");
+          GUM_ERROR(NotFound, "not a directory")
         }
       }
 
@@ -202,7 +202,7 @@ namespace gum {
 
           return str;
         }
-        GUM_ERROR(OperationNotAllowed, "Could not open file");
+        GUM_ERROR(OperationNotAllowed, "Could not open file")
       }
 
       bool O3prmrInterpreter::interpretLine(const std::string& line) {

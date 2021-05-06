@@ -110,7 +110,7 @@ namespace gum {
     // check that the variable does actually belong to the
     // MultiDimImplementation
     if (!vars__.exists(&v)) {
-      GUM_ERROR(NotFound, "Var does not exist in this implementation");
+      GUM_ERROR(NotFound, "Var does not exist in this implementation")
     }
 
     domainSize__ /= v.domainSize();

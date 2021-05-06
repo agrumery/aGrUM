@@ -65,7 +65,7 @@ namespace gum {
       if (!isValid__()) {
         delete label_map__;
         label_map__ = 0;
-        GUM_ERROR(OperationNotAllowed, "Invalid label map.");
+        GUM_ERROR(OperationNotAllowed, "Invalid label map.")
       }
     }
 
@@ -82,7 +82,7 @@ namespace gum {
 
     PRMType::PRMType(PRMType&& from) : PRMObject(from) {
       GUM_CONS_MOV(PRMType);
-      GUM_ERROR(FatalError, "Move constructor must not be used");
+      GUM_ERROR(FatalError, "Move constructor must not be used")
     }
 
 
@@ -94,12 +94,12 @@ namespace gum {
 
 
     PRMType& PRMType::operator=(const PRMType& from) {
-      GUM_ERROR(FatalError, "Copy operator must not be used");
+      GUM_ERROR(FatalError, "Copy operator must not be used")
     }
 
 
     PRMType& PRMType::operator=(PRMType&& from) {
-      GUM_ERROR(FatalError, "Move operator must not be used");
+      GUM_ERROR(FatalError, "Move operator must not be used")
     }
 
 

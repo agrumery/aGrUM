@@ -212,7 +212,7 @@ namespace gum_tests {
       std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!output.good()) {
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
       }
 
       output << id.toDot();
@@ -222,7 +222,7 @@ namespace gum_tests {
       output.close();
 
       if (output.fail()) {
-        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.")
       }
     }
 
@@ -781,7 +781,7 @@ namespace gum_tests {
       std::ofstream idOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!idOutput.good()) {
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
       }
 
       idOutput << id.toDot();
@@ -791,7 +791,7 @@ namespace gum_tests {
       idOutput.close();
 
       if (idOutput.fail()) {
-        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.")
       }
 
       // For comparison with what readers will return
@@ -800,7 +800,7 @@ namespace gum_tests {
       std::ofstream moralOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!moralOutput.good()) {
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");
+        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
       }
 
       moralOutput << moralGraph.toDot();
@@ -810,7 +810,7 @@ namespace gum_tests {
       moralOutput.close();
 
       if (moralOutput.fail()) {
-        GUM_ERROR(gum::IOError, "Writing in the ostream failed.");
+        GUM_ERROR(gum::IOError, "Writing in the ostream failed.")
       }
     }
 

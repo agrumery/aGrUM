@@ -53,7 +53,7 @@ namespace gum {
       strBuff << target;
       return strBuff.str();
     } else {
-      GUM_ERROR(OutOfBounds, "Indice out of bounds.");
+      GUM_ERROR(OutOfBounds, "Indice out of bounds.")
     }
   }
 
@@ -68,11 +68,11 @@ namespace gum {
     long               target;
 
     if (!(i >> target)) {
-      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this);
+      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }
 
     if (!belongs(target)) {
-      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this);
+      GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }
 
     return static_cast< Idx >(target - minBound__);

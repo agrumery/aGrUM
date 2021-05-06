@@ -135,7 +135,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str());
+              GUM_ERROR(gum::FatalError,stream.str())
           } else {
               return stream.str();
           }
@@ -166,7 +166,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str());
+              GUM_ERROR(gum::FatalError,stream.str())
           } else {
               return stream.str();
           }
@@ -197,7 +197,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str());
+              GUM_ERROR(gum::FatalError,stream.str())
           } else {
               return stream.str();
           }
@@ -224,7 +224,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str());
+              GUM_ERROR(gum::FatalError,stream.str())
           } else {
               return stream.str();
           }
@@ -249,7 +249,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
           int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
           if (isOK==1) {
-              GUM_ERROR(gum::FatalError,"Errors found in XML file");
+              GUM_ERROR(gum::FatalError,"Errors found in XML file")
           } else {
               return "";
           }
@@ -280,7 +280,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str());
+              GUM_ERROR(gum::FatalError,stream.str())
           } else {
               return stream.str();
           }

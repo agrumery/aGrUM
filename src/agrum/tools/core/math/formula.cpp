@@ -77,7 +77,7 @@ namespace gum {
         return "nil";
       }
       default: {
-        GUM_ERROR(OperationNotAllowed, "unknown function");
+        GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
   }
@@ -163,7 +163,7 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "unknown type");
+        GUM_ERROR(OperationNotAllowed, "unknown type")
       }
     }
     return s.str();
@@ -324,10 +324,10 @@ namespace gum {
     }
 
     if (stack.size() != 1) {
-      GUM_ERROR(OperationNotAllowed, "too many inputs");
+      GUM_ERROR(OperationNotAllowed, "too many inputs")
 
     } else if (stack.top().type != FormulaPart::token_type::NUMBER) {
-      GUM_ERROR(OperationNotAllowed, "too many inputs");
+      GUM_ERROR(OperationNotAllowed, "too many inputs")
     }
     return stack.top().number;
   }

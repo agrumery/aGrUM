@@ -33,11 +33,11 @@ namespace gum {
 
   INLINE void UndiGraph::addEdge(const NodeId first, const NodeId second) {
     if (!exists(first)) {
-      GUM_ERROR(InvalidNode, "Node (" << first << ") does not exist.");
+      GUM_ERROR(InvalidNode, "Node (" << first << ") does not exist.")
     }
 
     if (!exists(second)) {
-      GUM_ERROR(InvalidNode, "Node (" << second << ") does not exist.");
+      GUM_ERROR(InvalidNode, "Node (" << second << ") does not exist.")
     }
 
     EdgeGraphPart::addEdge(second, first);

@@ -38,7 +38,7 @@ namespace gum {
                                                       GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     if (external_weight == 0) {
-      GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND");
+      GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND")
     }
 
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
@@ -70,7 +70,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimNoisyAND< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) {
-      GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyAND ");
+      GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyAND ")
     }
 
     const DiscreteVariable& C = this->variable((Idx)0);

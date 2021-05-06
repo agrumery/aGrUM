@@ -497,7 +497,7 @@ namespace gum {
 
           eliminateNodes(elim, pool, trash);
         } catch (NotFound&) {
-          GUM_ERROR(FatalError, "there should be at least one node here.");
+          GUM_ERROR(FatalError, "there should be at least one node here.")
         }
       }
     }
@@ -650,7 +650,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void SVE< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
                                    Potential< GUM_SCALAR >&    j) {
-      GUM_ERROR(FatalError, "Not implemented.");
+      GUM_ERROR(FatalError, "Not implemented.")
     }
 
     template < typename GUM_SCALAR >

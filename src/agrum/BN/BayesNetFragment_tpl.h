@@ -78,7 +78,7 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >&
                BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "NodeId " << id << " is not installed");
+      GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
     if (localCPTs__.exists(id))
       return *localCPTs__[id];
@@ -96,7 +96,7 @@ namespace gum {
   INLINE const DiscreteVariable&
                BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "NodeId " << id << " is not installed");
+      GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
     return bn__.variable(id);
   }
@@ -107,7 +107,7 @@ namespace gum {
     NodeId id = bn__.nodeId(var);
 
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "variable " << var.name() << " is not installed");
+      GUM_ERROR(NotFound, "variable " << var.name() << " is not installed")
 
     return id;
   }
@@ -118,7 +118,7 @@ namespace gum {
     NodeId id = bn__.idFromName(name);
 
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "variable " << name << " is not installed");
+      GUM_ERROR(NotFound, "variable " << name << " is not installed")
 
     return id;
   }
@@ -129,7 +129,7 @@ namespace gum {
     NodeId id = idFromName(name);
 
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "variable " << name << " is not installed");
+      GUM_ERROR(NotFound, "variable " << name << " is not installed")
 
     return bn__.variable(id);
   }
@@ -144,7 +144,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installNode(NodeId id) {
     if (!bn__.dag().existsNode(id))
-      GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet");
+      GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet")
 
     if (!isInstalledNode(id)) {
       this->dag_.addNodeWithId(id);
@@ -215,7 +215,7 @@ namespace gum {
      NodeId                         id,
      const Potential< GUM_SCALAR >& pot) {
     if (!dag().existsNode(id))
-      GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
+      GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment")
 
     if (&(pot.variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
@@ -262,11 +262,11 @@ namespace gum {
      NodeId                         id,
      const Potential< GUM_SCALAR >& pot) {
     if (!isInstalledNode(id)) {
-      GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
+      GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment")
     }
 
     if (pot.nbrDim() > 1) {
-      GUM_ERROR(OperationNotAllowed, "The potential is not a marginal :" << pot);
+      GUM_ERROR(OperationNotAllowed, "The potential is not a marginal :" << pot)
     }
 
     if (&(pot.variable(0)) != &(bn__.variable(id))) {
@@ -281,7 +281,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   bool BayesNetFragment< GUM_SCALAR >::checkConsistency(NodeId id) const {
     if (!isInstalledNode(id))
-      GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
+      GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment")
 
     const auto& cpt = this->cpt(id);
     NodeSet     cpt_parents;

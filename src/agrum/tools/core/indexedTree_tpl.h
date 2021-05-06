@@ -175,7 +175,7 @@ namespace gum {
     if (i + 1 == index.size()) {
       // if the node to be inserted already exist, throw an exception
       if (current_node->children.exists(index[i])) {
-        GUM_ERROR(DuplicateElement, "the indexed tree already contains the node");
+        GUM_ERROR(DuplicateElement, "the indexed tree already contains the node")
       }
 
       // here, the node to be inserted does not exist, so we must create it
@@ -188,7 +188,7 @@ namespace gum {
     } else {
       // here, the node to be inserted is the root of the tree (so it already
       // exists)
-      GUM_ERROR(DuplicateElement, "the indexed tree already contains the node");
+      GUM_ERROR(DuplicateElement, "the indexed tree already contains the node")
     }
   }
 
@@ -227,7 +227,7 @@ namespace gum {
     if (i + 1 == index.size()) {
       // if the node to be inserted already exist, throw an exception
       if (current_node->children.exists(index[i])) {
-        GUM_ERROR(DuplicateElement, "the indexed tree already contains the node");
+        GUM_ERROR(DuplicateElement, "the indexed tree already contains the node")
       }
 
       // here, the node to be inserted does not exist, so we must create it
@@ -240,7 +240,7 @@ namespace gum {
     } else {
       // here, the node to be inserted is the root of the tree (so it already
       // exists)
-      GUM_ERROR(DuplicateElement, "the indexed tree already contains the node");
+      GUM_ERROR(DuplicateElement, "the indexed tree already contains the node")
     }
   }
 

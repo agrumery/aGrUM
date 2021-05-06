@@ -83,7 +83,7 @@ namespace gum {
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
           if (1 + range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node);
+            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node)
           }
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
@@ -99,21 +99,21 @@ namespace gum {
         name   = node.substr(0, posBrack);
         labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
         if (labels.size() < 2) {
-          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node);
+          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node)
         }
         if (!hasUniqueElts(labels)) {
-          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node);
+          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node)
         }
         ds = static_cast< Size >(labels.size());
       }
     }
 
     if (ds == 0) {
-      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".");
+      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".")
     } else if (ds == 1) {
       GUM_ERROR(InvalidArgument,
                 "Only one value for variable " << name
-                                               << " (2 at least are needed).");
+                                               << " (2 at least are needed).")
     }
 
     // now we add the node in the BN
@@ -226,9 +226,9 @@ namespace gum {
      BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId             id,
                                                  const std::string& old_label,
                                                  const std::string& new_label) {
-    if (variable(id).varType() != VarType::Labelized) {
+    if (variable(id).varType() != VarType::Labelized)
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
-    }
+
     LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
        const_cast< DiscreteVariable* >(&variable(id)));
 
@@ -244,17 +244,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
     auto   ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId res = 0;
-
     try {
-      res = add(var, ptr);
-
+      return add(var, ptr);
     } catch (Exception&) {
       delete ptr;
       throw;
     }
-
-    return res;
   }
 
   template < typename GUM_SCALAR >
@@ -263,7 +258,7 @@ namespace gum {
     if (nbrmod < 2) {
       GUM_ERROR(OperationNotAllowed,
                 "Variable " << name << "needs more than " << nbrmod
-                            << " modalities");
+                            << " modalities")
     }
 
     RangeVariable v(name, name, 0, nbrmod - 1);
@@ -275,28 +270,22 @@ namespace gum {
      BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
                                  MultiDimImplementation< GUM_SCALAR >* aContent) {
     NodeId proposedId = dag().nextNodeId();
-    NodeId res        = 0;
 
-    res = add(var, aContent, proposedId);
-
-    return res;
+    return add(var, aContent, proposedId);
   }
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var,
                                             NodeId                  id) {
     auto   ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId res = 0;
 
     try {
-      res = add(var, ptr, id);
+      return add(var, ptr, id);
 
     } catch (Exception&) {
       delete ptr;
       throw;
     }
-
-    return res;
   }
 
   template < typename GUM_SCALAR >
@@ -396,7 +385,7 @@ namespace gum {
     if (varMap__.exists(arc.tail()) && varMap__.exists(arc.head())) {
       NodeId head = arc.head(), tail = arc.tail();
       this->dag_.eraseArc(arc);
-      // Remove parent froms child's CPT
+      // Remove parent from child's CPT
       (*(probaMap__[head])) >> variable(tail);
     }
   }
@@ -408,10 +397,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::reverseArc(const Arc& arc) {
-    // check that the arc exsists
+    // check that the arc exists
     if (!varMap__.exists(arc.tail()) || !varMap__.exists(arc.head())
         || !dag().existsArc(arc)) {
-      GUM_ERROR(InvalidArc, "a nonexisting arc cannot be reversed");
+      GUM_ERROR(InvalidArc, "a non-existing arc cannot be reversed")
     }
 
     NodeId tail = arc.tail(), head = arc.head();
@@ -422,7 +411,7 @@ namespace gum {
       d.eraseArc(arc);
       d.addArc(head, tail);
     } catch (Exception&) {
-      GUM_ERROR(InvalidArc, "this arc reversal would induce a directed cycle");
+      GUM_ERROR(InvalidArc, "this arc reversal would induce a directed cycle")
     }
 
     // with the same notations as Shachter (1986), "evaluating influence
@@ -488,7 +477,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addAND(const DiscreteVariable& var) {
-    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an AND has to be boolean");
+    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an AND has to be boolean")
 
     return add(var, new aggregator::And< GUM_SCALAR >());
   }
@@ -502,7 +491,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addEXISTS(const DiscreteVariable& var,
                                                   Idx                     value) {
-    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean");
+    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean")
 
     return add(var, new aggregator::Exists< GUM_SCALAR >(value));
   }
@@ -510,7 +499,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addFORALL(const DiscreteVariable& var,
                                                   Idx                     value) {
-    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean");
+    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean")
 
     return add(var, new aggregator::Forall< GUM_SCALAR >(value));
   }
@@ -532,7 +521,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addOR(const DiscreteVariable& var) {
-    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an OR has to be boolean");
+    if (var.domainSize() > 2) GUM_ERROR(SizeError, "an OR has to be boolean")
 
     return add(var, new aggregator::Or< GUM_SCALAR >());
   }
@@ -629,7 +618,7 @@ namespace gum {
     } else {
       GUM_ERROR(InvalidArc,
                 "Head variable (" << variable(head).name()
-                                  << ") is not a CIModel variable !");
+                                  << ") is not a CIModel variable !")
     }
   }
 
@@ -681,7 +670,7 @@ namespace gum {
       copy_array->endMultipleChanges();
       copy_array->copyFrom(*(src.second));
 
-      // We add the CPT to the CPT's hashmap
+      // We add the CPT to the CPT hashmap
       probaMap__.insert(src.first, copy_array);
     }
   }
@@ -706,14 +695,14 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "cannot exchange potentials with different "
                 "dimensions for variable with id "
-                   << id);
+                   << id)
     }
 
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
                   "cannot exchange potentials because, for variable with id "
-                     << id << ", dimension " << i << " differs. ");
+                     << id << ", dimension " << i << " differs. ")
       }
     }
 

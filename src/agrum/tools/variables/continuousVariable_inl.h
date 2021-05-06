@@ -44,15 +44,15 @@ namespace gum {
     try {
       value = std::stof(str, &pos);
     } catch (std::invalid_argument&) {
-      GUM_ERROR(TypeError, "the value is not a number");
+      GUM_ERROR(TypeError, "the value is not a number")
     } catch (std::out_of_range&) {
-      GUM_ERROR(OutOfBounds, "the value is too huge");
+      GUM_ERROR(OutOfBounds, "the value is too huge")
     }
 
     // check whether there remains non-space unprocessed characters
     for (auto iter = str.begin() + pos, end = str.end(); iter != end; ++iter) {
       if (!std::isspace(static_cast< unsigned char >(*iter)))
-        GUM_ERROR(TypeError, "the value is not a number");
+        GUM_ERROR(TypeError, "the value is not a number")
     }
 
     if (belongs(value))
@@ -72,15 +72,15 @@ namespace gum {
     try {
       value = std::stod(str, &pos);
     } catch (std::invalid_argument&) {
-      GUM_ERROR(TypeError, "the value is not a number");
+      GUM_ERROR(TypeError, "the value is not a number")
     } catch (std::out_of_range&) {
-      GUM_ERROR(OutOfBounds, "the value is too huge");
+      GUM_ERROR(OutOfBounds, "the value is too huge")
     }
 
     // check whether there remains non-space unprocessed characters
     for (auto iter = str.begin() + pos, end = str.end(); iter != end; ++iter) {
       if (!std::isspace(static_cast< unsigned char >(*iter)))
-        GUM_ERROR(TypeError, "the value is not a number");
+        GUM_ERROR(TypeError, "the value is not a number")
     }
 
     if (belongs(value))

@@ -53,7 +53,7 @@
 
   void fromdict(PyObject* dict) {
     if (!PyDict_Check(dict)) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
     }
 
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
@@ -66,7 +66,7 @@
       std::string name = PyAgrumHelper::stringFromPyObject(key);
       gum::Idx    v;
       if (name == "") {
-        GUM_ERROR(gum::InvalidArgument, "A key is not a string");
+        GUM_ERROR(gum::InvalidArgument, "A key is not a string")
       }
       if (namesToVars.exists(name)) {
         if (!PyInt_Check(value)) {

@@ -161,7 +161,7 @@ namespace gum {
       try {
         elt = &(type().get(id));
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> matches the given id");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> matches the given id")
       }
 
       switch (elt->elt_type()) {
@@ -205,7 +205,7 @@ namespace gum {
               && (!static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id))
                       .isMultiple())
               && (referenceMap__[id]->size() == 1)) {
-            GUM_ERROR(OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached");
+            GUM_ERROR(OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached")
           }
 
           break;
@@ -262,13 +262,13 @@ namespace gum {
         PRMObject(source),
         type__(source.type__) {
       GUM_CONS_CPY(PRMInstance);
-      GUM_ERROR(FatalError, "do not copy Instance");
+      GUM_ERROR(FatalError, "do not copy Instance")
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& /**/
        PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
-      GUM_ERROR(FatalError, "do not copy Instance");
+      GUM_ERROR(FatalError, "do not copy Instance")
     }
 
     template < typename GUM_SCALAR >
@@ -301,7 +301,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId");
+        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
       }
     }
 
@@ -311,7 +311,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[id]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId");
+        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
       }
     }
 
@@ -321,7 +321,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[type().get(name).id()]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name");
+        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       }
     }
 
@@ -331,7 +331,7 @@ namespace gum {
       try {
         return *(nodeIdMap__[type().get(name).id()]);
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name");
+        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       }
     }
 
@@ -420,7 +420,7 @@ namespace gum {
       try {
         return PRMInstance< GUM_SCALAR >::RefIterator(*(referenceMap__[id]));
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no referred instances from this NodeId");
+        GUM_ERROR(NotFound, "no referred instances from this NodeId")
       }
     }
 
@@ -430,7 +430,7 @@ namespace gum {
       try {
         return PRMInstance< GUM_SCALAR >::RefConstIterator(*(referenceMap__[id]));
       } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no referred instances from this NodeId");
+        GUM_ERROR(NotFound, "no referred instances from this NodeId")
       }
     }
 
