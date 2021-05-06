@@ -789,8 +789,7 @@ namespace gum {
   INLINE void BinSearchTree< Val, Cmp, Node >::erase(const Val& val) {
     Node* n = getNode_(val);
 
-    if (n == nullptr)
-      GUM_ERROR(gum::NotFound, "Value \"" << val << "\" not found")
+    if (n == nullptr) GUM_ERROR(gum::NotFound, "Value \"" << val << "\" not found")
 
     erase_(n);
   }

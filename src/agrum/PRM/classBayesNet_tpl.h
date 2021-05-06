@@ -141,9 +141,7 @@ namespace gum {
        ClassBayesNet< GUM_SCALAR >::get__(const std::string& name) const {
       try {
         return class__->get(name);
-      } catch (NotFound&) {
-        GUM_ERROR(NotFound, "no element found with that id.")
-      }
+      } catch (NotFound&) { GUM_ERROR(NotFound, "no element found with that id.") }
     }
 
     template < typename GUM_SCALAR >

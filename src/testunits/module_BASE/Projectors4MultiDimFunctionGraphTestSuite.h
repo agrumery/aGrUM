@@ -197,8 +197,7 @@ namespace gum_tests {
 
       output.close();
 
-      if (output.fail())
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
+      if (output.fail()) GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
     }
 
 

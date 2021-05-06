@@ -8835,61 +8835,6 @@ class Potential(object):
           raise ValueError("No subscript using '"+str(i)+"'")
       return inst,loopvars
 
-
-    def topandas(self):
-      """
-      Returns
-      -------
-      pandas.DataFrame
-         the potential as an pandas.DataFrame
-      """
-      import pandas as pd
-      varnames = self.var_names
-      data = []
-      pname = ""
-      for inst in self.loopIn():
-        d = {k:v for k,v in reversed(inst.todict(True).items())}
-        d[pname] = self.get(inst)
-        d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
-        data.append(d)
-      cols = varnames[:-1] + [pname]
-      return pd.DataFrame(data).set_index(cols).unstack(pname)
-
-
-
-    def tolist(self):
-        """
-        Returns
-        -------
-        list
-            the potential as a list
-        """
-        return self.__getitem__({}).tolist()
-
-
-
-    def toarray(self):
-        """
-        Returns
-        -------
-        array
-            the potential as an array
-        """
-        return self.__getitem__({})
-
-
-
-    def tolatex(self):
-      """
-      Returns
-      -------
-      str
-         the potential as LaTeX string
-      """
-      return self.topandas().to_latex()
-
-
-
     def __getitem__(self, id):
       if isinstance(id,Instantiation):
           return self.get(id)
@@ -8917,8 +8862,6 @@ class Potential(object):
           tab[tuple(indice)]=self.get(inst)
           inst.incIn(loopvars)
       return tab
-
-
 
     def __setitem__(self, id, value):
       if isinstance(id,Instantiation):
@@ -8949,7 +8892,61 @@ class Potential(object):
             self.set(inst,float(value[indice]))
             inst.incIn(loopvars)
 
+    def tolist(self):
+        """
+        Returns
+        -------
+        list
+            the potential as a list
+        """
+        return self.__getitem__({}).tolist()
 
+    def toarray(self):
+        """
+        Returns
+        -------
+        array
+            the potential as an array
+        """
+        return self.__getitem__({})
+
+    def topandas(self):
+        """
+        Returns
+        -------
+        pandas.DataFrame
+           the potential as an pandas.DataFrame
+        """
+        import pandas as pd
+        varnames = self.var_names
+        data = []
+        pname = ""
+        for inst in self.loopIn():
+            d = {k:v for k,v in reversed(inst.todict(True).items())}
+            d[pname] = self.get(inst)
+            d[pname], d[varnames[-1]] = d[varnames[-1]], d[pname]
+            data.append(d)
+        cols = varnames[:-1] + [pname]
+        return pd.DataFrame(data).set_index(cols).unstack(pname)
+
+    def tolatex(self):
+        """
+        Render object to a LaTeX tabular.
+
+        Requires to include `booktabs` package in the LaTeX document.
+
+        Returns
+        -------
+        str
+         the potential as LaTeX string
+        """
+        return self.topandas().to_latex()
+
+    def toclipboard(self,**kwargs):
+        """
+        Write a text representation of object to the system clipboard. This can be pasted into spreadsheet, for instance.
+        """
+        return self.topandas().to_clipboard()
 
     @property
     def var_names(self):
@@ -8961,11 +8958,9 @@ class Potential(object):
 
         Warnings
         --------
-            Listed in reverse from the variable enumeration order
+            listed in the reverse order of the enumeration order of the variables.
         """
         return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
-
-
 
     @property
     def var_dims(self):
@@ -8976,7 +8971,6 @@ class Potential(object):
             a list containing the dimensions of each variables in the potential
         """
         return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
-
 
 
     def get(self, i):

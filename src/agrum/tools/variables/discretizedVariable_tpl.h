@@ -202,9 +202,7 @@ namespace gum {
   INLINE std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
     std::stringstream ss;
 
-    if (i >= ticks_size__ - 1) {
-      GUM_ERROR(OutOfBounds, "inexisting label index")
-    }
+    if (i >= ticks_size__ - 1) { GUM_ERROR(OutOfBounds, "inexisting label index") }
 
     ss << "[" << ticks__[i] << ";" << ticks__[i + 1];
 

@@ -1832,9 +1832,7 @@ namespace gum {
          = dynamic_cast< PRMClassElement< GUM_SCALAR >* >(
             stack__[stack__.size() - i]);
 
-      if (obj == 0) {
-        GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")
-      }
+      if (obj == 0) { GUM_ERROR(FactoryInvalidState, "illegal sequence of calls") }
 
       if (obj->elt_type() != elt_type) {
         GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")

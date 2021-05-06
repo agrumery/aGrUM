@@ -156,9 +156,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       try {
         return *(evidences__[&i]);
-      } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.")
-      }
+      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -167,9 +165,7 @@ namespace gum {
           const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return *(evidences__[&i]);
-      } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.")
-      }
+      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -177,9 +173,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(evidences__[i]);
-      } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.")
-      }
+      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -188,9 +182,7 @@ namespace gum {
           const PRMInstance< GUM_SCALAR >* i) const {
       try {
         return *(evidences__[i]);
-      } catch (NotFound&) {
-        GUM_ERROR(NotFound, "this instance has no evidence.")
-      }
+      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >

@@ -243,7 +243,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
-    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    auto ptr = new MultiDimArray< GUM_SCALAR >();
     try {
       return add(var, ptr);
     } catch (Exception&) {
@@ -277,7 +277,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var,
                                             NodeId                  id) {
-    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    auto ptr = new MultiDimArray< GUM_SCALAR >();
 
     try {
       return add(var, ptr, id);
