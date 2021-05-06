@@ -21,7 +21,7 @@ influence diagrams (ID) and LIMIDs, credal networks (CN), dynamic BN (dBN), prob
 
 .. image::  _static/fastModelsWithPyAgrum.png
 
-The module is generated using the `SWIG <https://www.swig.org>`_ interface 
+The module is generated using the `SWIG <http://www.swig.org>`_ interface
 generator. Custom-written code was added to make the interface more 
 user friendly.
 
