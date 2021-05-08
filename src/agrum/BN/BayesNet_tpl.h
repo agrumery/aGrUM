@@ -227,7 +227,7 @@ namespace gum {
                                                  const std::string& old_label,
                                                  const std::string& new_label) {
     if (variable(id).varType() != VarType::Labelized)
-      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
+      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
     LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
        const_cast< DiscreteVariable* >(&variable(id)));
@@ -415,8 +415,7 @@ namespace gum {
     }
 
     // with the same notations as Shachter (1986), "evaluating influence
-    // diagrams",
-    // p.878, we shall first compute the product of probabilities:
+    // diagrams", p.878, we shall first compute the product of probabilities:
     // pi_j^old (x_j | x_c^old(j) ) * pi_i^old (x_i | x_c^old(i) )
     Potential< GUM_SCALAR > prod{cpt(tail) * cpt(head)};
 

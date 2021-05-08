@@ -379,7 +379,7 @@ def animApproximationScheme(apsc, scale=np.log10):
   apsc.listener = h
 
   def stopper(x):
-    clear_output(True)
+    IPython.display.clear_output(True)
     plt.title(
       "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
                                                                       apsc.epsilon()))
