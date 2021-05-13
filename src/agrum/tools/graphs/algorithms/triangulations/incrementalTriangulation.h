@@ -99,8 +99,9 @@ namespace gum {
     void eraseEdge(const Edge& edge);
 
     /// returns the fill-ins added by the triangulation algorithm
-    const EdgeSet& fillIns(){
-       GUM_ERROR(OperationNotAllowed, "Not implemented yet")}
+    const EdgeSet& fillIns() {
+      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
+    }
 
     /// returns an elimination ordering compatible with the triangulated graph
     const std::vector< NodeId >& eliminationOrder();
@@ -110,15 +111,17 @@ namespace gum {
     Idx eliminationOrder(const NodeId);
 
     /// returns the triangulated graph
-    const UndiGraph& triangulatedGraph(){
-       GUM_ERROR(OperationNotAllowed, "Not implemented yet")}
+    const UndiGraph& triangulatedGraph() {
+      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
+    }
 
     /// returns the current graph (that which is incrementally triangulated)
     const UndiGraph& graph() const;
 
     /// returns the elimination tree of a compatible ordering
-    const CliqueGraph& eliminationTree(){
-       GUM_ERROR(OperationNotAllowed, "Not implemented yet")}
+    const CliqueGraph& eliminationTree() {
+      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
+    }
 
     /// returns a junction tree corresponding to the current graph
     const CliqueGraph& junctionTree();
