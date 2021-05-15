@@ -50,7 +50,7 @@ def _getTitleHisto(p, showMuSigma=True):
     return "{}".format(var.name())
 
   (mu, std) = _stats(p)
-  return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(), mu, std)
+  return "${}$\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(), mu, std)
 
 
 def __limits(p):
@@ -94,6 +94,54 @@ def __limits(p):
   return res, [v[i] for i in res], lres
 
 
+def _getProbaLine(p, scale=1.0, txtcolor="black"):
+  """
+  compute the representation of a matplotlib.fill_between for a mono-dim Potential
+
+  Parameters
+  ----------
+    p : pyAgrum.Potential
+      the mono-dimensional Potential
+    scale : float
+      the scale
+    txtcolor : str
+      color for text
+
+  Returns
+  -------
+  matplotlib.Figure
+    a matplotlib figure for a Potential p.
+  """
+
+  var = p.variable(0)
+  if gum.config['notebook', 'histogram_mode'] == "compact":
+    ra, v, lv = __limits(p)
+  else:
+    lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
+    v = p.tolist()
+    ra = range(len(v))
+
+  fig = plt.figure()
+  fig.set_figwidth(min(scale * 6, scale * len(v) / 4.0))
+  fig.set_figheight(scale * 2)
+
+  ax = fig.add_subplot(111)
+  ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
+
+  ax.set_ylim(bottom=0, top=1.05 * p.max())
+  # ax.set_xticks(ra)
+  # ax.set_xticklabels(lv, color=txtcolor)
+  ax.set_title(_getTitleHisto(p, True), color=txtcolor)
+
+  ax.get_xaxis().grid(True)
+  ax.get_yaxis().grid(True)
+  ax.margins(0)
+
+  ax.set_facecolor('w')
+
+  return fig
+
+
 def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   """
   compute the representation of a vertical histogram for a mono-dim Potential
@@ -119,7 +167,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     var = p.variable(0)
     if util is not None:
       lu = util.toarray()
-      coef = -1 if gum.config["influenceDiagram", "utility_show_loss"]=="True" else 1
+      coef = -1 if gum.config["influenceDiagram", "utility_show_loss"] == "True" else 1
       fmt = "{} [{:." + gum.config["influenceDiagram", "utility_visible_digits"] + "f}]"
       lv = [fmt.format(var.label(int(i)), coef * lu[i])
             for i in np.arange(var.domainSize())]
@@ -141,7 +189,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
   for bar in bars:
     if bar.get_height() != 0:
-      txt = txt = f"{bar.get_height():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+      txt = txt = f"{bar.get_height():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
       ax.text(bar.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
@@ -182,8 +230,8 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   if util is not None:
     lu = util.toarray()
     fmt = "{} [{:." + gum.config["influenceDiagram", "utility_visible_digits"] + "f}]"
-    if gum.config["influenceDiagram", "utility_show_loss"]=="True":
-      vx = [fmt.format(var.label(int(i)), -lu[i] if lu[i]!=0 else 0) for i in ra_reverse]
+    if gum.config["influenceDiagram", "utility_show_loss"] == "True":
+      vx = [fmt.format(var.label(int(i)), -lu[i] if lu[i] != 0 else 0) for i in ra_reverse]
     else:
       vx = [fmt.format(var.label(int(i)), lu[i]) for i in ra_reverse]
   else:
@@ -204,7 +252,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   for bar in bars:
     if bar.get_width() != 0:
-      txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+      txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
       ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
@@ -238,10 +286,16 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   matplotlib.Figure
     a matplotlib histogram for a Potential p.
   """
-  if util is None and p.variable(0).domainSize() > 8:
-    return _getProbaV(p, scale, txtcolor=txtcolor)
-  else:
+  if util is not None:
     return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
+
+  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']):
+    return _getProbaLine(p, scale, txtcolor=txtcolor)
+
+  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_horizontal_threshold']):
+    return _getProbaV(p, scale, txtcolor=txtcolor)
+
+  return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
 
 def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
@@ -312,10 +366,10 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
                     color=gum.config['notebook', 'histogram_color'])
 
   for bar in barsmax:
-    txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+    txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
     ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
   for bar in barsmin:
-    txt = f"{bar.get_width():.{gum.config['notebook', 'horizontal_histogram_visible_digits']}}"
+    txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
     ax.text(0, bar.get_y(), txt, ha='left', va='bottom')
 
   ax.set_xlim(0, 1)

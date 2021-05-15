@@ -34,7 +34,6 @@ namespace gum {
 
   /// default constructor
   BinaryJoinTreeConverterDefault::BinaryJoinTreeConverterDefault() {
-    // for debugging purposes
     GUM_CONSTRUCTOR(BinaryJoinTreeConverterDefault);
   }
 

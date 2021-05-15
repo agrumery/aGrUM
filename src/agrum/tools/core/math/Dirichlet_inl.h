@@ -48,7 +48,10 @@ namespace gum {
   }
 
   // destructor
-  INLINE Dirichlet::~Dirichlet() { GUM_DESTRUCTOR(Dirichlet); }
+  INLINE Dirichlet::~Dirichlet() {
+    GUM_DESTRUCTOR(Dirichlet);
+    ;
+  }
 
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {

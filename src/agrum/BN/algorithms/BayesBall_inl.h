@@ -30,9 +30,15 @@
 namespace gum {
 
   INLINE
-  BayesBall::BayesBall() { GUM_CONSTRUCTOR(BayesBall); }
+  BayesBall::BayesBall() {
+    GUM_CONSTRUCTOR(BayesBall);
+    ;
+  }
 
   INLINE
-  BayesBall::~BayesBall() { GUM_DESTRUCTOR(BayesBall); }
+  BayesBall::~BayesBall() {
+    GUM_DESTRUCTOR(BayesBall);
+    ;
+  }
 
 } /* namespace gum */

@@ -147,7 +147,7 @@ namespace gum {
         nameMap__.insert(elt->safeName(), elt);
       } else {
         GUM_ERROR(WrongClassElement,
-                  "illegal ClassElement<GUM_SCALAR> for an Interface");
+                  "illegal ClassElement<GUM_SCALAR> for an Interface")
       }
 
       return elt->id();
@@ -157,23 +157,22 @@ namespace gum {
     NodeId PRMInterface< GUM_SCALAR >::overload(
        PRMClassElement< GUM_SCALAR >* overloader) {
       try {
-        if (!super().exists(overloader->name())) {
+        if (!super().exists(overloader->name()))
           GUM_ERROR(OperationNotAllowed,
-                    "found no ClassElement<GUM_SCALAR> to overload");
-        }
+                    "found no ClassElement<GUM_SCALAR> to overload")
+
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
-                  "overload is possible only with sub interfaces");
+                  "overload is possible only with sub interfaces")
       }
 
       PRMClassElement< GUM_SCALAR >* overloaded = nameMap__[overloader->name()];
-      if (overloaded == overloader) {
+      if (overloaded == overloader)
         GUM_ERROR(DuplicateElement,
-                  "duplicate ClassElement '" << overloader->name() << "'");
-      }
-      if (!checkOverloadLegality__(overloaded, overloader)) {
+                  "duplicate ClassElement '" << overloader->name() << "'")
+
+      if (!checkOverloadLegality__(overloaded, overloader))
         GUM_ERROR(OperationNotAllowed, "illegal overload")
-      }
 
       switch (overloader->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
@@ -195,15 +194,13 @@ namespace gum {
         }
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
-          auto msg = "element can ! be overloaded";
-          GUM_ERROR(OperationNotAllowed, msg)
-          break;
-        }
-
-        default: {
-          GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type")
-        }
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain:
+          GUM_ERROR(OperationNotAllowed,
+                    "Element " << overloader->name() << " can not be overloaded")
+        default:
+          GUM_ERROR(FatalError,
+                    "Unknown ClassElement<GUM_SCALAR> type for "
+                       << overloader->name())
       }
 
       return overloader->id();

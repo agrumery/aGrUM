@@ -161,7 +161,7 @@ namespace gum {
     std::size_t IdCondSetIterator< ALLOC >::pos() const {
       if (seq__ == nullptr)
         GUM_ERROR(UndefinedIteratorValue,
-                  "The IdCondSet is empty, so its iterators have no position");
+                  "The IdCondSet is empty, so its iterators have no position")
       if (index__ >= seq__->size())
         GUM_ERROR(UndefinedIteratorValue,
                   "the IdCondSet iterator has no position because it reached "

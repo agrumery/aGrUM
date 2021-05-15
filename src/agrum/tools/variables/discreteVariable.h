@@ -156,7 +156,10 @@ namespace gum {
 
     protected:
     /// (protected) Default constructor
-    DiscreteVariable() { GUM_CONSTRUCTOR(DiscreteVariable); };
+    DiscreteVariable() {
+      GUM_CONSTRUCTOR(DiscreteVariable);
+      ;
+    }
   };
 
   /// for friendly displaying the content of the variable

@@ -68,7 +68,7 @@ namespace gum {
 
       if (xmlDoc.NoChildren()) {
         GUM_ERROR(IOError,
-                  ": Loading fail, please check the file for any syntax error.");
+                  ": Loading fail, please check the file for any syntax error.")
       }
 
       // Finding BIF element

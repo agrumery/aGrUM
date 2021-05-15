@@ -74,6 +74,9 @@ namespace gum {
                 MixedGraphListener::whenEdgeDeleted);
   }
 
-  MixedGraphListener::~MixedGraphListener() { GUM_DESTRUCTOR(MixedGraphListener); }
+  MixedGraphListener::~MixedGraphListener() {
+    GUM_DESTRUCTOR(MixedGraphListener);
+    ;
+  }
 
 }   // namespace gum

@@ -51,8 +51,10 @@ namespace gum {
         GUM_CONS_CPY(EdgeCode);
       }
 
-      INLINE
-      EdgeCode::~EdgeCode() { GUM_DESTRUCTOR(EdgeCode); }
+      INLINE EdgeCode::~EdgeCode() {
+        GUM_DESTRUCTOR(EdgeCode);
+        ;
+      }
 
       INLINE
       bool EdgeCode::isForward() const { return i < j; }

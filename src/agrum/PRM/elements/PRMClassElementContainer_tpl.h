@@ -64,7 +64,7 @@ namespace gum {
         PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
       GUM_ERROR(FatalError,
-                "illegal call to ClassElementContainer copy constructor");
+                "illegal call to ClassElementContainer copy constructor")
     }
 
     template < typename GUM_SCALAR >
@@ -81,7 +81,7 @@ namespace gum {
        bool                                 b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound,
-                  ": <" + elt.safeName() + "> is not in <" + name() + ">");
+                  ": <" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
@@ -89,7 +89,7 @@ namespace gum {
         } catch (NotFound&) { setIOFlag_(elt, std::make_pair(b, false)); }
       } else {
         GUM_ERROR(WrongClassElement,
-                  "given id is not an PRMAttribute or an PRMAggregate");
+                  "given id is not an PRMAttribute or an PRMAggregate")
       }
     }
 
@@ -135,7 +135,7 @@ namespace gum {
         return IOFlags__[elt.safeName()];
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
-                  "this ClassElement<GUM_SCALAR> does not have any IO flags");
+                  "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
 
@@ -147,7 +147,7 @@ namespace gum {
         return IOFlags__[elt.safeName()];
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
-                  "this ClassElement<GUM_SCALAR> does not have any IO flags");
+                  "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
 

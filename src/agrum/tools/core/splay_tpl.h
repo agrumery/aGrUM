@@ -501,7 +501,7 @@ namespace gum {
   INLINE Element& SplayTree< Element >::front() {
     SplayBinaryNode< Element >* act = root;
 
-    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty"); }
+    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty") }
 
     if (act->fg)
       for (; act->fg; act = act->fg)
@@ -518,7 +518,7 @@ namespace gum {
   INLINE Element& SplayTree< Element >::back() {
     SplayBinaryNode< Element >* act = root;
 
-    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty"); }
+    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty") }
 
     if (act->fd)
       for (; act->fd; act = act->fd)

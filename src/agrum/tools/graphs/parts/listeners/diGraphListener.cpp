@@ -60,6 +60,9 @@ namespace gum {
     GUM_CONNECT((*graph_), onArcDeleted, (*this), DiGraphListener::whenArcDeleted);
   }
 
-  DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR(DiGraphListener); }
+  DiGraphListener::~DiGraphListener() {
+    GUM_DESTRUCTOR(DiGraphListener);
+    ;
+  }
 
 }   // namespace gum

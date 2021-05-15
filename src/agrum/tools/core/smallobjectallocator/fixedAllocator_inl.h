@@ -129,7 +129,7 @@ namespace gum {
   // ============================================================================
   INLINE FixedAllocator::FixedAllocator(const std::size_t&   blockSize,
                                         const unsigned char& numBlocks) {
-    //    GUM_CONSTRUCTOR(FixedAllocator)
+    //    GUM_CONSTRUCTOR(FixedAllocator);
     blockSize__    = blockSize;
     numBlocks__    = numBlocks;
     allocChunk__   = chunks__.begin();
@@ -144,7 +144,7 @@ namespace gum {
          chunkIter != chunks__.end();
          ++chunkIter)
       chunkIter->release__();
-    //    GUM_DESTRUCTOR(FixedAllocator)
+    //    GUM_DESTRUCTOR(FixedAllocator);
   }
 
   // ############################################################################

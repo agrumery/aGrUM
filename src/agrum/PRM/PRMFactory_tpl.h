@@ -257,14 +257,14 @@ namespace gum {
         switch (elt.elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_refslot: {
             GUM_ERROR(OperationNotAllowed,
-                      "can not add a reference slot as a parent of an attribute");
+                      "can not add a reference slot as a parent of an attribute")
             break;
           }
 
           case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
             if (static_cast< PRMSlotChain< GUM_SCALAR >& >(elt).isMultiple()) {
               GUM_ERROR(OperationNotAllowed,
-                        "can not add a multiple slot chain to an attribute");
+                        "can not add a multiple slot chain to an attribute")
             }
 
             c->addArc(name, a->name());
@@ -606,11 +606,13 @@ namespace gum {
     INLINE void
        PRMFactory< GUM_SCALAR >::continueAggregator(const std::string& name) {
       PRMClassElementContainer< GUM_SCALAR >* c = checkStackContainter__(1);
-      if (!c->exists(name)) { GUM_ERROR(NotFound, name << "not found"); }
+
+      if (!c->exists(name)) GUM_ERROR(NotFound, "Element " << name << "not found")
+
       auto& agg = c->get(name);
-      if (!PRMClassElement< GUM_SCALAR >::isAggregate(agg)) {
-        GUM_ERROR(OperationNotAllowed, name << " not an aggregate")
-      }
+      if (!PRMClassElement< GUM_SCALAR >::isAggregate(agg))
+        GUM_ERROR(OperationNotAllowed, "Element " << name << " not an aggregate")
+
       stack__.push_back(&agg);
     }
 
@@ -691,7 +693,7 @@ namespace gum {
 
       if (chains.size() == 0) {
         GUM_ERROR(OperationNotAllowed,
-                  "a PRMAggregate<GUM_SCALAR> requires at least one parent");
+                  "a PRMAggregate<GUM_SCALAR> requires at least one parent")
       }
 
       // Retrieving the parents of the aggregate
@@ -1093,7 +1095,7 @@ namespace gum {
           }
         } catch (OperationNotAllowed&) {
           GUM_ERROR(WrongClassElement,
-                    "found a ClassElement<GUM_SCALAR> without a type");
+                    "found a ClassElement<GUM_SCALAR> without a type")
         }
       }
 
@@ -1187,7 +1189,7 @@ namespace gum {
 
       if (!labels.empty()) {
         GUM_ERROR(OperationNotAllowed,
-                  "labels definitions not handle for noisy-or");
+                  "labels definitions not handle for noisy-or")
       }
     }
 
@@ -1211,7 +1213,7 @@ namespace gum {
           full_name = prefixed;
         } else if (full_name != prefixed) {
           GUM_ERROR(DuplicateElement,
-                    "Type name '" << name << "' is ambiguous: specify full name.");
+                    "Type name '" << name << "' is ambiguous: specify full name.")
         }
       }
 
@@ -1357,8 +1359,7 @@ namespace gum {
       }
 
       if (interface == nullptr) {
-        GUM_ERROR(NotFound,
-                  "Interface '" << name << "' not found, check imports.");
+        GUM_ERROR(NotFound, "Interface '" << name << "' not found, check imports.")
       }
 
       return interface;
@@ -1393,21 +1394,21 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMObject::prm_type PRMFactory< GUM_SCALAR >::currentType() const {
-      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built"); }
+      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built") }
 
       return stack__.back()->obj_type();
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMObject* PRMFactory< GUM_SCALAR >::getCurrent() {
-      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built"); }
+      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built") }
 
       return stack__.back();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMObject* PRMFactory< GUM_SCALAR >::getCurrent() const {
-      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built"); }
+      if (stack__.size() == 0) { GUM_ERROR(NotFound, "no object being built") }
 
       return stack__.back();
     }
@@ -1457,7 +1458,7 @@ namespace gum {
 
         if (!var) {
           GUM_ERROR(FatalError,
-                    "the current type's variable is not a LabelizedVariable.");
+                    "the current type's variable is not a LabelizedVariable.")
         } else if (t->superType__) {
           GUM_ERROR(OperationNotAllowed, "current type is a subtype.")
         }
@@ -1474,7 +1475,7 @@ namespace gum {
 
         if (!var) {
           GUM_ERROR(FatalError,
-                    "the current type's variable is not a LabelizedVariable.");
+                    "the current type's variable is not a LabelizedVariable.")
         } else if (!t->superType__) {
           GUM_ERROR(OperationNotAllowed, "current type is not a subtype.")
         }
@@ -1496,7 +1497,7 @@ namespace gum {
           }
         }
 
-        if (!found) { GUM_ERROR(NotFound, "inexistent label in super type."); }
+        if (!found) { GUM_ERROR(NotFound, "inexistent label in super type.") }
       }
     }
 
@@ -1508,8 +1509,7 @@ namespace gum {
       if (!t->isValid__()) {
         GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype")
       } else if (t->variable().domainSize() < 2) {
-        GUM_ERROR(OperationNotAllowed,
-                  "current type is not a valid discrete type");
+        GUM_ERROR(OperationNotAllowed, "current type is not a valid discrete type")
       }
 
       prm__->typeMap__.insert(t->name(), t);
@@ -1539,7 +1539,7 @@ namespace gum {
 
       if (!var) {
         GUM_ERROR(FatalError,
-                  "the current type's variable is not a LabelizedVariable.");
+                  "the current type's variable is not a LabelizedVariable.")
       }
 
       try {
@@ -1555,8 +1555,7 @@ namespace gum {
          = static_cast< PRMType* >(checkStack__(1, PRMObject::prm_type::TYPE));
 
       if (t->variable().domainSize() < 2) {
-        GUM_ERROR(OperationNotAllowed,
-                  "current type is not a valid discrete type");
+        GUM_ERROR(OperationNotAllowed, "current type is not a valid discrete type")
       }
 
       prm__->typeMap__.insert(t->name(), t);
@@ -1580,8 +1579,7 @@ namespace gum {
       auto t   = new PRMType(var);
 
       if (t->variable().domainSize() < 2) {
-        GUM_ERROR(OperationNotAllowed,
-                  "current type is not a valid discrete type");
+        GUM_ERROR(OperationNotAllowed, "current type is not a valid discrete type")
       }
 
       prm__->typeMap__.insert(t->name(), t);
@@ -1636,11 +1634,15 @@ namespace gum {
     INLINE void
        PRMFactory< GUM_SCALAR >::continueAttribute(const std::string& name) {
       PRMClassElementContainer< GUM_SCALAR >* c = checkStackContainter__(1);
-      if (!c->exists(name)) { GUM_ERROR(NotFound, name << "not found"); }
+
+      if (!c->exists(name))
+        GUM_ERROR(NotFound, "Attribute " << name << "not found")
+
       auto& a = c->get(name);
-      if (!PRMClassElement< GUM_SCALAR >::isAttribute(a)) {
-        GUM_ERROR(OperationNotAllowed, name << " not an attribute")
-      }
+
+      if (!PRMClassElement< GUM_SCALAR >::isAttribute(a))
+        GUM_ERROR(OperationNotAllowed, "Element " << name << " not an attribute")
+
       stack__.push_back(&a);
     }
 
@@ -1669,7 +1671,7 @@ namespace gum {
            checkStack__(1, PRMObject::prm_type::SYSTEM));
         stack__.pop_back();
         model->instantiate();
-      } catch (Exception&) { GUM_ERROR(FatalError, "could not create system"); }
+      } catch (Exception&) { GUM_ERROR(FatalError, "could not create system") }
     }
 
     template < typename GUM_SCALAR >
@@ -1699,7 +1701,7 @@ namespace gum {
           addInstance__(c, name);
         } else {
           GUM_ERROR(OperationNotAllowed,
-                    "Class " + type + " does not have parameters");
+                    "Class " + type + " does not have parameters")
         }
 
       } else {

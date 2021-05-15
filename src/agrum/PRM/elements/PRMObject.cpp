@@ -57,7 +57,10 @@ namespace gum {
     // ==========================================================================
     // Destructor.
     // ==========================================================================
-    PRMObject::~PRMObject() { GUM_DESTRUCTOR(PRMObject); }
+    PRMObject::~PRMObject() {
+      GUM_DESTRUCTOR(PRMObject);
+      ;
+    }
 
     // Copy operator.
     PRMObject& PRMObject::operator=(const PRMObject& source) {

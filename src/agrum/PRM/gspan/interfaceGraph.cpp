@@ -39,13 +39,19 @@ namespace gum {
 
       // LabelData
 
-      LabelData::LabelData() : id(0) { GUM_CONSTRUCTOR(LabelData); }
+      LabelData::LabelData() : id(0) {
+        GUM_CONSTRUCTOR(LabelData);
+        ;
+      }
 
       LabelData::LabelData(const LabelData& from) : id(from.id), l(from.l) {
         GUM_CONS_CPY(LabelData);
       }
 
-      LabelData::~LabelData() { GUM_DESTRUCTOR(LabelData); }
+      LabelData::~LabelData() {
+        GUM_DESTRUCTOR(LabelData);
+        ;
+      }
 
       bool LabelData::operator==(const LabelData& from) const {
         return (id == from.id) && (l == from.l) && (tree_width == from.tree_width);

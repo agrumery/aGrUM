@@ -146,8 +146,6 @@ namespace gum {
       if (!this->modal_.empty()) {
         this->dynamicExpectations_();   // work with any network
       }
-
-      /// GUM_TRACE ( this->messageApproximationScheme() );
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >

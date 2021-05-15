@@ -168,7 +168,7 @@ namespace gum {
      const std::vector< GUM_SCALAR >& v) const {
     if (domainSize() != v.size()) {
       GUM_ERROR(SizeError,
-                "Sizes do not match : " << domainSize() << "!=" << v.size());
+                "Sizes do not match : " << domainSize() << "!=" << v.size())
     }
 
     Size cpt = 0;
@@ -184,7 +184,7 @@ namespace gum {
      std::initializer_list< GUM_SCALAR > l) const {
     if (domainSize() != l.size()) {
       GUM_ERROR(SizeError,
-                "Sizes do not match : " << domainSize() << "!=" << l.size());
+                "Sizes do not match : " << domainSize() << "!=" << l.size())
     }
 
     Instantiation i(*this);
@@ -259,7 +259,7 @@ namespace gum {
 
     this->endMultipleChanges();
 
-    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty potential"); }
+    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty potential") }
 
     Instantiation inst(src);
     inst.setVals(imask);

@@ -31,7 +31,7 @@ namespace gum {
   ALWAYS_INLINE double GammaLog2::gammaLog2(double x) const {
     if (x <= 0)
       GUM_ERROR(OutOfBounds,
-                "log2(gamma()) should be called with a positive argument");
+                "log2(gamma()) should be called with a positive argument")
 
     // if x is small, use precomputed values
     if (x < 50) {

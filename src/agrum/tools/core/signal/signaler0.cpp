@@ -34,7 +34,10 @@
 namespace gum {
   namespace __sig__ {
 
-    BasicSignaler0::BasicSignaler0() { GUM_CONSTRUCTOR(BasicSignaler0); }
+    BasicSignaler0::BasicSignaler0() {
+      GUM_CONSTRUCTOR(BasicSignaler0);
+      ;
+    }
 
     BasicSignaler0::BasicSignaler0(const BasicSignaler0& s) : ISignaler(s) {
       GUM_CONS_CPY(BasicSignaler0);

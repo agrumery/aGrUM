@@ -56,7 +56,10 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener")
     }
 
-    BNLearnerListener::~BNLearnerListener() { GUM_DESTRUCTOR(BNLearnerListener); }
+    BNLearnerListener::~BNLearnerListener() {
+      GUM_DESTRUCTOR(BNLearnerListener);
+      ;
+    }
 
     BNLearnerListener&
        BNLearnerListener::operator=(const BNLearnerListener& other) {

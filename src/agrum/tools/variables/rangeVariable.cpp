@@ -67,7 +67,10 @@ namespace gum {
   // ==========================================================================
   // destructor
   // ==========================================================================
-  RangeVariable::~RangeVariable() { GUM_DESTRUCTOR(RangeVariable); }
+  RangeVariable::~RangeVariable() {
+    GUM_DESTRUCTOR(RangeVariable);
+    ;
+  }
 
   const std::string RangeVariable::domain() const {
     std::stringstream s;

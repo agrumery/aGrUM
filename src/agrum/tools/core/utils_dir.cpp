@@ -36,7 +36,10 @@ namespace gum {
   }
 
   // Contructor
-  Directory::Directory() : m_dirPtr(nullptr) { GUM_CONSTRUCTOR(Directory); }
+  Directory::Directory() : m_dirPtr(nullptr) {
+    GUM_CONSTRUCTOR(Directory);
+    ;
+  }
 
   // Contructor
   Directory::Directory(const std::string& directory) : m_dirName(directory) {

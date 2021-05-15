@@ -44,7 +44,10 @@ namespace gum {
     GUM_CONS_CPY(Timer);
   }
 
-  Timer::~Timer() { GUM_DESTRUCTOR(Timer); }
+  Timer::~Timer() {
+    GUM_DESTRUCTOR(Timer);
+    ;
+  }
 
   Timer& Timer::operator=(const Timer& from) {
     GUM_OP_CPY(Timer);

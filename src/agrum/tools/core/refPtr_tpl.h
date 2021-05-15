@@ -34,7 +34,6 @@ namespace gum {
   template < typename Val >
   INLINE RefPtr< Val >::RefPtr(Val* v) :
       val__(v), refcount__(v ? new unsigned int(1U) : 0) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(RefPtr);
   }
 
@@ -43,7 +42,6 @@ namespace gum {
   template < typename Val >
   INLINE RefPtr< Val >::RefPtr(const RefPtr< Val >& from) :
       val__(from.val__), refcount__(from.refcount__) {
-    // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
     if (refcount__) ++*refcount__;
@@ -55,7 +53,6 @@ namespace gum {
   template < typename DownVal >
   INLINE RefPtr< Val >::RefPtr(const RefPtr< DownVal >& from) :
       val__(from.val__), refcount__(from.refcount__) {
-    // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
     if (refcount__) ++*refcount__;
@@ -83,8 +80,7 @@ namespace gum {
   INLINE RefPtr< Val >& RefPtr< Val >::operator=(const RefPtr< Val >& from) {
     // avoid self assignment
     if (val__ != from.val__) {
-      // for debugging purposes
-      GUM_OP_CPY(RefPtr);
+      GUM_OP_CPY(RefPtr)
 
       // keep track of the current refcount and dumb pointer
       unsigned int* old_refcount = refcount__;
@@ -109,7 +105,6 @@ namespace gum {
   INLINE RefPtr< Val >& RefPtr< Val >::operator=(Val* from) {
     // avoid self assignment
     if (val__ != from) {
-      // for debugging purposes
       GUM_OP_CPY(RefPtr);
 
       // keep track of the current refcount and dumb pointer
@@ -148,8 +143,7 @@ namespace gum {
   template < typename Val >
   template < typename DownVal >
   INLINE RefPtr< Val >& RefPtr< Val >::operator=(const RefPtr< DownVal >& from) {
-    // for debugging purposes
-    GUM_OP_CPY(RefPtr);
+    GUM_OP_CPY(RefPtr)
     // keep track of the current refcount and dumb pointer
     unsigned int* old_refcount = refcount__;
     Val*          old_val      = val__;
@@ -170,7 +164,6 @@ namespace gum {
 
   template < typename Val >
   INLINE RefPtr< Val >::~RefPtr() {
-    // for debugging purposes
     GUM_DESTRUCTOR(RefPtr);
     destroy__(refcount__, val__);
   }
@@ -193,7 +186,7 @@ namespace gum {
 
   template < typename Val >
   INLINE Val& RefPtr< Val >::operator*() {
-    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer") }
 
     return *val__;
   }
@@ -202,7 +195,7 @@ namespace gum {
 
   template < typename Val >
   INLINE const Val& RefPtr< Val >::operator*() const {
-    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer") }
 
     return *val__;
   }
@@ -211,7 +204,7 @@ namespace gum {
 
   template < typename Val >
   INLINE Val* RefPtr< Val >::operator->() const {
-    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
+    if (!val__) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer") }
 
     return val__;
   }

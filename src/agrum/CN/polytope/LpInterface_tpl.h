@@ -42,7 +42,7 @@ namespace gum {
       LpExpr& LpExpr::operator+=(const T& rhs) {
         if (ileft__ || iright__)
           GUM_ERROR(OperationNotAllowed,
-                    "expr::operator+= (expr) : <= present on one side of expr");
+                    "expr::operator+= (expr) : <= present on one side of expr")
 
         if (!imiddle__) imiddle__ = true;
 
@@ -55,7 +55,7 @@ namespace gum {
       LpExpr& LpExpr::operator-=(const T& rhs) {
         if (ileft__ || iright__)
           GUM_ERROR(OperationNotAllowed,
-                    "expr::operator-= (rhs) : <= present in one of expr");
+                    "expr::operator-= (rhs) : <= present in one of expr")
 
         if (!imiddle__) imiddle__ = true;
 

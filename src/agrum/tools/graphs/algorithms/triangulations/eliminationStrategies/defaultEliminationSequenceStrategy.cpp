@@ -37,7 +37,6 @@ namespace gum {
      double theThreshold) :
       simplicial_ratio__(theRatio),
       simplicial_threshold__(theThreshold) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
 
@@ -51,7 +50,6 @@ namespace gum {
       simplicial_threshold__(threshold) {
     setGraph(graph, domain_sizes);
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
 
@@ -69,7 +67,6 @@ namespace gum {
       simplicial_ratio__(from.simplicial_ratio__),
       simplicial_threshold__(from.simplicial_threshold__),
       provide_fill_ins__(from.provide_fill_ins__) {
-    // for debugging purposes
     GUM_CONS_CPY(DefaultEliminationSequenceStrategy);
   }
 
@@ -85,13 +82,11 @@ namespace gum {
     simplicial_set__->replaceLogWeights(&from.log_weights__, &log_weights__);
     from.simplicial_set__ = nullptr;
 
-    // for debugging purposes
     GUM_CONS_MOV(DefaultEliminationSequenceStrategy);
   }
 
   /// destructor
   DefaultEliminationSequenceStrategy::~DefaultEliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_DESTRUCTOR(DefaultEliminationSequenceStrategy);
 
     if (simplicial_set__ != nullptr) delete simplicial_set__;
@@ -157,7 +152,7 @@ namespace gum {
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId DefaultEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if (graph_ == nullptr) { GUM_ERROR(NotFound, "the graph is empty"); }
+    if (graph_ == nullptr) { GUM_ERROR(NotFound, "the graph is empty") }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes

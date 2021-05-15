@@ -225,7 +225,7 @@ namespace gum {
           if (columns__[i] == column)
             GUM_ERROR(DuplicateElement,
                       "There already exists a DBTranslator that parses Column"
-                         << column);
+                         << column)
         }
       }
 
@@ -294,7 +294,7 @@ namespace gum {
                     "The insertion of the translator for Variable "
                        << var.name()
                        << " is impossible because a translator "
-                          "for such variable is not implemented yet");
+                          "for such variable is not implemented yet")
       }
     }
 
@@ -381,6 +381,7 @@ namespace gum {
        const std::size_t                                             k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << " could not be found")
+
       return translators__[k]->translate(row[columns__[k]]);
     }
 
@@ -401,6 +402,7 @@ namespace gum {
        const std::size_t       k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found")
+
       return translators__[k]->translateBack(translated_val);
     }
 
@@ -423,6 +425,7 @@ namespace gum {
        const std::size_t       k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found")
+
       return translators__[k]->isMissingValue(translated_val);
     }
 
@@ -449,6 +452,7 @@ namespace gum {
            DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found")
+
       return *(translators__[k]);
     }
 
@@ -459,6 +463,7 @@ namespace gum {
        DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found")
+
       return *(translators__[k]);
     }
 
@@ -477,6 +482,7 @@ namespace gum {
            DBTranslatorSet< ALLOC >::domainSizeSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found")
+
       return translators__[k]->domainSize();
     }
 
@@ -495,6 +501,7 @@ namespace gum {
        DBTranslatorSet< ALLOC >::variableSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found")
+
       return *(translators__[k]->variable());
     }
 
@@ -515,6 +522,7 @@ namespace gum {
        DBTranslatorSet< ALLOC >::needsReorderingSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found")
+
       return translators__[k]->needsReordering();
     }
 
@@ -539,6 +547,7 @@ namespace gum {
            DBTranslatorSet< ALLOC >::reorderSafe(const std::size_t k) {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found")
+
       return translators__[k]->reorder();
     }
 
@@ -559,6 +568,7 @@ namespace gum {
            DBTranslatorSet< ALLOC >::inputColumnSafe(const std::size_t k) const {
       if (translators__.size() <= k)
         GUM_ERROR(UndefinedElement, "Column #" << k << "could not be found")
+
       return columns__[k];
     }
 

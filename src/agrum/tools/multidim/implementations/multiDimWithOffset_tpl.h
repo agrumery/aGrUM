@@ -212,7 +212,7 @@ namespace gum {
         off += iter.val() * i.valFromPtr(iter.key());
       else
         GUM_ERROR(InvalidArgument,
-                  iter.key()->name() << " not present in the instantiation " << i);
+                  iter.key()->name() << " not present in the instantiation " << i)
 
     return off;
   }

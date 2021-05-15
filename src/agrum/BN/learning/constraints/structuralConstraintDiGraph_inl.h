@@ -133,7 +133,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not supported by digraph constraint");
+                    "edge modifications are not supported by digraph constraint")
       }
     }
 

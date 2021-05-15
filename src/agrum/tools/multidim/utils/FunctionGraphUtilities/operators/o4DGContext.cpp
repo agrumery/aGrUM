@@ -75,7 +75,10 @@ namespace gum {
   }
 
   // Default Destructor.
-  O4DGContext::~O4DGContext() { GUM_DESTRUCTOR(O4DGContext); }
+  O4DGContext::~O4DGContext() {
+    GUM_DESTRUCTOR(O4DGContext);
+    ;
+  }
 
 }   // namespace gum
 

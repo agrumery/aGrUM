@@ -57,8 +57,7 @@ namespace gum {
   Chi2::Chi2(const std::vector< std::size_t >& var_modalities,
              double                            confidence_proba) :
       modalities__(var_modalities),
-      confidence_proba__(confidence_proba) {
-    // for debugging purposes
+      confidence_proba__(confidence_proba) {   // for debugging purposes
     GUM_CONSTRUCTOR(Chi2);
   }
 

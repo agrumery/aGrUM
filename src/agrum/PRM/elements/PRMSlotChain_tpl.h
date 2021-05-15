@@ -41,7 +41,7 @@ namespace gum {
 
       if (chain__->size() < 2) {
         GUM_ERROR(OperationNotAllowed,
-                  "chain must contain at least two ClassElement");
+                  "chain must contain at least two ClassElement")
       }
 
       for (Size i = 0; i < chain__->size() - 1; ++i) {
@@ -75,7 +75,7 @@ namespace gum {
 
       // if (chain__->size() < 2) {
       //  GUM_ERROR(OperationNotAllowed,
-      //            "chain must containt at least two PRMClassElement");
+      //            "chain must containt at least two PRMClassElement")
       //}
 
       // for (Size i = 0; i < chain__->size() - 1; ++i) {
@@ -155,7 +155,7 @@ namespace gum {
     PRMSlotChain< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::operator=(
        const PRMSlotChain< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError,
-                "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor.");
+                "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor.")
     }
 
     template < typename GUM_SCALAR >

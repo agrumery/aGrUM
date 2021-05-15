@@ -245,7 +245,7 @@ namespace gum {
       // we check size, labels and order of labels in the same time
       if (v->toString() != src.variable(v->name()).toString()) {
         GUM_ERROR(InvalidArgument,
-                  "Variables <" << v->name() << "> are not identical.");
+                  "Variables <" << v->name() << "> are not identical.")
       }
     }
 
@@ -270,7 +270,7 @@ namespace gum {
     }
     if (src.nbrDim() != mapSrc.size()) {
       GUM_ERROR(InvalidArgument,
-                "Potential and vector have not the same dimension.");
+                "Potential and vector have not the same dimension.")
     }
     Instantiation Isrc;
     for (Idx i = 0; i < src.nbrDim(); i++) {
@@ -313,7 +313,7 @@ namespace gum {
     for (const auto var: p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,
-                  "A variable in the argument does not belong to the potential.");
+                  "A variable in the argument does not belong to the potential.")
     }
     for (const auto var: this->variablesSequence()) {
       if (!p.contains(*var))
@@ -376,7 +376,7 @@ namespace gum {
         this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
       } else {
         GUM_ERROR(FatalError,
-                  "Normalization for a potential that sum to 0 in " << *this);
+                  "Normalization for a potential that sum to 0 in " << *this)
       }
     } else {
       if (varId >= this->nbrDim()) {
@@ -391,7 +391,7 @@ namespace gum {
           s += this->get(inst);
         if (s == (GUM_SCALAR)0.0) {
           GUM_ERROR(FatalError,
-                    "Normalization for a potential that sum to 0 in " << *this);
+                    "Normalization for a potential that sum to 0 in " << *this)
         }
         if (s != (GUM_SCALAR)1.0) {
           for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
@@ -532,7 +532,7 @@ namespace gum {
     for (const auto var: vars) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,
-                  "A variable in the vector does not belong to the potential.");
+                  "A variable in the vector does not belong to the potential.")
     }
 
     Potential< GUM_SCALAR > p;
@@ -570,7 +570,7 @@ namespace gum {
      Potential< GUM_SCALAR >::putFirst(const DiscreteVariable* var) const {
     if (!this->contains(*var)) {
       GUM_ERROR(InvalidArgument,
-                "The variable to put first does not belong to the potential");
+                "The variable to put first does not belong to the potential")
     }
     if (&(this->variable(0)) == var) return Potential< GUM_SCALAR >(*this);
 

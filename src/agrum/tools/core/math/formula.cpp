@@ -115,7 +115,10 @@ namespace gum {
     GUM_CONS_MOV(FormulaPart);
   }
 
-  FormulaPart::~FormulaPart() { GUM_DESTRUCTOR(FormulaPart); }
+  FormulaPart::~FormulaPart() {
+    GUM_DESTRUCTOR(FormulaPart);
+    ;
+  }
 
   FormulaPart& FormulaPart::operator=(const FormulaPart& source) {
     if (this == &source) { return *this; }
@@ -268,7 +271,10 @@ namespace gum {
     parser__->formula(this);
   }
 
-  Formula::~Formula() { GUM_DESTRUCTOR(Formula); }
+  Formula::~Formula() {
+    GUM_DESTRUCTOR(Formula);
+    ;
+  }
 
   Formula& Formula::operator=(const Formula& source) {
     if (this == &source) { return *this; }
@@ -301,7 +307,7 @@ namespace gum {
     parser__->Parse();
 
     std::stack< FormulaPart > stack;
-    if (output__.empty()) { GUM_ERROR(OperationNotAllowed, "no output found"); }
+    if (output__.empty()) { GUM_ERROR(OperationNotAllowed, "no output found") }
 
     for (auto item: output__) {
       switch (item.type) {
@@ -318,7 +324,7 @@ namespace gum {
 
         default: {
           GUM_ERROR(OperationNotAllowed,
-                    "expecting numbers, operators or functions");
+                    "expecting numbers, operators or functions")
         }
       }
     }

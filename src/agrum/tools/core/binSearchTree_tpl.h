@@ -161,7 +161,7 @@ namespace gum {
     if (node_) return node_->value();
 
     GUM_ERROR(UndefinedIteratorValue,
-              "the iterator does not point to a node of the binary tree");
+              "the iterator does not point to a node of the binary tree")
   }
 
   template < typename Val, class Cmp, class Node >
@@ -475,7 +475,7 @@ namespace gum {
           // here we found a node with the same key and the uniqueness policy
           // is set. So we should raise an exception
           GUM_ERROR(DuplicateElement,
-                    "Val " << val << " already in the binary search tree");
+                    "Val " << val << " already in the binary search tree")
         }
       }
     }

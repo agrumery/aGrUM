@@ -197,7 +197,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const GUM_SCALAR&
                MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
-    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
+    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large") }
 
     return values_[offset];
   }
@@ -205,7 +205,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::setByOffset(Idx               offset,
                                                        const GUM_SCALAR& data) {
-    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
+    if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large") }
 
     values_[offset] = data;
   }

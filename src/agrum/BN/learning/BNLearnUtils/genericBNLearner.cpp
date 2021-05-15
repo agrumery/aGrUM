@@ -195,7 +195,6 @@ namespace gum {
         score_database__(filename, missing_symbols) {
       no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
 
-      // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
@@ -204,7 +203,6 @@ namespace gum {
         score_database__(db) {
       no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
 
-      // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
@@ -228,7 +226,6 @@ namespace gum {
         initial_dag__(from.initial_dag__) {
       no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
 
-      // for debugging purposes
       GUM_CONS_CPY(genericBNLearner);
     }
 
@@ -254,8 +251,7 @@ namespace gum {
         initial_dag__(std::move(from.initial_dag__)) {
       no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
 
-      // for debugging purposes
-      GUM_CONS_MOV(genericBNLearner);
+      GUM_CONS_MOV(genericBNLearner)
     }
 
     genericBNLearner::~genericBNLearner() {
@@ -501,7 +497,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "The BNLearner does not support yet this apriori");
+                    "The BNLearner does not support yet this apriori")
       }
 
       // do not forget to assign a weight to the apriori
@@ -561,7 +557,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "genericBNLearner does not support yet this score");
+                    "genericBNLearner does not support yet this score")
       }
 
       // remove the old score, if any

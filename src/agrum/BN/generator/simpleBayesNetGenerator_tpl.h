@@ -56,7 +56,7 @@ namespace gum {
   cptGenerator ,Size nbrNodes, float density, Size maxModality):
     IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>(cptGenerator
   ,nbrNodes,density,maxModality) {
-    GUM_CONSTRUCTOR ( SimpleBayesNetGenerator );
+    GUM_CONSTRUCTOR ( SimpleBayesNetGenerator )
   }*/
 
   // Destructor.

@@ -23,8 +23,8 @@ namespace gum {
 
 
   /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) : dag__(dag) {
-    // for debugging purposes
+  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) :
+      dag__(dag) {   // for debugging purposes
     GUM_CONSTRUCTOR(BarrenNodesFinder);
   }
 
@@ -32,8 +32,7 @@ namespace gum {
   /// copy constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
       dag__(from.dag__), observed_nodes__(from.observed_nodes__),
-      target_nodes__(from.target_nodes__) {
-    // for debugging purposes
+      target_nodes__(from.target_nodes__) {   // for debugging purposes
     GUM_CONS_CPY(BarrenNodesFinder);
   }
 
@@ -48,8 +47,7 @@ namespace gum {
 
 
   /// destructor
-  INLINE BarrenNodesFinder::~BarrenNodesFinder() {
-    // for debugging purposes
+  INLINE BarrenNodesFinder::~BarrenNodesFinder() {   // for debugging purposes
     GUM_DESTRUCTOR(BarrenNodesFinder);
   }
 

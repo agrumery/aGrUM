@@ -71,7 +71,7 @@ namespace gum {
             }
           } else {
             GUM_ERROR(FatalError,
-                      "encountered an unexpected MultiDim implementation");
+                      "encountered an unexpected MultiDim implementation")
           }
         } else {
           if (dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(impl)) {
@@ -84,12 +84,12 @@ namespace gum {
                static_cast< const MultiDimBijArray< GUM_SCALAR >& >(*impl)));
           } else if (dynamic_cast< const MultiDimSparse< GUM_SCALAR >* >(impl)) {
             GUM_ERROR(FatalError,
-                      "There is no MultiDimSparse in PRMs, normally...");
+                      "There is no MultiDimSparse in PRMs, normally...")
           } else {
             // Just need to make the copy using the bijection but we only use
             // multidim array
             GUM_ERROR(FatalError,
-                      "encountered an unexpected MultiDim implementation");
+                      "encountered an unexpected MultiDim implementation")
           }
         }
 

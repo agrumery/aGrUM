@@ -54,7 +54,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE UAIBN::Scanner& UAIBNReader< GUM_SCALAR >::scanner() {
-    if (ioerror__) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
+    if (ioerror__) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *scanner__;
   }
@@ -77,7 +77,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size UAIBNReader< GUM_SCALAR >::proceed() {
-    if (ioerror__) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
+    if (ioerror__) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     if (!parseDone__) {
       try {

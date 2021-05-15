@@ -32,6 +32,9 @@ try:
 except ImportError:  # 3+
   from base64 import encodestring as encodebytes
 
+import io
+import base64
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
@@ -52,6 +55,98 @@ from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
+
+
+class FlowLayout(object):
+  """"
+  A class / object to display plots in a horizontal / flow layout below a cell
+
+  based on : https://stackoverflow.com/questions/21754976/ipython-notebook-arrange-plots-horizontally
+  """
+
+  def __init__(self):
+    self.clear()
+
+  def clear(self):
+    """
+    clear the flow
+    """
+    # string buffer for the HTML: initially some CSS; images to be appended
+    self.sHtml = """
+      <style>
+      .floating-box {
+      display: inline-block;
+      margin: 7px;
+      padding : 3px;
+      border: 2px solid #FFFFFF;  
+      valign:middle;
+      background-color: #FDFDFD;
+      }
+      </style>
+      """
+
+  def _getTitle(self, title):
+    if title == "":
+      return ""
+    return f"<br><center><small><em>{title}</em></small></center>"
+
+  def add_html(self, html, title=""):
+    """
+    add an html element in the row
+    """
+    self.sHtml += f'<div class="floating-box">{html}{self._getTitle(title)}</div>'
+
+  def add_separator(self, size=3):
+    """
+    add a (poor) separation between elements in a row
+    """
+    self.add_html("&nbsp;" * size)
+
+  def add_plot(self, oAxes, title=""):
+    """
+    Add a PNG representation of a Matplotlib Axes object
+    """
+    Bio = io.BytesIO()  # bytes buffer for the plot
+    fig = oAxes.get_figure()
+    fig.canvas.print_png(Bio)  # make a png of the plot in the buffer
+
+    # encode the bytes as string using base 64
+    sB64Img = base64.b64encode(Bio.getvalue()).decode()
+    self.sHtml += f'<div class="floating-box"><img src="data:image/png;base64,{sB64Img}\n">{self._getTitle(title)}</div>'
+    plt.close()
+
+  def new_line(self):
+    """
+    add a breakline (a new row)
+    """
+    self.sHtml += '<br/>'
+
+  def display(self):
+    """
+    Display the accumulated HTML
+    """
+    IPython.display.display(IPython.display.HTML(self.sHtml))
+    self.clear()
+
+  def row(self, *args, captions=None):
+    self.clear()
+    for i, arg in enumerate(args):
+      if captions is None:
+        t = ""
+      else:
+        t = captions[i]
+
+      if hasattr(arg, "get_figure"):
+        self.add_plot(arg, title=t)
+      elif hasattr(arg, "_repr_html_"):
+        self.add_html(arg._repr_html_(), title=t)
+      else:
+        self.add_html(arg, title=t)
+
+    self.display()
+
+
+flow = FlowLayout()
 
 _cdict = {
   'red': ((0.0, 0.1, 0.3),
@@ -325,12 +420,34 @@ def showProba(p, scale=1.0):
   plt.show()
 
 
+def _getMatplotFig(fig):
+  bio = io.BytesIO()  # bytes buffer for the plot
+  fig.savefig(bio, format = 'png', bbox_inches='tight') #.canvas.print_png(bio)  # make a png of the plot in the buffer
+
+  # encode the bytes as string using base 64
+  sB64Img = base64.b64encode(bio.getvalue()).decode()
+  res = f'<img src="data:image/png;base64,{sB64Img}\n">'
+  plt.close()
+  return res
+
+
+def getProba(p, scale=1.0):
+  """
+  get a mono-dim Potential as html (png) img
+
+  :param p: the mono-dim Potential
+  :param scale: the scale (zoom)
+  """
+  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  return _getMatplotFig(proba2histo(p, scale))
+
+
 def showProbaMinMax(pmin, pmax, scale=1.0):
   """
-  Show a bi-Potential (min,max
+  Show a bi-Potential (min,max)
 
   :param pmin: the mono-dim Potential for min values
-  :param pmin: the mono-dim Potential for max values
+  :param pmax: the mono-dim Potential for max values
   :param scale: the scale (zoom)
   """
   fig = probaMinMaxH(pmin, pmax, scale)
@@ -338,9 +455,21 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   plt.show()
 
 
+def getProbaMinMax(pmin, pmax, scale=1.0):
+  """
+  get a bi-Potential (min,max) as html (png) img
+
+  :param pmin: the mono-dim Potential for min values
+  :param pmax: the mono-dim Potential for max values
+  :param scale: the scale (zoom)
+  """
+  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  return _getMatplotFig(probaMinMaxH(pmin, pmax, scale))
+
+
 def getPosterior(bn, evs, target):
   """
-  shortcut for getProba(gum.getPosterior(bn,evs,target))
+  shortcut for proba2histo(gum.getPosterior(bn,evs,target))
 
   :param bn: the BayesNet
   :type bn: gum.BayesNet
@@ -350,7 +479,9 @@ def getPosterior(bn, evs, target):
   :type target: str
   :return: the matplotlib graph
   """
-  return proba2histo(gum.getPosterior(bn, evs=evs, target=target))
+  fig = proba2histo(gum.getPosterior(bn, evs=evs, target=target))
+  plt.close()
+  return _getMatplotFig(fig)
 
 
 def showPosterior(bn, evs, target):

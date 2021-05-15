@@ -33,7 +33,10 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE DBCell::DBCell() { GUM_CONSTRUCTOR(DBCell); }
+    INLINE DBCell::DBCell() {
+      GUM_CONSTRUCTOR(DBCell);
+      ;
+    }
 
 
     /// constructor for a real number
@@ -85,7 +88,10 @@ namespace gum {
 
 
     /// destructor
-    INLINE DBCell::~DBCell() { GUM_DESTRUCTOR(DBCell); }
+    INLINE DBCell::~DBCell() {
+      GUM_DESTRUCTOR(DBCell);
+      ;
+    }
 
 
     /// copy operator

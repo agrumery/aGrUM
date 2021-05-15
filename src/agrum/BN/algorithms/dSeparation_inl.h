@@ -30,7 +30,10 @@ namespace gum {
 
 
   // default constructor
-  INLINE dSeparation::dSeparation() { GUM_CONSTRUCTOR(dSeparation); }
+  INLINE dSeparation::dSeparation() {
+    GUM_CONSTRUCTOR(dSeparation);
+    ;
+  }
 
 
   // copy constructor
@@ -46,7 +49,10 @@ namespace gum {
 
 
   // destructor
-  INLINE dSeparation::~dSeparation() { GUM_DESTRUCTOR(dSeparation); }
+  INLINE dSeparation::~dSeparation() {
+    GUM_DESTRUCTOR(dSeparation);
+    ;
+  }
 
 
   // copy operator

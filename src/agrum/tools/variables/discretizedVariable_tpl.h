@@ -64,7 +64,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
-    if (ticks_size__ < 2) { GUM_ERROR(OutOfBounds, "not enough ticks"); }
+    if (ticks_size__ < 2) { GUM_ERROR(OutOfBounds, "not enough ticks") }
 
     if (target < ticks__[0]) {
       GUM_ERROR(OutOfLowerBound, "less than first range")
@@ -151,7 +151,7 @@ namespace gum {
      DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     if (isTick(aTick)) {
       GUM_ERROR(DefaultInLabel,
-                "Tick '" << aTick << "' already used for variable " << name());
+                "Tick '" << aTick << "' already used for variable " << name())
     }
 
     if (ticks_size__ == ticks__.size()) {   // streching ticks__ if necessary
@@ -224,7 +224,7 @@ namespace gum {
   template < typename T_TICKS >
   INLINE Idx
      DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
-    if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()); }
+    if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()) }
 
     std::istringstream i(label);
     T_TICKS            target;
@@ -252,7 +252,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE const T_TICKS& DiscretizedVariable< T_TICKS >::tick(Idx i) const {
-    if (i >= ticks_size__) { GUM_ERROR(OutOfBounds, "There is no such tick"); }
+    if (i >= ticks_size__) { GUM_ERROR(OutOfBounds, "There is no such tick") }
 
     return ticks__[i];
   }

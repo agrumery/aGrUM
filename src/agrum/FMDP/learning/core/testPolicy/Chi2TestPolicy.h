@@ -54,7 +54,10 @@ namespace gum {
       GUM_CONSTRUCTOR(Chi2TestPolicy);
     }
 
-    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR(Chi2TestPolicy); }
+    virtual ~Chi2TestPolicy() {
+      GUM_DESTRUCTOR(Chi2TestPolicy);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

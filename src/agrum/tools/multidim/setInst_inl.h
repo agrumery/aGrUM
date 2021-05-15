@@ -508,7 +508,7 @@ namespace gum {
     // of the SetInst
     if (vars__.exists(&v))
       GUM_ERROR(DuplicateElement,
-                "Variable '" << v.name() << "' already exists in this SetInst");
+                "Variable '" << v.name() << "' already exists in this SetInst")
 
     // actually add the new dimension
     add__(v);

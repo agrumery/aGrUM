@@ -36,8 +36,7 @@
 namespace gum {
 
   // constructor
-  Triangulation::Triangulation() {
-    // for debugging purposes
+  Triangulation::Triangulation() {   // for debugging purposes
     GUM_CONSTRUCTOR(Triangulation);
   }
 
@@ -48,8 +47,7 @@ namespace gum {
   }
 
   // destructor
-  Triangulation::~Triangulation() {
-    // for debugging purposes
+  Triangulation::~Triangulation() {   // for debugging purposes
     GUM_DESTRUCTOR(Triangulation);
   }
 

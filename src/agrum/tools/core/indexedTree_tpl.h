@@ -367,7 +367,7 @@ namespace gum {
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];
 
-    if (data == 0) { GUM_ERROR(NotFound, "the datum could not be found"); }
+    if (data == 0) { GUM_ERROR(NotFound, "the datum could not be found") }
 
     return *(current_node->data);
   }

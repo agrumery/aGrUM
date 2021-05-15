@@ -31,7 +31,10 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      DFSCode::DFSCode() { GUM_CONSTRUCTOR(DFSCode); }
+      DFSCode::DFSCode() {
+        GUM_CONSTRUCTOR(DFSCode);
+        ;
+      }
 
       INLINE
       DFSCode::DFSCode(const DFSCode& source) {

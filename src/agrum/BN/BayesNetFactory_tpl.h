@@ -29,11 +29,6 @@
 
 #include <agrum/BN/BayesNetFactory.h>
 
-#define VERBOSITY(x)                                                 \
-  {                                                                  \
-    if (isVerbose()) std::cerr << "[BN factory] " << x << std::endl; \
-  }
-
 namespace gum {
 
   // Default constructor.
@@ -51,7 +46,7 @@ namespace gum {
     for (auto node: bn->nodes()) {
       if (varNameMap__.exists(bn->variable(node).name()))
         GUM_ERROR(DuplicateElement,
-                  "Name already used: " << bn->variable(node).name());
+                  "Name already used: " << bn->variable(node).name())
 
       varNameMap__.insert(bn->variable(node).name(), node);
     }
@@ -64,8 +59,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE BayesNetFactory< GUM_SCALAR >::BayesNetFactory(
      const BayesNetFactory< GUM_SCALAR >& source) :
-      parents__(0),
-      impl__(0), bn__(0) {
+      parents__(nullptr),
+      impl__(nullptr), bn__(nullptr) {
     GUM_CONS_CPY(BayesNetFactory);
 
     if (source.state() != factory_state::NONE) {
@@ -81,9 +76,9 @@ namespace gum {
   INLINE BayesNetFactory< GUM_SCALAR >::~BayesNetFactory() {
     GUM_DESTRUCTOR(BayesNetFactory);
 
-    if (parents__ != 0) delete parents__;
+    if (parents__ != nullptr) delete parents__;
 
-    if (impl__ != 0) {
+    if (impl__ != nullptr) {
       //@todo better than throwing an exception from inside a destructor but
       // still ...
       std::cerr
@@ -91,7 +86,7 @@ namespace gum {
             "You should call endVariableDeclaration() before "
             "deleting me."
          << std::endl;
-      exit(1000);
+      exit(1);
     }
   }
 
@@ -111,7 +106,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE IBayesNetFactory::factory_state
          BayesNetFactory< GUM_SCALAR >::state() const {
-    // This is ok because there is alway at least the state NONE in the stack.
+    // This is ok because there is always at least the state NONE in the stack.
     return states__.back();
   }
 
@@ -122,7 +117,7 @@ namespace gum {
      BayesNetFactory< GUM_SCALAR >::variableId(const std::string& name) const {
     try {
       return varNameMap__[name];
-    } catch (NotFound&) { GUM_ERROR(NotFound, name); }
+    } catch (NotFound&) { GUM_ERROR(NotFound, name) }
   }
 
   // Returns a constant reference on a variable given it's name.
@@ -132,7 +127,7 @@ namespace gum {
      BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
     try {
       return bn__->variable(variableId(name));
-    } catch (NotFound&) { GUM_ERROR(NotFound, name); }
+    } catch (NotFound&) { GUM_ERROR(NotFound, name) }
   }
 
   // Returns the domainSize of the cpt for the node n.
@@ -151,8 +146,6 @@ namespace gum {
     } else {
       states__.push_back(factory_state::NETWORK);
     }
-
-    VERBOSITY("starting network");
   }
 
   // Tells the factory to add a property to the current network.
@@ -171,8 +164,6 @@ namespace gum {
     } else {
       states__.pop_back();
     }
-
-    VERBOSITY("network OK");
   }
 
   // Tells the factory that we're in a variable declaration.
@@ -187,8 +178,6 @@ namespace gum {
       stringBag__.push_back("desc");
       stringBag__.push_back("L");
     }
-
-    VERBOSITY("  starting variable");
   }
 
   // Tells the factory the current variable's name.
@@ -204,7 +193,6 @@ namespace gum {
 
       foo_flag__     = true;
       stringBag__[0] = name;
-      VERBOSITY("  -- variable " << name);
     }
   }
 
@@ -241,7 +229,7 @@ namespace gum {
         case VarType::Continuous:
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + stringBag__[0]
-                       + ") are not supported in Bayesian networks.");
+                       + ") are not supported in Bayesian networks.")
         case VarType::Labelized:
           stringBag__[2] = "L";
           break;
@@ -298,9 +286,9 @@ namespace gum {
     }
   }
 
-  // @brief Defines the implementation to use for var's Potential.
+  // @brief Defines the implementation to use for Potential.
   // @warning The implementation must be empty.
-  // @warning The pointer is always delegated to var's Potential! No copy of it
+  // @warning The pointer is always delegated to Potential! No copy of it
   //          is made.
   // @todo When copy of a MultiDimImplementation is available use a copy
   //       behaviour for this method.
@@ -320,7 +308,7 @@ namespace gum {
       if (impl == 0) {
         GUM_ERROR(OperationNotAllowed,
                   "An implementation for this variable is already "
-                  "defined.");
+                  "defined.")
       } else if (impl->nbrDim() > 0) {
         GUM_ERROR(OperationNotAllowed, "This implementation is not empty.")
       }
@@ -385,7 +373,6 @@ namespace gum {
       resetParts__();
       states__.pop_back();
 
-      VERBOSITY("  variable " << var->name() << " OK");
       return retVal;
     } else {
       std::stringstream msg;
@@ -428,8 +415,6 @@ namespace gum {
       stringBag__.insert(iter, var);
       states__.push_back(factory_state::PARENTS);
     }
-
-    VERBOSITY("starting parents for " << var);
   }
 
   // Tells the factory for which variable we're declaring parents.
@@ -460,16 +445,12 @@ namespace gum {
 
       for (size_t i = stringBag__.size() - 1; i > 0; --i) {
         bn__->addArc(varNameMap__[stringBag__[i]], id);
-        VERBOSITY("  adding parent " << stringBag__[i] << " for "
-                                     << stringBag__[0]);
       }
 
       resetParts__();
 
       states__.pop_back();
     }
-
-    VERBOSITY("end of parents for " << stringBag__[0]);
   }
 
   // Tells the factory that we're declaring a conditional probability table
@@ -485,8 +466,6 @@ namespace gum {
       stringBag__.push_back(var);
       states__.push_back(factory_state::RAW_CPT);
     }
-
-    VERBOSITY("  cpt starting for " << var);
   }
 
   // @brief Fills the variable's table with the values in rawTable.
@@ -627,8 +606,6 @@ namespace gum {
       resetParts__();
       states__.pop_back();
     }
-
-    VERBOSITY("  cpt ending for " << stringBag__[0]);
   }
 
   // Tells the factory that we're starting a factorized declaration.
@@ -709,10 +686,9 @@ namespace gum {
   // // finish your stuff
   // factory.endFactorizedProbabilityDeclaration();
   // @code
-  // as for rawProba, if value's size is different than the number of modalities
-  // of
-  // the current variable,
-  // we don't use the supplementary values and we fill by 0 the missign values.
+  // as for raw Probability, if value's size is different than the number of
+  // modalities of the current variable, we don't use the supplementary values and
+  // we fill by 0 the missing values.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::setVariableValuesUnchecked(
      const std::vector< float >& values) {
@@ -777,7 +753,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   var.name()
                      << " : invalid number of modalities: found " << values.size()
-                     << " while needed " << var.domainSize());
+                     << " while needed " << var.domainSize())
       }
 
       setVariableValuesUnchecked(values);
@@ -834,7 +810,8 @@ namespace gum {
   // DAG is changed to fit with table's definition.
   // @param var The name of the concerned variable.
   // @param table A pointer over the CPT used for var.
-  // @param redefineParents If true redefine var's parents to match table's
+  // @param redefineParents If true redefine parents of the variable to match
+  // table's
   //                        variables set.
   //
   // @throw NotFound Raised if no variable matches var.
@@ -863,7 +840,7 @@ namespace gum {
         for (auto node: bn__->parents(varId)) {
           if (!pot->contains(bn__->variable(node))) {
             GUM_ERROR(OperationNotAllowed,
-                      "The CPT is not valid in the current BayesNet.");
+                      "The CPT is not valid in the current BayesNet.")
           }
         }
 
@@ -871,15 +848,6 @@ namespace gum {
         bn__->unsafeChangePotential_(varId, pot);
       }
     }
-  }
-
-  // Copy operator is illegal, use only copy constructor.
-  template < typename GUM_SCALAR >
-  INLINE BayesNetFactory< GUM_SCALAR >& BayesNetFactory< GUM_SCALAR >::operator=(
-     const BayesNetFactory< GUM_SCALAR >& source) {
-    GUM_ERROR(OperationNotAllowed, "Illegal!")
-    // For noisy compilers
-    return *this;
   }
 
   // Raise an OperationNotAllowed with the message "Illegal state."
@@ -939,7 +907,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
      BayesNetFactory< GUM_SCALAR >::checkVariableName__(const std::string& name) {
-    if (!varNameMap__.exists(name)) { GUM_ERROR(NotFound, name); }
+    if (!varNameMap__.exists(name)) { GUM_ERROR(NotFound, name) }
   }
 
   // Check if var exists and if mod is one of it's modality, if not raise an

@@ -79,7 +79,7 @@ namespace gum {
     output << documentend__();
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
   }
 
   /*
@@ -101,7 +101,7 @@ namespace gum {
 
     output.close();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
   }
 
   /*

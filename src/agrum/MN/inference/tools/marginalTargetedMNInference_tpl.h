@@ -79,8 +79,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
     if (!this->MN().graph().exists(node)) {
-      GUM_ERROR(UndefinedElement,
-                node << " is not a NodeId in the Markov network");
+      GUM_ERROR(UndefinedElement, node << " is not a NodeId in the Markov network")
     }
 
     return targets__.contains(node);
@@ -118,7 +117,7 @@ namespace gum {
 
     if (!this->MN().graph().exists(target)) {
       GUM_ERROR(UndefinedElement,
-                target << " is not a NodeId in the Markov network");
+                target << " is not a NodeId in the Markov network")
     }
 
     setTargetedMode_();   // does nothing if already in targeted mode
@@ -179,7 +178,7 @@ namespace gum {
 
     if (!this->MN().graph().exists(target)) {
       GUM_ERROR(UndefinedElement,
-                target << " is not a NodeId in the Markov network");
+                target << " is not a NodeId in the Markov network")
     }
 
 

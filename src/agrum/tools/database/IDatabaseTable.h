@@ -551,15 +551,15 @@ namespace gum {
         /// sets the area in the database the handler will handle
         /** In addition to setting the area that will be parsed by the handler,
          * this method makes the handler point to the beginning of the area.
-         * @param begin the first row to be handled
-         * @param end the handler handles rows in interval [begin,end). Thus,
+         * @param first the first row to be handled
+         * @param last the handler handles rows in interval [first,last). Thus,
          * the endth row is not included in the set of rows handled.
-         * @warning if begin is greater than end, these values are swapped.
+         * @warning if first is greater than last, these values are swapped.
          * @throw NullElement is raised if the handler does not point to
          * any database
          * @throw SizeError is raised if end is greater than the number of
          * rows of the database */
-        virtual void setRange(std::size_t begin, std::size_t end) final;
+        virtual void setRange(std::size_t first, std::size_t last) final;
 
         /// returns the current range of the handler [begin,end)
         virtual std::pair< std::size_t, std::size_t > range() const final;

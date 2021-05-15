@@ -53,7 +53,10 @@ namespace gum {
   }
 
   // @brief Class destructor.
-  GammaLog2::~GammaLog2() { GUM_DESTRUCTOR(GammaLog2); }
+  GammaLog2::~GammaLog2() {
+    GUM_DESTRUCTOR(GammaLog2);
+    ;
+  }
 
 
   // the Log2 (gamma (x)) for x varying from 0 to 50 by step of 1/100

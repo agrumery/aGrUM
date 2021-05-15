@@ -64,7 +64,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "this graph modification is not supported yet");
+                    "this graph modification is not supported yet")
       }
     }
 

@@ -622,7 +622,7 @@ namespace gum {
           if (infE__::evidence_[node][1] != 0.
               && infE__::evidence_[node][1] != 1.) {
             GUM_ERROR(OperationNotAllowed,
-                      "CNLoopyPropagation can only handle HARD evidences");
+                      "CNLoopyPropagation can only handle HARD evidences")
           }
 
           active_nodes_set.insert(node);
@@ -1387,7 +1387,6 @@ namespace gum {
 
           GUM_SCALAR lmin = NodesL_min_[node];
           GUM_SCALAR lmax;
-          GUM_TRACE_VAR(NodesL_max_.exists(node))
           if (NodesL_max_.exists(node)) {
             lmax = NodesL_max_[node];
           } else {
@@ -1454,8 +1453,6 @@ namespace gum {
         infE__::marginalMax_[node][0] = 1 - msg_p_min;
         infE__::marginalMin_[node][1] = msg_p_min;
         infE__::marginalMax_[node][1] = msg_p_max;
-        GUM_TRACE_VAR(node << ":" << infE__::marginalMin_[node]);
-        GUM_TRACE_VAR(node << ":" << infE__::marginalMax_[node]);
       }
     }
 

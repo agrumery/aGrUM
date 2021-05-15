@@ -43,7 +43,10 @@ namespace gum {
     GUM_ERROR(OperationNotAllowed, "No copy constructor for ProgressListener")
   }
 
-  ProgressListener::~ProgressListener() { GUM_DESTRUCTOR(ProgressListener); }
+  ProgressListener::~ProgressListener() {
+    GUM_DESTRUCTOR(ProgressListener);
+    ;
+  }
 
   ProgressListener& ProgressListener::operator=(const ProgressListener& other) {
     GUM_CONS_CPY(ProgressListener);

@@ -34,14 +34,15 @@ namespace gum {
       GUM_CONSTRUCTOR(NameGenerator);
     }
 
-    INLINE
-    NameGenerator::NameGenerator(const NameGenerator& source) :
+    INLINE NameGenerator::NameGenerator(const NameGenerator& source) :
         counters__(source.counters__) {
       GUM_CONS_CPY(NameGenerator);
     }
 
-    INLINE
-    NameGenerator::~NameGenerator() { GUM_DESTRUCTOR(NameGenerator); }
+    INLINE NameGenerator::~NameGenerator() {
+      GUM_DESTRUCTOR(NameGenerator);
+      ;
+    }
 
     INLINE
     NameGenerator& NameGenerator::operator=(const NameGenerator& source) {

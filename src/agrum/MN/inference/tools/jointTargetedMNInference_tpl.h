@@ -77,7 +77,7 @@ namespace gum {
     for (const auto var: vars) {
       if (!gra.exists(var)) {
         GUM_ERROR(UndefinedElement,
-                  var << " is not a NodeId in the Markov network");
+                  var << " is not a NodeId in the Markov network")
       }
     }
 

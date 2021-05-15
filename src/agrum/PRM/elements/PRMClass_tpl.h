@@ -298,7 +298,7 @@ namespace gum {
         if (!(PRMClassElement< GUM_SCALAR >::isAttribute(elt)
               || PRMClassElement< GUM_SCALAR >::isAggregate(elt))) {
           GUM_ERROR(OperationNotAllowed,
-                    "you can only complete inheritance for attributes");
+                    "you can only complete inheritance for attributes")
         }
 
         for (const auto& prnt: super().containerDag().parents(elt.id())) {
@@ -497,7 +497,7 @@ namespace gum {
         head = nameMap__[head_name];
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
-                  "tail and/or head of arc does not exists in this Class");
+                  "tail and/or head of arc does not exists in this Class")
       }
 
       if ((tail->elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot)
@@ -510,14 +510,14 @@ namespace gum {
       if ((tail->elt_type() == PRMClassElement< GUM_SCALAR >::prm_slotchain)
           && (head->elt_type() == PRMClassElement< GUM_SCALAR >::prm_slotchain)) {
         GUM_ERROR(OperationNotAllowed,
-                  "illegal insertion of an arc between two SlotChain<GUM_SCALAR>");
+                  "illegal insertion of an arc between two SlotChain<GUM_SCALAR>")
       }
 
       if (!dag__.existsArc(Arc(tail->id(), head->id()))) {
         dag__.addArc(tail->id(), head->id());
       } else {
         GUM_ERROR(DuplicateElement,
-                  "duplicate arc " << tail_name << "->" << head_name);
+                  "duplicate arc " << tail_name << "->" << head_name)
       }
 
       get(tail->id()).addChild(get(head->id()));
@@ -558,13 +558,13 @@ namespace gum {
 
       if (!elt->type().isSubTypeOf(i_elt.type())) {
         GUM_ERROR(OperationNotAllowed,
-                  "Attribute type does not respect class interface");
+                  "Attribute type does not respect class interface")
       }
 
       if (elt->type() != i_elt.type()) {
         if (!this->exists(i_elt.safeName())) {
           GUM_ERROR(OperationNotAllowed,
-                    "Attribute type does not respect class interface");
+                    "Attribute type does not respect class interface")
         }
         elt = &(this->get(i_elt.safeName()));
       }
@@ -610,7 +610,7 @@ namespace gum {
       auto& i_ref = static_cast< PRMReferenceSlot< GUM_SCALAR >& >(i_elt);
       if (!ref->slotType().isSubTypeOf(i_ref.slotType())) {
         GUM_ERROR(OperationNotAllowed,
-                  "ReferenceSlot type does not respect class interface");
+                  "ReferenceSlot type does not respect class interface")
       }
       // Node must be reserved by constructor
       if (!dag__.exists(i_ref.id())) {
@@ -743,17 +743,16 @@ namespace gum {
       try {
         if (!super().exists(overloader->name())) {
           GUM_ERROR(OperationNotAllowed,
-                    "found no ClassElement<GUM_SCALAR> to overload");
+                    "found no ClassElement<GUM_SCALAR> to overload")
         }
       } catch (NotFound&) {
-        GUM_ERROR(OperationNotAllowed,
-                  "overload is possible only with subclasses");
+        GUM_ERROR(OperationNotAllowed, "overload is possible only with subclasses")
       }
 
       PRMClassElement< GUM_SCALAR >* overloaded = nameMap__[overloader->name()];
       if (overloaded == overloader) {
         GUM_ERROR(DuplicateElement,
-                  "dupplicate ClassElement " << overloader->name());
+                  "dupplicate ClassElement " << overloader->name())
       }
       // Checking overload legality
       if (!checkOverloadLegality__(overloaded, overloader)) {
@@ -792,7 +791,7 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
           GUM_ERROR(OperationNotAllowed,
-                    "SlotChain<GUM_SCALAR> can not be overloaded");
+                    "SlotChain<GUM_SCALAR> can not be overloaded")
           break;
         }
 
@@ -1140,7 +1139,7 @@ namespace gum {
           }
         } else {
           // @todo depth>5 is a workaround. Cycle detection is needed here !
-          GUM_TRACE("Depth limit reached when looking up parameters");
+          GUM_ERROR(FatalError, "Depth limit reached when looking up parameters")
         }
       }
 
@@ -1181,7 +1180,7 @@ namespace gum {
         return *implements__;
       } else {
         GUM_ERROR(NotFound,
-                  "this Class does not implement any Interface<GUM_SCALAR>");
+                  "this Class does not implement any Interface<GUM_SCALAR>")
       }
     }
 

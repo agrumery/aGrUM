@@ -158,7 +158,7 @@ namespace gum {
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType");
+                        "type not supported by DBCell convertType")
           }
 
           // ===================================
@@ -188,7 +188,7 @@ namespace gum {
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType");
+                        "type not supported by DBCell convertType")
           }
 
           // ===================================
@@ -227,7 +227,7 @@ namespace gum {
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType");
+                        "type not supported by DBCell convertType")
           }
 
           // ===================================

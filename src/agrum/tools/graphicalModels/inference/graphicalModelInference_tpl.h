@@ -513,7 +513,7 @@ namespace gum {
 
     if (!hasEvidence(id)) {
       GUM_ERROR(InvalidArgument,
-                id << " has no evidence. Please use addEvidence().");
+                id << " has no evidence. Please use addEvidence().")
     }
 
     // check whether we have a hard evidence (and also check whether the

@@ -43,15 +43,17 @@
 #      define GUM_DEEP_TRACE_ON
 #    endif   // GUM_TRACE_ON
 
-#    define GUM_ASSERT(condition)                                         \
-      do {                                                                \
-        if (!(condition)) {                                               \
-          std::cout << std::endl                                          \
-                    << __FILE__ << ":" << __LINE__ << " [aGrUM] assert (" \
-                    << #condition << ") failed" << std::endl;             \
-          std::abort();                                                   \
-        }                                                                 \
-      } while (0)
+#    define GUM_ASSERT(condition)                                           \
+      {                                                                     \
+        do {                                                                \
+          if (!(condition)) {                                               \
+            std::cout << std::endl                                          \
+                      << __FILE__ << ":" << __LINE__ << " [aGrUM] assert (" \
+                      << #condition << ") failed" << std::endl;             \
+            std::abort();                                                   \
+          }                                                                 \
+        } while (0);                                                        \
+      }
 
 #    define GUM_DEBUG_ONLY(x) \
       { x }
@@ -67,7 +69,7 @@
                                        (void*)this,      \
                                        sizeof(x));       \
       }
-#    define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x)
+#    define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x);
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_DESTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_DESTRUCTOR
@@ -79,7 +81,7 @@
                                        "destructor of", \
                                        (void*)this);    \
       }
-#    define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x)
+#    define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x);
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_CPY, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONS_CPY
@@ -92,7 +94,7 @@
                                        (void*)this,           \
                                        sizeof(x));            \
       }
-#    define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
+#    define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x);
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_MOV, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONS_MOV
@@ -132,13 +134,13 @@
 /////////////////////////////////////////////////////////////
 #  else   // GUM_DEBUG_MODE
 /////////////////////////////////////////////////////////////
-#    define GUM_ASSERT(condition) ((void)0)
-#    define GUM_CONSTRUCTOR(x)    ((void)0)
-#    define GUM_DESTRUCTOR(x)     ((void)0)
-#    define GUM_CONS_CPY(x)       ((void)0)
-#    define GUM_CONS_MOV(x)       ((void)0)
-#    define GUM_OP_CPY(x)         ((void)0)
-#    define GUM_OP_MOV(x)         ((void)0)
+#    define GUM_ASSERT(condition)
+#    define GUM_CONSTRUCTOR(x) ;
+#    define GUM_DESTRUCTOR(x)  ;
+#    define GUM_CONS_CPY(x)    ;
+#    define GUM_CONS_MOV(x)
+#    define GUM_OP_CPY(x)
+#    define GUM_OP_MOV(x)
 
 #    define GUM_DEBUG_ONLY(x)
 /////////////////////////////////////////////////////////////

@@ -64,7 +64,7 @@ namespace gum {
 
       if (xmlDoc.NoChildren()) {
         GUM_ERROR(IOError,
-                  ": Loading fail, please check the file for any syntax error.");
+                  ": Loading fail, please check the file for any syntax error.")
       }
 
       // Finding BIF element
@@ -97,7 +97,6 @@ namespace gum {
       return 0;
     } catch (ticpp::Exception& tinyexception) {
       GUM_ERROR(IOError, tinyexception.what())
-      return 1;
     }
   }
 

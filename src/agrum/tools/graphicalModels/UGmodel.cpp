@@ -26,13 +26,19 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  UGmodel::UGmodel() { GUM_CONSTRUCTOR(UGmodel); }
+  UGmodel::UGmodel() {
+    GUM_CONSTRUCTOR(UGmodel);
+    ;
+  }
 
   UGmodel::UGmodel(const UGmodel& from) : graph_(from.graph_) {
     GUM_CONS_CPY(UGmodel);
   }
 
-  UGmodel::~UGmodel() { GUM_DESTRUCTOR(UGmodel); }
+  UGmodel::~UGmodel() {
+    GUM_DESTRUCTOR(UGmodel);
+    ;
+  }
 
   UGmodel& UGmodel::operator=(const UGmodel& source) {
     if (this != &source) {

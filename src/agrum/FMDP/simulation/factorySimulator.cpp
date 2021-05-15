@@ -37,7 +37,7 @@
 // namespace gum {
 
 //  FactorySimulator::FactorySimulator():AbstractSimulator(){
-//    GUM_CONSTRUCTOR(FactorySimulator)
+//    GUM_CONSTRUCTOR(FactorySimulator);
 
 //    //
 //    *****************************************************************************************
@@ -113,7 +113,7 @@
 //  }
 
 //  FactorySimulator::~FactorySimulator(){
-//    GUM_DESTRUCTOR(FactorySimulator)
+//    GUM_DESTRUCTOR(FactorySimulator);
 
 //    for( BijectionIteratorSafe<const DiscreteVariable*, const
 //    DiscreteVariable*> varIter = primeMap__.beginSafe();

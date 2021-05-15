@@ -55,7 +55,7 @@ namespace gum {
       MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
-                "maxParents must be at least equal to 1 to have a connexe graph");
+                "maxParents must be at least equal to 1 to have a connexe graph")
 
     maxParents_ = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
@@ -123,7 +123,7 @@ namespace gum {
         setMaxParents(Size maxParents) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
-                "maxParents must be at least equal to 1 to have a connexe graph");
+                "maxParents must be at least equal to 1 to have a connexe graph")
 
     maxParents_ = maxParents;
   }

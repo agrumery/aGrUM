@@ -64,7 +64,10 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    virtual ~ITestPolicy() { GUM_DESTRUCTOR(ITestPolicy); }
+    virtual ~ITestPolicy() {
+      GUM_DESTRUCTOR(ITestPolicy);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

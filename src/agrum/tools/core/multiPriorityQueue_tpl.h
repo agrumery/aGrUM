@@ -222,7 +222,7 @@ namespace gum {
   // returns the element at the top of the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp, Alloc >::top() const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return *(heap__[0].second);
   }
@@ -231,7 +231,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
      MultiPriorityQueue< Val, Priority, Cmp, Alloc >::topPriority() const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return heap__[0].first;
   }
@@ -346,7 +346,7 @@ namespace gum {
   // removes the top element from the priority queue and return it
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Val MultiPriorityQueue< Val, Priority, Cmp, Alloc >::pop() {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     Val v = *(heap__[0].second);
     eraseByPos(0);

@@ -40,7 +40,7 @@ namespace gum {
   // Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)| If
   // the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setEpsilon(double eps) {
-    if (eps < 0.) { GUM_ERROR(OutOfLowerBound, "eps should be >=0"); }
+    if (eps < 0.) { GUM_ERROR(OutOfLowerBound, "eps should be >=0") }
 
     eps_         = eps;
     enabled_eps_ = true;
@@ -63,7 +63,7 @@ namespace gum {
 
   // Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
   INLINE void ApproximationScheme::setMinEpsilonRate(double rate) {
-    if (rate < 0) { GUM_ERROR(OutOfLowerBound, "rate should be >=0"); }
+    if (rate < 0) { GUM_ERROR(OutOfLowerBound, "rate should be >=0") }
 
     min_rate_eps_         = rate;
     enabled_min_rate_eps_ = true;
@@ -92,7 +92,7 @@ namespace gum {
 
   // stopping criterion on number of iterations
   INLINE void ApproximationScheme::setMaxIter(Size max) {
-    if (max < 1) { GUM_ERROR(OutOfLowerBound, "max should be >=1"); }
+    if (max < 1) { GUM_ERROR(OutOfLowerBound, "max should be >=1") }
     max_iter_         = max;
     enabled_max_iter_ = true;
   }
@@ -115,7 +115,7 @@ namespace gum {
   // stopping criterion on timeout (in seconds)
   // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime(double timeout) {
-    if (timeout <= 0.) { GUM_ERROR(OutOfLowerBound, "timeout should be >0."); }
+    if (timeout <= 0.) { GUM_ERROR(OutOfLowerBound, "timeout should be >0.") }
     max_time_         = timeout;
     enabled_max_time_ = true;
   }
@@ -140,7 +140,7 @@ namespace gum {
 
   // how many samples between 2 stopping isEnableds
   INLINE void ApproximationScheme::setPeriodSize(Size p) {
-    if (p < 1) { GUM_ERROR(OutOfLowerBound, "p should be >=1"); }
+    if (p < 1) { GUM_ERROR(OutOfLowerBound, "p should be >=1") }
 
     period_size_ = p;
   }
@@ -162,7 +162,7 @@ namespace gum {
   INLINE Size ApproximationScheme::nbrIterations() const {
     if (stateApproximationScheme() == ApproximationSchemeSTATE::Undefined) {
       GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is undefined");
+                "state of the approximation scheme is undefined")
     }
 
     return current_step_;
@@ -172,7 +172,7 @@ namespace gum {
   INLINE const std::vector< double >& ApproximationScheme::history() const {
     if (stateApproximationScheme() == ApproximationSchemeSTATE::Undefined) {
       GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is udefined");
+                "state of the approximation scheme is udefined")
     }
 
     if (verbosity() == false) {

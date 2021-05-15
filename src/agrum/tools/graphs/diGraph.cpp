@@ -115,7 +115,7 @@ namespace gum {
     while (roots.size()) {
       if (mutableTopologicalOrder__->exists(roots.back())) {
         GUM_ERROR(InvalidDirectedCycle,
-                  "cycles prevent the creation of a topological ordering.");
+                  "cycles prevent the creation of a topological ordering.")
       }
       mutableTopologicalOrder__->insert(roots.back());
       roots.pop_back();

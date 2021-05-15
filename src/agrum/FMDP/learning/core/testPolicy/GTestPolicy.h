@@ -67,7 +67,10 @@ namespace gum {
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~GTestPolicy() { GUM_DESTRUCTOR(GTestPolicy); }
+    virtual ~GTestPolicy() {
+      GUM_DESTRUCTOR(GTestPolicy);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

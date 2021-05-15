@@ -58,19 +58,19 @@ namespace gum {
   CliqueGraph::CliqueGraph(const CliqueGraph& from) :
       NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
       UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
-      cliques__(from.cliques__), separators__(from.separators__) {
-    // for debugging purposes
+      cliques__(from.cliques__),
+      separators__(from.separators__) {   // for debugging purposes
     GUM_CONS_CPY(CliqueGraph);
   }
 
   /// destructor
 
-  CliqueGraph::~CliqueGraph() {
-    // for debugging purposes
+  CliqueGraph::~CliqueGraph() {   // for debugging purposes
     GUM_DESTRUCTOR(CliqueGraph);
   }
 
-  /// returns a path from a clique containing node1 to a clique containing node2
+  /// returns a path from a clique containing node1 to a clique containing
+  /// node2
 
   std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1,
                                                    const NodeId node2) const {
@@ -101,7 +101,7 @@ namespace gum {
     // check if the node already exists, in which case throw an exception
     if (clique.contains(node_id)) {
       GUM_ERROR(DuplicateElement,
-                "the clique set already contains the node " << node_id);
+                "the clique set already contains the node " << node_id)
     }
 
     clique.insert(node_id);

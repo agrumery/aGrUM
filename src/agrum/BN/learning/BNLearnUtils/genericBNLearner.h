@@ -918,7 +918,7 @@ namespace gum {
           return current_algorithm__->epsilon();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// Disable stopping criterion on epsilon
       void disableEpsilon() {
@@ -943,7 +943,7 @@ namespace gum {
           return current_algorithm__->isEnabledEpsilon();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// Given that we approximate f(t), stopping criterion on
@@ -964,7 +964,7 @@ namespace gum {
           return current_algorithm__->minEpsilonRate();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// Disable stopping criterion on epsilon rate
       void disableMinEpsilonRate() {
@@ -987,7 +987,7 @@ namespace gum {
           return current_algorithm__->isEnabledMinEpsilonRate();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// stopping criterion on number of iterations
@@ -1008,7 +1008,7 @@ namespace gum {
           return current_algorithm__->maxIter();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// Disable stopping criterion on max iterations
       void disableMaxIter() {
@@ -1031,7 +1031,7 @@ namespace gum {
           return current_algorithm__->isEnabledMaxIter();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// stopping criterion on timeout
@@ -1053,7 +1053,7 @@ namespace gum {
           return current_algorithm__->maxTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// get the current running time in second (double)
       double currentTime() const {
@@ -1061,7 +1061,7 @@ namespace gum {
           return current_algorithm__->currentTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// Disable stopping criterion on timeout
       void disableMaxTime() {
@@ -1083,7 +1083,7 @@ namespace gum {
           return current_algorithm__->isEnabledMaxTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// how many samples between 2 stopping isEnableds
@@ -1101,7 +1101,7 @@ namespace gum {
           return current_algorithm__->periodSize();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// verbosity
@@ -1118,7 +1118,7 @@ namespace gum {
           return current_algorithm__->verbosity();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
 
       /// history
@@ -1129,7 +1129,7 @@ namespace gum {
           return current_algorithm__->stateApproximationScheme();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// @throw OperationNotAllowed if scheme not performed
       Size nbrIterations() const {
@@ -1137,7 +1137,7 @@ namespace gum {
           return current_algorithm__->nbrIterations();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
       const std::vector< double >& history() const {
@@ -1145,7 +1145,7 @@ namespace gum {
           return current_algorithm__->history();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
-      };
+      }
       /// @}
     };
 

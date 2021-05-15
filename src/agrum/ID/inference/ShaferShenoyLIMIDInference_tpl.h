@@ -112,9 +112,6 @@ namespace gum {
     PsiArcProperty  psi;
 
     initializingInference_(phi, psi);
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE_VAR(reducedJunctionTree_.toDot())
-#  endif
     // message passing (using reverse order of solvabilityOrder)
     // first collect of phis into root
     const auto firstRootIndice = 0;
@@ -258,9 +255,6 @@ namespace gum {
     GUM_SCALAR resvar  = 0;
     for (auto node: infdiag.nodes()) {
       if (infdiag.isUtilityNode(node)) {
-#  ifdef GUM_SSLI_TRACE_ON
-        GUM_TRACE_VAR(posteriors_[node])
-#  endif
         auto p = meanVar(node);
         resmean += p.first;
         resvar += p.second;
@@ -485,7 +479,7 @@ namespace gum {
     }
     if (infdiag.decisionNodeSize() != ids.size())
       GUM_ERROR(SizeError,
-                "Some decision nodes are missing in the sequence " << ids);
+                "Some decision nodes are missing in the sequence " << ids)
 
     noForgettingOrder_ = ids;
     createReduced_();
@@ -571,9 +565,6 @@ namespace gum {
      const NodeId     rootClique) {
     const auto& jt = *junctionTree();
 
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE("COLLECTING TO ROOT " << rootClique)
-#  endif
     std::function< void(NodeId, NodeId) > parcours
        = [&](NodeId node, NodeId from) {
            for (const auto nei: jt.neighbours(node)) {
@@ -594,10 +585,6 @@ namespace gum {
      NodeId           toClique) {
     const auto& jt = *junctionTree();
 
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE("COLLECTING TO FOLLOWING ROOT from " << fromClique << " to "
-                                                   << toClique)
-#  endif
     std::function< bool(NodeId, NodeId, NodeId) > revparcours
        = [&](NodeId node, NodeId from, NodeId target) {
            if (node == target) return true;
@@ -626,12 +613,6 @@ namespace gum {
     const auto& infdiag = this->influenceDiagram();
     const auto& jt      = *junctionTree();
 
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE(" Deciding for "
-              << infdiag.variable(decisionNode).name() << " in "
-              << node_to_clique_[decisionNode] << "("
-              << infdiag.names(jt.clique(node_to_clique_[decisionNode])) << ")")
-#  endif
     auto& decision
        = strategies_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
 
@@ -644,7 +625,6 @@ namespace gum {
       SetOfVars sev;
       sev.insert(&infdiag.variable(decisionNode));
       for (const auto parent: reduced_.parents(decisionNode)) {
-        // GUM_TRACE("    parent : " << infdiag.variable(parent).name())
         sev.insert(&infdiag.variable(parent));
       }
       dp = dp ^ sev;
@@ -665,17 +645,7 @@ namespace gum {
 
       binarizingMax_(decision, dp.probPot);
     }
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE("  UPDATING PHI(" << node_to_clique_[decisionNode] << ")")
-#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(phi[node_to_clique_[decisionNode]])
-    GUM_TRACE_VAR(decision)
-#    endif
-#  endif
     phi[node_to_clique_[decisionNode]].insertProba(decision);
-#  ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(phi[node_to_clique_[decisionNode]])
-#  endif
   }
 
   template < typename GUM_SCALAR >
@@ -732,9 +702,6 @@ namespace gum {
              if (nei != from) parcours(nei, node);
            }
          };
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE(" DISTRIBUTING")
-#  endif
 
     // phi.set(rootClique, integrating_(phi, psi, rootClique));
     for (const auto nei: jt.neighbours(rootClique)) {
@@ -751,17 +718,6 @@ namespace gum {
     // phi has been updated. No need to integrate anythin
     psi.set(Arc(fromClique, toClique),
             phi[fromClique] ^ varsSeparator_[Edge(fromClique, toClique)]);
-
-#  ifdef GUM_SSLI_TRACE_ON
-    const auto& jt      = *junctionTree();
-    const auto& infdiag = this->influenceDiagram();
-    GUM_TRACE("Computing final message : "
-              << fromClique << ":" << infdiag.names(jt.clique(fromClique)) << "->"
-              << toClique << ":" << infdiag.names(jt.clique(toClique)))
-#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(psi[Arc(fromClique, toClique)])
-#    endif
-#  endif
   }
 
   template < typename GUM_SCALAR >
@@ -773,18 +729,6 @@ namespace gum {
     psi.set(Arc(fromClique, toClique),
             integrating_(phi, psi, fromClique, toClique)
                ^ varsSeparator_[Edge(fromClique, toClique)]);
-
-#  ifdef GUM_SSLI_TRACE_ON
-    const auto& jt      = *junctionTree();
-    const auto& infdiag = this->influenceDiagram();
-    GUM_TRACE("Computing message : "
-              << fromClique << ":" << infdiag.names(jt.clique(fromClique)) << "->"
-              << toClique << ":" << infdiag.names(jt.clique(toClique)))
-
-    //#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(psi[Arc(fromClique, toClique)])
-//#    endif
-#  endif
   }
 
   template < typename GUM_SCALAR >
@@ -799,16 +743,6 @@ namespace gum {
     for (const auto nei: jt.neighbours(clique))
       if (nei != except) res *= psi[Arc(nei, clique)];
 
-#  ifdef GUM_SSLI_TRACE_ON
-    const auto& infdiag = this->influenceDiagram();
-    GUM_TRACE(" Integrating into : " << clique << ":"
-                                     << infdiag.names(jt.clique(clique)))
-
-#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(phi[clique])
-    GUM_TRACE_VAR(res)
-#    endif
-#  endif
     return res;
   }
 
@@ -821,26 +755,8 @@ namespace gum {
     const auto&                 jt  = *junctionTree();
     DecisionPotential< double > res = phi[clique];
 
-#  ifdef GUM_SSLI_TRACE_ON
-    const auto& infdiag = this->influenceDiagram();
-    GUM_TRACE(" Full-Integrating into : " << clique << ":"
-                                          << infdiag.names(jt.clique(clique)))
-#  endif
-
     for (const auto nei: jt.neighbours(clique))
       res *= psi[Arc(nei, clique)];
-
-#  ifdef GUM_SSLI_TRACE_ON
-    GUM_TRACE(" After Full-Integrating into : "
-              << clique << ":" << infdiag.names(jt.clique(clique)))
-#  endif
-
-
-#  ifdef GUM_SSLI_TRACE_ON
-#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-    GUM_TRACE_VAR(res)
-#    endif
-#  endif
 
     return res;
   }
@@ -855,10 +771,6 @@ namespace gum {
     posteriors_.clear();
     strategies_.clear();
     for (const auto node: infdiag.nodes()) {
-#  ifdef GUM_SSLI_TRACE_ON
-      GUM_TRACE(" ---> Posterior for variable " << infdiag.variable(node).name())
-      GUM_TRACE_VAR(phi[node_to_clique_[node]])
-#  endif
       const auto clik = node_to_clique_[node];
       if (!finalphis.exists(clik))
         finalphis.insert(clik, integrating_(phi, psi, clik));
@@ -879,15 +791,6 @@ namespace gum {
           if (infdiag.isChanceNode(par)) family.insert(&infdiag.variable(par));
         }
         const auto dp = finalphi ^ family;
-
-#  ifdef GUM_SSLI_TRACE_ON
-        GUM_TRACE_VAR(node_to_clique_[node])
-#    ifdef GUM_SSLI_POTENTIAL_TRACE_ON
-        GUM_TRACE_VAR(finalphi)
-
-        GUM_TRACE_VAR(dp)
-#    endif
-#  endif
 
         gum::Potential< double > decision
            = dp.utilPot.putFirst(&infdiag.variable(node));

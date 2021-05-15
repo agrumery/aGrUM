@@ -38,8 +38,7 @@ namespace gum {
 
   // copy constructor
   JunctionTreeStrategy::JunctionTreeStrategy(const JunctionTreeStrategy& from) :
-      triangulation_(from.triangulation_) {
-    // for debugging purposes
+      triangulation_(from.triangulation_) {   // for debugging purposes
     GUM_CONS_CPY(JunctionTreeStrategy);
   }
 

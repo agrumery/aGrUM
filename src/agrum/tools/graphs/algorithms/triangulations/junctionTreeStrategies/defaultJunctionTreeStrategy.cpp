@@ -36,7 +36,6 @@ namespace gum {
 
   // default constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy() {
-    // for debugging purposes
     GUM_CONSTRUCTOR(DefaultJunctionTreeStrategy);
   }
 
@@ -47,7 +46,6 @@ namespace gum {
       has_junction_tree__(from.has_junction_tree__),
       junction_tree__(from.junction_tree__),
       node_2_junction_clique__(from.node_2_junction_clique__) {
-    // for debugging purposes
     GUM_CONS_CPY(DefaultJunctionTreeStrategy);
   }
 
@@ -58,14 +56,13 @@ namespace gum {
       has_junction_tree__(from.has_junction_tree__),
       junction_tree__(std::move(from.junction_tree__)),
       node_2_junction_clique__(std::move(from.node_2_junction_clique__)) {
-    // for debugging purposes
     GUM_CONS_MOV(DefaultJunctionTreeStrategy);
   }
 
   // destructor
   DefaultJunctionTreeStrategy::~DefaultJunctionTreeStrategy() {
-    // for debugging purposes
     GUM_DESTRUCTOR(DefaultJunctionTreeStrategy);
+    ;
   }
 
   // clone factory
@@ -149,7 +146,7 @@ namespace gum {
     if (triangulation_ == nullptr)
       GUM_ERROR(UndefinedElement,
                 "No triangulation has been assigned to "
-                "the DefaultJunctionTreeStrategy");
+                "the DefaultJunctionTreeStrategy")
 
     // copy the elimination tree into the junction tree
     junction_tree__ = triangulation_->eliminationTree();
@@ -159,7 +156,7 @@ namespace gum {
 
     // create a vector indicating by which clique a given clique has been
     // substituted during the transformation from the elimination tree to the
-    // junction tree. Assume that clique J of the elmination tree has been
+    // junction tree. Assume that clique J of the elimination tree has been
     // substituted by clique K of the elimination tree, and that clique J
     // (resp. K) was the jth (resp. kth) one created during the triangulation
     // process. Then, in the vector below, substitution[j] = k.

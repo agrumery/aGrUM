@@ -32,9 +32,15 @@
 
 namespace gum {
 
-  SpanningForest::SpanningForest() { GUM_CONSTRUCTOR(SpanningForest); }
+  SpanningForest::SpanningForest() {
+    GUM_CONSTRUCTOR(SpanningForest);
+    ;
+  }
 
-  SpanningForest::~SpanningForest() { GUM_DESTRUCTOR(SpanningForest); }
+  SpanningForest::~SpanningForest() {
+    GUM_DESTRUCTOR(SpanningForest);
+    ;
+  }
 
   SpanningForest::SpanningForest(const SpanningForest& toCopy) {
     GUM_CONS_CPY(SpanningForest);

@@ -34,7 +34,7 @@ namespace gum {
     PRM< GUM_SCALAR >* LayerGenerator< GUM_SCALAR >::generate() {
       if (layers__.size() == 0) {
         GUM_ERROR(OperationNotAllowed,
-                  "cannot generate a layered PRM<GUM_SCALAR> without layers");
+                  "cannot generate a layered PRM<GUM_SCALAR> without layers")
       }
 
       std::vector< MyData >    l;

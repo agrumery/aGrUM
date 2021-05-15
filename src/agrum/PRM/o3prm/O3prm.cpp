@@ -53,7 +53,10 @@ namespace gum {
         GUM_CONS_MOV(O3Position);
       }
 
-      O3Position::~O3Position() { GUM_DESTRUCTOR(O3Position); }
+      O3Position::~O3Position() {
+        GUM_DESTRUCTOR(O3Position);
+        ;
+      }
 
       O3Position& O3Position::operator=(const O3Position& src) {
         if (this == &src) { return *this; }
@@ -80,7 +83,10 @@ namespace gum {
       int& O3Position::column() { return column__; }
       int  O3Position::column() const { return column__; }
 
-      O3Integer::O3Integer() : pos__(), value__(0) { GUM_CONSTRUCTOR(O3Integer); }
+      O3Integer::O3Integer() : pos__(), value__(0) {
+        GUM_CONSTRUCTOR(O3Integer);
+        ;
+      }
 
       O3Integer::O3Integer(const O3Position& pos, int value) :
           pos__(pos), value__(value) {
@@ -97,7 +103,10 @@ namespace gum {
         GUM_CONS_MOV(O3Integer);
       }
 
-      O3Integer::~O3Integer() { GUM_DESTRUCTOR(O3Integer); }
+      O3Integer::~O3Integer() {
+        GUM_DESTRUCTOR(O3Integer);
+        ;
+      }
 
       O3Integer& O3Integer::operator=(const O3Integer& src) {
         if (this == &src) { return *this; }
@@ -119,7 +128,10 @@ namespace gum {
       int  O3Integer::value() const { return value__; }
       int& O3Integer::value() { return value__; }
 
-      O3Float::O3Float() { GUM_CONSTRUCTOR(O3Float); }
+      O3Float::O3Float() {
+        GUM_CONSTRUCTOR(O3Float);
+        ;
+      }
 
       O3Float::O3Float(const O3Position& pos, float value) :
           pos__(pos), value__(value) {
@@ -136,7 +148,10 @@ namespace gum {
         GUM_CONS_MOV(O3Float);
       }
 
-      O3Float::~O3Float() { GUM_DESTRUCTOR(O3Float); }
+      O3Float::~O3Float() {
+        GUM_DESTRUCTOR(O3Float);
+        ;
+      }
 
       O3Float& O3Float::operator=(const O3Float& src) {
         if (this == &src) { return *this; }
@@ -179,7 +194,10 @@ namespace gum {
         GUM_CONS_MOV(O3Formula);
       }
 
-      O3Formula::~O3Formula() { GUM_DESTRUCTOR(O3Formula); }
+      O3Formula::~O3Formula() {
+        GUM_DESTRUCTOR(O3Formula);
+        ;
+      }
 
       O3Formula& O3Formula::operator=(const O3Formula& src) {
         if (this == &src) { return *this; }
@@ -201,7 +219,10 @@ namespace gum {
       const Formula& O3Formula::formula() const { return *formula__; }
       Formula&       O3Formula::formula() { return *formula__; }
 
-      O3Label::O3Label() : pos__(), label__() { GUM_CONSTRUCTOR(O3Label); }
+      O3Label::O3Label() : pos__(), label__() {
+        GUM_CONSTRUCTOR(O3Label);
+        ;
+      }
 
       O3Label::O3Label(const O3Position& pos, const std::string& label) :
           pos__(pos), label__(label) {
@@ -218,7 +239,10 @@ namespace gum {
         GUM_CONS_MOV(O3Label);
       }
 
-      O3Label::~O3Label() { GUM_DESTRUCTOR(O3Label); }
+      O3Label::~O3Label() {
+        GUM_DESTRUCTOR(O3Label);
+        ;
+      }
 
       O3Label& O3Label::operator=(const O3Label& src) {
         if (this == &src) { return *this; }
@@ -240,7 +264,10 @@ namespace gum {
       const std::string& O3Label::label() const { return label__; }
       std::string&       O3Label::label() { return label__; }
 
-      O3Type::O3Type() : dep_flag__(false) { GUM_CONSTRUCTOR(O3Type); }
+      O3Type::O3Type() : dep_flag__(false) {
+        GUM_CONSTRUCTOR(O3Type);
+        ;
+      }
 
       O3Type::O3Type(const O3Type& src) :
           pos__(src.pos__), name__(src.name__), superLabel__(src.superLabel__),
@@ -256,7 +283,10 @@ namespace gum {
         GUM_CONS_MOV(O3Type);
       }
 
-      O3Type::~O3Type() { GUM_DESTRUCTOR(O3Type); }
+      O3Type::~O3Type() {
+        GUM_DESTRUCTOR(O3Type);
+        ;
+      }
 
       O3Type& O3Type::operator=(const O3Type& src) {
         if (this == &src) { return *this; }
@@ -293,7 +323,10 @@ namespace gum {
       bool&       O3Type::deprecated() { return dep_flag__; }
       const bool& O3Type::deprecated() const { return dep_flag__; }
 
-      O3IntType::O3IntType() : dep_flag__(false) { GUM_CONSTRUCTOR(O3IntType); }
+      O3IntType::O3IntType() : dep_flag__(false) {
+        GUM_CONSTRUCTOR(O3IntType);
+        ;
+      }
 
       O3IntType::O3IntType(const O3IntType& src) :
           pos__(src.pos__), name__(src.name__), start__(src.start__),
@@ -308,7 +341,10 @@ namespace gum {
         GUM_CONS_MOV(O3IntType);
       }
 
-      O3IntType::~O3IntType() { GUM_DESTRUCTOR(O3IntType); }
+      O3IntType::~O3IntType() {
+        GUM_DESTRUCTOR(O3IntType);
+        ;
+      }
 
       O3IntType& O3IntType::operator=(const O3IntType& src) {
         if (this == &src) { return *this; }
@@ -345,7 +381,10 @@ namespace gum {
       bool&       O3IntType::deprecated() { return dep_flag__; }
       const bool& O3IntType::deprecated() const { return dep_flag__; }
 
-      O3RealType::O3RealType() : dep_flag__(false) { GUM_CONSTRUCTOR(O3RealType); }
+      O3RealType::O3RealType() : dep_flag__(false) {
+        GUM_CONSTRUCTOR(O3RealType);
+        ;
+      }
 
       O3RealType::O3RealType(const O3RealType& src) :
           pos__(src.pos__), name__(src.name__), values__(src.values__),
@@ -360,7 +399,10 @@ namespace gum {
         GUM_CONS_MOV(O3RealType);
       }
 
-      O3RealType::~O3RealType() { GUM_DESTRUCTOR(O3RealType); }
+      O3RealType::~O3RealType() {
+        GUM_DESTRUCTOR(O3RealType);
+        ;
+      }
 
       O3RealType& O3RealType::operator=(const O3RealType& src) {
         if (this == &src) { return *this; }
@@ -443,7 +485,10 @@ namespace gum {
         GUM_CONS_MOV(O3PRM);
       }
 
-      O3PRM::~O3PRM() { GUM_DESTRUCTOR(O3PRM); }
+      O3PRM::~O3PRM() {
+        GUM_DESTRUCTOR(O3PRM);
+        ;
+      }
 
       O3PRM& O3PRM::operator=(const O3PRM& src) {
         if (this == &src) { return *this; }
@@ -582,7 +627,10 @@ namespace gum {
         GUM_CONS_MOV(O3Interface);
       }
 
-      O3Interface::~O3Interface() { GUM_DESTRUCTOR(O3Interface); }
+      O3Interface::~O3Interface() {
+        GUM_DESTRUCTOR(O3Interface);
+        ;
+      }
 
       O3Interface& O3Interface::operator=(const O3Interface& src) {
         if (this == &src) { return *this; }
@@ -619,7 +667,10 @@ namespace gum {
         return *elts__;
       }
 
-      O3Attribute::O3Attribute() { GUM_CONSTRUCTOR(O3Attribute); }
+      O3Attribute::O3Attribute() {
+        GUM_CONSTRUCTOR(O3Attribute);
+        ;
+      }
 
       O3Attribute::O3Attribute(const O3Label&     type,
                                const O3Label&     name,
@@ -640,7 +691,10 @@ namespace gum {
         GUM_CONS_MOV(O3Attribute);
       }
 
-      O3Attribute::~O3Attribute() { GUM_DESTRUCTOR(O3Attribute); }
+      O3Attribute::~O3Attribute() {
+        GUM_DESTRUCTOR(O3Attribute);
+        ;
+      }
 
       O3Attribute& O3Attribute::operator=(const O3Attribute& src) {
         if (this == &src) { return *this; }
@@ -694,7 +748,10 @@ namespace gum {
         GUM_CONS_MOV(O3RawCPT);
       }
 
-      O3RawCPT::~O3RawCPT() { GUM_DESTRUCTOR(O3RawCPT); }
+      O3RawCPT::~O3RawCPT() {
+        GUM_DESTRUCTOR(O3RawCPT);
+        ;
+      }
 
       O3RawCPT& O3RawCPT::operator=(const O3RawCPT& src) {
         if (this == &src) { return *this; }
@@ -744,7 +801,10 @@ namespace gum {
         GUM_CONS_MOV(O3RuleCPT);
       }
 
-      O3RuleCPT::~O3RuleCPT() { GUM_DESTRUCTOR(O3RuleCPT); }
+      O3RuleCPT::~O3RuleCPT() {
+        GUM_DESTRUCTOR(O3RuleCPT);
+        ;
+      }
 
       O3RuleCPT& O3RuleCPT::operator=(const O3RuleCPT& src) {
         if (this == &src) { return *this; }
@@ -820,7 +880,10 @@ namespace gum {
         GUM_CONS_MOV(O3Class);
       }
 
-      O3Class::~O3Class() { GUM_DESTRUCTOR(O3Class); }
+      O3Class::~O3Class() {
+        GUM_DESTRUCTOR(O3Class);
+        ;
+      }
 
       O3Class& O3Class::operator=(const O3Class& src) {
         if (this == &src) { return *this; }
@@ -929,7 +992,10 @@ namespace gum {
         GUM_CONS_MOV(O3Parameter);
       }
 
-      O3Parameter::~O3Parameter() { GUM_DESTRUCTOR(O3Parameter); }
+      O3Parameter::~O3Parameter() {
+        GUM_DESTRUCTOR(O3Parameter);
+        ;
+      }
 
       O3Parameter& O3Parameter::operator=(const O3Parameter& src) {
         if (this == &src) { return *this; }
@@ -961,7 +1027,10 @@ namespace gum {
       O3Float&       O3Parameter::value() { return value__; }
       const O3Float& O3Parameter::value() const { return value__; }
 
-      O3ReferenceSlot::O3ReferenceSlot() { GUM_CONSTRUCTOR(O3ReferenceSlot); }
+      O3ReferenceSlot::O3ReferenceSlot() {
+        GUM_CONSTRUCTOR(O3ReferenceSlot);
+        ;
+      }
 
       O3ReferenceSlot::O3ReferenceSlot(const O3Label& type,
                                        const O3Label& name,
@@ -982,7 +1051,10 @@ namespace gum {
         GUM_CONS_MOV(O3ReferenceSlot);
       }
 
-      O3ReferenceSlot::~O3ReferenceSlot() { GUM_DESTRUCTOR(O3ReferenceSlot); }
+      O3ReferenceSlot::~O3ReferenceSlot() {
+        GUM_DESTRUCTOR(O3ReferenceSlot);
+        ;
+      }
 
       O3ReferenceSlot& O3ReferenceSlot::operator=(const O3ReferenceSlot& src) {
         if (this == &src) { return *this; }
@@ -1030,7 +1102,10 @@ namespace gum {
         GUM_CONS_MOV(O3Aggregate);
       }
 
-      O3Aggregate::~O3Aggregate() { GUM_DESTRUCTOR(O3Aggregate); }
+      O3Aggregate::~O3Aggregate() {
+        GUM_DESTRUCTOR(O3Aggregate);
+        ;
+      }
 
       O3Aggregate& O3Aggregate::operator=(const O3Aggregate& src) {
         if (this == &src) { return *this; }
@@ -1076,7 +1151,10 @@ namespace gum {
         return parameters__;
       }
 
-      O3Assignment::O3Assignment() { GUM_CONSTRUCTOR(O3Assignment); }
+      O3Assignment::O3Assignment() {
+        GUM_CONSTRUCTOR(O3Assignment);
+        ;
+      }
 
       O3Assignment::O3Assignment(const O3Assignment& src) :
           leftInstance__(src.leftInstance__), leftIndex__(src.leftIndex__),
@@ -1094,7 +1172,10 @@ namespace gum {
         GUM_CONS_CPY(O3Assignment);
       }
 
-      O3Assignment::~O3Assignment() { GUM_DESTRUCTOR(O3Assignment); }
+      O3Assignment::~O3Assignment() {
+        GUM_DESTRUCTOR(O3Assignment);
+        ;
+      }
 
       O3Assignment& O3Assignment::operator=(const O3Assignment& src) {
         if (this == &src) { return *this; }
@@ -1140,7 +1221,10 @@ namespace gum {
 
       const O3Integer& O3Assignment::rightIndex() const { return rightIndex__; }
 
-      O3Increment::O3Increment() { GUM_CONSTRUCTOR(O3Increment); }
+      O3Increment::O3Increment() {
+        GUM_CONSTRUCTOR(O3Increment);
+        ;
+      }
 
       O3Increment::O3Increment(const O3Increment& src) :
           leftInstance__(src.leftInstance__), leftIndex__(src.leftIndex__),
@@ -1158,7 +1242,10 @@ namespace gum {
         GUM_CONS_CPY(O3Increment);
       }
 
-      O3Increment::~O3Increment() { GUM_DESTRUCTOR(O3Increment); }
+      O3Increment::~O3Increment() {
+        GUM_DESTRUCTOR(O3Increment);
+        ;
+      }
 
       O3Increment& O3Increment::operator=(const O3Increment& src) {
         if (this == &src) { return *this; }
@@ -1199,7 +1286,10 @@ namespace gum {
 
       O3Label& O3Increment::rightInstance() { return rightInstance__; }
 
-      O3Instance::O3Instance() { GUM_CONSTRUCTOR(O3Instance); }
+      O3Instance::O3Instance() {
+        GUM_CONSTRUCTOR(O3Instance);
+        ;
+      }
 
       O3Instance::O3Instance(const O3Instance& src) :
           type__(src.type__), name__(src.name__), size__(src.size__),
@@ -1214,7 +1304,10 @@ namespace gum {
         GUM_CONS_MOV(O3Instance);
       }
 
-      O3Instance::~O3Instance() { GUM_DESTRUCTOR(O3Instance); }
+      O3Instance::~O3Instance() {
+        GUM_DESTRUCTOR(O3Instance);
+        ;
+      }
 
       O3Instance& O3Instance::operator=(const O3Instance& src) {
         if (this == &src) { return *this; }
@@ -1254,7 +1347,10 @@ namespace gum {
         return parameters__;
       }
 
-      O3System::O3System() { GUM_CONSTRUCTOR(O3System); }
+      O3System::O3System() {
+        GUM_CONSTRUCTOR(O3System);
+        ;
+      }
 
       O3System::O3System(const O3System& src) :
           name__(src.name__), instances__(src.instances__),
@@ -1269,7 +1365,10 @@ namespace gum {
         GUM_CONS_MOV(O3System);
       }
 
-      O3System::~O3System() { GUM_DESTRUCTOR(O3System); }
+      O3System::~O3System() {
+        GUM_DESTRUCTOR(O3System);
+        ;
+      }
 
       O3System& O3System::operator=(const O3System& src) {
         if (this == &src) { return *this; }
@@ -1365,7 +1464,10 @@ namespace gum {
 
       bool& O3InstanceParameter::isInteger() { return isInteger__; }
 
-      O3Import::O3Import() { GUM_CONSTRUCTOR(O3Import); }
+      O3Import::O3Import() {
+        GUM_CONSTRUCTOR(O3Import);
+        ;
+      }
 
       O3Import::O3Import(const O3Import& src) : import__(src.import__) {
         GUM_CONSTRUCTOR(O3Import);
@@ -1375,7 +1477,10 @@ namespace gum {
         GUM_CONS_MOV(O3Import);
       }
 
-      O3Import::~O3Import() { GUM_DESTRUCTOR(O3Import); }
+      O3Import::~O3Import() {
+        GUM_DESTRUCTOR(O3Import);
+        ;
+      }
 
       O3Import& O3Import::operator=(const O3Import& src) {
         if (this == &src) { return *this; }

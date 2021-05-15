@@ -38,7 +38,10 @@
 namespace gum {
 
   // Default constructor.
-  VariableNodeMap::VariableNodeMap() { GUM_CONSTRUCTOR(VariableNodeMap); }
+  VariableNodeMap::VariableNodeMap() {
+    GUM_CONSTRUCTOR(VariableNodeMap);
+    ;
+  }
 
   // Copy constructor.
   VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {

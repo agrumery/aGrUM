@@ -46,8 +46,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
 
     if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed,
-                " maxModality must be at least equal to two ");
+      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ")
 
     maxArcs_     = maxArcs;
     maxModality_ = maxModality;
@@ -87,8 +86,7 @@ namespace gum {
   INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxModality(
      Size maxModality) {
     if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed,
-                " maxModality must be at least equal to two ");
+      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ")
 
     maxModality_ = maxModality;
   }

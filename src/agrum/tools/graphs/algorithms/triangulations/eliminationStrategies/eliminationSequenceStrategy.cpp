@@ -59,7 +59,6 @@ namespace gum {
 
   // default constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_CONSTRUCTOR(EliminationSequenceStrategy);
   }
 
@@ -69,7 +68,6 @@ namespace gum {
      const NodeProperty< Size >* domain_sizes) {
     EliminationSequenceStrategy::setGraph(graph, domain_sizes);
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(EliminationSequenceStrategy);
   }
 
@@ -79,7 +77,6 @@ namespace gum {
       graph_(from.graph_),
       domain_sizes_(from.domain_sizes_),
       log_domain_sizes_(from.log_domain_sizes_) {
-    // for debugging purposes
     GUM_CONS_CPY(EliminationSequenceStrategy);
   }
 
@@ -89,13 +86,11 @@ namespace gum {
       graph_(from.graph_),
       domain_sizes_(from.domain_sizes_),
       log_domain_sizes_(std::move(from.log_domain_sizes_)) {
-    // for debugging purposes
     GUM_CONS_MOV(EliminationSequenceStrategy);
   }
 
   // destructor
   EliminationSequenceStrategy::~EliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_DESTRUCTOR(EliminationSequenceStrategy);
   }
 

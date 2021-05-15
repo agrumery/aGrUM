@@ -78,7 +78,7 @@ namespace gum {
     // of the Instantiation
     if (vars__.exists(&v)) {
       GUM_ERROR(DuplicateElement,
-                "Var " << v.name() << " already exists in this instantiation");
+                "Var " << v.name() << " already exists in this instantiation")
     }
     for (const auto& w: vars__) {
       if (w->name() == v.name())

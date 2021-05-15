@@ -89,8 +89,7 @@ namespace gum {
         variable__(var) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // add the content of the variable into the back dictionary
@@ -126,8 +125,7 @@ namespace gum {
         variable__(var) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // add the content of the variable into the back dictionary
@@ -271,7 +269,7 @@ namespace gum {
           return DBTranslatedValue{size};
         } else
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The translation of \"" << str << "\" could not be found");
+                    "The translation of \"" << str << "\" could not be found")
       }
     }
 

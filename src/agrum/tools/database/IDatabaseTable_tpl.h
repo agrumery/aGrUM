@@ -283,24 +283,23 @@ namespace gum {
     // sets the area in the database the handler will handle
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void
-       IDatabaseTable< T_DATA, ALLOC >::Handler::setRange(std::size_t begin,
-                                                          std::size_t end) {
-      if (begin > end) std::swap(begin, end);
+       IDatabaseTable< T_DATA, ALLOC >::Handler::setRange(std::size_t first,
+                                                          std::size_t last) {
+      if (first > last) std::swap(first, last);
 
       // check that the end belongs to the database, else raise an exception
-      if (row__ == nullptr) {
+      if (row__ == nullptr)
         GUM_ERROR(NullElement, "the handler does not point to any database")
-      }
-      if (end > row__->size()) {
+
+      if (last > row__->size())
         GUM_ERROR(SizeError,
                   "the database has fewer rows ("
-                     << row__->size() << ") than the upper range (" << end
-                     << ") specified to the handler");
-      }
+                     << row__->size() << ") than the upper range (" << last
+                     << ") specified to the handler")
 
-      begin_index__ = begin;
-      end_index__   = end;
-      index__       = begin;
+      begin_index__ = first;
+      end_index__   = last;
+      index__       = first;
     }
 
 
@@ -338,7 +337,7 @@ namespace gum {
                  IDatabaseTable< T_DATA, ALLOC >::Handler::database() const {
       if (db__ == nullptr) {
         GUM_ERROR(NullElement,
-                  "The database handler does not point toward a database");
+                  "The database handler does not point toward a database")
       }
       return *db__;
     }
@@ -788,7 +787,7 @@ namespace gum {
         if (variable_names_[i] == name) return i;
 
       GUM_ERROR(UndefinedElement,
-                "the database contains no column whose name is " << name);
+                "the database contains no column whose name is " << name)
     }
 
 
@@ -805,7 +804,7 @@ namespace gum {
 
       if (cols.empty())
         GUM_ERROR(UndefinedElement,
-                  "the database contains no column whose name is " << name);
+                  "the database contains no column whose name is " << name)
 
       return cols;
     }
@@ -980,7 +979,7 @@ namespace gum {
       for (const auto& row: new_rows) {
         if (row.size() != new_size) {
           GUM_ERROR(SizeError,
-                    "all the new rows do not have the same number of columns");
+                    "all the new rows do not have the same number of columns")
         }
       }
 
@@ -1035,7 +1034,7 @@ namespace gum {
       for (const auto& row: new_rows) {
         if (row.size() != new_size) {
           GUM_ERROR(SizeError,
-                    "all the new rows do not have the same number of columns");
+                    "all the new rows do not have the same number of columns")
         }
       }
 

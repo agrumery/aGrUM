@@ -167,7 +167,7 @@ namespace gum {
       } catch (NotFound&) {}
     }
 
-    if (!found) { GUM_ERROR(NotFound, "no possible node to eliminate"); }
+    if (!found) { GUM_ERROR(NotFound, "no possible node to eliminate") }
 
     return best_node;
   }
@@ -182,7 +182,7 @@ namespace gum {
                 "the partial order does not cover all the nodes "
                 "of the graph");
 
-    if (nodeset_.empty()) { GUM_ERROR(NotFound, "no node is admissible"); }
+    if (nodeset_.empty()) { GUM_ERROR(NotFound, "no node is admissible") }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes

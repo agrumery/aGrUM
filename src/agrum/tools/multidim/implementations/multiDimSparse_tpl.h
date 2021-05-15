@@ -148,7 +148,7 @@ namespace gum {
   INLINE GUM_SCALAR&
          MultiDimSparse< GUM_SCALAR >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed,
-              "Do not use this with the MultiDimSparse class.");
+              "Do not use this with the MultiDimSparse class.")
   }
 
 } /* namespace gum */

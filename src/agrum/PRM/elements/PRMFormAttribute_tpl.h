@@ -168,11 +168,10 @@ namespace gum {
         }
         formulas__->add(elt.type().variable());
       } catch (DuplicateElement&) {
-        GUM_ERROR(DuplicateElement,
-                  elt.name() << " as parent of " << this->name());
+        GUM_ERROR(DuplicateElement, elt.name() << " as parent of " << this->name())
       } catch (OperationNotAllowed&) {
         GUM_ERROR(OperationNotAllowed,
-                  elt.name() << " of wrong type as parent of " << this->name(););
+                  elt.name() << " of wrong type as parent of " << this->name();)
       }
 
       GUM_ASSERT(formulas__->contains(type__->variable()));
@@ -192,7 +191,7 @@ namespace gum {
                                                     type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
-                  "this ScalarAttribute can not have cast descendant");
+                  "this ScalarAttribute can not have cast descendant")
       }
 
       cast->addParent(*this);
@@ -220,7 +219,7 @@ namespace gum {
         type().setSuper(cast->type());
       } catch (OperationNotAllowed&) {
         GUM_ERROR(OperationNotAllowed,
-                  "this ScalarAttribute can not have cast descendant");
+                  "this ScalarAttribute can not have cast descendant")
       } catch (TypeError&) {
         std::stringstream msg;
         msg << type().name() << " is not a subtype of " << cast->type().name();
@@ -302,8 +301,8 @@ namespace gum {
 
         GUM_ASSERT(inst.end() && jnst.end());
 
-      } catch (Exception&) { GUM_ERROR(NotFound, "undefined value in cpt"); }
-      GUM_ASSERT(formulas__->contains(type__->variable()));
+      } catch (Exception&) { GUM_ERROR(NotFound, "undefined value in cpt") }
+      GUM_ASSERT(formulas__->contains(type__->variable()))
     }
 
     template < typename GUM_SCALAR >
@@ -330,7 +329,7 @@ namespace gum {
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot replace types with difference domain size");
+                  "Cannot replace types with difference domain size")
       }
       if (!formulas__->contains(old_type.variable())) {
         GUM_ERROR(NotFound, "could not find variable " + old_type.name())
@@ -377,7 +376,7 @@ namespace gum {
     void PRMFormAttribute< GUM_SCALAR >::type_(PRMType* t) {
       if (type__->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot replace types with difference domain size");
+                  "Cannot replace types with difference domain size")
       }
       auto old = formulas__;
 

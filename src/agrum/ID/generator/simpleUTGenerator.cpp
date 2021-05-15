@@ -31,10 +31,16 @@
 namespace gum {
 
   // Default constructor.
-  SimpleUTGenerator::SimpleUTGenerator() { GUM_CONSTRUCTOR(SimpleUTGenerator); }
+  SimpleUTGenerator::SimpleUTGenerator() {
+    GUM_CONSTRUCTOR(SimpleUTGenerator);
+    ;
+  }
 
   // Destructor.
-  SimpleUTGenerator::~SimpleUTGenerator() { GUM_DESTRUCTOR(SimpleUTGenerator); }
+  SimpleUTGenerator::~SimpleUTGenerator() {
+    GUM_DESTRUCTOR(SimpleUTGenerator);
+    ;
+  }
 
   // Generates a UT using floats.
   // @param varID The variable id of the UT owner.

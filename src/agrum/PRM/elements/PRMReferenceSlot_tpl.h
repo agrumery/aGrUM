@@ -54,8 +54,7 @@ namespace gum {
         PRMClassElement< GUM_SCALAR >(source),
         slotType__(source.slotType__), isArray__(source.isArray__) {
       GUM_CONS_CPY(PRMReferenceSlot);
-      GUM_ERROR(FatalError,
-                "illegal call to gum::ReferenceSlot copy constructor.");
+      GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy constructor.")
     }
 
     // Copy operator. Raise a FatalError.

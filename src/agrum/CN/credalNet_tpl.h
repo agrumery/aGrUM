@@ -1587,7 +1587,7 @@ namespace gum {
 
       if (!h_file.good())
         GUM_ERROR(IOError,
-                  "__H2Vlrs : could not open lrs input file : " << sinefile);
+                  "__H2Vlrs : could not open lrs input file : " << sinefile)
 
       h_file << "H - representation\n";
       h_file << "begin\n";

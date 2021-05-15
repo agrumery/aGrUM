@@ -41,11 +41,20 @@ namespace gum {
        * class LpCol
        */
 
-      LpCol::LpCol(unsigned int id) : id__(id) { GUM_CONSTRUCTOR(LpCol); }
+      LpCol::LpCol(unsigned int id) : id__(id) {
+        GUM_CONSTRUCTOR(LpCol);
+        ;
+      }
 
-      LpCol::LpCol(const LpCol& col) : id__(col.id__) { GUM_CONS_CPY(LpCol); }
+      LpCol::LpCol(const LpCol& col) : id__(col.id__) {
+        GUM_CONS_CPY(LpCol);
+        ;
+      }
 
-      LpCol::~LpCol() { GUM_DESTRUCTOR(LpCol); }
+      LpCol::~LpCol() {
+        GUM_DESTRUCTOR(LpCol);
+        ;
+      }
 
       /**
        * class LpExpr
@@ -205,7 +214,7 @@ namespace gum {
       LpExpr& LpExpr::operator+=(const LpCol& rhs) {
         if (ileft__ || iright__)
           GUM_ERROR(OperationNotAllowed,
-                    "expr::operator+= (expr) : <= present on one side of expr");
+                    "expr::operator+= (expr) : <= present on one side of expr")
 
         if (!imiddle__) imiddle__ = true;
 
@@ -254,7 +263,7 @@ namespace gum {
       LpExpr& LpExpr::operator-=(const LpCol& rhs) {
         if (ileft__ || iright__)
           GUM_ERROR(OperationNotAllowed,
-                    "expr::operator-= (rhs) : <= present in one of expr");
+                    "expr::operator-= (rhs) : <= present in one of expr")
 
         if (!imiddle__) imiddle__ = true;
 

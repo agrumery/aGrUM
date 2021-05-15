@@ -39,7 +39,6 @@ namespace gum {
     BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(
        const BayesNet< GUM_SCALAR >& bn) :
         bn__(bn) {
-      // for debugging purposes
       GUM_CONSTRUCTOR(BNDatabaseGenerator);
 
       // get the node names => they will serve as ids
@@ -150,7 +149,7 @@ namespace gum {
 
       if (csvSeparator.find("\n") != std::string::npos) {
         GUM_ERROR(InvalidArgument,
-                  "csvSeparator must not contain end-line characters");
+                  "csvSeparator must not contain end-line characters")
       }
 
       bool includeHeader = true;
@@ -290,15 +289,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
        const std::vector< Idx >& varOrder) {
-      if (varOrder.size() != nbVars__) {
+      if (varOrder.size() != nbVars__)
         GUM_ERROR(FatalError,
-                  "varOrder's size must be equal to the number of variables");
-      }
+                  "varOrder's size must be equal to the number of variables")
+
       std::vector< bool > usedVars(nbVars__, false);
       for (const auto& i: varOrder) {
-        if (i >= nbVars__) {
+        if (i >= nbVars__)
           GUM_ERROR(FatalError, "varOrder contains invalid variables")
-        }
         if (usedVars.at(i))
           GUM_ERROR(FatalError, "varOrder must not have repeated variables")
         usedVars.at(i) = true;

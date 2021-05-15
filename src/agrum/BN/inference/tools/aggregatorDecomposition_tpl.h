@@ -151,7 +151,7 @@ namespace gum {
             addAggregator_(bn, aggType, *newAgg, 0);
           } else {
             GUM_ERROR(OperationNotAllowed,
-                      "Decomposition is not available for type : " + aggType);
+                      "Decomposition is not available for type : " + aggType)
           }
 
           /*
@@ -214,7 +214,7 @@ namespace gum {
       addAggregator_(bn, aggType, *newAgg, 0);
     } else {
       GUM_ERROR(OperationNotAllowed,
-                "Decomposition is not available for type : " + aggType);
+                "Decomposition is not available for type : " + aggType)
     }
 
     newAggs.insert(bn.idFromName(newName));
@@ -291,7 +291,7 @@ namespace gum {
               addAggregator_(bn, aggType, *newAgg, 0);
             } else {
               GUM_ERROR(OperationNotAllowed,
-                        "Decomposition is not available for type : " + aggType);
+                        "Decomposition is not available for type : " + aggType)
             }
 
             for (NodeId node: newAggParents) {
@@ -347,7 +347,7 @@ namespace gum {
         addAggregator_(bn, aggType, *newAgg, 0);
       } else {
         GUM_ERROR(OperationNotAllowed,
-                  "Decomposition is not available for type : " + aggType);
+                  "Decomposition is not available for type : " + aggType)
       }
 
       newAggs.insert(bn.idFromName(newName));

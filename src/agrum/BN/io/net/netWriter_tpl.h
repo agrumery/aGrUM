@@ -64,7 +64,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
   }
 
   // Writes a Bayesian network in the referenced file using the BN format.
@@ -96,7 +96,7 @@ namespace gum {
     output.flush();
     output.close();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.

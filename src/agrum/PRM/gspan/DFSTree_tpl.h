@@ -224,7 +224,7 @@ namespace gum {
         // Finally we check if child is minimal.
         if (!child->isMinimal()) {
           GUM_ERROR(OperationNotAllowed,
-                    "the DFSCode for this growth is not minimal");
+                    "the DFSCode for this growth is not minimal")
         }
       }
 

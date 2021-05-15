@@ -612,7 +612,7 @@ namespace gum {
       if (!lrs_init(&chars[0])) {
         // coutOn__();
         GUM_ERROR(FatalError,
-                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_init");
+                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_init")
       }
 
       name  = "LRSWrapper globals";
@@ -623,7 +623,7 @@ namespace gum {
       if (dat__ == nullptr) {
         // coutOn__();
         GUM_ERROR(FatalError,
-                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_alloc_dat");
+                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_alloc_dat")
       }
 
       dat__->n = Size(input__[0].size());
@@ -640,7 +640,7 @@ namespace gum {
       if (dic__ == nullptr) {
         // coutOn__();
         GUM_ERROR(FatalError,
-                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_alloc_dic");
+                  "LRSWrapper< GUM_SCALAR >::initLrs__ : failed lrs_alloc_dic")
       }
 
       fill__();
@@ -671,7 +671,7 @@ namespace gum {
             lrs_printoutput(dat__, Lin__[col]);
 
           GUM_ERROR(FatalError,
-                    "LRSWrapper< GUM_SCALAR >::initLrs__ : redundant columns !");
+                    "LRSWrapper< GUM_SCALAR >::initLrs__ : redundant columns !")
         }
       }
       /*

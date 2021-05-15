@@ -57,7 +57,10 @@ namespace gum {
   // ###################################################################
   // Default constructor
   // ###################################################################
-  VariableSelector::~VariableSelector() { GUM_DESTRUCTOR(VariableSelector); }
+  VariableSelector::~VariableSelector() {
+    GUM_DESTRUCTOR(VariableSelector);
+    ;
+  }
 
 
   // ###################################################################

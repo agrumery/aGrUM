@@ -108,8 +108,7 @@ namespace gum {
       if ((upper_bound >= lower_bound)
           && (std::size_t(upper_bound - lower_bound + 1)
               > this->max_dico_entries_)) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // if the range variable is not empty, i.e., its upper bound is greater
@@ -174,8 +173,7 @@ namespace gum {
       if ((upper_bound >= lower_bound)
           && (std::size_t(upper_bound - lower_bound + 1)
               > this->max_dico_entries_)) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // add the content of the variable into the back dictionary

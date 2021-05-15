@@ -32,7 +32,10 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE K2::K2() { GUM_CONSTRUCTOR(K2); }
+    INLINE K2::K2() {
+      GUM_CONSTRUCTOR(K2);
+      ;
+    }
 
     /// copy constructor
     INLINE K2::K2(const K2& from) :
@@ -47,7 +50,10 @@ namespace gum {
     }
 
     /// destructor
-    INLINE K2::~K2() { GUM_DESTRUCTOR(K2); }
+    INLINE K2::~K2() {
+      GUM_DESTRUCTOR(K2);
+      ;
+    }
 
     /// copy operator
     INLINE K2& K2::operator=(const K2& from) {

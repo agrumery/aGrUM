@@ -32,9 +32,9 @@
 namespace gum {
 
   INLINE void DiGraph::addArc(const NodeId tail, const NodeId head) {
-    if (!exists(head)) { GUM_ERROR(InvalidNode, "no head node : " << head); }
+    if (!exists(head)) { GUM_ERROR(InvalidNode, "no head node : " << head) }
 
-    if (!exists(tail)) { GUM_ERROR(InvalidNode, "no tail node : " << tail); }
+    if (!exists(tail)) { GUM_ERROR(InvalidNode, "no tail node : " << tail) }
 
     ArcGraphPart::addArc(tail, head);
   }

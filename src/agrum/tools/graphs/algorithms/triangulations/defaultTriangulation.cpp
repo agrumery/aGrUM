@@ -45,8 +45,8 @@ namespace gum {
                                  DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      quasi_ratio__(theRatio), threshold__(theThreshold) {
-    // for debugging purposes
+      quasi_ratio__(theRatio),
+      threshold__(theThreshold) {   // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
@@ -57,16 +57,15 @@ namespace gum {
       UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      quasi_ratio__(theRatio), threshold__(theThreshold) {
-    // for debugging purposes
+      quasi_ratio__(theRatio),
+      threshold__(theThreshold) {   // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
   /// copy constructor
   DefaultTriangulation::DefaultTriangulation(const DefaultTriangulation& from) :
       UnconstrainedTriangulation(from), quasi_ratio__(from.quasi_ratio__),
-      threshold__(from.threshold__) {
-    // for debugging purposes
+      threshold__(from.threshold__) {   // for debugging purposes
     GUM_CONS_CPY(DefaultTriangulation);
   }
 

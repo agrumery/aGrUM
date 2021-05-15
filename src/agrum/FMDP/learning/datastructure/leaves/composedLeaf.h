@@ -62,7 +62,10 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ComposedLeaf() { GUM_DESTRUCTOR(ComposedLeaf); }
+    ~ComposedLeaf() {
+      GUM_DESTRUCTOR(ComposedLeaf);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

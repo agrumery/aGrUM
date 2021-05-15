@@ -201,7 +201,7 @@ namespace gum {
      const MultiDimImplementation< GUM_SCALAR >* transition) {
     if (!varSeq__.exists(var))
       GUM_ERROR(NotFound,
-                " Variable " << var->name() << " has not been declared before.");
+                " Variable " << var->name() << " has not been declared before.")
 
     if (!actionTransitionTable__.exists(actionId))
       GUM_ERROR(NotFound,
@@ -264,7 +264,7 @@ namespace gum {
 
     if (actionCostTable__[actionId] != nullptr)
       GUM_ERROR(DuplicateElement,
-                " Action " << actionName(actionId) << " already has a cost table");
+                " Action " << actionName(actionId) << " already has a cost table")
 
     actionCostTable__[actionId] = cost;
   }

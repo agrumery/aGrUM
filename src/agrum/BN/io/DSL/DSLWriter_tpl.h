@@ -72,7 +72,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
   }
 
   /** Writes a Bayesian network in the referenced file using the DSL format.

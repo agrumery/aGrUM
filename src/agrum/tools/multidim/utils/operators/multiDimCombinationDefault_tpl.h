@@ -44,7 +44,6 @@ namespace gum {
                                      const TABLE< GUM_SCALAR >&)) :
       MultiDimCombination< GUM_SCALAR, TABLE >(),
       combine_(combine) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
   }
 

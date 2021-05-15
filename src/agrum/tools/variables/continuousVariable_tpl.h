@@ -146,7 +146,7 @@ namespace gum {
       return value;
     else
       GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable");
+                "the value does not delong to the domain of the variable")
   }
 
 
@@ -186,7 +186,7 @@ namespace gum {
       lower_bound__ = new_bound;
     else
       GUM_ERROR(OutOfBounds,
-                "the new lower bound would be higher than the upper bound");
+                "the new lower bound would be higher than the upper bound")
   }
 
 
@@ -206,7 +206,7 @@ namespace gum {
       upper_bound__ = new_bound;
     else
       GUM_ERROR(OutOfBounds,
-                "the new upper bound would be lower than the lower bound");
+                "the new upper bound would be lower than the lower bound")
   }
 
 
@@ -231,7 +231,7 @@ namespace gum {
          ContinuousVariable< GUM_SCALAR >::label(const GUM_SCALAR& value) const {
     if (belongs(value)) return std::to_string(value);
     GUM_ERROR(OutOfBounds,
-              "the value does not belong to the domain of the variable");
+              "the value does not belong to the domain of the variable")
   }
 
 

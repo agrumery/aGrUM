@@ -62,8 +62,8 @@ namespace gum {
 
   // copy constructor
   OrderedTriangulation::OrderedTriangulation(const OrderedTriangulation& from) :
-      StaticTriangulation(from), order__(from.order__) {
-    // for debugging purposes
+      StaticTriangulation(from),
+      order__(from.order__) {   // for debugging purposes
     GUM_CONS_CPY(OrderedTriangulation);
   }
 

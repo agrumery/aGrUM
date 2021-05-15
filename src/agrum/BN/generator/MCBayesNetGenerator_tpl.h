@@ -171,7 +171,7 @@ namespace gum {
     } else {
       std::cout << this->bayesNet_.toDot() << std::endl;
       GUM_ERROR(OperationNotAllowed,
-                "BN is not valid cause it does not respect constraint ");
+                "BN is not valid cause it does not respect constraint ")
     }
 
     iteration_  = iter;

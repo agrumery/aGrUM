@@ -58,8 +58,7 @@ namespace gum {
   }
 
   /// copy constructor
-  INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator(
+  INLINE NodeGraphPartIterator::NodeGraphPartIterator(
      const NodeGraphPartIterator& it) noexcept :
       nodes_(it.nodes_),
       pos_(it.pos_), valid_(it.valid_) {
@@ -67,9 +66,8 @@ namespace gum {
   }
 
   /// move constructor
-  INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator(NodeGraphPartIterator&& it) noexcept
-      :
+  INLINE NodeGraphPartIterator::NodeGraphPartIterator(
+     NodeGraphPartIterator&& it) noexcept :
       nodes_(it.nodes_),
       pos_(it.pos_), valid_(it.valid_) {
     GUM_CONS_MOV(NodeGraphPartIterator);

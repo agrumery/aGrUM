@@ -248,7 +248,7 @@ namespace gum {
                                                     type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
-                  "this PRMAggregate can not have cast descendant");
+                  "this PRMAggregate can not have cast descendant")
       }
 
       cast->addParent(*this);

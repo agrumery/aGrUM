@@ -57,7 +57,7 @@ namespace gum {
         type__(0), cpf__(0) {
       GUM_CONS_CPY(PRMScalarAttribute);
       GUM_ERROR(FatalError,
-                "Illegal call to the copy constructor of gum::ScalarAttribute");
+                "Illegal call to the copy constructor of gum::ScalarAttribute")
     }
 
     template < typename GUM_SCALAR >
@@ -119,7 +119,7 @@ namespace gum {
     PRMScalarAttribute< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::operator=(
        const PRMScalarAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError,
-                "Illegal call to the copy operator of gum::ScalarAttribute");
+                "Illegal call to the copy operator of gum::ScalarAttribute")
     }
 
     template < typename GUM_SCALAR >
@@ -150,11 +150,10 @@ namespace gum {
       try {
         cpf__->add(elt.type().variable());
       } catch (DuplicateElement&) {
-        GUM_ERROR(DuplicateElement,
-                  elt.name() << " as parent of " << this->name());
+        GUM_ERROR(DuplicateElement, elt.name() << " as parent of " << this->name())
       } catch (OperationNotAllowed&) {
         GUM_ERROR(OperationNotAllowed,
-                  elt.name() << " of wrong type as parent of " << this->name());
+                  elt.name() << " of wrong type as parent of " << this->name())
       }
     }
 
@@ -173,7 +172,7 @@ namespace gum {
                                                     type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
-                  "this ScalarAttribute can not have cast descendant");
+                  "this ScalarAttribute can not have cast descendant")
       }
 
       cast->addParent(*this);
@@ -199,7 +198,7 @@ namespace gum {
         type().setSuper(cast->type());
       } catch (OperationNotAllowed&) {
         GUM_ERROR(OperationNotAllowed,
-                  "this ScalarAttribute can not have cast descendant");
+                  "this ScalarAttribute can not have cast descendant")
       } catch (TypeError&) {
         std::stringstream msg;
         msg << type().name() << " is not a subtype of " << cast->type().name();
@@ -235,7 +234,7 @@ namespace gum {
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot replace types with difference domain size");
+                  "Cannot replace types with difference domain size")
       }
       if (!cpf__->contains(old_type.variable())) {
         GUM_ERROR(NotFound, "could not find variable " + old_type.name())
@@ -277,7 +276,7 @@ namespace gum {
     void PRMScalarAttribute< GUM_SCALAR >::type_(PRMType* t) {
       if (type__->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot replace types with difference domain size");
+                  "Cannot replace types with difference domain size")
       }
       auto old = cpf__;
 

@@ -116,13 +116,19 @@ namespace gum {
    */
   class Signaler0: public __sig__::BasicSignaler0 {
     public:
-    Signaler0() { GUM_CONSTRUCTOR(Signaler0); }
+    Signaler0() {
+      GUM_CONSTRUCTOR(Signaler0);
+      ;
+    }
 
     Signaler0(const Signaler0& s) : __sig__::BasicSignaler0(s) {
       GUM_CONS_CPY(Signaler0);
     }
 
-    virtual ~Signaler0() { GUM_DESTRUCTOR(Signaler0); }
+    virtual ~Signaler0() {
+      GUM_DESTRUCTOR(Signaler0);
+      ;
+    }
 
     template < class TargetClass >
     void attach(TargetClass* target, void (TargetClass::*action)(const void*)) {

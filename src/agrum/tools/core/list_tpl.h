@@ -1771,8 +1771,7 @@ namespace gum {
                                          location                   place) {
     // if the iterator does not point to the list, raise an exception
     if (iter.list__ != this) {
-      GUM_ERROR(InvalidArgument,
-                "the iterator does not point to the correct list");
+      GUM_ERROR(InvalidArgument, "the iterator does not point to the correct list")
     }
 
     return insert__(iter, createBucket__(val), place);
@@ -1786,8 +1785,7 @@ namespace gum {
                                          location                   place) {
     // if the iterator does not point to the list, raise an exception
     if (iter.list__ != this) {
-      GUM_ERROR(InvalidArgument,
-                "the iterator does not point to the correct list");
+      GUM_ERROR(InvalidArgument, "the iterator does not point to the correct list")
     }
 
     return insert__(iter, createBucket__(std::move(val)), place);

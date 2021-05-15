@@ -80,7 +80,7 @@ namespace gum {
       try {
         if (t != superType()) {
           GUM_ERROR(TypeError,
-                    "The given type is not a valid super type for this Type");
+                    "The given type is not a valid super type for this Type")
         }
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed, "This Type has no super Type")

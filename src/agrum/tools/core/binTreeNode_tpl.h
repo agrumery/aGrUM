@@ -33,7 +33,6 @@ namespace gum {
   template < typename Val >
   INLINE BinTreeNode< Val >::BinTreeNode(const Val& v) :
       val_(v), parent_(0), parent_dir_(BinTreeDir::NO_PARENT) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(BinTreeNode);
 
     // set the children
@@ -44,7 +43,6 @@ namespace gum {
   template < typename Val >
   INLINE BinTreeNode< Val >::BinTreeNode(const BinTreeNode< Val >& from) :
       val_(from.val_), parent_(0), parent_dir_(BinTreeDir::NO_PARENT) {
-    // for debugging purposes
     GUM_CONS_CPY(BinTreeNode);
 
     // set the children
@@ -54,7 +52,6 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >::~BinTreeNode() {
-    // for debugging purposes
     GUM_DESTRUCTOR(BinTreeNode);
 
     // update the tree accordingly to the removal of this

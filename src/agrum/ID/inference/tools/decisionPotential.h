@@ -52,7 +52,10 @@ namespace gum {
       utilPot.fillWith(GUM_SCALAR(0));
     }
 
-    ~DecisionPotential() { GUM_DESTRUCTOR(DecisionPotential); }
+    ~DecisionPotential() {
+      GUM_DESTRUCTOR(DecisionPotential);
+      ;
+    }
 
     DecisionPotential(const Potential< GUM_SCALAR >& prob,
                       const Potential< GUM_SCALAR >& util) :

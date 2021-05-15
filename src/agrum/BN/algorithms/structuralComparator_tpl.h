@@ -34,8 +34,7 @@ namespace gum {
     }
     for (const NodeId node: ref.dag().asNodeSet()) {
       if (!test.dag().existsNode(node)) {
-        GUM_ERROR(InvalidNode,
-                  "Test doesn't contain node " << node << " from ref");
+        GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
       }
     }
 

@@ -56,8 +56,7 @@ namespace gum {
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // copy the ticks of var into our internal variable
@@ -123,8 +122,7 @@ namespace gum {
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // copy the ticks of var into our internal variable
@@ -188,8 +186,7 @@ namespace gum {
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // copy the ticks of var into our internal variable
@@ -226,8 +223,7 @@ namespace gum {
         variable__(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError,
-                  "the dictionary induced by the variable is too large");
+        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
       }
 
       // copy the ticks of var into our internal variable
@@ -393,7 +389,7 @@ namespace gum {
                          << "\" cannot be translated because it is not a number");
           } else {
             GUM_ERROR(UnknownLabelInDatabase,
-                      "The translation of \"" << str << "\" could not be found");
+                      "The translation of \"" << str << "\" could not be found")
           }
         }
       }

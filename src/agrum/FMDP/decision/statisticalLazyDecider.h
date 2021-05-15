@@ -66,7 +66,10 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~StatisticalLazyDecider() { GUM_DESTRUCTOR(StatisticalLazyDecider); }
+    ~StatisticalLazyDecider() {
+      GUM_DESTRUCTOR(StatisticalLazyDecider);
+      ;
+    }
 
     /// @}
 

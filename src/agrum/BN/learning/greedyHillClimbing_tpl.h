@@ -104,7 +104,7 @@ namespace gum {
 
               default:
                 GUM_ERROR(OperationNotAllowed,
-                          "edge modifications are not supported by local search");
+                          "edge modifications are not supported by local search")
             }
           }
         }

@@ -105,8 +105,8 @@ namespace gum {
 
   INLINE
   LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV) :
-      DiscreteVariable(aLDRV), labels__(aLDRV.labels__) {
-    // for debugging purposes
+      DiscreteVariable(aLDRV),
+      labels__(aLDRV.labels__) {   // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
   }
 
@@ -152,7 +152,7 @@ namespace gum {
       return labels__.pos(aLabel);
     } catch (...) {
       GUM_ERROR(OutOfBounds,
-                "label '" << aLabel << "' is unknown in " << this->toString());
+                "label '" << aLabel << "' is unknown in " << this->toString())
     }
   }
 

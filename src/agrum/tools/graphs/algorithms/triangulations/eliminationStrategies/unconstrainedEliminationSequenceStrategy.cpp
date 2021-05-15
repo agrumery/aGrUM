@@ -35,7 +35,6 @@ namespace gum {
   /// default constructor
   UnconstrainedEliminationSequenceStrategy::
      UnconstrainedEliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 
@@ -45,7 +44,6 @@ namespace gum {
         UndiGraph*                  graph,
         const NodeProperty< Size >* dom_sizes) :
       EliminationSequenceStrategy(graph, dom_sizes) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 
@@ -54,7 +52,6 @@ namespace gum {
      UnconstrainedEliminationSequenceStrategy(
         const UnconstrainedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from) {
-    // for debugging purposes
     GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }
 
@@ -62,15 +59,12 @@ namespace gum {
   UnconstrainedEliminationSequenceStrategy::
      UnconstrainedEliminationSequenceStrategy(
         UnconstrainedEliminationSequenceStrategy&& from) :
-      EliminationSequenceStrategy(std::move(from)) {
-    // for debugging purposes
-    GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy);
-  }
+      EliminationSequenceStrategy(std::move(from)){
+         GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy)}
 
-  /// destructor
-  UnconstrainedEliminationSequenceStrategy::
-     ~UnconstrainedEliminationSequenceStrategy() {
-    // for debugging purposes
+      /// destructor
+      UnconstrainedEliminationSequenceStrategy::
+         ~UnconstrainedEliminationSequenceStrategy() {
     GUM_DESTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 

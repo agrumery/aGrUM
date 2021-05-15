@@ -466,8 +466,6 @@ namespace gum {
             if (errors__.count() == 0) {
               errors__.addException("an unknown error occured", file);
             }
-            // GUM_TRACE_NEWLINE;
-            // GUM_SHOWERROR( e );
           } catch (...) {
             errors__.addException("an unknown exception occured", file);
           }

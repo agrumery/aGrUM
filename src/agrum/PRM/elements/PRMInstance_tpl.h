@@ -182,7 +182,7 @@ namespace gum {
                       .isArray())
               && (referenceMap__[id]->size() == 1)) {
             GUM_ERROR(OutOfUpperBound,
-                      "ReferenceSlot<GUM_SCALAR> size limit reached");
+                      "ReferenceSlot<GUM_SCALAR> size limit reached")
           }
 
           break;
@@ -214,7 +214,7 @@ namespace gum {
         default: {
           if (!type().isOutputNode(*elt)) {
             GUM_ERROR(WrongClassElement,
-                      "given ClassElement<GUM_SCALAR> is not an output node");
+                      "given ClassElement<GUM_SCALAR> is not an output node")
           }
         }
       }
@@ -369,7 +369,7 @@ namespace gum {
           return **(referenceMap__[id]->begin());
         } else {
           GUM_ERROR(UndefinedElement,
-                    "no Instance associated with the given NodeId");
+                    "no Instance associated with the given NodeId")
         }
       } catch (NotFound&) {
         GUM_ERROR(NotFound,

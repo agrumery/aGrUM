@@ -58,7 +58,10 @@ namespace gum {
       typedef ListConstIteratorSafe< MAKE_NAME(IConnector)
                                      < LIST_CLASSES >* > ConnectorIterator;
 
-      MAKE_NAME(BasicSignaler)() { GUM_CONSTRUCTOR(MAKE_NAME(BasicSignaler)); }
+      MAKE_NAME(BasicSignaler)() {
+        GUM_CONSTRUCTOR(MAKE_NAME(BasicSignaler));
+        ;
+      }
 
       MAKE_NAME(BasicSignaler)
       (const MAKE_NAME(BasicSignaler) & s) : ISignaler(s) {
@@ -150,7 +153,10 @@ namespace gum {
         GUM_CONS_CPY(MAKE_NAME(Connector));
       }
 
-      virtual ~MAKE_NAME(Connector)() { GUM_DESTRUCTOR(MAKE_NAME(Connector)); }
+      virtual ~MAKE_NAME(Connector)() {
+        GUM_DESTRUCTOR(MAKE_NAME(Connector));
+        ;
+      }
 
       INLINE virtual MAKE_NAME(IConnector)< LIST_CLASSES >* clone() {
         return new MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(*this);
@@ -184,7 +190,10 @@ namespace gum {
     public:
     using BasicSignaler = __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >;
 
-    MAKE_NAME(Signaler)() { GUM_CONSTRUCTOR(MAKE_NAME(Signaler)); }
+    MAKE_NAME(Signaler)() {
+      GUM_CONSTRUCTOR(MAKE_NAME(Signaler));
+      ;
+    }
 
     MAKE_NAME(Signaler)
     (const MAKE_NAME(Signaler) & s) :
@@ -192,7 +201,10 @@ namespace gum {
       GUM_CONS_CPY(MAKE_NAME(Signaler));
     }
 
-    virtual ~MAKE_NAME(Signaler)() { GUM_DESTRUCTOR(MAKE_NAME(Signaler)); }
+    virtual ~MAKE_NAME(Signaler)() {
+      GUM_DESTRUCTOR(MAKE_NAME(Signaler));
+      ;
+    }
 
     template < class TargetClass >
     void attach(TargetClass* target,

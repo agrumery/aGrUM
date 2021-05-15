@@ -296,7 +296,6 @@ namespace gum {
      Size size_param) :
       h__(size_param),
       end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONSTRUCTOR(SequenceImplementation);
     rend_safe__.setAtRend__();
     update_end__();
@@ -321,7 +320,6 @@ namespace gum {
      const SequenceImplementation< Key, Alloc, Gen >& aSeq) :
       end_safe__{*this},
       rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_CPY(SequenceImplementation);
     rend_safe__.setAtRend__();
     copy__(aSeq);   // performs the update_end__ ()
@@ -334,7 +332,6 @@ namespace gum {
      const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq) :
       end_safe__{*this},
       rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_CPY(SequenceImplementation);
     rend_safe__.setAtRend__();
     copy__(aSeq);   // performs the update_end__ ()
@@ -346,7 +343,6 @@ namespace gum {
      SequenceImplementation< Key, Alloc, Gen >&& aSeq) :
       h__(std::move(aSeq.h__)),
       v__(std::move(aSeq.v__)), end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_MOV(SequenceImplementation);
     rend_safe__.setAtRend__();
     update_end__();
@@ -501,7 +497,7 @@ namespace gum {
   INLINE const Key& SequenceImplementation< Key, Alloc, Gen >::atPos(Idx i) const {
     if (i >= h__.size()) {
       GUM_ERROR(OutOfBounds,
-                "index " << i << " for a sequence of size" << h__.size());
+                "index " << i << " for a sequence of size" << h__.size())
     }
 
     return *(v__[i]);
@@ -525,7 +521,7 @@ namespace gum {
   INLINE void
      SequenceImplementation< Key, Alloc, Gen >::setAtPos(Idx        i,
                                                          const Key& newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large"); }
+    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
 
     Key& new_key = const_cast< Key& >(h__.insert(newKey, i).first);
     h__.erase(*(v__[i]));
@@ -536,7 +532,7 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::setAtPos(Idx   i,
                                                                   Key&& newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large"); }
+    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
 
     Key& new_key = const_cast< Key& >(h__.insert(std::move(newKey), i).first);
     h__.erase(*(v__[i]));
@@ -730,7 +726,6 @@ namespace gum {
      Size size_param) :
       h__(size_param),
       end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONSTRUCTOR(SequenceImplementation);
     rend_safe__.setAtRend__();
     end_safe__.setAtEnd__();
@@ -755,7 +750,6 @@ namespace gum {
      const SequenceImplementation< Key, Alloc, true >& aSeq) :
       h__(aSeq.h__),
       v__(aSeq.v__), end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_CPY(SequenceImplementation);
     rend_safe__.setAtRend__();
     end_safe__.setAtEnd__();
@@ -768,7 +762,6 @@ namespace gum {
      const SequenceImplementation< Key, OtherAlloc, true >& aSeq) :
       h__(aSeq.size() / 2),
       end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_CPY(SequenceImplementation);
     rend_safe__.setAtRend__();
     copy__(aSeq);
@@ -780,7 +773,6 @@ namespace gum {
      SequenceImplementation< Key, Alloc, true >&& aSeq) :
       h__(std::move(aSeq.h__)),
       v__(std::move(aSeq.v__)), end_safe__{*this}, rend_safe__{*this} {
-    // for debugging purposes
     GUM_CONS_MOV(SequenceImplementation);
     rend_safe__.setAtRend__();
     end_safe__.setAtEnd__();
@@ -936,7 +928,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::setAtPos(Idx i,
                                                                    Key newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large"); }
+    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
 
     h__.insert(newKey, i);
     h__.erase(v__[i]);
@@ -1100,7 +1092,6 @@ namespace gum {
   INLINE Sequence< Key, Alloc >::Sequence(Size size_param) :
       SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >(
          size_param) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(Sequence);
   }
 

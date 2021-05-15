@@ -313,8 +313,7 @@ namespace gum {
 
     // check that the arc would not create a cycle
     if (hasCycleFromAddition(tail, head)) {
-      GUM_ERROR(InvalidDirectedCycle,
-                "the arc would create a directed into a DAG");
+      GUM_ERROR(InvalidDirectedCycle, "the arc would create a directed into a DAG")
     }
 
     dag__.addArc(tail, head);

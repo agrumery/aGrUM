@@ -95,7 +95,7 @@ namespace gum {
       INLINE void O3TypeFactory< GUM_SCALAR >::build() {
         if (build__) {
           GUM_ERROR(FatalError,
-                    "types have already been built, change PRM to rebuild");
+                    "types have already been built, change PRM to rebuild")
         }
         build__ = true;
 

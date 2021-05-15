@@ -78,7 +78,10 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ConcreteLeaf() { GUM_DESTRUCTOR(ConcreteLeaf); }
+    ~ConcreteLeaf() {
+      GUM_DESTRUCTOR(ConcreteLeaf);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

@@ -1002,8 +1002,7 @@ namespace gum {
           }
 
           default:
-            GUM_ERROR(NotImplementedYet,
-                      "Translated value type not supported yet");
+            GUM_ERROR(NotImplementedYet, "Translated value type not supported yet")
         }
       }
 
@@ -1028,7 +1027,7 @@ namespace gum {
                        << translators__.size() << " columns");
         } else {
           GUM_ERROR(InvalidArgument,
-                    "the new row is not compatible with the current translators");
+                    "the new row is not compatible with the current translators")
         }
       }
 
@@ -1054,7 +1053,7 @@ namespace gum {
                        << translators__.size() << " columns");
         } else {
           GUM_ERROR(InvalidArgument,
-                    "the new row is not compatible with the current translators");
+                    "the new row is not compatible with the current translators")
         }
       }
 

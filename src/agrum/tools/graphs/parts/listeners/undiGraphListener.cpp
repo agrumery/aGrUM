@@ -63,6 +63,9 @@ namespace gum {
                 UndiGraphListener::whenEdgeDeleted);
   }
 
-  UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR(UndiGraphListener); }
+  UndiGraphListener::~UndiGraphListener() {
+    GUM_DESTRUCTOR(UndiGraphListener);
+    ;
+  }
 
 }   // namespace gum

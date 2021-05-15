@@ -57,8 +57,7 @@ namespace gum {
   /// copy constructor
   UnconstrainedTriangulation::UnconstrainedTriangulation(
      const UnconstrainedTriangulation& from) :
-      StaticTriangulation(from) {
-    // for debugging purposes
+      StaticTriangulation(from) {   // for debugging purposes
     GUM_CONS_CPY(UnconstrainedTriangulation);
   }
 

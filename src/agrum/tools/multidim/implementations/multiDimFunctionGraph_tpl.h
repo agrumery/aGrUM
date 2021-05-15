@@ -664,7 +664,7 @@ namespace gum {
   INLINE GUM_SCALAR& MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::get_(
      const Instantiation& inst) const {
     GUM_ERROR(OperationNotAllowed,
-              "You can't edit a function by other mean than the manager");
+              "You can't edit a function by other mean than the manager")
   }
 
   // Return a data, given a Instantiation.

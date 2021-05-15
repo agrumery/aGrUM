@@ -31,7 +31,10 @@
 
 namespace gum {
 
-  Listener::Listener() { GUM_CONSTRUCTOR(Listener); }
+  Listener::Listener() {
+    GUM_CONSTRUCTOR(Listener);
+    ;
+  }
 
   Listener::Listener(const Listener& l) {
     GUM_CONS_CPY(Listener);

@@ -39,7 +39,6 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_CONSTRUCTOR(OrderedEliminationSequenceStrategy);
   }
 
@@ -59,7 +58,6 @@ namespace gum {
 
     setOrder(order);
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(OrderedEliminationSequenceStrategy);
   }
 
@@ -69,7 +67,6 @@ namespace gum {
       EliminationSequenceStrategy(from),
       order__(from.order__), order_index__(from.order_index__),
       order_needed__(from.order_needed__) {
-    // for debugging purposes
     GUM_CONS_CPY(OrderedEliminationSequenceStrategy);
   }
 
@@ -79,13 +76,11 @@ namespace gum {
       EliminationSequenceStrategy(std::move(from)),
       order__(from.order__), order_index__(from.order_index__),
       order_needed__(from.order_needed__) {
-    // for debugging purposes
     GUM_CONS_MOV(OrderedEliminationSequenceStrategy);
   }
 
   /// destructor
   OrderedEliminationSequenceStrategy::~OrderedEliminationSequenceStrategy() {
-    // for debugging purposes
     GUM_DESTRUCTOR(OrderedEliminationSequenceStrategy);
   }
 

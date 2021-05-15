@@ -31,10 +31,16 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern() : DiGraph(), last__(0) { GUM_CONSTRUCTOR(Pattern); }
+      Pattern::Pattern() : DiGraph(), last__(0) {
+        GUM_CONSTRUCTOR(Pattern);
+        ;
+      }
 
       INLINE
-      Pattern::~Pattern() { GUM_DESTRUCTOR(Pattern); }
+      Pattern::~Pattern() {
+        GUM_DESTRUCTOR(Pattern);
+        ;
+      }
 
       INLINE
       NodeId Pattern::addNodeWithLabel(LabelData& l) {
@@ -130,7 +136,7 @@ namespace gum {
         } else {
           delete edge;
           GUM_ERROR(OperationNotAllowed,
-                    "illegal arc considering neighborhood restriction");
+                    "illegal arc considering neighborhood restriction")
         }
       }
 
@@ -178,28 +184,28 @@ namespace gum {
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
         try {
           return *(arc_map__[Arc(tail, head)].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
         try {
           return *(arc_map__[arc].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
         try {
           return *(arc_map__[Arc(tail, head)].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
         try {
           return *(arc_map__[arc].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE

@@ -66,7 +66,10 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    virtual ~AbstractLeaf() { GUM_DESTRUCTOR(AbstractLeaf); }
+    virtual ~AbstractLeaf() {
+      GUM_DESTRUCTOR(AbstractLeaf);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

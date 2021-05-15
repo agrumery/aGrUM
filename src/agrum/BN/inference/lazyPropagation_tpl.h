@@ -57,7 +57,6 @@ namespace gum {
     // create a default triangulation (the user can change it afterwards)
     triangulation__ = new DefaultTriangulation;
 
-    // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR(LazyPropagation);
   }
 
@@ -86,7 +85,6 @@ namespace gum {
     if (junctionTree__ != nullptr) delete junctionTree__;
     delete triangulation__;
 
-    // for debugging purposes
     GUM_DESTRUCTOR(LazyPropagation);
   }
 

@@ -54,7 +54,7 @@ namespace gum {
           database__.insertTranslator(var, var_names[var.name()], missing_symbols);
         } catch (NotFound&) {
           GUM_ERROR(MissingVariableInDatabase,
-                    "Variable '" << var.name() << "' is missing");
+                    "Variable '" << var.name() << "' is missing")
         }
         nodeId2cols__.insert(NodeId(node), i++);
       }

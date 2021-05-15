@@ -64,7 +64,10 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~LeafPair() { GUM_DESTRUCTOR(LeafPair); }
+    ~LeafPair() {
+      GUM_DESTRUCTOR(LeafPair);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

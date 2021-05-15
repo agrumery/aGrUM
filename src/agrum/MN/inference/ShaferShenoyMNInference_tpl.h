@@ -1504,13 +1504,9 @@ namespace gum {
     this->prepareInference();
 
     for (const auto& cliknode: this->propagator__->nodes()) {
-      GUM_TRACE_VAR(cliknode);
       const auto clique = propagator__->clique(cliknode);
-      GUM_TRACE_VAR(clique);
       if (vars == clique) return true;
-      GUM_CHECKPOINT;
     }
-    GUM_CHECKPOINT;
     return false;
   }
 

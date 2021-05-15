@@ -33,23 +33,21 @@ namespace gum {
   /// constructor
 
   INLINE Variable::Variable(const std::string& aName, const std::string& aDesc) :
-      name__(aName), description__(aDesc) {
-    // for debugging purposes
+      name__(aName), description__(aDesc) {   // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
   }
 
   /// copy constructor
 
   INLINE Variable::Variable(const Variable& aRV) :
-      name__(aRV.name__), description__(aRV.description__) {
-    // for debugging purposes
+      name__(aRV.name__),
+      description__(aRV.description__) {   // for debugging purposes
     GUM_CONS_CPY(Variable);
   }
 
   /// destructor
 
-  INLINE Variable::~Variable() {
-    // for debugging purposes
+  INLINE Variable::~Variable() {   // for debugging purposes
     GUM_DESTRUCTOR(Variable);
   }
 

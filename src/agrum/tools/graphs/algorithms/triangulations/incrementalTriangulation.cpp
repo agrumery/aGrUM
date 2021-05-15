@@ -50,7 +50,6 @@ namespace gum {
      const NodeProperty< Size >*       domsizes) :
       Triangulation(domsizes),
       triangulation__(triang_algo.newFactory()) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
     // reset the triangulation algorithm => it starts with an empty graph
@@ -72,7 +71,6 @@ namespace gum {
   IncrementalTriangulation::IncrementalTriangulation(
      const UnconstrainedTriangulation& triang_algo) :
       triangulation__(triang_algo.newFactory()) {
-    // for debugging purposes
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
     // reset the triangulation algorithm => it starts with an empty graph
@@ -94,7 +92,6 @@ namespace gum {
       reverse_elimination_order__(from.reverse_elimination_order__),
       require_created_JT_cliques__(from.require_created_JT_cliques__),
       created_JT_cliques__(from.created_JT_cliques__) {
-    // for debugging purposes
     GUM_CONS_CPY(IncrementalTriangulation);
 
     domain_sizes__ = from.domain_sizes__;
@@ -102,7 +99,6 @@ namespace gum {
 
   /// destructor
   IncrementalTriangulation::~IncrementalTriangulation() {
-    // for debugging purposes
     GUM_DESTRUCTOR(IncrementalTriangulation);
 
     // remove things that were allocated within the current class
@@ -124,8 +120,7 @@ namespace gum {
      IncrementalTriangulation::operator=(const IncrementalTriangulation& from) {
     // avoid self assignment
     if (this != &from) {
-      // for debugging purposes
-      GUM_OP_CPY(IncrementalTriangulation);
+      GUM_OP_CPY(IncrementalTriangulation)
 
       // copy all the structures stored in "from"
       graph__                      = from.graph__;

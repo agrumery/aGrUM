@@ -38,7 +38,6 @@ namespace gum {
   Heap< Val, Cmp, Alloc >::Heap(Cmp compare, Size capacity) : cmp__(compare) {
     heap__.reserve(capacity);
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(Heap);
   }
 
@@ -50,7 +49,6 @@ namespace gum {
       insert(elt);
     }
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(Heap);
   }
 
@@ -168,7 +166,7 @@ namespace gum {
   // returns the element at the top of the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE const Val& Heap< Val, Cmp, Alloc >::top() const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap") }
 
     return heap__[0];
   }
@@ -241,7 +239,7 @@ namespace gum {
   // removes the top element from the heap and return it
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Val Heap< Val, Cmp, Alloc >::pop() {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty heap") }
 
     Val v = heap__[0];
     eraseByPos(0);

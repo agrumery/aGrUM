@@ -111,7 +111,7 @@ INLINE bool
 
     default:
       GUM_ERROR(OperationNotAllowed,
-                "edge modifications are not supported by the constraint");
+                "edge modifications are not supported by the constraint")
   }
 }
 

@@ -49,7 +49,10 @@ namespace gum {
     GUM_CONS_CPY(UndiGraph);
   }
 
-  UndiGraph::~UndiGraph() { GUM_DESTRUCTOR(UndiGraph); }
+  UndiGraph::~UndiGraph() {
+    GUM_DESTRUCTOR(UndiGraph);
+    ;
+  }
 
   bool UndiGraph::hasUndirectedCycle() const {
     List< std::pair< NodeId, NodeId > > open_nodes;

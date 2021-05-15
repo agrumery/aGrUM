@@ -55,7 +55,10 @@ namespace gum {
     }
 
     /// destructor
-    INLINE GraphChange::~GraphChange() noexcept { GUM_DESTRUCTOR(GraphChange); }
+    INLINE GraphChange::~GraphChange() noexcept {
+      GUM_DESTRUCTOR(GraphChange);
+      ;
+    }
 
     /// copy constructor
     INLINE GraphChange& GraphChange::operator=(const GraphChange& from) noexcept {

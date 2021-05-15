@@ -33,7 +33,7 @@ namespace gum {
     /*template< typename GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::InferenceEngine () : ApproximationScheme() {
       std::cout << "InferenceEngine construct ()" << std::endl;
-      GUM_CONSTRUCTOR ( InferenceEngine );
+      GUM_CONSTRUCTOR ( InferenceEngine )
     }*/
 
     template < typename GUM_SCALAR >
@@ -493,7 +493,7 @@ namespace gum {
 
       if (dynamicExpMin_.empty())
         GUM_ERROR(OperationNotAllowed,
-                  errTxt + "_dynamicExpectations() needs to be called before");
+                  errTxt + "_dynamicExpectations() needs to be called before")
 
       if (!dynamicExpMin_.exists(
              varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
@@ -511,7 +511,7 @@ namespace gum {
 
       if (dynamicExpMax_.empty())
         GUM_ERROR(OperationNotAllowed,
-                  errTxt + "_dynamicExpectations() needs to be called before");
+                  errTxt + "_dynamicExpectations() needs to be called before")
 
       if (!dynamicExpMax_.exists(
              varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)

@@ -65,7 +65,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   /*
@@ -87,7 +87,7 @@ namespace gum {
 
     output.close();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed."); }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   template < typename GUM_SCALAR >

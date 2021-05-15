@@ -60,12 +60,18 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    Observation() { GUM_CONSTRUCTOR(Observation); }
+    Observation() {
+      GUM_CONSTRUCTOR(Observation);
+      ;
+    }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~Observation() { GUM_DESTRUCTOR(Observation); }
+    ~Observation() {
+      GUM_DESTRUCTOR(Observation);
+      ;
+    }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

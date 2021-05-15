@@ -110,7 +110,7 @@ namespace gum {
       if (chain.first->exists(chain.second->id())) {
         if ((p.nbrDim() != 1) || (!p.contains(chain.second->type().variable())))
           GUM_ERROR(OperationNotAllowed,
-                    "illegal evidence for the given PRMAttribute.");
+                    "illegal evidence for the given PRMAttribute.")
 
         Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
         e->add(chain.second->type().variable());

@@ -78,10 +78,7 @@ namespace gum {
       nb_triangles__(graph__->size() * graph__->size() / 2),
       nb_adjacent_neighbours__(graph__->size()), quasi_ratio__(theRatio),
       log_threshold__(std::log(1 + theThreshold)) {
-    if (graph != nullptr) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR(SimplicialSet);
-    }
+    if (graph != nullptr) { GUM_CONSTRUCTOR(SimplicialSet); }
 
     // end of initialization: compute nb_triangles__, nb_adjacent_neighbours__,
     // etc
@@ -136,7 +133,6 @@ namespace gum {
     we_want_fill_ins__        = from.we_want_fill_ins__;
     fill_ins_list__           = from.fill_ins_list__;
 
-    // for debugging purposes
     GUM_CONS_CPY(SimplicialSet);
   }
 
@@ -155,15 +151,11 @@ namespace gum {
       changed_status__(std::move(from.changed_status__)),
       we_want_fill_ins__(from.we_want_fill_ins__),
       fill_ins_list__(std::move(from.fill_ins_list__)) {
-    // for debugging purposes
     GUM_CONS_MOV(SimplicialSet);
   }
 
   /// destructor
-  SimplicialSet::~SimplicialSet() {
-    // for debugging purposes
-    GUM_DESTRUCTOR(SimplicialSet);
-  }
+  SimplicialSet::~SimplicialSet() { GUM_DESTRUCTOR(SimplicialSet); }
 
   /// adds the necessary edges so that node 'id' and its neighbors form a clique
   void SimplicialSet::makeClique(const NodeId id) {

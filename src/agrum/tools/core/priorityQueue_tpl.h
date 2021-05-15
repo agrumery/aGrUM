@@ -46,7 +46,6 @@ namespace gum {
       cmp__(compare) {
     heap__.reserve(capacity);
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(PriorityQueueImplementation);
   }
 
@@ -66,7 +65,6 @@ namespace gum {
       insert(elt.first, elt.second);
     }
 
-    // for debugging purposes
     GUM_CONSTRUCTOR(PriorityQueueImplementation);
   }
 
@@ -88,7 +86,6 @@ namespace gum {
       heap__[elt.second].second = &(elt.first);
     }
 
-    // for debugging purposes
     GUM_CONS_CPY(PriorityQueueImplementation);
   }
 
@@ -116,7 +113,6 @@ namespace gum {
       }
     }
 
-    // for debugging purposes
     GUM_CONS_CPY(PriorityQueueImplementation);
   }
 
@@ -132,8 +128,7 @@ namespace gum {
       heap__(std::move(from.heap__)),
       indices__(std::move(from.indices__)),
       nb_elements__(std::move(from.nb_elements__)), cmp__(std::move(from.cmp__)) {
-    // for debugging purposes
-    GUM_CONS_MOV(PriorityQueueImplementation);
+    GUM_CONS_MOV(PriorityQueueImplementation)
   }
 
   // destructor
@@ -144,7 +139,6 @@ namespace gum {
              bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
      ~PriorityQueueImplementation() {
-    // for debugging purposes
     GUM_DESTRUCTOR(PriorityQueueImplementation);
   }
 
@@ -160,8 +154,7 @@ namespace gum {
            from) {
     // avoid self assignment
     if (this != &from) {
-      // for debugging purposes
-      GUM_OP_CPY(PriorityQueueImplementation);
+      GUM_OP_CPY(PriorityQueueImplementation)
 
       try {
         // set the comparison function
@@ -199,7 +192,6 @@ namespace gum {
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
         const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
            from) {
-    // for debugging purposes
     GUM_OP_CPY(PriorityQueueImplementation);
 
     try {
@@ -242,8 +234,7 @@ namespace gum {
         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from) {
     // avoid self assignment
     if (this != &from) {
-      // for debugging purposes
-      GUM_OP_MOV(PriorityQueueImplementation);
+      GUM_OP_MOV(PriorityQueueImplementation)
 
       indices__     = std::move(from.indices__);
       heap__        = std::move(from.heap__);
@@ -262,7 +253,7 @@ namespace gum {
              bool Gen >
   INLINE const Val&
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::top() const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return *(heap__[0].second);
   }
@@ -276,7 +267,7 @@ namespace gum {
   INLINE const Priority&
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::topPriority()
         const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return heap__[0].first;
   }
@@ -404,7 +395,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE Val PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::pop() {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     Val v = *(heap__[0].second);
     eraseByPos(0);
@@ -561,8 +552,7 @@ namespace gum {
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator[](
         Size index) const {
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     return *(heap__[index].second);
@@ -602,8 +592,7 @@ namespace gum {
      setPriorityByPos(Size index, const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     // get the element itself
@@ -651,8 +640,7 @@ namespace gum {
      setPriorityByPos(Size index, Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     // get the element itself
@@ -736,8 +724,7 @@ namespace gum {
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priorityByPos(
         Size index) const {
     if (index > nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
     return heap__[index].first;
   }
@@ -918,7 +905,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Val&
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::top() const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return heap__[0].second;
   }
@@ -928,7 +915,7 @@ namespace gum {
   INLINE const Priority&
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::topPriority()
         const {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return heap__[0].first;
   }
@@ -1027,7 +1014,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Val
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::pop() {
-    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue"); }
+    if (!nb_elements__) { GUM_ERROR(NotFound, "empty priority queue") }
 
     Val v = heap__[0].second;
     eraseByPos(0);
@@ -1152,8 +1139,7 @@ namespace gum {
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator[](
         Size index) const {
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     return heap__[index].second;
@@ -1185,8 +1171,7 @@ namespace gum {
      setPriorityByPos(Size index, const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     // get the element itself
@@ -1230,8 +1215,7 @@ namespace gum {
      setPriorityByPos(Size index, Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
 
     // get the element itself
@@ -1299,8 +1283,7 @@ namespace gum {
      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priorityByPos(
         Size index) const {
     if (index > nb_elements__) {
-      GUM_ERROR(NotFound,
-                "not enough elements in the PriorityQueueImplementation");
+      GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
     return heap__[index].first;
   }

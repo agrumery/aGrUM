@@ -92,7 +92,7 @@ INLINE bool
 
     default:
       GUM_ERROR(OperationNotAllowed,
-                "arc modifications are not supported by the constraint");
+                "arc modifications are not supported by the constraint")
   }
 }
 

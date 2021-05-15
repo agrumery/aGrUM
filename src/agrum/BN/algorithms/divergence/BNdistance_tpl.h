@@ -159,7 +159,7 @@ namespace gum {
     // should not be used
     if (p_.size() != q_.size())
       GUM_ERROR(OperationNotAllowed,
-                "BNdistance : the 2 BNs are not compatible (not the same size)");
+                "BNdistance : the 2 BNs are not compatible (not the same size)")
 
     if (std::fabs(p_.log10DomainSize() - q_.log10DomainSize()) > 1e-14) {
       GUM_ERROR(

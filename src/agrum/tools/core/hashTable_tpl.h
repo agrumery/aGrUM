@@ -1390,8 +1390,7 @@ namespace gum {
         // ind_elt = the index of the element we should point to
         // check if the index passed as parameter is valid
         if (ind_elt >= table__->nb_elements__) {
-          GUM_ERROR(UndefinedIteratorValue,
-                    "Not enough elements in the hashtable");
+          GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the hashtable")
         }
 
         // find the element we shall point to from the end of the hashtable
@@ -1956,8 +1955,7 @@ namespace gum {
         // ind_elt = the index of the element we should point to
         // check if the index passed as parameter is valid
         if (ind_elt >= table__->nb_elements__) {
-          GUM_ERROR(UndefinedIteratorValue,
-                    "Not enough elements in the hashtable");
+          GUM_ERROR(UndefinedIteratorValue, "Not enough elements in the hashtable")
         }
 
         // find the element we shall point to from the end of the hashtable

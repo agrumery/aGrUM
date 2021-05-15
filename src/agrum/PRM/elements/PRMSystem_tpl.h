@@ -247,10 +247,9 @@ namespace gum {
           break;
         }
 
-        default: {
-          GUM_ERROR(OperationNotAllowed, "Aggregator not handled yet")
-          break;
-        }
+        default:
+          GUM_ERROR(OperationNotAllowed,
+                    "Aggregator not handled yet for " << agg.name())
       }
 
       factory.endVariableDeclaration();
@@ -354,7 +353,7 @@ namespace gum {
 
           default: {
             GUM_ERROR(FatalError,
-                      "invalid ClassElement<GUM_SCALAR> type as parent.");
+                      "invalid ClassElement<GUM_SCALAR> type as parent.")
             break;
           }
         }
@@ -457,7 +456,7 @@ namespace gum {
         return *(nameMap_[name]);
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
-                  "found no Instance<GUM_SCALAR> matching the given name");
+                  "found no Instance<GUM_SCALAR> matching the given name")
       }
     }
 
@@ -468,7 +467,7 @@ namespace gum {
         return *(nameMap_[name]);
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
-                  "found no Instance<GUM_SCALAR> matching the given name");
+                  "found no Instance<GUM_SCALAR> matching the given name")
       }
     }
 
@@ -540,7 +539,7 @@ namespace gum {
        PRMClassElementContainer< GUM_SCALAR >& type) {
       if (arrayMap_.exists(array)) {
         GUM_ERROR(DuplicateElement,
-                  "an array '" << array << "' is already in this System");
+                  "an array '" << array << "' is already in this System")
       }
 
       arrayMap_.insert(array,

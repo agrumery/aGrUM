@@ -40,7 +40,7 @@ namespace gum {
      GUM_SCALAR eps) :
       ApproximationPolicy< GUM_SCALAR >(),
       lowLimit_(low), highLimit_(high), epsilon_(eps) {
-    if (eps <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0"); }
+    if (eps <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0") }
 
     computeNbInterval_();
   }
@@ -270,15 +270,15 @@ namespace gum {
 // we keep the bounds checked in debug mode
 #ifdef GUM_DEBUG_MODE
     if (value > this->highLimit_) {
-      GUM_TRACE(value << " not in (" << this->lowLimit_ << "-" << this->highLimit_
-                      << ")");
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit")
+      GUM_ERROR(OutOfUpperBound,
+                "Value asked is higher than High limit :  not in ("
+                   << this->lowLimit_ << "-" << this->highLimit_ << ")")
     }
 
     if (value < this->lowLimit_) {
-      GUM_TRACE(value << " not in (" << this->lowLimit_ << "-" << this->highLimit_
-                      << ")");
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
+      GUM_ERROR(OutOfLowerBound,
+                "Value asked is lower than low limit :  not in ("
+                   << this->lowLimit_ << "-" << this->highLimit_ << ")")
     }
 
 #endif   // GUM_DEBUG_MODE
@@ -291,7 +291,7 @@ namespace gum {
      LinearApproximationPolicy< GUM_SCALAR >::decode(Idx representation) const {
     if (representation > nbInterval_) {
       GUM_ERROR(OutOfUpperBound,
-                "Interval Number asked is higher than total number of interval");
+                "Interval Number asked is higher than total number of interval")
     }
 
     return decode__(GUM_SCALAR(representation));

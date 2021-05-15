@@ -40,10 +40,16 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    Miic::Miic() { GUM_CONSTRUCTOR(Miic); }
+    Miic::Miic() {
+      GUM_CONSTRUCTOR(Miic);
+      ;
+    }
 
     /// default constructor with maxLog
-    Miic::Miic(int maxLog) : maxLog__(maxLog) { GUM_CONSTRUCTOR(Miic); }
+    Miic::Miic(int maxLog) : maxLog__(maxLog) {
+      GUM_CONSTRUCTOR(Miic);
+      ;
+    }
 
     /// copy constructor
     Miic::Miic(const Miic& from) : ApproximationScheme(from) {
@@ -56,7 +62,10 @@ namespace gum {
     }
 
     /// destructor
-    Miic::~Miic() { GUM_DESTRUCTOR(Miic); }
+    Miic::~Miic() {
+      GUM_DESTRUCTOR(Miic);
+      ;
+    }
 
     /// copy operator
     Miic& Miic::operator=(const Miic& from) {
