@@ -26653,12 +26653,12 @@ class BNLearner(object):
         useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
         useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
 
-        Indicate that we wish to use K2.
+        Indicate to use the K2 algorithm (which needs a total ordering of the variables).
 
         Parameters
         ----------
-        order : list
-                a list of ids
+        order : list[int or str]
+              sequences of (ids or name)
 
         """
         return _pyAgrum.BNLearner_useK2(self, *args)
