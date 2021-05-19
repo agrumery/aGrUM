@@ -156,12 +156,12 @@ Indicate that we wish to use a greedy hill climbing algorithm.
 
 %feature("docstring") gum::learning::genericBNLearner::useK2
 "
-Indicate that we wish to use K2.
+Indicate to use the K2 algorithm (which needs a total ordering of the variables).
 
 Parameters
 ----------
-order : list
-        a list of ids
+order : list[int or str]
+      sequences of (ids or name)
 "
 
 %feature("docstring") gum::learning::genericBNLearner::useLocalSearchWithTabuList
