@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -308,7 +308,7 @@ namespace gum {
            OperationNotAllowed,
            "Column "
               << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.");
+              << "So it is forbidden to create a translator for that column.")
 
       // reserve some place for the new column in the records of the database
       const std::size_t new_size = this->nbVariables() + 1;
@@ -387,7 +387,7 @@ namespace gum {
            OperationNotAllowed,
            "Column "
               << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.");
+              << "So it is forbidden to create a translator for that column.")
 
       // if the databaseTable is not empty, we should fill the column of the
       // database corresponding to the new translator with missing values. But, the
@@ -398,7 +398,7 @@ namespace gum {
            MissingValueInDatabase,
            "inserting a new translator into a database creates a new column "
               << "with missing values. However, you did not define any symbol for "
-              << "such values.");
+              << "such values.")
       }
 
       // reserve some place for the new column in the records of the database
@@ -449,7 +449,7 @@ namespace gum {
            OperationNotAllowed,
            "Column "
               << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.");
+              << "So it is forbidden to create a translator for that column.")
 
       // reserve some place for the new column in the records of the database
       const std::size_t new_size = this->nbVariables() + 1;
@@ -630,12 +630,12 @@ namespace gum {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
                     "there is no translator in the database table that "
-                       << "parses Column " << k);
+                       << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans
                                         << " translators, so Translator #" << k
-                                        << " does not exist");
+                                        << " does not exist")
         }
       }
 
@@ -658,11 +658,11 @@ namespace gum {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
                     "there is no variable in the database table that "
-                       << "corresponds to Column " << k);
+                       << "corresponds to Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " variables, so Variable #"
-                                        << k << " does not exist");
+                                        << k << " does not exist")
         }
       }
 
@@ -683,7 +683,7 @@ namespace gum {
                     "the number of variable's names (i.e., "
                        << size
                        << ") does not correspond to the number of columns of the "
-                       << "database table (i.e.," << nb_trans << ")");
+                       << "database table (i.e.," << nb_trans << ")")
         }
 
         // update the translator names
@@ -696,7 +696,7 @@ namespace gum {
                     "the names vector has "
                        << size << " elements whereas it should have at least "
                        << (translators__.highestInputColumn() + 1)
-                       << "elements so that each translator is assigned a name");
+                       << "elements so that each translator is assigned a name")
         }
 
         // update the translator names
@@ -733,7 +733,7 @@ namespace gum {
           GUM_ERROR(UndefinedElement,
                     "It is impossible to ignore the column parsed by Translator #"
                        << k << "because there exist only " << nb_trans
-                       << " translators");
+                       << " translators")
         }
       }
 
@@ -816,11 +816,11 @@ namespace gum {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
                     "there is no variable in the database table that "
-                       << "corresponds to Column " << k);
+                       << "corresponds to Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " variables, so Variable #"
-                                        << k << " does not exist");
+                                        << k << " does not exist")
         }
       }
 
@@ -855,12 +855,12 @@ namespace gum {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
                     "there is no translator in the database table that "
-                       << "parses Column " << k);
+                       << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans
                                         << " translators, so Translator #" << k
-                                        << " does not exist");
+                                        << " does not exist")
         }
       }
 
@@ -882,12 +882,12 @@ namespace gum {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
                     "there is no translator in the database table that "
-                       << "parses Column " << k);
+                       << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans
                                         << " translators, so Translator #" << k
-                                        << " does not exist");
+                                        << " does not exist")
         }
       }
 
@@ -952,7 +952,7 @@ namespace gum {
                   "the new row has "
                      << row_size
                      << " columns whereas the database requires at least "
-                     << (translators__.highestInputColumn() + 1) << " columns");
+                     << (translators__.highestInputColumn() + 1) << " columns")
       }
 
       // convert the new_row into a row of DBTranslatedValue
@@ -1024,7 +1024,7 @@ namespace gum {
                     "The new row has "
                        << new_row.size()
                        << " elements whereas the database table has "
-                       << translators__.size() << " columns");
+                       << translators__.size() << " columns")
         } else {
           GUM_ERROR(InvalidArgument,
                     "the new row is not compatible with the current translators")
@@ -1050,7 +1050,7 @@ namespace gum {
                     "The new row has "
                        << new_row.size()
                        << " elements whereas the database table has "
-                       << translators__.size() << " columns");
+                       << translators__.size() << " columns")
         } else {
           GUM_ERROR(InvalidArgument,
                     "the new row is not compatible with the current translators")
@@ -1093,11 +1093,11 @@ namespace gum {
                       "The new row has "
                          << new_row.size()
                          << " elements whereas the database table has "
-                         << translators__.size() << " columns");
+                         << translators__.size() << " columns")
           } else {
             GUM_ERROR(
                InvalidArgument,
-               "the new row is not compatible with the current translators");
+               "the new row is not compatible with the current translators")
           }
         }
       }
@@ -1124,11 +1124,11 @@ namespace gum {
                       "The new row has "
                          << new_row.size()
                          << " elements whereas the database table has "
-                         << translators__.size() << " columns");
+                         << translators__.size() << " columns")
           } else {
             GUM_ERROR(
                InvalidArgument,
-               "the new row is not compatible with the current translators");
+               "the new row is not compatible with the current translators")
           }
         }
       }

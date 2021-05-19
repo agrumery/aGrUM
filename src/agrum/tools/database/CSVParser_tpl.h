@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
+ *   Copyright (c) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -59,15 +59,6 @@ namespace gum {
     CSVParser<ALLOC>::~CSVParser() {
       GUM_DESTRUCTOR( CSVParser );
     }
-
-
-    // for debugging purpose
-    /*
-      char getTheChar(const std::string& str,Size pos) {
-      return (pos<Size(std::string::npos))?str.at(pos):'$';
-      }
-    */
-
     
     template <template<typename> class ALLOC>
     void CSVParser<ALLOC>::getNextTriplet__( const std::string& str,

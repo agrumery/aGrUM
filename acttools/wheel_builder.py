@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-# ***************************************************************************
-# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
+# *   Copyright (c) 2015 by Pierre-Henri WUILLEMIN                          *
 # *   {prenom.nom}_at_lip6.fr                                               *
 # *                                                                         *
 # *   "act" is free software; you can redistribute it and/or modify         *

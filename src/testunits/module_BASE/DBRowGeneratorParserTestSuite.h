@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   Copyright (c) 2007 by Lionel Torti                                    *
  *   info_at_agrum_dot_org                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

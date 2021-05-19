@@ -26,7 +26,7 @@
 //!
 //! \section license License
 //! <div class="license">
-//! Copyright (C) 2013 lexicalunit <lexicalunit@lexicalunit.com>
+//! Copyright (c) 2013 lexicalunit <lexicalunit@lexicalunit.com>
 //!
 //! The MIT License
 //!
@@ -53,15 +53,15 @@
 //! <div class="license">
 //! Much of the code in this file was originally derived from TinyODBC.
 //! TinyODBC is hosted at http://code.google.com/p/tiodbc/
-//! Copyright (C) 2008 SqUe squarious@gmail.com
+//! Copyright (c) 2008 SqUe squarious@gmail.com
 //! License: The MIT License
 //!
 //! The idea for using RAII for transactions was inspired by SimpleDB: C++ ODBC database API,
 //! however the code in nanodbc is original and not derived from SimpleDB. Therefore
 //! the LGPL license under which SimpleDB is distributed does NOT apply to nanodbc.
 //! SimpleDB is hosted at http://simpledb.sourceforge.net
-//! Copyright (C) 2006 Eminence Technology Pty Ltd
-//! Copyright (C) 2008-2010,2012 Russell Kliese russell@kliese.id.au
+//! Copyright (c) 2006 Eminence Technology Pty Ltd
+//! Copyright (c) 2008-2010,2012 Russell Kliese russell@kliese.id.au
 //! License: GNU Lesser General Public version 2.1
 //!
 //! Some improvements and features are based on The Python ODBC Library.
@@ -70,7 +70,7 @@
 //!
 //! Implementation of column binding inspired by Nick E. Geht's source code posted to on CodeGuru.
 //! GSODBC hosted at http://www.codeguru.com/mfc_database/gsodbc.html
-//! Copyright (C) 2002 Nick E. Geht
+//! Copyright (c) 2002 Nick E. Geht
 //! License: Perpetual license to reproduce, distribute, adapt, perform, display, and sublicense.
 //! See http://www.codeguru.com/submission-guidelines.php for details.
 //! </div>

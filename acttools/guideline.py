@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding : utf-8 -*-
 # ***************************************************************************
-# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
+# *   Copyright (c) 2015 by Pierre-Henri WUILLEMIN                          *
 # *   {prenom.nom}_at_lip6.fr                                               *
 # *                                                                         *
 # *   "act" is free software; you can redistribute it and/or modify         *
@@ -71,7 +71,7 @@ def _checkForFormat(current, modif):
           else:
             notif("    [" + src + "] not correctly formatted")
         else:
-            notif_oneline("    [" + src.split("/")[-1] + "] OK")
+          notif_oneline("    [" + src.split("/")[-1] + "] OK")
   return nbrError
 
 
@@ -113,7 +113,8 @@ def _checkForLGPLlicense(current, modif):
       nbrError += 1
       if modif:
         __addLGPLatTop(agrumfile)
-        notif("    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
+        notif(
+            "    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
       else:
         notif("    [" + agrumfile + "] has no LGPL copyright in its first lines")
 
@@ -131,7 +132,8 @@ def __addCppFileForHeader(header, cppfile):
 def _checkCppFileExists(current, modif):
   nbrError = 0
 
-  exceptions = ['/mvsc/', '/signal/', '/external/', 'multidim/patterns/', 'agrum.h', 'inline.h']
+  exceptions = ['/mvsc/', '/signal/', '/external/',
+                'multidim/patterns/', 'agrum.h', 'inline.h']
   for header in recglob("src/agrum", "*.h"):
     if any(subs in header for subs in exceptions):
       continue
@@ -166,7 +168,7 @@ def _checkForMissingDocs(modif):
 _template_license = """
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2021 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -191,7 +193,7 @@ _template_cpp = _template_license + """
  * @file
  * @brief Class to include at least once this header
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  */
 
 #include <{include_file}>

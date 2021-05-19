@@ -3,7 +3,7 @@
 /* lrslib.hpp (vertex enumeration using lexicographic reverse search) */
 #define TITLE "lrslib "
 #define VERSION "v.6.2 2016.3.28"
-#define AUTHOR "*Copyright (C) 1995,2016, David Avis   avis@cs.mcgill.ca "
+#define AUTHOR "*Copyright (c) 1995,2016, David Avis   avis@cs.mcgill.ca "
 
 /* This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

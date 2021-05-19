@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -1302,40 +1302,18 @@ namespace gum {
       // check that i is less than the number of rows
       const std::size_t dbsize = nbRows();
       if (i >= dbsize) {
-        std::string str;
-        switch (i) {
-          case 1:
-            str = "st";
-            break;
-          case 2:
-            str = "nd";
-            break;
-          default:
-            str = "th";
-        }
         GUM_ERROR(OutOfBounds,
-                  "it is impossible to set the weight of the "
-                     << i << str << " record because the database contains only "
-                     << nbRows() << " records");
+                  "it is impossible to set the weight of record #"
+                     << i << " because the database contains only " << nbRows()
+                     << " records");
       }
 
       // check that the weight is positive
       if (weight < 0) {
-        std::string str;
-        switch (i) {
-          case 1:
-            str = "st";
-            break;
-          case 2:
-            str = "nd";
-            break;
-          default:
-            str = "th";
-        }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to set "
-                     << weight << " as a weight of the " << i << str
-                     << " record because this weight is negative");
+                     << weight << " as a weight of record #" << i
+                     << "  because this weight is negative");
       }
 
       rows_[i].setWeight(weight);
@@ -1348,21 +1326,10 @@ namespace gum {
       // check that i is less than the number of rows
       const std::size_t dbsize = nbRows();
       if (i >= dbsize) {
-        std::string str;
-        switch (i) {
-          case 1:
-            str = "st";
-            break;
-          case 2:
-            str = "nd";
-            break;
-          default:
-            str = "th";
-        }
         GUM_ERROR(OutOfBounds,
-                  "it is impossible to get the weight of the "
-                     << i << str << " record because the database contains only "
-                     << nbRows() << " records");
+                  "it is impossible to get the weight of record #"
+                     << i << " because the database contains only " << nbRows()
+                     << " records");
       }
 
       return rows_[i].weight();
