@@ -26,7 +26,6 @@ from ._types import *
 
 import IPython
 import pyAgrum.lib.notebook as gnb
-import pydotplus as dot
 import pyAgrum.causal as csl
 
 
@@ -65,7 +64,7 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
       model, on, doing, knowing, values)
   return gnb.getSideBySide(getCausalModel(model),
                            "?" if formula is None else (
-                               '$$\\begin{equation}' + formula.toLatex() + '\\end{equation}$$'),
+                               '$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$'),
                            "No result" if formula is None else impact,
                            captions=["Causal Model", "Explanation : " + explanation,
                                      "Impact : $" + ("?" if formula is None else formula.latexQuery(values)) + "$"])
