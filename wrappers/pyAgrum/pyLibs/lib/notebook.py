@@ -121,11 +121,17 @@ class FlowLayout(object):
     """
     self.sHtml += '<br/>'
 
+  def html(self):
+    """
+    Returns its content as HTML object
+    """
+    return IPython.display.HTML(self.sHtml)
+
   def display(self):
     """
     Display the accumulated HTML
     """
-    IPython.display.display(IPython.display.HTML(self.sHtml))
+    IPython.display.display(self.html())
     self.clear()
 
   def row(self, *args, captions=None):
