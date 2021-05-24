@@ -34,7 +34,11 @@ buildFileListsWithModules()
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
+
 set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
+
+#needed for some IDE (such as jetbrain's)
+set(SOURCE_FILES ${AGRUM_FILES})
 
 ####################################################################
 ## TARGET library
@@ -65,14 +69,6 @@ export (TARGETS ${LIBAGRUM} FILE ${LIBAGRUM}-targets.cmake)
 ####################################################################
 ## TARGET docs
 include(Doxygen.agrum)
-
-####################################################################
-## TARGET run
-#file(GLOB_RECURSE RUN_AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/run/*.cpp)
-#file(GLOB_RECURSE RUN_AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/run/*.h)
-#add_executable(run EXCLUDE_FROM_ALL ${RUN_AGRUM_SOURCES})
-#set_target_properties(run PROPERTIES COMPILE_FLAGS "-DGUM_RANDOMSEED=${GUM_RANDOMSEED}")
-#target_link_libraries(run ${LIBAGRUM})
 
 ####################################################################
 ## TARGET test

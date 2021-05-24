@@ -1,7 +1,7 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- *   info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe
+ * GONZALES(@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,35 +54,30 @@
 namespace gum {
 
   namespace learning {
+    using CondThreePoint
+       = std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >;
+    using CondRanking = std::pair< CondThreePoint*, double >;
+
+    using ThreePoint = std::tuple< NodeId, NodeId, NodeId >;
+    using Ranking    = std::pair< ThreePoint*, double >;
+
+    using ProbabilisticRanking = std::tuple< ThreePoint*, double, double, double >;
 
     class GreaterPairOn2nd {
       public:
-      bool operator()(
-         const std::pair<
-            std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-            double >& e1,
-         const std::pair<
-            std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-            double >& e2) const;
+      bool operator()(const CondRanking& e1, const CondRanking& e2) const;
     };
 
     class GreaterAbsPairOn2nd {
       public:
-      bool operator()(
-         const std::pair< std::tuple< NodeId, NodeId, NodeId >*, double >& e1,
-         const std::pair< std::tuple< NodeId, NodeId, NodeId >*, double >& e2)
-         const;
+      bool operator()(const Ranking& e1, const Ranking& e2) const;
     };
 
     class GreaterTupleOnLast {
       public:
       bool operator()(
-         const std::
-            tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
-               e1,
-         const std::
-            tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
-               e2) const;
+         const std::tuple< ThreePoint*, double, double, double >& e1,
+         const std::tuple< ThreePoint*, double, double, double >& e2) const;
     };
     /**
      * @class Miic
@@ -206,10 +201,7 @@ namespace gum {
          CorrectedMutualInformation<>&                                    I,
          MixedGraph&                                                      graph,
          HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-         Heap< std::pair<
-                  std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                  double >,
-               GreaterPairOn2nd >&                                        rank_);
+         Heap< CondRanking, GreaterPairOn2nd >&                           rank_);
 
       /// Iteration phase
       /**
@@ -227,10 +219,7 @@ namespace gum {
          CorrectedMutualInformation<>&                                    I,
          MixedGraph&                                                      graph,
          HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-         Heap< std::pair<
-                  std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                  double >,
-               GreaterPairOn2nd >&                                        rank_);
+         Heap< CondRanking, GreaterPairOn2nd >&                           rank_);
 
       /// Orientation phase from the 3off2 algorithm, returns a CPDAG
       /** @param I A mutual information instance that will do the computations
@@ -280,16 +269,12 @@ namespace gum {
        * @param graph containing the assessed nodes
        * @param rank_ the heap of ranks of the algorithm
        */
-      void findBestContributor_(
-         NodeId                        x,
-         NodeId                        y,
-         const std::vector< NodeId >&  ui,
-         const MixedGraph&             graph,
-         CorrectedMutualInformation<>& I,
-         Heap< std::pair<
-                  std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                  double >,
-               GreaterPairOn2nd >&     rank_);
+      void findBestContributor_(NodeId                                 x,
+                                NodeId                                 y,
+                                const std::vector< NodeId >&           ui,
+                                const MixedGraph&                      graph,
+                                CorrectedMutualInformation<>&          I,
+                                Heap< CondRanking, GreaterPairOn2nd >& rank_);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|
@@ -297,7 +282,7 @@ namespace gum {
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
-      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
+      std::vector< Ranking >
          getUnshieldedTriples_(const MixedGraph&                         graph,
                                CorrectedMutualInformation<>&             I,
                                const HashTable< std::pair< NodeId, NodeId >,
@@ -310,10 +295,7 @@ namespace gum {
        *@param sep_set hashtable storing the separation sets for pairs of variables
        * @param marks hashtable containing the orientation marks for edges
        */
-      std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
-                               double,
-                               double,
-                               double > >
+      std::vector< std::tuple< ThreePoint*, double, double, double > >
          getUnshieldedTriplesMIIC_(
             const MixedGraph&             graph,
             CorrectedMutualInformation<>& I,
@@ -325,16 +307,11 @@ namespace gum {
       /*@param graph graph in which to find the triples
        *@param proba_triples probabilities for the different triples to update
        */
-      std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
-                               double,
-                               double,
-                               double > >
+      std::vector< std::tuple< ThreePoint*, double, double, double > >
          updateProbaTriples_(
-            const MixedGraph&                   graph,
-            std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
-                                     double,
-                                     double,
-                                     double > > proba_triples);
+            const MixedGraph& graph,
+            std::vector< std::tuple< ThreePoint*, double, double, double > >
+               proba_triples);
 
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs
@@ -363,16 +340,44 @@ namespace gum {
       /// Initial marks for the orientation phase, used to convey constraints
       HashTable< std::pair< NodeId, NodeId >, char > initial_marks__;
 
-      /// checks for directed paths in a graph, consider double arcs like edges
-      /*@param graph MixedGraph in which to search the path
+      /** @brief checks for directed paths in a graph, considering double arcs like
+       * edges, not considering arc as a directed path.
+       * @param graph MixedGraph in which to search the path
+       * @param n1 tail of the path
+       * @param n2 head of the path
+       * @param countArc bool to know if we
+       */
+      static bool existsNonTrivialDirectedPath__(const MixedGraph& graph,
+                                                 NodeId            n1,
+                                                 NodeId            n2);
+
+      /** checks for directed paths in a graph, consider double arcs like edges
+       *@param graph MixedGraph in which to search the path
        *@param n1 tail of the path
        *@param n2 head of the path
-       *@param countArc bool to know if we consider arc as a directed path
        */
-      const bool existsDirectedPath__(const MixedGraph& graph,
-                                      const NodeId      n1,
-                                      const NodeId      n2,
-                                      const bool        countArc = true) const;
+      static bool
+         existsDirectedPath__(const MixedGraph& graph, NodeId n1, NodeId n2);
+
+      void orientingVstructureMIIC__(
+         MixedGraph&                                     graph,
+         HashTable< std::pair< NodeId, NodeId >, char >& marks,
+         NodeId                                          x,
+         NodeId                                          y,
+         NodeId                                          z,
+         double                                          p1,
+         double                                          p2);
+
+      void propagatingOrientationMIIC__(
+         MixedGraph&                                     graph,
+         HashTable< std::pair< NodeId, NodeId >, char >& marks,
+         NodeId                                          x,
+         NodeId                                          y,
+         NodeId                                          z,
+         double                                          p1,
+         double                                          p2);
+
+      bool isNotLatentCouple__(NodeId x, NodeId y);
     };
 
   } /* namespace learning */
