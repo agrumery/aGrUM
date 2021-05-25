@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_o3prmr_COCO_PARSER_H__)
-#define gum_prm_o3prmr_COCO_PARSER_H__
+#if !defined( _gum_prm_o3prmr_COCO_PARSER_H_)
+#define  _gum_prm_o3prmr_COCO_PARSER_H_
 
 #include <string>
 #include <sstream>
@@ -92,7 +92,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  errors__;
+    ErrorsContainer   _errors_;
 
   public:
     Scanner* scanner;
@@ -100,15 +100,15 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::prm::o3prmr::O3prmrContext<double> *context__;
-gum::prm::o3prmr::O3prmrSession<double> *currentSession__;
+    gum::prm::o3prmr::O3prmrContext<double> * _context_;
+gum::prm::o3prmr::O3prmrSession<double> * _currentSession_;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
 void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
-  context__=c;
+   _context_=c;
 }
 
 //=====================
@@ -141,5 +141,5 @@ void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
 } // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif // !defined( _COCO_PARSER_H_)
 

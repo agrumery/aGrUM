@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_formula_COCO_PARSER_H__)
-#define gum_formula_COCO_PARSER_H__
+#if !defined( _gum_formula_COCO_PARSER_H_)
+#define  _gum_formula_COCO_PARSER_H_
 
 #include <algorithm>
 #include <fstream>
@@ -81,7 +81,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  errors__;
+    ErrorsContainer   _errors_;
 
   public:
     Scanner* scanner;
@@ -90,26 +90,26 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-  gum::Formula* formula__;
+  gum::Formula*  _formula_;
 
 public:
   void formula( gum::Formula* f ) {
-    formula__ = f;
+     _formula_ = f;
   }
 
   gum::Formula& formula() {
-    return *formula__;
+    return * _formula_;
   }
 
   const gum::Formula& formula() const {
-    return *formula__;
+    return * _formula_;
   }
 
 // =============================================================================
 //                              SCANNER RULES
 // =============================================================================
 
-//________________________
+// ________________________
 
     Parser( Scanner* scanner );
     ~Parser();
@@ -130,5 +130,5 @@ public:
 } // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif // !defined( _COCO_PARSER_H_)
 

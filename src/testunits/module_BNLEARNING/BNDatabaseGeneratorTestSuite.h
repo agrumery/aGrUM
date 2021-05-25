@@ -38,20 +38,20 @@ namespace gum_tests {
 
   class ASimpleDBGeneratorListener: public gum::ProgressListener {
     private:
-    gum::Size   nbr__;
-    std::string mess__;
+    gum::Size    _nbr_;
+    std::string  _mess_;
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif), nbr__(0), mess__(""){};
+        gum::ProgressListener(notif),  _nbr_(0),  _mess_(""){};
 
     void whenProgress(const void* buffer, const gum::Size a, const double c) {
-      nbr__ += a;
+       _nbr_ += a;
     }
-    void whenStop(const void* buffer, const std::string& s) { mess__ = s; }
+    void whenStop(const void* buffer, const std::string& s) {  _mess_ = s; }
 
-    gum::Size   getNbr() { return nbr__; }
-    std::string getMess() { return mess__; }
+    gum::Size   getNbr() { return  _nbr_; }
+    std::string getMess() { return  _mess_; }
   };
 
 

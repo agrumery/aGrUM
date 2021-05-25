@@ -34,34 +34,34 @@ namespace gum {
 
   // Set DG1 diagram current explored Node
   INLINE void O4DGContext::setDG1Node(const NodeId& exploredNode) {
-    DG1ExploredNode__ = exploredNode;
+     _DG1ExploredNode_ = exploredNode;
   }
 
   // Set DG2 diagram current explored Node
   INLINE void O4DGContext::setDG2Node(const NodeId& exploredNode) {
-    DG2ExploredNode__ = exploredNode;
+     _DG2ExploredNode_ = exploredNode;
   }
 
   // Changes given variable modality
   INLINE void O4DGContext::chgVarModality(Idx varIndex, Idx newModality) {
-    varInstantiation__[varIndex] = newModality;
+     _varInstantiation_[varIndex] = newModality;
   }
 
   // Changes given variable modality
   INLINE Idx O4DGContext::varModality(Idx varIndex) {
-    return varInstantiation__[varIndex];
+    return  _varInstantiation_[varIndex];
   }
 
   // Returns o4DGContext key
   INLINE const double& O4DGContext::key(short int* instNeeded) {
-    key__ = DG1ExploredNode__ * logPrime__[offset1__]
-          + DG2ExploredNode__ * logPrime__[offset2__];
+     _key_ =  _DG1ExploredNode_ *  _logPrime_[ _offset1_]
+          +  _DG2ExploredNode_ *  _logPrime_[ _offset2_];
 
-    for (Idx varPos = 0, offset = offsetv__; varPos < nbVar__; varPos++, offset--)
+    for (Idx varPos = 0, offset =  _offsetv_; varPos <  _nbVar_; varPos++, offset--)
       if (instNeeded[varPos])
-        key__ += varInstantiation__[varPos] * logPrime__[offset];
+         _key_ +=  _varInstantiation_[varPos] *  _logPrime_[offset];
 
-    return key__;
+    return  _key_;
   }
 
   INLINE void* O4DGContext::operator new(size_t s) {

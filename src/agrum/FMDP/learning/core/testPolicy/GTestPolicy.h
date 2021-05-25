@@ -60,7 +60,7 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    GTestPolicy() : ITestPolicy< GUM_SCALAR >(), conTab__(), GStat__(0) {
+    GTestPolicy() : ITestPolicy< GUM_SCALAR >(),  _conTab_(),  _GStat_(0) {
       GUM_CONSTRUCTOR(GTestPolicy);
     }
 
@@ -109,7 +109,7 @@ namespace gum {
     // ============================================================================
     bool isTestRelevant() const {
       return (this->nbObservation() > 20
-              && this->nbObservation() > conTab__.attrASize() * 5);
+              && this->nbObservation() >  _conTab_.attrASize() * 5);
     }
 
     // ============================================================================
@@ -145,7 +145,7 @@ namespace gum {
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return conTab__; }
+    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return  _conTab_; }
 
 
     /// @}
@@ -160,8 +160,8 @@ namespace gum {
       std::stringstream ss;
       ss << ITestPolicy< GUM_SCALAR >::toString()
          << "\t\t\tContingency Table : " << std::endl
-         << conTab__.toString() << std::endl
-         << "\t\t\tGStat : " << GStat__ << std::endl
+         <<  _conTab_.toString() << std::endl
+         << "\t\t\tGStat : " <<  _GStat_ << std::endl
          << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
       return ss.str();
     }
@@ -170,8 +170,8 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable< Idx, GUM_SCALAR > conTab__;
-    mutable double                      GStat__;
+    ContingencyTable< Idx, GUM_SCALAR >  _conTab_;
+    mutable double                       _GStat_;
   };
 
 }   // End of namespace gum

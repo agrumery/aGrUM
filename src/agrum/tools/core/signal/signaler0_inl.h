@@ -33,7 +33,7 @@
 namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  namespace __sig__ {
+  namespace  __sig__ {
 
     INLINE
     bool BasicSignaler0::hasListener() { return (!(connectors_.empty())); }
@@ -42,14 +42,14 @@ namespace gum {
     void BasicSignaler0::detach(Listener* target) {
       auto it = std::find_if(connectors_.begin(),
                              connectors_.end(),
-                             find_target__(target));
+                              _find_target_(target));
 
       while (it != connectors_.end()) {
         delete *it;
-        target->detachSignal__(this);
+        target-> _detachSignal_(this);
 
         it = connectors_.erase(it);   // it is the next one
-        it = std::find_if(it, connectors_.end(), find_target__(target));
+        it = std::find_if(it, connectors_.end(),  _find_target_(target));
       }
     }
 
@@ -57,13 +57,13 @@ namespace gum {
     void BasicSignaler0::detachFromTarget_(Listener* target) {
       auto it = std::find_if(connectors_.begin(),
                              connectors_.end(),
-                             find_target__(target));
+                              _find_target_(target));
 
       while (it != connectors_.end()) {
         delete *it;
 
         it = connectors_.erase(it);   // it is the next one
-        it = std::find_if(it, connectors_.end(), find_target__(target));
+        it = std::find_if(it, connectors_.end(),  _find_target_(target));
       }
     }
 
@@ -72,25 +72,25 @@ namespace gum {
                                           Listener*       newtarget) {
       auto it = std::find_if(connectors_.begin(),
                              connectors_.end(),
-                             find_target__(oldtarget));
+                              _find_target_(oldtarget));
 
       while (it != connectors_.end()) {
         connectors_.push_back((*it)->duplicate(newtarget));
 
         it++;
-        it = std::find_if(it, connectors_.end(), find_target__(oldtarget));
+        it = std::find_if(it, connectors_.end(),  _find_target_(oldtarget));
       }
     }
 
     INLINE
     std::function< bool(IConnector0* el) >
-       BasicSignaler0::find_target__(const gum::Listener* l) {
+       BasicSignaler0:: _find_target_(const gum::Listener* l) {
       return [=](IConnector0* el) -> bool {
         return el->target() == l;
       };
     }
 
-  }   // namespace __sig__
+  }   // namespace  __sig__
 #endif
 
 }   // namespace gum

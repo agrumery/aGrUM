@@ -232,10 +232,10 @@ namespace gum {
                              EMap* >::const_iterator_safe EvidenceConstIterator;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
-      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > evidences__;
+      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >  _evidences_;
 
-      /// Private getter over evidences__, if necessary creates an EMap for i.
-      EMap& EMap__(const PRMInstance< GUM_SCALAR >* i);
+      /// Private getter over  _evidences_, if necessary creates an EMap for i.
+      EMap&  _EMap_(const PRMInstance< GUM_SCALAR >* i);
 
       /// @}
     };

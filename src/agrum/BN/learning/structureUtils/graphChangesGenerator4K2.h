@@ -74,7 +74,7 @@ namespace gum {
   namespace learning {
 
     // a dummy class used to check that the generator is adapted to K2
-    struct GraphChangesGenerator4K2__ {};
+    struct  _GraphChangesGenerator4K2_ {};
 
     /** @class GraphChangesGenerator4K2
      * @brief The basic class for computing the next graph changes possible in a
@@ -119,7 +119,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     class GraphChangesGenerator4K2:
         public IGraphChangesGenerator4DiGraph,
-        GraphChangesGenerator4K2__ {
+         _GraphChangesGenerator4K2_ {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;
@@ -236,9 +236,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size max_threads_number__{getMaxNumberOfThreads()};
+      Size  _max_threads_number_{getMaxNumberOfThreads()};
 #else
-      Size max_threads_number__{1};
+      Size  _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

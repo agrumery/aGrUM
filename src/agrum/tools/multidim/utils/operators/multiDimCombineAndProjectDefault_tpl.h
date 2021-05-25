@@ -45,8 +45,8 @@ namespace gum {
         TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
                                         const Set< const DiscreteVariable* >&)) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      combination__(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
-      projection__(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
+       _combination_(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
+       _projection_(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombineAndProjectDefault);
   }
@@ -57,8 +57,8 @@ namespace gum {
      MultiDimCombineAndProjectDefault(
         const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      combination__(from.combination__->newFactory()),
-      projection__(from.projection__->newFactory()) {
+       _combination_(from. _combination_->newFactory()),
+       _projection_(from. _projection_->newFactory()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }
@@ -69,8 +69,8 @@ namespace gum {
                                     TABLE >::~MultiDimCombineAndProjectDefault() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimCombineAndProjectDefault);
-    delete combination__;
-    delete projection__;
+    delete  _combination_;
+    delete  _projection_;
   }
 
   // virtual constructor
@@ -201,7 +201,7 @@ namespace gum {
         joint = const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.begin()));
         joint_to_delete = false;
       } else {
-        joint           = combination__->combine(tables_to_combine);
+        joint           =  _combination_->combine(tables_to_combine);
         joint_to_delete = true;
       }
 
@@ -209,7 +209,7 @@ namespace gum {
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      TABLE< GUM_SCALAR >* marginal = projection__->project(*joint, del_one_var);
+      TABLE< GUM_SCALAR >* marginal =  _projection_->project(*joint, del_one_var);
 
       // remove the temporary joint if needed
       if (joint_to_delete) delete joint;
@@ -311,7 +311,7 @@ namespace gum {
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
         TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
                                         const TABLE< GUM_SCALAR >&)) {
-    combination__->setCombineFunction(combine);
+     _combination_->setCombineFunction(combine);
   }
 
   // returns the current combination function
@@ -320,7 +320,7 @@ namespace gum {
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
      const TABLE< GUM_SCALAR >&,
      const TABLE< GUM_SCALAR >&) {
-    return combination__->combineFunction();
+    return  _combination_->combineFunction();
   }
 
   // changes the class that performs the combinations
@@ -328,8 +328,8 @@ namespace gum {
   INLINE void
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
         const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
-    delete combination__;
-    combination__ = comb_class.newFactory();
+    delete  _combination_;
+     _combination_ = comb_class.newFactory();
   }
 
   // changes the function used for projecting TABLES
@@ -338,7 +338,7 @@ namespace gum {
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
         TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
                                      const Set< const DiscreteVariable* >&)) {
-    projection__->setProjectFunction(proj);
+     _projection_->setProjectFunction(proj);
   }
 
   // returns the current projection function
@@ -347,7 +347,7 @@ namespace gum {
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
      const TABLE< GUM_SCALAR >&,
      const Set< const DiscreteVariable* >&) {
-    return projection__->projectFunction();
+    return  _projection_->projectFunction();
   }
 
   // changes the class that performs the projections
@@ -355,8 +355,8 @@ namespace gum {
   INLINE void
      MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
         const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
-    delete projection__;
-    projection__ = proj_class.newFactory();
+    delete  _projection_;
+     _projection_ = proj_class.newFactory();
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -503,14 +503,14 @@ namespace gum {
         joint_to_delete = true;
 
         // update the number of operations performed
-        nb_operations += combination__->nbOperations(tables_to_combine);
+        nb_operations +=  _combination_->nbOperations(tables_to_combine);
       }
 
       // update the number of operations performed by marginalizing out del_var
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      nb_operations += projection__->nbOperations(*joint, del_one_var);
+      nb_operations +=  _projection_->nbOperations(*joint, del_one_var);
 
       // compute the table resulting from marginalizing out del_var from joint
       Sequence< const DiscreteVariable* >* marginal;
@@ -769,7 +769,7 @@ namespace gum {
 
         // update the number of operations performed
         std::pair< long, long > comb_memory
-           = combination__->memoryUsage(tables_to_combine);
+           =  _combination_->memoryUsage(tables_to_combine);
 
         if ((std::numeric_limits< long >::max() - current_memory
              < comb_memory.first)
@@ -790,7 +790,7 @@ namespace gum {
       del_one_var << del_var;
 
       std::pair< long, long > comb_memory
-         = projection__->memoryUsage(*joint, del_one_var);
+         =  _projection_->memoryUsage(*joint, del_one_var);
 
       if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
           || (std::numeric_limits< long >::max() - current_memory

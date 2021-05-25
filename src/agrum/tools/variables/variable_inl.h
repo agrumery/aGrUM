@@ -26,22 +26,22 @@ namespace gum {
   /// protected copy
 
   INLINE void Variable::copy_(const Variable& aRV) {
-    name__        = aRV.name__;
-    description__ = aRV.description__;
+     _name_        = aRV. _name_;
+     _description_ = aRV. _description_;
   }
 
   /// constructor
 
   INLINE Variable::Variable(const std::string& aName, const std::string& aDesc) :
-      name__(aName), description__(aDesc) {   // for debugging purposes
+       _name_(aName),  _description_(aDesc) {   // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
   }
 
   /// copy constructor
 
   INLINE Variable::Variable(const Variable& aRV) :
-      name__(aRV.name__),
-      description__(aRV.description__) {   // for debugging purposes
+       _name_(aRV. _name_),
+       _description_(aRV. _description_) {   // for debugging purposes
     GUM_CONS_CPY(Variable);
   }
 
@@ -60,28 +60,28 @@ namespace gum {
     return *this;
   }
 
-  /// sets the name__ of the variable
+  /// sets the  _name_ of the variable
 
-  INLINE void Variable::setName(const std::string& theValue) { name__ = theValue; }
+  INLINE void Variable::setName(const std::string& theValue) {  _name_ = theValue; }
 
-  /// returns the name__ of the variable
+  /// returns the  _name_ of the variable
 
-  INLINE const std::string& Variable::name() const { return name__; }
+  INLINE const std::string& Variable::name() const { return  _name_; }
 
-  /// sets the description__ of the variable
+  /// sets the  _description_ of the variable
 
   INLINE void Variable::setDescription(const std::string& theValue) const {
-    description__ = theValue;
+     _description_ = theValue;
   }
 
-  /// returns the description__ of the variable
+  /// returns the  _description_ of the variable
 
-  INLINE const std::string& Variable::description() const { return description__; }
+  INLINE const std::string& Variable::description() const { return  _description_; }
 
   /// equality operator
 
   INLINE bool Variable::operator==(const Variable& aRV) const {
-    return (name__ == aRV.name__);
+    return ( _name_ == aRV. _name_);
   }
 
   /// inequality operator

@@ -228,7 +228,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    void adjacentSwap__(const DiscreteVariable* x, const DiscreteVariable* y);
+    void  _adjacentSwap_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     protected:
     /**
@@ -275,7 +275,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns the node id if found, 0 otherwhise.
      */
-    NodeId checkIsomorphism__(const DiscreteVariable* var, NodeId* sons);
+    NodeId  _checkIsomorphism_(const DiscreteVariable* var, NodeId* sons);
 
     /**
      * @brief Checks if node has the same child for every variable value.
@@ -286,7 +286,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns true if the node is redundant.
      */
-    bool isRedundant__(const DiscreteVariable* var, NodeId* sons);
+    bool  _isRedundant_(const DiscreteVariable* var, NodeId* sons);
 
     public:
     /**
@@ -310,7 +310,7 @@ namespace gum {
 
     private:
     /// The multidimdecisiongraph supposed to be edited.
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* functionGraph__;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _functionGraph_;
   };
 
   // ===========================================================================

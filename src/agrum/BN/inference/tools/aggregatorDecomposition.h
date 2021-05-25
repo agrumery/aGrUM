@@ -87,7 +87,7 @@ namespace gum {
     /// @}
 
     private:
-    gum::Size arity__;
+    gum::Size  _arity_;
   };
 
 

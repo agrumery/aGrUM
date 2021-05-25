@@ -36,34 +36,34 @@ namespace gum {
 
   ///////////////////// ArcGraphPart
   ArcGraphPart::ArcGraphPart(Size arcs_size, bool arcs_resize_policy) :
-      arcs__(arcs_size, arcs_resize_policy) {
+       _arcs_(arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(ArcGraphPart);
   }
 
-  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : arcs__(s.arcs__) {
+  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) :  _arcs_(s. _arcs_) {
     GUM_CONS_CPY(ArcGraphPart);
 
     // copy the sets of parents
-    const NodeProperty< NodeSet* >& pars = s.parents__;
-    parents__.resize(pars.capacity());
+    const NodeProperty< NodeSet* >& pars = s. _parents_;
+     _parents_.resize(pars.capacity());
 
     for (const auto& elt: pars) {
       NodeSet* newpar = new NodeSet(*elt.second);
-      parents__.insert(elt.first, newpar);
+       _parents_.insert(elt.first, newpar);
     }
 
     // copy the sets of children
-    const NodeProperty< NodeSet* >& children = s.children__;
-    children__.resize(children.capacity());
+    const NodeProperty< NodeSet* >& children = s. _children_;
+     _children_.resize(children.capacity());
 
     for (const auto& elt: children) {
       NodeSet* newchildren = new NodeSet(*elt.second);
-      children__.insert(elt.first, newchildren);
+       _children_.insert(elt.first, newchildren);
     }
 
     // send signals to indicate that there are new arcs
     if (onArcAdded.hasListener()) {
-      for (const auto& arc: arcs__) {
+      for (const auto& arc:  _arcs_) {
         GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
       }
     }
@@ -76,25 +76,25 @@ namespace gum {
   }
 
   void ArcGraphPart::clearArcs() {
-    for (const auto& elt: parents__)
+    for (const auto& elt:  _parents_)
       delete elt.second;
 
-    parents__.clear();
+     _parents_.clear();
 
-    for (const auto& elt: children__)
+    for (const auto& elt:  _children_)
       delete elt.second;
 
-    children__.clear();
+     _children_.clear();
 
     // we need this copy only if at least one onArcDeleted listener exists
     if (onArcDeleted.hasListener()) {
-      ArcSet tmp = arcs__;
-      arcs__.clear();
+      ArcSet tmp =  _arcs_;
+       _arcs_.clear();
 
       for (const auto& arc: tmp)
         GUM_EMIT2(onArcDeleted, arc.tail(), arc.head());
     } else {
-      arcs__.clear();
+       _arcs_.clear();
     }
   }
 
@@ -103,26 +103,26 @@ namespace gum {
     if (this != &s) {
       // copy the arcs
       clearArcs();
-      arcs__ = s.arcs__;
+       _arcs_ = s. _arcs_;
 
       // copy the sets of parents
-      parents__.resize(s.parents__.capacity());
+       _parents_.resize(s. _parents_.capacity());
 
-      for (const auto& elt: s.parents__) {
+      for (const auto& elt: s. _parents_) {
         NodeSet* newpar = new NodeSet(*elt.second);
-        parents__.insert(elt.first, newpar);
+         _parents_.insert(elt.first, newpar);
       }
 
       // copy the sets of children
-      children__.resize(s.children__.capacity());
+       _children_.resize(s. _children_.capacity());
 
-      for (const auto& elt: s.children__) {
+      for (const auto& elt: s. _children_) {
         NodeSet* newchildren = new NodeSet(*elt.second);
-        children__.insert(elt.first, newchildren);
+         _children_.insert(elt.first, newchildren);
       }
 
       if (onArcAdded.hasListener()) {
-        for (const auto& arc: arcs__) {
+        for (const auto& arc:  _arcs_) {
           GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
         }
       }
@@ -136,7 +136,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (const auto& arc: arcs__) {
+    for (const auto& arc:  _arcs_) {
       if (first) {
         first = false;
       } else {

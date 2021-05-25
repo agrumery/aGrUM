@@ -194,7 +194,7 @@ namespace gum {
 
       protected:
       /// the MandatoryArcs on which we perform checks
-      ArcSet MandatoryArcs__mandatory_arcs_;
+      ArcSet  _MandatoryArcs_mandatory_arcs_;
     };
 
   } /* namespace learning */

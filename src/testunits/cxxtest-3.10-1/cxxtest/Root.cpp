@@ -1,5 +1,5 @@
-#ifndef __cxxtest__Root_cpp__
-#define __cxxtest__Root_cpp__
+#ifndef  __cxxtest__Root_cpp__
+#define  __cxxtest__Root_cpp__
 
 //
 // This file holds the "root" of CxxTest, i.e.
@@ -15,4 +15,4 @@
 #include <cxxtest/TestTracker.cpp>
 #include <cxxtest/ValueTraits.cpp>
 
-#endif  // __cxxtest__Root_cpp__
+#endif  //  __cxxtest__Root_cpp__

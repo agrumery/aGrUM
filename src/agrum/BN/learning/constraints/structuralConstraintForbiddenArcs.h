@@ -194,7 +194,7 @@ namespace gum {
 
       protected:
       /// the ForbiddenArcs on which we perform checks
-      ArcSet ForbiddenArcs__forbidden_arcs_;
+      ArcSet  _ForbiddenArcs_forbidden_arcs_;
     };
 
   } /* namespace learning */

@@ -55,10 +55,10 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
-    output << preambule__(bn) << std::endl;
+    output <<  _preambule_(bn) << std::endl;
 
     for (auto node: bn.nodes())
-      output << cptBloc__(bn, node) << std::endl;
+      output <<  _cptBloc_(bn, node) << std::endl;
 
     output << std::endl;
 
@@ -90,7 +90,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-     UAIBNWriter< GUM_SCALAR >::preambule__(const IBayesNet< GUM_SCALAR >& bn) {
+     UAIBNWriter< GUM_SCALAR >:: _preambule_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -126,7 +126,7 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIBNWriter< GUM_SCALAR >::cptBloc__(const IBayesNet< GUM_SCALAR >& bn,
+         UAIBNWriter< GUM_SCALAR >:: _cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
                                           NodeId                         node) {
     std::stringstream str;
 

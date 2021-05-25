@@ -35,8 +35,8 @@ namespace gum {
   SpanningForestPrim::SpanningForestPrim(const UndiGraph*             graph,
                                          const EdgeProperty< float >* cost) :
       SpanningForest(),
-      graph__(*graph), costTable__(*cost), spanning_tree_cost__(0),
-      require_computation__(true) {
+       _graph_(*graph),  _costTable_(*cost),  _spanning_tree_cost_(0),
+       _require_computation_(true) {
     if (!graph || !cost) {
       GUM_ERROR(GraphError, "invalid null graph or edge cost pointer")
     }
@@ -47,11 +47,11 @@ namespace gum {
 
   // copy constructor
   SpanningForestPrim::SpanningForestPrim(const SpanningForestPrim& from) :
-      SpanningForest(), graph__(from.graph__), costTable__(from.costTable__),
-      edgesToExplore__(from.edgesToExplore__),
-      spanning_tree__(from.spanning_tree__),
-      spanning_tree_cost__(from.spanning_tree_cost__),
-      require_computation__(from.require_computation__) {
+      SpanningForest(),  _graph_(from. _graph_),  _costTable_(from. _costTable_),
+       _edgesToExplore_(from. _edgesToExplore_),
+       _spanning_tree_(from. _spanning_tree_),
+       _spanning_tree_cost_(from. _spanning_tree_cost_),
+       _require_computation_(from. _require_computation_) {
     // for debugging purposes
     GUM_CONS_CPY(SpanningForestPrim);
   }
@@ -64,82 +64,82 @@ namespace gum {
 
   /// Returns the cost of the spanning forest
   float SpanningForestPrim::costOfSpanningForest() {
-    if (require_computation__) compute__();
+    if ( _require_computation_)  _compute_();
 
-    return spanning_tree_cost__;
+    return  _spanning_tree_cost_;
   }
 
   /// Returns the edges in a min cost spanning forest
   const EdgeSet& SpanningForestPrim::edgesInSpanningForest() {
-    if (require_computation__) compute__();
+    if ( _require_computation_)  _compute_();
 
-    return spanning_tree__.edges();
+    return  _spanning_tree_.edges();
   }
 
   /// Construct the spanning forest
   const UndiGraph& SpanningForestPrim::spanningForest() {
-    if (require_computation__) compute__();
+    if ( _require_computation_)  _compute_();
 
-    return spanning_tree__;
+    return  _spanning_tree_;
   }
 
   /// compute the spanning forest
-  void SpanningForestPrim::compute__() {
+  void SpanningForestPrim:: _compute_() {
     // compute a spanning tree in every connected component
-    for (const auto node: graph__.nodes()) {
-      if (!spanning_tree__.existsNode(node)) { computeInAComponent__(node); }
+    for (const auto node:  _graph_.nodes()) {
+      if (! _spanning_tree_.existsNode(node)) {  _computeInAComponent_(node); }
     }
 
     // indicate that everything was computed
-    require_computation__ = false;
+     _require_computation_ = false;
   }
 
   /// compute a spanning tree
-  void SpanningForestPrim::computeInAComponent__(const NodeId id) {
+  void SpanningForestPrim:: _computeInAComponent_(const NodeId id) {
     // add the node to the spanning tree
-    spanning_tree__.addNodeWithId(id);
+     _spanning_tree_.addNodeWithId(id);
 
     // explore its neighborhood
-    exploreNode__(id);
+     _exploreNode_(id);
 
     // get the next nodes to link to the current spanning tree nodes
 
-    while (!edgesToExplore__.empty()) {
-      const Edge   edge   = edgesToExplore__.pop();
+    while (! _edgesToExplore_.empty()) {
+      const Edge   edge   =  _edgesToExplore_.pop();
       const NodeId first  = edge.first();
       const NodeId second = edge.second();
 
       // consider only the edges that have one extremal node not in the spanning
       // tree as those that can be added to the tree
 
-      if (!spanning_tree__.existsNode(first)) {
+      if (! _spanning_tree_.existsNode(first)) {
         // add the edge to the spanning tree
-        spanning_tree__.addNodeWithId(first);
-        spanning_tree__.addEdge(first, second);
-        spanning_tree_cost__ += costTable__[edge];
+         _spanning_tree_.addNodeWithId(first);
+         _spanning_tree_.addEdge(first, second);
+         _spanning_tree_cost_ +=  _costTable_[edge];
 
         // We must explore the first node's neighborhood
-        exploreNode__(first);
-      } else if (!spanning_tree__.existsNode(second)) {
+         _exploreNode_(first);
+      } else if (! _spanning_tree_.existsNode(second)) {
         // add the edge to the spanning tree
-        spanning_tree__.addNodeWithId(second);
-        spanning_tree__.addEdge(first, second);
-        spanning_tree_cost__ += costTable__[edge];
+         _spanning_tree_.addNodeWithId(second);
+         _spanning_tree_.addEdge(first, second);
+         _spanning_tree_cost_ +=  _costTable_[edge];
 
         // We must explore the second node
-        exploreNode__(second);
+         _exploreNode_(second);
       }
     }
   }
 
   /// explore the neighborhood of a node belonging to the spanning tree
-  void SpanningForestPrim::exploreNode__(const NodeId id) {
-    // add its neighbors edgesToExplore__ to indicate that they are
+  void SpanningForestPrim:: _exploreNode_(const NodeId id) {
+    // add its neighbors  _edgesToExplore_ to indicate that they are
     // potential next nodes to explore
-    for (const auto node: graph__.neighbours(id)) {
-      if (!spanning_tree__.existsNode(node)) {
+    for (const auto node:  _graph_.neighbours(id)) {
+      if (! _spanning_tree_.existsNode(node)) {
         Edge edge(node, id);
-        edgesToExplore__.insert(edge, costTable__[edge]);
+         _edgesToExplore_.insert(edge,  _costTable_[edge]);
       }
     }
   }

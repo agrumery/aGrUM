@@ -107,7 +107,7 @@ namespace gum {
       void compute(const PRMInstance< GUM_SCALAR >& i, NodeId n);
 
       /// Returns true if there is a hard evidence on i->get(n).
-      bool isHardEvidence__(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      bool  _isHardEvidence_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       private:
       /// Copy constructor.
@@ -121,38 +121,38 @@ namespace gum {
       /// Code alias
       typedef HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* > InstanceMap;
       /// Code alias
-      std::pair< bool, bool >& getMark__(InstanceMap&                     marks,
+      std::pair< bool, bool >&  _getMark_(InstanceMap&                     marks,
                                          const PRMInstance< GUM_SCALAR >* i,
                                          NodeId                           n);
       /// Code alias
-      const PRMSlotChain< GUM_SCALAR >& getSC__(const PRMInstance< GUM_SCALAR >* i,
+      const PRMSlotChain< GUM_SCALAR >&  _getSC_(const PRMInstance< GUM_SCALAR >* i,
                                                 NodeId n);
 
       /// Cleans this before a new computation.
-      void clean__();
+      void  _clean_();
 
       /// The real compute method.
-      void compute__(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      void  _compute_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       /// When the ball is received on i->get(n) from a child.
-      void fromChild__(const PRMInstance< GUM_SCALAR >* i,
+      void  _fromChild_(const PRMInstance< GUM_SCALAR >* i,
                        NodeId                           n,
                        InstanceMap&                     marks);
 
       /// When the ball is receive on i->get(n) from a parent.
-      void fromParent__(const PRMInstance< GUM_SCALAR >* i,
+      void  _fromParent_(const PRMInstance< GUM_SCALAR >* i,
                         NodeId                           n,
                         InstanceMap&                     marks);
 
-      /// Fill keyMap__ and reqMap__.
-      void fillMaps__(InstanceMap& marks);
+      /// Fill  _keyMap_ and  _reqMap_.
+      void  _fillMaps_(InstanceMap& marks);
 
       /// Builds the HashKey for the given instance and requisite nodes set.
-      std::string buildHashKey__(const PRMInstance< GUM_SCALAR >* i,
+      std::string  _buildHashKey_(const PRMInstance< GUM_SCALAR >* i,
                                  Set< NodeId >&                   req_nodes);
 
-      /// The PRM at which model__ belongs.
-      const PRMInference< GUM_SCALAR >* inf__;
+      /// The PRM at which  _model_ belongs.
+      const PRMInference< GUM_SCALAR >*  _inf_;
 
       /// Associate an PRMInstance<GUM_SCALAR> with a unique key w.r.t.
       /// d-separation and
@@ -160,11 +160,11 @@ namespace gum {
       /// set of requisite nodes deduced from d-separation analysis.
       HashTable< const PRMInstance< GUM_SCALAR >*,
                  std::pair< std::string, Set< NodeId >* > >
-         keyMap__;
+          _keyMap_;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.
-      HashTable< std::string, std::pair< Set< NodeId >*, Size > > reqMap__;
+      HashTable< std::string, std::pair< Set< NodeId >*, Size > >  _reqMap_;
     };
 
 

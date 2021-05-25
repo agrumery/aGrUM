@@ -1,5 +1,5 @@
-#ifndef __cxxtest__YesNoRunner_h__
-#define __cxxtest__YesNoRunner_h__
+#ifndef  __cxxtest__YesNoRunner_h__
+#define  __cxxtest__YesNoRunner_h__
 
 //
 // The YesNoRunner is a simple TestListener that
@@ -21,4 +21,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__YesNoRunner_h__
+#endif  //  __cxxtest__YesNoRunner_h__

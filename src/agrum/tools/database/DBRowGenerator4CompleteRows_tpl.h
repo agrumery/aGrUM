@@ -62,7 +62,7 @@ namespace gum {
        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-        input_row__(from.input_row__) {
+         _input_row_(from. _input_row_) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
     }
 
@@ -81,7 +81,7 @@ namespace gum {
        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
           alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-        input_row__(from.input_row__) {
+         _input_row_(from. _input_row_) {
       GUM_CONS_MOV(DBRowGenerator4CompleteRows);
     }
 
@@ -133,7 +133,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      input_row__                      = from.input_row__;
+       _input_row_                      = from. _input_row_;
       return *this;
     }
 
@@ -144,7 +144,7 @@ namespace gum {
        DBRowGenerator4CompleteRows< ALLOC >::operator=(
           DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      input_row__                      = from.input_row__;
+       _input_row_                      = from. _input_row_;
       return *this;
     }
 
@@ -154,7 +154,7 @@ namespace gum {
     INLINE const DBRow< DBTranslatedValue, ALLOC >&
                  DBRowGenerator4CompleteRows< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return *input_row__;
+      return * _input_row_;
     }
 
 
@@ -168,14 +168,14 @@ namespace gum {
         switch (this->column_types_[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
-              input_row__ = nullptr;
+               _input_row_ = nullptr;
               return std::size_t(0);
             }
             break;
 
           case DBTranslatedValueType::CONTINUOUS:
             if (xrow[col].cont_val == std::numeric_limits< float >::max()) {
-              input_row__ = nullptr;
+               _input_row_ = nullptr;
               return std::size_t(0);
             }
             break;
@@ -187,7 +187,7 @@ namespace gum {
             break;
         }
       }
-      input_row__ = &row;
+       _input_row_ = &row;
       return std::size_t(1);
     }
 

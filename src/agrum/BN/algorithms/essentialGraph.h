@@ -106,11 +106,11 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     private:
-    void buildEssentialGraph__();
-    bool strongly_protected__(NodeId a, NodeId b);
+    void  _buildEssentialGraph_();
+    bool  _strongly_protected_(NodeId a, NodeId b);
 
-    const DAGmodel* dagmodel__;
-    MixedGraph      mg__;
+    const DAGmodel*  _dagmodel_;
+    MixedGraph       _mg_;
   };
 }   // namespace gum
 

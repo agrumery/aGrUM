@@ -24,10 +24,10 @@
 
 class PythonDatabaseGeneratorListener : public gum::ProgressListener {
   private:
-  PyObject* pyWhenProgress__;
-  PyObject* pyWhenStop__;
+  PyObject* _pyWhenProgress_;
+  PyObject* _pyWhenStop_;
 
-  void checkCallable__(PyObject* pyfunc) {
+  void _checkCallable_(PyObject* pyfunc) {
     if (!PyCallable_Check(pyfunc)) {
       PyErr_SetString(PyExc_TypeError, "Need a callable object!");
     }
@@ -36,46 +36,46 @@ class PythonDatabaseGeneratorListener : public gum::ProgressListener {
   public:
   explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator<double>& notif)
       : gum::ProgressListener(notif) {
-    pyWhenProgress__ = pyWhenStop__ = (PyObject*)0;
+    _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
   };
 
   ~PythonDatabaseGeneratorListener() {
-    if (pyWhenProgress__) Py_DECREF(pyWhenProgress__);
+    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
 
-    if (pyWhenStop__) Py_DECREF(pyWhenStop__);
+    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
   };
 
   void whenProgress(const void* src, const gum::Size step, const double duration) {
-    if (pyWhenProgress__) {
+    if (_pyWhenProgress_) {
       PyObject* arglist = Py_BuildValue("(ld)", step, duration);
-      PyObject_Call(pyWhenProgress__, arglist, NULL);
+      PyObject_Call(_pyWhenProgress_, arglist, NULL);
       Py_DECREF(arglist);
     }
   };
 
   void whenStop(const void* src, const std::string& message) {
-    if (pyWhenStop__) {
+    if (_pyWhenStop_) {
       PyObject* arglist = Py_BuildValue("(s)", message.c_str());
-      PyObject_Call(pyWhenStop__, arglist, NULL);
+      PyObject_Call(_pyWhenStop_, arglist, NULL);
       Py_DECREF(arglist);
     }
   };
 
   void setWhenProgress(PyObject* pyfunc) {
-    checkCallable__(pyfunc);
+    _checkCallable_(pyfunc);
 
-    if (pyWhenProgress__) Py_DECREF(pyWhenProgress__);
+    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
 
-    pyWhenProgress__ = pyfunc;
+    _pyWhenProgress_ = pyfunc;
     Py_INCREF(pyfunc);
   };
 
   void setWhenStop(PyObject* pyfunc) {
-    checkCallable__(pyfunc);
+    _checkCallable_(pyfunc);
 
-    if (pyWhenStop__) Py_DECREF(pyWhenStop__);
+    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
 
-    pyWhenStop__ = pyfunc;
+    _pyWhenStop_ = pyfunc;
     Py_INCREF(pyfunc);
   };
 };

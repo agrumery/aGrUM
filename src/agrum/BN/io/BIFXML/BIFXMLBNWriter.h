@@ -101,23 +101,23 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string heading__(const IBayesNet< GUM_SCALAR >& bn);
+    std::string  _heading_(const IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Returns the end of the BIF file.
      */
-    std::string documentend__();
+    std::string  _documentend_();
 
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string variableBloc__(const DiscreteVariable& var);
+    std::string  _variableBloc_(const DiscreteVariable& var);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string variableDefinition__(const NodeId&                  varNodeId,
+    std::string  _variableDefinition_(const NodeId&                  varNodeId,
                                      const IBayesNet< GUM_SCALAR >& bn);
   };
 

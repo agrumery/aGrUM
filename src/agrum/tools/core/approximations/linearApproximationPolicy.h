@@ -218,14 +218,14 @@ namespace gum {
      * @param value The value to encode.
      * @return The encoded value.
      */
-    Idx encode__(const GUM_SCALAR& value) const;
+    Idx  _encode_(const GUM_SCALAR& value) const;
 
     /**
      * @brief Concretely computes the approximate value from representation.
      * @param representation The approximate value to decode.
      * @return The decoded value.
      */
-    GUM_SCALAR decode__(const GUM_SCALAR& representation) const;
+    GUM_SCALAR  _decode_(const GUM_SCALAR& representation) const;
 
     /**
      * @brief Get the number of interval.

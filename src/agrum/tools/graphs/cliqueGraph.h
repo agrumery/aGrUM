@@ -238,18 +238,18 @@ namespace gum {
 
     private:
     /// the set of nodes contained into the cliques
-    NodeProperty< NodeSet > cliques__;
+    NodeProperty< NodeSet >  _cliques_;
 
     /// the set of nodes contained into the separators
-    EdgeProperty< NodeSet > separators__;
+    EdgeProperty< NodeSet >  _separators_;
 
     /// function used to update the separators when a clique is modified
 
-    void updateSeparators__(const NodeId clique1);
+    void  _updateSeparators_(const NodeId clique1);
 
     /// structure used for the computation of the running intersection property
 
-    struct RunningIntersect__ {
+    struct  _RunningIntersect_ {
       /** @brief structure indicating for each clique whether it has been
        * examined by a DFS (Depth First Search) */
       NodeSet visited_cliques;
@@ -290,9 +290,9 @@ namespace gum {
 
     /// function used for the computation of the running intersection property
 
-    bool runningIntersectionDFS__(const NodeId        clique,
+    bool  _runningIntersectionDFS_(const NodeId        clique,
                                   const NodeId        from,
-                                  RunningIntersect__& infos_DFS) const;
+                                   _RunningIntersect_& infos_DFS) const;
   };
 
   /** @brief a junction tree is a clique graph satisfying the running

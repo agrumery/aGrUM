@@ -86,7 +86,7 @@ namespace gum {
                         bool&                   stop_iteration) const;
 
       private:
-      Idx value__;
+      Idx  _value_;
     };
 
 

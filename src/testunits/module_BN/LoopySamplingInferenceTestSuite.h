@@ -46,23 +46,23 @@ namespace gum_tests {
 
   class aSimpleHybridListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __mess;
+    int          __nbr;
+    std::string  __mess;
 
     public:
     aSimpleHybridListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) {
-      __nbr++;
+       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) { __mess = s; }
+    void whenStop(const void* buffer, const std::string s) {  __mess = s; }
 
-    int         getNbr() { return __nbr; }
-    std::string getMess() { return __mess; }
+    int         getNbr() { return  __nbr; }
+    std::string getMess() { return  __mess; }
   };
 
   class loopySamplingInferenceTestSuite: public CxxTest::TestSuite {
@@ -77,7 +77,7 @@ namespace gum_tests {
 
         gum::LoopyBeliefPropagation< double > lbp(&bn);
         lbp.makeInference();
-        compareInference(__FILE__, __LINE__, bn, lazy, lbp);
+        compareInference(  __FILE__,   __LINE__, bn, lazy, lbp);
 
         GUM_APPROX_TEST_BEGIN_ITERATION
         gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);

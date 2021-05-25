@@ -56,7 +56,7 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
-    output << heading__() << std::endl;
+    output <<  _heading_() << std::endl;
     output << "<!-- Variables -->" << std::endl;
 
     for (const auto node: infdiag.nodes()) {
@@ -67,16 +67,16 @@ namespace gum {
       else if (infdiag.isUtilityNode(node))
         nodeType = 3;
 
-      output << variableBloc__(infdiag.variable(node), nodeType) << std::endl;
+      output <<  _variableBloc_(infdiag.variable(node), nodeType) << std::endl;
     }
 
     output << "<!-- Probability distributions -->" << std::endl;
 
     for (const auto node: infdiag.nodes())
-      output << variableDefinition__(node, infdiag);
+      output <<  _variableDefinition_(node, infdiag);
 
     output << std::endl;
-    output << documentend__();
+    output <<  _documentend_();
     output.flush();
 
     if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
@@ -108,7 +108,7 @@ namespace gum {
    * Returns the header of the BIF file.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::heading__() {
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _heading_() {
     std::stringstream str;
 
     // Header for every xml
@@ -151,7 +151,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-         BIFXMLIDWriter< GUM_SCALAR >::variableBloc__(const DiscreteVariable& var,
+         BIFXMLIDWriter< GUM_SCALAR >:: _variableBloc_(const DiscreteVariable& var,
                                                   int varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
@@ -203,7 +203,7 @@ namespace gum {
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::variableDefinition__(
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _variableDefinition_(
      const NodeId&                         varNodeId,
      const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     //<DEFINITION>
@@ -263,7 +263,7 @@ namespace gum {
    * Returns the end of the BIF file.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::documentend__() {
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _documentend_() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

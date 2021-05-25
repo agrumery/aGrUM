@@ -52,12 +52,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(planer->makePlanning(10));
 
 
-      std::ofstream traceAlgoSaveFile__;
-      traceAlgoSaveFile__.open(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"),
+      std::ofstream  _traceAlgoSaveFile_;
+       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"),
                                std::ios::out | std::ios::trunc);
-      if (!traceAlgoSaveFile__) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(traceAlgoSaveFile__ << fmdp.toString());
-      traceAlgoSaveFile__.close();
+      if (! _traceAlgoSaveFile_) return;
+      TS_GUM_ASSERT_THROWS_NOTHING( _traceAlgoSaveFile_ << fmdp.toString());
+       _traceAlgoSaveFile_.close();
 
       int deletedFile
          = std::remove(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"));

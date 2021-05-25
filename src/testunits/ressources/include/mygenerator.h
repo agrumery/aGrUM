@@ -50,7 +50,7 @@ namespace gum {
                    const std::size_t nb_duplicates,
                    const allocator_type& alloc  = allocator_type () )
         : DBRowGenerator<ALLOC> ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc )
-        , nb_duplicates__ ( nb_duplicates ) {
+        ,  _nb_duplicates_ ( nb_duplicates ) {
         GUM_CONSTRUCTOR( MyGenerator );
       }
 
@@ -58,8 +58,8 @@ namespace gum {
       MyGenerator( const MyGenerator<ALLOC>& from,
                    const allocator_type& alloc )
         : DBRowGenerator<ALLOC>( from, alloc )
-        , input_row__( from.input_row__ )
-        , nb_duplicates__ ( from.nb_duplicates__ ) {
+        ,  _input_row_( from. _input_row_ )
+        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
         GUM_CONS_CPY( MyGenerator );
       }
 
@@ -72,8 +72,8 @@ namespace gum {
       MyGenerator( MyGenerator<ALLOC>&& from,
                    const allocator_type& alloc )
         : DBRowGenerator<ALLOC> ( std::move( from ), alloc )
-        , input_row__( from.input_row__ )
-        , nb_duplicates__ ( from.nb_duplicates__ ) {
+        ,  _input_row_( from. _input_row_ )
+        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
         GUM_CONS_MOV( MyGenerator );
       }
 
@@ -119,8 +119,8 @@ namespace gum {
       /// copy operator
       MyGenerator<ALLOC>& operator=( const MyGenerator<ALLOC>& from ) {
         DBRowGenerator<ALLOC>::operator=( from );
-        input_row__ = from.input_row__;
-        nb_duplicates__ = from.nb_duplicates__;
+         _input_row_ = from. _input_row_;
+         _nb_duplicates_ = from. _nb_duplicates_;
         return *this;
       }
     
@@ -128,8 +128,8 @@ namespace gum {
       /// move operator
       MyGenerator<ALLOC>& operator=( MyGenerator<ALLOC>&& from ) {
         DBRowGenerator<ALLOC>::operator=( std::move( from ) );
-        input_row__ = from.input_row__;
-        nb_duplicates__ = from.nb_duplicates__;
+         _input_row_ = from. _input_row_;
+         _nb_duplicates_ = from. _nb_duplicates_;
         return *this;
       }
     
@@ -141,7 +141,7 @@ namespace gum {
       /// generates new lines from those the generator gets in input
       virtual const DBRow<DBTranslatedValue,ALLOC>& generate() final {
         this->decreaseRemainingRows();
-        return *input_row__;
+        return * _input_row_;
       }
   
       
@@ -150,18 +150,18 @@ namespace gum {
       /// computes the rows it will provide in output
       virtual std::size_t
       computeRows_( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
-        input_row__ = &row;
-        return nb_duplicates__;
+         _input_row_ = &row;
+        return  _nb_duplicates_;
       }
 
 
     private:
      
       /// the row used as input to generate the output DBRows
-      const DBRow<DBTranslatedValue,ALLOC>* input_row__ { nullptr };
+      const DBRow<DBTranslatedValue,ALLOC>*  _input_row_ { nullptr };
 
       /// the number of times we return each input row
-      std::size_t nb_duplicates__ { std::size_t(1) };
+      std::size_t  _nb_duplicates_ { std::size_t(1) };
       
     };
 

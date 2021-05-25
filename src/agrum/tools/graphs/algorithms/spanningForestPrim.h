@@ -90,31 +90,31 @@ namespace gum {
 
     private:
     /// the graph the spanning tree of which we wish to compute
-    const UndiGraph& graph__;
+    const UndiGraph&  _graph_;
 
     /// the costs of the edges
-    const EdgeProperty< float >& costTable__;
+    const EdgeProperty< float >&  _costTable_;
 
     /// the next edges that may be added to the spanning tree
-    PriorityQueue< Edge, float > edgesToExplore__;
+    PriorityQueue< Edge, float >  _edgesToExplore_;
 
     /// the computed spanning tree
-    UndiGraph spanning_tree__;
+    UndiGraph  _spanning_tree_;
 
     /// the cost of the spanning tree
-    float spanning_tree_cost__;
+    float  _spanning_tree_cost_;
 
     /// a Boolean indicating whether we need recompute the spanning tree
-    bool require_computation__;
+    bool  _require_computation_;
 
     /// Computes the spanning forest
-    void compute__();
+    void  _compute_();
 
-    /// compute a spanning tree in a given connected component of graph__
-    void computeInAComponent__(const NodeId id);
+    /// compute a spanning tree in a given connected component of  _graph_
+    void  _computeInAComponent_(const NodeId id);
 
     /// explore the neighborhood of a node belonging to the spanning tree
-    void exploreNode__(const NodeId id);
+    void  _exploreNode_(const NodeId id);
 
     /// Copy operator: private to prevent using it
     SpanningForestPrim& operator=(const SpanningForestPrim& toCopy);

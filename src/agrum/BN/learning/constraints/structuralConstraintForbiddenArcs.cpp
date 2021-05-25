@@ -52,15 +52,15 @@ namespace gum {
     /// copy constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
        const StructuralConstraintForbiddenArcs& from) :
-        ForbiddenArcs__forbidden_arcs_(from.ForbiddenArcs__forbidden_arcs_) {
+         _ForbiddenArcs_forbidden_arcs_(from. _ForbiddenArcs_forbidden_arcs_) {
       GUM_CONS_CPY(StructuralConstraintForbiddenArcs);
     }
 
     /// move constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
        StructuralConstraintForbiddenArcs&& from) :
-        ForbiddenArcs__forbidden_arcs_(
-           std::move(from.ForbiddenArcs__forbidden_arcs_)) {
+         _ForbiddenArcs_forbidden_arcs_(
+           std::move(from. _ForbiddenArcs_forbidden_arcs_)) {
       GUM_CONS_MOV(StructuralConstraintForbiddenArcs);
     }
 
@@ -74,7 +74,7 @@ namespace gum {
        StructuralConstraintForbiddenArcs::operator=(
           const StructuralConstraintForbiddenArcs& from) {
       if (this != &from) {
-        ForbiddenArcs__forbidden_arcs_ = from.ForbiddenArcs__forbidden_arcs_;
+         _ForbiddenArcs_forbidden_arcs_ = from. _ForbiddenArcs_forbidden_arcs_;
       }
       return *this;
     }
@@ -84,8 +84,8 @@ namespace gum {
        StructuralConstraintForbiddenArcs::operator=(
           StructuralConstraintForbiddenArcs&& from) {
       if (this != &from) {
-        ForbiddenArcs__forbidden_arcs_
-           = std::move(from.ForbiddenArcs__forbidden_arcs_);
+         _ForbiddenArcs_forbidden_arcs_
+           = std::move(from. _ForbiddenArcs_forbidden_arcs_);
       }
       return *this;
     }

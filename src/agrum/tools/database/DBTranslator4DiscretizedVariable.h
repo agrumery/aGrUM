@@ -328,12 +328,12 @@ namespace gum {
 
       private:
       // the DiscretizedVariable used for translations
-      DiscretizedVariable< float > variable__;
+      DiscretizedVariable< float >  _variable_;
 
       // the DiscretizedVariable returned by method variable ()
       // We must return a IDiscretizedVariable because the user may have
       // saved into the translator a DiscretizedVariable<X>, with X != float
-      IDiscretizedVariable* real_variable__;
+      IDiscretizedVariable*  _real_variable_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

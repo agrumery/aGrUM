@@ -496,26 +496,26 @@ namespace gum {
 
     private:
     /// Keep track of the position of the element in v (for fast retrieval).
-    HashTable< Key, Idx, Alloc > h__;
+    HashTable< Key, Idx, Alloc >  _h_;
 
     /// The set of the elements stored into the sequence.
-    std::vector< Key*, typename Alloc::template rebind< Key* >::other > v__;
+    std::vector< Key*, typename Alloc::template rebind< Key* >::other >  _v_;
 
-    // Note that, using Key* in v__, we actually store the Key only once in the
-    // sequence (that is, within h__). This enables storing big objects within
+    // Note that, using Key* in  _v_, we actually store the Key only once in the
+    // sequence (that is, within  _h_). This enables storing big objects within
     // sequences without having memory overhead.
 
     /// Stores the end iterator for fast access.
-    SequenceIteratorSafe< Key > end_safe__;
+    SequenceIteratorSafe< Key >  _end_safe_;
 
     /// Stores the rend iterator for fast access.
-    SequenceIteratorSafe< Key > rend_safe__;
+    SequenceIteratorSafe< Key >  _rend_safe_;
 
     /**
      * @brief A method to update the end iterator after changes in the
      * sequence.
      */
-    void update_end__() noexcept;
+    void  _update_end_() noexcept;
 
     /**
      * @brief Clears the current sequence and fill it with copies the element
@@ -524,14 +524,14 @@ namespace gum {
      * @param aSeq The gum::SequenceImplementation to copy.
      */
     template < typename OtherAlloc >
-    void copy__(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+    void  _copy_(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
 
     /**
      * @brief Insert an element at the end of the sequence.
      *
      * @param bucket The bucket holing the store to insert.
      */
-    void insert__(HashTableBucket< Key, Idx >&& bucket);
+    void  _insert_(HashTableBucket< Key, Idx >&& bucket);
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -936,22 +936,22 @@ namespace gum {
 
     private:
     /// Keep track of the position of the element in v (for fast retrieval).
-    HashTable< Key, Idx, Alloc > h__;
+    HashTable< Key, Idx, Alloc >  _h_;
 
     /// The set of the elements stored into the sequence.
-    std::vector< Key, Alloc > v__;
+    std::vector< Key, Alloc >  _v_;
 
     /// Stores the end iterator for fast access.
-    SequenceIteratorSafe< Key > end_safe__;
+    SequenceIteratorSafe< Key >  _end_safe_;
 
     /// Stores the rend iterator for fast access.
-    SequenceIteratorSafe< Key > rend_safe__;
+    SequenceIteratorSafe< Key >  _rend_safe_;
 
     /**
      * @brief A method to update the end iterator after changes in the
      * sequence.
      */
-    void update_end__() noexcept;
+    void  _update_end_() noexcept;
 
     /**
      * @brief Clears the current sequence and fill it with copies the element
@@ -960,14 +960,14 @@ namespace gum {
      * @para aSeq The gum::SequenceImplementation to copy.
      */
     template < typename OtherAlloc >
-    void copy__(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+    void  _copy_(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
 
     /**
      * @brief Insert an element at the end of the sequence.
      *
      * @param bucket The bucket holing the store to insert.
      */
-    void insert__(Key k);
+    void  _insert_(Key k);
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -1413,22 +1413,22 @@ namespace gum {
 
     private:
     /// The index in the sequence's vector where the iterator is pointing.
-    Idx iterator__;
+    Idx  _iterator_;
 
     /// The sequence pointed to by the iterator (by default, key is a scalar).
     const SequenceImplementation< Key,
                                   std::allocator< Key >,
-                                  std::is_scalar< Key >::value >* seq__;
+                                  std::is_scalar< Key >::value >*  _seq_;
 
     /// The iterator points to the posth element (0 = beginning of the
     /// sequence).
-    void setPos__(Idx pos) noexcept;
+    void  _setPos_(Idx pos) noexcept;
 
     /// The iterator points to rend.
-    void setAtRend__() noexcept;
+    void  _setAtRend_() noexcept;
 
     /// The iterator points to the end (which is pos size()-1).
-    void setAtEnd__() noexcept;
+    void  _setAtEnd_() noexcept;
   };
 
   /// @brief A << operator for displaying the content of the Sequence.

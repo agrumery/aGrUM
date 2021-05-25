@@ -277,13 +277,13 @@ namespace gum {
     private:
       
       /// the handler that is really used to parse the database
-      typename DatabaseTable<ALLOC>::Handler handler__;
+      typename DatabaseTable<ALLOC>::Handler  _handler_;
 
       /// the set of DBRow generators (might be empty)
-      DBRowGeneratorSet<ALLOC> generator_set__;
+      DBRowGeneratorSet<ALLOC>  _generator_set_;
 
       /// the size of the generator set
-      std::size_t generator_size__;
+      std::size_t  _generator_size_;
 
     };
 

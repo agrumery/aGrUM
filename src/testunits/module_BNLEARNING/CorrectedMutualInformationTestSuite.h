@@ -35,7 +35,7 @@ namespace gum_tests {
 
   class CorrectedMutualInformationTestSuite: public CxxTest::TestSuite {
     private:
-    double entropy__(const std::vector< double >& vect) {
+    double  _entropy_(const std::vector< double >& vect) {
       double res = 0.0;
       double sum = 0.0;
       for (auto nb: vect) {
@@ -48,44 +48,44 @@ namespace gum_tests {
       return res;
     }
 
-    double H__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _H_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id) {
       gum::learning::RecordCounter<> counter(parser);
-      return entropy__(counter.counts(gum::learning::IdCondSet<>(id, {})));
+      return  _entropy_(counter.counts(gum::learning::IdCondSet<>(id, {})));
     }
 
-    double H__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _H_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2) {
       gum::learning::RecordCounter<> counter(parser);
-      return entropy__(
+      return  _entropy_(
          counter.counts(gum::learning::IdCondSet<>(id1, id2, {}, true)));
     }
 
-    double I__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _I_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2) {
-      return H__(parser, id1) + H__(parser, id2) - H__(parser, id1, id2);
+      return  _H_(parser, id1) +  _H_(parser, id2) -  _H_(parser, id1, id2);
     }
 
-    double H__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _H_(const gum::learning::DBRowGeneratorParser<>& parser,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      return entropy__(
+      return  _entropy_(
          counter.counts(gum::learning::IdCondSet<>(cond, true, true)));
     }
 
-    double H__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _H_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
       const auto v1 = counter.counts(gum::learning::IdCondSet<>(id, cond, true));
       const auto v2
          = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
-      return entropy__(v1) - entropy__(v2);
+      return  _entropy_(v1) -  _entropy_(v2);
     }
 
-    double H__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _H_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
@@ -94,35 +94,35 @@ namespace gum_tests {
          = counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true));
       const auto v2
          = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
-      return entropy__(v1) - entropy__(v2);
+      return  _entropy_(v1) -  _entropy_(v2);
     }
 
-    double I__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _I_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
-      const auto h1  = H__(parser, id1, cond);
-      const auto h2  = H__(parser, id2, cond);
-      const auto h12 = H__(parser, id1, id2, cond);
+      const auto h1  =  _H_(parser, id1, cond);
+      const auto h2  =  _H_(parser, id2, cond);
+      const auto h12 =  _H_(parser, id1, id2, cond);
       return h1 + h2 - h12;
     }
 
-    double I__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _I_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const gum::NodeId                            id3) {
-      return I__(parser, id1, id2)
-           - I__(parser, id1, id2, std::vector< gum::NodeId >{id3});
+      return  _I_(parser, id1, id2)
+           -  _I_(parser, id1, id2, std::vector< gum::NodeId >{id3});
     }
 
-    double I__(const gum::learning::DBRowGeneratorParser<>& parser,
+    double  _I_(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const gum::NodeId                            id3,
                const std::vector< gum::NodeId >&            cond) {
       std::vector< gum::NodeId > xcond(cond);
       xcond.push_back(id3);
-      return I__(parser, id1, id2, cond) - I__(parser, id1, id2, xcond);
+      return  _I_(parser, id1, id2, cond) -  _I_(parser, id1, id2, xcond);
     }
 
 
@@ -151,39 +151,39 @@ namespace gum_tests {
       score.useNoCorr();
 
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
-                      I__(parser, 1, 6, std::vector< gum::NodeId >{0}),
+                       _I_(parser, 1, 6, std::vector< gum::NodeId >{0}),
                       0.001);
 
       TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}),
-                      I__(parser, 2, 6),
+                       _I_(parser, 2, 6),
                       0.001);
-      TS_ASSERT_DELTA(score.score(2, 6), I__(parser, 2, 6), 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7), I__(parser, 4, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(2, 6),  _I_(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 7),  _I_(parser, 4, 7), 0.001);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), I__(parser, 6, 2), 0.001);
-      TS_ASSERT_DELTA(score.score(2, 6), I__(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(6, 2),  _I_(parser, 6, 2), 0.001);
+      TS_ASSERT_DELTA(score.score(2, 6),  _I_(parser, 2, 6), 0.001);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), I__(parser, 0, 1, 5), 0.01);
+      TS_ASSERT_DELTA(score.score(0, 1, 5),  _I_(parser, 0, 1, 5), 0.01);
       TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
-                      I__(parser, 2, 6, 5, std::vector< gum::NodeId >{1}),
+                       _I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}),
                       0.001);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), I__(parser, 4, 5, 7), 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), I__(parser, 4, 7, 5), 0.001);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), I__(parser, 5, 4, 7), 0.001);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), I__(parser, 5, 7, 4), 0.001);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), I__(parser, 7, 5, 4), 0.001);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), I__(parser, 7, 4, 5), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 5, 7),  _I_(parser, 4, 5, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 7, 5),  _I_(parser, 4, 7, 5), 0.001);
+      TS_ASSERT_DELTA(score.score(5, 4, 7),  _I_(parser, 5, 4, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(5, 7, 4),  _I_(parser, 5, 7, 4), 0.001);
+      TS_ASSERT_DELTA(score.score(7, 5, 4),  _I_(parser, 7, 5, 4), 0.001);
+      TS_ASSERT_DELTA(score.score(7, 4, 5),  _I_(parser, 7, 4, 5), 0.001);
 
       score.clear();
       TS_ASSERT_DELTA(score.score(0, 6, 5, std::vector< gum::NodeId >{1, 4}),
-                      I__(parser, 0, 6, 5, std::vector< gum::NodeId >{1, 4}),
+                       _I_(parser, 0, 6, 5, std::vector< gum::NodeId >{1, 4}),
                       1e-4);
       TS_ASSERT_DELTA(score.score(6, 0, 5, std::vector< gum::NodeId >{1, 4}),
-                      I__(parser, 6, 0, 5, std::vector< gum::NodeId >{1, 4}),
+                       _I_(parser, 6, 0, 5, std::vector< gum::NodeId >{1, 4}),
                       1e-4);
     }
 
@@ -215,37 +215,37 @@ namespace gum_tests {
 
       const double cst = 0.5 * std::log2(10000);
 
-      TS_ASSERT_DELTA(score.score(2, 6), I__(parser, 6, 2) - cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(4, 7), I__(parser, 4, 7) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6),  _I_(parser, 6, 2) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 7),  _I_(parser, 4, 7) - cst, 1e-4);
       TS_ASSERT_DELTA(score.score(4, 7, std::vector< gum::NodeId >{5}),
-                      I__(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst,
+                       _I_(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst,
                       TS_GUM_SMALL_ERROR);
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
-                      I__(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst,
+                       _I_(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst,
                       1e-4);
       TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}),
-                      I__(parser, 2, 6) - cst,
+                       _I_(parser, 2, 6) - cst,
                       1e-4);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), I__(parser, 6, 2) - cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(2, 6), I__(parser, 2, 6) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(6, 2),  _I_(parser, 6, 2) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6),  _I_(parser, 2, 6) - cst, 1e-4);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), I__(parser, 0, 1, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(0, 1, 5),  _I_(parser, 0, 1, 5) + cst, 1e-4);
       TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
-                      I__(parser, 2, 6, 5, std::vector< gum::NodeId >{1})
+                       _I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1})
                          + 2 * cst,
                       1e-4);
 
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), I__(parser, 4, 5, 7) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), I__(parser, 4, 7, 5) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), I__(parser, 5, 4, 7) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), I__(parser, 5, 7, 4) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), I__(parser, 7, 5, 4) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), I__(parser, 7, 4, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 5, 7),  _I_(parser, 4, 5, 7) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 7, 5),  _I_(parser, 4, 7, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(5, 4, 7),  _I_(parser, 5, 4, 7) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(5, 7, 4),  _I_(parser, 5, 7, 4) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(7, 5, 4),  _I_(parser, 7, 5, 4) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(7, 4, 5),  _I_(parser, 7, 4, 5) + cst, 1e-4);
     }
   };
 

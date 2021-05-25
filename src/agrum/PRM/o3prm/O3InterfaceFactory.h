@@ -74,37 +74,37 @@ namespace gum {
         void buildElements();
 
         private:
-        PRM< GUM_SCALAR >*          prm__;
-        O3PRM*                      o3_prm__;
-        O3NameSolver< GUM_SCALAR >* solver__;
-        ErrorsContainer*            errors__;
+        PRM< GUM_SCALAR >*           _prm_;
+        O3PRM*                       _o3_prm_;
+        O3NameSolver< GUM_SCALAR >*  _solver_;
+        ErrorsContainer*             _errors_;
 
-        HashTable< std::string, std::string >  eltName__;
-        HashTable< std::string, gum::NodeId >  nameMap__;
-        HashTable< std::string, O3Interface* > interfaceMap__;
-        HashTable< NodeId, O3Interface* >      nodeMap__;
-        DAG                                    dag__;
-        std::vector< O3Interface* >            o3Interface__;
+        HashTable< std::string, std::string >   _eltName_;
+        HashTable< std::string, gum::NodeId >   _nameMap_;
+        HashTable< std::string, O3Interface* >  _interfaceMap_;
+        HashTable< NodeId, O3Interface* >       _nodeMap_;
+        DAG                                     _dag_;
+        std::vector< O3Interface* >             _o3Interface_;
 
-        bool addInterface2Dag__();
+        bool  _addInterface2Dag_();
 
-        bool addArcs2Dag__();
+        bool  _addArcs2Dag_();
 
-        void setO3InterfaceCreationOrder__();
+        void  _setO3InterfaceCreationOrder_();
 
-        bool checkO3Interfaces__();
+        bool  _checkO3Interfaces_();
 
-        bool checkInterfaceElement__(O3Interface& i, O3InterfaceElement& elt);
+        bool  _checkInterfaceElement_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool checkOverloadLegality__(O3Interface& i, O3InterfaceElement& elt);
+        bool  _checkOverloadLegality_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool checkAttributeOverloadLegality__(O3Interface&        i,
+        bool  _checkAttributeOverloadLegality_(O3Interface&        i,
                                               O3InterfaceElement& elt);
 
-        bool checkReferenceOverloadLegality__(O3Interface&        i,
+        bool  _checkReferenceOverloadLegality_(O3Interface&        i,
                                               O3InterfaceElement& elt);
 
-        bool checkCyclicReference__(O3Interface& i, O3InterfaceElement& elt);
+        bool  _checkCyclicReference_(O3Interface& i, O3InterfaceElement& elt);
       };
 
     }   // namespace o3prm

@@ -42,21 +42,21 @@ namespace gum {
        const char        quoteMarker,
        const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
         IDBInitializer< ALLOC >(IDBInitializer< ALLOC >::InputType::STRING, alloc),
-        filename__(filename), delimiter__(delimiter),
-        comment_marker__(commentmarker), quote_marker__(quoteMarker),
-        first_row_has_names__(fileContainsNames),
-        input_stream__(filename__, std::ifstream::in),
-        parser__(input_stream__, delimiter, commentmarker, quoteMarker),
-        var_names__(alloc) {
+         _filename_(filename),  _delimiter_(delimiter),
+         _comment_marker_(commentmarker),  _quote_marker_(quoteMarker),
+         _first_row_has_names_(fileContainsNames),
+         _input_stream_( _filename_, std::ifstream::in),
+         _parser_( _input_stream_, delimiter, commentmarker, quoteMarker),
+         _var_names_(alloc) {
       // check that the input file was opened correctly
-      if ((input_stream__.rdstate() & std::ifstream::failbit) != 0) {
+      if (( _input_stream_.rdstate() & std::ifstream::failbit) != 0) {
         GUM_ERROR(IOError, "File " << filename << " not found")
       }
 
       // if the first line contains names, store them into the intializer
       if (fileContainsNames) {
-        parser__.next();
-        var_names__ = parser__.current();
+         _parser_.next();
+         _var_names_ =  _parser_.current();
       }
 
       GUM_CONSTRUCTOR(DBInitializerFromCSV);
@@ -68,11 +68,11 @@ namespace gum {
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
        const DBInitializerFromCSV< ALLOC >&                          from,
        const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
-        DBInitializerFromCSV< ALLOC >(from.filename__,
-                                      from.first_row_has_names__,
-                                      from.delimiter__,
-                                      from.quote_marker__,
-                                      from.comment_marker__,
+        DBInitializerFromCSV< ALLOC >(from. _filename_,
+                                      from. _first_row_has_names_,
+                                      from. _delimiter_,
+                                      from. _quote_marker_,
+                                      from. _comment_marker_,
                                       alloc) {}
 
     /// copy constructor
@@ -86,11 +86,11 @@ namespace gum {
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
        DBInitializerFromCSV< ALLOC >&&                               from,
        const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
-        DBInitializerFromCSV< ALLOC >(from.filename__,
-                                      from.first_row_has_names__,
-                                      from.delimiter__,
-                                      from.quote_marker__,
-                                      from.comment_marker__,
+        DBInitializerFromCSV< ALLOC >(from. _filename_,
+                                      from. _first_row_has_names_,
+                                      from. _delimiter_,
+                                      from. _quote_marker_,
+                                      from. _comment_marker_,
                                       alloc) {}
 
 
@@ -138,31 +138,31 @@ namespace gum {
        const DBInitializerFromCSV< ALLOC >& from) {
       if (this != &from) {
         IDBInitializer< ALLOC >::operator=(from);
-        filename__                       = from.filename__;
-        delimiter__                      = from.delimiter__;
-        comment_marker__                 = from.comment_marker__;
-        quote_marker__                   = from.quote_marker__;
-        first_row_has_names__            = from.first_row_has_names__;
+         _filename_                       = from. _filename_;
+         _delimiter_                      = from. _delimiter_;
+         _comment_marker_                 = from. _comment_marker_;
+         _quote_marker_                   = from. _quote_marker_;
+         _first_row_has_names_            = from. _first_row_has_names_;
 
         // open the CSV file
-        input_stream__.close();
-        input_stream__.open(filename__, std::ifstream::in);
+         _input_stream_.close();
+         _input_stream_.open( _filename_, std::ifstream::in);
 
         // check that the input file was opened correctly
-        if ((input_stream__.rdstate() & std::ifstream::failbit) != 0) {
-          GUM_ERROR(IOError, "File " << filename__ << " not found")
+        if (( _input_stream_.rdstate() & std::ifstream::failbit) != 0) {
+          GUM_ERROR(IOError, "File " <<  _filename_ << " not found")
         }
 
         // make the parser use the new input stream
-        parser__.useNewStream(input_stream__,
-                              delimiter__,
-                              comment_marker__,
-                              quote_marker__);
+         _parser_.useNewStream( _input_stream_,
+                               _delimiter_,
+                               _comment_marker_,
+                               _quote_marker_);
 
         // if the first line contains names, store them into the intializer
-        if (first_row_has_names__) {
-          parser__.next();
-          var_names__ = parser__.current();
+        if ( _first_row_has_names_) {
+           _parser_.next();
+           _var_names_ =  _parser_.current();
         }
       }
 
@@ -182,7 +182,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::vector< std::string, ALLOC< std::string > >
            DBInitializerFromCSV< ALLOC >::variableNames_() {
-      return var_names__;
+      return  _var_names_;
     }
 
 
@@ -190,14 +190,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const std::vector< std::string, ALLOC< std::string > >&
                  DBInitializerFromCSV< ALLOC >::currentStringRow_() {
-      return parser__.current();
+      return  _parser_.current();
     }
 
 
     // indicates whether there is a next row to read (and point on it)
     template < template < typename > class ALLOC >
     INLINE bool DBInitializerFromCSV< ALLOC >::nextRow_() {
-      return parser__.next();
+      return  _parser_.next();
     }
 
   } /* namespace learning */

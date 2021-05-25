@@ -39,11 +39,11 @@ namespace gum {
   // ==========================================================================
   /// computes the probability of normal z value (used by the cache)
   // ==========================================================================
-  double ChiSquare::probaZValue__(double z) {
+  double ChiSquare:: _probaZValue_(double z) {
     //      ++nbZt;
 
     //      z = std::round(z * std::pow(10, 3)) / std::pow(10, 3);
-    //      if( !ZCache__.exists(z) ){
+    //      if( ! _ZCache_.exists(z) ){
 
     double y, x, w;
 
@@ -52,7 +52,7 @@ namespace gum {
     else {
       y = 0.5 * fabs(z);
 
-      if (y >= (Z_MAX__ * 0.5))
+      if (y >= ( _Z_MAX_ * 0.5))
         x = 1.0;
       else if (y < 1.0) {
         w = y * y;
@@ -100,13 +100,13 @@ namespace gum {
       }
     }
 
-    //        ZCache__.insert(z, ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x )
+    //         _ZCache_.insert(z, ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x )
     //        * 0.5 ) ) );
     //      } else {
     //          ++nbZ;
     //        }
 
-    //      return ZCache__[z];
+    //      return  _ZCache_[z];
     return (z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5));
   }
 
@@ -119,43 +119,43 @@ namespace gum {
     //      ++nbChit;
 
     //      std::pair<double, unsigned long> conty(x, df);
-    //      if( !chi2Cache__.exists(conty) ){
+    //      if( ! _chi2Cache_.exists(conty) ){
 
     double a, y = 0, s;
     double e, c, z;
     int    even; /* true if df is an even number */
 
     if ((x <= 0.0) || (df < 1)) {
-      //          chi2Cache__.insert(conty,1.0);
+      //           _chi2Cache_.insert(conty,1.0);
       retVal = 1.0;
     } else {
       a = 0.5 * x;
 
       even = (2 * (df / 2)) == df;
 
-      if (df > 1) y = exp__(-a);
+      if (df > 1) y =  _exp_(-a);
 
-      s = (even ? y : (2.0 * probaZValue__(-sqrt(x))));
+      s = (even ? y : (2.0 *  _probaZValue_(-sqrt(x))));
 
       if (df > 2) {
         x = 0.5 * (df - 1.0);
         z = (even ? 1.0 : 0.5);
 
-        if (a > BIGX__) {
-          e = (even ? 0.0 : LOG_SQRT_PI__);
+        if (a >  _BIGX_) {
+          e = (even ? 0.0 :  _LOG_SQRT_PI_);
           c = log(a);
 
           while (z <= x) {
             e = log(z) + e;
-            s += exp__(c * z - a - e);
+            s +=  _exp_(c * z - a - e);
             z += 1.0;
           }
 
-          //              chi2Cache__.insert(conty,s);
+          //               _chi2Cache_.insert(conty,s);
           retVal = s;
 
         } else {
-          e = (even ? 1.0 : (I_SQRT_PI__ / sqrt(a)));
+          e = (even ? 1.0 : ( _I_SQRT_PI_ / sqrt(a)));
           c = 0.0;
 
           while (z <= x) {
@@ -164,11 +164,11 @@ namespace gum {
             z += 1.0;
           }
 
-          //              chi2Cache__.insert(conty,( c * y + s ));
+          //               _chi2Cache_.insert(conty,( c * y + s ));
           retVal = (c * y + s);
         }
       } else {
-        //            chi2Cache__.insert(conty,s);
+        //             _chi2Cache_.insert(conty,s);
         retVal = s;
       }
     }
@@ -177,14 +177,14 @@ namespace gum {
     //        }
     //      std::cout << "Z avoid : " << nbZ << " / " << nbZt << ". Chi avoid :
     //      " << nbChi << " / " << nbChit << "." << std::endl;
-    //      return chi2Cache__[conty];
+    //      return  _chi2Cache_[conty];
     return retVal;
   }
 
 }   // End of namespace gum
 
-// HashTable<std::pair<double, unsigned long>, double> ChiSquare::chi2Cache__;
-// HashTable<double, double> ChiSquare::ZCache__;
+// HashTable<std::pair<double, unsigned long>, double> ChiSquare:: _chi2Cache_;
+// HashTable<double, double> ChiSquare:: _ZCache_;
 // Idx ChiSquare::nbZ = 0;
 // Idx ChiSquare::nbChi = 0;
 // Idx ChiSquare::nbZt = 0;

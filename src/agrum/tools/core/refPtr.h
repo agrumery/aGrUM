@@ -334,16 +334,16 @@ namespace gum {
     friend class HashFunc;
 
     /// The dumb pointer encapsulated into the "smart" pointer.
-    Val* val__;
+    Val*  _val_;
 
     /// A reference counter on *val.
-    unsigned int* refcount__;
+    unsigned int*  _refcount_;
 
     /// A function to remove the content of the smart pointer, if any.
-    void destroy__(unsigned int*, Val*);
+    void  _destroy_(unsigned int*, Val*);
 
     /// A function to return the refcount pointer.
-    unsigned int* refCountPtr__() const;
+    unsigned int*  _refCountPtr_() const;
   };
 
 } /* namespace gum */

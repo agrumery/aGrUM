@@ -1,5 +1,5 @@
-#ifndef __cxxtest__Descriptions_cpp__
-#define __cxxtest__Descriptions_cpp__
+#ifndef  __cxxtest__Descriptions_cpp__
+#define  __cxxtest__Descriptions_cpp__
 
 #include <cxxtest/Descriptions.h>
 
@@ -57,4 +57,4 @@ namespace CxxTest {
 #endif  // _CXXTEST_FACTOR
 }
 
-#endif  // __cxxtest__Descriptions_cpp__
+#endif  //  __cxxtest__Descriptions_cpp__

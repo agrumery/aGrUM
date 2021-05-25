@@ -35,7 +35,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMClassElementContainer< GUM_SCALAR >::copyIOFlags_(
        const PRMClassElementContainer< GUM_SCALAR >& c) {
-      for (const auto& flag: c.IOFlags__)
+      for (const auto& flag: c. _IOFlags_)
         setIOFlag_(get(flag.first), flag.second);
     }
 
@@ -132,7 +132,7 @@ namespace gum {
            PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
           const PRMClassElement< GUM_SCALAR >& elt) {
       try {
-        return IOFlags__[elt.safeName()];
+        return  _IOFlags_[elt.safeName()];
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "this ClassElement<GUM_SCALAR> does not have any IO flags")
@@ -144,7 +144,7 @@ namespace gum {
                  PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
           const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
-        return IOFlags__[elt.safeName()];
+        return  _IOFlags_[elt.safeName()];
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "this ClassElement<GUM_SCALAR> does not have any IO flags")
@@ -156,8 +156,8 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt,
        const std::pair< bool, bool >&       flags) {
       try {
-        IOFlags__[elt.safeName()] = flags;
-      } catch (NotFound&) { IOFlags__.insert(elt.safeName(), flags); }
+         _IOFlags_[elt.safeName()] = flags;
+      } catch (NotFound&) {  _IOFlags_.insert(elt.safeName(), flags); }
     }
 
     template < typename GUM_SCALAR >

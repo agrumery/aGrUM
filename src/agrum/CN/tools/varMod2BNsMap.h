@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef __VAR_MOD_2_BNS_MAP__H__
-#define __VAR_MOD_2_BNS_MAP__H__
+#ifndef  __VAR_MOD_2_BNS_MAP__H__
+#define  __VAR_MOD_2_BNS_MAP__H__
 
 #include <list>
 
@@ -96,7 +96,7 @@ namespace gum {
 
       /**
        * Thread constructor.
-       * Initialize sampleDef__ from the CredalNet.
+       * Initialize  _sampleDef_ from the CredalNet.
        *
        * @param cn The CredalNet to be used.
        */
@@ -136,7 +136,7 @@ namespace gum {
       /// @{
 
       /**
-       * Initialize sampleDef__ from the CredalNet.
+       * Initialize  _sampleDef_ from the CredalNet.
        *
        * Shoud only be used by InferenceEngine to initialize it's member
        *variable.

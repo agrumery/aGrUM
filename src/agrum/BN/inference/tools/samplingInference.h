@@ -175,7 +175,7 @@ namespace gum {
 
     protected:
     /// Estimator object designed to approximate target posteriors
-    Estimator< GUM_SCALAR > estimator__;
+    Estimator< GUM_SCALAR >  _estimator_;
 
     /// whether the Estimator object has been initialized
     bool isSetEstimator = false;
@@ -244,7 +244,7 @@ namespace gum {
     void onStateChanged_() override;
 
     private:
-    BayesNetFragment< GUM_SCALAR >* samplingBN__;
+    BayesNetFragment< GUM_SCALAR >*  _samplingBN_;
   };
 
 

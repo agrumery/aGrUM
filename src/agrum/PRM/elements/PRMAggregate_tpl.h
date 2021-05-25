@@ -47,12 +47,12 @@ namespace gum {
                                              AggregateType      aggType,
                                              const PRMType&     rvType) :
         PRMClassElement< GUM_SCALAR >(name),
-        agg_type__(aggType), type__(new PRMType(rvType)),
-        label__(std::shared_ptr< Idx >(new Idx(INT_MAX))) {
+         _agg_type_(aggType),  _type_(new PRMType(rvType)),
+         _label_(std::shared_ptr< Idx >(new Idx(INT_MAX))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+      this->safeName_ = PRMObject::LEFT_CAST() +  _type_->name()
                       + PRMObject::RIGHT_CAST() + name;
-      this->type__->variable().setName(name);
+      this-> _type_->variable().setName(name);
     }
 
     template < typename GUM_SCALAR >
@@ -61,18 +61,18 @@ namespace gum {
                                              const PRMType&     rvType,
                                              Idx                label) :
         PRMClassElement< GUM_SCALAR >(name),
-        agg_type__(aggType), type__(new PRMType(rvType)),
-        label__(std::shared_ptr< Idx >(new Idx(label))) {
+         _agg_type_(aggType),  _type_(new PRMType(rvType)),
+         _label_(std::shared_ptr< Idx >(new Idx(label))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ = PRMObject::LEFT_CAST() + type__->name()
+      this->safeName_ = PRMObject::LEFT_CAST() +  _type_->name()
                       + PRMObject::RIGHT_CAST() + name;
-      this->type__->variable().setName(name);
+      this-> _type_->variable().setName(name);
     }
 
     template < typename GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >::~PRMAggregate() {
       GUM_DESTRUCTOR(PRMAggregate);
-      delete type__;
+      delete  _type_;
     }
 
     template < typename GUM_SCALAR >
@@ -98,33 +98,33 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename PRMAggregate< GUM_SCALAR >::AggregateType
        PRMAggregate< GUM_SCALAR >::agg_type() const {
-      return agg_type__;
+      return  _agg_type_;
     }
 
     template < typename GUM_SCALAR >
     INLINE Idx PRMAggregate< GUM_SCALAR >::label() const {
-      if (*label__ != INT_MAX) return *label__;
+      if (* _label_ != INT_MAX) return * _label_;
       GUM_ERROR(OperationNotAllowed, "no label defined for this aggregate")
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::string& PRMAggregate< GUM_SCALAR >::labelValue() const {
-      return label_value__;
+      return  _label_value_;
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::setLabel(Idx idx) {
-      (*label__) = idx;
+      (* _label_) = idx;
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::setLabel(const std::string& value) {
-      label_value__ = value;
+       _label_value_ = value;
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMAggregate< GUM_SCALAR >::hasLabel() const {
-      return *label__ != INT_MAX;
+      return * _label_ != INT_MAX;
     }
 
     template < typename GUM_SCALAR >
@@ -168,12 +168,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMType& PRMAggregate< GUM_SCALAR >::type() {
-      return *type__;
+      return * _type_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMType& PRMAggregate< GUM_SCALAR >::type() const {
-      return *type__;
+      return * _type_;
     }
 
     template < typename GUM_SCALAR >
@@ -269,13 +269,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::shared_ptr< Idx > PRMAggregate< GUM_SCALAR >::sharedLabel() const {
-      return label__;
+      return  _label_;
     }
 
     template < typename GUM_SCALAR >
     INLINE void
        PRMAggregate< GUM_SCALAR >::sharedLabel(std::shared_ptr< Idx > label) {
-      this->label__ = label;
+      this-> _label_ = label;
     }
 
   } /* namespace prm */

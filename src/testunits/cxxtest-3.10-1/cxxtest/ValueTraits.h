@@ -1,5 +1,5 @@
-#ifndef __cxxtest__ValueTraits_h__
-#define __cxxtest__ValueTraits_h__
+#ifndef  __cxxtest__ValueTraits_h__
+#define  __cxxtest__ValueTraits_h__
 
 //
 // ValueTraits are used by CxxTest to convert arbitrary
@@ -391,4 +391,4 @@ namespace CxxTest {
   case MEMBER:                        \
     return #MEMBER;
 
-#endif  // __cxxtest__ValueTraits_h__
+#endif  //  __cxxtest__ValueTraits_h__

@@ -48,7 +48,7 @@ namespace gum {
   E_GreedyDecider::E_GreedyDecider() {
     GUM_CONSTRUCTOR(E_GreedyDecider);
 
-    sss__ = 1.0;
+     _sss_ = 1.0;
   }
 
 
@@ -76,7 +76,7 @@ namespace gum {
     IDecisionStrategy::initialize(fmdp);
     for (auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables();
          ++varIter)
-      sss__ *= (double)(*varIter)->domainSize();
+       _sss_ *= (double)(*varIter)->domainSize();
   }
 
 
@@ -93,10 +93,10 @@ namespace gum {
   // ###################################################################
   void E_GreedyDecider::checkState(const Instantiation& reachedState,
                                    Idx                  actionId) {
-    if (statecpt__.nbVisitedStates() == 0)
-      statecpt__.reset(reachedState);
-    else if (!statecpt__.checkState(reachedState))
-      statecpt__.addState(reachedState);
+    if ( _statecpt_.nbVisitedStates() == 0)
+       _statecpt_.reset(reachedState);
+    else if (! _statecpt_.checkState(reachedState))
+       _statecpt_.addState(reachedState);
   }
 
   // ###################################################################
@@ -108,7 +108,7 @@ namespace gum {
   ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
     double explo = (double)std::rand() / (double)RAND_MAX;
     double temp
-       = std::pow((sss__ - (double)statecpt__.nbVisitedStates()) / sss__, 3.0);
+       = std::pow(( _sss_ - (double) _statecpt_.nbVisitedStates()) /  _sss_, 3.0);
     double exploThreshold = temp < 0.1 ? 0.1 : temp;
 
     //      std::cout << exploThreshold << std::endl;

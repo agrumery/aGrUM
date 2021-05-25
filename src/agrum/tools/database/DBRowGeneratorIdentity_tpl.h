@@ -61,7 +61,7 @@ namespace gum {
        const DBRowGeneratorIdentity< ALLOC >&                          from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-        input_row__(from.input_row__) {
+         _input_row_(from. _input_row_) {
       GUM_CONS_CPY(DBRowGeneratorIdentity);
     }
 
@@ -79,7 +79,7 @@ namespace gum {
        DBRowGeneratorIdentity< ALLOC >&&                               from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-        input_row__(from.input_row__) {
+         _input_row_(from. _input_row_) {
       GUM_CONS_MOV(DBRowGeneratorIdentity);
     }
 
@@ -128,7 +128,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        const DBRowGeneratorIdentity< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-      input_row__                      = from.input_row__;
+       _input_row_                      = from. _input_row_;
       return *this;
     }
 
@@ -138,7 +138,7 @@ namespace gum {
     DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
        DBRowGeneratorIdentity< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-      input_row__                      = from.input_row__;
+       _input_row_                      = from. _input_row_;
       return *this;
     }
 
@@ -148,7 +148,7 @@ namespace gum {
     INLINE const DBRow< DBTranslatedValue, ALLOC >&
                  DBRowGeneratorIdentity< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return *input_row__;
+      return * _input_row_;
     }
 
 
@@ -156,7 +156,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::size_t DBRowGeneratorIdentity< ALLOC >::computeRows_(
        const DBRow< DBTranslatedValue, ALLOC >& row) {
-      input_row__ = &row;
+       _input_row_ = &row;
       return std::size_t(1);
     }
 

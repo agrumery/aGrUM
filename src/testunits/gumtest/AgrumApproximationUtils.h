@@ -34,8 +34,8 @@ bool compareInference(const std::string&                       file,
     }
   }
   /*if (err > errmax) {
-    GUM__PRINT(file, line, argstr);
-    GUM__PRINT(file, line, inf.messageApproximationScheme());
+     _GUM_PRINT(file, line, argstr);
+     _GUM_PRINT(file, line, inf.messageApproximationScheme());
   }*/
   return err <= errmax;
 }
@@ -47,11 +47,11 @@ bool compareInference(const std::string&                       file,
   for (int ii = 0; ii < 10; ii++) {
 
 #define GUM_APPROX_TEST_END_ITERATION(ERRMAX)                        \
-  if (compareInference(__FILE__, __LINE__, bn, lazy, inf, ERRMAX)) { \
+  if (compareInference(  __FILE__,   __LINE__, bn, lazy, inf, ERRMAX)) { \
     res = true;                                                      \
     break;                                                           \
   }                                                                  \
-  std::cout << "![" << __LINE__ << "]" << std::flush;                \
+  std::cout << "![" <<   __LINE__ << "]" << std::flush;                \
   if (ii == 10) TS_FAIL("even with 10 tries.");                      \
   }
 #endif  // AGRUM_AGRUMAPPROXIMATIONUTILS_H_H

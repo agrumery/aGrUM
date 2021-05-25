@@ -34,33 +34,33 @@
 
 namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) :
-      model__(m), node__(id) {
+       _model_(m),  _node_(id) {
     if (level < 1)
       GUM_ERROR(InvalidArgument, "Argument level(=" << level << ") must be >0.")
 
     NodeSet done;
-    buildMarkovBlanket__(node__);
-    done.insert(node__);
+     _buildMarkovBlanket_( _node_);
+    done.insert( _node_);
 
     while (level > 1) {
       level--;
-      auto todo        = mb__.nodes().asNodeSet() - done;
+      auto todo        =  _mb_.nodes().asNodeSet() - done;
       bool anythingnew = false;
       for (NodeId n: todo) {
         done.insert(n);
-        if (buildMarkovBlanket__(n)) anythingnew = true;
+        if ( _buildMarkovBlanket_(n)) anythingnew = true;
       }
       if (!anythingnew) break;
     }
 
-    // we add now some arcs that are between the nodes in mb__ but are not part of
+    // we add now some arcs that are between the nodes in  _mb_ but are not part of
     // the last ones.
     // For instance, an arc between a parent and a parent of children
-    for (const auto node: mb__.nodes()) {
-      for (const auto child: model__.children(node)) {
-        if (mb__.existsNode(child) && !mb__.existsArc(Arc(node, child))) {
-          mb__.addArc(node, child);
-          specialArcs__.insert(Arc(node, child));
+    for (const auto node:  _mb_.nodes()) {
+      for (const auto child:  _model_.children(node)) {
+        if ( _mb_.existsNode(child) && ! _mb_.existsArc(Arc(node, child))) {
+           _mb_.addArc(node, child);
+           _specialArcs_.insert(Arc(node, child));
         }
       }
     }
@@ -73,37 +73,37 @@ namespace gum {
 
   MarkovBlanket::~MarkovBlanket() {}
 
-  bool MarkovBlanket::buildMarkovBlanket__(const NodeId node) {
+  bool MarkovBlanket:: _buildMarkovBlanket_(const NodeId node) {
     bool change = false;
-    if (!model__.nodes().exists(node))
+    if (! _model_.nodes().exists(node))
       GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.")
 
-    if (!mb__.nodes().exists(node)) {
-      mb__.addNodeWithId(node);
+    if (! _mb_.nodes().exists(node)) {
+       _mb_.addNodeWithId(node);
       change = true;
     }
 
-    for (const auto& parent: model__.parents(node)) {
-      if (!mb__.nodes().exists(parent)) {
-        mb__.addNodeWithId(parent);
+    for (const auto& parent:  _model_.parents(node)) {
+      if (! _mb_.nodes().exists(parent)) {
+         _mb_.addNodeWithId(parent);
         change = true;
       }
-      mb__.addArc(parent, node);
+       _mb_.addArc(parent, node);
     }
 
-    for (const auto& child: model__.children(node)) {
-      if (!mb__.nodes().exists(child)) {
-        mb__.addNodeWithId(child);
+    for (const auto& child:  _model_.children(node)) {
+      if (! _mb_.nodes().exists(child)) {
+         _mb_.addNodeWithId(child);
         change = true;
       }
-      mb__.addArc(node, child);
-      for (const auto& opar: model__.parents(child)) {
+       _mb_.addArc(node, child);
+      for (const auto& opar:  _model_.parents(child)) {
         if (opar != node) {
-          if (!mb__.nodes().exists(opar)) {
-            mb__.addNodeWithId(opar);
+          if (! _mb_.nodes().exists(opar)) {
+             _mb_.addNodeWithId(opar);
             change = true;
           }
-          mb__.addArc(opar, child);
+           _mb_.addArc(opar, child);
         }
       }
     }
@@ -118,14 +118,14 @@ namespace gum {
 
     for (const auto& nid: nodes()) {
       try {
-        other.idFromName(model__.variable(nid).name());
+        other.idFromName( _model_.variable(nid).name());
       } catch (NotFound) { return false; }
     }
 
     for (const auto& arc: arcs()) {
       if (!other.arcs().exists(
-             Arc(other.idFromName(model__.variable(arc.tail()).name()),
-                 other.idFromName(model__.variable(arc.head()).name()))))
+             Arc(other.idFromName( _model_.variable(arc.tail()).name()),
+                 other.idFromName( _model_.variable(arc.head()).name()))))
         return false;
     }
 
@@ -142,15 +142,15 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node: mb__.nodes()) {
-      nodeStream << tab << node << "[label=\"" << model__.variable(node).name()
+    for (const auto node:  _mb_.nodes()) {
+      nodeStream << tab << node << "[label=\"" <<  _model_.variable(node).name()
                  << "\"";
-      if (node == node__) { nodeStream << ", color=red"; }
+      if (node ==  _node_) { nodeStream << ", color=red"; }
       nodeStream << "];" << std::endl;
 
-      for (const auto chi: mb__.children(node)) {
+      for (const auto chi:  _mb_.children(node)) {
         arcStream << tab << node << " -> " << chi;
-        if (specialArcs__.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
+        if ( _specialArcs_.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
         arcStream << ";" << std::endl;
       }
     }

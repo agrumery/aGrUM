@@ -143,7 +143,7 @@ namespace gum {
 
     private:
     /// the value of N above which we should use Szpankowski's approximation
-    const double Szpankowski_threshold__{VariableLog2ParamComplexityCTableNSize};
+    const double  _Szpankowski_threshold_{VariableLog2ParamComplexityCTableNSize};
 
     // constants used to speed-up the computation of the Szpankowski
     // approximation.
@@ -157,16 +157,16 @@ namespace gum {
     // 0.5 log2(n) - 0.5 + log2(sqrt(pi)) + (sqrt(2/pi)/3) / sqrt(n) +
     // (3/36 - 4/(9*pi)) / n.
     // So, given the constants below, it is equal to:
-    // 0.5 * std::log2 (n) + cst1__ + cst2__ / std::sqrt(n) + cst3__ / n
-    const double cst1__ = -0.5 + std::log2(std::sqrt(M_PI));
-    const double cst2__ = std::sqrt(2.0 / M_PI) / 3.0;
-    const double cst3__ = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
+    // 0.5 * std::log2 (n) +  _cst1_ +  _cst2_ / std::sqrt(n) +  _cst3_ / n
+    const double  _cst1_ = -0.5 + std::log2(std::sqrt(M_PI));
+    const double  _cst2_ = std::sqrt(2.0 / M_PI) / 3.0;
+    const double  _cst3_ = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
 
     // indicates whether we should use a cache or not
-    bool use_cache__{true};
+    bool  _use_cache_{true};
 
     // the cache used, eventually, to store the log2Cnr values
-    HashTable< std::pair< std::size_t, double >, double > cache__;
+    HashTable< std::pair< std::size_t, double >, double >  _cache_;
   };
 
 } /* namespace gum */

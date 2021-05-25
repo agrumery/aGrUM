@@ -41,7 +41,7 @@ namespace gum {
     PRMClassElement< GUM_SCALAR >::PRMClassElement(
        const PRMClassElement< GUM_SCALAR >& source) :
         PRMObject(source.name()),
-        id__(source.id()) {
+         _id_(source.id()) {
       GUM_CONS_CPY(PRMClassElement);
     }
 
@@ -52,7 +52,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE NodeId PRMClassElement< GUM_SCALAR >::id() const {
-      return id__;
+      return  _id_;
     }
 
     template < typename GUM_SCALAR >
@@ -62,7 +62,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElement< GUM_SCALAR >::setId(NodeId id) {
-      id__ = id;
+       _id_ = id;
     }
 
     template < typename GUM_SCALAR >

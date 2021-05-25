@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class InterfaceGraphTestSuite: public CxxTest::TestSuite {
     private:
-    gum::prm::PRM< double >* prm__;
+    gum::prm::PRM< double >*  _prm_;
     std::string              source_dir;
     std::string              ressource_dir;
     std::string              printers;
@@ -41,22 +41,22 @@ namespace gum_tests {
     void setUp() {
       gum::prm::o3prm::O3prmReader< double > reader;
       reader.readFile(GET_RESSOURCES_PATH("o3prm/printers_systems.o3prm"));
-      prm__ = reader.prm();
+       _prm_ = reader.prm();
     }
 
-    void tearDown() { delete prm__; }
+    void tearDown() { delete  _prm_; }
 
     void testConstructorDestructor() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(ig
                                    = new gum::prm::gspan::InterfaceGraph< double >(
-                                      prm__->getSystem("microSys")));
+                                       _prm_->getSystem("microSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
 
     void testMicroTopologie() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("microSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Checking existing nodes
@@ -77,7 +77,7 @@ namespace gum_tests {
 
     void testMicroLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("microSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Testing power supply
@@ -103,7 +103,7 @@ namespace gum_tests {
 
     void testMicroLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("microSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Test difference
@@ -130,7 +130,7 @@ namespace gum_tests {
 
     void testSmallTopologie() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("smallSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Checking existing nodes
@@ -204,7 +204,7 @@ namespace gum_tests {
 
     void testSmallLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("smallSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Testing each labels size (the number of nodes with the given label)
@@ -219,7 +219,7 @@ namespace gum_tests {
 
     void testSmallLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = prm__->getSystem("smallSys");
+      gum::prm::PRMSystem< double >&             m  =  _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Test difference

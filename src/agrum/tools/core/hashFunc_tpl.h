@@ -43,7 +43,7 @@ namespace gum {
                    << new_size << " was provided to the resize function.");
     }
 
-    hash_log2_size_ = hashTableLog2__(new_size);
+    hash_log2_size_ =  _hashTableLog2_(new_size);
     hash_size_      = Size(1) << hash_log2_size_;
     hash_mask_      = hash_size_ - 1;
     right_shift_    = HashFuncConst::offset - hash_log2_size_;
@@ -166,7 +166,7 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Type >
   INLINE Size HashFunc< RefPtr< Type > >::castToSize(const RefPtr< Type >& key) {
-    return HashFunc< Type* >::castToSize(key.refCountPtr__());
+    return HashFunc< Type* >::castToSize(key. _refCountPtr_());
   }
 
   // Returns the hashed value of a key.

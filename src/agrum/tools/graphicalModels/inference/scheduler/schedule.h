@@ -204,17 +204,17 @@ namespace gum {
     /** Operations can be scheduled as a DAG: nodes without parents can be
      * executed directly. The other nodes need their parents to be executed to
      * get all their arguments constructed. */
-    mutable DAG dag__;
+    mutable DAG  _dag_;
 
     /// a hashtable assigning to each node of the DAG an operation
-    NodeProperty< ScheduleOperation< GUM_SCALAR >* > node2operation__;
+    NodeProperty< ScheduleOperation< GUM_SCALAR >* >  _node2operation_;
 
     /// a hashtable assigning to each operation id a node id in the DAG
-    HashTable< OperationId, NodeId > operation2node__;
+    HashTable< OperationId, NodeId >  _operation2node_;
 
     /** @brief a hashtable assigning to each ScheduleMultiDim resulting from a
      * computation the MultiDimOperation node id that created it */
-    HashTable< MultiDimId, NodeId > created_multidims__;
+    HashTable< MultiDimId, NodeId >  _created_multidims_;
 
     /// a list of operations whose parents are not properly set
     /** when entering operations to be performed in a "wrong" order, it may
@@ -224,17 +224,17 @@ namespace gum {
      * we compute the correct set of parents of the operations of this list
      * and, when this is done, we remove them from the list. As such, when the
      * list is empty, the schedule can be performed. */
-    mutable NodeSet operations_with_wrong_parents__;
+    mutable NodeSet  _operations_with_wrong_parents_;
 
     /// the set of operations that can be executed at once
-    mutable NodeSet operations_available__;
+    mutable NodeSet  _operations_available_;
 
     /// for each multidim, store the set of operations involving it
-    HashTable< MultiDimId, NodeSet* > multidim2operations__;
+    HashTable< MultiDimId, NodeSet* >  _multidim2operations_;
 
     /** @brief updates the set of parents for the nodes whoses parents are not
      * correct yet and update accordingly the available operations */
-    void updateWrongParents__() const;
+    void  _updateWrongParents_() const;
   };
 
 } /* namespace gum */

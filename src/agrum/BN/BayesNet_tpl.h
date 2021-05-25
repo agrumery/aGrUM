@@ -180,10 +180,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::BayesNet(const BayesNet< GUM_SCALAR >& source) :
-      IBayesNet< GUM_SCALAR >(source), varMap__(source.varMap__) {
+      IBayesNet< GUM_SCALAR >(source),  _varMap_(source. _varMap_) {
     GUM_CONS_CPY(BayesNet);
 
-    copyPotentials__(source);
+     _copyPotentials_(source);
   }
 
   template < typename GUM_SCALAR >
@@ -191,10 +191,10 @@ namespace gum {
      BayesNet< GUM_SCALAR >::operator=(const BayesNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IBayesNet< GUM_SCALAR >::operator=(source);
-      varMap__                         = source.varMap__;
+       _varMap_                         = source. _varMap_;
 
-      clearPotentials__();
-      copyPotentials__(source);
+       _clearPotentials_();
+       _copyPotentials_(source);
     }
 
     return *this;
@@ -203,7 +203,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::~BayesNet() {
     GUM_DESTRUCTOR(BayesNet);
-    for (const auto p: probaMap__) {
+    for (const auto p:  _probaMap_) {
       delete p.second;
     }
   }
@@ -211,14 +211,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
                BayesNet< GUM_SCALAR >::variable(NodeId id) const {
-    return varMap__.get(id);
+    return  _varMap_.get(id);
   }
 
   template < typename GUM_SCALAR >
   INLINE void
      BayesNet< GUM_SCALAR >::changeVariableName(NodeId             id,
                                                 const std::string& new_name) {
-    varMap__.changeName(id, new_name);
+     _varMap_.changeName(id, new_name);
   }
 
   template < typename GUM_SCALAR >
@@ -238,7 +238,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return varMap__.get(var);
+    return  _varMap_.get(var);
   }
 
   template < typename GUM_SCALAR >
@@ -293,56 +293,56 @@ namespace gum {
      BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
                                  MultiDimImplementation< GUM_SCALAR >* aContent,
                                  NodeId                                id) {
-    varMap__.insert(id, var);
+     _varMap_.insert(id, var);
     this->dag_.addNodeWithId(id);
 
     auto cpt = new Potential< GUM_SCALAR >(aContent);
     (*cpt) << variable(id);
-    probaMap__.insert(id, cpt);
+     _probaMap_.insert(id, cpt);
     return id;
   }
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
-    return varMap__.idFromName(name);
+    return  _varMap_.idFromName(name);
   }
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
      BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
-    return varMap__.variableFromName(name);
+    return  _varMap_.variableFromName(name);
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
-    return *(probaMap__[varId]);
+    return *( _probaMap_[varId]);
   }
 
   template < typename GUM_SCALAR >
   INLINE const VariableNodeMap& BayesNet< GUM_SCALAR >::variableNodeMap() const {
-    return varMap__;
+    return  _varMap_;
   }
 
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase(varMap__.get(var));
+    erase( _varMap_.get(var));
   }
 
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::erase(NodeId varId) {
-    if (varMap__.exists(varId)) {
+    if ( _varMap_.exists(varId)) {
       // Reduce the variable child's CPT
       const NodeSet& children = this->children(varId);
 
       for (const auto c: children) {
-        probaMap__[c]->erase(variable(varId));
+         _probaMap_[c]->erase(variable(varId));
       }
 
-      delete probaMap__[varId];
+      delete  _probaMap_[varId];
 
-      probaMap__.erase(varId);
-      varMap__.erase(varId);
+       _probaMap_.erase(varId);
+       _varMap_.erase(varId);
       this->dag_.eraseNode(varId);
     }
   }
@@ -366,7 +366,7 @@ namespace gum {
 
     this->dag_.addArc(tail, head);
     // Add parent in the child's CPT
-    (*(probaMap__[head])) << variable(tail);
+    (*( _probaMap_[head])) << variable(tail);
   }
 
   template < typename GUM_SCALAR >
@@ -382,11 +382,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::eraseArc(const Arc& arc) {
-    if (varMap__.exists(arc.tail()) && varMap__.exists(arc.head())) {
+    if ( _varMap_.exists(arc.tail()) &&  _varMap_.exists(arc.head())) {
       NodeId head = arc.head(), tail = arc.tail();
       this->dag_.eraseArc(arc);
       // Remove parent from child's CPT
-      (*(probaMap__[head])) >> variable(tail);
+      (*( _probaMap_[head])) >> variable(tail);
     }
   }
 
@@ -398,7 +398,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::reverseArc(const Arc& arc) {
     // check that the arc exists
-    if (!varMap__.exists(arc.tail()) || !varMap__.exists(arc.head())
+    if (! _varMap_.exists(arc.tail()) || ! _varMap_.exists(arc.head())
         || !dag().existsArc(arc)) {
       GUM_ERROR(InvalidArc, "a non-existing arc cannot be reversed")
     }
@@ -632,34 +632,34 @@ namespace gum {
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::beginTopologyTransformation() {
     for (const auto node: nodes())
-      probaMap__[node]->beginMultipleChanges();
+       _probaMap_[node]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::endTopologyTransformation() {
     for (const auto node: nodes())
-      probaMap__[node]->endMultipleChanges();
+       _probaMap_[node]->endMultipleChanges();
   }
 
   /// clear all potentials
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::clearPotentials__() {
+  void BayesNet< GUM_SCALAR >:: _clearPotentials_() {
     // Removing previous potentials
-    for (const auto& elt: probaMap__) {
+    for (const auto& elt:  _probaMap_) {
       delete elt.second;
     }
 
-    probaMap__.clear();
+     _probaMap_.clear();
   }
 
   /// copy of potentials from a BN to another, using names of vars as ref.
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::copyPotentials__(
+  void BayesNet< GUM_SCALAR >:: _copyPotentials_(
      const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
 
-    for (const auto src: source.probaMap__) {
+    for (const auto src: source. _probaMap_) {
       // First we build the node's CPT
       Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
@@ -670,7 +670,7 @@ namespace gum {
       copy_array->copyFrom(*(src.second));
 
       // We add the CPT to the CPT hashmap
-      probaMap__.insert(src.first, copy_array);
+       _probaMap_.insert(src.first, copy_array);
     }
   }
 
@@ -705,15 +705,15 @@ namespace gum {
       }
     }
 
-    unsafeChangePotential_(id, newPot);
+      _unsafeChangePotential_(id, newPot);
   }
 
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::unsafeChangePotential_(
+  void BayesNet< GUM_SCALAR >::_unsafeChangePotential_(
      NodeId                   id,
      Potential< GUM_SCALAR >* newPot) {
-    delete probaMap__[id];
-    probaMap__[id] = newPot;
+    delete  _probaMap_[id];
+     _probaMap_[id] = newPot;
   }
 
   template < typename GUM_SCALAR >

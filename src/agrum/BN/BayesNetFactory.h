@@ -399,32 +399,32 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool foo_flag__;
+    bool  _foo_flag_;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool bar_flag__;
+    bool  _bar_flag_;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string > stringBag__;
+    std::vector< std::string >  _stringBag_;
 
     /// Used when a factorized CPT is built.
-    Instantiation* parents__;
+    Instantiation*  _parents_;
 
     /// Implementation of variable between two
     /// startVariableDeclaration/endVariableDeclaration calls.
-    MultiDimImplementation< GUM_SCALAR >* impl__;
+    MultiDimImplementation< GUM_SCALAR >*  _impl_;
 
     /// @}
 
     /// State stack.
-    std::vector< factory_state > states__;
+    std::vector< factory_state >  _states_;
 
     /// The constructed BayesNet.
-    BayesNet< GUM_SCALAR >* bn__;
+    BayesNet< GUM_SCALAR >*  _bn_;
 
     /// Mapping between a declared variable's name and it's node id.
-    HashTable< std::string, NodeId > varNameMap__;
+    HashTable< std::string, NodeId >  _varNameMap_;
 
     /// Copy operator is illegal, use only copy constructor.
     BayesNetFactory< GUM_SCALAR >&
@@ -432,35 +432,35 @@ namespace gum {
        = delete;
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void illegalStateError__(const std::string& s);
+    void  _illegalStateError_(const std::string& s);
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
-    void checkVariableName__(const std::string& name);
+    void  _checkVariableName_(const std::string& name);
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
-    Idx checkVariableModality__(const std::string& name, const std::string& mod);
+    Idx  _checkVariableModality_(const std::string& name, const std::string& mod);
 
-    /// Check if in stringBag__ there is no other modality with the same name.
-    void checkModalityInBag__(const std::string& mod);
+    /// Check if in  _stringBag_ there is no other modality with the same name.
+    void  _checkModalityInBag_(const std::string& mod);
 
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.
-    void setCPTAndParents__(const DiscreteVariable&  var,
+    void  _setCPTAndParents_(const DiscreteVariable&  var,
                             Potential< GUM_SCALAR >* table);
 
     /// Reset the different parts used to constructed the BayesNet.
-    void resetParts__();
+    void  _resetParts_();
 
     /// Fill a potential from a raw CPT.
-    void fillProbaWithValuesTable__(const std::vector< std::string >& variables,
+    void  _fillProbaWithValuesTable_(const std::vector< std::string >& variables,
                                     const std::vector< float >&       rawTable);
     /// Fill a potential from a raw CPT.(using the canonical order of vars)
-    void fillProbaWithValuesTable__(const std::vector< float >& rawTable);
+    void  _fillProbaWithValuesTable_(const std::vector< float >& rawTable);
 
-    /// Increment a modality counter for the fillProbaWithValuesTable__ method.
-    bool increment__(std::vector< gum::Idx >&         modCounter,
+    /// Increment a modality counter for the  _fillProbaWithValuesTable_ method.
+    bool  _increment_(std::vector< gum::Idx >&         modCounter,
                      List< const DiscreteVariable* >& varList);
   };
 

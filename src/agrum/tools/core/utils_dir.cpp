@@ -107,7 +107,7 @@ namespace gum {
 
     if (chdir(oldWD) != 0)
       std::cerr << "Warning : Could not go to previous working directory. ("
-                << __FILE__ << ":" << __LINE__ << ")" << std::endl;
+                <<   __FILE__ << ":" <<   __LINE__ << ")" << std::endl;
 
     return result;
   }

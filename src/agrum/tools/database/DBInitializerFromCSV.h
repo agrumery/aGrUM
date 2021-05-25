@@ -225,28 +225,28 @@ namespace gum {
 
       private:
       // the filename used for parsing
-      std::string filename__;
+      std::string  _filename_;
 
       // indicates the delimiter used within the CSV
-      std::string delimiter__;
+      std::string  _delimiter_;
 
       // indicates which character is a comment symbol in the CSV
-      char comment_marker__;
+      char  _comment_marker_;
 
       // indicates which character is a quote symbol in the CSV
-      char quote_marker__;
+      char  _quote_marker_;
 
       // indicates whether the first row of the file contains the names
-      bool first_row_has_names__;
+      bool  _first_row_has_names_;
 
       // the input stream read by the parser
-      std::ifstream input_stream__;
+      std::ifstream  _input_stream_;
 
       // the CSV parser used for the reading the CSV file
-      CSVParser< ALLOC > parser__;
+      CSVParser< ALLOC >  _parser_;
 
       // the variables names, if the first row has names
-      std::vector< std::string, ALLOC< std::string > > var_names__;
+      std::vector< std::string, ALLOC< std::string > >  _var_names_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -91,7 +91,7 @@ namespace gum {
 
     private:
     /// assigns a influence diagram during the inference engine construction
-    void setIDDuringConstruction__(const InfluenceDiagram< GUM_SCALAR >* infdiag);
+    void  _setIDDuringConstruction_(const InfluenceDiagram< GUM_SCALAR >* infdiag);
   };
 
 } /* namespace gum */

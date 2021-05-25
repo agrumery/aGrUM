@@ -1,5 +1,5 @@
-#ifndef __cxxtest_StdHeaders_h__
-#define __cxxtest_StdHeaders_h__
+#ifndef  __cxxtest_StdHeaders_h__
+#define  __cxxtest_StdHeaders_h__
 
 //
 // This file basically #includes the STL headers.
@@ -22,4 +22,4 @@
 #pragma warning( pop )
 #endif  // _MSC_VER
 
-#endif  // __cxxtest_StdHeaders_h__
+#endif  //  __cxxtest_StdHeaders_h__

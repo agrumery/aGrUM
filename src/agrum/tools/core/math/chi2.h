@@ -148,16 +148,16 @@ namespace gum {
 
     private:
     /// The modalities of the random variables.
-    const std::vector< std::size_t >& modalities__;
+    const std::vector< std::size_t >&  _modalities_;
 
     /// The confidence probability used for critical values.
-    double confidence_proba__;
+    double  _confidence_proba_;
 
     /// The domain size of the conditioning nodes.
-    Size conditioning_size__;
+    Size  _conditioning_size_;
 
     /// A set of already computed critical values.
-    HashTable< Idx, double > critical_values__;
+    HashTable< Idx, double >  _critical_values_;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the
@@ -169,7 +169,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return Returns the critical value of a given chi2 test.
      */
-    static double criticalValue__(double proba, Size df);
+    static double  _criticalValue_(double proba, Size df);
 
 
     /**
@@ -182,12 +182,12 @@ namespace gum {
      * Collected Algorithms of the CACM 1963 p. 616
      *
      * This routine has six digit accuracy, so it is only useful for absolute z
-     * values < 6.  For z values >= to 6.0, probaZValue__() returns 0.0.
+     * values < 6.  For z values >= to 6.0,  _probaZValue_() returns 0.0.
      *
      * @param z A value.
      * @return The probability of z.
      */
-    static double probaZValue__(double z);
+    static double  _probaZValue_(double z);
 
     /// Forbid use of the copy constructor.
     Chi2(const Chi2&) = delete;

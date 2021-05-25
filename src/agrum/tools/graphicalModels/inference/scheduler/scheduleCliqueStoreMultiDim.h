@@ -125,16 +125,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim< GUM_SCALAR > table__;
+    ScheduleMultiDim< GUM_SCALAR >  _table_;
 
     // a mapping assigning to each clique a set of tables
-    NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* tableSet__;
+    NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >*  _tableSet_;
 
     // the clique into which the table will be stored
-    NodeId clique__;
+    NodeId  _clique_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
   };
 
 } /* namespace gum */

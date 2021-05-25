@@ -34,8 +34,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   GraphicalModelInference< GUM_SCALAR >::GraphicalModelInference(
      const GraphicalModel* model) :
-      model__(model) {
-    computeDomainSizes__();
+       _model_(model) {
+     _computeDomainSizes_();
 
     GUM_CONSTRUCTOR(GraphicalModelInference);
   }
@@ -56,7 +56,7 @@ namespace gum {
     // to pure virtual method onAllEvidenceErased_ which belongs to an inherited
     // instance and, therefore, does not exist anymore when
     // ~GraphicalModelInference () is called
-    for (const auto& pair: evidence__) {
+    for (const auto& pair:  _evidence_) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 
@@ -68,26 +68,26 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::isInferenceReady() const noexcept {
-    return (state__ == StateOfInference::ReadyForInference);
+    return ( _state_ == StateOfInference::ReadyForInference);
   }
   // returns whether the inference object is in a OutdatedStructure state
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedStructure()
      const noexcept {
-    return (state__ == StateOfInference::OutdatedStructure);
+    return ( _state_ == StateOfInference::OutdatedStructure);
   }
   // returns whether the inference object is in a OutdatedPotential state
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedPotentials()
         const noexcept {
-    return (state__ == StateOfInference::OutdatedPotentials);
+    return ( _state_ == StateOfInference::OutdatedPotentials);
   }
   // returns whether the inference object is in a InferenceDone state
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::isInferenceDone() const noexcept {
-    return (state__ == StateOfInference::Done);
+    return ( _state_ == StateOfInference::Done);
   }
 
 
@@ -95,15 +95,15 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename GraphicalModelInference< GUM_SCALAR >::StateOfInference
      GraphicalModelInference< GUM_SCALAR >::state() const noexcept {
-    return state__;
+    return  _state_;
   }
 
   // set the state of the inference
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::setState_(
      const StateOfInference state) {
-    if (state__ != state) {
-      state__ = state;
+    if ( _state_ != state) {
+       _state_ = state;
       onStateChanged_();
     }
   }
@@ -112,11 +112,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const GraphicalModel&
                GraphicalModelInference< GUM_SCALAR >::model() const {
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(UndefinedElement,
                 "No Bayes net has been assigned to "
                 "the inference algorithm.");
-    return *model__;
+    return * _model_;
   }
 
 
@@ -125,8 +125,8 @@ namespace gum {
   void GraphicalModelInference< GUM_SCALAR >::setModel_(
      const GraphicalModel* model) {
     clear();
-    model__ = model;
-    computeDomainSizes__();
+     _model_ = model;
+     _computeDomainSizes_();
     onModelChanged_(model);
     setState_(StateOfInference::OutdatedStructure);
   }
@@ -136,8 +136,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::setModelDuringConstruction_(
      const GraphicalModel* model) {
-    model__ = model;
-    computeDomainSizes__();
+     _model_ = model;
+     _computeDomainSizes_();
     setState_(StateOfInference::OutdatedStructure);
   }
 
@@ -152,11 +152,11 @@ namespace gum {
 
   /// computes the domain sizes of the random variables
   template < typename GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::computeDomainSizes__() {
-    domain_sizes__.clear();
+  void GraphicalModelInference< GUM_SCALAR >:: _computeDomainSizes_() {
+     _domain_sizes_.clear();
     if (!hasNoModel_()) {
-      for (auto node: model__->nodes()) {
-        domain_sizes__.insert(node, model__->variable(node).domainSize());
+      for (auto node:  _model_->nodes()) {
+         _domain_sizes_.insert(node,  _model_->variable(node).domainSize());
       }
     }
   }
@@ -166,7 +166,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Size >&
                GraphicalModelInference< GUM_SCALAR >::domainSizes() const {
-    return domain_sizes__;
+    return  _domain_sizes_;
   }
 
 
@@ -177,33 +177,33 @@ namespace gum {
   // create the internal structure for a hard evidence
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     GraphicalModelInference< GUM_SCALAR >::createHardEvidence__(
+     GraphicalModelInference< GUM_SCALAR >:: _createHardEvidence_(
         NodeId    id,
         const Idx val) const {
     // check that it is possible to create the evidence
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!model__->exists(id)) {
+    if (! _model_->exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
-    if (model__->variable(id).domainSize() <= val) {
+    if ( _model_->variable(id).domainSize() <= val) {
       GUM_ERROR(InvalidArgument,
-                "node " << model__->variable(id)
+                "node " <<  _model_->variable(id)
                         << " has fewer possible values than " << val);
     }
 
     // create the deterministic potential
     Potential< GUM_SCALAR > pot;
     pot.beginMultipleChanges();
-    pot << model__->variable(id);
+    pot <<  _model_->variable(id);
     pot.endMultipleChanges(0.0);
 
     Instantiation I(pot);
-    I.chgVal(model__->variable(id), val);
+    I.chgVal( _model_->variable(id), val);
     pot.set(I, 1.0);
 
     return pot;
@@ -212,7 +212,7 @@ namespace gum {
 
   // checks wether a potential corresponds to a hard evidence
   template < typename GUM_SCALAR >
-  bool GraphicalModelInference< GUM_SCALAR >::isHardEvidence__(
+  bool GraphicalModelInference< GUM_SCALAR >:: _isHardEvidence_(
      const Potential< GUM_SCALAR >& pot,
      Idx&                           val) const {
     // checking if pot is determininstic
@@ -242,7 +242,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(NodeId    id,
                                                                  const Idx val) {
-    addEvidence(createHardEvidence__(id, val));
+    addEvidence( _createHardEvidence_(id, val));
   }
 
   // adds a new hard evidence on node id
@@ -276,23 +276,23 @@ namespace gum {
      NodeId                           id,
      const std::vector< GUM_SCALAR >& vals) {
     // checks that the evidence is meaningful
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!model__->exists(id)) {
+    if (! _model_->exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
-    if (model__->variable(id).domainSize() != vals.size()) {
+    if ( _model_->variable(id).domainSize() != vals.size()) {
       GUM_ERROR(InvalidArgument,
-                "node " << model__->variable(id)
+                "node " <<  _model_->variable(id)
                         << " and its evidence vector have different sizes.");
     }
 
     Potential< GUM_SCALAR > pot;
-    pot.add(model__->variable(id));
+    pot.add( _model_->variable(id));
     pot.fillWith(vals);
     addEvidence(std::move(pot));
   }
@@ -313,12 +313,12 @@ namespace gum {
     if (pot.nbrDim() != 1) {
       GUM_ERROR(InvalidArgument, pot << " is not mono-dimensional.")
     }
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    NodeId id = model__->nodeId(pot.variable(0));
+    NodeId id =  _model_->nodeId(pot.variable(0));
 
     if (hasEvidence(id)) {
       GUM_ERROR(InvalidArgument,
@@ -330,17 +330,17 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val;
-    bool is_hard_evidence = isHardEvidence__(pot, val);
+    bool is_hard_evidence =  _isHardEvidence_(pot, val);
 
     // insert the evidence
-    evidence__.insert(
+     _evidence_.insert(
        id,
        new Potential< GUM_SCALAR >(std::forward< Potential< GUM_SCALAR > >(pot)));
     if (is_hard_evidence) {   // pot is deterministic
-      hard_evidence__.insert(id, val);
-      hard_evidence_nodes__.insert(id);
+       _hard_evidence_.insert(id, val);
+       _hard_evidence_nodes_.insert(id);
     } else {
-      soft_evidence_nodes__.insert(id);
+       _soft_evidence_nodes_.insert(id);
     }
     setState_(StateOfInference::OutdatedStructure);
     onEvidenceAdded_(id, is_hard_evidence);
@@ -377,14 +377,14 @@ namespace gum {
   // indicates whether some node(s) have received evidence
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::hasEvidence() const {
-    return !evidence__.empty();
+    return ! _evidence_.empty();
   }
 
 
   // indicates whether node id has received an evidence
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::hasEvidence(NodeId id) const {
-    return evidence__.exists(id);
+    return  _evidence_.exists(id);
   }
 
 
@@ -392,7 +392,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(NodeId id) const {
-    return hard_evidence_nodes__.exists(id);
+    return  _hard_evidence_nodes_.exists(id);
   }
 
 
@@ -400,7 +400,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(NodeId id) const {
-    return soft_evidence_nodes__.exists(id);
+    return  _soft_evidence_nodes_.exists(id);
   }
 
 
@@ -431,7 +431,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId    id,
                                                                  const Idx val) {
-    chgEvidence(createHardEvidence__(id, val));
+    chgEvidence( _createHardEvidence_(id, val));
   }
 
   // change the value of an already existing hard evidence
@@ -465,24 +465,24 @@ namespace gum {
      NodeId                           id,
      const std::vector< GUM_SCALAR >& vals) {
     // check whether this corresponds to an evidence
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!model__->exists(id)) {
+    if (! _model_->exists(id)) {
       GUM_ERROR(UndefinedElement, id << " is not a NodeId in the model")
     }
 
-    if (model__->variable(id).domainSize() != vals.size()) {
+    if ( _model_->variable(id).domainSize() != vals.size()) {
       GUM_ERROR(InvalidArgument,
-                "node " << model__->variable(id)
+                "node " <<  _model_->variable(id)
                         << " and its evidence have different sizes.");
     }
 
     // create the potential corresponding to vals
     Potential< GUM_SCALAR > pot;
-    pot.add(model__->variable(id));
+    pot.add( _model_->variable(id));
     pot.fillWith(vals);
     chgEvidence(pot);
   }
@@ -504,12 +504,12 @@ namespace gum {
     if (pot.nbrDim() != 1) {
       GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional potential.")
     }
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    NodeId id = model__->nodeId(pot.variable(0));
+    NodeId id =  _model_->nodeId(pot.variable(0));
 
     if (!hasEvidence(id)) {
       GUM_ERROR(InvalidArgument,
@@ -520,10 +520,10 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val;
-    bool is_hard_evidence = isHardEvidence__(pot, val);
+    bool is_hard_evidence =  _isHardEvidence_(pot, val);
 
     // modify the evidence already stored
-    const Potential< GUM_SCALAR >* localPot = evidence__[id];
+    const Potential< GUM_SCALAR >* localPot =  _evidence_[id];
     Instantiation                  I(pot);
     for (I.setFirst(); !I.end(); I.inc()) {
       localPot->set(I, pot[I]);
@@ -536,17 +536,17 @@ namespace gum {
     if (is_hard_evidence) {
       if (!hasHardEvidence(id)) {
         hasChangedSoftHard = true;
-        hard_evidence__.insert(id, val);
-        hard_evidence_nodes__.insert(id);
-        soft_evidence_nodes__.erase(id);
+         _hard_evidence_.insert(id, val);
+         _hard_evidence_nodes_.insert(id);
+         _soft_evidence_nodes_.erase(id);
       } else {
-        hard_evidence__[id] = val;
+         _hard_evidence_[id] = val;
       }
     } else {
       if (hasHardEvidence(id)) {   // evidence was hard
-        hard_evidence__.erase(id);
-        hard_evidence_nodes__.erase(id);
-        soft_evidence_nodes__.insert(id);
+         _hard_evidence_.erase(id);
+         _hard_evidence_nodes_.erase(id);
+         _soft_evidence_nodes_.insert(id);
         hasChangedSoftHard = true;
       }
     }
@@ -569,19 +569,19 @@ namespace gum {
     if (hasEvidence(id)) {
       if (hasHardEvidence(id)) {
         onEvidenceErased_(id, true);
-        hard_evidence__.erase(id);
-        hard_evidence_nodes__.erase(id);
+         _hard_evidence_.erase(id);
+         _hard_evidence_nodes_.erase(id);
         setState_(StateOfInference::OutdatedStructure);
       } else {
         onEvidenceErased_(id, false);
-        soft_evidence_nodes__.erase(id);
+         _soft_evidence_nodes_.erase(id);
         if (!isInferenceOutdatedStructure()) {
           setState_(StateOfInference::OutdatedPotentials);
         }
       }
 
-      delete (evidence__[id]);
-      evidence__.erase(id);
+      delete ( _evidence_[id]);
+       _evidence_.erase(id);
     }
   }
   // removed the evidence, if any, corresponding to node of name nodeName
@@ -595,17 +595,17 @@ namespace gum {
   // removes all the evidence entered into the network
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::eraseAllEvidence() {
-    bool has_hard_evidence = !hard_evidence__.empty();
+    bool has_hard_evidence = ! _hard_evidence_.empty();
     this->onAllEvidenceErased_(has_hard_evidence);
 
-    for (const auto& pair: evidence__) {
+    for (const auto& pair:  _evidence_) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 
-    evidence__.clear();
-    hard_evidence__.clear();
-    hard_evidence_nodes__.clear();
-    soft_evidence_nodes__.clear();
+     _evidence_.clear();
+     _hard_evidence_.clear();
+     _hard_evidence_nodes_.clear();
+     _soft_evidence_nodes_.clear();
 
     if (has_hard_evidence) {
       setState_(StateOfInference::OutdatedStructure);
@@ -620,21 +620,21 @@ namespace gum {
   // returns the number of evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
   INLINE Size GraphicalModelInference< GUM_SCALAR >::nbrEvidence() const {
-    return evidence__.size();
+    return  _evidence_.size();
   }
 
 
   // returns the number of hard evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
   INLINE Size GraphicalModelInference< GUM_SCALAR >::nbrHardEvidence() const {
-    return hard_evidence_nodes__.size();
+    return  _hard_evidence_nodes_.size();
   }
 
 
   // returns the number of soft evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
   INLINE Size GraphicalModelInference< GUM_SCALAR >::nbrSoftEvidence() const {
-    return soft_evidence_nodes__.size();
+    return  _soft_evidence_nodes_.size();
   }
 
 
@@ -642,7 +642,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Idx >&
                GraphicalModelInference< GUM_SCALAR >::hardEvidence() const {
-    return hard_evidence__;
+    return  _hard_evidence_;
   }
 
 
@@ -650,7 +650,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< const Potential< GUM_SCALAR >* >&
                GraphicalModelInference< GUM_SCALAR >::evidence() const {
-    return evidence__;
+    return  _evidence_;
   }
 
 
@@ -658,7 +658,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
                GraphicalModelInference< GUM_SCALAR >::softEvidenceNodes() const {
-    return soft_evidence_nodes__;
+    return  _soft_evidence_nodes_;
   }
 
 
@@ -666,7 +666,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
                GraphicalModelInference< GUM_SCALAR >::hardEvidenceNodes() const {
-    return hard_evidence_nodes__;
+    return  _hard_evidence_nodes_;
   }
 
 
@@ -695,12 +695,12 @@ namespace gum {
   INLINE void GraphicalModelInference< GUM_SCALAR >::prepareInference() {
     if (isInferenceReady() || isInferenceDone()) { return; }
 
-    if (model__ == nullptr)
+    if ( _model_ == nullptr)
       GUM_ERROR(NullElement,
                 "No model been assigned to the "
                 "inference algorithm");
 
-    if (state__ == StateOfInference::OutdatedStructure)
+    if ( _state_ == StateOfInference::OutdatedStructure)
       updateOutdatedStructure_();
     else
       updateOutdatedPotentials_();

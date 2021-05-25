@@ -126,17 +126,17 @@ namespace gum {
 
     private:
     /// a boolean indicating whether the junction tree has been constructed
-    bool has_junction_tree__{false};
+    bool  _has_junction_tree_{false};
 
     /// the junction tree computed by the algorithm
-    CliqueGraph junction_tree__;
+    CliqueGraph  _junction_tree_;
 
     /** @brief indicates which clique of the junction tree was created
      * by the elimination of a given node (the key of the table) */
-    NodeProperty< NodeId > node_2_junction_clique__;
+    NodeProperty< NodeId >  _node_2_junction_clique_;
 
     /// computes a junction tree from an elimination tree
-    void computeJunctionTree__();
+    void  _computeJunctionTree_();
   };
 
 } /* namespace gum */

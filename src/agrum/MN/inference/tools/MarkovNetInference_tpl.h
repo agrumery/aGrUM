@@ -71,7 +71,7 @@ namespace gum {
 
   // assigns a MN to a newly constructed inference engine
   template < typename GUM_SCALAR >
-  void MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(
+  void MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(
      const IMarkovNet< GUM_SCALAR >* mn) {
     this->setModelDuringConstruction_(mn);
   }

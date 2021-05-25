@@ -297,7 +297,7 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >::minimalCondSetVisitUp__(
+  void IBayesNet< GUM_SCALAR >:: _minimalCondSetVisitUp_(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -310,13 +310,13 @@ namespace gum {
       minimal << node;
     } else {
       for (auto fath: dag_.parents(node))
-        minimalCondSetVisitUp__(fath,
+         _minimalCondSetVisitUp_(fath,
                                 soids,
                                 minimal,
                                 alreadyVisitedUp,
                                 alreadyVisitedDn);
       for (auto chil: dag_.children(node))
-        minimalCondSetVisitDn__(chil,
+         _minimalCondSetVisitDn_(chil,
                                 soids,
                                 minimal,
                                 alreadyVisitedUp,
@@ -326,7 +326,7 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >::minimalCondSetVisitDn__(
+  void IBayesNet< GUM_SCALAR >:: _minimalCondSetVisitDn_(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -338,14 +338,14 @@ namespace gum {
     if (soids.contains(node)) {
       minimal << node;
       for (auto fath: dag_.parents(node))
-        minimalCondSetVisitUp__(fath,
+         _minimalCondSetVisitUp_(fath,
                                 soids,
                                 minimal,
                                 alreadyVisitedUp,
                                 alreadyVisitedDn);
     } else {
       for (auto chil: dag_.children(node))
-        minimalCondSetVisitDn__(chil,
+         _minimalCondSetVisitDn_(chil,
                                 soids,
                                 minimal,
                                 alreadyVisitedUp,
@@ -366,13 +366,13 @@ namespace gum {
     alreadyVisitedUp << target;
 
     for (auto fath: dag_.parents(target))
-      minimalCondSetVisitUp__(fath,
+       _minimalCondSetVisitUp_(fath,
                               soids,
                               res,
                               alreadyVisitedUp,
                               alreadyVisitedDn);
     for (auto chil: dag_.children(target))
-      minimalCondSetVisitDn__(chil,
+       _minimalCondSetVisitDn_(chil,
                               soids,
                               res,
                               alreadyVisitedUp,

@@ -314,10 +314,10 @@ namespace gum {
 
       private:
       // the set of ignored columns, sorted by increasing order
-      DBVector< std::size_t > ignored_cols__;
+      DBVector< std::size_t >  _ignored_cols_;
 
       /// translates a string into a DBCell and returns it
-      DBCell convert__(const std::string& elt) const;
+      DBCell  _convert_(const std::string& elt) const;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -123,9 +123,9 @@ namespace gum {
 
       /// @}
       private:
-      std::vector< LayerData > layers__;
-      Size                     domain_size__;
-      Size                     max_parents__;
+      std::vector< LayerData >  _layers_;
+      Size                      _domain_size_;
+      Size                      _max_parents_;
 
       struct MyData {
         // interface name
@@ -136,22 +136,22 @@ namespace gum {
         std::vector< std::string > c;
       };
 
-      std::string generateType__(PRMFactory< GUM_SCALAR >& f);
+      std::string  _generateType_(PRMFactory< GUM_SCALAR >& f);
 
-      void generateInterfaces__(PRMFactory< GUM_SCALAR >& f,
+      void  _generateInterfaces_(PRMFactory< GUM_SCALAR >& f,
                                 const std::string&        type,
                                 std::vector< MyData >&    l);
 
-      void generateClasses__(PRMFactory< GUM_SCALAR >&                       f,
+      void  _generateClasses_(PRMFactory< GUM_SCALAR >&                       f,
                              const std::string&                              type,
                              std::vector< typename LayerGenerator::MyData >& l);
 
-      void generateClassDag__(Size                              lvl,
+      void  _generateClassDag_(Size                              lvl,
                               DAG&                              dag,
                               Bijection< std::string, NodeId >& names,
                               std::vector< typename LayerGenerator::MyData >& l);
 
-      void generateSystem__(PRMFactory< GUM_SCALAR >& factory,
+      void  _generateSystem_(PRMFactory< GUM_SCALAR >& factory,
                             std::vector< typename LayerGenerator::MyData >& l);
     };
 

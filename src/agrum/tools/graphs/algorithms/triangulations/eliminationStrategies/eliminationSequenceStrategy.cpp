@@ -36,18 +36,18 @@
 namespace gum {
 
   // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet& EliminationSequenceStrategy::empty_fill_ins__() {
+  const EdgeSet& EliminationSequenceStrategy:: _empty_fill_ins_() {
 #ifdef GUM_DEBUG_MODE
     static bool first_use = true;
     if (first_use) {
       first_use = false;
-      __debug__::dec_creation__("Set",
-                                "__empty_edge_set",
+       __debug__:: _dec_creation_("Set",
+                                " __empty_edge_set",
                                 0,
                                 "static variable correction",
                                 0);
-      __debug__::dec_creation__("HashTable",
-                                "__empty_edge_set",
+       __debug__:: _dec_creation_("HashTable",
+                                " __empty_edge_set",
                                 0,
                                 "static variable correction",
                                 0);
@@ -100,7 +100,7 @@ namespace gum {
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */
   const EdgeSet& EliminationSequenceStrategy::fillIns() {
-    return empty_fill_ins__();
+    return  _empty_fill_ins_();
   }
 
   // clears the sequence (to prepare, for instance, a new elimination sequence)

@@ -456,18 +456,18 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, const Val* >, HeapAllocator > heap__;
+    std::vector< std::pair< Priority, const Val* >, HeapAllocator >  _heap_;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > indices__{HashTableConst::default_size,
+    HashTable< Val, Size, IndexAllocator >  _indices_{HashTableConst::default_size,
                                                      true,
                                                      true};
 
     /// The number of elements in the heap.
-    Size nb_elements__{0};
+    Size  _nb_elements_{0};
 
     /// Comparison function.
-    Cmp cmp__;
+    Cmp  _cmp_;
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -872,18 +872,18 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, Val >, HeapAllocator > heap__;
+    std::vector< std::pair< Priority, Val >, HeapAllocator >  _heap_;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, Size, IndexAllocator > indices__{HashTableConst::default_size,
+    HashTable< Val, Size, IndexAllocator >  _indices_{HashTableConst::default_size,
                                                      true,
                                                      true};
 
     /// The number of elements in the heap.
-    Size nb_elements__{0};
+    Size  _nb_elements_{0};
 
     /// Comparison function.
-    Cmp cmp__;
+    Cmp  _cmp_;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

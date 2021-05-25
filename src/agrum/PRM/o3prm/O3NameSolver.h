@@ -81,17 +81,17 @@ namespace gum {
         bool resolveSlotType(O3Label& name);
 
         private:
-        PRM< GUM_SCALAR >* prm__;
-        O3PRM*             o3_prm__;
-        ErrorsContainer*   errors__;
+        PRM< GUM_SCALAR >*  _prm_;
+        O3PRM*              _o3_prm_;
+        ErrorsContainer*    _errors_;
 
         using NameMap = HashTable< std::string, std::string >;
 
-        NameMap typeName__;
-        NameMap eltName__;
-        NameMap refName__;
-        NameMap interfaceName__;
-        NameMap className__;
+        NameMap  _typeName_;
+        NameMap  _eltName_;
+        NameMap  _refName_;
+        NameMap  _interfaceName_;
+        NameMap  _className_;
       };
 
     }   // namespace o3prm

@@ -33,19 +33,19 @@ namespace gum_tests {
 
   class ScoreBDeuTestSuite: public CxxTest::TestSuite {
     private:
-    gum::GammaLog2 gammalog2__;
-    bool           gum_destructor_increased__{false};
+    gum::GammaLog2  _gammalog2_;
+    bool            _gum_destructor_increased_{false};
 
     void setUp() {}
 
     void tearDown() {
-      if (!gum_destructor_increased__) {
+      if (! _gum_destructor_increased_) {
         GUM_DESTRUCTOR(GammaLog2);
-        gum_destructor_increased__ = true;
+         _gum_destructor_increased_ = true;
       }
     }
 
-    double score__(const std::vector< double >& N_ijk,
+    double  _score_(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
       double ess   = 2.0;
@@ -54,26 +54,26 @@ namespace gum_tests {
         double ess_qi   = ess / N_ij.size();
         double ess_riqi = ess / N_ijk.size();
         for (const auto n_ij: N_ij) {
-          score += gammalog2__(ess_qi) - gammalog2__(n_ij + ess_qi);
+          score +=  _gammalog2_(ess_qi) -  _gammalog2_(n_ij + ess_qi);
         }
         for (const auto n_ijk: N_ijk) {
-          score += gammalog2__(n_ijk + ess_riqi) - gammalog2__(ess_riqi);
+          score +=  _gammalog2_(n_ijk + ess_riqi) -  _gammalog2_(ess_riqi);
         }
       } else {
         double N      = 0.0;
         double ess_ri = ess / N_ijk.size();
         for (const auto n_ijk: N_ijk) {
-          score += gammalog2__(n_ijk + ess_ri) - gammalog2__(ess_ri);
+          score +=  _gammalog2_(n_ijk + ess_ri) -  _gammalog2_(ess_ri);
           N += n_ijk;
         }
-        score += gammalog2__(ess) - gammalog2__(N + ess);
+        score +=  _gammalog2_(ess) -  _gammalog2_(N + ess);
       }
 
       return score;
     }
 
 
-    bool equal__(const double x, const double y) const {
+    bool  _equal_(const double x, const double y) const {
       double dev = x >= y ? (x - y) / x : (y - x) / y;
       if (dev < 0) dev = -dev;
       return dev <= TS_GUM_SMALL_ERROR;
@@ -81,7 +81,7 @@ namespace gum_tests {
 
 
     public:
-    void test_no_range__no_nodeId2col() {
+    void  _test_no_range_no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -148,20 +148,20 @@ namespace gum_tests {
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{1200.0, 125.0, 75.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = score__(N_ijk_1, N_ij_1);
-      TS_ASSERT(equal__(xscore_1, score.score(node0)));
+      double                xscore_1 =  _score_(N_ijk_1, N_ij_1);
+      TS_ASSERT( _equal_(xscore_1, score.score(node0)));
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{200, 75, 0, 1000, 0, 75, 0, 50, 0};
       std::vector< double > N_ij_2{275, 1075, 50};
-      double                xscore_2 = score__(N_ijk_2, N_ij_2);
-      TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
+      double                xscore_2 =  _score_(N_ijk_2, N_ij_2);
+      TS_ASSERT( _equal_(xscore_2, score.score(node0, cond2)));
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{0, 75, 0, 200, 50, 75, 1000, 0, 0};
       std::vector< double > N_ij_3{75, 325, 1000};
-      double                xscore_3 = score__(N_ijk_3, N_ij_3);
-      TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
+      double                xscore_3 =  _score_(N_ijk_3, N_ij_3);
+      TS_ASSERT( _equal_(xscore_3, score.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<> score2(score);
       score2.setEffectiveSampleSize(2.0);
@@ -169,9 +169,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score2.score(node0)));
-      TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score2.score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score2.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
@@ -179,9 +179,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score3.score(node0)));
-      TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score3.score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score3.score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score3.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<>* score4 = score3.clone();
       score4->setEffectiveSampleSize(2.0);
@@ -189,33 +189,33 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       delete score4;
     }
 
 
-    void test_no_range__has_nodeId2col() {
+    void  _test_no_range_has_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -293,21 +293,21 @@ namespace gum_tests {
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{1200.0, 125.0, 75.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = score__(N_ijk_1, N_ij_1);
-      TS_ASSERT(equal__(xscore_1, score.score(node2)));
+      double                xscore_1 =  _score_(N_ijk_1, N_ij_1);
+      TS_ASSERT( _equal_(xscore_1, score.score(node2)));
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{200, 75, 0, 1000, 0, 75, 0, 50, 0};
       std::vector< double > N_ij_2{275, 1075, 50};
-      double                xscore_2 = score__(N_ijk_2, N_ij_2);
-      TS_ASSERT(equal__(xscore_2, score.score(node2, cond2)));
+      double                xscore_2 =  _score_(N_ijk_2, N_ij_2);
+      TS_ASSERT( _equal_(xscore_2, score.score(node2, cond2)));
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{0, 75, 0, 200, 50, 75, 1000, 0, 0};
       std::vector< double > N_ij_3{75, 325, 1000};
-      double                xscore_3 = score__(N_ijk_3, N_ij_3);
-      TS_ASSERT(equal__(xscore_3, score.score(node2, cond3)));
+      double                xscore_3 =  _score_(N_ijk_3, N_ij_3);
+      TS_ASSERT( _equal_(xscore_3, score.score(node2, cond3)));
 
 
       gum::learning::ScoreBDeu<> score2(score);
@@ -316,9 +316,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score2.score(node2)));
-      TS_ASSERT(equal__(xscore_2, score2.score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score2.score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score2.score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score2.score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score2.score(node2, cond3)));
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
@@ -326,9 +326,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score3.score(node2)));
-      TS_ASSERT(equal__(xscore_2, score3.score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score3.score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score3.score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score3.score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score3.score(node2, cond3)));
 
       gum::learning::ScoreBDeu<>* score4 = score3.clone();
       score4->setEffectiveSampleSize(2.0);
@@ -336,33 +336,33 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       delete score4;
     }
 
 
-    void test_has_range__no_nodeId2col() {
+    void  _test_has_range_no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -432,20 +432,20 @@ namespace gum_tests {
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{400.0, 75.0, 75.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = score__(N_ijk_1, N_ij_1);
-      TS_ASSERT(equal__(xscore_1, score.score(node0)));
+      double                xscore_1 =  _score_(N_ijk_1, N_ij_1);
+      TS_ASSERT( _equal_(xscore_1, score.score(node0)));
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{200, 75, 0, 200, 0, 75, 0, 0, 0};
       std::vector< double > N_ij_2{275, 275, 0};
-      double                xscore_2 = score__(N_ijk_2, N_ij_2);
-      TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
+      double                xscore_2 =  _score_(N_ijk_2, N_ij_2);
+      TS_ASSERT( _equal_(xscore_2, score.score(node0, cond2)));
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{0, 75, 0, 200, 0, 75, 200, 0, 0};
       std::vector< double > N_ij_3{75, 275, 200};
-      double                xscore_3 = score__(N_ijk_3, N_ij_3);
-      TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
+      double                xscore_3 =  _score_(N_ijk_3, N_ij_3);
+      TS_ASSERT( _equal_(xscore_3, score.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<> score2(score);
       score2.setEffectiveSampleSize(2.0);
@@ -453,9 +453,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score2.score(node0)));
-      TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score2.score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score2.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
@@ -463,9 +463,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score3.score(node0)));
-      TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score3.score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score3.score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score3.score(node0, cond3)));
 
       gum::learning::ScoreBDeu<>* score4 = score3.clone();
       score4->setEffectiveSampleSize(2.0);
@@ -473,33 +473,33 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
       delete score4;
     }
 
 
-    void test_has_range__has_nodeId2col() {
+    void  _test_has_range_has_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -580,21 +580,21 @@ namespace gum_tests {
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{400.0, 75.0, 75.0};
       std::vector< double > N_ij_1;
-      double                xscore_1 = score__(N_ijk_1, N_ij_1);
-      TS_ASSERT(equal__(xscore_1, score.score(node2)));
+      double                xscore_1 =  _score_(N_ijk_1, N_ij_1);
+      TS_ASSERT( _equal_(xscore_1, score.score(node2)));
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{200, 75, 0, 200, 0, 75, 0, 0, 0};
       std::vector< double > N_ij_2{275, 275, 0};
-      double                xscore_2 = score__(N_ijk_2, N_ij_2);
-      TS_ASSERT(equal__(xscore_2, score.score(node2, cond2)));
+      double                xscore_2 =  _score_(N_ijk_2, N_ij_2);
+      TS_ASSERT( _equal_(xscore_2, score.score(node2, cond2)));
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{0, 75, 0, 200, 0, 75, 200, 0, 0};
       std::vector< double > N_ij_3{75, 275, 200};
-      double                xscore_3 = score__(N_ijk_3, N_ij_3);
-      TS_ASSERT(equal__(xscore_3, score.score(node2, cond3)));
+      double                xscore_3 =  _score_(N_ijk_3, N_ij_3);
+      TS_ASSERT( _equal_(xscore_3, score.score(node2, cond3)));
 
 
       gum::learning::ScoreBDeu<> score2(score);
@@ -603,9 +603,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score2.score(node2)));
-      TS_ASSERT(equal__(xscore_2, score2.score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score2.score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score2.score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score2.score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score2.score(node2, cond3)));
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
@@ -613,9 +613,9 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score3.score(node2)));
-      TS_ASSERT(equal__(xscore_2, score3.score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score3.score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score3.score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score3.score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score3.score(node2, cond3)));
 
       gum::learning::ScoreBDeu<>* score4 = score3.clone();
       score4->setEffectiveSampleSize(2.0);
@@ -623,27 +623,27 @@ namespace gum_tests {
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
          gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-      TS_ASSERT(equal__(xscore_1, score4->score(node2)));
-      TS_ASSERT(equal__(xscore_2, score4->score(node2, cond2)));
-      TS_ASSERT(equal__(xscore_3, score4->score(node2, cond3)));
+      TS_ASSERT( _equal_(xscore_1, score4->score(node2)));
+      TS_ASSERT( _equal_(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT( _equal_(xscore_3, score4->score(node2, cond3)));
 
       delete score4;
     }
@@ -722,20 +722,20 @@ namespace gum_tests {
         // idset1: node0 | emptyset
         std::vector< double > N_ijk_1{400.0, 75.0, 75.0};
         std::vector< double > N_ij_1;
-        double                xscore_1 = score__(N_ijk_1, N_ij_1);
-        TS_ASSERT(equal__(xscore_1, score.score(node0)));
+        double                xscore_1 =  _score_(N_ijk_1, N_ij_1);
+        TS_ASSERT( _equal_(xscore_1, score.score(node0)));
 
         // idset2: node0 | node1
         std::vector< double > N_ijk_2{200, 75, 0, 200, 0, 75, 0, 0, 0};
         std::vector< double > N_ij_2{275, 275, 0};
-        double                xscore_2 = score__(N_ijk_2, N_ij_2);
-        TS_ASSERT(equal__(xscore_2, score.score(node0, cond2)));
+        double                xscore_2 =  _score_(N_ijk_2, N_ij_2);
+        TS_ASSERT( _equal_(xscore_2, score.score(node0, cond2)));
 
         // idset3: node0 | node3
         std::vector< double > N_ijk_3{0, 75, 0, 200, 0, 75, 200, 0, 0};
         std::vector< double > N_ij_3{75, 275, 200};
-        double                xscore_3 = score__(N_ijk_3, N_ij_3);
-        TS_ASSERT(equal__(xscore_3, score.score(node0, cond3)));
+        double                xscore_3 =  _score_(N_ijk_3, N_ij_3);
+        TS_ASSERT( _equal_(xscore_3, score.score(node0, cond3)));
 
         gum::learning::ScoreBDeu<> score2(score);
         score2.setEffectiveSampleSize(2.0);
@@ -743,9 +743,9 @@ namespace gum_tests {
            gum::learning::AprioriNoApriori<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
-        TS_ASSERT(equal__(xscore_1, score2.score(node0)));
-        TS_ASSERT(equal__(xscore_2, score2.score(node0, cond2)));
-        TS_ASSERT(equal__(xscore_3, score2.score(node0, cond3)));
+        TS_ASSERT( _equal_(xscore_1, score2.score(node0)));
+        TS_ASSERT( _equal_(xscore_2, score2.score(node0, cond2)));
+        TS_ASSERT( _equal_(xscore_3, score2.score(node0, cond3)));
 
         gum::learning::ScoreBDeu<> score3(std::move(score2));
         score3.setEffectiveSampleSize(2.0);
@@ -753,9 +753,9 @@ namespace gum_tests {
            gum::learning::AprioriNoApriori<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
-        TS_ASSERT(equal__(xscore_1, score3.score(node0)));
-        TS_ASSERT(equal__(xscore_2, score3.score(node0, cond2)));
-        TS_ASSERT(equal__(xscore_3, score3.score(node0, cond3)));
+        TS_ASSERT( _equal_(xscore_1, score3.score(node0)));
+        TS_ASSERT( _equal_(xscore_2, score3.score(node0, cond2)));
+        TS_ASSERT( _equal_(xscore_3, score3.score(node0, cond3)));
 
         gum::learning::ScoreBDeu<>* score4 = score3.clone();
         score4->setEffectiveSampleSize(2.0);
@@ -763,27 +763,27 @@ namespace gum_tests {
            gum::learning::AprioriNoApriori<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+        TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
            gum::learning::AprioriNoApriori<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+        TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
            gum::learning::AprioriNoApriori<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
-        TS_ASSERT(equal__(xscore_1, score4->score(node0)));
-        TS_ASSERT(equal__(xscore_2, score4->score(node0, cond2)));
-        TS_ASSERT(equal__(xscore_3, score4->score(node0, cond3)));
+        TS_ASSERT( _equal_(xscore_1, score4->score(node0)));
+        TS_ASSERT( _equal_(xscore_2, score4->score(node0, cond2)));
+        TS_ASSERT( _equal_(xscore_3, score4->score(node0, cond3)));
 
         delete score4;
       }

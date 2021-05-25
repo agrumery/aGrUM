@@ -77,7 +77,7 @@ namespace gum {
       /// @}
       private:
       /// The vector of counters.
-      std::vector< Size > counters__;
+      std::vector< Size >  _counters_;
     };
 
   } /* namespace prm */

@@ -31,7 +31,7 @@
 namespace gum_tests {
 
   class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
-    gum::DAG createDAG__(gum::Size nb_nodes, gum::Size nb_arcs) {
+    gum::DAG  _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
@@ -52,7 +52,7 @@ namespace gum_tests {
       return dag;
     }
 
-    void createChanges__(
+    void  _createChanges_(
        const gum::DAG&                               g,
        std::vector< gum::DAGCycleDetector::Change >& changes,
        std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
@@ -275,7 +275,7 @@ namespace gum_tests {
       std::uniform_int_distribution< int >         distrib_length(1, 10);
 
       for (gum::Idx i = 15; i < 25; ++i) {
-        gum::DAG g = createDAG__(20, i);
+        gum::DAG g =  _createDAG_(20, i);
         detector.setDAG(g);
 
         changes.clear();
@@ -283,7 +283,7 @@ namespace gum_tests {
 
         for (gum::Idx j = 0; j < 20; ++j) {
           gum::Size length = distrib_length(generator);
-          createChanges__(g, changes, del_add_changes, length);
+           _createChanges_(g, changes, del_add_changes, length);
 
           bool hasCycle = false;
           {
@@ -326,14 +326,14 @@ namespace gum_tests {
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
 
       for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g = createDAG__(10, i);
+        gum::DAG g =  _createDAG_(10, i);
         detector1.setDAG(g);
         detector2.setDAG(g);
 
         TS_ASSERT(detector1 == detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
-          createChanges__(g, changes, del_add_changes, 1);
+           _createChanges_(g, changes, del_add_changes, 1);
           TS_ASSERT(changes.size() == 1);
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
@@ -375,14 +375,14 @@ namespace gum_tests {
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
 
       for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g = createDAG__(10, i);
+        gum::DAG g =  _createDAG_(10, i);
         detector1.setDAG(g);
         detector2.setDAG(g);
 
         TS_ASSERT(detector1 == detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
-          createChanges__(g, changes, del_add_changes, 1);
+           _createChanges_(g, changes, del_add_changes, 1);
           TS_ASSERT(changes.size() == 1);
 
           for (auto& chgt: changes) {

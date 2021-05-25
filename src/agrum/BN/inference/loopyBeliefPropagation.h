@@ -82,20 +82,20 @@ namespace gum {
     virtual void makeInference_();
 
     // will be used in both directions :
-    // for x->y, (x,y) and (y,x) will be in messages__
-    ArcProperty< Potential< GUM_SCALAR > >  messages__;
-    NodeProperty< Potential< GUM_SCALAR > > posteriors__;
+    // for x->y, (x,y) and (y,x) will be in  _messages_
+    ArcProperty< Potential< GUM_SCALAR > >   _messages_;
+    NodeProperty< Potential< GUM_SCALAR > >  _posteriors_;
 
-    void initStats__();
+    void  _initStats_();
 
-    void                    init_messages__();
-    Potential< GUM_SCALAR > computeProdPi__(NodeId X);
-    Potential< GUM_SCALAR > computeProdPi__(NodeId X, NodeId except);
-    Potential< GUM_SCALAR > computeProdLambda__(NodeId X);
-    Potential< GUM_SCALAR > computeProdLambda__(NodeId X, NodeId except);
+    void                     _init_messages_();
+    Potential< GUM_SCALAR >  _computeProdPi_(NodeId X);
+    Potential< GUM_SCALAR >  _computeProdPi_(NodeId X, NodeId except);
+    Potential< GUM_SCALAR >  _computeProdLambda_(NodeId X);
+    Potential< GUM_SCALAR >  _computeProdLambda_(NodeId X, NodeId except);
 
     // return the max differential BNdistance for this node
-    GUM_SCALAR updateNodeMessage__(NodeId X);
+    GUM_SCALAR  _updateNodeMessage_(NodeId X);
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

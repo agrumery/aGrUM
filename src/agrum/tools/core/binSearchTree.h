@@ -399,7 +399,7 @@ namespace gum {
      * This is used by gum::BinSearchTree::erase_(Node*).
      * @param node The node to erase.
      */
-    void eraseWithTwoChildren__(Node* node);
+    void  _eraseWithTwoChildren_(Node* node);
 
     protected:
     /**
@@ -425,7 +425,7 @@ namespace gum {
      * @brief Update all iterators when a given node is deleted.
      * @param node The node that is erased.
      */
-    void updateEraseIterators__(Node* node);
+    void  _updateEraseIterators_(Node* node);
   };
 
   // ===========================================================================

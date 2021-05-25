@@ -36,7 +36,7 @@ namespace gum {
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
+      MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(mn);
     }
 
     GUM_CONSTRUCTOR(EvidenceMNInference);

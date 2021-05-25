@@ -280,7 +280,7 @@ namespace gum {
     // check the coherency between the parameters passed to setParameters functions
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void ParamEstimator< ALLOC >::checkParameters__(
+    void ParamEstimator< ALLOC >:: _checkParameters_(
        const NodeId                                  target_node,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
        Potential< GUM_SCALAR >&                      pot) {
@@ -345,11 +345,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-       ParamEstimator< ALLOC >::setParameters__(
+       ParamEstimator< ALLOC >:: _setParameters_(
           const NodeId                                  target_node,
           const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
           Potential< GUM_SCALAR >&                      pot) {
-      checkParameters__(target_node, conditioning_nodes, pot);
+       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
          parameters(target_node, conditioning_nodes));
@@ -369,11 +369,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-       ParamEstimator< ALLOC >::setParameters__(
+       ParamEstimator< ALLOC >:: _setParameters_(
           const NodeId                                  target_node,
           const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
           Potential< GUM_SCALAR >&                      pot) {
-      checkParameters__(target_node, conditioning_nodes, pot);
+       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
          parameters(target_node, conditioning_nodes));
@@ -388,7 +388,7 @@ namespace gum {
        const NodeId                                  target_node,
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
        Potential< GUM_SCALAR >&                      pot) {
-      setParameters__(target_node, conditioning_nodes, pot);
+       _setParameters_(target_node, conditioning_nodes, pot);
     }
 
 

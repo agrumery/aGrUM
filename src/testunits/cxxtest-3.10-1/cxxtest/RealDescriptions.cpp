@@ -1,5 +1,5 @@
-#ifndef __cxxtest__RealDescriptions_cpp__
-#define __cxxtest__RealDescriptions_cpp__
+#ifndef  __cxxtest__RealDescriptions_cpp__
+#define  __cxxtest__RealDescriptions_cpp__
 
 //
 // NOTE: If an error occur during world construction/deletion, CxxTest cannot
@@ -104,7 +104,7 @@ namespace CxxTest {
   void RealTestDescription::run() {
     _TS_TRY { runTest(); }
     _TS_CATCH_ABORT( {} )
-    ___TSM_CATCH( file(), line(), "Exception thrown from test" );
+     __TSM__CATCH( file(), line(), "Exception thrown from test" );
   }
 
   RealSuiteDescription::RealSuiteDescription() {}
@@ -325,7 +325,7 @@ namespace CxxTest {
   }
 
   void RealWorldDescription::reportError( const char* message ) {
-    doWarn( __FILE__, 5, message );
+    doWarn(   __FILE__, 5, message );
   }
 
   void activateAllTests() { RealWorldDescription().activateAllTests(); }
@@ -335,4 +335,4 @@ namespace CxxTest {
   }
 }
 
-#endif  // __cxxtest__RealDescriptions_cpp__
+#endif  //  __cxxtest__RealDescriptions_cpp__

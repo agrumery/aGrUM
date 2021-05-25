@@ -46,14 +46,14 @@ namespace gum {
     INLINE bool
        StructuralConstraintMandatoryArcs::checkArcDeletionAlone(NodeId x,
                                                                 NodeId y) const {
-      return !MandatoryArcs__mandatory_arcs_.exists(Arc(x, y));
+      return ! _MandatoryArcs_mandatory_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
        StructuralConstraintMandatoryArcs::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
-      return !MandatoryArcs__mandatory_arcs_.exists(Arc(x, y));
+      return ! _MandatoryArcs_mandatory_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -132,22 +132,22 @@ namespace gum {
 
     /// assign a set of forbidden arcs
     INLINE void StructuralConstraintMandatoryArcs::setArcs(const ArcSet& set) {
-      MandatoryArcs__mandatory_arcs_ = set;
+       _MandatoryArcs_mandatory_arcs_ = set;
     }
 
     /// assign a new forbidden arc
     INLINE void StructuralConstraintMandatoryArcs::addArc(const Arc& arc) {
-      MandatoryArcs__mandatory_arcs_.insert(arc);
+       _MandatoryArcs_mandatory_arcs_.insert(arc);
     }
 
     /// remove a forbidden arc
     INLINE void StructuralConstraintMandatoryArcs::eraseArc(const Arc& arc) {
-      MandatoryArcs__mandatory_arcs_.erase(arc);
+       _MandatoryArcs_mandatory_arcs_.erase(arc);
     }
 
     /// returns the set of mandatory arcs
     INLINE const ArcSet& StructuralConstraintMandatoryArcs::arcs() const {
-      return MandatoryArcs__mandatory_arcs_;
+      return  _MandatoryArcs_mandatory_arcs_;
     }
 
 // include all the methods applicable to the whole class hierarchy

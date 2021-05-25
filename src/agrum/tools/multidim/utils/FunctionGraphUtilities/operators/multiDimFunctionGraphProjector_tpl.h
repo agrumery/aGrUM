@@ -45,10 +45,10 @@ namespace gum {
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
         const Set< const DiscreteVariable* >&                          delVars,
         const GUM_SCALAR                                               neutral) :
-      src__(src),
-      delVars__(delVars), function__(), neutral__(neutral) {
+       _src_(src),
+       _delVars_(delVars),  _function_(),  _neutral_(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
-    rd__ = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
+     _rd_ = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
   }
 
 
@@ -74,61 +74,61 @@ namespace gum {
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
      MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
         project() {
-    rd__->copy(*src__);
+     _rd_->copy(* _src_);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter
-         = delVars__.beginSafe();
-         varIter != delVars__.endSafe();
+         =  _delVars_.beginSafe();
+         varIter !=  _delVars_.endSafe();
          ++varIter) {
       const DiscreteVariable* curVar = *varIter;
 
       // Tout d'abord, on déplace la variable à projeter en fin de séquence afin
       // de simplifier la projection
-      if (rd__->variablesSequence().exists(curVar))
-        rd__->manager()->moveTo(curVar, rd__->variablesSequence().size() - 1);
+      if ( _rd_->variablesSequence().exists(curVar))
+         _rd_->manager()->moveTo(curVar,  _rd_->variablesSequence().size() - 1);
 
       // 1er cas spécial : le diagramme est un un simple noeud terminal
-      if (rd__->isTerminalNode(rd__->root())) {
-        GUM_SCALAR newVal = neutral__, oldVal = rd__->nodeValue(rd__->root());
+      if ( _rd_->isTerminalNode( _rd_->root())) {
+        GUM_SCALAR newVal =  _neutral_, oldVal =  _rd_->nodeValue( _rd_->root());
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
              ++curVarModality)
-          newVal = function__(newVal, oldVal);
+          newVal =  _function_(newVal, oldVal);
 
-        NodeId newSonId = rd__->manager()->addTerminalNode(newVal);
-        rd__->manager()->setRootNode(newSonId);
+        NodeId newSonId =  _rd_->manager()->addTerminalNode(newVal);
+         _rd_->manager()->setRootNode(newSonId);
 
-        if (rd__->variablesSequence().exists(curVar)) rd__->erase(*curVar);
+        if ( _rd_->variablesSequence().exists(curVar))  _rd_->erase(*curVar);
         continue;
       }
 
       // 2ème cas spécial : la racine du diagramme est associée à la variable
       // projetée
-      if (rd__->node(rd__->root())->nodeVar() == curVar) {
-        const InternalNode* curVarNode = rd__->node(rd__->root());
-        GUM_SCALAR          newVal     = neutral__;
+      if ( _rd_->node( _rd_->root())->nodeVar() == curVar) {
+        const InternalNode* curVarNode =  _rd_->node( _rd_->root());
+        GUM_SCALAR          newVal     =  _neutral_;
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
              ++curVarModality)
-          newVal = function__(newVal,
-                              rd__->nodeValue(curVarNode->son(curVarModality)));
+          newVal =  _function_(newVal,
+                               _rd_->nodeValue(curVarNode->son(curVarModality)));
 
-        NodeId newSonId = rd__->manager()->addTerminalNode(newVal);
+        NodeId newSonId =  _rd_->manager()->addTerminalNode(newVal);
 
-        rd__->manager()->eraseNode(rd__->root(), newSonId, false);
+         _rd_->manager()->eraseNode( _rd_->root(), newSonId, false);
 
-        if (rd__->variablesSequence().exists(curVar)) rd__->erase(*curVar);
+        if ( _rd_->variablesSequence().exists(curVar))  _rd_->erase(*curVar);
         continue;
       }
 
       // Cas général
-      HashTable< NodeId, NodeId > visitedNode(2 * rd__->realSize(), true, false);
+      HashTable< NodeId, NodeId > visitedNode(2 *  _rd_->realSize(), true, false);
       std::vector< NodeId >       filo;
-      filo.push_back(rd__->root());
+      filo.push_back( _rd_->root());
 
       while (!filo.empty()) {
         NodeId curNodeId = filo.back();
         filo.pop_back();
 
-        const InternalNode* curNode = rd__->node(curNodeId);
+        const InternalNode* curNode =  _rd_->node(curNodeId);
 
         for (Idx modality = 0; modality < curNode->nodeVar()->domainSize();
              ++modality) {
@@ -137,47 +137,47 @@ namespace gum {
           if (!visitedNode.exists(oldSonId)) {
             NodeId newSonId = oldSonId;
 
-            if (!rd__->isTerminalNode(oldSonId)) {
-              if (rd__->node(oldSonId)->nodeVar() != curVar) {
+            if (! _rd_->isTerminalNode(oldSonId)) {
+              if ( _rd_->node(oldSonId)->nodeVar() != curVar) {
                 filo.push_back(oldSonId);
               } else {
-                const InternalNode* curVarNode = rd__->node(oldSonId);
-                GUM_SCALAR          newVal     = neutral__;
+                const InternalNode* curVarNode =  _rd_->node(oldSonId);
+                GUM_SCALAR          newVal     =  _neutral_;
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                      ++curVarModality)
-                  newVal = function__(
+                  newVal =  _function_(
                      newVal,
-                     rd__->nodeValue(curVarNode->son(curVarModality)));
+                      _rd_->nodeValue(curVarNode->son(curVarModality)));
 
-                newSonId = rd__->manager()->addTerminalNode(newVal);
+                newSonId =  _rd_->manager()->addTerminalNode(newVal);
 
-                rd__->manager()->eraseNode(oldSonId, newSonId, false);
-                rd__->manager()->setSon(curNodeId, modality, newSonId);
+                 _rd_->manager()->eraseNode(oldSonId, newSonId, false);
+                 _rd_->manager()->setSon(curNodeId, modality, newSonId);
               }
 
             } else {
-              GUM_SCALAR newVal = neutral__, oldVal = rd__->nodeValue(oldSonId);
+              GUM_SCALAR newVal =  _neutral_, oldVal =  _rd_->nodeValue(oldSonId);
               for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                    ++curVarModality)
-                newVal = function__(newVal, oldVal);
+                newVal =  _function_(newVal, oldVal);
 
-              newSonId = rd__->manager()->addTerminalNode(newVal);
-              rd__->manager()->setSon(curNodeId, modality, newSonId);
+              newSonId =  _rd_->manager()->addTerminalNode(newVal);
+               _rd_->manager()->setSon(curNodeId, modality, newSonId);
             }
 
             visitedNode.insert(oldSonId, newSonId);
 
           } else {
-            if (rd__->node(curNodeId)->son(modality) != visitedNode[oldSonId])
-              rd__->manager()->setSon(curNodeId, modality, visitedNode[oldSonId]);
+            if ( _rd_->node(curNodeId)->son(modality) != visitedNode[oldSonId])
+               _rd_->manager()->setSon(curNodeId, modality, visitedNode[oldSonId]);
           }
         }
       }
 
-      if (rd__->variablesSequence().exists(curVar)) rd__->erase(*curVar);
+      if ( _rd_->variablesSequence().exists(curVar))  _rd_->erase(*curVar);
     }
 
-    return rd__;
+    return  _rd_;
   }
 
 }   // namespace gum

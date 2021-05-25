@@ -192,10 +192,10 @@ namespace gum {
 
     private:
     /// the class used for the combinations
-    MultiDimCombination< GUM_SCALAR, TABLE >* combination__;
+    MultiDimCombination< GUM_SCALAR, TABLE >*  _combination_;
 
     /// the class used for the projections
-    MultiDimProjection< GUM_SCALAR, TABLE >* projection__;
+    MultiDimProjection< GUM_SCALAR, TABLE >*  _projection_;
   };
 
 } /* namespace gum */

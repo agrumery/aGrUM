@@ -56,21 +56,21 @@ namespace gum {
 
     /// Insert a new terminal node with given value
     void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) {
-      if (map__.exists(n)) *(map__[n]) += v;
-      map__.insert(n, new GUM_SCALAR(v));
+      if ( _map_.exists(n)) *( _map_[n]) += v;
+       _map_.insert(n, new GUM_SCALAR(v));
     }
 
     /// Remove node matching given id
     void eraseTerminalNode(const NodeId& n) {
-      if (map__.exists(n)) map__.erase(n);
+      if ( _map_.exists(n))  _map_.erase(n);
     }
 
     /// Erase all terminal nodes
     void clearAllTerminalNodes() {
-      for (auto nodeIter = map__.beginSafe(); nodeIter != map__.endSafe();
+      for (auto nodeIter =  _map_.beginSafe(); nodeIter !=  _map_.endSafe();
            ++nodeIter)
         delete nodeIter.val();
-      map__.clear();
+       _map_.clear();
     }
 
     /// @}
@@ -81,7 +81,7 @@ namespace gum {
 
     /// Returns true if a terminal node matching this id exists
     bool existsTerminalNodeWithId(const NodeId& n) const {
-      return map__.exists(n);
+      return  _map_.exists(n);
     }
 
     /// Returns true if a terminal node matching this value exists
@@ -97,12 +97,12 @@ namespace gum {
 
     /// Returns the value of the terminal node that has the given id
     const GUM_SCALAR& terminalNodeValue(const NodeId& n) const {
-      return *(map__[n]);
+      return *( _map_[n]);
     }
 
     /// Returns the id of the terminal node that has the given value
     const NodeId& terminalNodeId(const GUM_SCALAR& v) const {
-      for (auto nodeIter = map__.beginSafe(); nodeIter != map__.endSafe();
+      for (auto nodeIter =  _map_.beginSafe(); nodeIter !=  _map_.endSafe();
            ++nodeIter)
         if (*(nodeIter.val()) == v) return nodeIter.key();
       return jocker;
@@ -115,26 +115,26 @@ namespace gum {
     /// @{
 
     /// Initializes the constant safe iterator on terminal nodes
-    void beginValues() const { mappy__ = map__.cbeginSafe(); }
+    void beginValues() const {  _mappy_ =  _map_.cbeginSafe(); }
 
     /// Indicates if constant safe iterator has reach end of terminal nodes list
-    bool hasValue() const { return mappy__ != map__.cendSafe(); }
+    bool hasValue() const { return  _mappy_ !=  _map_.cendSafe(); }
 
     /// Increments the constant safe iterator
-    void nextValue() const { ++mappy__; }
+    void nextValue() const { ++ _mappy_; }
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_SCALAR& value() const { return *(mappy__.val()); }
+    const GUM_SCALAR& value() const { return *( _mappy_.val()); }
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
-    const NodeId& id() const { return mappy__.key(); }
+    const NodeId& id() const { return  _mappy_.key(); }
 
     private:
     /// The mapping between NodeIds and Value Sets
-    HashTable< NodeId, GUM_SCALAR* >                          map__;
-    mutable HashTableConstIteratorSafe< NodeId, GUM_SCALAR* > mappy__;
+    HashTable< NodeId, GUM_SCALAR* >                           _map_;
+    mutable HashTableConstIteratorSafe< NodeId, GUM_SCALAR* >  _mappy_;
 
     const NodeId jocker = 0;
   };

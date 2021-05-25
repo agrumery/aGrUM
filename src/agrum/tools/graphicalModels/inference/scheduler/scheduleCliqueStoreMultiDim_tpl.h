@@ -41,7 +41,7 @@ namespace gum {
      NodeId clique) :
       ScheduleOperation< GUM_SCALAR >(
          ScheduleOperation< GUM_SCALAR >::Type::CLIQUE_STORE_MULTIDIM),
-      table__(table), tableSet__(&clique_tables), clique__(clique), args__(0) {
+       _table_(table),  _tableSet_(&clique_tables),  _clique_(clique),  _args_(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCliqueStoreMultiDim);
   }
@@ -51,8 +51,8 @@ namespace gum {
   ScheduleCliqueStoreMultiDim< GUM_SCALAR >::ScheduleCliqueStoreMultiDim(
      const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) :
       ScheduleOperation< GUM_SCALAR >(from),
-      table__(from.table__), tableSet__(from.tableSet__), clique__(from.clique__),
-      args__(0) {
+       _table_(from. _table_),  _tableSet_(from. _tableSet_),  _clique_(from. _clique_),
+       _args_(0) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleCliqueStoreMultiDim);
   }
@@ -70,7 +70,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleCliqueStoreMultiDim);
 
-    if (args__) delete args__;
+    if ( _args_) delete  _args_;
   }
 
   /// copy operator
@@ -81,13 +81,13 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table__                                  = from.table__;
-      tableSet__                               = from.tableSet__;
-      clique__                                 = from.clique__;
+       _table_                                  = from. _table_;
+       _tableSet_                               = from. _tableSet_;
+       _clique_                                 = from. _clique_;
 
-      if (args__) {
-        args__->clear();
-        args__->insert(&table__);
+      if ( _args_) {
+         _args_->clear();
+         _args_->insert(& _table_);
       }
     }
 
@@ -102,8 +102,8 @@ namespace gum {
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op
        = static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((table__ == real_op.table__) && (tableSet__ == real_op.tableSet__)
-            && (clique__ == real_op.clique__));
+    return (( _table_ == real_op. _table_) && ( _tableSet_ == real_op. _tableSet_)
+            && ( _clique_ == real_op. _clique_));
   }
 
   /// operator !=
@@ -114,21 +114,21 @@ namespace gum {
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op
        = static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((table__ != real_op.table__) || (tableSet__ != real_op.tableSet__)
-            || (clique__ != real_op.clique__));
+    return (( _table_ != real_op. _table_) || ( _tableSet_ != real_op. _tableSet_)
+            || ( _clique_ != real_op. _clique_));
   }
 
   /// executes the operation
   template < typename GUM_SCALAR >
   void ScheduleCliqueStoreMultiDim< GUM_SCALAR >::execute() {
-    const MultiDimImplementation< GUM_SCALAR >& multidim = table__.multiDim();
+    const MultiDimImplementation< GUM_SCALAR >& multidim =  _table_.multiDim();
 
-    if (!tableSet__->exists(clique__)) {
-      tableSet__->insert(clique__,
+    if (! _tableSet_->exists( _clique_)) {
+       _tableSet_->insert( _clique_,
                          Set< const MultiDimImplementation< GUM_SCALAR >* >());
     }
 
-    tableSet__->operator[](clique__).insert(&multidim);
+     _tableSet_->operator[]( _clique_).insert(&multidim);
   }
 
   /** @brief returns an estimation of the number of elementary operations
@@ -149,12 +149,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleCliqueStoreMultiDim< GUM_SCALAR >::multiDimArgs() const {
-    if (!args__) {
-      args__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      args__->insert(&table__);
+    if (! _args_) {
+       _args_ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+       _args_->insert(& _table_);
     }
 
-    return *args__;
+    return * _args_;
   }
 
   /// returns the set of multidims that should be the result of the operation
@@ -170,14 +170,14 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::inc_deletion__("Sequence",
-                                __FILE__,
-                                __LINE__,
+       __debug__:: _inc_deletion_("Sequence",
+                                  __FILE__,
+                                  __LINE__,
                                 "destructor of",
                                 (void*)&empty_seq);
-      __debug__::inc_deletion__("SequenceImplementation",
-                                __FILE__,
-                                __LINE__,
+       __debug__:: _inc_deletion_("SequenceImplementation",
+                                  __FILE__,
+                                  __LINE__,
                                 "destructor of",
                                 (void*)&empty_seq);
     }
@@ -190,7 +190,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string ScheduleCliqueStoreMultiDim< GUM_SCALAR >::toString() const {
     std::stringstream s;
-    s << "store ( " << table__.toString() << ", clique " << clique__ << " )";
+    s << "store ( " <<  _table_.toString() << ", clique " <<  _clique_ << " )";
     return s.str();
   }
 

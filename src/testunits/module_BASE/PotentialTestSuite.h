@@ -1053,7 +1053,7 @@ namespace gum_tests {
     }
 
     private:
-    void testval_for_set__(const gum::Potential< int >&         p,
+    void  _testval_for_set_(const gum::Potential< int >&         p,
                            int                                  val,
                            const gum::Set< gum::Instantiation > s,
                            gum::Size                            expected_size) {
@@ -1073,16 +1073,16 @@ namespace gum_tests {
     void testArgMaxMinFindAll() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Potential< int >  p;
-      testval_for_set__(p, 4, p.findAll(4), 0);
+       _testval_for_set_(p, 4, p.findAll(4), 0);
 
       p.add(v);
       p.add(w);
       p.fillWith({1, 3, 2, 4, 1, 4});
 
-      testval_for_set__(p, 3, p.findAll(3), 1);
-      testval_for_set__(p, 10, p.findAll(10), 0);
-      testval_for_set__(p, 4, p.argmax(), 2);
-      testval_for_set__(p, 1, p.argmin(), 2);
+       _testval_for_set_(p, 3, p.findAll(3), 1);
+       _testval_for_set_(p, 10, p.findAll(10), 0);
+       _testval_for_set_(p, 4, p.argmax(), 2);
+       _testval_for_set_(p, 1, p.argmin(), 2);
     }
 
     void testAddDummyVariables() {

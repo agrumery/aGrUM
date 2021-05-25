@@ -158,7 +158,7 @@ namespace gum {
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* input_row__{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >*  _input_row_{nullptr};
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

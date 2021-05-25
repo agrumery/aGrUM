@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class DAG2BNLearnerTestSuite: public CxxTest::TestSuite {
     private:
-    std::vector< double > normalize__(const std::vector< double >& vin) {
+    std::vector< double >  _normalize_(const std::vector< double >& vin) {
       double sum = 0;
       for (const auto& val: vin)
         sum += val;
@@ -46,7 +46,7 @@ namespace gum_tests {
       return vout;
     }
 
-    std::vector< double > xnormalize__(const std::vector< double >& vin) {
+    std::vector< double >  _xnormalize_(const std::vector< double >& vin) {
       std::vector< double > vout(vin);
       for (std::size_t i = 0; i < vin.size(); i += 3) {
         double sum = 0;
@@ -58,7 +58,7 @@ namespace gum_tests {
       return vout;
     }
 
-    std::vector< double > getProba__(const gum::BayesNet< double >& bn,
+    std::vector< double >  _getProba_(const gum::BayesNet< double >& bn,
                                      const gum::NodeId              id) {
       const gum::Potential< double >& pot = bn.cpt(id);
       std::vector< double >           vect;
@@ -127,12 +127,12 @@ namespace gum_tests {
 
       auto bn1 = learner.createBN(param_estimator, dag);
 
-      auto                  v2  = getProba__(bn1, 2);
-      std::vector< double > xv2 = normalize__({1401, 1, 1});
+      auto                  v2  =  _getProba_(bn1, 2);
+      std::vector< double > xv2 =  _normalize_({1401, 1, 1});
       TS_ASSERT(v2 == xv2);
 
-      auto                  v02  = getProba__(bn1, 0);
-      std::vector< double > xv02 = xnormalize__({1201, 126, 76, 1, 1, 1, 1, 1, 1});
+      auto                  v02  =  _getProba_(bn1, 0);
+      std::vector< double > xv02 =  _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
     }
 

@@ -79,7 +79,7 @@ namespace gum {
       ParamEstimatorML(
          const DBRowGeneratorParser< ALLOC >& parser,
          const Apriori< ALLOC >&              external_apriori,
-         const Apriori< ALLOC >&              score_internal__apriori,
+         const Apriori< ALLOC >&               _score_internal_apriori,
          const std::vector< std::pair< std::size_t, std::size_t >,
                             ALLOC< std::pair< std::size_t, std::size_t > > >&
             ranges,
@@ -109,7 +109,7 @@ namespace gum {
       ParamEstimatorML(
          const DBRowGeneratorParser< ALLOC >& parser,
          const Apriori< ALLOC >&              external_apriori,
-         const Apriori< ALLOC >&              score_internal__apriori,
+         const Apriori< ALLOC >&               _score_internal_apriori,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
             nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),

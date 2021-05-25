@@ -44,7 +44,7 @@ namespace gum {
                                                           nodeId2columns,
        const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
@@ -58,7 +58,7 @@ namespace gum {
                                                           nodeId2columns,
        const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
@@ -69,7 +69,7 @@ namespace gum {
        const ScorefNML< ALLOC >&                          from,
        const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        internal_apriori__(from.internal_apriori__, alloc) {
+         _internal_apriori_(from. _internal_apriori_, alloc) {
       GUM_CONS_CPY(ScorefNML);
     }
 
@@ -86,7 +86,7 @@ namespace gum {
        ScorefNML< ALLOC >&&                               from,
        const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        internal_apriori__(std::move(from.internal_apriori__), alloc) {
+         _internal_apriori_(std::move(from. _internal_apriori_), alloc) {
       GUM_CONS_MOV(ScorefNML);
     }
 
@@ -134,7 +134,7 @@ namespace gum {
        ScorefNML< ALLOC >::operator=(const ScorefNML< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__      = from.internal_apriori__;
+         _internal_apriori_      = from. _internal_apriori_;
       }
       return *this;
     }
@@ -145,7 +145,7 @@ namespace gum {
     ScorefNML< ALLOC >& ScorefNML< ALLOC >::operator=(ScorefNML< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__      = std::move(from.internal_apriori__);
+         _internal_apriori_      = std::move(from. _internal_apriori_);
       }
       return *this;
     }
@@ -189,7 +189,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScorefNML< ALLOC >::internalApriori() const {
-      return internal_apriori__;
+      return  _internal_apriori_;
     }
 
 
@@ -230,7 +230,7 @@ namespace gum {
         // finally, remove the penalty
         double penalty = 0.0;
         for (const auto n_ij: N_ij) {
-          penalty += ctable__.log2Cnr(target_domsize, n_ij);
+          penalty +=  _ctable_.log2Cnr(target_domsize, n_ij);
         }
 
         score -= penalty;
@@ -257,7 +257,7 @@ namespace gum {
         score *= this->one_log2_;
 
         // finally, remove the penalty
-        score -= ctable__.log2Cnr(all_size, N);
+        score -=  _ctable_.log2Cnr(all_size, N);
 
         return score;
       }

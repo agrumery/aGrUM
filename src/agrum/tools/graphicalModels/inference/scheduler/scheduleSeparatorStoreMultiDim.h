@@ -127,16 +127,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim< GUM_SCALAR > table__;
+    ScheduleMultiDim< GUM_SCALAR >  _table_;
 
     // a mapping assigning to each clique a set of tables
-    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* tableSet__;
+    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >*  _tableSet_;
 
     // the separator into which the table will be stored
-    Arc separator__;
+    Arc  _separator_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
   };
 
 } /* namespace gum */

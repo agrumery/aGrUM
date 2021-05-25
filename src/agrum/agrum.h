@@ -25,10 +25,10 @@
 namespace gum {
 
   /// Internal namespace for aGrUM signaler/listener components
-  namespace __sig__ {}
+  namespace  __sig__ {}
 
   /// Internal namespace for aGrUM debugging tools
-  namespace __debug__ {}
+  namespace  __debug__ {}
 
   /// Aggregators are functional description of CPTs
   namespace aggregator {}

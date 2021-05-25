@@ -283,7 +283,7 @@ namespace gum {
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
-    NodeId recurArgMaxCopy__(NodeId,
+    NodeId  _recurArgMaxCopy_(NodeId,
                              Idx,
                              const MultiDimFunctionGraph< GUM_SCALAR >*,
                              MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
@@ -315,7 +315,7 @@ namespace gum {
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
-    NodeId recurExtractOptPol__(
+    NodeId  _recurExtractOptPol_(
        NodeId,
        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >*,
@@ -324,7 +324,7 @@ namespace gum {
     // ==========================================================================
     /// Extract from an ArgMaxSet the associated ActionSet
     // ==========================================================================
-    void transferActionIds__(const ArgMaxSet< GUM_SCALAR, Idx >&, ActionSet&);
+    void  _transferActionIds_(const ArgMaxSet< GUM_SCALAR, Idx >&, ActionSet&);
 
 
     /// @}
@@ -376,8 +376,8 @@ namespace gum {
     /// The threshold value
     /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
     // ==========================================================================
-    GUM_SCALAR threshold__;
-    bool       firstTime__;
+    GUM_SCALAR  _threshold_;
+    bool        _firstTime_;
   };
 
 } /* namespace gum */

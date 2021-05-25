@@ -1,5 +1,5 @@
-#ifndef __cxxtest__AgrumErrorFormatter_h__
-#define __cxxtest__AgrumErrorFormatter_h__
+#ifndef  __cxxtest__AgrumErrorFormatter_h__
+#define  __cxxtest__AgrumErrorFormatter_h__
 
 //
 // The AgrumErrorFormatter is a TestListener that
@@ -43,9 +43,9 @@ namespace CxxTest {
 
   class AgrumErrorFormatter : public TestListener {
     private:
-    gum::Timer* __clock;
-    double      __totalTime;
-    int         __nbrTest;
+    gum::Timer*  __clock;
+    double       __totalTime;
+    int          __nbrTest;
 
     public:
     AgrumErrorFormatter( OutputStream* o,
@@ -63,9 +63,9 @@ namespace CxxTest {
     }
 
     void enterWorld( const WorldDescription& /*desc*/ ) {
-      __clock = new gum::Timer();
+       __clock = new gum::Timer();
       gum::initRandom( GUM_RANDOMSEED );
-      __totalTime = 0.0;
+       __totalTime = 0.0;
       ( *_o ) << endl
               << "======================" << endl
               << "Agrum Test Unit Module" << endl
@@ -85,25 +85,25 @@ namespace CxxTest {
     }
 
     void enterSuite( const SuiteDescription& t ) {
-      __nbrTest = 0;
+       __nbrTest = 0;
       ( ( *_o ) << "\n" << t.file() << " : " ).flush();
       _reported = false;
-      __clock->reset();
+       __clock->reset();
     }
 
     void leaveSuite( const SuiteDescription& ) {
-      double step = __clock->step();
-      __totalTime += step;
+      double step =  __clock->step();
+       __totalTime += step;
       ( ( *_o ) << " [" << (unsigned int)( 1000.0 * step ) << " ms]" ).flush();
     }
 
     void enterTest( const TestDescription& ) { _reported = false; }
 
     void leaveTest( const TestDescription& ) {
-      __nbrTest++;
+       __nbrTest++;
 
       if ( !tracker().testFailed() ) {
-        if ( __nbrTest % 5 )
+        if (  __nbrTest % 5 )
           ( ( *_o ) << "." ).flush();
         else
           ( ( *_o ) << "#" ).flush();
@@ -113,14 +113,14 @@ namespace CxxTest {
     }
 
     void leaveWorld( const WorldDescription& desc ) {
-      delete ( __clock );
+      delete (  __clock );
       newLine();
 #ifdef GUM_DEBUG_MODE
-      gum::__debug__::atexit__();
+      gum:: __debug__:: _atexit_();
 #endif // GUM_DEBUG_MODE
 
       ( *_o ) << endl
-              << "## Profiling : " << (unsigned int)( 1000.0 * __totalTime )
+              << "## Profiling : " << (unsigned int)( 1000.0 *  __totalTime )
               << " ms ##" << endl;
 
       ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests
@@ -338,4 +338,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__AgrumErrorFormatter_h__
+#endif  //  __cxxtest__AgrumErrorFormatter_h__

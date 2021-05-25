@@ -32,13 +32,13 @@ namespace gum {
   // returns the current complete ordering
   INLINE const std::vector< NodeId >*
                OrderedEliminationSequenceStrategy::order() const noexcept {
-    return order__;
+    return  _order_;
   }
 
 
   // indicates whether a new complete ordering is needed
   INLINE bool OrderedEliminationSequenceStrategy::isOrderNeeded() const noexcept {
-    return order_needed__;
+    return  _order_needed_;
   }
 
 

@@ -35,25 +35,25 @@ namespace gum {
   // returns the size of the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE Size SequenceImplementation< Key, Alloc, Gen >::size() const noexcept {
-    return h__.size();
+    return  _h_.size();
   }
 
   // return true if empty
   template < typename Key, typename Alloc, bool Gen >
   INLINE bool SequenceImplementation< Key, Alloc, Gen >::empty() const noexcept {
-    return h__.empty();
+    return  _h_.empty();
   }
 
   // returns the size of the sequence
   template < typename Key, typename Alloc >
   INLINE Size SequenceImplementation< Key, Alloc, true >::size() const noexcept {
-    return h__.size();
+    return  _h_.size();
   }
 
   // return true if empty
   template < typename Key, typename Alloc >
   INLINE bool SequenceImplementation< Key, Alloc, true >::empty() const noexcept {
-    return h__.empty();
+    return  _h_.empty();
   }
 
   // ===========================================================================
@@ -66,16 +66,16 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
      const SequenceImplementation< Key, Alloc, Gen >& seq,
      Idx                                              pos) noexcept :
-      seq__{reinterpret_cast<
+       _seq_{reinterpret_cast<
          const SequenceImplementation< Key,
                                        std::allocator< Key >,
                                        std::is_scalar< Key >::value >* >(&seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
-    if (pos > seq__->size())
-      iterator__ = seq__->size();   // make the iterator point to end
+    if (pos >  _seq_->size())
+       _iterator_ =  _seq_->size();   // make the iterator point to end
     else
-      iterator__ = pos;
+       _iterator_ = pos;
   }
 
   // default constructor
@@ -84,24 +84,24 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
      const Sequence< Key, Alloc >& seq,
      Idx                           pos) noexcept :
-      seq__{reinterpret_cast<
+       _seq_{reinterpret_cast<
          const SequenceImplementation< Key,
                                        std::allocator< Key >,
                                        std::is_scalar< Key >::value >* >(&seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
-    if (pos > seq__->size())
-      iterator__ = seq__->size();   // make the iterator point to end
+    if (pos >  _seq_->size())
+       _iterator_ =  _seq_->size();   // make the iterator point to end
     else
-      iterator__ = pos;
+       _iterator_ = pos;
   }
 
   // copy constructor
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
      const SequenceIteratorSafe< Key >& source) noexcept :
-      iterator__{source.iterator__},
-      seq__{source.seq__} {
+       _iterator_{source. _iterator_},
+       _seq_{source. _seq_} {
     GUM_CONS_CPY(SequenceIteratorSafe);
   }
 
@@ -109,8 +109,8 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
      SequenceIteratorSafe< Key >&& source) noexcept :
-      iterator__{source.iterator__},
-      seq__{source.seq__} {
+       _iterator_{source. _iterator_},
+       _seq_{source. _seq_} {
     GUM_CONS_MOV(SequenceIteratorSafe);
   }
 
@@ -124,8 +124,8 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::operator=(
      const SequenceIteratorSafe< Key >& source) noexcept {
-    iterator__ = source.iterator__;
-    seq__      = source.seq__;
+     _iterator_ = source. _iterator_;
+     _seq_      = source. _seq_;
     return *this;
   }
 
@@ -133,8 +133,8 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::operator=(
      SequenceIteratorSafe< Key >&& source) noexcept {
-    iterator__ = source.iterator__;
-    seq__      = source.seq__;
+     _iterator_ = source. _iterator_;
+     _seq_      = source. _seq_;
     return *this;
   }
 
@@ -142,10 +142,10 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
      SequenceIteratorSafe< Key >::operator++() noexcept {
-    if (iterator__ < seq__->size())
-      ++iterator__;
+    if ( _iterator_ <  _seq_->size())
+      ++ _iterator_;
     else
-      iterator__ = seq__->size();
+       _iterator_ =  _seq_->size();
 
     return *this;
   }
@@ -154,7 +154,7 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
      SequenceIteratorSafe< Key >::operator--() noexcept {
-    if (iterator__ != std::numeric_limits< Idx >::max()) --iterator__;
+    if ( _iterator_ != std::numeric_limits< Idx >::max()) -- _iterator_;
 
     return *this;
   }
@@ -163,9 +163,9 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
      SequenceIteratorSafe< Key >::operator+=(Size nb) noexcept {
-    if (iterator__ == std::numeric_limits< Idx >::max()) return *this;
-    iterator__ += nb;
-    if (iterator__ > seq__->size()) iterator__ = seq__->size();
+    if ( _iterator_ == std::numeric_limits< Idx >::max()) return *this;
+     _iterator_ += nb;
+    if ( _iterator_ >  _seq_->size())  _iterator_ =  _seq_->size();
 
     return *this;
   }
@@ -174,9 +174,9 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
      SequenceIteratorSafe< Key >::operator-=(Size nb) noexcept {
-    if (iterator__ == std::numeric_limits< Idx >::max()) return *this;
-    iterator__ -= nb;
-    if (iterator__ > seq__->size()) iterator__ = std::numeric_limits< Idx >::max();
+    if ( _iterator_ == std::numeric_limits< Idx >::max()) return *this;
+     _iterator_ -= nb;
+    if ( _iterator_ >  _seq_->size())  _iterator_ = std::numeric_limits< Idx >::max();
 
     return *this;
   }
@@ -199,10 +199,10 @@ namespace gum {
   template < typename Key >
   INLINE bool SequenceIteratorSafe< Key >::operator==(
      const SequenceIteratorSafe< Key >& source) const noexcept {
-    if (seq__->empty())
+    if ( _seq_->empty())
       return true;   // all iterators are the same if seq is empty
 
-    if ((iterator__ != source.iterator__) || (seq__ != source.seq__)) return false;
+    if (( _iterator_ != source. _iterator_) || ( _seq_ != source. _seq_)) return false;
 
     return true;
   }
@@ -217,44 +217,44 @@ namespace gum {
   // returns the position of the iterator in the sequence
   template < typename Key >
   INLINE Idx SequenceIteratorSafe< Key >::pos() const {
-    if (iterator__ >= seq__->size()) {
+    if ( _iterator_ >=  _seq_->size()) {
       GUM_ERROR(UndefinedIteratorValue, "iterator is end() or rend()")
     }
 
-    return iterator__;
+    return  _iterator_;
   }
 
   // the iterator points to the posth element (0 = beginning of the sequence).
   template < typename Key >
-  INLINE void SequenceIteratorSafe< Key >::setPos__(Idx pos) noexcept {
-    if (pos > seq__->size())
-      iterator__ = seq__->size();
+  INLINE void SequenceIteratorSafe< Key >:: _setPos_(Idx pos) noexcept {
+    if (pos >  _seq_->size())
+       _iterator_ =  _seq_->size();
     else
-      iterator__ = pos;
+       _iterator_ = pos;
   }
 
   // the iterator points to the posth element (0 = beginning of the sequence).
   template < typename Key >
-  INLINE void SequenceIteratorSafe< Key >::setAtRend__() noexcept {
-    iterator__ = std::numeric_limits< Idx >::max();
+  INLINE void SequenceIteratorSafe< Key >:: _setAtRend_() noexcept {
+     _iterator_ = std::numeric_limits< Idx >::max();
   }
 
   // the iterator points to the posth element (0 = beginning of the sequence).
   template < typename Key >
-  INLINE void SequenceIteratorSafe< Key >::setAtEnd__() noexcept {
-    iterator__ = seq__->size();
+  INLINE void SequenceIteratorSafe< Key >:: _setAtEnd_() noexcept {
+     _iterator_ =  _seq_->size();
   }
 
   // returns the value pointed to by the iterator
   template < typename Key >
   INLINE const Key& SequenceIteratorSafe< Key >::operator*() const {
-    return Getter::op_star(seq__->v__[pos()]);
+    return Getter::op_star( _seq_-> _v_[pos()]);
   }
 
   // dereferences the value pointed to by the iterator
   template < typename Key >
   INLINE const Key* SequenceIteratorSafe< Key >::operator->() const {
-    return Getter::op_arrow(seq__->v__[pos()]);
+    return Getter::op_arrow( _seq_-> _v_[pos()]);
   }
 
   // ===========================================================================
@@ -263,54 +263,54 @@ namespace gum {
 
   // updates const iterators
   template < typename Key, typename Alloc, bool Gen >
-  INLINE void SequenceImplementation< Key, Alloc, Gen >::update_end__() noexcept {
-    end_safe__.setAtEnd__();
+  INLINE void SequenceImplementation< Key, Alloc, Gen >:: _update_end_() noexcept {
+     _end_safe_. _setAtEnd_();
   }
 
   // clear the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::clear() {
-    h__.clear();
-    v__.clear();
-    update_end__();
+     _h_.clear();
+     _v_.clear();
+     _update_end_();
   }
 
   // clears the current sequence and fill it with copies the element of aSeq
   template < typename Key, typename Alloc, bool Gen >
   template < typename OtherAlloc >
-  INLINE void SequenceImplementation< Key, Alloc, Gen >::copy__(
+  INLINE void SequenceImplementation< Key, Alloc, Gen >:: _copy_(
      const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq) {
     clear();
 
     for (Size i = 0; i < aSeq.size(); ++i) {
-      Key& new_key = const_cast< Key& >(h__.insert(*(aSeq.v__[i]), i).first);
-      v__.push_back(&new_key);
+      Key& new_key = const_cast< Key& >( _h_.insert(*(aSeq. _v_[i]), i).first);
+       _v_.push_back(&new_key);
     }
 
-    update_end__();
+     _update_end_();
   }
 
   // Default constructor
   template < typename Key, typename Alloc, bool Gen >
   INLINE SequenceImplementation< Key, Alloc, Gen >::SequenceImplementation(
      Size size_param) :
-      h__(size_param),
-      end_safe__{*this}, rend_safe__{*this} {
+       _h_(size_param),
+       _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    update_end__();
+     _rend_safe_. _setAtRend_();
+     _update_end_();
   }
 
   // initializer list constructor
   template < typename Key, typename Alloc, bool Gen >
   INLINE SequenceImplementation< Key, Alloc, Gen >::SequenceImplementation(
      std::initializer_list< Key > list) :
-      end_safe__{*this},
-      rend_safe__{*this} {
+       _end_safe_{*this},
+       _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
-    rend_safe__.setAtRend__();
+     _rend_safe_. _setAtRend_();
     for (const auto& elt: list) {
-      insert(elt);   // performs the update_end__ ()
+      insert(elt);   // performs the  _update_end_ ()
     }
   }
 
@@ -318,11 +318,11 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE SequenceImplementation< Key, Alloc, Gen >::SequenceImplementation(
      const SequenceImplementation< Key, Alloc, Gen >& aSeq) :
-      end_safe__{*this},
-      rend_safe__{*this} {
+       _end_safe_{*this},
+       _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    copy__(aSeq);   // performs the update_end__ ()
+     _rend_safe_. _setAtRend_();
+     _copy_(aSeq);   // performs the  _update_end_ ()
   }
 
   // generalized copy constructor
@@ -330,22 +330,22 @@ namespace gum {
   template < typename OtherAlloc >
   INLINE SequenceImplementation< Key, Alloc, Gen >::SequenceImplementation(
      const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq) :
-      end_safe__{*this},
-      rend_safe__{*this} {
+       _end_safe_{*this},
+       _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    copy__(aSeq);   // performs the update_end__ ()
+     _rend_safe_. _setAtRend_();
+     _copy_(aSeq);   // performs the  _update_end_ ()
   }
 
   // move constructor
   template < typename Key, typename Alloc, bool Gen >
   INLINE SequenceImplementation< Key, Alloc, Gen >::SequenceImplementation(
      SequenceImplementation< Key, Alloc, Gen >&& aSeq) :
-      h__(std::move(aSeq.h__)),
-      v__(std::move(aSeq.v__)), end_safe__{*this}, rend_safe__{*this} {
+       _h_(std::move(aSeq. _h_)),
+       _v_(std::move(aSeq. _v_)),  _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    update_end__();
+     _rend_safe_. _setAtRend_();
+     _update_end_();
   }
 
   // destructor
@@ -362,7 +362,7 @@ namespace gum {
         const SequenceImplementation< Key, Alloc, Gen >& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
-      copy__(aSeq);   // performs the update_end__ ()
+       _copy_(aSeq);   // performs the  _update_end_ ()
     }
 
     return *this;
@@ -374,7 +374,7 @@ namespace gum {
   INLINE SequenceImplementation< Key, Alloc, Gen >&
      SequenceImplementation< Key, Alloc, Gen >::operator=(
         const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq) {
-    copy__(aSeq);   // performs the update_end__ ()
+     _copy_(aSeq);   // performs the  _update_end_ ()
     return *this;
   }
 
@@ -385,9 +385,9 @@ namespace gum {
         SequenceImplementation< Key, Alloc, Gen >&& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
-      h__ = std::move(aSeq.h__);
-      v__ = std::move(aSeq.v__);
-      update_end__();
+       _h_ = std::move(aSeq. _h_);
+       _v_ = std::move(aSeq. _v_);
+       _update_end_();
     }
 
     return *this;
@@ -397,25 +397,25 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE bool
      SequenceImplementation< Key, Alloc, Gen >::exists(const Key& k) const {
-    return h__.exists(k);
+    return  _h_.exists(k);
   }
 
   // insert an element at the end of the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::insert(const Key& k) {
     // k will be added at the end. Insert the new key into the hashtable
-    Key& new_key = const_cast< Key& >(h__.insert(k, h__.size()).first);
-    v__.push_back(&new_key);
-    update_end__();
+    Key& new_key = const_cast< Key& >( _h_.insert(k,  _h_.size()).first);
+     _v_.push_back(&new_key);
+     _update_end_();
   }
 
   // insert an element at the end of the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::insert(Key&& k) {
     // k will be added at the end. Insert the new key into the hashtable
-    Key& new_key = const_cast< Key& >(h__.insert(std::move(k), h__.size()).first);
-    v__.push_back(&new_key);
-    update_end__();
+    Key& new_key = const_cast< Key& >( _h_.insert(std::move(k),  _h_.size()).first);
+     _v_.push_back(&new_key);
+     _update_end_();
   }
 
   // emplace a new element in the sequence
@@ -424,9 +424,9 @@ namespace gum {
   INLINE void SequenceImplementation< Key, Alloc, Gen >::emplace(Args&&... args) {
     Key  key(std::forward< Args >(args)...);
     Key& new_key
-       = const_cast< Key& >(h__.insert(std::move(key), h__.size()).first);
-    v__.push_back(&new_key);
-    update_end__();
+       = const_cast< Key& >( _h_.insert(std::move(key),  _h_.size()).first);
+     _v_.push_back(&new_key);
+     _update_end_();
   }
 
   // insert k in the sequence (synonym for insert)
@@ -452,17 +452,17 @@ namespace gum {
     Idx pos;
 
     try {
-      pos = h__[k];
+      pos =  _h_[k];
     } catch (NotFound&) { return; }
 
     // erase the element
-    v__.erase(v__.begin() + pos);
-    for (Idx i = pos, nb_elts = h__.size() - 1; i < nb_elts; ++i) {
-      --h__[*(v__[i])];
+     _v_.erase( _v_.begin() + pos);
+    for (Idx i = pos, nb_elts =  _h_.size() - 1; i < nb_elts; ++i) {
+      -- _h_[*( _v_[i])];
     }
-    h__.erase(k);
+     _h_.erase(k);
 
-    update_end__();
+     _update_end_();
   }
 
   // remove from the sequence the element pointed to by the iterator
@@ -473,15 +473,15 @@ namespace gum {
 
     // erase the element
     Idx  pos = iter.pos();
-    Key* key = v__[pos];
-    v__.erase(v__.begin() + pos);
+    Key* key =  _v_[pos];
+     _v_.erase( _v_.begin() + pos);
 
-    for (Idx i = pos, nb_elts = h__.size() - 1; i < nb_elts; ++i) {
-      --h__[*(v__[i])];
+    for (Idx i = pos, nb_elts =  _h_.size() - 1; i < nb_elts; ++i) {
+      -- _h_[*( _v_[i])];
     }
-    h__.erase(*key);
+     _h_.erase(*key);
 
-    update_end__();
+     _update_end_();
   }
 
   // remove k in the sequence (synonym for erase)
@@ -495,12 +495,12 @@ namespace gum {
   // returns the object at position i ( first elt = index 0 )
   template < typename Key, typename Alloc, bool Gen >
   INLINE const Key& SequenceImplementation< Key, Alloc, Gen >::atPos(Idx i) const {
-    if (i >= h__.size()) {
+    if (i >=  _h_.size()) {
       GUM_ERROR(OutOfBounds,
-                "index " << i << " for a sequence of size" << h__.size())
+                "index " << i << " for a sequence of size" <<  _h_.size())
     }
 
-    return *(v__[i]);
+    return *( _v_[i]);
   }
 
   // returns the element at position i (synonym for atPos)
@@ -513,7 +513,7 @@ namespace gum {
   // returns the position of the object passed in argument (if it exists)
   template < typename Key, typename Alloc, bool Gen >
   INLINE Idx SequenceImplementation< Key, Alloc, Gen >::pos(const Key& key) const {
-    return h__[key];
+    return  _h_[key];
   }
 
   // inserts and returns the object at the pos i
@@ -521,22 +521,22 @@ namespace gum {
   INLINE void
      SequenceImplementation< Key, Alloc, Gen >::setAtPos(Idx        i,
                                                          const Key& newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
+    if (i >=  _h_.size()) { GUM_ERROR(NotFound, "index too large") }
 
-    Key& new_key = const_cast< Key& >(h__.insert(newKey, i).first);
-    h__.erase(*(v__[i]));
-    v__[i] = &new_key;
+    Key& new_key = const_cast< Key& >( _h_.insert(newKey, i).first);
+     _h_.erase(*( _v_[i]));
+     _v_[i] = &new_key;
   }
 
   // inserts and returns the object at the pos i
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::setAtPos(Idx   i,
                                                                   Key&& newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
+    if (i >=  _h_.size()) { GUM_ERROR(NotFound, "index too large") }
 
-    Key& new_key = const_cast< Key& >(h__.insert(std::move(newKey), i).first);
-    h__.erase(*(v__[i]));
-    v__[i] = &new_key;
+    Key& new_key = const_cast< Key& >( _h_.insert(std::move(newKey), i).first);
+     _h_.erase(*( _v_[i]));
+     _v_[i] = &new_key;
   }
 
   // replace two elements in the sequence
@@ -547,11 +547,11 @@ namespace gum {
     Key& ki = const_cast< Key& >(atPos(i));
     Key& kj = const_cast< Key& >(atPos(j));
 
-    h__[ki] = j;
-    h__[kj] = i;
+     _h_[ki] = j;
+     _h_[kj] = i;
 
-    v__[i] = &kj;
-    v__[j] = &ki;
+     _v_[i] = &kj;
+     _v_[j] = &ki;
   }
 
   // returns the first element
@@ -572,11 +572,11 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    if (!h__.empty()) {
-      stream << 0 << ":" << *v__[0];
+    if (! _h_.empty()) {
+      stream << 0 << ":" << * _v_[0];
 
-      for (Idx i = 1; i < h__.size(); ++i) {
-        stream << " - " << i << ":" << *v__[i];
+      for (Idx i = 1; i <  _h_.size(); ++i) {
+        stream << " - " << i << ":" << * _v_[i];
       }
     }
 
@@ -595,7 +595,7 @@ namespace gum {
       return false;
     else {
       for (Idx i = 0; i < size(); ++i)
-        if (*v__[i] != *(k.v__[i])) return false;
+        if (* _v_[i] != *(k. _v_[i])) return false;
     }
 
     return true;
@@ -629,7 +629,7 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
      SequenceImplementation< Key, Alloc, Gen >::endSafe() const noexcept {
-    return end_safe__;
+    return  _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -637,7 +637,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >
          SequenceImplementation< Key, Alloc, Gen >::rbeginSafe() const {
     SequenceIteratorSafe< Key > it{*this};
-    it.setPos__(size() - 1);
+    it. _setPos_(size() - 1);
     return it;
   }
 
@@ -645,7 +645,7 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
      SequenceImplementation< Key, Alloc, Gen >::rendSafe() const noexcept {
-    return rend_safe__;
+    return  _rend_safe_;
   }
 
   // returns the unsafe begin iterator
@@ -659,7 +659,7 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE const SequenceIterator< Key >&
                SequenceImplementation< Key, Alloc, Gen >::end() const noexcept {
-    return end_safe__;
+    return  _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -667,7 +667,7 @@ namespace gum {
   INLINE SequenceIterator< Key >
          SequenceImplementation< Key, Alloc, Gen >::rbegin() const {
     SequenceIterator< Key > it{*this};
-    it.setPos__(size() - 1);
+    it. _setPos_(size() - 1);
     return it;
   }
 
@@ -675,16 +675,16 @@ namespace gum {
   template < typename Key, typename Alloc, bool Gen >
   INLINE const SequenceIterator< Key >&
                SequenceImplementation< Key, Alloc, Gen >::rend() const noexcept {
-    return rend_safe__;
+    return  _rend_safe_;
   }
 
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::resize(Size new_size) {
-    if (new_size < h__.size()) return;
+    if (new_size <  _h_.size()) return;
 
-    h__.resize(new_size);
-    v__.reserve(new_size);
+     _h_.resize(new_size);
+     _v_.reserve(new_size);
   }
 
   // ===========================================================================
@@ -693,52 +693,52 @@ namespace gum {
 
   // updates the end iterators
   template < typename Key, typename Alloc >
-  INLINE void SequenceImplementation< Key, Alloc, true >::update_end__() noexcept {
-    end_safe__.setAtEnd__();
+  INLINE void SequenceImplementation< Key, Alloc, true >:: _update_end_() noexcept {
+     _end_safe_. _setAtEnd_();
   }
 
   // clear the sequence
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::clear() {
-    h__.clear();
-    v__.clear();
-    update_end__();
+     _h_.clear();
+     _v_.clear();
+     _update_end_();
   }
 
   // clears the current sequence and fill it with copies the element of aSeq
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  INLINE void SequenceImplementation< Key, Alloc, true >::copy__(
+  INLINE void SequenceImplementation< Key, Alloc, true >:: _copy_(
      const SequenceImplementation< Key, OtherAlloc, true >& aSeq) {
     clear();
 
     for (Size i = 0; i < aSeq.size(); ++i) {
-      h__.insert(aSeq.v__[i], i);
-      v__.push_back(aSeq.v__[i]);
+       _h_.insert(aSeq. _v_[i], i);
+       _v_.push_back(aSeq. _v_[i]);
     }
 
-    update_end__();
+     _update_end_();
   }
 
   // Default constructor
   template < typename Key, typename Alloc >
   INLINE SequenceImplementation< Key, Alloc, true >::SequenceImplementation(
      Size size_param) :
-      h__(size_param),
-      end_safe__{*this}, rend_safe__{*this} {
+       _h_(size_param),
+       _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    end_safe__.setAtEnd__();
+     _rend_safe_. _setAtRend_();
+     _end_safe_. _setAtEnd_();
   }
 
   // initializer list constructor
   template < typename Key, typename Alloc >
   INLINE SequenceImplementation< Key, Alloc, true >::SequenceImplementation(
      std::initializer_list< Key > list) :
-      end_safe__{*this},
-      rend_safe__{*this} {
+       _end_safe_{*this},
+       _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
-    rend_safe__.setAtRend__();
+     _rend_safe_. _setAtRend_();
     for (const auto& elt: list) {
       insert(elt);
     }
@@ -748,11 +748,11 @@ namespace gum {
   template < typename Key, typename Alloc >
   SequenceImplementation< Key, Alloc, true >::SequenceImplementation(
      const SequenceImplementation< Key, Alloc, true >& aSeq) :
-      h__(aSeq.h__),
-      v__(aSeq.v__), end_safe__{*this}, rend_safe__{*this} {
+       _h_(aSeq. _h_),
+       _v_(aSeq. _v_),  _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    end_safe__.setAtEnd__();
+     _rend_safe_. _setAtRend_();
+     _end_safe_. _setAtEnd_();
   }
 
   // generalized copy constructor
@@ -760,22 +760,22 @@ namespace gum {
   template < typename OtherAlloc >
   SequenceImplementation< Key, Alloc, true >::SequenceImplementation(
      const SequenceImplementation< Key, OtherAlloc, true >& aSeq) :
-      h__(aSeq.size() / 2),
-      end_safe__{*this}, rend_safe__{*this} {
+       _h_(aSeq.size() / 2),
+       _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    copy__(aSeq);
+     _rend_safe_. _setAtRend_();
+     _copy_(aSeq);
   }
 
   // move constructor
   template < typename Key, typename Alloc >
   INLINE SequenceImplementation< Key, Alloc, true >::SequenceImplementation(
      SequenceImplementation< Key, Alloc, true >&& aSeq) :
-      h__(std::move(aSeq.h__)),
-      v__(std::move(aSeq.v__)), end_safe__{*this}, rend_safe__{*this} {
+       _h_(std::move(aSeq. _h_)),
+       _v_(std::move(aSeq. _v_)),  _end_safe_{*this},  _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
-    rend_safe__.setAtRend__();
-    end_safe__.setAtEnd__();
+     _rend_safe_. _setAtRend_();
+     _end_safe_. _setAtEnd_();
   }
 
   // destructor
@@ -790,7 +790,7 @@ namespace gum {
      SequenceImplementation< Key, Alloc, true >::operator=(
         const SequenceImplementation< Key, Alloc, true >& aSeq) {
     // avoid self assignment
-    if (&aSeq != this) { copy__(aSeq); }
+    if (&aSeq != this) {  _copy_(aSeq); }
 
     return *this;
   }
@@ -801,7 +801,7 @@ namespace gum {
   INLINE SequenceImplementation< Key, Alloc, true >&
      SequenceImplementation< Key, Alloc, true >::operator=(
         const SequenceImplementation< Key, OtherAlloc, true >& aSeq) {
-    copy__(aSeq);
+     _copy_(aSeq);
     return *this;
   }
 
@@ -812,9 +812,9 @@ namespace gum {
         SequenceImplementation< Key, Alloc, true >&& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
-      h__ = std::move(aSeq.h__);
-      v__ = std::move(aSeq.v__);
-      update_end__();
+       _h_ = std::move(aSeq. _h_);
+       _v_ = std::move(aSeq. _v_);
+       _update_end_();
     }
 
     return *this;
@@ -823,16 +823,16 @@ namespace gum {
   // check the existence of k in the sequence
   template < typename Key, typename Alloc >
   INLINE bool SequenceImplementation< Key, Alloc, true >::exists(Key k) const {
-    return h__.exists(k);
+    return  _h_.exists(k);
   }
 
   // insert an element at the end of the sequence
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::insert(Key k) {
     // k will be added at the end. Insert the new key into the hashtable
-    h__.insert(k, h__.size());
-    v__.push_back(k);
-    update_end__();
+     _h_.insert(k,  _h_.size());
+     _v_.push_back(k);
+     _update_end_();
   }
 
   // emplace a new element in the sequence
@@ -840,9 +840,9 @@ namespace gum {
   template < typename... Args >
   INLINE void SequenceImplementation< Key, Alloc, true >::emplace(Args&&... args) {
     Key new_key(std::forward< Args >(args)...);
-    h__.insert(new_key, h__.size());
-    v__.push_back(new_key);
-    update_end__();
+     _h_.insert(new_key,  _h_.size());
+     _v_.push_back(new_key);
+     _update_end_();
   }
 
   // insert k in the sequence (synonym for insert)
@@ -860,17 +860,17 @@ namespace gum {
     Idx pos;
 
     try {
-      pos = h__[k];
+      pos =  _h_[k];
     } catch (NotFound&) { return; }
 
     // erase the element
-    v__.erase(v__.begin() + pos);
-    for (Idx i = pos, nb_elts = h__.size() - 1; i < nb_elts; ++i) {
-      --h__[v__[i]];
+     _v_.erase( _v_.begin() + pos);
+    for (Idx i = pos, nb_elts =  _h_.size() - 1; i < nb_elts; ++i) {
+      -- _h_[ _v_[i]];
     }
-    h__.erase(k);
+     _h_.erase(k);
 
-    update_end__();
+     _update_end_();
   }
 
   // remove from the sequence the element pointed to by the iterator
@@ -881,15 +881,15 @@ namespace gum {
 
     // erase the element
     Idx pos = iter.pos();
-    Key key = v__[pos];
-    v__.erase(v__.begin() + pos);
+    Key key =  _v_[pos];
+     _v_.erase( _v_.begin() + pos);
 
-    for (Idx i = pos, nb_elts = h__.size() - 1; i < nb_elts; ++i) {
-      --h__[v__[i]];
+    for (Idx i = pos, nb_elts =  _h_.size() - 1; i < nb_elts; ++i) {
+      -- _h_[ _v_[i]];
     }
-    h__.erase(key);
+     _h_.erase(key);
 
-    update_end__();
+     _update_end_();
   }
 
   // remove k in the sequence (synonym for erase)
@@ -904,11 +904,11 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const Key&
                SequenceImplementation< Key, Alloc, true >::atPos(Idx i) const {
-    if (i >= h__.size()) {
+    if (i >=  _h_.size()) {
       GUM_ERROR(NotFound, "not enough elements in the sequence")
     }
 
-    return v__[i];
+    return  _v_[i];
   }
 
   // returns the element at position i (synonym for atPos)
@@ -921,18 +921,18 @@ namespace gum {
   // returns the position of the object passed in argument (if it exists)
   template < typename Key, typename Alloc >
   INLINE Idx SequenceImplementation< Key, Alloc, true >::pos(Key key) const {
-    return h__[key];
+    return  _h_[key];
   }
 
   // sets the object at position i
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::setAtPos(Idx i,
                                                                    Key newKey) {
-    if (i >= h__.size()) { GUM_ERROR(NotFound, "index too large") }
+    if (i >=  _h_.size()) { GUM_ERROR(NotFound, "index too large") }
 
-    h__.insert(newKey, i);
-    h__.erase(v__[i]);
-    v__[i] = newKey;
+     _h_.insert(newKey, i);
+     _h_.erase( _v_[i]);
+     _v_[i] = newKey;
   }
 
   // replace two elements in the sequence
@@ -943,11 +943,11 @@ namespace gum {
     Key ki = atPos(i);
     Key kj = atPos(j);
 
-    h__[ki] = j;
-    h__[kj] = i;
+     _h_[ki] = j;
+     _h_[kj] = i;
 
-    v__[i] = kj;
-    v__[j] = ki;
+     _v_[i] = kj;
+     _v_[j] = ki;
   }
 
   // returns the first element
@@ -968,11 +968,11 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    if (!h__.empty()) {
-      stream << 0 << ":" << v__[0];
+    if (! _h_.empty()) {
+      stream << 0 << ":" <<  _v_[0];
 
-      for (Idx i = 1; i < h__.size(); ++i) {
-        stream << " - " << i << ":" << v__[i];
+      for (Idx i = 1; i <  _h_.size(); ++i) {
+        stream << " - " << i << ":" <<  _v_[i];
       }
     }
 
@@ -991,7 +991,7 @@ namespace gum {
       return false;
     else {
       for (Idx i = 0; i < size(); ++i)
-        if (v__[i] != k.v__[i]) return false;
+        if ( _v_[i] != k. _v_[i]) return false;
     }
 
     return true;
@@ -1025,7 +1025,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const SequenceIteratorSafe< Key >&
      SequenceImplementation< Key, Alloc, true >::endSafe() const noexcept {
-    return end_safe__;
+    return  _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -1033,7 +1033,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >
          SequenceImplementation< Key, Alloc, true >::rbeginSafe() const {
     SequenceIteratorSafe< Key > it{*this};
-    it.setPos__(size() - 1);
+    it. _setPos_(size() - 1);
     return it;
   }
 
@@ -1041,7 +1041,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const SequenceIteratorSafe< Key >&
      SequenceImplementation< Key, Alloc, true >::rendSafe() const noexcept {
-    return rend_safe__;
+    return  _rend_safe_;
   }
 
   // returns the unsafe begin iterator
@@ -1055,7 +1055,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const SequenceIterator< Key >&
                SequenceImplementation< Key, Alloc, true >::end() const noexcept {
-    return end_safe__;
+    return  _end_safe_;
   }
 
   // return an unsafe iterator pointing to the last element
@@ -1063,7 +1063,7 @@ namespace gum {
   INLINE SequenceIterator< Key >
          SequenceImplementation< Key, Alloc, true >::rbegin() const {
     SequenceIterator< Key > it{*this};
-    it.setPos__(size() - 1);
+    it. _setPos_(size() - 1);
     return it;
   }
 
@@ -1071,16 +1071,16 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const SequenceIterator< Key >&
                SequenceImplementation< Key, Alloc, true >::rend() const noexcept {
-    return rend_safe__;
+    return  _rend_safe_;
   }
 
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::resize(Size new_size) {
-    if (new_size < h__.size()) return;
+    if (new_size <  _h_.size()) return;
 
-    h__.resize(new_size);
-    v__.reserve(new_size);
+     _h_.resize(new_size);
+     _v_.reserve(new_size);
   }
 
   // ===========================================================================

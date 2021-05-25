@@ -38,8 +38,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#  undef COCO_PARSER_H__
-#  undef COCO_SCANNER_H__
+#  undef  _COCO_PARSER_H_
+#  undef  _COCO_SCANNER_H_
 #  include <agrum/MN/io/UAI/cocoR/Parser.h>
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -125,23 +125,23 @@ namespace gum {
     /// @}
 
     protected:
-    MarkovNet< GUM_SCALAR >* mn__;
-    UAIMN::Scanner*          scanner__;
-    UAIMN::Parser*           parser__;
+    MarkovNet< GUM_SCALAR >*  _mn_;
+    UAIMN::Scanner*           _scanner_;
+    UAIMN::Parser*            _parser_;
 
-    std::string streamName__;
-    bool        traceScanning__;
-    bool        parseDone__;
+    std::string  _streamName_;
+    bool         _traceScanning_;
+    bool         _parseDone_;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool ioerror__;
+    bool  _ioerror_;
 
-    void addFatalError__(Idx                lig,
+    void  _addFatalError_(Idx                lig,
                          Idx                col,
                          const std::string& s);   // throw an exception
-    void addError__(Idx lig, Idx col, const std::string& s);
-    void addWarning__(Idx lig, Idx col, const std::string& s);
+    void  _addError_(Idx lig, Idx col, const std::string& s);
+    void  _addWarning_(Idx lig, Idx col, const std::string& s);
   };
 
 

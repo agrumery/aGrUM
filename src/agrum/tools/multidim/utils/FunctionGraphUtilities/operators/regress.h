@@ -86,54 +86,54 @@ namespace gum {
     /// Computes an order for the final Decision graph that will minimize the
     /// number
     /// of re exploration
-    void establishVarOrder__();
+    void  _establishVarOrder_();
 
     /// Establish for each node in both function graph if it has retrograde
     /// variables
     /// beneath it
-    void findRetrogradeVariables__(
+    void  _findRetrogradeVariables_(
        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
        HashTable< NodeId, short int* >&                               dgInstNeed);
 
     /// The main recursion function
-    NodeId compute__(O4DGContext& currentSituation, Idx lastInstVarPos);
+    NodeId  _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1__;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _DG1_;
 
     /// The other one
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2__;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _DG2_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* rd__;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _rd_;
 
     /// The set of variables we want to keep at the end
-    const Set< const DiscreteVariable* >* primedVars__;
+    const Set< const DiscreteVariable* >*  _primedVars_;
 
     /// The variable we work on to eleminate
-    const DiscreteVariable* targetVar__;
+    const DiscreteVariable*  _targetVar_;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR neutral__;
+    const GUM_SCALAR  _neutral_;
 
     /// The total number of variable implied in the operation
-    Idx nbVar__;
+    Idx  _nbVar_;
 
     /// The functions to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR > combine__;
-    const PROJECTOPERATOR< GUM_SCALAR > project__;
+    const COMBINEOPERATOR< GUM_SCALAR >  _combine_;
+    const PROJECTOPERATOR< GUM_SCALAR >  _project_;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited
-    HashTable< double, NodeId > explorationTable__;
+    HashTable< double, NodeId >  _explorationTable_;
 
     /// Table uses to know if a given node of given function graph has
     /// retrograde variables
-    HashTable< NodeId, short int* > DG1InstantiationNeeded__;
-    HashTable< NodeId, short int* > DG2InstantiationNeeded__;
+    HashTable< NodeId, short int* >  _DG1InstantiationNeeded_;
+    HashTable< NodeId, short int* >  _DG2InstantiationNeeded_;
 
     /// Just a computationnal trick
-    short int* default__;
+    short int*  _default_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

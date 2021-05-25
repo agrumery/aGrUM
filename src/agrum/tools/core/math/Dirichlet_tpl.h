@@ -37,8 +37,8 @@ namespace gum {
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-        gamma__.param(std::gamma_distribution< float >::param_type(parm[i], 1));
-        res[i] = gamma__(generator);
+         _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));
+        res[i] =  _gamma_(generator);
         sum += res[i];
       }
     }

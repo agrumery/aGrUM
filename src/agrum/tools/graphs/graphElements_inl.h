@@ -169,7 +169,7 @@ namespace gum {
 
   /// modifies the tail of the arc
 
-  INLINE void Arc::setTail__(NodeId id) { n1 = id; }
+  INLINE void Arc:: _setTail_(NodeId id) { n1 = id; }
 
   /// returns the head of the arc
 
@@ -177,7 +177,7 @@ namespace gum {
 
   /// modifies the head of the arc
 
-  INLINE void Arc::setHead__(NodeId id) { n2 = id; }
+  INLINE void Arc:: _setHead_(NodeId id) { n2 = id; }
 
   /// returns an extremal node of an edge given the ID of the other one
 

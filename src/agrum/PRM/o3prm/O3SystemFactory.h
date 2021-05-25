@@ -71,29 +71,29 @@ namespace gum {
         void build();
 
         private:
-        PRM< GUM_SCALAR >*          prm__;
-        O3PRM*                      o3_prm__;
-        O3NameSolver< GUM_SCALAR >* solver__;
-        ErrorsContainer*            errors__;
+        PRM< GUM_SCALAR >*           _prm_;
+        O3PRM*                       _o3_prm_;
+        O3NameSolver< GUM_SCALAR >*  _solver_;
+        ErrorsContainer*             _errors_;
 
-        HashTable< std::string, O3Instance* > nameMap__;
+        HashTable< std::string, O3Instance* >  _nameMap_;
 
-        void addInstances__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void  _addInstances_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void addAssignments__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void  _addAssignments_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void addIncrements__(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void  _addIncrements_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        bool checkSystem__(O3System& sys);
+        bool  _checkSystem_(O3System& sys);
 
-        bool checkIncrements__(O3System& sys);
+        bool  _checkIncrements_(O3System& sys);
 
-        bool checkParameters__(const PRMClass< GUM_SCALAR >& type,
+        bool  _checkParameters_(const PRMClass< GUM_SCALAR >& type,
                                const O3Instance&             inst);
 
-        bool checkInstance__(O3System& sys);
+        bool  _checkInstance_(O3System& sys);
 
-        bool checkAssignments__(O3System& sys);
+        bool  _checkAssignments_(O3System& sys);
       };
 
     }   // namespace o3prm

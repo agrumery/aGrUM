@@ -33,30 +33,30 @@ namespace gum {
 
 
     INLINE PRMType& PRMType::superType() {
-      if (superType__) {
-        return *superType__;
+      if ( _superType_) {
+        return * _superType_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
 
-    INLINE DiscreteVariable& PRMType::variable() { return *var__; }
+    INLINE DiscreteVariable& PRMType::variable() { return * _var_; }
 
 
-    INLINE const DiscreteVariable& PRMType::variable() const { return *var__; }
+    INLINE const DiscreteVariable& PRMType::variable() const { return * _var_; }
 
 
-    INLINE DiscreteVariable& PRMType::operator*() { return *var__; }
+    INLINE DiscreteVariable& PRMType::operator*() { return * _var_; }
 
 
-    INLINE const DiscreteVariable& PRMType::operator*() const { return *var__; }
+    INLINE const DiscreteVariable& PRMType::operator*() const { return * _var_; }
 
 
-    INLINE DiscreteVariable* PRMType::operator->() { return var__; }
+    INLINE DiscreteVariable* PRMType::operator->() { return  _var_; }
 
 
-    INLINE DiscreteVariable const* PRMType::operator->() const { return var__; }
+    INLINE DiscreteVariable const* PRMType::operator->() const { return  _var_; }
 
 
     INLINE PRMObject::prm_type PRMType::obj_type() const {
@@ -68,8 +68,8 @@ namespace gum {
 
 
     INLINE const PRMType& PRMType::superType() const {
-      if (superType__) {
-        return *superType__;
+      if ( _superType_) {
+        return * _superType_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
@@ -86,20 +86,20 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "This Type has no super Type")
       }
 
-      superType__ = &t;
+       _superType_ = &t;
     }
 
 
     INLINE const std::vector< Idx >& PRMType::label_map() const {
-      if (label_map__) {
-        return *label_map__;
+      if ( _label_map_) {
+        return * _label_map_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
 
-    INLINE bool PRMType::isSubType() const { return superType__ != nullptr; }
+    INLINE bool PRMType::isSubType() const { return  _superType_ != nullptr; }
 
 
     INLINE bool PRMType::isSuperTypeOf(const PRMType& t) const {

@@ -78,11 +78,11 @@ namespace gum_tests {
     void testAdd2() {
       gum::NodeGraphPart ngp;
       ngp.addNodeWithId(gum::NodeId(3));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size)3);
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size)3);
       ngp.addNodeWithId(gum::NodeId(2));
       ngp.addNodeWithId(gum::NodeId(1));
       ngp.addNodeWithId(gum::NodeId(0));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size)0);
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size)0);
 
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(gum::NodeId(0));
@@ -97,16 +97,16 @@ namespace gum_tests {
       gum::NodeGraphPart ngp;
       ngp.addNode();
       ngp.addNode();
-      ForTestCopy__(ngp);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size)0);
+       _ForTestCopy_(ngp);
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size)0);
       gum::NodeId id3 = ngp.addNode();
       gum::NodeId id4 = ngp.addNode();
       ngp.eraseNode(id3);
-      ForTestCopy__(ngp);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size)1);
+       _ForTestCopy_(ngp);
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size)1);
       ngp.eraseNode(id4);
-      ForTestCopy__(ngp);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(),
+       _ForTestCopy_(ngp);
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(),
                        (gum::Size)0);   // 2 last hole has vanished
     }
 
@@ -121,44 +121,44 @@ namespace gum_tests {
       gum::NodeId        g = 7;
 
       ngp.addNodeWithId(c);
-      TS_ASSERT(ngp.inHoles__(a));
-      TS_ASSERT(ngp.inHoles__(b));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(3)));
+      TS_ASSERT(ngp. _inHoles_(a));
+      TS_ASSERT(ngp. _inHoles_(b));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(3)));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(a);
-      TS_ASSERT(ngp.inHoles__(b));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(2)));
+      TS_ASSERT(ngp. _inHoles_(b));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(2)));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(f);
-      TS_ASSERT(ngp.inHoles__(b));
-      TS_ASSERT(ngp.inHoles__(d));
-      TS_ASSERT(ngp.inHoles__(e));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(4)));
+      TS_ASSERT(ngp. _inHoles_(b));
+      TS_ASSERT(ngp. _inHoles_(d));
+      TS_ASSERT(ngp. _inHoles_(e));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(4)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(e);
-      TS_ASSERT(ngp.inHoles__(b));
-      TS_ASSERT(ngp.inHoles__(d));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(3)));
+      TS_ASSERT(ngp. _inHoles_(b));
+      TS_ASSERT(ngp. _inHoles_(d));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(3)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(b);
-      TS_ASSERT(ngp.inHoles__(d));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(2)));
+      TS_ASSERT(ngp. _inHoles_(d));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(2)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(d);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(1)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(1)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(g);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(1)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(1)));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
       ngp.addNodeWithId(gum::NodeId(0));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
       TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement);
@@ -169,14 +169,14 @@ namespace gum_tests {
       gum::NodeId        node = 6;
 
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
       ngp.addNodeWithId(node);
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(node)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(node)));
       TS_ASSERT(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
-      TS_ASSERT_EQUALS(ngp.sizeHoles__(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp. _sizeHoles_(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
 
@@ -185,17 +185,17 @@ namespace gum_tests {
       ngp2.addNodeWithId(node);
 
       for (gum::Size i = 1; i < node; i++) {
-        TS_ASSERT_EQUALS(ngp2.sizeHoles__(), (gum::Size(node) + 1 - i));
+        TS_ASSERT_EQUALS(ngp2. _sizeHoles_(), (gum::Size(node) + 1 - i));
         TS_ASSERT(ngp2.addNode() < node);
       }
 
-      TS_ASSERT_EQUALS(ngp2.sizeHoles__(), gum::Size(1));
+      TS_ASSERT_EQUALS(ngp2. _sizeHoles_(), gum::Size(1));
 
       TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node - 1));
 
       ngp2.addNode();
 
-      TS_ASSERT_EQUALS(ngp2.sizeHoles__(), gum::Size(0));
+      TS_ASSERT_EQUALS(ngp2. _sizeHoles_(), gum::Size(0));
       TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node + 1));
     }
 
@@ -229,7 +229,7 @@ namespace gum_tests {
     }
 
     void testBigNodeGraphPart() {
-      TS_GUM_ASSERT_THROWS_NOTHING(privateTestBigNodeGraphPart__());
+      TS_GUM_ASSERT_THROWS_NOTHING( _privateTestBigNodeGraphPart_());
     }
 
     void testIteratorEnd() {
@@ -318,7 +318,7 @@ namespace gum_tests {
 
     private:
 #define NBR_PROFILING_NODES 50000
-    void privateTestBigNodeGraphPart__() {
+    void  _privateTestBigNodeGraphPart_() {
       {
         gum::NodeGraphPart ngp;
         // direct
@@ -374,7 +374,7 @@ namespace gum_tests {
       }
     }
 
-    void ForTestCopy__(gum::NodeGraphPart& ngp) {
+    void  _ForTestCopy_(gum::NodeGraphPart& ngp) {
       gum::NodeGraphPart ngp2(ngp);
       TS_ASSERT_EQUALS(ngp.toString(), ngp2.toString());
 

@@ -166,14 +166,14 @@ namespace gum {
 
       private:
       /// a pointer on the sequence stored in the IdCondSet
-      const Sequence< NodeId, ALLOC< NodeId > >* seq__{nullptr};
+      const Sequence< NodeId, ALLOC< NodeId > >*  _seq_{nullptr};
 
       /// The index in the IdCondSet's sequence where the iterator is pointing.
-      std::size_t index__{std::size_t(0)};
+      std::size_t  _index_{std::size_t(0)};
 
 
       /// places the index to the end of the sequence
-      void gotoEnd__();
+      void  _gotoEnd_();
 
       friend class IdCondSet< ALLOC >;
 
@@ -411,13 +411,13 @@ namespace gum {
 
       private:
       /// the ordered set of ids on the right side of the conditioning bar
-      Sequence< NodeId, ALLOC< NodeId > > ids__;
+      Sequence< NodeId, ALLOC< NodeId > >  _ids_;
 
       /// the number of left ids
-      std::size_t nb_lhs_ids__{std::size_t(0)};
+      std::size_t  _nb_lhs_ids_{std::size_t(0)};
 
       /// Stores the end iterator for fast access.
-      IdCondSetIterator< ALLOC > end_safe__;
+      IdCondSetIterator< ALLOC >  _end_safe_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

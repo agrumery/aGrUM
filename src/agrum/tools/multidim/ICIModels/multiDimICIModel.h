@@ -159,7 +159,7 @@ namespace gum {
     /// @}
     protected:
     /// \f$ p_0 \f$ in Henrion (89).
-    mutable GUM_SCALAR external_weight__;
+    mutable GUM_SCALAR  _external_weight_;
 
     // ============================================================================
     /// @name causal weights
@@ -167,9 +167,9 @@ namespace gum {
     /// @{
 
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-    mutable GUM_SCALAR default_weight__;
+    mutable GUM_SCALAR  _default_weight_;
 
-    mutable HashTable< const DiscreteVariable*, GUM_SCALAR > causal_weights__;
+    mutable HashTable< const DiscreteVariable*, GUM_SCALAR >  _causal_weights_;
     /// @}
 
     virtual void replace_(const DiscreteVariable* x,

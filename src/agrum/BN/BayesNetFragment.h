@@ -74,11 +74,11 @@ namespace gum {
       public gum::DiGraphListener {
     private:
     /// The referred BayesNet
-    const IBayesNet< GUM_SCALAR >& bn__;
+    const IBayesNet< GUM_SCALAR >&  _bn_;
 
     /// Mapping between the variable's id and their CPT specific to this
     /// Fragment.
-    NodeProperty< const Potential< GUM_SCALAR >* > localCPTs__;
+    NodeProperty< const Potential< GUM_SCALAR >* >  _localCPTs_;
 
     public:
     /// @name Constructors / Destructors
@@ -195,7 +195,7 @@ namespace gum {
      */
     void installNode(NodeId id);
     void installNode(const std::string& name) {
-      installNode(bn__.idFromName(name));
+      installNode( _bn_.idFromName(name));
     }
 
     /**
@@ -206,7 +206,7 @@ namespace gum {
      */
     void installAscendants(NodeId id);
     void installAscendants(const std::string& name) {
-      installAscendants(bn__.idFromName(name));
+      installAscendants( _bn_.idFromName(name));
     }
 
     /**
@@ -232,7 +232,7 @@ namespace gum {
     void installMarginal(NodeId id, const Potential< GUM_SCALAR >& pot);
     void installMarginal(const std::string&             name,
                          const Potential< GUM_SCALAR >& pot) {
-      installMarginal(bn__.idFromName(name), pot);
+      installMarginal( _bn_.idFromName(name), pot);
     }
 
     /**
@@ -249,7 +249,7 @@ namespace gum {
      **/
     void installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
     void installCPT(const std::string& name, const Potential< GUM_SCALAR >& pot) {
-      installCPT(bn__.idFromName(name), pot);
+      installCPT( _bn_.idFromName(name), pot);
     };
 
     /**

@@ -206,8 +206,8 @@ namespace gum {
    *
    * NodeGraphPart represents the set of nodes of all the graphs. It is built to
    * be as light as possible and it implements its own NodeId factory.
-   * The set of NodeId is 0 ... (bound__-1) minus the NodeIds in
-   * holes__.
+   * The set of NodeId is 0 ... ( _bound_-1) minus the NodeIds in
+   *  _holes_.
    *
    * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
    *
@@ -463,53 +463,53 @@ namespace gum {
     friend class NodeGraphPartIterator;
     friend class NodeGraphPartIteratorSafe;
 
-    /// to enable testunits to use check__
+    /// to enable testunits to use  _check_
 
     friend class gum_tests::NodeGraphPartTestSuite;
 
-    /// updating endIterator (always at max__+1)
-    void updateEndIteratorSafe__();
+    /// updating endIterator (always at  _max_+1)
+    void  _updateEndIteratorSafe_();
 
     /// code for clearing nodes (called twice)
-    void clearNodes__();
+    void  _clearNodes_();
 
     /// to delete hole.
     /// @warning the hole is assumed to be existing.
-    void eraseHole__(NodeId id);
+    void  _eraseHole_(NodeId id);
 
     /// to add a hole.
     /// @warning id is assumed not to be already a hole
-    void addHole__(NodeId id);
+    void  _addHole_(NodeId id);
 
     // ############################################################################
     /// @name Introspection
     // ############################################################################
     /// @{
 
-    /// @return true if id is part of holes__
-    bool inHoles__(NodeId id) const;
+    /// @return true if id is part of  _holes_
+    bool  _inHoles_(NodeId id) const;
 
-    /// @return the size of holes__
-    Size sizeHoles__() const;
+    /// @return the size of  _holes_
+    Size  _sizeHoles_() const;
 
     /// @}
 
     /** @brief the set of nodes not contained in the NodeGraphPart in the
-     * interval 1..max__
-     * @warning holes__ may be nullptr. */
-    NodeSet* holes__;
+     * interval 1.. _max_
+     * @warning  _holes_ may be nullptr. */
+    NodeSet*  _holes_;
 
-    /// value for holes__ configuration
-    Size holes_size__;
+    /// value for  _holes_ configuration
+    Size  _holes_size_;
 
-    /// value for holes__ configuration
-    bool holes_resize_policy__;
+    /// value for  _holes_ configuration
+    bool  _holes_resize_policy_;
 
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
-    NodeGraphPartIteratorSafe endIteratorSafe__;
+    NodeGraphPartIteratorSafe  _endIteratorSafe_;
 
     /** @brief the id below which NodeIds may belong to the NodeGraphPart */
-    NodeId boundVal__;
+    NodeId  _boundVal_;
   };
 
   /// for friendly displaying the content of node set

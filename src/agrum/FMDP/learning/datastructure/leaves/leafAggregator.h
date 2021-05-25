@@ -121,28 +121,28 @@ namespace gum {
 
     void update();
 
-    bool needsUpdate() { return needsUpdate__; }
+    bool needsUpdate() { return  _needsUpdate_; }
 
     HashTable< NodeId, AbstractLeaf* > leavesMap();
 
     std::string toString();
 
     private:
-    void removeContext__(Idx);
-    void addInitialPair__(LeafPair*);
-    void updateInitialPair__(LeafPair*);
-    void removeInitialPair__(LeafPair*);
+    void  _removeContext_(Idx);
+    void  _addInitialPair_(LeafPair*);
+    void  _updateInitialPair_(LeafPair*);
+    void  _removeInitialPair_(LeafPair*);
 
-    Sequence< FusionContext< false >* > fusionSeq__;
+    Sequence< FusionContext< false >* >  _fusionSeq_;
 
-    FusionContext< true >* initialContext__;
+    FusionContext< true >*  _initialContext_;
 
-    HashTable< AbstractLeaf*, Set< LeafPair* >* > leaf2Pair__;
+    HashTable< AbstractLeaf*, Set< LeafPair* >* >  _leaf2Pair_;
 
-    NodeGraphPart* leavesCpt__;
+    NodeGraphPart*  _leavesCpt_;
 
-    double similarityThreshold__;
-    bool   needsUpdate__;
+    double  _similarityThreshold_;
+    bool    _needsUpdate_;
   };
 
 

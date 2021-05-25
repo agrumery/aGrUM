@@ -101,22 +101,22 @@ namespace gum {
     // ###################################################################
     /** Updates database with new observation
      *
-     * Calls either @fn addObservation__( const Observation*, Int2Type<true>)
-     * or @fn addObservation__( const Observation*, Int2Type<false>)
+     * Calls either @fn  _addObservation_( const Observation*, Int2Type<true>)
+     * or @fn  _addObservation_( const Observation*, Int2Type<false>)
      * depending on if we're learning reward function or transition probability
      **/
     // ###################################################################
     void addObservation(const Observation*);
 
     private:
-    void addObservation__(const Observation*, Int2Type< true >);
-    void addObservation__(const Observation*, Int2Type< false >);
+    void  _addObservation_(const Observation*, Int2Type< true >);
+    void  _addObservation_(const Observation*, Int2Type< false >);
 
     public:
     // ###################################################################
     /// Nb observation taken into account by this instance
     // ###################################################################
-    INLINE Idx nbObservation() const { return nbObservation__; }
+    INLINE Idx nbObservation() const { return  _nbObservation_; }
 
     /// @}
 
@@ -130,7 +130,7 @@ namespace gum {
     /// any statistic is relevant
     // ###################################################################
     INLINE bool isTestRelevant(const DiscreteVariable* var) const {
-      return attrTable__[var]->isTestRelevant();
+      return  _attrTable_[var]->isTestRelevant();
     }
 
     // ###################################################################
@@ -138,7 +138,7 @@ namespace gum {
     /// criterion
     // ###################################################################
     INLINE double testValue(const DiscreteVariable* var) const {
-      return attrTable__[var]->score();
+      return  _attrTable_[var]->score();
     }
 
     // ###################################################################
@@ -146,7 +146,7 @@ namespace gum {
     /// secondary criterion (to break ties)
     // ###################################################################
     INLINE double testOtherCriterion(const DiscreteVariable* var) const {
-      return attrTable__[var]->secondaryscore();
+      return  _attrTable_[var]->secondaryscore();
     }
 
     /// @}
@@ -167,17 +167,17 @@ namespace gum {
     /// (so that test policy information can be merged too)
     // ###################################################################
     const TestPolicy< ValueType >* testPolicy(const DiscreteVariable* var) const {
-      return attrTable__[var];
+      return  _attrTable_[var];
     }
 
     // ###################################################################
     /// Iterators on value count to recopy correctly its content
     // ###################################################################
     const HashTableConstIteratorSafe< ValueType, Idx > cbeginValues() const {
-      return valueCount__.cbeginSafe();
+      return  _valueCount_.cbeginSafe();
     }
     const HashTableConstIteratorSafe< ValueType, Idx > cendValues() const {
-      return valueCount__.cendSafe();
+      return  _valueCount_.cendSafe();
     }
 
     /// @}
@@ -187,30 +187,30 @@ namespace gum {
     // ###################################################################
 
     Idx effectif(Idx moda) const {
-      return valueCount__.exists(ValueType(moda)) ? valueCount__[ValueType(moda)]
+      return  _valueCount_.exists(ValueType(moda)) ?  _valueCount_[ValueType(moda)]
                                                   : 0;
     }
 
-    Idx valueDomain() const { return valueDomain__(Int2Type< isScalar >()); }
+    Idx valueDomain() const { return  _valueDomain_(Int2Type< isScalar >()); }
 
     private:
-    Idx valueDomain__(Int2Type< true >) const { return valueCount__.size(); }
-    Idx valueDomain__(Int2Type< false >) const { return value__->domainSize(); }
+    Idx  _valueDomain_(Int2Type< true >) const { return  _valueCount_.size(); }
+    Idx  _valueDomain_(Int2Type< false >) const { return  _value_->domainSize(); }
 
     std::string toString() const;
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable< const DiscreteVariable*, TestPolicy< ValueType >* > attrTable__;
+    HashTable< const DiscreteVariable*, TestPolicy< ValueType >* >  _attrTable_;
 
     /// So does this reference on the value observed
-    const DiscreteVariable* value__;
+    const DiscreteVariable*  _value_;
 
     ///
-    Idx nbObservation__;
+    Idx  _nbObservation_;
 
     ///
-    HashTable< ValueType, Idx > valueCount__;
+    HashTable< ValueType, Idx >  _valueCount_;
   };
 
 

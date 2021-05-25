@@ -353,7 +353,7 @@ namespace gum_tests {
 
       gum::learning::Miic search;
       search.setMiicBehaviour();
-      search.set3off2Behaviour();
+        search.set3of2Behaviour();
       search.setMiicBehaviour();
       // creating complete graph
       gum::MixedGraph graph, g;
@@ -403,7 +403,7 @@ namespace gum_tests {
 
       gum::learning::Miic search;
       search.setMiicBehaviour();
-      search.set3off2Behaviour();
+        search.set3of2Behaviour();
       search.setMiicBehaviour();
 
       // adding constraints

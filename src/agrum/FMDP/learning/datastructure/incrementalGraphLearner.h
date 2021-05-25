@@ -96,19 +96,19 @@ namespace gum {
     // ==========================================================================
     /// Template function dispatcher
     // ==========================================================================
-    void clearValue__() { clearValue__(Int2Type< isScalar >()); }
+    void  _clearValue_() {  _clearValue_(Int2Type< isScalar >()); }
 
     // ==========================================================================
     /// In the case where we're learning a function of real values
     /// this has to be wiped out upon destruction (to be deprecated)
     // ==========================================================================
-    void clearValue__(Int2Type< true >) { delete value_; }
+    void  _clearValue_(Int2Type< true >) { delete value_; }
 
     // ==========================================================================
     /// In case where we're learning function of variable behaviour,
     /// this should do nothing
     // ==========================================================================
-    void clearValue__(Int2Type< false >) {}
+    void  _clearValue_(Int2Type< false >) {}
 
     /// @}
 
@@ -131,13 +131,13 @@ namespace gum {
      * Get value assumed by studied variable for current observation
      */
     // ==========================================================================
-    void assumeValue__(const Observation* obs) {
-      assumeValue__(obs, Int2Type< isScalar >());
+    void  _assumeValue_(const Observation* obs) {
+       _assumeValue_(obs, Int2Type< isScalar >());
     }
-    void assumeValue__(const Observation* obs, Int2Type< true >) {
+    void  _assumeValue_(const Observation* obs, Int2Type< true >) {
       if (!valueAssumed_.exists(obs->reward())) valueAssumed_ << obs->reward();
     }
-    void assumeValue__(const Observation* obs, Int2Type< false >) {
+    void  _assumeValue_(const Observation* obs, Int2Type< false >) {
       if (!valueAssumed_.exists(obs->modality(value_)))
         valueAssumed_ << obs->modality(value_);
     }
@@ -148,15 +148,15 @@ namespace gum {
      * Seek modality assumed in obs for given var
      */
     // ==========================================================================
-    Idx branchObs__(const Observation* obs, const DiscreteVariable* var) {
-      return branchObs__(obs, var, Int2Type< isScalar >());
+    Idx  _branchObs_(const Observation* obs, const DiscreteVariable* var) {
+      return  _branchObs_(obs, var, Int2Type< isScalar >());
     }
-    Idx branchObs__(const Observation*      obs,
+    Idx  _branchObs_(const Observation*      obs,
                     const DiscreteVariable* var,
                     Int2Type< true >) {
       return obs->rModality(var);
     }
-    Idx branchObs__(const Observation*      obs,
+    Idx  _branchObs_(const Observation*      obs,
                     const DiscreteVariable* var,
                     Int2Type< false >) {
       return obs->modality(var);

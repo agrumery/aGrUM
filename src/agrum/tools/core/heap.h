@@ -370,16 +370,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap.
-    std::vector< Val, Alloc > heap__;
+    std::vector< Val, Alloc >  _heap_;
 
     /// The number of elements in the heap.
-    Size nb_elements__{0};
+    Size  _nb_elements_{0};
 
     /// Comparison function.
-    Cmp cmp__;
+    Cmp  _cmp_;
 
     /// After inserting an element at the end of the heap, restore heap property
-    Size restoreHeap__();
+    Size  _restoreHeap_();
   };
 
 } /* namespace gum */

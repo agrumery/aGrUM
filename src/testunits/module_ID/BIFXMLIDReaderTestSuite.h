@@ -50,17 +50,17 @@ namespace gum_tests {
 
   class aSimpleListener: public gum::Listener {
     private:
-    int nbr__;
+    int  _nbr_;
 
     public:
-    aSimpleListener() : nbr__(0){};
+    aSimpleListener() :  _nbr_(0){};
     void whenProceeding(const void* buffer, int percent, std::string status) {
-      nbr__ = percent;
+       _nbr_ = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status
       // <<
       // std::endl;
     }
-    int getNbr() { return nbr__; };
+    int getNbr() { return  _nbr_; };
   };
 
   class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {

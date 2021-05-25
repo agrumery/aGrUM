@@ -41,7 +41,7 @@ namespace gum {
   // Default constructor.
   // ============================================================================
   template < bool isInitial >
-  FusionContext< isInitial >::FusionContext(AbstractLeaf* leaf) : leaf__(leaf) {
+  FusionContext< isInitial >::FusionContext(AbstractLeaf* leaf) :  _leaf_(leaf) {
     GUM_CONSTRUCTOR(FusionContext);
   }
 
@@ -52,12 +52,12 @@ namespace gum {
   FusionContext< isInitial >::~FusionContext() {
     GUM_DESTRUCTOR(FusionContext);
 
-    for (auto leafIter = leaf2Pair__.beginSafe();
-         leafIter != leaf2Pair__.endSafe();
+    for (auto leafIter =  _leaf2Pair_.beginSafe();
+         leafIter !=  _leaf2Pair_.endSafe();
          ++leafIter)
       delete leafIter.val();
 
-    delete leaf__;
+    delete  _leaf_;
   }
 
   // ############################################################################
@@ -68,47 +68,47 @@ namespace gum {
   //
   // ============================================================================
   template < bool isInitial >
-  bool FusionContext< isInitial >::associateLeaf__(AbstractLeaf* l,
+  bool FusionContext< isInitial >:: _associateLeaf_(AbstractLeaf* l,
                                                    Int2Type< false >) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
     ;
-    LeafPair* p = new LeafPair(l, leaf__);
-    leaf2Pair__.insert(l, p);
-    leaf2Pair__[l]->updateLikelyhood();
-    pairsHeap__.insert(p, p->likelyhood());
+    LeafPair* p = new LeafPair(l,  _leaf_);
+     _leaf2Pair_.insert(l, p);
+     _leaf2Pair_[l]->updateLikelyhood();
+     _pairsHeap_.insert(p, p->likelyhood());
 
-    return ptop != pairsHeap__.top();
+    return ptop !=  _pairsHeap_.top();
   }
 
   // ============================================================================
   //
   // ============================================================================
   template < bool isInitial >
-  bool FusionContext< isInitial >::updateAssociatedLeaf__(AbstractLeaf* l,
+  bool FusionContext< isInitial >:: _updateAssociatedLeaf_(AbstractLeaf* l,
                                                           Int2Type< false >) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
     ;
-    leaf2Pair__[l]->updateLikelyhood();
-    pairsHeap__.setPriority(leaf2Pair__[l], leaf2Pair__[l]->likelyhood());
+     _leaf2Pair_[l]->updateLikelyhood();
+     _pairsHeap_.setPriority( _leaf2Pair_[l],  _leaf2Pair_[l]->likelyhood());
 
-    return ptop != pairsHeap__.top();
+    return ptop !=  _pairsHeap_.top();
   }
 
   // ============================================================================
   //
   // ============================================================================
   template < bool isInitial >
-  bool FusionContext< isInitial >::updateAllAssociatedLeaves__(Int2Type< false >) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+  bool FusionContext< isInitial >:: _updateAllAssociatedLeaves_(Int2Type< false >) {
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
     ;
     for (HashTableConstIteratorSafe< AbstractLeaf*, LeafPair* > pairIter
-         = leaf2Pair__.cbeginSafe();
-         pairIter != leaf2Pair__.cendSafe();
+         =  _leaf2Pair_.cbeginSafe();
+         pairIter !=  _leaf2Pair_.cendSafe();
          ++pairIter) {
       pairIter.val()->updateLikelyhood();
-      pairsHeap__.setPriority(pairIter.val(), pairIter.val()->likelyhood());
+       _pairsHeap_.setPriority(pairIter.val(), pairIter.val()->likelyhood());
     }
-    LeafPair* ctop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+    LeafPair* ctop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
 
     return ptop != ctop;
   }
@@ -117,13 +117,13 @@ namespace gum {
   //
   // ============================================================================
   template < bool isInitial >
-  bool FusionContext< isInitial >::deassociateLeaf__(AbstractLeaf* l,
+  bool FusionContext< isInitial >:: _deassociateLeaf_(AbstractLeaf* l,
                                                      Int2Type< false >) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
-    pairsHeap__.erase(leaf2Pair__[l]);
-    leaf2Pair__.erase(l);
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
+     _pairsHeap_.erase( _leaf2Pair_[l]);
+     _leaf2Pair_.erase(l);
 
-    LeafPair* ctop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+    LeafPair* ctop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
 
     return ptop != ctop;
   }
@@ -138,10 +138,10 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::addPair(LeafPair* p) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
-    pairsHeap__.insert(p, p->likelyhood());
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
+     _pairsHeap_.insert(p, p->likelyhood());
 
-    return ptop != pairsHeap__.top();
+    return ptop !=  _pairsHeap_.top();
   }
 
   // ============================================================================
@@ -149,10 +149,10 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::updatePair(LeafPair* p) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
-    pairsHeap__.setPriority(p, p->likelyhood());
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
+     _pairsHeap_.setPriority(p, p->likelyhood());
 
-    return ptop != pairsHeap__.top();
+    return ptop !=  _pairsHeap_.top();
   }
 
   // ============================================================================
@@ -160,10 +160,10 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::removePair(LeafPair* p) {
-    LeafPair* ptop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
-    pairsHeap__.erase(p);
+    LeafPair* ptop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
+     _pairsHeap_.erase(p);
 
-    LeafPair* ctop = pairsHeap__.empty() ? nullptr : pairsHeap__.top();
+    LeafPair* ctop =  _pairsHeap_.empty() ? nullptr :  _pairsHeap_.top();
 
     return ptop != ctop;
   }
@@ -178,10 +178,10 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   Set< LeafPair* >
-     FusionContext< isInitial >::associatedPairs__(Int2Type< false >) {
+     FusionContext< isInitial >:: _associatedPairs_(Int2Type< false >) {
     Set< LeafPair* > retBag;
-    for (auto pairIter = leaf2Pair__.beginSafe();
-         pairIter != leaf2Pair__.endSafe();
+    for (auto pairIter =  _leaf2Pair_.beginSafe();
+         pairIter !=  _leaf2Pair_.endSafe();
          ++pairIter)
       retBag << pairIter.val();
 
@@ -192,17 +192,17 @@ namespace gum {
   template < bool isInitial >
   std::string FusionContext< isInitial >::toString() {
     std::stringstream ss;
-    if (leaf__)
-      ss << "Associated Leaf : " << leaf__->toString() << std::endl
+    if ( _leaf_)
+      ss << "Associated Leaf : " <<  _leaf_->toString() << std::endl
          << "Leaves Heap : " << std::endl;
 
     //      for( HashTableConstIteratorSafe<LeafPair*, std::vector<Size>>
-    //      leafIter = pairsHeap__.allValues().cbeginSafe();
-    //           leafIter != pairsHeap__.allValues().cendSafe(); ++leafIter ){
+    //      leafIter =  _pairsHeap_.allValues().cbeginSafe();
+    //           leafIter !=  _pairsHeap_.allValues().cendSafe(); ++leafIter ){
     //          ss << leafIter.key()->toString() << std::endl;
     //      }
-    if (!pairsHeap__.empty())
-      ss << "Top pair : " << pairsHeap__.top()->toString() << std::endl;
+    if (! _pairsHeap_.empty())
+      ss << "Top pair : " <<  _pairsHeap_.top()->toString() << std::endl;
 
     return ss.str();
   }

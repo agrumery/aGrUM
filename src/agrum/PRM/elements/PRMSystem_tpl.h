@@ -96,18 +96,18 @@ namespace gum {
       // Adding nodes
       for (PRMSystem< GUM_SCALAR >::const_iterator iter = begin(); iter != end();
            ++iter) {
-        groundAttr__(*(iter.val()), factory);
+         _groundAttr_(*(iter.val()), factory);
       }
 
       // Adding arcs and filling CPTs
       for (PRMSystem< GUM_SCALAR >::const_iterator iter = begin(); iter != end();
            ++iter) {
-        groundRef__(*(iter.val()), factory);
+         _groundRef_(*(iter.val()), factory);
       }
     }
 
     template < typename GUM_SCALAR >
-    void PRMSystem< GUM_SCALAR >::groundAttr__(
+    void PRMSystem< GUM_SCALAR >:: _groundAttr_(
        const PRMInstance< GUM_SCALAR >& instance,
        BayesNetFactory< GUM_SCALAR >&   factory) const {
       for (const auto node: instance.type().containerDag()) {
@@ -132,7 +132,7 @@ namespace gum {
             std::stringstream elt_name;
             elt_name << instance.name() << "."
                      << instance.type().get(node).safeName();
-            groundAgg__(instance.type().get(node), elt_name.str(), factory);
+             _groundAgg_(instance.type().get(node), elt_name.str(), factory);
             break;
           }
 
@@ -144,7 +144,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMSystem< GUM_SCALAR >::groundAgg__(
+    void PRMSystem< GUM_SCALAR >:: _groundAgg_(
        const PRMClassElement< GUM_SCALAR >& elt,
        const std::string&                   name,
        BayesNetFactory< GUM_SCALAR >&       factory) const {
@@ -256,7 +256,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMSystem< GUM_SCALAR >::groundRef__(
+    void PRMSystem< GUM_SCALAR >:: _groundRef_(
        const PRMInstance< GUM_SCALAR >& instance,
        BayesNetFactory< GUM_SCALAR >&   factory) const {
       for (const auto& elt: instance) {
@@ -309,12 +309,12 @@ namespace gum {
         // aggregates Potentials are generated)
         if (PRMClassElement< GUM_SCALAR >::isAttribute(
                instance.type().get(elt.second->safeName())))
-          groundPotential__(instance, *elt.second, factory);
+           _groundPotential_(instance, *elt.second, factory);
       }
     }
 
     template < typename GUM_SCALAR >
-    void PRMSystem< GUM_SCALAR >::groundPotential__(
+    void PRMSystem< GUM_SCALAR >:: _groundPotential_(
        const PRMInstance< GUM_SCALAR >&  instance,
        const PRMAttribute< GUM_SCALAR >& attr,
        BayesNetFactory< GUM_SCALAR >&    factory) const {

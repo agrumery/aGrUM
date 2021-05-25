@@ -173,7 +173,7 @@ namespace gum {
       private:
       /// read the first line of a file to find column names
       NodeProperty< Sequence< std::string > >
-         labelsFromBN__(const std::string&            filename,
+          _labelsFromBN_(const std::string&            filename,
                         const BayesNet< GUM_SCALAR >& src);
     };
 

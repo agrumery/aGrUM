@@ -313,7 +313,7 @@ namespace gum {
 
     private:
     /// the set of joint targets
-    Set< NodeSet > joint_targets__;
+    Set< NodeSet >  _joint_targets_;
   };
 
 

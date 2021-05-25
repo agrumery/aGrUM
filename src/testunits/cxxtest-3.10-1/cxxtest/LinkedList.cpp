@@ -1,5 +1,5 @@
-#ifndef __cxxtest__LinkedList_cpp__
-#define __cxxtest__LinkedList_cpp__
+#ifndef  __cxxtest__LinkedList_cpp__
+#define  __cxxtest__LinkedList_cpp__
 
 #include <cxxtest/LinkedList.h>
 
@@ -150,4 +150,4 @@ namespace CxxTest {
   }
 }
 
-#endif  // __cxxtest__LinkedList_cpp__
+#endif  //  __cxxtest__LinkedList_cpp__

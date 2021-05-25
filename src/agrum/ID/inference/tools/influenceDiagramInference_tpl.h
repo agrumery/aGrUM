@@ -62,7 +62,7 @@ namespace gum {
 
   // assigns a BN to a newly constructed inference engine
   template < typename GUM_SCALAR >
-  void InfluenceDiagramInference< GUM_SCALAR >::setIDDuringConstruction__(
+  void InfluenceDiagramInference< GUM_SCALAR >:: _setIDDuringConstruction_(
      const InfluenceDiagram< GUM_SCALAR >* infdiag) {
     this->setModelDuringConstruction_(infdiag);
   }

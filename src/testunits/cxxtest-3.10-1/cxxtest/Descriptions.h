@@ -1,5 +1,5 @@
-#ifndef __cxxtest__Descriptions_h__
-#define __cxxtest__Descriptions_h__
+#ifndef  __cxxtest__Descriptions_h__
+#define  __cxxtest__Descriptions_h__
 
 //
 // TestDescription, SuiteDescription and WorldDescription
@@ -68,4 +68,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__Descriptions_h__
+#endif  //  __cxxtest__Descriptions_h__

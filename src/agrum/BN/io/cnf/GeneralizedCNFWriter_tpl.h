@@ -256,7 +256,7 @@ namespace gum {
   /*template<typename GUM_SCALAR, template<class> class IApproximationPolicy >
   INLINE
     std::string
-    CNFWriter<GUM_SCALAR>::variableCPT__( const Potential<GUM_SCALAR>& cpt ) {
+    CNFWriter<GUM_SCALAR>:: _variableCPT_( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
     str << "";
     return str.str();
@@ -265,7 +265,7 @@ namespace gum {
   // Returns the header of the BN file.
   template<typename GUM_SCALAR,> INLINE
   std::string
-  CNFWriter<GUM_SCALAR>::header__( const IBayesNet<GUM_SCALAR>& ) {
+  CNFWriter<GUM_SCALAR>:: _header_( const IBayesNet<GUM_SCALAR>& ) {
   std::stringstream str;
   str << "";
   return str.str();
@@ -274,7 +274,7 @@ namespace gum {
   // Returns a bloc defining a variable in the BN format.
   template<typename GUM_SCALAR> INLINE
   std::string
-  CNFWriter<GUM_SCALAR>::variableBloc__( const DiscreteVariable& var ) {
+  CNFWriter<GUM_SCALAR>:: _variableBloc_( const DiscreteVariable& var ) {
   std::stringstream str;
   str << "" ;
   return str.str();

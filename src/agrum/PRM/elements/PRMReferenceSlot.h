@@ -161,10 +161,10 @@ namespace gum {
       // @{
 
       /// The type of this PRMReferenceSlot.
-      PRMClassElementContainer< GUM_SCALAR >& slotType__;
+      PRMClassElementContainer< GUM_SCALAR >&  _slotType_;
 
       /// Flag indicating if this slot is an array.
-      bool isArray__;
+      bool  _isArray_;
 
       /// @}
     };

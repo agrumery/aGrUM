@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_MDPDAT_COCO_PARSER_H__)
-#define gum_MDPDAT_COCO_PARSER_H__
+#if !defined( _gum_MDPDAT_COCO_PARSER_H_)
+#define  _gum_MDPDAT_COCO_PARSER_H_
 
 #include <agrum/tools/core/cast_unicode.h>
 // =====================================================================
@@ -76,7 +76,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  errors__;
+    ErrorsContainer   _errors_;
 
   public:
     Scanner* scanner;
@@ -84,16 +84,16 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::AbstractFMDPFactory* factory__;
+    gum::AbstractFMDPFactory*  _factory_;
 
                 /// for each transition diagram, we need to know the associated variable
-                std::string currentFunctionGraphVar__;
+                std::string  _currentFunctionGraphVar_;
 
                 /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > parentNode__;
+                std::vector< gum::NodeId >  _parentNode_;
 
                 /// and current modality
-                std::vector< gum::Idx > parentModality__;
+                std::vector< gum::Idx >  _parentModality_;
 
 
         // *************************************************************************************
@@ -102,12 +102,12 @@ class Parser {
 
                 /// Sets the main factory
                 void setFactory( gum::AbstractFMDPFactory* f ) {
-                        factory__ = f;
+                         _factory_ = f;
                 }
 
                 gum::AbstractFMDPFactory& factory() {
-                  if (factory__)
-                        return *factory__;
+                  if ( _factory_)
+                        return * _factory_;
                   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...")
                 }
 
@@ -166,5 +166,5 @@ class Parser {
 } // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif // !defined( _COCO_PARSER_H_)
 

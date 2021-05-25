@@ -202,7 +202,7 @@ namespace gum {
       PRM< GUM_SCALAR >& operator=(const PRM< GUM_SCALAR >& source);
 
       /// Add the built-in types in the PRM
-      void addBuiltInTypes__();
+      void  _addBuiltInTypes_();
 
       /// @}
       // ========================================================================
@@ -211,28 +211,28 @@ namespace gum {
       /// @{
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable< std::string, PRMClass< GUM_SCALAR >* > classMap__;
+      HashTable< std::string, PRMClass< GUM_SCALAR >* >  _classMap_;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set< PRMClass< GUM_SCALAR >* > classes__;
+      Set< PRMClass< GUM_SCALAR >* >  _classes_;
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable< std::string, PRMInterface< GUM_SCALAR >* > interfaceMap__;
+      HashTable< std::string, PRMInterface< GUM_SCALAR >* >  _interfaceMap_;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set< PRMInterface< GUM_SCALAR >* > interfaces__;
+      Set< PRMInterface< GUM_SCALAR >* >  _interfaces_;
 
       /// Mapping of all PRMType given their name.
-      HashTable< std::string, PRMType* > typeMap__;
+      HashTable< std::string, PRMType* >  _typeMap_;
 
       /// Set of all PRMType in this PRM.
-      Set< PRMType* > types__;
+      Set< PRMType* >  _types_;
 
       /// Mapping of all Systems given their name.
-      HashTable< std::string, PRMSystem< GUM_SCALAR >* > systemMap__;
+      HashTable< std::string, PRMSystem< GUM_SCALAR >* >  _systemMap_;
 
       /// Set of all Systems in this PRM.
-      Set< PRMSystem< GUM_SCALAR >* > systems__;
+      Set< PRMSystem< GUM_SCALAR >* >  _systems_;
 
       /// @}
     };

@@ -97,7 +97,7 @@ namespace gum {
 
     private:
     /// The scheme configuration.
-    ProgressNotifier& notif__;
+    ProgressNotifier&  _notif_;
   };
 }   // namespace gum
 #endif   // AGRUM_PROGRESSNOTIFICATION_H

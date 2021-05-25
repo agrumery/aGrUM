@@ -149,10 +149,10 @@ namespace gum {
       /// @{
 
       /// The random variable type of this attribute
-      PRMType* type__;
+      PRMType*  _type_;
 
       /// A pointer on the Potential of this attribute
-      Potential< GUM_SCALAR >* cpf__;
+      Potential< GUM_SCALAR >*  _cpf_;
 
       /// @}
     };

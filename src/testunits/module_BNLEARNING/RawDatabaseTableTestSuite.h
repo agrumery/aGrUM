@@ -559,7 +559,7 @@ namespace gum_tests {
       std::vector< int >          nb(num_threads);
 
       for (unsigned int i = 0; i < num_threads; ++i) {
-        threads[i] = new std::thread(&RawDatabaseTableTestSuite::create_handler__,
+        threads[i] = new std::thread(&RawDatabaseTableTestSuite:: _create_handler_,
                                      this,
                                      &database,
                                      &(handlers[i]),
@@ -621,7 +621,7 @@ namespace gum_tests {
 
       for (unsigned int i = 0; i < num_threads; ++i) {
         threads[i]
-           = new std::thread(&RawDatabaseTableTestSuite::create_handler_safe__,
+           = new std::thread(&RawDatabaseTableTestSuite:: _create_handler_safe_,
                              this,
                              &database,
                              &(handlers[i]),
@@ -926,7 +926,7 @@ namespace gum_tests {
 
 
     private:
-    void create_handler__(gum::learning::RawDatabaseTable<>*           database,
+    void  _create_handler_(gum::learning::RawDatabaseTable<>*           database,
                           gum::learning::RawDatabaseTable<>::Handler** handler,
                           int*                                         nb) {
       *handler = new gum::learning::RawDatabaseTable<>::Handler(*database);
@@ -940,7 +940,7 @@ namespace gum_tests {
       *nb = x;
     }
 
-    void create_handler_safe__(
+    void  _create_handler_safe_(
        gum::learning::RawDatabaseTable<>*               database,
        gum::learning::RawDatabaseTable<>::HandlerSafe** handler,
        int*                                             nb) {

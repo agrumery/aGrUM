@@ -411,28 +411,28 @@ namespace gum {
     void endTopologyTransformation();
 
     private:
-    bool topologyTransformationInProgress__;
+    bool  _topologyTransformationInProgress_;
 
     /// clear all potentials
-    void clearFactors__();
+    void  _clearFactors_();
 
     /// copy of potentials from a MN to another, using names of vars as ref.
-    void copyFactors__(const MarkovNet< GUM_SCALAR >& source);
+    void  _copyFactors_(const MarkovNet< GUM_SCALAR >& source);
 
     /// rebuild the graph after strucural changes in the factors
-    void rebuildGraph__();
+    void  _rebuildGraph_();
 
     /// the map between variable and id
-    VariableNodeMap varMap__;
+    VariableNodeMap  _varMap_;
 
     /// the factors
-    FactorTable< GUM_SCALAR > factors__;
+    FactorTable< GUM_SCALAR >  _factors_;
 
-    const Potential< GUM_SCALAR >* addFactor__(const NodeSet&                 vars,
+    const Potential< GUM_SCALAR >*  _addFactor_(const NodeSet&                 vars,
                                                const Potential< GUM_SCALAR >* src
                                                = nullptr);
 
-    void eraseFactor__(const NodeSet& vars);
+    void  _eraseFactor_(const NodeSet& vars);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;

@@ -54,7 +54,7 @@ namespace gum {
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
    */
-  unsigned int hashTableLog2__(const Size nb);
+  unsigned int  _hashTableLog2_(const Size nb);
 
   /**
    * @class HashFuncConst

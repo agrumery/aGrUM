@@ -582,21 +582,21 @@ namespace gum {
 
         protected:
         /// a reference to the whole database, including variable names
-        const IDatabaseTable< T_DATA, ALLOC >* db__;
+        const IDatabaseTable< T_DATA, ALLOC >*  _db_;
 
         /// a reference on the database's records pointed to by the handler
-        /** this data could be retrieved from db__ but we prefer using a
+        /** this data could be retrieved from  _db_ but we prefer using a
          * specific variable here for speed-up reasons. */
-        const Matrix< T_DATA >* row__;
+        const Matrix< T_DATA >*  _row_;
 
         /// the index of the row currently pointed to by the handler
-        std::size_t index__{std::size_t(0)};
+        std::size_t  _index_{std::size_t(0)};
 
         /// the first row managed by the handler
-        std::size_t begin_index__{std::size_t(0)};
+        std::size_t  _begin_index_{std::size_t(0)};
 
         /// the row just after the last one managed by the handler
-        std::size_t end_index__{std::size_t(0)};
+        std::size_t  _end_index_{std::size_t(0)};
 
         friend class IDatabaseTable< T_DATA, ALLOC >;
 
@@ -754,10 +754,10 @@ namespace gum {
 
         private:
         /// attach a new handler to the database
-        void attachHandler__();
+        void  _attachHandler_();
 
         /// detach a handler
-        void detachHandler__();
+        void  _detachHandler_();
 
         friend class IDatabaseTable< T_DATA, ALLOC >;
 
@@ -1196,28 +1196,28 @@ namespace gum {
       private:
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */
-      mutable DBVector< HandlerSafe* > list_of_safe_handlers__;
+      mutable DBVector< HandlerSafe* >  _list_of_safe_handlers_;
 
-      // a mutex to safely add/remove handlers in list_of_safe_handlers__
-      mutable std::mutex safe_handlers_mutex__;
+      // a mutex to safely add/remove handlers in  _list_of_safe_handlers_
+      mutable std::mutex  _safe_handlers_mutex_;
 
       // the end iterator for the database
-      Handler* end__{nullptr};
+      Handler*  _end_{nullptr};
 
       // the safe end iterator for the database
-      iterator_safe* end_safe__{nullptr};
+      iterator_safe*  _end_safe_{nullptr};
 
       /// add a new safe handler to the list of attached handlers
-      void attachHandler__(HandlerSafe* handler) const;
+      void  _attachHandler_(HandlerSafe* handler) const;
 
       /// detach a safe handler from the list of attached handlers
-      void detachHandler__(HandlerSafe* handler) const;
+      void  _detachHandler_(HandlerSafe* handler) const;
 
       /// update the handlers when the size of the database changes
-      void updateHandlers__(std::size_t new_size) const;
+      void  _updateHandlers_(std::size_t new_size) const;
 
       // create the end iterators
-      void createEndIterators__();
+      void  _createEndIterators_();
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -150,8 +150,8 @@ namespace gum {
 
 
     /// the elimination sequence to apply
-    /** @warning order__ is not owned by the orderedTriangulation class */
-    const std::vector< NodeId >* order__{nullptr};
+    /** @warning  _order_ is not owned by the orderedTriangulation class */
+    const std::vector< NodeId >*  _order_{nullptr};
 
     /// @}
 

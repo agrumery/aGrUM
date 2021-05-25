@@ -217,7 +217,7 @@
 #  define _D_ALLOC_NAMLEN(p) (PATH_MAX)
 
 
-#  ifdef __cplusplus
+#  ifdef  __cplusplus
 extern "C" {
 #  endif
 
@@ -850,7 +850,7 @@ static void dirent_set_errno(int error) {
 }
 
 
-#  ifdef __cplusplus
+#  ifdef  __cplusplus
 }
 #  endif
 

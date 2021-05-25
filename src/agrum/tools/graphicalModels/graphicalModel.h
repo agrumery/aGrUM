@@ -186,11 +186,11 @@ namespace gum {
     private:
     /// The properties of this Directed Graphical Model.
     /// Initialized using a lazy instantiation.
-    mutable HashTable< std::string, std::string >* propertiesMap__;
+    mutable HashTable< std::string, std::string >*  _propertiesMap_;
 
     /// Return the properties of this Directed Graphical Model and initialize
     /// the hash table is necessary.
-    HashTable< std::string, std::string >& properties__() const;
+    HashTable< std::string, std::string >&  _properties_() const;
   };
 }   // namespace gum
 

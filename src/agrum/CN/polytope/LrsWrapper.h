@@ -27,8 +27,8 @@
  * easy use of lrs lib
  */
 
-#ifndef __LRSWrapper_WRAPPER__H__
-#define __LRSWrapper_WRAPPER__H__
+#ifndef  __LRSWrapper_WRAPPER__H__
+#define  __LRSWrapper_WRAPPER__H__
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
@@ -79,8 +79,8 @@ extern "C" {
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef __int64          int64_t;
-typedef unsigned __int64 uint64_t;
+typedef  __int64          int64_t;
+typedef unsigned  __int64 uint64_t;
 #else
 #  include <stdint.h>
 #endif
@@ -110,37 +110,37 @@ namespace gum {
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */
-      matrix input__;
+      matrix  _input_;
 
       /** @brief Output matrix - either a V-representation or an
        * H-representation. */
-      matrix output__;
+      matrix  _output_;
 
       /** @brief Cardinality of the variable. */
-      unsigned int card__;
+      unsigned int  _card_;
 
       /** @brief To keep track of which constraints over modalities have been
        * inserted. When the set is full, the state changes from up to ready. */
-      std::unordered_set< int > insertedModals__;
+      std::unordered_set< int >  _insertedModals_;
 
       /** @brief The number of vertices of the polytope. */
-      unsigned int vertices__;
+      unsigned int  _vertices_;
 
       /** @brief To keep track of inserted vertices and total. When set is full,
        * the
        * state changes from up to ready. */
-      std::vector< std::vector< GUM_SCALAR > > insertedVertices__;
+      std::vector< std::vector< GUM_SCALAR > >  _insertedVertices_;
 
       /** @brief In case we have lower = upper for all modalities, a point
        * probability, there is no need to use lrs. */
-      std::vector< GUM_SCALAR > vertex__;
+      std::vector< GUM_SCALAR >  _vertex_;
 
-      /** @enum states__ The possible states of the LrsWrapper. Some functions
+      /** @enum  _states_ The possible states of the LrsWrapper. Some functions
        * will
        * throw an exception if the state is not correct. It allows the user to
        * avoid
        * making - invisible - mistakes. */
-      enum class states__ : char
+      enum class  _states_ : char
       {
         none     = char(0),
         Hup      = char(1),
@@ -150,58 +150,58 @@ namespace gum {
       };
 
       /** @brief The current state of the LrsWrapper. */
-      states__ state__;
+       _states_  _state_;
 
       /** @brief The volume of the polytope, if computed, 0 otherwise. */
-      GUM_SCALAR volume__;
+      GUM_SCALAR  _volume_;
 
       /** @brief To print an enum field name instead of it's value. Used with
        * GUM_ERROR. */
-      const char* setUpStateNames__[5] = {
-         enumStringify(states__::none),
-         enumStringify(states__::nHup),
-         enumStringify(states__::nVup),
-         enumStringify(states__::nH2Vready),
-         enumStringify(states__::nV2Hready),
+      const char*  _setUpStateNames_[5] = {
+         enumStringify( _states_::none),
+         enumStringify( _states_::nHup),
+         enumStringify( _states_::nVup),
+         enumStringify( _states_::nH2Vready),
+         enumStringify( _states_::nV2Hready),
       };
 
       /**
        * @brief File descriptor of standard cout.
        *
        * Lrs writes a lot of stuff on standard cout.
-       * oldCout__ is used to save the current cout before redirecting it
+       *  _oldCout_ is used to save the current cout before redirecting it
        * to /dev/null when calling lrs.
        * The standard cout is restored when lrs is done.
        */
-      mutable int oldCout__;
+      mutable int  _oldCout_;
 
       /// @name lrs structs
       /// @{
 
       /** @brief Structure for holding current dictionary and indices of lrs. */
-      lrs_dic* dic__;
+      lrs_dic*  _dic_;
 
       /** @brief Structure for holding static problem data of lrs.*/
-      lrs_dat* dat__;
+      lrs_dat*  _dat_;
 
       /** @brief One line of output of lrs : aither a ray, a vertex, a facet or
        * a
        * linearity. */
-      lrs_mp_vector lrsOutput__;
+      lrs_mp_vector  _lrsOutput_;
 
       /** @brief Holds lrs input linearities if any are found. */
-      lrs_mp_matrix Lin__;
+      lrs_mp_matrix  _Lin_;
 
       /// @}
 
       /// @name flags
       /// @{
 
-      bool getVolume__;
+      bool  _getVolume_;
 
-      bool hull__;
+      bool  _hull_;
 
-      bool polytope__;
+      bool  _polytope_;
 
       /// @}
 
@@ -209,10 +209,10 @@ namespace gum {
       /// @{
 
       /** @brief The function that redirects standard cout to /dev/null. */
-      void coutOff__() const;
+      void  _coutOff_() const;
 
       /** @brief The function that restores standard cout. */
-      void coutOn__() const;
+      void  _coutOn_() const;
 
       /// @}
 
@@ -220,20 +220,20 @@ namespace gum {
       /// @{
 
       /** @brief Free lrs space. */
-      void freeLrs__();
+      void  _freeLrs_();
 
       /** @brief Initialize lrs structs and first basis according to flags. */
-      void initLrs__();
+      void  _initLrs_();
 
       /**
-       * @brief Fill lrs_dictionnary and datas from \c input__ using integer
+       * @brief Fill lrs_dictionnary and datas from \c  _input_ using integer
        *rationals.
        *
        * Build polyhedron constraints and objective.
        * Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to
        *approximate reals by integer rationals.
        */
-      void fill__() const;
+      void  _fill_() const;
 
       /**
        * @brief Translate a single output from lrs.
@@ -245,7 +245,7 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void getLRSWrapperOutput__(lrs_mp                  Nin,
+      void  _getLRSWrapperOutput_(lrs_mp                  Nin,
                                  lrs_mp                  Din,
                                  std::vector< int64_t >& Num,
                                  std::vector< int64_t >& Den) const;
@@ -273,19 +273,19 @@ namespace gum {
 
       /**
        * @brief Get the intput matrix of the problem.
-       * @return A constant reference to the \c intput__ matrix.
+       * @return A constant reference to the \c  _intput_ matrix.
        */
       const matrix& getInput() const;
 
       /**
        * @brief Get the output matrix solution of the problem.
-       * @return A constant reference to the \c output__ matrix.
+       * @return A constant reference to the \c  _output_ matrix.
        */
       const matrix& getOutput() const;
 
       /**
        * @brief Get the number of vertices of this polytope.
-       * @return A constant reference to the number of vertices \c vertices__.
+       * @return A constant reference to the number of vertices \c  _vertices_.
        */
       const unsigned int& getVerticesNumber() const;
 
@@ -315,9 +315,9 @@ namespace gum {
       /**
        * @brief %Sets up an H-representation.
        *
-       * Initialize input matrix \c input__ to correct dimensions and wrapper
+       * Initialize input matrix \c  _input_ to correct dimensions and wrapper
        *state
-       *\c state__ to \c states__::Hup.
+       *\c  _state_ to \c  _states_::Hup.
        * @param card A constant reference to the cardinality of the variable.
        */
       void setUpH(const Size& card);
@@ -325,9 +325,9 @@ namespace gum {
       /**
        * @brief %Sets up a V-representation.
        *
-       * Initialize input matrix \c input__ to correct dimensions and wrapper
+       * Initialize input matrix \c  _input_ to correct dimensions and wrapper
        *state
-       *\c state__ to \c states__::Vup.
+       *\c  _state_ to \c  _states_::Vup.
        * @param card A constant reference to the cardinality of the variable.
        * @param vertices A constant reference to the number of vertices of the
        *polytope.
@@ -337,7 +337,7 @@ namespace gum {
       /**
        * @brief Reset the wrapper as if it was built.
        *
-       * Reset wrapper state \c state__ to \c states__::none and clear all
+       * Reset wrapper state \c  _state_ to \c  _states_::none and clear all
        *member
        *datas.
        */
@@ -351,10 +351,10 @@ namespace gum {
        *credal networks
        * specified as intervals over modalities.
        *
-       * Reset wrapper state \c state__ to it's previous state and clear output
-       *matrix \c output__.
-       * Keeps the cardinality \c card__ of the variable and therefor the input
-       *matrix \c intput__ structure.
+       * Reset wrapper state \c  _state_ to it's previous state and clear output
+       *matrix \c  _output_.
+       * Keeps the cardinality \c  _card_ of the variable and therefor the input
+       *matrix \c  _intput_ structure.
        */
       void nextHInput();
 
@@ -366,7 +366,7 @@ namespace gum {
       /**
        * @brief Creates the H-representation of min <= p(X=modal | .) <= max and
        *add
-       *it to the problem input \c input__.
+       *it to the problem input \c  _input_.
        *
        * @param min The lower value of p(X=modal | .).
        * @param max The upper value of p(X=modal | .).
@@ -386,7 +386,7 @@ namespace gum {
       /**
        * @brief Creates the V-representation of a polytope by adding a vertex to
        *the
-       *problem input \c input__.
+       *problem input \c  _input_.
        *
        * @param vertex The vertex we wish to add to the V-representation of the
        *polytope.
@@ -437,7 +437,7 @@ namespace gum {
        * @brief V-Redundancy elimination.
        *
        * Eliminates redundant vertices from a polytope V-representation input \c
-       *input__.
+       * _input_.
        */
       void elimRedundVrep();
 

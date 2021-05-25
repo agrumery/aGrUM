@@ -1,5 +1,5 @@
-#ifndef __cxxtest__Win32Gui_h__
-#define __cxxtest__Win32Gui_h__
+#ifndef  __cxxtest__Win32Gui_h__
+#define  __cxxtest__Win32Gui_h__
 
 //
 // The Win32Gui displays a simple progress bar using the Win32 API.
@@ -500,4 +500,4 @@ namespace CxxTest {
   };
 };
 
-#endif  // __cxxtest__Win32Gui_h__
+#endif  //  __cxxtest__Win32Gui_h__

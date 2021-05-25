@@ -40,7 +40,7 @@ namespace gum {
     if (pos_ > nodes_->bound()) { pos_ = nodes_->bound(); }
 
     while (pos_ < nodes_->bound()) {
-      if (!nodes_->inHoles__(pos_)) {
+      if (!nodes_-> _inHoles_(pos_)) {
         valid_ = true;
         return;
       }
@@ -224,21 +224,21 @@ namespace gum {
     NodeId next = 0;
 
     // return the first hole if holes exist
-    if (holes__ && (!holes__->empty()))
-      next = *(holes__->begin());
+    if ( _holes_ && (! _holes_->empty()))
+      next = *( _holes_->begin());
     else   // in other case
-      next = boundVal__;
+      next =  _boundVal_;
 
     return next;
   }
 
-  // holes__ is assumed to be not nullptr and id is assumed to be in holes__
-  INLINE void NodeGraphPart::eraseHole__(NodeId id) {
-    holes__->erase(id);
+  //  _holes_ is assumed to be not nullptr and id is assumed to be in  _holes_
+  INLINE void NodeGraphPart:: _eraseHole_(NodeId id) {
+     _holes_->erase(id);
 
-    if (holes__->empty()) {
-      delete holes__;
-      holes__ = nullptr;
+    if ( _holes_->empty()) {
+      delete  _holes_;
+       _holes_ = nullptr;
     }
   }
 
@@ -251,13 +251,13 @@ namespace gum {
     NodeId newNode;
 
     // fill the first hole if holes exist
-    if (holes__ && (!holes__->empty())) {
-      newNode = *(holes__->begin());
-      eraseHole__(newNode);
+    if ( _holes_ && (! _holes_->empty())) {
+      newNode = *( _holes_->begin());
+       _eraseHole_(newNode);
     } else {
-      newNode = boundVal__;
-      ++boundVal__;
-      updateEndIteratorSafe__();
+      newNode =  _boundVal_;
+      ++ _boundVal_;
+       _updateEndIteratorSafe_();
     }
 
     GUM_EMIT1(onNodeAdded, newNode);
@@ -275,15 +275,15 @@ namespace gum {
 
 
   INLINE Size NodeGraphPart::sizeNodes() const {
-    return (holes__) ? (boundVal__ - holes__->size()) : boundVal__;
+    return ( _holes_) ? ( _boundVal_ -  _holes_->size()) :  _boundVal_;
   }
 
   INLINE Size NodeGraphPart::size() const { return sizeNodes(); }
 
   INLINE bool NodeGraphPart::existsNode(const NodeId node) const {
-    if (node >= boundVal__) return false;
+    if (node >=  _boundVal_) return false;
 
-    return (!inHoles__(node));
+    return (! _inHoles_(node));
   }
 
   INLINE bool NodeGraphPart::exists(const NodeId node) const {
@@ -293,7 +293,7 @@ namespace gum {
   INLINE void NodeGraphPart::eraseNode(const NodeId node) {
     if (!existsNode(node)) return;
 
-    addHole__(node);
+     _addHole_(node);
 
     GUM_EMIT1(onNodeDeleted, node);
   }
@@ -302,16 +302,16 @@ namespace gum {
 
   INLINE bool NodeGraphPart::empty() const { return emptyNodes(); }
 
-  INLINE NodeId NodeGraphPart::bound() const { return boundVal__; }
+  INLINE NodeId NodeGraphPart::bound() const { return  _boundVal_; }
 
-  INLINE void NodeGraphPart::clearNodes() { clearNodes__(); }
+  INLINE void NodeGraphPart::clearNodes() {  _clearNodes_(); }
 
   // warning: clear is an alias for clearNodes but it should never be the case
   // that the code of clear is just a call to clearNodes: as both methods are
   // virtual, this could induce bugs within the graphs hierarchy (i.e., virtual
   // functions calling recursively each other along the hierarchy) that are not
   // easy to debug. Hence, the code of clearNodes should be duplicated here.
-  INLINE void NodeGraphPart::clear() { clearNodes__(); }
+  INLINE void NodeGraphPart::clear() {  _clearNodes_(); }
 
   INLINE NodeGraphPartIteratorSafe NodeGraphPart::beginSafe() const {
     NodeGraphPartIteratorSafe it(*this);
@@ -319,12 +319,12 @@ namespace gum {
     return it;
   }
 
-  INLINE void NodeGraphPart::updateEndIteratorSafe__() {
-    endIteratorSafe__.setPos_(boundVal__);
+  INLINE void NodeGraphPart:: _updateEndIteratorSafe_() {
+     _endIteratorSafe_.setPos_( _boundVal_);
   }
 
   INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const noexcept {
-    return endIteratorSafe__;
+    return  _endIteratorSafe_;
   }
 
   INLINE NodeGraphPartIterator NodeGraphPart::begin() const noexcept {
@@ -334,18 +334,18 @@ namespace gum {
   }
 
   INLINE const NodeGraphPartIterator& NodeGraphPart::end() const noexcept {
-    return endIteratorSafe__;
+    return  _endIteratorSafe_;
   }
 
   INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {
-    if (boundVal__ != p.boundVal__) return false;
+    if ( _boundVal_ != p. _boundVal_) return false;
 
-    if (holes__)
-      if (p.holes__)
-        return (*holes__ == *p.holes__);
+    if ( _holes_)
+      if (p. _holes_)
+        return (* _holes_ == *p. _holes_);
       else
         return false;
-    else if (p.holes__)
+    else if (p. _holes_)
       return false;
 
     return true;
@@ -359,8 +359,8 @@ namespace gum {
     NodeSet son(sizeNodes());
 
     if (!empty()) {
-      for (NodeId n = 0; n < boundVal__; ++n) {
-        if (!inHoles__(n)) son.insert(n);
+      for (NodeId n = 0; n <  _boundVal_; ++n) {
+        if (! _inHoles_(n)) son.insert(n);
       }
     }
 
@@ -371,13 +371,13 @@ namespace gum {
     return *(static_cast< const NodeGraphPart* >(this));
   }
 
-  INLINE bool NodeGraphPart::inHoles__(NodeId id) const {
-    return holes__ && holes__->contains(id);
+  INLINE bool NodeGraphPart:: _inHoles_(NodeId id) const {
+    return  _holes_ &&  _holes_->contains(id);
   }
 
-  /// @return the size of holes__
-  INLINE Size NodeGraphPart::sizeHoles__() const {
-    return holes__ ? holes__->size() : (Size)0;
+  /// @return the size of  _holes_
+  INLINE Size NodeGraphPart:: _sizeHoles_() const {
+    return  _holes_ ?  _holes_->size() : (Size)0;
   }
 
 } /* namespace gum */

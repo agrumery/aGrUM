@@ -38,7 +38,7 @@ namespace gum {
      * @ingroup learning_group
      */
     struct StructuralConstraintEmpty {
-      using allConstraints = ConstraintSet__< void >;
+      using allConstraints =  _ConstraintSet_< void >;
     };
 
   } /* namespace learning */

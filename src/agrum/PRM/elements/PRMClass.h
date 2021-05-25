@@ -329,7 +329,7 @@ namespace gum {
 
       private:
       /// Proceed with the copy of c in this.
-      // void copyClass__<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
+      // void  _copyClass_<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
 
       // ========================================================================
       /// @name Graphical model members
@@ -338,11 +338,11 @@ namespace gum {
 
       /// The dag representing dependencies between formal attributes and
       /// slots.
-      DAG dag__;
+      DAG  _dag_;
 
       /// Mapping between node's id and their name (being an attribute or a
       /// slot). Used for fast access to a member given it's node id.
-      NodeProperty< PRMClassElement< GUM_SCALAR >* > nodeIdMap__;
+      NodeProperty< PRMClassElement< GUM_SCALAR >* >  _nodeIdMap_;
 
       /// @}
       // ========================================================================
@@ -352,29 +352,29 @@ namespace gum {
 
       /// Mapping between a member's name and itself.
       /// Used for fast access to a member given it's name
-      HashTable< std::string, PRMClassElement< GUM_SCALAR >* > nameMap__;
+      HashTable< std::string, PRMClassElement< GUM_SCALAR >* >  _nameMap_;
 
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
-      Set< PRMAttribute< GUM_SCALAR >* > attributes__;
+      Set< PRMAttribute< GUM_SCALAR >* >  _attributes_;
 
       /// The sequence of PRMReferenceSlot<GUM_SCALAR>.
-      Set< PRMReferenceSlot< GUM_SCALAR >* > referenceSlots__;
+      Set< PRMReferenceSlot< GUM_SCALAR >* >  _referenceSlots_;
 
       /// The sequence of aggregate.
-      Set< PRMAggregate< GUM_SCALAR >* > aggregates__;
+      Set< PRMAggregate< GUM_SCALAR >* >  _aggregates_;
 
       /// The set of gum::PRMSlotChain<GUM_SCALAR>s
-      Set< PRMSlotChain< GUM_SCALAR >* > slotChains__;
+      Set< PRMSlotChain< GUM_SCALAR >* >  _slotChains_;
 
       /// The Set of parameters in this Class<GUM_SCALAR>.
-      Set< PRMParameter< GUM_SCALAR >* > parameters__;
+      Set< PRMParameter< GUM_SCALAR >* >  _parameters_;
 
       /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
-      void addCastDescendants__(PRMClassElement< GUM_SCALAR >* attr);
+      void  _addCastDescendants_(PRMClassElement< GUM_SCALAR >* attr);
 
       /// Recursively adds cast descendant from start to end in this
       /// Class<GUM_SCALAR>.
-      void addCastDescendants__(PRMAttribute< GUM_SCALAR >* start,
+      void  _addCastDescendants_(PRMAttribute< GUM_SCALAR >* start,
                                 PRMAttribute< GUM_SCALAR >* end);
 
       /// @}
@@ -387,47 +387,47 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
-      PRMClass< GUM_SCALAR >* superClass__;
+      PRMClass< GUM_SCALAR >*  _superClass_;
 
       /// The Set of implemented interface of this.
-      Set< PRMInterface< GUM_SCALAR >* >* implements__;
+      Set< PRMInterface< GUM_SCALAR >* >*  _implements_;
 
       /// The set of Class<GUM_SCALAR> which are extension of this
       /// Class<GUM_SCALAR> (i.e. direct subtypes).
-      Set< PRMClass< GUM_SCALAR >* > extensions__;
+      Set< PRMClass< GUM_SCALAR >* >  _extensions_;
 
       /// The bijection between variables in super and variables in this
       /// The bijection's firsts are attributes in this and its seconds are
       /// attributes in c.
-      Bijection< const DiscreteVariable*, const DiscreteVariable* >* bijection__;
+      Bijection< const DiscreteVariable*, const DiscreteVariable* >*  _bijection_;
 
       /// a dummy member used to fix a compilation issue in clang4
-      HashFunc< PRMClassElementContainer< GUM_SCALAR >* > dummy_hashfunc__;
+      HashFunc< PRMClassElementContainer< GUM_SCALAR >* >  _dummy_hashfunc_;
 
 
       /// Proceed with the copy when this inherits c.
-      void inheritClass__(const PRMClass< GUM_SCALAR >& c);
+      void  _inheritClass_(const PRMClass< GUM_SCALAR >& c);
 
       /// Proceed with the implementation of interfaces
-      void implementInterfaces__(bool delayInheritance);
+      void  _implementInterfaces_(bool delayInheritance);
 
       /// Check that a given element respects all the class interfaces
-      void checkInterfaces__(PRMClassElement< GUM_SCALAR >* elt);
+      void  _checkInterfaces_(PRMClassElement< GUM_SCALAR >* elt);
 
       /// Check that a given element respects a specific interface
-      void checkInterface__(PRMClassElement< GUM_SCALAR >* elt,
+      void  _checkInterface_(PRMClassElement< GUM_SCALAR >* elt,
                             PRMInterface< GUM_SCALAR >*    i);
 
       /// Check that a given element respects all the class interfaces
-      void checkRefInterfaces__(PRMReferenceSlot< GUM_SCALAR >* elt);
+      void  _checkRefInterfaces_(PRMReferenceSlot< GUM_SCALAR >* elt);
 
       /// Check that a given element respects a specific interface
-      void checkRefInterface__(PRMReferenceSlot< GUM_SCALAR >* elt,
+      void  _checkRefInterface_(PRMReferenceSlot< GUM_SCALAR >* elt,
                                PRMInterface< GUM_SCALAR >*     i);
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.
-      void addIOInterfaceFlags__(PRMClassElement< GUM_SCALAR >* elt);
+      void  _addIOInterfaceFlags_(PRMClassElement< GUM_SCALAR >* elt);
 
       /// This method is called when a sub-Class@<GUM_SCALAR@> of this
       /// Class@<GUM_SCALAR@> is created.
@@ -437,27 +437,27 @@ namespace gum {
       /// @throw DuplicateElement Raised if c is already a
       /// sub-Class@<GUM_SCALAR@>
       /// of this.
-      void addExtension__(PRMClass< GUM_SCALAR >* c);
+      void  _addExtension_(PRMClass< GUM_SCALAR >* c);
 
       /// Return true of overloaded can be overload by overloader.
       bool
-         checkOverloadLegality__(const PRMClassElement< GUM_SCALAR >* overloaded,
+          _checkOverloadLegality_(const PRMClassElement< GUM_SCALAR >* overloaded,
                                  const PRMClassElement< GUM_SCALAR >* overloader);
 
       /// Overloads an attribute.
-      void overloadAttribute__(PRMAttribute< GUM_SCALAR >* overloader,
+      void  _overloadAttribute_(PRMAttribute< GUM_SCALAR >* overloader,
                                PRMAttribute< GUM_SCALAR >* overloaded);
 
       /// Overloads an aggregate.
-      void overloadAggregate__(PRMAggregate< GUM_SCALAR >*    overloader,
+      void  _overloadAggregate_(PRMAggregate< GUM_SCALAR >*    overloader,
                                PRMClassElement< GUM_SCALAR >* overloaded);
 
       /// Overloads a reference slot.
-      void overloadReference__(PRMReferenceSlot< GUM_SCALAR >* overloader,
+      void  _overloadReference_(PRMReferenceSlot< GUM_SCALAR >* overloader,
                                PRMReferenceSlot< GUM_SCALAR >* overloaded);
 
       /// Overloads a parameter.
-      void overloadParameter__(PRMParameter< GUM_SCALAR >* overloader,
+      void  _overloadParameter_(PRMParameter< GUM_SCALAR >* overloader,
                                PRMParameter< GUM_SCALAR >* overloaded);
 
       /// @}

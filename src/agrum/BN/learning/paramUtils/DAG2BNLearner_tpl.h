@@ -138,7 +138,7 @@ namespace gum {
     /// copy a potential into another whose variables' sequence differs
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DAG2BNLearner< ALLOC >::probaVarReordering__(
+    void DAG2BNLearner< ALLOC >:: _probaVarReordering_(
        gum::Potential< GUM_SCALAR >&       pot,
        const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical

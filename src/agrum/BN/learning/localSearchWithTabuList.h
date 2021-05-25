@@ -125,7 +125,7 @@ namespace gum {
 
       private:
       /// the max number of changes decreasing the score that we allow to apply
-      Size MaxNbDecreasing__{2};
+      Size  _MaxNbDecreasing_{2};
     };
 
   } /* namespace learning */

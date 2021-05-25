@@ -1,5 +1,5 @@
-#ifndef __cxxtest__ErrorFormatter_h__
-#define __cxxtest__ErrorFormatter_h__
+#ifndef  __cxxtest__ErrorFormatter_h__
+#define  __cxxtest__ErrorFormatter_h__
 
 //
 // The ErrorFormatter is a TestListener that
@@ -274,4 +274,4 @@ namespace CxxTest {
   };
 };
 
-#endif  // __cxxtest__ErrorFormatter_h__
+#endif  //  __cxxtest__ErrorFormatter_h__

@@ -232,7 +232,7 @@ namespace gum {
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     private:
-    void minimalCondSetVisit__(NodeId         node,
+    void  _minimalCondSetVisit_(NodeId         node,
                                const NodeSet& soids,
                                NodeSet&       minimal,
                                NodeSet&       alreadyVisited) const;

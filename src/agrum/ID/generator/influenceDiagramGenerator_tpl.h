@@ -35,8 +35,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
-    utGenerator__  = new SimpleUTGenerator();
+     _cptGenerator_ = new SimpleCPTGenerator< GUM_SCALAR >();
+     _utGenerator_  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -47,8 +47,8 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
      ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    cptGenerator__ = cptGenerator;
-    utGenerator__  = new SimpleUTGenerator();
+     _cptGenerator_ = cptGenerator;
+     _utGenerator_  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -59,8 +59,8 @@ namespace gum {
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
      UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    cptGenerator__ = new SimpleCPTGenerator< GUM_SCALAR >();
-    utGenerator__  = utGenerator;
+     _cptGenerator_ = new SimpleCPTGenerator< GUM_SCALAR >();
+     _utGenerator_  = utGenerator;
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -74,16 +74,16 @@ namespace gum {
      ICPTGenerator< GUM_SCALAR >* cptGenerator,
      UTGenerator*                 utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
-    cptGenerator__ = cptGenerator;
-    utGenerator__  = utGenerator;
+     _cptGenerator_ = cptGenerator;
+     _utGenerator_  = utGenerator;
   }
 
   // Destructor.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::~InfluenceDiagramGenerator() {
     GUM_DESTRUCTOR(InfluenceDiagramGenerator);
-    delete cptGenerator__;
-    delete utGenerator__;
+    delete  _cptGenerator_;
+    delete  _utGenerator_;
   }
 
   // Generates an influence diagram using floats.
@@ -146,21 +146,21 @@ namespace gum {
     // And fill the CPTs and UTs
     for (Size i = 0; i < nbrNodes; ++i)
       if (influenceDiagram->isChanceNode(map[i]))
-        cptGenerator__->generateCPT(
+         _cptGenerator_->generateCPT(
            influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
            influenceDiagram->cpt(map[i]));
       else if (influenceDiagram->isUtilityNode(map[i]))
-        utGenerator__->generateUT(influenceDiagram->utility(map[i]).pos(
+         _utGenerator_->generateUT(influenceDiagram->utility(map[i]).pos(
                                      influenceDiagram->variable(map[i])),
                                   influenceDiagram->utility(map[i]));
 
-    checkTemporalOrder__(influenceDiagram);
+     _checkTemporalOrder_(influenceDiagram);
 
     return influenceDiagram;
   }
 
   template < typename GUM_SCALAR >
-  void InfluenceDiagramGenerator< GUM_SCALAR >::checkTemporalOrder__(
+  void InfluenceDiagramGenerator< GUM_SCALAR >:: _checkTemporalOrder_(
      InfluenceDiagram< GUM_SCALAR >* infdiag) {
     if (!infdiag->decisionOrderExists()) {
       Sequence< NodeId > order = infdiag->topologicalOrder(true);

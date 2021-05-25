@@ -114,11 +114,11 @@ namespace gum {
 
       /// @}
       private:
-      std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData > layers__;
-      Size                                                  domain_size__;
-      Size                                                  max_parents__;
-      double                                                cluster_ratio__;
-      HashTable< std::string, std::vector< std::string >* > cluster_map__;
+      std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >  _layers_;
+      Size                                                   _domain_size_;
+      Size                                                   _max_parents_;
+      double                                                 _cluster_ratio_;
+      HashTable< std::string, std::vector< std::string >* >  _cluster_map_;
 
       struct MyData {
         // interface name
@@ -129,38 +129,38 @@ namespace gum {
         std::vector< std::string > c;
       };
 
-      std::string generateType__(PRMFactory< GUM_SCALAR >& f);
+      std::string  _generateType_(PRMFactory< GUM_SCALAR >& f);
 
-      void generateInterfaces__(PRMFactory< GUM_SCALAR >& f,
+      void  _generateInterfaces_(PRMFactory< GUM_SCALAR >& f,
                                 const std::string&        type,
                                 std::vector< MyData >&    l);
 
-      void generateClasses__(
+      void  _generateClasses_(
          PRMFactory< GUM_SCALAR >&                                f,
          const std::string&                                       type,
          std::vector< typename ClusteredLayerGenerator::MyData >& l);
 
-      void generateCluster__(
+      void  _generateCluster_(
          PRMFactory< GUM_SCALAR >&                                f,
          const std::string&                                       type,
          std::vector< typename ClusteredLayerGenerator::MyData >& l,
          Size                                                     lvl,
          Set< std::string >&                                      i);
 
-      void generateClass__(
+      void  _generateClass_(
          PRMFactory< GUM_SCALAR >&                                f,
          const std::string&                                       type,
          std::vector< typename ClusteredLayerGenerator::MyData >& l,
          Size                                                     lvl,
          Set< std::string >&                                      i);
 
-      void generateClassDag__(
+      void  _generateClassDag_(
          Size                                                     lvl,
          DAG&                                                     dag,
          Bijection< std::string, NodeId >&                        names,
          std::vector< typename ClusteredLayerGenerator::MyData >& l);
 
-      void generateSystem__(
+      void  _generateSystem_(
          PRMFactory< GUM_SCALAR >&                                factory,
          std::vector< typename ClusteredLayerGenerator::MyData >& l);
     };

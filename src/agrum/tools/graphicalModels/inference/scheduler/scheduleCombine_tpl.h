@@ -43,15 +43,15 @@ namespace gum {
         const MultiDimImplementation< GUM_SCALAR >&)) :
       ScheduleOperation< GUM_SCALAR >(
          ScheduleOperation< GUM_SCALAR >::Type::COMBINE_MULTIDIM),
-      table1__(table1), table2__(table2), args__(0), results__(0),
-      combine__(combine) {
+       _table1_(table1),  _table2_(table2),  _args_(0),  _results_(0),
+       _combine_(combine) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCombine);
 
     // compute the variables of the resulting table
-    Sequence< const DiscreteVariable* >        vars = table1__.variablesSequence();
+    Sequence< const DiscreteVariable* >        vars =  _table1_.variablesSequence();
     const Sequence< const DiscreteVariable* >& vars2
-       = table2__.variablesSequence();
+       =  _table2_.variablesSequence();
 
     for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter
          = vars2.beginSafe();
@@ -62,7 +62,7 @@ namespace gum {
 
     // create the scheduleMultiDim that should result from the combination of
     // table1 and table2
-    result__ = new ScheduleMultiDim< GUM_SCALAR >(vars);
+     _result_ = new ScheduleMultiDim< GUM_SCALAR >(vars);
   }
 
   /// copy constructor
@@ -70,9 +70,9 @@ namespace gum {
   ScheduleCombine< GUM_SCALAR >::ScheduleCombine(
      const ScheduleCombine< GUM_SCALAR >& from) :
       ScheduleOperation< GUM_SCALAR >(from),
-      table1__(from.table1__), table2__(from.table2__),
-      result__(new ScheduleMultiDim< GUM_SCALAR >(*(from.result__))), args__(0),
-      results__(0), combine__(from.combine__) {
+       _table1_(from. _table1_),  _table2_(from. _table2_),
+       _result_(new ScheduleMultiDim< GUM_SCALAR >(*(from. _result_))),  _args_(0),
+       _results_(0),  _combine_(from. _combine_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleCombine);
   }
@@ -89,11 +89,11 @@ namespace gum {
   ScheduleCombine< GUM_SCALAR >::~ScheduleCombine() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleCombine);
-    delete result__;
+    delete  _result_;
 
-    if (args__) delete args__;
+    if ( _args_) delete  _args_;
 
-    if (results__) delete results__;
+    if ( _results_) delete  _results_;
   }
 
   /// copy operator
@@ -103,21 +103,21 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
-      table1__                                 = from.table1__;
-      table2__                                 = from.table2__;
-      *result__                                = *(from.result__);
-      combine__                                = from.combine__;
+       _table1_                                 = from. _table1_;
+       _table2_                                 = from. _table2_;
+      * _result_                                = *(from. _result_);
+       _combine_                                = from. _combine_;
 
-      // update args__ and results__ if they were already created
-      if (args__) {
-        args__->clear();
-        args__->insert(&table1__);
-        args__->insert(&table2__);
+      // update  _args_ and  _results_ if they were already created
+      if ( _args_) {
+         _args_->clear();
+         _args_->insert(& _table1_);
+         _args_->insert(& _table2_);
       }
 
-      if (results__) {
-        results__->clear();
-        results__->insert(result__);
+      if ( _results_) {
+         _results_->clear();
+         _results_->insert( _result_);
       }
     }
 
@@ -132,9 +132,9 @@ namespace gum {
 
     const ScheduleCombine< GUM_SCALAR >& real_op
        = static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
-    return ((((table1__ == real_op.table1__) && (table2__ == real_op.table2__))
-             || ((table1__ == real_op.table2__) && (table2__ == real_op.table1__)))
-            && (combine__ == real_op.combine__));
+    return (((( _table1_ == real_op. _table1_) && ( _table2_ == real_op. _table2_))
+             || (( _table1_ == real_op. _table2_) && ( _table2_ == real_op. _table1_)))
+            && ( _combine_ == real_op. _combine_));
   }
 
   /// operator !=
@@ -147,14 +147,14 @@ namespace gum {
   /// executes the operation
   template < typename GUM_SCALAR >
   void ScheduleCombine< GUM_SCALAR >::execute() {
-    if (result__->isAbstract()) {
+    if ( _result_->isAbstract()) {
       // first, get the multidims to combine
-      const MultiDimImplementation< GUM_SCALAR >& t1 = table1__.multiDim();
-      const MultiDimImplementation< GUM_SCALAR >& t2 = table2__.multiDim();
+      const MultiDimImplementation< GUM_SCALAR >& t1 =  _table1_.multiDim();
+      const MultiDimImplementation< GUM_SCALAR >& t2 =  _table2_.multiDim();
 
       // perform the combination and store the result
-      MultiDimImplementation< GUM_SCALAR >* res = combine__(t1, t2);
-      result__->setMultiDim(*res);
+      MultiDimImplementation< GUM_SCALAR >* res =  _combine_(t1, t2);
+       _result_->setMultiDim(*res);
     }
   }
 
@@ -162,8 +162,8 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template < typename GUM_SCALAR >
   float ScheduleCombine< GUM_SCALAR >::nbOperations() const {
-    const Sequence< const DiscreteVariable* >& seq1 = table1__.variablesSequence();
-    const Sequence< const DiscreteVariable* >& seq2 = table2__.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq1 =  _table1_.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq2 =  _table2_.variablesSequence();
 
     if (seq1.empty() && seq2.empty()) return 0.0f;
 
@@ -181,8 +181,8 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template < typename GUM_SCALAR >
   std::pair< long, long > ScheduleCombine< GUM_SCALAR >::memoryUsage() const {
-    const Sequence< const DiscreteVariable* >& seq1 = table1__.variablesSequence();
-    const Sequence< const DiscreteVariable* >& seq2 = table2__.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq1 =  _table1_.variablesSequence();
+    const Sequence< const DiscreteVariable* >& seq2 =  _table2_.variablesSequence();
 
     if (seq1.empty() && seq2.empty()) return std::pair< long, long >(0, 0);
 
@@ -212,39 +212,39 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleCombine< GUM_SCALAR >::multiDimArgs() const {
-    if (!args__) {
-      args__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      args__->insert(&table1__);
-      args__->insert(&table2__);
+    if (! _args_) {
+       _args_ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+       _args_->insert(& _table1_);
+       _args_->insert(& _table2_);
     }
 
-    return *args__;
+    return * _args_;
   }
 
   /// returns the set of multidims that should be the result of the operation
   template < typename GUM_SCALAR >
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleCombine< GUM_SCALAR >::multiDimResults() const {
-    if (!results__) {
-      results__ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
-      results__->insert(result__);
+    if (! _results_) {
+       _results_ = new Sequence< const ScheduleMultiDim< GUM_SCALAR >* >;
+       _results_->insert( _result_);
     }
 
-    return *results__;
+    return * _results_;
   }
 
   /// displays the content of the operation
   template < typename GUM_SCALAR >
   std::string ScheduleCombine< GUM_SCALAR >::toString() const {
-    return result__->toString() + " = combine ( " + table1__.toString() + " , "
-         + table2__.toString() + " )";
+    return  _result_->toString() + " = combine ( " +  _table1_.toString() + " , "
+         +  _table2_.toString() + " )";
   }
 
   /// returns the scheduleMultidim resulting from the execution of the operation
   template < typename GUM_SCALAR >
   INLINE const ScheduleMultiDim< GUM_SCALAR >&
                ScheduleCombine< GUM_SCALAR >::result() const {
-    return *result__;
+    return * _result_;
   }
 
 }   // namespace gum

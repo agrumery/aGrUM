@@ -97,43 +97,43 @@ namespace gum {
       template < typename GUM_SCALAR >
       InterfaceGraph< GUM_SCALAR >::InterfaceGraph(
          const PRMSystem< GUM_SCALAR >& sys) :
-          sys__(&sys),
-          labels__(new Bijection< Idx, LabelData* >()), counter__(0),
-          erase_flag__(true) {
+           _sys_(&sys),
+           _labels_(new Bijection< Idx, LabelData* >()),  _counter_(0),
+           _erase_flag_(true) {
         GUM_CONSTRUCTOR(InterfaceGraph);
         HashTable< std::string, LabelData* > label_map;
 
-        // We need to add each instance in graph__
+        // We need to add each instance in  _graph_
         for (auto iter = sys.begin(); iter != sys.end(); ++iter) {
           NodeData< GUM_SCALAR >* node = new NodeData< GUM_SCALAR >();
           node->n                      = iter.val();
-          label__(node, label_map);
-          graph__.addNodeWithId(iter.key());
-          idMap__.insert(node->n, iter.key());
-          nodes__.insert(iter.key(), node);
+           _label_(node, label_map);
+           _graph_.addNodeWithId(iter.key());
+           _idMap_.insert(node->n, iter.key());
+           _nodes_.insert(iter.key(), node);
         }
 
         NodeData< GUM_SCALAR >* u = nullptr;
         NodeData< GUM_SCALAR >* v = nullptr;
 
-        for (const auto& elt: nodes__) {
+        for (const auto& elt:  _nodes_) {
           NodeData< GUM_SCALAR >* data = elt.second;
 
           for (const auto chain: data->n->type().slotChains()) {
             for (const auto inst: data->n->getInstances(chain->id())) {
-              u = (nodes__[idMap__[inst]]->l < data->l) ? nodes__[idMap__[inst]]
+              u = ( _nodes_[ _idMap_[inst]]->l < data->l) ?  _nodes_[ _idMap_[inst]]
                                                         : data;
-              v = (u != data) ? data : nodes__[idMap__[inst]];
+              v = (u != data) ? data :  _nodes_[ _idMap_[inst]];
 
-              if (!graph__.existsEdge(idMap__[u->n], idMap__[v->n])) {
+              if (! _graph_.existsEdge( _idMap_[u->n],  _idMap_[v->n])) {
                 EdgeData< GUM_SCALAR >* edge = new EdgeData< GUM_SCALAR >();
                 edge->u                      = u->n;
                 edge->l_u                    = u->l;
                 edge->v                      = v->n;
                 edge->l_v                    = v->l;
-                label__(edge, label_map);
-                graph__.addEdge(idMap__[u->n], idMap__[v->n]);
-                edges__.insert(Edge(idMap__[u->n], idMap__[v->n]), edge);
+                 _label_(edge, label_map);
+                 _graph_.addEdge( _idMap_[u->n],  _idMap_[v->n]);
+                 _edges_.insert(Edge( _idMap_[u->n],  _idMap_[v->n]), edge);
               }
             }
           }
@@ -143,12 +143,12 @@ namespace gum {
       template < typename GUM_SCALAR >
       InterfaceGraph< GUM_SCALAR >::InterfaceGraph(
          const InterfaceGraph< GUM_SCALAR >& source) :
-          sys__(source.sys__),
-          graph__(source.graph__), nodes__(source.nodes__),
-          idMap__(source.idMap__), edges__(source.edges__),
-          labels__(new Bijection< Idx, LabelData* >(*(source.labels__))),
-          nodeMap__(source.nodeMap__), edgeMap__(source.edgeMap__),
-          counter__(source.counter__), erase_flag__(false) {
+           _sys_(source. _sys_),
+           _graph_(source. _graph_),  _nodes_(source. _nodes_),
+           _idMap_(source. _idMap_),  _edges_(source. _edges_),
+           _labels_(new Bijection< Idx, LabelData* >(*(source. _labels_))),
+           _nodeMap_(source. _nodeMap_),  _edgeMap_(source. _edgeMap_),
+           _counter_(source. _counter_),  _erase_flag_(false) {
         GUM_CONS_CPY(InterfaceGraph);
       }
 
@@ -156,25 +156,25 @@ namespace gum {
       InterfaceGraph< GUM_SCALAR >::~InterfaceGraph() {
         GUM_DESTRUCTOR(InterfaceGraph);
 
-        if (erase_flag__) {
-          for (const auto& elt: nodes__)
+        if ( _erase_flag_) {
+          for (const auto& elt:  _nodes_)
             delete elt.second;
 
-          for (const auto& elt: edges__)
+          for (const auto& elt:  _edges_)
             delete elt.second;
 
-          for (const auto& elt: nodeMap__) {
+          for (const auto& elt:  _nodeMap_) {
             delete elt.first;
             delete elt.second;
           }
 
-          for (const auto& elt: edgeMap__) {
+          for (const auto& elt:  _edgeMap_) {
             delete elt.first;
             delete elt.second;
           }
         }
 
-        delete labels__;
+        delete  _labels_;
       }
 
       template < typename GUM_SCALAR >
@@ -184,7 +184,7 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      void InterfaceGraph< GUM_SCALAR >::label__(
+      void InterfaceGraph< GUM_SCALAR >:: _label_(
          NodeData< GUM_SCALAR >*               node,
          HashTable< std::string, LabelData* >& label_map) {
         Size              size = Size(1);
@@ -220,19 +220,19 @@ namespace gum {
         if (!label_map.exists(sBuff.str())) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
-          label->id         = ++counter__;
+          label->id         = ++ _counter_;
           label->tree_width = size;
           label->l          = sBuff.str();
-          labels__->insert(label->id, label);
-          nodeMap__.insert(label, new Set< NodeData< GUM_SCALAR >* >());
+           _labels_->insert(label->id, label);
+           _nodeMap_.insert(label, new Set< NodeData< GUM_SCALAR >* >());
         }
 
         node->l = label_map[sBuff.str()];
-        nodeMap__[node->l]->insert(node);
+         _nodeMap_[node->l]->insert(node);
       }
 
       template < typename GUM_SCALAR >
-      void InterfaceGraph< GUM_SCALAR >::label__(
+      void InterfaceGraph< GUM_SCALAR >:: _label_(
          EdgeData< GUM_SCALAR >*               edge,
          HashTable< std::string, LabelData* >& label_map) {
         Size              size = Size(1);
@@ -260,86 +260,86 @@ namespace gum {
         if (!label_map.exists(sBuff.str())) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
-          label->id         = ++counter__;
+          label->id         = ++ _counter_;
           label->l          = sBuff.str();
           label->tree_width = size;
-          labels__->insert(label->id, label);
-          edgeMap__.insert(label, new Set< EdgeData< GUM_SCALAR >* >());
+           _labels_->insert(label->id, label);
+           _edgeMap_.insert(label, new Set< EdgeData< GUM_SCALAR >* >());
         }
 
         edge->l = label_map[sBuff.str()];
-        edgeMap__[edge->l]->insert(edge);
+         _edgeMap_[edge->l]->insert(edge);
       }
 
       template < typename GUM_SCALAR >
       INLINE UndiGraph& InterfaceGraph< GUM_SCALAR >::graph() {
-        return graph__;
+        return  _graph_;
       }
 
       template < typename GUM_SCALAR >
       INLINE const UndiGraph& InterfaceGraph< GUM_SCALAR >::graph() const {
-        return graph__;
+        return  _graph_;
       }
 
       template < typename GUM_SCALAR >
       INLINE Bijection< Idx, LabelData* >& InterfaceGraph< GUM_SCALAR >::labels() {
-        return *labels__;
+        return * _labels_;
       }
 
       template < typename GUM_SCALAR >
       INLINE const Bijection< Idx, LabelData* >&
                    InterfaceGraph< GUM_SCALAR >::labels() const {
-        return *labels__;
+        return * _labels_;
       }
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
         try {
-          return nodeMap__[const_cast< LabelData* >(l)]->size();
+          return  _nodeMap_[const_cast< LabelData* >(l)]->size();
         } catch (NotFound&) {
-          return edgeMap__[const_cast< LabelData* >(l)]->size();
+          return  _edgeMap_[const_cast< LabelData* >(l)]->size();
         }
       }
 
       template < typename GUM_SCALAR >
       INLINE Set< NodeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) {
-        return *(nodeMap__[const_cast< LabelData* >(l)]);
+        return *( _nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const Set< NodeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) const {
-        return *(nodeMap__[const_cast< LabelData* >(l)]);
+        return *( _nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE Set< EdgeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) {
-        return *(edgeMap__[const_cast< LabelData* >(l)]);
+        return *( _edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const Set< EdgeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) const {
-        return *(edgeMap__[const_cast< LabelData* >(l)]);
+        return *( _edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE LabelData* InterfaceGraph< GUM_SCALAR >::label(Idx id) {
-        return labels__->second(id);
+        return  _labels_->second(id);
       }
 
       template < typename GUM_SCALAR >
       INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(
          const PRMInstance< GUM_SCALAR >& i) const {
-        return idMap__[const_cast< PRMInstance< GUM_SCALAR >* >(&i)];
+        return  _idMap_[const_cast< PRMInstance< GUM_SCALAR >* >(&i)];
       }
 
       template < typename GUM_SCALAR >
       INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(
          const PRMInstance< GUM_SCALAR >* i) const {
-        return idMap__[const_cast< PRMInstance< GUM_SCALAR >* >(i)];
+        return  _idMap_[const_cast< PRMInstance< GUM_SCALAR >* >(i)];
       }
 
       template < typename GUM_SCALAR >
@@ -357,29 +357,29 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE NodeData< GUM_SCALAR >&
              InterfaceGraph< GUM_SCALAR >::node(NodeId id) {
-        return *(nodes__[id]);
+        return *( _nodes_[id]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const NodeData< GUM_SCALAR >&
                    InterfaceGraph< GUM_SCALAR >::node(NodeId id) const {
-        return *(nodes__[id]);
+        return *( _nodes_[id]);
       }
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                         NodeId v) {
         try {
-          return *(edges__[Edge(u, v)]);
-        } catch (NotFound&) { return *(edges__[Edge(v, u)]); }
+          return *( _edges_[Edge(u, v)]);
+        } catch (NotFound&) { return *( _edges_[Edge(v, u)]); }
       }
 
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >&
                    InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) const {
         try {
-          return *(edges__[Edge(u, v)]);
-        } catch (NotFound&) { return *(edges__[Edge(v, u)]); }
+          return *( _edges_[Edge(u, v)]);
+        } catch (NotFound&) { return *( _edges_[Edge(v, u)]); }
       }
 
       template < typename GUM_SCALAR >

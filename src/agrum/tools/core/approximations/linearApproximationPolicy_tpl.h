@@ -57,7 +57,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >::fromExact(
      const GUM_SCALAR& value) const {
-    return decode__(GUM_SCALAR(encode(value)));
+    return  _decode_(GUM_SCALAR(encode(value)));
   }
 
   // @brief Combine using addition with the given gum::ApproximationPolicy.
@@ -282,7 +282,7 @@ namespace gum {
     }
 
 #endif   // GUM_DEBUG_MODE
-    return encode__(value);
+    return  _encode_(value);
   }
 
   // Convert approximation representation to value
@@ -294,7 +294,7 @@ namespace gum {
                 "Interval Number asked is higher than total number of interval")
     }
 
-    return decode__(GUM_SCALAR(representation));
+    return  _decode_(GUM_SCALAR(representation));
   }
 
   // Sets approximation factor
@@ -361,7 +361,7 @@ namespace gum {
 
   // Concretely computes the approximate representation
   template < typename GUM_SCALAR >
-  INLINE Idx LinearApproximationPolicy< GUM_SCALAR >::encode__(
+  INLINE Idx LinearApproximationPolicy< GUM_SCALAR >:: _encode_(
      const GUM_SCALAR& value) const {
     if (value <= this->lowLimit_) return 0;
 
@@ -372,7 +372,7 @@ namespace gum {
 
   // Concretely computes the approximate value from representation
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >::decode__(
+  INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >:: _decode_(
      const GUM_SCALAR& representation) const {
     if (representation == 0) return this->lowLimit_;
 

@@ -476,16 +476,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, const Val* >, HeapAlloc > heap__;
+    std::vector< std::pair< Priority, const Val* >, HeapAlloc >  _heap_;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, std::vector< Size >, IndexAlloc > indices__;
+    HashTable< Val, std::vector< Size >, IndexAlloc >  _indices_;
 
     /// The number of elements in the heap.
-    Size nb_elements__{0};
+    Size  _nb_elements_{0};
 
     /// Comparison function.
-    Cmp cmp__;
+    Cmp  _cmp_;
   };
 
 } /* namespace gum */

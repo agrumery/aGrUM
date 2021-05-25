@@ -43,7 +43,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
        const LocalSearchWithTabuList& from) :
         ApproximationScheme(from),
-        MaxNbDecreasing__(from.MaxNbDecreasing__) {
+         _MaxNbDecreasing_(from. _MaxNbDecreasing_) {
       GUM_CONS_CPY(LocalSearchWithTabuList);
     }
 
@@ -51,7 +51,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
        LocalSearchWithTabuList&& from) :
         ApproximationScheme(std::move(from)),
-        MaxNbDecreasing__(std::move(from.MaxNbDecreasing__)) {
+         _MaxNbDecreasing_(std::move(from. _MaxNbDecreasing_)) {
       GUM_CONS_MOV(LocalSearchWithTabuList);
     }
 
@@ -64,7 +64,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
-      MaxNbDecreasing__            = from.MaxNbDecreasing__;
+       _MaxNbDecreasing_            = from. _MaxNbDecreasing_;
       return *this;
     }
 
@@ -72,14 +72,14 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
-      MaxNbDecreasing__            = std::move(from.MaxNbDecreasing__);
+       _MaxNbDecreasing_            = std::move(from. _MaxNbDecreasing_);
       return *this;
     }
 
     /// set the max number of changes decreasing the score that we allow to
     /// apply
     INLINE void LocalSearchWithTabuList::setMaxNbDecreasingChanges(Size nb) {
-      MaxNbDecreasing__ = nb;
+       _MaxNbDecreasing_ = nb;
     }
 
     /// returns the approximation policy of the learning algorithm

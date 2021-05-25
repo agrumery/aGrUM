@@ -195,7 +195,7 @@ namespace gum {
      * @return the mathcing node id in the target
      */
     // ==========================================================================
-    NodeId insertNodeInFunctionGraph__(NodeId src);
+    NodeId  _insertNodeInFunctionGraph_(NodeId src);
 
     // ==========================================================================
     /**
@@ -207,8 +207,8 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId insertTerminalNode__(NodeId src) {
-      return insertTerminalNode__(src, Int2Type< isScalar >());
+    NodeId  _insertTerminalNode_(NodeId src) {
+      return  _insertTerminalNode_(src, Int2Type< isScalar >());
     }
 
     // ==========================================================================
@@ -220,7 +220,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId insertTerminalNode__(NodeId src, Int2Type< true >);
+    NodeId  _insertTerminalNode_(NodeId src, Int2Type< true >);
 
     // ==========================================================================
     /**
@@ -231,7 +231,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId insertTerminalNode__(NodeId src, Int2Type< false >);
+    NodeId  _insertTerminalNode_(NodeId src, Int2Type< false >);
 
     /// @}
 
@@ -255,13 +255,13 @@ namespace gum {
     /// Hashtable indicating if given node has been modified (upon receiving new
     /// exemple or through a transpose)
     /// The aim is not if we have revise the installed variable on that node
-    HashTable< NodeId, bool > staleTable__;
+    HashTable< NodeId, bool >  _staleTable_;
 
     /// The total number of observation added to this tree
-    Idx nbTotalObservation__;
+    Idx  _nbTotalObservation_;
 
     /// The threshold above which we consider variables to be dependant
-    double attributeSelectionThreshold__;
+    double  _attributeSelectionThreshold_;
   };
 
 

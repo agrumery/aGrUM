@@ -1,5 +1,5 @@
-#ifndef __cxxtest__DummyDescriptions_h__
-#define __cxxtest__DummyDescriptions_h__
+#ifndef  __cxxtest__DummyDescriptions_h__
+#define  __cxxtest__DummyDescriptions_h__
 
 //
 // DummyTestDescription, DummySuiteDescription and DummyWorldDescription
@@ -68,4 +68,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__DummyDescriptions_h__
+#endif  //  __cxxtest__DummyDescriptions_h__

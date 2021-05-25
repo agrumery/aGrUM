@@ -1,5 +1,5 @@
-#ifndef __cxxtest__ValueTraits_cpp__
-#define __cxxtest__ValueTraits_cpp__
+#ifndef  __cxxtest__ValueTraits_cpp__
+#define  __cxxtest__ValueTraits_cpp__
 
 #include <cxxtest/ValueTraits.h>
 
@@ -156,4 +156,4 @@ namespace CxxTest {
 #endif  // !CXXTEST_USER_VALUE_TRAITS
 }
 
-#endif  // __cxxtest__ValueTraits_cpp__
+#endif  //  __cxxtest__ValueTraits_cpp__

@@ -42,7 +42,7 @@
     0.5723649429247000870717135                       // std::log (std::sqrt (pi))
 #  define GUM_I_SQRT_PI 0.5641895835477562869480795   // 1 / std::sqrt (pi)
 #  define GUM_BIGX      20.0   // max value to represent exp (x)
-#  define gum__ex(x)    (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
+#  define  _gum_ex(x)    (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -56,8 +56,8 @@ namespace gum {
   // default constructor
   Chi2::Chi2(const std::vector< std::size_t >& var_modalities,
              double                            confidence_proba) :
-      modalities__(var_modalities),
-      confidence_proba__(confidence_proba) {   // for debugging purposes
+       _modalities_(var_modalities),
+       _confidence_proba_(confidence_proba) {   // for debugging purposes
     GUM_CONSTRUCTOR(Chi2);
   }
 
@@ -68,7 +68,7 @@ namespace gum {
   }
 
   // computes the probability of normal z value (used by the cache)
-  double Chi2::probaZValue__(double z) {
+  double Chi2:: _probaZValue_(double z) {
     double y, x, w;
 
     if (z == 0.0)
@@ -139,9 +139,9 @@ namespace gum {
 
     even = (2 * (df / 2)) == df;
 
-    if (df > 1) y = gum__ex(-a);
+    if (df > 1) y =  _gum_ex(-a);
 
-    s = (even ? y : (2.0 * probaZValue__(-std::sqrt(x))));
+    s = (even ? y : (2.0 *  _probaZValue_(-std::sqrt(x))));
 
     if (df > 2) {
       x = 0.5 * (df - 1.0);
@@ -153,7 +153,7 @@ namespace gum {
 
         while (z <= x) {
           e = std::log(z) + e;
-          s += gum__ex(c * z - a - e);
+          s +=  _gum_ex(c * z - a - e);
           z += 1.0;
         }
 
@@ -175,7 +175,7 @@ namespace gum {
   }
 
   // computes the critical value of a given chi2 test (used by the cache)
-  double Chi2::criticalValue__(double proba, Size df) {
+  double Chi2:: _criticalValue_(double proba, Size df) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
     double chisqval;

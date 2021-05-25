@@ -665,7 +665,7 @@ namespace gum {
 
     // update all the iterators pointing to node that they should point
     // elsewhere
-    updateEraseIterators__(node);
+     _updateEraseIterators_(node);
 
     // update the number of elements contained in the tree
     --nb_elements_;
@@ -715,7 +715,7 @@ namespace gum {
     }
     // ok, here there are two children
     else {
-      eraseWithTwoChildren__(node);
+       _eraseWithTwoChildren_(node);
     }
 
     // now we shall physically remove node from memory
@@ -723,7 +723,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  INLINE void BinSearchTree< Val, Cmp, Node >::eraseWithTwoChildren__(Node* node) {
+  INLINE void BinSearchTree< Val, Cmp, Node >:: _eraseWithTwoChildren_(Node* node) {
     // the idea is to get the successor of "node" and substitute "node" by
     // it.  As "node" has two children, we are sure that the successor is one
     // of node's descendants. Moreover, by its very definition, this
@@ -800,7 +800,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  void BinSearchTree< Val, Cmp, Node >::updateEraseIterators__(Node* node) {
+  void BinSearchTree< Val, Cmp, Node >:: _updateEraseIterators_(Node* node) {
     for (iterator* iter = iterator_list_; iter; iter = iter->next_iter_) {
       // if the iterator points toward the node to be deleted, make its node_
       // field point to 0 and update accordingly its other fields

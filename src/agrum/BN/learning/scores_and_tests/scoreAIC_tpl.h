@@ -45,7 +45,7 @@ namespace gum {
                                                          nodeId2columns,
        const typename ScoreAIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreAIC);
     }
 
@@ -59,7 +59,7 @@ namespace gum {
                                                          nodeId2columns,
        const typename ScoreAIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreAIC);
     }
 
@@ -70,7 +70,7 @@ namespace gum {
        const ScoreAIC< ALLOC >&                          from,
        const typename ScoreAIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        internal_apriori__(from.internal_apriori__, alloc) {
+         _internal_apriori_(from. _internal_apriori_, alloc) {
       GUM_CONS_CPY(ScoreAIC);
     }
 
@@ -87,7 +87,7 @@ namespace gum {
        ScoreAIC< ALLOC >&&                               from,
        const typename ScoreAIC< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        internal_apriori__(std::move(from.internal_apriori__), alloc) {
+         _internal_apriori_(std::move(from. _internal_apriori_), alloc) {
       GUM_CONS_MOV(ScoreAIC);
     }
 
@@ -135,7 +135,7 @@ namespace gum {
        ScoreAIC< ALLOC >::operator=(const ScoreAIC< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__      = from.internal_apriori__;
+         _internal_apriori_      = from. _internal_apriori_;
       }
       return *this;
     }
@@ -146,7 +146,7 @@ namespace gum {
     ScoreAIC< ALLOC >& ScoreAIC< ALLOC >::operator=(ScoreAIC< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__      = std::move(from.internal_apriori__);
+         _internal_apriori_      = std::move(from. _internal_apriori_);
       }
       return *this;
     }
@@ -190,7 +190,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreAIC< ALLOC >::internalApriori() const {
-      return internal_apriori__;
+      return  _internal_apriori_;
     }
 
 

@@ -19,8 +19,8 @@
  */
 
 
-#ifndef __INFERENCE_ENGINE__H__
-#define __INFERENCE_ENGINE__H__
+#ifndef  __INFERENCE_ENGINE__H__
+#define  __INFERENCE_ENGINE__H__
 
 /**
  * @file

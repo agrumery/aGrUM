@@ -37,7 +37,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  const std::string createMsg__(const std::string& filename,
+  const std::string  _createMsg_(const std::string& filename,
                                 const std::string& function,
                                 const int          line,
                                 const std::string& msg) {

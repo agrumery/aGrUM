@@ -115,8 +115,8 @@ namespace gum {
     void removeNode_(NodeId removedNodeId);
 
     private:
-    void addLeaf__(NodeId);
-    void removeLeaf__(NodeId);
+    void  _addLeaf_(NodeId);
+    void  _removeLeaf_(NodeId);
 
     /// @}
 
@@ -129,8 +129,8 @@ namespace gum {
     // ==========================================================================
     /// Computes the score of the given variables for the given node
     // ==========================================================================
-    void updateScore__(const DiscreteVariable*, NodeId, VariableSelector& vs);
-    void downdateScore__(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void  _updateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void  _downdateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
 
     // ==========================================================================
     /// For each node in the given set, this methods checks whether or not
@@ -138,7 +138,7 @@ namespace gum {
     /// If so, the node is updated
     // ==========================================================================
     void
-       updateNodeSet__(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
+        _updateNodeSet_(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -148,37 +148,37 @@ namespace gum {
     void updateFunctionGraph();
 
     private:
-    void   rebuildFunctionGraph__();
-    NodeId insertLeafInFunctionGraph__(AbstractLeaf*, Int2Type< true >);
-    NodeId insertLeafInFunctionGraph__(AbstractLeaf*, Int2Type< false >);
+    void    _rebuildFunctionGraph_();
+    NodeId  _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< true >);
+    NodeId  _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< false >);
 
     /// @}
     ///
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           = varOrder__.beginSafe();
-           varIter != varOrder__.endSafe();
+           =  _varOrder_.beginSafe();
+           varIter !=  _varOrder_.endSafe();
            ++varIter)
         ret->add(**varIter);
     }
 
     private:
-    Sequence< const DiscreteVariable* > varOrder__;
+    Sequence< const DiscreteVariable* >  _varOrder_;
 
-    LeafAggregator lg__;
+    LeafAggregator  _lg_;
 
-    HashTable< NodeId, AbstractLeaf* > leafMap__;
+    HashTable< NodeId, AbstractLeaf* >  _leafMap_;
 
     /// The total number of observation added to this tree
-    Idx nbTotalObservation__;
+    Idx  _nbTotalObservation_;
 
     /// The threshold above which we consider variables to be dependant
-    double attributeSelectionThreshold__;
+    double  _attributeSelectionThreshold_;
 
     /// The threshold above which two leaves does not share the same probability
     /// distribution
-    // double pairSelectionThreshold__;
+    // double  _pairSelectionThreshold_;
   };
 
 

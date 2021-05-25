@@ -71,50 +71,50 @@ namespace gum {
     /// publishing Errors API
 
     /// # of errors
-    Size errors() { return errors__.error_count; }
+    Size errors() { return  _errors_.error_count; }
     /// # of errors
-    Size warnings() { return errors__.warning_count; }
+    Size warnings() { return  _errors_.warning_count; }
 
-    Idx errLine(Idx i) { return errors__.error(i).line; }
+    Idx errLine(Idx i) { return  _errors_.error(i).line; }
     /// col of ith error or warning
-    Idx errCol(Idx i) { return errors__.error(i).column; }
+    Idx errCol(Idx i) { return  _errors_.error(i).column; }
     /// type of ith error or warning
-    bool errIsError(Idx i) { return errors__.error(i).is_error; }
+    bool errIsError(Idx i) { return  _errors_.error(i).is_error; }
     /// message of ith error or warning
-    std::string errMsg(Idx i) { return errors__.error(i).msg; }
+    std::string errMsg(Idx i) { return  _errors_.error(i).msg; }
 
     /// send on std::cerr the list of errors
     void showElegantErrors(std::ostream& o = std::cerr) {
-      errors__.elegantErrors(o);
+       _errors_.elegantErrors(o);
     }
 
     /// send on std::cerr the list of errors or warnings
     void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) {
-      errors__.elegantErrorsAndWarnings(o);
+       _errors_.elegantErrorsAndWarnings(o);
     }
 
     /// send on std::cerr the number of errors and the number of warnings
     void showErrorCounts(std::ostream& o = std::cerr) {
-      errors__.syntheticResults(o);
+       _errors_.syntheticResults(o);
     }
     /// @}
 
     private:
-    std::string filename__;
+    std::string  _filename_;
 
-    std::string classpath__;
-    std::string entityName__;
+    std::string  _classpath_;
+    std::string  _entityName_;
 
-    BayesNet< GUM_SCALAR >* bn__;
-    ErrorsContainer         errors__;
+    BayesNet< GUM_SCALAR >*  _bn_;
+    ErrorsContainer          _errors_;
 
-    void               generateBN__(prm::PRMSystem< GUM_SCALAR >& system);
-    static std::string getVariableName__(const std::string& path,
+    void                _generateBN_(prm::PRMSystem< GUM_SCALAR >& system);
+    static std::string  _getVariableName_(const std::string& path,
                                          const std::string& type,
                                          const std::string& name,
                                          const std::string& toRemove = "");
-    static std::string getEntityName__(const std::string& filename);
-    static std::string getInstanceName__(const std::string& classname);
+    static std::string  _getEntityName_(const std::string& filename);
+    static std::string  _getInstanceName_(const std::string& classname);
   };
 
 }   // namespace gum

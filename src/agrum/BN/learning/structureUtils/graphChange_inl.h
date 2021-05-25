@@ -37,20 +37,20 @@ namespace gum {
     INLINE GraphChange::GraphChange(GraphChangeType type,
                                     NodeId          node1,
                                     NodeId          node2) noexcept :
-        type__{type},
-        node1__{node1}, node2__{node2} {
+         _type_{type},
+         _node1_{node1},  _node2_{node2} {
       GUM_CONSTRUCTOR(GraphChange);
     }
 
     /// copy constructor
     INLINE GraphChange::GraphChange(const GraphChange& from) noexcept :
-        type__{from.type__}, node1__{from.node1__}, node2__{from.node2__} {
+         _type_{from. _type_},  _node1_{from. _node1_},  _node2_{from. _node2_} {
       GUM_CONS_CPY(GraphChange);
     }
 
     /// move constructor
     INLINE GraphChange::GraphChange(GraphChange&& from) noexcept :
-        type__{from.type__}, node1__{from.node1__}, node2__{from.node2__} {
+         _type_{from. _type_},  _node1_{from. _node1_},  _node2_{from. _node2_} {
       GUM_CONS_MOV(GraphChange);
     }
 
@@ -62,33 +62,33 @@ namespace gum {
 
     /// copy constructor
     INLINE GraphChange& GraphChange::operator=(const GraphChange& from) noexcept {
-      type__  = from.type__;
-      node1__ = from.node1__;
-      node2__ = from.node2__;
+       _type_  = from. _type_;
+       _node1_ = from. _node1_;
+       _node2_ = from. _node2_;
       return *this;
     }
 
     /// move operator
     INLINE GraphChange& GraphChange::operator=(GraphChange&& from) noexcept {
-      type__  = from.type__;
-      node1__ = from.node1__;
-      node2__ = from.node2__;
+       _type_  = from. _type_;
+       _node1_ = from. _node1_;
+       _node2_ = from. _node2_;
       return *this;
     }
 
     /// returns the type of the operation
-    INLINE GraphChangeType GraphChange::type() const noexcept { return type__; }
+    INLINE GraphChangeType GraphChange::type() const noexcept { return  _type_; }
 
     /// returns the first node involved in the modification
-    INLINE NodeId GraphChange::node1() const noexcept { return node1__; }
+    INLINE NodeId GraphChange::node1() const noexcept { return  _node1_; }
 
     /// returns the second node involved in the modification
-    INLINE NodeId GraphChange::node2() const noexcept { return node2__; }
+    INLINE NodeId GraphChange::node2() const noexcept { return  _node2_; }
 
     /// returns whether two graph changes are identical or not
     INLINE bool GraphChange::operator==(const GraphChange& from) const noexcept {
-      return ((node1__ == from.node1__) && (node2__ == from.node2__)
-              && (type__ == from.type__));
+      return (( _node1_ == from. _node1_) && ( _node2_ == from. _node2_)
+              && ( _type_ == from. _type_));
     }
 
     /// returns whether two graph changes are different or not

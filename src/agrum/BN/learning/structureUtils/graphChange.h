@@ -123,13 +123,13 @@ namespace gum {
 
       private:
       /// the type of modification
-      GraphChangeType type__;
+      GraphChangeType  _type_;
 
       /// the first node in the edge or arc to be modified
-      NodeId node1__;
+      NodeId  _node1_;
 
       /// the second node in the edge or arc to be modified
-      NodeId node2__;
+      NodeId  _node2_;
     };
 
     /* =========================================================================

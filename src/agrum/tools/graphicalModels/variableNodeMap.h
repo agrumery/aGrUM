@@ -158,13 +158,13 @@ namespace gum {
 
     private:
     /// effectively do the copy (for copy constructor or operator=)
-    void copy__(const VariableNodeMap& source);
+    void  _copy_(const VariableNodeMap& source);
 
     /// Bijection between the node's NodeIds and the variables.
-    Bijection< NodeId, const DiscreteVariable* > nodes2vars__;
+    Bijection< NodeId, const DiscreteVariable* >  _nodes2vars_;
 
     /// HashTable for easely find an id from a name
-    Bijection< std::string, NodeId > names2nodes__;
+    Bijection< std::string, NodeId >  _names2nodes_;
   };
 
   /// for friendly displaying the content of clique graphs

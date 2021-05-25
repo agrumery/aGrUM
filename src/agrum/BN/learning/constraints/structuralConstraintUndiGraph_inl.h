@@ -34,22 +34,22 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     INLINE void
        StructuralConstraintUndiGraph::setGraphAlone(const UndiGraph& graph) {
-      UndiGraph__graph_ = graph;
+       _UndiGraph_graph_ = graph;
     }
 
     /// checks whether the constraints enable to add edge (x,y)
     INLINE bool
        StructuralConstraintUndiGraph::checkEdgeAdditionAlone(NodeId x,
                                                              NodeId y) const {
-      return UndiGraph__graph_.existsNode(x) && UndiGraph__graph_.existsNode(y)
-          && !UndiGraph__graph_.existsEdge(x, y);
+      return  _UndiGraph_graph_.existsNode(x) &&  _UndiGraph_graph_.existsNode(y)
+          && ! _UndiGraph_graph_.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to remove edge (x,y)
     INLINE bool
        StructuralConstraintUndiGraph::checkEdgeDeletionAlone(NodeId x,
                                                              NodeId y) const {
-      return UndiGraph__graph_.existsEdge(x, y);
+      return  _UndiGraph_graph_.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to add an edge
@@ -84,13 +84,13 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
        const EdgeAddition& change) {
-      UndiGraph__graph_.addEdge(change.node1(), change.node2());
+       _UndiGraph_graph_.addEdge(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
        const EdgeDeletion& change) {
-      UndiGraph__graph_.eraseEdge(Edge(change.node1(), change.node2()));
+       _UndiGraph_graph_.eraseEdge(Edge(change.node1(), change.node2()));
     }
 
     /// notify the constraint of a modification of the graph
@@ -120,9 +120,9 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintUndiGraph::setGraph(Size nb_nodes) {
-      UndiGraph__graph_.clear();
+       _UndiGraph_graph_.clear();
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        UndiGraph__graph_.addNodeWithId(i);
+         _UndiGraph_graph_.addNodeWithId(i);
       }
     }
 

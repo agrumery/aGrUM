@@ -128,9 +128,9 @@ namespace gum {
       GroundedInference& operator=(const GroundedInference& source);
 
       /// The bayesnet inference engine used by this class.
-      MarginalTargetedInference< GUM_SCALAR >* inf__;
+      MarginalTargetedInference< GUM_SCALAR >*  _inf_;
 
-      List< const Potential< GUM_SCALAR >* > obs__;
+      List< const Potential< GUM_SCALAR >* >  _obs_;
     };
 
 

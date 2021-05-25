@@ -107,14 +107,14 @@ namespace gum {
     /// Iterator beginning
     // ============================================================================
     SequenceIteratorSafe< GUM_SCALAR_SEQ > beginSafe() const {
-      return argMaxSeq__->beginSafe();
+      return  _argMaxSeq_->beginSafe();
     }
 
     // ============================================================================
     /// Iterator end
     // ============================================================================
     SequenceIteratorSafe< GUM_SCALAR_SEQ > endSafe() const {
-      return argMaxSeq__->endSafe();
+      return  _argMaxSeq_->endSafe();
     }
 
     /// @}
@@ -140,7 +140,7 @@ namespace gum {
     /// Gives the ith element
     // ============================================================================
     const GUM_SCALAR_SEQ& operator[](const Idx i) const {
-      return argMaxSeq__->atPos(i);
+      return  _argMaxSeq_->atPos(i);
     }
 
     // ============================================================================
@@ -158,7 +158,7 @@ namespace gum {
     // ============================================================================
     bool operator<(
        const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return val__ < compared.value() ? true : false;
+      return  _val_ < compared.value() ? true : false;
     }
     bool operator>(
        const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
@@ -178,26 +178,26 @@ namespace gum {
     // ============================================================================
     /// Gives the size
     // ============================================================================
-    Idx size() const { return argMaxSeq__->size(); }
+    Idx size() const { return  _argMaxSeq_->size(); }
 
     // ============================================================================
     /// Returns the value on which comparison are made
     // ============================================================================
-    const GUM_SCALAR_VAL& value() const { return val__; }
+    const GUM_SCALAR_VAL& value() const { return  _val_; }
 
     bool exists(const GUM_SCALAR_SEQ& elem) const {
-      return argMaxSeq__->exists(elem);
+      return  _argMaxSeq_->exists(elem);
     }
 
     private:
     /// The very bone of the ArgMaxSet
-    Sequence< GUM_SCALAR_SEQ >* argMaxSeq__;
-    GUM_SCALAR_VAL              val__;
+    Sequence< GUM_SCALAR_SEQ >*  _argMaxSeq_;
+    GUM_SCALAR_VAL               _val_;
 
     public:
     friend std::ostream& operator<<(std::ostream& streamy, const ArgMaxSet& objy) {
       streamy << "Value : " << objy.value()
-              << " - Set : " << objy.argMaxSeq__->toString();
+              << " - Set : " << objy. _argMaxSeq_->toString();
       return streamy;
     }
   };

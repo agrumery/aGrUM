@@ -110,18 +110,18 @@ namespace gum {
       PRMFormAttribute& operator=(const PRMFormAttribute& source);
 
       /// The random variable type of this attribute
-      PRMType* type__;
+      PRMType*  _type_;
 
       /// A pointer on the Potential of this attribute
-      mutable Potential< GUM_SCALAR >* cpf__;
+      mutable Potential< GUM_SCALAR >*  _cpf_;
 
       /// A pointer on the Potential of this attribute
-      MultiDimImplementation< std::string >* formulas__;
+      MultiDimImplementation< std::string >*  _formulas_;
 
       /// A pointe toward the class of this attribute
-      const PRMClass< GUM_SCALAR >* class__;
+      const PRMClass< GUM_SCALAR >*  _class_;
 
-      void fillCpf__() const;
+      void  _fillCpf_() const;
     };
 
 

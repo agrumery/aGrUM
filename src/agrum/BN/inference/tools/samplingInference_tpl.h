@@ -47,7 +47,7 @@ namespace gum {
   SamplingInference< GUM_SCALAR >::SamplingInference(
      const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn),
-      estimator__(), samplingBN__(nullptr) {
+       _estimator_(),  _samplingBN_(nullptr) {
     this->setEpsilon(DEFAULT_EPSILON);
     this->setMinEpsilonRate(DEFAULT_MIN_EPSILON_RATE);
     this->setMaxIter(DEFAULT_MAXITER);
@@ -61,9 +61,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::~SamplingInference() {
     GUM_DESTRUCTOR(SamplingInference);
-    if (samplingBN__ != nullptr) {
-      if (isContextualized) {   // otherwise samplingBN__==&BN()
-        delete samplingBN__;
+    if ( _samplingBN_ != nullptr) {
+      if (isContextualized) {   // otherwise  _samplingBN_==&BN()
+        delete  _samplingBN_;
       }
     }
   }
@@ -72,14 +72,14 @@ namespace gum {
   INLINE const IBayesNet< GUM_SCALAR >&
                SamplingInference< GUM_SCALAR >::samplingBN() {
     this->prepareInference();
-    if (samplingBN__ == nullptr)
+    if ( _samplingBN_ == nullptr)
       return this->BN();
     else
-      return *samplingBN__;
+      return * _samplingBN_;
   }
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::setEstimatorFromBN_() {
-    estimator__.setFromBN(&samplingBN(), this->hardEvidenceNodes());
+     _estimator_.setFromBN(&samplingBN(), this->hardEvidenceNodes());
     this->isSetEstimator = true;
   }
 
@@ -87,7 +87,7 @@ namespace gum {
   void SamplingInference< GUM_SCALAR >::setEstimatorFromLBP_(
      LoopyBeliefPropagation< GUM_SCALAR >* lbp,
      GUM_SCALAR                            virtualLBPSize) {
-    estimator__.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
+     _estimator_.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }
 
@@ -95,7 +95,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
-    return estimator__.posterior(this->BN().variable(id));
+    return  _estimator_.posterior(this->BN().variable(id));
   }
 
   template < typename GUM_SCALAR >
@@ -107,7 +107,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      SamplingInference< GUM_SCALAR >::posterior_(NodeId id) {
-    return estimator__.posterior(this->BN().variable(id));
+    return  _estimator_.posterior(this->BN().variable(id));
   }
 
   template < typename GUM_SCALAR >
@@ -120,9 +120,9 @@ namespace gum {
     const NodeSet& barren = barr_nodes.barrenNodes();
 
     // creating BN fragment
-    samplingBN__ = new BayesNetFragment< GUM_SCALAR >(this->BN());
+     _samplingBN_ = new BayesNetFragment< GUM_SCALAR >(this->BN());
     for (const auto elmt: this->BN().dag().asNodeSet() - barren)
-      samplingBN__->installNode(elmt);
+       _samplingBN_->installNode(elmt);
 
     // D-separated nodes
 
@@ -139,19 +139,19 @@ namespace gum {
     auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
 
     for (const auto elmt: nonRequisite)
-      samplingBN__->uninstallNode(elmt);
+       _samplingBN_->uninstallNode(elmt);
     for (const auto hard: this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
       I.chgVal(this->BN().variable(hard), this->hardEvidence()[hard]);
 
       for (const auto& child: this->BN().children(hard)) {
-        samplingBN__->installCPT(child, this->BN().cpt(child).extract(I));
+         _samplingBN_->installCPT(child, this->BN().cpt(child).extract(I));
       }
     }
 
     this->isContextualized = true;
-    this->onContextualize_(samplingBN__);
+    this->onContextualize_( _samplingBN_);
   }
 
 
@@ -163,7 +163,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::loopApproxInference_() {
-    //@todo This should be in prepareInference__
+    //@todo This should be in  _prepareInference_
     if (!isContextualized) { this->contextualize(); }
 
     this->initApproximationScheme();
@@ -174,9 +174,9 @@ namespace gum {
     Ip = this->burnIn_();
     do {
       Ip = this->draw_(&w, Ip);
-      estimator__.update(Ip, w);
+       _estimator_.update(Ip, w);
       this->updateApproximationScheme();
-    } while (this->continueApproximationScheme(estimator__.confidence()));
+    } while (this->continueApproximationScheme( _estimator_.confidence()));
 
     this->isSetEstimator = false;
   }
@@ -247,7 +247,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onStateChanged_() {
     if (this->isInferenceReady()) {
-      estimator__.clear();
+       _estimator_.clear();
       this->initApproximationScheme();
     }
   }

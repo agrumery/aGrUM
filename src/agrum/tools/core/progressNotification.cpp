@@ -30,15 +30,15 @@
 
 namespace gum {
 
-  ProgressListener::ProgressListener(ProgressNotifier& notif) : notif__(notif) {
+  ProgressListener::ProgressListener(ProgressNotifier& notif) :  _notif_(notif) {
     GUM_CONSTRUCTOR(ProgressListener);
 
-    GUM_CONNECT((notif__), onProgress, (*this), ProgressListener::whenProgress);
-    GUM_CONNECT((notif__), onStop, (*this), ProgressListener::whenStop);
+    GUM_CONNECT(( _notif_), onProgress, (*this), ProgressListener::whenProgress);
+    GUM_CONNECT(( _notif_), onStop, (*this), ProgressListener::whenStop);
   }
 
   ProgressListener::ProgressListener(const ProgressListener& other) :
-      notif__(other.notif__) {
+       _notif_(other. _notif_) {
     GUM_CONS_CPY(ProgressListener);
     GUM_ERROR(OperationNotAllowed, "No copy constructor for ProgressListener")
   }

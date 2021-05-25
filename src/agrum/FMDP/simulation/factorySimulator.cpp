@@ -44,50 +44,50 @@
 //    // Défintion des variables du problème
 
 //    // Position FactorySimulator
-//    xPos__ = new LabelizedVariable("xPos", "Position horizontale du
+//     _xPos_ = new LabelizedVariable("xPos", "Position horizontale du
 //    FactorySimulator");
-//    yPos__ = new LabelizedVariable("yPos", "Position verticale du
+//     _yPos_ = new LabelizedVariable("yPos", "Position verticale du
 //    FactorySimulator");
-//    xPos__->eraseLabels();
-//    yPos__->eraseLabels();
+//     _xPos_->eraseLabels();
+//     _yPos_->eraseLabels();
 //    for( Idx pos = 0; pos < 5; pos++){
 //      std::stringstream ss;
 //      ss << pos;
-//      xPos__->addLabel(ss.str());
-//      yPos__->addLabel(ss.str());
+//       _xPos_->addLabel(ss.str());
+//       _yPos_->addLabel(ss.str());
 //    }
 
 //    // Position et destination passager
-//    passengerPos__ = new LabelizedVariable("PassengerPos", "Position du
+//     _passengerPos_ = new LabelizedVariable("PassengerPos", "Position du
 //    Passager", 5);
-//    passengerDest__ = new LabelizedVariable("PassengerDest", "Destination du
+//     _passengerDest_ = new LabelizedVariable("PassengerDest", "Destination du
 //    Passager", 4);
-//    passengerPos__->changeLabel(HOME, "Home");
-//    passengerDest__->changeLabel(HOME, "Home");
-//    passengerPos__->changeLabel(WORK, "Work");
-//    passengerDest__->changeLabel(WORK, "Work");
-//    passengerPos__->changeLabel(THEATER, "Theater");
-//    passengerDest__->changeLabel(THEATER, "Theater");
-//    passengerPos__->changeLabel(CLUB, "Club");
-//    passengerDest__->changeLabel(CLUB, "Club");
-//    passengerPos__->changeLabel(Factory, "Factory");
+//     _passengerPos_->changeLabel(HOME, "Home");
+//     _passengerDest_->changeLabel(HOME, "Home");
+//     _passengerPos_->changeLabel(WORK, "Work");
+//     _passengerDest_->changeLabel(WORK, "Work");
+//     _passengerPos_->changeLabel(THEATER, "Theater");
+//     _passengerDest_->changeLabel(THEATER, "Theater");
+//     _passengerPos_->changeLabel(CLUB, "Club");
+//     _passengerDest_->changeLabel(CLUB, "Club");
+//     _passengerPos_->changeLabel(Factory, "Factory");
 
-////    fuelLevel__ = new LabelizedVariable("FuelLevel", "Niveau du réservoir",
+////     _fuelLevel_ = new LabelizedVariable("FuelLevel", "Niveau du réservoir",
 /// 14);
 
 //    // Ajout à séquence
-//    FactoryVars__.insert(xPos__);
-//    FactoryVars__.insert(yPos__);
-//    FactoryVars__.insert(passengerPos__);
-//    FactoryVars__.insert(passengerDest__);
-////    FactoryVars__.insert(fuelLevel__);
+//     _FactoryVars_.insert( _xPos_);
+//     _FactoryVars_.insert( _yPos_);
+//     _FactoryVars_.insert( _passengerPos_);
+//     _FactoryVars_.insert( _passengerDest_);
+////     _FactoryVars_.insert( _fuelLevel_);
 
 //    // Prime version creation
 //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
 //    this->beginVariables(); varIter != this->endVariables(); ++varIter){
 //      DiscreteVariable* primeVar = (*varIter)->clone();
 //      primeVar->setName((*varIter)->name() + "'");
-//      primeMap__.insert((*varIter), primeVar);
+//       _primeMap_.insert((*varIter), primeVar);
 //    }
 
 //    //
@@ -96,28 +96,28 @@
 //    //
 //    *****************************************************************************************
 //    // Défintion des actions du problème
-//    FactoryActions__.insert(GoNorth);
-//    actionMap__.insert(GoNorth, new std::string ("Go North"));
-//    FactoryActions__.insert(GoEast);
-//    actionMap__.insert(GoEast, new std::string ("Go East"));
-//    FactoryActions__.insert(GoSouth);
-//    actionMap__.insert(GoSouth, new std::string ("Go South"));
-//    FactoryActions__.insert(GoWest);
-//    actionMap__.insert(GoWest, new std::string ("Go West"));
-//    FactoryActions__.insert(PickUp);
-//    actionMap__.insert(PickUp, new std::string ("Pick Up"));
-//    FactoryActions__.insert(PutDown);
-//    actionMap__.insert(PutDown, new std::string ("Put Down"));
-////    FactoryActions__.insert(FillUp);
-////    actionMap__.insert(FillUp, new std::string ("FillUp"));
+//     _FactoryActions_.insert(GoNorth);
+//     _actionMap_.insert(GoNorth, new std::string ("Go North"));
+//     _FactoryActions_.insert(GoEast);
+//     _actionMap_.insert(GoEast, new std::string ("Go East"));
+//     _FactoryActions_.insert(GoSouth);
+//     _actionMap_.insert(GoSouth, new std::string ("Go South"));
+//     _FactoryActions_.insert(GoWest);
+//     _actionMap_.insert(GoWest, new std::string ("Go West"));
+//     _FactoryActions_.insert(PickUp);
+//     _actionMap_.insert(PickUp, new std::string ("Pick Up"));
+//     _FactoryActions_.insert(PutDown);
+//     _actionMap_.insert(PutDown, new std::string ("Put Down"));
+////     _FactoryActions_.insert(FillUp);
+////     _actionMap_.insert(FillUp, new std::string ("FillUp"));
 //  }
 
 //  FactorySimulator::~FactorySimulator(){
 //    GUM_DESTRUCTOR(FactorySimulator);
 
 //    for( BijectionIteratorSafe<const DiscreteVariable*, const
-//    DiscreteVariable*> varIter = primeMap__.beginSafe();
-//        varIter != primeMap__.endSafe(); ++varIter ){
+//    DiscreteVariable*> varIter =  _primeMap_.beginSafe();
+//        varIter !=  _primeMap_.endSafe(); ++varIter ){
 //      delete varIter.first();
 //      delete varIter.second();
 //    }
@@ -132,20 +132,20 @@
 //  ==================================================================================================================
 //  Instantiation  FactorySimulator::randomState_(){
 //    Instantiation randy = AbstractSimulator::randomState_();
-////    Idx curFuelLevel = randy.valFromPtr(fuelLevel__);
+////    Idx curFuelLevel = randy.valFromPtr( _fuelLevel_);
 ////    while(curFuelLevel > 12 || curFuelLevel < 5)
 ////      curFuelLevel = (Idx)(((double)std::rand( ) / (double)RAND_MAX) * 7.0)
 ///+ 5;
-////    randy.chgVal(fuelLevel__, curFuelLevel);
+////    randy.chgVal( _fuelLevel_, curFuelLevel);
 
 //    FactorySimulationLandmark passPos = (FactorySimulationLandmark)
-//    randy.valFromPtr(passengerPos__);
+//    randy.valFromPtr( _passengerPos_);
 //    FactorySimulationLandmark passDest = (FactorySimulationLandmark)
-//    randy.valFromPtr(passengerDest__);
+//    randy.valFromPtr( _passengerDest_);
 //    while( passPos == passDest || passPos == Factory )
 //      passPos = (FactorySimulationLandmark) (((double)std::rand( ) /
 //      (double)RAND_MAX) * 3.0);
-//    randy.chgVal(passengerPos__, passPos);
+//    randy.chgVal( _passengerPos_, passPos);
 
 //    return randy;
 //  }
@@ -157,11 +157,11 @@
 //  //
 //  ==================================================================================================================
 //  bool FactorySimulator::hasReachEnd(){
-//    if( currentState_.valFromPtr(passengerPos__) ==
-//    currentState_.valFromPtr(passengerDest__) )
+//    if( currentState_.valFromPtr( _passengerPos_) ==
+//    currentState_.valFromPtr( _passengerDest_) )
 //      return true;
 
-////    if( currentState_.valFromPtr(fuelLevel__) == 0 )
+////    if( currentState_.valFromPtr( _fuelLevel_) == 0 )
 ////      return true;
 
 //    return false;
@@ -174,22 +174,22 @@
 //  //
 //  ==================================================================================================================
 //  double FactorySimulator::reward(){
-//    if( currentState_.valFromPtr(passengerPos__) ==
-//    currentState_.valFromPtr(passengerDest__) ) {
+//    if( currentState_.valFromPtr( _passengerPos_) ==
+//    currentState_.valFromPtr( _passengerDest_) ) {
 //      return 20.0;
 //    }
 
-//    if( lastAction__ == PickUp ){
-//      if( currentState_.valFromPtr(passengerPos__) != Factory )
+//    if(  _lastAction_ == PickUp ){
+//      if( currentState_.valFromPtr( _passengerPos_) != Factory )
 //        return -10.0;
 //      else
 //        return 10.0;
 //    }
 
-//    if( lastAction__ == PutDown )
+//    if(  _lastAction_ == PutDown )
 //      return -10.0;
 
-////    if( currentState_.valFromPtr(fuelLevel__) == 0 )
+////    if( currentState_.valFromPtr( _fuelLevel_) == 0 )
 ////      return -10.0;
 
 //    return 0.0;//-1.0;
@@ -202,20 +202,20 @@
 //  ==================================================================================================================
 //  void FactorySimulator::perform(Idx actionId){
 
-//    lastAction__ = (FactorySimulationAction) actionId;
+//     _lastAction_ = (FactorySimulationAction) actionId;
 
-////    Idx curFuelLevel = currentState_.valFromPtr(fuelLevel__);
+////    Idx curFuelLevel = currentState_.valFromPtr( _fuelLevel_);
 ////    if( curFuelLevel > 0 )
-////      currentState_.chgVal(fuelLevel__, --curFuelLevel);
+////      currentState_.chgVal( _fuelLevel_, --curFuelLevel);
 
 //    switch(actionId){
-//      case GoNorth : return goNorth__( );
-//      case GoEast : return goEast__( );
-//      case GoSouth : return goSouth__( );
-//      case GoWest : return goWest__( );
-//      case PickUp : return pickUp__( );
-//      case PutDown : return putDown__( );
-//      case FillUp : return fillUp__( );
+//      case GoNorth : return  _goNorth_( );
+//      case GoEast : return  _goEast_( );
+//      case GoSouth : return  _goSouth_( );
+//      case GoWest : return  _goWest_( );
+//      case PickUp : return  _pickUp_( );
+//      case PutDown : return  _putDown_( );
+//      case FillUp : return  _fillUp_( );
 //    }
 //  }
 
@@ -225,10 +225,10 @@
 //  // Transition if you go North
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::goNorth__(){
-//    Idx curPos = this->currentState_.valFromPtr(yPos__);
+//  void FactorySimulator:: _goNorth_(){
+//    Idx curPos = this->currentState_.valFromPtr( _yPos_);
 //    if( curPos < 4 )
-//      currentState_.chgVal(yPos__, ++curPos);
+//      currentState_.chgVal( _yPos_, ++curPos);
 //  }
 
 
@@ -237,9 +237,9 @@
 //  // Transition if you go east
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::goEast__(){
-//    Idx xCurPos = this->currentState_.valFromPtr(xPos__);
-//    Idx yCurPos = this->currentState_.valFromPtr(yPos__);
+//  void FactorySimulator:: _goEast_(){
+//    Idx xCurPos = this->currentState_.valFromPtr( _xPos_);
+//    Idx yCurPos = this->currentState_.valFromPtr( _yPos_);
 
 //    if(xCurPos == 4)
 //      return;
@@ -250,7 +250,7 @@
 //      if(yCurPos == 3 || yCurPos == 4)
 //        return;
 
-//    currentState_.chgVal(xPos__, ++xCurPos);
+//    currentState_.chgVal( _xPos_, ++xCurPos);
 //  }
 
 
@@ -259,10 +259,10 @@
 //  // Transition if you go south
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::goSouth__(){
-//    Idx curPos = this->currentState_.valFromPtr(yPos__);
+//  void FactorySimulator:: _goSouth_(){
+//    Idx curPos = this->currentState_.valFromPtr( _yPos_);
 //    if( curPos > 0 )
-//      currentState_.chgVal(yPos__, --curPos);
+//      currentState_.chgVal( _yPos_, --curPos);
 //  }
 
 
@@ -271,9 +271,9 @@
 //  // Transition if you go west
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::goWest__(){
-//    Idx xCurPos = this->currentState_.valFromPtr(xPos__);
-//    Idx yCurPos = this->currentState_.valFromPtr(yPos__);
+//  void FactorySimulator:: _goWest_(){
+//    Idx xCurPos = this->currentState_.valFromPtr( _xPos_);
+//    Idx yCurPos = this->currentState_.valFromPtr( _yPos_);
 
 //    if(xCurPos == 0)
 //      return;
@@ -284,7 +284,7 @@
 //      if(yCurPos == 3 || yCurPos == 4)
 //        return;
 
-//    currentState_.chgVal(xPos__, --xCurPos);
+//    currentState_.chgVal( _xPos_, --xCurPos);
 //  }
 
 
@@ -293,32 +293,32 @@
 //  // Transition if you go pick up sb
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::pickUp__(){
+//  void FactorySimulator:: _pickUp_(){
 //    FactorySimulationLandmarkX xCurPos = (FactorySimulationLandmarkX)
-//    this->currentState_.valFromPtr(xPos__);
+//    this->currentState_.valFromPtr( _xPos_);
 //    FactorySimulationLandmarkY yCurPos = (FactorySimulationLandmarkY)
-//    this->currentState_.valFromPtr(yPos__);
+//    this->currentState_.valFromPtr( _yPos_);
 //    FactorySimulationLandmark passPos = (FactorySimulationLandmark)
-//    this->currentState_.valFromPtr(passengerPos__);
+//    this->currentState_.valFromPtr( _passengerPos_);
 //    switch(passPos){
 //      case HOME :  {
 //                  if( xCurPos == HOMEX && yCurPos == HOMEY )
-//                    currentState_.chgVal(passengerPos__, Factory);
+//                    currentState_.chgVal( _passengerPos_, Factory);
 //                  return;
 //                }
 //      case WORK :  {
 //                  if( xCurPos == WORKX && yCurPos == WORKY )
-//                    currentState_.chgVal(passengerPos__, Factory);
+//                    currentState_.chgVal( _passengerPos_, Factory);
 //                  return;
 //                }
 //      case THEATER :  {
 //                  if( xCurPos == THEATERX && yCurPos == THEATERY )
-//                    currentState_.chgVal(passengerPos__, Factory);
+//                    currentState_.chgVal( _passengerPos_, Factory);
 //                  return;
 //                }
 //      case CLUB :  {
 //                  if( xCurPos == CLUBX && yCurPos == CLUBY )
-//                    currentState_.chgVal(passengerPos__, Factory);
+//                    currentState_.chgVal( _passengerPos_, Factory);
 //                  return;
 //                }
 //      case Factory :  return;
@@ -331,35 +331,35 @@
 //  // Transition if you go put down sb
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::putDown__(){
+//  void FactorySimulator:: _putDown_(){
 //    FactorySimulationLandmarkX xCurPos = (FactorySimulationLandmarkX)
-//    this->currentState_.valFromPtr(xPos__);
+//    this->currentState_.valFromPtr( _xPos_);
 //    FactorySimulationLandmarkY yCurPos = (FactorySimulationLandmarkY)
-//    this->currentState_.valFromPtr(yPos__);
+//    this->currentState_.valFromPtr( _yPos_);
 //    FactorySimulationLandmark passPos = (FactorySimulationLandmark)
-//    this->currentState_.valFromPtr(passengerPos__);
+//    this->currentState_.valFromPtr( _passengerPos_);
 //    FactorySimulationLandmark passDest = (FactorySimulationLandmark)
-//    this->currentState_.valFromPtr(passengerDest__);
+//    this->currentState_.valFromPtr( _passengerDest_);
 //    if(passPos == Factory ){
 //        switch(passDest){
 //          case HOME :  {
 //                      if( xCurPos == HOMEX && yCurPos == HOMEY )
-//                        currentState_.chgVal(passengerPos__, HOME);
+//                        currentState_.chgVal( _passengerPos_, HOME);
 //                      return;
 //                    }
 //          case WORK :  {
 //                      if( xCurPos == WORKX && yCurPos == WORKY )
-//                        currentState_.chgVal(passengerPos__, WORK);
+//                        currentState_.chgVal( _passengerPos_, WORK);
 //                      return;
 //                    }
 //          case THEATER :  {
 //                      if( xCurPos == THEATERX && yCurPos == THEATERY )
-//                        currentState_.chgVal(passengerPos__, THEATER);
+//                        currentState_.chgVal( _passengerPos_, THEATER);
 //                      return;
 //                    }
 //          case CLUB :  {
 //                      if( xCurPos == CLUBX && yCurPos == CLUBY )
-//                        currentState_.chgVal(passengerPos__, CLUB);
+//                        currentState_.chgVal( _passengerPos_, CLUB);
 //                      return;
 //                    }
 //          case Factory :  return;
@@ -374,13 +374,13 @@
 //  // Transition if you go reffill
 //  //
 //  ==================================================================================================================
-//  void FactorySimulator::fillUp__(){
+//  void FactorySimulator:: _fillUp_(){
 //    FactorySimulationLandmarkX xCurPos = (FactorySimulationLandmarkX)
-//    this->currentState_.valFromPtr(xPos__);
+//    this->currentState_.valFromPtr( _xPos_);
 //    FactorySimulationLandmarkY yCurPos = (FactorySimulationLandmarkY)
-//    this->currentState_.valFromPtr(yPos__);
+//    this->currentState_.valFromPtr( _yPos_);
 
 //    if( xCurPos == STATIONX && yCurPos == STATIONY )
-//      currentState_.chgVal(fuelLevel__, 13);
+//      currentState_.chgVal( _fuelLevel_, 13);
 //  }
 //} // End of namespace gum

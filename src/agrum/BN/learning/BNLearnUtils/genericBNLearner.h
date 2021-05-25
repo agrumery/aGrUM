@@ -270,36 +270,36 @@ namespace gum {
 
         protected:
         /// the database itself
-        DatabaseTable<> database__;
+        DatabaseTable<>  _database_;
 
         /// the parser used for reading the database
-        DBRowGeneratorParser<>* parser__{nullptr};
+        DBRowGeneratorParser<>*  _parser_{nullptr};
 
         /// the domain sizes of the variables (useful to speed-up computations)
-        std::vector< std::size_t > domain_sizes__;
+        std::vector< std::size_t >  _domain_sizes_;
 
         /// a bijection assigning to each variable name its NodeId
-        Bijection< NodeId, std::size_t > nodeId2cols__;
+        Bijection< NodeId, std::size_t >  _nodeId2cols_;
 
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-        Size max_threads_number__{getMaxNumberOfThreads()};
+        Size  _max_threads_number_{getMaxNumberOfThreads()};
 #else
-        Size max_threads_number__{1};
+        Size  _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
 
         /// the minimal number of rows to parse (on average) by thread
-        Size min_nb_rows_per_thread__{100};
+        Size  _min_nb_rows_per_thread_{100};
 
         private:
         // returns the set of variables as a BN. This is convenient for
         // the constructors of apriori Databases
         template < typename GUM_SCALAR >
-        BayesNet< GUM_SCALAR > BNVars__() const;
+        BayesNet< GUM_SCALAR >  _BNVars_() const;
       };
 
       /// sets the apriori weight
-      void setAprioriWeight__(double weight);
+      void  _setAprioriWeight_(double weight);
 
       public:
       // ##########################################################################
@@ -752,119 +752,119 @@ namespace gum {
 
       protected:
       /// the score selected for learning
-      ScoreType score_type__{ScoreType::BDeu};
+      ScoreType  _score_type_{ScoreType::BDeu};
 
       /// the score used
-      Score<>* score__{nullptr};
+      Score<>*  _score_{nullptr};
 
       /// the type of the parameter estimator
-      ParamEstimatorType param_estimator_type__{ParamEstimatorType::ML};
+      ParamEstimatorType  _param_estimator_type_{ParamEstimatorType::ML};
 
       /// epsilon for EM. if espilon=0.0 : no EM
-      double EMepsilon__{0.0};
+      double  _EMepsilon_{0.0};
 
       /// the selected correction for 3off2 and miic
-      CorrectedMutualInformation<>* mutual_info__{nullptr};
+      CorrectedMutualInformation<>*  _mutual_info_{nullptr};
 
       /// the a priori selected for the score and parameters
-      AprioriType apriori_type__{AprioriType::NO_APRIORI};
+      AprioriType  _apriori_type_{AprioriType::NO_APRIORI};
 
       /// the apriori used
-      Apriori<>* apriori__{nullptr};
+      Apriori<>*  _apriori_{nullptr};
 
-      AprioriNoApriori<>* no_apriori__{nullptr};
+      AprioriNoApriori<>*  _no_apriori_{nullptr};
 
       /// the weight of the apriori
-      double apriori_weight__{1.0f};
+      double  _apriori_weight_{1.0f};
 
       /// the constraint for 2TBNs
-      StructuralConstraintSliceOrder constraint_SliceOrder__;
+      StructuralConstraintSliceOrder  _constraint_SliceOrder_;
 
       /// the constraint for indegrees
-      StructuralConstraintIndegree constraint_Indegree__;
+      StructuralConstraintIndegree  _constraint_Indegree_;
 
       /// the constraint for tabu lists
-      StructuralConstraintTabuList constraint_TabuList__;
+      StructuralConstraintTabuList  _constraint_TabuList_;
 
       /// the constraint on forbidden arcs
-      StructuralConstraintForbiddenArcs constraint_ForbiddenArcs__;
+      StructuralConstraintForbiddenArcs  _constraint_ForbiddenArcs_;
 
       /// the constraint on possible Edges
-      StructuralConstraintPossibleEdges constraint_PossibleEdges__;
+      StructuralConstraintPossibleEdges  _constraint_PossibleEdges_;
 
       /// the constraint on forbidden arcs
-      StructuralConstraintMandatoryArcs constraint_MandatoryArcs__;
+      StructuralConstraintMandatoryArcs  _constraint_MandatoryArcs_;
 
       /// the selected learning algorithm
-      AlgoType selected_algo__{AlgoType::GREEDY_HILL_CLIMBING};
+      AlgoType  _selected_algo_{AlgoType::GREEDY_HILL_CLIMBING};
 
       /// the K2 algorithm
-      K2 K2__;
+      K2  _K2_;
 
       /// the 3off2 algorithm
-      Miic miic_3off2__;
+      Miic  _miic_3off2_;
 
       /// the penalty used in 3off2
-      typename CorrectedMutualInformation<>::KModeTypes kmode_3off2__{
+      typename CorrectedMutualInformation<>::KModeTypes  _kmode_3off2_{
          CorrectedMutualInformation<>::KModeTypes::MDL};
 
       /// the parametric EM
-      DAG2BNLearner<> Dag2BN__;
+      DAG2BNLearner<>  _Dag2BN_;
 
       /// the greedy hill climbing algorithm
-      GreedyHillClimbing greedy_hill_climbing__;
+      GreedyHillClimbing  _greedy_hill_climbing_;
 
       /// the local search with tabu list algorithm
-      LocalSearchWithTabuList local_search_with_tabu_list__;
+      LocalSearchWithTabuList  _local_search_with_tabu_list_;
 
       /// the database to be used by the scores and parameter estimators
-      Database score_database__;
+      Database  _score_database_;
 
       /// the set of rows' ranges within the database in which learning is done
-      std::vector< std::pair< std::size_t, std::size_t > > ranges__;
+      std::vector< std::pair< std::size_t, std::size_t > >  _ranges_;
 
       /// the database used by the Dirichlet a priori
-      Database* apriori_database__{nullptr};
+      Database*  _apriori_database_{nullptr};
 
       /// the filename for the Dirichlet a priori, if any
-      std::string apriori_dbname__;
+      std::string  _apriori_dbname_;
 
       /// an initial DAG given to learners
-      DAG initial_dag__;
+      DAG  _initial_dag_;
 
       // the current algorithm as an approximationScheme
-      const ApproximationScheme* current_algorithm__{nullptr};
+      const ApproximationScheme*  _current_algorithm_{nullptr};
 
       /// reads a file and returns a databaseVectInRam
       static DatabaseTable<>
-         readFile__(const std::string&                filename,
+          _readFile_(const std::string&                filename,
                     const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
-      static void checkFileName__(const std::string& filename);
+      static void  _checkFileName_(const std::string& filename);
 
       /// create the apriori used for learning
-      void createApriori__();
+      void  _createApriori_();
 
       /// create the score used for learning
-      void createScore__();
+      void  _createScore_();
 
       /// create the parameter estimator used for learning
-      ParamEstimator<>* createParamEstimator__(DBRowGeneratorParser<>& parser,
+      ParamEstimator<>*  _createParamEstimator_(DBRowGeneratorParser<>& parser,
                                                bool take_into_account_score
                                                = true);
 
       /// returns the DAG learnt
-      DAG learnDAG__();
+      DAG  _learnDAG_();
 
       /// prepares the initial graph for 3off2 or miic
-      MixedGraph prepare_miic_3off2__();
+      MixedGraph  _prepare_miic_3off2_();
 
       /// returns the type (as a string) of a given apriori
-      const std::string& getAprioriType__() const;
+      const std::string&  _getAprioriType_() const;
 
       /// create the Corrected Mutual Information instance for Miic/3off2
-      void createCorrectedMutualInformation__();
+      void  _createCorrectedMutualInformation_();
 
 
       public:
@@ -879,7 +879,7 @@ namespace gum {
       /// {@    /// distribute signals
       INLINE void setCurrentApproximationScheme(
          const ApproximationScheme* approximationScheme) {
-        current_algorithm__ = approximationScheme;
+         _current_algorithm_ = approximationScheme;
       }
 
       INLINE void
@@ -906,41 +906,41 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if eps<0
       void setEpsilon(double eps) {
-        K2__.approximationScheme().setEpsilon(eps);
-        greedy_hill_climbing__.setEpsilon(eps);
-        local_search_with_tabu_list__.setEpsilon(eps);
-        Dag2BN__.setEpsilon(eps);
+         _K2_.approximationScheme().setEpsilon(eps);
+         _greedy_hill_climbing_.setEpsilon(eps);
+         _local_search_with_tabu_list_.setEpsilon(eps);
+         _Dag2BN_.setEpsilon(eps);
       };
 
       /// Get the value of epsilon
       double epsilon() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->epsilon();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->epsilon();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on epsilon
       void disableEpsilon() {
-        K2__.approximationScheme().disableEpsilon();
-        greedy_hill_climbing__.disableEpsilon();
-        local_search_with_tabu_list__.disableEpsilon();
-        Dag2BN__.disableEpsilon();
+         _K2_.approximationScheme().disableEpsilon();
+         _greedy_hill_climbing_.disableEpsilon();
+         _local_search_with_tabu_list_.disableEpsilon();
+         _Dag2BN_.disableEpsilon();
       };
 
       /// Enable stopping criterion on epsilon
       void enableEpsilon() {
-        K2__.approximationScheme().enableEpsilon();
-        greedy_hill_climbing__.enableEpsilon();
-        local_search_with_tabu_list__.enableEpsilon();
-        Dag2BN__.enableEpsilon();
+         _K2_.approximationScheme().enableEpsilon();
+         _greedy_hill_climbing_.enableEpsilon();
+         _local_search_with_tabu_list_.enableEpsilon();
+         _Dag2BN_.enableEpsilon();
       };
 
       /// @return true if stopping criterion on epsilon is enabled, false
       /// otherwise
       bool isEnabledEpsilon() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->isEnabledEpsilon();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->isEnabledEpsilon();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -952,39 +952,39 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if rate<0
       void setMinEpsilonRate(double rate) {
-        K2__.approximationScheme().setMinEpsilonRate(rate);
-        greedy_hill_climbing__.setMinEpsilonRate(rate);
-        local_search_with_tabu_list__.setMinEpsilonRate(rate);
-        Dag2BN__.setMinEpsilonRate(rate);
+         _K2_.approximationScheme().setMinEpsilonRate(rate);
+         _greedy_hill_climbing_.setMinEpsilonRate(rate);
+         _local_search_with_tabu_list_.setMinEpsilonRate(rate);
+         _Dag2BN_.setMinEpsilonRate(rate);
       };
 
       /// Get the value of the minimal epsilon rate
       double minEpsilonRate() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->minEpsilonRate();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->minEpsilonRate();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on epsilon rate
       void disableMinEpsilonRate() {
-        K2__.approximationScheme().disableMinEpsilonRate();
-        greedy_hill_climbing__.disableMinEpsilonRate();
-        local_search_with_tabu_list__.disableMinEpsilonRate();
-        Dag2BN__.disableMinEpsilonRate();
+         _K2_.approximationScheme().disableMinEpsilonRate();
+         _greedy_hill_climbing_.disableMinEpsilonRate();
+         _local_search_with_tabu_list_.disableMinEpsilonRate();
+         _Dag2BN_.disableMinEpsilonRate();
       };
       /// Enable stopping criterion on epsilon rate
       void enableMinEpsilonRate() {
-        K2__.approximationScheme().enableMinEpsilonRate();
-        greedy_hill_climbing__.enableMinEpsilonRate();
-        local_search_with_tabu_list__.enableMinEpsilonRate();
-        Dag2BN__.enableMinEpsilonRate();
+         _K2_.approximationScheme().enableMinEpsilonRate();
+         _greedy_hill_climbing_.enableMinEpsilonRate();
+         _local_search_with_tabu_list_.enableMinEpsilonRate();
+         _Dag2BN_.enableMinEpsilonRate();
       };
       /// @return true if stopping criterion on epsilon rate is enabled, false
       /// otherwise
       bool isEnabledMinEpsilonRate() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->isEnabledMinEpsilonRate();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->isEnabledMinEpsilonRate();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -996,39 +996,39 @@ namespace gum {
       /// @param max The maximum number of iterations
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter(Size max) {
-        K2__.approximationScheme().setMaxIter(max);
-        greedy_hill_climbing__.setMaxIter(max);
-        local_search_with_tabu_list__.setMaxIter(max);
-        Dag2BN__.setMaxIter(max);
+         _K2_.approximationScheme().setMaxIter(max);
+         _greedy_hill_climbing_.setMaxIter(max);
+         _local_search_with_tabu_list_.setMaxIter(max);
+         _Dag2BN_.setMaxIter(max);
       };
 
       /// @return the criterion on number of iterations
       Size maxIter() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->maxIter();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->maxIter();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on max iterations
       void disableMaxIter() {
-        K2__.approximationScheme().disableMaxIter();
-        greedy_hill_climbing__.disableMaxIter();
-        local_search_with_tabu_list__.disableMaxIter();
-        Dag2BN__.disableMaxIter();
+         _K2_.approximationScheme().disableMaxIter();
+         _greedy_hill_climbing_.disableMaxIter();
+         _local_search_with_tabu_list_.disableMaxIter();
+         _Dag2BN_.disableMaxIter();
       };
       /// Enable stopping criterion on max iterations
       void enableMaxIter() {
-        K2__.approximationScheme().enableMaxIter();
-        greedy_hill_climbing__.enableMaxIter();
-        local_search_with_tabu_list__.enableMaxIter();
-        Dag2BN__.enableMaxIter();
+         _K2_.approximationScheme().enableMaxIter();
+         _greedy_hill_climbing_.enableMaxIter();
+         _local_search_with_tabu_list_.enableMaxIter();
+         _Dag2BN_.enableMaxIter();
       };
       /// @return true if stopping criterion on max iterations is enabled, false
       /// otherwise
       bool isEnabledMaxIter() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->isEnabledMaxIter();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->isEnabledMaxIter();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -1041,46 +1041,46 @@ namespace gum {
       /** timeout is time in second (double).
        */
       void setMaxTime(double timeout) {
-        K2__.approximationScheme().setMaxTime(timeout);
-        greedy_hill_climbing__.setMaxTime(timeout);
-        local_search_with_tabu_list__.setMaxTime(timeout);
-        Dag2BN__.setMaxTime(timeout);
+         _K2_.approximationScheme().setMaxTime(timeout);
+         _greedy_hill_climbing_.setMaxTime(timeout);
+         _local_search_with_tabu_list_.setMaxTime(timeout);
+         _Dag2BN_.setMaxTime(timeout);
       }
 
       /// returns the timeout (in seconds)
       double maxTime() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->maxTime();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->maxTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// get the current running time in second (double)
       double currentTime() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->currentTime();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->currentTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on timeout
       void disableMaxTime() {
-        K2__.approximationScheme().disableMaxTime();
-        greedy_hill_climbing__.disableMaxTime();
-        local_search_with_tabu_list__.disableMaxTime();
-        Dag2BN__.disableMaxTime();
+         _K2_.approximationScheme().disableMaxTime();
+         _greedy_hill_climbing_.disableMaxTime();
+         _local_search_with_tabu_list_.disableMaxTime();
+         _Dag2BN_.disableMaxTime();
       };
       void enableMaxTime() {
-        K2__.approximationScheme().enableMaxTime();
-        greedy_hill_climbing__.enableMaxTime();
-        local_search_with_tabu_list__.enableMaxTime();
-        Dag2BN__.enableMaxTime();
+         _K2_.approximationScheme().enableMaxTime();
+         _greedy_hill_climbing_.enableMaxTime();
+         _local_search_with_tabu_list_.enableMaxTime();
+         _Dag2BN_.enableMaxTime();
       };
       /// @return true if stopping criterion on timeout is enabled, false
       /// otherwise
       bool isEnabledMaxTime() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->isEnabledMaxTime();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->isEnabledMaxTime();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -1090,15 +1090,15 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if p<1
       void setPeriodSize(Size p) {
-        K2__.approximationScheme().setPeriodSize(p);
-        greedy_hill_climbing__.setPeriodSize(p);
-        local_search_with_tabu_list__.setPeriodSize(p);
-        Dag2BN__.setPeriodSize(p);
+         _K2_.approximationScheme().setPeriodSize(p);
+         _greedy_hill_climbing_.setPeriodSize(p);
+         _local_search_with_tabu_list_.setPeriodSize(p);
+         _Dag2BN_.setPeriodSize(p);
       };
 
       Size periodSize() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->periodSize();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->periodSize();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -1107,15 +1107,15 @@ namespace gum {
       /// verbosity
       /// @{
       void setVerbosity(bool v) {
-        K2__.approximationScheme().setVerbosity(v);
-        greedy_hill_climbing__.setVerbosity(v);
-        local_search_with_tabu_list__.setVerbosity(v);
-        Dag2BN__.setVerbosity(v);
+         _K2_.approximationScheme().setVerbosity(v);
+         _greedy_hill_climbing_.setVerbosity(v);
+         _local_search_with_tabu_list_.setVerbosity(v);
+         _Dag2BN_.setVerbosity(v);
       };
 
       bool verbosity() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->verbosity();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->verbosity();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
@@ -1125,24 +1125,24 @@ namespace gum {
       /// @{
 
       ApproximationSchemeSTATE stateApproximationScheme() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->stateApproximationScheme();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->stateApproximationScheme();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// @throw OperationNotAllowed if scheme not performed
       Size nbrIterations() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->nbrIterations();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->nbrIterations();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
       const std::vector< double >& history() const {
-        if (current_algorithm__ != nullptr)
-          return current_algorithm__->history();
+        if ( _current_algorithm_ != nullptr)
+          return  _current_algorithm_->history();
         else
           GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }

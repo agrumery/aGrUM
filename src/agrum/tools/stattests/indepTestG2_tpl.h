@@ -42,7 +42,7 @@ namespace gum {
                                                             nodeId2columns,
        const typename IndepTestG2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        domain_sizes__(parser.database().domainSizes()), chi2__(domain_sizes__) {
+         _domain_sizes_(parser.database().domainSizes()),  _chi2_( _domain_sizes_) {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
@@ -56,7 +56,7 @@ namespace gum {
                                                             nodeId2columns,
        const typename IndepTestG2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        domain_sizes__(parser.database().domainSizes()), chi2__(domain_sizes__) {
+         _domain_sizes_(parser.database().domainSizes()),  _chi2_( _domain_sizes_) {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
@@ -67,7 +67,7 @@ namespace gum {
        const IndepTestG2< ALLOC >&                          from,
        const typename IndepTestG2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
-        chi2__(domain_sizes__) {
+         _chi2_( _domain_sizes_) {
       GUM_CONS_CPY(IndepTestG2);
     }
 
@@ -84,7 +84,7 @@ namespace gum {
        IndepTestG2< ALLOC >&&                               from,
        const typename IndepTestG2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
-        domain_sizes__(from.domain_sizes__), chi2__(domain_sizes__) {
+         _domain_sizes_(from. _domain_sizes_),  _chi2_( _domain_sizes_) {
       GUM_CONS_MOV(IndepTestG2);
     }
 
@@ -132,7 +132,7 @@ namespace gum {
        IndepTestG2< ALLOC >::operator=(const IndepTestG2< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        //__chi2 = from.chi2__;
+        // __chi2 = from. _chi2_;
       }
       return *this;
     }
@@ -144,7 +144,7 @@ namespace gum {
        IndepTestG2< ALLOC >::operator=(IndepTestG2< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-        //__chi2 = std::move(from.chi2__);
+        // __chi2 = std::move(from. _chi2_);
       }
       return *this;
     }
@@ -213,7 +213,7 @@ namespace gum {
               cond_nodes.push_back(nodeId2cols.second(node));
           }
         }
-        chi2__.setConditioningNodes(cond_nodes);
+         _chi2_.setConditioningNodes(cond_nodes);
 
 
         // now, perform :
@@ -244,7 +244,7 @@ namespace gum {
         // here, there is no conditioning set
 
         // indicate to the chi2 distribution the set of conditioning nodes
-        chi2__.setConditioningNodes(empty_set__);
+         _chi2_.setConditioningNodes( _empty_set_);
 
         // now, perform sum_X sum_Y #XY * log ( ( #XY * N ) / ( #X * #Y ) )
 
@@ -282,8 +282,8 @@ namespace gum {
       // to the Pearson's chi-squared test formula
       cumulStat *= 2;
 
-      Size   df     = chi2__.degreesOfFreedom(var_x, var_y);
-      double pValue = chi2__.probaChi2(cumulStat, df);
+      Size   df     =  _chi2_.degreesOfFreedom(var_x, var_y);
+      double pValue =  _chi2_.probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }
 
@@ -308,7 +308,7 @@ namespace gum {
       // To get a meaningful score, we shall compute the critical values
       // for the Chi2 distribution and assign as the score of
       // (score - alpha ) / alpha, where alpha is the critical value
-      const double alpha = chi2__.criticalValue(var_x, var_y);
+      const double alpha =  _chi2_.criticalValue(var_x, var_y);
       score              = (score - alpha) / alpha;
 
       return score;

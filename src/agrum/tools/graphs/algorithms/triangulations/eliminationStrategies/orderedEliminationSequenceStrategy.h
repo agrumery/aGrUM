@@ -174,18 +174,18 @@ namespace gum {
 
     private:
     /// the vector indicating in which order we should eliminate the nodes
-    const std::vector< NodeId >* order__{nullptr};
+    const std::vector< NodeId >*  _order_{nullptr};
 
     /// the index in the order indicating the new node to eliminate
-    std::size_t order_index__{std::size_t(0)};
+    std::size_t  _order_index_{std::size_t(0)};
 
     /// indicate whether a new complete ordering is necessary for the
     /// elimination
-    bool order_needed__{true};
+    bool  _order_needed_{true};
 
 
     /// indicates whether an order is compatible with the current graph
-    bool isOrderNeeded__(const std::vector< NodeId >* order) const;
+    bool  _isOrderNeeded_(const std::vector< NodeId >* order) const;
   };
 
 

@@ -314,7 +314,7 @@ namespace gum {
          operator=(const PRMInterface< GUM_SCALAR >& source);
 
       /// Proceed with the copy of i in this.
-      void inheritInterface__(const PRMInterface< GUM_SCALAR >& i);
+      void  _inheritInterface_(const PRMInterface< GUM_SCALAR >& i);
 
       // ========================================================================
       /// @name Graphical model members
@@ -323,11 +323,11 @@ namespace gum {
 
       /// The dag representing dependencies between formal attributes and
       /// slots.
-      DAG dag__;
+      DAG  _dag_;
 
       /// Mapping between node's id and their name (being an attribute or a
       /// slot). Used for fast access to a member given it's node id.
-      NodeProperty< PRMClassElement< GUM_SCALAR >* > nodeIdMap__;
+      NodeProperty< PRMClassElement< GUM_SCALAR >* >  _nodeIdMap_;
 
       /// @}
       // ========================================================================
@@ -337,13 +337,13 @@ namespace gum {
 
       /// Mapping between a member's name and itself.
       /// Used for fast access to a member given it's name.
-      HashTable< std::string, PRMClassElement< GUM_SCALAR >* > nameMap__;
+      HashTable< std::string, PRMClassElement< GUM_SCALAR >* >  _nameMap_;
 
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
-      Set< PRMAttribute< GUM_SCALAR >* > attributes__;
+      Set< PRMAttribute< GUM_SCALAR >* >  _attributes_;
 
       /// The sequence of PRMReferenceSlot<GUM_SCALAR>.
-      Set< PRMReferenceSlot< GUM_SCALAR >* > referenceSlots__;
+      Set< PRMReferenceSlot< GUM_SCALAR >* >  _referenceSlots_;
 
       /// @}
       // ========================================================================
@@ -355,35 +355,35 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
-      PRMInterface< GUM_SCALAR >* superInterface__;
+      PRMInterface< GUM_SCALAR >*  _superInterface_;
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
-      Set< PRMClass< GUM_SCALAR >* > implementations__;
+      Set< PRMClass< GUM_SCALAR >* >  _implementations_;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this PRMInterface.
-      void addImplementation__(PRMClass< GUM_SCALAR >* c);
+      void  _addImplementation_(PRMClass< GUM_SCALAR >* c);
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
-      Set< PRMInterface< GUM_SCALAR >* > extensions__;
+      Set< PRMInterface< GUM_SCALAR >* >  _extensions_;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this PRMInterface.
-      void addExtension__(PRMInterface< GUM_SCALAR >* c);
+      void  _addExtension_(PRMInterface< GUM_SCALAR >* c);
 
       bool
-         checkOverloadLegality__(const PRMClassElement< GUM_SCALAR >* overloaded,
+          _checkOverloadLegality_(const PRMClassElement< GUM_SCALAR >* overloaded,
                                  const PRMClassElement< GUM_SCALAR >* overloader);
 
-      void overloadAttribute__(PRMAttribute< GUM_SCALAR >* overloader,
+      void  _overloadAttribute_(PRMAttribute< GUM_SCALAR >* overloader,
                                PRMAttribute< GUM_SCALAR >* overloaded);
 
-      void overloadReferenceSlot__(PRMReferenceSlot< GUM_SCALAR >* overloader,
+      void  _overloadReferenceSlot_(PRMReferenceSlot< GUM_SCALAR >* overloader,
                                    PRMReferenceSlot< GUM_SCALAR >* overloaded);
 
-      void addCastDescendants__(PRMAttribute< GUM_SCALAR >* start,
+      void  _addCastDescendants_(PRMAttribute< GUM_SCALAR >* start,
                                 PRMAttribute< GUM_SCALAR >* end);
 
       /// @}

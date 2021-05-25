@@ -92,7 +92,7 @@ namespace gum {
     protected:
     private:
     /// Confusion matrix
-    /*   __________________________________________________
+    /*    __________________________________________________
      *  |   \predicted |           |           |           |
      *  |true\         |    -->    |    ---    |     X     |
      *  |--------------|-----------|-----------|-----------|
@@ -104,14 +104,14 @@ namespace gum {
      *  |--------------|-----------|-----------|-----------|
      *  |       X      |wrong arc  |wrong edge | true none |
      *  |      	       |      none |      none |           |
-     *  |______________|___________|___________|___________|
+     *  | ______________| ___________| ___________| ___________|
      *
      */
-    double true_edge__, true_arc__, true_none__;
-    double wrong_edge_arc__, wrong_edge_none__;
-    double wrong_arc_edge__, wrong_arc_none__, misoriented_arc__;
-    double wrong_none_edge__, wrong_none_arc__;
-    // double precision__, recall__, f_score__;
+    double  _true_edge_,  _true_arc_,  _true_none_;
+    double  _wrong_edge_arc_,  _wrong_edge_none_;
+    double  _wrong_arc_edge_,  _wrong_arc_none_,  _misoriented_arc_;
+    double  _wrong_none_edge_,  _wrong_none_arc_;
+    // double  _precision_,  _recall_,  _f_score_;
   };
 
 } /* namespace gum */

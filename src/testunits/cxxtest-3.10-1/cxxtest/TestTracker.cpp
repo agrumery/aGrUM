@@ -1,5 +1,5 @@
-#ifndef __cxxtest__TestTracker_cpp__
-#define __cxxtest__TestTracker_cpp__
+#ifndef  __cxxtest__TestTracker_cpp__
+#define  __cxxtest__TestTracker_cpp__
 
 #include <cxxtest/TestTracker.h>
 
@@ -248,4 +248,4 @@ namespace CxxTest {
   }
 }
 
-#endif  // __cxxtest__TestTracker_cpp__
+#endif  //  __cxxtest__TestTracker_cpp__

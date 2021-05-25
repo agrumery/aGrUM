@@ -1,5 +1,5 @@
-#ifndef __cxxtest__AgrumErrorPrinter_h__
-#define __cxxtest__AgrumErrorPrinter_h__
+#ifndef  __cxxtest__AgrumErrorPrinter_h__
+#define  __cxxtest__AgrumErrorPrinter_h__
 
 //
 // The AgrumErrorPrinter is a simple TestListener that
@@ -62,4 +62,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__ErrorPrinter_h__
+#endif  //  __cxxtest__ErrorPrinter_h__

@@ -47,7 +47,7 @@ namespace gum {
         constraint_(from.constraint_),
         target_nodes_(from.target_nodes_), tail_nodes_(from.tail_nodes_),
         legal_changes_(from.legal_changes_),
-        max_threads_number__(from.max_threads_number__) {
+         _max_threads_number_(from. _max_threads_number_) {
       GUM_CONS_CPY(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -60,7 +60,7 @@ namespace gum {
         target_nodes_(std::move(from.target_nodes_)),
         tail_nodes_(std::move(from.tail_nodes_)),
         legal_changes_(std::move(from.legal_changes_)),
-        max_threads_number__(from.max_threads_number__) {
+         _max_threads_number_(from. _max_threads_number_) {
       GUM_CONS_MOV(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -81,7 +81,7 @@ namespace gum {
         target_nodes_        = from.target_nodes_;
         tail_nodes_          = from.tail_nodes_;
         legal_changes_       = from.legal_changes_;
-        max_threads_number__ = from.max_threads_number__;
+         _max_threads_number_ = from. _max_threads_number_;
       }
       return *this;
     }
@@ -96,7 +96,7 @@ namespace gum {
         target_nodes_        = std::move(from.target_nodes_);
         tail_nodes_          = std::move(from.tail_nodes_);
         legal_changes_       = std::move(from.legal_changes_);
-        max_threads_number__ = from.max_threads_number__;
+         _max_threads_number_ = from. _max_threads_number_;
       }
       return *this;
     }
@@ -108,7 +108,7 @@ namespace gum {
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
       std::vector< Set< GraphChange > > legal_changes;
-#  pragma omp parallel num_threads(max_threads_number__)
+#  pragma omp parallel num_threads( _max_threads_number_)
       {
         int num_threads = getNumberOfRunningThreads();
 
@@ -282,9 +282,9 @@ namespace gum {
           Size nb) noexcept {
 #  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       if (nb == 0) nb = getMaxNumberOfThreads();
-      max_threads_number__ = nb;
+       _max_threads_number_ = nb;
 #  else
-      max_threads_number__ = 1;
+       _max_threads_number_ = 1;
 #  endif /* _OPENMP && GUM_DEBUG_MODE */
     }
 

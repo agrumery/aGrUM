@@ -36,20 +36,20 @@ namespace gum_tests {
 
   class MultiDimBucketTestSuite: public CxxTest::TestSuite {
     private:
-    std::vector< gum::LabelizedVariable* >*   variables__;
-    std::vector< gum::Potential< double >* >* potentials__;
+    std::vector< gum::LabelizedVariable* >*    _variables_;
+    std::vector< gum::Potential< double >* >*  _potentials_;
 
-    void fillBucket__(gum::MultiDimBucket< double >* bucket) {
+    void  _fillBucket_(gum::MultiDimBucket< double >* bucket) {
       for (size_t i = 0; i < 5; ++i) {
-        bucket->add(potentials__->at(i));
+        bucket->add( _potentials_->at(i));
       }
     }
 
     // Product must have variables
-    void makeProduct__(gum::Potential< double >& product) {
-      if (potentials__->size() == 0) return;
+    void  _makeProduct_(gum::Potential< double >& product) {
+      if ( _potentials_->size() == 0) return;
 
-      std::vector< gum::Potential< double >* > temp(*potentials__);
+      std::vector< gum::Potential< double >* > temp(* _potentials_);
 
       // we use the first element as init for the result
       gum::Potential< double > result = *temp.back();
@@ -69,75 +69,75 @@ namespace gum_tests {
     public:
     void setUp() {
       gum::SimpleCPTGenerator< double > cptGenerator;
-      variables__ = new std::vector< gum::LabelizedVariable* >();
+       _variables_ = new std::vector< gum::LabelizedVariable* >();
 
       for (gum::Size i = 0; i < 10; ++i) {
         std::stringstream sBuff;
         sBuff << "var_" << i;
-        variables__->push_back(
+         _variables_->push_back(
            new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
       }
 
-      potentials__ = new std::vector< gum::Potential< double >* >();
+       _potentials_ = new std::vector< gum::Potential< double >* >();
 
       for (gum::Size i = 0; i < 5; ++i) {
-        potentials__->push_back(
+         _potentials_->push_back(
            new gum::Potential< double >(new gum::MultiDimArray< double >()));
       }
 
       // Creating a table of 2 elements
-      potentials__->at(0)->add(*(variables__->at(0)));
+       _potentials_->at(0)->add(*( _variables_->at(0)));
 
-      cptGenerator.generateCPT(potentials__->at(0)->pos(*(variables__->at(0))),
-                               *(potentials__->at(0)));
+      cptGenerator.generateCPT( _potentials_->at(0)->pos(*( _variables_->at(0))),
+                               *( _potentials_->at(0)));
 
       // Creating a table of 2 elements
-      potentials__->at(1)->add(*(variables__->at(1)));
+       _potentials_->at(1)->add(*( _variables_->at(1)));
 
-      cptGenerator.generateCPT(potentials__->at(1)->pos(*(variables__->at(1))),
-                               *(potentials__->at(1)));
+      cptGenerator.generateCPT( _potentials_->at(1)->pos(*( _variables_->at(1))),
+                               *( _potentials_->at(1)));
 
       // Creating a table of 2^4=16 elements
       for (size_t i = 2; i < 6; ++i) {
-        potentials__->at(2)->add(*(variables__->at(i)));
+         _potentials_->at(2)->add(*( _variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(potentials__->at(2)->pos(*(variables__->at(2))),
-                               *(potentials__->at(2)));
+      cptGenerator.generateCPT( _potentials_->at(2)->pos(*( _variables_->at(2))),
+                               *( _potentials_->at(2)));
 
       // Creatinh a table of 2^4=16 elements
 
       for (size_t i = 4; i < 8; ++i) {
-        potentials__->at(3)->add(*(variables__->at(i)));
+         _potentials_->at(3)->add(*( _variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(potentials__->at(3)->pos(*(variables__->at(4))),
-                               *(potentials__->at(3)));
+      cptGenerator.generateCPT( _potentials_->at(3)->pos(*( _variables_->at(4))),
+                               *( _potentials_->at(3)));
 
       // Creatinh a table of 2^4=16 elements
 
       for (size_t i = 6; i < 10; ++i) {
-        potentials__->at(4)->add(*(variables__->at(i)));
+         _potentials_->at(4)->add(*( _variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(potentials__->at(4)->pos(*(variables__->at(6))),
-                               *(potentials__->at(4)));
+      cptGenerator.generateCPT( _potentials_->at(4)->pos(*( _variables_->at(6))),
+                               *( _potentials_->at(4)));
     }
 
     void tearDown() {
-      while (potentials__->size() > 0) {
-        delete potentials__->back();
-        potentials__->pop_back();
+      while ( _potentials_->size() > 0) {
+        delete  _potentials_->back();
+         _potentials_->pop_back();
       }
 
-      while (variables__->size() > 0) {
-        delete variables__->back();
-        variables__->pop_back();
+      while ( _variables_->size() > 0) {
+        delete  _variables_->back();
+         _variables_->pop_back();
       }
 
-      delete variables__;
+      delete  _variables_;
 
-      delete potentials__;
+      delete  _potentials_;
     }
 
     void testCreation() {
@@ -155,17 +155,17 @@ namespace gum_tests {
         TS_ASSERT(bucket->isBucketEmpty());
 
         for (size_t i = 0; i < 5; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(potentials__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add( _potentials_->at(i)));
         }
 
         TS_ASSERT(!bucket->isBucketEmpty());
 
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)5);
-        TS_ASSERT_THROWS_NOTHING(bucket->erase(potentials__->at(4)));
+        TS_ASSERT_THROWS_NOTHING(bucket->erase( _potentials_->at(4)));
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)4);
 
         for (size_t i = 5; i > 0; --i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->erase(potentials__->at(i - 1)));
+          TS_ASSERT_THROWS_NOTHING(bucket->erase( _potentials_->at(i - 1)));
         }
 
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)0);
@@ -180,15 +180,15 @@ namespace gum_tests {
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >());
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
-          product.add(*(variables__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
+          product.add(*( _variables_->at(i)));
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
         gum::Instantiation inst(product);
 
         TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize());
@@ -207,16 +207,16 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
-          product.add(*(variables__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
+          product.add(*( _variables_->at(i)));
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
         gum::Instantiation inst(product);
         TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize());
         TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim());
@@ -236,16 +236,16 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >());
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
-          product.add(*(variables__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
+          product.add(*( _variables_->at(i)));
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
 
         gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
@@ -271,14 +271,14 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >());
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
-          product.add(*(variables__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
+          product.add(*( _variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
 
         gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
@@ -304,16 +304,16 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
-          product.add(*(variables__->at(i)));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
+          product.add(*( _variables_->at(i)));
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
 
         gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
@@ -339,19 +339,19 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
         TS_ASSERT(bucket->bucketChanged());
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(variables__->at(i))));
+          TS_ASSERT_THROWS_NOTHING(bucket->add(*( _variables_->at(i))));
           TS_ASSERT(bucket->bucketChanged());
-          product.add(*(variables__->at(i)));
+          product.add(*( _variables_->at(i)));
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
 
         TS_ASSERT(!bucket->bucketChanged());
-        TS_GUM_ASSERT_THROWS_NOTHING(makeProduct__(product));
+        TS_GUM_ASSERT_THROWS_NOTHING( _makeProduct_(product));
 
         TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size)0);
 
@@ -395,7 +395,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(fillBucket__(bucket));
+        TS_ASSERT_THROWS_NOTHING( _fillBucket_(bucket));
         TS_ASSERT_EQUALS(bucket->allVariables().size(), (gum::Size)10);
         gum::Size inBucket  = 0;
         gum::Size outBucket = 0;

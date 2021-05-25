@@ -45,17 +45,17 @@ namespace gum {
    * Default constructor.
    */
   FMDPSimulator::FMDPSimulator(const FMDP< double >* fmdp) :
-      AbstractSimulator(), fmdp__(const_cast< FMDP< double >* >(fmdp)),
-      loaded__(false) {
+      AbstractSimulator(),  _fmdp_(const_cast< FMDP< double >* >(fmdp)),
+       _loaded_(false) {
     GUM_CONSTRUCTOR(FMDPSimulator);
   }
 
   FMDPSimulator::FMDPSimulator(const std::string& ressource) :
-      AbstractSimulator(), loaded__(true) {
+      AbstractSimulator(),  _loaded_(true) {
     GUM_CONSTRUCTOR(FMDPSimulator);
 
-    fmdp__ = new FMDP< double >(true);
-    FMDPDatReader< double > reader(fmdp__, ressource);
+     _fmdp_ = new FMDP< double >(true);
+    FMDPDatReader< double > reader( _fmdp_, ressource);
     reader.trace(false);
     reader.proceed();
   }
@@ -65,7 +65,7 @@ namespace gum {
    */
   FMDPSimulator::~FMDPSimulator() {
     GUM_DESTRUCTOR(FMDPSimulator);
-    if (loaded__) delete fmdp__;
+    if ( _loaded_) delete  _fmdp_;
   }
 
 

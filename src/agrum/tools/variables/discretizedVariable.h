@@ -55,8 +55,8 @@ namespace gum {
   template < typename T_TICKS >
   class DiscretizedVariable: public IDiscretizedVariable {
     private:
-    std::vector< T_TICKS > ticks__;   // Array from 0 to domainSize-2
-    Size                   ticks_size__;
+    std::vector< T_TICKS >  _ticks_;   // Array from 0 to domainSize-2
+    Size                    _ticks_size_;
 
     protected:
     /**

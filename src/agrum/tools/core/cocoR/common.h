@@ -74,9 +74,9 @@ Coco/R itself) does not fall under the GNU General Public License.
 #    define coco_swprintf swprintf_s
 #  elif _MSC_VER >= 1300
 #    define coco_swprintf _snwprintf
-#  elif defined __MINGW32__
+#  elif defined  __MINGW32__
 #    define coco_swprintf _snwprintf
-#  elif defined __GNUC__
+#  elif defined  __GNUC__
 #    define coco_swprintf swprintf
 // cocoR genereted files may create unused-variable
 #    pragma GCC diagnostic ignored "-Wunused-variable"

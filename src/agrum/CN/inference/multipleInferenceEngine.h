@@ -19,8 +19,8 @@
  */
 
 
-#ifndef __MULTIPLE_INFERENCE_ENGINES__H__
-#define __MULTIPLE_INFERENCE_ENGINES__H__
+#ifndef  __MULTIPLE_INFERENCE_ENGINES__H__
+#define  __MULTIPLE_INFERENCE_ENGINES__H__
 
 /**
  * @file
@@ -54,22 +54,22 @@ namespace gum {
     class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine< GUM_SCALAR > infE__;
+      typedef InferenceEngine< GUM_SCALAR >  _infE_;
 
-      typedef NodeProperty< std::vector< NodeId > >                    cluster__;
-      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > credalSet__;
-      typedef NodeProperty< std::vector< GUM_SCALAR > >                margi__;
-      typedef NodeProperty< GUM_SCALAR >                               expe__;
+      typedef NodeProperty< std::vector< NodeId > >                     _cluster_;
+      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > >  _credalSet_;
+      typedef NodeProperty< std::vector< GUM_SCALAR > >                 _margi_;
+      typedef NodeProperty< GUM_SCALAR >                                _expe_;
 
-      typedef IBayesNet< GUM_SCALAR >                 bnet__;
-      typedef std::vector< margi__ >                  margis__;
-      typedef std::vector< expe__ >                   expes__;
-      typedef std::vector< credalSet__ >              credalSets__;
-      typedef std::vector< std::vector< cluster__ > > clusters__;
+      typedef IBayesNet< GUM_SCALAR >                  _bnet_;
+      typedef std::vector<  _margi_ >                   _margis_;
+      typedef std::vector<  _expe_ >                    _expes_;
+      typedef std::vector<  _credalSet_ >               _credalSets_;
+      typedef std::vector< std::vector<  _cluster_ > >  _clusters_;
 
       typedef typename std::vector<
          HashTable< std::string, std::vector< GUM_SCALAR > > >
-         modals__;
+          _modals_;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
@@ -84,30 +84,30 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void updateThreadCredalSets__(const NodeId&                    id,
+      inline void  _updateThreadCredalSets_(const NodeId&                    id,
                                            const std::vector< GUM_SCALAR >& vertex,
                                            const bool& elimRedund);
 
       protected:
       /** Threads lower marginals, one per thread. */
-      margis__ l_marginalMin_;
+       _margis_ l_marginalMin_;
       /** Threads upper marginals, one per thread. */
-      margis__ l_marginalMax_;
+       _margis_ l_marginalMax_;
       /** Threads lower expectations, one per thread. */
-      expes__ l_expectationMin_;
+       _expes_ l_expectationMin_;
       /** Threads upper expectations, one per thread. */
-      expes__ l_expectationMax_;
+       _expes_ l_expectationMax_;
       /** Threads modalities. */
-      modals__ l_modal_;
+       _modals_ l_modal_;
       /** Threads vertices. */
-      credalSets__ l_marginalSets_;
+       _credalSets_ l_marginalSets_;
       /** Threads evidence. */
-      margis__ l_evidence_;
+       _margis_ l_evidence_;
       /** Threads clusters. */
-      clusters__ l_clusters_;
+       _clusters_ l_clusters_;
 
       /** Threads IBayesNet. */
-      typename std::vector< bnet__* > workingSet_;
+      typename std::vector<  _bnet_* > workingSet_;
       /** Threads evidence. */
       typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
 
@@ -128,15 +128,15 @@ namespace gum {
        * @brief Initialize threads data.
        *
        * @param num_threads The number of threads.
-       * @param storeVertices__ \c True if vertices should be stored, \c False
+       * @param  _storeVertices_ \c True if vertices should be stored, \c False
        *otherwise.
-       * @param storeBNOpt__ \c True if optimal IBayesNet should be stored, \c
+       * @param  _storeBNOpt_ \c True if optimal IBayesNet should be stored, \c
        *false
        *otherwise.
        */
       void initThreadsData_(const Size& num_threads,
-                            const bool  storeVertices__,
-                            const bool  storeBNOpt__);
+                            const bool   _storeVertices_,
+                            const bool   _storeBNOpt_);
 
       /// @}
 

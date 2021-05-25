@@ -221,9 +221,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size max_threads_number__{getMaxNumberOfThreads()};
+      Size  _max_threads_number_{getMaxNumberOfThreads()};
 #else
-      Size max_threads_number__{1};
+      Size  _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

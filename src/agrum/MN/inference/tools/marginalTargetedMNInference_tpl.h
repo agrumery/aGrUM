@@ -36,13 +36,13 @@ namespace gum {
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      MarkovNetInference< GUM_SCALAR >::setMarkovNetDuringConstruction__(mn);
+      MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(mn);
     }
 
     // sets all the nodes as targets
     if (mn != nullptr) {
-      targeted_mode__ = false;
-      targets__       = mn->graph().asNodeSet();
+       _targeted_mode_ = false;
+       _targets_       = mn->graph().asNodeSet();
     }
 
     GUM_CONSTRUCTOR(MarginalTargetedMNInference);
@@ -60,8 +60,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MarginalTargetedMNInference< GUM_SCALAR >::onModelChanged_(
      const GraphicalModel* mn) {
-    targeted_mode__ = true;
-    setAllMarginalTargets__();
+     _targeted_mode_ = true;
+     _setAllMarginalTargets_();
   }
 
 
@@ -82,7 +82,7 @@ namespace gum {
       GUM_ERROR(UndefinedElement, node << " is not a NodeId in the Markov network")
     }
 
-    return targets__.contains(node);
+    return  _targets_.contains(node);
   }
 
   // Add a single target to the list of targets
@@ -98,7 +98,7 @@ namespace gum {
   INLINE void MarginalTargetedMNInference< GUM_SCALAR >::eraseAllTargets() {
     onAllMarginalTargetsErased_();
 
-    targets__.clear();
+     _targets_.clear();
     setTargetedMode_();   // does nothing if already in targeted mode
 
     this->setState_(
@@ -122,8 +122,8 @@ namespace gum {
 
     setTargetedMode_();   // does nothing if already in targeted mode
     // add the new target
-    if (!targets__.contains(target)) {
-      targets__.insert(target);
+    if (! _targets_.contains(target)) {
+       _targets_.insert(target);
       onMarginalTargetAdded_(target);
       this->setState_(
          MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
@@ -143,8 +143,8 @@ namespace gum {
 
     setTargetedMode_();   // does nothing if already in targeted mode
     for (const auto target: this->MN().graph()) {
-      if (!targets__.contains(target)) {
-        targets__.insert(target);
+      if (! _targets_.contains(target)) {
+         _targets_.insert(target);
         onMarginalTargetAdded_(target);
         this->setState_(
            MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
@@ -182,11 +182,11 @@ namespace gum {
     }
 
 
-    if (targets__.contains(target)) {
-      targeted_mode__ = true;   // we do not use setTargetedMode_ because we do not
+    if ( _targets_.contains(target)) {
+       _targeted_mode_ = true;   // we do not use setTargetedMode_ because we do not
                                 // want to clear the targets
       onMarginalTargetErased_(target);
-      targets__.erase(target);
+       _targets_.erase(target);
       this->setState_(
          MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
@@ -211,23 +211,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
      MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
-    return targets__;
+    return  _targets_;
   }
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
   INLINE const Size
      MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
-    return targets__.size();
+    return  _targets_.size();
   }
 
 
   /// sets all the nodes of the Markov net as targets
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::setAllMarginalTargets__() {
-    targets__.clear();
+  void MarginalTargetedMNInference< GUM_SCALAR >:: _setAllMarginalTargets_() {
+     _targets_.clear();
     if (!this->hasNoModel_()) {
-      targets__ = this->MN().graph().asNodeSet();
+       _targets_ = this->MN().graph().asNodeSet();
       onAllMarginalTargetsAdded_();
     }
   }
@@ -334,13 +334,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTargetedMode_() const {
-    return targeted_mode__;
+    return  _targeted_mode_;
   }
   template < typename GUM_SCALAR >
   INLINE void MarginalTargetedMNInference< GUM_SCALAR >::setTargetedMode_() {
-    if (!targeted_mode__) {
-      targets__.clear();
-      targeted_mode__ = true;
+    if (! _targeted_mode_) {
+       _targets_.clear();
+       _targeted_mode_ = true;
     }
   }
 } /* namespace gum */

@@ -39,26 +39,26 @@ namespace gum {
          O3PRM&                      o3_prm,
          O3NameSolver< GUM_SCALAR >& solver,
          ErrorsContainer&            errors) :
-          prm__(&prm),
-          o3_prm__(&o3_prm), solver__(&solver), errors__(&errors), build__(false) {
+           _prm_(&prm),
+           _o3_prm_(&o3_prm),  _solver_(&solver),  _errors_(&errors),  _build_(false) {
         GUM_CONSTRUCTOR(O3TypeFactory);
       }
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >::O3TypeFactory(
          const O3TypeFactory< GUM_SCALAR >& src) :
-          prm__(src.prm__),
-          o3_prm__(src.o3_prm__), solver__(src.solver__), errors__(src.errors__),
-          build__(src.build__) {
+           _prm_(src. _prm_),
+           _o3_prm_(src. _o3_prm_),  _solver_(src. _solver_),  _errors_(src. _errors_),
+           _build_(src. _build_) {
         GUM_CONS_CPY(O3TypeFactory);
       }
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >::O3TypeFactory(
          O3TypeFactory< GUM_SCALAR >&& src) :
-          prm__(std::move(src.prm__)),
-          o3_prm__(std::move(src.o3_prm__)), solver__(std::move(src.solver__)),
-          errors__(std::move(src.errors__)), build__(std::move(src.build__)) {
+           _prm_(std::move(src. _prm_)),
+           _o3_prm_(std::move(src. _o3_prm_)),  _solver_(std::move(src. _solver_)),
+           _errors_(std::move(src. _errors_)),  _build_(std::move(src. _build_)) {
         GUM_CONS_MOV(O3TypeFactory);
       }
 
@@ -71,11 +71,11 @@ namespace gum {
       INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
          const O3TypeFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
-        prm__    = src.prm__;
-        o3_prm__ = src.o3_prm__;
-        solver__ = src.solver__;
-        errors__ = src.errors__;
-        build__  = src.build__;
+         _prm_    = src. _prm_;
+         _o3_prm_ = src. _o3_prm_;
+         _solver_ = src. _solver_;
+         _errors_ = src. _errors_;
+         _build_  = src. _build_;
         return *this;
       }
 
@@ -83,44 +83,44 @@ namespace gum {
       INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
          O3TypeFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
-        prm__    = std::move(src.prm__);
-        o3_prm__ = std::move(src.o3_prm__);
-        solver__ = std::move(src.solver__);
-        errors__ = std::move(src.errors__);
-        build__  = std::move(src.build__);
+         _prm_    = std::move(src. _prm_);
+         _o3_prm_ = std::move(src. _o3_prm_);
+         _solver_ = std::move(src. _solver_);
+         _errors_ = std::move(src. _errors_);
+         _build_  = std::move(src. _build_);
         return *this;
       }
 
       template < typename GUM_SCALAR >
       INLINE void O3TypeFactory< GUM_SCALAR >::build() {
-        if (build__) {
+        if ( _build_) {
           GUM_ERROR(FatalError,
                     "types have already been built, change PRM to rebuild")
         }
-        build__ = true;
+         _build_ = true;
 
         // checking deprecated declarations
-        checkDepreactedO3Types__();
+         _checkDepreactedO3Types_();
 
         // building types
-        buildTypes__();
+         _buildTypes_();
 
         // building int types
-        buildIntTypes__();
+         _buildIntTypes_();
 
         // building real types
-        buildRealTypes__();
+         _buildRealTypes_();
       }
 
       template < typename GUM_SCALAR >
-      INLINE void O3TypeFactory< GUM_SCALAR >::buildTypes__() {
-        if (checkO3Types__()) {
-          setO3TypeCreationOrder__();
+      INLINE void O3TypeFactory< GUM_SCALAR >:: _buildTypes_() {
+        if ( _checkO3Types_()) {
+           _setO3TypeCreationOrder_();
 
-          PRMFactory< GUM_SCALAR > factory(prm__);
-          for (auto type: o3Types__) {
-            if (!isPrimitiveType__(*type)) {
-              if (solver__->resolveType(type->superLabel())) {
+          PRMFactory< GUM_SCALAR > factory( _prm_);
+          for (auto type:  _o3Types_) {
+            if (! _isPrimitiveType_(*type)) {
+              if ( _solver_->resolveType(type->superLabel())) {
                 factory.startDiscreteType(type->name().label(),
                                           type->superLabel().label());
 
@@ -136,31 +136,31 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE void O3TypeFactory< GUM_SCALAR >::checkDepreactedO3Types__() {
-        for (auto& t: o3_prm__->types()) {
+      INLINE void O3TypeFactory< GUM_SCALAR >:: _checkDepreactedO3Types_() {
+        for (auto& t:  _o3_prm_->types()) {
           if (t->deprecated()) {
-            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *errors__);
+            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), * _errors_);
           }
         }
 
-        for (auto& t: o3_prm__->int_types()) {
+        for (auto& t:  _o3_prm_->int_types()) {
           if (t->deprecated()) {
-            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *errors__);
+            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), * _errors_);
           }
         }
 
-        for (auto& t: o3_prm__->real_types()) {
+        for (auto& t:  _o3_prm_->real_types()) {
           if (t->deprecated()) {
-            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *errors__);
+            O3PRM_DEPRECATED_TYPE_WARNING(t->name(), * _errors_);
           }
         }
       }
 
       template < typename GUM_SCALAR >
-      INLINE void O3TypeFactory< GUM_SCALAR >::buildIntTypes__() {
-        if (checkO3IntTypes__()) {
-          PRMFactory< GUM_SCALAR > factory(prm__);
-          for (auto type: o3IntTypes__) {
+      INLINE void O3TypeFactory< GUM_SCALAR >:: _buildIntTypes_() {
+        if ( _checkO3IntTypes_()) {
+          PRMFactory< GUM_SCALAR > factory( _prm_);
+          for (auto type:  _o3IntTypes_) {
             factory.addRangeType(type->name().label(),
                                  type->start().value(),
                                  type->end().value());
@@ -169,10 +169,10 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE void O3TypeFactory< GUM_SCALAR >::buildRealTypes__() {
-        if (checkO3RealTypes__()) {
-          PRMFactory< GUM_SCALAR > factory(prm__);
-          for (auto type: o3RealTypes__) {
+      INLINE void O3TypeFactory< GUM_SCALAR >:: _buildRealTypes_() {
+        if ( _checkO3RealTypes_()) {
+          PRMFactory< GUM_SCALAR > factory( _prm_);
+          for (auto type:  _o3RealTypes_) {
             factory.startDiscretizedType(type->name().label());
 
             for (auto value: type->values()) {
@@ -184,59 +184,59 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::checkO3RealTypes__() {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _checkO3RealTypes_() {
         auto names = gum::Set< std::string >();
-        for (auto& type: o3_prm__->types()) {
+        for (auto& type:  _o3_prm_->types()) {
           names.insert(type->name().label());
         }
-        for (auto& type: o3_prm__->int_types()) {
+        for (auto& type:  _o3_prm_->int_types()) {
           names.insert(type->name().label());
         }
 
-        for (const auto& type: o3_prm__->real_types()) {
+        for (const auto& type:  _o3_prm_->real_types()) {
           if (names.contains(type->name().label())) {
             // Raised if duplicate type names
-            O3PRM_TYPE_DUPPLICATE(type->name(), *errors__);
+            O3PRM_TYPE_DUPPLICATE(type->name(), * _errors_);
             return false;
 
           } else if (type->values().size() < 3) {
             // Invalid range
-            O3PRM_TYPE_INVALID_RANGE(*type, *errors__);
+            O3PRM_TYPE_INVALID_RANGE(*type, * _errors_);
             return false;
 
           } else {
-            o3RealTypes__.push_back(type.get());
+             _o3RealTypes_.push_back(type.get());
           }
         }
         return true;
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::isPrimitiveType__(O3Type& type) {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _isPrimitiveType_(O3Type& type) {
         return type.name().label() == "boolean";
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::checkO3Types__() {
-        if (addTypes2Dag__()) {
-          if (addArcs2Dag__()) { return true; }
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _checkO3Types_() {
+        if ( _addTypes2Dag_()) {
+          if ( _addArcs2Dag_()) { return true; }
         }
         return false;
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::addTypes2Dag__() {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _addTypes2Dag_() {
         // Adding nodes to the type inheritance graph
-        for (auto& type: o3_prm__->types()) {
-          auto id = dag__.addNode();
+        for (auto& type:  _o3_prm_->types()) {
+          auto id =  _dag_.addNode();
           try {
-            nameMap__.insert(type->name().label(), id);
-            typeMap__.insert(type->name().label(), type.get());
-            nodeMap__.insert(id, type.get());
+             _nameMap_.insert(type->name().label(), id);
+             _typeMap_.insert(type->name().label(), type.get());
+             _nodeMap_.insert(id, type.get());
 
           } catch (DuplicateElement&) {
             // Raised if duplicate type names
-            O3PRM_TYPE_DUPPLICATE(type->name(), *errors__);
+            O3PRM_TYPE_DUPPLICATE(type->name(), * _errors_);
             return false;
           }
         }
@@ -244,28 +244,28 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::addArcs2Dag__() {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _addArcs2Dag_() {
         // Adding arcs to the graph inheritance graph
-        for (auto& type: o3_prm__->types()) {
+        for (auto& type:  _o3_prm_->types()) {
           if (type->superLabel().label() != "") {
-            if (!solver__->resolveType(type->superLabel())) { return false; }
+            if (! _solver_->resolveType(type->superLabel())) { return false; }
 
-            auto head = nameMap__[type->superLabel().label()];
-            auto tail = nameMap__[type->name().label()];
+            auto head =  _nameMap_[type->superLabel().label()];
+            auto tail =  _nameMap_[type->name().label()];
 
             try {
-              dag__.addArc(tail, head);
+               _dag_.addArc(tail, head);
 
             } catch (InvalidDirectedCycle&) {
               // Cyclic inheritance
               O3PRM_TYPE_CYCLIC_INHERITANCE(type->name(),
                                             type->superLabel(),
-                                            *errors__);
+                                            * _errors_);
               return false;
             }
 
             // Check labels inheritance
-            if (!checkLabels__(*type)) { return false; }
+            if (! _checkLabels_(*type)) { return false; }
           }
         }
 
@@ -273,17 +273,17 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::checkLabels__(O3Type& type) {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _checkLabels_(O3Type& type) {
         for (auto& pair: type.labels()) {
           auto super_labels = Set< std::string >();
-          auto super        = typeMap__[type.superLabel().label()];
+          auto super        =  _typeMap_[type.superLabel().label()];
 
           for (auto& label: super->labels()) {
             super_labels.insert(label.first.label());
           }
 
           if (!super_labels.contains(pair.second.label())) {
-            O3PRM_TYPE_UNKNOWN_LABEL(type.superLabel(), pair.second, *errors__);
+            O3PRM_TYPE_UNKNOWN_LABEL(type.superLabel(), pair.second, * _errors_);
             return false;
           }
         }
@@ -291,36 +291,36 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE void O3TypeFactory< GUM_SCALAR >::setO3TypeCreationOrder__() {
-        auto v = dag__.topologicalOrder();
+      INLINE void O3TypeFactory< GUM_SCALAR >:: _setO3TypeCreationOrder_() {
+        auto v =  _dag_.topologicalOrder();
 
         for (auto id = v.rbegin(); id != v.rend(); --id) {
-          if (nodeMap__[*id]->name().label() != "boolean") {
-            o3Types__.push_back(nodeMap__[*id]);
+          if ( _nodeMap_[*id]->name().label() != "boolean") {
+             _o3Types_.push_back( _nodeMap_[*id]);
           }
         }
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3TypeFactory< GUM_SCALAR >::checkO3IntTypes__() {
+      INLINE bool O3TypeFactory< GUM_SCALAR >:: _checkO3IntTypes_() {
         auto names = gum::Set< std::string >();
-        for (auto& type: o3_prm__->types()) {
+        for (auto& type:  _o3_prm_->types()) {
           names.insert(type->name().label());
         }
 
-        for (const auto& type: o3_prm__->int_types()) {
+        for (const auto& type:  _o3_prm_->int_types()) {
           if (names.contains(type->name().label())) {
             // Raised if duplicate type names
-            O3PRM_TYPE_DUPPLICATE(type->name(), *errors__);
+            O3PRM_TYPE_DUPPLICATE(type->name(), * _errors_);
             return false;
 
           } else if (type->end().value() - type->start().value() < 1) {
             // Invalid range
-            O3PRM_TYPE_INVALID_RANGE(*type, *errors__);
+            O3PRM_TYPE_INVALID_RANGE(*type, * _errors_);
             return false;
 
           } else {
-            o3IntTypes__.push_back(type.get());
+             _o3IntTypes_.push_back(type.get());
           }
         }
         return true;

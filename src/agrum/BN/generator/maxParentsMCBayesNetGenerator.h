@@ -71,7 +71,7 @@ namespace gum {
    * 2) Add a variable specific to the constraint (here maxParents_). \n
    * 3) Verify in the function checkCondition_() the wanted constraint and then
    *launch
-   * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::checkConditions__()
+   * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>:: _checkConditions_()
    *to verify the default constraint.\n
    * 4) Define the getters and setters of the constraint variable.\n
    * 5) And verify in the constructor that the constraint is not in
@@ -184,7 +184,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    bool checkConditions__() final;
+    bool  _checkConditions_() final;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

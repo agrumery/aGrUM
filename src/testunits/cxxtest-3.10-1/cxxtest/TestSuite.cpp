@@ -1,5 +1,5 @@
-#ifndef __cxxtest__TestSuite_cpp__
-#define __cxxtest__TestSuite_cpp__
+#ifndef  __cxxtest__TestSuite_cpp__
+#define  __cxxtest__TestSuite_cpp__
 
 #include <cxxtest/TestSuite.h>
 
@@ -120,4 +120,4 @@ namespace CxxTest {
   }
 }
 
-#endif  // __cxxtest__TestSuite_cpp__
+#endif  //  __cxxtest__TestSuite_cpp__

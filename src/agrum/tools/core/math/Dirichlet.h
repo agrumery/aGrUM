@@ -167,14 +167,14 @@ namespace gum {
 
     private:
     /// The random engine used by the unform random distribution.
-    std::default_random_engine generator__;
+    std::default_random_engine  _generator_;
 
     /// The gamma distribution used to compute the Dirichlet unnormalized
     /// samples.
-    std::gamma_distribution< float > gamma__;
+    std::gamma_distribution< float >  _gamma_;
 
     /// The parameters of the distribution.
-    param_type params__;
+    param_type  _params_;
   };
 
 } /* namespace gum */

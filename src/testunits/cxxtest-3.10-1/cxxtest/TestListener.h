@@ -1,5 +1,5 @@
-#ifndef __cxxtest__TestListener_h__
-#define __cxxtest__TestListener_h__
+#ifndef  __cxxtest__TestListener_h__
+#define  __cxxtest__TestListener_h__
 
 //
 // TestListener is the base class for all "listeners",
@@ -98,4 +98,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__TestListener_h__
+#endif  //  __cxxtest__TestListener_h__

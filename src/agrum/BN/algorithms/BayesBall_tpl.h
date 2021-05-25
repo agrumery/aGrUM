@@ -66,7 +66,7 @@ namespace gum {
       nodes_to_visit.insert(std::pair< NodeId, bool >(node, true));
     }
 
-    // perform the bouncing ball until node2potentials__ becomes empty (which
+    // perform the bouncing ball until  _node2potentials_ becomes empty (which
     // means that we have reached all the potentials and, therefore, those
     // are d-connected to query) or until there is no node in the graph to send
     // the ball to
@@ -77,7 +77,7 @@ namespace gum {
       // if the marks of the node do not exist, create them
       if (!marks.exists(node)) marks.insert(node, empty_mark);
 
-      // if the node belongs to the query, update node2potentials__: remove all
+      // if the node belongs to the query, update  _node2potentials_: remove all
       // the potentials containing the node
       if (node2potentials.exists(node)) {
         auto& pot_set = node2potentials[node];
@@ -93,7 +93,7 @@ namespace gum {
         }
         node2potentials.erase(node);
 
-        // if node2potentials__ is empty, no need to go on: all the potentials
+        // if  _node2potentials_ is empty, no need to go on: all the potentials
         // are d-connected to the query
         if (node2potentials.empty()) return;
       }
@@ -143,7 +143,7 @@ namespace gum {
     }
 
 
-    // here, all the potentials that belong to node2potentials__ are d-separated
+    // here, all the potentials that belong to  _node2potentials_ are d-separated
     // from the query
     for (const auto elt: node2potentials) {
       for (const auto pot: elt.second) {

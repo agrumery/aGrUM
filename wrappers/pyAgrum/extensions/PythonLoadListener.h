@@ -31,12 +31,12 @@
 
 class PythonLoadListener : public gum::Listener {
   private:
-    PyObject* whenLoading__;
+    PyObject* _whenLoading_;
   public:
     void whenLoading ( const void* buffer, int percent ) {
-      if ( whenLoading__ ) {
+      if ( _whenLoading_ ) {
         PyObject* arglist = Py_BuildValue ( "(i)", percent );
-        PyObject_Call ( whenLoading__, arglist, NULL );
+        PyObject_Call ( _whenLoading_, arglist, NULL );
         Py_DECREF ( arglist );
       }
     }
@@ -45,22 +45,22 @@ class PythonLoadListener : public gum::Listener {
       if ( ! PyCallable_Check ( l ) ) {
         return false;
       } else {
-        whenLoading__ = l;
+        _whenLoading_ = l;
         Py_INCREF ( l );
         return true;
       }
     }
 
     PythonLoadListener() {
-      whenLoading__ = ( PyObject* ) 0;
+      _whenLoading_ = ( PyObject* ) 0;
     }
     ~PythonLoadListener() {
-      if ( whenLoading__ ) Py_DECREF ( whenLoading__ );
+      if ( _whenLoading_ ) Py_DECREF ( _whenLoading_ );
     }
 };
 
 
-int fillLoadListeners__ ( std::vector<PythonLoadListener>& py_listener, PyObject* l ) {
+int _fillLoadListeners_ ( std::vector<PythonLoadListener>& py_listener, PyObject* l ) {
   if ( !l ) return 0;
 
   if ( l == Py_None ) return 0;

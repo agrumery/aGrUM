@@ -52,10 +52,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return errors__;
+  return  _errors_;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return errors__;
+  return  _errors_;
 }
 
 void Parser::Get() {
@@ -152,21 +152,21 @@ void Parser::INTERFACE_UNIT() {
 		auto n = errors().error_count; 
 		auto i = O3Interface(); 
 		INTERFACE_DECLARATION(i.position(), i.name(), i.superLabel(), i.elements() );
-		if (ok__(n)) { addO3Interface__( std::move( i ) ); } 
+		if ( _ok_(n)) {  _addO3Interface_( std::move( i ) ); }
 }
 
 void Parser::CLASS_UNIT() {
 		auto n = errors().error_count; 
 		auto c = O3Class(); 
 		CLASS_DECLARATION(c);
-		if (ok__(n)) { addO3Class__( std::move(c) ); } 
+		if ( _ok_(n)) {  _addO3Class_( std::move(c) ); }
 }
 
 void Parser::SYSTEM_UNIT() {
 		auto n = errors().error_count; 
 		auto s = O3System(); 
 		SYSTEM_DECLARATION(s);
-		if (ok__(n)) { addO3System__( std::move(s) ); } 
+		if ( _ok_(n)) {  _addO3System_( std::move(s) ); }
 }
 
 void Parser::CLASS_DECLARATION(O3Class& c) {
@@ -198,7 +198,7 @@ void Parser::PREFIXED_LABEL(O3Label& l) {
 		Expect(_label);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		auto label = narrow( t->val ); 
-		if (prefix__ != "") { label = prefix__ + label; } 
+		if ( _prefix_ != "") { label =  _prefix_ + label; }
 		l = O3Label( pos, label ); 
 }
 
@@ -278,22 +278,22 @@ void Parser::CLASS_ANON_TYPE_ATTR(O3Class& c) {
 			TYPE_VALUE_LIST(t.labels());
 			Expect(27 /* ")" */);
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t); 
-			if ( ok__( n ) ) { addO3Type__( std::move(t) ); } 
+			type =  _setAnonTypeName_(c, name, pos, t);
+			if (  _ok_( n ) ) {  _addO3Type_( std::move(t) ); }
 		} else if (la->kind == _int) {
 			auto t = O3IntType(); 
 			t.position() = pos; 
 			INT_TYPE_DECLARATION(t.start(), t.end());
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t); 
-			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } 
+			type =  _setAnonTypeName_(c, name, pos, t);
+			if (  _ok_( n ) ) {  _addO3IntType_( std::move(t) ); }
 		} else if (la->kind == _real) {
 			auto t = O3RealType(); 
 			t.position() = pos; 
 			REAL_TYPE_DECLARATION(t.values());
 			LABEL_OR_INT(name);
-			type = setAnonTypeName__(c, name, pos, t); 
-			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } 
+			type =  _setAnonTypeName_(c, name, pos, t);
+			if (  _ok_( n ) ) {  _addO3RealType_( std::move(t) ); }
 		} else SynErr(37);
 		ATTRIBUTE(type, name, c);
 }
@@ -582,17 +582,17 @@ void Parser::TYPE_DECLARATION() {
 			} else {
 				EXTENDED_TYPE_DECLARATION(t.deprecated(), t.superLabel(), t.labels());
 			}
-			if ( ok__( n ) ) { addO3Type__( std::move(t) ); } 
+			if (  _ok_( n ) ) {  _addO3Type_( std::move(t) ); }
 		} else if (la->kind == _int) {
 			auto t = O3IntType(); 
 			t.name() = name; t.position() = pos; 
 			INT_TYPE_DECLARATION(t.start(), t.end());
-			if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } 
+			if (  _ok_( n ) ) {  _addO3IntType_( std::move(t) ); }
 		} else if (la->kind == _real) {
 			auto t = O3RealType(); 
 			t.name() = name; t.position() = pos; 
 			REAL_TYPE_DECLARATION(t.values());
-			if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } 
+			if (  _ok_( n ) ) {  _addO3RealType_( std::move(t) ); }
 		} else SynErr(43);
 		Expect(_semicolon);
 }
@@ -609,7 +609,7 @@ void Parser::DEPRECATED_INT_DECLARATION() {
 		Expect(27 /* ")" */);
 		LABEL(t.name());
 		Expect(_semicolon);
-		if ( ok__( n ) ) { addO3IntType__( std::move( t ) ); } 
+		if (  _ok_( n ) ) {  _addO3IntType_( std::move( t ) ); }
 }
 
 void Parser::DEPRECATED_REAL_DECLARATION() {
@@ -622,7 +622,7 @@ void Parser::DEPRECATED_REAL_DECLARATION() {
 		Expect(27 /* ")" */);
 		LABEL(t.name());
 		Expect(_semicolon);
-		if ( ok__( n ) ) { addO3RealType__( std::move( t ) ); } 
+		if (  _ok_( n ) ) {  _addO3RealType_( std::move( t ) ); }
 }
 
 void Parser::DISCRETE_TYPE_DECLARATION(bool& deprecated, LabelMap& labels) {
@@ -915,7 +915,7 @@ void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 void Parser::IMPORT_BODY() {
 		auto i = O3Import(); 
 		IMPORT_DECLARATION(i);
-		addO3Import__( std::move( i ) ); 
+		 _addO3Import_( std::move( i ) );
 }
 
 void Parser::IMPORT_DECLARATION(O3Import& import) {
@@ -1107,13 +1107,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist )  _errors_.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  errors__.Warning( scanner->filename(),t->line, t->col, msg );
+   _errors_.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -1188,7 +1188,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  errors__.Error( filename,line,col,ss.c_str() );
+   _errors_.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

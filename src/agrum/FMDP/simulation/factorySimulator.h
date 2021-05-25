@@ -126,15 +126,15 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return primeMap__.second(mainVar);
+      return  _primeMap_.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return FactoryVars__.beginSafe();
+      return  _FactoryVars_.beginSafe();
     }
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return FactoryVars__.endSafe();
+      return  _FactoryVars_.endSafe();
     }
 
     /// @}
@@ -144,41 +144,41 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return *actionMap__[actionId]; }
+    const std::string& actionName(Idx actionId) { return * _actionMap_[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() {
-      return FactoryActions__.beginSafe();
+      return  _FactoryActions_.beginSafe();
     }
-    SequenceIteratorSafe< Idx > endActions() { return FactoryActions__.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() { return  _FactoryActions_.endSafe(); }
 
 
     /// @}
 
 
     private:
-    void goNorth__();
-    void goEast__();
-    void goSouth__();
-    void goWest__();
-    void pickUp__();
-    void putDown__();
-    void fillUp__();
+    void  _goNorth_();
+    void  _goEast_();
+    void  _goSouth_();
+    void  _goWest_();
+    void  _pickUp_();
+    void  _putDown_();
+    void  _fillUp_();
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* >                           FactoryVars__;
-    Bijection< const DiscreteVariable*, const DiscreteVariable* > primeMap__;
-    DiscreteVariable*                                             xPos__;
-    DiscreteVariable*                                             yPos__;
-    DiscreteVariable*                                             passengerPos__;
-    DiscreteVariable*                                             passengerDest__;
-    DiscreteVariable*                                             fuelLevel__;
+    Sequence< const DiscreteVariable* >                            _FactoryVars_;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* >  _primeMap_;
+    DiscreteVariable*                                              _xPos_;
+    DiscreteVariable*                                              _yPos_;
+    DiscreteVariable*                                              _passengerPos_;
+    DiscreteVariable*                                              _passengerDest_;
+    DiscreteVariable*                                              _fuelLevel_;
 
     /// Actions
-    Sequence< Idx >                FactoryActions__;
-    HashTable< Idx, std::string* > actionMap__;   //__actionMap.insert ( actionId,
+    Sequence< Idx >                 _FactoryActions_;
+    HashTable< Idx, std::string* >  _actionMap_;   // __actionMap.insert ( actionId,
     // new std::string ( action ) );
-    FactorySimulationAction lastAction__;
+    FactorySimulationAction  _lastAction_;
   };
 
 } /* namespace gum */

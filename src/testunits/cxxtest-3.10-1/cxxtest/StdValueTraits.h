@@ -1,5 +1,5 @@
-#ifndef __cxxtest_StdValueTraits_h__
-#define __cxxtest_StdValueTraits_h__
+#ifndef  __cxxtest_StdValueTraits_h__
+#define  __cxxtest_StdValueTraits_h__
 
 //
 // This file defines ValueTraits for std:: stuff.
@@ -219,4 +219,4 @@ namespace CxxTest {
 
 #endif  // CXXTEST_USER_VALUE_TRAITS
 
-#endif  // __cxxtest_StdValueTraits_h__
+#endif  //  __cxxtest_StdValueTraits_h__

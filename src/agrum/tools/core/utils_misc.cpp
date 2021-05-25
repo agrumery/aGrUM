@@ -46,9 +46,9 @@ namespace gum {
     return true;
   }
 
-  void atexit__() {
+  void  _atexit_() {
 #ifdef GUM_DEBUG_MODE
-    gum::__debug__::atexit__();
+    gum:: __debug__:: _atexit_();
 #endif
   }
 

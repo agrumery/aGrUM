@@ -363,7 +363,7 @@ namespace gum {
      * In extenso, learn from the transition.
      * @param reachedState : the state reached after the transition
      * @param obtainedReward : the reward obtained during the transition
-     * @warning Uses the originalState__ and performedAction__ stored in cache
+     * @warning Uses the  _originalState_ and  _performedAction_ stored in cache
      * If you want to specify the original state and the performed action, see
      * below
      */
@@ -393,7 +393,7 @@ namespace gum {
     // ==========================================================================
     std::string toString();
 
-    std::string optimalPolicy2String() { return planer__->optimalPolicy2String(); }
+    std::string optimalPolicy2String() { return  _planer_->optimalPolicy2String(); }
 
 
     // ###################################################################
@@ -409,7 +409,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size learnerSize() { return learner__->size(); }
+    Size learnerSize() { return  _learner_->size(); }
 
     // ==========================================================================
     /**
@@ -425,7 +425,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size valueFunctionSize() { return planer__->vFunctionSize(); }
+    Size valueFunctionSize() { return  _planer_->vFunctionSize(); }
 
     // ==========================================================================
     /**
@@ -433,7 +433,7 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size optimalPolicySize() { return planer__->optimalPolicySize(); }
+    Size optimalPolicySize() { return  _planer_->optimalPolicySize(); }
 
     /// @}
 
@@ -447,31 +447,31 @@ namespace gum {
 
     private:
     /// The learner used to learn the FMDP
-    ILearningStrategy* learner__;
+    ILearningStrategy*  _learner_;
 
     /// The planer used to plan an optimal strategy
-    IPlanningStrategy< double >* planer__;
+    IPlanningStrategy< double >*  _planer_;
 
     /// The decider
-    IDecisionStrategy* decider__;
+    IDecisionStrategy*  _decider_;
 
 
     /// The number of observation we make before using again the planer
-    Idx observationPhaseLenght__;
+    Idx  _observationPhaseLenght_;
 
     /// The total number of observation made so far
-    Idx nbObservation__;
+    Idx  _nbObservation_;
 
     /// The number of Value Iteration step we perform
-    Idx nbValueIterationStep__;
+    Idx  _nbValueIterationStep_;
 
     /// The last performed action
-    Idx lastAction__;
+    Idx  _lastAction_;
 
     /// Since SDYNA made these observation, it has to delete them on quitting
-    Set< Observation* > bin__;
+    Set< Observation* >  _bin_;
 
-    bool actionReward__;
+    bool  _actionReward_;
 
     bool verbose_;
   };

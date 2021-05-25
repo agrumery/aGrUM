@@ -19,8 +19,8 @@
  */
 
 
-#ifndef __LP_INTERFACE__H__
-#define __LP_INTERFACE__H__
+#ifndef  __LP_INTERFACE__H__
+#define  __LP_INTERFACE__H__
 
 /**
  * @file
@@ -159,7 +159,7 @@ namespace gum {
         protected:
         private:
         /** @brief %Variable id. */
-        unsigned int id__;
+        unsigned int  _id_;
       };
 
     }   // end of namespace lp
@@ -411,35 +411,35 @@ namespace gum {
         /** @brief \c True if this expression has a non-empty left side L : L <=
          * M <=
          * R . \c False otherwise. */
-        bool ileft__;
+        bool  _ileft_;
         /** @brief \c True if this expression has a non-empty middle side M (
          * the
          * default ) : L <= M <= R . \c False otherwise. */
-        bool imiddle__;
+        bool  _imiddle_;
         /** @brief \c True if this expression has a non-empty right side R : L
          * <= M
          * <= R . \c False otherwise. */
-        bool iright__;
+        bool  _iright_;
 
         /** @brief The constant on the left side L : L <= M <= R */
-        double lValue__;
+        double  _lValue_;
         /** @brief The constant on the middle side L : L <= M <= R */
-        double mValue__;
+        double  _mValue_;
         /** @brief The constant on the right side L : L <= M <= R */
-        double rValue__;
+        double  _rValue_;
 
         /** @brief The coefficients of each variable on the left side L : L <= M
          * <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* lCoeffs__;
+        HashTable< LpCol, double >*  _lCoeffs_;
         /** @brief The coefficients of each variable on the middle side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* mCoeffs__;
+        HashTable< LpCol, double >*  _mCoeffs_;
         /** @brief The coefficients of each variable on the right side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >* rCoeffs__;
+        HashTable< LpCol, double >*  _rCoeffs_;
 
         /// @name Used by static method LpExpr::LessThan<T1,T2> and by operator
         /// <=
@@ -453,7 +453,7 @@ namespace gum {
          * on
          * the first empty side met, starting at left.
          */
-        void addSide__(const LpCol& from);
+        void  _addSide_(const LpCol& from);
 
         /**
          * @brief Copy an expression to a side of the calling expression, from
@@ -463,7 +463,7 @@ namespace gum {
          * copy
          * on the first empty side met, starting at left.
          */
-        void addSide__(const LpExpr& from);
+        void  _addSide_(const LpExpr& from);
 
         /**
          * @brief Move an expression to a side of the calling expression, from
@@ -473,7 +473,7 @@ namespace gum {
          * side
          * met, starting at left.
          */
-        void addSide__(LpExpr&& from);
+        void  _addSide_(LpExpr&& from);
 
         /**
          * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L
@@ -485,7 +485,7 @@ namespace gum {
          * first empty side met, starting at left.
          */
         template < typename SCALAR >
-        void addSide__(const SCALAR& from);
+        void  _addSide_(const SCALAR& from);
 
         /// @}
       };
@@ -585,11 +585,11 @@ namespace gum {
         protected:
         private:
         /** @brief The constant of the linear inequality. */
-        double cste__;
+        double  _cste_;
 
         /** @brief The coefficients of the variables of the linear inequality.
          */
-        HashTable< LpCol, double >* coeffs__;
+        HashTable< LpCol, double >*  _coeffs_;
 
       };   // end of class LpRow
 
@@ -748,16 +748,16 @@ namespace gum {
         protected:
         private:
         /** @brief Rows of the problem. */
-        std::vector< LpRow* > rows__;
+        std::vector< LpRow* >  _rows_;
         /** @brief %Variables of the problem. */
-        std::vector< LpCol > cols__;
+        std::vector< LpCol >  _cols_;
 
         /** @brief \c true if addPositivity() has been called, \c false
          * otherwise. */
-        bool positivity__;
+        bool  _positivity_;
         /** @brief \c true if addSumIsOne() has been called, \c false otherwise.
          */
-        bool sumIsOne__;
+        bool  _sumIsOne_;
 
       };   // end of class LpInterface
 

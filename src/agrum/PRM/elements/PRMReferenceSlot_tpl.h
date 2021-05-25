@@ -36,7 +36,7 @@ namespace gum {
        PRMClassElementContainer< GUM_SCALAR >& type,
        bool                                    isArray) :
         PRMClassElement< GUM_SCALAR >(name),
-        slotType__(type), isArray__(isArray) {
+         _slotType_(type),  _isArray_(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
       this->safeName_
          = PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
@@ -52,7 +52,7 @@ namespace gum {
     PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
        const PRMReferenceSlot< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source),
-        slotType__(source.slotType__), isArray__(source.isArray__) {
+         _slotType_(source. _slotType_),  _isArray_(source. _isArray_) {
       GUM_CONS_CPY(PRMReferenceSlot);
       GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy constructor.")
     }
@@ -73,18 +73,18 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMReferenceSlot< GUM_SCALAR >::slotType() {
-      return slotType__;
+      return  _slotType_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMReferenceSlot< GUM_SCALAR >::slotType() const {
-      return slotType__;
+      return  _slotType_;
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMReferenceSlot< GUM_SCALAR >::isArray() const {
-      return isArray__;
+      return  _isArray_;
     }
 
     template < typename GUM_SCALAR >

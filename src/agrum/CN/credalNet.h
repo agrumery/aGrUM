@@ -19,8 +19,8 @@
  */
 
 
-#ifndef __CREDAL_NET__H__
-#define __CREDAL_NET__H__
+#ifndef  __CREDAL_NET__H__
+#define  __CREDAL_NET__H__
 
 /**
  * @file
@@ -66,8 +66,8 @@
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef __int64          int64_t;
-typedef unsigned __int64 uint64_t;
+typedef  __int64          int64_t;
+typedef unsigned  __int64 uint64_t;
 #else
 #  include <stdint.h>
 #endif
@@ -367,7 +367,7 @@ namespace gum {
        *
        * Use this method when using a single BayesNet storing counts of events.
        * Lagrange normalization. This call is irreversible and modify counts
-       *stored by \c src_bn__.
+       *stored by \c  _src_bn_.
        *
        * Doest not performs computations of the parameters but keeps normalized
        *counts of events only. Call \c idmLearning to compute the probabilities
@@ -480,7 +480,7 @@ namespace gum {
        * @param id The constant reference to the choosen NodeId
        * @return Returns the type of the choosen node in the ( up-to-date )
        * CredalNet
-       * current_bn__ if any, src_bn__ otherwise.
+       *  _current_bn_ if any,  _src_bn_ otherwise.
        */
       NodeType currentNodeType(const NodeId& id) const;
 
@@ -488,7 +488,7 @@ namespace gum {
        * @param id The constant reference to the choosen NodeId
        * @return Returns the type of the choosen node in the ( up-to-date )
        * CredalNet
-       * in src_bn__.
+       * in  _src_bn_.
        */
       NodeType nodeType(const NodeId& id) const;
 
@@ -550,83 +550,83 @@ namespace gum {
 
       protected:
       private:
-      /** @brief 1e6 by default, used by fracC__ as precision. */
-      GUM_SCALAR precisionC__;   // = 1e6;
-      /** @brief 5 by default, used by fracC__ as number of decimals. */
-      GUM_SCALAR deltaC__;   // = 5;
+      /** @brief 1e6 by default, used by  _fracC_ as precision. */
+      GUM_SCALAR  _precisionC_;   // = 1e6;
+      /** @brief 5 by default, used by  _fracC_ as number of decimals. */
+      GUM_SCALAR  _deltaC_;   // = 5;
 
       /** @brief The lowest perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      GUM_SCALAR epsilonMin__;
+      GUM_SCALAR  _epsilonMin_;
       /** @brief The highest perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      GUM_SCALAR epsilonMax__;
+      GUM_SCALAR  _epsilonMax_;
       /** @brief The average perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      GUM_SCALAR epsilonMoy__;
+      GUM_SCALAR  _epsilonMoy_;
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * computing redundant vertices. */
-      GUM_SCALAR epsRedund__;   //= 1e-6;
+      GUM_SCALAR  _epsRedund_;   //= 1e-6;
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
-       * using farey__. */
-      GUM_SCALAR epsF__;   // = 1e-6;
-      /** @brief Highest possible denominator allowed when using farey__. A
+       * using  _farey_. */
+      GUM_SCALAR  _epsF_;   // = 1e-6;
+      /** @brief Highest possible denominator allowed when using  _farey_. A
        * value too
        * high may lead to lrs being unable to find vertices. */
-      GUM_SCALAR denMax__;   // = 1e6; // beware LRS
+      GUM_SCALAR  _denMax_;   // = 1e6; // beware LRS
 
-      /** @brief Precision used by frac__. */
-      GUM_SCALAR precision__;   // = 1e6; // beware LRS
+      /** @brief Precision used by  _frac_. */
+      GUM_SCALAR  _precision_;   // = 1e6; // beware LRS
 
       /** @brief \c TRUE if this CredalNet is separately and interval specified,
        * \c
        * FALSE otherwise. */
-      bool separatelySpecified__;
+      bool  _separatelySpecified_;
 
       /** @brief Original BayesNet (used as a DAG). Is never modified. */
-      BayesNet< GUM_SCALAR > src_bn__;
+      BayesNet< GUM_SCALAR >  _src_bn_;
 
       /** @brief BayesNet used to store lower probabilities. */
-      BayesNet< GUM_SCALAR > src_bn_min__;
+      BayesNet< GUM_SCALAR >  _src_bn_min_;
       /** @brief BayesNet used to store upper probabilities. */
-      BayesNet< GUM_SCALAR > src_bn_max__;
+      BayesNet< GUM_SCALAR >  _src_bn_max_;
 
       /** @brief Up-to-date BayesNet (used as a DAG). */
-      BayesNet< GUM_SCALAR >* current_bn__;   // = nullptr;
+      BayesNet< GUM_SCALAR >*  _current_bn_;   // = nullptr;
 
       /** @brief This CredalNet original CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >
-         credalNet_src_cpt__;
+          _credalNet_src_cpt_;
 
       /** @brief This CredalNet up-to-date CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-         credalNet_current_cpt__;   // =  nullptr;
+          _credalNet_current_cpt_;   // =  nullptr;
 
       /** @deprecated @brief Corresponding bits of each variable. */
-      NodeProperty< std::vector< NodeId > > var_bits__;
+      NodeProperty< std::vector< NodeId > >  _var_bits_;
 
       /** @brief The NodeType of each node from the ORIGINAL network. */
-      NodeProperty< NodeType > original_nodeType__;
+      NodeProperty< NodeType >  _original_nodeType_;
       /** @brief The NodeType of each node from the up-to-date network. */
-      NodeProperty< NodeType >* current_nodeType__;   // = nullptr;
+      NodeProperty< NodeType >*  _current_nodeType_;   // = nullptr;
 
       /** @brief Used by L2U, to know if lower and upper probabilities over the
        * second modality has been stored in order to speed-up the algorithm. */
-      bool hasComputedBinaryCPTMinMax__;
+      bool  _hasComputedBinaryCPTMinMax_;
       /**
        * @brief Used with binary networks to speed-up L2U inference. Store the
        * lower
        * probabilities of each node X over the "true" modality, i.e. \f$
        * \underline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector< std::vector< GUM_SCALAR > > binCptMin__;
+      typename std::vector< std::vector< GUM_SCALAR > >  _binCptMin_;
 
       /**
        * @brief Used with binary networks to speed-up L2U inference. Store the
@@ -634,10 +634,10 @@ namespace gum {
        * probabilities of each node X over the "true" modality, i.e. \f$
        * \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector< std::vector< GUM_SCALAR > > binCptMax__;
+      typename std::vector< std::vector< GUM_SCALAR > >  _binCptMax_;
 
       /** @brief %Set the NodeType of each node */
-      void sort_varType__();
+      void  _sort_varType_();
 
       /**
        * @deprecated
@@ -645,7 +645,7 @@ namespace gum {
        * Node.
        * @return Returns the cardinality of the Decision Node.
        */
-      int find_dNode_card__(
+      int  _find_dNode_card_(
          const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt)
          const;
 
@@ -658,23 +658,23 @@ namespace gum {
        *
        * Called by bnToCredal and idmLearning.
        */
-      void intervalToCredal__();
+      void  _intervalToCredal_();
 
       /** @brief Initialize private constant variables after the Constructor has
        * been
        * called */
-      void initParams__();
+      void  _initParams_();
 
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been
        * called */
-      void initCNNets__(const std::string& src_min_num,
+      void  _initCNNets_(const std::string& src_min_num,
                         const std::string& src_max_den);
 
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been
        * called */
-      void initCNNets__(const BayesNet< GUM_SCALAR >& src_min_num,
+      void  _initCNNets_(const BayesNet< GUM_SCALAR >& src_min_num,
                         const BayesNet< GUM_SCALAR >& src_max_den);
 
       /**
@@ -693,9 +693,9 @@ namespace gum {
        *
        * @param bn_dest The reference to the new copy
        */
-      void bnCopy__(BayesNet< GUM_SCALAR >& bn_dest);
+      void  _bnCopy_(BayesNet< GUM_SCALAR >& bn_dest);
 
-      // void H2Vcdd__ ( const std::vector< std::vector< GUM_SCALAR > > & h_rep,
+      // void  _H2Vcdd_ ( const std::vector< std::vector< GUM_SCALAR > > & h_rep,
       // std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
       /**
        * @deprecated one should use the LrsWrapper class
@@ -708,7 +708,7 @@ namespace gum {
        * @param v_rep A reference to the V-representation of the same credal
        *set.
        */
-      void H2Vlrs__(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
+      void  _H2Vlrs_(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
                     std::vector< std::vector< GUM_SCALAR > >&       v_rep) const;
 
     };   // CredalNet
@@ -723,4 +723,4 @@ namespace gum {
 
 #include <agrum/CN/credalNet_tpl.h>
 
-#endif   // __CREDAL_NET__H__
+#endif   //  __CREDAL_NET__H__

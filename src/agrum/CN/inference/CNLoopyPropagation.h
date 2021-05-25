@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef __CN_LOOPY_PROPAGATION__H__
-#define __CN_LOOPY_PROPAGATION__H__
+#ifndef  __CN_LOOPY_PROPAGATION__H__
+#define  __CN_LOOPY_PROPAGATION__H__
 
 #include <cstdlib>
 #include <ctime>
@@ -365,16 +365,16 @@ namespace gum {
 
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      using infE__ = InferenceEngine< GUM_SCALAR >;
+      using  _infE_ = InferenceEngine< GUM_SCALAR >;
 
       /** The choosen inference type. nodeToNeighbours by Default. */
-      InferenceType inferenceType__;
+      InferenceType  _inferenceType_;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet< GUM_SCALAR >* cn__;
+      const CredalNet< GUM_SCALAR >*  _cn_;
 
       /** A pointer to it's IBayesNet used as a DAG. */
-      const IBayesNet< GUM_SCALAR >* bnet__;
+      const IBayesNet< GUM_SCALAR >*  _bnet_;
 
       // typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       // cnfunc getCN = &infE::getCN;

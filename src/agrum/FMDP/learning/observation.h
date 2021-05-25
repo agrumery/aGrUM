@@ -98,10 +98,10 @@ namespace gum {
      */
     // ###################################################################
     INLINE Idx modality(const DiscreteVariable* var) const {
-      return varInst__[var];
+      return  _varInst_[var];
     }
     INLINE Idx rModality(const DiscreteVariable* var) const {
-      return rInst__[var];
+      return  _rInst_[var];
     }
 
     // ###################################################################
@@ -113,21 +113,21 @@ namespace gum {
      */
     // ###################################################################
     INLINE void setModality(const DiscreteVariable* var, Idx modality) {
-      varInst__.insert(var, modality);
+       _varInst_.insert(var, modality);
     }
     INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
-      rInst__.insert(var, modality);
+       _rInst_.insert(var, modality);
     }
 
     // ###################################################################
     // Returns the reward obtained during this observation
     // ###################################################################
-    double reward() const { return reward__; }
+    double reward() const { return  _reward_; }
 
     // ###################################################################
     // Sets the reward obtained during this observation
     // ###################################################################
-    void setReward(double reward) { reward__ = reward; }
+    void setReward(double reward) {  _reward_ = reward; }
 
     /// @}
     ///
@@ -144,7 +144,7 @@ namespace gum {
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
        cbeginVariablesSafe() const {
-      return varInst__.cbeginSafe();
+      return  _varInst_.cbeginSafe();
     }
 
     // ###################################################################
@@ -153,18 +153,18 @@ namespace gum {
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
        cendVariablesSafe() const {
-      return varInst__.cendSafe();
+      return  _varInst_.cendSafe();
     }
 
     /// @}
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable< const DiscreteVariable*, Idx > varInst__;
-    HashTable< const DiscreteVariable*, Idx > rInst__;
+    HashTable< const DiscreteVariable*, Idx >  _varInst_;
+    HashTable< const DiscreteVariable*, Idx >  _rInst_;
 
     /// The reward associated to this transition
-    double reward__;
+    double  _reward_;
   };
 
 } /* namespace gum */

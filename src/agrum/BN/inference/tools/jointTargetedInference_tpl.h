@@ -37,7 +37,7 @@ namespace gum {
       MarginalTargetedInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      BayesNetInference< GUM_SCALAR >::setBayesNetDuringConstruction__(bn);
+      BayesNetInference< GUM_SCALAR >:: _setBayesNetDuringConstruction_(bn);
     }
     GUM_CONSTRUCTOR(JointTargetedInference);
   }
@@ -56,7 +56,7 @@ namespace gum {
      const GraphicalModel* bn) {
     MarginalTargetedInference< GUM_SCALAR >::onModelChanged_(bn);
     onAllJointTargetsErased_();
-    joint_targets__.clear();
+     _joint_targets_.clear();
   }
 
 
@@ -80,7 +80,7 @@ namespace gum {
       }
     }
 
-    return joint_targets__.contains(vars);
+    return  _joint_targets_.contains(vars);
   }
 
 
@@ -94,10 +94,10 @@ namespace gum {
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
   INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllJointTargets() {
-    if (joint_targets__.size() > 0) {
+    if ( _joint_targets_.size() > 0) {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
-      joint_targets__.clear();
+       _joint_targets_.clear();
       this->setState_(GraphicalModelInference<
                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
@@ -132,23 +132,23 @@ namespace gum {
     }
 
     // check that the joint_target set does not contain the new target
-    if (joint_targets__.contains(joint_target)) return;
+    if ( _joint_targets_.contains(joint_target)) return;
 
     // check if joint_target is a subset of an already existing target
-    for (const auto& target: joint_targets__) {
+    for (const auto& target:  _joint_targets_) {
       if (target.isProperSupersetOf(joint_target)) return;
     }
 
     // check if joint_target is not a superset of an already existing target
     // in this case, we need to remove old existing target
-    for (auto iter = joint_targets__.beginSafe();
-         iter != joint_targets__.endSafe();
+    for (auto iter =  _joint_targets_.beginSafe();
+         iter !=  _joint_targets_.endSafe();
          ++iter) {
       if (iter->isProperSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
     this->setTargetedMode_();   // does nothing if already in targeted mode
-    joint_targets__.insert(joint_target);
+     _joint_targets_.insert(joint_target);
     onJointTargetAdded_(joint_target);
     this->setState_(
        GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
@@ -175,11 +175,11 @@ namespace gum {
     }
 
     // check that the joint_target set does not contain the new target
-    if (joint_targets__.contains(joint_target)) {
+    if ( _joint_targets_.contains(joint_target)) {
       // note that we have to be in target mode when we are here
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
-      joint_targets__.erase(joint_target);
+       _joint_targets_.erase(joint_target);
       this->setState_(GraphicalModelInference<
                       GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
@@ -190,14 +190,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
      JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
-    return joint_targets__;
+    return  _joint_targets_;
   }
 
   /// returns the number of target sets
   template < typename GUM_SCALAR >
   INLINE Size
      JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
-    return joint_targets__.size();
+    return  _joint_targets_.size();
   }
 
 
@@ -213,11 +213,11 @@ namespace gum {
     NodeSet set;
     bool    found_exact_target = false;
 
-    if (joint_targets__.contains(nodes)) {
+    if ( _joint_targets_.contains(nodes)) {
       set                = nodes;
       found_exact_target = true;
     } else {
-      for (const auto& target: joint_targets__) {
+      for (const auto& target:  _joint_targets_) {
         if (nodes.isProperSubsetOf(target)) {
           set = target;
           break;
@@ -228,7 +228,7 @@ namespace gum {
     if (set.empty()) {
       GUM_ERROR(UndefinedElement,
                 " no joint target containing " << nodes << " could be found among "
-                                               << joint_targets__);
+                                               <<  _joint_targets_);
     }
 
     if (!this->isInferenceDone()) { this->makeInference(); }

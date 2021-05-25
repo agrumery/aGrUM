@@ -58,14 +58,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
        const StructuralConstraintDiGraph& from) :
-        DiGraph__graph_(from.DiGraph__graph_) {
+         _DiGraph_graph_(from. _DiGraph_graph_) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
        StructuralConstraintDiGraph&& from) :
-        DiGraph__graph_(std::move(from.DiGraph__graph_)) {
+         _DiGraph_graph_(std::move(from. _DiGraph_graph_)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }
 
@@ -77,14 +77,14 @@ namespace gum {
     /// copy operator
     StructuralConstraintDiGraph& StructuralConstraintDiGraph::operator=(
        const StructuralConstraintDiGraph& from) {
-      if (this != &from) { DiGraph__graph_ = from.DiGraph__graph_; }
+      if (this != &from) {  _DiGraph_graph_ = from. _DiGraph_graph_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintDiGraph&
        StructuralConstraintDiGraph::operator=(StructuralConstraintDiGraph&& from) {
-      if (this != &from) { DiGraph__graph_ = std::move(from.DiGraph__graph_); }
+      if (this != &from) {  _DiGraph_graph_ = std::move(from. _DiGraph_graph_); }
       return *this;
     }
 

@@ -324,76 +324,76 @@ namespace gum {
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
-      ScoreLog2Likelihood< ALLOC > NH__;
+      ScoreLog2Likelihood< ALLOC >  _NH_;
 
       /// the object computing the NML k score
-      KNML< ALLOC > k_NML__;
+      KNML< ALLOC >  _k_NML_;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
-      ScoreMDL< ALLOC > score_MDL__;
+      ScoreMDL< ALLOC >  _score_MDL_;
 
       /// the mode used for the correction
-      KModeTypes kmode__{KModeTypes::MDL};
+      KModeTypes  _kmode_{KModeTypes::MDL};
 
 
       /// a Boolean indicating whether we wish to use the I cache
       /** The I cache is the cache used to store N times the values of
        * mutual informations */
-      bool use_ICache__{true};
+      bool  _use_ICache_{true};
 
       /// a Boolean indicating whether we wish to use the H cache
       /** The H cache is the cache for storing N times the entropy. Mutual
        * information is computed as a summation/subtraction of entropies. The
-       * latter are cached directly within the NH__ instance. */
-      bool use_HCache__{true};
+       * latter are cached directly within the  _NH_ instance. */
+      bool  _use_HCache_{true};
 
       /// a Boolean indicating whether we wish to use the K cache
       /** The K cache is used to cache K-scores, which corresponds to
        * summations/subtractions of kNML individual values. The cache for the
        * latter is called the Cnr cache because it uses Cnr values */
-      bool use_KCache__{true};
+      bool  _use_KCache_{true};
 
       /// a Boolean indicating whether we wish to use the Cnr cache
       /** When using the kNML class, the computation of the K-scores
        * consists of summations/subtractions of kNML scores. The latter
        * essentially amount to computing Cnr values. Those can be
-       * cached directly within the k_NML__ instance */
-      bool use_CnrCache__{true};
+       * cached directly within the  _k_NML_ instance */
+      bool  _use_CnrCache_{true};
 
 
       /// the ICache
-      ScoringCache< ALLOC > ICache__;
+      ScoringCache< ALLOC >  _ICache_;
 
       /// the KCache
-      ScoringCache< ALLOC > KCache__;
+      ScoringCache< ALLOC >  _KCache_;
 
 
       /// an empty conditioning set
-      const std::vector< NodeId, ALLOC< NodeId > > empty_conditioning_set__;
+      const std::vector< NodeId, ALLOC< NodeId > >  _empty_conditioning_set_;
 
       /// a constant used to prevent numerical instabilities
-      const double threshold__{1e-10};
+      const double  _threshold_{1e-10};
 
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double NI_score__(NodeId                                        var_x,
+      double  _NI_score_(NodeId                                        var_x,
                         NodeId                                        var_y,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double NI_score__(NodeId                                        var_x,
+      double  _NI_score_(NodeId                                        var_x,
                         NodeId                                        var_y,
                         NodeId                                        var_z,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
 
       /// computes the complexity correction for the mutual information
-      double K_score__(NodeId                                        var_x,
+      double  _K_score_(NodeId                                        var_x,
                        NodeId                                        var_y,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// computes the complexity correction for the mutual information
-      double K_score__(NodeId                                        var_x,
+      double  _K_score_(NodeId                                        var_x,
                        NodeId                                        var_y,
                        NodeId                                        var_z,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);

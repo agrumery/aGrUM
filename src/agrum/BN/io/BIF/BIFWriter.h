@@ -97,17 +97,17 @@ namespace gum {
 
     private:
     // Returns the header of the BIF file.
-    std::string header__(const IBayesNet< GUM_SCALAR >& bn);
+    std::string  _header_(const IBayesNet< GUM_SCALAR >& bn);
 
     // Returns a bloc defining a variable in the BIF format.
-    std::string variableBloc__(const DiscreteVariable& var);
+    std::string  _variableBloc_(const DiscreteVariable& var);
 
     // Returns a bloc defining a variable's CPT in the BIF format.
-    std::string variableCPT__(const Potential< GUM_SCALAR >& cpt);
+    std::string  _variableCPT_(const Potential< GUM_SCALAR >& cpt);
 
     // Returns the modalities labels of the variables in varsSeq
     std::string
-       variablesLabels__(const Sequence< const DiscreteVariable* >& varsSeq,
+        _variablesLabels_(const Sequence< const DiscreteVariable* >& varsSeq,
                          const Instantiation&                       inst);
   };
 

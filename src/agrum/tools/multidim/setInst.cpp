@@ -31,41 +31,41 @@
 
 namespace gum {
 
-  void SetInst::init__(MultiDimAdressable* master) {
+  void SetInst:: _init_(MultiDimAdressable* master) {
     // for speed issues
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
-    vars__.resize(v.size());
-    vals__.reserve(v.size());
+     _vars_.resize(v.size());
+     _vals_.reserve(v.size());
     // fill the SetInst
 
     for (const auto var: v)
-      add__(*var);
+       _add_(*var);
 
     // if ( master ) actAsSlave( master->getMasterRef() );
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable& d) : /*master__( 0 ),*/ overflow__(false) {
+  SetInst::SetInst(MultiDimAdressable& d) : /* _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
-    init__(&d);
+     _init_(&d);
   }
 
   SetInst::SetInst(const MultiDimAdressable& d) :
-      /*master__( 0 ),*/ overflow__(false) {
+      /* _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
-    init__(const_cast< MultiDimAdressable* >(&d));
+     _init_(const_cast< MultiDimAdressable* >(&d));
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable* d) : /*master__( 0 ),*/ overflow__(false) {
+  SetInst::SetInst(MultiDimAdressable* d) : /* _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
-    if (d) init__(d);
+    if (d)  _init_(d);
   }
 
   // constructor for a SetInst contained into a MultiDimInterface
@@ -73,48 +73,48 @@ namespace gum {
    * in MultiDimAdressable and below */
 
   SetInst::SetInst(const MultiDimAdressable* const_d) :
-      /*master__( 0 ),*/ overflow__(false) {
+      /* _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
-    if (const_d) init__(const_cast< MultiDimAdressable* >(const_d));
+    if (const_d)  _init_(const_cast< MultiDimAdressable* >(const_d));
   }
 
   // copy constructor
 
   SetInst::SetInst(const SetInst& aI) :
-      /* MultiDimInterface(), master__( 0 ),*/ overflow__(false) {
+      /* MultiDimInterface(),  _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     // copy the content of aI
-    vars__     = aI.vars__;
-    vals__     = aI.vals__;
-    overflow__ = aI.overflow__;
+     _vars_     = aI. _vars_;
+     _vals_     = aI. _vals_;
+     _overflow_ = aI. _overflow_;
 
-    // if ( aI.master__ && notifyMaster ) actAsSlave( *aI.master__ );
+    // if ( aI. _master_ && notifyMaster ) actAsSlave( *aI. _master_ );
   }
 
   SetInst::SetInst(const Instantiation& aI) :
-      /* MultiDimInterface(), master__( 0 ),*/ overflow__(false) {
+      /* MultiDimInterface(),  _master_( 0 ),*/  _overflow_(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     const Sequence< const DiscreteVariable* >& v = aI.variablesSequence();
-    vars__.resize(v.size());
-    //__vals.reserve( v.size() );
+     _vars_.resize(v.size());
+    // __vals.reserve( v.size() );
     // fill the SetInst
 
     for (const auto var: v) {
-      add__(*var);
-      vals__[vars__.pos(var)] = (Size(1) << (aI.val(*var)));
+       _add_(*var);
+       _vals_[ _vars_.pos(var)] = (Size(1) << (aI.val(*var)));
     }
   }
 
   // operator=
   SetInst& SetInst::operator=(const SetInst& aI) {
     // copy the content of aI
-    vars__     = aI.vars__;
-    vals__     = aI.vals__;
-    overflow__ = aI.overflow__;
+     _vars_     = aI. _vars_;
+     _vals_     = aI. _vals_;
+     _overflow_ = aI. _overflow_;
 
     return *this;
   }
@@ -124,13 +124,13 @@ namespace gum {
     std::stringstream sstr;
     // check if the value of the SetInst is correct
 
-    if (overflow__) { sstr << "<invalid>"; }
+    if ( _overflow_) { sstr << "<invalid>"; }
 
     sstr << "<";
 
-    Sequence< const DiscreteVariable* >::iterator_safe iter = vars__.begin();
+    Sequence< const DiscreteVariable* >::iterator_safe iter =  _vars_.begin();
 
-    if (iter != vars__.end()) {
+    if (iter !=  _vars_.end()) {
       std::stringstream sstr2;
       sstr2.str("");
       Size si   = variable(iter.pos()).domainSize();
@@ -148,7 +148,7 @@ namespace gum {
       sstr << variable(iter.pos()).name() << ":" << sstr2.str();
       ++iter;
 
-      while (iter != vars__.end()) {
+      while (iter !=  _vars_.end()) {
         std::stringstream sstr3;
         sstr3 << "";
         si = variable(iter.pos()).domainSize();

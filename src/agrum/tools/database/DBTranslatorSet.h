@@ -477,17 +477,17 @@ namespace gum {
       private:
       // the set of all the translators
       std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >
-         translators__;
+          _translators_;
 
       // a vector indicating which column of the original database each
       // translator should translate
-      std::vector< std::size_t, ALLOC< std::size_t > > columns__;
+      std::vector< std::size_t, ALLOC< std::size_t > >  _columns_;
 
       // the highest column index read by the translators
-      std::size_t highest_column__{std::size_t(0)};
+      std::size_t  _highest_column_{std::size_t(0)};
 
       /// copy the content of another translator set that uses another allocator
-      void copy__(const DBTranslatorSet< ALLOC >& from,
+      void  _copy_(const DBTranslatorSet< ALLOC >& from,
                   const allocator_type&           alloc);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

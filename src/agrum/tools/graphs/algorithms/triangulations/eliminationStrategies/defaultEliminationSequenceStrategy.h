@@ -219,23 +219,23 @@ namespace gum {
     private:
     /// for each node, the weight of the clique created by the node's
     /// elimination
-    NodeProperty< double > log_weights__;
+    NodeProperty< double >  _log_weights_;
 
     /// the simplicial set used for determining the best nodes to eliminate
-    SimplicialSet* simplicial_set__{nullptr};
+    SimplicialSet*  _simplicial_set_{nullptr};
 
-    /// the ratio used by simplicial_set__ for its quasi-simplicial nodes
-    double simplicial_ratio__;
+    /// the ratio used by  _simplicial_set_ for its quasi-simplicial nodes
+    double  _simplicial_ratio_;
 
-    /// the threshold used by  simplicial_set__ to determine small cliques
-    double simplicial_threshold__;
+    /// the threshold used by   _simplicial_set_ to determine small cliques
+    double  _simplicial_threshold_;
 
     /// indicates whether we compute new fill-ins
-    bool provide_fill_ins__{false};
+    bool  _provide_fill_ins_{false};
 
 
     /// create a new simplicial set suited for the current graph
-    void createSimplicialSet__();
+    void  _createSimplicialSet_();
   };
 
 

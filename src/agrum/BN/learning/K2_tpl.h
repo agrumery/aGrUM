@@ -40,16 +40,16 @@ namespace gum {
     DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-         std::is_base_of< GraphChangesGenerator4K2__,
+         std::is_base_of<  _GraphChangesGenerator4K2_,
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType >::value,
          "K2 must be called with a K2-compliant Graph Change Generator");
 
       // check that the order passed in argument concerns all the nodes
-      //__checkOrder(modal);
+      // __checkOrder(modal);
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
-      generator.setOrder(order__);
+      generator.setOrder( _order_);
 
       // use the greedy hill climbing algorithm to perform the search
       return GreedyHillClimbing::learnStructure(selector, initial_dag);
@@ -64,16 +64,16 @@ namespace gum {
                                        DAG                     initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-         std::is_base_of< GraphChangesGenerator4K2__,
+         std::is_base_of<  _GraphChangesGenerator4K2_,
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType >::value,
          "K2 must be called with a K2-compliant Graph Change Generator");
 
       // check that the order passed in argument concerns all the nodes
-      //__checkOrder(modal);
+      // __checkOrder(modal);
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
-      generator.setOrder(order__);
+      generator.setOrder( _order_);
 
       // use the greedy hill climbing algorithm to perform the search
       return GreedyHillClimbing::learnBN< GUM_SCALAR >(selector,

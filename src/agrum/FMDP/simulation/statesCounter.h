@@ -89,36 +89,36 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId root() const { return counter__->root(); }
+    NodeId root() const { return  _counter_->root(); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal(NodeId ni) const { return counter__->isTerminalNode(ni); }
+    bool isTerminal(NodeId ni) const { return  _counter_->isTerminalNode(ni); }
 
     // ==========================================================================
     ///
     // ==========================================================================
     const DiscreteVariable* nodeVar(NodeId ni) const {
-      return counter__->node(ni)->nodeVar();
+      return  _counter_->node(ni)->nodeVar();
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
     NodeId nodeSon(NodeId ni, Idx modality) const {
-      return counter__->node(ni)->son(modality);
+      return  _counter_->node(ni)->son(modality);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation(NodeId ni) const { return counter__->nodeValue(ni); }
+    Idx nodeNbObservation(NodeId ni) const { return  _counter_->nodeValue(ni); }
 
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           = counter__->variablesSequence().beginSafe();
-           varIter != counter__->variablesSequence().endSafe();
+           =  _counter_->variablesSequence().beginSafe();
+           varIter !=  _counter_->variablesSequence().endSafe();
            ++varIter)
         ret->add(**varIter);
     }
@@ -127,11 +127,11 @@ namespace gum {
     /// @}
 
     private:
-    void incState__(const Instantiation&, NodeId, Idx, Size);
+    void  _incState_(const Instantiation&, NodeId, Idx, Size);
 
-    MultiDimFunctionGraph< Size >* counter__;
+    MultiDimFunctionGraph< Size >*  _counter_;
 
-    Set< Instantiation* > visitedStates__;
+    Set< Instantiation* >  _visitedStates_;
   };
 } /* namespace gum */
 

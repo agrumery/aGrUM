@@ -253,15 +253,15 @@ namespace gum {
 
     private:
     /// the set of all the edges contained within the EdgeGraphPart
-    EdgeSet edges__;
+    EdgeSet  _edges_;
 
     /// for each node, the set of its adjacent edges
-    mutable NodeProperty< NodeSet* > neighbours__;
+    mutable NodeProperty< NodeSet* >  _neighbours_;
 
     /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
-     * this function adds an empty set entry to neighbours__[id]
-     * @param id the node whose neighbours__[id] is checked */
-    void checkNeighbours__(const NodeId id) const;
+     * this function adds an empty set entry to  _neighbours_[id]
+     * @param id the node whose  _neighbours_[id] is checked */
+    void  _checkNeighbours_(const NodeId id) const;
   };
 
   /// for friendly displaying the content of an edge set

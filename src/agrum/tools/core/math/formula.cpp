@@ -176,99 +176,99 @@ namespace gum {
   // ===                        Class Formula                               ===
   // ==========================================================================
 
-  void Formula::initialise__() {
-    auto c_str   = (unsigned char*)formula__.c_str();
-    auto scanner = new gum::formula::Scanner(c_str, (int)formula__.size());
-    scanner__    = std::unique_ptr< gum::formula::Scanner >(scanner);
+  void Formula:: _initialise_() {
+    auto c_str   = (unsigned char*) _formula_.c_str();
+    auto scanner = new gum::formula::Scanner(c_str, (int) _formula_.size());
+     _scanner_    = std::unique_ptr< gum::formula::Scanner >(scanner);
 
     auto parser = new gum::formula::Parser(scanner);
-    parser__    = std::unique_ptr< gum::formula::Parser >(parser);
-    parser__->formula(this);
+     _parser_    = std::unique_ptr< gum::formula::Parser >(parser);
+     _parser_->formula(this);
   }
 
   Formula::Formula(short s) :
-      formula__(std::to_string(s)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(s)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(unsigned short us) :
-      formula__(std::to_string(us)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(us)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(int i) :
-      formula__(std::to_string(i)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(i)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(unsigned int ui) :
-      formula__(std::to_string(ui)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(ui)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(long l) :
-      formula__(std::to_string(l)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(l)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(unsigned long ul) :
-      formula__(std::to_string(ul)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(ul)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(long long l) :
-      formula__(std::to_string(l)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(l)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(unsigned long long ul) :
-      formula__(std::to_string(ul)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(ul)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(float f) :
-      formula__(std::to_string(f)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(f)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(double d) :
-      formula__(std::to_string(d)), last_token__(FormulaPart()) {
+       _formula_(std::to_string(d)),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(const std::string& f) :
-      formula__(f), last_token__(FormulaPart()) {
+       _formula_(f),  _last_token_(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
 
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(const Formula& source) :
-      formula__(source.formula__), last_token__(source.last_token__),
-      output__(source.output__), stack__(source.stack__) {
+       _formula_(source. _formula_),  _last_token_(source. _last_token_),
+       _output_(source. _output_),  _stack_(source. _stack_) {
     GUM_CONS_CPY(Formula);
 
-    initialise__();
+     _initialise_();
   }
 
   Formula::Formula(Formula&& source) :
-      formula__(std::move(source.formula__)),
-      scanner__(std::move(source.scanner__)), parser__(std::move(source.parser__)),
-      last_token__(std::move(source.last_token__)),
-      output__(std::move(source.output__)), stack__(std::move(source.stack__)) {
+       _formula_(std::move(source. _formula_)),
+       _scanner_(std::move(source. _scanner_)),  _parser_(std::move(source. _parser_)),
+       _last_token_(std::move(source. _last_token_)),
+       _output_(std::move(source. _output_)),  _stack_(std::move(source. _stack_)) {
     GUM_CONS_CPY(Formula);
 
-    parser__->formula(this);
+     _parser_->formula(this);
   }
 
   Formula::~Formula() {
@@ -279,12 +279,12 @@ namespace gum {
   Formula& Formula::operator=(const Formula& source) {
     if (this == &source) { return *this; }
 
-    formula__    = source.formula__;
-    last_token__ = source.last_token__;
-    output__     = source.output__;
-    stack__      = source.stack__;
+     _formula_    = source. _formula_;
+     _last_token_ = source. _last_token_;
+     _output_     = source. _output_;
+     _stack_      = source. _stack_;
 
-    initialise__();
+     _initialise_();
 
     return *this;
   }
@@ -292,24 +292,24 @@ namespace gum {
   Formula& Formula::operator=(Formula&& source) {
     if (this == &source) { return *this; }
 
-    formula__ = std::move(source.formula__);
-    scanner__ = std::move(source.scanner__);
-    parser__  = std::move(source.parser__);
-    parser__->formula(this);
-    last_token__ = std::move(source.last_token__);
-    output__     = std::move(source.output__);
-    stack__      = std::move(source.stack__);
+     _formula_ = std::move(source. _formula_);
+     _scanner_ = std::move(source. _scanner_);
+     _parser_  = std::move(source. _parser_);
+     _parser_->formula(this);
+     _last_token_ = std::move(source. _last_token_);
+     _output_     = std::move(source. _output_);
+     _stack_      = std::move(source. _stack_);
 
     return *this;
   }
 
   double Formula::result() const {
-    parser__->Parse();
+     _parser_->Parse();
 
     std::stack< FormulaPart > stack;
-    if (output__.empty()) { GUM_ERROR(OperationNotAllowed, "no output found") }
+    if ( _output_.empty()) { GUM_ERROR(OperationNotAllowed, "no output found") }
 
-    for (auto item: output__) {
+    for (auto item:  _output_) {
       switch (item.type) {
         case FormulaPart::token_type::NUMBER: {
           stack.push(item);
@@ -318,7 +318,7 @@ namespace gum {
 
         case FormulaPart::token_type::OPERATOR:
         case FormulaPart::token_type::FUNCTION: {
-          reduceOperatorOrFunction__(item, stack);
+           _reduceOperatorOrFunction_(item, stack);
           break;
         }
 

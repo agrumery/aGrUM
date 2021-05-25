@@ -51,7 +51,7 @@ namespace gum {
        StructuralConstraintSliceOrder::checkArcAdditionAlone(NodeId x,
                                                              NodeId y) const {
       try {
-        return SliceOrder__order_[x] <= SliceOrder__order_[y];
+        return  _SliceOrder_order_[x] <=  _SliceOrder_order_[y];
       } catch (const Exception&) { return true; }
     }
 
@@ -67,7 +67,7 @@ namespace gum {
        StructuralConstraintSliceOrder::checkArcReversalAlone(NodeId x,
                                                              NodeId y) const {
       try {
-        return SliceOrder__order_[x] == SliceOrder__order_[y];
+        return  _SliceOrder_order_[x] ==  _SliceOrder_order_[y];
       } catch (const Exception&) { return true; }
     }
 
@@ -93,8 +93,8 @@ namespace gum {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           try {
-            return (SliceOrder__order_[change.node1()]
-                    > SliceOrder__order_[change.node2()]);
+            return ( _SliceOrder_order_[change.node1()]
+                    >  _SliceOrder_order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
         case GraphChangeType::ARC_DELETION:
@@ -102,8 +102,8 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL:
           try {
-            return (SliceOrder__order_[change.node1()]
-                    != SliceOrder__order_[change.node2()]);
+            return ( _SliceOrder_order_[change.node1()]
+                    !=  _SliceOrder_order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
         default:
@@ -154,12 +154,12 @@ namespace gum {
     /// sets the time slices of all the nodes in the property
     INLINE void StructuralConstraintSliceOrder::setSliceOrder(
        const NodeProperty< NodeId >& order) {
-      SliceOrder__order_ = order;
+       _SliceOrder_order_ = order;
     }
 
     /// sets the default time slice
     INLINE void StructuralConstraintSliceOrder::setDefaultSlice(NodeId slice) {
-      for (auto& node: SliceOrder__order_) {
+      for (auto& node:  _SliceOrder_order_) {
         node.second = slice;
       }
     }
@@ -167,13 +167,13 @@ namespace gum {
     /// adds a new node in the slice order
     INLINE void StructuralConstraintSliceOrder::addNode(NodeId node,
                                                         NodeId slice) {
-      SliceOrder__order_.set(node, slice);
+       _SliceOrder_order_.set(node, slice);
     }
 
     /// returns the current slice order
     INLINE const NodeProperty< NodeId >&
                  StructuralConstraintSliceOrder::sliceOrder() const {
-      return SliceOrder__order_;
+      return  _SliceOrder_order_;
     }
 
 // include all the methods applicable to the whole class hierarchy

@@ -216,25 +216,25 @@ namespace gum {
 
       private:
       // the names of the variables
-      std::vector< std::string, ALLOC< std::string > > var_names__;
+      std::vector< std::string, ALLOC< std::string > >  _var_names_;
 
       // the types of the input data read to fill the database
-      InputType input_type__;
+      InputType  _input_type_;
 
       // indicates whether an exception was raised when adding the last row
       // into the database. If so, when filling again the database, we may
       // try to insert again the same row
-      bool last_insertion_failed__{false};
+      bool  _last_insertion_failed_{false};
 
 
       /// fills the rows of the database using string inputs
       template < template < template < typename > class > class DATABASE >
-      void fillDatabaseFromStrings__(DATABASE< ALLOC >& database,
+      void  _fillDatabaseFromStrings_(DATABASE< ALLOC >& database,
                                      const bool         retry_insertion);
 
       /// fills the rows of the database using DBCell inputs
       template < template < template < typename > class > class DATABASE >
-      void fillDatabaseFromDBCells__(DATABASE< ALLOC >& database,
+      void  _fillDatabaseFromDBCells_(DATABASE< ALLOC >& database,
                                      const bool         retry_insertion);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

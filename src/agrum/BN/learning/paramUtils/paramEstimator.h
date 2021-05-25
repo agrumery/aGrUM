@@ -83,7 +83,7 @@ namespace gum {
       ParamEstimator(
          const DBRowGeneratorParser< ALLOC >& parser,
          const Apriori< ALLOC >&              external_apriori,
-         const Apriori< ALLOC >&              score_internal__apriori,
+         const Apriori< ALLOC >&               _score_internal_apriori,
          const std::vector< std::pair< std::size_t, std::size_t >,
                             ALLOC< std::pair< std::size_t, std::size_t > > >&
             ranges,
@@ -112,7 +112,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
                      const Apriori< ALLOC >&              external_apriori,
-                     const Apriori< ALLOC >&              score_internal__apriori,
+                     const Apriori< ALLOC >&               _score_internal_apriori,
                      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                         nodeId2columns
                      = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
@@ -266,7 +266,7 @@ namespace gum {
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */
       template < typename GUM_SCALAR >
-      void checkParameters__(
+      void  _checkParameters_(
          const NodeId                                  target_node,
          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
          Potential< GUM_SCALAR >&                      pot);
@@ -277,7 +277,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-         setParameters__(
+          _setParameters_(
             const NodeId                                  target_node,
             const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
             Potential< GUM_SCALAR >&                      pot);
@@ -288,7 +288,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-         setParameters__(
+          _setParameters_(
             const NodeId                                  target_node,
             const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
             Potential< GUM_SCALAR >&                      pot);

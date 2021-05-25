@@ -54,13 +54,13 @@
 #    define GUM_ERROR(type, msg)                                    \
       {                                                             \
         std::ostringstream error_stream;                            \
-        error_stream << __FILE__ << ":" << __LINE__ << ": " << msg; \
+        error_stream <<   __FILE__ << ":" <<   __LINE__ << ": " << msg; \
         throw(type(error_stream.str()));                            \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \
         std::cout << std::endl                                             \
-                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+                  <<   __FILE__ << ":" <<   __LINE__ << " " << (e).errorType() \
                   << " from " << std::endl                                 \
                   << (e).errorContent() << std::endl;                      \
       }
@@ -69,15 +69,15 @@
       {                                                    \
         std::ostringstream error_stream;                   \
         error_stream << msg;                               \
-        throw(type(gum::createMsg__(__FILE__,              \
-                                    __FUNCTION__,          \
-                                    __LINE__,              \
+        throw(type(gum:: _createMsg_(  __FILE__,              \
+                                     __FUNCTION__,          \
+                                      __LINE__,              \
                                     error_stream.str()))); \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \
         std::cout << std::endl                                             \
-                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+                  <<   __FILE__ << ":" <<   __LINE__ << " " << (e).errorType() \
                   << " from " << std::endl                                 \
                   << (e).errorContent() << std::endl;                      \
         std::cout << (e).errorCallStack() << std::endl;                    \
@@ -485,7 +485,7 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  const std::string createMsg__(const std::string& filename,
+  const std::string  _createMsg_(const std::string& filename,
                                 const std::string& function,
                                 int                line,
                                 const std::string& msg);

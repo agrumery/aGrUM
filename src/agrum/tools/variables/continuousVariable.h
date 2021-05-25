@@ -176,10 +176,10 @@ namespace gum {
 
     private:
     // the lower bound.
-    GUM_SCALAR lower_bound__;
+    GUM_SCALAR  _lower_bound_;
 
     // the upper bound.
-    GUM_SCALAR upper_bound__;
+    GUM_SCALAR  _upper_bound_;
 
     template < typename TX_VAL >
     friend class ContinuousVariable;

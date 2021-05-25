@@ -48,7 +48,7 @@
         do {                                                                \
           if (!(condition)) {                                               \
             std::cout << std::endl                                          \
-                      << __FILE__ << ":" << __LINE__ << " [aGrUM] assert (" \
+                      <<   __FILE__ << ":" <<   __LINE__ << " [aGrUM] assert (" \
                       << #condition << ") failed" << std::endl;             \
             std::abort();                                                   \
           }                                                                 \
@@ -62,9 +62,9 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_CONSTRUCTOR_BASIC(x)                     \
       {                                                  \
-        gum::__debug__::inc_creation__(#x,               \
-                                       __FILE__,         \
-                                       __LINE__,         \
+        gum:: __debug__:: _inc_creation_(#x,               \
+                                         __FILE__,         \
+                                         __LINE__,         \
                                        "constructor of", \
                                        (void*)this,      \
                                        sizeof(x));       \
@@ -75,9 +75,9 @@
 // DEFINITION OF GUM_DESTRUCTOR
 #    define GUM_DESTRUCTOR_BASIC(x)                     \
       {                                                 \
-        gum::__debug__::inc_deletion__(#x,              \
-                                       __FILE__,        \
-                                       __LINE__,        \
+        gum:: __debug__:: _inc_deletion_(#x,              \
+                                         __FILE__,        \
+                                         __LINE__,        \
                                        "destructor of", \
                                        (void*)this);    \
       }
@@ -87,9 +87,9 @@
 // DEFINITION OF GUM_CONS_CPY
 #    define GUM_CONS_CPY_BASIC(x)                             \
       {                                                       \
-        gum::__debug__::inc_creation__(#x,                    \
-                                       __FILE__,              \
-                                       __LINE__,              \
+        gum:: __debug__:: _inc_creation_(#x,                    \
+                                         __FILE__,              \
+                                         __LINE__,              \
                                        "copy constructor of", \
                                        (void*)this,           \
                                        sizeof(x));            \
@@ -100,9 +100,9 @@
 // DEFINITION OF GUM_CONS_MOV
 #    define GUM_CONS_MOV_BASIC(x)                             \
       {                                                       \
-        gum::__debug__::inc_creation__(#x,                    \
-                                       __FILE__,              \
-                                       __LINE__,              \
+        gum:: __debug__:: _inc_creation_(#x,                    \
+                                         __FILE__,              \
+                                         __LINE__,              \
                                        "move constructor of", \
                                        (void*)this,           \
                                        sizeof(x));            \
@@ -113,9 +113,9 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_OP_CPY_BASIC(x)                          \
       {                                                  \
-        gum::__debug__::show_trace__(#x,                 \
-                                     __FILE__,           \
-                                     __LINE__,           \
+        gum:: __debug__:: _show_trace_(#x,                 \
+                                       __FILE__,           \
+                                       __LINE__,           \
                                      "copy operator of", \
                                      (void*)this);       \
       }
@@ -124,9 +124,9 @@
 // DEFINITION OF GUM_CONSTRUCTOR
 #    define GUM_OP_MOV_BASIC(x)                          \
       {                                                  \
-        gum::__debug__::show_trace__(#x,                 \
-                                     __FILE__,           \
-                                     __LINE__,           \
+        gum:: __debug__:: _show_trace_(#x,                 \
+                                       __FILE__,           \
+                                       __LINE__,           \
                                      "move operator of", \
                                      (void*)this);       \
       }
@@ -147,22 +147,22 @@
 #  endif   // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
-#    define GUM__PRINT(file, line, msg)                                    \
+#    define  _GUM_PRINT(file, line, msg)                                    \
       {                                                                    \
         std::string ff(file);                                              \
         std::cout << file << ":" << line << " [GUM] " << msg << std::endl; \
       }
 
 #    define GUM_CHECKPOINT \
-      GUM__PRINT(__FILE__, __LINE__, "******** checkpoint ********")
-#    define GUM_TRACE(msg) GUM__PRINT(__FILE__, __LINE__, msg)
+       _GUM_PRINT(  __FILE__,   __LINE__, "******** checkpoint ********")
+#    define GUM_TRACE(msg)  _GUM_PRINT(  __FILE__,   __LINE__, msg)
 #    define GUM_TRACE_VAR(var) \
-      GUM__PRINT(__FILE__, __LINE__, "<" << #var << ">: " << var)
+       _GUM_PRINT(  __FILE__,   __LINE__, "<" << #var << ">: " << var)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }
 #  else   // GUM_TRACE_ON
-#    define GUM__PRINT(line, file, x)
+#    define  _GUM_PRINT(line, file, x)
 #    define GUM_CHECKPOINT
 #    define GUM_TRACE(msg)
 #    define GUM_TRACE_VAR(var)
@@ -173,35 +173,35 @@ namespace gum {
 
 #  ifdef GUM_DEBUG_MODE
 
-  namespace __debug__ {
+  namespace  __debug__ {
 
-    std::string getFile__(const char* f);
+    std::string  _getFile_(const char* f);
 
-    void show_trace__(const char* zeKey,
+    void  _show_trace_(const char* zeKey,
                       const char* zeFile,
                       long        zeLine,
                       const char* zeMsg,
                       const void* zePtr);
-    void inc_creation__(const char* zeKey,
+    void  _inc_creation_(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize = -1);
-    void inc_deletion__(const char* zeKey,
+    void  _inc_deletion_(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr);
-    void dec_creation__(const char* zeKey,
+    void  _dec_creation_(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr);
-    void dumpObjects__();
-    void atexit__();
+    void  _dumpObjects_();
+    void  _atexit_();
 
-  }   // namespace __debug__
+  }   // namespace  __debug__
 
 #  endif   // GUM_DEBUG_MODE
 

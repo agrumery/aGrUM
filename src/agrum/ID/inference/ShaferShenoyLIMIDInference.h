@@ -182,12 +182,12 @@ namespace gum {
     std::vector< NodeId >  noForgettingOrder_;
 
     private:
-    void completingNoForgettingAssumption__();
-    void reducingLIMID__();
-    void creatingPartialOrder__(const NodeSet& utilities);
-    void checkingSolvability__(const NodeSet& utilities);
-    void creatingJunctionTree__();
-    void findingCliqueForEachNode__(DefaultTriangulation& triangulation);
+    void  _completingNoForgettingAssumption_();
+    void  _reducingLIMID_();
+    void  _creatingPartialOrder_(const NodeSet& utilities);
+    void  _checkingSolvability_(const NodeSet& utilities);
+    void  _creatingJunctionTree_();
+    void  _findingCliqueForEachNode_(DefaultTriangulation& triangulation);
 
     void initializingInference_(PhiNodeProperty& phi, PsiArcProperty& psi);
     void collectingMessage_(PhiNodeProperty& phi,

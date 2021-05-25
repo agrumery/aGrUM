@@ -49,22 +49,22 @@ namespace gum {
        * class LpCol
        */
 
-      INLINE unsigned int LpCol::id() const { return id__; }
+      INLINE unsigned int LpCol::id() const { return  _id_; }
 
       INLINE bool LpCol::operator<(const LpCol& col) const {
-        return (id__ < col.id());
+        return ( _id_ < col.id());
       }
 
       INLINE bool LpCol::operator==(const LpCol& col) const {
-        return (id__ == col.id());
+        return ( _id_ == col.id());
       }
 
       INLINE bool LpCol::operator!=(const LpCol& col) const {
-        return (id__ != col.id());
+        return ( _id_ != col.id());
       }
 
       INLINE LpCol& LpCol::operator=(const LpCol& col) {
-        id__ = col.id__;
+         _id_ = col. _id_;
 
         return *this;
       }
@@ -75,7 +75,7 @@ namespace gum {
       }
 
       INLINE std::string LpCol::toString() const {
-        return "V" + std::to_string(id__);
+        return "V" + std::to_string( _id_);
       }
 
 

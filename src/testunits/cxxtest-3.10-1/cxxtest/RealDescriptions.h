@@ -1,5 +1,5 @@
-#ifndef __cxxtest__RealDescriptions_h__
-#define __cxxtest__RealDescriptions_h__
+#ifndef  __cxxtest__RealDescriptions_h__
+#define  __cxxtest__RealDescriptions_h__
 
 //
 // The "real" description classes
@@ -243,4 +243,4 @@ namespace CxxTest {
   bool leaveOnly( const char* suiteName, const char* testName = 0 );
 }
 
-#endif  // __cxxtest__RealDescriptions_h__
+#endif  //  __cxxtest__RealDescriptions_h__

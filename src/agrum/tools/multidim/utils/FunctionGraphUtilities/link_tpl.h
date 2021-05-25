@@ -35,14 +35,14 @@ namespace gum {
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem) : element__(elem) {
+  INLINE Link< T >::Link(const T& elem) :  _element_(elem) {
     GUM_CONSTRUCTOR(Link);
   }
 
   // Constructor
   template < typename T >
   INLINE Link< T >::Link(const T& elem, Link< T >* nextLink) :
-      element__(elem), nextLink__(nextLink) {
+       _element_(elem),  _nextLink_(nextLink) {
     GUM_CONSTRUCTOR(Link);
   }
 
@@ -64,34 +64,34 @@ namespace gum {
 
   template < typename T >
   INLINE const T& Link< T >::element() const {
-    return element__;
+    return  _element_;
   }
 
   template < typename T >
   INLINE T& Link< T >::element() {
-    return element__;
+    return  _element_;
   }
 
   template < typename T >
   INLINE const Link< T >* Link< T >::nextLink() const {
-    return nextLink__;
+    return  _nextLink_;
   }
 
   template < typename T >
   INLINE Link< T >* Link< T >::nextLink() {
-    return nextLink__;
+    return  _nextLink_;
   }
 
   template < typename T >
   INLINE void Link< T >::setNextLink(Link< T >* newLink) {
-    nextLink__ = newLink;
+     _nextLink_ = newLink;
   }
 
   // Constructor
   template < typename T >
   INLINE LinkedList< T >::LinkedList() {
     GUM_CONSTRUCTOR(LinkedList);
-    firstLink__ = nullptr;
+     _firstLink_ = nullptr;
   }
 
   // Destructor
@@ -113,17 +113,17 @@ namespace gum {
 
   template < typename T >
   INLINE const Link< T >* LinkedList< T >::list() const {
-    return firstLink__;
+    return  _firstLink_;
   }
 
   template < typename T >
   INLINE Link< T >* LinkedList< T >::list() {
-    return firstLink__;
+    return  _firstLink_;
   }
 
   template < typename T >
   void LinkedList< T >::clear() {
-    Link< T >* curLink = firstLink__;
+    Link< T >* curLink =  _firstLink_;
     Link< T >* nl      = nullptr;
     while (curLink) {
       nl = curLink->nextLink();
@@ -134,13 +134,13 @@ namespace gum {
 
   template < typename T >
   INLINE void LinkedList< T >::addLink(const T& elem) {
-    Link< T >* newLink = new Link< T >(elem, firstLink__);
-    firstLink__        = newLink;
+    Link< T >* newLink = new Link< T >(elem,  _firstLink_);
+     _firstLink_        = newLink;
   }
 
   template < typename T >
   INLINE void LinkedList< T >::searchAndRemoveLink(const T& elem) {
-    Link< T >* curLink  = firstLink__;
+    Link< T >* curLink  =  _firstLink_;
     Link< T >* prevLink = nullptr;
     while (curLink && curLink->element() != elem) {
       prevLink = curLink;
@@ -150,7 +150,7 @@ namespace gum {
       if (prevLink)
         prevLink->setNextLink(curLink->nextLink());
       else
-        firstLink__ = curLink->nextLink();
+         _firstLink_ = curLink->nextLink();
       delete curLink;
     }
   }

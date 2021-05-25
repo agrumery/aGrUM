@@ -1,5 +1,5 @@
-#ifndef __cxxtest__TeeListener_h__
-#define __cxxtest__TeeListener_h__
+#ifndef  __cxxtest__TeeListener_h__
+#define  __cxxtest__TeeListener_h__
 
 //
 // A TeeListener notifies two "reular" TestListeners
@@ -180,4 +180,4 @@ namespace CxxTest {
   };
 };
 
-#endif  // __cxxtest__TeeListener_h__
+#endif  //  __cxxtest__TeeListener_h__

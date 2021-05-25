@@ -47,26 +47,26 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class CNMonteCarloSamplingListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __msg;
+    int          __nbr;
+    std::string  __msg;
 
     protected:
     public:
     CNMonteCarloSamplingListener(gum::ApproximationScheme& aS) :
-        gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
+        gum::ApproximationSchemeListener(aS),  __nbr(0),  __msg(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) {
-      __nbr++;
+       __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string s) { __msg = s; }
+    void whenStop(const void* buffer, const std::string s) {  __msg = s; }
 
-    int nbr() { return __nbr; }
+    int nbr() { return  __nbr; }
 
-    std::string& msg() { return __msg; }
+    std::string& msg() { return  __msg; }
   };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////

@@ -139,18 +139,18 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable< Size, FixedAllocator* > Pool__;
-    Pool__                                     pool__;
+    typedef HashTable< Size, FixedAllocator* >  _Pool_;
+     _Pool_                                      _pool_;
 
     // ============================================================================
     /// The memory that a chunk allocates
     // ============================================================================
-    std::size_t chunkSize__;
+    std::size_t  _chunkSize_;
 
     // ============================================================================
     /// The maximal size of an object befor new is called
     // ============================================================================
-    std::size_t maxObjectSize__;
+    std::size_t  _maxObjectSize_;
 
     Idx nbAllocation;
     Idx nbDeallocation;

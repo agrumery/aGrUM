@@ -489,35 +489,35 @@ namespace gum {
 
     private:
     /// the current state of the inference (outdated/ready/done)
-    StateOfInference state__{StateOfInference::OutdatedStructure};
+    StateOfInference  _state_{StateOfInference::OutdatedStructure};
 
     /// the Bayes net on which we perform inferences
-    const GraphicalModel* model__{nullptr};
+    const GraphicalModel*  _model_{nullptr};
 
     /// the domain sizes of the random variables
-    NodeProperty< Size > domain_sizes__;
+    NodeProperty< Size >  _domain_sizes_;
 
     /// the set of evidence entered into the network
-    NodeProperty< const Potential< GUM_SCALAR >* > evidence__;
+    NodeProperty< const Potential< GUM_SCALAR >* >  _evidence_;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty< Idx > hard_evidence__;
+    NodeProperty< Idx >  _hard_evidence_;
 
     /// the set of nodes that received soft evidence
-    NodeSet soft_evidence_nodes__;
+    NodeSet  _soft_evidence_nodes_;
 
     /// the set of nodes that received hard evidence
-    NodeSet hard_evidence_nodes__;
+    NodeSet  _hard_evidence_nodes_;
 
 
     /// create the internal structure for a hard evidence
-    Potential< GUM_SCALAR > createHardEvidence__(NodeId id, Idx val) const;
+    Potential< GUM_SCALAR >  _createHardEvidence_(NodeId id, Idx val) const;
 
     /// checks whether a potential corresponds to a hard evidence or not
-    bool isHardEvidence__(const Potential< GUM_SCALAR >& pot, Idx& val) const;
+    bool  _isHardEvidence_(const Potential< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
-    void computeDomainSizes__();
+    void  _computeDomainSizes_();
 
     protected:
     /// set the state of the inference engine and
@@ -530,7 +530,7 @@ namespace gum {
     /// assigns a model during the inference engine construction
     void setModelDuringConstruction_(const GraphicalModel* model);
 
-    bool hasNoModel_() const { return model__ == nullptr; };
+    bool hasNoModel_() const { return  _model_ == nullptr; };
   };
 }   // namespace gum
 

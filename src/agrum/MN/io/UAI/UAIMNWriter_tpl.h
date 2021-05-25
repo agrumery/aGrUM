@@ -56,10 +56,10 @@ namespace gum {
       GUM_ERROR(IOError, "Stream states flags are not all unset.")
     }
 
-    output << preambule__(MN) << std::endl;
+    output <<  _preambule_(MN) << std::endl;
 
     for (const auto& kv: MN.factors())
-      output << factorBloc__(MN, *kv.second) << std::endl;
+      output <<  _factorBloc_(MN, *kv.second) << std::endl;
 
     output << std::endl;
 
@@ -92,7 +92,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-     UAIMNWriter< GUM_SCALAR >::preambule__(const IMarkovNet< GUM_SCALAR >& MN) {
+     UAIMNWriter< GUM_SCALAR >:: _preambule_(const IMarkovNet< GUM_SCALAR >& MN) {
     std::stringstream str;
 
     str << "MARKOV" << std::endl;
@@ -119,7 +119,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string UAIMNWriter< GUM_SCALAR >::factorBloc__(
+  INLINE std::string UAIMNWriter< GUM_SCALAR >:: _factorBloc_(
      const IMarkovNet< GUM_SCALAR >& MN,
      const Potential< GUM_SCALAR >&  clikpot) {
     std::stringstream str;

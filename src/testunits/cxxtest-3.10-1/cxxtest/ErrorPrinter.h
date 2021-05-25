@@ -1,5 +1,5 @@
-#ifndef __cxxtest__ErrorPrinter_h__
-#define __cxxtest__ErrorPrinter_h__
+#ifndef  __cxxtest__ErrorPrinter_h__
+#define  __cxxtest__ErrorPrinter_h__
 
 //
 // The ErrorPrinter is a simple TestListener that
@@ -57,4 +57,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__ErrorPrinter_h__
+#endif  //  __cxxtest__ErrorPrinter_h__

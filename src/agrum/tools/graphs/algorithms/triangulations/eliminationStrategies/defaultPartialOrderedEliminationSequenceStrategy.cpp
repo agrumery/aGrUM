@@ -37,8 +37,8 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy::
      DefaultPartialOrderedEliminationSequenceStrategy(double theRatio,
                                                       double theThreshold) :
-      simplicial_ratio__(theRatio),
-      simplicial_threshold__(theThreshold) {
+       _simplicial_ratio_(theRatio),
+       _simplicial_threshold_(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
   }
@@ -51,8 +51,8 @@ namespace gum {
         const List< NodeSet >*      subsets,
         double                      ratio,
         double                      threshold) :
-      simplicial_ratio__(ratio),
-      simplicial_threshold__(threshold) {
+       _simplicial_ratio_(ratio),
+       _simplicial_threshold_(threshold) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 
@@ -65,16 +65,16 @@ namespace gum {
      DefaultPartialOrderedEliminationSequenceStrategy(
         const DefaultPartialOrderedEliminationSequenceStrategy& from) :
       PartialOrderedEliminationSequenceStrategy(from),
-      // no need to set log_weights__ because the copy of the simplicial set
+      // no need to set  _log_weights_ because the copy of the simplicial set
       // will set it properly
-      simplicial_set__(new SimplicialSet(*from.simplicial_set__,
+       _simplicial_set_(new SimplicialSet(*from. _simplicial_set_,
                                          graph_,
                                          &log_domain_sizes_,
-                                         &log_weights__,
+                                         & _log_weights_,
                                          false)),
-      simplicial_ratio__(from.simplicial_ratio__),
-      simplicial_threshold__(from.simplicial_threshold__),
-      provide_fill_ins__(from.provide_fill_ins__) {
+       _simplicial_ratio_(from. _simplicial_ratio_),
+       _simplicial_threshold_(from. _simplicial_threshold_),
+       _provide_fill_ins_(from. _provide_fill_ins_) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultPartialOrderedEliminationSequenceStrategy);
   }
@@ -84,13 +84,13 @@ namespace gum {
      DefaultPartialOrderedEliminationSequenceStrategy(
         DefaultPartialOrderedEliminationSequenceStrategy&& from) :
       PartialOrderedEliminationSequenceStrategy(std::move(from)),
-      log_weights__(std::move(from.log_weights__)),
-      simplicial_set__(from.simplicial_set__),
-      simplicial_ratio__(from.simplicial_ratio__),
-      simplicial_threshold__(from.simplicial_threshold__),
-      provide_fill_ins__(from.provide_fill_ins__) {
-    simplicial_set__->replaceLogWeights(&from.log_weights__, &log_weights__);
-    from.simplicial_set__ = nullptr;
+       _log_weights_(std::move(from. _log_weights_)),
+       _simplicial_set_(from. _simplicial_set_),
+       _simplicial_ratio_(from. _simplicial_ratio_),
+       _simplicial_threshold_(from. _simplicial_threshold_),
+       _provide_fill_ins_(from. _provide_fill_ins_) {
+     _simplicial_set_->replaceLogWeights(&from. _log_weights_, & _log_weights_);
+    from. _simplicial_set_ = nullptr;
 
     // for debugging purposes
     GUM_CONS_MOV(DefaultPartialOrderedEliminationSequenceStrategy);
@@ -102,26 +102,26 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
 
-    if (simplicial_set__) delete simplicial_set__;
+    if ( _simplicial_set_) delete  _simplicial_set_;
   }
 
   /// create a new simplicial set suited for the current graph
-  void DefaultPartialOrderedEliminationSequenceStrategy::createSimplicialSet__() {
+  void DefaultPartialOrderedEliminationSequenceStrategy:: _createSimplicialSet_() {
     // remove the old simplicial set, if any
-    if (simplicial_set__ != nullptr) {
-      delete simplicial_set__;
-      simplicial_set__ = nullptr;
+    if ( _simplicial_set_ != nullptr) {
+      delete  _simplicial_set_;
+       _simplicial_set_ = nullptr;
     }
 
     if (graph_ != nullptr) {
       // create a simplicial set suited for the graph
-      simplicial_set__ = new SimplicialSet(graph_,
+       _simplicial_set_ = new SimplicialSet(graph_,
                                            &log_domain_sizes_,
-                                           &log_weights__,
-                                           simplicial_ratio__,
-                                           simplicial_threshold__);
+                                           & _log_weights_,
+                                            _simplicial_ratio_,
+                                            _simplicial_threshold_);
 
-      simplicial_set__->setFillIns(provide_fill_ins__);
+       _simplicial_set_->setFillIns( _provide_fill_ins_);
     }
   }
 
@@ -130,7 +130,7 @@ namespace gum {
      UndiGraph*                  graph,
      const NodeProperty< Size >* domain_sizes) {
     if (PartialOrderedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
-      createSimplicialSet__();
+       _createSimplicialSet_();
       return true;
     }
 
@@ -140,16 +140,16 @@ namespace gum {
   /// clears the sequence (to prepare, for instance, a new elimination sequence)
   void DefaultPartialOrderedEliminationSequenceStrategy::clear() {
     PartialOrderedEliminationSequenceStrategy::clear();
-    log_weights__.clear();
+     _log_weights_.clear();
 
-    if (simplicial_set__ != nullptr) {
-      delete simplicial_set__;
-      simplicial_set__ = nullptr;
+    if ( _simplicial_set_ != nullptr) {
+      delete  _simplicial_set_;
+       _simplicial_set_ = nullptr;
     }
   }
 
   /// returns the best possible node to be eliminated
-  NodeId DefaultPartialOrderedEliminationSequenceStrategy::nodeToEliminate__(
+  NodeId DefaultPartialOrderedEliminationSequenceStrategy:: _nodeToEliminate_(
      const PriorityQueue< NodeId, double >& possibleNodes) {
     bool   found     = false;
     double min_score = 0;
@@ -186,26 +186,26 @@ namespace gum {
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
-    // note that if graph_ != nullptr, simplicial_set__ has been allocated
+    // note that if graph_ != nullptr,  _simplicial_set_ has been allocated
     try {
-      return nodeToEliminate__(simplicial_set__->allSimplicialNodes());
+      return  _nodeToEliminate_( _simplicial_set_->allSimplicialNodes());
     } catch (NotFound&) {}
 
     try {
-      return nodeToEliminate__(simplicial_set__->allAlmostSimplicialNodes());
+      return  _nodeToEliminate_( _simplicial_set_->allAlmostSimplicialNodes());
     } catch (NotFound&) {}
 
     try {
-      return nodeToEliminate__(simplicial_set__->allQuasiSimplicialNodes());
+      return  _nodeToEliminate_( _simplicial_set_->allQuasiSimplicialNodes());
     } catch (NotFound&) {}
 
     // here: select the node through Kjaerulff's heuristic
     auto   iter      = nodeset_.cbegin();
-    double min_score = log_weights__[*iter];
+    double min_score =  _log_weights_[*iter];
     NodeId best_node = *iter;
 
     for (++iter; iter != nodeset_.cend(); ++iter) {
-      double score = log_weights__[*iter];
+      double score =  _log_weights_[*iter];
 
       if (score < min_score) {
         min_score = score;
@@ -219,16 +219,16 @@ namespace gum {
   /** @brief if the elimination sequence is able to compute fill-ins, we
    * indicatewhether we want this feature to be activated */
   void DefaultPartialOrderedEliminationSequenceStrategy::askFillIns(bool do_it) {
-    provide_fill_ins__ = do_it;
+     _provide_fill_ins_ = do_it;
 
-    if (simplicial_set__) simplicial_set__->setFillIns(provide_fill_ins__);
+    if ( _simplicial_set_)  _simplicial_set_->setFillIns( _provide_fill_ins_);
   }
 
   /** @brief indicates whether the new fill-ins generated by a new eliminated
    * node, if needed, will be computed by the elimination sequence, or need be
    * computed by the triangulation itself. */
   bool DefaultPartialOrderedEliminationSequenceStrategy::providesFillIns() const {
-    return provide_fill_ins__;
+    return  _provide_fill_ins_;
   }
 
   /** @brief indicates whether the elimination sequence updates by itself the
@@ -242,9 +242,9 @@ namespace gum {
   void DefaultPartialOrderedEliminationSequenceStrategy::eliminationUpdate(
      const NodeId id) {
     // check whether we can do something
-    if (simplicial_set__ != nullptr) {
-      simplicial_set__->makeClique(id);
-      simplicial_set__->eraseClique(id);
+    if ( _simplicial_set_ != nullptr) {
+       _simplicial_set_->makeClique(id);
+       _simplicial_set_->eraseClique(id);
 
       if (!partial_order_needed_) {
         // remove the node from nodeset_
@@ -266,10 +266,10 @@ namespace gum {
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * generated after the last node elimination */
   const EdgeSet& DefaultPartialOrderedEliminationSequenceStrategy::fillIns() {
-    if (!provide_fill_ins__ || (simplicial_set__ == nullptr))
+    if (! _provide_fill_ins_ || ( _simplicial_set_ == nullptr))
       return EliminationSequenceStrategy::fillIns();
     else
-      return simplicial_set__->fillIns();
+      return  _simplicial_set_->fillIns();
   }
 
   /** @brief creates a new elimination sequence of the same type as the current
@@ -277,8 +277,8 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy*
      DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(
-       simplicial_ratio__,
-       simplicial_threshold__);
+        _simplicial_ratio_,
+        _simplicial_threshold_);
   }
 
   /// virtual copy constructor

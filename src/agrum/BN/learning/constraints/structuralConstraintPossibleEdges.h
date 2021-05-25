@@ -194,7 +194,7 @@ namespace gum {
 
       protected:
       /// the PossibleEdges on which we perform checks
-      EdgeSet PossibleEdges__possible_edges_;
+      EdgeSet  _PossibleEdges_possible_edges_;
     };
 
   } /* namespace learning */

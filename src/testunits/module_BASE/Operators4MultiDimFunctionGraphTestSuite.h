@@ -60,7 +60,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe d'une liste de variable
     // *****************************************************************************************************
-    gum::Sequence< const gum::DiscreteVariable* >* generateFixVarList__() {
+    gum::Sequence< const gum::DiscreteVariable* >*  _generateFixVarList_() {
       gum::Sequence< const gum::DiscreteVariable* >* ret
          = new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
@@ -75,7 +75,7 @@ namespace gum_tests {
     /// Génération aléatoire d'une liste de 10 variables
     // *****************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >*
-       generateRandomVarList__(gum::Idx i) {
+        _generateRandomVarList_(gum::Idx i) {
       gum::Sequence< const gum::DiscreteVariable* >* ret
          = new gum::Sequence< const gum::DiscreteVariable* >();
 
@@ -94,7 +94,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Brassage aléatoire d'une liste de 10 variables
     // *****************************************************************************************************
-    void shuffleVarList__(gum::Sequence< const gum::DiscreteVariable* >* varList,
+    void  _shuffleVarList_(gum::Sequence< const gum::DiscreteVariable* >* varList,
                           gum::Idx                                       i) {
       for (gum::Idx j = 0; j < 10; j++)
         varList->swap(rand() % (varList->size()), rand() % (varList->size()));
@@ -104,7 +104,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
     // *****************************************************************************************************
-    gum::MultiDimFunctionGraph< double >* generateFunctionGraph1__(
+    gum::MultiDimFunctionGraph< double >*  _generateFunctionGraph1_(
        const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
          = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
@@ -144,7 +144,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
     // *****************************************************************************************************
-    gum::MultiDimFunctionGraph< double >* generateFunctionGraph2__(
+    gum::MultiDimFunctionGraph< double >*  _generateFunctionGraph2_(
        const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
          = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
@@ -179,7 +179,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération aléatoire de diagramme de décision
     // *****************************************************************************************************
-    gum::MultiDimFunctionGraph< double >* generateRandomFunctionGraph__(
+    gum::MultiDimFunctionGraph< double >*  _generateRandomFunctionGraph_(
        const gum::Sequence< const gum::DiscreteVariable* >* varList,
        double                                               lowLimit  = -100,
        double                                               highLimit = 100) {
@@ -192,7 +192,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
     // *****************************************************************************************************
-    void saveDiagrams__(gum::MultiDimFunctionGraph< double >* a1,
+    void  _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
                         gum::MultiDimFunctionGraph< double >* a2,
                         gum::MultiDimFunctionGraph< double >* a3) {
       std::string   dotfile = GET_RESSOURCES_PATH("FunctionGraphError.log");
@@ -251,7 +251,7 @@ namespace gum_tests {
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
     // *****************************************************************************************************
-    bool evalOperation__(gum::Idx                              operationId,
+    bool  _evalOperation_(gum::Idx                              operationId,
                          gum::MultiDimFunctionGraph< double >* a1,
                          gum::MultiDimFunctionGraph< double >* a2,
                          double&                               tempsCalcul,
@@ -344,10 +344,10 @@ namespace gum_tests {
           }
         }
 
-        if (!hasNoError) saveDiagrams__(a1, a2, a3);
+        if (!hasNoError)  _saveDiagrams_(a1, a2, a3);
         delete a3;
       } else {
-        saveDiagrams__(a1, a2, a3);
+         _saveDiagrams_(a1, a2, a3);
         hasNoError = false;
       }
 
@@ -372,13 +372,13 @@ namespace gum_tests {
         time.reset();
 
         gum::Sequence< const gum::DiscreteVariable* >* varList
-           = generateFixVarList__();
+           =  _generateFixVarList_();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a1 = generateFunctionGraph1__(varList));
+        TS_GUM_ASSERT_THROWS_NOTHING(a1 =  _generateFunctionGraph1_(varList));
 
         gum::MultiDimFunctionGraph< double >* a2 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a2 = generateFunctionGraph2__(varList));
+        TS_GUM_ASSERT_THROWS_NOTHING(a2 =  _generateFunctionGraph2_(varList));
 
         //          std::cout << a1->toDot() << std::endl;
 
@@ -389,7 +389,7 @@ namespace gum_tests {
         bool evalRes = true;
 
         for (gum::Idx opId = 1; opId < nbOperation && evalRes; opId++)
-          evalRes = evalOperation__(opId, a1, a2, tempsCalcul, tempsEval);
+          evalRes =  _evalOperation_(opId, a1, a2, tempsCalcul, tempsEval);
 
         delete a1;
         delete a2;
@@ -585,7 +585,7 @@ namespace gum_tests {
       dg2->manager()->setRootNode(n01);
 
       double foo = 0.0, bar = 0.0;
-      TS_GUM_ASSERT_THROWS_NOTHING(evalOperation__(1, dg1, dg2, foo, bar, 0.0));
+      TS_GUM_ASSERT_THROWS_NOTHING( _evalOperation_(1, dg1, dg2, foo, bar, 0.0));
 
       delete dg1;
       delete dg2;
@@ -614,8 +614,8 @@ namespace gum_tests {
 //  time.reset();
 
 //  gum::Sequence<const gum::DiscreteVariable*>* varList =
-//      generateRandomVarList__( i + 1 );
-//  shuffleVarList__( varList, i + 2 );
+//       _generateRandomVarList_( i + 1 );
+//   _shuffleVarList_( varList, i + 2 );
 
 //  //          std::cout << std::endl << " gum::Sequence variable : ";
 //  //          for( gum::SequenceIterator< const gum::DiscreteVariable* >
@@ -625,10 +625,10 @@ namespace gum_tests {
 
 //  gum::MultiDimFunctionGraph<double>* a1 = nullptr;
 //  TS_GUM_ASSERT_THROWS_NOTHING(
-//      a1 = generateRandomFunctionGraph__( varList, i + 3 ) );
+//      a1 =  _generateRandomFunctionGraph_( varList, i + 3 ) );
 //  //          std::cout << a1->toDot() << std::endl;
 
-//  shuffleVarList__( varList, i + 4 );
+//   _shuffleVarList_( varList, i + 4 );
 
 //  //          std::cout << std::endl << " gum::Sequence variable : ";
 //  //          for( gum::SequenceIterator< const gum::DiscreteVariable* >
@@ -638,7 +638,7 @@ namespace gum_tests {
 
 //  gum::MultiDimFunctionGraph<double>* a2 = nullptr;
 //  TS_GUM_ASSERT_THROWS_NOTHING(
-//      a2 = generateRandomFunctionGraph__( varList, i + 5 ) );
+//      a2 =  _generateRandomFunctionGraph_( varList, i + 5 ) );
 //  //          std::cout << a2->toDot();
 
 //  tempsGene += time.step();
@@ -649,7 +649,7 @@ namespace gum_tests {
 //  for ( gum::Idx nbOp = 1; nbOp < nbOperation && evalRes; nbOp++ )
 //    TS_GUM_ASSERT_THROWS_NOTHING(
 //        evalRes =
-//            evalOperation__( nbOp, a1, a2, tempsCalcul, tempsEval ) );
+//             _evalOperation_( nbOp, a1, a2, tempsCalcul, tempsEval ) );
 
 //  delete a1;
 //  delete a2;

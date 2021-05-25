@@ -115,13 +115,13 @@ namespace gum {
     private:
 
       // the result of the last SQL query performed
-      nanodbc::result result__;
+      nanodbc::result  _result_;
 
       // the line number within the current query
-      std::size_t nb_line__ { std::size_t(0) };
+      std::size_t  _nb_line_ { std::size_t(0) };
 
       // a vector that will contain the content of the current line of result
-      std::vector<std::string,ALLOC<std::string>> data__;
+      std::vector<std::string,ALLOC<std::string>>  _data_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

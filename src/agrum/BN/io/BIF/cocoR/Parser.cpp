@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return errors__;
+  return  _errors_;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return errors__;
+  return  _errors_;
 }
 
 void Parser::Get() {
@@ -337,7 +337,7 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 			LISTE_LABELS(parents,labels,0);
 			Expect(19 /* ")" */);
 			LISTE_FLOAT(v);
-			checkSizeOfProbabilityAssignation__(v,var);
+			 _checkSizeOfProbabilityAssignation_(v,var);
 			TRY(factory().setVariableValuesUnchecked(v));
 			TRY(factory().endFactorizedEntry());
 			
@@ -346,7 +346,7 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 			if (! is_first) SemErr("'default' assignation has to be the first."); 
 			LISTE_FLOAT(v);
 			TRY(factory().startFactorizedEntry());
-			checkSizeOfProbabilityAssignation__(v,var);
+			 _checkSizeOfProbabilityAssignation_(v,var);
 			TRY(factory().setVariableValuesUnchecked(v));
 			TRY(factory().endFactorizedEntry());
 			
@@ -516,13 +516,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist )  _errors_.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  errors__.Warning( scanner->filename(),t->line, t->col, msg );
+   _errors_.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -576,7 +576,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  errors__.Error( filename,line,col,ss.c_str() );
+   _errors_.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

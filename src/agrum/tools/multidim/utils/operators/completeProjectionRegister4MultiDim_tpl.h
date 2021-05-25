@@ -45,20 +45,20 @@ namespace gum {
     // insert the new entry
     CompleteProjectionSet* theset;
 
-    if (!set__.exists(projection_name)) {
-      theset = set__.insert(projection_name, new CompleteProjectionSet).second;
+    if (! _set_.exists(projection_name)) {
+      theset =  _set_.insert(projection_name, new CompleteProjectionSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::inc_deletion__("HashTable",
-                                __FILE__,
-                                __LINE__,
+       __debug__:: _inc_deletion_("HashTable",
+                                  __FILE__,
+                                  __LINE__,
                                 "destructor of",
                                 (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
-      theset = set__[projection_name];
+      theset =  _set_[projection_name];
     }
 
     theset->insert(type_multidim, newFunction);
@@ -69,9 +69,9 @@ namespace gum {
   void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::erase(
      const std::string& projection_name,
      const std::string& type_multidim) {
-    if (!set__.exists(projection_name)) return;
+    if (! _set_.exists(projection_name)) return;
 
-    CompleteProjectionSet* theset = set__[projection_name];
+    CompleteProjectionSet* theset =  _set_[projection_name];
 
     theset->erase(type_multidim);
   }
@@ -81,9 +81,9 @@ namespace gum {
   INLINE bool CompleteProjectionRegister4MultiDim< GUM_SCALAR >::exists(
      const std::string& projection_name,
      const std::string& type_multidim) const {
-    if (!set__.exists(projection_name)) return false;
+    if (! _set_.exists(projection_name)) return false;
 
-    return set__[projection_name].exists(type_multidim);
+    return  _set_[projection_name].exists(type_multidim);
   }
 
   /** @brief returns the specialized operator assigned to a given subtype of
@@ -94,7 +94,7 @@ namespace gum {
      CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
         const std::string& projection_name,
         const std::string& type_multidim) const {
-    CompleteProjectionSet* theset = set__[projection_name];
+    CompleteProjectionSet* theset =  _set_[projection_name];
     return theset->        operator[](type_multidim);
   }
 
@@ -113,11 +113,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::inc_deletion__("HashTable",
-                                __FILE__,
-                                __LINE__,
+       __debug__:: _inc_deletion_("HashTable",
+                                  __FILE__,
+                                  __LINE__,
                                 "destructor of",
-                                (void*)&container.set__);
+                                (void*)&container. _set_);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -137,8 +137,8 @@ namespace gum {
     // remove all the sets
     for (typename HashTable< std::string, CompleteProjectionSet* >::iterator_safe
             iter
-         = set__.beginSafe();
-         iter != set__.endSafe();
+         =  _set_.beginSafe();
+         iter !=  _set_.endSafe();
          ++iter)
       delete iter.val();
   }

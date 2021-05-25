@@ -97,9 +97,9 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string preambule__(const IBayesNet< GUM_SCALAR >& bn);
+    std::string  _preambule_(const IBayesNet< GUM_SCALAR >& bn);
 
-    std::string cptBloc__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _cptBloc_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
   };
 
 

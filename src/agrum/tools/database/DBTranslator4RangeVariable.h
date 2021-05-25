@@ -378,20 +378,20 @@ namespace gum {
 
       private:
       // the RangeVariable assigned to the translator, if any
-      RangeVariable variable__;
+      RangeVariable  _variable_;
 
       // assign to each integer missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< std::string, bool > > >
-         status_int_missing_symbols__;
+          _status_int_missing_symbols_;
 
       // the set of translations of the integer missing symbols found so far
-      Set< long, ALLOC< long > > translated_int_missing_symbols__;
+      Set< long, ALLOC< long > >  _translated_int_missing_symbols_;
 
       // a string containing a non int missing symbol
       // (useful for back translations)
-      std::string nonint_missing_symbol__;
+      std::string  _nonint_missing_symbol_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

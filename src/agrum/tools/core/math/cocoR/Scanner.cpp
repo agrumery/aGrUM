@@ -260,19 +260,19 @@ int UTF8Buffer::Read() {
 
 Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  filenamne__=widen( filename.c_str() );
-  trace__=trace;
+   _filenamne_=widen( filename.c_str() );
+   _trace_=trace;
   Init();
 }
 
 Scanner::Scanner( const char* fileName,bool trace ) {
   Load( widen( std::string( fileName ) ).c_str() );
-  trace__=trace;
+   _trace_=trace;
 }
 
 Scanner::Scanner( const wchar_t* fileName,bool trace ) {
   Load( fileName );
-  trace__=trace;
+   _trace_=trace;
 }
 
 void Scanner::Load( const wchar_t* fileName ) {
@@ -286,15 +286,15 @@ void Scanner::Load( const wchar_t* fileName ) {
 
   coco_string_delete( chFileName );
   buffer = new Buffer( stream, false );
-  filenamne__=std::wstring( fileName );
+   _filenamne_=std::wstring( fileName );
   Init();
 }
 
 Scanner::Scanner( FILE* s,bool trace ) {
   buffer = new Buffer( s, true );
-  filenamne__=L"FILE";
+   _filenamne_=L"FILE";
   Init();
-  trace__=trace;
+   _trace_=trace;
 }
 
 Scanner::~Scanner() {
@@ -396,7 +396,7 @@ void Scanner::NextCh() {
     // eol handling uniform across Windows, Unix and Mac
     if ( ch == L'\r' && buffer->Peek() != L'\n' ) ch = EOL;
 
-    if ( ch == EOL ) { /*if (trace__) std::cout<<line<<std::endl;*/ line++; col = 0; }
+    if ( ch == EOL ) { /*if ( _trace_) std::cout<<line<<std::endl;*/ line++; col = 0; }
   }
 
   

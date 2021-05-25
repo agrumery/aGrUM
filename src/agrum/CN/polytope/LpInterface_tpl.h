@@ -32,49 +32,49 @@ namespace gum {
       LpExpr& LpExpr::operator=(const SCALAR& rhs) {
         clear();
 
-        mValue__  = rhs;
-        imiddle__ = true;
+         _mValue_  = rhs;
+         _imiddle_ = true;
 
         return *this;
       }
 
       template < typename T >
       LpExpr& LpExpr::operator+=(const T& rhs) {
-        if (ileft__ || iright__)
+        if ( _ileft_ ||  _iright_)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator+= (expr) : <= present on one side of expr")
 
-        if (!imiddle__) imiddle__ = true;
+        if (! _imiddle_)  _imiddle_ = true;
 
-        mValue__ += rhs;
+         _mValue_ += rhs;
 
         return *this;
       }
 
       template < typename T >
       LpExpr& LpExpr::operator-=(const T& rhs) {
-        if (ileft__ || iright__)
+        if ( _ileft_ ||  _iright_)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator-= (rhs) : <= present in one of expr")
 
-        if (!imiddle__) imiddle__ = true;
+        if (! _imiddle_)  _imiddle_ = true;
 
-        mValue__ -= rhs;
+         _mValue_ -= rhs;
 
         return *this;
       }
 
       template < typename SCALAR >
-      void LpExpr::addSide__(const SCALAR& from) {
-        if (!ileft__) {
-          lValue__ = from;
-          ileft__  = true;
-        } else if (!imiddle__) {
-          mValue__  = from;
-          imiddle__ = true;
-        } else if (!iright__) {
-          rValue__ = from;
-          iright__ = true;
+      void LpExpr:: _addSide_(const SCALAR& from) {
+        if (! _ileft_) {
+           _lValue_ = from;
+           _ileft_  = true;
+        } else if (! _imiddle_) {
+           _mValue_  = from;
+           _imiddle_ = true;
+        } else if (! _iright_) {
+           _rValue_ = from;
+           _iright_ = true;
         } else
           GUM_ERROR(OperationNotAllowed,
                     "LpExpr::setSide ( const LpCol & from "
@@ -86,35 +86,35 @@ namespace gum {
        */
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface() {
-        positivity__ = false;
-        sumIsOne__   = false;
+         _positivity_ = false;
+         _sumIsOne_   = false;
         GUM_CONSTRUCTOR(LpInterface);
       }
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface(
          const LpInterface< GUM_SCALAR >& from) :
-          cols__(from.cols__),
-          positivity__(from.positivity__), sumIsOne__(from.sumIsOne__) {
-        rows__.resize(from.rows__.size());
+           _cols_(from. _cols_),
+           _positivity_(from. _positivity_),  _sumIsOne_(from. _sumIsOne_) {
+         _rows_.resize(from. _rows_.size());
 
-        for (unsigned int i = 0, end = from.rows__.size(); i < end; i++)
-          rows__[i] = new LpRow(*from.rows__[i]);
+        for (unsigned int i = 0, end = from. _rows_.size(); i < end; i++)
+           _rows_[i] = new LpRow(*from. _rows_[i]);
 
         GUM_CONS_CPY(LpInterface);
       }
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface(LpInterface< GUM_SCALAR >&& from) :
-          positivity__(from.positivity__), sumIsOne__(from.sumIsOne__) {
-        rows__.swap(from.rows__);
-        cols__.swap(from.cols__);
+           _positivity_(from. _positivity_),  _sumIsOne_(from. _sumIsOne_) {
+         _rows_.swap(from. _rows_);
+         _cols_.swap(from. _cols_);
         GUM_CONS_CPY(LpInterface);
       }
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::~LpInterface() {
-        for (const auto row: rows__)
+        for (const auto row:  _rows_)
           delete row;
 
         GUM_DESTRUCTOR(LpInterface);
@@ -124,20 +124,20 @@ namespace gum {
       LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::operator=(
          const LpInterface< GUM_SCALAR >& from) {
         /// faster than clear (), delete only rows
-        for (const auto& row: rows__)
+        for (const auto& row:  _rows_)
           delete row;
 
-        rows__.clear();
-        rows__.shrink_to_fit();
+         _rows_.clear();
+         _rows_.shrink_to_fit();
 
-        rows__.resize(from.rows__.size());
+         _rows_.resize(from. _rows_.size());
 
-        for (unsigned int i = 0, end = from.rows__.size(); i < end; i++)
-          rows__[i] = new LpRow(*from.rows__[i]);
+        for (unsigned int i = 0, end = from. _rows_.size(); i < end; i++)
+           _rows_[i] = new LpRow(*from. _rows_[i]);
 
-        cols__       = from.cols__;
-        positivity__ = from.positivity__;
-        sumIsOne__   = from.sumIsOne__;
+         _cols_       = from. _cols_;
+         _positivity_ = from. _positivity_;
+         _sumIsOne_   = from. _sumIsOne_;
 
         return *this;
       }
@@ -145,11 +145,11 @@ namespace gum {
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >&
          LpInterface< GUM_SCALAR >::operator=(LpInterface< GUM_SCALAR >&& from) {
-        rows__.swap(from.rows__);
-        cols__.swap(from.cols__);
+         _rows_.swap(from. _rows_);
+         _cols_.swap(from. _cols_);
 
-        positivity__ = from.positivity__;
-        sumIsOne__   = from.sumIsOne__;
+         _positivity_ = from. _positivity_;
+         _sumIsOne_   = from. _sumIsOne_;
 
         return *this;
       }
@@ -162,9 +162,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpCol LpInterface< GUM_SCALAR >::addCol() {
-        LpCol col((unsigned int)cols__.size());
+        LpCol col((unsigned int) _cols_.size());
 
-        cols__.push_back(col);
+         _cols_.push_back(col);
 
         return col;
       }
@@ -179,43 +179,43 @@ namespace gum {
                        << cols << " < 1");
 
         for (unsigned int i = 0; i < cols; i++) {
-          cols__.push_back(LpCol((unsigned int)cols__.size()));
+           _cols_.push_back(LpCol((unsigned int) _cols_.size()));
         }
 
-        return cols__;
+        return  _cols_;
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addRow(const LpExpr& expr) {
-        if (!expr.ileft__ && !expr.iright__)
+        if (!expr. _ileft_ && !expr. _iright_)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
                        << expr.toString() << "is not an inequality.");
 
-        if ((expr.ileft__ && !expr.iright__) || (!expr.ileft__ && expr.iright__)) {
-          rows__.push_back(new LpRow(expr, cols__));
+        if ((expr. _ileft_ && !expr. _iright_) || (!expr. _ileft_ && expr. _iright_)) {
+           _rows_.push_back(new LpRow(expr,  _cols_));
         } else {
           LpExpr lexpr(expr, true, true, false);
           LpExpr rexpr(expr, false, true, true);
 
-          rows__.push_back(
+           _rows_.push_back(
              new LpRow(std::move(lexpr),
-                       cols__));   /// lexpr not used anymore, use move constructor
-          rows__.push_back(
+                        _cols_));   /// lexpr not used anymore, use move constructor
+           _rows_.push_back(
              new LpRow(std::move(rexpr),
-                       cols__));   /// rexpr not used anymore, use move constructor
+                        _cols_));   /// rexpr not used anymore, use move constructor
         }
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addRow(LpExpr&& expr) {
-        if (!expr.ileft__ && !expr.iright__)
+        if (!expr. _ileft_ && !expr. _iright_)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
                        << expr.toString() << "is not an inequality.");
 
-        if ((expr.ileft__ && !expr.iright__) || (!expr.ileft__ && expr.iright__)) {
-          rows__.push_back(new LpRow(std::move(expr), cols__));
+        if ((expr. _ileft_ && !expr. _iright_) || (!expr. _ileft_ && expr. _iright_)) {
+           _rows_.push_back(new LpRow(std::move(expr),  _cols_));
         } else {
           LpExpr lexpr(std::move(expr), true, true, false);
 
@@ -224,51 +224,51 @@ namespace gum {
 
           /// rexpr miss middle side, copy it from lexpr
 
-          *rexpr.mCoeffs__ = *lexpr.mCoeffs__;
-          rexpr.mValue__   = lexpr.mValue__;
-          rexpr.imiddle__  = true;
+          *rexpr. _mCoeffs_ = *lexpr. _mCoeffs_;
+          rexpr. _mValue_   = lexpr. _mValue_;
+          rexpr. _imiddle_  = true;
 
-          rows__.push_back(
+           _rows_.push_back(
              new LpRow(std::move(lexpr),
-                       cols__));   /// lexpr not used anymore, use move constructor
-          rows__.push_back(
+                        _cols_));   /// lexpr not used anymore, use move constructor
+           _rows_.push_back(
              new LpRow(std::move(rexpr),
-                       cols__));   /// rexpr not used anymore, use move constructor
+                        _cols_));   /// rexpr not used anymore, use move constructor
         }
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addPositivity() {
-        if (positivity__) return;
+        if ( _positivity_) return;
 
-        for (const auto& col: cols__)
+        for (const auto& col:  _cols_)
           addRow(0 <= col);
 
-        positivity__ = true;
+         _positivity_ = true;
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addSumIsOne() {
-        if (sumIsOne__) return;
+        if ( _sumIsOne_) return;
 
         LpExpr expr;
 
-        for (const auto& col: cols__)
+        for (const auto& col:  _cols_)
           expr += col;
 
         addRow(1 <= std::move(expr) <= 1);
 
-        sumIsOne__ = true;
+         _sumIsOne_ = true;
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addProba() {
-        if (positivity__ && sumIsOne__) {
+        if ( _positivity_ &&  _sumIsOne_) {
           return;
-        } else if (positivity__ && !sumIsOne__) {
+        } else if ( _positivity_ && ! _sumIsOne_) {
           addSumIsOne();
           return;
-        } else if (!positivity__ && sumIsOne__) {
+        } else if (! _positivity_ &&  _sumIsOne_) {
           addPositivity();
           return;
         }
@@ -278,31 +278,31 @@ namespace gum {
         // addSumIsOne();
         LpExpr expr;
 
-        for (const auto& col: cols__) {
+        for (const auto& col:  _cols_) {
           addRow(0 <= col);
           expr += col;
         }
 
         addRow(1 <= std::move(expr) <= 1);
 
-        sumIsOne__   = true;
-        positivity__ = true;
+         _sumIsOne_   = true;
+         _positivity_ = true;
       }
 
       template < typename GUM_SCALAR >
       std::vector< std::vector< GUM_SCALAR > > LpInterface< GUM_SCALAR >::solve() {
         LRSWrapper< GUM_SCALAR > lrs;
 
-        lrs.setUpH((unsigned int)cols__.size());
+        lrs.setUpH((unsigned int) _cols_.size());
 
         std::vector< std::vector< GUM_SCALAR > > lrsMatrix;
 
-        for (const auto& row: rows__) {
-          std::vector< GUM_SCALAR > expandedRow(cols__.size() + 1, 0);
+        for (const auto& row:  _rows_) {
+          std::vector< GUM_SCALAR > expandedRow( _cols_.size() + 1, 0);
 
-          expandedRow[0] = row->cste__;
+          expandedRow[0] = row-> _cste_;
 
-          for (const auto& elt: *row->coeffs__)
+          for (const auto& elt: *row-> _coeffs_)
             expandedRow[elt.first.id() + 1] = elt.second;
 
           lrsMatrix.push_back(expandedRow);
@@ -317,7 +317,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::vector< LpCol > LpInterface< GUM_SCALAR >::getCols() const {
-        return cols__;
+        return  _cols_;
       }
 
       template < typename GUM_SCALAR >
@@ -326,12 +326,12 @@ namespace gum {
 
         s << std::endl << std::endl << "Variables : " << std::endl;
 
-        for (const auto& col: cols__)
+        for (const auto& col:  _cols_)
           s << " " << col.toString();
 
         s << std::endl;
 
-        for (const auto& row: rows__)
+        for (const auto& row:  _rows_)
           s << std::endl << row->toString();
 
         s << std::endl << std::endl;
@@ -341,32 +341,32 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clear() {
-        for (const auto& row: rows__)
+        for (const auto& row:  _rows_)
           delete row;
 
-        rows__.clear();
-        rows__.shrink_to_fit();   /// to really clear content memory, otherwise
+         _rows_.clear();
+         _rows_.shrink_to_fit();   /// to really clear content memory, otherwise
                                   /// we have
                                   /// to wait for (*this) destruction ???
-        /// checked with sizeof( rows__ ) + sizeof( LpRow ) * rows__.capacity()
+        /// checked with sizeof(  _rows_ ) + sizeof( LpRow ) *  _rows_.capacity()
 
-        cols__.clear();
-        cols__.shrink_to_fit();
+         _cols_.clear();
+         _cols_.shrink_to_fit();
 
-        positivity__ = false;
-        sumIsOne__   = false;
+         _positivity_ = false;
+         _sumIsOne_   = false;
       }
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clearRows() {
-        for (const auto& row: rows__)
+        for (const auto& row:  _rows_)
           delete row;
 
-        rows__.clear();
-        rows__.shrink_to_fit();
+         _rows_.clear();
+         _rows_.shrink_to_fit();
 
-        positivity__ = false;
-        sumIsOne__   = false;
+         _positivity_ = false;
+         _sumIsOne_   = false;
       }
 
       ///////////////////////////////////////////////////////
@@ -483,8 +483,8 @@ namespace gum {
       template < typename SCALAR >
       INLINE LpExpr LpExpr::multiply(const SCALAR& lhs, const LpCol& rhs) {
         LpExpr expr;
-        expr.mCoeffs__->insert(rhs, lhs);
-        expr.imiddle__ = true;
+        expr. _mCoeffs_->insert(rhs, lhs);
+        expr. _imiddle_ = true;
         return expr;
       }
 
@@ -502,8 +502,8 @@ namespace gum {
       template < typename T1, typename T2 >
       INLINE LpExpr LpExpr::lessThan(T1&& lhs, T2&& rhs) {
         LpExpr expr;
-        expr.addSide__(std::forward< T1 >(lhs));
-        expr.addSide__(std::forward< T2 >(rhs));
+        expr. _addSide_(std::forward< T1 >(lhs));
+        expr. _addSide_(std::forward< T2 >(rhs));
         return expr;
       }
 

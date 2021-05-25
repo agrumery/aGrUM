@@ -205,7 +205,7 @@ namespace gum {
 
       protected:
       /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector DAG__cycle_detector_;
+      DAGCycleDetector  _DAG_cycle_detector_;
     };
 
   } /* namespace learning */

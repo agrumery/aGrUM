@@ -130,24 +130,24 @@ namespace gum {
       private:
       /// Mapping between DiscreteVariable and their NodeId
       HashTable< const DiscreteVariable*, const PRMClassElement< GUM_SCALAR >* >
-         varNodeMap__;
+          _varNodeMap_;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement< GUM_SCALAR >& get__(NodeId id) const;
+      const PRMClassElement< GUM_SCALAR >&  _get_(NodeId id) const;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement< GUM_SCALAR >& get__(const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >&  _get_(const std::string& name) const;
 
       /// The PRMClassElementContainer decorated by this.
-      const PRMClass< GUM_SCALAR >* class__;
+      const PRMClass< GUM_SCALAR >*  _class_;
 
-      mutable NodeProperty< Size > modalities__;
+      mutable NodeProperty< Size >  _modalities_;
 
-      void init__(const PRMClass< GUM_SCALAR >& c);
+      void  _init_(const PRMClass< GUM_SCALAR >& c);
     };
 
 

@@ -265,13 +265,13 @@ namespace gum {
 
       private:
       // the real type of the last element read from the database
-      EltType type__{EltType::MISSING};
+      EltType  _type_{EltType::MISSING};
 
       // the element read from the database
       union {
-        int   val_index__;     // stores string indices. Basically, it should have
-        int   val_integer__;   // been an Idx, but int are shorter than Idx.
-        float val_real__;
+        int    _val_index_;     // stores string indices. Basically, it should have
+        int    _val_integer_;   // been an Idx, but int are shorter than Idx.
+        float  _val_real_;
       };
 
 
@@ -281,14 +281,14 @@ namespace gum {
          conditional< sizeof(int) < sizeof(float), float, int >::type;
 
       // raises an appropriate exception when encountering a type error
-      std::string typeErrorMsg__(const std::string& real_type) const;
+      std::string  _typeErrorMsg_(const std::string& real_type) const;
 
 
       // a bijection assigning to each string index its corresponding string
-      static Bijection< std::string, int >& strings__();
+      static Bijection< std::string, int >&  _strings_();
 
       // the last index used so far
-      static int string_max_index__;
+      static int  _string_max_index_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

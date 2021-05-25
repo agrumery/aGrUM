@@ -110,16 +110,16 @@ namespace gum {
 
     private:
     /// Indicates whether we need more precision for small values.
-    bool requires_precision__{false};
+    bool  _requires_precision_{false};
 
     /// The value of 1 / std::log(2).
-    static constexpr double inv_log2__{M_LOG2E};
+    static constexpr double  _inv_log2_{M_LOG2E};
 
     /// The value of std::log ( std::sqrt(2pi) ).
-    static constexpr double log_sqrt_2pi__{GUM_LOG_SQRT_2PI};
+    static constexpr double  _log_sqrt_2pi_{GUM_LOG_SQRT_2PI};
 
     /// The 5000 values from 0 to 50 by step of 1/100.
-    static const std::vector< double > small_values__;
+    static const std::vector< double >  _small_values_;
   };
 
 } /* namespace gum */

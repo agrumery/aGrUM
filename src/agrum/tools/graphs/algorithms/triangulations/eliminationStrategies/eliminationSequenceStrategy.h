@@ -183,7 +183,7 @@ namespace gum {
 
     private:
     /// an empty fill-ins set used by default
-    static const EdgeSet& empty_fill_ins__();
+    static const EdgeSet&  _empty_fill_ins_();
   };
 
 

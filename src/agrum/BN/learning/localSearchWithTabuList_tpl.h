@@ -179,7 +179,7 @@ namespace gum {
         }
 
         // std::cout << "current N = " << current_N << std::endl;
-      } while ((current_N <= MaxNbDecreasing__)
+      } while ((current_N <=  _MaxNbDecreasing_)
                && continueApproximationScheme(delta_score));
 
       stopApproximationScheme();   // just to be sure of the

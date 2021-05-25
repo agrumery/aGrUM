@@ -60,7 +60,7 @@ namespace gum {
     /// Constructor
     // ============================================================================
     LeastSquareTestPolicy() :
-        ITestPolicy< GUM_SCALAR >(), sumO__(0.0), score__(0) {
+        ITestPolicy< GUM_SCALAR >(),  _sumO_(0.0),  _score_(0) {
       GUM_CONSTRUCTOR(LeastSquareTestPolicy);
     }
 
@@ -145,40 +145,40 @@ namespace gum {
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
-    double sumValue() const { return sumO__; }
+    double sumValue() const { return  _sumO_; }
 
     // ============================================================================
     /// Returns nbobs per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, Idx >& nbObsTable() const { return nbObsTable__; }
+    const HashTable< Idx, Idx >& nbObsTable() const { return  _nbObsTable_; }
 
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, double >& sumAttrTable() const { return sumAttrTable__; }
+    const HashTable< Idx, double >& sumAttrTable() const { return  _sumAttrTable_; }
 
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
     const HashTable< Idx, LinkedList< double >* >& obsTable() const {
-      return obsTable__;
+      return  _obsTable_;
     }
 
     private:
     /// Global sum
-    double sumO__;
+    double  _sumO_;
 
     /// Nb Observation for each modality assumed by variable
-    HashTable< Idx, Idx > nbObsTable__;
+    HashTable< Idx, Idx >  _nbObsTable_;
 
     /// Sum for each modality assumed by variable
-    HashTable< Idx, double > sumAttrTable__;
+    HashTable< Idx, double >  _sumAttrTable_;
 
     /// Not sure if needed
-    HashTable< Idx, LinkedList< double >* > obsTable__;
+    HashTable< Idx, LinkedList< double >* >  _obsTable_;
 
     /// Keeping computed score
-    double score__;
+    double  _score_;
   };
 
 }   // End of namespace gum

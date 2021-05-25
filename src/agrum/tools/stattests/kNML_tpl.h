@@ -43,7 +43,7 @@ namespace gum {
                                                      nodeId2columns,
        const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        param_complexity__(alloc) {
+         _param_complexity_(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -57,7 +57,7 @@ namespace gum {
                                                      nodeId2columns,
        const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        param_complexity__(alloc) {
+         _param_complexity_(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -68,7 +68,7 @@ namespace gum {
        KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
                            const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
-        param_complexity__(from.param_complexity__, alloc) {
+         _param_complexity_(from. _param_complexity_, alloc) {
       GUM_CONS_CPY(KNML);
     }
 
@@ -85,7 +85,7 @@ namespace gum {
        KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
                            const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
-        param_complexity__(std::move(from.param_complexity__), alloc) {
+         _param_complexity_(std::move(from. _param_complexity_), alloc) {
       GUM_CONS_MOV(KNML);
     }
 
@@ -132,7 +132,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        param_complexity__                 = from.param_complexity__;
+         _param_complexity_                 = from. _param_complexity_;
       }
       return *this;
     }
@@ -143,7 +143,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(KNML< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-        param_complexity__                 = std::move(from.param_complexity__);
+         _param_complexity_                 = std::move(from. _param_complexity_);
       }
       return *this;
     }
@@ -153,7 +153,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clear() {
       IndependenceTest< ALLOC >::clear();
-      param_complexity__.clearCache();
+       _param_complexity_.clearCache();
     }
 
 
@@ -161,7 +161,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clearCache() {
       IndependenceTest< ALLOC >::clearCache();
-      param_complexity__.clearCache();
+       _param_complexity_.clearCache();
     }
 
 
@@ -169,7 +169,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::useCache(const bool on_off) {
       IndependenceTest< ALLOC >::useCache(on_off);
-      param_complexity__.useCache(on_off);
+       _param_complexity_.useCache(on_off);
     }
 
 
@@ -224,12 +224,12 @@ namespace gum {
         // 		 sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
         double score = 0.0;
         for (auto n_xui: N_xui)
-          score += param_complexity__.log2Cnr(r_y, n_xui);
+          score +=  _param_complexity_.log2Cnr(r_y, n_xui);
         for (auto n_yui: N_yui)
-          score += param_complexity__.log2Cnr(r_x, n_yui);
+          score +=  _param_complexity_.log2Cnr(r_x, n_yui);
         for (auto n_ui: N_ui) {
-          score -= param_complexity__.log2Cnr(r_y, n_ui);
-          score -= param_complexity__.log2Cnr(r_x, n_ui);
+          score -=  _param_complexity_.log2Cnr(r_y, n_ui);
+          score -=  _param_complexity_.log2Cnr(r_x, n_ui);
         }
 
         score *= 0.5;
@@ -258,13 +258,13 @@ namespace gum {
         double N     = 0.0;
         double score = 0.0;
         for (auto n_xui: N_xui) {
-          score += param_complexity__.log2Cnr(r_y, n_xui);
+          score +=  _param_complexity_.log2Cnr(r_y, n_xui);
           N += n_xui;
         }
         for (auto n_yui: N_yui)
-          score += param_complexity__.log2Cnr(r_x, n_yui);
-        score -= param_complexity__.log2Cnr(r_y, N);
-        score -= param_complexity__.log2Cnr(r_x, N);
+          score +=  _param_complexity_.log2Cnr(r_x, n_yui);
+        score -=  _param_complexity_.log2Cnr(r_y, N);
+        score -=  _param_complexity_.log2Cnr(r_x, N);
 
         score *= 0.5;
 

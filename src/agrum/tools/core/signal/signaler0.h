@@ -39,7 +39,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  namespace __sig__ {
+  namespace  __sig__ {
 
     class IConnector0 {
       public:
@@ -76,7 +76,7 @@ namespace gum {
       ConnectorList connectors_;
 
       private:
-      std::function< bool(IConnector0* el) > find_target__(const gum::Listener* l);
+      std::function< bool(IConnector0* el) >  _find_target_(const gum::Listener* l);
     };
 
     template < class TargetClass >
@@ -99,11 +99,11 @@ namespace gum {
       virtual Listener* target() const;
 
       private:
-      TargetClass* target__;
-      void (TargetClass::*action__)(const void*);
+      TargetClass*  _target_;
+      void (TargetClass::* _action_)(const void*);
     };
 
-  }   // namespace __sig__
+  }   // namespace  __sig__
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -114,14 +114,14 @@ namespace gum {
    * @warning Due to the too-smart-way-for-DOXYGEN of building classes
    * Signaler1,...,Signaler_n, these classes are not documented.
    */
-  class Signaler0: public __sig__::BasicSignaler0 {
+  class Signaler0: public  __sig__::BasicSignaler0 {
     public:
     Signaler0() {
       GUM_CONSTRUCTOR(Signaler0);
       ;
     }
 
-    Signaler0(const Signaler0& s) : __sig__::BasicSignaler0(s) {
+    Signaler0(const Signaler0& s) :  __sig__::BasicSignaler0(s) {
       GUM_CONS_CPY(Signaler0);
     }
 
@@ -132,10 +132,10 @@ namespace gum {
 
     template < class TargetClass >
     void attach(TargetClass* target, void (TargetClass::*action)(const void*)) {
-      __sig__::Connector0< TargetClass >* conn
-         = new __sig__::Connector0< TargetClass >(target, action);
+       __sig__::Connector0< TargetClass >* conn
+         = new  __sig__::Connector0< TargetClass >(target, action);
       this->connectors_.push_back(conn);
-      target->attachSignal__(this);
+      target-> _attachSignal_(this);
     }
 
     INLINE void operator()(const void* src) {

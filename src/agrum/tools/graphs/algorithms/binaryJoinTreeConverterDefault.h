@@ -75,7 +75,7 @@ namespace gum {
 
     private:
     /// the new roots that have been created to compute the last query
-    NodeSet roots__;
+    NodeSet  _roots_;
 
     /// forbid copy constructor
     BinaryJoinTreeConverterDefault(const BinaryJoinTreeConverterDefault&);
@@ -86,25 +86,25 @@ namespace gum {
 
     /** @brief a function used to mark the nodes belonging to a given
      * connected component */
-    void markConnectedComponent__(const CliqueGraph&    JT,
+    void  _markConnectedComponent_(const CliqueGraph&    JT,
                                   NodeId                root,
                                   NodeProperty< bool >& mark) const;
 
     /// convert a whole connected component into a binary join tree
-    void convertConnectedComponent__(CliqueGraph&                JT,
+    void  _convertConnectedComponent_(CliqueGraph&                JT,
                                      NodeId                      current_node,
                                      NodeId                      from,
                                      const NodeProperty< Size >& domain_sizes,
                                      NodeProperty< bool >&       mark) const;
 
     /// convert a clique and its adjacent cliques into a binary join tree
-    void convertClique__(CliqueGraph&                JT,
+    void  _convertClique_(CliqueGraph&                JT,
                          NodeId                      clique,
                          NodeId                      from,
                          const NodeProperty< Size >& domain_sizes) const;
 
     /// returns the domain size of the union of two cliques
-    float combinedSize__(const NodeSet&              nodes1,
+    float  _combinedSize_(const NodeSet&              nodes1,
                          const NodeSet&              nodes2,
                          const NodeProperty< Size >& domain_sizes) const;
   };

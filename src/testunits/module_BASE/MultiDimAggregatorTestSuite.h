@@ -45,7 +45,7 @@ namespace gum_tests {
 
   class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
     private:
-    float is_min__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_min_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = b;
 
       if (tmp > c) tmp = c;
@@ -55,7 +55,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_max__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_max_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = b;
 
@@ -66,7 +66,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_median3__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_median3_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = 0;
 
       if (b <= c) {
@@ -95,7 +95,7 @@ namespace gum_tests {
     }
 
     float
-       is_median4__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+        _is_median4_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2, m1, m2;
       // gum::Idx hh, ll;
@@ -144,7 +144,7 @@ namespace gum_tests {
     }
 
     float
-       is_amplitude__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+        _is_amplitude_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2;
       // gum::Idx m1, m2;
@@ -188,7 +188,7 @@ namespace gum_tests {
     }
 
 
-    float is_count_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_count_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = (gum::Idx)0;
 
@@ -201,7 +201,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_forall_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_forall_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) && (c == (gum::Idx)2) && (d == (gum::Idx)2))
@@ -211,7 +211,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_exists_2__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_exists_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)2) || (c == (gum::Idx)2) || (d == (gum::Idx)2))
@@ -221,7 +221,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_or__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_or_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) || (c == (gum::Idx)1) || (d == (gum::Idx)1))
@@ -231,7 +231,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_and__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
+    float  _is_and_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
       tmp = ((b == (gum::Idx)1) && (c == (gum::Idx)1) && (d == (gum::Idx)1))
@@ -241,7 +241,7 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float is_sum__(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
+    float  _is_sum_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
       gum::Idx tmp = b + c + d;
       if (tmp > maxA) { tmp = maxA; }
       return (tmp == a) ? (float)1 : (float)0;
@@ -258,7 +258,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], is_min__(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],  _is_min_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -272,7 +272,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], is_max__(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],  _is_max_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -287,7 +287,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         is_count_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
+                          _is_count_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -302,7 +302,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         is_forall_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
+                          _is_forall_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -317,7 +317,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(p[i],
-                         is_exists_2__(i.val(a), i.val(b), i.val(c), i.val(d)));
+                          _is_exists_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -331,7 +331,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], is_or__(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],  _is_or_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -345,7 +345,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], is_and__(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],  _is_and_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -360,7 +360,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(is_median3__(i.val(a), i.val(b), i.val(c), i.val(d)),
+        TS_ASSERT_EQUALS( _is_median3_(i.val(a), i.val(b), i.val(c), i.val(d)),
                          p[i]);
       }
     }
@@ -378,7 +378,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           is_median4__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
+            _is_median4_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
            p[i]);
       }
     }
@@ -396,7 +396,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-           is_amplitude__(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
+            _is_amplitude_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)),
            p[i]);
       }
     }
@@ -411,7 +411,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], is_min__(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],  _is_min_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
 
       // it is not allowed to change a value but can only be detected at the
@@ -437,7 +437,7 @@ namespace gum_tests {
         for (i.setFirst(); !i.end(); ++i) {
           TS_ASSERT_EQUALS(
              p[i],
-             is_sum__(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8));
+              _is_sum_(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8));
         }
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

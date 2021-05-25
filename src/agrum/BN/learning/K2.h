@@ -115,12 +115,12 @@ namespace gum {
 
       private:
       /// the order on the variable used for learning
-      Sequence< NodeId > order__;
+      Sequence< NodeId >  _order_;
 
       /** @brief checks that the order passed to K2 is coherent with the
        * variables
        * as specified by their modalities */
-      void checkOrder__(const std::vector< Size >& modal);
+      void  _checkOrder_(const std::vector< Size >& modal);
       /// @}
     };
 

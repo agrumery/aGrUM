@@ -157,7 +157,7 @@ namespace gum {
     virtual void initTriangulation_(UndiGraph& graph) final;
 
     /// the partial ordering to apply to eliminate nodes
-    const List< NodeSet >* partial_order__{nullptr};
+    const List< NodeSet >*  _partial_order_{nullptr};
 
     /// @}
 

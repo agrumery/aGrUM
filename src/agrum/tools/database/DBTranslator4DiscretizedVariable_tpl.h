@@ -53,7 +53,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        variable__(var.name(), var.description()) {
+         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -62,7 +62,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
       for (const auto tick: ticks) {
-        variable__.addTick((float)tick);
+         _variable_.addTick((float)tick);
       }
 
       // the the bounds of the discretized variable
@@ -99,7 +99,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = var.clone();
+       _real_variable_ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -119,7 +119,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        variable__(var.name(), var.description()) {
+         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -128,7 +128,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
       for (const auto tick: ticks) {
-        variable__.addTick((float)tick);
+         _variable_.addTick((float)tick);
       }
 
       // the the bounds of the discretized variable
@@ -165,7 +165,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = var.clone();
+       _real_variable_ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -183,7 +183,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        variable__(var.name(), var.description()) {
+         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -192,7 +192,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
       for (const auto tick: ticks) {
-        variable__.addTick((float)tick);
+         _variable_.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
@@ -203,7 +203,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = var.clone();
+       _real_variable_ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -220,7 +220,7 @@ namespace gum {
                               false,
                               max_dico_entries,
                               alloc),
-        variable__(var.name(), var.description()) {
+         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -229,7 +229,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
       for (const auto tick: ticks) {
-        variable__.addTick((float)tick);
+         _variable_.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
@@ -240,7 +240,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = var.clone();
+       _real_variable_ = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -253,9 +253,9 @@ namespace gum {
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
         DBTranslator< ALLOC >(from, alloc),
-        variable__(from.variable__) {
+         _variable_(from. _variable_) {
       // store a copy of the variable, that should be used by method variable ()
-      real_variable__ = from.real_variable__->clone();
+       _real_variable_ = from. _real_variable_->clone();
 
       GUM_CONS_CPY(DBTranslator4DiscretizedVariable);
     }
@@ -275,10 +275,10 @@ namespace gum {
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) :
         DBTranslator< ALLOC >(std::move(from), alloc),
-        variable__(std::move(from.variable__)) {
+         _variable_(std::move(from. _variable_)) {
       // moves the copy of the variable, that should be used by method variable ()
-      real_variable__      = from.real_variable__;
-      from.real_variable__ = nullptr;
+       _real_variable_      = from. _real_variable_;
+      from. _real_variable_ = nullptr;
 
       GUM_CONS_MOV(DBTranslator4DiscretizedVariable);
     }
@@ -323,7 +323,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4DiscretizedVariable<
        ALLOC >::~DBTranslator4DiscretizedVariable() {
-      if (real_variable__ != nullptr) delete real_variable__;
+      if ( _real_variable_ != nullptr) delete  _real_variable_;
 
       GUM_DESTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -336,10 +336,10 @@ namespace gum {
           const DBTranslator4DiscretizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-        variable__                     = from.variable__;
+         _variable_                     = from. _variable_;
 
-        if (real_variable__ != nullptr) delete real_variable__;
-        real_variable__ = from.real_variable__->clone();
+        if ( _real_variable_ != nullptr) delete  _real_variable_;
+         _real_variable_ = from. _real_variable_->clone();
       }
 
       return *this;
@@ -353,11 +353,11 @@ namespace gum {
           DBTranslator4DiscretizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-        variable__                     = std::move(from.variable__);
+         _variable_                     = std::move(from. _variable_);
 
-        if (real_variable__ != nullptr) delete real_variable__;
-        real_variable__      = from.real_variable__;
-        from.real_variable__ = nullptr;
+        if ( _real_variable_ != nullptr) delete  _real_variable_;
+         _real_variable_      = from. _real_variable_;
+        from. _real_variable_ = nullptr;
       }
 
       return *this;
@@ -370,7 +370,7 @@ namespace gum {
        const std::string& str) {
       // try to get the index of str within the discretized variable.
       try {
-        return DBTranslatedValue{std::size_t(variable__[str])};
+        return DBTranslatedValue{std::size_t( _variable_[str])};
       } catch (gum::Exception&) {
         // check for a missing symbol
         if (this->isMissingSymbol(str))
@@ -453,7 +453,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::size_t
            DBTranslator4DiscretizedVariable< ALLOC >::domainSize() const {
-      return variable__.domainSize();
+      return  _variable_.domainSize();
     }
 
 
@@ -461,7 +461,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const IDiscretizedVariable*
                  DBTranslator4DiscretizedVariable< ALLOC >::variable() const {
-      return real_variable__;
+      return  _real_variable_;
     }
 
 

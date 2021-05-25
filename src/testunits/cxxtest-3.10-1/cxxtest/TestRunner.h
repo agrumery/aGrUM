@@ -1,5 +1,5 @@
-#ifndef __cxxtest_TestRunner_h__
-#define __cxxtest_TestRunner_h__
+#ifndef  __cxxtest_TestRunner_h__
+#define  __cxxtest_TestRunner_h__
 
 //
 // TestRunner is the class that runs all the tests.
@@ -20,15 +20,15 @@ namespace CxxTest {
       _TS_TRY { TestRunner().runWorld(); }
       _TS_LAST_CATCH( {
         tracker().failedTest(
-            __FILE__, __LINE__, "Exception thrown from world" );
+              __FILE__,   __LINE__, "Exception thrown from world" );
       } );
       tracker().setListener( 0 );
     }
 
     static void runAllTests( TestListener* listener ) {
       if ( listener ) {
-        listener->warning( __FILE__,
-                           __LINE__,
+        listener->warning(   __FILE__,
+                             __LINE__,
                            "Deprecated; Use runAllTests( TestListener & )" );
         runAllTests( *listener );
       }
@@ -119,4 +119,4 @@ namespace CxxTest {
   void initialize();
 }
 
-#endif  // __cxxtest_TestRunner_h__
+#endif  //  __cxxtest_TestRunner_h__

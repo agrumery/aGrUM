@@ -43,7 +43,7 @@ namespace gum {
         Apriori< ALLOC >(apriori_parser.database(),
                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                          alloc),
-        counter__(
+         _counter_(
            apriori_parser,
            std::vector< std::pair< std::size_t, std::size_t >,
                         ALLOC< std::pair< std::size_t, std::size_t > > >(alloc),
@@ -124,12 +124,12 @@ namespace gum {
                                           ranges,
                                           this->nodeId2columns_,
                                           alloc);
-      counter__ = std::move(good_counter);
+       _counter_ = std::move(good_counter);
 
       if (apriori_db.nbRows() == std::size_t(0))
-        internal_weight__ = 0.0;
+         _internal_weight_ = 0.0;
       else
-        internal_weight__ = this->weight_ / apriori_db.nbRows();
+         _internal_weight_ = this->weight_ / apriori_db.nbRows();
 
       GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
@@ -142,8 +142,8 @@ namespace gum {
        const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
           alloc) :
         Apriori< ALLOC >(from, alloc),
-        counter__(from.counter__, alloc),
-        internal_weight__(from.internal_weight__) {
+         _counter_(from. _counter_, alloc),
+         _internal_weight_(from. _internal_weight_) {
       GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
 
@@ -162,8 +162,8 @@ namespace gum {
        const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
           alloc) :
         Apriori< ALLOC >(std::move(from), alloc),
-        counter__(std::move(from.counter__), alloc),
-        internal_weight__(from.internal_weight__) {
+         _counter_(std::move(from. _counter_), alloc),
+         _internal_weight_(from. _internal_weight_) {
       GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
 
@@ -217,8 +217,8 @@ namespace gum {
           const AprioriDirichletFromDatabase< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(from);
-        counter__                 = from.counter__;
-        internal_weight__         = from.internal_weight__;
+         _counter_                 = from. _counter_;
+         _internal_weight_         = from. _internal_weight_;
       }
       return *this;
     }
@@ -231,8 +231,8 @@ namespace gum {
           AprioriDirichletFromDatabase< ALLOC >&& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(std::move(from));
-        counter__                 = std::move(from.counter__);
-        internal_weight__         = from.internal_weight__;
+         _counter_                 = std::move(from. _counter_);
+         _internal_weight_         = from. _internal_weight_;
       }
       return *this;
     }
@@ -266,10 +266,10 @@ namespace gum {
     INLINE void
        AprioriDirichletFromDatabase< ALLOC >::setWeight(const double weight) {
       Apriori< ALLOC >::setWeight(weight);
-      if (counter__.database().nbRows() == 0.0)
-        internal_weight__ = 0.0;
+      if ( _counter_.database().nbRows() == 0.0)
+         _internal_weight_ = 0.0;
       else
-        internal_weight__ = this->weight_ / counter__.database().nbRows();
+         _internal_weight_ = this->weight_ /  _counter_.database().nbRows();
     }
 
 
@@ -280,11 +280,11 @@ namespace gum {
        std::vector< double, ALLOC< double > >& counts) {
       if (this->weight_ == 0.0) return;
 
-      const auto&       apriori = counter__.counts(idset);
+      const auto&       apriori =  _counter_.counts(idset);
       const std::size_t size    = apriori.size();
-      if (internal_weight__ != 1.0) {
+      if ( _internal_weight_ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * internal_weight__;
+          counts[i] += apriori[i] *  _internal_weight_;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
@@ -299,13 +299,13 @@ namespace gum {
     void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
        const IdCondSet< ALLOC >&               idset,
        std::vector< double, ALLOC< double > >& counts) {
-      if (internal_weight__ == 0.0) return;
+      if ( _internal_weight_ == 0.0) return;
 
-      const auto&       apriori = counter__.counts(idset.conditionalIdCondSet());
+      const auto&       apriori =  _counter_.counts(idset.conditionalIdCondSet());
       const std::size_t size    = apriori.size();
-      if (internal_weight__ != 1.0) {
+      if ( _internal_weight_ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * internal_weight__;
+          counts[i] += apriori[i] *  _internal_weight_;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {

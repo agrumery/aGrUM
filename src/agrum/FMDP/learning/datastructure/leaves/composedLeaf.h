@@ -55,7 +55,7 @@ namespace gum {
     /// Default constructor
     // ###################################################################
     ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2) :
-        AbstractLeaf(leafId), l1__(l1), l2__(l2) {
+        AbstractLeaf(leafId),  _l1_(l1),  _l2_(l2) {
       GUM_CONSTRUCTOR(ComposedLeaf);
     }
 
@@ -83,25 +83,25 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     double effectif(Idx moda) const {
-      return l1__->effectif(moda) + l2__->effectif(moda);
+      return  _l1_->effectif(moda) +  _l2_->effectif(moda);
     }
-    double total() const { return l1__->total() + l2__->total(); }
+    double total() const { return  _l1_->total() +  _l2_->total(); }
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
     bool contains(NodeId testedId) const {
-      return AbstractLeaf::contains(testedId) || l1__->contains(testedId)
-          || l2__->contains(testedId);
+      return AbstractLeaf::contains(testedId) ||  _l1_->contains(testedId)
+          ||  _l2_->contains(testedId);
     }
 
-    Idx nbModa() const { return l1__->nbModa(); }
+    Idx nbModa() const { return  _l1_->nbModa(); }
 
     std::string toString();
 
     private:
-    AbstractLeaf* l1__;
-    AbstractLeaf* l2__;
+    AbstractLeaf*  _l1_;
+    AbstractLeaf*  _l2_;
   };
 
 

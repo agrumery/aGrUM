@@ -92,9 +92,9 @@ It will take care of the conversion and throwing the exception.
 #define TICPPTHROW(message)                                            \
   {                                                                    \
     std::ostringstream full_message;                                   \
-    std::string        file(__FILE__);                                 \
+    std::string        file(  __FILE__);                                 \
     file = file.substr(file.find_last_of("\\/") + 1);                  \
-    full_message << message << " <" << file << "@" << __LINE__ << ">"; \
+    full_message << message << " <" << file << "@" <<   __LINE__ << ">"; \
     full_message << BuildDetailedErrorString();                        \
     throw Exception(full_message.str());                               \
   }

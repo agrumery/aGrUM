@@ -44,7 +44,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void GTestPolicy< GUM_SCALAR >::addObservation(Idx iattr, GUM_SCALAR ivalue) {
     ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
-    conTab__.add(iattr, ivalue);
+     _conTab_.add(iattr, ivalue);
   }
 
 
@@ -58,28 +58,28 @@ namespace gum {
   template < typename GUM_SCALAR >
   void GTestPolicy< GUM_SCALAR >::computeScore() const {
     ITestPolicy< GUM_SCALAR >::computeScore();
-    GStat__ = 0;
+     _GStat_ = 0;
 
     // Itération sur l'axe 1 du tableau
-    for (auto attrIter = conTab__.attrABeginSafe();
-         attrIter != conTab__.attrAEndSafe();
+    for (auto attrIter =  _conTab_.attrABeginSafe();
+         attrIter !=  _conTab_.attrAEndSafe();
          ++attrIter) {
       // Mise en cache de valeur utile
       double semiExpected
          = (double)(attrIter.val()) / (double)this->nbObservation();
 
       // Itération sur l'axe 2 du tableau
-      for (auto valIter = conTab__.attrBBeginSafe();
-           valIter != conTab__.attrBEndSafe();
+      for (auto valIter =  _conTab_.attrBBeginSafe();
+           valIter !=  _conTab_.attrBEndSafe();
            ++valIter) {
         // Récupération de la valeur en cellule
-        Idx cell = conTab__.joint(attrIter.key(), valIter.key());
+        Idx cell =  _conTab_.joint(attrIter.key(), valIter.key());
         if (cell < 5) continue;
 
         // Récupération de la valeur en axe 2
         double expected = semiExpected * (double)valIter.val();
 
-        GStat__ += 2 * cell * log(cell / expected);
+         _GStat_ += 2 * cell * log(cell / expected);
       }
     }
   }
@@ -92,9 +92,9 @@ namespace gum {
     if (this->isModified_()) computeScore();
     //      std::cout << this->toString() << std::endl;
     double score = 1
-                 - ChiSquare::probaChi2(GStat__,
-                                        (conTab__.attrASize() - 1)
-                                           * (conTab__.attrBSize() - 1));
+                 - ChiSquare::probaChi2( _GStat_,
+                                        ( _conTab_.attrASize() - 1)
+                                           * ( _conTab_.attrBSize() - 1));
     return score;
   }
 
@@ -104,13 +104,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   double GTestPolicy< GUM_SCALAR >::secondaryscore() const {
     if (this->isModified_()) computeScore();
-    return GStat__;
+    return  _GStat_;
   }
 
   template < typename GUM_SCALAR >
   void GTestPolicy< GUM_SCALAR >::add(const GTestPolicy< GUM_SCALAR >& src) {
     ITestPolicy< GUM_SCALAR >::add(src);
-    conTab__ += src.ct();
+     _conTab_ += src.ct();
   }
 
 }   // End of namespace gum

@@ -37,7 +37,7 @@
 
 namespace gum {
 
-  namespace __sig__ {
+  namespace  __sig__ {
 
     template < LIST_DECL_CLASSES >
     class MAKE_NAME(IConnector) {
@@ -68,7 +68,7 @@ namespace gum {
         GUM_CONS_CPY(MAKE_NAME(BasicSignaler));
 
         for (const auto& connector: connectors_) {
-          connector->target()->attachSignal__(this);
+          connector->target()-> _attachSignal_(this);
           connectors_.pushBack(connector->clone());
         }
       }
@@ -78,7 +78,7 @@ namespace gum {
         GUM_DESTRUCTOR(MAKE_NAME(BasicSignaler));
 
         for (const auto& connector: connectors_) {
-          connector->target()->detachSignal__(this);
+          connector->target()-> _detachSignal_(this);
           delete connector;
         }
 
@@ -95,7 +95,7 @@ namespace gum {
           if ((*it)->target() == target) {
             delete *it;
             connectors_.erase(it);
-            target->detachSignal__(this);
+            target-> _detachSignal_(this);
             return;
           }
         }
@@ -135,16 +135,16 @@ namespace gum {
       public:
       MAKE_NAME(Connector)() {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
-        target__ = NULL;
-        action__ = NULL;
+         _target_ = NULL;
+         _action_ = NULL;
       }
 
       MAKE_NAME(Connector)
       (TargetClass* target,
        void (TargetClass::*action)(const void*, LIST_CLASSES)) {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
-        target__ = target;
-        action__ = action;
+         _target_ = target;
+         _action_ = action;
       }
 
       MAKE_NAME(Connector)
@@ -165,30 +165,30 @@ namespace gum {
       INLINE virtual MAKE_NAME(IConnector)< LIST_CLASSES >* duplicate(
          Listener* target) {
         return new MAKE_NAME(
-           Connector)< TargetClass, LIST_CLASSES >((TargetClass*)target, action__);
+           Connector)< TargetClass, LIST_CLASSES >((TargetClass*)target,  _action_);
       }
 
       INLINE virtual void notify(const void* src, LIST_DECL_ARGS) {
-        (target__->*action__)(src, LIST_ARGS);
+        ( _target_->* _action_)(src, LIST_ARGS);
       }
 
-      INLINE virtual Listener* target() const { return target__; }
+      INLINE virtual Listener* target() const { return  _target_; }
 
       private:
-      TargetClass* target__;
-      void (TargetClass::*action__)(const void*, LIST_CLASSES);
+      TargetClass*  _target_;
+      void (TargetClass::* _action_)(const void*, LIST_CLASSES);
     };
 
-  }   // namespace __sig__
+  }   // namespace  __sig__
 
   template < LIST_DECL_CLASSES >
   class MAKE_NAME(Signaler) :
-      public __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
-    typedef typename __sig__::MAKE_NAME(
+      public  __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
+    typedef typename  __sig__::MAKE_NAME(
        BasicSignaler)< LIST_CLASSES >::ConnectorIterator ConnectorIterator;
 
     public:
-    using BasicSignaler = __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >;
+    using BasicSignaler =  __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >;
 
     MAKE_NAME(Signaler)() {
       GUM_CONSTRUCTOR(MAKE_NAME(Signaler));
@@ -197,7 +197,7 @@ namespace gum {
 
     MAKE_NAME(Signaler)
     (const MAKE_NAME(Signaler) & s) :
-        __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >(s) {
+         __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >(s) {
       GUM_CONS_CPY(MAKE_NAME(Signaler));
     }
 
@@ -209,11 +209,11 @@ namespace gum {
     template < class TargetClass >
     void attach(TargetClass* target,
                 void (TargetClass::*action)(const void*, LIST_CLASSES)) {
-      __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn
-         = new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target,
+       __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn
+         = new  __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target,
                                                                           action);
       this->connectors_.pushBack(conn);
-      target->attachSignal__(this);
+      target-> _attachSignal_(this);
     }
 
     INLINE void operator()(const void* src, LIST_DECL_ARGS) {

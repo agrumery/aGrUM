@@ -93,12 +93,12 @@ namespace gum {
     bool hasSameStructure(const DAGmodel& other);
 
     private:
-    bool buildMarkovBlanket__(const NodeId id);
+    bool  _buildMarkovBlanket_(const NodeId id);
 
-    const DAGmodel& model__;
-    DAG             mb__;
-    const NodeId    node__;
-    ArcSet          specialArcs__;
+    const DAGmodel&  _model_;
+    DAG              _mb_;
+    const NodeId     _node_;
+    ArcSet           _specialArcs_;
   };
 }   // namespace gum
 

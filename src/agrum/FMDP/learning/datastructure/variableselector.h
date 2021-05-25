@@ -88,33 +88,33 @@ namespace gum {
     // ###################################################################
     const DiscreteVariable* select();
 
-    bool isEmpty() { return remainingVars__.empty(); }
+    bool isEmpty() { return  _remainingVars_.empty(); }
 
-    void begin() { rvi__ = remainingVars__.beginSafe(); }
-    bool hasNext() { return rvi__ != remainingVars__.endSafe(); }
-    void next() { ++rvi__; }
-    const DiscreteVariable* current() { return *rvi__; }
+    void begin() {  _rvi_ =  _remainingVars_.beginSafe(); }
+    bool hasNext() { return  _rvi_ !=  _remainingVars_.endSafe(); }
+    void next() { ++ _rvi_; }
+    const DiscreteVariable* current() { return * _rvi_; }
 
     private:
-    void addVar__(const DiscreteVariable* var);
-    void removeVar__(const DiscreteVariable* var);
+    void  _addVar_(const DiscreteVariable* var);
+    void  _removeVar_(const DiscreteVariable* var);
 
     /// The set of remaining vars to select among
-    Set< const DiscreteVariable* >             remainingVars__;
-    SetIteratorSafe< const DiscreteVariable* > rvi__;
+    Set< const DiscreteVariable* >              _remainingVars_;
+    SetIteratorSafe< const DiscreteVariable* >  _rvi_;
 
     /// Heap keeping best score on top for immediate access
-    MultiPriorityQueue< double, double, std::greater< double > > remainingScores__;
+    MultiPriorityQueue< double, double, std::greater< double > >  _remainingScores_;
 
     /// HashTable associating to each score the set of variable having that
     /// score
-    HashTable< double, Set< const DiscreteVariable* >* > remainingVarsByScore__;
+    HashTable< double, Set< const DiscreteVariable* >* >  _remainingVarsByScore_;
 
     /// HashTable associating to each variable its score
-    HashTable< const DiscreteVariable*, double > remainingVarsScore__;
+    HashTable< const DiscreteVariable*, double >  _remainingVarsScore_;
 
     /// HashTable associating to each variable its 2nd score
-    HashTable< const DiscreteVariable*, double > remainingVarsOtherScore__;
+    HashTable< const DiscreteVariable*, double >  _remainingVarsOtherScore_;
   };
 
 }   // namespace gum

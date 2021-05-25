@@ -206,14 +206,14 @@ namespace gum {
       /// @{
 
       /// The sequence of PRMClassElement<GUM_SCALAR> composing the slot chain
-      Sequence< PRMClassElement< GUM_SCALAR >* >* chain__;
+      Sequence< PRMClassElement< GUM_SCALAR >* >*  _chain_;
 
       /// Flag indicating if this slot chain is multiple or not.
-      bool isMultiple__;
+      bool  _isMultiple_;
 
       /// Copy the last element, this prevents unwanted DuplicateElement
       /// exceptions.
-      void copyLastElt__();
+      void  _copyLastElt_();
 
       /// @}
     };

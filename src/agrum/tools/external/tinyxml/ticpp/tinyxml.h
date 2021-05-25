@@ -81,7 +81,7 @@ distribution.
 #define TIXML_SNPRINTF _snprintf
 #define TIXML_SNSCANF _snscanf
 #define TIXML_SSCANF sscanf
-#elif defined(__GNUC__) && (__GNUC__ >= 3)
+#elif defined( __GNUC__) && ( __GNUC__ >= 3)
 // GCC version 3 and higher.s
 //#warning( "Using sn* functions." )
 #define TIXML_SNPRINTF snprintf

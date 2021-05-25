@@ -162,7 +162,7 @@ namespace gum {
         void addError(std::string msg);
         void addWarning(std::string msg);
 
-        std::string readFile__(const std::string& file);
+        std::string  _readFile_(const std::string& file);
 
         O3prmrContext< double >*                m_context;
         gum::prm::o3prm::O3prmReader< double >* m_reader;

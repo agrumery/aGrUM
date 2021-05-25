@@ -51,10 +51,10 @@ namespace gum {
      const JunctionTreeStrategy&                      JTStrategy,
      bool                                             minimality) :
       StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
-      partial_order__(partial_order) {
+       _partial_order_(partial_order) {
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setPartialOrder(partial_order__);
+       ->setPartialOrder( _partial_order_);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedTriangulation);
@@ -64,7 +64,7 @@ namespace gum {
   PartialOrderedTriangulation::PartialOrderedTriangulation(
      const PartialOrderedTriangulation& from) :
       StaticTriangulation(from),
-      partial_order__(from.partial_order__) {
+       _partial_order_(from. _partial_order_) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedTriangulation);
   }
@@ -73,7 +73,7 @@ namespace gum {
   PartialOrderedTriangulation::PartialOrderedTriangulation(
      PartialOrderedTriangulation&& from) :
       StaticTriangulation(std::move(from)),
-      partial_order__(from.partial_order__) {
+       _partial_order_(from. _partial_order_) {
     // for debugging purposes
     GUM_CONS_MOV(PartialOrderedTriangulation);
   }
@@ -104,16 +104,16 @@ namespace gum {
     StaticTriangulation::setGraph(graph, domsizes);
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setPartialOrder(partial_order__);
+       ->setPartialOrder( _partial_order_);
   }
 
   /// sets the sequence of elimination
   void PartialOrderedTriangulation::setPartialOrder(
      const List< NodeSet >* partial_order) {
-    partial_order__ = partial_order;
+     _partial_order_ = partial_order;
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setPartialOrder(partial_order__);
+       ->setPartialOrder( _partial_order_);
   }
 
   /// the function called to initialize the triangulation process
@@ -122,7 +122,7 @@ namespace gum {
        = static_cast< PartialOrderedEliminationSequenceStrategy* >(
           elimination_sequence_strategy_);
     elim->setGraph(&graph, domain_sizes_);
-    elim->setPartialOrder(partial_order__);
+    elim->setPartialOrder( _partial_order_);
   }
 
 } /* namespace gum */

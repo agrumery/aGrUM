@@ -37,7 +37,7 @@
 namespace gum {
   // instrumental and non-API function
   template < typename GUM_SCALAR >
-  void initPotentialOperators___() {
+  void  _initPotentialOperators__() {
     static bool first = true;
 
     if (first) {
@@ -68,7 +68,7 @@ namespace gum {
      GUM_SCALAR                            empty_value) :
       content_(aContent),
       empty_value_(empty_value) {
-    initPotentialOperators___< GUM_SCALAR >();
+     _initPotentialOperators__< GUM_SCALAR >();
     GUM_CONSTRUCTOR(MultiDimDecorator);
   }
 
@@ -77,7 +77,7 @@ namespace gum {
      const MultiDimDecorator< GUM_SCALAR >& from) :
       MultiDimContainer< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimDecorator);
-    initPotentialOperators___< GUM_SCALAR >();
+     _initPotentialOperators__< GUM_SCALAR >();
     empty_value_ = from.empty_value_;
     content()->copy(from.content());
   }
@@ -120,7 +120,7 @@ namespace gum {
      MultiDimDecorator< GUM_SCALAR >::operator=(
         const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
-    initPotentialOperators___< GUM_SCALAR >();
+     _initPotentialOperators__< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
     empty_value_                             = from.empty_value_;
     if (content_ == nullptr)

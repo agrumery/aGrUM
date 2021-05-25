@@ -157,10 +157,10 @@ namespace gum {
 
     /// @{
     /// The lower bound.
-    long minBound__;
+    long  _minBound_;
 
     /// The upper bound.
-    long maxBound__;
+    long  _maxBound_;
 
     /// @}
   };

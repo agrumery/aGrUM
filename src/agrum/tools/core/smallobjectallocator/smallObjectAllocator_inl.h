@@ -48,9 +48,9 @@ namespace gum {
    */
   // ============================================================================
   INLINE SmallObjectAllocator::SmallObjectAllocator() :
-      chunkSize__(GUM_DEFAULT_CHUNK_SIZE),
-      maxObjectSize__(GUM_DEFAULT_MAX_OBJECT_SIZE) {
-    pool__.setKeyUniquenessPolicy(false);
+       _chunkSize_(GUM_DEFAULT_CHUNK_SIZE),
+       _maxObjectSize_(GUM_DEFAULT_MAX_OBJECT_SIZE) {
+     _pool_.setKeyUniquenessPolicy(false);
     GUM_CONSTRUCTOR(SmallObjectAllocator);
     nbAllocation   = 0;
     nbDeallocation = 0;
@@ -67,7 +67,7 @@ namespace gum {
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
     GUM_DESTRUCTOR(SmallObjectAllocator);
-    for (Pool__::iterator pit = pool__.begin(); pit != pool__.end(); ++pit)
+    for ( _Pool_::iterator pit =  _pool_.begin(); pit !=  _pool_.end(); ++pit)
       delete pit.val();
   }
 
@@ -89,24 +89,24 @@ namespace gum {
     GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
-    if (objectSize > maxObjectSize__) return new unsigned char[objectSize];
+    if (objectSize >  _maxObjectSize_) return new unsigned char[objectSize];
 
     void* ret;
 #pragma omp critical(soa)
     {
       //
-      if (!pool__.exists(Size(objectSize))) {
+      if (! _pool_.exists(Size(objectSize))) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb = chunkSize__ / Size(objectSize);
+        std::size_t nb =  _chunkSize_ / Size(objectSize);
         if (nb > UCHAR_MAX) nb = UCHAR_MAX;
         unsigned char numBlocks = static_cast< unsigned char >(nb);
 
         FixedAllocator* newFa = new FixedAllocator(Size(objectSize), numBlocks);
-        pool__.set(Size(objectSize), newFa);
+         _pool_.set(Size(objectSize), newFa);
       }
       nbAllocation++;
 
-      ret = pool__[Size(objectSize)]->allocate();
+      ret =  _pool_[Size(objectSize)]->allocate();
     }
     return ret;
   }
@@ -123,7 +123,7 @@ namespace gum {
     GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
-    if (objectSize > maxObjectSize__) {
+    if (objectSize >  _maxObjectSize_) {
       delete[](unsigned char*) pDeallocatedObject;
       return;
     }
@@ -131,7 +131,7 @@ namespace gum {
 #pragma omp critical(soa)
     {
       //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      pool__[Size(objectSize)]->deallocate(pDeallocatedObject);
+       _pool_[Size(objectSize)]->deallocate(pDeallocatedObject);
       nbDeallocation++;
     }
   }

@@ -140,13 +140,13 @@ namespace gum {
 
     private:
     /// the name of the operation to perform
-    Type type__;
+    Type  _type_;
 
     /// the id corresponding to the operation
-    Idx id__;
+    Idx  _id_;
 
     /// returns a new distinct ID for each operation
-    static Idx newId__();
+    static Idx  _newId_();
   };
 
 } /* namespace gum */

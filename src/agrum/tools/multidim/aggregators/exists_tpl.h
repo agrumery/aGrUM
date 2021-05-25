@@ -35,14 +35,14 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Exists< GUM_SCALAR >::Exists(Idx value) :
-        MultiDimAggregator< GUM_SCALAR >(), value__(value) {
+        MultiDimAggregator< GUM_SCALAR >(),  _value_(value) {
       GUM_CONSTRUCTOR(Exists);
     }
 
     template < typename GUM_SCALAR >
     INLINE Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
-      value__ = from.value__;
+       _value_ = from. _value_;
       GUM_CONS_CPY(Exists);
     }
 
@@ -61,7 +61,7 @@ namespace gum {
                                            Idx                     i1,
                                            Idx                     i2,
                                            bool& stop_iteration) const {
-      if (i1 != value__) {
+      if (i1 !=  _value_) {
         return (Idx)0;
       } else {
         stop_iteration = true;
@@ -75,14 +75,14 @@ namespace gum {
        std::string
        Exists< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
-      ss << "exists[" << value__ << "]";
+      ss << "exists[" <<  _value_ << "]";
       return ss.str();
     }
 
     template < typename GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >*
            Exists< GUM_SCALAR >::newFactory() const {
-      return new Exists< GUM_SCALAR >(value__);
+      return new Exists< GUM_SCALAR >( _value_);
     }
 
   }   // namespace aggregator

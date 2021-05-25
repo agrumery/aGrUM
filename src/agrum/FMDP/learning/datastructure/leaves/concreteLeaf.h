@@ -71,7 +71,7 @@ namespace gum {
                  NodeDatabase< AttributeSelection, isScalar >* n1,
                  const Sequence< ValueType >*                  valueDomain) :
         AbstractLeaf(leafId),
-        n1__(n1), valueDomain__(valueDomain) {
+         _n1_(n1),  _valueDomain_(valueDomain) {
       GUM_CONSTRUCTOR(ConcreteLeaf);
     }
 
@@ -99,25 +99,25 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     virtual double effectif(Idx moda) const {
-      return effectif__(moda, Int2Type< isScalar >());
+      return  _effectif_(moda, Int2Type< isScalar >());
     }
 
     private:
-    double effectif__(Idx moda, Int2Type< true >) const {
-      return (double)n1__->effectif(Idx(valueDomain__->atPos(moda)));
+    double  _effectif_(Idx moda, Int2Type< true >) const {
+      return (double) _n1_->effectif(Idx( _valueDomain_->atPos(moda)));
     }
-    double effectif__(Idx moda, Int2Type< false >) const {
-      return (double)n1__->effectif(moda);
+    double  _effectif_(Idx moda, Int2Type< false >) const {
+      return (double) _n1_->effectif(moda);
     }
 
     public:
-    virtual double total() const { return double(n1__->nbObservation()); }
+    virtual double total() const { return double( _n1_->nbObservation()); }
 
-    Idx nbModa() const { return nbModa__(Int2Type< isScalar >()); }
+    Idx nbModa() const { return  _nbModa_(Int2Type< isScalar >()); }
 
     private:
-    Idx nbModa__(Int2Type< true >) const { return valueDomain__->size(); }
-    Idx nbModa__(Int2Type< false >) const { return n1__->valueDomain(); }
+    Idx  _nbModa_(Int2Type< true >) const { return  _valueDomain_->size(); }
+    Idx  _nbModa_(Int2Type< false >) const { return  _n1_->valueDomain(); }
 
     public:
     std::string toString() {
@@ -127,8 +127,8 @@ namespace gum {
     }
 
     private:
-    NodeDatabase< AttributeSelection, isScalar >* n1__;
-    const Sequence< ValueType >*                  valueDomain__;
+    NodeDatabase< AttributeSelection, isScalar >*  _n1_;
+    const Sequence< ValueType >*                   _valueDomain_;
   };
 
 

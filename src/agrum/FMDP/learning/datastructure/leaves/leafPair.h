@@ -57,7 +57,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : l1__(l1), l2__(l2) {
+    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) :  _l1_(l1),  _l2_(l2) {
       GUM_CONSTRUCTOR(LeafPair);
     }
 
@@ -101,35 +101,35 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    AbstractLeaf* firstLeaf() { return l1__; }
-    AbstractLeaf* secondLeaf() { return l2__; }
+    AbstractLeaf* firstLeaf() { return  _l1_; }
+    AbstractLeaf* secondLeaf() { return  _l2_; }
 
     // ###################################################################
     /// Returns true if pair has leaf in it
     // ###################################################################
     bool contains(NodeId testedId) {
-      return l1__->contains(testedId) || l2__->contains(testedId);
+      return  _l1_->contains(testedId) ||  _l2_->contains(testedId);
     }
 
     // ###################################################################
     /// Returns a leaf matching data and having given id as id
     // ###################################################################
     AbstractLeaf* convert2Leaf(NodeId leafId) const {
-      return new ComposedLeaf(leafId, l1__, l2__);
+      return new ComposedLeaf(leafId,  _l1_,  _l2_);
     }
 
     AbstractLeaf* otherLeaf(AbstractLeaf* l) const {
-      return l == l1__ ? l2__ : l1__;
+      return l ==  _l1_ ?  _l2_ :  _l1_;
     }
 
     std::string toString();
 
     private:
-    AbstractLeaf* l1__;
-    AbstractLeaf* l2__;
+    AbstractLeaf*  _l1_;
+    AbstractLeaf*  _l2_;
 
-    double likelyhood1__;
-    double likelyhood2__;
+    double  _likelyhood1_;
+    double  _likelyhood2_;
   };
 
 

@@ -278,53 +278,53 @@ namespace gum {
                           const DiscreteVariable* y) override;
 
     private:
-    /// The number of element allowed in bucket__.
-    Size bufferSize__;
+    /// The number of element allowed in  _bucket_.
+    Size  _bufferSize_;
 
     /// Bijection between instantiations registered on this and
-    /// their equivalent on bucket__
-    Bijection< Instantiation*, Instantiation* > instantiations__;
+    /// their equivalent on  _bucket_
+    Bijection< Instantiation*, Instantiation* >  _instantiations_;
 
     /// The result table of this bucket.
-    MultiDimArray< GUM_SCALAR >* bucket__;
+    MultiDimArray< GUM_SCALAR >*  _bucket_;
 
     /// The set of MultiDimContainer in this bucket.
     mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >
-       multiDims__;
+        _multiDims_;
 
     /// The set of all variables of the multidims in this bucket.
-    Set< const DiscreteVariable* > allVariables__;
+    Set< const DiscreteVariable* >  _allVariables_;
 
     /// Instantiation over all variable in this
-    mutable Instantiation allVarsInst__;
+    mutable Instantiation  _allVarsInst_;
 
     /**
-     * @brief Add a variable to allVariables__, and do nothing if var is already
+     * @brief Add a variable to  _allVariables_, and do nothing if var is already
      * in
      * the set.
      * @param var The DiscreteVariable to add.
      */
-    void addVariable__(const DiscreteVariable* var);
+    void  _addVariable_(const DiscreteVariable* var);
 
     /**
-     * @brief Erase a variable from allVariables__ if no other multidimensional
+     * @brief Erase a variable from  _allVariables_ if no other multidimensional
      * table
      * uses it in this bucket.
      * @param var The DiscreteVariable to remove.
      */
-    void eraseVariable__(const DiscreteVariable* var);
+    void  _eraseVariable_(const DiscreteVariable* var);
 
     /**
      * @brief Initialize the internal buffer.
      *
-     * This method delete bucket__ after saving it's slave instantiations.
+     * This method delete  _bucket_ after saving it's slave instantiations.
      */
-    void initializeBuffer__();
+    void  _initializeBuffer_();
 
     /**
      * @brief Clean the buffer and switch it's instantiation to this bucket.
      */
-    void eraseBuffer__();
+    void  _eraseBuffer_();
 
     /**
      * @brief Compute the value of the final table of this bucket given i.
@@ -335,18 +335,18 @@ namespace gum {
      * @param value The value to compute.
      * @throw SizeError Raised if the bucket is empty.
      */
-    GUM_SCALAR computeValue__(const Instantiation& value) const;
+    GUM_SCALAR  _computeValue_(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last
     /// computation.
-    mutable bool changed__;
+    mutable bool  _changed_;
 
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
-    mutable HashTable< const Instantiation*, GUM_SCALAR > slavesValue__;
+    mutable HashTable< const Instantiation*, GUM_SCALAR >  _slavesValue_;
 
     /// The class name.
-    std::string name__;
+    std::string  _name_;
   };
 
 

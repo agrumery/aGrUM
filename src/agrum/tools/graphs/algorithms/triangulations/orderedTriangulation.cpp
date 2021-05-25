@@ -51,10 +51,10 @@ namespace gum {
      const JunctionTreeStrategy&               JTStrategy,
      bool                                      minimality) :
       StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
-      order__(order) {
+       _order_(order) {
     static_cast< OrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setOrder(order__);
+       ->setOrder( _order_);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(OrderedTriangulation);
@@ -63,13 +63,13 @@ namespace gum {
   // copy constructor
   OrderedTriangulation::OrderedTriangulation(const OrderedTriangulation& from) :
       StaticTriangulation(from),
-      order__(from.order__) {   // for debugging purposes
+       _order_(from. _order_) {   // for debugging purposes
     GUM_CONS_CPY(OrderedTriangulation);
   }
 
   // move constructor
   OrderedTriangulation::OrderedTriangulation(OrderedTriangulation&& from) :
-      StaticTriangulation(std::move(from)), order__(from.order__) {
+      StaticTriangulation(std::move(from)),  _order_(from. _order_) {
     // for debugging purposes
     GUM_CONS_MOV(OrderedTriangulation);
   }
@@ -99,15 +99,15 @@ namespace gum {
     StaticTriangulation::setGraph(graph, domsizes);
     static_cast< OrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setOrder(order__);
+       ->setOrder( _order_);
   }
 
   /// sets the sequence of elimination
   void OrderedTriangulation::setOrder(const std::vector< NodeId >* order) {
-    order__ = order;
+     _order_ = order;
     static_cast< OrderedEliminationSequenceStrategy* >(
        elimination_sequence_strategy_)
-       ->setOrder(order__);
+       ->setOrder( _order_);
   }
 
   /// the function called to initialize the triangulation process
@@ -116,7 +116,7 @@ namespace gum {
        = static_cast< OrderedEliminationSequenceStrategy* >(
           elimination_sequence_strategy_);
     elim->setGraph(&graph, domain_sizes_);
-    elim->setOrder(order__);
+    elim->setOrder( _order_);
   }
 
 } /* namespace gum */

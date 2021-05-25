@@ -35,10 +35,10 @@ namespace gum {
 #  define GCC_STR(s)        #  s
 #  define GCC_JOINSTR(x, y) GCC_STR(x##y)
 
-#  if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
+#  if (( __GNUC__ * 100) +  __GNUC_MINOR__) >= 405
 #    define GCC_DIAG_DO_PRAGMA(x) Pragma_(#    x)
 #    define GCC_DIAG_PRAGMA(x)    GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
-#    if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
+#    if (( __GNUC__ * 100) +  __GNUC_MINOR__) >= 406
 #      define GCC_DIAG_OFF(x) \
         GCC_DIAG_PRAGMA(push) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))
 #      define GCC_DIAG_ON(x) GCC_DIAG_PRAGMA(pop)
@@ -70,16 +70,16 @@ namespace gum {
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
-  static const ListConstIteratorSafe< Debug > static_list_end_safe__;
-  static const ListConstIterator< Debug >     static_list_end__;
+  static const ListConstIteratorSafe< Debug >  _static_list_end_safe_;
+  static const ListConstIterator< Debug >      _static_list_end_;
 
-  static constexpr const void* get_list_end_safe__() {
-    return &static_list_end_safe__;
+  static constexpr const void*  _get_list_end_safe_() {
+    return & _static_list_end_safe_;
   }
-  static constexpr const void* get_list_end__() { return &static_list_end__; }
+  static constexpr const void*  _get_list_end_() { return & _static_list_end_; }
 
-  const void* const list_end_safe__ = get_list_end_safe__();
-  const void* const list_end__      = get_list_end__();
+  const void* const  _list_end_safe_ =  _get_list_end_safe_();
+  const void* const  _list_end_      =  _get_list_end_();
 
 } /* namespace gum */
 

@@ -271,15 +271,15 @@ namespace gum {
      * @name verbosity control
      * @{
      */
-    void setVerbose() { verbose__ = true; }
+    void setVerbose() {  _verbose_ = true; }
 
-    void resetVerbose() { verbose__ = false; }
+    void resetVerbose() {  _verbose_ = false; }
 
-    bool isVerbose() { return verbose__; }
+    bool isVerbose() { return  _verbose_; }
     /// @}
 
     private:
-    bool verbose__;
+    bool  _verbose_;
   };
 } /* namespace gum */
 

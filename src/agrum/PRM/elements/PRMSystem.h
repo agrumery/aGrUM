@@ -302,14 +302,14 @@ namespace gum {
       ///        in the IBayesNet.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void groundRef__(const PRMInstance< GUM_SCALAR >& instance,
+      void  _groundRef_(const PRMInstance< GUM_SCALAR >& instance,
                        BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which ground Atttributes and Aggregators of
       ///        an PRMInstance.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void groundAttr__(const PRMInstance< GUM_SCALAR >& instance,
+      void  _groundAttr_(const PRMInstance< GUM_SCALAR >& instance,
                         BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which copy node's Potential of an PRMInstance to the
@@ -320,7 +320,7 @@ namespace gum {
       /// is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void groundPotential__(const PRMInstance< GUM_SCALAR >&  instance,
+      void  _groundPotential_(const PRMInstance< GUM_SCALAR >&  instance,
                              const PRMAttribute< GUM_SCALAR >& attr,
                              BayesNetFactory< GUM_SCALAR >&    factory) const;
 
@@ -329,7 +329,7 @@ namespace gum {
       /// @param elt     The aggregator grounded.
       /// @param name    The aggregator's name in the grounded IBayesNet.
       /// @param factory The factory used to build the grounded IBayesNet.
-      void groundAgg__(const PRMClassElement< GUM_SCALAR >& elt,
+      void  _groundAgg_(const PRMClassElement< GUM_SCALAR >& elt,
                        const std::string&                   name,
                        BayesNetFactory< GUM_SCALAR >&       factory) const;
       /// @}

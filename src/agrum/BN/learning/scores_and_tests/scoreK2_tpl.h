@@ -45,7 +45,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -59,7 +59,7 @@ namespace gum {
                                                         nodeId2columns,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -70,8 +70,8 @@ namespace gum {
        const ScoreK2< ALLOC >&                          from,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        internal_apriori__(from.internal_apriori__, alloc),
-        gammalog2__(from.gammalog2__) {
+         _internal_apriori_(from. _internal_apriori_, alloc),
+         _gammalog2_(from. _gammalog2_) {
       GUM_CONS_CPY(ScoreK2);
     }
 
@@ -88,8 +88,8 @@ namespace gum {
        ScoreK2< ALLOC >&&                               from,
        const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        internal_apriori__(std::move(from.internal_apriori__), alloc),
-        gammalog2__(std::move(from.gammalog2__)) {
+         _internal_apriori_(std::move(from. _internal_apriori_), alloc),
+         _gammalog2_(std::move(from. _gammalog2_)) {
       GUM_CONS_MOV(ScoreK2);
     }
 
@@ -136,7 +136,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(const ScoreK2< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__      = from.internal_apriori__;
+         _internal_apriori_      = from. _internal_apriori_;
       }
       return *this;
     }
@@ -147,7 +147,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(ScoreK2< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__      = std::move(from.internal_apriori__);
+         _internal_apriori_      = std::move(from. _internal_apriori_);
       }
       return *this;
     }
@@ -199,7 +199,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreK2< ALLOC >::internalApriori() const {
-      return internal_apriori__;
+      return  _internal_apriori_;
     }
 
 
@@ -236,24 +236,24 @@ namespace gum {
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
           //                             gammalog2 ( N'_ijk + 1 ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-            score += gammalog2__(N_prime_ij[j] + ri)
-                   - gammalog2__(N_ij[j] + N_prime_ij[j] + ri);
+            score +=  _gammalog2_(N_prime_ij[j] + ri)
+                   -  _gammalog2_(N_ij[j] + N_prime_ij[j] + ri);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1.0)
-                   - gammalog2__(N_prime_ijk[k] + 1.0);
+            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1.0)
+                   -  _gammalog2_(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:
           // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
           //                                   sum_k=1^ri log { N_ijk! } ]
-          score = conditioning_size * gammalog2__(ri);
+          score = conditioning_size *  _gammalog2_(ri);
 
           for (const auto n_ij: N_ij) {
-            score -= gammalog2__(n_ij + ri);
+            score -=  _gammalog2_(n_ij + ri);
           }
           for (const auto n_ijk: N_ijk) {
-            score += gammalog2__(n_ijk + 1);
+            score +=  _gammalog2_(n_ijk + 1);
           }
         }
       } else {
@@ -275,22 +275,22 @@ namespace gum {
           double N       = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += gammalog2__(N_ijk[k] + N_prime_ijk[k] + 1)
-                   - gammalog2__(N_prime_ijk[k] + 1);
+            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1)
+                   -  _gammalog2_(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score += gammalog2__(N_prime + ri) - gammalog2__(N + N_prime + ri);
+          score +=  _gammalog2_(N_prime + ri) -  _gammalog2_(N + N_prime + ri);
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-          score    = gammalog2__(ri);
+          score    =  _gammalog2_(ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
-            score += gammalog2__(n_ijk + 1);
+            score +=  _gammalog2_(n_ijk + 1);
             N += n_ijk;
           }
-          score -= gammalog2__(N + ri);
+          score -=  _gammalog2_(N + ri);
         }
       }
 

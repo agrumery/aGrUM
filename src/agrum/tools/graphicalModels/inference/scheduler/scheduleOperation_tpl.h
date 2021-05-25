@@ -27,7 +27,7 @@ namespace gum {
 
   /// returns a new distinct ID for each ScheduleOperation
   template < typename GUM_SCALAR >
-  Idx ScheduleOperation< GUM_SCALAR >::newId__() {
+  Idx ScheduleOperation< GUM_SCALAR >:: _newId_() {
     static Idx id = 0;
     return ++id;
   }
@@ -35,7 +35,7 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(Type t) :
-      type__(t), id__(newId__()) {
+       _type_(t),  _id_( _newId_()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -44,8 +44,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(
      const ScheduleOperation< GUM_SCALAR >& from) :
-      type__(from.type__),
-      id__(from.id__) {
+       _type_(from. _type_),
+       _id_(from. _id_) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -62,8 +62,8 @@ namespace gum {
   INLINE ScheduleOperation< GUM_SCALAR >&
      ScheduleOperation< GUM_SCALAR >::operator=(
         const ScheduleOperation< GUM_SCALAR >& from) {
-    type__ = from.type__;
-    id__   = from.id__;
+     _type_ = from. _type_;
+     _id_   = from. _id_;
     return *this;
   }
 
@@ -71,13 +71,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename ScheduleOperation< GUM_SCALAR >::Type
      ScheduleOperation< GUM_SCALAR >::type() const {
-    return type__;
+    return  _type_;
   }
 
   /// returns the id of the operation
   template < typename GUM_SCALAR >
   INLINE Idx ScheduleOperation< GUM_SCALAR >::id() const {
-    return id__;
+    return  _id_;
   }
 
 } /* namespace gum */

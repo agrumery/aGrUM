@@ -206,10 +206,10 @@ namespace gum {
 
       protected:
       /// the max number of parents per node
-      NodeProperty< Size > Indegree__max_parents_;
+      NodeProperty< Size >  _Indegree_max_parents_;
 
       /// a default max indegree to assign for nodes without specified indegree
-      Size Indegree__max_indegree_{std::numeric_limits< Size >::max()};
+      Size  _Indegree_max_indegree_{std::numeric_limits< Size >::max()};
     };
 
   } /* namespace learning */

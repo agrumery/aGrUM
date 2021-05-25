@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_UAIMN_COCO_PARSER_H__)
-#define gum_UAIMN_COCO_PARSER_H__
+#if !defined( _gum_UAIMN_COCO_PARSER_H_)
+#define  _gum_UAIMN_COCO_PARSER_H_
 
 #include <iostream>
 #include <tuple>
@@ -73,7 +73,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  errors__;
+    ErrorsContainer   _errors_;
 
   public:
     Scanner* scanner;
@@ -117,5 +117,5 @@ decltype(quartets) getQuartets() {
 } // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif // !defined( _COCO_PARSER_H_)
 

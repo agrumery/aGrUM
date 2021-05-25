@@ -31,42 +31,42 @@
 
 namespace gum {
 
-  INLINE MixedGraph EssentialGraph::mixedGraph() { return mg__; }
+  INLINE MixedGraph EssentialGraph::mixedGraph() { return  _mg_; }
 
   INLINE const NodeSet& EssentialGraph::parents(NodeId id) const {
-    return mg__.parents(id);
+    return  _mg_.parents(id);
   }
 
   INLINE const NodeSet& EssentialGraph::children(NodeId id) const {
-    return mg__.children(id);
+    return  _mg_.children(id);
   }
 
   INLINE NodeSet EssentialGraph::parents(const NodeSet& ids) const {
-    return mg__.parents(ids);
+    return  _mg_.parents(ids);
   }
 
   INLINE NodeSet EssentialGraph::children(const NodeSet& ids) const {
-    return mg__.children(ids);
+    return  _mg_.children(ids);
   }
 
   INLINE const NodeSet& EssentialGraph::neighbours(NodeId id) const {
-    return mg__.neighbours(id);
+    return  _mg_.neighbours(id);
   }
 
 
-  INLINE Size EssentialGraph::sizeArcs() const { return mg__.sizeArcs(); }
+  INLINE Size EssentialGraph::sizeArcs() const { return  _mg_.sizeArcs(); }
 
-  INLINE const ArcSet& EssentialGraph::arcs() const { return mg__.arcs(); }
+  INLINE const ArcSet& EssentialGraph::arcs() const { return  _mg_.arcs(); }
 
-  INLINE Size EssentialGraph::sizeEdges() const { return mg__.sizeEdges(); }
+  INLINE Size EssentialGraph::sizeEdges() const { return  _mg_.sizeEdges(); }
 
-  INLINE const EdgeSet& EssentialGraph::edges() const { return mg__.edges(); }
+  INLINE const EdgeSet& EssentialGraph::edges() const { return  _mg_.edges(); }
 
-  INLINE Size EssentialGraph::sizeNodes() const { return mg__.sizeNodes(); }
+  INLINE Size EssentialGraph::sizeNodes() const { return  _mg_.sizeNodes(); }
 
-  INLINE Size EssentialGraph::size() const { return mg__.size(); }
+  INLINE Size EssentialGraph::size() const { return  _mg_.size(); }
 
   INLINE const NodeGraphPart& EssentialGraph::nodes() const {
-    return mg__.nodes();
+    return  _mg_.nodes();
   }
 }   // namespace gum

@@ -93,21 +93,21 @@ namespace gum {
      * Returns an iterator reference to he beginning of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {
-      return varSeq__.beginSafe();
+      return  _varSeq_.beginSafe();
     }
 
     /**
      * Returns an iterator reference to the end of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() const {
-      return varSeq__.endSafe();
+      return  _varSeq_.endSafe();
     }
 
     /**
      * Returns the primed variable associate to the given main variable
      */
     const DiscreteVariable* main2prime(const DiscreteVariable* mainVar) const {
-      return main2primed__.second(mainVar);
+      return  _main2primed_.second(mainVar);
     }
 
     /**
@@ -115,7 +115,7 @@ namespace gum {
      */
     INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
                  mapMainPrime() const {
-      return main2primed__;
+      return  _main2primed_;
     }
 
     /// @}
@@ -135,14 +135,14 @@ namespace gum {
      * Returns an iterator reference to he beginning of the list of actions
      */
     SequenceIteratorSafe< Idx > beginActions() const {
-      return actionSeq__.beginSafe();
+      return  _actionSeq_.beginSafe();
     }
 
     /**
      * Returns an iterator reference to the end of the list of actions
      */
     SequenceIteratorSafe< Idx > endActions() const {
-      return actionSeq__.endSafe();
+      return  _actionSeq_.endSafe();
     }
 
     /// @}
@@ -266,32 +266,32 @@ namespace gum {
 
     private:
     /// Sequence de variables and its iterator
-    Sequence< const DiscreteVariable* > varSeq__;
+    Sequence< const DiscreteVariable* >  _varSeq_;
 
-    Sequence< Idx > actionSeq__;
+    Sequence< Idx >  _actionSeq_;
 
     /// Mapping from a main variable to its associated primed version
-    Bijection< const DiscreteVariable*, const DiscreteVariable* > main2primed__;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* >  _main2primed_;
 
     /// Bijection mapping an action name to its id
-    Bijection< Idx, const std::string* > actionMap__;
+    Bijection< Idx, const std::string* >  _actionMap_;
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > actionTransitionTable__;
+    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* >  _actionTransitionTable_;
 
     /// Table which give for each action cost table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-       actionCostTable__;
+        _actionCostTable_;
 
     /// Table which give for each action reward table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-       actionRewardTable__;
+        _actionRewardTable_;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance
     /// Usually the case when fmdp has been initialized with the factory
-    bool onDestructionDeleteVars__;
+    bool  _onDestructionDeleteVars_;
   };
 
 

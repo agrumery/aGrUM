@@ -220,7 +220,7 @@ namespace gum {
      * knowledge to the elimination sequence (through method setGraph of the
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
-     * original_graph__) */
+     *  _original_graph_) */
     virtual void initTriangulation_(UndiGraph& graph);
 
     /// @}
@@ -235,86 +235,86 @@ namespace gum {
 
     private:
     /// a pointer to the (external) original graph (which will be triangulated)
-    const UndiGraph* original_graph__{nullptr};
+    const UndiGraph*  _original_graph_{nullptr};
 
     /// the triangulated graph
-    UndiGraph triangulated_graph__;
+    UndiGraph  _triangulated_graph_;
 
     /// the fill-ins added during the whole triangulation process
-    EdgeSet fill_ins__;
+    EdgeSet  _fill_ins_;
 
     /// the order in which nodes are eliminated by the algorithm
-    std::vector< NodeId > elim_order__;
+    std::vector< NodeId >  _elim_order_;
 
     /// the elimination order (access by NodeId)
-    NodeProperty< NodeId > reverse_elim_order__;
+    NodeProperty< NodeId >  _reverse_elim_order_;
 
     /// the cliques formed by the elimination of the nodes
-    NodeProperty< NodeSet > elim_cliques__;
+    NodeProperty< NodeSet >  _elim_cliques_;
 
     /// the elimination tree computed by the algorithm
-    CliqueGraph elim_tree__;
+    CliqueGraph  _elim_tree_;
 
     /// the junction tree computed by the algorithm
     /** note that the junction tree is owned by the junctionTreeStrategy and,
      * therefore, its deletion from memory is not handled by the static
      * triangulation class. */
-    const CliqueGraph* junction_tree__{nullptr};
+    const CliqueGraph*  _junction_tree_{nullptr};
 
     /// the maximal prime subgraph junction tree computed from the junction tree
-    CliqueGraph max_prime_junction_tree__;
+    CliqueGraph  _max_prime_junction_tree_;
 
     /** @brief indicates which clique of the max prime junction tree was created
      * by the elmination of a given node (the key of the table) */
-    NodeProperty< NodeId > node_2_max_prime_clique__;
+    NodeProperty< NodeId >  _node_2_max_prime_clique_;
 
     /// a boolean indicating whether we have parformed a triangulation
-    bool has_triangulation__{false};
+    bool  _has_triangulation_{false};
 
     /// a boolean indicating whether we have constructed the triangulated graph
-    bool has_triangulated_graph__{false};
+    bool  _has_triangulated_graph_{false};
 
     /// a boolean indicating whether the elimination tree has been computed
-    bool has_elimination_tree__{false};
+    bool  _has_elimination_tree_{false};
 
     /// a boolean indicating whether the junction tree has been constructed
-    bool has_junction_tree__{false};
+    bool  _has_junction_tree_{false};
 
     /** @brief indicates whether a maximal prime subgraph junction tree has
      * been constructed */
-    bool has_max_prime_junction_tree__{false};
+    bool  _has_max_prime_junction_tree_{false};
 
     /// indicates whether we actually computed fill-ins
-    bool has_fill_ins__{false};
+    bool  _has_fill_ins_{false};
 
     /// indicates whether the triangulation must be minimal
-    bool minimality_required__{false};
+    bool  _minimality_required_{false};
 
     /** @brief a vector containing the set of fill-ins added after each node
      * elimination (used by recursive thinning) */
-    std::vector< EdgeSet > added_fill_ins__;
+    std::vector< EdgeSet >  _added_fill_ins_;
 
     /** @brief a boolean indicating if we want fill-ins list with the standard
      * triangulation method */
-    bool we_want_fill_ins__{false};
+    bool  _we_want_fill_ins_{false};
 
     // ===========================================================================
 
     /// the function that performs the triangulation
-    void triangulate__();
+    void  _triangulate_();
 
     /// returns an elimination tree from a triangulated graph
-    void computeEliminationTree__();
+    void  _computeEliminationTree_();
 
     /// computes the junction tree of the maximal prime subgraphs
-    void computeMaxPrimeJunctionTree__();
+    void  _computeMaxPrimeJunctionTree_();
 
     /// removes redondant fill-ins and compute proper elimination cliques and
     /// order
-    void computeRecursiveThinning__();
+    void  _computeRecursiveThinning_();
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void computeMaxPrimeMergings__(const NodeId        node,
+    void  _computeMaxPrimeMergings_(const NodeId        node,
                                    const NodeId        from,
                                    std::vector< Arc >& merged_cliques,
                                    NodeSet&            mark) const;

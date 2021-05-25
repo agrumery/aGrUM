@@ -267,7 +267,7 @@ namespace gum {
 
       private:
       /// The node's id of this element
-      NodeId id__;
+      NodeId  _id_;
     };
 
 

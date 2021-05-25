@@ -123,10 +123,10 @@ namespace gum {
 
     private:
     // the table to delete
-    ScheduleMultiDim< GUM_SCALAR > table__;
+    ScheduleMultiDim< GUM_SCALAR >  _table_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
   };
 
 } /* namespace gum */

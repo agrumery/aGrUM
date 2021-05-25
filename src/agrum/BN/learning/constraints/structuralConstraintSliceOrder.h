@@ -230,7 +230,7 @@ namespace gum {
 
       protected:
       /// slices to which belong the nodes
-      NodeProperty< NodeId > SliceOrder__order_;
+      NodeProperty< NodeId >  _SliceOrder_order_;
     };
 
   } /* namespace learning */

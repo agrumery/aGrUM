@@ -204,7 +204,7 @@ namespace gum {
 
       // The name of this object
       // ======================================================================
-      std::string name__;
+      std::string  _name_;
 
       /// @}
     };

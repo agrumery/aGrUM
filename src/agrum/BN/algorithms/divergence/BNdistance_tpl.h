@@ -38,25 +38,25 @@ namespace gum {
                                        const IBayesNet< GUM_SCALAR >& Q) :
       p_(P),
       q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0),
-      difficulty__(Complexity::Heavy), done__(false) {
-    checkCompatibility__();   // may throw OperationNotAllowed
+       _difficulty_(Complexity::Heavy),  _done_(false) {
+     _checkCompatibility_();   // may throw OperationNotAllowed
     GUM_CONSTRUCTOR(BNdistance);
 
     double diff = p_.log10DomainSize();
 
     if (diff > GAP_COMPLEXITY_KL_HEAVY_DIFFICULT)
-      difficulty__ = Complexity::Heavy;
+       _difficulty_ = Complexity::Heavy;
     else if (diff > GAP_COMPLEXITY_KL_DIFFICULT_CORRECT)
-      difficulty__ = Complexity::Difficult;
+       _difficulty_ = Complexity::Difficult;
     else
-      difficulty__ = Complexity::Correct;
+       _difficulty_ = Complexity::Correct;
   }
 
   template < typename GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const BNdistance< GUM_SCALAR >& kl) :
       p_(kl.p_), q_(kl.q_), klPQ_(kl.klPQ_), klQP_(kl.klQP_),
-      errorPQ_(kl.errorPQ_), errorQP_(kl.errorQP_), difficulty__(kl.difficulty__),
-      done__(kl.done__) {
+      errorPQ_(kl.errorPQ_), errorQP_(kl.errorQP_),  _difficulty_(kl. _difficulty_),
+       _done_(kl. _done_) {
     GUM_CONSTRUCTOR(BNdistance);
   }
 
@@ -67,7 +67,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Complexity BNdistance< GUM_SCALAR >::difficulty() const {
-    return difficulty__;
+    return  _difficulty_;
   }
 
   template < typename GUM_SCALAR >
@@ -124,7 +124,7 @@ namespace gum {
 
   // check if the 2 BNs are compatible
   template < typename GUM_SCALAR >
-  bool BNdistance< GUM_SCALAR >::checkCompatibility__() const {
+  bool BNdistance< GUM_SCALAR >:: _checkCompatibility_() const {
     for (auto node: p_.nodes()) {
       const DiscreteVariable& vp = p_.variable(node);
 
@@ -172,12 +172,12 @@ namespace gum {
     return true;
   }
 
-  // do the job if not already done__
+  // do the job if not already  _done_
   template < typename GUM_SCALAR >
   void BNdistance< GUM_SCALAR >::process_() {
-    if (!done__) {
+    if (! _done_) {
       computeKL_();
-      done__ = true;
+       _done_ = true;
     }
   }
 

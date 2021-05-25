@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
-    gum::Potential< double > infer__(
+    gum::Potential< double >  _infer_(
        const gum::BayesNet< double >&                                  bn,
        const std::vector< std::size_t >&                               targets,
        const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
@@ -57,7 +57,7 @@ namespace gum_tests {
     }
 
     public:
-    void test_no_range__no_nodeId2col() {
+    void  _test_no_range_no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -268,7 +268,7 @@ namespace gum_tests {
     }
 
 
-    void test_no_range__has_nodeId2col() {
+    void  _test_no_range_has_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -1100,7 +1100,7 @@ namespace gum_tests {
       int                   nb_row = 0;
       for (const auto& row: database) {
         gum::Potential< double > proba
-           = infer__(bn, {std::size_t(0), std::size_t(1)}, row);
+           =  _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

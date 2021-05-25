@@ -434,15 +434,15 @@ namespace gum {
 
     private:
     /// Mapping between id and variable
-    VariableNodeMap variableMap__;
+    VariableNodeMap  _variableMap_;
 
     /// Mapping between potential variable's id and their CPT
-    NodeProperty< Potential< GUM_SCALAR >* > potentialMap__;
+    NodeProperty< Potential< GUM_SCALAR >* >  _potentialMap_;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty< Potential< GUM_SCALAR >* > utilityMap__;
+    NodeProperty< Potential< GUM_SCALAR >* >  _utilityMap_;
 
     /// The temporal order
-    mutable List< NodeSet > temporalOrder__;
+    mutable List< NodeSet >  _temporalOrder_;
   };
 
 } /* namespace gum */

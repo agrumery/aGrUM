@@ -232,7 +232,7 @@ namespace gum {
 
       private:
       /// the CTable computation
-      VariableLog2ParamComplexity< ALLOC > param_complexity__;
+      VariableLog2ParamComplexity< ALLOC >  _param_complexity_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

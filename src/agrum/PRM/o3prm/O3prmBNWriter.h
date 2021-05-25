@@ -97,22 +97,22 @@ namespace gum {
                        const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
-    std::string extractAttribute__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractAttribute_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string extractType__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
     template < typename VARTYPE >
-    std::string extractDiscretizedType__(const VARTYPE* var);
+    std::string  _extractDiscretizedType_(const VARTYPE* var);
 
-    std::string extractName__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractName_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string extractParents__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractParents_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string extractCPT__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractCPT_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string extractRangeType__(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string  _extractRangeType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string extractLabelizedType__(const IBayesNet< GUM_SCALAR >& bn,
+    std::string  _extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn,
                                        NodeId                         node);
   };
 

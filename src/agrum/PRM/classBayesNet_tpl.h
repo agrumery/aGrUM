@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    void ClassBayesNet< GUM_SCALAR >::init__(const PRMClass< GUM_SCALAR >& c) {
+    void ClassBayesNet< GUM_SCALAR >:: _init_(const PRMClass< GUM_SCALAR >& c) {
       for (const auto node: c.containerDag().nodes()) {
         try {
           // Adding the attribute
@@ -40,7 +40,7 @@ namespace gum {
               || PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
             const PRMClassElement< GUM_SCALAR >& elt = c.get(node);
             this->dag_.addNodeWithId(elt.id());
-            this->varNodeMap__.insert(&(elt.type().variable()), &elt);
+            this-> _varNodeMap_.insert(&(elt.type().variable()), &elt);
           }
         } catch (NotFound&) {
           // Not an attribute
@@ -60,16 +60,16 @@ namespace gum {
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
        const PRMClass< GUM_SCALAR >& c) :
         IBayesNet< GUM_SCALAR >(),
-        class__(&c) {
+         _class_(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
-      init__(c);
+       _init_(c);
     }
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
        const ClassBayesNet< GUM_SCALAR >& from) :
         IBayesNet< GUM_SCALAR >(from),
-        class__(from.class__) {
+         _class_(from. _class_) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
@@ -84,7 +84,7 @@ namespace gum {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
-        class__ = from.class__;
+         _class_ = from. _class_;
       }
 
       return *this;
@@ -93,7 +93,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
-      return get__(varId).cpf();
+      return  _get_(varId).cpf();
     }
 
     template < typename GUM_SCALAR >
@@ -105,32 +105,32 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
                  ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
-      return get__(id).type().variable();
+      return  _get_(id).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
        ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-      return varNodeMap__[&var]->id();
+      return  _varNodeMap_[&var]->id();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
        ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
-      return get__(name).id();
+      return  _get_(name).id();
     }
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variableFromName(
        const std::string& name) const {
-      return get__(name).type().variable();
+      return  _get_(name).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::get__(NodeId id) const {
+                 ClassBayesNet< GUM_SCALAR >:: _get_(NodeId id) const {
       if (this->dag_.exists(id)) {
-        return class__->get(id);
+        return  _class_->get(id);
       } else {
         GUM_ERROR(NotFound, "no element found with that id.")
       }
@@ -138,22 +138,22 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       ClassBayesNet< GUM_SCALAR >::get__(const std::string& name) const {
+       ClassBayesNet< GUM_SCALAR >:: _get_(const std::string& name) const {
       try {
-        return class__->get(name);
+        return  _class_->get(name);
       } catch (NotFound&) { GUM_ERROR(NotFound, "no element found with that id.") }
     }
 
     template < typename GUM_SCALAR >
     INLINE const NodeProperty< Size >&
                  ClassBayesNet< GUM_SCALAR >::modalities() const {
-      if (modalities__.empty()) {
+      if ( _modalities_.empty()) {
         for (const auto node: this->nodes()) {
-          modalities__.insert(node, (Size)variable(node).domainSize());
+           _modalities_.insert(node, (Size)variable(node).domainSize());
         }
       }
 
-      return modalities__;
+      return  _modalities_;
     }
 
     template < typename GUM_SCALAR >
@@ -161,7 +161,7 @@ namespace gum {
       std::string       tab = "  ";
       std::stringstream output;
       output << "digraph \"";
-      output << class__->name() << "\" {" << std::endl;
+      output <<  _class_->name() << "\" {" << std::endl;
 
       for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0)

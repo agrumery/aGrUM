@@ -97,9 +97,9 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
-      return jointTable__.exists(
+      return  _jointTable_.exists(
                 std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
-              ? jointTable__[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
+              ?  _jointTable_[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
                                                                      valueB)]
               : 0;
     }
@@ -108,7 +108,7 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrAMarginal(GUM_SCALAR_A valueA) const {
-      return attrAMarginalTable__.exists(valueA) ? attrAMarginalTable__[valueA]
+      return  _attrAMarginalTable_.exists(valueA) ?  _attrAMarginalTable_[valueA]
                                                  : 0;
     }
 
@@ -116,7 +116,7 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrBMarginal(GUM_SCALAR_B valueB) const {
-      return attrAMarginalTable__.exists(valueB) ? attrAMarginalTable__[valueB]
+      return  _attrAMarginalTable_.exists(valueB) ?  _attrAMarginalTable_[valueB]
                                                  : 0;
     }
 
@@ -124,35 +124,35 @@ namespace gum {
     /// Returns the number of samples for line iattr
 
     //        Idx aMarginal( GUM_SCALAR_A iattr ) { return
-    //        attrMarginalTable__[iattr]; }
+    //         _attrMarginalTable_[iattr]; }
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrABeginSafe() const {
-      return attrAMarginalTable__.cbeginSafe();
+      return  _attrAMarginalTable_.cbeginSafe();
     }
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrAEndSafe() const {
-      return attrAMarginalTable__.cendSafe();
+      return  _attrAMarginalTable_.cendSafe();
     }
 
 
     /// Returns the number of samples for column ivalue
 
     //        Idx vMarginal( GUM_SCALAR_B ivalue ) { return
-    //        valueMarginalTable__[ivalue]; }
+    //         _valueMarginalTable_[ivalue]; }
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBBeginSafe() const {
-      return attrBMarginalTable__.cbeginSafe();
+      return  _attrBMarginalTable_.cbeginSafe();
     }
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBEndSafe() const {
-      return attrBMarginalTable__.cendSafe();
+      return  _attrBMarginalTable_.cendSafe();
     }
 
 
     /// Returns the number of samples for line iattr
 
-    Idx attrASize() const { return attrAMarginalTable__.size(); }
+    Idx attrASize() const { return  _attrAMarginalTable_.size(); }
 
 
     /// Returns the number of samples for column ivalue
 
-    Idx attrBSize() const { return attrBMarginalTable__.size(); }
+    Idx attrBSize() const { return  _attrBMarginalTable_.size(); }
 
     /// @}
 
@@ -161,9 +161,9 @@ namespace gum {
 
     std::string toString() const {
       std::stringstream ss;
-      ss << "\t\t\t\t" << attrAMarginalTable__ << std::endl
-         << "\t\t\t\t" << attrBMarginalTable__ << std::endl
-         << "\t\t\t\t" << jointTable__ << std::endl;
+      ss << "\t\t\t\t" <<  _attrAMarginalTable_ << std::endl
+         << "\t\t\t\t" <<  _attrBMarginalTable_ << std::endl
+         << "\t\t\t\t" <<  _jointTable_ << std::endl;
       return ss.str();
     }
 
@@ -177,9 +177,9 @@ namespace gum {
      * If someone ever use this class and has time to correctly implements
      * a efficient contingency table, you're welcome
      */
-    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > jointTable__;
-    HashTable< GUM_SCALAR_A, Idx >                            attrAMarginalTable__;
-    HashTable< GUM_SCALAR_B, Idx >                            attrBMarginalTable__;
+    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx >  _jointTable_;
+    HashTable< GUM_SCALAR_A, Idx >                             _attrAMarginalTable_;
+    HashTable< GUM_SCALAR_B, Idx >                             _attrBMarginalTable_;
   };
 
 } /* namespace gum */

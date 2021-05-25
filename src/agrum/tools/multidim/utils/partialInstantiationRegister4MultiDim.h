@@ -205,7 +205,7 @@ namespace gum {
      * MultiDimImplementation is associated a function to partially instantiate
      * this subtype of hypermatrix (the PartialInstantiationPtr).
      */
-    HashTable< std::string, PartialInstantiationSet* > set__;
+    HashTable< std::string, PartialInstantiationSet* >  _set_;
   };
 
   /// A function to more easily register new instantiation functions in

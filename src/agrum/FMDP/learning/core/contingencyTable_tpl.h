@@ -65,21 +65,21 @@ namespace gum {
   void ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >::add(GUM_SCALAR_A valueA,
                                                            GUM_SCALAR_B valueB) {
     // Updating
-    if (attrAMarginalTable__.exists(valueA))
-      attrAMarginalTable__[valueA]++;
+    if ( _attrAMarginalTable_.exists(valueA))
+       _attrAMarginalTable_[valueA]++;
     else
-      attrAMarginalTable__.insert(valueA, 1);
+       _attrAMarginalTable_.insert(valueA, 1);
 
-    if (attrBMarginalTable__.exists(valueB))
-      attrBMarginalTable__[valueB]++;
+    if ( _attrBMarginalTable_.exists(valueB))
+       _attrBMarginalTable_[valueB]++;
     else
-      attrBMarginalTable__.insert(valueB, 1);
+       _attrBMarginalTable_.insert(valueB, 1);
 
     std::pair< GUM_SCALAR_A, GUM_SCALAR_B > cell(valueA, valueB);
-    if (jointTable__.exists(cell))
-      jointTable__[cell]++;
+    if ( _jointTable_.exists(cell))
+       _jointTable_[cell]++;
     else
-      jointTable__.insert(cell, 1);
+       _jointTable_.insert(cell, 1);
   }
 
   template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
@@ -88,26 +88,26 @@ namespace gum {
         const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src) {
     // Ajout dans marginal A et table joint des valeurs pour src
     for (auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe(); ++aTer) {
-      if (attrAMarginalTable__.exists(aTer.key()))
-        attrAMarginalTable__[aTer.key()] += aTer.val();
+      if ( _attrAMarginalTable_.exists(aTer.key()))
+         _attrAMarginalTable_[aTer.key()] += aTer.val();
       else
-        attrAMarginalTable__.insert(aTer.key(), aTer.val());
+         _attrAMarginalTable_.insert(aTer.key(), aTer.val());
 
       for (auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe(); ++bTer) {
         std::pair< GUM_SCALAR_A, GUM_SCALAR_B > cell(aTer.key(), bTer.key());
-        if (jointTable__.exists(cell))
-          jointTable__[cell] += src.joint(aTer.key(), bTer.key());
+        if ( _jointTable_.exists(cell))
+           _jointTable_[cell] += src.joint(aTer.key(), bTer.key());
         else
-          jointTable__.insert(cell, src.joint(aTer.key(), bTer.key()));
+           _jointTable_.insert(cell, src.joint(aTer.key(), bTer.key()));
       }
     }
 
     // Ajout dans marginal B des valeurs de src
     for (auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe(); ++bTer) {
-      if (attrBMarginalTable__.exists(bTer.key()))
-        attrBMarginalTable__[bTer.key()] += bTer.val();
+      if ( _attrBMarginalTable_.exists(bTer.key()))
+         _attrBMarginalTable_[bTer.key()] += bTer.val();
       else
-        attrBMarginalTable__.insert(bTer.key(), bTer.val());
+         _attrBMarginalTable_.insert(bTer.key(), bTer.val());
     }
     return *this;
   }

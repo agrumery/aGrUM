@@ -87,95 +87,95 @@ namespace gum {
 
 
         private:
-        PRM< GUM_SCALAR >*          prm__;
-        O3PRM*                      o3_prm__;
-        O3NameSolver< GUM_SCALAR >* solver__;
-        ErrorsContainer*            errors__;
+        PRM< GUM_SCALAR >*           _prm_;
+        O3PRM*                       _o3_prm_;
+        O3NameSolver< GUM_SCALAR >*  _solver_;
+        ErrorsContainer*             _errors_;
 
-        HashTable< std::string, gum::NodeId > nameMap__;
-        HashTable< std::string, O3Class* >    classMap__;
-        HashTable< NodeId, O3Class* >         nodeMap__;
-        DAG                                   dag__;
-        std::vector< O3Class* >               o3Classes__;
+        HashTable< std::string, gum::NodeId >  _nameMap_;
+        HashTable< std::string, O3Class* >     _classMap_;
+        HashTable< NodeId, O3Class* >          _nodeMap_;
+        DAG                                    _dag_;
+        std::vector< O3Class* >                _o3Classes_;
 
         /// @name Checking classes
         /// @{
-        void setO3ClassCreationOrder__();
+        void  _setO3ClassCreationOrder_();
 
-        bool checkAndAddNodesToDag__();
+        bool  _checkAndAddNodesToDag_();
 
-        bool checkAndAddArcsToDag__();
+        bool  _checkAndAddArcsToDag_();
 
-        bool checkO3Classes__();
+        bool  _checkO3Classes_();
         /// @}
 
         /// @name Checking Implementations
         /// @{
-        bool checkImplementation__(O3Class& c);
+        bool  _checkImplementation_(O3Class& c);
 
-        bool checkImplementation__(
+        bool  _checkImplementation_(
            O3Class&                                    c,
            O3Label&                                    i,
            HashTable< std::string, O3Attribute* >&     attrMap,
            HashTable< std::string, O3Aggregate* >&     aggMap,
            HashTable< std::string, O3ReferenceSlot* >& refMap);
 
-        bool checkImplementation__(O3Label& o3_type, const PRMType& type);
+        bool  _checkImplementation_(O3Label& o3_type, const PRMType& type);
 
-        bool checkImplementation__(
+        bool  _checkImplementation_(
            O3Label&                                      o3_type,
            const PRMClassElementContainer< GUM_SCALAR >& type);
         /// @}
 
         /// @name Checking and Adding Paramteters
         /// @{
-        void addParameters__(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
+        void  _addParameters_(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
 
         /// @}
 
         /// @name Checking and adding Reference Slots
         /// @{
-        void addReferenceSlots__(O3Class& c);
+        void  _addReferenceSlots_(O3Class& c);
 
 
-        bool checkReferenceSlot__(O3Class& c, O3ReferenceSlot& ref);
+        bool  _checkReferenceSlot_(O3Class& c, O3ReferenceSlot& ref);
         /// @}
 
         /// @name Checking and adding Attributes
         /// @{
-        void declareAttribute__(O3Class& c);
+        void  _declareAttribute_(O3Class& c);
 
-        bool checkAttributeForDeclaration__(O3Class& o3_c, O3Attribute& attr);
+        bool  _checkAttributeForDeclaration_(O3Class& o3_c, O3Attribute& attr);
 
-        void completeAttribute__(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
+        void  _completeAttribute_(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
 
-        bool checkAttributeForCompletion__(const O3Class& o3_c, O3Attribute& attr);
+        bool  _checkAttributeForCompletion_(const O3Class& o3_c, O3Attribute& attr);
 
-        bool checkParent__(const PRMClass< GUM_SCALAR >& c, const O3Label& prnt);
+        bool  _checkParent_(const PRMClass< GUM_SCALAR >& c, const O3Label& prnt);
 
-        bool checkLocalParent__(const PRMClass< GUM_SCALAR >& c,
+        bool  _checkLocalParent_(const PRMClass< GUM_SCALAR >& c,
                                 const O3Label&                prnt);
 
-        bool checkRemoteParent__(const PRMClassElementContainer< GUM_SCALAR >& c,
+        bool  _checkRemoteParent_(const PRMClassElementContainer< GUM_SCALAR >& c,
                                  const O3Label& prnt);
 
-        bool checkRawCPT__(const PRMClass< GUM_SCALAR >& c, O3RawCPT& attr);
+        bool  _checkRawCPT_(const PRMClass< GUM_SCALAR >& c, O3RawCPT& attr);
 
-        bool checkRuleCPT__(const PRMClass< GUM_SCALAR >& c, O3RuleCPT& attr);
+        bool  _checkRuleCPT_(const PRMClass< GUM_SCALAR >& c, O3RuleCPT& attr);
 
-        bool checkLabelsNumber__(const O3RuleCPT&         attr,
+        bool  _checkLabelsNumber_(const O3RuleCPT&         attr,
                                  const O3RuleCPT::O3Rule& rule);
 
-        bool checkLabelsValues__(const PRMClass< GUM_SCALAR >& c,
+        bool  _checkLabelsValues_(const PRMClass< GUM_SCALAR >& c,
                                  const O3RuleCPT&              attr,
                                  const O3RuleCPT::O3Rule&      rule);
 
-        void addParamsToForms__(
+        void  _addParamsToForms_(
            const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >&
                               scope,
            O3RuleCPT::O3Rule& rule);
 
-        bool checkRuleCPTSumsTo1__(const PRMClass< GUM_SCALAR >& c,
+        bool  _checkRuleCPTSumsTo1_(const PRMClass< GUM_SCALAR >& c,
                                    const O3RuleCPT&              attr,
                                    const O3RuleCPT::O3Rule&      rule);
 
@@ -184,34 +184,34 @@ namespace gum {
         /// @name Utility methods
         /// @{
         const PRMClassElement< GUM_SCALAR >*
-           resolveSlotChain__(const PRMClassElementContainer< GUM_SCALAR >& c,
+            _resolveSlotChain_(const PRMClassElementContainer< GUM_SCALAR >& c,
                               const O3Label&                                chain);
 
-        bool checkSlotChainLink__(const PRMClassElementContainer< GUM_SCALAR >& c,
+        bool  _checkSlotChainLink_(const PRMClassElementContainer< GUM_SCALAR >& c,
                                   const O3Label&     chain,
                                   const std::string& s);
         /// @}
 
         /// @name Checking and adding Aggregates
         /// @{
-        void declareAggregates__(O3Class& c);
-        void completeAggregates__(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
+        void  _declareAggregates_(O3Class& c);
+        void  _completeAggregates_(PRMFactory< GUM_SCALAR >& factory, O3Class& c);
 
-        bool checkAggregateForDeclaration__(O3Class& o3class, O3Aggregate& agg);
-        bool checkAggregateForCompletion__(O3Class& o3class, O3Aggregate& agg);
+        bool  _checkAggregateForDeclaration_(O3Class& o3class, O3Aggregate& agg);
+        bool  _checkAggregateForCompletion_(O3Class& o3class, O3Aggregate& agg);
 
-        const PRMType* checkAggParents__(O3Class& o3class, O3Aggregate& agg);
+        const PRMType*  _checkAggParents_(O3Class& o3class, O3Aggregate& agg);
 
-        bool checkAggTypeLegality__(O3Class& o3class, O3Aggregate& agg);
+        bool  _checkAggTypeLegality_(O3Class& o3class, O3Aggregate& agg);
 
 
-        bool checkAggParameters__(O3Class&       o3class,
+        bool  _checkAggParameters_(O3Class&       o3class,
                                   O3Aggregate&   agg,
                                   const PRMType* t);
 
-        bool checkParametersNumber__(O3Aggregate& agg, Size n);
+        bool  _checkParametersNumber_(O3Aggregate& agg, Size n);
 
-        bool checkParameterValue__(O3Aggregate& agg, const gum::prm::PRMType& t);
+        bool  _checkParameterValue_(O3Aggregate& agg, const gum::prm::PRMType& t);
 
         // @}
       };

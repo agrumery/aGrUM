@@ -42,7 +42,7 @@ namespace gum {
 
   class Listener;
 
-  namespace __sig__ {
+  namespace  __sig__ {
 
     /**
      * @class ISignaler
@@ -59,7 +59,7 @@ namespace gum {
          = 0;
       virtual bool hasListener() = 0;
     };
-  }   // namespace __sig__
+  }   // namespace  __sig__
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -73,7 +73,7 @@ namespace gum {
   class Listener {
     private:
     /// Alias for the list of signal senders.
-    typedef std::vector< __sig__::ISignaler* > Senders_list;
+    typedef std::vector<  __sig__::ISignaler* > Senders_list;
 
     public:
     /**
@@ -85,12 +85,12 @@ namespace gum {
 
     virtual ~Listener();
 
-    void attachSignal__(__sig__::ISignaler* sender);
+    void  _attachSignal_( __sig__::ISignaler* sender);
 
-    void detachSignal__(__sig__::ISignaler* sender);
+    void  _detachSignal_( __sig__::ISignaler* sender);
 
     private:
-    Senders_list senders__;
+    Senders_list  _senders_;
   };
 }   // namespace gum
 

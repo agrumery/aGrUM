@@ -126,9 +126,9 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      ParameterType type__;
+      ParameterType  _type_;
 
-      GUM_SCALAR value__;
+      GUM_SCALAR  _value_;
 
       /// @}
     };

@@ -39,18 +39,18 @@ namespace gum {
   // Default constructor
   // ###################################################################
   VariableSelector::VariableSelector(Set< const DiscreteVariable* >& startingSet) :
-      remainingVars__(startingSet) {
+       _remainingVars_(startingSet) {
     GUM_CONSTRUCTOR(VariableSelector);
-    remainingScores__.insert(0.0, 0.0);
-    remainingVarsByScore__.insert(
+     _remainingScores_.insert(0.0, 0.0);
+     _remainingVarsByScore_.insert(
        0.0,
-       new Set< const DiscreteVariable* >(remainingVars__));
+       new Set< const DiscreteVariable* >( _remainingVars_));
 
-    for (auto varIter = remainingVars__.cbeginSafe();
-         varIter != remainingVars__.cendSafe();
+    for (auto varIter =  _remainingVars_.cbeginSafe();
+         varIter !=  _remainingVars_.cendSafe();
          ++varIter) {
-      remainingVarsScore__.insert(*varIter, 0.0);
-      remainingVarsOtherScore__.insert(*varIter, 0.0);
+       _remainingVarsScore_.insert(*varIter, 0.0);
+       _remainingVarsOtherScore_.insert(*varIter, 0.0);
     }
   }
 
@@ -69,10 +69,10 @@ namespace gum {
   void VariableSelector::updateScore(const DiscreteVariable* var,
                                      double                  score,
                                      double                  secondaryscore) {
-    removeVar__(var);
-    remainingVarsScore__[var] += score;
-    addVar__(var);
-    remainingVarsOtherScore__[var] += secondaryscore;
+     _removeVar_(var);
+     _remainingVarsScore_[var] += score;
+     _addVar_(var);
+     _remainingVarsOtherScore_[var] += secondaryscore;
   }
 
 
@@ -82,10 +82,10 @@ namespace gum {
   void VariableSelector::downdateScore(const DiscreteVariable* var,
                                        double                  score,
                                        double                  secondaryscore) {
-    removeVar__(var);
-    remainingVarsScore__[var] -= score;
-    addVar__(var);
-    remainingVarsOtherScore__[var] -= secondaryscore;
+     _removeVar_(var);
+     _remainingVarsScore_[var] -= score;
+     _addVar_(var);
+     _remainingVarsOtherScore_[var] -= secondaryscore;
   }
 
 
@@ -93,22 +93,22 @@ namespace gum {
   // Select the most relevant variable
   // ###################################################################
   const DiscreteVariable* VariableSelector::select() {
-    double                          bestScore = remainingScores__.top();
-    Set< const DiscreteVariable* >* bestSet   = remainingVarsByScore__[bestScore];
+    double                          bestScore =  _remainingScores_.top();
+    Set< const DiscreteVariable* >* bestSet   =  _remainingVarsByScore_[bestScore];
     const DiscreteVariable*         bestVar   = nullptr;
 
     for (auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe();
          ++varIter) {
       if (bestVar == nullptr
-          || remainingVarsOtherScore__[bestVar]
-                < remainingVarsOtherScore__[*varIter]
-          || (remainingVarsOtherScore__[bestVar]
-                 == remainingVarsOtherScore__[*varIter]
+          ||  _remainingVarsOtherScore_[bestVar]
+                <  _remainingVarsOtherScore_[*varIter]
+          || ( _remainingVarsOtherScore_[bestVar]
+                 ==  _remainingVarsOtherScore_[*varIter]
               && bestVar->domainSize() < (*varIter)->domainSize()))
         bestVar = *varIter;
     }
-    removeVar__(bestVar);
-    remainingVars__ >> bestVar;
+     _removeVar_(bestVar);
+     _remainingVars_ >> bestVar;
     return bestVar;
   }
 
@@ -116,28 +116,28 @@ namespace gum {
   // ###################################################################
   // Select the most relevant variable
   // ###################################################################
-  void VariableSelector::addVar__(const DiscreteVariable* var) {
-    double varScore = remainingVarsScore__[var];
+  void VariableSelector:: _addVar_(const DiscreteVariable* var) {
+    double varScore =  _remainingVarsScore_[var];
 
-    if (!remainingVarsByScore__.exists(varScore)) {
-      remainingVarsByScore__.insert(varScore,
+    if (! _remainingVarsByScore_.exists(varScore)) {
+       _remainingVarsByScore_.insert(varScore,
                                     new Set< const DiscreteVariable* >());
-      remainingScores__.insert(varScore, varScore);
+       _remainingScores_.insert(varScore, varScore);
     }
-    remainingVarsByScore__[varScore]->insert(var);
+     _remainingVarsByScore_[varScore]->insert(var);
   }
 
 
   // ###################################################################
   // Select the most relevant variable
   // ###################################################################
-  void VariableSelector::removeVar__(const DiscreteVariable* var) {
-    double                          varScore = remainingVarsScore__[var];
-    Set< const DiscreteVariable* >* varSet   = remainingVarsByScore__[varScore];
+  void VariableSelector:: _removeVar_(const DiscreteVariable* var) {
+    double                          varScore =  _remainingVarsScore_[var];
+    Set< const DiscreteVariable* >* varSet   =  _remainingVarsByScore_[varScore];
     *varSet >> var;
     if (varSet->empty()) {
-      remainingScores__.erase(varScore);
-      remainingVarsByScore__.erase(varScore);
+       _remainingScores_.erase(varScore);
+       _remainingVarsByScore_.erase(varScore);
       delete varSet;
     }
   }

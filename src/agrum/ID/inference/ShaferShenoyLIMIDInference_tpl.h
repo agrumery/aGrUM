@@ -182,7 +182,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::creatingJunctionTree__() {
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >:: _creatingJunctionTree_() {
     const auto& infdiag = this->influenceDiagram();
     auto        moral   = reduced_.moralGraph();
 
@@ -197,13 +197,13 @@ namespace gum {
       }
     DefaultTriangulation triangulation(&moral, &modalities);
     reducedJunctionTree_ = triangulation.junctionTree();
-    findingCliqueForEachNode__(triangulation);
+     _findingCliqueForEachNode_(triangulation);
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::findingCliqueForEachNode__(
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >:: _findingCliqueForEachNode_(
      DefaultTriangulation& triangulation) {
-    // indicate, for each node of the moral graph a clique in JT__ that can
+    // indicate, for each node of the moral graph a clique in  _JT_ that can
     // contain its conditional probability table
     const auto& infdiag = this->influenceDiagram();
     NodeId      first_eliminated_node;
@@ -307,12 +307,12 @@ namespace gum {
     for (const auto& arc: infdiag.arcs())
       reduced_.addArc(arc.tail(), arc.head());
 
-    completingNoForgettingAssumption__();
-    creatingPartialOrder__(utilities);
-    checkingSolvability__(utilities);
+     _completingNoForgettingAssumption_();
+     _creatingPartialOrder_(utilities);
+     _checkingSolvability_(utilities);
     if (isSolvable()) {
-      reducingLIMID__();
-      creatingJunctionTree__();
+       _reducingLIMID_();
+       _creatingJunctionTree_();
     }
 
     this->setState_(
@@ -321,7 +321,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference<
-     GUM_SCALAR >::completingNoForgettingAssumption__() {
+     GUM_SCALAR >:: _completingNoForgettingAssumption_() {
     // force no forgetting if necessary
     if (hasNoForgettingAssumption()) {
       auto last = *(noForgettingOrder_.begin());
@@ -340,7 +340,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::checkingSolvability__(
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >:: _checkingSolvability_(
      const NodeSet& utilities) {
     if (hasNoForgettingAssumption()) {
       solvabilityOrder_ = noForgettingOrder_;
@@ -374,7 +374,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::reducingLIMID__() {
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >:: _reducingLIMID_() {
     for (const auto& sen: reversePartialOrder_) {
       for (auto n: sen) {
         for (auto p: nonRequisiteNodes_(n))
@@ -384,7 +384,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void ShaferShenoyLIMIDInference< GUM_SCALAR >::creatingPartialOrder__(
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >:: _creatingPartialOrder_(
      const NodeSet& utilities) {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     NodeProperty< Size >                  level;

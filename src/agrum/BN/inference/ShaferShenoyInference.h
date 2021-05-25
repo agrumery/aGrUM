@@ -218,65 +218,65 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* > PotentialSet__;
+    typedef Set< const Potential< GUM_SCALAR >* >  _PotentialSet_;
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-       PotentialSetIterator__;
+        _PotentialSetIterator_;
 
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType barren_nodes_type__;
+    FindBarrenNodesType  _barren_nodes_type_;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (*projection_op__)(
+    Potential< GUM_SCALAR >* (* _projection_op_)(
        const Potential< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&){SSNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (*combination_op__)(const Potential< GUM_SCALAR >&,
+    Potential< GUM_SCALAR >* (* _combination_op_)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
        SSNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
-    Triangulation* triangulation__;
+    Triangulation*  _triangulation_;
 
     /** @brief indicates whether we should transform junction trees into
      * binary join trees */
-    bool use_binary_join_tree__{true};
+    bool  _use_binary_join_tree_{true};
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target, graph__ will be
+     * instance if the BN is A->B->C and only B is a target,  _graph_ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
-    UndiGraph graph__;
+    UndiGraph  _graph_;
 
     /// the join (or junction) tree used to answer the last inference query
-    JoinTree* JT__{nullptr};
+    JoinTree*  _JT_{nullptr};
 
     /// the junction tree to answer the last inference query
-    JunctionTree* junctionTree__{nullptr};
+    JunctionTree*  _junctionTree_{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
      * the current JT is no more appropriate for inference. This variable
      * enables us to keep track of this. */
-    bool is_new_jt_needed__{true};
+    bool  _is_new_jt_needed_{true};
 
-    /// a clique node used as a root in each connected component of JT__
+    /// a clique node used as a root in each connected component of  _JT_
     /** For usual probabilistic inference, roots is useless. This is useful
      * when computing the probability of evidence. In this case, we need to
      * compute this probability in every connected component and multiply
      * them to get the overall probability of evidence.
-     * @warning roots__ should be computed only when evidenceProbability
+     * @warning  _roots_ should be computed only when evidenceProbability
      * is called. */
-    NodeSet roots__;
+    NodeSet  _roots_;
 
-    /// for each node of graph__ (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId > node_to_clique__;
+    /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
+    HashTable< NodeId, NodeId >  _node_to_clique_;
 
     /// for each set target, assign a clique in the JT that contains it
-    HashTable< NodeSet, NodeId > joint_target_to_clique__;
+    HashTable< NodeSet, NodeId >  _joint_target_to_clique_;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
@@ -285,49 +285,49 @@ namespace gum {
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. The product of all
      * these potentials is precisely the potential stored into
-     * clique_ss_potential__ */
-    NodeProperty< PotentialSet__ > clique_potentials__;
+     *  _clique_ss_potential_ */
+    NodeProperty<  _PotentialSet_ >  _clique_potentials_;
 
     /// the potentials stored into the cliques by Shafer-Shenoy
-    /** For a given clique, there is an entry in clique_ss_potential__ if and
+    /** For a given clique, there is an entry in  _clique_ss_potential_ if and
      * only if the clique received some potential(s). In this case, the
      * potential stored is the combination of all the corresponding list of
-     * potentials in clique_potentials__. */
-    NodeProperty< const Potential< GUM_SCALAR >* > clique_ss_potential__;
+     * potentials in  _clique_potentials_. */
+    NodeProperty< const Potential< GUM_SCALAR >* >  _clique_ss_potential_;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
      * directions) whether the arc received any potential or not. */
-    ArcProperty< PotentialSet__ > separator_potentials__;
+    ArcProperty<  _PotentialSet_ >  _separator_potentials_;
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
      * been created.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
-     * hard_ev_projected_CPTs__. */
-    ArcProperty< PotentialSet__ > created_potentials__;
+     *  _hard_ev_projected_CPTs_. */
+    ArcProperty<  _PotentialSet_ >  _created_potentials_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyInference. */
-    NodeProperty< const Potential< GUM_SCALAR >* > target_posteriors__;
+    NodeProperty< const Potential< GUM_SCALAR >* >  _target_posteriors_;
 
     /// the set of set target posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyInference. */
-    HashTable< NodeSet, const Potential< GUM_SCALAR >* > joint_target_posteriors__;
+    HashTable< NodeSet, const Potential< GUM_SCALAR >* >  _joint_target_posteriors_;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
      * @TODO remove this constant and insert the notion of a constant into
      * potentials/multidim arrays */
-    NodeProperty< GUM_SCALAR > constants__;
+    NodeProperty< GUM_SCALAR >  _constants_;
 
     /// indicates whether a message (from one clique to another) has been
     /// computed
     /** Here, all the messages, computed or not, are put into the property, only
      * the Boolean makes the difference between messages computed and those that
      * were not computed */
-    ArcProperty< bool > messages_computed__;
+    ArcProperty< bool >  _messages_computed_;
 
     /// the soft evidence stored in the cliques per their assigned node in the BN
     /** This variable is useful for method updateOutdatedPotentials_: it
@@ -336,17 +336,17 @@ namespace gum {
      * @warning These potentials are not owned by ShaferShenoyInference,
      * they are only referenced by it. Only the cliques that contain evidence
      * are filled in this structure. */
-    NodeProperty< const Potential< GUM_SCALAR >* > node_to_soft_evidence__;
+    NodeProperty< const Potential< GUM_SCALAR >* >  _node_to_soft_evidence_;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > hard_ev_projected_CPTs__;
+    NodeProperty< const Potential< GUM_SCALAR >* >  _hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
-    NodeSet hard_ev_nodes__;
+    NodeSet  _hard_ev_nodes_;
 
     /// the possible types of evidence changes
     enum EvidenceChangeType
@@ -358,53 +358,53 @@ namespace gum {
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
-    NodeProperty< EvidenceChangeType > evidence_changes__;
+    NodeProperty< EvidenceChangeType >  _evidence_changes_;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR one_minus_epsilon__{GUM_SCALAR(1.0 - 1e-6)};
+    const GUM_SCALAR  _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// check whether a new join tree is really needed for the next inference
-    bool isNewJTNeeded__() const;
+    bool  _isNewJTNeeded_() const;
 
     /// create a new junction tree as well as its related data structures
-    void createNewJT__();
+    void  _createNewJT_();
     /// sets the operator for performing the projections
-    void setProjectionFunction__(
+    void  _setProjectionFunction_(
        Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
                                         const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction__(Potential< GUM_SCALAR >* (
+    void  _setCombinationFunction_(Potential< GUM_SCALAR >* (
        *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
-    void diffuseMessageInvalidations__(NodeId   from,
+    void  _diffuseMessageInvalidations_(NodeId   from,
                                        NodeId   to,
                                        NodeSet& cliques_invalidated);
 
     /// invalidate all messages, posteriors and created potentials
-    void invalidateAllMessages__();
+    void  _invalidateAllMessages_();
 
-    /// compute a root for each connected component of JT__
-    void computeJoinTreeRoots__();
+    /// compute a root for each connected component of  _JT_
+    void  _computeJoinTreeRoots_();
 
     // remove barren variables and return the newly created projected potentials
-    PotentialSet__
-       removeBarrenVariables__(PotentialSet__&                 pot_list,
+     _PotentialSet_
+        _removeBarrenVariables_( _PotentialSet_&                 pot_list,
                                Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    PotentialSet__ marginalizeOut__(PotentialSet__                  pot_list,
+     _PotentialSet_  _marginalizeOut_( _PotentialSet_                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void produceMessage__(NodeId from_id, NodeId to_id);
+    void  _produceMessage_(NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void collectMessage__(NodeId id, NodeId from);
+    void  _collectMessage_(NodeId id, NodeId from);
 
     /// avoid copy constructors
     ShaferShenoyInference(const ShaferShenoyInference< GUM_SCALAR >&);

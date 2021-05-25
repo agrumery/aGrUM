@@ -121,11 +121,11 @@ namespace gum {
     /// @}
     private:
     // Check if a temporal order exists and creates ones if not
-    void checkTemporalOrder__(InfluenceDiagram< GUM_SCALAR >* infdiag);
+    void  _checkTemporalOrder_(InfluenceDiagram< GUM_SCALAR >* infdiag);
     // The Conditional Probability Table generator
-    ICPTGenerator< GUM_SCALAR >* cptGenerator__;
+    ICPTGenerator< GUM_SCALAR >*  _cptGenerator_;
     // The Utility Table generator
-    UTGenerator* utGenerator__;
+    UTGenerator*  _utGenerator_;
   };
 
 } /* namespace gum */

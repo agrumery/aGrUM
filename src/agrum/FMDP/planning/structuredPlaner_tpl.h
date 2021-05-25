@@ -70,7 +70,7 @@ namespace gum {
       operator_(opi), verbose_(verbose) {
     GUM_CONSTRUCTOR(StructuredPlaner);
 
-    threshold__    = epsilon;
+     _threshold_    = epsilon;
     vFunction_     = nullptr;
     optimalPolicy_ = nullptr;
   }
@@ -230,7 +230,7 @@ namespace gum {
     fmdp_ = fmdp;
 
     // Determination of the threshold value
-    threshold__ *= (1 - discountFactor_) / (2 * discountFactor_);
+     _threshold_ *= (1 - discountFactor_) / (2 * discountFactor_);
 
     // Establishement of sequence of variable elemination
     for (auto varIter = fmdp_->beginVariables(); varIter != fmdp_->endVariables();
@@ -240,7 +240,7 @@ namespace gum {
     // Initialisation of the value function
     vFunction_     = operator_->getFunctionInstance();
     optimalPolicy_ = operator_->getAggregatorInstance();
-    firstTime__    = true;
+     _firstTime_    = true;
   }
 
 
@@ -249,17 +249,17 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   void StructuredPlaner< GUM_SCALAR >::makePlanning(Idx nbStep) {
-    if (firstTime__) {
+    if ( _firstTime_) {
       this->initVFunction_();
-      firstTime__ = false;
+       _firstTime_ = false;
     }
 
     // *****************************************************************************************
     // Main loop
     // *****************************************************************************************
     Idx        nbIte = 0;
-    GUM_SCALAR gap   = threshold__ + 1;
-    while ((gap > threshold__) && (nbIte < nbStep)) {
+    GUM_SCALAR gap   =  _threshold_ + 1;
+    while ((gap >  _threshold_) && (nbIte < nbStep)) {
       ++nbIte;
 
       MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = this->valueIteration_();
@@ -276,7 +276,7 @@ namespace gum {
 
       if (verbose_)
         std::cout << " ------------------- Fin itération n° " << nbIte << std::endl
-                  << " Gap : " << gap << " - " << threshold__ << std::endl;
+                  << " Gap : " << gap << " - " <<  _threshold_ << std::endl;
 
       // *****************************************************************************************
       // And eventually we update pointers for next loop
@@ -498,7 +498,7 @@ namespace gum {
 
     HashTable< NodeId, NodeId > src2dest;
     amcpy->manager()->setRootNode(
-       recurArgMaxCopy__(qAction->root(), actionId, qAction, amcpy, src2dest));
+        _recurArgMaxCopy_(qAction->root(), actionId, qAction, amcpy, src2dest));
 
     delete qAction;
     return amcpy;
@@ -509,7 +509,7 @@ namespace gum {
   // Recursion part for the createArgMaxCopy
   // ==========================================================================
   template < typename GUM_SCALAR >
-  NodeId StructuredPlaner< GUM_SCALAR >::recurArgMaxCopy__(
+  NodeId StructuredPlaner< GUM_SCALAR >:: _recurArgMaxCopy_(
      NodeId                                     currentNodeId,
      Idx                                        actionId,
      const MultiDimFunctionGraph< GUM_SCALAR >* src,
@@ -527,7 +527,7 @@ namespace gum {
       NodeId*             sonsMap     = static_cast< NodeId* >(
          SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
       for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda)
-        sonsMap[moda] = recurArgMaxCopy__(currentNode->son(moda),
+        sonsMap[moda] =  _recurArgMaxCopy_(currentNode->son(moda),
                                           actionId,
                                           src,
                                           argMaxCpy,
@@ -586,7 +586,7 @@ namespace gum {
 
     HashTable< NodeId, NodeId > src2dest;
     optimalPolicy_->manager()->setRootNode(
-       recurExtractOptPol__(argMaxOptimalValueFunction->root(),
+        _recurExtractOptPol_(argMaxOptimalValueFunction->root(),
                             argMaxOptimalValueFunction,
                             src2dest));
 
@@ -598,7 +598,7 @@ namespace gum {
   // Recursion part for the createArgMaxCopy
   // ==========================================================================
   template < typename GUM_SCALAR >
-  NodeId StructuredPlaner< GUM_SCALAR >::recurExtractOptPol__(
+  NodeId StructuredPlaner< GUM_SCALAR >:: _recurExtractOptPol_(
      NodeId                                                currentNodeId,
      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                   SetTerminalNodePolicy >* argMaxOptVFunc,
@@ -608,14 +608,14 @@ namespace gum {
     NodeId nody;
     if (argMaxOptVFunc->isTerminalNode(currentNodeId)) {
       ActionSet leaf;
-      transferActionIds__(argMaxOptVFunc->nodeValue(currentNodeId), leaf);
+       _transferActionIds_(argMaxOptVFunc->nodeValue(currentNodeId), leaf);
       nody = optimalPolicy_->manager()->addTerminalNode(leaf);
     } else {
       const InternalNode* currentNode = argMaxOptVFunc->node(currentNodeId);
       NodeId*             sonsMap     = static_cast< NodeId* >(
          SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
       for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda)
-        sonsMap[moda] = recurExtractOptPol__(currentNode->son(moda),
+        sonsMap[moda] =  _recurExtractOptPol_(currentNode->son(moda),
                                              argMaxOptVFunc,
                                              visitedNodes);
       nody = optimalPolicy_->manager()->addInternalNode(currentNode->nodeVar(),
@@ -629,7 +629,7 @@ namespace gum {
   // Extract from an ArgMaxSet the associated ActionSet
   // ==========================================================================
   template < typename GUM_SCALAR >
-  void StructuredPlaner< GUM_SCALAR >::transferActionIds__(
+  void StructuredPlaner< GUM_SCALAR >:: _transferActionIds_(
      const ArgMaxSet< GUM_SCALAR, Idx >& src,
      ActionSet&                          dest) {
     for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)

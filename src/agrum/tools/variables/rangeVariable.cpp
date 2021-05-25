@@ -42,14 +42,14 @@ namespace gum {
                                long               minVal,
                                long               maxVal) :
       DiscreteVariable(aName, aDesc),
-      minBound__(minVal), maxBound__(maxVal) {
+       _minBound_(minVal),  _maxBound_(maxVal) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
   RangeVariable::RangeVariable(const std::string& aName,
                                const std::string& aDesc) :
       DiscreteVariable(aName, aDesc),
-      minBound__(0), maxBound__(1) {
+       _minBound_(0),  _maxBound_(1) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
@@ -59,8 +59,8 @@ namespace gum {
   // @param aDRV the variable we copy
   // ==========================================================================
   RangeVariable::RangeVariable(const RangeVariable& aDRV) :
-      DiscreteVariable(aDRV), minBound__(aDRV.minBound__),
-      maxBound__(aDRV.maxBound__) {
+      DiscreteVariable(aDRV),  _minBound_(aDRV. _minBound_),
+       _maxBound_(aDRV. _maxBound_) {
     GUM_CONS_CPY(RangeVariable);
   }
 

@@ -125,8 +125,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimNoisyORNet< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyORNet< GUM_SCALAR >(this->external_weight__,
-                                                this->default_weight__);
+    return new MultiDimNoisyORNet< GUM_SCALAR >(this-> _external_weight_,
+                                                this-> _default_weight_);
   }
 
   // returns the name of the implementation

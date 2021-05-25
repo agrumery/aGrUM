@@ -656,22 +656,22 @@ namespace gum {
     // size objects, this feature is of particular interest.
 
     /// The gum::HashTable associating T2 objects to T1 objects
-    HashTable12 firstToSecond__;
+    HashTable12  _firstToSecond_;
 
     /// The gum::HashTable associating T1 objects to T2 objects
-    HashTable21 secondToFirst__;
+    HashTable21  _secondToFirst_;
 
     /**
      * @brief A function that performs a complete copy of another
      * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling copy__.
+     * If it is not the case, use function clear() before calling  _copy_.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
      */
     template < typename OtherAlloc >
-    void copy__(const HashTable< T1, T2*, OtherAlloc >& source);
+    void  _copy_(const HashTable< T1, T2*, OtherAlloc >& source);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -679,7 +679,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    typename HashTable12::value_type* insert__(const T1& first, const T2& second);
+    typename HashTable12::value_type*  _insert_(const T1& first, const T2& second);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -687,7 +687,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    typename HashTable12::value_type* insert__(T1&& first, T2&& second);
+    typename HashTable12::value_type*  _insert_(T1&& first, T2&& second);
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -1285,22 +1285,22 @@ namespace gum {
     // size objects, this feature is of particular interest.
 
     /// hashtable associating T2 scalars to T1 scalars
-    HashTable12 firstToSecond__;
+    HashTable12  _firstToSecond_;
 
     /// hashtable associating T1 scalars to T2 scalars
-    HashTable21 secondToFirst__;
+    HashTable21  _secondToFirst_;
 
     /**
      * @brief A function that performs a complete copy of another
      * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling copy__.
+     * If it is not the case, use function clear() before calling  _copy_.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
      */
     template < typename OtherAlloc >
-    void copy__(const HashTable< T1, T2, OtherAlloc >& f2s);
+    void  _copy_(const HashTable< T1, T2, OtherAlloc >& f2s);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -1308,7 +1308,7 @@ namespace gum {
      * @param second The second object in the association.
      * @return Returns a pointer toward the inserted association.
      */
-    void insert__(const T1 first, const T2 second);
+    void  _insert_(const T1 first, const T2 second);
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -1319,9 +1319,9 @@ namespace gum {
    * @brief A class which creates the static iterator used by gim::Bijections.
    * @ingroup bijection_group
    *
-   * The aim of using this class rather than just creating BijectionIterEnd__
+   * The aim of using this class rather than just creating  _BijectionIterEnd_
    * as a global variable is to prevent other classes to access and modify
-   * BijectionIterEnd__.
+   *  _BijectionIterEnd_.
    */
   class BijectionIteratorStaticEnd {
     /// Friends that have access to the iterator
@@ -1330,21 +1330,21 @@ namespace gum {
 
     private:
     /// The safe iterator used by everyone
-    static const BijectionIteratorSafe< int, int >* BijectionIterEndSafe__;
+    static const BijectionIteratorSafe< int, int >*  _BijectionIterEndSafe_;
 
     /// The unsafe iterator used by everyone.
-    static const BijectionIterator< int, int >* BijectionIterEnd__;
+    static const BijectionIterator< int, int >*  _BijectionIterEnd_;
 
     /**
      * @brief Creates (if needed) and returns the iterator
-     * BijectionIterEndSafe__
-     * @return Returns BijectionIterEndSafe__.
+     *  _BijectionIterEndSafe_
+     * @return Returns  _BijectionIterEndSafe_.
      */
     static const BijectionIteratorSafe< int, int >* endSafe4Statics();
 
     /**
-     * @brief Creates (if needed) and returns the iterator BijectionIterEnd__.
-     * @return Returns BijectionIterEnd__;
+     * @brief Creates (if needed) and returns the iterator  _BijectionIterEnd_.
+     * @return Returns  _BijectionIterEnd_;
      */
     static const BijectionIterator< int, int >* end4Statics();
   };
@@ -1589,7 +1589,7 @@ namespace gum {
     using HashIter = typename HashTable12::const_iterator_safe;
 
     /// The hashTable iterator that actually does all the job.
-    HashIter iter__;
+    HashIter  _iter_;
   };
 
   // ===========================================================================
@@ -1778,7 +1778,7 @@ namespace gum {
     using HashIter = typename HashTable12::const_iterator;
 
     /// The hashTable iterator that actually does all the job.
-    HashIter iter__;
+    HashIter  _iter_;
   };
 
   /**

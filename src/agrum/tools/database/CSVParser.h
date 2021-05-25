@@ -138,29 +138,29 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
       
     private:
-      void getNextTriplet__( const std::string& str,
+      void  _getNextTriplet_( const std::string& str,
                              std::size_t&       first_letter_token,
                              std::size_t&       next_token,
                              std::size_t&       last_letter_token,
                              std::size_t        from ) const;
       
-      void tokenize__( const std::string& str );
+      void  _tokenize_( const std::string& str );
 
-      std::size_t correspondingQuoteMarker__( const std::string& str,
+      std::size_t  _correspondingQuoteMarker_( const std::string& str,
                                               std::size_t pos ) const;
 
       
-      std::string              line__;
-      std::string              delimiter__;
-      std::string              spaces__;
-      std::string              delimiterPlusSpaces__;
-      std::size_t              nbLine__;
-      char                     commentMarker__;
-      char                     quoteMarker__;
-      bool                     emptyData__;
+      std::string               _line_;
+      std::string               _delimiter_;
+      std::string               _spaces_;
+      std::string               _delimiterPlusSpaces_;
+      std::size_t               _nbLine_;
+      char                      _commentMarker_;
+      char                      _quoteMarker_;
+      bool                      _emptyData_;
 
-      std::istream*            instream__;
-      std::vector<std::string,ALLOC<std::string>> data__;
+      std::istream*             _instream_;
+      std::vector<std::string,ALLOC<std::string>>  _data_;
       
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

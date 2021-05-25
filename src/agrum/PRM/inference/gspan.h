@@ -63,8 +63,8 @@ namespace gum {
      * more than one PRMInstance<GUM_SCALAR>.
      *
      * This algorithm proceeds in three main steps represented by the private
-     * methods GSpan::sortNodesAndEdges__(), GSpan::subgraph_mining__() and
-     * GSpan::sortPatterns__().
+     * methods GSpan:: _sortNodesAndEdges_(), GSpan:: _subgraph_mining_() and
+     * GSpan:: _sortPatterns_().
      */
     template < typename GUM_SCALAR >
     class GSpan {
@@ -212,32 +212,32 @@ namespace gum {
       /// @{
 
       /// The interface graph used by this class.
-      gspan::InterfaceGraph< GUM_SCALAR >* graph__;
+      gspan::InterfaceGraph< GUM_SCALAR >*  _graph_;
 
       /// The DFSTree used to discover new patters.
-      gspan::DFSTree< GUM_SCALAR > tree__;
+      gspan::DFSTree< GUM_SCALAR >  _tree_;
 
       /// The max depth allowed for the DSF tree
-      Size depth_stop__;
+      Size  _depth_stop_;
 
       /// The vector of discovered patters, in decreasing order of interest.
-      std::vector< gspan::Pattern* > patterns__;
+      std::vector< gspan::Pattern* >  _patterns_;
 
-      /// The vector of nodes in graph__, in decreasing order of interest.
-      std::vector< gspan::LabelData* > nodes__;
+      /// The vector of nodes in  _graph_, in decreasing order of interest.
+      std::vector< gspan::LabelData* >  _nodes_;
 
-      /// The vector of edges in graph__, in decreasing order of interest.
-      std::vector< gspan::LabelData* > edges__;
+      /// The vector of edges in  _graph_, in decreasing order of interest.
+      std::vector< gspan::LabelData* >  _edges_;
 
       /// Mapping between labels and their cost.
-      HashTable< gspan::LabelData*, Idx > cost__;
+      HashTable< gspan::LabelData*, Idx >  _cost_;
 
       /// Mapping between a pattern and the multiset of instances matched
       /// to it.
-      HashTable< gspan::Pattern*, MatchedInstances* > matched_instances__;
+      HashTable< gspan::Pattern*, MatchedInstances* >  _matched_instances_;
 
       /// Contains all instance which belongs to a discovered and used pattern.
-      Set< PRMInstance< GUM_SCALAR >* > chosen__;
+      Set< PRMInstance< GUM_SCALAR >* >  _chosen_;
 
       /// @}
       // ========================================================================
@@ -245,13 +245,13 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// Sort the nodes and edges of graph__.
-      void sortNodesAndEdges__();
+      /// Sort the nodes and edges of  _graph_.
+      void  _sortNodesAndEdges_();
 
       /// Discovers new patterns by developing p.
       /// @param graph The interface graph used in this discovery process.
       /// @param p The pattern used as a base for discovery.
-      void subgraph_mining__(gspan::InterfaceGraph< GUM_SCALAR >& graph,
+      void  _subgraph_mining_(gspan::InterfaceGraph< GUM_SCALAR >& graph,
                              gspan::Pattern&                      p);
 
       /// Returns the cost with respect to an interface size and its frequency.
@@ -259,15 +259,15 @@ namespace gum {
       /// @param frequency The frequency of the pattern in the current interface
       ///        graph.
       /// @return the cost with respect to an interface size and its frequency.
-      Size cost_func__(Size interface_size, Size frequency);
+      Size  _cost_func_(Size interface_size, Size frequency);
 
       /// Sort the patterns and compute their respective costs.
-      void sortPatterns__();
+      void  _sortPatterns_();
 
       /// Returns true if e is an eligible root edge.
       /// @param e An EdgeData<GUM_SCALAR>.
       /// @return true if e is an eligible root edge.
-      bool isEdgeEligible__(typename gspan::EdgeData< GUM_SCALAR >* e);
+      bool  _isEdgeEligible_(typename gspan::EdgeData< GUM_SCALAR >* e);
 
       /// @}
 

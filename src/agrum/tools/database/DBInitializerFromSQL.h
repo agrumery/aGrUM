@@ -246,25 +246,25 @@ namespace gum {
 
       private:
       // the string specifying how to connect to the database
-      std::string connection_string__;
+      std::string  _connection_string_;
 
       // the current query
-      std::string query__;
+      std::string  _query_;
 
       // the timeout for executing the queries
-      long timeout__;
+      long  _timeout_;
 
       // the names of the columns in the query result
-      std::vector< std::string, ALLOC< std::string > > var_names__;
+      std::vector< std::string, ALLOC< std::string > >  _var_names_;
 
       // the nanodbc connection to the database
-      nanodbc::connection connection__;
+      nanodbc::connection  _connection_;
 
       // the parser used for parsing the query results
-      NanodbcParser< ALLOC > parser__;
+      NanodbcParser< ALLOC >  _parser_;
 
       /// perform a connection from a connection string
-      void connect__(const std::string& connection_string, long timeout);
+      void  _connect_(const std::string& connection_string, long timeout);
 
 
 #    endif /* DOXYGEN_SHOULD_SKIP_THIS */

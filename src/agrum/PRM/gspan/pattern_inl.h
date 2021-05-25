@@ -31,7 +31,7 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern() : DiGraph(), last__(0) {
+      Pattern::Pattern() : DiGraph(),  _last_(0) {
         GUM_CONSTRUCTOR(Pattern);
         ;
       }
@@ -46,15 +46,15 @@ namespace gum {
       NodeId Pattern::addNodeWithLabel(LabelData& l) {
         NodeId n = NodeId(size() + 1);
         DiGraph::addNodeWithId(n);
-        node_map__.insert(n, &l);
-        last__ = &l;
+         _node_map_.insert(n, &l);
+         _last_ = &l;
         return n;
       }
 
       INLINE
       LabelData& Pattern::label(NodeId node) {
         try {
-          return *(node_map__[node]);
+          return *( _node_map_[node]);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "node not found in this Pattern")
         }
@@ -63,7 +63,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(NodeId node) const {
         try {
-          return *(node_map__[node]);
+          return *( _node_map_[node]);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "node not found in this Pattern")
         }
@@ -71,14 +71,14 @@ namespace gum {
 
       INLINE
       LabelData& Pattern::lastAdded() {
-        if (last__) return *last__;
+        if ( _last_) return * _last_;
 
         GUM_ERROR(OperationNotAllowed, "there are no LabelData yet")
       }
 
       INLINE
       const LabelData& Pattern::lastAdded() const {
-        if (last__) return *last__;
+        if ( _last_) return * _last_;
 
         GUM_ERROR(OperationNotAllowed, "there are no LabelData yet")
       }
@@ -86,7 +86,7 @@ namespace gum {
       INLINE
       LabelData& Pattern::label(NodeId i, NodeId j) {
         try {
-          return *(arc_map__[Arc(i, j)].first);
+          return *( _arc_map_[Arc(i, j)].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
@@ -95,7 +95,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(NodeId i, NodeId j) const {
         try {
-          return *(arc_map__[Arc(i, j)].first);
+          return *( _arc_map_[Arc(i, j)].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
@@ -104,7 +104,7 @@ namespace gum {
       INLINE
       LabelData& Pattern::label(const Arc& arc) {
         try {
-          return *(arc_map__[arc].first);
+          return *( _arc_map_[arc].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
@@ -113,7 +113,7 @@ namespace gum {
       INLINE
       const LabelData& Pattern::label(const Arc& arc) const {
         try {
-          return *(arc_map__[arc].first);
+          return *( _arc_map_[arc].first);
         } catch (NotFound&) {
           GUM_ERROR(NotFound, "arc not found in this Pattern")
         }
@@ -126,12 +126,12 @@ namespace gum {
         }
 
         EdgeCode* edge
-           = new EdgeCode(i, j, node_map__[i]->id, l.id, node_map__[j]->id);
+           = new EdgeCode(i, j,  _node_map_[i]->id, l.id,  _node_map_[j]->id);
 
         if ((code().codes.size() == 0)
             || (DFSCode::validNeighbors(code().codes.back(), edge))) {
           DiGraph::addArc(i, j);
-          arc_map__.insert(Arc(i, j), std::make_pair(&l, edge));
+           _arc_map_.insert(Arc(i, j), std::make_pair(&l, edge));
           code().codes.push_back(edge);
         } else {
           delete edge;
@@ -175,51 +175,51 @@ namespace gum {
       INLINE const ArcSet& Pattern::arcs() const { return DiGraph::arcs(); }
 
       INLINE
-      DFSCode& Pattern::code() { return code__; }
+      DFSCode& Pattern::code() { return  _code_; }
 
       INLINE
-      const DFSCode& Pattern::code() const { return code__; }
+      const DFSCode& Pattern::code() const { return  _code_; }
 
       INLINE
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
         try {
-          return *(arc_map__[Arc(tail, head)].second);
+          return *( _arc_map_[Arc(tail, head)].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
         try {
-          return *(arc_map__[arc].second);
+          return *( _arc_map_[arc].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
         try {
-          return *(arc_map__[Arc(tail, head)].second);
+          return *( _arc_map_[Arc(tail, head)].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
         try {
-          return *(arc_map__[arc].second);
+          return *( _arc_map_[arc].second);
         } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       void Pattern::pop_back() {
-        EdgeCode* edge = code__.codes.back();
-        code__.codes.pop_back();
+        EdgeCode* edge =  _code_.codes.back();
+         _code_.codes.pop_back();
 
         if (edge->isForward()) {
-          node_map__.erase(edge->j);
-          arc_map__.erase(Arc(edge->i, edge->j));
+           _node_map_.erase(edge->j);
+           _arc_map_.erase(Arc(edge->i, edge->j));
           DiGraph::eraseArc(Arc(edge->i, edge->j));
           DiGraph::eraseNode(edge->j);
         } else {
-          arc_map__.erase(Arc(edge->i, edge->j));
+           _arc_map_.erase(Arc(edge->i, edge->j));
           DiGraph::eraseArc(Arc(edge->i, edge->j));
         }
 
@@ -230,7 +230,7 @@ namespace gum {
       void Pattern::remove(NodeId node) {
         if (DiGraph::parents(node).empty() && DiGraph::children(node).empty()) {
           DiGraph::eraseNode(node);
-          node_map__.erase(node);
+           _node_map_.erase(node);
         } else {
           GUM_ERROR(OperationNotAllowed, "the given node has neighbors")
         }

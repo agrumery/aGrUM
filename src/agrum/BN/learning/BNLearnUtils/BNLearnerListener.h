@@ -77,7 +77,7 @@ namespace gum {
       BNLearnerListener(const BNLearnerListener& other);
       BNLearnerListener& operator=(const BNLearnerListener& other);
 
-      genericBNLearner* bnlearner__;
+      genericBNLearner*  _bnlearner_;
     };
   }   // namespace learning
 }   // namespace gum

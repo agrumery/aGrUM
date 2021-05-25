@@ -31,13 +31,13 @@
 #include <agrum/tools/core/signal/signaler0.h>
 
 namespace gum {
-  namespace __sig__ {
+  namespace  __sig__ {
 
     template < class TargetClass >
     Connector0< TargetClass >::Connector0() {
       GUM_CONSTRUCTOR(Connector0);
-      target__ = nullptr;
-      action__ = nullptr;
+       _target_ = nullptr;
+       _action_ = nullptr;
     }
 
     template < class TargetClass >
@@ -45,8 +45,8 @@ namespace gum {
        TargetClass* target,
        void (TargetClass::*action)(const void*)) {
       GUM_CONSTRUCTOR(Connector0);
-      target__ = target;
-      action__ = action;
+       _target_ = target;
+       _action_ = action;
     }
 
     template < class TargetClass >
@@ -67,19 +67,19 @@ namespace gum {
 
     template < class TargetClass >
     IConnector0* Connector0< TargetClass >::duplicate(Listener* target) {
-      return new Connector0< TargetClass >((TargetClass*)target, action__);
+      return new Connector0< TargetClass >((TargetClass*)target,  _action_);
     }
 
     template < class TargetClass >
     void Connector0< TargetClass >::notify(const void* src) {
-      (target__->*action__)(src);
+      ( _target_->* _action_)(src);
     }
 
     template < class TargetClass >
     Listener* Connector0< TargetClass >::target() const {
-      return target__;
+      return  _target_;
     }
 
-  }   // namespace __sig__
+  }   // namespace  __sig__
 
 }   // namespace gum

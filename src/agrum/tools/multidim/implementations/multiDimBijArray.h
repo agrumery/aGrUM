@@ -179,10 +179,10 @@ namespace gum {
 
     private:
     /// The true data.
-    const MultiDimArray< GUM_SCALAR >& array__;
+    const MultiDimArray< GUM_SCALAR >&  _array_;
 
     /// The class name.
-    std::string name__;
+    std::string  _name_;
   };
 
 

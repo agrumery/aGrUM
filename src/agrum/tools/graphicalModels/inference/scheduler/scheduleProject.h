@@ -130,22 +130,22 @@ namespace gum {
 
     private:
     // the table to project
-    ScheduleMultiDim< GUM_SCALAR > table__;
+    ScheduleMultiDim< GUM_SCALAR >  _table_;
 
     // the set of variables that should be removed from the table
-    Set< const DiscreteVariable* > del_vars__;
+    Set< const DiscreteVariable* >  _del_vars_;
 
     /// the result of the operation
-    ScheduleMultiDim< GUM_SCALAR >* result__;
+    ScheduleMultiDim< GUM_SCALAR >*  _result_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* results__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _results_;
 
     /// the projection operator
-    MultiDimImplementation< GUM_SCALAR >* (*project__)(
+    MultiDimImplementation< GUM_SCALAR >* (* _project_)(
        const MultiDimImplementation< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&);
   };

@@ -45,8 +45,8 @@ namespace gum {
                                  DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      quasi_ratio__(theRatio),
-      threshold__(theThreshold) {   // for debugging purposes
+       _quasi_ratio_(theRatio),
+       _threshold_(theThreshold) {   // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
@@ -57,22 +57,22 @@ namespace gum {
       UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
                                  DefaultJunctionTreeStrategy(),
                                  minimality),
-      quasi_ratio__(theRatio),
-      threshold__(theThreshold) {   // for debugging purposes
+       _quasi_ratio_(theRatio),
+       _threshold_(theThreshold) {   // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
   /// copy constructor
   DefaultTriangulation::DefaultTriangulation(const DefaultTriangulation& from) :
-      UnconstrainedTriangulation(from), quasi_ratio__(from.quasi_ratio__),
-      threshold__(from.threshold__) {   // for debugging purposes
+      UnconstrainedTriangulation(from),  _quasi_ratio_(from. _quasi_ratio_),
+       _threshold_(from. _threshold_) {   // for debugging purposes
     GUM_CONS_CPY(DefaultTriangulation);
   }
 
   /// move constructor
   DefaultTriangulation::DefaultTriangulation(DefaultTriangulation&& from) :
       UnconstrainedTriangulation(std::move(from)),
-      quasi_ratio__(from.quasi_ratio__), threshold__(from.threshold__) {
+       _quasi_ratio_(from. _quasi_ratio_),  _threshold_(from. _threshold_) {
     // for debugging purposes
     GUM_CONS_MOV(DefaultTriangulation);
   }
@@ -86,8 +86,8 @@ namespace gum {
   /// virtual clone constructor
   DefaultTriangulation* DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation(isMinimalityRequired(),
-                                    quasi_ratio__,
-                                    threshold__);
+                                     _quasi_ratio_,
+                                     _threshold_);
   }
 
   /// virtual copy constructor

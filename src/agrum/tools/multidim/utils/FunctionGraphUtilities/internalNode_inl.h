@@ -78,24 +78,24 @@ namespace gum {
   }
 
   INLINE
-  const DiscreteVariable* InternalNode::nodeVar() const { return nodeVar__; }
+  const DiscreteVariable* InternalNode::nodeVar() const { return  _nodeVar_; }
 
   INLINE
   void InternalNode::setSon(Idx modality, NodeId son) {
-    nodeSons__[modality] = son;
+     _nodeSons_[modality] = son;
   }
 
   INLINE
-  NodeId InternalNode::son(Idx modality) const { return nodeSons__[modality]; }
+  NodeId InternalNode::son(Idx modality) const { return  _nodeSons_[modality]; }
 
   INLINE
-  Idx InternalNode::nbSons() const { return nodeVar__->domainSize(); }
+  Idx InternalNode::nbSons() const { return  _nodeVar_->domainSize(); }
 
   INLINE
-  Link< Parent >* InternalNode::parents() { return nodeParents__.list(); }
+  Link< Parent >* InternalNode::parents() { return  _nodeParents_.list(); }
 
   INLINE
   const Link< Parent >* InternalNode::parents() const {
-    return nodeParents__.list();
+    return  _nodeParents_.list();
   }
 }   // namespace gum

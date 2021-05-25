@@ -170,7 +170,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    bool checkConditions__() final;
+    bool  _checkConditions_() final;
   };
 
 

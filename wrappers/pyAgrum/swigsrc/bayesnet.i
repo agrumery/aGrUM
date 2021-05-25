@@ -126,7 +126,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
       try {
           gum::BIFReader<GUM_SCALAR> reader(self,name);
-          int l_size=fillLoadListeners__(py_listener,l);
+          int l_size=_fillLoadListeners_(py_listener,l);
           for(int i=0 ; i<l_size ; i++) {
               GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
           }
@@ -157,7 +157,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
       try {
           gum::DSLReader<GUM_SCALAR> reader(self,name);
-          int l_size=fillLoadListeners__(py_listener,l);
+          int l_size=_fillLoadListeners_(py_listener,l);
           for(int i=0 ; i<l_size ; i++) {
               GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
           }
@@ -188,7 +188,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
       try {
           gum::NetReader<GUM_SCALAR> reader(self,name);
-          int l_size=fillLoadListeners__(py_listener,l);
+          int l_size=_fillLoadListeners_(py_listener,l);
           for(int i=0 ; i<l_size ; i++) {
               GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
           }
@@ -271,7 +271,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
       try {
           gum::UAIBNReader<GUM_SCALAR> reader(self,name);
-          int l_size=fillLoadListeners__(py_listener,l);
+          int l_size=_fillLoadListeners_(py_listener,l);
           for(int i=0 ; i<l_size ; i++) {
               GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
           }

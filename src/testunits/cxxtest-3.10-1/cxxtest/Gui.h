@@ -1,5 +1,5 @@
-#ifndef __CXXTEST__GUI_H
-#define __CXXTEST__GUI_H
+#ifndef  __CXXTEST_GUI__H
+#define  __CXXTEST_GUI__H
 
 //
 // GuiListener is a simple base class for the differes GUIs
@@ -198,4 +198,4 @@ namespace CxxTest {
   };
 };
 
-#endif  //__CXXTEST__GUI_H
+#endif  // __CXXTEST_GUI__H

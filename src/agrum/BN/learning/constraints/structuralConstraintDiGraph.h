@@ -190,7 +190,7 @@ namespace gum {
 
       protected:
       /// the DiGraph on which we perform checks
-      DiGraph DiGraph__graph_;
+      DiGraph  _DiGraph_graph_;
     };
 
   } /* namespace learning */

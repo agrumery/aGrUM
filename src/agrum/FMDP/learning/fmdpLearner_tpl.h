@@ -47,10 +47,10 @@ namespace gum {
                LearnerSelection >::FMDPLearner(double lT,
                                                bool   actionReward,
                                                double sT) :
-      actionReward__(actionReward),
-      learningThreshold__(lT), similarityThreshold__(sT) {
+       _actionReward_(actionReward),
+       _learningThreshold_(lT),  _similarityThreshold_(sT) {
     GUM_CONSTRUCTOR(FMDPLearner);
-    rewardLearner__ = nullptr;
+     _rewardLearner_ = nullptr;
   }
 
 
@@ -63,19 +63,19 @@ namespace gum {
   FMDPLearner< VariableAttributeSelection,
                RewardAttributeSelection,
                LearnerSelection >::~FMDPLearner() {
-    for (auto actionIter = actionLearners__.beginSafe();
-         actionIter != actionLearners__.endSafe();
+    for (auto actionIter =  _actionLearners_.beginSafe();
+         actionIter !=  _actionLearners_.endSafe();
          ++actionIter) {
       for (auto learnerIter = actionIter.val()->beginSafe();
            learnerIter != actionIter.val()->endSafe();
            ++learnerIter)
         delete learnerIter.val();
       delete actionIter.val();
-      if (actionRewardLearners__.exists(actionIter.key()))
-        delete actionRewardLearners__[actionIter.key()];
+      if ( _actionRewardLearners_.exists(actionIter.key()))
+        delete  _actionRewardLearners_[actionIter.key()];
     }
 
-    if (rewardLearner__) delete rewardLearner__;
+    if ( _rewardLearner_) delete  _rewardLearner_;
 
     GUM_DESTRUCTOR(FMDPLearner);
   }
@@ -94,57 +94,57 @@ namespace gum {
   void FMDPLearner< VariableAttributeSelection,
                     RewardAttributeSelection,
                     LearnerSelection >::initialize(FMDP< double >* fmdp) {
-    fmdp__ = fmdp;
+     _fmdp_ = fmdp;
 
-    modaMax__ = 0;
-    rmax__    = 0.0;
+     _modaMax_ = 0;
+     _rmax_    = 0.0;
 
     Set< const DiscreteVariable* > mainVariables;
-    for (auto varIter = fmdp__->beginVariables();
-         varIter != fmdp__->endVariables();
+    for (auto varIter =  _fmdp_->beginVariables();
+         varIter !=  _fmdp_->endVariables();
          ++varIter) {
       mainVariables.insert(*varIter);
-      modaMax__ = modaMax__ < (*varIter)->domainSize() ? (*varIter)->domainSize()
-                                                       : modaMax__;
+       _modaMax_ =  _modaMax_ < (*varIter)->domainSize() ? (*varIter)->domainSize()
+                                                       :  _modaMax_;
     }
 
-    for (auto actionIter = fmdp__->beginActions();
-         actionIter != fmdp__->endActions();
+    for (auto actionIter =  _fmdp_->beginActions();
+         actionIter !=  _fmdp_->endActions();
          ++actionIter) {
       // Adding a Hashtable for the action
-      actionLearners__.insert(*actionIter, new VarLearnerTable());
+       _actionLearners_.insert(*actionIter, new VarLearnerTable());
 
       // Adding a learner for each variable
-      for (auto varIter = fmdp__->beginVariables();
-           varIter != fmdp__->endVariables();
+      for (auto varIter =  _fmdp_->beginVariables();
+           varIter !=  _fmdp_->endVariables();
            ++varIter) {
-        MultiDimFunctionGraph< double >* varTrans = instantiateFunctionGraph__();
-        varTrans->setTableName("ACTION : " + fmdp__->actionName(*actionIter)
+        MultiDimFunctionGraph< double >* varTrans =  _instantiateFunctionGraph_();
+        varTrans->setTableName("ACTION : " +  _fmdp_->actionName(*actionIter)
                                + " - VARIABLE : " + (*varIter)->name());
-        fmdp__->addTransitionForAction(*actionIter, *varIter, varTrans);
-        actionLearners__[*actionIter]->insert(
+         _fmdp_->addTransitionForAction(*actionIter, *varIter, varTrans);
+         _actionLearners_[*actionIter]->insert(
            (*varIter),
-           instantiateVarLearner__(varTrans,
+            _instantiateVarLearner_(varTrans,
                                    mainVariables,
-                                   fmdp__->main2prime(*varIter)));
+                                    _fmdp_->main2prime(*varIter)));
       }
 
-      if (actionReward__) {
-        MultiDimFunctionGraph< double >* reward = instantiateFunctionGraph__();
+      if ( _actionReward_) {
+        MultiDimFunctionGraph< double >* reward =  _instantiateFunctionGraph_();
         reward->setTableName("REWARD - ACTION : "
-                             + fmdp__->actionName(*actionIter));
-        fmdp__->addRewardForAction(*actionIter, reward);
-        actionRewardLearners__.insert(
+                             +  _fmdp_->actionName(*actionIter));
+         _fmdp_->addRewardForAction(*actionIter, reward);
+         _actionRewardLearners_.insert(
            *actionIter,
-           instantiateRewardLearner__(reward, mainVariables));
+            _instantiateRewardLearner_(reward, mainVariables));
       }
     }
 
-    if (!actionReward__) {
-      MultiDimFunctionGraph< double >* reward = instantiateFunctionGraph__();
+    if (! _actionReward_) {
+      MultiDimFunctionGraph< double >* reward =  _instantiateFunctionGraph_();
       reward->setTableName("REWARD");
-      fmdp__->addReward(reward);
-      rewardLearner__ = instantiateRewardLearner__(reward, mainVariables);
+       _fmdp_->addReward(reward);
+       _rewardLearner_ =  _instantiateRewardLearner_(reward, mainVariables);
     }
   }
 
@@ -159,25 +159,25 @@ namespace gum {
                     LearnerSelection >::addObservation(Idx                actionId,
                                                        const Observation* newObs) {
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-         = fmdp__->beginVariables();
-         varIter != fmdp__->endVariables();
+         =  _fmdp_->beginVariables();
+         varIter !=  _fmdp_->endVariables();
          ++varIter) {
-      actionLearners__[actionId]
+       _actionLearners_[actionId]
          ->getWithDefault(*varIter, nullptr)
          ->addObservation(newObs);
-      actionLearners__[actionId]->getWithDefault(*varIter, nullptr)->updateGraph();
+       _actionLearners_[actionId]->getWithDefault(*varIter, nullptr)->updateGraph();
     }
 
-    if (actionReward__) {
-      actionRewardLearners__[actionId]->addObservation(newObs);
-      actionRewardLearners__[actionId]->updateGraph();
+    if ( _actionReward_) {
+       _actionRewardLearners_[actionId]->addObservation(newObs);
+       _actionRewardLearners_[actionId]->updateGraph();
     } else {
-      rewardLearner__->addObservation(newObs);
-      rewardLearner__->updateGraph();
+       _rewardLearner_->addObservation(newObs);
+       _rewardLearner_->updateGraph();
     }
 
-    rmax__
-       = rmax__ < std::abs(newObs->reward()) ? std::abs(newObs->reward()) : rmax__;
+     _rmax_
+       =  _rmax_ < std::abs(newObs->reward()) ? std::abs(newObs->reward()) :  _rmax_;
 
     return false;
   }
@@ -192,20 +192,20 @@ namespace gum {
                     RewardAttributeSelection,
                     LearnerSelection >::size() {
     Size s = 0;
-    for (SequenceIteratorSafe< Idx > actionIter = fmdp__->beginActions();
-         actionIter != fmdp__->endActions();
+    for (SequenceIteratorSafe< Idx > actionIter =  _fmdp_->beginActions();
+         actionIter !=  _fmdp_->endActions();
          ++actionIter) {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           = fmdp__->beginVariables();
-           varIter != fmdp__->endVariables();
+           =  _fmdp_->beginVariables();
+           varIter !=  _fmdp_->endVariables();
            ++varIter)
-        s += actionLearners__[*actionIter]
+        s +=  _actionLearners_[*actionIter]
                 ->getWithDefault(*varIter, nullptr)
                 ->size();
-      if (actionReward__) s += actionRewardLearners__[*actionIter]->size();
+      if ( _actionReward_) s +=  _actionRewardLearners_[*actionIter]->size();
     }
 
-    if (!actionReward__) s += rewardLearner__->size();
+    if (! _actionReward_) s +=  _rewardLearner_->size();
 
     return s;
   }
@@ -220,20 +220,20 @@ namespace gum {
   void FMDPLearner< VariableAttributeSelection,
                     RewardAttributeSelection,
                     LearnerSelection >::updateFMDP() {
-    for (SequenceIteratorSafe< Idx > actionIter = fmdp__->beginActions();
-         actionIter != fmdp__->endActions();
+    for (SequenceIteratorSafe< Idx > actionIter =  _fmdp_->beginActions();
+         actionIter !=  _fmdp_->endActions();
          ++actionIter) {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           = fmdp__->beginVariables();
-           varIter != fmdp__->endVariables();
+           =  _fmdp_->beginVariables();
+           varIter !=  _fmdp_->endVariables();
            ++varIter)
-        actionLearners__[*actionIter]
+         _actionLearners_[*actionIter]
            ->getWithDefault(*varIter, nullptr)
            ->updateFunctionGraph();
-      if (actionReward__)
-        actionRewardLearners__[*actionIter]->updateFunctionGraph();
+      if ( _actionReward_)
+         _actionRewardLearners_[*actionIter]->updateFunctionGraph();
     }
 
-    if (!actionReward__) rewardLearner__->updateFunctionGraph();
+    if (! _actionReward_)  _rewardLearner_->updateFunctionGraph();
   }
 }   // End of namespace gum

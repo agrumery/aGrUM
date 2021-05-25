@@ -38,8 +38,8 @@ namespace gum {
      const std::string&              filePath) :
       IDReader< GUM_SCALAR >(infdiag, filePath) {
     GUM_CONSTRUCTOR(BIFXMLIDReader);
-    infdiag__  = infdiag;
-    filePath__ = filePath;
+     _infdiag_  = infdiag;
+     _filePath_ = filePath;
   }
 
   /*
@@ -63,7 +63,7 @@ namespace gum {
       std::string status = "Loading File ...";
       GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc(filePath__);
+      ticpp::Document xmlDoc( _filePath_);
       xmlDoc.LoadFile();
 
       if (xmlDoc.NoChildren()) {
@@ -87,13 +87,13 @@ namespace gum {
       status = "Network found. Now proceeding variables instanciation...";
       GUM_EMIT2(onProceed, 10, status);
 
-      parsingVariables__(networkElement);
+       _parsingVariables_(networkElement);
 
       // Filling diagram
       status = "All variables have been instancied. Now filling up diagram...";
       GUM_EMIT2(onProceed, 55, status);
 
-      fillingDiagram__(networkElement);
+       _fillingDiagram_(networkElement);
 
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
@@ -104,7 +104,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BIFXMLIDReader< GUM_SCALAR >::parsingVariables__(
+  void BIFXMLIDReader< GUM_SCALAR >:: _parsingVariables_(
      ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
@@ -143,11 +143,11 @@ namespace gum {
 
       // Add the variable to the id
       if (nodeType.compare("decision") == 0)
-        infdiag__->addDecisionNode(newVar);
+         _infdiag_->addDecisionNode(newVar);
       else if (nodeType.compare("utility") == 0)
-        infdiag__->addUtilityNode(newVar);
+         _infdiag_->addUtilityNode(newVar);
       else
-        infdiag__->addChanceNode(newVar);
+         _infdiag_->addChanceNode(newVar);
 
       // Emitting progress.
       std::string status
@@ -159,7 +159,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BIFXMLIDReader< GUM_SCALAR >::fillingDiagram__(
+  void BIFXMLIDReader< GUM_SCALAR >:: _fillingDiagram_(
      ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;
@@ -181,7 +181,7 @@ namespace gum {
       // Considered Node
       std::string currentVarName
          = currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
-      NodeId currentVarId = infdiag__->idFromName(currentVarName);
+      NodeId currentVarId =  _infdiag_->idFromName(currentVarName);
 
       // Get Node's parents
       ticpp::Iterator< ticpp::Element > givenIte("GIVEN");
@@ -190,17 +190,17 @@ namespace gum {
       for (givenIte = givenIte.begin(currentVar); givenIte != givenIte.end();
            ++givenIte) {
         std::string parentNode = givenIte->GetTextOrDefault("");
-        NodeId      parentId   = infdiag__->idFromName(parentNode);
+        NodeId      parentId   =  _infdiag_->idFromName(parentNode);
         parentList.pushBack(parentId);
       }
 
       for (List< NodeId >::iterator_safe parentListIte = parentList.rbeginSafe();
            parentListIte != parentList.rendSafe();
            --parentListIte)
-        infdiag__->addArc(*parentListIte, currentVarId);
+         _infdiag_->addArc(*parentListIte, currentVarId);
 
       // Recuperating tables values
-      if (!infdiag__->isDecisionNode(currentVarId)) {
+      if (! _infdiag_->isDecisionNode(currentVarId)) {
         ticpp::Element*    tableElement = currentVar->FirstChildElement("TABLE");
         std::istringstream issTableString(tableElement->GetTextOrDefault(""));
         std::list< GUM_SCALAR > tablelist;
@@ -214,11 +214,11 @@ namespace gum {
         std::vector< GUM_SCALAR > tablevector(tablelist.begin(), tablelist.end());
 
         // Filling tables
-        if (infdiag__->isChanceNode(currentVarId)) {
-          const Potential< GUM_SCALAR >* table = &infdiag__->cpt(currentVarId);
+        if ( _infdiag_->isChanceNode(currentVarId)) {
+          const Potential< GUM_SCALAR >* table = & _infdiag_->cpt(currentVarId);
           table->populate(tablevector);
-        } else if (infdiag__->isUtilityNode(currentVarId)) {
-          const Potential< GUM_SCALAR >* table = &infdiag__->utility(currentVarId);
+        } else if ( _infdiag_->isUtilityNode(currentVarId)) {
+          const Potential< GUM_SCALAR >* table = & _infdiag_->utility(currentVarId);
           table->populate(tablevector);
         }
       }

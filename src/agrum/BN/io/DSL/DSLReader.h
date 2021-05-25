@@ -113,18 +113,18 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*        bn__;
-    BayesNetFactory< GUM_SCALAR >* factory__;
-    DSL::Scanner*                  scanner__;
-    DSL::Parser*                   parser__;
+    BayesNet< GUM_SCALAR >*         _bn_;
+    BayesNetFactory< GUM_SCALAR >*  _factory_;
+    DSL::Scanner*                   _scanner_;
+    DSL::Parser*                    _parser_;
 
-    std::string streamName__;
-    bool        traceScanning__;
-    bool        parseDone__;
+    std::string  _streamName_;
+    bool         _traceScanning_;
+    bool         _parseDone_;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool ioerror__;
+    bool  _ioerror_;
   };
 
 

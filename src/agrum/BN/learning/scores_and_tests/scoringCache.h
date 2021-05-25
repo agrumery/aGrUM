@@ -160,7 +160,7 @@ namespace gum {
       HashTable< IdCondSet< ALLOC >,
                  double,
                  ALLOC< std::pair< IdCondSet< ALLOC >, double > > >
-         scores__;
+          _scores_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

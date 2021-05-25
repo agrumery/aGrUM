@@ -176,21 +176,21 @@ namespace gum {
     /// @}
 
     private:
-    void makeRMaxFunctionGraphs__();
+    void  _makeRMaxFunctionGraphs_();
 
-    std::pair< NodeId, NodeId > visitLearner__(const IVisitableGraphLearner*,
+    std::pair< NodeId, NodeId >  _visitLearner_(const IVisitableGraphLearner*,
                                                NodeId currentNodeId,
                                                MultiDimFunctionGraph< double >*,
                                                MultiDimFunctionGraph< double >*);
-    void                        clearTables__();
+    void                         _clearTables_();
 
     private:
-    HashTable< Idx, MultiDimFunctionGraph< double >* > actionsRMaxTable__;
-    HashTable< Idx, MultiDimFunctionGraph< double >* > actionsBoolTable__;
-    const ILearningStrategy*                           fmdpLearner__;
+    HashTable< Idx, MultiDimFunctionGraph< double >* >  _actionsRMaxTable_;
+    HashTable< Idx, MultiDimFunctionGraph< double >* >  _actionsBoolTable_;
+    const ILearningStrategy*                            _fmdpLearner_;
 
-    double rThreshold__;
-    double rmax__;
+    double  _rThreshold_;
+    double  _rmax_;
 
 
     // ###################################################################
@@ -199,18 +199,18 @@ namespace gum {
     /// @{
     public:
     void checkState(const Instantiation& newState, Idx actionId) {
-      if (!initializedTable__[actionId]) {
-        counterTable__[actionId]->reset(newState);
-        initializedTable__[actionId] = true;
+      if (! _initializedTable_[actionId]) {
+         _counterTable_[actionId]->reset(newState);
+         _initializedTable_[actionId] = true;
       } else
-        counterTable__[actionId]->incState(newState);
+         _counterTable_[actionId]->incState(newState);
     }
 
     private:
-    HashTable< Idx, StatesCounter* > counterTable__;
-    HashTable< Idx, bool >           initializedTable__;
+    HashTable< Idx, StatesCounter* >  _counterTable_;
+    HashTable< Idx, bool >            _initializedTable_;
 
-    bool initialized__;
+    bool  _initialized_;
     /// @}
   };
 

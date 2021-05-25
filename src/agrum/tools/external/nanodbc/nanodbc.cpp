@@ -18,7 +18,7 @@
 #include <iomanip>
 #include <map>
 
-#ifndef __clang__
+#ifndef  __clang__
     #include <cstdint>
 #endif
 
@@ -41,7 +41,7 @@
     #pragma warning(disable:4996) // warning about snprintf() deprecated.
 #endif
 
-#ifdef __APPLE__
+#ifdef  __APPLE__
     // silence spurious OS X deprecation warnings
     #define MAC_OS_X_VERSION_MIN_REQUIRED MAC_OS_X_VERSION_10_6
 #endif
@@ -129,22 +129,22 @@ typedef wide_string_type::value_type wide_char_t;
     #define NANODBC_CALL_RC(FUNC, RC, ...)                                    \
         do                                                                    \
         {                                                                     \
-            std::cerr << __FILE__ ":" NANODBC_STRINGIZE(__LINE__) " "         \
-                NANODBC_STRINGIZE(FUNC) "(" #__VA_ARGS__ ")" << std::endl;    \
-            RC = FUNC(__VA_ARGS__);                                           \
+            std::cerr <<   __FILE__ ":" NANODBC_STRINGIZE(  __LINE__) " "         \
+                NANODBC_STRINGIZE(FUNC) "(" # __VA_ARGS__ ")" << std::endl;    \
+            RC = FUNC( __VA_ARGS__);                                           \
         } while(false)                                                        \
         /**/
     #define NANODBC_CALL(FUNC, ...)                                           \
         do                                                                    \
         {                                                                     \
-            std::cerr << __FILE__ ":" NANODBC_STRINGIZE(__LINE__) " "         \
-                NANODBC_STRINGIZE(FUNC) "(" #__VA_ARGS__ ")" << std::endl;    \
-            FUNC(__VA_ARGS__);                                                \
+            std::cerr <<   __FILE__ ":" NANODBC_STRINGIZE(  __LINE__) " "         \
+                NANODBC_STRINGIZE(FUNC) "(" # __VA_ARGS__ ")" << std::endl;    \
+            FUNC( __VA_ARGS__);                                                \
         } while(false)                                                        \
         /**/
 #else
-    #define NANODBC_CALL_RC(FUNC, RC, ...) RC = FUNC(__VA_ARGS__)
-    #define NANODBC_CALL(FUNC, ...) FUNC(__VA_ARGS__)
+    #define NANODBC_CALL_RC(FUNC, RC, ...) RC = FUNC( __VA_ARGS__)
+    #define NANODBC_CALL(FUNC, ...) FUNC( __VA_ARGS__)
 #endif
 
 // 8888888888                                      888    888                        888 888 d8b
@@ -400,7 +400,7 @@ namespace nanodbc
     throw nanodbc::database_error(                                            \
         handle                                                                \
         , handle_type                                                         \
-        , __FILE__ ":" NANODBC_STRINGIZE(__LINE__) ": ")                      \
+        ,   __FILE__ ":" NANODBC_STRINGIZE(  __LINE__) ": ")                      \
     /**/
 
 // 8888888b.           888             d8b 888

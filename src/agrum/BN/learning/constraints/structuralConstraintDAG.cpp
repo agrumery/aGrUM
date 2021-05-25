@@ -49,7 +49,7 @@ namespace gum {
       for (NodeId i = 0; i < nb_nodes; ++i) {
         g.addNodeWithId(i);
       }
-      DAG__cycle_detector_.setDAG(g);
+       _DAG_cycle_detector_.setDAG(g);
 
       GUM_CONSTRUCTOR(StructuralConstraintDAG);
     }
@@ -57,7 +57,7 @@ namespace gum {
     /// constructor starting with a given graph
     StructuralConstraintDAG::StructuralConstraintDAG(const DAG& graph) {
       StructuralConstraintDiGraph::setGraph(graph);
-      DAG__cycle_detector_.setDAG(graph);
+       _DAG_cycle_detector_.setDAG(graph);
 
       GUM_CONSTRUCTOR(StructuralConstraintDAG);
     }
@@ -66,7 +66,7 @@ namespace gum {
     StructuralConstraintDAG::StructuralConstraintDAG(
        const StructuralConstraintDAG& from) :
         StructuralConstraintDiGraph(from),
-        DAG__cycle_detector_(from.DAG__cycle_detector_) {
+         _DAG_cycle_detector_(from. _DAG_cycle_detector_) {
       GUM_CONS_CPY(StructuralConstraintDAG);
     }
 
@@ -74,7 +74,7 @@ namespace gum {
     StructuralConstraintDAG::StructuralConstraintDAG(
        StructuralConstraintDAG&& from) :
         StructuralConstraintDiGraph(std::move(from)),
-        DAG__cycle_detector_(std::move(from.DAG__cycle_detector_)) {
+         _DAG_cycle_detector_(std::move(from. _DAG_cycle_detector_)) {
       GUM_CONS_MOV(StructuralConstraintDAG);
     }
 
@@ -88,7 +88,7 @@ namespace gum {
        StructuralConstraintDAG::operator=(const StructuralConstraintDAG& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        DAG__cycle_detector_                 = from.DAG__cycle_detector_;
+         _DAG_cycle_detector_                 = from. _DAG_cycle_detector_;
       }
       return *this;
     }
@@ -98,7 +98,7 @@ namespace gum {
        StructuralConstraintDAG::operator=(StructuralConstraintDAG&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        DAG__cycle_detector_ = std::move(from.DAG__cycle_detector_);
+         _DAG_cycle_detector_ = std::move(from. _DAG_cycle_detector_);
       }
       return *this;
     }

@@ -71,18 +71,18 @@ namespace gum {
     template < template < typename > class ALLOC >
     std::string DBCell::toString(
        const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
-      switch (type__) {
+      switch ( _type_) {
         case EltType::STRING:
-          return strings__().first(val_index__);
+          return  _strings_().first( _val_index_);
 
         case EltType::REAL: {
           char buffer[100];
-          sprintf(buffer, "%g", val_real__);
+          sprintf(buffer, "%g",  _val_real_);
           return std::string(buffer);
         }
 
         case EltType::INTEGER:
-          return std::to_string(val_integer__);
+          return std::to_string( _val_integer_);
 
         case EltType::MISSING:
           if (missingVals.size())

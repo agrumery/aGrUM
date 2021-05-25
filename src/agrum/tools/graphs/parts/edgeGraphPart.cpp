@@ -36,24 +36,24 @@ namespace gum {
 
   ///////////////////// EdgeGraphPart
   EdgeGraphPart::EdgeGraphPart(Size edges_size, bool edges_resize_policy) :
-      edges__(edges_size, edges_resize_policy) {
+       _edges_(edges_size, edges_resize_policy) {
     GUM_CONSTRUCTOR(EdgeGraphPart);
   }
 
-  EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s) : edges__(s.edges__) {
+  EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s) :  _edges_(s. _edges_) {
     GUM_CONS_CPY(EdgeGraphPart);
 
     // copy the set of neighbours
-    neighbours__.resize(s.neighbours__.capacity());
+     _neighbours_.resize(s. _neighbours_.capacity());
 
-    for (const auto& elt: s.neighbours__) {
+    for (const auto& elt: s. _neighbours_) {
       NodeSet* newneigh = new NodeSet(*elt.second);
-      neighbours__.insert(elt.first, newneigh);
+       _neighbours_.insert(elt.first, newneigh);
     }
 
     // send signals to indicate that there are new edges
     if (onEdgeAdded.hasListener())
-      for (const auto& edge: edges__)
+      for (const auto& edge:  _edges_)
         GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
   }
 
@@ -64,19 +64,19 @@ namespace gum {
   }
 
   void EdgeGraphPart::clearEdges() {
-    for (const auto& elt: neighbours__)
+    for (const auto& elt:  _neighbours_)
       delete elt.second;
 
-    neighbours__.clear();
+     _neighbours_.clear();
 
     if (onEdgeDeleted.hasListener()) {
-      EdgeSet tmp = edges__;
-      edges__.clear();
+      EdgeSet tmp =  _edges_;
+       _edges_.clear();
 
       for (const auto& edge: tmp)
         GUM_EMIT2(onEdgeDeleted, edge.first(), edge.second());
     } else {
-      edges__.clear();
+       _edges_.clear();
     }
   }
 
@@ -85,18 +85,18 @@ namespace gum {
     if (this != &s) {
       clearEdges();
 
-      edges__ = s.edges__;
+       _edges_ = s. _edges_;
 
       // copy the set of neighbours
-      neighbours__.resize(s.neighbours__.capacity());
+       _neighbours_.resize(s. _neighbours_.capacity());
 
-      for (const auto& elt: s.neighbours__) {
+      for (const auto& elt: s. _neighbours_) {
         NodeSet* newneigh = new NodeSet(*elt.second);
-        neighbours__.insert(elt.first, newneigh);
+         _neighbours_.insert(elt.first, newneigh);
       }
 
       if (onEdgeAdded.hasListener())
-        for (const auto& edge: edges__)
+        for (const auto& edge:  _edges_)
           GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
     }
 
@@ -108,7 +108,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (const auto& edge: edges__) {
+    for (const auto& edge:  _edges_) {
       if (first)
         first = false;
       else

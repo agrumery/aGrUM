@@ -446,7 +446,7 @@ namespace gum {
 
       private:
       /// input / output flags, useful when inheriting or copying.
-      HashTable< std::string, std::pair< bool, bool > > IOFlags__;
+      HashTable< std::string, std::pair< bool, bool > >  _IOFlags_;
     };
 
 

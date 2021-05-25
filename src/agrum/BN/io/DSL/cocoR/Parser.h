@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_DSL_COCO_PARSER_H__)
-#define gum_DSL_COCO_PARSER_H__
+#if !defined( _gum_DSL_COCO_PARSER_H_)
+#define  _gum_DSL_COCO_PARSER_H_
 
 #include <agrum/tools/core/cast_unicode.h>
 
@@ -75,7 +75,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  errors__;
+    ErrorsContainer   _errors_;
 
   public:
     Scanner* scanner;
@@ -83,14 +83,14 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::IBayesNetFactory* factory__;
+    gum::IBayesNetFactory*  _factory_;
 
 void setFactory(gum::IBayesNetFactory* f) {
-  factory__=f;
+   _factory_=f;
 }
 
 gum::IBayesNetFactory& factory() {
-  if (factory__) return *factory__;
+  if ( _factory_) return * _factory_;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...")
 }
 
@@ -102,7 +102,7 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::string& var, int res) {
+void  _checkSizeOfProbabilityAssignation_(const std::vector<float>&v,const std::string& var, int res) {
   if ((int) v.size()<res)
     Warning("Not enough data in probability assignation for node "+var);
   if ((int) v.size()>res)
@@ -156,5 +156,5 @@ void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::s
 } // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif // !defined( _COCO_PARSER_H_)
 

@@ -91,25 +91,25 @@ namespace gum {
 
     private:
     /// The main recursion function
-    NodeId xPloreDT1__(NodeId currentNodeId);
+    NodeId  _xPloreDT1_(NodeId currentNodeId);
 
     /// The main recursion function
-    NodeId xPloreDT2__(NodeId currentNodeId);
+    NodeId  _xPloreDT2_(NodeId currentNodeId);
 
-    NodeId checkRedundancy__(const DiscreteVariable*, NodeId*);
+    NodeId  _checkRedundancy_(const DiscreteVariable*, NodeId*);
 
     /// The two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1__;
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2__;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _dt1_;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _dt2_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* rd__;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _rd_;
 
     /// The function to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR > combine__;
+    const COMBINEOPERATOR< GUM_SCALAR >  _combine_;
 
-    HashTable< const DiscreteVariable*, Idx > context__;
-    NodeId                                    curDT1Leaf__;
+    HashTable< const DiscreteVariable*, Idx >  _context_;
+    NodeId                                     _curDT1Leaf_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

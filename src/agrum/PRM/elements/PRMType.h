@@ -265,21 +265,21 @@ namespace gum {
       /// @{
 
       /// Returns true if this is a valid type or subtype.
-      bool isValid__() const;
+      bool  _isValid_() const;
 
       /// Used at construction to set a unique name to this class underlying
       /// DiscreteVariable.
-      void updateName__();
+      void  _updateName_();
 
       /// The discrete variable
-      DiscreteVariable* var__;
+      DiscreteVariable*  _var_;
 
       /// The super type of this, if any.
-      PRMType* superType__;
+      PRMType*  _superType_;
 
       /// A vector in which the i-th element is the Idx of the super
       /// type's label for the i-th label of this.
-      std::vector< Idx >* label_map__;
+      std::vector< Idx >*  _label_map_;
 
       /// @}
     };

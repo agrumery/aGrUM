@@ -65,7 +65,7 @@ namespace gum {
            << std::endl;
 
     for (auto node: bn.topologicalOrder()) {
-      output << variableBloc__(bn, bn.variable(node));
+      output <<  _variableBloc_(bn, bn.variable(node));
     }
 
     output << "};";
@@ -99,7 +99,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   std::string
-     DSLWriter< GUM_SCALAR >::variableBloc__(const IBayesNet< GUM_SCALAR >& bn,
+     DSLWriter< GUM_SCALAR >:: _variableBloc_(const IBayesNet< GUM_SCALAR >& bn,
                                              const DiscreteVariable&        var) {
     NodeId             id;
     std::ostringstream oss;

@@ -34,7 +34,7 @@ namespace gum {
                                              ParameterType      type,
                                              GUM_SCALAR         value) :
         PRMClassElement< GUM_SCALAR >(name),
-        type__(type), value__(value) {
+         _type_(type),  _value_(value) {
       GUM_CONSTRUCTOR(PRMParameter);
       this->safeName_ = name;
     }
@@ -43,7 +43,7 @@ namespace gum {
     PRMParameter< GUM_SCALAR >::PRMParameter(
        const PRMParameter< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
-        type__(source.valueType()), value__(source.value()) {
+         _type_(source.valueType()),  _value_(source.value()) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR")
     }
 
@@ -66,18 +66,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     GUM_SCALAR PRMParameter< GUM_SCALAR >::value() const {
-      return value__;
+      return  _value_;
     }
 
     template < typename GUM_SCALAR >
     void PRMParameter< GUM_SCALAR >::value(GUM_SCALAR value) {
-      value__ = value;
+       _value_ = value;
     }
 
     template < typename GUM_SCALAR >
     typename PRMParameter< GUM_SCALAR >::ParameterType
        PRMParameter< GUM_SCALAR >::valueType() const {
-      return type__;
+      return  _type_;
     }
 
     template < typename GUM_SCALAR >

@@ -102,24 +102,24 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string heading__();
+    std::string  _heading_();
 
     /**
      * Returns the end of the BIF file.
      */
-    std::string documentend__();
+    std::string  _documentend_();
 
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string variableBloc__(const DiscreteVariable& var, int nodeType);
+    std::string  _variableBloc_(const DiscreteVariable& var, int nodeType);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
     std::string
-       variableDefinition__(const NodeId&                         varNodeId,
+        _variableDefinition_(const NodeId&                         varNodeId,
                             const InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */

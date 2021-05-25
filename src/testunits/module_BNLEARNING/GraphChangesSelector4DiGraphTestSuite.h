@@ -38,7 +38,7 @@ namespace gum_tests {
 
   class GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
     private:
-    void order_nodes__(
+    void  _order_nodes_(
        const std::vector< std::vector< double > >&      all_scores,
        const std::vector< gum::NodeId >&                best_nodes,
        std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
@@ -56,7 +56,7 @@ namespace gum_tests {
                 });
     }
 
-    void compute_scores__(gum::learning::ScoreK2<>&             score,
+    void  _compute_scores_(gum::learning::ScoreK2<>&             score,
                           const gum::DAG&                       graph,
                           std::vector< std::vector< double > >& all_scores,
                           std::vector< gum::NodeId >&           best_nodes,
@@ -196,7 +196,7 @@ namespace gum_tests {
       std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
       std::vector< gum::NodeId >           best_nodes(6);
       gum::NodeId                          best_node;
-      compute_scores__(score, graph, all_scores, best_nodes, best_node);
+       _compute_scores_(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
@@ -226,7 +226,7 @@ namespace gum_tests {
       selector.applyChangeWithoutScoreUpdate(change2);
       selector.updateScoresAfterAppliedChanges();
 
-      compute_scores__(score, graph, all_scores, best_nodes, best_node);
+       _compute_scores_(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -247,7 +247,7 @@ namespace gum_tests {
       graph.addArc(change3.node1(), change3.node2());
       selector.applyChange(change3);
 
-      compute_scores__(score, graph, all_scores, best_nodes, best_node);
+       _compute_scores_(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -268,7 +268,7 @@ namespace gum_tests {
       graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
       selector.applyChange(change4);
 
-      compute_scores__(score, graph, all_scores, best_nodes, best_node);
+       _compute_scores_(score, graph, all_scores, best_nodes, best_node);
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
@@ -285,7 +285,7 @@ namespace gum_tests {
       TS_ASSERT(xnodes.size() == std::size_t(6));
 
       std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
-      order_nodes__(all_scores, best_nodes, sorted_nodes);
+       _order_nodes_(all_scores, best_nodes, sorted_nodes);
       for (std::size_t i = 0; i < 6; ++i) {
         TS_ASSERT(xnodes[i] == sorted_nodes[i]);
       }

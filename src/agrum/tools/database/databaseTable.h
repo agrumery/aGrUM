@@ -706,28 +706,28 @@ namespace gum {
 
       private:
       /// the set of translators used to convert the strings into floats
-      DBTranslatorSet< ALLOC > translators__;
+      DBTranslatorSet< ALLOC >  _translators_;
 
       /// the set of ignored columns asked by the user
-      Set< std::size_t, ALLOC< std::size_t > > ignored_cols__;
+      Set< std::size_t, ALLOC< std::size_t > >  _ignored_cols_;
 
       /** @brief check that a row's values are compatible with those of the
        * translators' variables */
-      bool isRowCompatible__(const Row< DBTranslatedValue >& row) const;
+      bool  _isRowCompatible_(const Row< DBTranslatedValue >& row) const;
 
       /** @brief returns the index corresponding either to the kth translator or
        * to the first one that parses the kth column of the input dataset
        *
        * @warning if the translator does not exists, the function returns an
        * index which is greater than the number of translators */
-      std::size_t getKthIndex__(const std::size_t k,
+      std::size_t  _getKthIndex_(const std::size_t k,
                                 const bool        k_is_input_col) const;
 
       /** @brief returns the indices corresponding either to the kth translator
        * or to all those that parse the kth column of the input dataset
        *
        * @warning the indices are sorted by deacreasing order */
-      DBVector< std::size_t > getKthIndices__(const std::size_t k,
+      DBVector< std::size_t >  _getKthIndices_(const std::size_t k,
                                               const bool k_is_input_col) const;
 
       /// a method to process the rows of the database in multithreading
@@ -750,7 +750,7 @@ namespace gum {
        * calling undo_func, they should have restored this state.
        */
       template < typename Functor1, typename Functor2 >
-      void threadProcessDatabase__(Functor1& exec_func, Functor2& undo_func);
+      void  _threadProcessDatabase_(Functor1& exec_func, Functor2& undo_func);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

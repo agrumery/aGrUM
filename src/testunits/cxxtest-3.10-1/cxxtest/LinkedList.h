@@ -1,5 +1,5 @@
-#ifndef __cxxtest__LinkedList_h__
-#define __cxxtest__LinkedList_h__
+#ifndef  __cxxtest__LinkedList_h__
+#define  __cxxtest__LinkedList_h__
 
 #include <cxxtest/Flags.h>
 
@@ -58,4 +58,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__LinkedList_h__
+#endif  //  __cxxtest__LinkedList_h__

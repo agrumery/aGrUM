@@ -210,7 +210,7 @@ namespace gum {
      * hence to a pair of types of MultiDimImplementations, is associated a
      * function to combine them (the OperatorPtr).
      */
-    HashTable< std::string, OperatorSet* > set__;
+    HashTable< std::string, OperatorSet* >  _set_;
   };
 
   /// A function to more easily register new operators in MultiDims

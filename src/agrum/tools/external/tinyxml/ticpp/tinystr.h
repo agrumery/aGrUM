@@ -49,7 +49,7 @@ distribution.
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 // Microsoft visual studio, version 6 and higher.
 #define TIXML_EXPLICIT explicit
-#elif defined(__GNUC__) && (__GNUC__ >= 3)
+#elif defined( __GNUC__) && ( __GNUC__ >= 3)
 // GCC version 3 and higher.s
 #define TIXML_EXPLICIT explicit
 #else

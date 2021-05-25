@@ -36,8 +36,8 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
       // check that the max_indegree corresponds to the graph
       for (const auto id: graph) {
-        if (!Indegree__max_parents_.exists(id)) {
-          Indegree__max_parents_.insert(id, Indegree__max_indegree_);
+        if (! _Indegree_max_parents_.exists(id)) {
+           _Indegree_max_parents_.insert(id,  _Indegree_max_indegree_);
         }
       }
     }
@@ -46,7 +46,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintIndegree::checkArcAdditionAlone(NodeId x,
                                                            NodeId y) const {
-      return (Indegree__max_parents_[y] > DiGraph__graph_.parents(y).size());
+      return ( _Indegree_max_parents_[y] >  _DiGraph_graph_.parents(y).size());
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -60,7 +60,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintIndegree::checkArcReversalAlone(NodeId x,
                                                            NodeId y) const {
-      return (Indegree__max_parents_[x] > DiGraph__graph_.parents(x).size());
+      return ( _Indegree_max_parents_[x] >  _DiGraph_graph_.parents(x).size());
     }
 
     /// checks whether the constraints enable to add an arc
@@ -121,10 +121,10 @@ namespace gum {
     INLINE bool StructuralConstraintIndegree::isAlwaysInvalidAlone(
        const GraphChange& change) const {
       if ((change.type() == GraphChangeType::ARC_ADDITION)
-          && (Indegree__max_parents_[change.node2()] == 0)) {
+          && ( _Indegree_max_parents_[change.node2()] == 0)) {
         return true;
       } else if ((change.type() == GraphChangeType::ARC_REVERSAL)
-                 && (Indegree__max_parents_[change.node1()] == 0)) {
+                 && ( _Indegree_max_parents_[change.node1()] == 0)) {
         return true;
       } else {
         return false;
@@ -135,7 +135,7 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setIndegree(
        const NodeProperty< Size >& max_indegree) {
       for (const auto& degree: max_indegree) {
-        Indegree__max_parents_.set(degree.first, degree.second);
+         _Indegree_max_parents_.set(degree.first, degree.second);
       }
     }
 
@@ -143,12 +143,12 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setMaxIndegree(Size max_indegree,
                                                              bool update_all) {
       if (update_all) {
-        for (auto& degree: Indegree__max_parents_) {
+        for (auto& degree:  _Indegree_max_parents_) {
           degree.second = max_indegree;
         }
       }
 
-      Indegree__max_indegree_ = max_indegree;
+       _Indegree_max_indegree_ = max_indegree;
     }
 
 // include all the methods applicable to the whole class hierarchy

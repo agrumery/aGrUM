@@ -1,5 +1,5 @@
-#ifndef __cxxtest__QtGui_h__
-#define __cxxtest__QtGui_h__
+#ifndef  __cxxtest__QtGui_h__
+#define  __cxxtest__QtGui_h__
 
 //
 // The QtGui displays a simple progress bar using the Qt Toolkit.  It
@@ -241,4 +241,4 @@ namespace CxxTest {
   };
 };
 
-#endif  // __cxxtest__QtGui_h__
+#endif  //  __cxxtest__QtGui_h__

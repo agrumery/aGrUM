@@ -84,7 +84,7 @@
 #include <string>
 #include <vector>
 
-#ifndef __clang__
+#ifndef  __clang__
     #include <cstdint>
 #endif
 
@@ -146,7 +146,7 @@ namespace nanodbc
     #if defined(_WIN64)
         // LLP64 machine: Windows
         typedef std::int64_t null_type;
-    #elif !defined(_WIN64) && defined(__LP64__)
+    #elif !defined(_WIN64) && defined( __LP64__)
         // LP64 machine: OS X or Linux
         typedef long null_type;
     #else

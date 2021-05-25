@@ -84,15 +84,15 @@ namespace gum {
     private:
     /// The whatever 1
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-       xPloreVFunc__(NodeId currentNodeId);
+        _xPloreVFunc_(NodeId currentNodeId);
 
     /// The function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vFunc__;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _vFunc_;
     const Bijection<
        const DiscreteVariable*,
        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
-                                              pxi__;
-    HashTable< const DiscreteVariable*, Idx > context__;
+                                               _pxi_;
+    HashTable< const DiscreteVariable*, Idx >  _context_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

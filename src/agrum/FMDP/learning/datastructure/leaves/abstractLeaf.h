@@ -59,7 +59,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf(NodeId leafId) : leafId__(leafId) {
+    AbstractLeaf(NodeId leafId) :  _leafId_(leafId) {
       GUM_CONSTRUCTOR(AbstractLeaf);
     }
 
@@ -92,16 +92,16 @@ namespace gum {
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains(NodeId testedId) const { return leafId__ == testedId; }
+    virtual bool contains(NodeId testedId) const { return  _leafId_ == testedId; }
 
-    NodeId id() { return leafId__; }
+    NodeId id() { return  _leafId_; }
 
     virtual Idx nbModa() const = 0;
 
     virtual std::string toString() = 0;
 
     private:
-    NodeId leafId__;
+    NodeId  _leafId_;
   };
 
 

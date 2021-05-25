@@ -59,7 +59,7 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    StatisticalLazyDecider() : counter__(), initialized__(false) {
+    StatisticalLazyDecider() :  _counter_(),  _initialized_(false) {
       GUM_CONSTRUCTOR(StatisticalLazyDecider);
     }
 
@@ -80,16 +80,16 @@ namespace gum {
     /// @{
     public:
     void checkState(const Instantiation& newState, Idx actionId = 0) {
-      if (!initialized__) {
-        counter__.reset(newState);
-        initialized__ = true;
+      if (! _initialized_) {
+         _counter_.reset(newState);
+         _initialized_ = true;
       } else
-        counter__.incState(newState);
+         _counter_.incState(newState);
     }
 
     private:
-    StatesCounter counter__;
-    bool          initialized__;
+    StatesCounter  _counter_;
+    bool           _initialized_;
   };
 }   // namespace gum
 #endif   // GUM_STATISTICAL_LAZY_DECIDER_H

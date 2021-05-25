@@ -36,7 +36,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename IDBInitializer< ALLOC >::allocator_type
        IDBInitializer< ALLOC >::getAllocator() const {
-      return var_names__.get_allocator();
+      return  _var_names_.get_allocator();
     }
 
 
@@ -45,8 +45,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        typename IDBInitializer< ALLOC >::InputType             type,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        var_names__(alloc),
-        input_type__(type) {
+         _var_names_(alloc),
+         _input_type_(type) {
       GUM_CONSTRUCTOR(IDBInitializer);
     }
 
@@ -56,8 +56,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        const IDBInitializer< ALLOC >&                          from,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        var_names__(from.var_names__, alloc),
-        input_type__(from.input_type__) {
+         _var_names_(from. _var_names_, alloc),
+         _input_type_(from. _input_type_) {
       GUM_CONS_CPY(IDBInitializer);
     }
 
@@ -74,8 +74,8 @@ namespace gum {
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
        IDBInitializer< ALLOC >&&                               from,
        const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
-        var_names__(std::move(from.var_names__), alloc),
-        input_type__(from.input_type__) {
+         _var_names_(std::move(from. _var_names_), alloc),
+         _input_type_(from. _input_type_) {
       GUM_CONS_MOV(IDBInitializer);
     }
 
@@ -98,8 +98,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     const std::vector< std::string, ALLOC< std::string > >&
        IDBInitializer< ALLOC >::variableNames() {
-      if (var_names__.empty()) var_names__ = this->variableNames_();
-      return var_names__;
+      if ( _var_names_.empty())  _var_names_ = this->variableNames_();
+      return  _var_names_;
     }
 
 
@@ -108,9 +108,9 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(const IDBInitializer< ALLOC >& from) {
       if (this != &from) {
-        var_names__             = from.var_names__;
-        input_type__            = from.input_type__;
-        last_insertion_failed__ = false;
+         _var_names_             = from. _var_names_;
+         _input_type_            = from. _input_type_;
+         _last_insertion_failed_ = false;
       }
       return *this;
     }
@@ -121,9 +121,9 @@ namespace gum {
     IDBInitializer< ALLOC >&
        IDBInitializer< ALLOC >::operator=(IDBInitializer< ALLOC >&& from) {
       if (this != &from) {
-        var_names__             = std::move(from.var_names__);
-        input_type__            = from.input_type__;
-        last_insertion_failed__ = false;
+         _var_names_             = std::move(from. _var_names_);
+         _input_type_            = from. _input_type_;
+         _last_insertion_failed_ = false;
       }
       return *this;
     }
@@ -134,13 +134,13 @@ namespace gum {
     template < template < template < typename > class > class DATABASE >
     INLINE void IDBInitializer< ALLOC >::fillDatabase(DATABASE< ALLOC >& database,
                                                       const bool retry_insertion) {
-      switch (input_type__) {
+      switch ( _input_type_) {
         case InputType::STRING:
-          fillDatabaseFromStrings__(database, retry_insertion);
+           _fillDatabaseFromStrings_(database, retry_insertion);
           return;
 
         case InputType::DBCELL:
-          fillDatabaseFromDBCells__(database, retry_insertion);
+           _fillDatabaseFromDBCells_(database, retry_insertion);
           return;
 
         default:
@@ -154,13 +154,13 @@ namespace gum {
     /// fills the rows of the database using string inputs
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
-    void IDBInitializer< ALLOC >::fillDatabaseFromStrings__(
+    void IDBInitializer< ALLOC >:: _fillDatabaseFromStrings_(
        DATABASE< ALLOC >& database,
        const bool         retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if (retry_insertion && last_insertion_failed__) {
+      if (retry_insertion &&  _last_insertion_failed_) {
         database.insertRow(currentStringRow_());
-        last_insertion_failed__ = false;
+         _last_insertion_failed_ = false;
       }
 
       // try to insert the next rows
@@ -169,7 +169,7 @@ namespace gum {
           // read a new line in the input file and insert it into the database
           database.insertRow(currentStringRow_());
         } catch (...) {
-          last_insertion_failed__ = true;
+           _last_insertion_failed_ = true;
           throw;
         }
       }
@@ -179,13 +179,13 @@ namespace gum {
     /// fills the rows of the database using DBCell inputs
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
-    void IDBInitializer< ALLOC >::fillDatabaseFromDBCells__(
+    void IDBInitializer< ALLOC >:: _fillDatabaseFromDBCells_(
        DATABASE< ALLOC >& database,
        const bool         retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if (retry_insertion && last_insertion_failed__) {
+      if (retry_insertion &&  _last_insertion_failed_) {
         database.insertRow(currentDBCellRow_());
-        last_insertion_failed__ = false;
+         _last_insertion_failed_ = false;
       }
 
       // try to insert the next rows
@@ -194,7 +194,7 @@ namespace gum {
           // read a new line in the input file and insert it into the database
           database.insertRow(currentDBCellRow_());
         } catch (...) {
-          last_insertion_failed__ = true;
+           _last_insertion_failed_ = true;
           throw;
         }
       }

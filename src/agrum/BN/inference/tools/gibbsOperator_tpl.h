@@ -38,8 +38,8 @@ namespace gum {
                                              Size                           nbr,
                                              bool atRandom) :
       counting_(0),
-      sampling_bn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
-    updateSamplingNodes__();
+      samplingBn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
+    _updateSamplingNodes_();
     GUM_CONSTRUCTOR(GibbsOperator);
   }
 
@@ -49,9 +49,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::updateSamplingNodes__() {
+  void GibbsOperator< GUM_SCALAR >::_updateSamplingNodes_() {
     samplingNodes_.clear();
-    for (const auto node: sampling_bn_.nodes())
+    for (const auto node: samplingBn_.nodes())
       if (hardEv_ == nullptr || !hardEv_->exists(node))
         samplingNodes_.insert(node);
     if (samplingNodes_.size() == 0) {
@@ -69,24 +69,24 @@ namespace gum {
   Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample() {
     gum::Instantiation I;
 
-    for (const auto nod: sampling_bn_.topologicalOrder()) {
-      I.add(sampling_bn_.variable(nod));
+    for (const auto nod: samplingBn_.topologicalOrder()) {
+      I.add(samplingBn_.variable(nod));
       if (hardEv_ != nullptr && hardEv_->exists(nod)) {
-        I.chgVal(sampling_bn_.variable(nod), (*hardEv_)[nod]);
+        I.chgVal(samplingBn_.variable(nod), (*hardEv_)[nod]);
       } else {
-        drawVarMonteCarlo__(nod, &I);
+         _drawVarMonteCarlo_(nod, &I);
       }
     }
     return I;
   }
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::drawVarMonteCarlo__(NodeId         nod,
+  void GibbsOperator< GUM_SCALAR >:: _drawVarMonteCarlo_(NodeId         nod,
                                                         Instantiation* I) {
     gum::Instantiation Itop(*I);
-    Itop.erase(sampling_bn_.variable(nod));
-    I->chgVal(sampling_bn_.variable(nod),
-              sampling_bn_.cpt(nod).extract(Itop).draw());
+    Itop.erase(samplingBn_.variable(nod));
+    I->chgVal(samplingBn_.variable(nod),
+              samplingBn_.cpt(nod).extract(Itop).draw());
   }
 
 
@@ -95,7 +95,7 @@ namespace gum {
     for (Idx i = 0; i < nbr_; i++) {
       auto pos = atRandom_ ? randomValue(samplingNodes_.size())
                            : (counting_ % samplingNodes_.size());
-      this->GibbsSample__(samplingNodes_[pos], &prev);
+      this-> _GibbsSample_(samplingNodes_[pos], &prev);
       counting_++;
     }
     return prev;
@@ -103,16 +103,16 @@ namespace gum {
   /// change in Instantiation I a new drawn value for id
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::GibbsSample__(NodeId id, Instantiation* I) {
+  void GibbsOperator< GUM_SCALAR >:: _GibbsSample_(NodeId id, Instantiation* I) {
     gum::Instantiation Itop(*I);
-    Itop.erase(sampling_bn_.variable(id));
-    gum::Potential< GUM_SCALAR > p = sampling_bn_.cpt(id).extract(Itop);
-    for (const auto nod: sampling_bn_.children(id))
-      p *= sampling_bn_.cpt(nod).extract(Itop);
+    Itop.erase(samplingBn_.variable(id));
+    gum::Potential< GUM_SCALAR > p = samplingBn_.cpt(id).extract(Itop);
+    for (const auto nod: samplingBn_.children(id))
+      p *= samplingBn_.cpt(nod).extract(Itop);
     GUM_ASSERT(p.nbrDim() == 1);
     if (p.sum() != 0) {
       p.normalize();
-      I->chgVal(sampling_bn_.variable(id), p.draw());
+      I->chgVal(samplingBn_.variable(id), p.draw());
     }
   }
 }   // namespace gum

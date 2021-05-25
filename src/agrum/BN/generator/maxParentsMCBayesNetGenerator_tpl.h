@@ -96,11 +96,11 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-     checkConditions__() {
+      _checkConditions_() {
     for (auto node: this->bayesNet_.nodes())
       if (this->bayesNet_.parents(node).size() > maxParents_) return false;
 
-    return MCBG::checkConditions__();
+    return MCBG:: _checkConditions_();
   }
 
   template < typename GUM_SCALAR,

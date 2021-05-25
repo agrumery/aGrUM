@@ -1,5 +1,5 @@
-#ifndef __cxxtest__TestTracker_h__
-#define __cxxtest__TestTracker_h__
+#ifndef  __cxxtest__TestTracker_h__
+#define  __cxxtest__TestTracker_h__
 
 //
 // The TestTracker tracks running tests
@@ -142,4 +142,4 @@ namespace CxxTest {
   inline TestTracker& tracker() { return TestTracker::tracker(); }
 }
 
-#endif  // __cxxtest__TestTracker_h__
+#endif  //  __cxxtest__TestTracker_h__

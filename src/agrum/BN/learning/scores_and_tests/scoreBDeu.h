@@ -218,10 +218,10 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriBDeu< ALLOC > internal_apriori__;
+      AprioriBDeu< ALLOC >  _internal_apriori_;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
-      GammaLog2 gammalog2__;
+      GammaLog2  _gammalog2_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -62,7 +62,7 @@ namespace gum {
     output << "class " << bnName << " {" << std::endl;
 
     for (auto node: bn.nodes()) {
-      output << extractAttribute__(bn, node) << std::endl;
+      output <<  _extractAttribute_(bn, node) << std::endl;
     }
 
     output << "}" << std::endl;
@@ -75,22 +75,22 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::extractAttribute__(
+  INLINE std::string O3prmBNWriter< GUM_SCALAR >:: _extractAttribute_(
      const IBayesNet< GUM_SCALAR >& bn,
      NodeId                         node) {
     std::stringstream str;
     str << O3PRM_INDENT;
-    str << extractType__(bn, node) << " ";
-    str << extractName__(bn, node) << " ";
+    str <<  _extractType_(bn, node) << " ";
+    str <<  _extractName_(bn, node) << " ";
     if (bn.parents(node).size() > 0) {
-      str << "dependson " << extractParents__(bn, node) << " ";
+      str << "dependson " <<  _extractParents_(bn, node) << " ";
     }
-    str << " {" << extractCPT__(bn, node) << "};" << std::endl;
+    str << " {" <<  _extractCPT_(bn, node) << "};" << std::endl;
     return str.str();
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::extractParents__(
+  INLINE std::string O3prmBNWriter< GUM_SCALAR >:: _extractParents_(
      const IBayesNet< GUM_SCALAR >& bn,
      NodeId                         node) {
     std::stringstream str;
@@ -103,7 +103,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-     O3prmBNWriter< GUM_SCALAR >::extractCPT__(const IBayesNet< GUM_SCALAR >& bn,
+     O3prmBNWriter< GUM_SCALAR >:: _extractCPT_(const IBayesNet< GUM_SCALAR >& bn,
                                                NodeId node) {
     std::stringstream str;
     bool              first = true;
@@ -152,20 +152,20 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-     O3prmBNWriter< GUM_SCALAR >::extractType__(const IBayesNet< GUM_SCALAR >& bn,
+     O3prmBNWriter< GUM_SCALAR >:: _extractType_(const IBayesNet< GUM_SCALAR >& bn,
                                                 NodeId node) {
     switch (bn.variable(node).varType()) {
       case gum::VarType::Discretized: {
         auto double_var = dynamic_cast< const DiscretizedVariable< double >* >(
            &(bn.variable(node)));
         if (double_var != nullptr) {
-          return extractDiscretizedType__< DiscretizedVariable< double > >(
+          return  _extractDiscretizedType_< DiscretizedVariable< double > >(
              double_var);
         } else {
           auto float_var = dynamic_cast< const DiscretizedVariable< float >* >(
              &(bn.variable(node)));
           if (float_var != nullptr) {
-            return extractDiscretizedType__< DiscretizedVariable< float > >(
+            return  _extractDiscretizedType_< DiscretizedVariable< float > >(
                float_var);
           }
         }
@@ -173,16 +173,16 @@ namespace gum {
                   "DiscretizedVariable ticks are neither doubles or floats")
       }
       case gum::VarType::Range: {
-        return extractRangeType__(bn, node);
+        return  _extractRangeType_(bn, node);
       }
       default: {
-        return extractLabelizedType__(bn, node);
+        return  _extractLabelizedType_(bn, node);
       }
     }
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::extractRangeType__(
+  INLINE std::string O3prmBNWriter< GUM_SCALAR >:: _extractRangeType_(
      const IBayesNet< GUM_SCALAR >& bn,
      NodeId                         node) {
     const auto&       var = static_cast< const RangeVariable& >(bn.variable(node));
@@ -192,7 +192,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::extractLabelizedType__(
+  INLINE std::string O3prmBNWriter< GUM_SCALAR >:: _extractLabelizedType_(
      const IBayesNet< GUM_SCALAR >& bn,
      NodeId                         node) {
     std::stringstream str;
@@ -206,7 +206,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   template < typename VARTYPE >
   INLINE std::string
-     O3prmBNWriter< GUM_SCALAR >::extractDiscretizedType__(const VARTYPE* var) {
+     O3prmBNWriter< GUM_SCALAR >:: _extractDiscretizedType_(const VARTYPE* var) {
     std::stringstream str;
     if (var->ticks().size() >= 3) {
       str << "real(" << var->ticks()[0];
@@ -221,7 +221,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-     O3prmBNWriter< GUM_SCALAR >::extractName__(const IBayesNet< GUM_SCALAR >& bn,
+     O3prmBNWriter< GUM_SCALAR >:: _extractName_(const IBayesNet< GUM_SCALAR >& bn,
                                                 NodeId node) {
     if (!bn.variable(node).name().empty()) {
       return bn.variable(node).name();

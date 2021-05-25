@@ -109,13 +109,13 @@ namespace gum {
 
     private:
     /// the DAG on which we compute the barren nodes
-    const DAG* dag__;
+    const DAG*  _dag_;
 
     /// the set of observed nodes
-    const NodeSet* observed_nodes__;
+    const NodeSet*  _observed_nodes_;
 
     /// the set of targeted nodes
-    const NodeSet* target_nodes__;
+    const NodeSet*  _target_nodes_;
   };
 
 

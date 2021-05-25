@@ -159,7 +159,7 @@ namespace gum {
         /// @}
 
         private:
-        Size freq__;
+        Size  _freq_;
       };
 
       /**
@@ -209,11 +209,11 @@ namespace gum {
         /// @}
 
         private:
-        Size   freq__;
-        double inner_cost__(const Pattern* p);
-        double outer_cost__(const Pattern* p);
-        void   compute_costs__(const Pattern* p);
-        HashTable< const Pattern*, std::pair< double, double > > map__;
+        Size    _freq_;
+        double  _inner_cost_(const Pattern* p);
+        double  _outer_cost_(const Pattern* p);
+        void    _compute_costs_(const Pattern* p);
+        HashTable< const Pattern*, std::pair< double, double > >  _map_;
         /// Private structure to represent data about a pattern.
         struct PData {
           /// A yet to be triangulated undigraph
@@ -234,19 +234,19 @@ namespace gum {
           /// Returns the set of outputs nodes given all the matches of pattern
           NodeSet outputs;
         };
-        std::string dot__;
-        std::string str__(const PRMInstance< GUM_SCALAR >*  i,
+        std::string  _dot_;
+        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMAttribute< GUM_SCALAR >* a) const;
-        std::string str__(const PRMInstance< GUM_SCALAR >*  i,
+        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMAttribute< GUM_SCALAR >& a) const;
-        std::string str__(const PRMInstance< GUM_SCALAR >*  i,
+        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMSlotChain< GUM_SCALAR >& a) const;
-        void        buildPatternGraph__(
+        void         _buildPatternGraph_(
                   typename StrictSearch< GUM_SCALAR >::PData&   data,
                   Set< Potential< GUM_SCALAR >* >&              pool,
                   const Sequence< PRMInstance< GUM_SCALAR >* >& match);
         std::pair< Size, Size >
-           elimination_cost__(typename StrictSearch< GUM_SCALAR >::PData& data,
+            _elimination_cost_(typename StrictSearch< GUM_SCALAR >::PData& data,
                               Set< Potential< GUM_SCALAR >* >&            pool);
       };
 
@@ -298,7 +298,7 @@ namespace gum {
         /// @}
 
         private:
-        HashTable< const Pattern*, double > map__;
+        HashTable< const Pattern*, double >  _map_;
       };
 
 

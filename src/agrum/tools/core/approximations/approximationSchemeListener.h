@@ -94,7 +94,7 @@ namespace gum {
 
     private:
     /// The scheme configuration.
-    IApproximationSchemeConfiguration& sch__;
+    IApproximationSchemeConfiguration&  _sch_;
   };
 }   // namespace gum
 

@@ -171,37 +171,37 @@ namespace gum {
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* input_row__{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >*  _input_row_{nullptr};
 
       /// the set of missing columns of the current row
-      std::vector< std::size_t, ALLOC< std::size_t > > missing_cols__;
+      std::vector< std::size_t, ALLOC< std::size_t > >  _missing_cols_;
 
       /// the number of missing values in the current row
-      std::size_t nb_miss__;
+      std::size_t  _nb_miss_;
 
       /// the joint probability of the missing variables of the current row
-      Potential< GUM_SCALAR > joint_proba__;
+      Potential< GUM_SCALAR >  _joint_proba_;
 
       /// an instantiation over the joint proba
-      Instantiation* joint_inst__{nullptr};
+      Instantiation*  _joint_inst_{nullptr};
 
       /// the row that we return if there are missing values
       /** DBRowGeneratorSets produce new rows in advance. So, when they
        * return a row, they have already computed the new row. To cope with
        * this, the DBRowGeneratorEM should have 2 filled_row: one that will
        * be used for the first row returned and one for the next one. Hence
-       * filled_row1__ and filled_row2__, which are filled alternatively by
+       *  _filled_row1_ and  _filled_row2_, which are filled alternatively by
        * the content of the probabilities computed. */
-      DBRow< DBTranslatedValue, ALLOC > filled_row1__;
+      DBRow< DBTranslatedValue, ALLOC >  _filled_row1_;
 
       /// the row that we return if there are missing values
-      DBRow< DBTranslatedValue, ALLOC > filled_row2__;
+      DBRow< DBTranslatedValue, ALLOC >  _filled_row2_;
 
       /// indicates whether we should return filled_row1 or filled_row2
-      bool use_filled_row1__{true};
+      bool  _use_filled_row1_{true};
 
       /// the weight of the original input row
-      double original_weight__;
+      double  _original_weight_;
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -315,7 +315,7 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IMarkovNet< GUM_SCALAR >::minimalCondSetVisit__(
+  void IMarkovNet< GUM_SCALAR >:: _minimalCondSetVisit_(
      NodeId         node,
      const NodeSet& soids,
      NodeSet&       minimal,
@@ -327,7 +327,7 @@ namespace gum {
       minimal << node;
     } else {
       for (auto neig: graph_.neighbours(node))
-        minimalCondSetVisit__(neig, soids, minimal, alreadyVisited);
+         _minimalCondSetVisit_(neig, soids, minimal, alreadyVisited);
     }
   }
 
@@ -342,7 +342,7 @@ namespace gum {
     alreadyVisited << target;
 
     for (auto neig: graph_.neighbours(target))
-      minimalCondSetVisit__(neig, soids, res, alreadyVisited);
+       _minimalCondSetVisit_(neig, soids, res, alreadyVisited);
     return res;
   }
 

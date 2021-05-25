@@ -379,25 +379,25 @@ namespace gum {
       private:
       // the ContinuousVariable really used by the translator. As its values
       // are floats, this speeds-up translations
-      ContinuousVariable< float > variable__;
+      ContinuousVariable< float >  _variable_;
 
       // the ContinuousVariablee returned by method variable ()
       // We must return a IContinuousVariable because the user may have
       // saved into the translator a ContinuousVariable<X>, with X != float
-      IContinuousVariable* real_variable__;
+      IContinuousVariable*  _real_variable_;
 
       // assign to each float missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< float, bool > > >
-         status_float_missing_symbols__;
+          _status_float_missing_symbols_;
 
       // a string containing a non real missing symbol
       // (useful for back translations)
-      std::string nonfloat_missing_symbol__;
+      std::string  _nonfloat_missing_symbol_;
 
       // indicates whether we should fit the range of the observed values
-      bool fit_range__;
+      bool  _fit_range_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

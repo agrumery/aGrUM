@@ -260,44 +260,44 @@ namespace gum {
 
         private:
         /// The interface graph on which this DFSTree applies.
-        const InterfaceGraph< GUM_SCALAR >* graph__;
+        const InterfaceGraph< GUM_SCALAR >*  _graph_;
 
         /// The list of root patterns in this DFSTree.
-        std::list< NodeId > roots__;
+        std::list< NodeId >  _roots_;
 
         /// The mapping between nodes in this DFSTree and the patterns they
         /// represents.
-        Bijection< NodeId, Pattern* > node_map__;
+        Bijection< NodeId, Pattern* >  _node_map_;
 
         /// Data about patterns in this DFSTree.
-        HashTable< Pattern*, PatternData* > data__;
+        HashTable< Pattern*, PatternData* >  _data_;
 
         /// The strategy used to prune the search tree.
-        SearchStrategy< GUM_SCALAR >* strategy__;
+        SearchStrategy< GUM_SCALAR >*  _strategy_;
 
         /// Raise different exceptions if child is invalid or illegal
-        void checkGrowth__(Pattern&                  p,
+        void  _checkGrowth_(Pattern&                  p,
                            Pattern*                  child,
                            EdgeGrowth< GUM_SCALAR >& edge_growth);
 
         /// Add a child to this DFSTree.
-        void addChild__(Pattern&                  p,
+        void  _addChild_(Pattern&                  p,
                         Pattern*                  child,
                         EdgeGrowth< GUM_SCALAR >& edge_growth);
 
         /// Check if an instance match is redundant.
-        bool is_new_seq__(
+        bool  _is_new_seq_(
            Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
            NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map);
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.
         /// @param seq A sequence of EdgeData<GUM_SCALAR>.
-        void initialiaze_root__(Pattern*                             p,
+        void  _initialiaze_root_(Pattern*                             p,
                                 Sequence< EdgeData< GUM_SCALAR >* >& seq);
 
-        // Used by find_sub_pattern__.
-        bool test_equality__(HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
+        // Used by  _find_sub_pattern_.
+        bool  _test_equality_(HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
                              HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y);
       };
 

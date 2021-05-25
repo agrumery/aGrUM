@@ -42,7 +42,7 @@ namespace gum_tests {
 
   class MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
     private:
-    void fillFactory__(gum::MultiDimFunctionGraph< double >* factory,
+    void  _fillFactory_(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {
       try {
         factory->add(*Cprimevar);
@@ -168,7 +168,7 @@ namespace gum_tests {
         // The insertion are done so that no error should be rised
         // *********************************************************************
         gum::List< gum::NodeId > idList;
-        TS_GUM_ASSERT_THROWS_NOTHING(fillFactory__(functionGraph, &idList));
+        TS_GUM_ASSERT_THROWS_NOTHING( _fillFactory_(functionGraph, &idList));
 
         // *********************************************************************
         // Destruction of the multidim
@@ -191,7 +191,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
         // *********************************************************************
         // Tests
@@ -250,7 +250,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
         // For comparison with what readers will return
         std::string   dotfile = GET_RESSOURCES_PATH("outputs/FunctionGraph.dot");
@@ -288,7 +288,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -371,7 +371,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -558,7 +558,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
         gum::LabelizedVariable* lv
            = new gum::LabelizedVariable("Test", "Cornichon", 2);
 
@@ -614,7 +614,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -731,9 +731,9 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* dg3
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(dg1, &idList);
-        fillFactory__(dg2, &idList);
-        fillFactory__(dg3, &idList);
+         _fillFactory_(dg1, &idList);
+         _fillFactory_(dg2, &idList);
+         _fillFactory_(dg3, &idList);
 
         dg3->manager()->setSon(3, 0, 16);
 
@@ -777,7 +777,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-        fillFactory__(functionGraph, &idList);
+         _fillFactory_(functionGraph, &idList);
 
         // *********************************************************************
         // Testing moveTo function

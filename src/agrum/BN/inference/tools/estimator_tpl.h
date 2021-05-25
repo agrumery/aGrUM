@@ -134,12 +134,12 @@ namespace gum {
       GUM_ERROR(NotFound, "Target variable not found")
 
     // check if we have already computed the posterior
-    if (target_posteriors__.exists(var.name())) {
-      p = target_posteriors__[var.name()];
+    if ( _target_posteriors_.exists(var.name())) {
+      p =  _target_posteriors_[var.name()];
     } else {
       p = new Potential< GUM_SCALAR >();
       *p << var;
-      target_posteriors__.insert(var.name(), p);
+       _target_posteriors_.insert(var.name(), p);
     }
 
     p->fillWith(estimator_[var.name()]);
@@ -188,8 +188,8 @@ namespace gum {
     estimator_.clear();
     wtotal_ = (GUM_SCALAR)0;
     ntotal_ = Size(0);
-    for (const auto& pot: target_posteriors__)
+    for (const auto& pot:  _target_posteriors_)
       delete pot.second;
-    target_posteriors__.clear();
+     _target_posteriors_.clear();
   }
 }   // namespace gum

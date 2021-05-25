@@ -842,34 +842,34 @@ namespace gum {
 
     private:
     /// The tuple of variables to be instantiated.
-    Sequence< const DiscreteVariable* > vars__;
+    Sequence< const DiscreteVariable* >  _vars_;
 
     /// The current SetInst: the value of the tuple.
-    std::vector< Size > vals__;
+    std::vector< Size >  _vals_;
 
     /// The overflow flag.
-    bool overflow__;
+    bool  _overflow_;
 
     /**
      * @brief Swap 2 vars in the SetInst.
      * @param i The first variable to swap.
      * @param j The second variable to swap.
      */
-    void swap__(Idx i, Idx j);
+    void  _swap_(Idx i, Idx j);
 
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
      * @param newVal The new value.
      */
-    void chgVal__(Idx varPos, Idx newVal);
+    void  _chgVal_(Idx varPos, Idx newVal);
 
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
      * @param newVal The new value.
      */
-    void chgVals__(Idx varPos, const Size newVal);
+    void  _chgVals_(Idx varPos, const Size newVal);
 
     /**
      *  @brief Adds a new var to the sequence of vars.
@@ -882,7 +882,7 @@ namespace gum {
      *  instead.
      *
      *  @warning this function does not notify the master MultiDimAdressable,
-     *  if any. Use in addition function chgVal or chgVal__ if need be.
+     *  if any. Use in addition function chgVal or  _chgVal_ if need be.
      *
      *  @warning variable v is known to the SetInst only by a pointer to it.
      *  As a result, this is not a copy of v that is used by SetInst but rather
@@ -892,7 +892,7 @@ namespace gum {
      *  @param v The new var.
      *  @throw DuplicateElement Raised if v is already in the SetInst.
      */
-    void add__(const DiscreteVariable& v);
+    void  _add_(const DiscreteVariable& v);
 
     /**
      *  @brief Removes a variable from the sequence of vars.
@@ -909,13 +909,13 @@ namespace gum {
      *
      *  @param v The variable to remove.
      */
-    void erase__(const DiscreteVariable& v);
+    void  _erase_(const DiscreteVariable& v);
 
     /**
      * @brief Intialize the SetInst.
      * @param master The master of this SetInst.
      */
-    void init__(MultiDimAdressable* master);
+    void  _init_(MultiDimAdressable* master);
   };
 
   /// Print information of the SetInst in the stream.

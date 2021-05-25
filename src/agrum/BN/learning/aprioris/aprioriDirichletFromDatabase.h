@@ -180,13 +180,13 @@ namespace gum {
 
       private:
       // the record counter used to parse the apriori database
-      RecordCounter< ALLOC > counter__;
+      RecordCounter< ALLOC >  _counter_;
 
       // the internal weight is equal to weight_ / nb rows of apriori database
       // this internal weight is used to ensure that assigning a weight of 1
       // to the apriori is equivalent to adding just one row to the learning
       // database
-      double internal_weight__;
+      double  _internal_weight_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

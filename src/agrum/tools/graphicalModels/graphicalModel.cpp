@@ -26,35 +26,35 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  GraphicalModel::GraphicalModel() : propertiesMap__(nullptr) {
+  GraphicalModel::GraphicalModel() :  _propertiesMap_(nullptr) {
     GUM_CONSTRUCTOR(GraphicalModel);
   }
 
   GraphicalModel::GraphicalModel(const GraphicalModel& from) :
-      propertiesMap__(nullptr) {
+       _propertiesMap_(nullptr) {
     GUM_CONS_CPY(GraphicalModel);
 
-    if (from.propertiesMap__) {
-      propertiesMap__
-         = new HashTable< std::string, std::string >(*(from.propertiesMap__));
+    if (from. _propertiesMap_) {
+       _propertiesMap_
+         = new HashTable< std::string, std::string >(*(from. _propertiesMap_));
     }
   }
 
   GraphicalModel::~GraphicalModel() {
     GUM_DESTRUCTOR(GraphicalModel);
-    if (propertiesMap__) { delete propertiesMap__; }
+    if ( _propertiesMap_) { delete  _propertiesMap_; }
   }
 
   GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
     if (this != &source) {
-      if (propertiesMap__) {
-        delete propertiesMap__;
-        propertiesMap__ = nullptr;
+      if ( _propertiesMap_) {
+        delete  _propertiesMap_;
+         _propertiesMap_ = nullptr;
       }
 
-      if (source.propertiesMap__ != 0) {
-        propertiesMap__
-           = new HashTable< std::string, std::string >(*(source.propertiesMap__));
+      if (source. _propertiesMap_ != 0) {
+         _propertiesMap_
+           = new HashTable< std::string, std::string >(*(source. _propertiesMap_));
       }
     }
     return *this;

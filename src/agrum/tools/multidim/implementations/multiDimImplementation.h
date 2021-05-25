@@ -268,38 +268,38 @@ namespace gum {
 
     private:
     /// List of discrete variables (dimensions).
-    Sequence< const DiscreteVariable* > vars__;
+    Sequence< const DiscreteVariable* >  _vars_;
 
     /// List of instantiations of the tuples (sequences) of variables.
-    List< Instantiation* > slaveInstantiations__;
+    List< Instantiation* >  _slaveInstantiations_;
 
     /// Used to represent in which change method this MultiDimImplementation is.
-    enum class InternalChangeMethod__ : char
+    enum class  _InternalChangeMethod_ : char
     {
       DIRECT_CHANGE,
       MULTIPLE_CHANGE
     };
 
     /// Used to represent in which change state this MultiDimImplementation is.
-    enum class InternalChangeState__ : char
+    enum class  _InternalChangeState_ : char
     {
       NO_CHANGE,
       NOT_COMMITTED_CHANGE
     };
 
     /// The current change method.
-    InternalChangeMethod__ internalChangeMethod__;
+     _InternalChangeMethod_  _internalChangeMethod_;
 
     /// The current change state.
-    InternalChangeState__ internalChangeState__;
+     _InternalChangeState_  _internalChangeState_;
 
     /// This MultiDimImplementation domain size.
-    Size domainSize__;
+    Size  _domainSize_;
 
     /**
-     * @brief Change the internalChangeState__ to NOT_COMMITTED_CHANGE.
+     * @brief Change the  _internalChangeState_ to NOT_COMMITTED_CHANGE.
      */
-    void setNotCommitedChange__();
+    void  _setNotCommitedChange_();
   };
 
   /**

@@ -1,5 +1,5 @@
-#ifndef __cxxtest__StdioPrinter_h__
-#define __cxxtest__StdioPrinter_h__
+#ifndef  __cxxtest__StdioPrinter_h__
+#define  __cxxtest__StdioPrinter_h__
 
 //
 // The StdioPrinter is an StdioFilePrinter which defaults to stdout.
@@ -19,4 +19,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__StdioPrinter_h__
+#endif  //  __cxxtest__StdioPrinter_h__

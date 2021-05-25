@@ -171,7 +171,7 @@ namespace gum {
 
       protected:
       /// the UndiGraph on which we perform checks
-      UndiGraph UndiGraph__graph_;
+      UndiGraph  _UndiGraph_graph_;
     };
 
   } /* namespace learning */

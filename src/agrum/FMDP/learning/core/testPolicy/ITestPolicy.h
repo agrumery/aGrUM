@@ -57,7 +57,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    ITestPolicy() : isModified__(false), nbObs__(0) {
+    ITestPolicy() :  _isModified_(false),  _nbObs_(0) {
       GUM_CONSTRUCTOR(ITestPolicy);
     }
 
@@ -91,14 +91,14 @@ namespace gum {
     /// Comptabilizes the new observation
     // ============================================================================
     virtual void addObservation(Idx attr, GUM_SCALAR value) {
-      isModified__ = true;
-      nbObs__++;
+       _isModified_ = true;
+       _nbObs_++;
     }
 
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    Idx nbObservation() const { return nbObs__; }
+    Idx nbObservation() const { return  _nbObs_; }
 
     /// @}
 
@@ -117,7 +117,7 @@ namespace gum {
     // ============================================================================
     /// Recomputes the statistic from the beginning
     // ============================================================================
-    virtual void computeScore() const { isModified__ = false; }
+    virtual void computeScore() const {  _isModified_ = false; }
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
@@ -141,8 +141,8 @@ namespace gum {
     ///
     // ============================================================================
     void add(const ITestPolicy< GUM_SCALAR >& src) {
-      isModified__ = true;
-      nbObs__ += src.nbObservation();
+       _isModified_ = true;
+       _nbObs_ += src.nbObservation();
     }
 
     /// @}
@@ -158,21 +158,21 @@ namespace gum {
     // ============================================================================
     std::string toString() const {
       std::stringstream ss;
-      ss << "\t\t\tNb Obs : " << nbObs__ << std::endl;
+      ss << "\t\t\tNb Obs : " <<  _nbObs_ << std::endl;
       return ss.str();
     }
 
     /// @}
 
     protected:
-    bool isModified_() const { return isModified__; }
+    bool isModified_() const { return  _isModified_; }
 
     private:
     ///  Booleans indicating if we have to re eval test
-    mutable bool isModified__;
+    mutable bool  _isModified_;
 
     ///
-    Idx nbObs__;
+    Idx  _nbObs_;
   };
 
 }   // End of namespace gum

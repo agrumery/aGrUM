@@ -210,10 +210,10 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori< ALLOC > internal_apriori__;
+      AprioriNoApriori< ALLOC >  _internal_apriori_;
 
       /// the CTable cache
-      VariableLog2ParamComplexity< ALLOC > ctable__;
+      VariableLog2ParamComplexity< ALLOC >  _ctable_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -35,7 +35,7 @@ namespace gum {
   MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
      const MultiDimBijArray< GUM_SCALAR >& from) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      array__(from.array__), name__(from.name__) {
+       _array_(from. _array_),  _name_(from. _name_) {
     GUM_CONS_CPY(MultiDimBijArray);
 
     for (auto var: from.variablesSequence()) {
@@ -48,7 +48,7 @@ namespace gum {
      const VarBijection&                bijection,
      const MultiDimArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      array__(array), name__("MultiDimBijArray") {
+       _array_(array),  _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -61,7 +61,7 @@ namespace gum {
      const VarBijection&                   bijection,
      const MultiDimBijArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-      array__(array.array__), name__("MultiDimBijArray") {
+       _array_(array. _array_),  _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -88,7 +88,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const std::string& MultiDimBijArray< GUM_SCALAR >::name() const {
-    return name__;
+    return  _name_;
   }
 
   template < typename GUM_SCALAR >
@@ -120,9 +120,9 @@ namespace gum {
   INLINE GUM_SCALAR
      MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
     if (i.isMaster(this)) {
-      return array__.values_[this->offsets_[&i]];
+      return  _array_.values_[this->offsets_[&i]];
     } else {
-      return array__.values_[this->getOffs_(i)];
+      return  _array_.values_[this->getOffs_(i)];
     }
   }
 

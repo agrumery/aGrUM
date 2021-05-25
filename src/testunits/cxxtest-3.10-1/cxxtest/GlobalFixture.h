@@ -1,5 +1,5 @@
-#ifndef __cxxtest__GlobalFixture_h__
-#define __cxxtest__GlobalFixture_h__
+#ifndef  __cxxtest__GlobalFixture_h__
+#define  __cxxtest__GlobalFixture_h__
 
 #include <cxxtest/LinkedList.h>
 
@@ -24,4 +24,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__GlobalFixture_h__
+#endif  //  __cxxtest__GlobalFixture_h__

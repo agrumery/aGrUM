@@ -56,14 +56,14 @@ namespace gum {
 
     /// Insert a new terminal node with given value
     void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) {
-      map__.insert(n, v);
+       _map_.insert(n, v);
     }
 
     /// Remove node matching given id
-    void eraseTerminalNode(const NodeId& n) { map__.eraseFirst(n); }
+    void eraseTerminalNode(const NodeId& n) {  _map_.eraseFirst(n); }
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes() { map__.clear(); }
+    void clearAllTerminalNodes() {  _map_.clear(); }
 
     /// @}
     // ============================================================================
@@ -73,12 +73,12 @@ namespace gum {
 
     /// Returns true if a terminal node matching this id exists
     bool existsTerminalNodeWithId(const NodeId& n) const {
-      return map__.existsFirst(n);
+      return  _map_.existsFirst(n);
     }
 
     /// Returns true if a terminal node matching this value exists
     bool existsTerminalNodeWithValue(const GUM_SCALAR& v) const {
-      return map__.existsSecond(v);
+      return  _map_.existsSecond(v);
     }
 
     /// @}
@@ -89,12 +89,12 @@ namespace gum {
 
     /// Returns the value of the terminal node that has the given id
     const GUM_SCALAR& terminalNodeValue(const NodeId& n) const {
-      return map__.second(n);
+      return  _map_.second(n);
     }
 
     /// Returns the id of the terminal node that has the given value
     const NodeId& terminalNodeId(const GUM_SCALAR& v) const {
-      return map__.first(v);
+      return  _map_.first(v);
     }
 
     /// @}
@@ -104,27 +104,27 @@ namespace gum {
     /// @{
 
     /// Initializes the constant safe iterator on terminal nodes
-    void beginValues() const { mappy__ = map__.beginSafe(); }
+    void beginValues() const {  _mappy_ =  _map_.beginSafe(); }
 
     /// Indicates if constant safe iterator has reach end of terminal nodes list
-    bool hasValue() const { return mappy__ != map__.endSafe(); }
+    bool hasValue() const { return  _mappy_ !=  _map_.endSafe(); }
 
     /// Increments the constant safe iterator
-    void nextValue() const { ++mappy__; }
+    void nextValue() const { ++ _mappy_; }
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_SCALAR& value() const { return mappy__.second(); }
+    const GUM_SCALAR& value() const { return  _mappy_.second(); }
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
-    const NodeId& id() const { return mappy__.first(); }
+    const NodeId& id() const { return  _mappy_.first(); }
 
     /// @}
 
     private:
-    Bijection< NodeId, GUM_SCALAR >                     map__;
-    mutable BijectionIteratorSafe< NodeId, GUM_SCALAR > mappy__;
+    Bijection< NodeId, GUM_SCALAR >                      _map_;
+    mutable BijectionIteratorSafe< NodeId, GUM_SCALAR >  _mappy_;
   };
 
 }   // End of namespace gum

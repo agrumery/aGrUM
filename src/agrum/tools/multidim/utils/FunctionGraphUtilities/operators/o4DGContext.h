@@ -83,13 +83,13 @@ namespace gum {
     void setDG1Node(const NodeId&);
 
     /// Get DG1 diagram current explored Node
-    const NodeId& DG1Node() const { return DG1ExploredNode__; }
+    const NodeId& DG1Node() const { return  _DG1ExploredNode_; }
 
     /// Set DG2 diagram current explored Node
     void setDG2Node(const NodeId&);
 
     /// Get DG2 diagram current explored Node
-    const NodeId& DG2Node() const { return DG2ExploredNode__; }
+    const NodeId& DG2Node() const { return  _DG2ExploredNode_; }
     /// @}
 
     // ============================================================================
@@ -116,22 +116,22 @@ namespace gum {
 
     private:
     /// DG1 Diagram current explored node
-    NodeId DG1ExploredNode__;
+    NodeId  _DG1ExploredNode_;
 
     /// DG2 Diagram current explored node
-    NodeId DG2ExploredNode__;
+    NodeId  _DG2ExploredNode_;
 
     /// Vector containing for each retrograde variable its current modality
     /// 0 meaning no instantiation done => there's an offset
-    Idx* varInstantiation__;
-    Idx  nbVar__;
+    Idx*  _varInstantiation_;
+    Idx   _nbVar_;
 
     /// The key use to store the context as a key in the hashtable
-    double key__;
+    double  _key_;
 
     /// Table containing the log2 of prime numbers
-    static const double logPrime__[];
-    static const Idx    nbLogPrime__, offsetv__, offset1__, offset2__;
+    static const double  _logPrime_[];
+    static const Idx     _nbLogPrime_,  _offsetv_,  _offset1_,  _offset2_;
   };
 }   // namespace gum
 

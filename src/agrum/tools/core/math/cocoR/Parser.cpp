@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return errors__;
+  return  _errors_;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return errors__;
+  return  _errors_;
 }
 
 void Parser::Get() {
@@ -113,49 +113,49 @@ void Parser::EVAL() {
 		while (StartOf(1)) {
 			expression();
 		}
-		formula__->finalize__(); 
+		 _formula_-> _finalize_();
 }
 
 void Parser::expression() {
 		switch (la->kind) {
 		case _integer: {
 			Get();
-			formula__->push_number__((double)coco_atoi(t->val)); 
+			 _formula_-> _push_number_((double)coco_atoi(t->val));
 			break;
 		}
 		case _float: {
 			Get();
-			formula__->push_number__((double)coco_atof(t->val)); 
+			 _formula_-> _push_number_((double)coco_atof(t->val));
 			break;
 		}
 		case _scifloat: {
 			Get();
-			formula__->push_number__((double)coco_atof(t->val)); 
+			 _formula_-> _push_number_((double)coco_atof(t->val));
 			break;
 		}
 		case _operator: {
 			Get();
-			formula__->push_operator__(narrow(t->val)[0]); 
+			 _formula_-> _push_operator_(narrow(t->val)[0]);
 			break;
 		}
 		case 7 /* "(" */: {
 			Get();
-			formula__->push_leftParenthesis__(); 
+			 _formula_-> _push_leftParenthesis_();
 			break;
 		}
 		case 8 /* ")" */: {
 			Get();
-			formula__->push_rightParenthesis__(); 
+			 _formula_-> _push_rightParenthesis_();
 			break;
 		}
 		case _ident: {
 			Get();
-			formula__->push_identifier__(narrow(t->val)); 
+			 _formula_-> _push_identifier_(narrow(t->val));
 			break;
 		}
 		case 9 /* "," */: {
 			Get();
-			formula__->push_comma__(); 
+			 _formula_-> _push_comma_();
 			break;
 		}
 		default: SynErr(11); break;
@@ -290,13 +290,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist )  _errors_.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  errors__.Warning( scanner->filename(),t->line, t->col, msg );
+   _errors_.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -327,7 +327,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  errors__.Error( filename,line,col,ss.c_str() );
+   _errors_.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

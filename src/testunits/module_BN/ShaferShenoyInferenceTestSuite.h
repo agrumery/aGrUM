@@ -54,7 +54,7 @@ namespace gum_tests {
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    float __epsilon{1e-6f};
+    float  __epsilon{1e-6f};
 
     void setUp() {
       bn = new gum::BayesNet< double >();
@@ -85,11 +85,11 @@ namespace gum_tests {
       gum::Instantiation i2(p2);
 
       for (i1.setFirst(), i2.setFirst(); !i1.end(); i1.inc(), i2.inc()) {
-        if ((p1[i1] == 0) && (std::fabs(p2[i2]) > __epsilon)) return false;
+        if ((p1[i1] == 0) && (std::fabs(p2[i2]) >  __epsilon)) return false;
         if (p1[i1] > p2[i2]) {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) >  __epsilon) return false;
         } else {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) >  __epsilon) return false;
         }
       }
 

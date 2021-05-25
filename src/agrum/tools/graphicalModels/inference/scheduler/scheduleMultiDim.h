@@ -202,30 +202,30 @@ namespace gum {
     friend class ScheduleDeleteMultiDim< GUM_SCALAR >;
 
     /// the unique Id of the ScheduleMultiDim
-    Idx id__;
+    Idx  _id_;
 
     /// returns a new distinct ID for each abtract scheduleMultiDim
-    static Idx newId__();
+    static Idx  _newId_();
 
     /// returns a mapping from id to multidimImplementations
     static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >&
-       id2multidim__();
+        _id2multidim_();
 
     /// returns the id corresponding to a given multidim
     /** useful to assign the same id every time a given MultiDimImplementation
      * is wrapped into a ScheduleMultiDim */
     static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >&
-       multidim2id__();
+        _multidim2id_();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
-    static HashTable< Idx, Idx >& id2refs__();
+    static HashTable< Idx, Idx >&  _id2refs_();
 
     /// returns a table with the variables of the table corresponding to id
     static HashTable< Idx, const Sequence< const DiscreteVariable* >* >&
-       id2vars__();
+        _id2vars_();
 
     /// returns a table with the domain size of the table corresponding to id
-    static HashTable< Idx, Size >& id2size__();
+    static HashTable< Idx, Size >&  _id2size_();
   };
 
 } /* namespace gum */

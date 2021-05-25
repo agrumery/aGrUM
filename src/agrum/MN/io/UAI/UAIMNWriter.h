@@ -97,9 +97,9 @@ namespace gum {
     /**
      * Returns the header of the BIF file.
      */
-    std::string preambule__(const IMarkovNet< GUM_SCALAR >& MN);
+    std::string  _preambule_(const IMarkovNet< GUM_SCALAR >& MN);
 
-    std::string factorBloc__(const IMarkovNet< GUM_SCALAR >& MN,
+    std::string  _factorBloc_(const IMarkovNet< GUM_SCALAR >& MN,
                              const Potential< GUM_SCALAR >&  clikpot);
   };
 

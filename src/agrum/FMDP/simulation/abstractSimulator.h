@@ -132,4 +132,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif   // GUM__ABSTRACT_SIMULATOR_H
+#endif   //  _GUM_ABSTRACT_SIMULATOR_H

@@ -371,28 +371,28 @@ namespace gum {
 
     private:
     /// The name of the data structure
-    std::string name__;
+    std::string  _name_;
 
     /// The name of the data structure
-    std::string tableName__;
+    std::string  _tableName_;
 
     /// Indicates available nodeIds
-    NodeGraphPart model__;
+    NodeGraphPart  _model_;
 
     /// A reference to the manager that edits this function graph
-    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >* manager__;
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*  _manager_;
 
     /// The root node of the function graph
-    NodeId root__;
+    NodeId  _root_;
 
     /// Associates each non-terminal node to a variable
-    HashTable< NodeId, InternalNode* > internalNodeMap__;
+    HashTable< NodeId, InternalNode* >  _internalNodeMap_;
 
     /// Mapping between var and node
-    HashTable< const DiscreteVariable*, LinkedList< NodeId >* > var2NodeIdMap__;
+    HashTable< const DiscreteVariable*, LinkedList< NodeId >* >  _var2NodeIdMap_;
 
     /// Wheter the MultiDimFunctionGraphManager is reduced or not
-    bool isReduced__;
+    bool  _isReduced_;
 
     friend class MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >;
   };

@@ -36,7 +36,7 @@ namespace gum_tests {
   class DBRowGeneratorParserTestSuite : public CxxTest::TestSuite {
   private:
     gum::Potential<double>
-    infer__( const gum::BayesNet<double>& bn,
+     _infer_( const gum::BayesNet<double>& bn,
              const std::vector<std::size_t>& targets,
              const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation<double> ve(&bn);
@@ -416,7 +416,7 @@ namespace gum_tests {
         ++handler;
         TS_ASSERT(parser.hasRows());
       
-        gum::Potential<double> proba = infer__(bn, {std::size_t(1)},
+        gum::Potential<double> proba =  _infer_(bn, {std::size_t(1)},
                                                handler.row());
         gum::Instantiation inst(proba);
 
@@ -438,7 +438,7 @@ namespace gum_tests {
         ++handler;
         TS_ASSERT(parser.hasRows());
       
-        gum::Potential<double> proba = infer__(bn, {std::size_t(0),std::size_t(1)},
+        gum::Potential<double> proba =  _infer_(bn, {std::size_t(0),std::size_t(1)},
                                                handler.row());
 
         std::vector<double> xproba (4);

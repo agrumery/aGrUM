@@ -45,11 +45,11 @@ namespace gum {
      TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2) :
-      dt1__(dt1),
-      dt2__(dt2), combine__() {
+       _dt1_(dt1),
+       _dt2_(dt2),  _combine_() {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    rd__ = MultiDimFunctionGraph< GUM_SCALAR,
+     _rd_ = MultiDimFunctionGraph< GUM_SCALAR,
                                   TerminalNodePolicy >::getTreeInstance();
   }
 
@@ -63,11 +63,11 @@ namespace gum {
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
         const HashTable< const DiscreteVariable*, Idx > givenContext) :
-      dt1__(dt1),
-      dt2__(dt2), combine__(), context__(givenContext) {
+       _dt1_(dt1),
+       _dt2_(dt2),  _combine_(),  _context_(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 
-    rd__ = MultiDimFunctionGraph< GUM_SCALAR,
+     _rd_ = MultiDimFunctionGraph< GUM_SCALAR,
                                   TerminalNodePolicy >::getTreeInstance();
   }
 
@@ -90,9 +90,9 @@ namespace gum {
              class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
      TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
-    rd__->manager()->setRootNode(xPloreDT1__(dt1__->root()));
+     _rd_->manager()->setRootNode( _xPloreDT1_( _dt1_->root()));
 
-    return rd__;
+    return  _rd_;
   }
 
   // Main recursion function, called every time we move on a node to determine
@@ -103,26 +103,26 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::xPloreDT1__(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >:: _xPloreDT1_(
         NodeId currentNodeId) {
-    if (dt1__->isTerminalNode(currentNodeId)) {
-      curDT1Leaf__ = currentNodeId;
-      return xPloreDT2__(dt2__->root());
+    if ( _dt1_->isTerminalNode(currentNodeId)) {
+       _curDT1Leaf_ = currentNodeId;
+      return  _xPloreDT2_( _dt2_->root());
     }
 
-    const InternalNode* currentNode = dt1__->node(currentNodeId);
+    const InternalNode* currentNode =  _dt1_->node(currentNodeId);
 
-    if (!rd__->variablesSequence().exists(currentNode->nodeVar()))
-      rd__->add(*(currentNode->nodeVar()));
+    if (! _rd_->variablesSequence().exists(currentNode->nodeVar()))
+       _rd_->add(*(currentNode->nodeVar()));
 
     NodeId* sonsMap = static_cast< NodeId* >(
        ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
     for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda) {
-      context__.insert(currentNode->nodeVar(), moda);
-      sonsMap[moda] = xPloreDT1__(currentNode->son(moda));
-      context__.erase(currentNode->nodeVar());
+       _context_.insert(currentNode->nodeVar(), moda);
+      sonsMap[moda] =  _xPloreDT1_(currentNode->son(moda));
+       _context_.erase(currentNode->nodeVar());
     }
-    return checkRedundancy__(currentNode->nodeVar(), sonsMap);
+    return  _checkRedundancy_(currentNode->nodeVar(), sonsMap);
   }
 
   template < typename GUM_SCALAR,
@@ -131,29 +131,29 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::xPloreDT2__(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >:: _xPloreDT2_(
         NodeId currentNodeId) {
-    if (dt2__->isTerminalNode(currentNodeId))
-      return rd__->manager()->addTerminalNode(
-         combine__(dt1__->nodeValue(curDT1Leaf__),
-                   dt2__->nodeValue(currentNodeId)));
+    if ( _dt2_->isTerminalNode(currentNodeId))
+      return  _rd_->manager()->addTerminalNode(
+          _combine_( _dt1_->nodeValue( _curDT1Leaf_),
+                    _dt2_->nodeValue(currentNodeId)));
 
-    const InternalNode* currentNode = dt2__->node(currentNodeId);
+    const InternalNode* currentNode =  _dt2_->node(currentNodeId);
 
-    if (!rd__->variablesSequence().exists(currentNode->nodeVar()))
-      rd__->add(*(currentNode->nodeVar()));
+    if (! _rd_->variablesSequence().exists(currentNode->nodeVar()))
+       _rd_->add(*(currentNode->nodeVar()));
 
-    if (context__.exists(currentNode->nodeVar()))
-      return xPloreDT2__(currentNode->son(context__[currentNode->nodeVar()]));
+    if ( _context_.exists(currentNode->nodeVar()))
+      return  _xPloreDT2_(currentNode->son( _context_[currentNode->nodeVar()]));
 
     NodeId* sonsMap = static_cast< NodeId* >(
        ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
     for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda) {
-      context__.insert(currentNode->nodeVar(), moda);
-      sonsMap[moda] = xPloreDT2__(currentNode->son(moda));
-      context__.erase(currentNode->nodeVar());
+       _context_.insert(currentNode->nodeVar(), moda);
+      sonsMap[moda] =  _xPloreDT2_(currentNode->son(moda));
+       _context_.erase(currentNode->nodeVar());
     }
-    return checkRedundancy__(currentNode->nodeVar(), sonsMap);
+    return  _checkRedundancy_(currentNode->nodeVar(), sonsMap);
   }
 
   template < typename GUM_SCALAR,
@@ -162,7 +162,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::
-     checkRedundancy__(const DiscreteVariable* var, NodeId* sonsMap) {
+      _checkRedundancy_(const DiscreteVariable* var, NodeId* sonsMap) {
     bool diff = false;
     for (Idx moda = 1; moda < var->domainSize() && !diff; ++moda)
       if (sonsMap[0] != sonsMap[moda]) diff = true;
@@ -173,7 +173,7 @@ namespace gum {
       return zero;
     }
 
-    return rd__->manager()->addInternalNode(var, sonsMap);
+    return  _rd_->manager()->addInternalNode(var, sonsMap);
   }
 
 }   // namespace gum

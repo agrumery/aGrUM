@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_net_COCO_SCANNER_H__)
-#define gum_net_COCO_SCANNER_H__
+#if !defined( _gum_net_COCO_SCANNER_H_)
+#define  _gum_net_COCO_SCANNER_H_
 
 #include <limits.h>
 #include <stdio.h>
@@ -206,8 +206,8 @@ class Scanner {
     void* heapTop;
     void** heapEnd;
 
-    std::wstring filenamne__;
-    bool trace__;
+    std::wstring  _filenamne_;
+    bool  _trace_;
 
     unsigned char EOL;
     int eofSym;
@@ -259,14 +259,14 @@ class Scanner {
     Scanner( FILE* s,bool trace=false );
     ~Scanner();
 
-    void setTrace( bool b ) { trace__=b;}
+    void setTrace( bool b ) {  _trace_=b;}
 
     void Load( const wchar_t* fileName );
     Token* Scan();
     Token* Peek();
     void ResetPeek();
 
-    const std::wstring& filename() const {return filenamne__;}
+    const std::wstring& filename() const {return  _filenamne_;}
     Buffer* getBuffer() {return buffer;}
 
 }; // end Scanner
@@ -275,5 +275,5 @@ class Scanner {
 } // namespace
 
 
-#endif // !defined(COCO_SCANNER_H__)
+#endif // !defined( _COCO_SCANNER_H_)
 

@@ -45,7 +45,7 @@ namespace gum {
                                                                     nodeId2columns,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
@@ -59,7 +59,7 @@ namespace gum {
                                                                     nodeId2columns,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-        internal_apriori__(parser.database(), nodeId2columns) {
+         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
@@ -70,7 +70,7 @@ namespace gum {
        const ScoreLog2Likelihood< ALLOC >&                          from,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-        internal_apriori__(from.internal_apriori__, alloc) {
+         _internal_apriori_(from. _internal_apriori_, alloc) {
       GUM_CONS_CPY(ScoreLog2Likelihood);
     }
 
@@ -88,7 +88,7 @@ namespace gum {
        ScoreLog2Likelihood< ALLOC >&&                               from,
        const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-        internal_apriori__(std::move(from.internal_apriori__), alloc) {
+         _internal_apriori_(std::move(from. _internal_apriori_), alloc) {
       GUM_CONS_MOV(ScoreLog2Likelihood);
     }
 
@@ -137,7 +137,7 @@ namespace gum {
        const ScoreLog2Likelihood< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-        internal_apriori__      = from.internal_apriori__;
+         _internal_apriori_      = from. _internal_apriori_;
       }
       return *this;
     }
@@ -149,7 +149,7 @@ namespace gum {
        ScoreLog2Likelihood< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-        internal_apriori__      = std::move(from.internal_apriori__);
+         _internal_apriori_      = std::move(from. _internal_apriori_);
       }
       return *this;
     }
@@ -195,7 +195,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >&
                  ScoreLog2Likelihood< ALLOC >::internalApriori() const {
-      return internal_apriori__;
+      return  _internal_apriori_;
     }
 
 

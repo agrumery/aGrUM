@@ -64,7 +64,7 @@ namespace gum_tests {
       mn->addFactor({i3, i5});
       mn->addFactor({i2, i4, i5});
 
-      __fill(*mn);
+       __fill(*mn);
     }
 
     void tearDown() { delete mn; }
@@ -91,7 +91,7 @@ namespace gum_tests {
 
     private:
     // Builds a MN to test the inference
-    void __fill(gum::MarkovNet< double >& mn) {
+    void  __fill(gum::MarkovNet< double >& mn) {
       try {
         mn.factor({"0", "2"}).fillWith({1, 2, 3, 4});
         mn.factor({"0", "3"}).fillWith({11, 12, 13, 14});

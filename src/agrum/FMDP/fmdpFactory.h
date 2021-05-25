@@ -264,53 +264,53 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool foo_flag__;
+    bool  _foo_flag_;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool bar_flag__;
+    bool  _bar_flag_;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string > stringBag__;
+    std::vector< std::string >  _stringBag_;
 
     /// Just to keep track of multidim between two start/end calls.
-    std::vector< const MultiDimImplementation< GUM_SCALAR >* > ddBag__;
+    std::vector< const MultiDimImplementation< GUM_SCALAR >* >  _ddBag_;
 
     /// Used in VARIABLE mode
-    /// Checks if in stringBag__ there is no other modality with the same name.
-    void checkModalityInBag__(const std::string& mod);
+    /// Checks if in  _stringBag_ there is no other modality with the same name.
+    void  _checkModalityInBag_(const std::string& mod);
 
     /// Reset the different parts used to constructed the FMDP.
-    void resetParts__();
+    void  _resetParts_();
 
     /// Insert every variables in the function graph
-    void initializeFunctionGraph__();
+    void  _initializeFunctionGraph_();
 
     /// Insert every variables in the function graph
-    void finalizeFunctionGraph__();
+    void  _finalizeFunctionGraph_();
 
     /// @}
 
     /// State stack.
-    std::vector< FMDPfactory_state > states__;
+    std::vector< FMDPfactory_state >  _states_;
 
     /// The constructed FMDP
-    FMDP< GUM_SCALAR >* fmdp__;
+    FMDP< GUM_SCALAR >*  _fmdp_;
 
     /// The FunctionGraph we're building at a given time
-    MultiDimFunctionGraph< GUM_SCALAR >* FunctionGraph__;
+    MultiDimFunctionGraph< GUM_SCALAR >*  _FunctionGraph_;
 
     /// Mapping between a declared variable's name and itself.
-    HashTable< std::string, const DiscreteVariable* > varNameMap__;
+    HashTable< std::string, const DiscreteVariable* >  _varNameMap_;
 
     /// Action Id counter
-    Idx actionIdcpt__;
+    Idx  _actionIdcpt_;
 
     /// Copy operator is illegal, use only copy constructor.
     FMDPFactory< GUM_SCALAR >& operator=(const FMDPFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void illegalStateError__(const std::string& s);
+    void  _illegalStateError_(const std::string& s);
   };
 
 

@@ -1,5 +1,5 @@
-#ifndef __cxxtest__StdioFilePrinter_h__
-#define __cxxtest__StdioFilePrinter_h__
+#ifndef  __cxxtest__StdioFilePrinter_h__
+#define  __cxxtest__StdioFilePrinter_h__
 
 //
 // The StdioFilePrinter is a simple TestListener that
@@ -46,4 +46,4 @@ namespace CxxTest {
   };
 }
 
-#endif  // __cxxtest__StdioFilePrinter_h__
+#endif  //  __cxxtest__StdioFilePrinter_h__

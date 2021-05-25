@@ -201,44 +201,44 @@ namespace gum {
 
         private:
         /// The DFSCode of this Pattern.
-        DFSCode code__;
+        DFSCode  _code_;
 
         /// Mapping between nodes in this Pattern and their respective
         /// LabelData.
-        NodeProperty< LabelData* > node_map__;
+        NodeProperty< LabelData* >  _node_map_;
 
         /// Mapping between edges in this Pattern and their respective
         /// LabelData.
-        ArcProperty< std::pair< LabelData*, EdgeCode* > > arc_map__;
+        ArcProperty< std::pair< LabelData*, EdgeCode* > >  _arc_map_;
 
         /// The last LabelData added to this pattern.
-        LabelData* last__;
+        LabelData*  _last_;
 
         /// Returns true if the expand code by adding and edge betwenne u and v
         /// is
         /// minimal
-        /// with respect to code__.
+        /// with respect to  _code_.
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @returns true if the expand code by adding and edge betwenne u and v
         /// is
         /// minimal
-        ///          with respect to code__.
-        bool expandCodeIsMinimal__(NodeId u, NodeId v);
+        ///          with respect to  _code_.
+        bool  _expandCodeIsMinimal_(NodeId u, NodeId v);
 
-        /// Recurisve method used by expandCodeIsMinimal__.
+        /// Recurisve method used by  _expandCodeIsMinimal_.
         /// @param p A Pattern.
         /// @param node_map A bijection.
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @return true if the expansion is minimal.
-        bool rec__(Pattern&                     p,
+        bool  _rec_(Pattern&                     p,
                    Bijection< NodeId, NodeId >& node_map,
                    NodeId                       u,
                    NodeId                       v);
 
-        /// A non recursive bugged version of rec__.
-        bool not_rec__(Pattern&                     p,
+        /// A non recursive bugged version of  _rec_.
+        bool  _not_rec_(Pattern&                     p,
                        Bijection< NodeId, NodeId >& node_map,
                        NodeId                       u,
                        NodeId                       v);

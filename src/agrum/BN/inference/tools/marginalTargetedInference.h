@@ -236,17 +236,17 @@ namespace gum {
 
     private:
     /// whether the actual targets are default
-    bool targeted_mode__;
+    bool  _targeted_mode_;
 
     /// the set of marginal targets
-    NodeSet targets__;
+    NodeSet  _targets_;
 
 
     /*/// remove all the marginal posteriors computed
-    void invalidatePosteriors__() noexcept;*/
+    void  _invalidatePosteriors_() noexcept;*/
 
     /// sets all the nodes of the Bayes net as targets
-    void setAllMarginalTargets__();
+    void  _setAllMarginalTargets_();
   };
 
 

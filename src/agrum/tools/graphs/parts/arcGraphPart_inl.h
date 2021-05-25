@@ -31,35 +31,35 @@
 
 namespace gum {
 
-  INLINE bool ArcGraphPart::emptyArcs() const { return arcs__.empty(); }
+  INLINE bool ArcGraphPart::emptyArcs() const { return  _arcs_.empty(); }
 
-  INLINE Size ArcGraphPart::sizeArcs() const { return arcs__.size(); }
+  INLINE Size ArcGraphPart::sizeArcs() const { return  _arcs_.size(); }
 
-  INLINE const ArcSet& ArcGraphPart::arcs() const { return arcs__; }
+  INLINE const ArcSet& ArcGraphPart::arcs() const { return  _arcs_; }
 
   INLINE bool ArcGraphPart::existsArc(const Arc& arc) const {
-    return arcs__.contains(arc);
+    return  _arcs_.contains(arc);
   }
 
   INLINE bool ArcGraphPart::existsArc(NodeId tail, NodeId head) const {
-    return parents__.exists(head) && parents__[head]->exists(tail);
+    return  _parents_.exists(head) &&  _parents_[head]->exists(tail);
   }
 
-  INLINE void ArcGraphPart::checkParents__(NodeId id) const {
-    if (!parents__.exists(id)) { parents__.insert(id, new NodeSet); }
+  INLINE void ArcGraphPart:: _checkParents_(NodeId id) const {
+    if (! _parents_.exists(id)) {  _parents_.insert(id, new NodeSet); }
   }
 
-  INLINE void ArcGraphPart::checkChildren__(NodeId id) const {
-    if (!children__.exists(id)) { children__.insert(id, new NodeSet); }
+  INLINE void ArcGraphPart:: _checkChildren_(NodeId id) const {
+    if (! _children_.exists(id)) {  _children_.insert(id, new NodeSet); }
   }
 
   INLINE const NodeSet& ArcGraphPart::parents(NodeId id) const {
-    checkParents__(id);
-    return *(parents__[id]);
+     _checkParents_(id);
+    return *( _parents_[id]);
   }
 
   INLINE NodeSet ArcGraphPart::family(NodeId id) const {
-    checkParents__(id);
+     _checkParents_(id);
     NodeSet res{id};
     return res + parents(id);
   }
@@ -89,30 +89,30 @@ namespace gum {
   }
 
   INLINE const NodeSet& ArcGraphPart::children(NodeId id) const {
-    checkChildren__(id);
-    return *(children__[id]);
+     _checkChildren_(id);
+    return *( _children_[id]);
   }
 
   INLINE void ArcGraphPart::addArc(NodeId tail, NodeId head) {
     Arc arc(tail, head);
 
-    arcs__.insert(arc);
-    checkParents__(head);
-    checkChildren__(tail);
-    parents__[head]->insert(tail);
-    children__[tail]->insert(head);
+     _arcs_.insert(arc);
+     _checkParents_(head);
+     _checkChildren_(tail);
+     _parents_[head]->insert(tail);
+     _children_[tail]->insert(head);
 
     GUM_EMIT2(onArcAdded, tail, head);
   }
 
   INLINE void ArcGraphPart::eraseArc(const Arc& arc) {
-    // ASSUMING tail and head exists in parents__ anf children__
+    // ASSUMING tail and head exists in  _parents_ anf  _children_
     // (if not, it is an error)
     if (existsArc(arc)) {
       NodeId tail = arc.tail(), head = arc.head();
-      parents__[head]->erase(tail);
-      children__[tail]->erase(head);
-      arcs__.erase(arc);
+       _parents_[head]->erase(tail);
+       _children_[tail]->erase(head);
+       _arcs_.erase(arc);
       GUM_EMIT2(onArcDeleted, tail, head);
     }
   }
@@ -123,8 +123,8 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::eraseParents(NodeId id) {
-    if (parents__.exists(id)) {
-      NodeSet& parents = *(parents__[id]);
+    if ( _parents_.exists(id)) {
+      NodeSet& parents = *( _parents_[id]);
 
       for (auto iter = parents.beginSafe();   // safe iterator needed here
            iter != parents.endSafe();
@@ -137,8 +137,8 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::eraseChildren(NodeId id) {
-    if (children__.exists(id)) {
-      NodeSet& children = *(children__[id]);
+    if ( _children_.exists(id)) {
+      NodeSet& children = *( _children_[id]);
 
       for (auto iter = children.beginSafe();   // safe iterator needed here
            iter != children.endSafe();
@@ -156,8 +156,8 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::unvirtualizedEraseParents(NodeId id) {
-    if (parents__.exists(id)) {
-      NodeSet& parents = *(parents__[id]);
+    if ( _parents_.exists(id)) {
+      NodeSet& parents = *( _parents_[id]);
 
       for (auto iter = parents.beginSafe();   // safe iterator needed here
            iter != parents.endSafe();
@@ -168,8 +168,8 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::unvirtualizedEraseChildren(NodeId id) {
-    if (children__.exists(id)) {
-      NodeSet& children = *(children__[id]);
+    if ( _children_.exists(id)) {
+      NodeSet& children = *( _children_[id]);
 
       for (auto iter = children.beginSafe();   // safe iterator needed here
            iter != children.endSafe();
@@ -180,11 +180,11 @@ namespace gum {
   }
 
   INLINE bool ArcGraphPart::operator==(const ArcGraphPart& p) const {
-    return arcs__ == p.arcs__;
+    return  _arcs_ == p. _arcs_;
   }
 
   INLINE bool ArcGraphPart::operator!=(const ArcGraphPart& p) const {
-    return arcs__ != p.arcs__;
+    return  _arcs_ != p. _arcs_;
   }
 
 } /* namespace gum */

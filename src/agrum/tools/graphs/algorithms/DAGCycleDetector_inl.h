@@ -38,24 +38,24 @@ namespace gum {
   INLINE DAGCycleDetector::Change::Change(ChangeType type,
                                           NodeId     tail,
                                           NodeId     head) noexcept :
-      type__{type},
-      tail__{tail}, head__{head} {
+       _type_{type},
+       _tail_{tail},  _head_{head} {
     GUM_CONSTRUCTOR(DAGCycleDetector::Change);
   }
 
   // copy constructor
   INLINE DAGCycleDetector::Change::Change(
      const DAGCycleDetector::Change& from) noexcept :
-      type__{from.type__},
-      tail__{from.tail__}, head__{from.head__} {
+       _type_{from. _type_},
+       _tail_{from. _tail_},  _head_{from. _head_} {
     GUM_CONS_CPY(DAGCycleDetector::Change);
   }
 
   // move constructor
   INLINE DAGCycleDetector::Change::Change(DAGCycleDetector::Change&& from) noexcept
       :
-      type__{from.type__},
-      tail__{from.tail__}, head__{from.head__} {
+       _type_{from. _type_},
+       _tail_{from. _tail_},  _head_{from. _head_} {
     GUM_CONS_MOV(DAGCycleDetector::Change);
   }
 
@@ -67,32 +67,32 @@ namespace gum {
   // copy operator
   INLINE DAGCycleDetector::Change& DAGCycleDetector::Change::operator=(
      const DAGCycleDetector::Change& from) noexcept {
-    type__ = from.type__;
-    tail__ = from.tail__;
-    head__ = from.head__;
+     _type_ = from. _type_;
+     _tail_ = from. _tail_;
+     _head_ = from. _head_;
     return *this;
   }
 
   // move operator
   INLINE DAGCycleDetector::Change& DAGCycleDetector::Change::operator=(
      DAGCycleDetector::Change&& from) noexcept {
-    type__ = from.type__;
-    tail__ = from.tail__;
-    head__ = from.head__;
+     _type_ = from. _type_;
+     _tail_ = from. _tail_;
+     _head_ = from. _head_;
     return *this;
   }
 
   /// returns the type of the operation
   INLINE DAGCycleDetector::ChangeType
          DAGCycleDetector::Change::type() const noexcept {
-    return type__;
+    return  _type_;
   }
 
   /// indicates the tail of the arc involved in the modification
-  INLINE NodeId DAGCycleDetector::Change::tail() const noexcept { return tail__; }
+  INLINE NodeId DAGCycleDetector::Change::tail() const noexcept { return  _tail_; }
 
   /// indicates the head of the arc involved in the modification
-  INLINE NodeId DAGCycleDetector::Change::head() const noexcept { return head__; }
+  INLINE NodeId DAGCycleDetector::Change::head() const noexcept { return  _head_; }
 
   /* ===========================================================================
    */
@@ -255,15 +255,15 @@ namespace gum {
 
   /// copy constructor
   INLINE DAGCycleDetector::DAGCycleDetector(const DAGCycleDetector& from) :
-      dag__(from.dag__), ancestors__(from.ancestors__),
-      descendants__(from.descendants__) {
+       _dag_(from. _dag_),  _ancestors_(from. _ancestors_),
+       _descendants_(from. _descendants_) {
     GUM_CONS_CPY(DAGCycleDetector);
   }
 
   /// move constructor
   INLINE DAGCycleDetector::DAGCycleDetector(DAGCycleDetector&& from) :
-      dag__(std::move(from.dag__)), ancestors__(std::move(from.ancestors__)),
-      descendants__(std::move(from.descendants__)) {
+       _dag_(std::move(from. _dag_)),  _ancestors_(std::move(from. _ancestors_)),
+       _descendants_(std::move(from. _descendants_)) {
     GUM_CONS_MOV(DAGCycleDetector);
   }
 
@@ -276,9 +276,9 @@ namespace gum {
   INLINE
   DAGCycleDetector& DAGCycleDetector::operator=(const DAGCycleDetector& from) {
     if (this != &from) {
-      dag__         = from.dag__;
-      ancestors__   = from.ancestors__;
-      descendants__ = from.descendants__;
+       _dag_         = from. _dag_;
+       _ancestors_   = from. _ancestors_;
+       _descendants_ = from. _descendants_;
     }
 
     return *this;
@@ -287,9 +287,9 @@ namespace gum {
   /// move operator
   INLINE DAGCycleDetector& DAGCycleDetector::operator=(DAGCycleDetector&& from) {
     if (this != &from) {
-      dag__         = std::move(from.dag__);
-      ancestors__   = std::move(from.ancestors__);
-      descendants__ = std::move(from.descendants__);
+       _dag_         = std::move(from. _dag_);
+       _ancestors_   = std::move(from. _ancestors_);
+       _descendants_ = std::move(from. _descendants_);
     }
 
     return *this;
@@ -298,13 +298,13 @@ namespace gum {
   /// indicates whether an arc addition would create a cycle
   INLINE bool DAGCycleDetector::hasCycleFromAddition(NodeId x,
                                                      NodeId y) const noexcept {
-    return descendants__[y].exists(x);
+    return  _descendants_[y].exists(x);
   }
 
   /// indicates wether an arc reversal would create a cycle
   INLINE bool DAGCycleDetector::hasCycleFromReversal(NodeId x,
                                                      NodeId y) const noexcept {
-    return (ancestors__[y][x] > 1);
+    return ( _ancestors_[y][x] > 1);
   }
 
   /// indicates whether an arc deletion would create a cycle
@@ -315,7 +315,7 @@ namespace gum {
 
   /// adds a nodeset to another (nodes are weighted, so weights are added)
   INLINE
-  void DAGCycleDetector::addWeightedSet__(NodeProperty< Size >&       nodeset,
+  void DAGCycleDetector:: _addWeightedSet_(NodeProperty< Size >&       nodeset,
                                           const NodeProperty< Size >& set_to_add,
                                           Size multiplier) const {
     for (auto iter = set_to_add.cbegin(); iter != set_to_add.cend(); ++iter) {
@@ -329,7 +329,7 @@ namespace gum {
 
   /// removes a weighted nodeset from another (weights are subtracted)
   INLINE
-  void DAGCycleDetector::delWeightedSet__(NodeProperty< Size >&       nodeset,
+  void DAGCycleDetector:: _delWeightedSet_(NodeProperty< Size >&       nodeset,
                                           const NodeProperty< Size >& set_to_del,
                                           Size multiplier) const {
     for (auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter) {
@@ -345,7 +345,7 @@ namespace gum {
   /** @brief put into a weighted nodeset the nodes of another weighted set that
    * belong to a set of arc extremities */
   INLINE
-  void DAGCycleDetector::restrictWeightedSet__(
+  void DAGCycleDetector:: _restrictWeightedSet_(
      NodeProperty< Size >&       result_set,
      const NodeProperty< Size >& set_to_restrict,
      const NodeSet&              extremities) const {
@@ -369,8 +369,8 @@ namespace gum {
 
   /// check the equality between two DAGCycleDetectors
   INLINE bool DAGCycleDetector::operator==(const DAGCycleDetector& from) const {
-    return (   //( dagmodel__ == from.dagmodel__ ) &&
-       (ancestors__ == from.ancestors__) && (descendants__ == from.descendants__));
+    return (   //(  _dagmodel_ == from. _dagmodel_ ) &&
+       ( _ancestors_ == from. _ancestors_) && ( _descendants_ == from. _descendants_));
   }
 
   /// check the inequality between two DAGCycleDetectors

@@ -105,7 +105,7 @@ namespace gum {
          ++nodeIter)
       delete nodeIter.val();
 
-    clearValue__();
+     _clearValue_();
 
     GUM_DESTRUCTOR(IncrementalGraphLearner);
   }
@@ -124,7 +124,7 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   void IncrementalGraphLearner< AttributeSelection, isScalar >::addObservation(
      const Observation* newObs) {
-    assumeValue__(newObs);
+     _assumeValue_(newObs);
 
     // The we go across the tree
     NodeId currentNodeId = root_;
@@ -136,7 +136,7 @@ namespace gum {
       // The we select the next to go throught
       currentNodeId
          = nodeSonsMap_[currentNodeId]
-                       [branchObs__(newObs, nodeVarMap_[currentNodeId])];
+                       [ _branchObs_(newObs, nodeVarMap_[currentNodeId])];
     }
 
     // On final insertion into the leave we reach
@@ -272,8 +272,8 @@ namespace gum {
            = leafDatabase_[currentNodeId]->beginSafe();
            leafDatabase_[currentNodeId]->endSafe() != obsIter;
            ++obsIter) {
-        dbMap[branchObs__(*obsIter, desiredVar)]->addObservation(*obsIter);
-        obsetMap[branchObs__(*obsIter, desiredVar)]->insert(*obsIter);
+        dbMap[ _branchObs_(*obsIter, desiredVar)]->addObservation(*obsIter);
+        obsetMap[ _branchObs_(*obsIter, desiredVar)]->insert(*obsIter);
       }
 
       // Then we can install each new leaves (and put in place the sonsMap)

@@ -102,7 +102,7 @@ namespace gum {
   class InternalNode {
     private:
     /// Variable associated to such node
-    const DiscreteVariable* nodeVar__;
+    const DiscreteVariable*  _nodeVar_;
 
     /**
      * @brief Table of sons of the node.
@@ -111,21 +111,21 @@ namespace gum {
      * So those modalities are used has indexes for that table.
      *
      * @code
-     * _____________________________
+     *  _____________________________
      * |      |      |      |      |
      * | son1 | son2 | son3 | son4 |
-     * |______|______|______|______|
+     * | ______| ______| ______| ______|
      *    x1     x2     x3     x4
      *
      * @endcode
      */
-    NodeId* nodeSons__;
+    NodeId*  _nodeSons_;
 
     /// The list of the node's parent
-    LinkedList< Parent > nodeParents__;
+    LinkedList< Parent >  _nodeParents_;
 
     /// @brief Set the node variable.
-    void setNodeVar__(const DiscreteVariable* v);
+    void  _setNodeVar_(const DiscreteVariable* v);
 
     public:
     // ============================================================================

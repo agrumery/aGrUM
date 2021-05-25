@@ -49,7 +49,7 @@ namespace gum_tests {
     int c;
     int d;
 
-    void build_alpha__() {
+    void  _build_alpha_() {
       alpha = new gum::prm::gspan::DFSCode();
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, X, a, Y));
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, Y, b, X));
@@ -59,7 +59,7 @@ namespace gum_tests {
       alpha->codes.push_back(new gum::prm::gspan::EdgeCode(1, 4, Y, d, Z));
     }
 
-    void build_beta__() {
+    void  _build_beta_() {
       beta = new gum::prm::gspan::DFSCode();
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, Y, a, X));
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, X, a, X));
@@ -69,7 +69,7 @@ namespace gum_tests {
       beta->codes.push_back(new gum::prm::gspan::EdgeCode(0, 4, Y, d, Z));
     }
 
-    void build_gamma__() {
+    void  _build_gamma_() {
       gamma = new gum::prm::gspan::DFSCode();
       gamma->codes.push_back(new gum::prm::gspan::EdgeCode(0, 1, X, a, X));
       gamma->codes.push_back(new gum::prm::gspan::EdgeCode(1, 2, X, a, Y));
@@ -88,9 +88,9 @@ namespace gum_tests {
       b = 1;
       c = 2;
       d = 3;
-      build_alpha__();
-      build_beta__();
-      build_gamma__();
+       _build_alpha_();
+       _build_beta_();
+       _build_gamma_();
     }
 
     void tearDown() {

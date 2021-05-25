@@ -40,10 +40,10 @@ namespace gum {
    * is
    * not actually compulsory for the hash function we use. However, as it
    * speeds up the computations of hashed values, we chose to impose
-   * this restriction. Function hashTableLog2__ thus returns the size in
+   * this restriction. Function  _hashTableLog2_ thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  INLINE unsigned int hashTableLog2__(const Size nb) {
+  INLINE unsigned int  _hashTableLog2_(const Size nb) {
     unsigned int i = 0;
 
     for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {};

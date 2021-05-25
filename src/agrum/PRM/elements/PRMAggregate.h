@@ -266,18 +266,18 @@ namespace gum {
       /// @{
 
       /// The AggregateType of this aggregate.
-      AggregateType agg_type__;
+      AggregateType  _agg_type_;
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      PRMType* type__;
+      PRMType*  _type_;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      std::shared_ptr< Idx > label__;
-      // Idx* label__;
-      std::string label_value__;
+      std::shared_ptr< Idx >  _label_;
+      // Idx*  _label_;
+      std::string  _label_value_;
 
       /// @}
     };

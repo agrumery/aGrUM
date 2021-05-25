@@ -60,32 +60,32 @@ namespace gum_tests {
 
   class simpleListenerForGHC: public gum::ApproximationSchemeListener {
     private:
-    int         nbr__;
-    std::string mess__;
+    int          _nbr_;
+    std::string  _mess_;
 
     public:
     simpleListenerForGHC(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), nbr__(0), mess__(""){};
+        gum::ApproximationSchemeListener(sch),  _nbr_(0),  _mess_(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) {
-      nbr__++;
-      std::cout << nbr__ << ": error = " << b << std::endl;
+       _nbr_++;
+      std::cout <<  _nbr_ << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void* buffer, const std::string s) { mess__ = s; }
+    void whenStop(const void* buffer, const std::string s) {  _mess_ = s; }
 
-    int getNbr() { return nbr__; }
+    int getNbr() { return  _nbr_; }
 
-    std::string getMess() { return mess__; }
+    std::string getMess() { return  _mess_; }
   };
 
 
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
-    double score__(gum::learning::ScoreBIC<>& score,
+    double  _score_(gum::learning::ScoreBIC<>& score,
                    const gum::NodeId&         node,
                    const gum::DAG&            dag) {
       std::vector< gum::NodeId > cond_set;
@@ -95,7 +95,7 @@ namespace gum_tests {
       return score.score(node, cond_set);
     }
 
-    bool applyNextChange__(gum::learning::ScoreBIC<>& score,
+    bool  _applyNextChange_(gum::learning::ScoreBIC<>& score,
                            std::vector< double >&     current_scores,
                            gum::DAG&                  dag) {
       const int nb_vars = int(dag.size());
@@ -109,7 +109,7 @@ namespace gum_tests {
             if (!dag.existsArc(gum::Arc(i, j))) {
               try {
                 dag.addArc(gum::NodeId(i), gum::NodeId(j));
-                double new_score = score__(score, j, dag) - current_scores[j];
+                double new_score =  _score_(score, j, dag) - current_scores[j];
                 if (new_score > 0) {
                   changes.push_back(
                      std::pair< gum::learning::GraphChange, double >(
@@ -126,7 +126,7 @@ namespace gum_tests {
             // check remove arc
             if (dag.existsArc(gum::Arc(i, j))) {
               dag.eraseArc(gum::Arc(i, j));
-              double new_score = score__(score, j, dag) - current_scores[j];
+              double new_score =  _score_(score, j, dag) - current_scores[j];
               if (new_score > 0) {
                 changes.push_back(std::pair< gum::learning::GraphChange, double >(
                    gum::learning::GraphChange(
@@ -143,8 +143,8 @@ namespace gum_tests {
               dag.eraseArc(gum::Arc(i, j));
               try {
                 dag.addArc(j, i);
-                double new_score_i = score__(score, i, dag) - current_scores[i];
-                double new_score_j = score__(score, j, dag) - current_scores[j];
+                double new_score_i =  _score_(score, i, dag) - current_scores[i];
+                double new_score_j =  _score_(score, j, dag) - current_scores[j];
                 double new_score   = new_score_i + new_score_j;
                 if (new_score > 0) {
                   changes.push_back(
@@ -189,9 +189,9 @@ namespace gum_tests {
                                 changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()]
-             = score__(score, changes[best_i].first.node1(), dag);
+             =  _score_(score, changes[best_i].first.node1(), dag);
           current_scores[changes[best_i].first.node2()]
-             = score__(score, changes[best_i].first.node2(), dag);
+             =  _score_(score, changes[best_i].first.node2(), dag);
           break;
 
         default:
@@ -595,9 +595,9 @@ namespace gum_tests {
 
         std::vector< double > scores(nb_vars);
         for (auto node: xdag)
-          scores[std::size_t(node)] = score__(score, node, xdag);
+          scores[std::size_t(node)] =  _score_(score, node, xdag);
 
-        while (applyNextChange__(score, scores, xdag)) {}
+        while ( _applyNextChange_(score, scores, xdag)) {}
 
         TS_ASSERT(xdag == dag);
       }

@@ -44,25 +44,25 @@ namespace gum_tests {
 
   class aSimpleWeightedListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __mess;
+    int          __nbr;
+    std::string  __mess;
 
     public:
     aSimpleWeightedListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) {
-      __nbr++;
+       __nbr++;
     }
     void whenStop(const void* buffer, const std::string s) {
-      __nbr++;
-      __mess = s;
+       __nbr++;
+       __mess = s;
     }
 
-    int         getNbr() { return __nbr; }
-    std::string getMess() { return __mess; }
+    int         getNbr() { return  __nbr; }
+    std::string getMess() { return  __mess; }
   };
 
   class WeightedSamplingTestSuite: public CxxTest::TestSuite {

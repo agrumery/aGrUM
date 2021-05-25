@@ -620,7 +620,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          g_ve = new gum::prm::SVE< double >(*prm, prm->getSystem("aSys")));
-      testEvidencenSioux3__(g_ve);
+       _testEvidencenSioux3_(g_ve);
       delete g_ve;
     }
 
@@ -629,12 +629,12 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          g_ve = new gum::prm::SVED< double >(*prm, prm->getSystem("aSys")));
-      testEvidencenSioux3__(g_ve);
+       _testEvidencenSioux3_(g_ve);
       delete g_ve;
     }
 
     private:
-    void testEvidencenSioux3__(gum::prm::PRMInference< double >* g_ve) {
+    void  _testEvidencenSioux3_(gum::prm::PRMInference< double >* g_ve) {
       // Adding evidence
       {
         const gum::prm::PRMInstance< double >& instance

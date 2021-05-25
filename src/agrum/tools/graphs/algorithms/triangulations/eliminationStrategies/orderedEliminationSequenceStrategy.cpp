@@ -65,8 +65,8 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
      const OrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
-      order__(from.order__), order_index__(from.order_index__),
-      order_needed__(from.order_needed__) {
+       _order_(from. _order_),  _order_index_(from. _order_index_),
+       _order_needed_(from. _order_needed_) {
     GUM_CONS_CPY(OrderedEliminationSequenceStrategy);
   }
 
@@ -74,8 +74,8 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
      OrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
-      order__(from.order__), order_index__(from.order_index__),
-      order_needed__(from.order_needed__) {
+       _order_(from. _order_),  _order_index_(from. _order_index_),
+       _order_needed_(from. _order_needed_) {
     GUM_CONS_MOV(OrderedEliminationSequenceStrategy);
   }
 
@@ -102,7 +102,7 @@ namespace gum {
      UndiGraph*                  graph,
      const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
-      setOrder(order__);
+      setOrder( _order_);
       return true;
     }
 
@@ -110,7 +110,7 @@ namespace gum {
   }
 
   /// indicates whether an order is compatible with the current graph
-  bool OrderedEliminationSequenceStrategy::isOrderNeeded__(
+  bool OrderedEliminationSequenceStrategy:: _isOrderNeeded_(
      const std::vector< NodeId >* order) const {
     if ((graph_ == nullptr) || (order == nullptr)) return true;
 
@@ -128,18 +128,18 @@ namespace gum {
   bool OrderedEliminationSequenceStrategy::setOrder(
      const std::vector< NodeId >* order) {
     // check that the order contains all the nodes of the graph
-    order_needed__ = isOrderNeeded__(order);
+     _order_needed_ =  _isOrderNeeded_(order);
 
-    if (!order_needed__) {
-      order__ = order;
+    if (! _order_needed_) {
+       _order_ = order;
 
       // determine the first element in order that belong to the graph
-      // here, note that we have the guarantee that order_index__ will be
-      // lower than the size of order__ since all the nodes in the graph
-      // belong to vector order__
-      order_index__ = 0;
-      while (!graph_->existsNode((*order__)[order_index__]))
-        ++order_index__;
+      // here, note that we have the guarantee that  _order_index_ will be
+      // lower than the size of  _order_ since all the nodes in the graph
+      // belong to vector  _order_
+       _order_index_ = 0;
+      while (!graph_->existsNode((* _order_)[ _order_index_]))
+        ++ _order_index_;
 
       return true;
     }
@@ -150,18 +150,18 @@ namespace gum {
   /// clears the order (to prepare, for instance, a new elimination sequence)
   void OrderedEliminationSequenceStrategy::clear() {
     EliminationSequenceStrategy::clear();
-    order_needed__ = true;
-    order_index__  = std::size_t(0);
+     _order_needed_ = true;
+     _order_index_  = std::size_t(0);
   }
 
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId OrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // check that we can return a nodeId
-    if (order_needed__ || (order__->size() <= order_index__)) {
+    if ( _order_needed_ || ( _order_->size() <=  _order_index_)) {
       GUM_ERROR(NotFound, "no node id can be returned")
     }
 
-    return (*order__)[order_index__];
+    return (* _order_)[ _order_index_];
   }
 
   /** @brief if the elimination sequence is able to compute fill-ins, we
@@ -186,10 +186,10 @@ namespace gum {
   /// performs all the graph/fill-ins updates provided (if any)
   void OrderedEliminationSequenceStrategy::eliminationUpdate(const NodeId node) {
     // check whether there is something to update
-    if (!order_needed__) {
+    if (! _order_needed_) {
       // check that node corresponds to the current index
-      if ((order_index__ >= order__->size())
-          || ((*order__)[order_index__] != node)) {
+      if (( _order_index_ >=  _order_->size())
+          || ((* _order_)[ _order_index_] != node)) {
         GUM_ERROR(OutOfBounds,
                   "update impossible because node "
                      << node
@@ -197,11 +197,11 @@ namespace gum {
       }
 
       // now perform the update: goto the next node that belongs to graph_
-      ++order_index__;
-      std::size_t size = order__->size();
-      while ((order_index__ < size)
-             && !graph_->existsNode((*order__)[order_index__]))
-        ++order_index__;
+      ++ _order_index_;
+      std::size_t size =  _order_->size();
+      while (( _order_index_ < size)
+             && !graph_->existsNode((* _order_)[ _order_index_]))
+        ++ _order_index_;
     }
   }
 

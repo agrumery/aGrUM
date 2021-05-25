@@ -34,8 +34,8 @@ namespace gum {
                                                   const std::string& filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
-    bn__       = bn;
-    filePath__ = filePath;
+     _bn_       = bn;
+     _filePath_ = filePath;
   }
 
   /*
@@ -59,7 +59,7 @@ namespace gum {
       std::string status = "Loading File ...";
       GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc(filePath__);
+      ticpp::Document xmlDoc( _filePath_);
       xmlDoc.LoadFile();
 
       if (xmlDoc.NoChildren()) {
@@ -83,13 +83,13 @@ namespace gum {
       status = "Network found. Now proceedind variables instanciation...";
       GUM_EMIT2(onProceed, 10, status);
 
-      parsingVariables__(networkElement);
+       _parsingVariables_(networkElement);
 
       // Filling diagram
       status = "All variables have been instancied. Now filling up diagram...";
       GUM_EMIT2(onProceed, 55, status);
 
-      fillingBN__(networkElement);
+       _fillingBN_(networkElement);
 
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
@@ -101,7 +101,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BIFXMLBNReader< GUM_SCALAR >::parsingVariables__(
+  void BIFXMLBNReader< GUM_SCALAR >:: _parsingVariables_(
      ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
@@ -136,7 +136,7 @@ namespace gum {
         newVar->addLabel(varOutComesIte->GetTextOrDefault(""));
 
       // Add the variable to the bn and then delete newVar (add makes a copy)
-      bn__->add(*newVar);
+       _bn_->add(*newVar);
       delete (newVar);
 
       // Emitting progress.
@@ -149,7 +149,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BIFXMLBNReader< GUM_SCALAR >::fillingBN__(ticpp::Element* parentNetwork) {
+  void BIFXMLBNReader< GUM_SCALAR >:: _fillingBN_(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;
     ticpp::Iterator< ticpp::Element > definitionIte("DEFINITION");
@@ -170,7 +170,7 @@ namespace gum {
       // Considered Node
       std::string currentVarName
          = currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
-      NodeId currentVarId = bn__->idFromName(currentVarName);
+      NodeId currentVarId =  _bn_->idFromName(currentVarName);
 
       // Get Node's parents
       ticpp::Iterator< ticpp::Element > givenIte("GIVEN");
@@ -179,14 +179,14 @@ namespace gum {
       for (givenIte = givenIte.begin(currentVar); givenIte != givenIte.end();
            ++givenIte) {
         std::string parentNode = givenIte->GetTextOrDefault("");
-        NodeId      parentId   = bn__->idFromName(parentNode);
+        NodeId      parentId   =  _bn_->idFromName(parentNode);
         parentList.pushBack(parentId);
       }
 
       for (List< NodeId >::iterator_safe parentListIte = parentList.rbeginSafe();
            parentListIte != parentList.rendSafe();
            --parentListIte)
-        bn__->addArc(*parentListIte, currentVarId);
+         _bn_->addArc(*parentListIte, currentVarId);
 
       // Recuperating tables values
       ticpp::Element*    tableElement = currentVar->FirstChildElement("TABLE");
@@ -202,7 +202,7 @@ namespace gum {
       std::vector< GUM_SCALAR > tablevector(tablelist.begin(), tablelist.end());
 
       // Filling tables
-      bn__->cpt(currentVarId).fillWith(tablevector);
+       _bn_->cpt(currentVarId).fillWith(tablevector);
 
       // Emitting progress.
       std::string status

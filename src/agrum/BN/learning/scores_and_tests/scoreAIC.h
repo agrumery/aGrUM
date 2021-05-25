@@ -207,7 +207,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori< ALLOC > internal_apriori__;
+      AprioriNoApriori< ALLOC >  _internal_apriori_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -40,31 +40,31 @@ namespace gum {
   namespace learning {
 
     // create the static members
-    int DBCell::string_max_index__ = 0;
+    int DBCell:: _string_max_index_ = 0;
 
 
-    Bijection< std::string, int >& DBCell::strings__() {
+    Bijection< std::string, int >& DBCell:: _strings_() {
 #  ifdef GUM_DEBUG_MODE
       static bool first_time = true;
       if (first_time) {
         first_time = false;
-        __debug__::dec_creation__("Bijection",
-                                  "__strings",
+         __debug__:: _dec_creation_("Bijection",
+                                  " __strings",
                                   0,
                                   "BCell string bijection",
                                   0);
-        __debug__::dec_creation__("BijectionImplementation",
-                                  "__strings",
+         __debug__:: _dec_creation_("BijectionImplementation",
+                                  " __strings",
                                   0,
                                   "BCell string bijection",
                                   0);
-        __debug__::dec_creation__("HashTable",
-                                  "__strings",
+         __debug__:: _dec_creation_("HashTable",
+                                  " __strings",
                                   0,
                                   "BCell string bijection",
                                   0);
-        __debug__::dec_creation__("HashTable",
-                                  "__strings",
+         __debug__:: _dec_creation_("HashTable",
+                                  " __strings",
                                   0,
                                   "BCell string bijection",
                                   0);
@@ -134,22 +134,22 @@ namespace gum {
 
     // try to convert the content of the DBCell into another type
     bool DBCell::convertType(const EltType new_type) {
-      if (new_type == type__) return true;
+      if (new_type ==  _type_) return true;
       switch (new_type) {
           // ===================================
         case EltType::REAL:
-          switch (type__) {
+          switch ( _type_) {
             case EltType::INTEGER:
-              val_real__ = float(val_integer__);
-              type__     = EltType::REAL;
+               _val_real_ = float( _val_integer_);
+               _type_     = EltType::REAL;
               return true;
 
             case EltType::STRING:
               try {
-                const std::string& str = strings__().first(val_index__);
+                const std::string& str =  _strings_().first( _val_index_);
                 if (!isReal(str)) return false;
-                val_real__ = std::stof(str);
-                type__     = EltType::REAL;
+                 _val_real_ = std::stof(str);
+                 _type_     = EltType::REAL;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
@@ -163,12 +163,12 @@ namespace gum {
 
           // ===================================
         case EltType::INTEGER:
-          switch (type__) {
+          switch ( _type_) {
             case EltType::REAL: {
-              const int nb = int(val_real__);
-              if (nb == val_real__) {
-                val_integer__ = nb;
-                type__        = EltType::INTEGER;
+              const int nb = int( _val_real_);
+              if (nb ==  _val_real_) {
+                 _val_integer_ = nb;
+                 _type_        = EltType::INTEGER;
                 return true;
               } else
                 return false;
@@ -176,10 +176,10 @@ namespace gum {
 
             case EltType::STRING:
               try {
-                const std::string& str = strings__().first(val_index__);
+                const std::string& str =  _strings_().first( _val_index_);
                 if (!isInteger(str)) return false;
-                val_integer__ = std::stoi(str);
-                type__        = EltType::INTEGER;
+                 _val_integer_ = std::stoi(str);
+                 _type_        = EltType::INTEGER;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
@@ -193,33 +193,33 @@ namespace gum {
 
           // ===================================
         case EltType::STRING:
-          switch (type__) {
+          switch ( _type_) {
             case EltType::REAL: {
               char buffer[100];
-              sprintf(buffer, "%g", val_real__);
+              sprintf(buffer, "%g",  _val_real_);
               const std::string str(buffer);
-              if (!strings__().existsFirst(str)) {
-                strings__().insert(str, string_max_index__);
-                val_index__ = string_max_index__;
-                ++string_max_index__;
+              if (! _strings_().existsFirst(str)) {
+                 _strings_().insert(str,  _string_max_index_);
+                 _val_index_ =  _string_max_index_;
+                ++ _string_max_index_;
               } else {
-                val_index__ = strings__().second(str);
+                 _val_index_ =  _strings_().second(str);
               }
             }
-              type__ = EltType::STRING;
+               _type_ = EltType::STRING;
               return true;
 
             case EltType::INTEGER: {
-              const std::string str = std::to_string(val_integer__);
-              if (!strings__().existsFirst(str)) {
-                strings__().insert(str, string_max_index__);
-                val_index__ = string_max_index__;
-                ++string_max_index__;
+              const std::string str = std::to_string( _val_integer_);
+              if (! _strings_().existsFirst(str)) {
+                 _strings_().insert(str,  _string_max_index_);
+                 _val_index_ =  _string_max_index_;
+                ++ _string_max_index_;
               } else {
-                val_index__ = strings__().second(str);
+                 _val_index_ =  _strings_().second(str);
               }
             }
-              type__ = EltType::STRING;
+               _type_ = EltType::STRING;
               return true;
 
             case EltType::MISSING:
@@ -232,7 +232,7 @@ namespace gum {
 
           // ===================================
         case EltType::MISSING:
-          type__ = EltType::MISSING;
+           _type_ = EltType::MISSING;
           return true;
 
         default:
@@ -244,9 +244,9 @@ namespace gum {
 
 
     // raises an appropriate exception when encountering a type error
-    std::string DBCell::typeErrorMsg__(const std::string& true_type) const {
+    std::string DBCell:: _typeErrorMsg_(const std::string& true_type) const {
       std::stringstream str;
-      switch (type__) {
+      switch ( _type_) {
         case EltType::REAL:
           str << "The DBCell contains a real number instead of " << true_type;
           break;

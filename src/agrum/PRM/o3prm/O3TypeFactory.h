@@ -72,38 +72,38 @@ namespace gum {
         void build();
 
         private:
-        PRM< GUM_SCALAR >*          prm__;
-        O3PRM*                      o3_prm__;
-        O3NameSolver< GUM_SCALAR >* solver__;
-        ErrorsContainer*            errors__;
+        PRM< GUM_SCALAR >*           _prm_;
+        O3PRM*                       _o3_prm_;
+        O3NameSolver< GUM_SCALAR >*  _solver_;
+        ErrorsContainer*             _errors_;
 
-        bool build__;
+        bool  _build_;
 
-        HashTable< std::string, O3Type* >     superMap__;
-        HashTable< std::string, gum::NodeId > nameMap__;
-        HashTable< std::string, O3Type* >     typeMap__;
-        HashTable< NodeId, O3Type* >          nodeMap__;
-        DAG                                   dag__;
-        std::vector< O3Type* >                o3Types__;
-        std::vector< O3IntType* >             o3IntTypes__;
-        std::vector< O3RealType* >            o3RealTypes__;
+        HashTable< std::string, O3Type* >      _superMap_;
+        HashTable< std::string, gum::NodeId >  _nameMap_;
+        HashTable< std::string, O3Type* >      _typeMap_;
+        HashTable< NodeId, O3Type* >           _nodeMap_;
+        DAG                                    _dag_;
+        std::vector< O3Type* >                 _o3Types_;
+        std::vector< O3IntType* >              _o3IntTypes_;
+        std::vector< O3RealType* >             _o3RealTypes_;
 
-        void buildTypes__();
-        void buildIntTypes__();
-        void buildRealTypes__();
+        void  _buildTypes_();
+        void  _buildIntTypes_();
+        void  _buildRealTypes_();
 
-        bool isPrimitiveType__(O3Type& type);
+        bool  _isPrimitiveType_(O3Type& type);
 
-        bool checkO3Types__();
-        void checkDepreactedO3Types__();
-        bool addTypes2Dag__();
-        bool addArcs2Dag__();
-        bool checkLabels__(O3Type& type);
+        bool  _checkO3Types_();
+        void  _checkDepreactedO3Types_();
+        bool  _addTypes2Dag_();
+        bool  _addArcs2Dag_();
+        bool  _checkLabels_(O3Type& type);
 
-        void setO3TypeCreationOrder__();
+        void  _setO3TypeCreationOrder_();
 
-        bool checkO3IntTypes__();
-        bool checkO3RealTypes__();
+        bool  _checkO3IntTypes_();
+        bool  _checkO3RealTypes_();
       };
 
     }   // namespace o3prm

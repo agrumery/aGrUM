@@ -146,7 +146,7 @@ namespace gum {
         m_results.clear();
 
         try {
-          std::string file_content = readFile__(filename);
+          std::string file_content =  _readFile_(filename);
 
           delete m_context;
           m_context = new O3prmrContext< double >(filename);
@@ -184,7 +184,7 @@ namespace gum {
         } catch (gum::Exception&) { return false; }
       }
 
-      std::string O3prmrInterpreter::readFile__(const std::string& file) {
+      std::string O3prmrInterpreter:: _readFile_(const std::string& file) {
         // read entire file into string
         std::ifstream istream(file, std::ifstream::binary);
         if (istream) {

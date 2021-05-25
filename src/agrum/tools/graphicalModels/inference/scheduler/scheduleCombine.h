@@ -129,23 +129,23 @@ namespace gum {
 
     private:
     /// the first table to combine
-    ScheduleMultiDim< GUM_SCALAR > table1__;
+    ScheduleMultiDim< GUM_SCALAR >  _table1_;
 
     /// the second table to combine with
-    ScheduleMultiDim< GUM_SCALAR > table2__;
+    ScheduleMultiDim< GUM_SCALAR >  _table2_;
 
     /// the result of the operation
     /** the result is allocated and deallocated by ScheduleCombine */
-    ScheduleMultiDim< GUM_SCALAR >* result__;
+    ScheduleMultiDim< GUM_SCALAR >*  _result_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* args__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* results__;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _results_;
 
     /// the function actually used to perform the combination
-    MultiDimImplementation< GUM_SCALAR >* (*combine__)(
+    MultiDimImplementation< GUM_SCALAR >* (* _combine_)(
        const MultiDimImplementation< GUM_SCALAR >&,
        const MultiDimImplementation< GUM_SCALAR >&);
   };

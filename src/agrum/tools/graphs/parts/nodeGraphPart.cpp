@@ -35,69 +35,69 @@ namespace gum {
 
   ///////////////////// NodeGraphPart
   NodeGraphPart::NodeGraphPart(Size holes_size, bool holes_resize_policy) :
-      holes_size__(holes_size), holes_resize_policy__(holes_resize_policy),
-      endIteratorSafe__(*this), boundVal__(0) {
-    holes__ = nullptr;
+       _holes_size_(holes_size),  _holes_resize_policy_(holes_resize_policy),
+       _endIteratorSafe_(*this),  _boundVal_(0) {
+     _holes_ = nullptr;
     GUM_CONSTRUCTOR(NodeGraphPart);
-    updateEndIteratorSafe__();
+     _updateEndIteratorSafe_();
   }
 
   NodeGraphPart::NodeGraphPart(const NodeGraphPart& s) :
-      holes_size__(s.holes_size__), holes_resize_policy__(s.holes_resize_policy__),
-      endIteratorSafe__(*this), boundVal__(s.boundVal__) {
-    holes__ = nullptr;
+       _holes_size_(s. _holes_size_),  _holes_resize_policy_(s. _holes_resize_policy_),
+       _endIteratorSafe_(*this),  _boundVal_(s. _boundVal_) {
+     _holes_ = nullptr;
 
-    if (s.holes__) holes__ = new NodeSet(*s.holes__);
+    if (s. _holes_)  _holes_ = new NodeSet(*s. _holes_);
 
-    updateEndIteratorSafe__();
+     _updateEndIteratorSafe_();
 
     GUM_CONS_CPY(NodeGraphPart);
   }
 
   NodeGraphPart::~NodeGraphPart() {
-    if (holes__) delete holes__;
+    if ( _holes_) delete  _holes_;
 
     GUM_DESTRUCTOR(NodeGraphPart);
   }
 
   void NodeGraphPart::populateNodes(const NodeGraphPart& s) {
     clear();   // "virtual" flush of the nodes set
-    holes_size__          = s.holes_size__;
-    holes_resize_policy__ = s.holes_resize_policy__;
+     _holes_size_          = s. _holes_size_;
+     _holes_resize_policy_ = s. _holes_resize_policy_;
 
-    if (s.holes__) holes__ = new NodeSet(*s.holes__);
+    if (s. _holes_)  _holes_ = new NodeSet(*s. _holes_);
 
-    boundVal__ = s.boundVal__;
+     _boundVal_ = s. _boundVal_;
 
-    updateEndIteratorSafe__();
+     _updateEndIteratorSafe_();
   }
 
   // id is assumed to belong to NodeGraphPart
-  void NodeGraphPart::addHole__(NodeId node) {
+  void NodeGraphPart:: _addHole_(NodeId node) {
     // we assume that the node exists
-    if (node + 1 == boundVal__) {
+    if (node + 1 ==  _boundVal_) {
       // we remove the max : no new hole and maybe a bunch of holes to remove
-      --boundVal__;
+      -- _boundVal_;
 
-      if (holes__) {
-        while (holes__->contains(boundVal__ - 1)) {
+      if ( _holes_) {
+        while ( _holes_->contains( _boundVal_ - 1)) {
           // a bunch of holes to remove. We do not use inHoles for optimisation
           // :
-          // not to repeat the test if (holes__) each time
-          holes__->erase(--boundVal__);
+          // not to repeat the test if ( _holes_) each time
+           _holes_->erase(-- _boundVal_);
         }
 
-        if (holes__->empty()) {
-          delete holes__;
-          holes__ = nullptr;
+        if ( _holes_->empty()) {
+          delete  _holes_;
+           _holes_ = nullptr;
         }
       }
 
-      updateEndIteratorSafe__();
+       _updateEndIteratorSafe_();
     } else {
-      if (!holes__) holes__ = new NodeSet(holes_size__, holes_resize_policy__);
+      if (! _holes_)  _holes_ = new NodeSet( _holes_size_,  _holes_resize_policy_);
 
-      holes__->insert(node);
+       _holes_->insert(node);
     }
   }
 
@@ -106,8 +106,8 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (NodeId id = 0; id < boundVal__; ++id) {
-      if (inHoles__(id)) continue;
+    for (NodeId id = 0; id <  _boundVal_; ++id) {
+      if ( _inHoles_(id)) continue;
 
       if (first) {
         first = false;
@@ -129,20 +129,20 @@ namespace gum {
   }
 
   void NodeGraphPart::addNodeWithId(const NodeId id) {
-    if (id >= boundVal__) {
-      if (id > boundVal__) {   // we have to add holes
-        if (!holes__) holes__ = new NodeSet(holes_size__, holes_resize_policy__);
+    if (id >=  _boundVal_) {
+      if (id >  _boundVal_) {   // we have to add holes
+        if (! _holes_)  _holes_ = new NodeSet( _holes_size_,  _holes_resize_policy_);
 
-        for (NodeId i = boundVal__; i < id; ++i)
-          holes__->insert(i);
+        for (NodeId i =  _boundVal_; i < id; ++i)
+           _holes_->insert(i);
       }
 
-      boundVal__ = id + 1;
+       _boundVal_ = id + 1;
 
-      updateEndIteratorSafe__();
+       _updateEndIteratorSafe_();
     } else {
-      if (inHoles__(id)) {   // we fill a hole
-        eraseHole__(id);
+      if ( _inHoles_(id)) {   // we fill a hole
+         _eraseHole_(id);
       } else {
         GUM_ERROR(DuplicateElement, "Id " << id << " is already used")
       }
@@ -151,20 +151,20 @@ namespace gum {
     GUM_EMIT1(onNodeAdded, id);
   }
 
-  void NodeGraphPart::clearNodes__() {
-    NodeId bound = boundVal__;
-    boundVal__   = 0;
+  void NodeGraphPart:: _clearNodes_() {
+    NodeId bound =  _boundVal_;
+     _boundVal_   = 0;
 
     if (onNodeDeleted.hasListener()) {
       for (NodeId n = 0; n < bound; ++n) {
-        if (!inHoles__(n)) GUM_EMIT1(onNodeDeleted, n);
+        if (! _inHoles_(n)) GUM_EMIT1(onNodeDeleted, n);
       }
     }
 
-    updateEndIteratorSafe__();
+     _updateEndIteratorSafe_();
 
-    delete (holes__);
-    holes__ = nullptr;
+    delete ( _holes_);
+     _holes_ = nullptr;
   }
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {

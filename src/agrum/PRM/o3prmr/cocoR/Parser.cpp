@@ -52,10 +52,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return errors__;
+  return  _errors_;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return errors__;
+  return  _errors_;
 }
 
 void Parser::Get() {
@@ -110,12 +110,12 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::o3prmr() {
-		std::string s, alias; currentSession__ = 0; 
+		std::string s, alias;  _currentSession_ = 0;
 		if (StartOf(1)) {
 			if (la->kind == _package) {
 				Get();
 				Ident(s);
-				context__->setPackage( s ); 
+				 _context_->setPackage( s );
 				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(29); Get();}
 				Expect(15 /* ";" */);
 			}
@@ -133,7 +133,7 @@ void Parser::o3prmr() {
 						alias = gum::narrow(t->val); 
 					} else SynErr(30);
 				}
-				context__->addImport( t->line, s, alias ); 
+				 _context_->addImport( t->line, s, alias );
 				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(31); Get();}
 				Expect(15 /* ";" */);
 			}
@@ -141,8 +141,8 @@ void Parser::o3prmr() {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
-			currentSession__ = new O3prmrSession<double>("default");
-			context__->addSession( *currentSession__ );
+			 _currentSession_ = new O3prmrSession<double>("default");
+			 _context_->addSession( * _currentSession_ );
 			
 			Command();
 		} else SynErr(32);
@@ -163,14 +163,14 @@ void Parser::Ident(std::string& s) {
 void Parser::RequestBloc() {
 		Expect(_request);
 		Expect(_word);
-		currentSession__ = new O3prmrSession<double>(gum::narrow(t->val)); 
+		 _currentSession_ = new O3prmrSession<double>(gum::narrow(t->val));
 		Expect(16 /* "{" */);
 		while (StartOf(2)) {
 			Command();
 		}
 		while (!(la->kind == _EOF || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
 		Expect(17 /* "}" */);
-		context__->addSession( *currentSession__ ); currentSession__ = nullptr; 
+		 _context_->addSession( * _currentSession_ );  _currentSession_ = nullptr;
 }
 
 void Parser::Command() {
@@ -202,14 +202,14 @@ void Parser::Observe() {
 			right_value = std::to_string(coco_atoi(t->val)); 
 		} else SynErr(35);
 		Expect(15 /* ";" */);
-		currentSession__->addObserve(t->line, left_value, right_value); 
+		 _currentSession_->addObserve(t->line, left_value, right_value);
 }
 
 void Parser::Unobserve() {
 		Expect(_unobserve);
 		std::string s; 
 		IdentArray(s);
-		currentSession__->addUnobserve( t->line, s ); 
+		 _currentSession_->addUnobserve( t->line, s );
 		Expect(15 /* ";" */);
 }
 
@@ -217,11 +217,11 @@ void Parser::Query() {
 		Expect(_query);
 		std::string s; 
 		IdentArray(s);
-		currentSession__->addQuery( t->line, s ); 
+		 _currentSession_->addQuery( t->line, s );
 		while (la->kind == _and) {
 			Get();
 			IdentArray(s);
-			currentSession__->addQuery( t->line, s ); 
+			 _currentSession_->addQuery( t->line, s );
 		}
 		Expect(15 /* ";" */);
 }
@@ -235,7 +235,7 @@ void Parser::SetEngine() {
 		} else if (la->kind == 21 /* "GRD" */) {
 			Get();
 		} else SynErr(36);
-		currentSession__->addSetEngine( t->line, gum::narrow(t->val) ); 
+		 _currentSession_->addSetEngine( t->line, gum::narrow(t->val) );
 		Expect(15 /* ";" */);
 }
 
@@ -248,7 +248,7 @@ void Parser::SetGrdEngine() {
 		} else if (la->kind == 24 /* "lazy" */) {
 			Get();
 		} else SynErr(37);
-		currentSession__->addSetGndEngine( t->line, gum::narrow(t->val) ); 
+		 _currentSession_->addSetGndEngine( t->line, gum::narrow(t->val) );
 		Expect(15 /* ";" */);
 }
 
@@ -405,13 +405,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist )  _errors_.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-  errors__.Warning( scanner->filename(),t->line, t->col, msg );
+   _errors_.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -468,7 +468,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-  errors__.Error( filename,line,col,ss.c_str() );
+   _errors_.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

@@ -33,77 +33,77 @@
 #endif   // GUM_NOINLINE
 
 namespace gum {
-  EssentialGraph::EssentialGraph(const DAGmodel& m) : dagmodel__(&m) {
-    buildEssentialGraph__();
+  EssentialGraph::EssentialGraph(const DAGmodel& m) :  _dagmodel_(&m) {
+     _buildEssentialGraph_();
   }
 
   EssentialGraph::EssentialGraph(const DAGmodel& m, const MixedGraph& mg) :
-      dagmodel__(&m), mg__(mg) {}
+       _dagmodel_(&m),  _mg_(mg) {}
   EssentialGraph::EssentialGraph(const EssentialGraph& g) {
-    dagmodel__ = g.dagmodel__;
-    buildEssentialGraph__();
+     _dagmodel_ = g. _dagmodel_;
+     _buildEssentialGraph_();
   }
   EssentialGraph& EssentialGraph::operator=(const EssentialGraph& g) {
     if (&g != this) {
-      dagmodel__ = g.dagmodel__;
-      buildEssentialGraph__();
+       _dagmodel_ = g. _dagmodel_;
+       _buildEssentialGraph_();
     }
     return *this;
   }
 
   EssentialGraph::~EssentialGraph() = default;
 
-  void EssentialGraph::buildEssentialGraph__() {
-    mg__.clear();
-    if (dagmodel__ == nullptr) return;
+  void EssentialGraph:: _buildEssentialGraph_() {
+     _mg_.clear();
+    if ( _dagmodel_ == nullptr) return;
 
-    for (const auto& node: dagmodel__->nodes()) {
-      mg__.addNodeWithId(node);
+    for (const auto& node:  _dagmodel_->nodes()) {
+       _mg_.addNodeWithId(node);
     }
-    for (const auto& arc: dagmodel__->arcs()) {
-      mg__.addArc(arc.tail(), arc.head());
+    for (const auto& arc:  _dagmodel_->arcs()) {
+       _mg_.addArc(arc.tail(), arc.head());
     }
 
     std::vector< Arc > v;
     do {
       v.clear();
-      for (const auto x: dagmodel__->topologicalOrder())
-        for (const auto y: mg__.children(x))
-          if (!strongly_protected__(x, y)) v.emplace_back(x, y);
+      for (const auto x:  _dagmodel_->topologicalOrder())
+        for (const auto y:  _mg_.children(x))
+          if (! _strongly_protected_(x, y)) v.emplace_back(x, y);
 
       for (const auto& arc: v) {
-        mg__.eraseArc(arc);
-        mg__.addEdge(arc.tail(), arc.head());
+         _mg_.eraseArc(arc);
+         _mg_.addEdge(arc.tail(), arc.head());
       }
     } while (!v.empty());
   }
 
-  bool EssentialGraph::strongly_protected__(NodeId a, NodeId b) {
+  bool EssentialGraph:: _strongly_protected_(NodeId a, NodeId b) {
     // testing a->b from
     // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
     // condition (a)
-    for (const auto& c: mg__.parents(a)) {
-      if (!mg__.existsArc(c, b)) { return true; }
+    for (const auto& c:  _mg_.parents(a)) {
+      if (! _mg_.existsArc(c, b)) { return true; }
     }
 
 
-    for (const auto& c: mg__.parents(b)) {
+    for (const auto& c:  _mg_.parents(b)) {
       if (c == a) { continue; }
       // condition (c)
-      if (mg__.existsArc(a, c)) { return true; }
+      if ( _mg_.existsArc(a, c)) { return true; }
 
       // condition (b) knowing that a can not be a parent of c (condition below)
-      if (!mg__.existsEdge(a, c) && !mg__.existsArc(c, a)) { return true; }
+      if (! _mg_.existsEdge(a, c) && ! _mg_.existsArc(c, a)) { return true; }
     }
 
     // condition (d)
     bool oneFound = false;
-    for (const auto& c: mg__.parents(b)) {
+    for (const auto& c:  _mg_.parents(b)) {
       if (c == a) { continue; }
       // condition (d)
-      if (mg__.existsEdge(c, a)) {
+      if ( _mg_.existsEdge(c, a)) {
         if (oneFound) {   // this is the second found
           return true;
         }
@@ -123,17 +123,17 @@ namespace gum {
            << "no_name\" {" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
-    if (dagmodel__ != nullptr) {
-      for (const auto node: mg__.nodes()) {
+    if ( _dagmodel_ != nullptr) {
+      for (const auto node:  _mg_.nodes()) {
         nodeStream << tab << node << "[label=\""
-                   << dagmodel__->variable(node).name() << "\"];";
+                   <<  _dagmodel_->variable(node).name() << "\"];";
 
-        for (const auto nei: mg__.neighbours(node))
+        for (const auto nei:  _mg_.neighbours(node))
           if (!treatedNodes.exists(nei))
             edgeStream << tab << node << " -> " << nei << " [dir=none];"
                        << std::endl;
 
-        for (const auto chi: mg__.children(node))
+        for (const auto chi:  _mg_.children(node))
           edgeStream << tab << node << " -> " << chi << " [color=red];"
                      << std::endl;
 

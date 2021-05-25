@@ -180,66 +180,66 @@ namespace gum {
 
       private:
       /// the scoring function
-      Score< ALLOC >* score__;
+      Score< ALLOC >*  _score_;
 
       /// the set of constraints used to determine valid changes
-      STRUCTURAL_CONSTRAINT* constraint__;
+      STRUCTURAL_CONSTRAINT*  _constraint_;
 
       /// the generator that returns the set of possible changes
-      GRAPH_CHANGES_GENERATOR* changes_generator__;
+      GRAPH_CHANGES_GENERATOR*  _changes_generator_;
 
       /// a sequence containing all the possible changes
-      Sequence< GraphChange > changes__;
+      Sequence< GraphChange >  _changes_;
 
       /// the scores for the head and tail of all the changes
-      /** the scores are indexed by their index in sequence changes__ */
-      std::vector< std::pair< double, double > > change_scores__;
+      /** the scores are indexed by their index in sequence  _changes_ */
+      std::vector< std::pair< double, double > >  _change_scores_;
 
       /// for each node, a priority queue sorting GraphChanges by decreasing score
       /** within each queue, the changes are determined by their index in
-       * sequence changes__. */
+       * sequence  _changes_. */
       NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-         change_queue_per_node__;
+          _change_queue_per_node_;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue< NodeId, double, std::greater< double > > node_queue__;
+      PriorityQueue< NodeId, double, std::greater< double > >  _node_queue_;
 
       /// the set of changes known to be currently illegal (due to the constraints)
       /** within each queue, the changes are determined by their index in
-       * sequence changes__. */
-      Set< std::size_t > illegal_changes__;
+       * sequence  _changes_. */
+      Set< std::size_t >  _illegal_changes_;
 
       /// the current score of each node
-      NodeProperty< double > node_current_scores__;
+      NodeProperty< double >  _node_current_scores_;
 
       /// the set of parents of each node (speeds-up score computations)
-      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > parents__;
+      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > >  _parents_;
 
       /// indicates whether we need to recompute whether the queue is empty or not
-      bool queues_valid__{false};
+      bool  _queues_valid_{false};
 
       /// the set of queues to update when applying several changes
-      Set< NodeId > queues_to_update__;
+      Set< NodeId >  _queues_to_update_;
 
       /// indicates whether a given change is valid or not
-      bool isChangeValid__(const std::size_t index) const;
+      bool  _isChangeValid_(const std::size_t index) const;
 
       /// put a change into the illegal set
-      void invalidateChange__(const std::size_t change_index);
+      void  _invalidateChange_(const std::size_t change_index);
 
       /// remove the now legal changes from the illegal set
-      void illegal2LegalChanges__(Set< std::size_t >& changes_to_recompute);
+      void  _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute);
 
       /// finds the changes that are affected by a given node modification
       void
-         findLegalChangesNeedingUpdate__(Set< std::size_t >& changes_to_recompute,
+          _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
                                          const NodeId        target_node);
 
       /// perform the necessary updates of the scores
-      void updateScores__(const Set< std::size_t >& changes_to_recompute);
+      void  _updateScores_(const Set< std::size_t >& changes_to_recompute);
 
       /// get from the graph change generator a new set of changes
-      void getNewChanges__();
+      void  _getNewChanges_();
     };
 
   } /* namespace learning */

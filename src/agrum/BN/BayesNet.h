@@ -652,29 +652,29 @@ namespace gum {
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
-    /// probaMap__[NodeId]
+    ///  _probaMap_[NodeId]
     void changePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
     void changePotential(const std::string& name, Potential< GUM_SCALAR >* newPot);
 
     private:
     /// clear all potentials
-    void clearPotentials__();
+    void  _clearPotentials_();
 
     /// copy of potentials from a BN to another, using names of vars as ref.
-    void copyPotentials__(const BayesNet< GUM_SCALAR >& source);
+    void  _copyPotentials_(const BayesNet< GUM_SCALAR >& source);
 
     /// the map between variable and id
-    VariableNodeMap varMap__;
+    VariableNodeMap  _varMap_;
 
     /// Mapping between the variable's id and their CPT.
-    NodeProperty< Potential< GUM_SCALAR >* > probaMap__;
-    // HashTable<NodeId, Potential<GUM_SCALAR>* > probaMap__;
+    NodeProperty< Potential< GUM_SCALAR >* >  _probaMap_;
+    // HashTable<NodeId, Potential<GUM_SCALAR>* >  _probaMap_;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
     /// @see changePotential
-    void unsafeChangePotential_(NodeId id, Potential< GUM_SCALAR >* newPot);
+    void _unsafeChangePotential_(NodeId id, Potential< GUM_SCALAR >* newPot);
 
     public:
     using IBayesNet< GUM_SCALAR >::dag;

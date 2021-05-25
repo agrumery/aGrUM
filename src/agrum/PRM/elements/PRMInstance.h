@@ -363,8 +363,8 @@ namespace gum {
         PRMInstance< GUM_SCALAR >* operator->() const;
 
         private:
-        Set< PRMInstance< GUM_SCALAR >* >&                   set__;
-        typename Set< PRMInstance< GUM_SCALAR >* >::iterator iter__;
+        Set< PRMInstance< GUM_SCALAR >* >&                    _set_;
+        typename Set< PRMInstance< GUM_SCALAR >* >::iterator  _iter_;
       };
 
       /**
@@ -414,8 +414,8 @@ namespace gum {
         const PRMInstance< GUM_SCALAR >* operator->() const;
 
         private:
-        const Set< PRMInstance< GUM_SCALAR >* >&                   set__;
-        typename Set< PRMInstance< GUM_SCALAR >* >::const_iterator iter__;
+        const Set< PRMInstance< GUM_SCALAR >* >&                    _set_;
+        typename Set< PRMInstance< GUM_SCALAR >* >::const_iterator  _iter_;
       };
 
       /**
@@ -465,21 +465,21 @@ namespace gum {
       /// @{
 
       /// Used at construction to instantiate aggregates.
-      void copyAggregates__(PRMAggregate< GUM_SCALAR >* source);
+      void  _copyAggregates_(PRMAggregate< GUM_SCALAR >* source);
 
       /// Used at construction to instantiate attributes.
-      /// @param source An attribute in type__.
-      void copyAttribute__(PRMAttribute< GUM_SCALAR >* source);
+      /// @param source An attribute in  _type_.
+      void  _copyAttribute_(PRMAttribute< GUM_SCALAR >* source);
 
       /**
        * @brief Starts this instance instantiations.
        */
-      void doInstantiate__();
+      void  _doInstantiate_();
 
       /// @brief Retrieve all instances referred by sc.
       /// @param sc A slot chain of this instance's type.
       /// @throw NotFound Raised if a reference in sc is not instantiated.
-      void instantiateSlotChain__(PRMSlotChain< GUM_SCALAR >* sc);
+      void  _instantiateSlotChain_(PRMSlotChain< GUM_SCALAR >* sc);
 
       /// @brief Copy the content of an PRMAttribute<GUM_SCALAR> from its
       /// Class<GUM_SCALAR> counterpart.
@@ -487,13 +487,13 @@ namespace gum {
       /// PRMInstance<GUM_SCALAR>.
       /// @throw OperationNotAllowed If the MultiDimImplementation is of an
       /// unknown type.
-      void copyAttributeCPF__(PRMAttribute< GUM_SCALAR >* attr);
+      void  _copyAttributeCPF_(PRMAttribute< GUM_SCALAR >* attr);
 
       /// @brief Add this as a referring instance over the attribute pointed by
       /// sc in i.
       /// @param sc A slot chain pointing over an attribute in i.
       /// @param i An instance holding an attribute pointed by sc.
-      void addReferingInstance__(PRMSlotChain< GUM_SCALAR >* sc,
+      void  _addReferingInstance_(PRMSlotChain< GUM_SCALAR >* sc,
                                  PRMInstance< GUM_SCALAR >*  i);
 
       /// @}
@@ -503,29 +503,29 @@ namespace gum {
       /// @{
 
       /// True if this instance has been instantiated
-      bool instantiated__;
+      bool  _instantiated_;
 
       /// The type of this PRMInstance<GUM_SCALAR>.
-      PRMClass< GUM_SCALAR >* type__;
+      PRMClass< GUM_SCALAR >*  _type_;
 
       /// The gum::prm::PRMAttribute<GUM_SCALAR> and
       /// gum::prm::PRMAggregate<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
-      NodeProperty< PRMAttribute< GUM_SCALAR >* > nodeIdMap__;
+      NodeProperty< PRMAttribute< GUM_SCALAR >* >  _nodeIdMap_;
 
       /// Mapping between the gum::prm::PRMReferenceSlot and
       /// gum::prm::PRMSlotChain<GUM_SCALAR> in
-      /// type__ / and the PRMInstance<GUM_SCALAR> associated with it.
-      NodeProperty< Set< PRMInstance< GUM_SCALAR >* >* > referenceMap__;
+      ///  _type_ / and the PRMInstance<GUM_SCALAR> associated with it.
+      NodeProperty< Set< PRMInstance< GUM_SCALAR >* >* >  _referenceMap_;
 
       /// Code alias.
       typedef std::pair< PRMInstance< GUM_SCALAR >*, std::string > pair;
 
       /// The set of pair (instance, attribute) referring an attribute of
       /// this instance.
-      NodeProperty< std::vector< pair >* > referingAttr__;
+      NodeProperty< std::vector< pair >* >  _referingAttr_;
 
       /// A bijection used for MultiDim handling.
-      Bijection< const DiscreteVariable*, const DiscreteVariable* > bijection__;
+      Bijection< const DiscreteVariable*, const DiscreteVariable* >  _bijection_;
 
       /// @}
     };

@@ -200,7 +200,7 @@ namespace gum {
      * MultiDimImplementation is associated a function to project this subtype
      * of hypermatrix (the CompleteProjectionPtr)
      */
-    HashTable< std::string, CompleteProjectionSet* > set__;
+    HashTable< std::string, CompleteProjectionSet* >  _set_;
   };
 
   /// A function to more easily register new projection functions in MultiDims

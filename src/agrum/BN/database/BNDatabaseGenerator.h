@@ -147,33 +147,33 @@ namespace gum {
 
       private:
       /// Bayesian network
-      const BayesNet< GUM_SCALAR >& bn__;
+      const BayesNet< GUM_SCALAR >&  _bn_;
 
       /// bijection nodes names
-      Bijection< std::string, NodeId > names2ids__;
+      Bijection< std::string, NodeId >  _names2ids_;
 
       /// number of variables
-      Size nbVars__;
+      Size  _nbVars_;
 
       /// generated database
-      std::vector< std::vector< Idx > > database__;
+      std::vector< std::vector< Idx > >  _database_;
 
       /// variable order in generated database
-      std::vector< Idx > varOrder__;
+      std::vector< Idx >  _varOrder_;
 
       /// whether drawSamples has been already called.
-      bool drawnSamples__ = false;
+      bool  _drawnSamples_ = false;
 
       /// log2Likelihood of generated samples
-      double log2likelihood__ = 0;
+      double  _log2likelihood_ = 0;
 
       /// returns varOrder from a csv file
-      std::vector< Idx > varOrderFromCSV__(const std::string& csvFileURL,
+      std::vector< Idx >  _varOrderFromCSV_(const std::string& csvFileURL,
                                            const std::string& csvSeparator
                                            = ",") const;
 
       /// returns varOrder from a csv file
-      std::vector< Idx > varOrderFromCSV__(std::ifstream&     csvFile,
+      std::vector< Idx >  _varOrderFromCSV_(std::ifstream&     csvFile,
                                            const std::string& csvSeparator
                                            = ",") const;
 

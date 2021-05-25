@@ -41,8 +41,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#  undef COCO_PARSER_H__
-#  undef COCO_SCANNER_H__
+#  undef  _COCO_PARSER_H_
+#  undef  _COCO_SCANNER_H_
 #  include <agrum/BN/io/UAI/cocoR/Parser.h>
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -128,24 +128,24 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*        bn__;
-    BayesNetFactory< GUM_SCALAR >* factory__;
-    UAIBN::Scanner*                scanner__;
-    UAIBN::Parser*                 parser__;
+    BayesNet< GUM_SCALAR >*         _bn_;
+    BayesNetFactory< GUM_SCALAR >*  _factory_;
+    UAIBN::Scanner*                 _scanner_;
+    UAIBN::Parser*                  _parser_;
 
-    std::string streamName__;
-    bool        traceScanning__;
-    bool        parseDone__;
+    std::string  _streamName_;
+    bool         _traceScanning_;
+    bool         _parseDone_;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool ioerror__;
+    bool  _ioerror_;
 
-    void addFatalError__(Idx                lig,
+    void  _addFatalError_(Idx                lig,
                          Idx                col,
                          const std::string& s);   // throw an exception
-    void addError__(Idx lig, Idx col, const std::string& s);
-    void addWarning__(Idx lig, Idx col, const std::string& s);
+    void  _addError_(Idx lig, Idx col, const std::string& s);
+    void  _addWarning_(Idx lig, Idx col, const std::string& s);
   };
 
 

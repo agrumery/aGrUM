@@ -171,13 +171,13 @@ namespace gum {
 
       private:
       /// the domain sizes of the variables
-      std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes__;
+      std::vector< std::size_t, ALLOC< std::size_t > >  _domain_sizes_;
 
       /// a chi2 distribution for computing critical values
-      Chi2 chi2__;
+      Chi2  _chi2_;
 
       /// an empty vector of ids
-      const std::vector< Idx > empty_set__;
+      const std::vector< Idx >  _empty_set_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

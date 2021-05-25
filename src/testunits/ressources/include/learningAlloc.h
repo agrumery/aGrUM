@@ -14,16 +14,16 @@ namespace gum_tests {
   class MyPoolAlloc {
   public:
     MyPoolAlloc ( const std::size_t size )
-      : mempool__ ( new int[size / sizeof(int) + 1 ] )
-      , size__ ( size / sizeof(int) + 1 ) {
-      //std::cout << "create a new pool alloc " << mempool__ << std::endl;
+      :  _mempool_ ( new int[size / sizeof(int) + 1 ] )
+      ,  _size_ ( size / sizeof(int) + 1 ) {
+      //std::cout << "create a new pool alloc " <<  _mempool_ << std::endl;
     }
     
     MyPoolAlloc ( const MyPoolAlloc& ) = delete;
     MyPoolAlloc ( MyPoolAlloc&& ) = delete;
 
     ~MyPoolAlloc () {
-      delete[] mempool__;
+      delete[]  _mempool_;
     }
 
     MyPoolAlloc& operator= ( const MyPoolAlloc& ) = delete;
@@ -32,48 +32,48 @@ namespace gum_tests {
     int* allocate ( const std::size_t nb_bytes ) {
       std::size_t nb_int = nb_bytes / sizeof(int);
       if ( nb_bytes % sizeof(int) ) ++nb_int;
-      if ( current_index__ + nb_int > size__ )
+      if (  _current_index_ + nb_int >  _size_ )
         throw std::bad_alloc ();
-      int* alloc_pointer = mempool__ + current_index__;
-      allocations__.push_back ( current_index__ );
-      current_index__ += nb_int;
+      int* alloc_pointer =  _mempool_ +  _current_index_;
+       _allocations_.push_back (  _current_index_ );
+       _current_index_ += nb_int;
 
       //std::cout << "LearningAlloc allocated: " << alloc_pointer
       //          << "  of size : " << nb_bytes
-      //          << "  mempool = " << mempool__ << std::endl;
+      //          << "  mempool = " <<  _mempool_ << std::endl;
       
       return alloc_pointer;
     }
 
     void deallocate ( int* pointer ) {
-      const std::size_t index = pointer - mempool__;
-      for ( auto iter = allocations__.rbegin();
-            iter != allocations__.rend(); ++iter ) {
+      const std::size_t index = pointer -  _mempool_;
+      for ( auto iter =  _allocations_.rbegin();
+            iter !=  _allocations_.rend(); ++iter ) {
         if ( *iter == index ) {
-          if ( iter == allocations__.rbegin() )
-            current_index__ = index;
-          allocations__.erase ( (iter+1).base() );
+          if ( iter ==  _allocations_.rbegin() )
+             _current_index_ = index;
+           _allocations_.erase ( (iter+1).base() );
           return;
         }
       }
 
       //std::cout << "LearningAlloc cannot find address: " << pointer
-      //          << "  in mempool " << mempool__ << std::endl;
+      //          << "  in mempool " <<  _mempool_ << std::endl;
       throw std::bad_alloc ();
     }
 
     std::size_t allocatedSize () {
-      return allocations__.size ();
+      return  _allocations_.size ();
     }
     
     std::string toString () const {
       bool deja = false;
       std::stringstream str;
-      str << "allocator " << mempool__ << " = { ";
-      for ( auto index : allocations__ ) {
+      str << "allocator " <<  _mempool_ << " = { ";
+      for ( auto index :  _allocations_ ) {
         if ( deja ) str << ", ";
         else deja = true;
-        str << ( mempool__ + index );
+        str << (  _mempool_ + index );
       }
       str << " }";
       return str.str ();
@@ -82,15 +82,15 @@ namespace gum_tests {
       
   private:
     // the pool of memory used
-    int *mempool__;
+    int * _mempool_;
 
     // the size of the pool
-    const std::size_t size__;
+    const std::size_t  _size_;
     
-    std::size_t current_index__ { 0 };
+    std::size_t  _current_index_ { 0 };
 
     // the set of allocation performed as a set sorted of [begin,end)
-    std::vector<std::size_t> allocations__;
+    std::vector<std::size_t>  _allocations_;
     
   };
 
@@ -106,37 +106,37 @@ namespace gum_tests {
     };
 
     LearningAlloc ( const std::size_t size = 1000 )
-      : mempool__ ( new MyPoolAlloc ( size ) ) {}
+      :  _mempool_ ( new MyPoolAlloc ( size ) ) {}
 
     LearningAlloc ( const LearningAlloc<T>& from )
-      : mempool__ ( from.mempool__ ) {}
+      :  _mempool_ ( from. _mempool_ ) {}
     
     template <typename U>
     LearningAlloc( const LearningAlloc<U>& from )
-      : mempool__ ( from.mempool__ ) {}
+      :  _mempool_ ( from. _mempool_ ) {}
 
     LearningAlloc ( LearningAlloc<T>&& from )
-      : mempool__ ( from.mempool__ ) {}
+      :  _mempool_ ( from. _mempool_ ) {}
 
     ~LearningAlloc () {}
 
     LearningAlloc<T>& operator= ( const LearningAlloc<T>& from ) {
       if ( this != &from ) {
-        mempool__ = from.mempool__;
+         _mempool_ = from. _mempool_;
       }
       return *this;
     }
 
     LearningAlloc<T>& operator= ( LearningAlloc<T>&& from ) {
       if ( this != &from ) {
-        mempool__ = from.mempool__;
+         _mempool_ = from. _mempool_;
       }
       return *this;
     }
 
     template <typename U>
     bool operator== ( const LearningAlloc<U>& other ) const {
-      return mempool__.get() == other.mempool__.get();
+      return  _mempool_.get() == other. _mempool_.get();
     }
 
     template <typename U>
@@ -146,11 +146,11 @@ namespace gum_tests {
 
     
     T* allocate( std::size_t num ) {
-      return reinterpret_cast<T*>( mempool__->allocate ( num * sizeof( T ) ) );
+      return reinterpret_cast<T*>(  _mempool_->allocate ( num * sizeof( T ) ) );
     }
 
     void deallocate( T* p, std::size_t num ) {
-      mempool__->deallocate ( reinterpret_cast<int*> ( p ) );
+       _mempool_->deallocate ( reinterpret_cast<int*> ( p ) );
     }
 
     template <typename... Args>
@@ -161,15 +161,15 @@ namespace gum_tests {
     void destroy( T* p ) { p->~T(); }
 
     std::size_t allocatedSize () {
-      return mempool__->allocatedSize ();
+      return  _mempool_->allocatedSize ();
     }
 
     std::string toString () const {
-      return mempool__->toString ();
+      return  _mempool_->toString ();
     }
 
   private:
-    std::shared_ptr<MyPoolAlloc> mempool__;
+    std::shared_ptr<MyPoolAlloc>  _mempool_;
 
     template <typename U>
     friend class LearningAlloc;

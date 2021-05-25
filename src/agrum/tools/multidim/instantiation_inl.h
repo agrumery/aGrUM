@@ -32,7 +32,7 @@ namespace gum {
 
   // indicates whether a given variable belongs to the Instantiation
   INLINE bool Instantiation::contains(const DiscreteVariable& v) const {
-    return vars__.exists(&v);
+    return  _vars_.exists(&v);
   }
 
   INLINE bool Instantiation::contains(const std::string& name) const {
@@ -41,15 +41,15 @@ namespace gum {
 
   // indicates whether a given variable belongs to the Instantiation
   INLINE bool Instantiation::contains(const DiscreteVariable* v) const {
-    return vars__.exists(v);
+    return  _vars_.exists(v);
   }
 
   // modifies internally the value of a given variable of the sequence
-  INLINE void Instantiation::chgVal__(Idx varPos, Idx newVal) {
-    Idx oldVal     = vals__[varPos];
-    vals__[varPos] = newVal;
+  INLINE void Instantiation:: _chgVal_(Idx varPos, Idx newVal) {
+    Idx oldVal     =  _vals_[varPos];
+     _vals_[varPos] = newVal;
 
-    masterChangeNotification__(varPos, newVal, oldVal);
+     _masterChangeNotification_(varPos, newVal, oldVal);
   }
 
   // modifies the value of a given variable of the sequence (external function)
@@ -59,14 +59,14 @@ namespace gum {
       // check that the variable does belong to the instantiation and that the
       // new
       // value is possible.
-      Idx varPos = vars__.pos(&v);   // throws NotFound if v doesn't belong to this
+      Idx varPos =  _vars_.pos(&v);   // throws NotFound if v doesn't belong to this
 
       if (newVal >= v.domainSize()) { GUM_ERROR(OutOfBounds, "") }
 
       // if we were in overflow, indicate that we are not anymore
-      overflow__ = false;
+       _overflow_ = false;
 
-      chgVal__(varPos, newVal);
+       _chgVal_(varPos, newVal);
 
       return *this;
     } catch (NotFound&) {
@@ -81,14 +81,14 @@ namespace gum {
       // check that the variable does belong to the instantiation and that the
       // new
       // value is possible.
-      Idx varPos = vars__.pos(v);   // throws NotFound if v doesn't belong to this
+      Idx varPos =  _vars_.pos(v);   // throws NotFound if v doesn't belong to this
 
       if (newVal >= v->domainSize()) { GUM_ERROR(OutOfBounds, "") }
 
       // if we were in overflow, indicate that we are not anymore
-      overflow__ = false;
+       _overflow_ = false;
 
-      chgVal__(varPos, newVal);
+       _chgVal_(varPos, newVal);
 
       return *this;
     } catch (NotFound&) {
@@ -101,14 +101,14 @@ namespace gum {
   INLINE Instantiation& Instantiation::chgVal(Idx varPos, Idx newVal) {
     // check that the variable does belong to the instantiation and that the new
     // value is possible.
-    if (vals__.size() <= varPos) { GUM_ERROR(NotFound, "") }
+    if ( _vals_.size() <= varPos) { GUM_ERROR(NotFound, "") }
 
-    if (newVal >= vars__[varPos]->domainSize()) { GUM_ERROR(OutOfBounds, "") }
+    if (newVal >=  _vars_[varPos]->domainSize()) { GUM_ERROR(OutOfBounds, "") }
 
     // if we were in overflow, indicate that we are not anymore
-    overflow__ = false;
+     _overflow_ = false;
 
-    chgVal__(varPos, newVal);
+     _chgVal_(varPos, newVal);
 
     return *this;
   }
@@ -126,17 +126,17 @@ namespace gum {
 
   // adds a new var to the sequence of vars
   INLINE void Instantiation::add(const DiscreteVariable& v) {
-    // if master__ : not allowed
-    if (master__) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
+    // if  _master_ : not allowed
+    if ( _master_) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
 
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if (vars__.exists(&v)) {
+    if ( _vars_.exists(&v)) {
       GUM_ERROR(DuplicateElement,
                 "Var <" << v.name() << "> already exists in this instantiation")
     }
 
-    for (const auto& vv: vars__) {
+    for (const auto& vv:  _vars_) {
       if (vv->name() == v.name()) {
         GUM_ERROR(InvalidArgument,
                   "Var with name <" << v.name()
@@ -145,21 +145,21 @@ namespace gum {
     }
 
     // actually add the new dimension
-    add__(v);
+     _add_(v);
   }
 
   // removes a variable from the sequence of vars
   INLINE void Instantiation::erase(const DiscreteVariable& v) {
-    // if master__ : not allowed
-    if (master__) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
+    // if  _master_ : not allowed
+    if ( _master_) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
 
     // check that the variable does actually belong to the Instantiation
-    if (!vars__.exists(&v)) {
+    if (! _vars_.exists(&v)) {
       GUM_ERROR(NotFound, "Var does not exist in this instantiation")
     }
 
     // actually delete the dimension
-    erase__(v);
+     _erase_(v);
   }
 
   INLINE void Instantiation::erase(const std::string& name) {
@@ -168,10 +168,10 @@ namespace gum {
 
   // removes everything
   INLINE void Instantiation::clear() {
-    if (master__) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
+    if ( _master_) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
 
-    vars__.clear();
-    vals__.clear();
+     _vars_.clear();
+     _vals_.clear();
   }
 
   // @brief returns the product of the size of the domains of the variables
@@ -179,7 +179,7 @@ namespace gum {
   INLINE Size Instantiation::domainSize() const {
     Size s = 1;
 
-    for (const auto var: vars__)
+    for (const auto var:  _vars_)
       s *= var->domainSize();
 
     return s;
@@ -187,24 +187,24 @@ namespace gum {
 
   // returns the index of a var
   INLINE Idx Instantiation::pos(const DiscreteVariable& k) const {
-    return vars__.pos(&k);
+    return  _vars_.pos(&k);
   }
 
   // returns the number of vars in the sequence
-  INLINE Idx Instantiation::nbrDim() const { return vars__.size(); }
+  INLINE Idx Instantiation::nbrDim() const { return  _vars_.size(); }
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(Idx i) const {
-    if (i >= vals__.size()) {
+    if (i >=  _vals_.size()) {
       GUM_ERROR(NotFound, i << " is out of bound index for the instantiation.")
     }
 
-    return vals__[i];
+    return  _vals_[i];
   }
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(const DiscreteVariable& var) const {
-    return vals__[vars__.pos(&var)];
+    return  _vals_[ _vars_.pos(&var)];
   }
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(const std::string& name) const {
@@ -214,17 +214,17 @@ namespace gum {
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::valFromPtr(const DiscreteVariable* pvar) const {
-    return vals__[vars__.pos(pvar)];
+    return  _vals_[ _vars_.pos(pvar)];
   }
 
   // returns the variable at position i in the tuple
   INLINE const DiscreteVariable& Instantiation::variable(Idx i) const {
-    return *(vars__.atPos(i));
+    return *( _vars_.atPos(i));
   }
   // returns the variable with name in the tuple
   INLINE const DiscreteVariable&
                Instantiation::variable(const std::string& name) const {
-    for (const auto& v: vars__) {
+    for (const auto& v:  _vars_) {
       if (v->name() == name) return *v;
     }
 
@@ -232,7 +232,7 @@ namespace gum {
   }
 
   // indicates whether the current value of the tuple is correct or not
-  INLINE bool Instantiation::inOverflow() const { return overflow__; }
+  INLINE bool Instantiation::inOverflow() const { return  _overflow_; }
 
   // end() just is a synonym for inOverflow()
   INLINE bool Instantiation::end() const { return inOverflow(); }
@@ -242,75 +242,75 @@ namespace gum {
 
   // indicates that the current value is correct even if it should be in
   // overflow
-  INLINE void Instantiation::unsetOverflow() { overflow__ = false; }
+  INLINE void Instantiation::unsetOverflow() {  _overflow_ = false; }
 
   // alias for unsetOverflow
-  INLINE void Instantiation::unsetEnd() { overflow__ = false; }
+  INLINE void Instantiation::unsetEnd() {  _overflow_ = false; }
 
   // operator ++
   INLINE void Instantiation::inc() {
     Size p = nbrDim();
-    if (p == 0) { overflow__ = true; }
+    if (p == 0) {  _overflow_ = true; }
 
-    if (overflow__) return;
+    if ( _overflow_) return;
     p -= 1;
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
     // perform the increment
     while (true) {
-      Idx v = vals__[cpt];
+      Idx v =  _vals_[cpt];
 
-      if (v + 1 == vars__[cpt]->domainSize()) {
-        vals__[cpt] = 0;
+      if (v + 1 ==  _vars_[cpt]->domainSize()) {
+         _vals_[cpt] = 0;
 
         if (cpt == p) {
-          overflow__ = true;
-          masterFirstNotification__();
+           _overflow_ = true;
+           _masterFirstNotification_();
           return;
         } else
           ++cpt;
       } else {
-        ++vals__[cpt];
+        ++ _vals_[cpt];
         break;
       }
     }
 
-    masterIncNotification__();
+     _masterIncNotification_();
   }
 
   // operator --
   INLINE void Instantiation::dec() {
     Size p = nbrDim();
-    if (p == 0) { overflow__ = true; }
+    if (p == 0) {  _overflow_ = true; }
 
-    if (overflow__) return;
+    if ( _overflow_) return;
     p -= 1;
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
     // perform the increment
     while (true) {
-      Idx v = vals__[cpt];
+      Idx v =  _vals_[cpt];
 
       if (v == 0) {
-        vals__[cpt] = vars__[cpt]->domainSize() - 1;
+         _vals_[cpt] =  _vars_[cpt]->domainSize() - 1;
 
         if (cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
 
-          masterLastNotification__();
+           _masterLastNotification_();
 
           return;
         } else
           ++cpt;
       } else {
-        --vals__[cpt];
+        -- _vals_[cpt];
         break;
       }
     }
 
-    masterDecNotification__();
+     _masterDecNotification_();
   }
 
   // operator ++
@@ -343,65 +343,65 @@ namespace gum {
 
   // assign the (0,0,...) first value to the tuple of the Instantiation.
   INLINE void Instantiation::setFirst() {
-    overflow__ = false;
+     _overflow_ = false;
     Size s     = nbrDim();
 
     for (Idx p = 0; p < s; ++p)
-      vals__[p] = 0;
+       _vals_[p] = 0;
 
-    masterFirstNotification__();
+     _masterFirstNotification_();
   }
 
   // put the (D1-1,D2-1,...) last value in the Instantiation
   INLINE void Instantiation::setLast() {
-    overflow__ = false;
+     _overflow_ = false;
     Size s     = nbrDim();
 
     for (Idx p = 0; p < s; ++p)
-      vals__[p] = vars__[p]->domainSize() - 1;
+       _vals_[p] =  _vars_[p]->domainSize() - 1;
 
-    masterLastNotification__();
+     _masterLastNotification_();
   }
 
   // operator ++ limited only to the variables in i
   INLINE void Instantiation::incIn(const Instantiation& i) {
     // if i is empty, overflow and do nothing
     if (i.nbrDim() == 0) {
-      overflow__ = true;
+       _overflow_ = true;
       return;
     }
 
     // if we are in overflow, do nothing
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     Size p = i.nbrDim() - 1;
 
     Idx i_cpt = 0;
 
     while (true) {
-      // verify that vars__[cpt] belongs to i before incrementing its value
+      // verify that  _vars_[cpt] belongs to i before incrementing its value
       const DiscreteVariable& v = i.variable(i_cpt);
 
       if (!contains(v)) {
         if (i_cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++i_cpt;
       } else {
         Idx cpt = pos(v);
-        Idx iv  = vals__[cpt];
+        Idx iv  =  _vals_[cpt];
 
-        if (iv + 1 == vars__[cpt]->domainSize()) {
-          chgVal__(cpt, 0);
+        if (iv + 1 ==  _vars_[cpt]->domainSize()) {
+           _chgVal_(cpt, 0);
 
           if (i_cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++i_cpt;
         } else {
-          chgVal__(cpt, iv + 1);
+           _chgVal_(cpt, iv + 1);
           return;
         }
       }
@@ -414,32 +414,32 @@ namespace gum {
     Idx  i_cpt = 0;
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     while (true) {
-      // verify that vars__[cpt] belongs to i before incrementing its value
+      // verify that  _vars_[cpt] belongs to i before incrementing its value
       const DiscreteVariable& v = i.variable(i_cpt);
 
       if (!contains(v)) {
         if (i_cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++i_cpt;
       } else {
         Idx cpt = pos(v);
-        Idx iv  = vals__[cpt];
+        Idx iv  =  _vals_[cpt];
 
         if (iv == 0) {
-          chgVal__(cpt, vars__[cpt]->domainSize() - 1);
+           _chgVal_(cpt,  _vars_[cpt]->domainSize() - 1);
 
           if (i_cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++i_cpt;
         } else {
-          chgVal__(cpt, iv - 1);
+           _chgVal_(cpt, iv - 1);
           return;
         }
       }
@@ -453,31 +453,31 @@ namespace gum {
 
   // put the (0,0,...) first value in the Instantiation for the variables in i
   INLINE void Instantiation::setFirstIn(const Instantiation& i) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p)
-      if (i.contains(vars__[p])) chgVal__(p, 0);
+      if (i.contains( _vars_[p]))  _chgVal_(p, 0);
   }
 
   // change values with those in i
   INLINE Instantiation& Instantiation::setVals(const Instantiation& i) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = i.nbrDim();
 
     for (Size p = 0; p < s; ++p)
-      if (contains(i.variable(p))) chgVal__(pos(i.variable(p)), i.val(p));
+      if (contains(i.variable(p)))  _chgVal_(pos(i.variable(p)), i.val(p));
 
     return *this;
   }
 
   // put the (D1-1,D2-1,...) lastvalue in the Instantiation for variables in i
   INLINE void Instantiation::setLastIn(const Instantiation& i) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p)
-      if (i.contains(vars__[p])) chgVal__(p, vars__[p]->domainSize() - 1);
+      if (i.contains( _vars_[p]))  _chgVal_(p,  _vars_[p]->domainSize() - 1);
   }
 
   // operator ++ for the variables not in i
@@ -486,28 +486,28 @@ namespace gum {
     Idx  cpt = 0;
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     while (true) {
-      if (i.contains(vars__[cpt])) {
+      if (i.contains( _vars_[cpt])) {
         if (cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++cpt;
       } else {
-        Idx v = vals__[cpt];
+        Idx v =  _vals_[cpt];
 
-        if (v + 1 == vars__[cpt]->domainSize()) {
-          chgVal__(cpt, 0);
+        if (v + 1 ==  _vars_[cpt]->domainSize()) {
+           _chgVal_(cpt, 0);
 
           if (cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++cpt;
         } else {
-          chgVal__(cpt, v + 1);
+           _chgVal_(cpt, v + 1);
           return;
         }
       }
@@ -520,28 +520,28 @@ namespace gum {
     Idx  cpt = 0;
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     while (true) {
-      if (i.contains(vars__[cpt])) {
+      if (i.contains( _vars_[cpt])) {
         if (cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++cpt;
       } else {
-        Idx v = vals__[cpt];
+        Idx v =  _vals_[cpt];
 
         if (v == 0) {
-          chgVal__(cpt, vars__[cpt]->domainSize() - 1);
+           _chgVal_(cpt,  _vars_[cpt]->domainSize() - 1);
 
           if (cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++cpt;
         } else {
-          chgVal__(cpt, v - 1);
+           _chgVal_(cpt, v - 1);
           return;
         }
       }
@@ -551,20 +551,20 @@ namespace gum {
   // put the (0,0,...) first val in the Instantiation for the variables not in
   // i
   INLINE void Instantiation::setFirstOut(const Instantiation& i) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p)
-      if (!i.contains(vars__[p])) chgVal__(p, 0);
+      if (!i.contains( _vars_[p]))  _chgVal_(p, 0);
   }
 
   // put the (D1-1,D2-1,...) lastvalue in the Instantiation for vars not in i
   INLINE void Instantiation::setLastOut(const Instantiation& i) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p)
-      if (!i.contains(vars__[p])) chgVal__(p, vars__[p]->domainSize() - 1);
+      if (!i.contains( _vars_[p]))  _chgVal_(p,  _vars_[p]->domainSize() - 1);
   }
 
   // operator ++ for vars which are not v.
@@ -573,28 +573,28 @@ namespace gum {
     Idx  cpt = 0;
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     while (true) {
-      if (vars__[cpt] == &v) {
+      if ( _vars_[cpt] == &v) {
         if (cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++cpt;
       } else {
-        Idx iv = vals__[cpt];
+        Idx iv =  _vals_[cpt];
 
-        if (iv + 1 == vars__[cpt]->domainSize()) {
-          chgVal__(cpt, 0);
+        if (iv + 1 ==  _vars_[cpt]->domainSize()) {
+           _chgVal_(cpt, 0);
 
           if (cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++cpt;
         } else {
-          chgVal__(cpt, iv + 1);
+           _chgVal_(cpt, iv + 1);
           return;
         }
       }
@@ -607,28 +607,28 @@ namespace gum {
     Idx  cpt = 0;
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
     while (true) {
-      if (vars__[cpt] == &v) {
+      if ( _vars_[cpt] == &v) {
         if (cpt == p) {
-          overflow__ = true;
+           _overflow_ = true;
           return;
         } else
           ++cpt;
       } else {
-        Idx iv = vals__[cpt];
+        Idx iv =  _vals_[cpt];
 
         if (iv == 0) {
-          chgVal__(cpt, vars__[cpt]->domainSize() - 1);
+           _chgVal_(cpt,  _vars_[cpt]->domainSize() - 1);
 
           if (cpt == p) {
-            overflow__ = true;
+             _overflow_ = true;
             return;
           } else
             ++cpt;
         } else {
-          chgVal__(cpt, iv - 1);
+           _chgVal_(cpt, iv - 1);
           return;
         }
       }
@@ -637,14 +637,14 @@ namespace gum {
 
   // assign the (0,0,...) first value to variables which are not v.
   INLINE void Instantiation::setFirstNotVar(const DiscreteVariable& v) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p) {
-      if (vars__[p] == &v) {
-        Idx oldval = vals__[p];
+      if ( _vars_[p] == &v) {
+        Idx oldval =  _vals_[p];
         setFirst();
-        chgVal__(p, oldval);
+         _chgVal_(p, oldval);
         return;
       }
     }
@@ -654,14 +654,14 @@ namespace gum {
 
   // put the (D1-1,D2-1,...) lastvalue in the Instantiation for vars != v
   INLINE void Instantiation::setLastNotVar(const DiscreteVariable& v) {
-    overflow__ = false;
+     _overflow_ = false;
     Idx s      = nbrDim();
 
     for (Size p = 0; p < s; ++p) {
-      if (vars__[p] == &v) {
-        Idx oldval = vals__[p];
+      if ( _vars_[p] == &v) {
+        Idx oldval =  _vals_[p];
         setLast();
-        chgVal__(p, oldval);
+         _chgVal_(p, oldval);
         return;
       }
     }
@@ -672,57 +672,57 @@ namespace gum {
   // operator ++ for variable v only
   INLINE void Instantiation::incVar(const DiscreteVariable& v) {
     // get the position of the variable
-    Idx cpt = vars__.pos(&v);
+    Idx cpt =  _vars_.pos(&v);
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
-    Idx p = vals__[cpt];
+    Idx p =  _vals_[cpt];
 
     if (p + 1 == v.domainSize()) {
-      chgVal__(cpt, 0);
-      overflow__ = true;
+       _chgVal_(cpt, 0);
+       _overflow_ = true;
     } else {
-      chgVal__(cpt, p + 1);
+       _chgVal_(cpt, p + 1);
     }
   }
 
   // operator -- for variable v only
   INLINE void Instantiation::decVar(const DiscreteVariable& v) {
     // get the position of the variable
-    Idx cpt = vars__.pos(&v);
+    Idx cpt =  _vars_.pos(&v);
     // if we are in overflow, do nothing
 
-    if (overflow__) return;
+    if ( _overflow_) return;
 
-    Idx p = vals__[cpt];
+    Idx p =  _vals_[cpt];
 
     if (p == 0) {
-      chgVal__(cpt, v.domainSize() - 1);
-      overflow__ = true;
+       _chgVal_(cpt, v.domainSize() - 1);
+       _overflow_ = true;
     } else {
-      chgVal__(cpt, p - 1);
+       _chgVal_(cpt, p - 1);
     }
   }
 
   // assign the first value in the Instantiation for var v.
   INLINE void Instantiation::setFirstVar(const DiscreteVariable& v) {
-    overflow__ = false;
-    chgVal__(vars__.pos(&v), 0);
+     _overflow_ = false;
+     _chgVal_( _vars_.pos(&v), 0);
   }
 
   // assign the last value to var v.
   INLINE void Instantiation::setLastVar(const DiscreteVariable& v) {
-    overflow__ = false;
-    chgVal__(vars__.pos(&v), v.domainSize() - 1);
+     _overflow_ = false;
+     _chgVal_( _vars_.pos(&v), v.domainSize() - 1);
   }
 
   // indicates whether the Instantiation has a master MultiDimAdressable
-  INLINE bool Instantiation::isSlave() const { return (master__ != nullptr); }
+  INLINE bool Instantiation::isSlave() const { return ( _master_ != nullptr); }
 
   // indicates wether the MultiDimAdressable* m is the master
   INLINE bool Instantiation::isMaster(const MultiDimAdressable* m) const {
-    return (master__ == m);
+    return ( _master_ == m);
   }
 
   // indicates wether the MultiDimAdressable* m is the master
@@ -733,36 +733,36 @@ namespace gum {
   // returns the sequence of DiscreteVariable
   INLINE const Sequence< const DiscreteVariable* >&
                Instantiation::variablesSequence() const {
-    return vars__;
+    return  _vars_;
   }
 
 
   // replace 2 vars in the Instantiation
-  INLINE void Instantiation::swap__(Idx i, Idx j) {
+  INLINE void Instantiation:: _swap_(Idx i, Idx j) {
     if (i == j) return;
 
-    vars__.swap(i, j);
+     _vars_.swap(i, j);
 
     Idx v;
-    v         = vals__[i];
-    vals__[i] = vals__[j];
-    vals__[j] = v;
+    v         =  _vals_[i];
+     _vals_[i] =  _vals_[j];
+     _vals_[j] = v;
   }
 
   // reordering
   INLINE
   void
      Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
-    if (master__ != nullptr) {
+    if ( _master_ != nullptr) {
       GUM_ERROR(OperationNotAllowed,
                 "Reordering impossible in slave instantiation")
     }
 
-    reorder__(original);
+     _reorder_(original);
   }
 
   INLINE
-  void Instantiation::reorder__(
+  void Instantiation:: _reorder_(
      const Sequence< const DiscreteVariable* >& original) {
     Idx max      = original.size();
     Idx position = 0;
@@ -773,7 +773,7 @@ namespace gum {
         auto p = pos(*pv);
         GUM_ASSERT(p >= position);   // this var should not be
                                      // already placed.
-        swap__(position, p);
+         _swap_(position, p);
         position++;
       }
     }
@@ -783,36 +783,36 @@ namespace gum {
   // add new dim by master
   INLINE void Instantiation::addWithMaster(const MultiDimAdressable* m,
                                            const DiscreteVariable&   v) {
-    if (m != master__) {
+    if (m !=  _master_) {
       GUM_ERROR(OperationNotAllowed, "only master can do this")
     }
 
-    add__(v);
+     _add_(v);
   }
 
 
   // adds a new var to the sequence of vars
-  INLINE void Instantiation::add__(const DiscreteVariable& v) {
-    vars__.insert(&v);
-    vals__.push_back(0);
-    overflow__ = false;
+  INLINE void Instantiation:: _add_(const DiscreteVariable& v) {
+     _vars_.insert(&v);
+     _vals_.push_back(0);
+     _overflow_ = false;
   }
 
   // removes a variable from the sequence of vars
-  INLINE void Instantiation::erase__(const DiscreteVariable& v) {
+  INLINE void Instantiation:: _erase_(const DiscreteVariable& v) {
     // get the position of the variable
-    Idx pos = vars__.pos(&v);
-    vars__.erase(&v);
-    vals__.erase(vals__.begin() + pos);
+    Idx pos =  _vars_.pos(&v);
+     _vars_.erase(&v);
+     _vals_.erase( _vals_.begin() + pos);
   }
 
   // is this empty ?
-  INLINE bool Instantiation::empty() const { return vals__.empty(); }
+  INLINE bool Instantiation::empty() const { return  _vals_.empty(); }
 
   // Replace x by y.
   INLINE void Instantiation::replace_(const DiscreteVariable* x,
                                       const DiscreteVariable* y) {
-    vars__.setAtPos(vars__.pos(x), y);
+     _vars_.setAtPos( _vars_.pos(x), y);
   }
 
   /// returns a hashed key for hash tables the keys of which are represented

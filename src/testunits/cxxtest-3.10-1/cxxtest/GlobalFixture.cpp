@@ -1,5 +1,5 @@
-#ifndef __cxxtest__GlobalFixture_cpp__
-#define __cxxtest__GlobalFixture_cpp__
+#ifndef  __cxxtest__GlobalFixture_cpp__
+#define  __cxxtest__GlobalFixture_cpp__
 
 #include <cxxtest/GlobalFixture.h>
 
@@ -26,4 +26,4 @@ namespace CxxTest {
   }
 }
 
-#endif  // __cxxtest__GlobalFixture_cpp__
+#endif  //  __cxxtest__GlobalFixture_cpp__

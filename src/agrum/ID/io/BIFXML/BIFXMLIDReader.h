@@ -133,24 +133,24 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void parsingVariables__(ticpp::Element* parentNetwork);
+    void  _parsingVariables_(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void fillingDiagram__(ticpp::Element* parentNetwork);
+    void  _fillingDiagram_(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the influence diagram in which will be load the content of
      * the
      * xml filePath
      */
-    InfluenceDiagram< GUM_SCALAR >* infdiag__;
+    InfluenceDiagram< GUM_SCALAR >*  _infdiag_;
 
     /**
      * the path to the xml filePath
      */
-    std::string filePath__;
+    std::string  _filePath_;
   };
 
 } /* namespace gum */

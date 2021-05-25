@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef __CN_MC_SAMPLING__H__
-#define __CN_MC_SAMPLING__H__
+#ifndef  __CN_MC_SAMPLING__H__
+#define  __CN_MC_SAMPLING__H__
 
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 #include <limits>
@@ -64,30 +64,30 @@ namespace gum {
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      using infEs__ = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
+      using  _infEs_ = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
 
       /// @name Private initialization methods
       /// @{
       /** Initialize approximation Scheme. */
-      void mcInitApproximationScheme__();
+      void  _mcInitApproximationScheme_();
       /** Initialize threads data. */
-      void mcThreadDataCopy__();
+      void  _mcThreadDataCopy_();
       /// @}
 
       /// @name Private algorithm methods
       /// @{
       /** Thread samples a IBayesNet from the CredalNet. */
-      inline void verticesSampling__();
+      inline void  _verticesSampling_();
 
       /** Insert CredalNet evidence into a thread BNInferenceEngine. */
-      inline void insertEvidence__();
+      inline void  _insertEvidence_();
 
       /** Thread performs an inference using BNInferenceEngine. Calls
-       * verticesSampling__ and insertEvidence__. */
-      inline void threadInference__();
+       *  _verticesSampling_ and  _insertEvidence_. */
+      inline void  _threadInference_();
 
       /** Update thread data after a IBayesNet inference. */
-      inline void threadUpdate__();
+      inline void  _threadUpdate_();
 
       /**
        * Get the binary representation of a given value.
@@ -96,7 +96,7 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void binaryRep__(std::vector< bool >& toFill, const Idx value) const;
+      inline void  _binaryRep_(std::vector< bool >& toFill, const Idx value) const;
 
       /// @}
 

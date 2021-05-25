@@ -226,11 +226,11 @@ namespace gum {
 
     private:
     /// Returns the moral graph of this DAGModel.
-    /// @warning mutableMoralGraph__ is assumed to be valid and empty
-    void moralGraph__() const;
+    /// @warning  _mutableMoralGraph_ is assumed to be valid and empty
+    void  _moralGraph_() const;
 
     /// The moral graph of this Directed Graphical Model.
-    mutable UndiGraph* mutableMoralGraph__;
+    mutable UndiGraph*  _mutableMoralGraph_;
   };
 }   // namespace gum
 

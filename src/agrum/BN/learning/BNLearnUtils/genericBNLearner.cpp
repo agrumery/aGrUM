@@ -50,26 +50,26 @@ namespace gum {
 
 
     genericBNLearner::Database::Database(const DatabaseTable<>& db) :
-        database__(db) {
+         _database_(db) {
       // get the variables names
-      const auto&       var_names = database__.variableNames();
+      const auto&       var_names =  _database_.variableNames();
       const std::size_t nb_vars   = var_names.size();
-      for (auto dom: database__.domainSizes())
-        domain_sizes__.push_back(dom);
+      for (auto dom:  _database_.domainSizes())
+         _domain_sizes_.push_back(dom);
       for (std::size_t i = 0; i < nb_vars; ++i) {
-        nodeId2cols__.insert(NodeId(i), i);
+         _nodeId2cols_.insert(NodeId(i), i);
       }
 
       // create the parser
-      parser__
-         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+       _parser_
+         = new DBRowGeneratorParser<>( _database_.handler(), DBRowGeneratorSet<>());
     }
 
 
     genericBNLearner::Database::Database(
        const std::string&                filename,
        const std::vector< std::string >& missing_symbols) :
-        Database(genericBNLearner::readFile__(filename, missing_symbols)) {}
+        Database(genericBNLearner:: _readFile_(filename, missing_symbols)) {}
 
 
     genericBNLearner::Database::Database(
@@ -77,7 +77,7 @@ namespace gum {
        Database&                         score_database,
        const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the CSV file its column
-      genericBNLearner::checkFileName__(CSV_filename);
+      genericBNLearner:: _checkFileName_(CSV_filename);
       DBInitializerFromCSV<> initializer(CSV_filename);
       const auto&            apriori_names   = initializer.variableNames();
       std::size_t            apriori_nb_vars = apriori_names.size();
@@ -87,7 +87,7 @@ namespace gum {
 
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if (apriori_nb_vars < score_database.database__.nbVariables()) {
+      if (apriori_nb_vars < score_database. _database_.nbVariables()) {
         GUM_ERROR(InvalidArgument,
                   "the a apriori database has fewer variables "
                   "than the observed database");
@@ -114,56 +114,56 @@ namespace gum {
       // create the translators for CSV database
       for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         const Variable& var = score_database.databaseTable().variable(i);
-        database__.insertTranslator(var, mapping[i], missing_symbols);
+         _database_.insertTranslator(var, mapping[i], missing_symbols);
       }
 
       // fill the database
-      initializer.fillDatabase(database__);
+      initializer.fillDatabase( _database_);
 
       // get the domain sizes of the variables
-      for (auto dom: database__.domainSizes())
-        domain_sizes__.push_back(dom);
+      for (auto dom:  _database_.domainSizes())
+         _domain_sizes_.push_back(dom);
 
       // compute the mapping from node ids to column indices
-      nodeId2cols__ = score_database.nodeId2Columns();
+       _nodeId2cols_ = score_database.nodeId2Columns();
 
       // create the parser
-      parser__
-         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+       _parser_
+         = new DBRowGeneratorParser<>( _database_.handler(), DBRowGeneratorSet<>());
     }
 
 
     genericBNLearner::Database::Database(const Database& from) :
-        database__(from.database__), domain_sizes__(from.domain_sizes__),
-        nodeId2cols__(from.nodeId2cols__) {
+         _database_(from. _database_),  _domain_sizes_(from. _domain_sizes_),
+         _nodeId2cols_(from. _nodeId2cols_) {
       // create the parser
-      parser__
-         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+       _parser_
+         = new DBRowGeneratorParser<>( _database_.handler(), DBRowGeneratorSet<>());
     }
 
 
     genericBNLearner::Database::Database(Database&& from) :
-        database__(std::move(from.database__)),
-        domain_sizes__(std::move(from.domain_sizes__)),
-        nodeId2cols__(std::move(from.nodeId2cols__)) {
+         _database_(std::move(from. _database_)),
+         _domain_sizes_(std::move(from. _domain_sizes_)),
+         _nodeId2cols_(std::move(from. _nodeId2cols_)) {
       // create the parser
-      parser__
-         = new DBRowGeneratorParser<>(database__.handler(), DBRowGeneratorSet<>());
+       _parser_
+         = new DBRowGeneratorParser<>( _database_.handler(), DBRowGeneratorSet<>());
     }
 
 
-    genericBNLearner::Database::~Database() { delete parser__; }
+    genericBNLearner::Database::~Database() { delete  _parser_; }
 
     genericBNLearner::Database&
        genericBNLearner::Database::operator=(const Database& from) {
       if (this != &from) {
-        delete parser__;
-        database__     = from.database__;
-        domain_sizes__ = from.domain_sizes__;
-        nodeId2cols__  = from.nodeId2cols__;
+        delete  _parser_;
+         _database_     = from. _database_;
+         _domain_sizes_ = from. _domain_sizes_;
+         _nodeId2cols_  = from. _nodeId2cols_;
 
         // create the parser
-        parser__ = new DBRowGeneratorParser<>(database__.handler(),
+         _parser_ = new DBRowGeneratorParser<>( _database_.handler(),
                                               DBRowGeneratorSet<>());
       }
 
@@ -173,13 +173,13 @@ namespace gum {
     genericBNLearner::Database&
        genericBNLearner::Database::operator=(Database&& from) {
       if (this != &from) {
-        delete parser__;
-        database__     = std::move(from.database__);
-        domain_sizes__ = std::move(from.domain_sizes__);
-        nodeId2cols__  = std::move(from.nodeId2cols__);
+        delete  _parser_;
+         _database_     = std::move(from. _database_);
+         _domain_sizes_ = std::move(from. _domain_sizes_);
+         _nodeId2cols_  = std::move(from. _nodeId2cols_);
 
         // create the parser
-        parser__ = new DBRowGeneratorParser<>(database__.handler(),
+         _parser_ = new DBRowGeneratorParser<>( _database_.handler(),
                                               DBRowGeneratorSet<>());
       }
 
@@ -192,125 +192,125 @@ namespace gum {
     genericBNLearner::genericBNLearner(
        const std::string&                filename,
        const std::vector< std::string >& missing_symbols) :
-        score_database__(filename, missing_symbols) {
-      no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
+         _score_database_(filename, missing_symbols) {
+       _no_apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable());
 
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
     genericBNLearner::genericBNLearner(const DatabaseTable<>& db) :
-        score_database__(db) {
-      no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
+         _score_database_(db) {
+       _no_apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable());
 
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
-        score_type__(from.score_type__),
-        param_estimator_type__(from.param_estimator_type__),
-        EMepsilon__(from.EMepsilon__), apriori_type__(from.apriori_type__),
-        apriori_weight__(from.apriori_weight__),
-        constraint_SliceOrder__(from.constraint_SliceOrder__),
-        constraint_Indegree__(from.constraint_Indegree__),
-        constraint_TabuList__(from.constraint_TabuList__),
-        constraint_ForbiddenArcs__(from.constraint_ForbiddenArcs__),
-        constraint_MandatoryArcs__(from.constraint_MandatoryArcs__),
-        selected_algo__(from.selected_algo__), K2__(from.K2__),
-        miic_3off2__(from.miic_3off2__), kmode_3off2__(from.kmode_3off2__),
-        greedy_hill_climbing__(from.greedy_hill_climbing__),
-        local_search_with_tabu_list__(from.local_search_with_tabu_list__),
-        score_database__(from.score_database__), ranges__(from.ranges__),
-        apriori_dbname__(from.apriori_dbname__),
-        initial_dag__(from.initial_dag__) {
-      no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
+         _score_type_(from. _score_type_),
+         _param_estimator_type_(from. _param_estimator_type_),
+         _EMepsilon_(from. _EMepsilon_),  _apriori_type_(from. _apriori_type_),
+         _apriori_weight_(from. _apriori_weight_),
+         _constraint_SliceOrder_(from. _constraint_SliceOrder_),
+         _constraint_Indegree_(from. _constraint_Indegree_),
+         _constraint_TabuList_(from. _constraint_TabuList_),
+         _constraint_ForbiddenArcs_(from. _constraint_ForbiddenArcs_),
+         _constraint_MandatoryArcs_(from. _constraint_MandatoryArcs_),
+         _selected_algo_(from. _selected_algo_),  _K2_(from. _K2_),
+         _miic_3off2_(from. _miic_3off2_),  _kmode_3off2_(from. _kmode_3off2_),
+         _greedy_hill_climbing_(from. _greedy_hill_climbing_),
+         _local_search_with_tabu_list_(from. _local_search_with_tabu_list_),
+         _score_database_(from. _score_database_),  _ranges_(from. _ranges_),
+         _apriori_dbname_(from. _apriori_dbname_),
+         _initial_dag_(from. _initial_dag_) {
+       _no_apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable());
 
       GUM_CONS_CPY(genericBNLearner);
     }
 
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
-        score_type__(from.score_type__),
-        param_estimator_type__(from.param_estimator_type__),
-        EMepsilon__(from.EMepsilon__), apriori_type__(from.apriori_type__),
-        apriori_weight__(from.apriori_weight__),
-        constraint_SliceOrder__(std::move(from.constraint_SliceOrder__)),
-        constraint_Indegree__(std::move(from.constraint_Indegree__)),
-        constraint_TabuList__(std::move(from.constraint_TabuList__)),
-        constraint_ForbiddenArcs__(std::move(from.constraint_ForbiddenArcs__)),
-        constraint_MandatoryArcs__(std::move(from.constraint_MandatoryArcs__)),
-        selected_algo__(from.selected_algo__), K2__(std::move(from.K2__)),
-        miic_3off2__(std::move(from.miic_3off2__)),
-        kmode_3off2__(from.kmode_3off2__),
-        greedy_hill_climbing__(std::move(from.greedy_hill_climbing__)),
-        local_search_with_tabu_list__(
-           std::move(from.local_search_with_tabu_list__)),
-        score_database__(std::move(from.score_database__)),
-        ranges__(std::move(from.ranges__)),
-        apriori_dbname__(std::move(from.apriori_dbname__)),
-        initial_dag__(std::move(from.initial_dag__)) {
-      no_apriori__ = new AprioriNoApriori<>(score_database__.databaseTable());
+         _score_type_(from. _score_type_),
+         _param_estimator_type_(from. _param_estimator_type_),
+         _EMepsilon_(from. _EMepsilon_),  _apriori_type_(from. _apriori_type_),
+         _apriori_weight_(from. _apriori_weight_),
+         _constraint_SliceOrder_(std::move(from. _constraint_SliceOrder_)),
+         _constraint_Indegree_(std::move(from. _constraint_Indegree_)),
+         _constraint_TabuList_(std::move(from. _constraint_TabuList_)),
+         _constraint_ForbiddenArcs_(std::move(from. _constraint_ForbiddenArcs_)),
+         _constraint_MandatoryArcs_(std::move(from. _constraint_MandatoryArcs_)),
+         _selected_algo_(from. _selected_algo_),  _K2_(std::move(from. _K2_)),
+         _miic_3off2_(std::move(from. _miic_3off2_)),
+         _kmode_3off2_(from. _kmode_3off2_),
+         _greedy_hill_climbing_(std::move(from. _greedy_hill_climbing_)),
+         _local_search_with_tabu_list_(
+           std::move(from. _local_search_with_tabu_list_)),
+         _score_database_(std::move(from. _score_database_)),
+         _ranges_(std::move(from. _ranges_)),
+         _apriori_dbname_(std::move(from. _apriori_dbname_)),
+         _initial_dag_(std::move(from. _initial_dag_)) {
+       _no_apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable());
 
       GUM_CONS_MOV(genericBNLearner)
     }
 
     genericBNLearner::~genericBNLearner() {
-      if (score__) delete score__;
+      if ( _score_) delete  _score_;
 
-      if (apriori__) delete apriori__;
+      if ( _apriori_) delete  _apriori_;
 
-      if (no_apriori__) delete no_apriori__;
+      if ( _no_apriori_) delete  _no_apriori_;
 
-      if (apriori_database__) delete apriori_database__;
+      if ( _apriori_database_) delete  _apriori_database_;
 
-      if (mutual_info__) delete mutual_info__;
+      if ( _mutual_info_) delete  _mutual_info_;
 
       GUM_DESTRUCTOR(genericBNLearner);
     }
 
     genericBNLearner& genericBNLearner::operator=(const genericBNLearner& from) {
       if (this != &from) {
-        if (score__) {
-          delete score__;
-          score__ = nullptr;
+        if ( _score_) {
+          delete  _score_;
+           _score_ = nullptr;
         }
 
-        if (apriori__) {
-          delete apriori__;
-          apriori__ = nullptr;
+        if ( _apriori_) {
+          delete  _apriori_;
+           _apriori_ = nullptr;
         }
 
-        if (apriori_database__) {
-          delete apriori_database__;
-          apriori_database__ = nullptr;
+        if ( _apriori_database_) {
+          delete  _apriori_database_;
+           _apriori_database_ = nullptr;
         }
 
-        if (mutual_info__) {
-          delete mutual_info__;
-          mutual_info__ = nullptr;
+        if ( _mutual_info_) {
+          delete  _mutual_info_;
+           _mutual_info_ = nullptr;
         }
 
-        score_type__                  = from.score_type__;
-        param_estimator_type__        = from.param_estimator_type__;
-        EMepsilon__                   = from.EMepsilon__;
-        apriori_type__                = from.apriori_type__;
-        apriori_weight__              = from.apriori_weight__;
-        constraint_SliceOrder__       = from.constraint_SliceOrder__;
-        constraint_Indegree__         = from.constraint_Indegree__;
-        constraint_TabuList__         = from.constraint_TabuList__;
-        constraint_ForbiddenArcs__    = from.constraint_ForbiddenArcs__;
-        constraint_MandatoryArcs__    = from.constraint_MandatoryArcs__;
-        selected_algo__               = from.selected_algo__;
-        K2__                          = from.K2__;
-        miic_3off2__                  = from.miic_3off2__;
-        kmode_3off2__                 = from.kmode_3off2__;
-        greedy_hill_climbing__        = from.greedy_hill_climbing__;
-        local_search_with_tabu_list__ = from.local_search_with_tabu_list__;
-        score_database__              = from.score_database__;
-        ranges__                      = from.ranges__;
-        apriori_dbname__              = from.apriori_dbname__;
-        initial_dag__                 = from.initial_dag__;
-        current_algorithm__           = nullptr;
+         _score_type_                  = from. _score_type_;
+         _param_estimator_type_        = from. _param_estimator_type_;
+         _EMepsilon_                   = from. _EMepsilon_;
+         _apriori_type_                = from. _apriori_type_;
+         _apriori_weight_              = from. _apriori_weight_;
+         _constraint_SliceOrder_       = from. _constraint_SliceOrder_;
+         _constraint_Indegree_         = from. _constraint_Indegree_;
+         _constraint_TabuList_         = from. _constraint_TabuList_;
+         _constraint_ForbiddenArcs_    = from. _constraint_ForbiddenArcs_;
+         _constraint_MandatoryArcs_    = from. _constraint_MandatoryArcs_;
+         _selected_algo_               = from. _selected_algo_;
+         _K2_                          = from. _K2_;
+         _miic_3off2_                  = from. _miic_3off2_;
+         _kmode_3off2_                 = from. _kmode_3off2_;
+         _greedy_hill_climbing_        = from. _greedy_hill_climbing_;
+         _local_search_with_tabu_list_ = from. _local_search_with_tabu_list_;
+         _score_database_              = from. _score_database_;
+         _ranges_                      = from. _ranges_;
+         _apriori_dbname_              = from. _apriori_dbname_;
+         _initial_dag_                 = from. _initial_dag_;
+         _current_algorithm_           = nullptr;
       }
 
       return *this;
@@ -318,48 +318,48 @@ namespace gum {
 
     genericBNLearner& genericBNLearner::operator=(genericBNLearner&& from) {
       if (this != &from) {
-        if (score__) {
-          delete score__;
-          score__ = nullptr;
+        if ( _score_) {
+          delete  _score_;
+           _score_ = nullptr;
         }
 
-        if (apriori__) {
-          delete apriori__;
-          apriori__ = nullptr;
+        if ( _apriori_) {
+          delete  _apriori_;
+           _apriori_ = nullptr;
         }
 
-        if (apriori_database__) {
-          delete apriori_database__;
-          apriori_database__ = nullptr;
+        if ( _apriori_database_) {
+          delete  _apriori_database_;
+           _apriori_database_ = nullptr;
         }
 
-        if (mutual_info__) {
-          delete mutual_info__;
-          mutual_info__ = nullptr;
+        if ( _mutual_info_) {
+          delete  _mutual_info_;
+           _mutual_info_ = nullptr;
         }
 
-        score_type__               = from.score_type__;
-        param_estimator_type__     = from.param_estimator_type__;
-        EMepsilon__                = from.EMepsilon__;
-        apriori_type__             = from.apriori_type__;
-        apriori_weight__           = from.apriori_weight__;
-        constraint_SliceOrder__    = std::move(from.constraint_SliceOrder__);
-        constraint_Indegree__      = std::move(from.constraint_Indegree__);
-        constraint_TabuList__      = std::move(from.constraint_TabuList__);
-        constraint_ForbiddenArcs__ = std::move(from.constraint_ForbiddenArcs__);
-        constraint_MandatoryArcs__ = std::move(from.constraint_MandatoryArcs__);
-        selected_algo__            = from.selected_algo__;
-        K2__                       = from.K2__;
-        miic_3off2__               = std::move(from.miic_3off2__);
-        kmode_3off2__              = from.kmode_3off2__;
-        greedy_hill_climbing__     = std::move(from.greedy_hill_climbing__);
-        local_search_with_tabu_list__
-           = std::move(from.local_search_with_tabu_list__);
-        score_database__    = std::move(from.score_database__);
-        ranges__            = std::move(from.ranges__);
-        apriori_dbname__    = std::move(from.apriori_dbname__);
-        initial_dag__       = std::move(from.initial_dag__);
-        current_algorithm__ = nullptr;
+         _score_type_               = from. _score_type_;
+         _param_estimator_type_     = from. _param_estimator_type_;
+         _EMepsilon_                = from. _EMepsilon_;
+         _apriori_type_             = from. _apriori_type_;
+         _apriori_weight_           = from. _apriori_weight_;
+         _constraint_SliceOrder_    = std::move(from. _constraint_SliceOrder_);
+         _constraint_Indegree_      = std::move(from. _constraint_Indegree_);
+         _constraint_TabuList_      = std::move(from. _constraint_TabuList_);
+         _constraint_ForbiddenArcs_ = std::move(from. _constraint_ForbiddenArcs_);
+         _constraint_MandatoryArcs_ = std::move(from. _constraint_MandatoryArcs_);
+         _selected_algo_            = from. _selected_algo_;
+         _K2_                       = from. _K2_;
+         _miic_3off2_               = std::move(from. _miic_3off2_);
+         _kmode_3off2_              = from. _kmode_3off2_;
+         _greedy_hill_climbing_     = std::move(from. _greedy_hill_climbing_);
+         _local_search_with_tabu_list_
+           = std::move(from. _local_search_with_tabu_list_);
+         _score_database_    = std::move(from. _score_database_);
+         _ranges_            = std::move(from. _ranges_);
+         _apriori_dbname_    = std::move(from. _apriori_dbname_);
+         _initial_dag_       = std::move(from. _initial_dag_);
+         _current_algorithm_ = nullptr;
       }
 
       return *this;
@@ -407,7 +407,7 @@ namespace gum {
     }
 
 
-    void genericBNLearner::checkFileName__(const std::string& filename) {
+    void genericBNLearner:: _checkFileName_(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -431,11 +431,11 @@ namespace gum {
     }
 
 
-    DatabaseTable<> genericBNLearner::readFile__(
+    DatabaseTable<> genericBNLearner:: _readFile_(
        const std::string&                filename,
        const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
-      checkFileName__(filename);
+       _checkFileName_(filename);
 
       DBInitializerFromCSV<> initializer(filename);
 
@@ -458,41 +458,41 @@ namespace gum {
     }
 
 
-    void genericBNLearner::createApriori__() {
+    void genericBNLearner:: _createApriori_() {
       // first, save the old apriori, to be delete if everything is ok
-      Apriori<>* old_apriori = apriori__;
+      Apriori<>* old_apriori =  _apriori_;
 
       // create the new apriori
-      switch (apriori_type__) {
+      switch ( _apriori_type_) {
         case AprioriType::NO_APRIORI:
-          apriori__ = new AprioriNoApriori<>(score_database__.databaseTable(),
-                                             score_database__.nodeId2Columns());
+           _apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable(),
+                                              _score_database_.nodeId2Columns());
           break;
 
         case AprioriType::SMOOTHING:
-          apriori__ = new AprioriSmoothing<>(score_database__.databaseTable(),
-                                             score_database__.nodeId2Columns());
+           _apriori_ = new AprioriSmoothing<>( _score_database_.databaseTable(),
+                                              _score_database_.nodeId2Columns());
           break;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
-          if (apriori_database__ != nullptr) {
-            delete apriori_database__;
-            apriori_database__ = nullptr;
+          if ( _apriori_database_ != nullptr) {
+            delete  _apriori_database_;
+             _apriori_database_ = nullptr;
           }
 
-          apriori_database__ = new Database(apriori_dbname__,
-                                            score_database__,
-                                            score_database__.missingSymbols());
+           _apriori_database_ = new Database( _apriori_dbname_,
+                                             _score_database_,
+                                             _score_database_.missingSymbols());
 
-          apriori__ = new AprioriDirichletFromDatabase<>(
-             score_database__.databaseTable(),
-             apriori_database__->parser(),
-             apriori_database__->nodeId2Columns());
+           _apriori_ = new AprioriDirichletFromDatabase<>(
+              _score_database_.databaseTable(),
+              _apriori_database_->parser(),
+              _apriori_database_->nodeId2Columns());
           break;
 
         case AprioriType::BDEU:
-          apriori__ = new AprioriBDeu<>(score_database__.databaseTable(),
-                                        score_database__.nodeId2Columns());
+           _apriori_ = new AprioriBDeu<>( _score_database_.databaseTable(),
+                                         _score_database_.nodeId2Columns());
           break;
 
         default:
@@ -501,58 +501,58 @@ namespace gum {
       }
 
       // do not forget to assign a weight to the apriori
-      apriori__->setWeight(apriori_weight__);
+       _apriori_->setWeight( _apriori_weight_);
 
       // remove the old apriori, if any
       if (old_apriori != nullptr) delete old_apriori;
     }
 
-    void genericBNLearner::createScore__() {
+    void genericBNLearner:: _createScore_() {
       // first, save the old score, to be delete if everything is ok
-      Score<>* old_score = score__;
+      Score<>* old_score =  _score_;
 
       // create the new scoring function
-      switch (score_type__) {
+      switch ( _score_type_) {
         case ScoreType::AIC:
-          score__ = new ScoreAIC<>(score_database__.parser(),
-                                   *apriori__,
-                                   ranges__,
-                                   score_database__.nodeId2Columns());
+           _score_ = new ScoreAIC<>( _score_database_.parser(),
+                                   * _apriori_,
+                                    _ranges_,
+                                    _score_database_.nodeId2Columns());
           break;
 
         case ScoreType::BD:
-          score__ = new ScoreBD<>(score_database__.parser(),
-                                  *apriori__,
-                                  ranges__,
-                                  score_database__.nodeId2Columns());
+           _score_ = new ScoreBD<>( _score_database_.parser(),
+                                  * _apriori_,
+                                   _ranges_,
+                                   _score_database_.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
-          score__ = new ScoreBDeu<>(score_database__.parser(),
-                                    *apriori__,
-                                    ranges__,
-                                    score_database__.nodeId2Columns());
+           _score_ = new ScoreBDeu<>( _score_database_.parser(),
+                                    * _apriori_,
+                                     _ranges_,
+                                     _score_database_.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
-          score__ = new ScoreBIC<>(score_database__.parser(),
-                                   *apriori__,
-                                   ranges__,
-                                   score_database__.nodeId2Columns());
+           _score_ = new ScoreBIC<>( _score_database_.parser(),
+                                   * _apriori_,
+                                    _ranges_,
+                                    _score_database_.nodeId2Columns());
           break;
 
         case ScoreType::K2:
-          score__ = new ScoreK2<>(score_database__.parser(),
-                                  *apriori__,
-                                  ranges__,
-                                  score_database__.nodeId2Columns());
+           _score_ = new ScoreK2<>( _score_database_.parser(),
+                                  * _apriori_,
+                                   _ranges_,
+                                   _score_database_.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          score__ = new ScoreLog2Likelihood<>(score_database__.parser(),
-                                              *apriori__,
-                                              ranges__,
-                                              score_database__.nodeId2Columns());
+           _score_ = new ScoreLog2Likelihood<>( _score_database_.parser(),
+                                              * _apriori_,
+                                               _ranges_,
+                                               _score_database_.nodeId2Columns());
           break;
 
         default:
@@ -565,27 +565,27 @@ namespace gum {
     }
 
     ParamEstimator<>*
-       genericBNLearner::createParamEstimator__(DBRowGeneratorParser<>& parser,
+       genericBNLearner:: _createParamEstimator_(DBRowGeneratorParser<>& parser,
                                                 bool take_into_account_score) {
       ParamEstimator<>* param_estimator = nullptr;
 
       // create the new estimator
-      switch (param_estimator_type__) {
+      switch ( _param_estimator_type_) {
         case ParamEstimatorType::ML:
-          if (take_into_account_score && (score__ != nullptr)) {
+          if (take_into_account_score && ( _score_ != nullptr)) {
             param_estimator
                = new ParamEstimatorML<>(parser,
-                                        *apriori__,
-                                        score__->internalApriori(),
-                                        ranges__,
-                                        score_database__.nodeId2Columns());
+                                        * _apriori_,
+                                         _score_->internalApriori(),
+                                         _ranges_,
+                                         _score_database_.nodeId2Columns());
           } else {
             param_estimator
                = new ParamEstimatorML<>(parser,
-                                        *apriori__,
-                                        *no_apriori__,
-                                        ranges__,
-                                        score_database__.nodeId2Columns());
+                                        * _apriori_,
+                                        * _no_apriori_,
+                                         _ranges_,
+                                         _score_database_.nodeId2Columns());
           }
 
           break;
@@ -597,16 +597,16 @@ namespace gum {
       }
 
       // assign the set of ranges
-      param_estimator->setRanges(ranges__);
+      param_estimator->setRanges( _ranges_);
 
       return param_estimator;
     }
 
     /// prepares the initial graph for 3off2 or miic
-    MixedGraph genericBNLearner::prepare_miic_3off2__() {
+    MixedGraph genericBNLearner:: _prepare_miic_3off2_() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
-      for (Size i = 0; i < score_database__.databaseTable().nbVariables(); ++i) {
+      for (Size i = 0; i <  _score_database_.databaseTable().nbVariables(); ++i) {
         mgraph.addNodeWithId(i);
         for (Size j = 0; j < i; ++j) {
           mgraph.addEdge(j, i);
@@ -615,93 +615,93 @@ namespace gum {
 
       // translating the constraints for 3off2 or miic
       HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
-      const ArcSet& mandatory_arcs = constraint_MandatoryArcs__.arcs();
+      const ArcSet& mandatory_arcs =  _constraint_MandatoryArcs_.arcs();
       for (const auto& arc: mandatory_arcs) {
         initial_marks.insert({arc.tail(), arc.head()}, '>');
       }
 
-      const ArcSet& forbidden_arcs = constraint_ForbiddenArcs__.arcs();
+      const ArcSet& forbidden_arcs =  _constraint_ForbiddenArcs_.arcs();
       for (const auto& arc: forbidden_arcs) {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
-      miic_3off2__.addConstraints(initial_marks);
+       _miic_3off2_.addConstraints(initial_marks);
 
       // create the mutual entropy object
-      // if (mutual_info__ == nullptr) { this->useNML(); }
-      createCorrectedMutualInformation__();
+      // if ( _mutual_info_ == nullptr) { this->useNML(); }
+       _createCorrectedMutualInformation_();
 
       return mgraph;
     }
 
     MixedGraph genericBNLearner::learnMixedStructure() {
-      if (selected_algo__ != AlgoType::MIIC_THREE_OFF_TWO) {
+      if ( _selected_algo_ != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
       }
       // check that the database does not contain any missing value
-      if (score_database__.databaseTable().hasMissingValues()) {
+      if ( _score_database_.databaseTable().hasMissingValues()) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to learn "
                      << "structures with missing values in databases");
       }
-      BNLearnerListener listener(this, miic_3off2__);
+      BNLearnerListener listener(this,  _miic_3off2_);
 
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
-      MixedGraph mgraph = this->prepare_miic_3off2__();
+      MixedGraph mgraph = this-> _prepare_miic_3off2_();
 
-      return miic_3off2__.learnMixedStructure(*mutual_info__, mgraph);
+      return  _miic_3off2_.learnMixedStructure(* _mutual_info_, mgraph);
     }
 
     DAG genericBNLearner::learnDAG() {
       // create the score and the apriori
-      createApriori__();
-      createScore__();
+       _createApriori_();
+       _createScore_();
 
-      return learnDAG__();
+      return  _learnDAG_();
     }
 
-    void genericBNLearner::createCorrectedMutualInformation__() {
-      if (mutual_info__ != nullptr) delete mutual_info__;
+    void genericBNLearner:: _createCorrectedMutualInformation_() {
+      if ( _mutual_info_ != nullptr) delete  _mutual_info_;
 
-      mutual_info__
-         = new CorrectedMutualInformation<>(score_database__.parser(),
-                                            *no_apriori__,
-                                            ranges__,
-                                            score_database__.nodeId2Columns());
-      switch (kmode_3off2__) {
+       _mutual_info_
+         = new CorrectedMutualInformation<>( _score_database_.parser(),
+                                            * _no_apriori_,
+                                             _ranges_,
+                                             _score_database_.nodeId2Columns());
+      switch ( _kmode_3off2_) {
         case CorrectedMutualInformation<>::KModeTypes::MDL:
-          mutual_info__->useMDL();
+           _mutual_info_->useMDL();
           break;
 
         case CorrectedMutualInformation<>::KModeTypes::NML:
-          mutual_info__->useNML();
+           _mutual_info_->useNML();
           break;
 
         case CorrectedMutualInformation<>::KModeTypes::NoCorr:
-          mutual_info__->useNoCorr();
+           _mutual_info_->useNoCorr();
           break;
 
         default:
           GUM_ERROR(NotImplementedYet,
                     "The BNLearner's corrected mutual information class does "
-                       << "not support yet penalty mode " << int(kmode_3off2__));
+                       << "not support yet penalty mode " << int( _kmode_3off2_));
       }
     }
 
-    DAG genericBNLearner::learnDAG__() {
+    DAG genericBNLearner:: _learnDAG_() {
       // check that the database does not contain any missing value
-      if (score_database__.databaseTable().hasMissingValues()
-          || ((apriori_database__ != nullptr)
-              && (apriori_type__ == AprioriType::DIRICHLET_FROM_DATABASE)
-              && apriori_database__->databaseTable().hasMissingValues())) {
+      if ( _score_database_.databaseTable().hasMissingValues()
+          || (( _apriori_database_ != nullptr)
+              && ( _apriori_type_ == AprioriType::DIRICHLET_FROM_DATABASE)
+              &&  _apriori_database_->databaseTable().hasMissingValues())) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to cope "
                   "with missing values in databases");
       }
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
-      DAG init_graph = initial_dag__;
+      DAG init_graph =  _initial_dag_;
 
-      const ArcSet& mandatory_arcs = constraint_MandatoryArcs__.arcs();
+      const ArcSet& mandatory_arcs =  _constraint_MandatoryArcs_.arcs();
 
       for (const auto& arc: mandatory_arcs) {
         if (!init_graph.exists(arc.tail())) init_graph.addNodeWithId(arc.tail());
@@ -711,38 +711,38 @@ namespace gum {
         init_graph.addArc(arc.tail(), arc.head());
       }
 
-      const ArcSet& forbidden_arcs = constraint_ForbiddenArcs__.arcs();
+      const ArcSet& forbidden_arcs =  _constraint_ForbiddenArcs_.arcs();
 
       for (const auto& arc: forbidden_arcs) {
         init_graph.eraseArc(arc);
       }
 
-      switch (selected_algo__) {
+      switch ( _selected_algo_) {
         // ========================================================================
         case AlgoType::MIIC_THREE_OFF_TWO: {
-          BNLearnerListener listener(this, miic_3off2__);
+          BNLearnerListener listener(this,  _miic_3off2_);
           // create the mixedGraph and the corrected mutual information
-          MixedGraph mgraph = this->prepare_miic_3off2__();
+          MixedGraph mgraph = this-> _prepare_miic_3off2_();
 
-          return miic_3off2__.learnStructure(*mutual_info__, mgraph);
+          return  _miic_3off2_.learnStructure(* _mutual_info_, mgraph);
         }
 
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {
-          BNLearnerListener listener(this, greedy_hill_climbing__);
+          BNLearnerListener listener(this,  _greedy_hill_climbing_);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
                                          StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-             = constraint_MandatoryArcs__;
+             =  _constraint_MandatoryArcs_;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-             = constraint_ForbiddenArcs__;
+             =  _constraint_ForbiddenArcs_;
           static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-             = constraint_PossibleEdges__;
+             =  _constraint_PossibleEdges_;
           static_cast< StructuralConstraintSliceOrder& >(gen_constraint)
-             = constraint_SliceOrder__;
+             =  _constraint_SliceOrder_;
 
           GraphChangesGenerator4DiGraph< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -751,31 +751,31 @@ namespace gum {
                                          StructuralConstraintDAG >
              sel_constraint;
           static_cast< StructuralConstraintIndegree& >(sel_constraint)
-             = constraint_Indegree__;
+             =  _constraint_Indegree_;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                         decltype(op_set) >
-             selector(*score__, sel_constraint, op_set);
+             selector(* _score_, sel_constraint, op_set);
 
-          return greedy_hill_climbing__.learnStructure(selector, init_graph);
+          return  _greedy_hill_climbing_.learnStructure(selector, init_graph);
         }
 
         // ========================================================================
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
-          BNLearnerListener listener(this, local_search_with_tabu_list__);
+          BNLearnerListener listener(this,  _local_search_with_tabu_list_);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
                                          StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-             = constraint_MandatoryArcs__;
+             =  _constraint_MandatoryArcs_;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-             = constraint_ForbiddenArcs__;
+             =  _constraint_ForbiddenArcs_;
           static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-             = constraint_PossibleEdges__;
+             =  _constraint_PossibleEdges_;
           static_cast< StructuralConstraintSliceOrder& >(gen_constraint)
-             = constraint_SliceOrder__;
+             =  _constraint_SliceOrder_;
 
           GraphChangesGenerator4DiGraph< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -785,31 +785,31 @@ namespace gum {
                                          StructuralConstraintDAG >
              sel_constraint;
           static_cast< StructuralConstraintTabuList& >(sel_constraint)
-             = constraint_TabuList__;
+             =  _constraint_TabuList_;
           static_cast< StructuralConstraintIndegree& >(sel_constraint)
-             = constraint_Indegree__;
+             =  _constraint_Indegree_;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                         decltype(op_set) >
-             selector(*score__, sel_constraint, op_set);
+             selector(* _score_, sel_constraint, op_set);
 
-          return local_search_with_tabu_list__.learnStructure(selector,
+          return  _local_search_with_tabu_list_.learnStructure(selector,
                                                               init_graph);
         }
 
         // ========================================================================
         case AlgoType::K2: {
-          BNLearnerListener listener(this, K2__.approximationScheme());
+          BNLearnerListener listener(this,  _K2_.approximationScheme());
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
                                          StructuralConstraintPossibleEdges >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-             = constraint_MandatoryArcs__;
+             =  _constraint_MandatoryArcs_;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-             = constraint_ForbiddenArcs__;
+             =  _constraint_ForbiddenArcs_;
           static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-             = constraint_PossibleEdges__;
+             =  _constraint_PossibleEdges_;
 
           GraphChangesGenerator4K2< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -819,7 +819,7 @@ namespace gum {
           const ArcSet& mandatory_arcs
              = static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
                   .arcs();
-          const Sequence< NodeId >& order            = K2__.order();
+          const Sequence< NodeId >& order            =  _K2_.order();
           bool                      order_compatible = true;
 
           for (const auto& arc: mandatory_arcs) {
@@ -834,25 +834,25 @@ namespace gum {
                                            StructuralConstraintDiGraph >
                sel_constraint;
             static_cast< StructuralConstraintIndegree& >(sel_constraint)
-               = constraint_Indegree__;
+               =  _constraint_Indegree_;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                           decltype(op_set) >
-               selector(*score__, sel_constraint, op_set);
+               selector(* _score_, sel_constraint, op_set);
 
-            return K2__.learnStructure(selector, init_graph);
+            return  _K2_.learnStructure(selector, init_graph);
           } else {
             StructuralConstraintSetStatic< StructuralConstraintIndegree,
                                            StructuralConstraintDAG >
                sel_constraint;
             static_cast< StructuralConstraintIndegree& >(sel_constraint)
-               = constraint_Indegree__;
+               =  _constraint_Indegree_;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
                                           decltype(op_set) >
-               selector(*score__, sel_constraint, op_set);
+               selector(* _score_, sel_constraint, op_set);
 
-            return K2__.learnStructure(selector, init_graph);
+            return  _K2_.learnStructure(selector, init_graph);
           }
         }
 
@@ -865,27 +865,27 @@ namespace gum {
     }
 
     std::string genericBNLearner::checkScoreAprioriCompatibility() {
-      const std::string& apriori = getAprioriType__();
+      const std::string& apriori =  _getAprioriType_();
 
-      switch (score_type__) {
+      switch ( _score_type_) {
         case ScoreType::AIC:
-          return ScoreAIC<>::isAprioriCompatible(apriori, apriori_weight__);
+          return ScoreAIC<>::isAprioriCompatible(apriori,  _apriori_weight_);
 
         case ScoreType::BD:
-          return ScoreBD<>::isAprioriCompatible(apriori, apriori_weight__);
+          return ScoreBD<>::isAprioriCompatible(apriori,  _apriori_weight_);
 
         case ScoreType::BDeu:
-          return ScoreBDeu<>::isAprioriCompatible(apriori, apriori_weight__);
+          return ScoreBDeu<>::isAprioriCompatible(apriori,  _apriori_weight_);
 
         case ScoreType::BIC:
-          return ScoreBIC<>::isAprioriCompatible(apriori, apriori_weight__);
+          return ScoreBIC<>::isAprioriCompatible(apriori,  _apriori_weight_);
 
         case ScoreType::K2:
-          return ScoreK2<>::isAprioriCompatible(apriori, apriori_weight__);
+          return ScoreK2<>::isAprioriCompatible(apriori,  _apriori_weight_);
 
         case ScoreType::LOG2LIKELIHOOD:
           return ScoreLog2Likelihood<>::isAprioriCompatible(apriori,
-                                                            apriori_weight__);
+                                                             _apriori_weight_);
 
         default:
           return "genericBNLearner does not support yet this score";
@@ -908,7 +908,7 @@ namespace gum {
                         << " but, here, it is equal to " << learning_fold);
       }
 
-      const std::size_t db_size = score_database__.databaseTable().nbRows();
+      const std::size_t db_size =  _score_database_.databaseTable().nbRows();
       if (k_fold >= db_size) {
         GUM_ERROR(OutOfBounds,
                   "In " << k_fold << "-fold cross validation, the database's "
@@ -922,16 +922,16 @@ namespace gum {
       const std::size_t unfold_deb = learning_fold * foldSize;
       const std::size_t unfold_end = unfold_deb + foldSize;
 
-      ranges__.clear();
+       _ranges_.clear();
       if (learning_fold == std::size_t(0)) {
-        ranges__.push_back(
+         _ranges_.push_back(
            std::pair< std::size_t, std::size_t >(unfold_end, db_size));
       } else {
-        ranges__.push_back(
+         _ranges_.push_back(
            std::pair< std::size_t, std::size_t >(std::size_t(0), unfold_deb));
 
         if (learning_fold != k_fold - 1) {
-          ranges__.push_back(
+           _ranges_.push_back(
              std::pair< std::size_t, std::size_t >(unfold_end, db_size));
         }
       }
@@ -944,9 +944,9 @@ namespace gum {
        genericBNLearner::chi2(const NodeId                 id1,
                               const NodeId                 id2,
                               const std::vector< NodeId >& knowing) {
-      createApriori__();
-      gum::learning::IndepTestChi2<> chi2score(score_database__.parser(),
-                                               *apriori__,
+       _createApriori_();
+      gum::learning::IndepTestChi2<> chi2score( _score_database_.parser(),
+                                               * _apriori_,
                                                databaseRanges());
 
       return chi2score.statistics(id1, id2, knowing);
@@ -969,9 +969,9 @@ namespace gum {
        genericBNLearner::G2(const NodeId                 id1,
                             const NodeId                 id2,
                             const std::vector< NodeId >& knowing) {
-      createApriori__();
-      gum::learning::IndepTestG2<> g2score(score_database__.parser(),
-                                           *apriori__,
+       _createApriori_();
+      gum::learning::IndepTestG2<> g2score( _score_database_.parser(),
+                                           * _apriori_,
                                            databaseRanges());
       return g2score.statistics(id1, id2, knowing);
     }
@@ -991,9 +991,9 @@ namespace gum {
 
     double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
-      createApriori__();
-      gum::learning::ScoreLog2Likelihood<> ll2score(score_database__.parser(),
-                                                    *apriori__,
+       _createApriori_();
+      gum::learning::ScoreLog2Likelihood<> ll2score( _score_database_.parser(),
+                                                    * _apriori_,
                                                     databaseRanges());
 
       std::vector< NodeId > total(vars);
@@ -1030,9 +1030,9 @@ namespace gum {
        genericBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
       Potential< double > res;
 
-      createApriori__();
-      gum::learning::PseudoCount<> count(score_database__.parser(),
-                                         *apriori__,
+       _createApriori_();
+      gum::learning::PseudoCount<> count( _score_database_.parser(),
+                                         * _apriori_,
                                          databaseRanges());
       return count.get(vars);
     }

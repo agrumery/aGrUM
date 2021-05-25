@@ -383,7 +383,7 @@ namespace gum {
 
       private:
       // the LabelizedVariable assigned to the translator, if any
-      LabelizedVariable variable__;
+      LabelizedVariable  _variable_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -44,18 +44,18 @@ namespace gum_tests {
 
   class BayesNetFactoryTestSuite: public CxxTest::TestSuite {
     private:
-    gum::BayesNet< double >* __bn_d;
-    // gum::BayesNet<float>*  __bn_f;
+    gum::BayesNet< double >*  __bn_d;
+    // gum::BayesNet<float>*   __bn_f;
 
     public:
-    void setUp() { __bn_d = new gum::BayesNet< double >(); }
+    void setUp() {  __bn_d = new gum::BayesNet< double >(); }
 
-    void tearDown() { delete __bn_d; }
+    void tearDown() { delete  __bn_d; }
 
     void testCreation() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
 
@@ -63,7 +63,7 @@ namespace gum_tests {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
       //        TS_ASSERT_THROWS(factory->startVariableDeclaration(),
       //        gum::OperationNotAllowed);
@@ -104,10 +104,10 @@ namespace gum_tests {
     void testLegalsCallsInNONE() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
-      TS_ASSERT_THROWS(__bn_d->property("name"), gum::NotFound);
-      TS_ASSERT_THROWS(__bn_d->property("author"), gum::NotFound);
+      TS_ASSERT_THROWS( __bn_d->property("name"), gum::NotFound);
+      TS_ASSERT_THROWS( __bn_d->property("author"), gum::NotFound);
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -116,8 +116,8 @@ namespace gum_tests {
          factory->addNetworkProperty("author", "Lionel"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
-      TS_ASSERT_EQUALS(__bn_d->property("name"), "TestSuite BayesNet");
-      TS_ASSERT_EQUALS(__bn_d->property("author"), "Lionel");
+      TS_ASSERT_EQUALS( __bn_d->property("name"), "TestSuite BayesNet");
+      TS_ASSERT_EQUALS( __bn_d->property("author"), "Lionel");
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
@@ -126,7 +126,7 @@ namespace gum_tests {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -166,7 +166,7 @@ namespace gum_tests {
     void testBayesNetCreation() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
       // defining network
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
@@ -306,7 +306,7 @@ namespace gum_tests {
     void testDefiningWithAlltypes() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
       // defining network
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
@@ -361,7 +361,7 @@ namespace gum_tests {
     void testDefiningWithCPT() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >(__bn_d));
+                                   = new gum::BayesNetFactory< double >( __bn_d));
 
       // defining network
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());

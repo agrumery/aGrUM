@@ -37,7 +37,7 @@ namespace gum {
   INLINE
   const std::string& GraphicalModel::property(const std::string& name) const {
     try {
-      return properties__()[name];
+      return  _properties_()[name];
     } catch (NotFound&) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name)
@@ -45,12 +45,12 @@ namespace gum {
   }
 
   INLINE
-  HashTable< std::string, std::string >& GraphicalModel::properties__() const {
-    if (propertiesMap__ == nullptr) {
-      propertiesMap__ = new HashTable< std::string, std::string >();
+  HashTable< std::string, std::string >& GraphicalModel:: _properties_() const {
+    if ( _propertiesMap_ == nullptr) {
+       _propertiesMap_ = new HashTable< std::string, std::string >();
     }
 
-    return *propertiesMap__;
+    return * _propertiesMap_;
   }
 
   INLINE
@@ -58,7 +58,7 @@ namespace gum {
      GraphicalModel::propertyWithDefault(const std::string& name,
                                          const std::string& byDefault) const {
     try {
-      return properties__()[name];
+      return  _properties_()[name];
     } catch (NotFound&) { return byDefault; }
   }
 
@@ -66,8 +66,8 @@ namespace gum {
   void GraphicalModel::setProperty(const std::string& name,
                                    const std::string& value) {
     try {
-      properties__()[name] = value;
-    } catch (NotFound&) { properties__().insert(name, value); }
+       _properties_()[name] = value;
+    } catch (NotFound&) {  _properties_().insert(name, value); }
   }
 
 

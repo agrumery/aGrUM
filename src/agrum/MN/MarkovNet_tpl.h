@@ -170,22 +170,22 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MarkovNet< GUM_SCALAR >::MarkovNet() :
-      IMarkovNet< GUM_SCALAR >(), topologyTransformationInProgress__(false) {
+      IMarkovNet< GUM_SCALAR >(),  _topologyTransformationInProgress_(false) {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
   template < typename GUM_SCALAR >
   INLINE MarkovNet< GUM_SCALAR >::MarkovNet(std::string name) :
-      IMarkovNet< GUM_SCALAR >(name), topologyTransformationInProgress__(false) {
+      IMarkovNet< GUM_SCALAR >(name),  _topologyTransformationInProgress_(false) {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::MarkovNet(const MarkovNet< GUM_SCALAR >& source) :
-      IMarkovNet< GUM_SCALAR >(source), topologyTransformationInProgress__(false),
-      varMap__(source.varMap__) {
+      IMarkovNet< GUM_SCALAR >(source),  _topologyTransformationInProgress_(false),
+       _varMap_(source. _varMap_) {
     GUM_CONS_CPY(MarkovNet);
-    copyFactors__(source);
+     _copyFactors_(source);
   }
 
   template < typename GUM_SCALAR >
@@ -193,9 +193,9 @@ namespace gum {
      MarkovNet< GUM_SCALAR >::operator=(const MarkovNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IMarkovNet< GUM_SCALAR >::operator =(source);
-      varMap__                           = source.varMap__;
-      topologyTransformationInProgress__ = false;
-      copyFactors__(source);
+       _varMap_                           = source. _varMap_;
+       _topologyTransformationInProgress_ = false;
+       _copyFactors_(source);
     }
 
     return *this;
@@ -203,21 +203,21 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::~MarkovNet() {
-    clearFactors__();
+     _clearFactors_();
     GUM_DESTRUCTOR(MarkovNet);
   }
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
                MarkovNet< GUM_SCALAR >::variable(NodeId id) const {
-    return varMap__.get(id);
+    return  _varMap_.get(id);
   }
 
   template < typename GUM_SCALAR >
   INLINE void
      MarkovNet< GUM_SCALAR >::changeVariableName(NodeId             id,
                                                  const std::string& new_name) {
-    varMap__.changeName(id, new_name);
+     _varMap_.changeName(id, new_name);
   }
 
   template < typename GUM_SCALAR >
@@ -237,13 +237,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId
      MarkovNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return varMap__.get(var);
+    return  _varMap_.get(var);
   }
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      MarkovNet< GUM_SCALAR >::factor(const NodeSet& varIds) const {
-    return *factors__[varIds];
+    return * _factors_[varIds];
   }
 
   template < typename GUM_SCALAR >
@@ -274,7 +274,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const FactorTable< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::factors() const {
-    return factors__;
+    return  _factors_;
   }
 
   template < typename GUM_SCALAR >
@@ -291,17 +291,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MarkovNet< GUM_SCALAR >::rebuildGraph__() {
-    if (topologyTransformationInProgress__) return;
+  INLINE void MarkovNet< GUM_SCALAR >:: _rebuildGraph_() {
+    if ( _topologyTransformationInProgress_) return;
 
     this->graph_.clearEdges();
 
-    for (const auto& kv: factors__) {
+    for (const auto& kv:  _factors_) {
       const Potential< double >& c = *kv.second;
       for (Idx i = 0; i < c.nbrDim(); i++)
         for (Idx j = i + 1; j < c.nbrDim(); j++)
-          this->graph_.addEdge(varMap__.get(c.variable(i)),
-                               varMap__.get(c.variable(j)));
+          this->graph_.addEdge( _varMap_.get(c.variable(i)),
+                                _varMap_.get(c.variable(j)));
     }
   }
 
@@ -314,7 +314,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId MarkovNet< GUM_SCALAR >::add(const DiscreteVariable& var,
                                              NodeId                  id) {
-    varMap__.insert(id, var);
+     _varMap_.insert(id, var);
     this->graph_.addNodeWithId(id);
     return id;
   }
@@ -322,23 +322,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId
      MarkovNet< GUM_SCALAR >::idFromName(const std::string& name) const {
-    return varMap__.idFromName(name);
+    return  _varMap_.idFromName(name);
   }
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
      MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
-    return varMap__.variableFromName(name);
+    return  _varMap_.variableFromName(name);
   }
 
   template < typename GUM_SCALAR >
   INLINE const VariableNodeMap& MarkovNet< GUM_SCALAR >::variableNodeMap() const {
-    return varMap__;
+    return  _varMap_;
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase(varMap__.get(var));
+    erase( _varMap_.get(var));
   }
 
   template < typename GUM_SCALAR >
@@ -348,25 +348,25 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MarkovNet< GUM_SCALAR >::erase(NodeId varId) {
-    if (!varMap__.exists(varId)) {
+    if (! _varMap_.exists(varId)) {
       GUM_ERROR(InvalidArgument, "No node with id " << varId << ".")
     }
-    varMap__.erase(varId);
+     _varMap_.erase(varId);
     this->graph_.eraseNode(varId);
 
     std::vector< NodeSet > vs;
-    for (const auto& kv: factors__) {
+    for (const auto& kv:  _factors_) {
       if (kv.first.contains(varId)) { vs.push_back(kv.first); }
     }
     for (const auto& ns: vs) {
-      eraseFactor__(ns);
+       _eraseFactor_(ns);
     }
     for (const auto& ns: vs) {
       NodeSet nv = ns;
       nv.erase(varId);
-      if (nv.size() > 1) addFactor__(nv);
+      if (nv.size() > 1)  _addFactor_(nv);
     }
-    rebuildGraph__();
+     _rebuildGraph_();
   }
 
   template < typename GUM_SCALAR >
@@ -377,7 +377,7 @@ namespace gum {
         this->erase(no);
       }
     }
-    rebuildGraph__();
+     _rebuildGraph_();
   }
 
 
@@ -395,12 +395,12 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "Empty factor cannot be added.")
     }
 
-    if (factors__.exists(vars)) {
+    if ( _factors_.exists(vars)) {
       GUM_ERROR(InvalidArgument, "A factor for (" << vars << ") already exists.")
     }
 
-    auto res = addFactor__(vars);
-    rebuildGraph__();
+    auto res =  _addFactor_(vars);
+     _rebuildGraph_();
 
     return *res;
   }
@@ -409,7 +409,7 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(
      const std::vector< std::string >& varnames) {
     auto vars = this->nodeset(varnames);
-    if (factors__.exists(vars)) {
+    if ( _factors_.exists(vars)) {
       GUM_ERROR(InvalidArgument,
                 "A factor for (" << varnames << ") already exists.")
     }
@@ -429,19 +429,19 @@ namespace gum {
       key.insert(idFromName(factor.variable(i).name()));
     }
 
-    if (factors__.exists(key)) {
+    if ( _factors_.exists(key)) {
       GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.")
     }
 
-    auto res = addFactor__(key, &factor);
-    rebuildGraph__();
+    auto res =  _addFactor_(key, &factor);
+     _rebuildGraph_();
 
     return *res;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >*
-               MarkovNet< GUM_SCALAR >::addFactor__(const NodeSet&                 vars,
+               MarkovNet< GUM_SCALAR >:: _addFactor_(const NodeSet&                 vars,
                                           const Potential< GUM_SCALAR >* src) {
     Potential< GUM_SCALAR >* factor = new Potential< GUM_SCALAR >();
 
@@ -457,7 +457,7 @@ namespace gum {
     }
 
     if (src != nullptr) { factor->fillWith(*src); }
-    factors__.insert(vars, factor);
+     _factors_.insert(vars, factor);
 
     return factor;
   }
@@ -465,21 +465,21 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::generateFactors() const {
-    for (const auto& elt: factors__) {
+    for (const auto& elt:  _factors_) {
       elt.second->random();
     }
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::generateFactor(const NodeSet& vars) const {
-    factors__[vars]->random();
+     _factors_[vars]->random();
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::eraseFactor(const NodeSet& vars) {
-    if (factors__.exists(vars)) {
-      eraseFactor__(vars);
-      rebuildGraph__();
+    if ( _factors_.exists(vars)) {
+       _eraseFactor_(vars);
+       _rebuildGraph_();
     } else {
       GUM_ERROR(InvalidArgument, "No factor for " << vars << ".")
     }
@@ -489,50 +489,50 @@ namespace gum {
   INLINE void MarkovNet< GUM_SCALAR >::eraseFactor(
      const std::vector< std::string >& varnames) {
     auto vars = this->nodeset(varnames);
-    if (factors__.exists(vars)) {
-      eraseFactor__(vars);
-      rebuildGraph__();
+    if ( _factors_.exists(vars)) {
+       _eraseFactor_(vars);
+       _rebuildGraph_();
     } else {
       GUM_ERROR(InvalidArgument, "No factor for " << varnames << ".")
     }
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MarkovNet< GUM_SCALAR >::eraseFactor__(const NodeSet& vars) {
-    delete factors__[vars];
-    factors__.erase(vars);
+  INLINE void MarkovNet< GUM_SCALAR >:: _eraseFactor_(const NodeSet& vars) {
+    delete  _factors_[vars];
+     _factors_.erase(vars);
   }
 
   template < typename GUM_SCALAR >
-  void MarkovNet< GUM_SCALAR >::clearFactors__() {
-    for (const auto& kv: factors__) {
+  void MarkovNet< GUM_SCALAR >:: _clearFactors_() {
+    for (const auto& kv:  _factors_) {
       delete kv.second;
     }
-    factors__.clear();
-    rebuildGraph__();
+     _factors_.clear();
+     _rebuildGraph_();
   }
 
   template < typename GUM_SCALAR >
-  void MarkovNet< GUM_SCALAR >::copyFactors__(
+  void MarkovNet< GUM_SCALAR >:: _copyFactors_(
      const MarkovNet< GUM_SCALAR >& source) {
-    clearFactors__();
+     _clearFactors_();
     for (const auto& pf: source.factors()) {
-      addFactor__(pf.first, pf.second);
+       _addFactor_(pf.first, pf.second);
     }
-    rebuildGraph__();
+     _rebuildGraph_();
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::beginTopologyTransformation() {
-    topologyTransformationInProgress__ = true;
+     _topologyTransformationInProgress_ = true;
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::endTopologyTransformation() {
-    if (topologyTransformationInProgress__) {
-      topologyTransformationInProgress__
+    if ( _topologyTransformationInProgress_) {
+       _topologyTransformationInProgress_
          = false;   // before rebuildGraph of course
-      rebuildGraph__();
+       _rebuildGraph_();
     }
   }
 } /* namespace gum */

@@ -103,11 +103,11 @@ namespace gum {
 
     private:
     /// the ratio above which we consider nodes to be quasi simplicial
-    double quasi_ratio__;
+    double  _quasi_ratio_;
 
     /** @brief threshold under which almost and quasi simplicial nodes can be
      * chosen to be eliminated */
-    double threshold__;
+    double  _threshold_;
 
 
     // ############################################################################

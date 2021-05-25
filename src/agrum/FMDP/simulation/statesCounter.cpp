@@ -29,7 +29,7 @@ namespace gum {
   //
   // =================================================================================================
   StatesCounter::StatesCounter() :
-      counter__(MultiDimFunctionGraph< Size >::getTreeInstance()) {
+       _counter_(MultiDimFunctionGraph< Size >::getTreeInstance()) {
     GUM_CONSTRUCTOR(StatesCounter);
   }
 
@@ -38,7 +38,7 @@ namespace gum {
   //
   // =================================================================================================
   StatesCounter::~StatesCounter() {
-    delete counter__;
+    delete  _counter_;
     GUM_DESTRUCTOR(StatesCounter);
   }
 
@@ -47,16 +47,16 @@ namespace gum {
   //
   // =================================================================================================
   void StatesCounter::reset(const Instantiation& initialState) {
-    counter__->clear();
+     _counter_->clear();
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter
          = initialState.variablesSequence().beginSafe();
          varIter != initialState.variablesSequence().endSafe();
          ++varIter)
-      counter__->add(**varIter);
+       _counter_->add(**varIter);
 
-    counter__->manager()->setRootNode(counter__->manager()->addTerminalNode(0));
+     _counter_->manager()->setRootNode( _counter_->manager()->addTerminalNode(0));
 
-    incState__(initialState, 0, 0, 0);
+     _incState_(initialState, 0, 0, 0);
   }
 
 
@@ -64,51 +64,51 @@ namespace gum {
   //
   // =================================================================================================
   void StatesCounter::incState(const Instantiation& state) {
-    Idx nbVisits = counter__->get(state);
+    Idx nbVisits =  _counter_->get(state);
 
-    NodeId parId   = counter__->root();
-    Idx    parModa = state.valFromPtr(counter__->node(parId)->nodeVar());
-    while (!counter__->isTerminalNode(counter__->node(parId)->son(parModa))) {
-      parId   = counter__->node(parId)->son(parModa);
-      parModa = state.valFromPtr(counter__->node(parId)->nodeVar());
+    NodeId parId   =  _counter_->root();
+    Idx    parModa = state.valFromPtr( _counter_->node(parId)->nodeVar());
+    while (! _counter_->isTerminalNode( _counter_->node(parId)->son(parModa))) {
+      parId   =  _counter_->node(parId)->son(parModa);
+      parModa = state.valFromPtr( _counter_->node(parId)->nodeVar());
     }
-    incState__(state, parId, parModa, nbVisits);
+     _incState_(state, parId, parModa, nbVisits);
   }
 
 
   // =================================================================================================
   //
   // =================================================================================================
-  void StatesCounter::incState__(const Instantiation& state,
+  void StatesCounter:: _incState_(const Instantiation& state,
                                  NodeId               parentId,
                                  Idx                  parentModa,
                                  Size                 nbVisits) {
     Idx varIter = 0;
     if (parentId)
       varIter
-         = state.variablesSequence().pos(counter__->node(parentId)->nodeVar()) + 1;
+         = state.variablesSequence().pos( _counter_->node(parentId)->nodeVar()) + 1;
 
 
     for (; varIter < state.variablesSequence().size(); ++varIter) {
       const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
-      NodeId varId = counter__->manager()->addInternalNode(curVar);
+      NodeId varId =  _counter_->manager()->addInternalNode(curVar);
       if (parentId)
-        counter__->manager()->setSon(parentId, parentModa, varId);
+         _counter_->manager()->setSon(parentId, parentModa, varId);
       else
-        counter__->manager()->setRootNode(varId);
+         _counter_->manager()->setRootNode(varId);
       for (Idx moda = 0; moda < curVar->domainSize(); ++moda) {
         if (moda == state.valFromPtr(curVar))
           parentModa = moda;
         else
-          counter__->manager()->setSon(varId,
+           _counter_->manager()->setSon(varId,
                                        moda,
-                                       counter__->terminalNodeId(nbVisits));
+                                        _counter_->terminalNodeId(nbVisits));
       }
       parentId = varId;
     }
-    counter__->manager()->setSon(
+     _counter_->manager()->setSon(
        parentId,
        parentModa,
-       counter__->manager()->addTerminalNode(nbVisits + 1));
+        _counter_->manager()->addTerminalNode(nbVisits + 1));
   }
 }   // End of namespace gum

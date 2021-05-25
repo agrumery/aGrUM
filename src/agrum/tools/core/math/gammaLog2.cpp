@@ -36,19 +36,19 @@ namespace gum {
 
   // @brief Default constructor.
   GammaLog2::GammaLog2(bool requires_precision) :
-      requires_precision__{requires_precision} {
+       _requires_precision_{requires_precision} {
     GUM_CONSTRUCTOR(GammaLog2);
   }
 
   // @brief Copy constructor.
   GammaLog2::GammaLog2(const GammaLog2& from) :
-      requires_precision__{from.requires_precision__} {
+       _requires_precision_{from. _requires_precision_} {
     GUM_CONS_CPY(GammaLog2);
   }
 
   // @brief Move constructor.
   GammaLog2::GammaLog2(GammaLog2&& from) :
-      requires_precision__{from.requires_precision__} {
+       _requires_precision_{from. _requires_precision_} {
     GUM_CONS_MOV(GammaLog2);
   }
 
@@ -60,7 +60,7 @@ namespace gum {
 
 
   // the Log2 (gamma (x)) for x varying from 0 to 50 by step of 1/100
-  const std::vector< double > GammaLog2::small_values__{
+  const std::vector< double > GammaLog2:: _small_values_{
      std::numeric_limits< double >::max(),
      6.635647,
      5.627671,

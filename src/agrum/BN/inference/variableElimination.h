@@ -225,130 +225,130 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* > PotentialSet__;
+    typedef Set< const Potential< GUM_SCALAR >* >  _PotentialSet_;
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-       PotentialSetIterator__;
+        _PotentialSetIterator_;
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType find_relevant_potential_type__;
+    RelevantPotentialsFinderType  _find_relevant_potential_type_;
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void (VariableElimination< GUM_SCALAR >::*findRelevantPotentials__)(
+    void (VariableElimination< GUM_SCALAR >::* _findRelevantPotentials_)(
        Set< const Potential< GUM_SCALAR >* >& pot_list,
        Set< const DiscreteVariable* >&        kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType barren_nodes_type__;
+    FindBarrenNodesType  _barren_nodes_type_;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (*projection_op__)(
+    Potential< GUM_SCALAR >* (* _projection_op_)(
        const Potential< GUM_SCALAR >&,
        const Set< const DiscreteVariable* >&){VENewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (*combination_op__)(const Potential< GUM_SCALAR >&,
+    Potential< GUM_SCALAR >* (* _combination_op_)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
        VENewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
-    Triangulation* triangulation__;
+    Triangulation*  _triangulation_;
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target, graph__ will be
+     * instance if the BN is A->B->C and only B is a target,  _graph_ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
-    UndiGraph graph__;
+    UndiGraph  _graph_;
 
     /// the junction tree used to answer the last inference query
-    JunctionTree* JT__{nullptr};
+    JunctionTree*  _JT_{nullptr};
 
-    /// for each node of graph__ (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId > node_to_clique__;
+    /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
+    HashTable< NodeId, NodeId >  _node_to_clique_;
 
     /// for each BN node, indicate in which clique its CPT will be stored
-    HashTable< NodeId, NodeSet > clique_potentials__;
+    HashTable< NodeId, NodeSet >  _clique_potentials_;
 
     /// indicate a clique that contains all the nodes of the target
-    NodeId targets2clique__;
+    NodeId  _targets2clique_;
 
     /// the posterior computed during the last inference
     /** the posterior is owned by VariableElimination. */
-    Potential< GUM_SCALAR >* target_posterior__{nullptr};
+    Potential< GUM_SCALAR >*  _target_posterior_{nullptr};
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR one_minus_epsilon__{GUM_SCALAR(1.0 - 1e-6)};
+    const GUM_SCALAR  _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// create a new junction tree as well as its related data structures
-    void createNewJT__(const NodeSet& targets);
+    void  _createNewJT_(const NodeSet& targets);
 
     /// sets the operator for performing the projections
-    void setProjectionFunction__(
+    void  _setProjectionFunction_(
        Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
                                         const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction__(Potential< GUM_SCALAR >* (
+    void  _setCombinationFunction_(Potential< GUM_SCALAR >* (
        *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void findRelevantPotentialsWithdSeparation__(
-       PotentialSet__&                 pot_list,
+    void  _findRelevantPotentialsWithdSeparation_(
+        _PotentialSet_&                 pot_list,
        Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void findRelevantPotentialsWithdSeparation2__(
-       PotentialSet__&                 pot_list,
+    void  _findRelevantPotentialsWithdSeparation2_(
+        _PotentialSet_&                 pot_list,
        Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void findRelevantPotentialsWithdSeparation3__(
-       PotentialSet__&                 pot_list,
+    void  _findRelevantPotentialsWithdSeparation3_(
+        _PotentialSet_&                 pot_list,
        Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void findRelevantPotentialsGetAll__(PotentialSet__&                 pot_list,
+    void  _findRelevantPotentialsGetAll_( _PotentialSet_&                 pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void findRelevantPotentialsXX__(PotentialSet__&                 pot_list,
+    void  _findRelevantPotentialsXX_( _PotentialSet_&                 pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-    PotentialSet__
-       removeBarrenVariables__(PotentialSet__&                 pot_list,
+     _PotentialSet_
+        _removeBarrenVariables_( _PotentialSet_&                 pot_list,
                                Set< const DiscreteVariable* >& del_vars);
 
     /// actually perform the collect phase
-    std::pair< PotentialSet__, PotentialSet__ > collectMessage__(NodeId id,
+    std::pair<  _PotentialSet_,  _PotentialSet_ >  _collectMessage_(NodeId id,
                                                                  NodeId from);
 
     /// returns the CPT + evidence of a node projected w.r.t. hard evidence
-    std::pair< PotentialSet__, PotentialSet__ > NodePotentials__(NodeId node);
+    std::pair<  _PotentialSet_,  _PotentialSet_ >  _NodePotentials_(NodeId node);
 
     /// creates the message sent by clique from_id to clique to_id
-    std::pair< PotentialSet__, PotentialSet__ > produceMessage__(
+    std::pair<  _PotentialSet_,  _PotentialSet_ >  _produceMessage_(
        NodeId                                        from_id,
        NodeId                                        to_id,
-       std::pair< PotentialSet__, PotentialSet__ >&& incoming_messages);
+       std::pair<  _PotentialSet_,  _PotentialSet_ >&& incoming_messages);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    PotentialSet__ marginalizeOut__(PotentialSet__                  pot_list,
+     _PotentialSet_  _marginalizeOut_( _PotentialSet_                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
   };

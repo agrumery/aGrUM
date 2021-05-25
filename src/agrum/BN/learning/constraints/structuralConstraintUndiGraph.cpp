@@ -58,14 +58,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
        const StructuralConstraintUndiGraph& from) :
-        UndiGraph__graph_(from.UndiGraph__graph_) {
+         _UndiGraph_graph_(from. _UndiGraph_graph_) {
       GUM_CONS_CPY(StructuralConstraintUndiGraph);
     }
 
     /// move constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
        StructuralConstraintUndiGraph&& from) :
-        UndiGraph__graph_(std::move(from.UndiGraph__graph_)) {
+         _UndiGraph_graph_(std::move(from. _UndiGraph_graph_)) {
       GUM_CONS_MOV(StructuralConstraintUndiGraph);
     }
 
@@ -77,14 +77,14 @@ namespace gum {
     /// copy operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
        const StructuralConstraintUndiGraph& from) {
-      if (this != &from) { UndiGraph__graph_ = from.UndiGraph__graph_; }
+      if (this != &from) {  _UndiGraph_graph_ = from. _UndiGraph_graph_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
        StructuralConstraintUndiGraph&& from) {
-      if (this != &from) { UndiGraph__graph_ = std::move(from.UndiGraph__graph_); }
+      if (this != &from) {  _UndiGraph_graph_ = std::move(from. _UndiGraph_graph_); }
       return *this;
     }
 

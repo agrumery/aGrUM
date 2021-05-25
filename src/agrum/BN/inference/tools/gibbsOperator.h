@@ -45,16 +45,16 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR >
+  template<typename GUM_SCALAR>
   class GibbsOperator {
-    public:
+  public:
     /**
      *  constructor
      */
-    GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
-                  const NodeProperty< Idx >*     hardEv,
-                  Size                           nbr      = 1,
-                  bool                           atRandom = false);
+    GibbsOperator(const IBayesNet<GUM_SCALAR> &BN,
+                  const NodeProperty<Idx> *hardEv,
+                  Size nbr = 1,
+                  bool atRandom = false);
 
     /**
      * Destructor.
@@ -76,32 +76,34 @@ namespace gum {
     /// draws next sample of Gibbs sampling
     Instantiation nextSample(Instantiation prev);
 
-    protected:
-    /// number of samples drawn
-    Size                           counting_;
-    const IBayesNet< GUM_SCALAR >& sampling_bn_;
-    const NodeProperty< Idx >*     hardEv_;
-    Sequence< NodeId >             samplingNodes_;
+  protected:
+    Size counting_;
+    const IBayesNet<GUM_SCALAR> &samplingBn_;
+    const NodeProperty<Idx> *hardEv_;
+    Sequence<NodeId> samplingNodes_;
 
     Size nbr_;
-
-    protected:
     bool atRandom_;
 
+  private:
+    void _updateSamplingNodes_();
 
-    private:
-    void updateSamplingNodes__();
     // adds a node to current instantiation
-    void drawVarMonteCarlo__(NodeId nod, Instantiation* I);
-    void GibbsSample__(NodeId id, Instantiation* I);
+    void  _drawVarMonteCarlo_(NodeId nod, Instantiation *I);
+
+    void  _GibbsSample_(NodeId id, Instantiation *I);
   };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GibbsOperator< double >;
+
+  extern template
+  class GibbsOperator<double>;
+
 #endif
 
 }   // namespace gum
 
 #include <agrum/BN/inference/tools/gibbsOperator_tpl.h>
+
 #endif

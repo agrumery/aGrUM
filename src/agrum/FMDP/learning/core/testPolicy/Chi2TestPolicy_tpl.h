@@ -43,7 +43,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Chi2TestPolicy< GUM_SCALAR >::addObservation(Idx iattr, GUM_SCALAR ivalue) {
     ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
-    conTab__.add(iattr, ivalue);
+     _conTab_.add(iattr, ivalue);
   }
 
 
@@ -57,20 +57,20 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Chi2TestPolicy< GUM_SCALAR >::computeScore() const {
     ITestPolicy< GUM_SCALAR >::computeScore();
-    chi2Score__ = 0;
-    for (auto attrIter = conTab__.attrABeginSafe();
-         attrIter != conTab__.attrAEndSafe();
+     _chi2Score_ = 0;
+    for (auto attrIter =  _conTab_.attrABeginSafe();
+         attrIter !=  _conTab_.attrAEndSafe();
          ++attrIter) {
       double semiExpected
          = (double)(attrIter.val()) / (double)this->nbObservation();
-      for (auto valIter = conTab__.attrBBeginSafe();
-           valIter != conTab__.attrBEndSafe();
+      for (auto valIter =  _conTab_.attrBBeginSafe();
+           valIter !=  _conTab_.attrBEndSafe();
            ++valIter) {
-        double cell = (double)conTab__.joint(attrIter.key(), valIter.key());
+        double cell = (double) _conTab_.joint(attrIter.key(), valIter.key());
         if (cell < 5) continue;
         double expected = semiExpected * (double)(valIter.val());
 
-        chi2Score__ += std::pow(cell - expected, 2.0) / expected;
+         _chi2Score_ += std::pow(cell - expected, 2.0) / expected;
       }
     }
   }
@@ -82,9 +82,9 @@ namespace gum {
   double Chi2TestPolicy< GUM_SCALAR >::score() const {
     if (this->isModified_()) computeScore();
     double score = 1
-                 - ChiSquare::probaChi2(chi2Score__,
-                                        (conTab__.attrASize() - 1)
-                                           * (conTab__.attrBSize() - 1));
+                 - ChiSquare::probaChi2( _chi2Score_,
+                                        ( _conTab_.attrASize() - 1)
+                                           * ( _conTab_.attrBSize() - 1));
     return score;
   }
 
@@ -94,13 +94,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   double Chi2TestPolicy< GUM_SCALAR >::secondaryscore() const {
     if (this->isModified_()) computeScore();
-    return chi2Score__;
+    return  _chi2Score_;
   }
 
   template < typename GUM_SCALAR >
   void Chi2TestPolicy< GUM_SCALAR >::add(const Chi2TestPolicy< GUM_SCALAR >& src) {
     ITestPolicy< GUM_SCALAR >::add(src);
-    conTab__ += src.ct();
+     _conTab_ += src.ct();
   }
 
 }   // End of namespace gum

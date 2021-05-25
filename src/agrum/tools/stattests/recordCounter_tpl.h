@@ -39,7 +39,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename RecordCounter< ALLOC >::allocator_type
        RecordCounter< ALLOC >::getAllocator() const {
-      return parsers__.get_allocator();
+      return  _parsers_.get_allocator();
     }
 
 
@@ -52,10 +52,10 @@ namespace gum {
        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                                                               nodeId2columns,
        const typename RecordCounter< ALLOC >::allocator_type& alloc) :
-        parsers__(alloc),
-        ranges__(alloc), nodeId2columns__(nodeId2columns),
-        last_DB_countings__(alloc), last_DB_ids__(alloc),
-        last_nonDB_countings__(alloc), last_nonDB_ids__(alloc) {
+         _parsers_(alloc),
+         _ranges_(alloc),  _nodeId2columns_(nodeId2columns),
+         _last_DB_countings_(alloc),  _last_DB_ids_(alloc),
+         _last_nonDB_countings_(alloc),  _last_nonDB_ids_(alloc) {
       // check that the columns in nodeId2columns do belong to the database
       const std::size_t db_nb_cols = parser.database().nbVariables();
       for (auto iter = nodeId2columns.cbegin(); iter != nodeId2columns.cend();
@@ -69,20 +69,20 @@ namespace gum {
       }
 
       // create the parsers. There should always be at least one parser
-      if (max_nb_threads__ < std::size_t(1)) max_nb_threads__ = std::size_t(1);
-      parsers__.reserve(max_nb_threads__);
-      for (std::size_t i = std::size_t(0); i < max_nb_threads__; ++i)
-        parsers__.push_back(parser);
+      if ( _max_nb_threads_ < std::size_t(1))  _max_nb_threads_ = std::size_t(1);
+       _parsers_.reserve( _max_nb_threads_);
+      for (std::size_t i = std::size_t(0); i <  _max_nb_threads_; ++i)
+         _parsers_.push_back(parser);
 
       // check that the ranges are within the bounds of the database and
       // save them
-      checkRanges__(ranges);
-      ranges__.reserve(ranges.size());
+       _checkRanges_(ranges);
+       _ranges_.reserve(ranges.size());
       for (const auto& range: ranges)
-        ranges__.push_back(range);
+         _ranges_.push_back(range);
 
       // dispatch the ranges for the threads
-      dispatchRangesToThreads__();
+       _dispatchRangesToThreads_();
 
       GUM_CONSTRUCTOR(RecordCounter);
     }
@@ -108,16 +108,16 @@ namespace gum {
     RecordCounter< ALLOC >::RecordCounter(
        const RecordCounter< ALLOC >&                          from,
        const typename RecordCounter< ALLOC >::allocator_type& alloc) :
-        parsers__(from.parsers__, alloc),
-        ranges__(from.ranges__, alloc),
-        thread_ranges__(from.thread_ranges__, alloc),
-        nodeId2columns__(from.nodeId2columns__),
-        last_DB_countings__(from.last_DB_countings__, alloc),
-        last_DB_ids__(from.last_DB_ids__),
-        last_nonDB_countings__(from.last_nonDB_countings__, alloc),
-        last_nonDB_ids__(from.last_nonDB_ids__),
-        max_nb_threads__(from.max_nb_threads__),
-        min_nb_rows_per_thread__(from.min_nb_rows_per_thread__) {
+         _parsers_(from. _parsers_, alloc),
+         _ranges_(from. _ranges_, alloc),
+         _thread_ranges_(from. _thread_ranges_, alloc),
+         _nodeId2columns_(from. _nodeId2columns_),
+         _last_DB_countings_(from. _last_DB_countings_, alloc),
+         _last_DB_ids_(from. _last_DB_ids_),
+         _last_nonDB_countings_(from. _last_nonDB_countings_, alloc),
+         _last_nonDB_ids_(from. _last_nonDB_ids_),
+         _max_nb_threads_(from. _max_nb_threads_),
+         _min_nb_rows_per_thread_(from. _min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
     }
 
@@ -133,16 +133,16 @@ namespace gum {
     RecordCounter< ALLOC >::RecordCounter(
        RecordCounter< ALLOC >&&                               from,
        const typename RecordCounter< ALLOC >::allocator_type& alloc) :
-        parsers__(std::move(from.parsers__), alloc),
-        ranges__(std::move(from.ranges__), alloc),
-        thread_ranges__(std::move(from.thread_ranges__), alloc),
-        nodeId2columns__(std::move(from.nodeId2columns__)),
-        last_DB_countings__(std::move(from.last_DB_countings__), alloc),
-        last_DB_ids__(std::move(from.last_DB_ids__)),
-        last_nonDB_countings__(std::move(from.last_nonDB_countings__), alloc),
-        last_nonDB_ids__(std::move(from.last_nonDB_ids__)),
-        max_nb_threads__(from.max_nb_threads__),
-        min_nb_rows_per_thread__(from.min_nb_rows_per_thread__) {
+         _parsers_(std::move(from. _parsers_), alloc),
+         _ranges_(std::move(from. _ranges_), alloc),
+         _thread_ranges_(std::move(from. _thread_ranges_), alloc),
+         _nodeId2columns_(std::move(from. _nodeId2columns_)),
+         _last_DB_countings_(std::move(from. _last_DB_countings_), alloc),
+         _last_DB_ids_(std::move(from. _last_DB_ids_)),
+         _last_nonDB_countings_(std::move(from. _last_nonDB_countings_), alloc),
+         _last_nonDB_ids_(std::move(from. _last_nonDB_ids_)),
+         _max_nb_threads_(from. _max_nb_threads_),
+         _min_nb_rows_per_thread_(from. _min_nb_rows_per_thread_) {
       GUM_CONS_MOV(RecordCounter);
     }
 
@@ -189,16 +189,16 @@ namespace gum {
     RecordCounter< ALLOC >&
        RecordCounter< ALLOC >::operator=(const RecordCounter< ALLOC >& from) {
       if (this != &from) {
-        parsers__                = from.parsers__;
-        ranges__                 = from.ranges__;
-        thread_ranges__          = from.thread_ranges__;
-        nodeId2columns__         = from.nodeId2columns__;
-        last_DB_countings__      = from.last_DB_countings__;
-        last_DB_ids__            = from.last_DB_ids__;
-        last_nonDB_countings__   = from.last_nonDB_countings__;
-        last_nonDB_ids__         = from.last_nonDB_ids__;
-        max_nb_threads__         = from.max_nb_threads__;
-        min_nb_rows_per_thread__ = from.min_nb_rows_per_thread__;
+         _parsers_                = from. _parsers_;
+         _ranges_                 = from. _ranges_;
+         _thread_ranges_          = from. _thread_ranges_;
+         _nodeId2columns_         = from. _nodeId2columns_;
+         _last_DB_countings_      = from. _last_DB_countings_;
+         _last_DB_ids_            = from. _last_DB_ids_;
+         _last_nonDB_countings_   = from. _last_nonDB_countings_;
+         _last_nonDB_ids_         = from. _last_nonDB_ids_;
+         _max_nb_threads_         = from. _max_nb_threads_;
+         _min_nb_rows_per_thread_ = from. _min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -209,16 +209,16 @@ namespace gum {
     RecordCounter< ALLOC >&
        RecordCounter< ALLOC >::operator=(RecordCounter< ALLOC >&& from) {
       if (this != &from) {
-        parsers__                = std::move(from.parsers__);
-        ranges__                 = std::move(from.ranges__);
-        thread_ranges__          = std::move(from.thread_ranges__);
-        nodeId2columns__         = std::move(from.nodeId2columns__);
-        last_DB_countings__      = std::move(from.last_DB_countings__);
-        last_DB_ids__            = std::move(from.last_DB_ids__);
-        last_nonDB_countings__   = std::move(from.last_nonDB_countings__);
-        last_nonDB_ids__         = std::move(from.last_nonDB_ids__);
-        max_nb_threads__         = from.max_nb_threads__;
-        min_nb_rows_per_thread__ = from.min_nb_rows_per_thread__;
+         _parsers_                = std::move(from. _parsers_);
+         _ranges_                 = std::move(from. _ranges_);
+         _thread_ranges_          = std::move(from. _thread_ranges_);
+         _nodeId2columns_         = std::move(from. _nodeId2columns_);
+         _last_DB_countings_      = std::move(from. _last_DB_countings_);
+         _last_DB_ids_            = std::move(from. _last_DB_ids_);
+         _last_nonDB_countings_   = std::move(from. _last_nonDB_countings_);
+         _last_nonDB_ids_         = std::move(from. _last_nonDB_ids_);
+         _max_nb_threads_         = from. _max_nb_threads_;
+         _min_nb_rows_per_thread_ = from. _min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -227,10 +227,10 @@ namespace gum {
     /// clears all the last database-parsed countings from memory
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::clear() {
-      last_DB_countings__.clear();
-      last_DB_ids__.clear();
-      last_nonDB_countings__.clear();
-      last_nonDB_ids__.clear();
+       _last_DB_countings_.clear();
+       _last_DB_ids_.clear();
+       _last_nonDB_countings_.clear();
+       _last_nonDB_ids_.clear();
     }
 
 
@@ -238,16 +238,16 @@ namespace gum {
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::setMaxNbThreads(const std::size_t nb) const {
       if (nb == std::size_t(0) || !isOMP())
-        max_nb_threads__ = std::size_t(1);
+         _max_nb_threads_ = std::size_t(1);
       else
-        max_nb_threads__ = nb;
+         _max_nb_threads_ = nb;
     }
 
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
     INLINE std::size_t RecordCounter< ALLOC >::nbThreads() const {
-      return max_nb_threads__;
+      return  _max_nb_threads_;
     }
 
 
@@ -257,22 +257,22 @@ namespace gum {
     void
        RecordCounter< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       if (nb == std::size_t(0))
-        min_nb_rows_per_thread__ = std::size_t(1);
+         _min_nb_rows_per_thread_ = std::size_t(1);
       else
-        min_nb_rows_per_thread__ = nb;
+         _min_nb_rows_per_thread_ = nb;
     }
 
 
     /// returns the minimum of rows that each thread should process
     template < template < typename > class ALLOC >
     INLINE std::size_t RecordCounter< ALLOC >::minNbRowsPerThread() const {
-      return min_nb_rows_per_thread__;
+      return  _min_nb_rows_per_thread_;
     }
 
 
     /// compute and raise the exception when some variables are continuous
     template < template < typename > class ALLOC >
-    void RecordCounter< ALLOC >::raiseCheckException__(
+    void RecordCounter< ALLOC >:: _raiseCheckException_(
        const std::vector< std::string, ALLOC< std::string > >& bad_vars) const {
       // generate the exception
       std::stringstream msg;
@@ -297,12 +297,12 @@ namespace gum {
 
     /// check that all the variables in an idset are discrete
     template < template < typename > class ALLOC >
-    void RecordCounter< ALLOC >::checkDiscreteVariables__(
+    void RecordCounter< ALLOC >:: _checkDiscreteVariables_(
        const IdCondSet< ALLOC >& ids) const {
       const std::size_t             size     = ids.size();
-      const DatabaseTable< ALLOC >& database = parsers__[0].data.database();
+      const DatabaseTable< ALLOC >& database =  _parsers_[0].data.database();
 
-      if (nodeId2columns__.empty()) {
+      if ( _nodeId2columns_.empty()) {
         // check all the ids
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           if (database.variable(i).varType() == VarType::Continuous) {
@@ -315,14 +315,14 @@ namespace gum {
               if (database.variable(i).varType() == VarType::Continuous)
                 bad_vars.push_back(database.variable(i).name());
             }
-            raiseCheckException__(bad_vars);
+             _raiseCheckException_(bad_vars);
           }
         }
       } else {
         // check all the ids
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           // get the position of the variable in the database
-          std::size_t pos = nodeId2columns__.second(ids[i]);
+          std::size_t pos =  _nodeId2columns_.second(ids[i]);
 
           if (database.variable(pos).varType() == VarType::Continuous) {
             // here, id does not correspond to a discrete variable.
@@ -331,11 +331,11 @@ namespace gum {
             std::vector< std::string, ALLOC< std::string > > bad_vars{
                database.variable(pos).name()};
             for (++i; i < size; ++i) {
-              pos = nodeId2columns__.second(ids[i]);
+              pos =  _nodeId2columns_.second(ids[i]);
               if (database.variable(pos).varType() == VarType::Continuous)
                 bad_vars.push_back(database.variable(pos).name());
             }
-            raiseCheckException__(bad_vars);
+             _raiseCheckException_(bad_vars);
           }
         }
       }
@@ -346,14 +346,14 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                  RecordCounter< ALLOC >::nodeId2Columns() const {
-      return nodeId2columns__;
+      return  _nodeId2columns_;
     }
 
 
     /// returns the database on which we perform the counts
     template < template < typename > class ALLOC >
     const DatabaseTable< ALLOC >& RecordCounter< ALLOC >::database() const {
-      return parsers__[0].data.database();
+      return  _parsers_[0].data.database();
     }
 
 
@@ -364,22 +364,22 @@ namespace gum {
                                       const bool check_discrete_vars) {
       // if the idset is empty, return an empty vector
       if (ids.empty()) {
-        last_nonDB_ids__.clear();
-        last_nonDB_countings__.clear();
-        return last_nonDB_countings__;
+         _last_nonDB_ids_.clear();
+         _last_nonDB_countings_.clear();
+        return  _last_nonDB_countings_;
       }
 
       // check whether we can extract the vector we wish to return from
       // some already computed counting vector
-      if (last_nonDB_ids__.contains(ids))
-        return extractFromCountings__(ids,
-                                      last_nonDB_ids__,
-                                      last_nonDB_countings__);
-      else if (last_DB_ids__.contains(ids))
-        return extractFromCountings__(ids, last_DB_ids__, last_DB_countings__);
+      if ( _last_nonDB_ids_.contains(ids))
+        return  _extractFromCountings_(ids,
+                                       _last_nonDB_ids_,
+                                       _last_nonDB_countings_);
+      else if ( _last_DB_ids_.contains(ids))
+        return  _extractFromCountings_(ids,  _last_DB_ids_,  _last_DB_countings_);
       else {
-        if (check_discrete_vars) checkDiscreteVariables__(ids);
-        return countFromDatabase__(ids);
+        if (check_discrete_vars)  _checkDiscreteVariables_(ids);
+        return  _countFromDatabase_(ids);
       }
     }
 
@@ -387,16 +387,16 @@ namespace gum {
     // returns a mapping from the nodes ids to the columns of the database
     // for a given sequence of ids
     template < template < typename > class ALLOC >
-    HashTable< NodeId, std::size_t > RecordCounter< ALLOC >::getNodeIds2Columns__(
+    HashTable< NodeId, std::size_t > RecordCounter< ALLOC >:: _getNodeIds2Columns_(
        const IdCondSet< ALLOC >& ids) const {
       HashTable< NodeId, std::size_t > res(ids.size());
-      if (nodeId2columns__.empty()) {
+      if ( _nodeId2columns_.empty()) {
         for (const auto id: ids) {
           res.insert(id, std::size_t(id));
         }
       } else {
         for (const auto id: ids) {
-          res.insert(id, nodeId2columns__.second(id));
+          res.insert(id,  _nodeId2columns_.second(id));
         }
       }
       return res;
@@ -406,18 +406,18 @@ namespace gum {
     /// extracts some new countings from previously computed ones
     template < template < typename > class ALLOC >
     INLINE std::vector< double, ALLOC< double > >&
-           RecordCounter< ALLOC >::extractFromCountings__(
+           RecordCounter< ALLOC >:: _extractFromCountings_(
           const IdCondSet< ALLOC >&                     subset_ids,
           const IdCondSet< ALLOC >&                     superset_ids,
           const std::vector< double, ALLOC< double > >& superset_vect) {
       // get a mapping between the node Ids and their columns in the database.
-      // This should be stored into nodeId2columns__, except if the latter is
+      // This should be stored into  _nodeId2columns_, except if the latter is
       // empty, in which case there is an identity mapping
-      const auto nodeId2columns = getNodeIds2Columns__(superset_ids);
+      const auto nodeId2columns =  _getNodeIds2Columns_(superset_ids);
 
       // we first determine the size of the output vector, the domain of
       // each of its variables and their offsets in the output vector
-      const auto& database         = parsers__[0].data.database();
+      const auto& database         =  _parsers_[0].data.database();
       std::size_t result_vect_size = std::size_t(1);
       for (const auto id: subset_ids) {
         result_vect_size *= database.domainSize(nodeId2columns[id]);
@@ -451,12 +451,12 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          last_nonDB_ids__       = subset_ids;
-          last_nonDB_countings__ = std::move(result_vect);
-          return last_nonDB_countings__;
+           _last_nonDB_ids_       = subset_ids;
+           _last_nonDB_countings_ = std::move(result_vect);
+          return  _last_nonDB_countings_;
         } catch (...) {
-          last_nonDB_ids__.clear();
-          last_nonDB_countings__.clear();
+           _last_nonDB_ids_.clear();
+           _last_nonDB_countings_.clear();
           throw;
         }
       }
@@ -496,12 +496,12 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          last_nonDB_ids__       = subset_ids;
-          last_nonDB_countings__ = std::move(result_vect);
-          return last_nonDB_countings__;
+           _last_nonDB_ids_       = subset_ids;
+           _last_nonDB_countings_ = std::move(result_vect);
+          return  _last_nonDB_countings_;
         } catch (...) {
-          last_nonDB_ids__.clear();
-          last_nonDB_countings__.clear();
+           _last_nonDB_ids_.clear();
+           _last_nonDB_countings_.clear();
           throw;
         }
       }
@@ -605,12 +605,12 @@ namespace gum {
 
       // save the subset_ids and the result vector
       try {
-        last_nonDB_ids__       = subset_ids;
-        last_nonDB_countings__ = std::move(result_vect);
-        return last_nonDB_countings__;
+         _last_nonDB_ids_       = subset_ids;
+         _last_nonDB_countings_ = std::move(result_vect);
+        return  _last_nonDB_countings_;
       } catch (...) {
-        last_nonDB_ids__.clear();
-        last_nonDB_countings__.clear();
+         _last_nonDB_ids_.clear();
+         _last_nonDB_countings_.clear();
         throw;
       }
     }
@@ -619,19 +619,19 @@ namespace gum {
     /// parse the database to produce new countings
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > >&
-       RecordCounter< ALLOC >::countFromDatabase__(const IdCondSet< ALLOC >& ids) {
+       RecordCounter< ALLOC >:: _countFromDatabase_(const IdCondSet< ALLOC >& ids) {
       // if the ids vector is empty or the database is empty, return an
       // empty vector
-      const auto& database = parsers__[0].data.database();
-      if (ids.empty() || database.empty() || thread_ranges__.empty()) {
-        last_nonDB_countings__.clear();
-        last_nonDB_ids__.clear();
-        return last_nonDB_countings__;
+      const auto& database =  _parsers_[0].data.database();
+      if (ids.empty() || database.empty() ||  _thread_ranges_.empty()) {
+         _last_nonDB_countings_.clear();
+         _last_nonDB_ids_.clear();
+        return  _last_nonDB_countings_;
       }
 
       // we translate the ids into their corresponding columns in the
       // DatabaseTable
-      const auto nodeId2columns = getNodeIds2Columns__(ids);
+      const auto nodeId2columns =  _getNodeIds2Columns_(ids);
 
       // we first determine the size of the counting vector, the domain of
       // each of its variables and their offsets in the output vector
@@ -663,12 +663,12 @@ namespace gum {
                 });
 
       // create parsers if needed
-      const std::size_t nb_ranges = thread_ranges__.size();
+      const std::size_t nb_ranges =  _thread_ranges_.size();
       const std::size_t nb_threads
-         = nb_ranges <= max_nb_threads__ ? nb_ranges : max_nb_threads__;
-      while (parsers__.size() < nb_threads) {
-        ThreadData< DBRowGeneratorParser< ALLOC > > new_parser(parsers__[0]);
-        parsers__.push_back(std::move(new_parser));
+         = nb_ranges <=  _max_nb_threads_ ? nb_ranges :  _max_nb_threads_;
+      while ( _parsers_.size() < nb_threads) {
+        ThreadData< DBRowGeneratorParser< ALLOC > > new_parser( _parsers_[0]);
+         _parsers_.push_back(std::move(new_parser));
       }
 
       // set the columns of interest for each parser. This specifies to the
@@ -678,7 +678,7 @@ namespace gum {
       for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
         cols_of_interest[i] = cols_offsets[i].first;
       }
-      for (auto& parser: parsers__) {
+      for (auto& parser:  _parsers_) {
         parser.data.setColumnsOfInterest(cols_of_interest);
       }
 
@@ -703,9 +703,9 @@ namespace gum {
           // get the number of the thread
           const std::size_t this_thread = getThreadNumber();
           if (this_thread + i < nb_ranges) {
-            DBRowGeneratorParser< ALLOC >& parser = parsers__[this_thread].data;
-            parser.setRange(thread_ranges__[this_thread + i].first,
-                            thread_ranges__[this_thread + i].second);
+            DBRowGeneratorParser< ALLOC >& parser =  _parsers_[this_thread].data;
+            parser.setRange( _thread_ranges_[this_thread + i].first,
+                             _thread_ranges_[this_thread + i].second);
             std::vector< double, ALLOC< double > >& countings
                = thread_countings[this_thread].data;
 
@@ -741,16 +741,16 @@ namespace gum {
       }
 
       // save the final results
-      last_DB_ids__       = ids;
-      last_DB_countings__ = std::move(counting_vect);
+       _last_DB_ids_       = ids;
+       _last_DB_countings_ = std::move(counting_vect);
 
-      return last_DB_countings__;
+      return  _last_DB_countings_;
     }
 
 
     /// the method used by threads to produce countings by parsing the database
     template < template < typename > class ALLOC >
-    void RecordCounter< ALLOC >::threadedCount__(
+    void RecordCounter< ALLOC >:: _threadedCount_(
        const std::size_t              begin,
        const std::size_t              end,
        DBRowGeneratorParser< ALLOC >& parser,
@@ -784,11 +784,11 @@ namespace gum {
     /// checks that the ranges passed in argument are ok or raise an exception
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
-    void RecordCounter< ALLOC >::checkRanges__(
+    void RecordCounter< ALLOC >:: _checkRanges_(
        const std::vector< std::pair< std::size_t, std::size_t >,
                           XALLOC< std::pair< std::size_t, std::size_t > > >&
           new_ranges) const {
-      const std::size_t dbsize = parsers__[0].data.database().nbRows();
+      const std::size_t dbsize =  _parsers_[0].data.database().nbRows();
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          incorrect_ranges;
@@ -820,28 +820,28 @@ namespace gum {
 
     /// sets the ranges within which each thread should perform its computations
     template < template < typename > class ALLOC >
-    void RecordCounter< ALLOC >::dispatchRangesToThreads__() {
-      thread_ranges__.clear();
+    void RecordCounter< ALLOC >:: _dispatchRangesToThreads_() {
+       _thread_ranges_.clear();
 
-      // ensure that ranges__ contains the ranges asked by the user
+      // ensure that  _ranges_ contains the ranges asked by the user
       bool add_range = false;
-      if (ranges__.empty()) {
-        const auto& database = parsers__[0].data.database();
-        ranges__.push_back(
+      if ( _ranges_.empty()) {
+        const auto& database =  _parsers_[0].data.database();
+         _ranges_.push_back(
            std::pair< std::size_t, std::size_t >(std::size_t(0),
                                                  database.nbRows()));
         add_range = true;
       }
 
       // dispatch the ranges
-      for (const auto& range: ranges__) {
+      for (const auto& range:  _ranges_) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
-          std::size_t       nb_threads = range_size / min_nb_rows_per_thread__;
+          std::size_t       nb_threads = range_size /  _min_nb_rows_per_thread_;
           if (nb_threads < 1)
             nb_threads = 1;
-          else if (nb_threads > max_nb_threads__)
-            nb_threads = max_nb_threads__;
+          else if (nb_threads >  _max_nb_threads_)
+            nb_threads =  _max_nb_threads_;
           std::size_t nb_rows_par_thread = range_size / nb_threads;
           std::size_t rest_rows = range_size - nb_rows_par_thread * nb_threads;
 
@@ -852,20 +852,20 @@ namespace gum {
               ++end_index;
               --rest_rows;
             }
-            thread_ranges__.push_back(
+             _thread_ranges_.push_back(
                std::pair< std::size_t, std::size_t >(begin_index, end_index));
             begin_index = end_index;
           }
         }
       }
-      if (add_range) ranges__.clear();
+      if (add_range)  _ranges_.clear();
 
       // sort ranges by decreasing range size, so that if the number of
       // ranges exceeds the number of threads allowed, we start a first round of
       // threads with the highest range, then another round with lower ranges,
       // and so on until all the ranges have been processed
-      std::sort(thread_ranges__.begin(),
-                thread_ranges__.end(),
+      std::sort( _thread_ranges_.begin(),
+                 _thread_ranges_.end(),
                 [](const std::pair< std::size_t, std::size_t >& a,
                    const std::pair< std::size_t, std::size_t >& b) -> bool {
                   return (a.second - a.first) > (b.second - b.first);
@@ -881,7 +881,7 @@ namespace gum {
                           XALLOC< std::pair< std::size_t, std::size_t > > >&
           new_ranges) {
       // first, we check that all ranges are within the database's bounds
-      checkRanges__(new_ranges);
+       _checkRanges_(new_ranges);
 
       // since the ranges are OK, save them and clear the counting caches
       const std::size_t new_size = new_ranges.size();
@@ -894,20 +894,20 @@ namespace gum {
       }
 
       clear();
-      ranges__ = std::move(ranges);
+       _ranges_ = std::move(ranges);
 
       // dispatch the ranges to the threads
-      dispatchRangesToThreads__();
+       _dispatchRangesToThreads_();
     }
 
 
     /// reset the ranges to the one range corresponding to the whole database
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::clearRanges() {
-      if (ranges__.empty()) return;
+      if ( _ranges_.empty()) return;
       clear();
-      ranges__.clear();
-      dispatchRangesToThreads__();
+       _ranges_.clear();
+       _dispatchRangesToThreads_();
     }
 
 
@@ -916,7 +916,7 @@ namespace gum {
     INLINE const std::vector< std::pair< std::size_t, std::size_t >,
                               ALLOC< std::pair< std::size_t, std::size_t > > >&
                  RecordCounter< ALLOC >::ranges() const {
-      return ranges__;
+      return  _ranges_;
     }
 
 
@@ -929,7 +929,7 @@ namespace gum {
       clear();
 
       // assign the new BN
-      for (auto& xparser: parsers__) {
+      for (auto& xparser:  _parsers_) {
         xparser.data.setBayesNet(new_bn);
       }
     }
