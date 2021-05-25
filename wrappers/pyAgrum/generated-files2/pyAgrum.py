@@ -365,9 +365,9 @@ class PythonLoadListener(object):
 _pyAgrum.PythonLoadListener_swigregister(PythonLoadListener)
 
 
-def fillLoadListeners__(py_listener, l):
-    r"""fillLoadListeners__(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int"""
-    return _pyAgrum.fillLoadListeners__(py_listener, l)
+def _fillLoadListeners_(py_listener, l):
+    r"""_fillLoadListeners_(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int"""
+    return _pyAgrum._fillLoadListeners_(py_listener, l)
 class PythonApproximationListener(object):
     r"""
 
@@ -1751,9 +1751,9 @@ class GumException(Exception):
 _pyAgrum.GumException_swigregister(GumException)
 
 
-def createMsg__(filename, function, line, msg):
-    r"""createMsg__(std::string const & filename, std::string const & function, int line, std::string const & msg) -> std::string const"""
-    return _pyAgrum.createMsg__(filename, function, line, msg)
+def _createMsg_(filename, function, line, msg):
+    r"""_createMsg_(std::string const & filename, std::string const & function, int line, std::string const & msg) -> std::string const"""
+    return _pyAgrum._createMsg_(filename, function, line, msg)
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
 
@@ -6332,8 +6332,8 @@ class GraphicalModel(object):
 # Register GraphicalModel in _pyAgrum:
 _pyAgrum.GraphicalModel_swigregister(GraphicalModel)
 cvar = _pyAgrum.cvar
-list_end_safe__ = cvar.list_end_safe__
-list_end__ = cvar.list_end__
+_list_end_safe_ = cvar._list_end_safe_
+_list_end_ = cvar._list_end_
 
 class DAGmodel(GraphicalModel):
     r"""
