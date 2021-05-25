@@ -968,16 +968,33 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   """
   from IPython.core.display import HTML
 
+  def hex_to_rgb(v):
+    """
+    from #FFFFFF to 255,255,255
+    :param value: the rbg string
+    :return: the triple
+    """
+    value = v.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+  r0,g0,b0=hex_to_rgb(gum.config['notebook', 'potential_color_0'])
+  r1,g1,b1=hex_to_rgb(gum.config['notebook', 'potential_color_1'])
+
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
 
   def _mkCell(val):
     s = "<td style='"
     if withColors and (0 <= val <= 1):
-      r = int(255 - val * 128)
-      g = int(127 + val * 128)
-      b = 100
-      s += "color:black;background-color:" + _rgb(r, g, b) + ";"
+      r = int(r0 + val * (r1-r0))
+      g = int(g0 + val * (g1-g0))
+      b = int(b0 + val * (b1-b0))
+
+      brightness = r * 0.299 + g * 0.587 + b * 0.114
+      tx = "white" if brightness <=153 else "black"
+
+      s += "color:"+tx+";background-color:" + _rgb(r, g, b) + ";"
     s += "text-align:right;'>{:." + str(digits) + "f}</td>"
     return s.format(val)
 
