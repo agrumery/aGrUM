@@ -19,8 +19,8 @@
  */
 
 
-#ifndef  __LP_INTERFACE__H__
-#define  __LP_INTERFACE__H__
+#ifndef __LP_INTERFACE__H__
+#define __LP_INTERFACE__H__
 
 /**
  * @file
@@ -141,12 +141,11 @@ namespace gum {
          * want.
          * @return The address of the caller.
          */
-        friend std::ostream&
-           operator<<(std::ostream& out,
-                      const LpCol&  col);   // calls col.toString(),
-                                           // friend is useless but
-                                           // good for documentation
-                                           // purpose
+        friend std::ostream& operator<<(std::ostream& out,
+                                        const LpCol&  col);   // calls col.toString(),
+                                                             // friend is useless but
+                                                             // good for documentation
+                                                             // purpose
 
         /// @}
 
@@ -159,7 +158,7 @@ namespace gum {
         protected:
         private:
         /** @brief %Variable id. */
-        unsigned int  _id_;
+        unsigned int _id_;
       };
 
     }   // end of namespace lp
@@ -411,35 +410,35 @@ namespace gum {
         /** @brief \c True if this expression has a non-empty left side L : L <=
          * M <=
          * R . \c False otherwise. */
-        bool  _ileft_;
+        bool _ileft_;
         /** @brief \c True if this expression has a non-empty middle side M (
          * the
          * default ) : L <= M <= R . \c False otherwise. */
-        bool  _imiddle_;
+        bool _imiddle_;
         /** @brief \c True if this expression has a non-empty right side R : L
          * <= M
          * <= R . \c False otherwise. */
-        bool  _iright_;
+        bool _iright_;
 
         /** @brief The constant on the left side L : L <= M <= R */
-        double  _lValue_;
+        double _lValue_;
         /** @brief The constant on the middle side L : L <= M <= R */
-        double  _mValue_;
+        double _mValue_;
         /** @brief The constant on the right side L : L <= M <= R */
-        double  _rValue_;
+        double _rValue_;
 
         /** @brief The coefficients of each variable on the left side L : L <= M
          * <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >*  _lCoeffs_;
+        HashTable< LpCol, double >* _lCoeffs_;
         /** @brief The coefficients of each variable on the middle side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >*  _mCoeffs_;
+        HashTable< LpCol, double >* _mCoeffs_;
         /** @brief The coefficients of each variable on the right side L : L <=
          * M <=
          * R. If a variable is not present, it's coefficient is 0. */
-        HashTable< LpCol, double >*  _rCoeffs_;
+        HashTable< LpCol, double >* _rCoeffs_;
 
         /// @name Used by static method LpExpr::LessThan<T1,T2> and by operator
         /// <=
@@ -453,7 +452,7 @@ namespace gum {
          * on
          * the first empty side met, starting at left.
          */
-        void  _addSide_(const LpCol& from);
+        void _addSide_(const LpCol& from);
 
         /**
          * @brief Copy an expression to a side of the calling expression, from
@@ -463,7 +462,7 @@ namespace gum {
          * copy
          * on the first empty side met, starting at left.
          */
-        void  _addSide_(const LpExpr& from);
+        void _addSide_(const LpExpr& from);
 
         /**
          * @brief Move an expression to a side of the calling expression, from
@@ -473,7 +472,7 @@ namespace gum {
          * side
          * met, starting at left.
          */
-        void  _addSide_(LpExpr&& from);
+        void _addSide_(LpExpr&& from);
 
         /**
          * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L
@@ -485,7 +484,7 @@ namespace gum {
          * first empty side met, starting at left.
          */
         template < typename SCALAR >
-        void  _addSide_(const SCALAR& from);
+        void _addSide_(const SCALAR& from);
 
         /// @}
       };
@@ -569,12 +568,11 @@ namespace gum {
          * want.
          * @return The address of the caller.
          */
-        friend std::ostream&
-           operator<<(std::ostream& out,
-                      const LpRow&  row);   // calls row.toString(),
-                                           // friend is useless but
-                                           // good for documentation
-                                           // purpose
+        friend std::ostream& operator<<(std::ostream& out,
+                                        const LpRow&  row);   // calls row.toString(),
+                                                             // friend is useless but
+                                                             // good for documentation
+                                                             // purpose
 
         /**
          * @brief Get the string representation of a calling row.
@@ -585,11 +583,11 @@ namespace gum {
         protected:
         private:
         /** @brief The constant of the linear inequality. */
-        double  _cste_;
+        double _cste_;
 
         /** @brief The coefficients of the variables of the linear inequality.
          */
-        HashTable< LpCol, double >*  _coeffs_;
+        HashTable< LpCol, double >* _coeffs_;
 
       };   // end of class LpRow
 
@@ -632,8 +630,7 @@ namespace gum {
          * @brief Copy compound assignment.
          * @param from The LpInterface to be copied.
          */
-        LpInterface< GUM_SCALAR >&
-           operator=(const LpInterface< GUM_SCALAR >& from);
+        LpInterface< GUM_SCALAR >& operator=(const LpInterface< GUM_SCALAR >& from);
 
         /**
          * @brief Move coumpound assignment.
@@ -748,16 +745,16 @@ namespace gum {
         protected:
         private:
         /** @brief Rows of the problem. */
-        std::vector< LpRow* >  _rows_;
+        std::vector< LpRow* > _rows_;
         /** @brief %Variables of the problem. */
-        std::vector< LpCol >  _cols_;
+        std::vector< LpCol > _cols_;
 
         /** @brief \c true if addPositivity() has been called, \c false
          * otherwise. */
-        bool  _positivity_;
+        bool _positivity_;
         /** @brief \c true if addSumIsOne() has been called, \c false otherwise.
          */
-        bool  _sumIsOne_;
+        bool _sumIsOne_;
 
       };   // end of class LpInterface
 
@@ -843,9 +840,7 @@ namespace gum {
       /**
        * operator+ between neither LpExpr nor LpCol lhs and LpCol rhs
        */
-      template < typename T1,
-                 forbidden_type< T1, LpExpr > = 0,
-                 forbidden_type< T1, LpCol >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr > = 0, forbidden_type< T1, LpCol > = 0 >
       LpExpr operator+(const T1& lhs, const LpCol& rhs);
       /// @}
 
@@ -931,9 +926,7 @@ namespace gum {
        * @tparam T1 A scalar type ( integer or float ( any precision ) ) or a \c
        * LpCol or a \c LpExpr.
        */
-      template < typename T1,
-                 forbidden_type< T1, LpExpr > = 0,
-                 forbidden_type< T1, LpCol >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr > = 0, forbidden_type< T1, LpCol > = 0 >
       LpExpr operator-(const T1& lhs, const LpCol& rhs);
       /// @}
 
@@ -998,26 +991,18 @@ namespace gum {
       LpExpr operator<=(const LpExpr& lhs, T2&& rhs);
       template < typename T2 >
       LpExpr operator<=(const LpCol& lhs, T2&& rhs);
-      template < typename T1,
-                 forbidden_type< T1, LpExpr& > = 0,
-                 forbidden_type< T1, LpCol& >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr& > = 0, forbidden_type< T1, LpCol& > = 0 >
       LpExpr operator<=(T1&& lhs, const LpExpr& rhs);
-      template < typename T1,
-                 forbidden_type< T1, LpExpr& > = 0,
-                 forbidden_type< T1, LpCol& >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr& > = 0, forbidden_type< T1, LpCol& > = 0 >
       LpExpr operator<=(T1&& lhs, const LpCol& rhs);
 
       template < typename T2 >
       LpExpr operator<=(LpExpr&& lhs, T2&& rhs);
       template < typename T2 >
       LpExpr operator<=(LpCol&& lhs, T2&& rhs);
-      template < typename T1,
-                 forbidden_type< T1, LpExpr > = 0,
-                 forbidden_type< T1, LpCol >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr > = 0, forbidden_type< T1, LpCol > = 0 >
       LpExpr operator<=(T1&& lhs, LpExpr&& rhs);
-      template < typename T1,
-                 forbidden_type< T1, LpExpr > = 0,
-                 forbidden_type< T1, LpCol >  = 0 >
+      template < typename T1, forbidden_type< T1, LpExpr > = 0, forbidden_type< T1, LpCol > = 0 >
       LpExpr operator<=(T1&& lhs, LpCol&& rhs);
 
       /// @}

@@ -44,19 +44,16 @@ namespace gum {
      const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
 #  endif
 
-    typename PartialInstantiationRegister4MultiDim<
-       GUM_SCALAR >::PartialInstantiationPtr func;
+    typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr func;
 
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,inst_vars) in the register
-      func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get(
-         "i",
-         ttable.name());
+      func
+         = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get("i", ttable.name());
     } catch (NotFound&) {
-      func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get(
-         "i",
-         ttable.basename());
+      func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get("i",
+                                                                                 ttable.basename());
     }
 
     // perform the partial instantiation

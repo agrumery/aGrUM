@@ -42,8 +42,7 @@ namespace gum {
      * removed or reversed
      * @ingroup learning_group
      */
-    class StructuralConstraintMandatoryArcs:
-        public virtual StructuralConstraintEmpty {
+    class StructuralConstraintMandatoryArcs: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -57,8 +56,7 @@ namespace gum {
       StructuralConstraintMandatoryArcs(const DiGraph& graph);
 
       /// copy constructor
-      StructuralConstraintMandatoryArcs(
-         const StructuralConstraintMandatoryArcs& from);
+      StructuralConstraintMandatoryArcs(const StructuralConstraintMandatoryArcs& from);
 
       /// move constructor
       StructuralConstraintMandatoryArcs(StructuralConstraintMandatoryArcs&& from);
@@ -74,12 +72,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintMandatoryArcs&
-         operator=(const StructuralConstraintMandatoryArcs& from);
+      StructuralConstraintMandatoryArcs& operator=(const StructuralConstraintMandatoryArcs& from);
 
       /// move operator
-      StructuralConstraintMandatoryArcs&
-         operator=(StructuralConstraintMandatoryArcs&& from);
+      StructuralConstraintMandatoryArcs& operator=(StructuralConstraintMandatoryArcs&& from);
 
       /// @}
 
@@ -194,7 +190,7 @@ namespace gum {
 
       protected:
       /// the MandatoryArcs on which we perform checks
-      ArcSet  _MandatoryArcs_mandatory_arcs_;
+      ArcSet _MandatoryArcs_mandatory_arcs_;
     };
 
   } /* namespace learning */

@@ -84,8 +84,7 @@ namespace gum_tests {
       TS_ASSERT(node4->parent() == &node2);
       TS_ASSERT(node5->parent() == &node2);
 
-      gum::BinTreeNode< int >* node6
-         = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
+      gum::BinTreeNode< int >* node6 = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
       gum::BinTreeNode< int >* node7 = new gum::BinTreeNode< int >(8);
       node4->insertChild(*node7, gum::BinTreeDir::RIGHT_CHILD);
 

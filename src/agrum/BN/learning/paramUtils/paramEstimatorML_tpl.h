@@ -38,14 +38,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              external_apriori,
-       const Apriori< ALLOC >&              score_internal_apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              external_apriori,
+       const Apriori< ALLOC >&                                              score_internal_apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                 nodeId2columns,
-       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename ParamEstimatorML< ALLOC >::allocator_type&            alloc) :
         ParamEstimator< ALLOC >(parser,
                                 external_apriori,
                                 score_internal_apriori,
@@ -59,12 +58,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              external_apriori,
-       const Apriori< ALLOC >&              score_internal_apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                 nodeId2columns,
-       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       external_apriori,
+       const Apriori< ALLOC >&                                       score_internal_apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename ParamEstimatorML< ALLOC >::allocator_type&     alloc) :
         ParamEstimator< ALLOC >(parser,
                                 external_apriori,
                                 score_internal_apriori,
@@ -86,8 +84,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-       const ParamEstimatorML< ALLOC >& from) :
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(const ParamEstimatorML< ALLOC >& from) :
         ParamEstimatorML< ALLOC >(from, this->getAllocator()) {}
 
 
@@ -103,8 +100,7 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-       ParamEstimatorML< ALLOC >&& from) :
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(ParamEstimatorML< ALLOC >&& from) :
         ParamEstimatorML< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
@@ -141,8 +137,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::operator=(
-       const ParamEstimatorML< ALLOC >& from) {
+    ParamEstimatorML< ALLOC >&
+       ParamEstimatorML< ALLOC >::operator=(const ParamEstimatorML< ALLOC >& from) {
       ParamEstimator< ALLOC >::operator=(from);
       return *this;
     }
@@ -168,14 +164,11 @@ namespace gum {
 
       // get the counts for all the nodes in the idset and add the external and
       // score internal aprioris
-      std::vector< double, ALLOC< double > > N_ijk(
-         this->counter_.counts(idset, true));
-      const bool informative_external_apriori
-         = this->external_apriori_->isInformative();
+      std::vector< double, ALLOC< double > > N_ijk(this->counter_.counts(idset, true));
+      const bool informative_external_apriori = this->external_apriori_->isInformative();
       const bool informative_score_internal_apriori
          = this->score_internal_apriori_->isInformative();
-      if (informative_external_apriori)
-        this->external_apriori_->addAllApriori(idset, N_ijk);
+      if (informative_external_apriori) this->external_apriori_->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
         this->score_internal_apriori_->addAllApriori(idset, N_ijk);
 
@@ -195,7 +188,7 @@ namespace gum {
           this->score_internal_apriori_->addConditioningApriori(idset, N_ij);
 
         const std::size_t conditioning_domsize = N_ij.size();
-        const std::size_t target_domsize = N_ijk.size() / conditioning_domsize;
+        const std::size_t target_domsize       = N_ijk.size() / conditioning_domsize;
 
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         // check that all conditioning nodes have strictly positive counts
@@ -213,8 +206,7 @@ namespace gum {
               }
             } else {
               for (std::size_t i = std::size_t(0); i < cond_nb; ++i) {
-                cond_domsize[i]
-                   = database.domainSize(node2cols.second(conditioning_nodes[i]));
+                cond_domsize[i] = database.domainSize(node2cols.second(conditioning_nodes[i]));
               }
             }
 
@@ -243,15 +235,13 @@ namespace gum {
                 str << ", ";
               else
                 deja = true;
-              std::size_t             col = node2cols.empty()
-                                             ? conditioning_nodes[i]
-                                             : node2cols.second(conditioning_nodes[i]);
+              std::size_t             col = node2cols.empty() ? conditioning_nodes[i]
+                                                              : node2cols.second(conditioning_nodes[i]);
               const DiscreteVariable& var
                  = dynamic_cast< const DiscreteVariable& >(database.variable(col));
               str << var.name() << "=" << var.labels()[values[i]];
             }
-            auto target_col
-               = node2cols.empty() ? target_node : node2cols.second(target_node);
+            auto target_col     = node2cols.empty() ? target_node : node2cols.second(target_node);
             const Variable& var = database.variable(target_col);
             str << "> for target node " << var.name()
                 << " never appears in the database. Please consider using "
@@ -263,9 +253,7 @@ namespace gum {
 #  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
 
         // normalize the counts
-        for (std::size_t j = std::size_t(0), k = std::size_t(0);
-             j < conditioning_domsize;
-             ++j) {
+        for (std::size_t j = std::size_t(0), k = std::size_t(0); j < conditioning_domsize; ++j) {
           for (std::size_t i = std::size_t(0); i < target_domsize; ++i, ++k) {
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
             N_ijk[k] /= N_ij[j];
@@ -293,11 +281,10 @@ namespace gum {
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           std::stringstream str;
 
-          const auto& node2cols = this->counter_.nodeId2Columns();
-          const auto& database  = this->counter_.database();
-          auto        target_col
-             = node2cols.empty() ? target_node : node2cols.second(target_node);
-          const Variable& var = database.variable(target_col);
+          const auto& node2cols  = this->counter_.nodeId2Columns();
+          const auto& database   = this->counter_.database();
+          auto        target_col = node2cols.empty() ? target_node : node2cols.second(target_node);
+          const Variable& var    = database.variable(target_col);
           str << "No data for target node " << var.name()
               << ". It is impossible to estimate the parameters by maximum "
                  "likelihood";

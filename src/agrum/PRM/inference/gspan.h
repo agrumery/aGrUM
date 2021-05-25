@@ -212,32 +212,32 @@ namespace gum {
       /// @{
 
       /// The interface graph used by this class.
-      gspan::InterfaceGraph< GUM_SCALAR >*  _graph_;
+      gspan::InterfaceGraph< GUM_SCALAR >* _graph_;
 
       /// The DFSTree used to discover new patters.
-      gspan::DFSTree< GUM_SCALAR >  _tree_;
+      gspan::DFSTree< GUM_SCALAR > _tree_;
 
       /// The max depth allowed for the DSF tree
-      Size  _depth_stop_;
+      Size _depth_stop_;
 
       /// The vector of discovered patters, in decreasing order of interest.
-      std::vector< gspan::Pattern* >  _patterns_;
+      std::vector< gspan::Pattern* > _patterns_;
 
       /// The vector of nodes in  _graph_, in decreasing order of interest.
-      std::vector< gspan::LabelData* >  _nodes_;
+      std::vector< gspan::LabelData* > _nodes_;
 
       /// The vector of edges in  _graph_, in decreasing order of interest.
-      std::vector< gspan::LabelData* >  _edges_;
+      std::vector< gspan::LabelData* > _edges_;
 
       /// Mapping between labels and their cost.
-      HashTable< gspan::LabelData*, Idx >  _cost_;
+      HashTable< gspan::LabelData*, Idx > _cost_;
 
       /// Mapping between a pattern and the multiset of instances matched
       /// to it.
-      HashTable< gspan::Pattern*, MatchedInstances* >  _matched_instances_;
+      HashTable< gspan::Pattern*, MatchedInstances* > _matched_instances_;
 
       /// Contains all instance which belongs to a discovered and used pattern.
-      Set< PRMInstance< GUM_SCALAR >* >  _chosen_;
+      Set< PRMInstance< GUM_SCALAR >* > _chosen_;
 
       /// @}
       // ========================================================================
@@ -246,28 +246,27 @@ namespace gum {
       /// @{
 
       /// Sort the nodes and edges of  _graph_.
-      void  _sortNodesAndEdges_();
+      void _sortNodesAndEdges_();
 
       /// Discovers new patterns by developing p.
       /// @param graph The interface graph used in this discovery process.
       /// @param p The pattern used as a base for discovery.
-      void  _subgraph_mining_(gspan::InterfaceGraph< GUM_SCALAR >& graph,
-                             gspan::Pattern&                      p);
+      void _subgraph_mining_(gspan::InterfaceGraph< GUM_SCALAR >& graph, gspan::Pattern& p);
 
       /// Returns the cost with respect to an interface size and its frequency.
       /// @param interface_size The size of all output nodes of a pattern.
       /// @param frequency The frequency of the pattern in the current interface
       ///        graph.
       /// @return the cost with respect to an interface size and its frequency.
-      Size  _cost_func_(Size interface_size, Size frequency);
+      Size _cost_func_(Size interface_size, Size frequency);
 
       /// Sort the patterns and compute their respective costs.
-      void  _sortPatterns_();
+      void _sortPatterns_();
 
       /// Returns true if e is an eligible root edge.
       /// @param e An EdgeData<GUM_SCALAR>.
       /// @return true if e is an eligible root edge.
-      bool  _isEdgeEligible_(typename gspan::EdgeData< GUM_SCALAR >* e);
+      bool _isEdgeEligible_(typename gspan::EdgeData< GUM_SCALAR >* e);
 
       /// @}
 

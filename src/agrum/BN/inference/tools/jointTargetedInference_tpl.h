@@ -32,12 +32,11 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  JointTargetedInference< GUM_SCALAR >::JointTargetedInference(
-     const IBayesNet< GUM_SCALAR >* bn) :
+  JointTargetedInference< GUM_SCALAR >::JointTargetedInference(const IBayesNet< GUM_SCALAR >* bn) :
       MarginalTargetedInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      BayesNetInference< GUM_SCALAR >:: _setBayesNetDuringConstruction_(bn);
+      BayesNetInference< GUM_SCALAR >::_setBayesNetDuringConstruction_(bn);
     }
     GUM_CONSTRUCTOR(JointTargetedInference);
   }
@@ -52,11 +51,10 @@ namespace gum {
 
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
-  void JointTargetedInference< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* bn) {
+  void JointTargetedInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {
     MarginalTargetedInference< GUM_SCALAR >::onModelChanged_(bn);
     onAllJointTargetsErased_();
-     _joint_targets_.clear();
+    _joint_targets_.clear();
   }
 
 
@@ -66,8 +64,7 @@ namespace gum {
 
   // return true if target is a nodeset target.
   template < typename GUM_SCALAR >
-  INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(
-     const NodeSet& vars) const {
+  INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
@@ -75,12 +72,10 @@ namespace gum {
 
     const auto& dag = this->BN().dag();
     for (const auto var: vars) {
-      if (!dag.exists(var)) {
-        GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn")
-      }
+      if (!dag.exists(var)) { GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn") }
     }
 
-    return  _joint_targets_.contains(vars);
+    return _joint_targets_.contains(vars);
   }
 
 
@@ -94,12 +89,11 @@ namespace gum {
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
   INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllJointTargets() {
-    if ( _joint_targets_.size() > 0) {
+    if (_joint_targets_.size() > 0) {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
-       _joint_targets_.clear();
-      this->setState_(GraphicalModelInference<
-                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      _joint_targets_.clear();
+      this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -114,8 +108,7 @@ namespace gum {
 
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
-  void JointTargetedInference< GUM_SCALAR >::addJointTarget(
-     const NodeSet& joint_target) {
+  void JointTargetedInference< GUM_SCALAR >::addJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -126,39 +119,34 @@ namespace gum {
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
-                  "at least one one in " << joint_target
-                                         << " does not belong to the bn");
+                  "at least one one in " << joint_target << " does not belong to the bn");
       }
     }
 
     // check that the joint_target set does not contain the new target
-    if ( _joint_targets_.contains(joint_target)) return;
+    if (_joint_targets_.contains(joint_target)) return;
 
     // check if joint_target is a subset of an already existing target
-    for (const auto& target:  _joint_targets_) {
+    for (const auto& target: _joint_targets_) {
       if (target.isProperSupersetOf(joint_target)) return;
     }
 
     // check if joint_target is not a superset of an already existing target
     // in this case, we need to remove old existing target
-    for (auto iter =  _joint_targets_.beginSafe();
-         iter !=  _joint_targets_.endSafe();
-         ++iter) {
+    for (auto iter = _joint_targets_.beginSafe(); iter != _joint_targets_.endSafe(); ++iter) {
       if (iter->isProperSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
     this->setTargetedMode_();   // does nothing if already in targeted mode
-     _joint_targets_.insert(joint_target);
+    _joint_targets_.insert(joint_target);
     onJointTargetAdded_(joint_target);
-    this->setState_(
-       GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+    this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
 
   // removes an existing set target
   template < typename GUM_SCALAR >
-  void JointTargetedInference< GUM_SCALAR >::eraseJointTarget(
-     const NodeSet& joint_target) {
+  void JointTargetedInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -169,35 +157,31 @@ namespace gum {
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
-                  "at least one one in " << joint_target
-                                         << " does not belong to the bn");
+                  "at least one one in " << joint_target << " does not belong to the bn");
       }
     }
 
     // check that the joint_target set does not contain the new target
-    if ( _joint_targets_.contains(joint_target)) {
+    if (_joint_targets_.contains(joint_target)) {
       // note that we have to be in target mode when we are here
       // so, no this->setTargetedMode_();  is necessary
       onJointTargetErased_(joint_target);
-       _joint_targets_.erase(joint_target);
-      this->setState_(GraphicalModelInference<
-                      GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      _joint_targets_.erase(joint_target);
+      this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
 
   /// returns the list of target sets
   template < typename GUM_SCALAR >
-  INLINE const Set< NodeSet >&
-     JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
-    return  _joint_targets_;
+  INLINE const Set< NodeSet >& JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
+    return _joint_targets_;
   }
 
   /// returns the number of target sets
   template < typename GUM_SCALAR >
-  INLINE Size
-     JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
-    return  _joint_targets_.size();
+  INLINE Size JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
+    return _joint_targets_.size();
   }
 
 
@@ -213,11 +197,11 @@ namespace gum {
     NodeSet set;
     bool    found_exact_target = false;
 
-    if ( _joint_targets_.contains(nodes)) {
+    if (_joint_targets_.contains(nodes)) {
       set                = nodes;
       found_exact_target = true;
     } else {
-      for (const auto& target:  _joint_targets_) {
+      for (const auto& target: _joint_targets_) {
         if (nodes.isProperSubsetOf(target)) {
           set = target;
           break;
@@ -228,7 +212,7 @@ namespace gum {
     if (set.empty()) {
       GUM_ERROR(UndefinedElement,
                 " no joint target containing " << nodes << " could be found among "
-                                               <<  _joint_targets_);
+                                               << _joint_targets_);
     }
 
     if (!this->isInferenceDone()) { this->makeInference(); }
@@ -242,8 +226,7 @@ namespace gum {
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
-     JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+  const Potential< GUM_SCALAR >& JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node))
       return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
     else
@@ -282,9 +265,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
-    if (X == Y) {
-      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y")
-    }
+    if (X == Y) { GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y") }
 
     try {
       // here use unnormalized joint posterior rather than just posterior
@@ -338,13 +319,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-        const NodeSet& targets,
-        const NodeSet& evs) {
+     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
+                                                               const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
-                "Targets (" << targets << ") can not intersect evs (" << evs
-                            << ").");
+                "Targets (" << targets << ") can not intersect evs (" << evs << ").");
     }
     auto condset = this->BN().minimalCondSet(targets, evs);
 
@@ -381,24 +360,21 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
-     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-        const std::vector< std::string >& targets,
-        const std::vector< std::string >& evs) {
+  Potential< GUM_SCALAR > JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+     const std::vector< std::string >& targets,
+     const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
     return evidenceJointImpact(bn.nodeset(targets), bn.nodeset(evs));
   }
 
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
-     const NodeSet& targets) {
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
     const auto& bn  = this->BN();
     const Size  siz = targets.size();
     if (siz <= 1) {
       GUM_ERROR(InvalidArgument,
-                "jointMutualInformation needs at least 2 variables (targets="
-                   << targets << ")");
+                "jointMutualInformation needs at least 2 variables (targets=" << targets << ")");
     }
 
     this->eraseAllTargets();

@@ -64,7 +64,7 @@ namespace gum_tests {
       mn->addFactor({i3, i5});
       mn->addFactor({i2, i4, i5});
 
-       __fill(*mn);
+      __fill(*mn);
     }
 
     void tearDown() { delete mn; }
@@ -77,7 +77,7 @@ namespace gum_tests {
 
     void testWriter_ostream() {
       gum::UAIMNWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
+      std::string                file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
       writer.write(file, *mn);
 
       gum::MarkovNet< double >   net;
@@ -91,13 +91,12 @@ namespace gum_tests {
 
     private:
     // Builds a MN to test the inference
-    void  __fill(gum::MarkovNet< double >& mn) {
+    void __fill(gum::MarkovNet< double >& mn) {
       try {
         mn.factor({"0", "2"}).fillWith({1, 2, 3, 4});
         mn.factor({"0", "3"}).fillWith({11, 12, 13, 14});
         mn.factor({"2", "4"}).fillWith({21, 22, 23, 24, 25, 26});
-        mn.factor({"4", "1", "3"})
-           .fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
+        mn.factor({"4", "1", "3"}).fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };

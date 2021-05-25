@@ -93,8 +93,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
-    virtual std::pair< long, long >
-       memoryUsage(const Schedule< GUM_SCALAR >&) const = 0;
+    virtual std::pair< long, long > memoryUsage(const Schedule< GUM_SCALAR >&) const = 0;
 
     /** @brief returns the memory consumption used during the execution of the
      * k first ScheduleOperations of a given schedule
@@ -108,8 +107,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * k first operations of the schedule */
-    virtual std::pair< long, long > memoryUsage(const Schedule< GUM_SCALAR >&,
-                                                Size k) const = 0;
+    virtual std::pair< long, long > memoryUsage(const Schedule< GUM_SCALAR >&, Size k) const = 0;
 
     /// @}
   };

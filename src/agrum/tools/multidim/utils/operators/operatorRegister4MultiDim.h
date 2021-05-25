@@ -114,9 +114,8 @@ namespace gum {
      * @param type2 the \e real type of the second multiDim taken in argument
      * by the function to remove.
      */
-    void erase(const std::string& operation_name,
-               const std::string& type1,
-               const std::string& type2);
+    void
+       erase(const std::string& operation_name, const std::string& type1, const std::string& type2);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -198,8 +197,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given operation type
-    typedef HashTable< std::pair< std::string, std::string >, OperatorPtr >
-       OperatorSet;
+    typedef HashTable< std::pair< std::string, std::string >, OperatorPtr > OperatorSet;
 
     /**
      * @brief A mapping from pairs of types of MultiDimImplementations to
@@ -210,16 +208,15 @@ namespace gum {
      * hence to a pair of types of MultiDimImplementations, is associated a
      * function to combine them (the OperatorPtr).
      */
-    HashTable< std::string, OperatorSet* >  _set_;
+    HashTable< std::string, OperatorSet* > _set_;
   };
 
   /// A function to more easily register new operators in MultiDims
   template < typename GUM_SCALAR >
-  void registerOperator(
-     const std::string&                                            operation_name,
-     const std::string&                                            type1,
-     const std::string&                                            type2,
-     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
+  void registerOperator(const std::string& operation_name,
+                        const std::string& type1,
+                        const std::string& type2,
+                        typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
 
 } /* namespace gum */
 

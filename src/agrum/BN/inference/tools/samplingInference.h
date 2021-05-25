@@ -170,12 +170,12 @@ namespace gum {
      *
      */
     virtual void setEstimatorFromLBP_(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-                                      GUM_SCALAR virtualLBPSize);
+                                      GUM_SCALAR                            virtualLBPSize);
     ///@}
 
     protected:
     /// Estimator object designed to approximate target posteriors
-    Estimator< GUM_SCALAR >  _estimator_;
+    Estimator< GUM_SCALAR > _estimator_;
 
     /// whether the Estimator object has been initialized
     bool isSetEstimator = false;
@@ -244,7 +244,7 @@ namespace gum {
     void onStateChanged_() override;
 
     private:
-    BayesNetFragment< GUM_SCALAR >*  _samplingBN_;
+    BayesNetFragment< GUM_SCALAR >* _samplingBN_;
   };
 
 

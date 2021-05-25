@@ -53,12 +53,10 @@ namespace gum {
     /// @{
 
     /// Default constructor
-    MultiDimCompleteProjection(GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&,
-                                                  Instantiation*));
+    MultiDimCompleteProjection(GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*));
 
     /// Copy constructor
-    MultiDimCompleteProjection(
-       const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
+    MultiDimCompleteProjection(const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
 
     /// Destructor
     virtual ~MultiDimCompleteProjection();
@@ -78,12 +76,10 @@ namespace gum {
     /// @{
 
     /// Creates and returns the projection of the table over all of its vars
-    GUM_SCALAR project(const TABLE< GUM_SCALAR >& table,
-                       Instantiation*             instantiation = 0);
+    GUM_SCALAR project(const TABLE< GUM_SCALAR >& table, Instantiation* instantiation = 0);
 
     /// Changes the function used for projecting TABLES
-    void setProjectFunction(GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&,
-                                               Instantiation*));
+    void setProjectFunction(GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*));
 
     /// Returns the projection function currently used by the projector
     GUM_SCALAR(*projectFunction())

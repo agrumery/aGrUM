@@ -130,8 +130,7 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    void updateNodeWithObservation_(const Observation* newObs,
-                                    NodeId             currentNodeId);
+    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId);
 
     /// @}
 
@@ -195,7 +194,7 @@ namespace gum {
      * @return the mathcing node id in the target
      */
     // ==========================================================================
-    NodeId  _insertNodeInFunctionGraph_(NodeId src);
+    NodeId _insertNodeInFunctionGraph_(NodeId src);
 
     // ==========================================================================
     /**
@@ -207,8 +206,8 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId  _insertTerminalNode_(NodeId src) {
-      return  _insertTerminalNode_(src, Int2Type< isScalar >());
+    NodeId _insertTerminalNode_(NodeId src) {
+      return _insertTerminalNode_(src, Int2Type< isScalar >());
     }
 
     // ==========================================================================
@@ -220,7 +219,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId  _insertTerminalNode_(NodeId src, Int2Type< true >);
+    NodeId _insertTerminalNode_(NodeId src, Int2Type< true >);
 
     // ==========================================================================
     /**
@@ -231,7 +230,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId  _insertTerminalNode_(NodeId src, Int2Type< false >);
+    NodeId _insertTerminalNode_(NodeId src, Int2Type< false >);
 
     /// @}
 
@@ -244,8 +243,7 @@ namespace gum {
      */
     // ==========================================================================
     void insertSetOfVars_(MultiDimFunctionGraph< double >* ret) {
-      for (SetIteratorSafe< const DiscreteVariable* > varIter
-           = this->setOfVars_.beginSafe();
+      for (SetIteratorSafe< const DiscreteVariable* > varIter = this->setOfVars_.beginSafe();
            varIter != this->setOfVars_.endSafe();
            ++varIter)
         ret->add(**varIter);
@@ -255,13 +253,13 @@ namespace gum {
     /// Hashtable indicating if given node has been modified (upon receiving new
     /// exemple or through a transpose)
     /// The aim is not if we have revise the installed variable on that node
-    HashTable< NodeId, bool >  _staleTable_;
+    HashTable< NodeId, bool > _staleTable_;
 
     /// The total number of observation added to this tree
-    Idx  _nbTotalObservation_;
+    Idx _nbTotalObservation_;
 
     /// The threshold above which we consider variables to be dependant
-    double  _attributeSelectionThreshold_;
+    double _attributeSelectionThreshold_;
   };
 
 

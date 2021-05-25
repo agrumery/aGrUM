@@ -102,7 +102,7 @@ namespace gum {
   class InternalNode {
     private:
     /// Variable associated to such node
-    const DiscreteVariable*  _nodeVar_;
+    const DiscreteVariable* _nodeVar_;
 
     /**
      * @brief Table of sons of the node.
@@ -119,13 +119,13 @@ namespace gum {
      *
      * @endcode
      */
-    NodeId*  _nodeSons_;
+    NodeId* _nodeSons_;
 
     /// The list of the node's parent
-    LinkedList< Parent >  _nodeParents_;
+    LinkedList< Parent > _nodeParents_;
 
     /// @brief Set the node variable.
-    void  _setNodeVar_(const DiscreteVariable* v);
+    void _setNodeVar_(const DiscreteVariable* v);
 
     public:
     // ============================================================================

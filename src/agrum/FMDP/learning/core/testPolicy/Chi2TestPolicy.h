@@ -50,7 +50,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   class Chi2TestPolicy: public ITestPolicy< GUM_SCALAR > {
     public:
-    Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(),  _conTab_(),  _chi2Score_(0) {
+    Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(), _conTab_(), _chi2Score_(0) {
       GUM_CONSTRUCTOR(Chi2TestPolicy);
     }
 
@@ -62,10 +62,8 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) {
-      return SmallObjectAllocator::instance().allocate(s);
-    }
-    void operator delete(void* p) {
+    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void  operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(Chi2TestPolicy));
     }
 
@@ -92,8 +90,7 @@ namespace gum {
     /// relevant
     // ============================================================================
     bool isTestRelevant() const {
-      return (this->nbObservation() > 20
-              && this->nbObservation() >  _conTab_.attrASize() * 5);
+      return (this->nbObservation() > 20 && this->nbObservation() > _conTab_.attrASize() * 5);
     }
 
     /// @}
@@ -121,15 +118,14 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return  _conTab_; }
+    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return _conTab_; }
 
     void add(const Chi2TestPolicy< GUM_SCALAR >& src);
 
     std::string toString() const {
       std::stringstream ss;
-      ss << ITestPolicy< GUM_SCALAR >::toString()
-         << "\t\t\tContingency Table : " << std::endl
-         <<  _conTab_.toString() << std::endl
+      ss << ITestPolicy< GUM_SCALAR >::toString() << "\t\t\tContingency Table : " << std::endl
+         << _conTab_.toString() << std::endl
          << "\t\t\tGStat : " << this->score() << std::endl
          << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
       return ss.str();
@@ -137,9 +133,9 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable< Idx, GUM_SCALAR >  _conTab_;
+    ContingencyTable< Idx, GUM_SCALAR > _conTab_;
 
-    mutable double  _chi2Score_;
+    mutable double _chi2Score_;
   };
 
 }   // End of namespace gum

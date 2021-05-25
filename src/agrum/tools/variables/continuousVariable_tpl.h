@@ -38,14 +38,13 @@ namespace gum {
 
   /// Default constructor
   template < typename GUM_SCALAR >
-  INLINE
-     ContinuousVariable< GUM_SCALAR >::ContinuousVariable(const std::string& aName,
-                                                          const std::string& aDesc,
-                                                          GUM_SCALAR lower_bound,
-                                                          GUM_SCALAR upper_bound) :
+  INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(const std::string& aName,
+                                                              const std::string& aDesc,
+                                                              GUM_SCALAR         lower_bound,
+                                                              GUM_SCALAR         upper_bound) :
       IContinuousVariable(aName, aDesc),
-       _lower_bound_(lower_bound),  _upper_bound_(upper_bound) {
-    if ( _lower_bound_ >  _upper_bound_) { std::swap( _upper_bound_,  _lower_bound_); }
+      _lower_bound_(lower_bound), _upper_bound_(upper_bound) {
+    if (_lower_bound_ > _upper_bound_) { std::swap(_upper_bound_, _lower_bound_); }
     GUM_CONSTRUCTOR(ContinuousVariable);
   }
 
@@ -55,7 +54,7 @@ namespace gum {
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
      const ContinuousVariable< GUM_SCALAR >& from) :
       IContinuousVariable(from),
-       _lower_bound_(from. _lower_bound_),  _upper_bound_(from. _upper_bound_) {
+      _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
     GUM_CONS_CPY(ContinuousVariable);
   }
 
@@ -66,18 +65,17 @@ namespace gum {
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
      const ContinuousVariable< TX_VAL >& from) :
       IContinuousVariable(from),
-       _lower_bound_(GUM_SCALAR(from. _lower_bound_)),
-       _upper_bound_(GUM_SCALAR(from. _upper_bound_)) {
+      _lower_bound_(GUM_SCALAR(from._lower_bound_)), _upper_bound_(GUM_SCALAR(from._upper_bound_)) {
     GUM_CONS_CPY(ContinuousVariable);
   }
 
 
   /// move constructor
   template < typename GUM_SCALAR >
-  INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
-     ContinuousVariable< GUM_SCALAR >&& from) :
+  INLINE
+     ContinuousVariable< GUM_SCALAR >::ContinuousVariable(ContinuousVariable< GUM_SCALAR >&& from) :
       IContinuousVariable(std::move(from)),
-       _lower_bound_(from. _lower_bound_),  _upper_bound_(from. _upper_bound_) {
+      _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
     GUM_CONS_MOV(ContinuousVariable);
   }
 
@@ -91,8 +89,7 @@ namespace gum {
 
   /// Copy Factory.
   template < typename GUM_SCALAR >
-  INLINE ContinuousVariable< GUM_SCALAR >*
-         ContinuousVariable< GUM_SCALAR >::clone() const {
+  INLINE ContinuousVariable< GUM_SCALAR >* ContinuousVariable< GUM_SCALAR >::clone() const {
     return new ContinuousVariable< GUM_SCALAR >(*this);
   }
 
@@ -100,11 +97,10 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   INLINE ContinuousVariable< GUM_SCALAR >&
-     ContinuousVariable< GUM_SCALAR >::operator=(
-        const ContinuousVariable< GUM_SCALAR >& from) {
+     ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< GUM_SCALAR >& from) {
     IContinuousVariable::operator=(from);
-     _lower_bound_                = from. _lower_bound_;
-     _upper_bound_                = from. _upper_bound_;
+    _lower_bound_                = from._lower_bound_;
+    _upper_bound_                = from._upper_bound_;
     return *this;
   }
 
@@ -113,11 +109,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   template < typename TX_VAL >
   INLINE ContinuousVariable< GUM_SCALAR >&
-     ContinuousVariable< GUM_SCALAR >::operator=(
-        const ContinuousVariable< TX_VAL >& from) {
+     ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< TX_VAL >& from) {
     IContinuousVariable::operator=(from);
-     _lower_bound_                = GUM_SCALAR(from. _lower_bound_);
-     _upper_bound_                = GUM_SCALAR(from. _upper_bound_);
+    _lower_bound_                = GUM_SCALAR(from._lower_bound_);
+    _upper_bound_                = GUM_SCALAR(from._upper_bound_);
     return *this;
   }
 
@@ -125,19 +120,17 @@ namespace gum {
   /// move operator
   template < typename GUM_SCALAR >
   INLINE ContinuousVariable< GUM_SCALAR >&
-     ContinuousVariable< GUM_SCALAR >::operator=(
-        ContinuousVariable< GUM_SCALAR >&& from) {
+     ContinuousVariable< GUM_SCALAR >::operator=(ContinuousVariable< GUM_SCALAR >&& from) {
     IContinuousVariable::operator=(std::move(from));
-     _lower_bound_                = from. _lower_bound_;
-     _upper_bound_                = from. _upper_bound_;
+    _lower_bound_                = from._lower_bound_;
+    _upper_bound_                = from._upper_bound_;
     return *this;
   }
 
 
   /// returns the GUM_SCALAR corresponding to a string (unspecialized version)
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     ContinuousVariable< GUM_SCALAR >::operator[](const std::string& str) const {
+  INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::operator[](const std::string& str) const {
     std::istringstream stream(str);
     GUM_SCALAR         value;
     stream >> value;
@@ -145,75 +138,68 @@ namespace gum {
     if (belongs(value))
       return value;
     else
-      GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable")
+      GUM_ERROR(OutOfBounds, "the value does not delong to the domain of the variable")
   }
 
 
   /// returns the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::lowerBound() const {
-    return  _lower_bound_;
+    return _lower_bound_;
   }
 
 
   /// returns the lower bound of the domain of the variable as a double
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::lowerBoundAsDouble() const {
-    return (double) _lower_bound_;
+    return (double)_lower_bound_;
   }
 
 
   /// returns the upper bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::upperBound() const {
-    return  _upper_bound_;
+    return _upper_bound_;
   }
 
 
   /// returns the upper bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::upperBoundAsDouble() const {
-    return (double) _upper_bound_;
+    return (double)_upper_bound_;
   }
 
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void
-     ContinuousVariable< GUM_SCALAR >::setLowerBound(const GUM_SCALAR& new_bound) {
-    if (new_bound <=  _upper_bound_)
-       _lower_bound_ = new_bound;
+  INLINE void ContinuousVariable< GUM_SCALAR >::setLowerBound(const GUM_SCALAR& new_bound) {
+    if (new_bound <= _upper_bound_)
+      _lower_bound_ = new_bound;
     else
-      GUM_ERROR(OutOfBounds,
-                "the new lower bound would be higher than the upper bound")
+      GUM_ERROR(OutOfBounds, "the new lower bound would be higher than the upper bound")
   }
 
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void ContinuousVariable< GUM_SCALAR >::setLowerBoundFromDouble(
-     const double new_bound) {
+  INLINE void ContinuousVariable< GUM_SCALAR >::setLowerBoundFromDouble(const double new_bound) {
     setLowerBound((GUM_SCALAR)new_bound);
   }
 
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void
-     ContinuousVariable< GUM_SCALAR >::setUpperBound(const GUM_SCALAR& new_bound) {
-    if (new_bound >=  _lower_bound_)
-       _upper_bound_ = new_bound;
+  INLINE void ContinuousVariable< GUM_SCALAR >::setUpperBound(const GUM_SCALAR& new_bound) {
+    if (new_bound >= _lower_bound_)
+      _upper_bound_ = new_bound;
     else
-      GUM_ERROR(OutOfBounds,
-                "the new upper bound would be lower than the lower bound")
+      GUM_ERROR(OutOfBounds, "the new upper bound would be lower than the lower bound")
   }
 
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void ContinuousVariable< GUM_SCALAR >::setUpperBoundFromDouble(
-     const double new_bound) {
+  INLINE void ContinuousVariable< GUM_SCALAR >::setUpperBoundFromDouble(const double new_bound) {
     setUpperBound((GUM_SCALAR)new_bound);
   }
 
@@ -227,19 +213,16 @@ namespace gum {
 
   /// returns a string containing the value of the variable passed in argument
   template < typename GUM_SCALAR >
-  INLINE std::string
-         ContinuousVariable< GUM_SCALAR >::label(const GUM_SCALAR& value) const {
+  INLINE std::string ContinuousVariable< GUM_SCALAR >::label(const GUM_SCALAR& value) const {
     if (belongs(value)) return std::to_string(value);
-    GUM_ERROR(OutOfBounds,
-              "the value does not belong to the domain of the variable")
+    GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
   }
 
 
   /// Returns true if the param belongs to the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE bool
-     ContinuousVariable< GUM_SCALAR >::belongs(const GUM_SCALAR& value) const {
-    return (value >=  _lower_bound_) && (value <=  _upper_bound_);
+  INLINE bool ContinuousVariable< GUM_SCALAR >::belongs(const GUM_SCALAR& value) const {
+    return (value >= _lower_bound_) && (value <= _upper_bound_);
   }
 
 
@@ -247,7 +230,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const std::string ContinuousVariable< GUM_SCALAR >::domain() const {
     std::ostringstream stream;
-    stream << '[' <<  _lower_bound_ << ';' <<  _upper_bound_ << ']';
+    stream << '[' << _lower_bound_ << ';' << _upper_bound_ << ']';
     return stream.str();
   }
 
@@ -263,8 +246,7 @@ namespace gum {
 
   /// string version of *this using description attribute instead of name.
   template < typename GUM_SCALAR >
-  INLINE std::string
-         ContinuousVariable< GUM_SCALAR >::toStringWithDescription() const {
+  INLINE std::string ContinuousVariable< GUM_SCALAR >::toStringWithDescription() const {
     std::string str(this->description());
     str += domain();
     return str;
@@ -273,8 +255,7 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                           stream,
-                           const ContinuousVariable< GUM_SCALAR >& var) {
+  std::ostream& operator<<(std::ostream& stream, const ContinuousVariable< GUM_SCALAR >& var) {
     return stream << var.toString();
   }
 

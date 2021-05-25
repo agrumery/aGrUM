@@ -50,8 +50,7 @@ namespace gum {
              class COMBINEOPERATOR,
              template < typename >
              class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy
-             = ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class TreeRegress {
     public:
     // ============================================================================
@@ -61,10 +60,9 @@ namespace gum {
 
     /// Default constructor.
     TreeRegress(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
-       const Bijection<
-          const DiscreteVariable*,
-          const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*                    qAction,
+       const Bijection< const DiscreteVariable*,
+                        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
 
     /// Default destructor.
     ~TreeRegress();
@@ -83,16 +81,14 @@ namespace gum {
 
     private:
     /// The whatever 1
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-        _xPloreVFunc_(NodeId currentNodeId);
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _xPloreVFunc_(NodeId currentNodeId);
 
     /// The function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _vFunc_;
-    const Bijection<
-       const DiscreteVariable*,
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
-                                               _pxi_;
-    HashTable< const DiscreteVariable*, Idx >  _context_;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _vFunc_;
+    const Bijection< const DiscreteVariable*,
+                     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
+                                              _pxi_;
+    HashTable< const DiscreteVariable*, Idx > _context_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

@@ -117,9 +117,7 @@ namespace gum {
    * @tparam Cmp The comperator used to sort elements in the gum::Heap.
    * @tparam Alloc The allocator of elements stored in the gum::Heap.
    */
-  template < typename Val,
-             typename Cmp   = std::less< Val >,
-             typename Alloc = std::allocator< Val > >
+  template < typename Val, typename Cmp = std::less< Val >, typename Alloc = std::allocator< Val > >
   class Heap {
     public:
     /// Types for STL compliance
@@ -370,16 +368,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap.
-    std::vector< Val, Alloc >  _heap_;
+    std::vector< Val, Alloc > _heap_;
 
     /// The number of elements in the heap.
-    Size  _nb_elements_{0};
+    Size _nb_elements_{0};
 
     /// Comparison function.
-    Cmp  _cmp_;
+    Cmp _cmp_;
 
     /// After inserting an element at the end of the heap, restore heap property
-    Size  _restoreHeap_();
+    Size _restoreHeap_();
   };
 
 } /* namespace gum */

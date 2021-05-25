@@ -73,32 +73,27 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const GraphChange& change) {
 }
 
 /// indicates whether a change will always violate the constraint
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange& change) const {
   return constraints::isAlwaysInvalid(change) || isAlwaysInvalidAlone(change);
 }
 
 /// checks whether the constraints enable to add an arc
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcAddition& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcAddition& change) const {
   return checkArcAddition(change.node1(), change.node2());
 }
 
 /// checks whether the constraints enable to remove an arc
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcDeletion& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcDeletion& change) const {
   return checkArcDeletion(change.node1(), change.node2());
 }
 
 /// checks whether the constraints enable to reverse an arc
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& change) const {
   return checkArcReversal(change.node1(), change.node2());
 }
 
 /// checks whether the constraints enable to perform a graph change
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   switch (change.type()) {
     case GraphChangeType::ARC_ADDITION:
       return checkArcAddition(change.node1(), change.node2());
@@ -110,8 +105,7 @@ INLINE bool
       return checkArcReversal(change.node1(), change.node2());
 
     default:
-      GUM_ERROR(OperationNotAllowed,
-                "edge modifications are not supported by the constraint")
+      GUM_ERROR(OperationNotAllowed, "edge modifications are not supported by the constraint")
   }
 }
 

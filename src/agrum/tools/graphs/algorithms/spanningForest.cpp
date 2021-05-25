@@ -42,13 +42,9 @@ namespace gum {
     ;
   }
 
-  SpanningForest::SpanningForest(const SpanningForest& toCopy) {
-    GUM_CONS_CPY(SpanningForest);
-  }
+  SpanningForest::SpanningForest(const SpanningForest& toCopy) { GUM_CONS_CPY(SpanningForest); }
 
-  SpanningForest& SpanningForest::operator=(const SpanningForest& toCopy) {
-    return *this;
-  }
+  SpanningForest& SpanningForest::operator=(const SpanningForest& toCopy) { return *this; }
 
 } /* namespace gum */
 

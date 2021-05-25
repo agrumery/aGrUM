@@ -37,15 +37,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreK2< ALLOC >::ScoreK2(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                        nodeId2columns,
-       const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename ScoreK2< ALLOC >::allocator_type&                     alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -53,25 +52,22 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreK2< ALLOC >::ScoreK2(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                        nodeId2columns,
-       const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename ScoreK2< ALLOC >::allocator_type&              alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreK2< ALLOC >::ScoreK2(
-       const ScoreK2< ALLOC >&                          from,
-       const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreK2< ALLOC >::ScoreK2(const ScoreK2< ALLOC >&                          from,
+                                     const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-         _internal_apriori_(from. _internal_apriori_, alloc),
-         _gammalog2_(from. _gammalog2_) {
+        _internal_apriori_(from._internal_apriori_, alloc), _gammalog2_(from._gammalog2_) {
       GUM_CONS_CPY(ScoreK2);
     }
 
@@ -84,12 +80,11 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreK2< ALLOC >::ScoreK2(
-       ScoreK2< ALLOC >&&                               from,
-       const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreK2< ALLOC >::ScoreK2(ScoreK2< ALLOC >&&                               from,
+                                     const typename ScoreK2< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-         _internal_apriori_(std::move(from. _internal_apriori_), alloc),
-         _gammalog2_(std::move(from. _gammalog2_)) {
+        _internal_apriori_(std::move(from._internal_apriori_), alloc),
+        _gammalog2_(std::move(from._gammalog2_)) {
       GUM_CONS_MOV(ScoreK2);
     }
 
@@ -102,8 +97,8 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScoreK2< ALLOC >* ScoreK2< ALLOC >::clone(
-       const typename ScoreK2< ALLOC >::allocator_type& alloc) const {
+    ScoreK2< ALLOC >*
+       ScoreK2< ALLOC >::clone(const typename ScoreK2< ALLOC >::allocator_type& alloc) const {
       ALLOC< ScoreK2< ALLOC > > allocator(alloc);
       ScoreK2< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -136,7 +131,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(const ScoreK2< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-         _internal_apriori_      = from. _internal_apriori_;
+        _internal_apriori_      = from._internal_apriori_;
       }
       return *this;
     }
@@ -147,7 +142,7 @@ namespace gum {
     ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(ScoreK2< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-         _internal_apriori_      = std::move(from. _internal_apriori_);
+        _internal_apriori_      = std::move(from._internal_apriori_);
       }
       return *this;
     }
@@ -155,9 +150,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string
-       ScoreK2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                             double             weight) {
+    std::string ScoreK2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                                      double             weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
@@ -183,8 +177,7 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string
-           ScoreK2< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
+    INLINE std::string ScoreK2< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -199,7 +192,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreK2< ALLOC >::internalApriori() const {
-      return  _internal_apriori_;
+      return _internal_apriori_;
     }
 
 
@@ -207,20 +200,18 @@ namespace gum {
     template < template < typename > class ALLOC >
     double ScoreK2< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
-      std::vector< double, ALLOC< double > > N_ijk(
-         this->counter_.counts(idset, true));
-      const std::size_t all_size              = N_ijk.size();
-      const bool informative_external_apriori = this->apriori_->isInformative();
-      double     score                        = 0.0;
+      std::vector< double, ALLOC< double > > N_ijk(this->counter_.counts(idset, true));
+      const std::size_t                      all_size = N_ijk.size();
+      const bool informative_external_apriori         = this->apriori_->isInformative();
+      double     score                                = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_ij(
-           this->marginalize_(idset[0], N_ijk));
-        const std::size_t conditioning_size = N_ij.size();
-        const double      ri                = double(all_size / conditioning_size);
+        std::vector< double, ALLOC< double > > N_ij(this->marginalize_(idset[0], N_ijk));
+        const std::size_t                      conditioning_size = N_ij.size();
+        const double                           ri = double(all_size / conditioning_size);
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
@@ -236,24 +227,23 @@ namespace gum {
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
           //                             gammalog2 ( N'_ijk + 1 ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-            score +=  _gammalog2_(N_prime_ij[j] + ri)
-                   -  _gammalog2_(N_ij[j] + N_prime_ij[j] + ri);
+            score += _gammalog2_(N_prime_ij[j] + ri) - _gammalog2_(N_ij[j] + N_prime_ij[j] + ri);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1.0)
-                   -  _gammalog2_(N_prime_ijk[k] + 1.0);
+            score
+               += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1.0) - _gammalog2_(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:
           // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
           //                                   sum_k=1^ri log { N_ijk! } ]
-          score = conditioning_size *  _gammalog2_(ri);
+          score = conditioning_size * _gammalog2_(ri);
 
           for (const auto n_ij: N_ij) {
-            score -=  _gammalog2_(n_ij + ri);
+            score -= _gammalog2_(n_ij + ri);
           }
           for (const auto n_ijk: N_ijk) {
-            score +=  _gammalog2_(n_ijk + 1);
+            score += _gammalog2_(n_ijk + 1);
           }
         }
       } else {
@@ -275,22 +265,21 @@ namespace gum {
           double N       = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1)
-                   -  _gammalog2_(N_prime_ijk[k] + 1);
+            score += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1) - _gammalog2_(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score +=  _gammalog2_(N_prime + ri) -  _gammalog2_(N + N_prime + ri);
+          score += _gammalog2_(N_prime + ri) - _gammalog2_(N + N_prime + ri);
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-          score    =  _gammalog2_(ri);
+          score    = _gammalog2_(ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
-            score +=  _gammalog2_(n_ijk + 1);
+            score += _gammalog2_(n_ijk + 1);
             N += n_ijk;
           }
-          score -=  _gammalog2_(N + ri);
+          score -= _gammalog2_(N + ri);
         }
       }
 

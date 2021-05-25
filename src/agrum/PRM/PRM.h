@@ -157,8 +157,7 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const PRMInterface< GUM_SCALAR >&
-         getInterface(const std::string& name) const;
+      const PRMInterface< GUM_SCALAR >& getInterface(const std::string& name) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -202,7 +201,7 @@ namespace gum {
       PRM< GUM_SCALAR >& operator=(const PRM< GUM_SCALAR >& source);
 
       /// Add the built-in types in the PRM
-      void  _addBuiltInTypes_();
+      void _addBuiltInTypes_();
 
       /// @}
       // ========================================================================
@@ -211,28 +210,28 @@ namespace gum {
       /// @{
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable< std::string, PRMClass< GUM_SCALAR >* >  _classMap_;
+      HashTable< std::string, PRMClass< GUM_SCALAR >* > _classMap_;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set< PRMClass< GUM_SCALAR >* >  _classes_;
+      Set< PRMClass< GUM_SCALAR >* > _classes_;
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable< std::string, PRMInterface< GUM_SCALAR >* >  _interfaceMap_;
+      HashTable< std::string, PRMInterface< GUM_SCALAR >* > _interfaceMap_;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set< PRMInterface< GUM_SCALAR >* >  _interfaces_;
+      Set< PRMInterface< GUM_SCALAR >* > _interfaces_;
 
       /// Mapping of all PRMType given their name.
-      HashTable< std::string, PRMType* >  _typeMap_;
+      HashTable< std::string, PRMType* > _typeMap_;
 
       /// Set of all PRMType in this PRM.
-      Set< PRMType* >  _types_;
+      Set< PRMType* > _types_;
 
       /// Mapping of all Systems given their name.
-      HashTable< std::string, PRMSystem< GUM_SCALAR >* >  _systemMap_;
+      HashTable< std::string, PRMSystem< GUM_SCALAR >* > _systemMap_;
 
       /// Set of all Systems in this PRM.
-      Set< PRMSystem< GUM_SCALAR >* >  _systems_;
+      Set< PRMSystem< GUM_SCALAR >* > _systems_;
 
       /// @}
     };

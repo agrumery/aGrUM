@@ -90,9 +90,7 @@ namespace gum {
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator& operator=(const SmallObjectAllocator&) {
-      return instance();
-    }
+    SmallObjectAllocator& operator=(const SmallObjectAllocator&) { return instance(); }
 
     public:
     // ============================================================================
@@ -128,8 +126,7 @@ namespace gum {
     // ============================================================================
     void displayStats() {
       GUM_TRACE("Nb Small Allocation : " << nbAllocation
-                                         << " -  Nb Small Deallocation : "
-                                         << nbDeallocation);
+                                         << " -  Nb Small Deallocation : " << nbDeallocation);
     }
 
     Idx nbAlloc() { return nbAllocation; }
@@ -139,18 +136,18 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable< Size, FixedAllocator* >  _Pool_;
-     _Pool_                                      _pool_;
+    typedef HashTable< Size, FixedAllocator* > _Pool_;
+    _Pool_                                     _pool_;
 
     // ============================================================================
     /// The memory that a chunk allocates
     // ============================================================================
-    std::size_t  _chunkSize_;
+    std::size_t _chunkSize_;
 
     // ============================================================================
     /// The maximal size of an object befor new is called
     // ============================================================================
-    std::size_t  _maxObjectSize_;
+    std::size_t _maxObjectSize_;
 
     Idx nbAllocation;
     Idx nbDeallocation;

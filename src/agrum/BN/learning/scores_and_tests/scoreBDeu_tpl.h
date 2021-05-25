@@ -37,15 +37,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                          nodeId2columns,
-       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename ScoreBDeu< ALLOC >::allocator_type&                   alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
 
@@ -53,25 +52,22 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                          nodeId2columns,
-       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename ScoreBDeu< ALLOC >::allocator_type&            alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-       const ScoreBDeu< ALLOC >&                          from,
-       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreBDeu< ALLOC >::ScoreBDeu(const ScoreBDeu< ALLOC >&                          from,
+                                         const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-         _internal_apriori_(from. _internal_apriori_, alloc),
-         _gammalog2_(from. _gammalog2_) {
+        _internal_apriori_(from._internal_apriori_, alloc), _gammalog2_(from._gammalog2_) {
       GUM_CONS_CPY(ScoreBDeu);
     }
 
@@ -84,12 +80,11 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-       ScoreBDeu< ALLOC >&&                               from,
-       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreBDeu< ALLOC >::ScoreBDeu(ScoreBDeu< ALLOC >&&                               from,
+                                         const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-         _internal_apriori_(std::move(from. _internal_apriori_), alloc),
-         _gammalog2_(std::move(from. _gammalog2_)) {
+        _internal_apriori_(std::move(from._internal_apriori_), alloc),
+        _gammalog2_(std::move(from._gammalog2_)) {
       GUM_CONS_MOV(ScoreBDeu);
     }
 
@@ -102,8 +97,8 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScoreBDeu< ALLOC >* ScoreBDeu< ALLOC >::clone(
-       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) const {
+    ScoreBDeu< ALLOC >*
+       ScoreBDeu< ALLOC >::clone(const typename ScoreBDeu< ALLOC >::allocator_type& alloc) const {
       ALLOC< ScoreBDeu< ALLOC > > allocator(alloc);
       ScoreBDeu< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -133,11 +128,10 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreBDeu< ALLOC >&
-       ScoreBDeu< ALLOC >::operator=(const ScoreBDeu< ALLOC >& from) {
+    ScoreBDeu< ALLOC >& ScoreBDeu< ALLOC >::operator=(const ScoreBDeu< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-         _internal_apriori_      = from. _internal_apriori_;
+        _internal_apriori_      = from._internal_apriori_;
       }
       return *this;
     }
@@ -148,7 +142,7 @@ namespace gum {
     ScoreBDeu< ALLOC >& ScoreBDeu< ALLOC >::operator=(ScoreBDeu< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-         _internal_apriori_      = std::move(from. _internal_apriori_);
+        _internal_apriori_      = std::move(from._internal_apriori_);
       }
       return *this;
     }
@@ -156,9 +150,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string
-       ScoreBDeu< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                               double             weight) {
+    std::string ScoreBDeu< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                                        double             weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
@@ -184,8 +177,7 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string
-       ScoreBDeu< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
+    INLINE std::string ScoreBDeu< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -200,7 +192,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScoreBDeu< ALLOC >::internalApriori() const {
-      return  _internal_apriori_;
+      return _internal_apriori_;
     }
 
 
@@ -212,7 +204,7 @@ namespace gum {
                   "The effective sample size of the BDeu's "
                   "internal apriori must be positive");
       } else {
-         _internal_apriori_.setEffectiveSampleSize(ess);
+        _internal_apriori_.setEffectiveSampleSize(ess);
       }
     }
 
@@ -221,12 +213,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     double ScoreBDeu< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
-      std::vector< double, ALLOC< double > > N_ijk(
-         this->counter_.counts(idset, true));
-      const std::size_t all_size = N_ijk.size();
+      std::vector< double, ALLOC< double > > N_ijk(this->counter_.counts(idset, true));
+      const std::size_t                      all_size = N_ijk.size();
 
       double       score                        = 0.0;
-      const double ess                          =  _internal_apriori_.weight();
+      const double ess                          = _internal_apriori_.weight();
       const bool   informative_external_apriori = this->apriori_->isInformative();
 
 
@@ -234,11 +225,10 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_ij(
-           this->marginalize_(idset[0], N_ijk));
-        const std::size_t conditioning_size = N_ij.size();
-        const double      ess_qi            = ess / conditioning_size;
-        const double      ess_riqi          = ess / all_size;
+        std::vector< double, ALLOC< double > > N_ij(this->marginalize_(idset[0], N_ijk));
+        const std::size_t                      conditioning_size = N_ij.size();
+        const double                           ess_qi            = ess / conditioning_size;
+        const double                           ess_riqi          = ess / all_size;
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris
@@ -256,12 +246,12 @@ namespace gum {
           //     + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + ESS / (r_i * q_i ) )
           //     - gammalog2 ( N'_ijk + ESS / (r_i * q_i ) ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-            score +=  _gammalog2_(N_prime_ij[j] + ess_qi)
-                   -  _gammalog2_(N_ij[j] + N_prime_ij[j] + ess_qi);
+            score += _gammalog2_(N_prime_ij[j] + ess_qi)
+                   - _gammalog2_(N_ij[j] + N_prime_ij[j] + ess_qi);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + ess_riqi)
-                   -  _gammalog2_(N_prime_ijk[k] + ess_riqi);
+            score += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + ess_riqi)
+                   - _gammalog2_(N_prime_ijk[k] + ess_riqi);
           }
         } else {
           // the BDeu score can be computed as follows:
@@ -269,14 +259,13 @@ namespace gum {
           // - sum_j=1^qi [ gammalog2 ( N_ij + ess / qi ) ]
           // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) )
           // ]
-          score = conditioning_size *  _gammalog2_(ess_qi)
-                - all_size *  _gammalog2_(ess_riqi);
+          score = conditioning_size * _gammalog2_(ess_qi) - all_size * _gammalog2_(ess_riqi);
 
           for (const auto n_ij: N_ij) {
-            score -=  _gammalog2_(n_ij + ess_qi);
+            score -= _gammalog2_(n_ij + ess_qi);
           }
           for (const auto n_ijk: N_ijk) {
-            score +=  _gammalog2_(n_ijk + ess_riqi);
+            score += _gammalog2_(n_ijk + ess_riqi);
           }
         }
       } else {
@@ -298,25 +287,25 @@ namespace gum {
           double N       = 0.0;
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score +=  _gammalog2_(N_ijk[k] + N_prime_ijk[k] + ess_ri)
-                   -  _gammalog2_(N_prime_ijk[k] + ess_ri);
+            score += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + ess_ri)
+                   - _gammalog2_(N_prime_ijk[k] + ess_ri);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score +=  _gammalog2_(N_prime + ess) -  _gammalog2_(N + N_prime + ess);
+          score += _gammalog2_(N_prime + ess) - _gammalog2_(N + N_prime + ess);
         } else {
           // the BDeu score can be computed as follows:
           // gammalog2 ( ess ) - ri * gammalog2 ( ess / ri )
           // - gammalog2 ( N + ess )
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
-          score    =  _gammalog2_(ess) - all_size *  _gammalog2_(ess_ri);
+          score    = _gammalog2_(ess) - all_size * _gammalog2_(ess_ri);
           double N = 0;
           for (const auto n_ijk: N_ijk) {
-            score +=  _gammalog2_(n_ijk + ess_ri);
+            score += _gammalog2_(n_ijk + ess_ri);
             N += n_ijk;
           }
-          score -=  _gammalog2_(N + ess);
+          score -= _gammalog2_(N + ess);
         }
       }
 

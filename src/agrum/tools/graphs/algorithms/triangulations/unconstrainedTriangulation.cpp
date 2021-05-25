@@ -55,15 +55,13 @@ namespace gum {
   }
 
   /// copy constructor
-  UnconstrainedTriangulation::UnconstrainedTriangulation(
-     const UnconstrainedTriangulation& from) :
+  UnconstrainedTriangulation::UnconstrainedTriangulation(const UnconstrainedTriangulation& from) :
       StaticTriangulation(from) {   // for debugging purposes
     GUM_CONS_CPY(UnconstrainedTriangulation);
   }
 
   /// move constructor
-  UnconstrainedTriangulation::UnconstrainedTriangulation(
-     UnconstrainedTriangulation&& from) :
+  UnconstrainedTriangulation::UnconstrainedTriangulation(UnconstrainedTriangulation&& from) :
       StaticTriangulation(std::move(from)) {
     // for debugging purposes
     GUM_CONS_MOV(UnconstrainedTriangulation);

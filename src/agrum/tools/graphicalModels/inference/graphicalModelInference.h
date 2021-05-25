@@ -220,8 +220,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
-    virtual void addEvidence(const std::string& nodeName,
-                             const std::string& label) final;
+    virtual void addEvidence(const std::string& nodeName, const std::string& label) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -231,8 +230,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void addEvidence(NodeId                           id,
-                             const std::vector< GUM_SCALAR >& vals) final;
+    virtual void addEvidence(NodeId id, const std::vector< GUM_SCALAR >& vals) final;
 
     /// adds a new evidence on node named nodeName (might be soft or hard)
     /**
@@ -276,8 +274,7 @@ namespace gum {
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void
-       addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
+    virtual void addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
@@ -288,8 +285,7 @@ namespace gum {
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addListOfEvidence(
-       const List< const Potential< GUM_SCALAR >* >& potlist) final;
+    virtual void addListOfEvidence(const List< const Potential< GUM_SCALAR >* >& potlist) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -321,8 +317,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(const std::string& nodeName,
-                             const std::string& label) final;
+    virtual void chgEvidence(const std::string& nodeName, const std::string& label) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -332,8 +327,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence(NodeId                           id,
-                             const std::vector< GUM_SCALAR >& vals) final;
+    virtual void chgEvidence(NodeId id, const std::vector< GUM_SCALAR >& vals) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -489,35 +483,35 @@ namespace gum {
 
     private:
     /// the current state of the inference (outdated/ready/done)
-    StateOfInference  _state_{StateOfInference::OutdatedStructure};
+    StateOfInference _state_{StateOfInference::OutdatedStructure};
 
     /// the Bayes net on which we perform inferences
-    const GraphicalModel*  _model_{nullptr};
+    const GraphicalModel* _model_{nullptr};
 
     /// the domain sizes of the random variables
-    NodeProperty< Size >  _domain_sizes_;
+    NodeProperty< Size > _domain_sizes_;
 
     /// the set of evidence entered into the network
-    NodeProperty< const Potential< GUM_SCALAR >* >  _evidence_;
+    NodeProperty< const Potential< GUM_SCALAR >* > _evidence_;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty< Idx >  _hard_evidence_;
+    NodeProperty< Idx > _hard_evidence_;
 
     /// the set of nodes that received soft evidence
-    NodeSet  _soft_evidence_nodes_;
+    NodeSet _soft_evidence_nodes_;
 
     /// the set of nodes that received hard evidence
-    NodeSet  _hard_evidence_nodes_;
+    NodeSet _hard_evidence_nodes_;
 
 
     /// create the internal structure for a hard evidence
-    Potential< GUM_SCALAR >  _createHardEvidence_(NodeId id, Idx val) const;
+    Potential< GUM_SCALAR > _createHardEvidence_(NodeId id, Idx val) const;
 
     /// checks whether a potential corresponds to a hard evidence or not
-    bool  _isHardEvidence_(const Potential< GUM_SCALAR >& pot, Idx& val) const;
+    bool _isHardEvidence_(const Potential< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
-    void  _computeDomainSizes_();
+    void _computeDomainSizes_();
 
     protected:
     /// set the state of the inference engine and
@@ -530,7 +524,7 @@ namespace gum {
     /// assigns a model during the inference engine construction
     void setModelDuringConstruction_(const GraphicalModel* model);
 
-    bool hasNoModel_() const { return  _model_ == nullptr; };
+    bool hasNoModel_() const { return _model_ == nullptr; };
   };
 }   // namespace gum
 

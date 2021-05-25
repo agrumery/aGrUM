@@ -40,18 +40,14 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
-       const LocalSearchWithTabuList& from) :
-        ApproximationScheme(from),
-         _MaxNbDecreasing_(from. _MaxNbDecreasing_) {
+    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(const LocalSearchWithTabuList& from) :
+        ApproximationScheme(from), _MaxNbDecreasing_(from._MaxNbDecreasing_) {
       GUM_CONS_CPY(LocalSearchWithTabuList);
     }
 
     /// move constructor
-    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
-       LocalSearchWithTabuList&& from) :
-        ApproximationScheme(std::move(from)),
-         _MaxNbDecreasing_(std::move(from. _MaxNbDecreasing_)) {
+    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(LocalSearchWithTabuList&& from) :
+        ApproximationScheme(std::move(from)), _MaxNbDecreasing_(std::move(from._MaxNbDecreasing_)) {
       GUM_CONS_MOV(LocalSearchWithTabuList);
     }
 
@@ -64,7 +60,7 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
-       _MaxNbDecreasing_            = from. _MaxNbDecreasing_;
+      _MaxNbDecreasing_            = from._MaxNbDecreasing_;
       return *this;
     }
 
@@ -72,20 +68,18 @@ namespace gum {
     INLINE LocalSearchWithTabuList&
        LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
-       _MaxNbDecreasing_            = std::move(from. _MaxNbDecreasing_);
+      _MaxNbDecreasing_            = std::move(from._MaxNbDecreasing_);
       return *this;
     }
 
     /// set the max number of changes decreasing the score that we allow to
     /// apply
     INLINE void LocalSearchWithTabuList::setMaxNbDecreasingChanges(Size nb) {
-       _MaxNbDecreasing_ = nb;
+      _MaxNbDecreasing_ = nb;
     }
 
     /// returns the approximation policy of the learning algorithm
-    INLINE ApproximationScheme& LocalSearchWithTabuList::approximationScheme() {
-      return *this;
-    }
+    INLINE ApproximationScheme& LocalSearchWithTabuList::approximationScheme() { return *this; }
 
   } /* namespace learning */
 

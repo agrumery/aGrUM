@@ -55,9 +55,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       class O3NameSolver {
         public:
-        O3NameSolver(PRM< GUM_SCALAR >& prm,
-                     O3PRM&             o3_prm,
-                     ErrorsContainer&   errors);
+        O3NameSolver(PRM< GUM_SCALAR >& prm, O3PRM& o3_prm, ErrorsContainer& errors);
 
         O3NameSolver(const O3NameSolver< GUM_SCALAR >& src);
 
@@ -65,8 +63,7 @@ namespace gum {
 
         ~O3NameSolver();
 
-        O3NameSolver< GUM_SCALAR >&
-           operator=(const O3NameSolver< GUM_SCALAR >& src);
+        O3NameSolver< GUM_SCALAR >& operator=(const O3NameSolver< GUM_SCALAR >& src);
 
         O3NameSolver< GUM_SCALAR >& operator=(O3NameSolver< GUM_SCALAR >&& src);
 
@@ -81,17 +78,17 @@ namespace gum {
         bool resolveSlotType(O3Label& name);
 
         private:
-        PRM< GUM_SCALAR >*  _prm_;
-        O3PRM*              _o3_prm_;
-        ErrorsContainer*    _errors_;
+        PRM< GUM_SCALAR >* _prm_;
+        O3PRM*             _o3_prm_;
+        ErrorsContainer*   _errors_;
 
         using NameMap = HashTable< std::string, std::string >;
 
-        NameMap  _typeName_;
-        NameMap  _eltName_;
-        NameMap  _refName_;
-        NameMap  _interfaceName_;
-        NameMap  _className_;
+        NameMap _typeName_;
+        NameMap _eltName_;
+        NameMap _refName_;
+        NameMap _interfaceName_;
+        NameMap _className_;
       };
 
     }   // namespace o3prm

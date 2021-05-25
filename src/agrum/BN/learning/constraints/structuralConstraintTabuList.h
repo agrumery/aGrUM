@@ -95,8 +95,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintTabuList&
-         operator=(const StructuralConstraintTabuList& from);
+      StructuralConstraintTabuList& operator=(const StructuralConstraintTabuList& from);
 
       /// move operator
       StructuralConstraintTabuList& operator=(StructuralConstraintTabuList&& from);
@@ -205,10 +204,10 @@ namespace gum {
 
       protected:
       /// the tabu list
-      Bijection< GraphChange, NodeId >  _TabuList_changes_;
+      Bijection< GraphChange, NodeId > _TabuList_changes_;
 
       /// the index of the oldest element
-      NodeId  _TabuList_offset_{0};
+      NodeId _TabuList_offset_{0};
     };
 
   } /* namespace learning */

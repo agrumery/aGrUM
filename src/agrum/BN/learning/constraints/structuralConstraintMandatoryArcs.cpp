@@ -43,8 +43,7 @@ namespace gum {
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-       const DiGraph& graph) {
+    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(const DiGraph& graph) {
       setGraph(graph);
       GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
     }
@@ -52,15 +51,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
        const StructuralConstraintMandatoryArcs& from) :
-         _MandatoryArcs_mandatory_arcs_(from. _MandatoryArcs_mandatory_arcs_) {
+        _MandatoryArcs_mandatory_arcs_(from._MandatoryArcs_mandatory_arcs_) {
       GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
     }
 
     /// move constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
        StructuralConstraintMandatoryArcs&& from) :
-         _MandatoryArcs_mandatory_arcs_(
-           std::move(from. _MandatoryArcs_mandatory_arcs_)) {
+        _MandatoryArcs_mandatory_arcs_(std::move(from._MandatoryArcs_mandatory_arcs_)) {
       GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
     }
 
@@ -71,21 +69,16 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintMandatoryArcs&
-       StructuralConstraintMandatoryArcs::operator=(
-          const StructuralConstraintMandatoryArcs& from) {
-      if (this != &from) {
-         _MandatoryArcs_mandatory_arcs_ = from. _MandatoryArcs_mandatory_arcs_;
-      }
+       StructuralConstraintMandatoryArcs::operator=(const StructuralConstraintMandatoryArcs& from) {
+      if (this != &from) { _MandatoryArcs_mandatory_arcs_ = from._MandatoryArcs_mandatory_arcs_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintMandatoryArcs&
-       StructuralConstraintMandatoryArcs::operator=(
-          StructuralConstraintMandatoryArcs&& from) {
+       StructuralConstraintMandatoryArcs::operator=(StructuralConstraintMandatoryArcs&& from) {
       if (this != &from) {
-         _MandatoryArcs_mandatory_arcs_
-           = std::move(from. _MandatoryArcs_mandatory_arcs_);
+        _MandatoryArcs_mandatory_arcs_ = std::move(from._MandatoryArcs_mandatory_arcs_);
       }
       return *this;
     }

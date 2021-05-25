@@ -242,8 +242,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
-    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src,
-                          Instantiation*                         p_i) const;
+    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src, Instantiation* p_i) const;
 
     /**
      * @brief Basic extraction of a MultiDimContainer.
@@ -257,8 +256,7 @@ namespace gum {
      * extraction will concern every variable not in the instantiation and the
      * copy of data will use the (relevant) values in this instantiation.
      */
-    virtual void extractFrom(const MultiDimContainer< GUM_SCALAR >& src,
-                             const Instantiation&                   mask);
+    virtual void extractFrom(const MultiDimContainer< GUM_SCALAR >& src, const Instantiation& mask);
 
     /**
      * @brief Returns the implementation for this object (may be *this).
@@ -356,9 +354,8 @@ namespace gum {
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_SCALAR
-       reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-              GUM_SCALAR                                          base) const;
+    virtual GUM_SCALAR reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                              GUM_SCALAR                                          base) const;
 
 
     /// @}

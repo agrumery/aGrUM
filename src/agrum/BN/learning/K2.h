@@ -102,25 +102,22 @@ namespace gum {
        * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
        * @param initial_dag the DAG we start from for our learning */
       template < typename GRAPH_CHANGES_SELECTOR >
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                         DAG                     initial_dag = DAG());
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag = DAG());
 
       /// learns the structure and the parameters of a BN
-      template < typename GUM_SCALAR,
-                 typename GRAPH_CHANGES_SELECTOR,
-                 typename PARAM_ESTIMATOR >
+      template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
       BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR& selector,
                                      PARAM_ESTIMATOR&        estimator,
                                      DAG                     initial_dag = DAG());
 
       private:
       /// the order on the variable used for learning
-      Sequence< NodeId >  _order_;
+      Sequence< NodeId > _order_;
 
       /** @brief checks that the order passed to K2 is coherent with the
        * variables
        * as specified by their modalities */
-      void  _checkOrder_(const std::vector< Size >& modal);
+      void _checkOrder_(const std::vector< Size >& modal);
       /// @}
     };
 

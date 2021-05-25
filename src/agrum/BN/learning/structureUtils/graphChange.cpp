@@ -63,8 +63,7 @@ namespace gum {
           return stream.str();
 
         default:
-          GUM_ERROR(OperationNotAllowed,
-                    "this graph modification is not supported yet")
+          GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
       }
     }
 

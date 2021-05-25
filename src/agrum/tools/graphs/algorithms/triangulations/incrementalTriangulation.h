@@ -99,9 +99,7 @@ namespace gum {
     void eraseEdge(const Edge& edge);
 
     /// returns the fill-ins added by the triangulation algorithm
-    const EdgeSet& fillIns() {
-      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
-    }
+    const EdgeSet& fillIns() { GUM_ERROR(OperationNotAllowed, "Not implemented yet") }
 
     /// returns an elimination ordering compatible with the triangulated graph
     const std::vector< NodeId >& eliminationOrder();
@@ -111,17 +109,13 @@ namespace gum {
     Idx eliminationOrder(const NodeId);
 
     /// returns the triangulated graph
-    const UndiGraph& triangulatedGraph() {
-      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
-    }
+    const UndiGraph& triangulatedGraph() { GUM_ERROR(OperationNotAllowed, "Not implemented yet") }
 
     /// returns the current graph (that which is incrementally triangulated)
     const UndiGraph& graph() const;
 
     /// returns the elimination tree of a compatible ordering
-    const CliqueGraph& eliminationTree() {
-      GUM_ERROR(OperationNotAllowed, "Not implemented yet")
-    }
+    const CliqueGraph& eliminationTree() { GUM_ERROR(OperationNotAllowed, "Not implemented yet") }
 
     /// returns a junction tree corresponding to the current graph
     const CliqueGraph& junctionTree();
@@ -145,8 +139,7 @@ namespace gum {
     void clear();
 
     /// changes the current graph
-    void setGraph(const UndiGraph*            theGraph,
-                  const NodeProperty< Size >* domain_sizes);
+    void setGraph(const UndiGraph* theGraph, const NodeProperty< Size >* domain_sizes);
 
     /// returns the triangulation algorithm (useful for fine tuning it)
     const UnconstrainedTriangulation& triangulationAlgo() const;
@@ -173,104 +166,98 @@ namespace gum {
 
     private:
     /// the graph that needs be triangulated
-    UndiGraph  _graph_;
+    UndiGraph _graph_;
 
     /// the domain sizes of the nodes
-    NodeProperty< Size >  _domain_sizes_;
+    NodeProperty< Size > _domain_sizes_;
 
     /// the junction tree computed so far
-    CliqueGraph  _junction_tree_;
+    CliqueGraph _junction_tree_;
 
     /// the maximal prime subgraph tree
-    CliqueGraph  _T_mpd_;
+    CliqueGraph _T_mpd_;
 
     /// for each node in graph, store the MPS containing the node
-    NodeProperty< List< NodeId > >  _mps_of_node_;
+    NodeProperty< List< NodeId > > _mps_of_node_;
 
     /// indicate for each MPS its set of cliques in the junction tree
-    NodeProperty< std::vector< NodeId > >  _cliques_of_mps_;
+    NodeProperty< std::vector< NodeId > > _cliques_of_mps_;
 
     /// indicate for each clique the MPS it belongs to
-    NodeProperty< NodeId >  _mps_of_clique_;
+    NodeProperty< NodeId > _mps_of_clique_;
 
     /// the set of MPS affected by a new triangulation
-    NodeProperty< bool >  _mps_affected_;
+    NodeProperty< bool > _mps_affected_;
 
     /// the triangulation algorithm that will be used incremantally
-    UnconstrainedTriangulation*  _triangulation_;
+    UnconstrainedTriangulation* _triangulation_;
 
     /// a Boolean indicating whether the triangulation need be updated
-    bool  _require_update_{false};
+    bool _require_update_{false};
 
     /// a Boolean indicating wether we should update the elimination order
-    bool  _require_elimination_order_{false};
+    bool _require_elimination_order_{false};
 
     /// the current elimination ordering
-    std::vector< NodeId >  _elimination_order_;
+    std::vector< NodeId > _elimination_order_;
 
     /// the elimination order (access by NodeId)
-    NodeProperty< Idx >  _reverse_elimination_order_;
+    NodeProperty< Idx > _reverse_elimination_order_;
 
     /// a Boolean indicating whether we should compute the createdJTCliques
-    bool  _require_created_JT_cliques_{false};
+    bool _require_created_JT_cliques_{false};
 
     /// For each node, a clique that contains it
-    NodeProperty< NodeId >  _created_JT_cliques_;
+    NodeProperty< NodeId > _created_JT_cliques_;
 
     /// mark the mps affected by the deletion of a given edge
-    void  _markAffectedMPSsByRemoveLink_(const NodeId My,
-                                        const NodeId Mz,
-                                        const Edge&  edge);
+    void _markAffectedMPSsByRemoveLink_(const NodeId My, const NodeId Mz, const Edge& edge);
 
     /// mark the mps affected by the insertion of a new edge
-    int  _markAffectedMPSsByAddLink_(const NodeId My,
+    int _markAffectedMPSsByAddLink_(const NodeId My,
                                     const NodeId Mz,
                                     const NodeId X,
                                     const NodeId Y);
 
     /// remove a given node from the T_mpd structure
-    void  _performRemoveNode_(const NodeId node, const NodeId My, const NodeId Mz);
+    void _performRemoveNode_(const NodeId node, const NodeId My, const NodeId Mz);
 
     /// adds a new node to T_mpd, the graph and the clique graph
-    void  _performAddNode_(const NodeId node);
+    void _performAddNode_(const NodeId node);
 
     /// set-up the connected subgraph that needs be retriangulated
-    void  _setUpConnectedTriangulation_(
-       NodeId                     Mx,
-       NodeId                     Mfrom,
-       UndiGraph&                 theGraph,
-       std::vector< Edge >&       notAffectedneighborClique,
-       HashTable< NodeId, bool >& cliques_affected);
+    void _setUpConnectedTriangulation_(NodeId                     Mx,
+                                       NodeId                     Mfrom,
+                                       UndiGraph&                 theGraph,
+                                       std::vector< Edge >&       notAffectedneighborClique,
+                                       HashTable< NodeId, bool >& cliques_affected);
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void  _computeMaxPrimeMergings_(
-       const NodeId                                node,
-       const NodeId                                from,
-       std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
-       NodeProperty< bool >&                       mark,
-       const NodeSet& new_nodes_in_junction_tree) const;
+    void _computeMaxPrimeMergings_(const NodeId                                node,
+                                   const NodeId                                from,
+                                   std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
+                                   NodeProperty< bool >&                       mark,
+                                   const NodeSet& new_nodes_in_junction_tree) const;
 
     /// update the junction tree
-    void  _updateJunctionTree_(NodeProperty< bool >& all_cliques_affected,
+    void _updateJunctionTree_(NodeProperty< bool >& all_cliques_affected,
                               NodeSet&              new_nodes_in_junction_tree);
 
     /// update the max prime subgraph
-    void  _updateMaxPrimeSubgraph_(NodeProperty< bool >& cliques_affected,
-                                  const NodeSet& new_nodes_in_junction_tree);
+    void _updateMaxPrimeSubgraph_(NodeProperty< bool >& cliques_affected,
+                                  const NodeSet&        new_nodes_in_junction_tree);
 
     /// a collect algorithm to compute elimination orderings
-    void  _collectEliminationOrder_(const NodeId          node,
+    void _collectEliminationOrder_(const NodeId          node,
                                    const NodeId          from,
                                    NodeProperty< bool >& examined,
                                    Idx&                  index);
 
     /// a collect algorithm to compute, for each node, one container JT's clique
-    void  _collectJTCliques_(const NodeId          clique,
-                            const NodeId          from,
-                            NodeProperty< bool >& examined);
+    void _collectJTCliques_(const NodeId clique, const NodeId from, NodeProperty< bool >& examined);
 
     /// checks that the incremental triangulation works properly
-    bool  _check_();
+    bool _check_();
 
     /// to enable testunits to use  _check_
     friend class gum_tests::IncrementalTriangulationTestSuite;

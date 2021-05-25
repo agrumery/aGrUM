@@ -77,8 +77,7 @@ namespace gum {
       // create and link properly the children
       children = from.children;
 
-      for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter
-           = children.begin();
+      for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter = children.begin();
            iter != children.end();
            ++iter)
         iter->parent = this;
@@ -113,8 +112,7 @@ namespace gum {
 
         children = from.children;
 
-        for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter
-             = children.begin();
+        for (HashTableIteratorSafe< Key, IndexedTree< Key, Data > > iter = children.begin();
              iter != children.end();
              ++iter)
           iter->parent = this;
@@ -143,8 +141,7 @@ namespace gum {
   // adds a new node into the tree
 
   template < typename Key, typename Data >
-  void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index,
-                                            const Data*               theData) {
+  void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index, const Data* theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -158,8 +155,7 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
@@ -195,8 +191,7 @@ namespace gum {
   // adds a new node into the tree
 
   template < typename Key, typename Data >
-  void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index,
-                                            const Data&               theData) {
+  void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index, const Data& theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -210,8 +205,7 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
@@ -231,8 +225,7 @@ namespace gum {
       }
 
       // here, the node to be inserted does not exist, so we must create it
-      IndexedTree< Key, Data >* new_node
-         = new IndexedTree< Key, Data >(index[i], theData);
+      IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], theData);
 
       current_node->children.insert(index[i], new_node);
 
@@ -247,8 +240,7 @@ namespace gum {
   // updates the value of a node (or adds it if it does not already exist)
 
   template < typename Key, typename Data >
-  void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index,
-                                         Data*                     theData) {
+  void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index, Data* theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -262,8 +254,7 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
@@ -286,8 +277,7 @@ namespace gum {
         node->data = theData;
       } else {
         // here, the node tobe set does not exist, so we must create it
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], theData);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], theData);
         current_node->children.insert(index[i], new_node);
         new_node->parent = current_node;
       }
@@ -303,8 +293,7 @@ namespace gum {
   // updates the value of a node (or adds it if it does not already exist)
 
   template < typename Key, typename Data >
-  void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index,
-                                         const Data&               theData) {
+  void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index, const Data& theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -318,8 +307,7 @@ namespace gum {
       // if the node that should be on the path between the root of the tree and
       // the node that we wish to insert does not exist, create it
       if (!children.exists(index[i])) {
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], (Data*)0);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], (Data*)0);
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
@@ -342,8 +330,7 @@ namespace gum {
         node->data = new Data(theData);
       } else {
         // here, the node tobe set does not exist, so we must create it
-        IndexedTree< Key, Data >* new_node
-           = new IndexedTree< Key, Data >(index[i], theData);
+        IndexedTree< Key, Data >* new_node = new IndexedTree< Key, Data >(index[i], theData);
         current_node->children.insert(index[i], new_node);
         new_node->parent = current_node;
       }
@@ -359,10 +346,8 @@ namespace gum {
   // returns the value of a given test from the cache
 
   template < typename Key, typename Data >
-  INLINE Data&
-         IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
-    IndexedTree< Key, Data >* current_node
-       = const_cast< IndexedTree< Key, Data >* >(this);
+  INLINE Data& IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
+    IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];
@@ -377,8 +362,7 @@ namespace gum {
   template < typename Key, typename Data >
   INLINE IndexedTree< Key, Data >&
          IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
-    IndexedTree< Key, Data >* current_node
-       = const_cast< IndexedTree< Key, Data >* >(this);
+    IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];

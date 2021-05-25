@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    void ClassBayesNet< GUM_SCALAR >:: _init_(const PRMClass< GUM_SCALAR >& c) {
+    void ClassBayesNet< GUM_SCALAR >::_init_(const PRMClass< GUM_SCALAR >& c) {
       for (const auto node: c.containerDag().nodes()) {
         try {
           // Adding the attribute
@@ -40,7 +40,7 @@ namespace gum {
               || PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
             const PRMClassElement< GUM_SCALAR >& elt = c.get(node);
             this->dag_.addNodeWithId(elt.id());
-            this-> _varNodeMap_.insert(&(elt.type().variable()), &elt);
+            this->_varNodeMap_.insert(&(elt.type().variable()), &elt);
           }
         } catch (NotFound&) {
           // Not an attribute
@@ -57,19 +57,15 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
-       const PRMClass< GUM_SCALAR >& c) :
-        IBayesNet< GUM_SCALAR >(),
-         _class_(&c) {
+    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
+        IBayesNet< GUM_SCALAR >(), _class_(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
-       _init_(c);
+      _init_(c);
     }
 
     template < typename GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
-       const ClassBayesNet< GUM_SCALAR >& from) :
-        IBayesNet< GUM_SCALAR >(from),
-         _class_(from. _class_) {
+    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const ClassBayesNet< GUM_SCALAR >& from) :
+        IBayesNet< GUM_SCALAR >(from), _class_(from._class_) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
@@ -79,58 +75,53 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::operator=(
-       const ClassBayesNet< GUM_SCALAR >& from) {
+    INLINE ClassBayesNet< GUM_SCALAR >&
+       ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
-         _class_ = from. _class_;
+        _class_ = from._class_;
       }
 
       return *this;
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
-      return  _get_(varId).cpf();
+    INLINE const Potential< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+      return _get_(varId).cpf();
     }
 
     template < typename GUM_SCALAR >
-    INLINE const VariableNodeMap&
-                 ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
+    INLINE const VariableNodeMap& ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
       GUM_ERROR(FatalError, "Sorry no VarMap in a ClassBayesNet.")
     }
 
     template < typename GUM_SCALAR >
+    INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
+      return _get_(id).type().variable();
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE NodeId ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+      return _varNodeMap_[&var]->id();
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE NodeId ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+      return _get_(name).id();
+    }
+
+    template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
-                 ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
-      return  _get_(id).type().variable();
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE NodeId
-       ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-      return  _varNodeMap_[&var]->id();
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE NodeId
-       ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
-      return  _get_(name).id();
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variableFromName(
-       const std::string& name) const {
-      return  _get_(name).type().variable();
+                 ClassBayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      return _get_(name).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >:: _get_(NodeId id) const {
+                 ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       if (this->dag_.exists(id)) {
-        return  _class_->get(id);
+        return _class_->get(id);
       } else {
         GUM_ERROR(NotFound, "no element found with that id.")
       }
@@ -138,22 +129,21 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       ClassBayesNet< GUM_SCALAR >:: _get_(const std::string& name) const {
+                 ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
       try {
-        return  _class_->get(name);
+        return _class_->get(name);
       } catch (NotFound&) { GUM_ERROR(NotFound, "no element found with that id.") }
     }
 
     template < typename GUM_SCALAR >
-    INLINE const NodeProperty< Size >&
-                 ClassBayesNet< GUM_SCALAR >::modalities() const {
-      if ( _modalities_.empty()) {
+    INLINE const NodeProperty< Size >& ClassBayesNet< GUM_SCALAR >::modalities() const {
+      if (_modalities_.empty()) {
         for (const auto node: this->nodes()) {
-           _modalities_.insert(node, (Size)variable(node).domainSize());
+          _modalities_.insert(node, (Size)variable(node).domainSize());
         }
       }
 
-      return  _modalities_;
+      return _modalities_;
     }
 
     template < typename GUM_SCALAR >
@@ -161,7 +151,7 @@ namespace gum {
       std::string       tab = "  ";
       std::stringstream output;
       output << "digraph \"";
-      output <<  _class_->name() << "\" {" << std::endl;
+      output << _class_->name() << "\" {" << std::endl;
 
       for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0)

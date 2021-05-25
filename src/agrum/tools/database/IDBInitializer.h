@@ -141,8 +141,7 @@ namespace gum {
       IDBInitializer(const IDBInitializer< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      IDBInitializer(const IDBInitializer< ALLOC >& from,
-                     const allocator_type&          alloc);
+      IDBInitializer(const IDBInitializer< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       IDBInitializer(IDBInitializer< ALLOC >&& from);
@@ -154,8 +153,7 @@ namespace gum {
       virtual IDBInitializer< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual IDBInitializer< ALLOC >*
-         clone(const allocator_type& alloc) const = 0;
+      virtual IDBInitializer< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~IDBInitializer();
@@ -175,8 +173,7 @@ namespace gum {
       /** This method may raise exceptions when trying to insert new rows
        * into the database table. See Method insertRow() of the database table. */
       template < template < template < typename > class > class DATABASE >
-      void fillDatabase(DATABASE< ALLOC >& database,
-                        const bool         retry_insertion = false);
+      void fillDatabase(DATABASE< ALLOC >& database, const bool retry_insertion = false);
 
       /** @brief This method indicates which column filling raised an exception,
        * if any, during the execution of fillDatabase */
@@ -196,13 +193,11 @@ namespace gum {
       IDBInitializer< ALLOC >& operator=(IDBInitializer< ALLOC >&& from);
 
       /// ask the child class for the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > > variableNames_()
-         = 0;
+      virtual std::vector< std::string, ALLOC< std::string > > variableNames_() = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */
-      virtual const std::vector< std::string, ALLOC< std::string > >&
-         currentStringRow_();
+      virtual const std::vector< std::string, ALLOC< std::string > >& currentStringRow_();
 
       /// asks the child class for the content of the current row using dbcells
       /** If the child class parses DBRows, this method should be overloaded */
@@ -216,26 +211,24 @@ namespace gum {
 
       private:
       // the names of the variables
-      std::vector< std::string, ALLOC< std::string > >  _var_names_;
+      std::vector< std::string, ALLOC< std::string > > _var_names_;
 
       // the types of the input data read to fill the database
-      InputType  _input_type_;
+      InputType _input_type_;
 
       // indicates whether an exception was raised when adding the last row
       // into the database. If so, when filling again the database, we may
       // try to insert again the same row
-      bool  _last_insertion_failed_{false};
+      bool _last_insertion_failed_{false};
 
 
       /// fills the rows of the database using string inputs
       template < template < template < typename > class > class DATABASE >
-      void  _fillDatabaseFromStrings_(DATABASE< ALLOC >& database,
-                                     const bool         retry_insertion);
+      void _fillDatabaseFromStrings_(DATABASE< ALLOC >& database, const bool retry_insertion);
 
       /// fills the rows of the database using DBCell inputs
       template < template < template < typename > class > class DATABASE >
-      void  _fillDatabaseFromDBCells_(DATABASE< ALLOC >& database,
-                                     const bool         retry_insertion);
+      void _fillDatabaseFromDBCells_(DATABASE< ALLOC >& database, const bool retry_insertion);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

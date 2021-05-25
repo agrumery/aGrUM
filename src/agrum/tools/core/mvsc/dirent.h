@@ -217,7 +217,7 @@
 #  define _D_ALLOC_NAMLEN(p) (PATH_MAX)
 
 
-#  ifdef  __cplusplus
+#  ifdef __cplusplus
 extern "C" {
 #  endif
 
@@ -648,11 +648,7 @@ static struct dirent* readdir(DIR* dirp) {
     int    error;
 
     /* Attempt to convert file name to multi-byte string */
-    error = dirent_wcstombs_s(&n,
-                              dirp->ent.d_name,
-                              PATH_MAX,
-                              datap->cFileName,
-                              PATH_MAX);
+    error = dirent_wcstombs_s(&n, dirp->ent.d_name, PATH_MAX, datap->cFileName, PATH_MAX);
 
     /*
      * If the file name cannot be represented by a multi-byte string,
@@ -665,11 +661,8 @@ static struct dirent* readdir(DIR* dirp) {
      * VirtualBox shared folders fail to do this.
      */
     if (error && datap->cAlternateFileName[0] != '\0') {
-      error = dirent_wcstombs_s(&n,
-                                dirp->ent.d_name,
-                                PATH_MAX,
-                                datap->cAlternateFileName,
-                                PATH_MAX);
+      error
+         = dirent_wcstombs_s(&n, dirp->ent.d_name, PATH_MAX, datap->cAlternateFileName, PATH_MAX);
     }
 
     if (!error) {
@@ -850,7 +843,7 @@ static void dirent_set_errno(int error) {
 }
 
 
-#  ifdef  __cplusplus
+#  ifdef __cplusplus
 }
 #  endif
 

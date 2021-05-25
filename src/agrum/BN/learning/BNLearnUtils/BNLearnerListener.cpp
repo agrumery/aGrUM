@@ -42,10 +42,8 @@ s
 
 namespace gum {
   namespace learning {
-    BNLearnerListener::BNLearnerListener(genericBNLearner*    bnl,
-                                         ApproximationScheme& sch) :
-        ApproximationSchemeListener(sch),
-         _bnlearner_(bnl) {
+    BNLearnerListener::BNLearnerListener(genericBNLearner* bnl, ApproximationScheme& sch) :
+        ApproximationSchemeListener(sch), _bnlearner_(bnl) {
       bnl->setCurrentApproximationScheme(&sch);
       GUM_CONSTRUCTOR(BNLearnerListener);
     }
@@ -61,25 +59,20 @@ namespace gum {
       ;
     }
 
-    BNLearnerListener&
-       BNLearnerListener::operator=(const BNLearnerListener& other) {
+    BNLearnerListener& BNLearnerListener::operator=(const BNLearnerListener& other) {
       GUM_CONS_CPY(BNLearnerListener);
       GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener")
     }
 
-    void BNLearnerListener::whenProgress(const void* src,
-                                         Size        pourcent,
-                                         double      error,
-                                         double      time) {
-       _bnlearner_->distributeProgress(
-         static_cast< const ApproximationScheme* >(src),
-         pourcent,
-         error,
-         time);
+    void
+       BNLearnerListener::whenProgress(const void* src, Size pourcent, double error, double time) {
+      _bnlearner_->distributeProgress(static_cast< const ApproximationScheme* >(src),
+                                      pourcent,
+                                      error,
+                                      time);
     }
     void BNLearnerListener::whenStop(const void* src, std::string message) {
-       _bnlearner_->distributeStop(static_cast< const ApproximationScheme* >(src),
-                                  message);
+      _bnlearner_->distributeStop(static_cast< const ApproximationScheme* >(src), message);
     }
   }   // namespace learning
 }   // namespace gum

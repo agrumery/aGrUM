@@ -31,15 +31,13 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE GeneralizedCNFWriter< GUM_SCALAR,
-                               IApproximationPolicy >::GeneralizedCNFWriter() {
+  INLINE GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::GeneralizedCNFWriter() {
     GUM_CONSTRUCTOR(GeneralizedCNFWriter);
   }
 
   // Default destructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE GeneralizedCNFWriter< GUM_SCALAR,
-                               IApproximationPolicy >::~GeneralizedCNFWriter() {
+  INLINE GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::~GeneralizedCNFWriter() {
     GUM_DESTRUCTOR(GeneralizedCNFWriter);
   }
 
@@ -53,8 +51,7 @@ namespace gum {
   INLINE void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
      std::ostream&                  output,
      const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     std::stringstream strfile, strfile2;
 
@@ -106,8 +103,7 @@ namespace gum {
         for (Idx j = i + 1; j < var.domainSize(); j++) {
           std::stringstream strj;
           strj << var.name() << "_" << var.label(j);
-          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()]
-               << " 0\n";
+          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n";
           clause++;
         }
       }
@@ -123,8 +119,7 @@ namespace gum {
           std::stringstream str;
           str << inst.variable(i).name() << "_" << inst.val(inst.variable(i));
           str2 << "-" << vartable[str.str()] << " ";
-          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()]
-               << " 0\n";
+          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()] << " 0\n";
           clause++;
         }
 
@@ -135,8 +130,7 @@ namespace gum {
       clausstr << str2.str() << str3.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n"
-           << clausstr.str() << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
     output.flush();
   }
 
@@ -154,13 +148,11 @@ namespace gum {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
-    if (!output.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     std::stringstream strfile, strfile2;
 
-    if (!outputvar.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!outputvar.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     Idx num      = 0;
     Idx numparam = 0;
@@ -210,8 +202,7 @@ namespace gum {
         for (Idx j = i + 1; j < var.domainSize(); j++) {
           std::stringstream strj;
           strj << var.name() << "_" << var.label(j);
-          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()]
-               << " 0\n";
+          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n";
           clause++;
         }
       }
@@ -227,8 +218,7 @@ namespace gum {
           std::stringstream str;
           str << inst.variable(i).name() << "_" << inst.val(inst.variable(i));
           str2 << "-" << vartable[str.str()] << " ";
-          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()]
-               << " 0\n";
+          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()] << " 0\n";
           clause++;
         }
 
@@ -239,8 +229,7 @@ namespace gum {
       clausstr << str2.str() << str3.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n"
-           << clausstr.str() << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
     output.flush();
     outputvar << strfile.str() << strfile2.str();
     outputvar.flush();

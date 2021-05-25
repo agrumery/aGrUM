@@ -37,7 +37,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  const std::string  _createMsg_(const std::string& filename,
+  const std::string _createMsg_(const std::string& filename,
                                 const std::string& function,
                                 const int          line,
                                 const std::string& msg) {
@@ -46,8 +46,8 @@ namespace gum {
     stream << std::endl << msg << std::endl;
 #  else
     stream << std::endl
-           << "<" << filename << "> " << function << "() #" << std::setw(6)
-           << std::dec << line << " :" << std::endl
+           << "<" << filename << "> " << function << "() #" << std::setw(6) << std::dec << line
+           << " :" << std::endl
            << "--------------" << std::endl
            << "! " << msg << std::endl
            << "--------------" << std::endl;

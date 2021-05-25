@@ -70,8 +70,7 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >*
-       getFunctionInstance() {
+    MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >* getFunctionInstance() {
       return MultiDimFunctionGraph< GUM_SCALAR >::getTreeInstance();
     }
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
@@ -79,10 +78,8 @@ namespace gum {
       return MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >::getTreeInstance();
     }
-    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-       getAggregatorInstance() {
-      return MultiDimFunctionGraph< ActionSet,
-                                    SetTerminalNodePolicy >::getTreeInstance();
+    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() {
+      return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
     }
 
     /// @}
@@ -97,11 +94,10 @@ namespace gum {
     /// Computes Qaction for given actionid
     /// @return qAction : the computed Q(s,a)
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_SCALAR >*
-       regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-               Idx                                        actionId,
-               const FMDP< GUM_SCALAR >*                  fmdp,
-               const Set< const DiscreteVariable* >&      elVarSeq);
+    MultiDimFunctionGraph< GUM_SCALAR >* regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
+                                                 Idx                                   actionId,
+                                                 const FMDP< GUM_SCALAR >*             fmdp,
+                                                 const Set< const DiscreteVariable* >& elVarSeq);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -130,21 +126,18 @@ namespace gum {
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                   SetTerminalNodePolicy >*
-       argmaximize(const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                                SetTerminalNodePolicy >* f1,
-                   const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                                SetTerminalNodePolicy >* f2,
-                   Idx                                                   del = 3);
+    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+       argmaximize(
+          const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f1,
+          const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f2,
+          Idx del = 3);
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       add(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-           const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-           Idx                                        del = 1);
+    virtual MultiDimFunctionGraph< GUM_SCALAR >* add(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                     const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                     Idx del = 1);
 
     // ==========================================================================
     /// @warning this time, nothing is deleted

@@ -77,16 +77,13 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              external_apriori,
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >&
-            ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      IndepTestChi2(const DBRowGeneratorParser< ALLOC >& parser,
+                    const Apriori< ALLOC >&              external_apriori,
+                    const std::vector< std::pair< std::size_t, std::size_t >,
+                                       ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
+                    = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                    const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -104,10 +101,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(const DBRowGeneratorParser< ALLOC >& parser,
-                    const Apriori< ALLOC >&              apriori,
-                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                       nodeId2columns
+      IndepTestChi2(const DBRowGeneratorParser< ALLOC >&                          parser,
+                    const Apriori< ALLOC >&                                       apriori,
+                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
                     = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                     const allocator_type& alloc = allocator_type());
 
@@ -115,8 +111,7 @@ namespace gum {
       IndepTestChi2(const IndepTestChi2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      IndepTestChi2(const IndepTestChi2< ALLOC >& from,
-                    const allocator_type&         alloc);
+      IndepTestChi2(const IndepTestChi2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       IndepTestChi2(IndepTestChi2< ALLOC >&& from);
@@ -158,10 +153,10 @@ namespace gum {
 
       /// get the pair <chi2 statistic,pvalue> for a test var1 indep var2 given
       /// rhs_ids
-      std::pair< double, double >
-         statistics(NodeId                                        var1,
-                    NodeId                                        var2,
-                    const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids = {});
+      std::pair< double, double > statistics(NodeId                                        var1,
+                                             NodeId                                        var2,
+                                             const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids
+                                             = {});
 
       /// @}
 
@@ -180,13 +175,13 @@ namespace gum {
 
       private:
       /// the domain sizes of the variables
-      std::vector< std::size_t, ALLOC< std::size_t > >  _domain_sizes_;
+      std::vector< std::size_t, ALLOC< std::size_t > > _domain_sizes_;
 
       /// a chi2 distribution for computing critical values
-      Chi2  _chi2_;
+      Chi2 _chi2_;
 
       /// an empty conditioning set
-      const std::vector< Idx >  _empty_set_;
+      const std::vector< Idx > _empty_set_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

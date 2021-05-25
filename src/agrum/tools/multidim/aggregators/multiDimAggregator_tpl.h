@@ -55,8 +55,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    Idx MultiDimAggregator< GUM_SCALAR >::buildValue_(
-       const Instantiation& i) const {
+    Idx MultiDimAggregator< GUM_SCALAR >::buildValue_(const Instantiation& i) const {
       if (this->nbrDim() == 1) return neutralElt_();
 
       // is i equal to f(f(f(f...(j_,neutral_elt))))
@@ -65,10 +64,7 @@ namespace gum {
       bool stop_iteration = false;
 
       for (Idx j = 1; j < this->nbrDim(); j++) {
-        current = fold_(this->variable(j),
-                        i.val(this->variable(j)),
-                        current,
-                        stop_iteration);
+        current = fold_(this->variable(j), i.val(this->variable(j)), current, stop_iteration);
 
         if (stop_iteration) break;
       }
@@ -77,11 +73,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    GUM_SCALAR
-       MultiDimAggregator< GUM_SCALAR >::get(const Instantiation& i) const {
+    GUM_SCALAR MultiDimAggregator< GUM_SCALAR >::get(const Instantiation& i) const {
       if (this->nbrDim() < 1) {
-        GUM_ERROR(OperationNotAllowed,
-                  "Not enough variable for an aggregator : " << *this)
+        GUM_ERROR(OperationNotAllowed, "Not enough variable for an aggregator : " << *this)
       }
 
       const DiscreteVariable& agg     = this->variable((Idx)0);
@@ -117,8 +111,7 @@ namespace gum {
       } else {
         if (p->name() != this->name()) {
           GUM_ERROR(OperationNotAllowed,
-                    "Can not copy from a " << p->name() << " to a "
-                                           << this->name());
+                    "Can not copy from a " << p->name() << " to a " << this->name());
         }
       }
       // it the types aree consistant, nothing to do...
@@ -139,8 +132,7 @@ namespace gum {
 
     // For friendly displaying the content of the variable.
     template < typename GUM_SCALAR >
-    INLINE std::ostream& operator<<(std::ostream&                           s,
-                                    const MultiDimAggregator< GUM_SCALAR >& ag) {
+    INLINE std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag) {
       return s << ag.toString();
     }
   } /* namespace aggregator */

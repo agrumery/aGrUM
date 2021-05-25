@@ -107,10 +107,10 @@ namespace gum {
      *  | ______________| ___________| ___________| ___________|
      *
      */
-    double  _true_edge_,  _true_arc_,  _true_none_;
-    double  _wrong_edge_arc_,  _wrong_edge_none_;
-    double  _wrong_arc_edge_,  _wrong_arc_none_,  _misoriented_arc_;
-    double  _wrong_none_edge_,  _wrong_none_arc_;
+    double _true_edge_, _true_arc_, _true_none_;
+    double _wrong_edge_arc_, _wrong_edge_none_;
+    double _wrong_arc_edge_, _wrong_arc_none_, _misoriented_arc_;
+    double _wrong_none_edge_, _wrong_none_arc_;
     // double  _precision_,  _recall_,  _f_score_;
   };
 

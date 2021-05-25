@@ -48,13 +48,11 @@ namespace gum {
     GUM_CONSTRUCTOR(MixedGraph);
   }
 
-  MixedGraph::MixedGraph(const UndiGraph& g) :
-      NodeGraphPart(g), UndiGraph(g), DiGraph() {
+  MixedGraph::MixedGraph(const UndiGraph& g) : NodeGraphPart(g), UndiGraph(g), DiGraph() {
     GUM_CONSTRUCTOR(MixedGraph);
   }
 
-  MixedGraph::MixedGraph(const DiGraph& g) :
-      NodeGraphPart(g), UndiGraph(), DiGraph(g) {
+  MixedGraph::MixedGraph(const DiGraph& g) : NodeGraphPart(g), UndiGraph(), DiGraph(g) {
     GUM_CONSTRUCTOR(MixedGraph);
   }
 
@@ -76,8 +74,8 @@ namespace gum {
     return s;
   }
 
-  const std::vector< NodeId >
-     MixedGraph::mixedOrientedPath(const NodeId n1, const NodeId n2) const {
+  const std::vector< NodeId > MixedGraph::mixedOrientedPath(const NodeId n1,
+                                                            const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -138,8 +136,8 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found")
   }
 
-  const std::vector< NodeId >
-     MixedGraph::mixedUnorientedPath(const NodeId n1, const NodeId n2) const {
+  const std::vector< NodeId > MixedGraph::mixedUnorientedPath(const NodeId n1,
+                                                              const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -235,8 +233,7 @@ namespace gum {
 
       for (const auto nei: neighbours(node))
         if (!treatedNodes.exists(nei))
-          edgeStream << tab << node << " -> " << nei << " [dir=none];"
-                     << std::endl;
+          edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
 
       for (const auto chi: children(node))
         edgeStream << tab << node << " -> " << chi << ";" << std::endl;
@@ -244,9 +241,7 @@ namespace gum {
       treatedNodes.insert(node);
     }
 
-    output << nodeStream.str() << std::endl
-           << edgeStream.str() << std::endl
-           << "}" << std::endl;
+    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
 
     return output.str();
   }

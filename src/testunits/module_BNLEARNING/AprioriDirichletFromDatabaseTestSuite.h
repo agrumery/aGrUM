@@ -42,7 +42,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -432,7 +432,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -478,9 +478,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori(database,
-                                                            parser,
-                                                            nodeId2columns);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser, nodeId2columns);
 
       TS_ASSERT(apriori.weight() == 1.0);
       apriori.setWeight(2.0 * db_size);

@@ -62,8 +62,7 @@ namespace gum {
      * Default constructor.
      * @throw gum::InvalidArgument if external_weight is null.
      */
-    MultiDimNoisyAND(GUM_SCALAR external_weight,
-                     GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
+    MultiDimNoisyAND(GUM_SCALAR external_weight, GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
     MultiDimNoisyAND(const MultiDimNoisyAND< GUM_SCALAR >& from);
 
@@ -73,9 +72,8 @@ namespace gum {
      * @param bij First variables are new variables, seconds are in from.
      * @param from the copied instance
      */
-    MultiDimNoisyAND(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const MultiDimNoisyAND< GUM_SCALAR >&                                from);
+    MultiDimNoisyAND(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                     const MultiDimNoisyAND< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.
@@ -136,8 +134,7 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                         s,
-                           const MultiDimNoisyAND< GUM_SCALAR >& ag);
+  std::ostream& operator<<(std::ostream& s, const MultiDimNoisyAND< GUM_SCALAR >& ag);
 
 } /* namespace gum */
 

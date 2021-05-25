@@ -55,17 +55,15 @@ namespace gum_tests {
       reader.showElegantErrorsAndWarnings();
 
 
-      std::ofstream  _traceAlgoSaveFile_;
-       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
+      std::ofstream _traceAlgoSaveFile_;
+      _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
                                std::ios::out | std::ios::trunc);
-      if (! _traceAlgoSaveFile_) return;
-      TS_GUM_ASSERT_THROWS_NOTHING( _traceAlgoSaveFile_ << fmdp.toString());
-       _traceAlgoSaveFile_.close();
+      if (!_traceAlgoSaveFile_) return;
+      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString());
+      _traceAlgoSaveFile_.close();
 
-      int deletedFile
-         = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
-      if (deletedFile != 0)
-        std::cout << "Couldn't delete output file." << std::endl;
+      int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
+      if (deletedFile != 0) std::cout << "Couldn't delete output file." << std::endl;
 
 
       // Only way to ensure diagrams are read correctly
@@ -76,10 +74,9 @@ namespace gum_tests {
              = fmdp.beginVariables();
              varIter != fmdp.endVariables();
              ++varIter) {
-          gum::MultiDimFunctionGraph< double >* hey
-             = new gum::MultiDimFunctionGraph< double >(
-                *static_cast< const gum::MultiDimFunctionGraph< double >* >(
-                   fmdp.transition(*actIter, *varIter)));
+          gum::MultiDimFunctionGraph< double >* hey = new gum::MultiDimFunctionGraph< double >(
+             *static_cast< const gum::MultiDimFunctionGraph< double >* >(
+                fmdp.transition(*actIter, *varIter)));
           delete hey;
         }
     }
@@ -91,8 +88,7 @@ namespace gum_tests {
       gum::FMDP< double >           fmdp(true);
       gum::FMDPDatReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         reader = new gum::FMDPDatReader< double >(&fmdp, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
     }

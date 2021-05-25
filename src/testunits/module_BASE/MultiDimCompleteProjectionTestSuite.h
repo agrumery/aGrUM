@@ -136,8 +136,7 @@ namespace gum_tests {
       return result;
     }
 
-    double local_projmax(const gum::Potential< double >& table,
-                         gum::Instantiation&             instantiation) {
+    double local_projmax(const gum::Potential< double >& table, gum::Instantiation& instantiation) {
       const gum::MultiDimArray< double >& impl
          = dynamic_cast< const gum::MultiDimArray< double >& >(*(table.content()));
       return local_projmax(impl, instantiation);
@@ -165,8 +164,7 @@ namespace gum_tests {
     double* local_projmax(const gum::Potential< double* >& table,
                           gum::Instantiation&              instantiation) {
       const gum::MultiDimArray< double* >& impl
-         = dynamic_cast< const gum::MultiDimArray< double* >& >(
-            *(table.content()));
+         = dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
       return local_projmax(impl, instantiation);
     }
 
@@ -180,10 +178,8 @@ namespace gum_tests {
       return result;
     }
 
-    bool local_equal(const gum::Instantiation& inst1,
-                     const gum::Instantiation& inst2) {
-      const gum::Sequence< const gum::DiscreteVariable* >& vars
-         = inst1.variablesSequence();
+    bool local_equal(const gum::Instantiation& inst1, const gum::Instantiation& inst2) {
+      const gum::Sequence< const gum::DiscreteVariable* >& vars = inst1.variablesSequence();
 
       for (const auto var: vars)
         if (inst1.val(*var) != inst2.val(*var)) return false;
@@ -204,8 +200,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double > t1;
 
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
 
       gum::Instantiation inst(t1);
@@ -238,8 +234,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double > tt1;
 
-      tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&tt1);
 
       gum::MultiDimImplementation< double >& t1 = tt1;
@@ -277,8 +273,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t1 = new gum::MultiDimArray< double* >;
 
-      *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(t1);
 
       gum::Instantiation inst(t1);
@@ -311,8 +307,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* tt1 = new gum::MultiDimArray< double* >;
 
-      *tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-           << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      *tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(tt1);
       gum::MultiDimImplementation< double* >* t1 = tt1;
 
@@ -350,8 +346,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double > t1;
 
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
 
       gum::Instantiation inst(t1);
@@ -380,8 +376,8 @@ namespace gum_tests {
 
       gum::Potential< double > t1;
 
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
 
       gum::Instantiation inst(t1);
@@ -409,8 +405,8 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t1 = new gum::MultiDimArray< double* >;
 
-      *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(t1);
 
       gum::Instantiation inst(t1);
@@ -431,8 +427,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static double myMax(const gum::Potential< double >& table,
-                        gum::Instantiation*             inst) {
+    static double myMax(const gum::Potential< double >& table, gum::Instantiation* inst) {
       return table.max();
     }
 
@@ -447,8 +442,8 @@ namespace gum_tests {
 
       gum::Potential< double > t1;
 
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
       gum::MultiDimCompleteProjection< double, gum::Potential > Proj(myMax);
 

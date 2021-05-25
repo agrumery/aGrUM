@@ -97,12 +97,10 @@ namespace gum {
     Idx id() const;
 
     /// returns the set of multidims passed in argument to the operation
-    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-       multiDimArgs() const = 0;
+    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimArgs() const = 0;
 
     /// returns the set of multidims that should be the result of the operation
-    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-       multiDimResults() const = 0;
+    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimResults() const = 0;
 
     /// executes the operation
     virtual void execute() = 0;
@@ -135,18 +133,17 @@ namespace gum {
     ScheduleOperation(const ScheduleOperation< GUM_SCALAR >& from);
 
     /// copy operator
-    ScheduleOperation< GUM_SCALAR >&
-       operator=(const ScheduleOperation< GUM_SCALAR >&);
+    ScheduleOperation< GUM_SCALAR >& operator=(const ScheduleOperation< GUM_SCALAR >&);
 
     private:
     /// the name of the operation to perform
-    Type  _type_;
+    Type _type_;
 
     /// the id corresponding to the operation
-    Idx  _id_;
+    Idx _id_;
 
     /// returns a new distinct ID for each operation
-    static Idx  _newId_();
+    static Idx _newId_();
   };
 
 } /* namespace gum */

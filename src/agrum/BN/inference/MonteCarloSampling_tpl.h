@@ -35,8 +35,7 @@ namespace gum {
 
   /// Default constructor
   template < typename GUM_SCALAR >
-  MonteCarloSampling< GUM_SCALAR >::MonteCarloSampling(
-     const IBayesNet< GUM_SCALAR >* bn) :
+  MonteCarloSampling< GUM_SCALAR >::MonteCarloSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(MonteCarloSampling);
   }
@@ -56,8 +55,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
-                                                        Instantiation prev) {
+  Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     *w               = 1.0f;
     bool wrong_value = false;
     do {

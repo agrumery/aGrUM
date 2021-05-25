@@ -111,8 +111,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function to remove
      */
-    void erase(const std::string& projection_name,
-               const std::string& type_multidim);
+    void erase(const std::string& projection_name, const std::string& type_multidim);
 
     /**
      * @brief indicates whether a given entry exists in the register
@@ -128,8 +127,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function we look for
      */
-    bool exists(const std::string& projection_name,
-                const std::string& type_multidim) const;
+    bool exists(const std::string& projection_name, const std::string& type_multidim) const;
 
     /**
      * @brief returns the specialized projection operator assigned to a given
@@ -149,8 +147,7 @@ namespace gum {
      * @throws NotFound exception is thrown if the operator we look for does
      * not exist within this register.
      */
-    ProjectionPtr get(const std::string& projection_name,
-                      const std::string& type_multidim) const;
+    ProjectionPtr get(const std::string& projection_name, const std::string& type_multidim) const;
 
     /// @}
     // ========================================================================
@@ -197,15 +194,15 @@ namespace gum {
      * MultiDimImplementation is associated a function to project this subtype
      * of hypermatrix (the ProjectionPtr)
      */
-    HashTable< std::string, ProjectionSet* >  _set_;
+    HashTable< std::string, ProjectionSet* > _set_;
   };
 
   /// A function to more easily register new projection functions in MultiDims
   template < typename GUM_SCALAR >
-  void registerProjection(
-     const std::string& projection_name,
-     const std::string& type_multidim,
-     typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr function);
+  void
+     registerProjection(const std::string& projection_name,
+                        const std::string& type_multidim,
+                        typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr function);
 
   // a display operator for ProjectionPtrs
 

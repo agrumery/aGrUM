@@ -45,7 +45,7 @@ namespace gum_tests {
 
   class BIFWriterTestSuite: public CxxTest::TestSuite {
     private:
-    bool  __compareFile(std::string f1, std::string f2) {
+    bool __compareFile(std::string f1, std::string f2) {
       std::ifstream file1, file2;
       file1.open(f1, std::ios::binary);
       file2.open(f2, std::ios::binary);
@@ -102,8 +102,7 @@ namespace gum_tests {
 
         j++;
         // we do not compare the comments (can contain version number of agrum
-        if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0))
-          continue;
+        if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0)) continue;
         if (strcmp(string1, string2) != 0) {
           GUM_TRACE(f2 << ":" << j);
           GUM_TRACE_VAR(string1);
@@ -157,10 +156,9 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::BIFWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
+      std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      TS_ASSERT(
-          __compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
+      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 
     private:

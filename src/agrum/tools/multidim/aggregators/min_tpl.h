@@ -63,7 +63,7 @@ namespace gum {
     INLINE Idx Min< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
-                                        bool& stop_iteration) const {
+                                        bool&                   stop_iteration) const {
       return (i1 < i2) ? i1 : i2;
     }
 

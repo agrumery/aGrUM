@@ -36,8 +36,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(
        const typename DBRowGeneratorSet< ALLOC >::allocator_type& alloc) :
-         _generators_(alloc),
-         _setInputRow_performed_(alloc) {
+        _generators_(alloc),
+        _setInputRow_performed_(alloc) {
       GUM_CONSTRUCTOR(DBRowGeneratorSet);
     }
 
@@ -47,12 +47,12 @@ namespace gum {
     DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(
        const DBRowGeneratorSet< ALLOC >&                          from,
        const typename DBRowGeneratorSet< ALLOC >::allocator_type& alloc) :
-         _generators_(from. _nb_generators_, nullptr, alloc),
-         _nb_generators_(from. _nb_generators_),
-         _setInputRow_performed_(from. _nb_generators_, 0, alloc) {
+        _generators_(from._nb_generators_, nullptr, alloc),
+        _nb_generators_(from._nb_generators_),
+        _setInputRow_performed_(from._nb_generators_, 0, alloc) {
       // create the generators
-      for (std::size_t i = std::size_t(0); i <  _nb_generators_; ++i)
-         _generators_[i] = from. _generators_[i]->clone(alloc);
+      for (std::size_t i = std::size_t(0); i < _nb_generators_; ++i)
+        _generators_[i] = from._generators_[i]->clone(alloc);
 
       GUM_CONS_CPY(DBRowGeneratorSet);
     }
@@ -60,8 +60,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(
-       const DBRowGeneratorSet< ALLOC >& from) :
+    INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from) :
         DBRowGeneratorSet< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -70,17 +69,16 @@ namespace gum {
     INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(
        DBRowGeneratorSet< ALLOC >&&                               from,
        const typename DBRowGeneratorSet< ALLOC >::allocator_type& alloc) :
-         _generators_(std::move(from. _generators_), alloc),
-         _nb_generators_(from. _nb_generators_),  _output_row_(from. _output_row_),
-         _setInputRow_performed_(std::move(from. _setInputRow_performed_), alloc) {
+        _generators_(std::move(from._generators_), alloc),
+        _nb_generators_(from._nb_generators_), _output_row_(from._output_row_),
+        _setInputRow_performed_(std::move(from._setInputRow_performed_), alloc) {
       GUM_CONS_MOV(DBRowGeneratorSet);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(
-       DBRowGeneratorSet< ALLOC >&& from) :
+    INLINE DBRowGeneratorSet< ALLOC >::DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from) :
         DBRowGeneratorSet< ALLOC >(std::move(from), from.getAllocator()) {}
 
     /// virtual copy constructor with a given allocator
@@ -111,16 +109,16 @@ namespace gum {
     void DBRowGeneratorSet< ALLOC >::clear() {
       // delete all the generators
       ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
-      for (auto gen:  _generators_) {
+      for (auto gen: _generators_) {
         allocator.destroy(gen);
         allocator.deallocate(gen, 1);
       }
 
       // clear all the internal fields
-       _generators_.clear();
-       _nb_generators_ = std::size_t(0);
-       _output_row_    = nullptr;
-       _setInputRow_performed_.clear();
+      _generators_.clear();
+      _nb_generators_ = std::size_t(0);
+      _output_row_    = nullptr;
+      _setInputRow_performed_.clear();
     }
 
 
@@ -134,16 +132,18 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorSet< ALLOC >& DBRowGeneratorSet< ALLOC >::operator=(
-       const DBRowGeneratorSet< ALLOC >& from) {
+    DBRowGeneratorSet< ALLOC >&
+       DBRowGeneratorSet< ALLOC >::operator=(const DBRowGeneratorSet< ALLOC >& from) {
       if (this != &from) {
         // produce the new generators
         ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
-        std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > >
-           new_generators(from. _nb_generators_, nullptr, allocator);
-        for (std::size_t i = std::size_t(0); i < from. _nb_generators_; ++i) {
+        std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > > new_generators(
+           from._nb_generators_,
+           nullptr,
+           allocator);
+        for (std::size_t i = std::size_t(0); i < from._nb_generators_; ++i) {
           try {
-            new_generators[i] = from. _generators_[i]->clone(allocator);
+            new_generators[i] = from._generators_[i]->clone(allocator);
           } catch (...) {
             for (std::size_t j = std::size_t(0); j < i; ++j) {
               allocator.destroy(new_generators[j]);
@@ -154,17 +154,16 @@ namespace gum {
         }
 
         // create the setInputDBrow_performed vector
-        std::vector< int, ALLOC< int > > setInputDBrow_performed(
-           from. _nb_generators_,
-           0,
-           getAllocator());
+        std::vector< int, ALLOC< int > > setInputDBrow_performed(from._nb_generators_,
+                                                                 0,
+                                                                 getAllocator());
 
         // remove the old generators and copy the new ones
         clear();
-         _generators_            = std::move(new_generators);
-         _nb_generators_         = from. _nb_generators_;
-         _output_row_            = nullptr;
-         _setInputRow_performed_ = std::move(setInputDBrow_performed);
+        _generators_            = std::move(new_generators);
+        _nb_generators_         = from._nb_generators_;
+        _output_row_            = nullptr;
+        _setInputRow_performed_ = std::move(setInputDBrow_performed);
       }
 
       return *this;
@@ -178,10 +177,10 @@ namespace gum {
       if (this != &from) {
         // remove the old generators and move the new ones
         clear();
-         _generators_            = std::move(from. _generators_);
-         _nb_generators_         = from. _nb_generators_;
-         _output_row_            = from. _output_row_;
-         _setInputRow_performed_ = std::move(from. _setInputRow_performed_);
+        _generators_            = std::move(from._generators_);
+        _nb_generators_         = from._nb_generators_;
+        _output_row_            = from._output_row_;
+        _setInputRow_performed_ = std::move(from._setInputRow_performed_);
       }
       return *this;
     }
@@ -189,9 +188,8 @@ namespace gum {
 
     /// returns the ith generator
     template < template < typename > class ALLOC >
-    INLINE DBRowGenerator< ALLOC >&
-       DBRowGeneratorSet< ALLOC >::operator[](const std::size_t i) {
-      return *( _generators_[i]);
+    INLINE DBRowGenerator< ALLOC >& DBRowGeneratorSet< ALLOC >::operator[](const std::size_t i) {
+      return *(_generators_[i]);
     }
 
 
@@ -199,82 +197,78 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const DBRowGenerator< ALLOC >&
        DBRowGeneratorSet< ALLOC >::operator[](const std::size_t i) const {
-      return *( _generators_[i]);
+      return *(_generators_[i]);
     }
 
 
     /// inserts a new generator at the end of the set
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Generator >
-    void DBRowGeneratorSet< ALLOC >::insertGenerator(
-       const Generator< ALLOC >& generator) {
+    void DBRowGeneratorSet< ALLOC >::insertGenerator(const Generator< ALLOC >& generator) {
       // check that no output row generation is still active
-      if ( _output_row_ != nullptr)
+      if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "you cannot insert a new generator while a generation is "
                   "still being processed");
 
       ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
-       _generators_.push_back(generator.clone(allocator));
+      _generators_.push_back(generator.clone(allocator));
 
       try {
-         _setInputRow_performed_.push_back(0);
+        _setInputRow_performed_.push_back(0);
       } catch (...) {
-        allocator.destroy( _generators_.back());
-        allocator.deallocate( _generators_.back(), 1);
+        allocator.destroy(_generators_.back());
+        allocator.deallocate(_generators_.back(), 1);
         throw;
       }
 
-      ++ _nb_generators_;
-       _output_row_ = nullptr;
+      ++_nb_generators_;
+      _output_row_ = nullptr;
     }
 
 
     /// inserts a new generator at the end of the set
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Generator >
-    void DBRowGeneratorSet< ALLOC >::insertGenerator(
-       const Generator< ALLOC >& generator,
-       const std::size_t         i) {
+    void DBRowGeneratorSet< ALLOC >::insertGenerator(const Generator< ALLOC >& generator,
+                                                     const std::size_t         i) {
       // check that no output row generation is still active
-      if ( _output_row_ != nullptr)
+      if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "you cannot insert a new generator while a generation is "
                   "still being processed");
 
       ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
-       _generators_.insert( _generators_.begin() + i, generator.clone(allocator));
+      _generators_.insert(_generators_.begin() + i, generator.clone(allocator));
 
       try {
-         _setInputRow_performed_.push_back(0);
+        _setInputRow_performed_.push_back(0);
       } catch (...) {
-        allocator.destroy(*( _generators_.begin() + i));
-        allocator.deallocate(*( _generators_.begin() + i));
+        allocator.destroy(*(_generators_.begin() + i));
+        allocator.deallocate(*(_generators_.begin() + i));
         throw;
       }
 
-      ++ _nb_generators_;
-       _output_row_ = nullptr;
+      ++_nb_generators_;
+      _output_row_ = nullptr;
     }
 
 
     /// returns the number of generators
     template < template < typename > class ALLOC >
     INLINE std::size_t DBRowGeneratorSet< ALLOC >::nbGenerators() const noexcept {
-      return  _nb_generators_;
+      return _nb_generators_;
     }
 
 
     /// assign a new Bayes net to all the generators that depend on a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DBRowGeneratorSet< ALLOC >::setBayesNet(
-       const BayesNet< GUM_SCALAR >& new_bn) {
-      HashTable< DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >*,
-                 const BayesNet< GUM_SCALAR >* >
+    void DBRowGeneratorSet< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+      HashTable< DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >*, const BayesNet< GUM_SCALAR >* >
          old_bns;
 
-      for (auto xgen:  _generators_) {
+      for (auto xgen: _generators_) {
         // check if the generator relies on a Bayes net
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >* gen = nullptr;
         try {
@@ -304,20 +298,20 @@ namespace gum {
     /// returns the number of generators (alias for nbGenerators)
     template < template < typename > class ALLOC >
     INLINE std::size_t DBRowGeneratorSet< ALLOC >::size() const noexcept {
-      return  _nb_generators_;
+      return _nb_generators_;
     }
 
 
     /// returns true if there are still rows that can be output by the RowFilter
     template < template < typename > class ALLOC >
     INLINE bool DBRowGeneratorSet< ALLOC >::hasRows() {
-      return  _output_row_ != nullptr;
+      return _output_row_ != nullptr;
     }
 
 
     // try to produce a new row
     template < template < typename > class ALLOC >
-    bool DBRowGeneratorSet< ALLOC >:: _produceNextRow_(
+    bool DBRowGeneratorSet< ALLOC >::_produceNextRow_(
        const DBRow< DBTranslatedValue, ALLOC >* input_row,
        std::size_t                              i) {
       // the generation of output rows can be viewed as the traversal of a
@@ -340,12 +334,12 @@ namespace gum {
       // until all the generators have been able to generate at least one output
       // row (or no output row can be produced from input_row).
       const DBRow< DBTranslatedValue, ALLOC >* row = input_row;
-      while (i !=  _nb_generators_) {
-        auto generator =  _generators_[i];
+      while (i != _nb_generators_) {
+        auto generator = _generators_[i];
 
         // if we did not pass any row yet to the ith generator, do it
         // else use method generate() to generate a new output row
-        if ( _setInputRow_performed_[i] == 0) {
+        if (_setInputRow_performed_[i] == 0) {
           // pass the current row
           const bool has_rows = generator->setInputRow(*row);
 
@@ -356,14 +350,14 @@ namespace gum {
               continue;
             } else {
               // here we were unable to generate output rows
-               _output_row_ = nullptr;
+              _output_row_ = nullptr;
               return false;
             }
           } else {
             // here, the generator is able to generate output rows
             // so, generate the first one
             row                        = &(generator->generate());
-             _setInputRow_performed_[i] = 1;
+            _setInputRow_performed_[i] = 1;
 
             // pass to the next generator
             ++i;
@@ -381,13 +375,13 @@ namespace gum {
           } else {
             // indicate that the next time we use this generator, we will have
             // to use method setInputDBRow and backtrack
-             _setInputRow_performed_[i] = 0;
+            _setInputRow_performed_[i] = 0;
             if (i > std::size_t(0)) {
               --i;
               continue;
             } else {
               // here we were unable to generate output rows
-               _output_row_ = nullptr;
+              _output_row_ = nullptr;
               return false;
             }
           }
@@ -396,34 +390,33 @@ namespace gum {
 
       // here row contains a row generated on a leaf of the row generation tree
       // we should keep it when the user will ask for the next row to generate
-       _output_row_ = row;
+      _output_row_ = row;
       return true;
     }
 
 
     /// sets the input row from which the generator will create new rows
     template < template < typename > class ALLOC >
-    INLINE bool DBRowGeneratorSet< ALLOC >::setInputRow(
-       const DBRow< DBTranslatedValue, ALLOC >& input_row) {
+    INLINE bool
+       DBRowGeneratorSet< ALLOC >::setInputRow(const DBRow< DBTranslatedValue, ALLOC >& input_row) {
       // reset all the generators: ask them to use method setInputDBRow
       if (hasRows())
-        for (auto& performed:  _setInputRow_performed_)
+        for (auto& performed: _setInputRow_performed_)
           performed = 0;
 
       // now, parse the row generation tree
-      return  _produceNextRow_(&input_row, std::size_t(0));
+      return _produceNextRow_(&input_row, std::size_t(0));
     }
 
 
     /// generate new rows from the input row
     template < template < typename > class ALLOC >
-    INLINE const DBRow< DBTranslatedValue, ALLOC >&
-                 DBRowGeneratorSet< ALLOC >::generate() {
+    INLINE const DBRow< DBTranslatedValue, ALLOC >& DBRowGeneratorSet< ALLOC >::generate() {
       // get the row that we should return
-      const auto row =  _output_row_;
+      const auto row = _output_row_;
 
       // we should ask the last generator to produce the next output row
-       _produceNextRow_( _output_row_,  _nb_generators_ - 1);
+      _produceNextRow_(_output_row_, _nb_generators_ - 1);
 
       return *row;
     }
@@ -432,11 +425,11 @@ namespace gum {
     /// resets the filter
     template < template < typename > class ALLOC >
     INLINE void DBRowGeneratorSet< ALLOC >::reset() {
-      for (auto gen:  _generators_)
+      for (auto gen: _generators_)
         gen->reset();
-      for (auto& performed:  _setInputRow_performed_)
+      for (auto& performed: _setInputRow_performed_)
         performed = 0;
-       _output_row_ = nullptr;
+      _output_row_ = nullptr;
     }
 
 
@@ -446,11 +439,11 @@ namespace gum {
     INLINE void DBRowGeneratorSet< ALLOC >::setColumnsOfInterest(
        const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest) {
       // check that no output row generation is still active
-      if ( _output_row_ != nullptr)
+      if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "you cannot change the columns of interest while a "
                   "generation is still being processed");
-      for (auto gen:  _generators_)
+      for (auto gen: _generators_)
         gen->setColumnsOfInterest(cols_of_interest);
     }
 
@@ -460,11 +453,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void DBRowGeneratorSet< ALLOC >::setColumnsOfInterest(
        std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest) {
-      if ( _output_row_ != nullptr)
+      if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "you cannot change the columns of interest while a "
                   "generation is still being processed");
-      for (auto gen:  _generators_)
+      for (auto gen: _generators_)
         gen->setColumnsOfInterest(cols_of_interest);
     }
 
@@ -473,12 +466,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const std::vector< std::size_t, ALLOC< std::size_t > >&
                  DBRowGeneratorSet< ALLOC >::columnsOfInterest() const {
-      if ( _nb_generators_ == std::size_t(0)) {
+      if (_nb_generators_ == std::size_t(0)) {
         GUM_ERROR(UndefinedElement,
                   "there are no generators yet in the generator set, so "
                   "there are no columns of interest");
       }
-      return  _generators_[0]->columnsOfInterest();
+      return _generators_[0]->columnsOfInterest();
     }
 
 
@@ -486,7 +479,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename DBRowGeneratorSet< ALLOC >::allocator_type
        DBRowGeneratorSet< ALLOC >::getAllocator() const {
-      return allocator_type( _generators_.get_allocator());
+      return allocator_type(_generators_.get_allocator());
     }
 
 

@@ -139,8 +139,7 @@ namespace gum {
     void variableType(const VarType& type);
 
     /// Tells the factory to add a property to the current network.
-    void addNetworkProperty(const std::string& propName,
-                            const std::string& propValue) final;
+    void addNetworkProperty(const std::string& propName, const std::string& propValue) final;
 
     /// Tells the factory that we're out of a network declaration.
     void endNetworkDeclaration() final;
@@ -293,8 +292,7 @@ namespace gum {
 
     /// Tells the factory on which modality we want to instantiate one of
     /// variable's parent.
-    void setParentModality(const std::string& parent,
-                           const std::string& modality) final;
+    void setParentModality(const std::string& parent, const std::string& modality) final;
 
     /**
      * @brief Gives the values of the variable with respect to precedent
@@ -399,69 +397,65 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool  _foo_flag_;
+    bool _foo_flag_;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool  _bar_flag_;
+    bool _bar_flag_;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string >  _stringBag_;
+    std::vector< std::string > _stringBag_;
 
     /// Used when a factorized CPT is built.
-    Instantiation*  _parents_;
+    Instantiation* _parents_;
 
     /// Implementation of variable between two
     /// startVariableDeclaration/endVariableDeclaration calls.
-    MultiDimImplementation< GUM_SCALAR >*  _impl_;
+    MultiDimImplementation< GUM_SCALAR >* _impl_;
 
     /// @}
 
     /// State stack.
-    std::vector< factory_state >  _states_;
+    std::vector< factory_state > _states_;
 
     /// The constructed BayesNet.
-    BayesNet< GUM_SCALAR >*  _bn_;
+    BayesNet< GUM_SCALAR >* _bn_;
 
     /// Mapping between a declared variable's name and it's node id.
-    HashTable< std::string, NodeId >  _varNameMap_;
+    HashTable< std::string, NodeId > _varNameMap_;
 
     /// Copy operator is illegal, use only copy constructor.
-    BayesNetFactory< GUM_SCALAR >&
-       operator=(const BayesNetFactory< GUM_SCALAR >& source)
-       = delete;
+    BayesNetFactory< GUM_SCALAR >& operator=(const BayesNetFactory< GUM_SCALAR >& source) = delete;
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void  _illegalStateError_(const std::string& s);
+    void _illegalStateError_(const std::string& s);
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
-    void  _checkVariableName_(const std::string& name);
+    void _checkVariableName_(const std::string& name);
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
-    Idx  _checkVariableModality_(const std::string& name, const std::string& mod);
+    Idx _checkVariableModality_(const std::string& name, const std::string& mod);
 
     /// Check if in  _stringBag_ there is no other modality with the same name.
-    void  _checkModalityInBag_(const std::string& mod);
+    void _checkModalityInBag_(const std::string& mod);
 
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.
-    void  _setCPTAndParents_(const DiscreteVariable&  var,
-                            Potential< GUM_SCALAR >* table);
+    void _setCPTAndParents_(const DiscreteVariable& var, Potential< GUM_SCALAR >* table);
 
     /// Reset the different parts used to constructed the BayesNet.
-    void  _resetParts_();
+    void _resetParts_();
 
     /// Fill a potential from a raw CPT.
-    void  _fillProbaWithValuesTable_(const std::vector< std::string >& variables,
+    void _fillProbaWithValuesTable_(const std::vector< std::string >& variables,
                                     const std::vector< float >&       rawTable);
     /// Fill a potential from a raw CPT.(using the canonical order of vars)
-    void  _fillProbaWithValuesTable_(const std::vector< float >& rawTable);
+    void _fillProbaWithValuesTable_(const std::vector< float >& rawTable);
 
     /// Increment a modality counter for the  _fillProbaWithValuesTable_ method.
-    bool  _increment_(std::vector< gum::Idx >&         modCounter,
-                     List< const DiscreteVariable* >& varList);
+    bool _increment_(std::vector< gum::Idx >& modCounter, List< const DiscreteVariable* >& varList);
   };
 
 

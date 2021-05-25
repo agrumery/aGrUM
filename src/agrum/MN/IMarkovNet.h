@@ -151,8 +151,7 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
     /// @}
 
     /**
@@ -232,7 +231,7 @@ namespace gum {
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     private:
-    void  _minimalCondSetVisit_(NodeId         node,
+    void _minimalCondSetVisit_(NodeId         node,
                                const NodeSet& soids,
                                NodeSet&       minimal,
                                NodeSet&       alreadyVisited) const;
@@ -246,8 +245,7 @@ namespace gum {
 
   /// Prints map's graph in output using the Graphviz-dot format.
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                   output,
-                           const IMarkovNet< GUM_SCALAR >& mn);
+  std::ostream& operator<<(std::ostream& output, const IMarkovNet< GUM_SCALAR >& mn);
 
 } /* namespace gum */
 

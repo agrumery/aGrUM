@@ -37,8 +37,7 @@ namespace gum {
        MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {
       std::stringstream str;
-      str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl
-          << ")";
+      str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl << ")";
       GUM_CONSTRUCTOR(PRMFuncAttribute);
     }
 
@@ -48,12 +47,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMFuncAttribute< GUM_SCALAR >::addParent(
-       const PRMClassElement< GUM_SCALAR >& elt) {}
+    INLINE void
+       PRMFuncAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
-    INLINE void PRMFuncAttribute< GUM_SCALAR >::addChild(
-       const PRMClassElement< GUM_SCALAR >& elt) {}
+    INLINE void PRMFuncAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
+    }
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
@@ -65,14 +64,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >&
-       PRMFuncAttribute< GUM_SCALAR >::operator=(
-          const PRMFuncAttribute< GUM_SCALAR >& from) {
+       PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
     template < typename GUM_SCALAR >
-    INLINE void
-       PRMFuncAttribute< GUM_SCALAR >::setCpf_(Potential< GUM_SCALAR >* cpf) {
+    INLINE void PRMFuncAttribute< GUM_SCALAR >::setCpf_(Potential< GUM_SCALAR >* cpf) {
       GUM_ERROR(OperationNotAllowed, "Cannot change CPF of a functional attribute")
     }
 

@@ -74,9 +74,8 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriK2(const DatabaseTable< ALLOC >& database,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                   nodeId2columns
+      AprioriK2(const DatabaseTable< ALLOC >&                                 database,
+                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
                 = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                 const allocator_type& alloc = allocator_type());
 

@@ -40,8 +40,7 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
-     const MultiDimLogit< GUM_SCALAR >& from) :
+  INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(const MultiDimLogit< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimLogit);
   }
@@ -63,9 +62,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimLogit< GUM_SCALAR >::get(const Instantiation& i) const {
-    if (this->nbrDim() < 1) {
-      GUM_ERROR(OperationNotAllowed, "Not enough variable for a Logit")
-    }
+    if (this->nbrDim() < 1) { GUM_ERROR(OperationNotAllowed, "Not enough variable for a Logit") }
 
     const DiscreteVariable& C = this->variable((Idx)0);
 
@@ -75,8 +72,7 @@ namespace gum {
 
     for (Idx j = 1; j < this->nbrDim(); j++) {
       const DiscreteVariable& v = this->variable(j);
-      fact += GUM_SCALAR(this->causalWeight(v)
-                         * this->variable(j).numerical(i.val(v)));
+      fact += GUM_SCALAR(this->causalWeight(v) * this->variable(j).numerical(i.val(v)));
     }
 
     fact     = 1 / (1 + std::exp(-fact));   // or std::exp(fact)/(1+std::exp(fact))
@@ -109,16 +105,13 @@ namespace gum {
 
   // For friendly displaying the content of the variable.
   template < typename GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream&                      s,
-                                  const MultiDimLogit< GUM_SCALAR >& ag) {
+  INLINE std::ostream& operator<<(std::ostream& s, const MultiDimLogit< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >*
-         MultiDimLogit< GUM_SCALAR >::newFactory() const {
-    return new MultiDimLogit< GUM_SCALAR >(this-> _external_weight_,
-                                           this-> _default_weight_);
+  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimLogit< GUM_SCALAR >::newFactory() const {
+    return new MultiDimLogit< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation

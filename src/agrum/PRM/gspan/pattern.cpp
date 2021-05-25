@@ -36,21 +36,18 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern(const Pattern& source) : DiGraph(),  _last_(0) {
+      Pattern::Pattern(const Pattern& source) : DiGraph(), _last_(0) {
         GUM_CONS_CPY(Pattern);
         NodeProperty< NodeId > node_map;
 
         for (NodeId node = 1; node <= source.size(); ++node) {
-          node_map.insert(
-             node,
-             addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
+          node_map.insert(node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
         for (const auto& edge: source.code().codes)
           addArc(node_map[edge->i],
                  node_map[edge->j],
-                 const_cast< LabelData& >(
-                    source.label(node_map[edge->i], node_map[edge->j])));
+                 const_cast< LabelData& >(source.label(node_map[edge->i], node_map[edge->j])));
       }
 
       bool Pattern::isMinimal() {
@@ -63,7 +60,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if ( _expandCodeIsMinimal_(node, next)) { return false; }
+              if (_expandCodeIsMinimal_(node, next)) { return false; }
             }
           }
 
@@ -75,7 +72,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if ( _expandCodeIsMinimal_(node, next)) { return false; }
+              if (_expandCodeIsMinimal_(node, next)) { return false; }
             }
           }
         }
@@ -96,7 +93,7 @@ namespace gum {
         return sBuff.str();
       }
 
-      bool Pattern:: _expandCodeIsMinimal_(NodeId u, NodeId v) {
+      bool Pattern::_expandCodeIsMinimal_(NodeId u, NodeId v) {
         Bijection< NodeId, NodeId > node_map;
         Pattern                     p;
         node_map.insert(u, p.addNodeWithLabel(label(u)));
@@ -108,27 +105,24 @@ namespace gum {
 
         for (const auto nei: children(u))
           if (nei != v)
-            if ( _rec_(p, node_map, u, nei)) return true;
+            if (_rec_(p, node_map, u, nei)) return true;
 
         for (const auto nei: parents(u))
           if (nei != v)
-            if ( _rec_(p, node_map, u, nei)) return true;
+            if (_rec_(p, node_map, u, nei)) return true;
 
         for (const auto nei: children(v))
           if (nei != u)
-            if ( _rec_(p, node_map, v, nei)) return true;
+            if (_rec_(p, node_map, v, nei)) return true;
 
         for (const auto nei: parents(v))
           if (nei != u)
-            if ( _rec_(p, node_map, v, nei)) return true;
+            if (_rec_(p, node_map, v, nei)) return true;
 
         return false;
       }
 
-      bool Pattern:: _rec_(Pattern&                     p,
-                          Bijection< NodeId, NodeId >& node_map,
-                          NodeId                       u,
-                          NodeId                       v) {
+      bool Pattern::_rec_(Pattern& p, Bijection< NodeId, NodeId >& node_map, NodeId u, NodeId v) {
         if (node_map.existsFirst(v)) {
           if (node_map.second(u) < node_map.second(v)) {
             // Invalid forward edge
@@ -173,10 +167,10 @@ namespace gum {
 
           for (const auto node: r_path) {
             for (const auto nei: children(node_map.first(node)))
-              if ( _rec_(p, node_map, node_map.first(node), nei)) return true;
+              if (_rec_(p, node_map, node_map.first(node), nei)) return true;
 
             for (const auto nei: parents(node_map.first(node)))
-              if ( _rec_(p, node_map, node_map.first(node), nei)) return true;
+              if (_rec_(p, node_map, node_map.first(node), nei)) return true;
           }
         }
 
@@ -186,7 +180,7 @@ namespace gum {
         return false;
       }
 
-      bool Pattern:: _not_rec_(Pattern&                     p,
+      bool Pattern::_not_rec_(Pattern&                     p,
                               Bijection< NodeId, NodeId >& node_map,
                               NodeId                       a_u,
                               NodeId                       a_v) {
@@ -210,8 +204,7 @@ namespace gum {
                 // Invalid forward edge
                 go = false;
               } else if ((p.existsArc(node_map.second(u), node_map.second(v)))
-                         || (p.existsArc(node_map.second(v),
-                                         node_map.second(u)))) {
+                         || (p.existsArc(node_map.second(v), node_map.second(u)))) {
                 // Duplicate arc !
                 go = false;
               }

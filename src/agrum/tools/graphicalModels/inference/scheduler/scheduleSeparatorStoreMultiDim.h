@@ -52,14 +52,12 @@ namespace gum {
 
     /// default constructor
     ScheduleSeparatorStoreMultiDim(
-       const ScheduleMultiDim< GUM_SCALAR >& table,
-       ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
-           separator_tables,
-       Arc separator);
+       const ScheduleMultiDim< GUM_SCALAR >&                              table,
+       ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >& separator_tables,
+       Arc                                                                separator);
 
     /// copy constructor
-    ScheduleSeparatorStoreMultiDim(
-       const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
+    ScheduleSeparatorStoreMultiDim(const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleSeparatorStoreMultiDim< GUM_SCALAR >* newFactory() const;
@@ -117,8 +115,7 @@ namespace gum {
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-       multiDimResults() const;
+    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -127,16 +124,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim< GUM_SCALAR >  _table_;
+    ScheduleMultiDim< GUM_SCALAR > _table_;
 
     // a mapping assigning to each clique a set of tables
-    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >*  _tableSet_;
+    ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* _tableSet_;
 
     // the separator into which the table will be stored
-    Arc  _separator_;
+    Arc _separator_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* _args_;
   };
 
 } /* namespace gum */

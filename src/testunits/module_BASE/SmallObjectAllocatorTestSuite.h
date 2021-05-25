@@ -42,8 +42,7 @@ namespace gum_tests {
     void test_Fixed_Allocator_CONST_AND_DEST() {
       gum::FixedAllocator* fa = nullptr;
       // Test constructor
-      TS_ASSERT_THROWS_NOTHING(
-         fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50));
+      TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50));
       // Test destructor
       TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa);
     }
@@ -52,7 +51,7 @@ namespace gum_tests {
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
     void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
-      gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
+      gum::FixedAllocator* fa    = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       void*                pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate());
       TS_ASSERT_THROWS_NOTHING(fa->deallocate(pVoid));
@@ -71,9 +70,7 @@ namespace gum_tests {
       // Demande du 51ème élément
       TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()));
       // Désallocation de tous les éléments.
-      for (std::vector< void* >::iterator vite = vVoid.begin();
-           vite != vVoid.end();
-           ++vite)
+      for (std::vector< void* >::iterator vite = vVoid.begin(); vite != vVoid.end(); ++vite)
         TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
       TS_ASSERT_THROWS_NOTHING(delete fa);
     }
@@ -83,7 +80,7 @@ namespace gum_tests {
     // Au terme de ce test, seul 7 Chunk supplémentaire doivent avoir été créé
     // ==============================================================================
     void test_Fixed_Allocator_ALLOC_DEALLOC_CROISEE() {
-      gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
+      gum::FixedAllocator*                 fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       std::vector< std::vector< void* >* > vvVoid;
       for (int i = 0; i < 7; ++i)
         vvVoid.push_back(new std::vector< void* >());
@@ -106,14 +103,12 @@ namespace gum_tests {
 
       // Nettoyage
       for (int i = 0; i < 7; ++i) {
-        for (std::vector< void* >::iterator vite = vvVoid[i]->begin();
-             vite != vvVoid[i]->end();
+        for (std::vector< void* >::iterator vite = vvVoid[i]->begin(); vite != vvVoid[i]->end();
              ++vite)
           TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
         delete vvVoid[i];
       }
-      for (std::vector< void* >::iterator vite = v6.begin(); vite != v6.end();
-           ++vite)
+      for (std::vector< void* >::iterator vite = v6.begin(); vite != v6.end(); ++vite)
         TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
       TS_ASSERT_THROWS_NOTHING(delete fa);
     }
@@ -135,11 +130,9 @@ namespace gum_tests {
     void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
       void* pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(
-         pVoid
-         = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
+         pVoid = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
       TS_ASSERT_THROWS_NOTHING(
-         gum::SmallObjectAllocator::instance().deallocate(pVoid,
-                                                          5 * sizeof(gum::Idx)));
+         gum::SmallObjectAllocator::instance().deallocate(pVoid, 5 * sizeof(gum::Idx)));
     }
 
     // ==============================================================================
@@ -148,9 +141,8 @@ namespace gum_tests {
     void test_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS() {
       std::vector< void* > vVoid;
       for (std::size_t i = 1; i < 13; ++i)
-        TS_ASSERT_THROWS_NOTHING(
-           vVoid.push_back(gum::SmallObjectAllocator::instance().allocate(
-              gum::Size(2 * i * sizeof(gum::Idx)))));
+        TS_ASSERT_THROWS_NOTHING(vVoid.push_back(
+           gum::SmallObjectAllocator::instance().allocate(gum::Size(2 * i * sizeof(gum::Idx)))));
 
       std::vector< std::size_t > dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for (int i = 0; i < 12; ++i)

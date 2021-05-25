@@ -57,8 +57,7 @@ namespace gum {
   class FMDP {
     template < typename GUM_SCALAR_O >
     using VarTransitionTable
-       = HashTable< const DiscreteVariable*,
-                    const MultiDimImplementation< GUM_SCALAR_O >* >;
+       = HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR_O >* >;
 
     public:
     // ===========================================================================
@@ -93,21 +92,21 @@ namespace gum {
      * Returns an iterator reference to he beginning of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {
-      return  _varSeq_.beginSafe();
+      return _varSeq_.beginSafe();
     }
 
     /**
      * Returns an iterator reference to the end of the list of variables
      */
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() const {
-      return  _varSeq_.endSafe();
+      return _varSeq_.endSafe();
     }
 
     /**
      * Returns the primed variable associate to the given main variable
      */
     const DiscreteVariable* main2prime(const DiscreteVariable* mainVar) const {
-      return  _main2primed_.second(mainVar);
+      return _main2primed_.second(mainVar);
     }
 
     /**
@@ -115,7 +114,7 @@ namespace gum {
      */
     INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
                  mapMainPrime() const {
-      return  _main2primed_;
+      return _main2primed_;
     }
 
     /// @}
@@ -134,16 +133,12 @@ namespace gum {
     /**
      * Returns an iterator reference to he beginning of the list of actions
      */
-    SequenceIteratorSafe< Idx > beginActions() const {
-      return  _actionSeq_.beginSafe();
-    }
+    SequenceIteratorSafe< Idx > beginActions() const { return _actionSeq_.beginSafe(); }
 
     /**
      * Returns an iterator reference to the end of the list of actions
      */
-    SequenceIteratorSafe< Idx > endActions() const {
-      return  _actionSeq_.endSafe();
-    }
+    SequenceIteratorSafe< Idx > endActions() const { return _actionSeq_.endSafe(); }
 
     /// @}
 
@@ -158,10 +153,9 @@ namespace gum {
      * @throw DuplicateElement if variable already has a transition for this
      * action
      */
-    void addTransitionForAction(
-       Idx                                         actionId,
-       const DiscreteVariable*                     var,
-       const MultiDimImplementation< GUM_SCALAR >* transition);
+    void addTransitionForAction(Idx                                         actionId,
+                                const DiscreteVariable*                     var,
+                                const MultiDimImplementation< GUM_SCALAR >* transition);
 
     /**
      * Adds a default variable transition
@@ -177,8 +171,8 @@ namespace gum {
      * Returns transition associated to given in parameter variable and the
      * given action
      */
-    const MultiDimImplementation< GUM_SCALAR >*
-       transition(Idx actionId, const DiscreteVariable* v) const;
+    const MultiDimImplementation< GUM_SCALAR >* transition(Idx                     actionId,
+                                                           const DiscreteVariable* v) const;
 
     /// @}
 
@@ -191,8 +185,7 @@ namespace gum {
      * Adds a cost table to specified action
      * @throw NotFound if action does not exists
      */
-    void addCostForAction(Idx                                         actionId,
-                          const MultiDimImplementation< GUM_SCALAR >* cost);
+    void addCostForAction(Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost);
 
     /**
      * Adds a default variable cost
@@ -218,8 +211,7 @@ namespace gum {
      * Adds a default variable reward
      * @throw DuplicateElement if a default reward exists already
      */
-    void addRewardForAction(Idx                                         actionId,
-                            const MultiDimImplementation< GUM_SCALAR >* reward);
+    void addRewardForAction(Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward);
 
     /**
      * Adds a default variable reward
@@ -266,32 +258,30 @@ namespace gum {
 
     private:
     /// Sequence de variables and its iterator
-    Sequence< const DiscreteVariable* >  _varSeq_;
+    Sequence< const DiscreteVariable* > _varSeq_;
 
-    Sequence< Idx >  _actionSeq_;
+    Sequence< Idx > _actionSeq_;
 
     /// Mapping from a main variable to its associated primed version
-    Bijection< const DiscreteVariable*, const DiscreteVariable* >  _main2primed_;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > _main2primed_;
 
     /// Bijection mapping an action name to its id
-    Bijection< Idx, const std::string* >  _actionMap_;
+    Bijection< Idx, const std::string* > _actionMap_;
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* >  _actionTransitionTable_;
+    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > _actionTransitionTable_;
 
     /// Table which give for each action cost table
-    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-        _actionCostTable_;
+    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > _actionCostTable_;
 
     /// Table which give for each action reward table
-    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-        _actionRewardTable_;
+    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > _actionRewardTable_;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance
     /// Usually the case when fmdp has been initialized with the factory
-    bool  _onDestructionDeleteVars_;
+    bool _onDestructionDeleteVars_;
   };
 
 

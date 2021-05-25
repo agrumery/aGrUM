@@ -180,7 +180,7 @@ namespace gum {
 
     private:
     /// the set of labels contained in the variable
-    mutable Sequence< std::string >  _labels_;
+    mutable Sequence< std::string > _labels_;
   };
 
 } /* namespace gum */

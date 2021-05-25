@@ -58,9 +58,8 @@
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
 
-#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
-    add2MultiDimArrays4Pointers
-#  define GUM_MULTI_DIM_OPERATOR(x, y) new T((*x) + (*y))
+#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME add2MultiDimArrays4Pointers
+#  define GUM_MULTI_DIM_OPERATOR(x, y)                   new T((*x) + (*y))
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
@@ -85,9 +84,8 @@
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
 
-#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
-    subtract2MultiDimArrays4Pointers
-#  define GUM_MULTI_DIM_OPERATOR(x, y) new T((*x) - (*y))
+#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME subtract2MultiDimArrays4Pointers
+#  define GUM_MULTI_DIM_OPERATOR(x, y)                   new T((*x) - (*y))
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
@@ -112,9 +110,8 @@
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
 
-#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
-    multiply2MultiDimArrays4Pointers
-#  define GUM_MULTI_DIM_OPERATOR(x, y) new T((*x) * (*y))
+#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME multiply2MultiDimArrays4Pointers
+#  define GUM_MULTI_DIM_OPERATOR(x, y)                   new T((*x) * (*y))
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
@@ -139,9 +136,8 @@
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
 
-#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
-    divide2MultiDimArrays4Pointers
-#  define GUM_MULTI_DIM_OPERATOR(x, y) new T((*x) / (*y))
+#  define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME divide2MultiDimArrays4Pointers
+#  define GUM_MULTI_DIM_OPERATOR(x, y)                   new T((*x) / (*y))
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_OPERATOR
@@ -160,8 +156,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    add2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -177,8 +172,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    subtract2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME subtract2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -194,8 +188,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    multiply2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME multiply2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -211,8 +204,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    divide2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME divide2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -228,8 +220,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    maximize2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME maximize2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -245,8 +236,7 @@
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-    minimize2MultiDimFunctionGraphs
+#  define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME minimize2MultiDimFunctionGraphs
 #  include <agrum/tools/multidim/utils/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #  undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 

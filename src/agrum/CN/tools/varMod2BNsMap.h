@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef  __VAR_MOD_2_BNS_MAP__H__
-#define  __VAR_MOD_2_BNS_MAP__H__
+#ifndef __VAR_MOD_2_BNS_MAP__H__
+#define __VAR_MOD_2_BNS_MAP__H__
 
 #include <list>
 
@@ -148,8 +148,7 @@ namespace gum {
        * %Set the current thread sample and it's hash.
        * @param sample The constant reference to the sample with structure.
        */
-      void setCurrentSample(
-         const std::vector< std::vector< std::vector< bool > > >& sample);
+      void setCurrentSample(const std::vector< std::vector< std::vector< bool > > >& sample);
 
       /**
        * Get the current sample as a vector of bits without structure.

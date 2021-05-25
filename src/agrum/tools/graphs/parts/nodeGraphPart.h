@@ -434,8 +434,7 @@ namespace gum {
      * method
      * will assign it for you. */
     template < typename VAL >
-    NodeProperty< VAL > nodesProperty(VAL (*f)(const NodeId&),
-                                      Size size = 0) const;
+    NodeProperty< VAL > nodesProperty(VAL (*f)(const NodeId&), Size size = 0) const;
 
     /// a method to create a hashMap with key:NodeId and value:VAL
     /** for all nodes, the value stored is a. This method is a wrapper of the
@@ -468,18 +467,18 @@ namespace gum {
     friend class gum_tests::NodeGraphPartTestSuite;
 
     /// updating endIterator (always at  _max_+1)
-    void  _updateEndIteratorSafe_();
+    void _updateEndIteratorSafe_();
 
     /// code for clearing nodes (called twice)
-    void  _clearNodes_();
+    void _clearNodes_();
 
     /// to delete hole.
     /// @warning the hole is assumed to be existing.
-    void  _eraseHole_(NodeId id);
+    void _eraseHole_(NodeId id);
 
     /// to add a hole.
     /// @warning id is assumed not to be already a hole
-    void  _addHole_(NodeId id);
+    void _addHole_(NodeId id);
 
     // ############################################################################
     /// @name Introspection
@@ -487,29 +486,29 @@ namespace gum {
     /// @{
 
     /// @return true if id is part of  _holes_
-    bool  _inHoles_(NodeId id) const;
+    bool _inHoles_(NodeId id) const;
 
     /// @return the size of  _holes_
-    Size  _sizeHoles_() const;
+    Size _sizeHoles_() const;
 
     /// @}
 
     /** @brief the set of nodes not contained in the NodeGraphPart in the
      * interval 1.. _max_
      * @warning  _holes_ may be nullptr. */
-    NodeSet*  _holes_;
+    NodeSet* _holes_;
 
     /// value for  _holes_ configuration
-    Size  _holes_size_;
+    Size _holes_size_;
 
     /// value for  _holes_ configuration
-    bool  _holes_resize_policy_;
+    bool _holes_resize_policy_;
 
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
-    NodeGraphPartIteratorSafe  _endIteratorSafe_;
+    NodeGraphPartIteratorSafe _endIteratorSafe_;
 
     /** @brief the id below which NodeIds may belong to the NodeGraphPart */
-    NodeId  _boundVal_;
+    NodeId _boundVal_;
   };
 
   /// for friendly displaying the content of node set

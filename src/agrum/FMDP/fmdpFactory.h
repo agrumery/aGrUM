@@ -163,8 +163,7 @@ namespace gum {
     void startTransitionDeclaration();
 
     /// Tells the factory to add a transition table to the current fmdp.
-    void addTransition(const std::string&        var,
-                       const MultiDimAdressable* transition);
+    void addTransition(const std::string& var, const MultiDimAdressable* transition);
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
@@ -264,53 +263,53 @@ namespace gum {
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool  _foo_flag_;
+    bool _foo_flag_;
 
     /// Depending on the context this flag is used for some VERY important
     /// reasons.
-    bool  _bar_flag_;
+    bool _bar_flag_;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector< std::string >  _stringBag_;
+    std::vector< std::string > _stringBag_;
 
     /// Just to keep track of multidim between two start/end calls.
-    std::vector< const MultiDimImplementation< GUM_SCALAR >* >  _ddBag_;
+    std::vector< const MultiDimImplementation< GUM_SCALAR >* > _ddBag_;
 
     /// Used in VARIABLE mode
     /// Checks if in  _stringBag_ there is no other modality with the same name.
-    void  _checkModalityInBag_(const std::string& mod);
+    void _checkModalityInBag_(const std::string& mod);
 
     /// Reset the different parts used to constructed the FMDP.
-    void  _resetParts_();
+    void _resetParts_();
 
     /// Insert every variables in the function graph
-    void  _initializeFunctionGraph_();
+    void _initializeFunctionGraph_();
 
     /// Insert every variables in the function graph
-    void  _finalizeFunctionGraph_();
+    void _finalizeFunctionGraph_();
 
     /// @}
 
     /// State stack.
-    std::vector< FMDPfactory_state >  _states_;
+    std::vector< FMDPfactory_state > _states_;
 
     /// The constructed FMDP
-    FMDP< GUM_SCALAR >*  _fmdp_;
+    FMDP< GUM_SCALAR >* _fmdp_;
 
     /// The FunctionGraph we're building at a given time
-    MultiDimFunctionGraph< GUM_SCALAR >*  _FunctionGraph_;
+    MultiDimFunctionGraph< GUM_SCALAR >* _FunctionGraph_;
 
     /// Mapping between a declared variable's name and itself.
-    HashTable< std::string, const DiscreteVariable* >  _varNameMap_;
+    HashTable< std::string, const DiscreteVariable* > _varNameMap_;
 
     /// Action Id counter
-    Idx  _actionIdcpt_;
+    Idx _actionIdcpt_;
 
     /// Copy operator is illegal, use only copy constructor.
     FMDPFactory< GUM_SCALAR >& operator=(const FMDPFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void  _illegalStateError_(const std::string& s);
+    void _illegalStateError_(const std::string& s);
   };
 
 

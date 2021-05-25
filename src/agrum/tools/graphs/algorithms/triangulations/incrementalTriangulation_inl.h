@@ -46,7 +46,7 @@ namespace gum {
   INLINE
   const CliqueGraph& IncrementalTriangulation::junctionTree() {
     updateTriangulation();
-    return  _junction_tree_;
+    return _junction_tree_;
   }
 
   /// returns the junction tree of the maximal prime subgraphs
@@ -54,21 +54,18 @@ namespace gum {
   INLINE
   const CliqueGraph& IncrementalTriangulation::maxPrimeSubgraphTree() {
     updateTriangulation();
-    return  _T_mpd_;
+    return _T_mpd_;
   }
 
   /// returns the triangulation algorithm (useful for fine tuning it)
 
-  INLINE const UnconstrainedTriangulation&
-               IncrementalTriangulation::triangulationAlgo() const {
-    return * _triangulation_;
+  INLINE const UnconstrainedTriangulation& IncrementalTriangulation::triangulationAlgo() const {
+    return *_triangulation_;
   }
 
   /// returns the current graph (that which is incrementally triangulated)
 
-  INLINE const UndiGraph& IncrementalTriangulation::graph() const {
-    return  _graph_;
-  }
+  INLINE const UndiGraph& IncrementalTriangulation::graph() const { return _graph_; }
 
 } /* namespace gum */
 

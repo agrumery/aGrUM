@@ -94,31 +94,29 @@ namespace gum {
      * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) final;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string  _heading_(const IBayesNet< GUM_SCALAR >& bn);
+    std::string _heading_(const IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Returns the end of the BIF file.
      */
-    std::string  _documentend_();
+    std::string _documentend_();
 
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string  _variableBloc_(const DiscreteVariable& var);
+    std::string _variableBloc_(const DiscreteVariable& var);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string  _variableDefinition_(const NodeId&                  varNodeId,
-                                     const IBayesNet< GUM_SCALAR >& bn);
+    std::string _variableDefinition_(const NodeId& varNodeId, const IBayesNet< GUM_SCALAR >& bn);
   };
 
 

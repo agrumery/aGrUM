@@ -44,32 +44,28 @@ namespace gum_tests {
 
   class aSimpleWeightedListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __mess;
+    int         __nbr;
+    std::string __mess;
 
     public:
     aSimpleWeightedListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
     void whenStop(const void* buffer, const std::string s) {
-       __nbr++;
-       __mess = s;
+      __nbr++;
+      __mess = s;
     }
 
-    int         getNbr() { return  __nbr; }
-    std::string getMess() { return  __mess; }
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
   };
 
   class WeightedSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testWeightedBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -89,8 +85,7 @@ namespace gum_tests {
     }
 
     void testWeightedBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
 
@@ -113,8 +108,7 @@ namespace gum_tests {
     }
 
     void testWeightedBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
@@ -138,8 +132,7 @@ namespace gum_tests {
     }
 
     void testWeightedBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
@@ -163,8 +156,7 @@ namespace gum_tests {
     }
 
     void testWeightedBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {

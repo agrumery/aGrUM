@@ -50,8 +50,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 0u);
     }
     void testCaseD() {
-      auto bn
-         = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 4u);

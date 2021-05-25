@@ -80,13 +80,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              apriori,
+         const DBRowGeneratorParser< ALLOC >&                                 parser,
+         const Apriori< ALLOC >&                                              apriori,
          const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >&
-            ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+                            ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
@@ -107,10 +105,9 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              apriori,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+         const DBRowGeneratorParser< ALLOC >&                          parser,
+         const Apriori< ALLOC >&                                       apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
@@ -118,22 +115,19 @@ namespace gum {
       ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from,
-                          const allocator_type&               alloc);
+      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from,
-                          const allocator_type&          alloc);
+      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual ScoreLog2Likelihood< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreLog2Likelihood< ALLOC >*
-         clone(const allocator_type& alloc) const;
+      virtual ScoreLog2Likelihood< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ScoreLog2Likelihood();
@@ -148,8 +142,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreLog2Likelihood< ALLOC >&
-         operator=(const ScoreLog2Likelihood< ALLOC >& from);
+      ScoreLog2Likelihood< ALLOC >& operator=(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// move operator
       ScoreLog2Likelihood< ALLOC >& operator=(ScoreLog2Likelihood< ALLOC >&& from);
@@ -201,8 +194,7 @@ namespace gum {
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns a non empty string if the apriori is compatible with the score.
        */
-      static std::string isAprioriCompatible(const std::string& apriori_type,
-                                             double             weight = 1.0f);
+      static std::string isAprioriCompatible(const std::string& apriori_type, double weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
@@ -221,7 +213,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori< ALLOC >  _internal_apriori_;
+      AprioriNoApriori< ALLOC > _internal_apriori_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

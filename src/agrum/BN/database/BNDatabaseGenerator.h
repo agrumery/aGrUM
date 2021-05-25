@@ -122,8 +122,7 @@ namespace gum {
       void setVarOrder(const std::vector< std::string >& varOrder);
 
       /// change columns order according to a csv file
-      void setVarOrderFromCSV(const std::string& csvFileURL,
-                              const std::string& csvSeparator = ",");
+      void setVarOrderFromCSV(const std::string& csvFileURL, const std::string& csvSeparator = ",");
 
       /// set columns in topoligical order
       void setTopologicalVarOrder();
@@ -147,35 +146,33 @@ namespace gum {
 
       private:
       /// Bayesian network
-      const BayesNet< GUM_SCALAR >&  _bn_;
+      const BayesNet< GUM_SCALAR >& _bn_;
 
       /// bijection nodes names
-      Bijection< std::string, NodeId >  _names2ids_;
+      Bijection< std::string, NodeId > _names2ids_;
 
       /// number of variables
-      Size  _nbVars_;
+      Size _nbVars_;
 
       /// generated database
-      std::vector< std::vector< Idx > >  _database_;
+      std::vector< std::vector< Idx > > _database_;
 
       /// variable order in generated database
-      std::vector< Idx >  _varOrder_;
+      std::vector< Idx > _varOrder_;
 
       /// whether drawSamples has been already called.
-      bool  _drawnSamples_ = false;
+      bool _drawnSamples_ = false;
 
       /// log2Likelihood of generated samples
-      double  _log2likelihood_ = 0;
+      double _log2likelihood_ = 0;
 
       /// returns varOrder from a csv file
-      std::vector< Idx >  _varOrderFromCSV_(const std::string& csvFileURL,
-                                           const std::string& csvSeparator
-                                           = ",") const;
+      std::vector< Idx > _varOrderFromCSV_(const std::string& csvFileURL,
+                                           const std::string& csvSeparator = ",") const;
 
       /// returns varOrder from a csv file
-      std::vector< Idx >  _varOrderFromCSV_(std::ifstream&     csvFile,
-                                           const std::string& csvSeparator
-                                           = ",") const;
+      std::vector< Idx > _varOrderFromCSV_(std::ifstream&     csvFile,
+                                           const std::string& csvSeparator = ",") const;
 
       // forbidden copies / moves
       BNDatabaseGenerator(const BNDatabaseGenerator&) = delete;

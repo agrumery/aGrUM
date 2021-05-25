@@ -80,7 +80,7 @@ namespace gum {
      * @return the resulting influence diagram
      */
     static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                        Size domainSize = 2);
+                                                        Size               domainSize = 2);
 
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -105,8 +105,7 @@ namespace gum {
     /**
      * Copy Operator
      */
-    InfluenceDiagram< GUM_SCALAR >&
-       operator=(const InfluenceDiagram< GUM_SCALAR >& source);
+    InfluenceDiagram< GUM_SCALAR >& operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
@@ -151,24 +150,18 @@ namespace gum {
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
-    bool isUtilityNode(const std::string& name) const {
-      return isUtilityNode(idFromName(name));
-    };
+    bool isUtilityNode(const std::string& name) const { return isUtilityNode(idFromName(name)); };
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
-    bool isDecisionNode(const std::string& name) const {
-      return isDecisionNode(idFromName(name));
-    };
+    bool isDecisionNode(const std::string& name) const { return isDecisionNode(idFromName(name)); };
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
-    bool isChanceNode(const std::string& name) const {
-      return isChanceNode(idFromName(name));
-    };
+    bool isChanceNode(const std::string& name) const { return isChanceNode(idFromName(name)); };
     /**
      * Returns the number of utility nodes
      */
@@ -434,15 +427,15 @@ namespace gum {
 
     private:
     /// Mapping between id and variable
-    VariableNodeMap  _variableMap_;
+    VariableNodeMap _variableMap_;
 
     /// Mapping between potential variable's id and their CPT
-    NodeProperty< Potential< GUM_SCALAR >* >  _potentialMap_;
+    NodeProperty< Potential< GUM_SCALAR >* > _potentialMap_;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty< Potential< GUM_SCALAR >* >  _utilityMap_;
+    NodeProperty< Potential< GUM_SCALAR >* > _utilityMap_;
 
     /// The temporal order
-    mutable List< NodeSet >  _temporalOrder_;
+    mutable List< NodeSet > _temporalOrder_;
   };
 
 } /* namespace gum */

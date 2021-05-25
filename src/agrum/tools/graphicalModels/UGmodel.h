@@ -120,9 +120,7 @@ namespace gum {
     virtual bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const final;
     /** check if nodes X and nodes Y are independent given nodes Z
      */
-    bool isIndependent(const NodeSet& X,
-                       const NodeSet& Y,
-                       const NodeSet& Z) const final;
+    bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const final;
 
     bool isIndependent(const std::string&                Xname,
                        const std::string&                Yname,

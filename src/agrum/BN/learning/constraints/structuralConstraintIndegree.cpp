@@ -43,24 +43,21 @@ namespace gum {
     }
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintIndegree::StructuralConstraintIndegree(Size nb_nodes,
-                                                               Size max_indegree) :
-        StructuralConstraintDiGraph(nb_nodes),
-         _Indegree_max_indegree_(max_indegree) {
+    StructuralConstraintIndegree::StructuralConstraintIndegree(Size nb_nodes, Size max_indegree) :
+        StructuralConstraintDiGraph(nb_nodes), _Indegree_max_indegree_(max_indegree) {
       for (NodeId i = 0; i < nb_nodes; ++i) {
-         _Indegree_max_parents_.insert(i, max_indegree);
+        _Indegree_max_parents_.insert(i, max_indegree);
       }
       GUM_CONSTRUCTOR(StructuralConstraintIndegree);
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintIndegree::StructuralConstraintIndegree(
-       const DiGraph& graph,
-       Size           max_indegree) :
+    StructuralConstraintIndegree::StructuralConstraintIndegree(const DiGraph& graph,
+                                                               Size           max_indegree) :
         StructuralConstraintDiGraph(graph),
-         _Indegree_max_indegree_(max_indegree) {
+        _Indegree_max_indegree_(max_indegree) {
       for (const auto id: graph) {
-         _Indegree_max_parents_.insert(id, max_indegree);
+        _Indegree_max_parents_.insert(id, max_indegree);
       }
       GUM_CONSTRUCTOR(StructuralConstraintIndegree);
     }
@@ -69,8 +66,8 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(
        const StructuralConstraintIndegree& from) :
         StructuralConstraintDiGraph(from),
-         _Indegree_max_parents_(from. _Indegree_max_parents_),
-         _Indegree_max_indegree_(from. _Indegree_max_indegree_) {
+        _Indegree_max_parents_(from._Indegree_max_parents_),
+        _Indegree_max_indegree_(from._Indegree_max_indegree_) {
       GUM_CONS_CPY(StructuralConstraintIndegree);
     }
 
@@ -78,8 +75,8 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree(
        StructuralConstraintIndegree&& from) :
         StructuralConstraintDiGraph(std::move(from)),
-         _Indegree_max_parents_(std::move(from. _Indegree_max_parents_)),
-         _Indegree_max_indegree_(std::move(from. _Indegree_max_indegree_)) {
+        _Indegree_max_parents_(std::move(from._Indegree_max_parents_)),
+        _Indegree_max_indegree_(std::move(from._Indegree_max_indegree_)) {
       GUM_CONS_MOV(StructuralConstraintIndegree);
     }
 
@@ -89,24 +86,24 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintIndegree& StructuralConstraintIndegree::operator=(
-       const StructuralConstraintIndegree& from) {
+    StructuralConstraintIndegree&
+       StructuralConstraintIndegree::operator=(const StructuralConstraintIndegree& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-         _Indegree_max_parents_               = from. _Indegree_max_parents_;
-         _Indegree_max_indegree_              = from. _Indegree_max_indegree_;
+        _Indegree_max_parents_               = from._Indegree_max_parents_;
+        _Indegree_max_indegree_              = from._Indegree_max_indegree_;
       }
 
       return *this;
     }
 
     /// move operator
-    StructuralConstraintIndegree& StructuralConstraintIndegree::operator=(
-       StructuralConstraintIndegree&& from) {
+    StructuralConstraintIndegree&
+       StructuralConstraintIndegree::operator=(StructuralConstraintIndegree&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-         _Indegree_max_parents_  = std::move(from. _Indegree_max_parents_);
-         _Indegree_max_indegree_ = std::move(from. _Indegree_max_indegree_);
+        _Indegree_max_parents_               = std::move(from._Indegree_max_parents_);
+        _Indegree_max_indegree_              = std::move(from._Indegree_max_indegree_);
       }
 
       return *this;

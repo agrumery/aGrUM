@@ -66,8 +66,7 @@ namespace gum {
   {
 
     // get the variables of the uninstantiated table
-    const Sequence< const DiscreteVariable* >& table_vars
-       = table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars = table->variablesSequence();
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
@@ -154,8 +153,7 @@ namespace gum {
     // that were not instantiated. ptable and presult are pointers on the
     // arrays that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult
-       = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
-          &(result->unsafeGet(0)));
+       = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
     Instantiation table_inst(table);
     table_inst += table_alone_offset;
 

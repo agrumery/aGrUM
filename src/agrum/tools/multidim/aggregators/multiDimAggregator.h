@@ -129,9 +129,7 @@ namespace gum {
 
       void setChangeNotification(const gum::Instantiation&) override{};
 
-      std::string toString(const gum::Instantiation* i) const override {
-        return i->toString();
-      };
+      std::string toString(const gum::Instantiation* i) const override { return i->toString(); };
 
       /**
        * @return the real number of parameters used for this table.
@@ -186,10 +184,7 @@ namespace gum {
       /// fold_ is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx fold_(const DiscreteVariable& v,
-                        Idx                     i1,
-                        Idx                     i2,
-                        bool&                   stop_iteration) const = 0;
+      virtual Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const = 0;
     };
 
 
@@ -199,8 +194,7 @@ namespace gum {
 
     /// For friendly displaying the content of the array.
     template < typename GUM_SCALAR >
-    std::ostream& operator<<(std::ostream&                           s,
-                             const MultiDimAggregator< GUM_SCALAR >& ag);
+    std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag);
 
   } /* namespace aggregator */
 } /* namespace gum */

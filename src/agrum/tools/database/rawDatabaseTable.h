@@ -158,18 +158,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template < template < typename > class VARALLOC,
-                 template < typename >
-                 class MISSALLOC >
-      RawDatabaseTable(
-         const MissingValType< MISSALLOC >& missing_symbols,
-         const std::vector< std::string, VARALLOC< std::string > >& var_names,
-         const allocator_type& alloc = allocator_type());
+      template < template < typename > class VARALLOC, template < typename > class MISSALLOC >
+      RawDatabaseTable(const MissingValType< MISSALLOC >&                         missing_symbols,
+                       const std::vector< std::string, VARALLOC< std::string > >& var_names,
+                       const allocator_type& alloc = allocator_type());
 
       /// default constructor
       template < template < typename > class MISSALLOC >
       RawDatabaseTable(const MissingValType< MISSALLOC >& missing_symbols,
-                       const allocator_type& alloc = allocator_type());
+                       const allocator_type&              alloc = allocator_type());
 
       /// default constructor
       RawDatabaseTable(const allocator_type& alloc = allocator_type());
@@ -178,22 +175,19 @@ namespace gum {
       RawDatabaseTable(const RawDatabaseTable< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      RawDatabaseTable(const RawDatabaseTable< ALLOC >& from,
-                       const allocator_type&            alloc);
+      RawDatabaseTable(const RawDatabaseTable< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       RawDatabaseTable(RawDatabaseTable< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      RawDatabaseTable(RawDatabaseTable< ALLOC >&& from,
-                       const allocator_type&       alloc);
+      RawDatabaseTable(RawDatabaseTable< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual RawDatabaseTable< ALLOC >* clone() const final;
 
       /// virtual copy constructor with a given allocator
-      virtual RawDatabaseTable< ALLOC >*
-         clone(const allocator_type& alloc) const final;
+      virtual RawDatabaseTable< ALLOC >* clone(const allocator_type& alloc) const final;
 
       /// destructor
       virtual ~RawDatabaseTable();
@@ -248,9 +242,8 @@ namespace gum {
        * @throw SizeError is raised if the names passed in arguments cannot be
        * assigned to the columns of the RawDatabaseTable because the size of their
        * vector is inadequate. */
-      virtual void setVariableNames(
-         const std::vector< std::string, ALLOC< std::string > >& names,
-         const bool from_external_object = true) final;
+      virtual void setVariableNames(const std::vector< std::string, ALLOC< std::string > >& names,
+                                    const bool from_external_object = true) final;
 
       /// makes the database table ignore from now on the kth column
       /** This method can be called in two different ways: either k refers to
@@ -282,8 +275,7 @@ namespace gum {
        * @param from_external_object indicates whether k refers to the kth
        * column of an original external database (true) or to the current kth
        * column of the RawDatabaseTable. */
-      virtual void ignoreColumn(const std::size_t k,
-                                const bool from_external_object = true) final;
+      virtual void ignoreColumn(const std::size_t k, const bool from_external_object = true) final;
 
       /// returns  the set of columns of the original dataset that are ignored
       virtual const DBVector< std::size_t > ignoredColumns() const final;
@@ -301,8 +293,7 @@ namespace gum {
        * in the RawDatabaseTable because its size does not allow a matching with
        * the columns of the RawDatabaseTable (taking into account the ignored
        * columns) */
-      virtual void insertRow(
-         const std::vector< std::string, ALLOC< std::string > >& new_row) final;
+      virtual void insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row) final;
 
       /// erase the content of the database, including the names of the variables
       virtual void clear() final;
@@ -314,10 +305,10 @@ namespace gum {
 
       private:
       // the set of ignored columns, sorted by increasing order
-      DBVector< std::size_t >  _ignored_cols_;
+      DBVector< std::size_t > _ignored_cols_;
 
       /// translates a string into a DBCell and returns it
-      DBCell  _convert_(const std::string& elt) const;
+      DBCell _convert_(const std::string& elt) const;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

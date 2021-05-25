@@ -53,13 +53,10 @@ namespace gum {
     }
 
     /// destructor
-    GreedyHillClimbing::~GreedyHillClimbing() {
-      GUM_DESTRUCTOR(GreedyHillClimbing);
-    }
+    GreedyHillClimbing::~GreedyHillClimbing() { GUM_DESTRUCTOR(GreedyHillClimbing); }
 
     /// copy operator
-    GreedyHillClimbing&
-       GreedyHillClimbing::operator=(const GreedyHillClimbing& from) {
+    GreedyHillClimbing& GreedyHillClimbing::operator=(const GreedyHillClimbing& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
@@ -71,9 +68,7 @@ namespace gum {
     }
 
     /// returns the approximation policy of the learning algorithm
-    ApproximationScheme& GreedyHillClimbing::approximationScheme() {
-      return *this;
-    }
+    ApproximationScheme& GreedyHillClimbing::approximationScheme() { return *this; }
 
   } /* namespace learning */
 

@@ -65,8 +65,7 @@ namespace gum {
       DAG2BNLearner(const DAG2BNLearner< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from,
-                    const allocator_type&         alloc);
+      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       DAG2BNLearner(DAG2BNLearner< ALLOC >&& from);
@@ -108,8 +107,7 @@ namespace gum {
 
       /// create a BN from a DAG using a one pass generator (typically ML)
       template < typename GUM_SCALAR = double >
-      static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator,
-                                             const DAG&               dag);
+      static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator, const DAG& dag);
 
       /// create a BN from a DAG using a two pass generator (typically EM)
       /** The bootstrap estimator is used once to provide an inital BN. This
@@ -136,9 +134,8 @@ namespace gum {
       /** The variables of both potential should be the same, only their
        * order differs */
       template < typename GUM_SCALAR = double >
-      static void
-          _probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
-                              const gum::Potential< GUM_SCALAR >& other_pot);
+      static void _probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
+                                       const gum::Potential< GUM_SCALAR >& other_pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

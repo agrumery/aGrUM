@@ -36,8 +36,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMAttribute< GUM_SCALAR >::PRMAttribute(
-       const PRMAttribute< GUM_SCALAR >& source) :
+    PRMAttribute< GUM_SCALAR >::PRMAttribute(const PRMAttribute< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAttribute);
       GUM_ERROR(OperationNotAllowed, "Cannot copy Attributes")

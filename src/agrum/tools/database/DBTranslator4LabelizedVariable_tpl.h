@@ -42,16 +42,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-       std::size_t                                              max_dico_entries,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
+       const std::vector< std::string, XALLOC< std::string > >&                missing_symbols,
+       std::size_t                                                             max_dico_entries,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               missing_symbols,
                               true,
                               max_dico_entries,
                               alloc),
-         _variable_("var", "", 0) {
+        _variable_("var", "", 0) {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
@@ -59,14 +58,10 @@ namespace gum {
     /// default constructor without missing symbols
     template < template < typename > class ALLOC >
     DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       std::size_t max_dico_entries,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
-                              true,
-                              max_dico_entries,
-                              alloc),
-         _variable_("var", "", 0) {
+       std::size_t                                                             max_dico_entries,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
+        _variable_("var", "", 0) {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
@@ -75,18 +70,17 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       const LabelizedVariable&                                 var,
-       const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-       const bool  editable_dictionary,
-       std::size_t max_dico_entries,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
+       const LabelizedVariable&                                                var,
+       const std::vector< std::string, XALLOC< std::string > >&                missing_symbols,
+       const bool                                                              editable_dictionary,
+       std::size_t                                                             max_dico_entries,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               missing_symbols,
                               editable_dictionary,
                               max_dico_entries,
                               alloc),
-         _variable_(var) {
+        _variable_(var) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -97,9 +91,7 @@ namespace gum {
       for (const auto& label: var.labels()) {
         // if the label corresponds to a missing value, then remove it from
         // the set of missing symbols.
-        if (this->missing_symbols_.exists(label)) {
-          this->missing_symbols_.erase(label);
-        }
+        if (this->missing_symbols_.exists(label)) { this->missing_symbols_.erase(label); }
 
         // insert the label into the back_dictionary
         this->back_dico_.insert(size, label);
@@ -113,16 +105,15 @@ namespace gum {
     /// default constructor with a labelized variable as translator
     template < template < typename > class ALLOC >
     DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       const LabelizedVariable& var,
-       const bool               editable_dictionary,
-       std::size_t              max_dico_entries,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
+       const LabelizedVariable&                                                var,
+       const bool                                                              editable_dictionary,
+       std::size_t                                                             max_dico_entries,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               editable_dictionary,
                               max_dico_entries,
                               alloc),
-         _variable_(var) {
+        _variable_(var) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
         GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
@@ -143,11 +134,10 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       const DBTranslator4LabelizedVariable< ALLOC >& from,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
+       const DBTranslator4LabelizedVariable< ALLOC >&                          from,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(from, alloc),
-         _variable_(from. _variable_) {
+        _variable_(from._variable_) {
       GUM_CONS_CPY(DBTranslator4LabelizedVariable);
     }
 
@@ -162,11 +152,10 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
-       DBTranslator4LabelizedVariable< ALLOC >&& from,
-       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-          alloc) :
+       DBTranslator4LabelizedVariable< ALLOC >&&                               from,
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(std::move(from), alloc),
-         _variable_(std::move(from. _variable_)) {
+        _variable_(std::move(from._variable_)) {
       GUM_CONS_MOV(DBTranslator4LabelizedVariable);
     }
 
@@ -175,18 +164,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4LabelizedVariable< ALLOC >::DBTranslator4LabelizedVariable(
        DBTranslator4LabelizedVariable< ALLOC >&& from) :
-        DBTranslator4LabelizedVariable< ALLOC >(std::move(from),
-                                                from.getAllocator()) {}
+        DBTranslator4LabelizedVariable< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    DBTranslator4LabelizedVariable< ALLOC >*
-       DBTranslator4LabelizedVariable< ALLOC >::clone(
-          const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type&
-             alloc) const {
+    DBTranslator4LabelizedVariable< ALLOC >* DBTranslator4LabelizedVariable< ALLOC >::clone(
+       const typename DBTranslator4LabelizedVariable< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBTranslator4LabelizedVariable< ALLOC > > allocator(alloc);
-      DBTranslator4LabelizedVariable< ALLOC >* translator = allocator.allocate(1);
+      DBTranslator4LabelizedVariable< ALLOC >*         translator = allocator.allocate(1);
       try {
         allocator.construct(translator, *this, alloc);
       } catch (...) {
@@ -207,20 +193,18 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE
-       DBTranslator4LabelizedVariable< ALLOC >::~DBTranslator4LabelizedVariable() {
+    INLINE DBTranslator4LabelizedVariable< ALLOC >::~DBTranslator4LabelizedVariable() {
       GUM_DESTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBTranslator4LabelizedVariable< ALLOC >&
-       DBTranslator4LabelizedVariable< ALLOC >::operator=(
-          const DBTranslator4LabelizedVariable< ALLOC >& from) {
+    DBTranslator4LabelizedVariable< ALLOC >& DBTranslator4LabelizedVariable< ALLOC >::operator=(
+       const DBTranslator4LabelizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
-         _variable_                     = from. _variable_;
+        _variable_                     = from._variable_;
       }
 
       return *this;
@@ -229,12 +213,11 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBTranslator4LabelizedVariable< ALLOC >&
-       DBTranslator4LabelizedVariable< ALLOC >::operator=(
-          DBTranslator4LabelizedVariable< ALLOC >&& from) {
+    DBTranslator4LabelizedVariable< ALLOC >& DBTranslator4LabelizedVariable< ALLOC >::operator=(
+       DBTranslator4LabelizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
-         _variable_                     = std::move(from. _variable_);
+        _variable_                     = std::move(from._variable_);
       }
 
       return *this;
@@ -243,14 +226,13 @@ namespace gum {
 
     /// returns the translation of a string, as found in the current dictionary
     template < template < typename > class ALLOC >
-    DBTranslatedValue
-       DBTranslator4LabelizedVariable< ALLOC >::translate(const std::string& str) {
+    DBTranslatedValue DBTranslator4LabelizedVariable< ALLOC >::translate(const std::string& str) {
       // try to get the index of str within the labelized variable. If this
       // cannot be found, try to find if this corresponds to a missing value.
       // Finally, if this is still not a missing value and, if enabled, try
       // to add str as a new label
       try {
-        return DBTranslatedValue{std::size_t( _variable_[str])};
+        return DBTranslatedValue{std::size_t(_variable_[str])};
       } catch (gum::Exception&) {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
@@ -259,12 +241,12 @@ namespace gum {
 
         // try to add str as a new value if possible
         if (this->hasEditableDictionary()) {
-          const std::size_t size =  _variable_.domainSize();
+          const std::size_t size = _variable_.domainSize();
           if (size >= this->max_dico_entries_)
             GUM_ERROR(SizeError,
                       "String \"" << str << "\" cannot be translated "
                                   << "because the dictionary is already full");
-           _variable_.addLabel(str);
+          _variable_.addLabel(str);
           this->back_dico_.insert(size, str);
           return DBTranslatedValue{size};
         } else
@@ -297,7 +279,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     bool DBTranslator4LabelizedVariable< ALLOC >::needsReordering() const {
       // if the variable contains only numbers, they should be increasing
-      const auto& labels      =  _variable_.labels();
+      const auto& labels      = _variable_.labels();
       float       last_number = std::numeric_limits< float >::lowest();
       float       number;
       bool        only_numbers = true;
@@ -326,13 +308,11 @@ namespace gum {
 
     /// returns a mapping to reorder the current dictionary and updates it
     template < template < typename > class ALLOC >
-    HashTable< std::size_t,
-               std::size_t,
-               ALLOC< std::pair< std::size_t, std::size_t > > >
+    HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
        DBTranslator4LabelizedVariable< ALLOC >::reorder() {
       // check whether the variable contains only numeric values. In this
       // case, we have to sort the values by increasing number
-      const auto&       labels =  _variable_.labels();
+      const auto&       labels = _variable_.labels();
       const std::size_t size   = labels.size();
 
       bool only_numbers = true;
@@ -385,17 +365,15 @@ namespace gum {
 
       // recreate the variable so that the labels correspond to the
       // new ordering
-       _variable_.eraseLabels();
+      _variable_.eraseLabels();
       for (auto& label: xlabels)
-         _variable_.addLabel(label.second);
+        _variable_.addLabel(label.second);
 
       // create the hashTable corresponding to the mapping from the old
       // indices to the new one
       this->back_dico_.clear();
-      HashTable< std::size_t,
-                 std::size_t,
-                 ALLOC< std::pair< std::size_t, std::size_t > > >
-         mapping((Size)size);
+      HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > > mapping(
+         (Size)size);
       for (std::size_t i = std::size_t(0); i < size; ++i) {
         mapping.insert(xlabels[i].first, i);
         this->back_dico_.insert(i, xlabels[i].second);
@@ -407,24 +385,21 @@ namespace gum {
 
     /// returns the domain size of a variable corresponding to the translations
     template < template < typename > class ALLOC >
-    INLINE std::size_t
-           DBTranslator4LabelizedVariable< ALLOC >::domainSize() const {
-      return  _variable_.domainSize();
+    INLINE std::size_t DBTranslator4LabelizedVariable< ALLOC >::domainSize() const {
+      return _variable_.domainSize();
     }
 
 
     /// returns the variable stored into the translator
     template < template < typename > class ALLOC >
-    INLINE const LabelizedVariable*
-                 DBTranslator4LabelizedVariable< ALLOC >::variable() const {
-      return & _variable_;
+    INLINE const LabelizedVariable* DBTranslator4LabelizedVariable< ALLOC >::variable() const {
+      return &_variable_;
     }
 
 
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
-    INLINE DBTranslatedValue
-       DBTranslator4LabelizedVariable< ALLOC >::missingValue() const {
+    INLINE DBTranslatedValue DBTranslator4LabelizedVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 

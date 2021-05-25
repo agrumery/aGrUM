@@ -50,17 +50,17 @@ namespace gum_tests {
 
   class aSimpleListener: public gum::Listener {
     private:
-    int  _nbr_;
+    int _nbr_;
 
     public:
-    aSimpleListener() :  _nbr_(0){};
+    aSimpleListener() : _nbr_(0){};
     void whenProceeding(const void* buffer, int percent, std::string status) {
-       _nbr_ = percent;
+      _nbr_ = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status
       // <<
       // std::endl;
     }
-    int getNbr() { return  _nbr_; };
+    int getNbr() { return _nbr_; };
   };
 
   class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
@@ -72,8 +72,7 @@ namespace gum_tests {
 
       gum::BIFXMLIDReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         reader = new gum::BIFXMLIDReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
 
@@ -95,17 +94,13 @@ namespace gum_tests {
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
       std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
-      if (!output.good()) {
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
-      }
+      if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
 
       output << net->toDot();
       output.flush();
       output.close();
 
-      if (output.fail()) {
-        GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
-      }
+      if (output.fail()) { GUM_ERROR(gum::IOError, "Writting in the ostream failed.") }
 
       if (net != 0) { TS_ASSERT(!net->empty()); }
 
@@ -237,8 +232,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(utilityVar2.domainSize(), (gum::Size)1);
         TS_ASSERT_EQUALS(utilityVar2.label(0), "0");
 
-        const gum::Potential< double >& cptChanceVar1
-           = net->cpt(idMap["chanceVar1"]);
+        const gum::Potential< double >& cptChanceVar1 = net->cpt(idMap["chanceVar1"]);
         TS_ASSERT_EQUALS(cptChanceVar1.domainSize(), (gum::Size)4);
         gum::Instantiation instChanceVar1(cptChanceVar1);
         instChanceVar1.chgVal(decisionVar1, 0);
@@ -252,8 +246,7 @@ namespace gum_tests {
         instChanceVar1.chgVal(chanceVar1, 1);
         TS_ASSERT_DELTA(cptChanceVar1[instChanceVar1], 0.5, 0.001);
 
-        const gum::Potential< double >& cptChanceVar2
-           = net->cpt(idMap["chanceVar2"]);
+        const gum::Potential< double >& cptChanceVar2 = net->cpt(idMap["chanceVar2"]);
         TS_ASSERT_EQUALS(cptChanceVar2.domainSize(), (gum::Size)4);
         gum::Instantiation instChanceVar2(cptChanceVar2);
         instChanceVar2.chgVal(chanceVar1, 0);
@@ -267,8 +260,7 @@ namespace gum_tests {
         instChanceVar2.chgVal(chanceVar2, 1);
         TS_ASSERT_DELTA(cptChanceVar2[instChanceVar2], 0.1, 0.001);
 
-        const gum::Potential< double >& cptChanceVar3
-           = net->cpt(idMap["chanceVar3"]);
+        const gum::Potential< double >& cptChanceVar3 = net->cpt(idMap["chanceVar3"]);
         TS_ASSERT_EQUALS(cptChanceVar3.domainSize(), (gum::Size)4);
         gum::Instantiation instChanceVar3(cptChanceVar3);
         instChanceVar3.chgVal(decisionVar3, 0);
@@ -282,8 +274,7 @@ namespace gum_tests {
         instChanceVar3.chgVal(chanceVar3, 1);
         TS_ASSERT_DELTA(cptChanceVar3[instChanceVar3], 0.81, 0.001);
 
-        const gum::Potential< double >& cptChanceVar4
-           = net->cpt(idMap["chanceVar4"]);
+        const gum::Potential< double >& cptChanceVar4 = net->cpt(idMap["chanceVar4"]);
         TS_ASSERT_EQUALS(cptChanceVar4.domainSize(), (gum::Size)4);
         gum::Instantiation instChanceVar4(cptChanceVar4);
         instChanceVar4.chgVal(decisionVar2, 0);
@@ -297,8 +288,7 @@ namespace gum_tests {
         instChanceVar4.chgVal(chanceVar4, 1);
         TS_ASSERT_DELTA(cptChanceVar4[instChanceVar4], 0.5, 0.001);
 
-        const gum::Potential< double >& cptChanceVar5
-           = net->cpt(idMap["chanceVar5"]);
+        const gum::Potential< double >& cptChanceVar5 = net->cpt(idMap["chanceVar5"]);
         TS_ASSERT_EQUALS(cptChanceVar5.domainSize(), (gum::Size)8);
         gum::Instantiation instChanceVar5(cptChanceVar5);
         instChanceVar5.chgVal(chanceVar4, 0);
@@ -324,8 +314,7 @@ namespace gum_tests {
         instChanceVar5.chgVal(chanceVar5, 1);
         TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.7, 0.001);
 
-        const gum::Potential< double >& utUtilityVar1
-           = net->utility(idMap["utilityVar1"]);
+        const gum::Potential< double >& utUtilityVar1 = net->utility(idMap["utilityVar1"]);
         TS_ASSERT_EQUALS(utUtilityVar1.domainSize(), (gum::Size)4);
         gum::Instantiation instUtilityVar1(utUtilityVar1);
         instUtilityVar1.chgVal(utilityVar1, 0);
@@ -340,8 +329,7 @@ namespace gum_tests {
         instUtilityVar1.chgVal(chanceVar1, 1);
         TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 84, 0.001);
 
-        const gum::Potential< double >& utUtilityVar2
-           = net->utility(idMap["utilityVar2"]);
+        const gum::Potential< double >& utUtilityVar2 = net->utility(idMap["utilityVar2"]);
         TS_ASSERT_EQUALS(utUtilityVar2.domainSize(), (gum::Size)4);
         gum::Instantiation instUtilityVar2(utUtilityVar2);
         instUtilityVar2.chgVal(utilityVar2, 0);

@@ -60,9 +60,7 @@ namespace gum {
    * tree.
    *
    */
-  template < typename Val,
-             class Cmp  = std::less< Val >,
-             class Node = BinTreeNode< Val > >
+  template < typename Val, class Cmp = std::less< Val >, class Node = BinTreeNode< Val > >
   class BinSearchTree {
     public:
     /// @brief Alias for gum::BinSearchTree iterators
@@ -108,8 +106,7 @@ namespace gum {
      * @param from The gum::BinSearchTree to copy.
      * @return Returns this gum::BinSearchTree.
      */
-    BinSearchTree< Val, Cmp, Node >&
-       operator=(const BinSearchTree< Val, Cmp, Node >& from);
+    BinSearchTree< Val, Cmp, Node >& operator=(const BinSearchTree< Val, Cmp, Node >& from);
 
     /// @}
     // ============================================================================
@@ -332,9 +329,7 @@ namespace gum {
      * @param parent The node that should be the parent of the copy.
      * @param dir The direction of the edge parent->copy.
      */
-    Node* copy_(Node*      root_from,
-                Node*      parent = 0,
-                BinTreeDir dir    = BinTreeDir::LEFT_CHILD);
+    Node* copy_(Node* root_from, Node* parent = 0, BinTreeDir dir = BinTreeDir::LEFT_CHILD);
 
     /**
      * @brief Returns the smallest node w.r.t. order Cmp in the subtree rooted
@@ -399,7 +394,7 @@ namespace gum {
      * This is used by gum::BinSearchTree::erase_(Node*).
      * @param node The node to erase.
      */
-    void  _eraseWithTwoChildren_(Node* node);
+    void _eraseWithTwoChildren_(Node* node);
 
     protected:
     /**
@@ -425,7 +420,7 @@ namespace gum {
      * @brief Update all iterators when a given node is deleted.
      * @param node The node that is erased.
      */
-    void  _updateEraseIterators_(Node* node);
+    void _updateEraseIterators_(Node* node);
   };
 
   // ===========================================================================

@@ -172,8 +172,7 @@ namespace gum {
      * @return the moralized ancestral graph
      */
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
-    UndiGraph
-       moralizedAncestralGraph(const std::vector< std::string >& nodenames) const;
+    UndiGraph moralizedAncestralGraph(const std::vector< std::string >& nodenames) const;
 
     /** check if node X and node Y are independent given nodes Z
      */
@@ -181,9 +180,7 @@ namespace gum {
 
     /** check if nodes X and nodes Y are independent given nodes Z
      */
-    bool isIndependent(const NodeSet& X,
-                       const NodeSet& Y,
-                       const NodeSet& Z) const final;
+    bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const final;
 
     bool isIndependent(const std::string&                Xname,
                        const std::string&                Yname,
@@ -227,10 +224,10 @@ namespace gum {
     private:
     /// Returns the moral graph of this DAGModel.
     /// @warning  _mutableMoralGraph_ is assumed to be valid and empty
-    void  _moralGraph_() const;
+    void _moralGraph_() const;
 
     /// The moral graph of this Directed Graphical Model.
-    mutable UndiGraph*  _mutableMoralGraph_;
+    mutable UndiGraph* _mutableMoralGraph_;
   };
 }   // namespace gum
 

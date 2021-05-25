@@ -81,13 +81,11 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) final;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns a bloc defining a variable in the DSL format.
-    std::string  _variableBloc_(const IBayesNet< GUM_SCALAR >& bn,
-                               const DiscreteVariable&        var);
+    std::string _variableBloc_(const IBayesNet< GUM_SCALAR >& bn, const DiscreteVariable& var);
   };
 
 

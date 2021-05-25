@@ -149,8 +149,7 @@ namespace gum {
        * specified by methods useAprioriXXX () + the implicit apriori of the
        * score, else we just take into account the apriori specified by
        * useAprioriXXX () */
-      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag,
-                                             bool take_into_account_score = true);
+      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool take_into_account_score = true);
 
       // learns a BN (its parameters) when its structure is known
       /** @param take_into_account_score The dag of the BN which was passed in
@@ -172,9 +171,8 @@ namespace gum {
 
       private:
       /// read the first line of a file to find column names
-      NodeProperty< Sequence< std::string > >
-          _labelsFromBN_(const std::string&            filename,
-                        const BayesNet< GUM_SCALAR >& src);
+      NodeProperty< Sequence< std::string > > _labelsFromBN_(const std::string&            filename,
+                                                             const BayesNet< GUM_SCALAR >& src);
     };
 
   } /* namespace learning */

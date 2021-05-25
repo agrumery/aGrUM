@@ -39,18 +39,16 @@
 namespace gum {
 
   /// default constructor
-  PartialOrderedEliminationSequenceStrategy::
-     PartialOrderedEliminationSequenceStrategy() {
+  PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
 
   /// constructor for an a priori non empty graph
-  PartialOrderedEliminationSequenceStrategy::
-     PartialOrderedEliminationSequenceStrategy(
-        UndiGraph*                  graph,
-        const NodeProperty< Size >* dom_sizes,
-        const List< NodeSet >*      subsets) {
+  PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* dom_sizes,
+     const List< NodeSet >*      subsets) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 
@@ -59,23 +57,20 @@ namespace gum {
   }
 
   /// copy constructor
-  PartialOrderedEliminationSequenceStrategy::
-     PartialOrderedEliminationSequenceStrategy(
-        const PartialOrderedEliminationSequenceStrategy& from) :
+  PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
+     const PartialOrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
-      subsets_(from.subsets_), subset_iter_(from.subset_iter_),
-      nodeset_(from.nodeset_), partial_order_needed_(from.partial_order_needed_) {
+      subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(from.nodeset_),
+      partial_order_needed_(from.partial_order_needed_) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
   }
 
   /// move constructor
-  PartialOrderedEliminationSequenceStrategy::
-     PartialOrderedEliminationSequenceStrategy(
-        PartialOrderedEliminationSequenceStrategy&& from) :
+  PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
+     PartialOrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
-      subsets_(from.subsets_), subset_iter_(from.subset_iter_),
-      nodeset_(std::move(from.nodeset_)),
+      subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(std::move(from.nodeset_)),
       partial_order_needed_(from.partial_order_needed_) {
     from.partial_order_needed_ = true;
 
@@ -84,16 +79,15 @@ namespace gum {
   }
 
   /// destructor
-  PartialOrderedEliminationSequenceStrategy::
-     ~PartialOrderedEliminationSequenceStrategy() {
+  PartialOrderedEliminationSequenceStrategy::~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
 
   /// sets a new graph to be triangulated
-  bool PartialOrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* domain_sizes) {
+  bool
+     PartialOrderedEliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
+                                                         const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setPartialOrder(subsets_);
       return true;
@@ -119,8 +113,7 @@ namespace gum {
   }
 
   /// sets a new partial order
-  bool PartialOrderedEliminationSequenceStrategy::setPartialOrder(
-     const List< NodeSet >* subsets) {
+  bool PartialOrderedEliminationSequenceStrategy::setPartialOrder(const List< NodeSet >* subsets) {
     // check that the partial order contains all the nodes of the graph
     partial_order_needed_ = isPartialOrderNeeded_(subsets);
 
@@ -130,8 +123,7 @@ namespace gum {
       // initialize properly the set of nodes that can be currently eliminated:
       // find the first subset that contains some node(s) of the graph
       nodeset_.clear();
-      for (subset_iter_ = subsets_->cbegin(); subset_iter_ != subsets_->cend();
-           ++subset_iter_) {
+      for (subset_iter_ = subsets_->cbegin(); subset_iter_ != subsets_->cend(); ++subset_iter_) {
         for (const auto node: *subset_iter_) {
           if (graph_->existsNode(node)) { nodeset_.insert(node); }
         }

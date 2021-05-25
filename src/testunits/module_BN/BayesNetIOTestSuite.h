@@ -60,7 +60,7 @@ namespace gum_tests {
       }
 
       gum::NetWriter< double > netwriter;
-      std::string netwritefile = GET_RESSOURCES_PATH("outputs/alarm_writer.net");
+      std::string              netwritefile = GET_RESSOURCES_PATH("outputs/alarm_writer.net");
       TS_GUM_ASSERT_THROWS_NOTHING(netwriter.write(netwritefile, netbn));
 
       gum::BayesNet< double >  netbn2;

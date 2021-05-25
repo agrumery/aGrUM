@@ -49,17 +49,14 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void
-     UAIMNWriter< GUM_SCALAR >::write(std::ostream&                   output,
-                                      const IMarkovNet< GUM_SCALAR >& MN) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
-    }
+  INLINE void UAIMNWriter< GUM_SCALAR >::write(std::ostream&                   output,
+                                               const IMarkovNet< GUM_SCALAR >& MN) {
+    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
 
-    output <<  _preambule_(MN) << std::endl;
+    output << _preambule_(MN) << std::endl;
 
     for (const auto& kv: MN.factors())
-      output <<  _factorBloc_(MN, *kv.second) << std::endl;
+      output << _factorBloc_(MN, *kv.second) << std::endl;
 
     output << std::endl;
 
@@ -78,9 +75,8 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void
-     UAIMNWriter< GUM_SCALAR >::write(const std::string&              filePath,
-                                      const IMarkovNet< GUM_SCALAR >& MN) {
+  INLINE void UAIMNWriter< GUM_SCALAR >::write(const std::string&              filePath,
+                                               const IMarkovNet< GUM_SCALAR >& MN) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, MN);
@@ -91,8 +87,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string
-     UAIMNWriter< GUM_SCALAR >:: _preambule_(const IMarkovNet< GUM_SCALAR >& MN) {
+  INLINE std::string UAIMNWriter< GUM_SCALAR >::_preambule_(const IMarkovNet< GUM_SCALAR >& MN) {
     std::stringstream str;
 
     str << "MARKOV" << std::endl;
@@ -103,8 +98,7 @@ namespace gum {
       str << MN.variable(node).domainSize() << " ";
     str << std::endl;
 
-    str << MN.factors().size() << " # nbr Factors "
-        << std::endl;   // number of cliques
+    str << MN.factors().size() << " # nbr Factors " << std::endl;   // number of cliques
 
     for (const auto& kv: MN.factors()) {
       const auto& nodeset = kv.first;
@@ -119,9 +113,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string UAIMNWriter< GUM_SCALAR >:: _factorBloc_(
-     const IMarkovNet< GUM_SCALAR >& MN,
-     const Potential< GUM_SCALAR >&  clikpot) {
+  INLINE std::string
+         UAIMNWriter< GUM_SCALAR >::_factorBloc_(const IMarkovNet< GUM_SCALAR >& MN,
+                                             const Potential< GUM_SCALAR >&  clikpot) {
     std::stringstream str;
 
     str << clikpot.domainSize() << " # {";

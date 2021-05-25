@@ -56,8 +56,7 @@ namespace gum {
 
   /// copy constructor
 
-  INLINE Edge::Edge(const Edge& src) :
-      n1(src.n1), n2(src.n2) {   // for debugging purposes
+  INLINE Edge::Edge(const Edge& src) : n1(src.n1), n2(src.n2) {   // for debugging purposes
     GUM_CONS_CPY(Edge);
   }
 
@@ -99,21 +98,16 @@ namespace gum {
 
   /// check if two undirected edges are equal
 
-  INLINE bool Edge::operator==(const Edge& src) const {
-    return ((n1 == src.n1) && (n2 == src.n2));
-  }
+  INLINE bool Edge::operator==(const Edge& src) const { return ((n1 == src.n1) && (n2 == src.n2)); }
 
   /// check if two undirected edges are different
 
-  INLINE bool Edge::operator!=(const Edge& src) const {
-    return ((n1 != src.n1) || (n2 != src.n2));
-  }
+  INLINE bool Edge::operator!=(const Edge& src) const { return ((n1 != src.n1) || (n2 != src.n2)); }
 
 
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Edge >::castToSize(const Edge& key) {
-    return Size(key.first()) * HashFuncConst::pi
-         + Size(key.second()) * HashFuncConst::gold;
+    return Size(key.first()) * HashFuncConst::pi + Size(key.second()) * HashFuncConst::gold;
   }
 
   // Computes the hashed value of a key.
@@ -135,15 +129,13 @@ namespace gum {
 
   /// basic constructor.
 
-  INLINE Arc::Arc(NodeId tail, NodeId head) :
-      n1(tail), n2(head) {   // for debugging purposes
+  INLINE Arc::Arc(NodeId tail, NodeId head) : n1(tail), n2(head) {   // for debugging purposes
     GUM_CONSTRUCTOR(Arc);
   }
 
   /// copy constructor
 
-  INLINE Arc::Arc(const Arc& src) :
-      n1(src.n1), n2(src.n2) {   // for debugging purposes
+  INLINE Arc::Arc(const Arc& src) : n1(src.n1), n2(src.n2) {   // for debugging purposes
     GUM_CONS_CPY(Arc);
   }
 
@@ -169,7 +161,7 @@ namespace gum {
 
   /// modifies the tail of the arc
 
-  INLINE void Arc:: _setTail_(NodeId id) { n1 = id; }
+  INLINE void Arc::_setTail_(NodeId id) { n1 = id; }
 
   /// returns the head of the arc
 
@@ -177,7 +169,7 @@ namespace gum {
 
   /// modifies the head of the arc
 
-  INLINE void Arc:: _setHead_(NodeId id) { n2 = id; }
+  INLINE void Arc::_setHead_(NodeId id) { n2 = id; }
 
   /// returns an extremal node of an edge given the ID of the other one
 
@@ -201,15 +193,11 @@ namespace gum {
 
   /// check if two arcs are equal
 
-  INLINE bool Arc::operator==(const Arc& src) const {
-    return ((n1 == src.n1) && (n2 == src.n2));
-  }
+  INLINE bool Arc::operator==(const Arc& src) const { return ((n1 == src.n1) && (n2 == src.n2)); }
 
   /// check if two arcs are different
 
-  INLINE bool Arc::operator!=(const Arc& src) const {
-    return ((n1 != src.n1) || (n2 != src.n2));
-  }
+  INLINE bool Arc::operator!=(const Arc& src) const { return ((n1 != src.n1) || (n2 != src.n2)); }
 
   /// reverses the direction of the arc
 
@@ -222,8 +210,7 @@ namespace gum {
 
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Arc >::castToSize(const Arc& key) {
-    return Size(key.first()) * HashFuncConst::pi
-         + Size(key.second()) * HashFuncConst::gold;
+    return Size(key.first()) * HashFuncConst::pi + Size(key.second()) * HashFuncConst::gold;
   }
 
   // Computes the hashed value of a key.

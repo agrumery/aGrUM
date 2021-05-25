@@ -51,14 +51,13 @@ namespace gum {
       NodeGraphPart::operator=(g);
       ArcGraphPart:: operator=(g);
 
-      if ( _mutableTopologicalOrder_ != nullptr) {
-        delete  _mutableTopologicalOrder_;
-         _mutableTopologicalOrder_ = nullptr;
+      if (_mutableTopologicalOrder_ != nullptr) {
+        delete _mutableTopologicalOrder_;
+        _mutableTopologicalOrder_ = nullptr;
       }
 
-      if (g. _mutableTopologicalOrder_ != nullptr) {
-         _mutableTopologicalOrder_
-           = new Sequence< NodeId >(*(g. _mutableTopologicalOrder_));
+      if (g._mutableTopologicalOrder_ != nullptr) {
+        _mutableTopologicalOrder_ = new Sequence< NodeId >(*(g._mutableTopologicalOrder_));
       }
     }
 
@@ -79,8 +78,6 @@ namespace gum {
     return ArcGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE bool DiGraph::operator!=(const DiGraph& p) const {
-    return !operator==(p);
-  }
+  INLINE bool DiGraph::operator!=(const DiGraph& p) const { return !operator==(p); }
 
 } /* namespace gum */

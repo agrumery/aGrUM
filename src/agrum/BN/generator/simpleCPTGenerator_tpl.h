@@ -33,8 +33,7 @@ namespace gum {
 
   // Default constructor.
   template < typename GUM_SCALAR >
-  INLINE SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator() :
-      ICPTGenerator< GUM_SCALAR >() {
+  INLINE SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator() : ICPTGenerator< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTGenerator);
   }
 
@@ -49,9 +48,8 @@ namespace gum {
   // @param cpt A reference on the CPT to fill.
 
   template < typename GUM_SCALAR >
-  void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(
-     const Idx&                     varId,
-     const Potential< GUM_SCALAR >& cpt) {
+  void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(const Idx&                     varId,
+                                                     const Potential< GUM_SCALAR >& cpt) {
     cpt.random().normalizeAsCPT(varId);
   }
 

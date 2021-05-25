@@ -49,8 +49,7 @@ namespace gum {
   class MultiPriorityQueue;
 
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
-  std::ostream& operator<<(std::ostream&,
-                           const MultiPriorityQueue< Val, Priority, Cmp, Alloc >&);
+  std::ostream& operator<<(std::ostream&, const MultiPriorityQueue< Val, Priority, Cmp, Alloc >&);
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -141,12 +140,11 @@ namespace gum {
     /// @}
 
     /// The allocator for the indices.
-    using IndexAlloc = typename Alloc::template rebind<
-       std::pair< Val, std::vector< Size > > >::other;
+    using IndexAlloc =
+       typename Alloc::template rebind< std::pair< Val, std::vector< Size > > >::other;
 
     /// The allocator for the heap.
-    using HeapAlloc =
-       typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
+    using HeapAlloc = typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -162,9 +160,8 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit MultiPriorityQueue(Cmp  compare = Cmp(),
-                                Size capacity
-                                = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
+    explicit MultiPriorityQueue(Cmp  compare  = Cmp(),
+                                Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
      * @brief Initializer list constructor.
@@ -174,15 +171,13 @@ namespace gum {
      *
      * @param list The initializer list.
      */
-    explicit MultiPriorityQueue(
-       std::initializer_list< std::pair< Val, Priority > > list);
+    explicit MultiPriorityQueue(std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::MultiPriorityQueue to copy.
      */
-    MultiPriorityQueue(
-       const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
+    MultiPriorityQueue(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /// generalized copy constructor
     /**
@@ -191,8 +186,7 @@ namespace gum {
      * @tparam OtherAlloc The other gum::MultiPriorityQueue allocator.
      */
     template < typename OtherAlloc >
-    MultiPriorityQueue(
-       const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+    MultiPriorityQueue(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move constructor.
@@ -476,16 +470,16 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector< std::pair< Priority, const Val* >, HeapAlloc >  _heap_;
+    std::vector< std::pair< Priority, const Val* >, HeapAlloc > _heap_;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable< Val, std::vector< Size >, IndexAlloc >  _indices_;
+    HashTable< Val, std::vector< Size >, IndexAlloc > _indices_;
 
     /// The number of elements in the heap.
-    Size  _nb_elements_{0};
+    Size _nb_elements_{0};
 
     /// Comparison function.
-    Cmp  _cmp_;
+    Cmp _cmp_;
   };
 
 } /* namespace gum */

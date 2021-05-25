@@ -85,13 +85,13 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::NetWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/NetWriter_TestFile.net");
+      std::string              file = GET_RESSOURCES_PATH("outputs/NetWriter_TestFile.net");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 
     void test_isreadable() {
-      std::string file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
       gum::NetReader< double > reader(net, file);
       TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false));
@@ -148,8 +148,8 @@ namespace gum_tests {
       const gum::Potential< double >& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
-        const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int          n    = 8;
+        const double                t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+        int                         n    = 8;
         const std::vector< double > v(t, t + n);
         p4.fillWith(v);
       }
@@ -157,22 +157,8 @@ namespace gum_tests {
       const gum::Potential< double >& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
-        const double t[16] = {1.0,
-                              0.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0};
+        const double t[16]
+           = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0};
 
         int                         n = 16;
         const std::vector< double > v(t, t + n);

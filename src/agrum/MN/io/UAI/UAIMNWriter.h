@@ -90,16 +90,15 @@ namespace gum {
      * @param MN The Markov net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string&              filePath,
-               const IMarkovNet< GUM_SCALAR >& MN) final;
+    void write(const std::string& filePath, const IMarkovNet< GUM_SCALAR >& MN) final;
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string  _preambule_(const IMarkovNet< GUM_SCALAR >& MN);
+    std::string _preambule_(const IMarkovNet< GUM_SCALAR >& MN);
 
-    std::string  _factorBloc_(const IMarkovNet< GUM_SCALAR >& MN,
+    std::string _factorBloc_(const IMarkovNet< GUM_SCALAR >& MN,
                              const Potential< GUM_SCALAR >&  clikpot);
   };
 

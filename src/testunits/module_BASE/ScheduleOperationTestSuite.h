@@ -49,18 +49,17 @@ namespace gum_tests {
       gum::Set< const gum::DiscreteVariable* > del_vars;
       del_vars << vars[0] << vars[3];
 
-      gum::ScheduleProject< double > real_myproj(f1, del_vars, gum::projectMax);
+      gum::ScheduleProject< double >         real_myproj(f1, del_vars, gum::projectMax);
       const gum::ScheduleMultiDim< double >& res    = real_myproj.result();
       gum::ScheduleOperation< double >&      myproj = real_myproj;
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims
-         = myproj.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims = myproj.multiDimArgs();
       TS_ASSERT(multidims.size() == 1);
       TS_ASSERT(*(multidims.atPos(0)) == f1);
 
       std::stringstream s1;
-      s1 << res.toString() << " = project ( " << f1.toString() << " , "
-         << del_vars.toString() << " )";
+      s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
+         << " )";
       TS_ASSERT(s1.str() == myproj.toString());
 
       gum::ScheduleProject< double >    real_myproj2 = real_myproj;
@@ -94,14 +93,12 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double >*
-       proj(const gum::Potential< double >&                 table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars,
-            double                                          neutral_elt) {
+    gum::Potential< double >* proj(const gum::Potential< double >&                 table,
+                                   const gum::Set< const gum::DiscreteVariable* >& del_vars,
+                                   double                                          neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
 
-      const gum::Sequence< const gum::DiscreteVariable* >& vars
-         = table.variablesSequence();
+      const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result->beginMultipleChanges();
 
       for (const auto var: vars)

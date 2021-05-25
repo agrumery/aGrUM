@@ -81,21 +81,15 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5);
 
       gum::NodeId ind = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr
-                                   = topo.variable(idList[0]);
-                                   ind = topo.nodeId(varPtr););
+      TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr = topo.variable(idList[0]);
+                                   ind                                 = topo.nodeId(varPtr););
       TS_ASSERT_EQUALS(idList[0], ind);
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[0])),
-                       *var1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[1])),
-                       *var2);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[2])),
-                       *var3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[3])),
-                       *var4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[4])),
-                       *var5);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[0])), *var1);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[1])), *var2);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[2])), *var3);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[3])), *var4);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[4])), *var5);
     }
 
     void testArcInsertion() {

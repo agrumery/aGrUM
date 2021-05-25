@@ -158,8 +158,8 @@ namespace gum {
       template < template < typename > class XALLOC >
       DBTranslator4RangeVariable(
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc  = allocator_type());
+         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc            = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -201,9 +201,9 @@ namespace gum {
       DBTranslator4RangeVariable(
          const RangeVariable&                                     var,
          const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool  editable_dictionary = false,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc  = allocator_type());
+         const bool                                               editable_dictionary = false,
+         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc            = allocator_type());
 
       /** @brief default constructor with a range variable as translator
        * but without missing symbols
@@ -249,8 +249,7 @@ namespace gum {
       virtual DBTranslator4RangeVariable< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBTranslator4RangeVariable< ALLOC >*
-         clone(const allocator_type& alloc) const;
+      virtual DBTranslator4RangeVariable< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBTranslator4RangeVariable();
@@ -269,8 +268,7 @@ namespace gum {
          operator=(const DBTranslator4RangeVariable< ALLOC >& from);
 
       /// move operator
-      DBTranslator4RangeVariable< ALLOC >&
-         operator=(DBTranslator4RangeVariable< ALLOC >&& from);
+      DBTranslator4RangeVariable< ALLOC >& operator=(DBTranslator4RangeVariable< ALLOC >&& from);
 
       /// @}
 
@@ -328,8 +326,7 @@ namespace gum {
       /** @return the string that was translated into a given DBTranslatedValue.
        * @throws UnknownLabelInDatabase is raised if this original value cannot
        * be found */
-      virtual std::string
-         translateBack(const DBTranslatedValue translated_val) const final;
+      virtual std::string translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Returns the size of the range of the variable. */
@@ -360,9 +357,7 @@ namespace gum {
        * changed. It updates accordingly the dictionary and returns the mapping
        * that enables changing the old dictionary values into the new ones.
        */
-      virtual HashTable< std::size_t,
-                         std::size_t,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >
+      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
          reorder() final;
 
       /// returns the variable stored into the translator
@@ -378,20 +373,20 @@ namespace gum {
 
       private:
       // the RangeVariable assigned to the translator, if any
-      RangeVariable  _variable_;
+      RangeVariable _variable_;
 
       // assign to each integer missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< std::string, bool > > >
-          _status_int_missing_symbols_;
+         _status_int_missing_symbols_;
 
       // the set of translations of the integer missing symbols found so far
-      Set< long, ALLOC< long > >  _translated_int_missing_symbols_;
+      Set< long, ALLOC< long > > _translated_int_missing_symbols_;
 
       // a string containing a non int missing symbol
       // (useful for back translations)
-      std::string  _nonint_missing_symbol_;
+      std::string _nonint_missing_symbol_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

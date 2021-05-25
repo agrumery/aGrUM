@@ -46,29 +46,25 @@ namespace gum_tests {
 
   class aSimpleGibbsApproxListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __mess;
+    int         __nbr;
+    std::string __mess;
 
     public:
     aSimpleGibbsApproxListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
 
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) {  __mess = s; }
+    void whenStop(const void* buffer, const std::string s) { __mess = s; }
 
-    int         getNbr() { return  __nbr; }
-    std::string getMess() { return  __mess; }
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
   };
   class GibbsSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testGibbsSimpleBN() {
-      auto bn
-         = gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -87,8 +83,7 @@ namespace gum_tests {
       }
     }
     void testGibbsApproxBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -112,8 +107,7 @@ namespace gum_tests {
     }
 
     void testGibbsApproxBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
 
@@ -137,8 +131,7 @@ namespace gum_tests {
     }   //
 
     void testGibbsApproxBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
@@ -161,8 +154,7 @@ namespace gum_tests {
     }
 
     void testGibbsApproxBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
@@ -185,8 +177,7 @@ namespace gum_tests {
     }
 
     void testGibbsApproxBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {
@@ -389,8 +380,7 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
       } catch (gum::Exception e) { TS_ASSERT(false); }
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(),
-                       inf.nbrIterations());
+      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(), inf.nbrIterations());
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
     }
 

@@ -483,9 +483,8 @@ namespace gum {
      * @throw NotFound Raised if a variable in external does not point to a
      * variable in *this or in external.
      */
-    void setValsFrom(
-       const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
-       const Instantiation& external);
+    void setValsFrom(const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
+                     const Instantiation&                                                 external);
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -1120,33 +1119,32 @@ namespace gum {
      * @param x The variable to replace.
      * @param y The variable replacing x.
      */
-    virtual void replace_(const DiscreteVariable* x,
-                          const DiscreteVariable* y) final;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) final;
 
     private:
     /// The master, if any, contains precisely the set of variables to be
     /// instantiated.
-    MultiDimAdressable*  _master_;
+    MultiDimAdressable* _master_;
 
     /// The tuple of variables to be instantiated.
-    Sequence< const DiscreteVariable* >  _vars_;
+    Sequence< const DiscreteVariable* > _vars_;
 
     /// The current instantiation: the value of the tuple.
-    std::vector< Idx >  _vals_;
+    std::vector< Idx > _vals_;
 
     /// Indicates whether the current value of the tuple is valid when we loop
     /// sufficiently over values of the tuple, we may have browsed all the
     /// possible values and we have to know in a way or another that the tuple
     /// contains no more value. This is precisely the meaning of Boolean
     /// overflow
-    bool  _overflow_;
+    bool _overflow_;
 
     /**
      * @brief Swap two variables in the Instantiation.
      * @param i The first variable.
      * @param j The second variable.
      */
-    void  _swap_(Idx i, Idx j);
+    void _swap_(Idx i, Idx j);
 
     /**
      * @brief Modifies internally the value of a given variable of the sequence.
@@ -1157,7 +1155,7 @@ namespace gum {
      * @param varPos The variable to change.
      * @param newVal The variable new value.
      */
-    void  _chgVal_(Idx varPos, Idx newVal);
+    void _chgVal_(Idx varPos, Idx newVal);
 
     /**
      *  @brief Adds a new var to the sequence of vars.
@@ -1181,7 +1179,7 @@ namespace gum {
      *  @param v The new var.
      *  @throw DuplicateElement Raised if v is already in this Instantiation.
      */
-    void  _add_(const DiscreteVariable& v);
+    void _add_(const DiscreteVariable& v);
 
     /**
      *  @brief Removes a variable from the sequence of vars.
@@ -1199,7 +1197,7 @@ namespace gum {
      *
      *  @param v The variable to be erased from the tuple.
      */
-    void  _erase_(const DiscreteVariable& v);
+    void _erase_(const DiscreteVariable& v);
 
     /**
      *  This function is called by the master (if any) when changes arise in its
@@ -1209,13 +1207,13 @@ namespace gum {
      *
      *  @param v the new vars list
      */
-    void  _notifiedDimChanged_(const Sequence< const DiscreteVariable* >& v);
+    void _notifiedDimChanged_(const Sequence< const DiscreteVariable* >& v);
 
     /**
      * @brief Initialize this Instantiation.
      * @param master This Instantiation's master.
      */
-    void  _init_(MultiDimAdressable* master);
+    void _init_(MultiDimAdressable* master);
 
     /**
      * @brief Reorder vars of this instantiation giving the order in v.
@@ -1227,13 +1225,13 @@ namespace gum {
      *
      * @param v The new order of variables in this Instantiation.
      */
-    void  _reorder_(const Sequence< const DiscreteVariable* >& v);
+    void _reorder_(const Sequence< const DiscreteVariable* >& v);
 
-    void  _masterChangeNotification_(Idx varPos, Idx newVal, Idx oldVal) const;
-    void  _masterFirstNotification_() const;
-    void  _masterIncNotification_() const;
-    void  _masterLastNotification_() const;
-    void  _masterDecNotification_() const;
+    void _masterChangeNotification_(Idx varPos, Idx newVal, Idx oldVal) const;
+    void _masterFirstNotification_() const;
+    void _masterIncNotification_() const;
+    void _masterLastNotification_() const;
+    void _masterDecNotification_() const;
   };
 
   /**

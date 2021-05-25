@@ -218,10 +218,7 @@ namespace gum {
      * @param line The error's line.
      * @param col The error's column.
      */
-    void addError(const std::string& msg,
-                  const std::string& filename,
-                  Idx                line,
-                  Idx                col);
+    void addError(const std::string& msg, const std::string& filename, Idx line, Idx col);
 
     /**
      * @brief Adds a warning.
@@ -230,10 +227,7 @@ namespace gum {
      * @param line The warning's line.
      * @param col The warning's column.
      */
-    void addWarning(const std::string& msg,
-                    const std::string& filename,
-                    Idx                line,
-                    Idx                col);
+    void addWarning(const std::string& msg, const std::string& filename, Idx line, Idx col);
 
     /**
      * @brief Add an exception.
@@ -291,8 +285,7 @@ namespace gum {
      * @param col The error's column.
      * @param msg The error's message.
      */
-    void
-       Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
+    void Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding warnings.
@@ -301,10 +294,7 @@ namespace gum {
      * @param col The warning's column.
      * @param msg The warning's message.
      */
-    void Warning(const std::wstring& filename,
-                 Idx                 line,
-                 Idx                 col,
-                 const wchar_t*      msg);
+    void Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding exceptions.

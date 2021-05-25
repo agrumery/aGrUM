@@ -36,21 +36,15 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
 
       TS_ASSERT(bn.hasSameStructure(bn));
-      TS_ASSERT(bn.hasSameStructure(
-         gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
-      TS_ASSERT(!bn.hasSameStructure(
-         gum::BayesNet< float >::fastPrototype("b->a->c;b->c")));
-      TS_ASSERT(
-         !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
-      TS_ASSERT(
-         !bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
-      TS_ASSERT(
-         !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->d")));
+      TS_ASSERT(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
+      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->c;b->c")));
+      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
+      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
+      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->d")));
     }
 
     void testAncestors() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
       TS_ASSERT_EQUALS(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
       TS_ASSERT_EQUALS(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
 
@@ -65,8 +59,7 @@ namespace gum_tests {
     }
 
     void testMoralizedAncestralGraph() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
       auto g = bn.moralizedAncestralGraph({"I", "J"});
       TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
@@ -74,18 +67,15 @@ namespace gum_tests {
 
       g = bn.moralizedAncestralGraph({"A"});
       TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
-      TS_ASSERT_EQUALS(g.edges(),
-                       gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
+      TS_ASSERT_EQUALS(g.edges(), gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
       // just for the fun
-      TS_ASSERT_EQUALS(g.edges(),
-                       gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
+      TS_ASSERT_EQUALS(g.edges(), gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
 
       // V-structure
       g = bn.moralizedAncestralGraph({"C"});
       TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
-      TS_ASSERT_EQUALS(
-         g.edges(),
-         gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
+      TS_ASSERT_EQUALS(g.edges(),
+                       gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
 
       g = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
       TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
@@ -99,8 +89,7 @@ namespace gum_tests {
                                      gum::Edge(6, 8)}));
 
       g = bn.moralizedAncestralGraph({"F", "B", "E", "H"});
-      TS_ASSERT_EQUALS(g.nodes().asNodeSet(),
-                       gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
+      TS_ASSERT_EQUALS(g.nodes().asNodeSet(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
       TS_ASSERT_EQUALS(g.edges(),
                        gum::EdgeSet({gum::Edge(2, 8),
                                      gum::Edge(2, 9),
@@ -119,8 +108,7 @@ namespace gum_tests {
     }
 
     void testIndependence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-         "A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
       TS_ASSERT(bn.isIndependent("I", "J", {}));
       TS_ASSERT(!bn.isIndependent("I", "J", {"C"}));
@@ -141,9 +129,8 @@ namespace gum_tests {
     void testMultiIndependence() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
 
-      TS_ASSERT_THROWS(
-         bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
-         gum::InvalidArgument);
+      TS_ASSERT_THROWS(bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
+                       gum::InvalidArgument);
 
       // clang-format off
       TS_ASSERT( bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {}));

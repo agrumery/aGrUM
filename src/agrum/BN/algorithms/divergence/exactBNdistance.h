@@ -73,8 +73,7 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    ExactBNdistance(const IBayesNet< GUM_SCALAR >& P,
-                    const IBayesNet< GUM_SCALAR >& Q);
+    ExactBNdistance(const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */

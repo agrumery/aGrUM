@@ -77,8 +77,7 @@ namespace gum {
                           const DiscreteVariable& var,
                           Idx                     value);
 
-    BayesNet< GUM_SCALAR >& decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
-                                                 NodeId                  node);
+    BayesNet< GUM_SCALAR >& decomposeAggregator_(BayesNet< GUM_SCALAR >& bn, NodeId node);
 
     Set< NodeId > addDepthLayer_(BayesNet< GUM_SCALAR >& bn,
                                  Set< NodeId >           nodes,
@@ -87,7 +86,7 @@ namespace gum {
     /// @}
 
     private:
-    gum::Size  _arity_;
+    gum::Size _arity_;
   };
 
 

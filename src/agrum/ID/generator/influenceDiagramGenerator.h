@@ -90,8 +90,7 @@ namespace gum {
      * @param cptGenerator The policy used to generate CPT.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(ICPTGenerator< GUM_SCALAR >* cptGenerator,
-                              UTGenerator*                 utGenerator);
+    InfluenceDiagramGenerator(ICPTGenerator< GUM_SCALAR >* cptGenerator, UTGenerator* utGenerator);
 
     /**
      * Destructor.
@@ -121,11 +120,11 @@ namespace gum {
     /// @}
     private:
     // Check if a temporal order exists and creates ones if not
-    void  _checkTemporalOrder_(InfluenceDiagram< GUM_SCALAR >* infdiag);
+    void _checkTemporalOrder_(InfluenceDiagram< GUM_SCALAR >* infdiag);
     // The Conditional Probability Table generator
-    ICPTGenerator< GUM_SCALAR >*  _cptGenerator_;
+    ICPTGenerator< GUM_SCALAR >* _cptGenerator_;
     // The Utility Table generator
-    UTGenerator*  _utGenerator_;
+    UTGenerator* _utGenerator_;
   };
 
 } /* namespace gum */

@@ -72,9 +72,7 @@ namespace gum {
     virtual void initialize(const FMDP< double >* fmdp) {
       optPol_ = nullptr;
       if (allActions_.size() == 0)
-        for (auto actionIter = fmdp->beginActions();
-             actionIter != fmdp->endActions();
-             ++actionIter)
+        for (auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter)
           allActions_ += *actionIter;
     }
     /// @}
@@ -87,15 +85,13 @@ namespace gum {
     public:
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
-    void setOptimalStrategy(
-       const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
-      optPol_ = const_cast<
-         MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(optPol);
+    void
+       setOptimalStrategy(const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
+      optPol_ = const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(optPol);
     }
 
     virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {
-      return (optPol_ && optPol_->realSize() != 0) ? optPol_->get(curState)
-                                                   : allActions_;
+      return (optPol_ && optPol_->realSize() != 0) ? optPol_->get(curState) : allActions_;
     }
 
     protected:

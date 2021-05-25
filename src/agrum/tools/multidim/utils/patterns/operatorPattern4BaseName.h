@@ -42,9 +42,8 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_OPERATOR_NAME
 #    define GUM_MULTI_DIM_OPERATOR_TYPE T
   template < typename T >
-  MultiDimImplementation< T >*
-     GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
-                                 const MultiDimImplementation< T >* t2)
+  MultiDimImplementation< T >* GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
+                                                           const MultiDimImplementation< T >* t2)
 #  endif
 
   // clang-format off
@@ -220,9 +219,8 @@ namespace gum {
           t1_inst = t1_alone_begin_inst;
 
           for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
-            result->unsafeSet(
-               result_offset,
-               GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+            result->unsafeSet(result_offset,
+                              GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
 
             ++result_offset;
 
@@ -241,9 +239,8 @@ namespace gum {
           t1_inst = t1_alone_begin_inst;
 
           for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
-            result->unsafeSet(
-               result_offset,
-               GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+            result->unsafeSet(result_offset,
+                              GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
 
             ++result_offset;
 

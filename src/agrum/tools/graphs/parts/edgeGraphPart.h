@@ -215,8 +215,7 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > undirectedPath(const NodeId node1,
-                                               const NodeId node2) const;
+    const std::vector< NodeId > undirectedPath(const NodeId node1, const NodeId node2) const;
     /**
      * return true if n1 and n2 are connected (by an undirected path) in the graph.
      * @param n1 NodeId
@@ -235,9 +234,7 @@ namespace gum {
      * leads to 'false'
      * @return bool
      */
-    bool hasUndirectedPath(const NodeId   n1,
-                           const NodeId   n2,
-                           const NodeSet& except) const;
+    bool hasUndirectedPath(const NodeId n1, const NodeId n2, const NodeSet& except) const;
     /**
      * return true if n1 and n2 are connected (by an undirected path not using the
      * nodes of except) in the graph.
@@ -246,22 +243,20 @@ namespace gum {
      * @param except NodeSet
      * @return bool
      */
-    bool hasUndirectedPath(const NodeSet& n1,
-                           const NodeSet& n2,
-                           const NodeSet& except) const;
+    bool hasUndirectedPath(const NodeSet& n1, const NodeSet& n2, const NodeSet& except) const;
     /// @}
 
     private:
     /// the set of all the edges contained within the EdgeGraphPart
-    EdgeSet  _edges_;
+    EdgeSet _edges_;
 
     /// for each node, the set of its adjacent edges
-    mutable NodeProperty< NodeSet* >  _neighbours_;
+    mutable NodeProperty< NodeSet* > _neighbours_;
 
     /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
      * this function adds an empty set entry to  _neighbours_[id]
      * @param id the node whose  _neighbours_[id] is checked */
-    void  _checkNeighbours_(const NodeId id) const;
+    void _checkNeighbours_(const NodeId id) const;
   };
 
   /// for friendly displaying the content of an edge set

@@ -39,7 +39,7 @@ namespace gum {
   // ==========================================================================
   /// computes the probability of normal z value (used by the cache)
   // ==========================================================================
-  double ChiSquare:: _probaZValue_(double z) {
+  double ChiSquare::_probaZValue_(double z) {
     //      ++nbZt;
 
     //      z = std::round(z * std::pow(10, 3)) / std::pow(10, 3);
@@ -52,12 +52,11 @@ namespace gum {
     else {
       y = 0.5 * fabs(z);
 
-      if (y >= ( _Z_MAX_ * 0.5))
+      if (y >= (_Z_MAX_ * 0.5))
         x = 1.0;
       else if (y < 1.0) {
         w = y * y;
-        x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) * w
-                  - 0.019198292004)
+        x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) * w - 0.019198292004)
                     * w
                  + 0.059054035642)
                    * w
@@ -71,9 +70,7 @@ namespace gum {
           * y * 2.0;
       } else {
         y -= 2.0;
-        x = (((((((((((((-0.000045255659 * y + 0.000152529290) * y
-                        - 0.000019538132)
-                          * y
+        x = (((((((((((((-0.000045255659 * y + 0.000152529290) * y - 0.000019538132) * y
                        - 0.000676904986)
                          * y
                       + 0.001390604284)
@@ -133,21 +130,21 @@ namespace gum {
 
       even = (2 * (df / 2)) == df;
 
-      if (df > 1) y =  _exp_(-a);
+      if (df > 1) y = _exp_(-a);
 
-      s = (even ? y : (2.0 *  _probaZValue_(-sqrt(x))));
+      s = (even ? y : (2.0 * _probaZValue_(-sqrt(x))));
 
       if (df > 2) {
         x = 0.5 * (df - 1.0);
         z = (even ? 1.0 : 0.5);
 
-        if (a >  _BIGX_) {
-          e = (even ? 0.0 :  _LOG_SQRT_PI_);
+        if (a > _BIGX_) {
+          e = (even ? 0.0 : _LOG_SQRT_PI_);
           c = log(a);
 
           while (z <= x) {
             e = log(z) + e;
-            s +=  _exp_(c * z - a - e);
+            s += _exp_(c * z - a - e);
             z += 1.0;
           }
 
@@ -155,7 +152,7 @@ namespace gum {
           retVal = s;
 
         } else {
-          e = (even ? 1.0 : ( _I_SQRT_PI_ / sqrt(a)));
+          e = (even ? 1.0 : (_I_SQRT_PI_ / sqrt(a)));
           c = 0.0;
 
           while (z <= x) {

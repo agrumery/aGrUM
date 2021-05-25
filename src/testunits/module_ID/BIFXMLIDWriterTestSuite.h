@@ -48,8 +48,7 @@ namespace gum_tests {
 
   class BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
     private:
-    void fillTopo(gum::InfluenceDiagram< double >& infDiag,
-                  gum::List< gum::NodeId >&        idList) {
+    void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {
         idList.insert(infDiag.addDecisionNode(*decisionVar1));   // 0
         idList.insert(infDiag.addDecisionNode(*decisionVar2));   // 1
@@ -82,8 +81,7 @@ namespace gum_tests {
       }
     }
 
-    void fill(gum::InfluenceDiagram< double >& infDiag,
-              gum::List< gum::NodeId >&        idList) {
+    void fill(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       fillTopo(infDiag, idList);
 
       try {
@@ -104,11 +102,9 @@ namespace gum_tests {
     public:
     gum::InfluenceDiagram< double >* id;
     gum::List< gum::NodeId >*        idListPtr;
-    gum::LabelizedVariable *         decisionVar1, *decisionVar2, *decisionVar3,
-       *decisionVar4;
-    gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
-       *chanceVar5;
-    gum::LabelizedVariable *utilityVar1, *utilityVar2;
+    gum::LabelizedVariable *         decisionVar1, *decisionVar2, *decisionVar3, *decisionVar4;
+    gum::LabelizedVariable *         chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4, *chanceVar5;
+    gum::LabelizedVariable *         utilityVar1, *utilityVar2;
 
     void setUp() {
       id        = new gum::InfluenceDiagram< double >();
@@ -161,24 +157,20 @@ namespace gum_tests {
 
     void testWriter_file() {
       gum::BIFXMLIDWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
+      std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id));
 
       // For comparison with what readers will return
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
       std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
-      if (!output.good()) {
-        GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
-      }
+      if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
 
       output << id->toDot();
       output.flush();
       output.close();
 
-      if (output.fail()) {
-        GUM_ERROR(gum::IOError, "Writing in the ostream failed.")
-      }
+      if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
     }
   };
 }   // namespace gum_tests

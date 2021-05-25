@@ -34,8 +34,7 @@ namespace gum {
 
   // constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimPartialInstantiation< GUM_SCALAR,
-                                TABLE >::MultiDimPartialInstantiation() {
+  MultiDimPartialInstantiation< GUM_SCALAR, TABLE >::MultiDimPartialInstantiation() {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimPartialInstantiation);
   }
@@ -50,8 +49,7 @@ namespace gum {
 
   // destructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimPartialInstantiation< GUM_SCALAR,
-                                TABLE >::~MultiDimPartialInstantiation() {
+  MultiDimPartialInstantiation< GUM_SCALAR, TABLE >::~MultiDimPartialInstantiation() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimPartialInstantiation);
   }
@@ -73,12 +71,10 @@ namespace gum {
 
   // creates and returns the partial instantiation of the table
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  TABLE< GUM_SCALAR >*
-     MultiDimPartialInstantiation< GUM_SCALAR, TABLE >::instantiate(
-        const TABLE< GUM_SCALAR >&                       table,
-        const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
-    MultiDimImplementation< GUM_SCALAR >* new_impl
-       = partialInstantiation(table, inst_vars);
+  TABLE< GUM_SCALAR >* MultiDimPartialInstantiation< GUM_SCALAR, TABLE >::instantiate(
+     const TABLE< GUM_SCALAR >&                       table,
+     const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
+    MultiDimImplementation< GUM_SCALAR >* new_impl = partialInstantiation(table, inst_vars);
     return new TABLE< GUM_SCALAR >(new_impl);
   }
 
@@ -88,9 +84,8 @@ namespace gum {
      TABLE< GUM_SCALAR >&                             container,
      const TABLE< GUM_SCALAR >&                       table,
      const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
-    MultiDimImplementation< GUM_SCALAR >* new_impl
-       = partialInstantiation(table, inst_vars);
-    container = *new_impl;
+    MultiDimImplementation< GUM_SCALAR >* new_impl = partialInstantiation(table, inst_vars);
+    container                                      = *new_impl;
     delete new_impl;
   }
 

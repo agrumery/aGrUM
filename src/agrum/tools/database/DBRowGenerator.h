@@ -248,17 +248,15 @@ namespace gum {
        * continuous or a discrete one
        * @param alloc the allocator used by all the methods */
       DBRowGenerator(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                  column_types,
-         const DBRowGeneratorGoal goal,
-         const allocator_type&    alloc = allocator_type());
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+         const DBRowGeneratorGoal                                                   goal,
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGenerator(const DBRowGenerator< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGenerator(const DBRowGenerator< ALLOC >& from,
-                     const allocator_type&          alloc);
+      DBRowGenerator(const DBRowGenerator< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       DBRowGenerator(DBRowGenerator< ALLOC >&& from);
@@ -270,8 +268,7 @@ namespace gum {
       virtual DBRowGenerator< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual DBRowGenerator< ALLOC >*
-         clone(const allocator_type& alloc) const = 0;
+      virtual DBRowGenerator< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~DBRowGenerator();
@@ -339,12 +336,11 @@ namespace gum {
        * columns 0, 3 and 4 are guaranteed to have correct values (columns are
        * always indexed, starting from 0).
        */
-      virtual void setColumnsOfInterest(
-         std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
+      virtual void
+         setColumnsOfInterest(std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
 
       /// returns the current set of columns of interest
-      const std::vector< std::size_t, ALLOC< std::size_t > >&
-         columnsOfInterest() const;
+      const std::vector< std::size_t, ALLOC< std::size_t > >& columnsOfInterest() const;
 
       /// returns the allocator used
       allocator_type getAllocator() const;
@@ -362,15 +358,13 @@ namespace gum {
       /// the types of the columns in the DatabaseTable
       /** This is useful to determine whether we need to use the .discr_val
        * field or the .cont_val field in DBTranslatedValue instances. */
-      std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-         column_types_;
+      std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types_;
 
       /// the set of columns of interest
       std::vector< std::size_t, ALLOC< std::size_t > > columns_of_interest_;
 
       /// the goal of the DBRowGenerator (just remove missing values or not)
-      DBRowGeneratorGoal goal_{
-         DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES};
+      DBRowGeneratorGoal goal_{DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES};
 
 
       /// copy constructor
@@ -381,9 +375,7 @@ namespace gum {
 
       /** @brief the method that computes the set of DBRow instances to output
        * after method setInputRow has been called */
-      virtual std::size_t
-         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row)
-         = 0;
+      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) = 0;
     };
 
   } /* namespace learning */

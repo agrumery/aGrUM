@@ -96,18 +96,15 @@ namespace gum {
       // ========================================================================
       /// @{
 
+      virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const;
       virtual PRMAttribute< GUM_SCALAR >*
-         newFactory(const PRMClass< GUM_SCALAR >& c) const;
-      virtual PRMAttribute< GUM_SCALAR >* copy(
-         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
-      virtual void copyCpf(
-         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-         const PRMAttribute< GUM_SCALAR >& source);
+      virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+                           const PRMAttribute< GUM_SCALAR >& source);
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
 
       /// See gum::PRMClassElement::type().
       virtual PRMType& type();
@@ -125,8 +122,8 @@ namespace gum {
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
-      virtual void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void becomeCastDescendant(PRMType& subtype);
+      virtual void                        setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
+      virtual void                        becomeCastDescendant(PRMType& subtype);
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
       virtual void swap(const PRMType& old_type, const PRMType& new_type);
@@ -149,10 +146,10 @@ namespace gum {
       /// @{
 
       /// The random variable type of this attribute
-      PRMType*  _type_;
+      PRMType* _type_;
 
       /// A pointer on the Potential of this attribute
-      Potential< GUM_SCALAR >*  _cpf_;
+      Potential< GUM_SCALAR >* _cpf_;
 
       /// @}
     };

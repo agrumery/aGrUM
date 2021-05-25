@@ -64,47 +64,43 @@ namespace gum {
         O3InterfaceFactory(const O3InterfaceFactory< GUM_SCALAR >& src);
         O3InterfaceFactory(O3InterfaceFactory< GUM_SCALAR >&& src);
         ~O3InterfaceFactory();
-        O3InterfaceFactory< GUM_SCALAR >&
-           operator=(const O3InterfaceFactory< GUM_SCALAR >& src);
-        O3InterfaceFactory< GUM_SCALAR >&
-           operator=(O3InterfaceFactory< GUM_SCALAR >&& src);
+        O3InterfaceFactory< GUM_SCALAR >& operator=(const O3InterfaceFactory< GUM_SCALAR >& src);
+        O3InterfaceFactory< GUM_SCALAR >& operator=(O3InterfaceFactory< GUM_SCALAR >&& src);
 
         void buildInterfaces();
 
         void buildElements();
 
         private:
-        PRM< GUM_SCALAR >*           _prm_;
-        O3PRM*                       _o3_prm_;
-        O3NameSolver< GUM_SCALAR >*  _solver_;
-        ErrorsContainer*             _errors_;
+        PRM< GUM_SCALAR >*          _prm_;
+        O3PRM*                      _o3_prm_;
+        O3NameSolver< GUM_SCALAR >* _solver_;
+        ErrorsContainer*            _errors_;
 
-        HashTable< std::string, std::string >   _eltName_;
-        HashTable< std::string, gum::NodeId >   _nameMap_;
-        HashTable< std::string, O3Interface* >  _interfaceMap_;
-        HashTable< NodeId, O3Interface* >       _nodeMap_;
-        DAG                                     _dag_;
-        std::vector< O3Interface* >             _o3Interface_;
+        HashTable< std::string, std::string >  _eltName_;
+        HashTable< std::string, gum::NodeId >  _nameMap_;
+        HashTable< std::string, O3Interface* > _interfaceMap_;
+        HashTable< NodeId, O3Interface* >      _nodeMap_;
+        DAG                                    _dag_;
+        std::vector< O3Interface* >            _o3Interface_;
 
-        bool  _addInterface2Dag_();
+        bool _addInterface2Dag_();
 
-        bool  _addArcs2Dag_();
+        bool _addArcs2Dag_();
 
-        void  _setO3InterfaceCreationOrder_();
+        void _setO3InterfaceCreationOrder_();
 
-        bool  _checkO3Interfaces_();
+        bool _checkO3Interfaces_();
 
-        bool  _checkInterfaceElement_(O3Interface& i, O3InterfaceElement& elt);
+        bool _checkInterfaceElement_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool  _checkOverloadLegality_(O3Interface& i, O3InterfaceElement& elt);
+        bool _checkOverloadLegality_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool  _checkAttributeOverloadLegality_(O3Interface&        i,
-                                              O3InterfaceElement& elt);
+        bool _checkAttributeOverloadLegality_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool  _checkReferenceOverloadLegality_(O3Interface&        i,
-                                              O3InterfaceElement& elt);
+        bool _checkReferenceOverloadLegality_(O3Interface& i, O3InterfaceElement& elt);
 
-        bool  _checkCyclicReference_(O3Interface& i, O3InterfaceElement& elt);
+        bool _checkCyclicReference_(O3Interface& i, O3InterfaceElement& elt);
       };
 
     }   // namespace o3prm

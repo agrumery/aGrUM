@@ -114,8 +114,7 @@ namespace gum {
      * @param type_multidim The \e real type of the multiDim taken in argument
      * by the function to remove.
      */
-    void erase(const std::string& instantiation_func_name,
-               const std::string& type_multidim);
+    void erase(const std::string& instantiation_func_name, const std::string& type_multidim);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -130,8 +129,7 @@ namespace gum {
      * by the function we look for.
      * @return Returns true if a given entry exists in the register.
      */
-    bool exists(const std::string& instantiation_func_name,
-                const std::string& type_multidim) const;
+    bool exists(const std::string& instantiation_func_name, const std::string& type_multidim) const;
 
     /**
      * @brief Returns the specialized partial instantiation operator assigned
@@ -182,8 +180,7 @@ namespace gum {
     /**
      * @brief Copy operator: never to be used.
      */
-    PartialInstantiationRegister4MultiDim(
-       const PartialInstantiationRegister4MultiDim&);
+    PartialInstantiationRegister4MultiDim(const PartialInstantiationRegister4MultiDim&);
 
     /**
      * @brief Class destructor.
@@ -193,8 +190,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given partial instantiation type
-    typedef HashTable< std::string, PartialInstantiationPtr >
-       PartialInstantiationSet;
+    typedef HashTable< std::string, PartialInstantiationPtr > PartialInstantiationSet;
 
     /**
      * @brief A mapping from the types of MultiDimImplementations to partial
@@ -205,7 +201,7 @@ namespace gum {
      * MultiDimImplementation is associated a function to partially instantiate
      * this subtype of hypermatrix (the PartialInstantiationPtr).
      */
-    HashTable< std::string, PartialInstantiationSet* >  _set_;
+    HashTable< std::string, PartialInstantiationSet* > _set_;
   };
 
   /// A function to more easily register new instantiation functions in
@@ -214,8 +210,8 @@ namespace gum {
   void registerPartialInstantiation(
      const std::string& instantiation_func_name,
      const std::string& type_multidim,
-     typename PartialInstantiationRegister4MultiDim<
-        GUM_SCALAR >::PartialInstantiationPtr function);
+     typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
+        function);
 
 } /* namespace gum */
 

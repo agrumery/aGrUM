@@ -89,17 +89,15 @@ namespace gum {
 
       /// default constructor
       DBRowGenerator4CompleteRows(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                               column_types,
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      DBRowGenerator4CompleteRows(
-         const DBRowGenerator4CompleteRows< ALLOC >& from);
+      DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from,
-                                  const allocator_type& alloc);
+                                  const allocator_type&                       alloc);
 
       /// move constructor
       DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from);
@@ -132,8 +130,7 @@ namespace gum {
          operator=(const DBRowGenerator4CompleteRows< ALLOC >& from);
 
       /// move operator
-      DBRowGenerator4CompleteRows< ALLOC >&
-         operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
+      DBRowGenerator4CompleteRows< ALLOC >& operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
 
       /// @}
 
@@ -158,15 +155,14 @@ namespace gum {
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t
-         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >*  _input_row_{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* _input_row_{nullptr};
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

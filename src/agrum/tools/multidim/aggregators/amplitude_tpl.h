@@ -37,14 +37,12 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Amplitude< GUM_SCALAR >::Amplitude() :
-        MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Amplitude< GUM_SCALAR >::Amplitude() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Amplitude);
     }
 
     template < typename GUM_SCALAR >
-    INLINE
-       Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
+    INLINE Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Amplitude);
     }
@@ -62,8 +60,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >*
-           Amplitude< GUM_SCALAR >::newFactory() const {
+    INLINE MultiDimContainer< GUM_SCALAR >* Amplitude< GUM_SCALAR >::newFactory() const {
       return new Amplitude< GUM_SCALAR >();
     }
 
@@ -87,7 +84,7 @@ namespace gum {
     INLINE Idx Amplitude< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                               Idx                     i1,
                                               Idx                     i2,
-                                              bool& stop_iteration) const {
+                                              bool&                   stop_iteration) const {
       return 0;
     }
 

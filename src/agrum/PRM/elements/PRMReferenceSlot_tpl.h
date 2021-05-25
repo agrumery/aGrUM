@@ -31,15 +31,13 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
-       const std::string&                      name,
-       PRMClassElementContainer< GUM_SCALAR >& type,
-       bool                                    isArray) :
+    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(const std::string&                      name,
+                                                     PRMClassElementContainer< GUM_SCALAR >& type,
+                                                     bool isArray) :
         PRMClassElement< GUM_SCALAR >(name),
-         _slotType_(type),  _isArray_(isArray) {
+        _slotType_(type), _isArray_(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
-      this->safeName_
-         = PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
     }
 
     // Destructor.
@@ -49,18 +47,17 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
-       const PRMReferenceSlot< GUM_SCALAR >& source) :
-        PRMClassElement< GUM_SCALAR >(source),
-         _slotType_(source. _slotType_),  _isArray_(source. _isArray_) {
+    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(const PRMReferenceSlot< GUM_SCALAR >& source) :
+        PRMClassElement< GUM_SCALAR >(source), _slotType_(source._slotType_),
+        _isArray_(source._isArray_) {
       GUM_CONS_CPY(PRMReferenceSlot);
       GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy constructor.")
     }
 
     // Copy operator. Raise a FatalError.
     template < typename GUM_SCALAR >
-    PRMReferenceSlot< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::operator=(
-       const PRMReferenceSlot< GUM_SCALAR >& from) {
+    PRMReferenceSlot< GUM_SCALAR >&
+       PRMReferenceSlot< GUM_SCALAR >::operator=(const PRMReferenceSlot< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy operator.")
     }
 
@@ -71,20 +68,19 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >&
-           PRMReferenceSlot< GUM_SCALAR >::slotType() {
-      return  _slotType_;
+    INLINE PRMClassElementContainer< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::slotType() {
+      return _slotType_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMReferenceSlot< GUM_SCALAR >::slotType() const {
-      return  _slotType_;
+      return _slotType_;
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMReferenceSlot< GUM_SCALAR >::isArray() const {
-      return  _isArray_;
+      return _isArray_;
     }
 
     template < typename GUM_SCALAR >
@@ -103,25 +99,23 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >&
-                 PRMReferenceSlot< GUM_SCALAR >::cpf() const {
+    INLINE const Potential< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMAttribute< GUM_SCALAR >*
-           PRMReferenceSlot< GUM_SCALAR >::getCastDescendant() const {
+    INLINE PRMAttribute< GUM_SCALAR >* PRMReferenceSlot< GUM_SCALAR >::getCastDescendant() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
 
     template < typename GUM_SCALAR >
-    INLINE void PRMReferenceSlot< GUM_SCALAR >::addParent(
-       const PRMClassElement< GUM_SCALAR >& elt) {}
+    INLINE void
+       PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
-    INLINE void PRMReferenceSlot< GUM_SCALAR >::addChild(
-       const PRMClassElement< GUM_SCALAR >& elt) {}
+    INLINE void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
+    }
 
   } /* namespace prm */
 } /* namespace gum */

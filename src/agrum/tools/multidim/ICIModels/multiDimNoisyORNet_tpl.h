@@ -32,9 +32,8 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
-     GUM_SCALAR external_weight,
-     GUM_SCALAR default_weight) :
+  INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(GUM_SCALAR external_weight,
+                                                              GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORNet);
   }
@@ -64,9 +63,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimNoisyORNet< GUM_SCALAR >::get(const Instantiation& i) const {
-    if (this->nbrDim() < 1) {
-      GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ")
-    }
+    if (this->nbrDim() < 1) { GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ") }
 
     const DiscreteVariable& C = this->variable((Idx)0);
 
@@ -104,8 +101,7 @@ namespace gum {
 
     for (Idx i = 1; i < MultiDimImplementation< GUM_SCALAR >::nbrDim(); i++) {
       s << MultiDimImplementation< GUM_SCALAR >::variable(i) << "["
-        << this->causalWeight(MultiDimImplementation< GUM_SCALAR >::variable(i))
-        << "]";
+        << this->causalWeight(MultiDimImplementation< GUM_SCALAR >::variable(i)) << "]";
     }
 
     s << ")";
@@ -117,16 +113,13 @@ namespace gum {
 
   // For friendly displaying the content of the variable.
   template < typename GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream&                           s,
-                                  const MultiDimNoisyORNet< GUM_SCALAR >& ag) {
+  INLINE std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORNet< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >*
-         MultiDimNoisyORNet< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyORNet< GUM_SCALAR >(this-> _external_weight_,
-                                                this-> _default_weight_);
+  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimNoisyORNet< GUM_SCALAR >::newFactory() const {
+    return new MultiDimNoisyORNet< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation

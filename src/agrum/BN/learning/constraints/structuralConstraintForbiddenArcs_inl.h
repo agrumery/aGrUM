@@ -32,51 +32,44 @@ namespace gum {
   namespace learning {
 
     /// sets a new graph from which we will perform checkings
-    INLINE void
-       StructuralConstraintForbiddenArcs::setGraphAlone(const DiGraph& graph) {}
+    INLINE void StructuralConstraintForbiddenArcs::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-       StructuralConstraintForbiddenArcs::checkArcAdditionAlone(NodeId x,
-                                                                NodeId y) const {
-      return ! _ForbiddenArcs_forbidden_arcs_.exists(Arc(x, y));
+    INLINE bool StructuralConstraintForbiddenArcs::checkArcAdditionAlone(NodeId x, NodeId y) const {
+      return !_ForbiddenArcs_forbidden_arcs_.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-       StructuralConstraintForbiddenArcs::checkArcDeletionAlone(NodeId x,
-                                                                NodeId y) const {
+    INLINE bool StructuralConstraintForbiddenArcs::checkArcDeletionAlone(NodeId x, NodeId y) const {
       return true;
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-       StructuralConstraintForbiddenArcs::checkArcReversalAlone(NodeId x,
-                                                                NodeId y) const {
-      return ! _ForbiddenArcs_forbidden_arcs_.exists(Arc(y, x));
+    INLINE bool StructuralConstraintForbiddenArcs::checkArcReversalAlone(NodeId x, NodeId y) const {
+      return !_ForbiddenArcs_forbidden_arcs_.exists(Arc(y, x));
     }
 
     /// checks whether the constraints enable to add an arc
-    INLINE bool StructuralConstraintForbiddenArcs::checkModificationAlone(
-       const ArcAddition& change) const {
+    INLINE bool
+       StructuralConstraintForbiddenArcs::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
-    INLINE bool StructuralConstraintForbiddenArcs::checkModificationAlone(
-       const ArcDeletion& change) const {
+    INLINE bool
+       StructuralConstraintForbiddenArcs::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
-    INLINE bool StructuralConstraintForbiddenArcs::checkModificationAlone(
-       const ArcReversal& change) const {
+    INLINE bool
+       StructuralConstraintForbiddenArcs::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintForbiddenArcs::checkModificationAlone(
-       const GraphChange& change) const {
+    INLINE bool
+       StructuralConstraintForbiddenArcs::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -95,24 +88,20 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(
-       const ArcAddition& change) {}
+    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(const ArcAddition& change) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(
-       const ArcDeletion& change) {}
+    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(const ArcDeletion& change) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(
-       const ArcReversal& change) {}
+    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(const ArcReversal& change) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(
-       const GraphChange& change) {}
+    INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool StructuralConstraintForbiddenArcs::isAlwaysInvalidAlone(
-       const GraphChange& change) const {
+    INLINE bool
+       StructuralConstraintForbiddenArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           return !checkArcAdditionAlone(change.node1(), change.node2());
@@ -132,22 +121,22 @@ namespace gum {
 
     /// assign a set of forbidden arcs
     INLINE void StructuralConstraintForbiddenArcs::setArcs(const ArcSet& set) {
-       _ForbiddenArcs_forbidden_arcs_ = set;
+      _ForbiddenArcs_forbidden_arcs_ = set;
     }
 
     /// assign a new forbidden arc
     INLINE void StructuralConstraintForbiddenArcs::addArc(const Arc& arc) {
-       _ForbiddenArcs_forbidden_arcs_.insert(arc);
+      _ForbiddenArcs_forbidden_arcs_.insert(arc);
     }
 
     /// remove a forbidden arc
     INLINE void StructuralConstraintForbiddenArcs::eraseArc(const Arc& arc) {
-       _ForbiddenArcs_forbidden_arcs_.erase(arc);
+      _ForbiddenArcs_forbidden_arcs_.erase(arc);
     }
 
     /// returns the set of mandatory arcs
     INLINE const ArcSet& StructuralConstraintForbiddenArcs::arcs() const {
-      return  _ForbiddenArcs_forbidden_arcs_;
+      return _ForbiddenArcs_forbidden_arcs_;
     }
 
 // include all the methods applicable to the whole class hierarchy

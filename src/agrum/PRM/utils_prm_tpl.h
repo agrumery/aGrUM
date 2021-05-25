@@ -25,31 +25,25 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    Potential< GUM_SCALAR >* copyPotential(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const Potential< GUM_SCALAR >& source) {
+    Potential< GUM_SCALAR >*
+       copyPotential(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                     const Potential< GUM_SCALAR >&                                       source) {
       const MultiDimImplementation< GUM_SCALAR >* impl = source.content();
       Potential< GUM_SCALAR >*                    p    = 0;
 
       try {
         if (dynamic_cast< const MultiDimReadOnly< GUM_SCALAR >* >(impl)) {
           if (dynamic_cast< const MultiDimNoisyORCompound< GUM_SCALAR >* >(impl)) {
-            p = new Potential< GUM_SCALAR >(
-               new MultiDimNoisyORCompound< GUM_SCALAR >(
-                  bij,
-                  static_cast< const MultiDimNoisyORCompound< GUM_SCALAR >& >(
-                     *impl)));
-          } else if (dynamic_cast< const MultiDimNoisyORNet< GUM_SCALAR >* >(
-                        impl)) {
+            p = new Potential< GUM_SCALAR >(new MultiDimNoisyORCompound< GUM_SCALAR >(
+               bij,
+               static_cast< const MultiDimNoisyORCompound< GUM_SCALAR >& >(*impl)));
+          } else if (dynamic_cast< const MultiDimNoisyORNet< GUM_SCALAR >* >(impl)) {
             p = new Potential< GUM_SCALAR >(new MultiDimNoisyORNet< GUM_SCALAR >(
                bij,
                static_cast< const MultiDimNoisyORNet< GUM_SCALAR >& >(*impl)));
-          } else if (dynamic_cast<
-                        const aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-                        impl)) {
+          } else if (dynamic_cast< const aggregator::MultiDimAggregator< GUM_SCALAR >* >(impl)) {
             p = new Potential< GUM_SCALAR >(
-               static_cast< MultiDimImplementation< GUM_SCALAR >* >(
-                  impl->newFactory()));
+               static_cast< MultiDimImplementation< GUM_SCALAR >* >(impl->newFactory()));
 
             for (auto var: impl->variablesSequence())
               p->add(*(bij.second(var)));
@@ -62,16 +56,14 @@ namespace gum {
             try {
               p = new Potential< GUM_SCALAR >(new MultiDimBijArray< GUM_SCALAR >(
                  bij,
-                 static_cast< const MultiDimBucket< GUM_SCALAR >* >(impl)
-                    ->bucket()));
+                 static_cast< const MultiDimBucket< GUM_SCALAR >* >(impl)->bucket()));
             } catch (OperationNotAllowed&) {
               // This is an empty bucket, it happens if all variables were
               // eliminated
               return new Potential< GUM_SCALAR >();
             }
           } else {
-            GUM_ERROR(FatalError,
-                      "encountered an unexpected MultiDim implementation")
+            GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation")
           }
         } else {
           if (dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(impl)) {
@@ -83,13 +75,11 @@ namespace gum {
                bij,
                static_cast< const MultiDimBijArray< GUM_SCALAR >& >(*impl)));
           } else if (dynamic_cast< const MultiDimSparse< GUM_SCALAR >* >(impl)) {
-            GUM_ERROR(FatalError,
-                      "There is no MultiDimSparse in PRMs, normally...")
+            GUM_ERROR(FatalError, "There is no MultiDimSparse in PRMs, normally...")
           } else {
             // Just need to make the copy using the bijection but we only use
             // multidim array
-            GUM_ERROR(FatalError,
-                      "encountered an unexpected MultiDim implementation")
+            GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation")
           }
         }
 

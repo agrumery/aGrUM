@@ -34,10 +34,9 @@ namespace gum {
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(
-     Size nbrNodes,
-     Size maxArcs,
-     Size maxModality) :
+  INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(Size nbrNodes,
+                                                                             Size maxArcs,
+                                                                             Size maxModality) :
       bayesNet_() {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
     nbrNodes_ = nbrNodes;
@@ -62,13 +61,11 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fillCPT() {
     for (auto node: bayesNet_.nodes())
-      this->generateCPT(bayesNet_.cpt(node).pos(bayesNet_.variable(node)),
-                        bayesNet_.cpt(node));
+      this->generateCPT(bayesNet_.cpt(node).pos(bayesNet_.variable(node)), bayesNet_.cpt(node));
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE Size
-     IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::maxModality() const {
+  INLINE Size IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::maxModality() const {
     return maxModality_;
   }
 
@@ -83,16 +80,14 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxModality(
-     Size maxModality) {
+  INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxModality(Size maxModality) {
     if (maxModality < 2)
       GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ")
 
     maxModality_ = maxModality;
   }
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE void
-     IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
+  INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
     if ((maxArcs_ < nbrNodes - 1) || (maxArcs_ > (nbrNodes * (nbrNodes - 1)) / 2))
       GUM_ERROR(OperationNotAllowed, " nbrNodes value not possible ")
 
@@ -100,8 +95,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE void
-     IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxArcs(Size maxArcs) {
+  INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxArcs(Size maxArcs) {
     if (maxArcs < nbrNodes_ - 1 || maxArcs > (nbrNodes_ * (nbrNodes_ - 1)) / 2)
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
 

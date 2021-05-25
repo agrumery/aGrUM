@@ -33,16 +33,15 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >::MultiDimContainer(
-     MultiDimContainer< GUM_SCALAR >&& from) :
+  INLINE
+     MultiDimContainer< GUM_SCALAR >::MultiDimContainer(MultiDimContainer< GUM_SCALAR >&& from) :
       MultiDimAdressable(std::forward< MultiDimAdressable >(from)) {
     GUM_CONS_MOV(MultiDimContainer);
   }
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >::MultiDimContainer() :
-      MultiDimAdressable() {
+  INLINE MultiDimContainer< GUM_SCALAR >::MultiDimContainer() : MultiDimAdressable() {
     GUM_CONSTRUCTOR(MultiDimContainer);
   }
 
@@ -55,15 +54,13 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >&
-     MultiDimContainer< GUM_SCALAR >::operator=(
-        const MultiDimContainer< GUM_SCALAR >& from) {
+     MultiDimContainer< GUM_SCALAR >::operator=(const MultiDimContainer< GUM_SCALAR >& from) {
     MultiDimAdressable::operator=(from);
     return *this;
   }
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >&
-     MultiDimContainer< GUM_SCALAR >::operator=(
-        MultiDimContainer< GUM_SCALAR >&& from) {
+     MultiDimContainer< GUM_SCALAR >::operator=(MultiDimContainer< GUM_SCALAR >&& from) {
     GUM_OP_MOV(MultiDimContainer);
     MultiDimAdressable::operator=(std::forward< MultiDimAdressable >(from));
     return *this;
@@ -79,8 +76,7 @@ namespace gum {
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     MultiDimContainer< GUM_SCALAR >::operator[](const Instantiation& i) const {
+  INLINE GUM_SCALAR MultiDimContainer< GUM_SCALAR >::operator[](const Instantiation& i) const {
     return get(i);
   }
 
@@ -88,15 +84,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimContainer< GUM_SCALAR >::set(const Instantiation& i,
-                                                   const GUM_SCALAR& value) const {
+                                                   const GUM_SCALAR&    value) const {
     get_(i) = value;
   }
 
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     MultiDimContainer< GUM_SCALAR >::get(const Instantiation& i) const {
+  INLINE GUM_SCALAR MultiDimContainer< GUM_SCALAR >::get(const Instantiation& i) const {
     return get_(i);
   }
 
@@ -126,13 +121,11 @@ namespace gum {
   // Test if this potential is equal to p.
 
   template < typename GUM_SCALAR >
-  bool MultiDimContainer< GUM_SCALAR >::operator==(
-     const MultiDimContainer< GUM_SCALAR >& p) const {
+  bool MultiDimContainer< GUM_SCALAR >::operator==(const MultiDimContainer< GUM_SCALAR >& p) const {
     if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
       if (nbrDim() == 0) return true;
 
-      typedef Sequence< const DiscreteVariable* >::const_iterator_safe
-         var_iterator;
+      typedef Sequence< const DiscreteVariable* >::const_iterator_safe var_iterator;
 
       for (var_iterator iter = variablesSequence().beginSafe();
            iter != variablesSequence().endSafe();
@@ -157,18 +150,16 @@ namespace gum {
   // Test if this potential is different of p.
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimContainer< GUM_SCALAR >::operator!=(
-     const MultiDimContainer< GUM_SCALAR >& p) const {
+  INLINE bool
+     MultiDimContainer< GUM_SCALAR >::operator!=(const MultiDimContainer< GUM_SCALAR >& p) const {
     return !operator==(p);
   }
 
   // automation fill with vector.
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::populate(
-     const std::vector< GUM_SCALAR >& v) const {
+  void MultiDimContainer< GUM_SCALAR >::populate(const std::vector< GUM_SCALAR >& v) const {
     if (domainSize() != v.size()) {
-      GUM_ERROR(SizeError,
-                "Sizes do not match : " << domainSize() << "!=" << v.size())
+      GUM_ERROR(SizeError, "Sizes do not match : " << domainSize() << "!=" << v.size())
     }
 
     Size cpt = 0;
@@ -180,11 +171,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::populate(
-     std::initializer_list< GUM_SCALAR > l) const {
+  void MultiDimContainer< GUM_SCALAR >::populate(std::initializer_list< GUM_SCALAR > l) const {
     if (domainSize() != l.size()) {
-      GUM_ERROR(SizeError,
-                "Sizes do not match : " << domainSize() << "!=" << l.size())
+      GUM_ERROR(SizeError, "Sizes do not match : " << domainSize() << "!=" << l.size())
     }
 
     Instantiation i(*this);
@@ -196,8 +185,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::apply(
-     std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
+  void MultiDimContainer< GUM_SCALAR >::apply(std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
     Instantiation i(*this);
     for (i.setFirst(); !i.end(); ++i) {
       set(i, f(get(i)));
@@ -205,9 +193,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR MultiDimContainer< GUM_SCALAR >::reduce(
-     std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-     GUM_SCALAR                                          base) const {
+  GUM_SCALAR
+     MultiDimContainer< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                                             GUM_SCALAR base) const {
     GUM_SCALAR    tmp = base;
     Instantiation i(*this);
     for (i.setFirst(); !i.end(); ++i) {
@@ -218,13 +206,11 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::copyFrom(
-     const MultiDimContainer< GUM_SCALAR >& src,
-     Instantiation*                         p_i) const {
+  void MultiDimContainer< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src,
+                                                 Instantiation*                         p_i) const {
     if (src.domainSize() != domainSize()) {
       GUM_ERROR(OperationNotAllowed,
-                "Domain sizes do not fit : " << src.domainSize()
-                                             << "!=" << domainSize());
+                "Domain sizes do not fit : " << src.domainSize() << "!=" << domainSize());
     }
 
     if (p_i == nullptr) {   // if null, we just follow the same order
@@ -235,17 +221,15 @@ namespace gum {
     } else {
       Instantiation i_dest(*this);
       Instantiation i_src(src);
-      for (i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
-           i_dest.incIn(*p_i), ++i_src) {
+      for (i_dest.setFirst(), i_src.setFirst(); !i_dest.end(); i_dest.incIn(*p_i), ++i_src) {
         set(i_dest, src[i_src]);
       }
     }
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::extractFrom(
-     const MultiDimContainer< GUM_SCALAR >& src,
-     const Instantiation&                   imask) {
+  void MultiDimContainer< GUM_SCALAR >::extractFrom(const MultiDimContainer< GUM_SCALAR >& src,
+                                                    const Instantiation&                   imask) {
     this->beginMultipleChanges();
 
     Size nbr = this->nbrDim();
@@ -268,12 +252,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::copyFrom(
-     const MultiDimContainer< GUM_SCALAR >& src) const {
+  void MultiDimContainer< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
     if (src.domainSize() != domainSize()) {
       GUM_ERROR(OperationNotAllowed,
-                "Domain sizes do not fit : " << src.domainSize()
-                                             << "!=" << domainSize());
+                "Domain sizes do not fit : " << src.domainSize() << "!=" << domainSize());
     }
 
     Instantiation i_dest(*this);
@@ -287,8 +269,7 @@ namespace gum {
   // copy
 
   template < typename GUM_SCALAR >
-  void MultiDimContainer< GUM_SCALAR >::copy(
-     const MultiDimContainer< GUM_SCALAR >& src) {
+  void MultiDimContainer< GUM_SCALAR >::copy(const MultiDimContainer< GUM_SCALAR >& src) {
     this->beginMultipleChanges();
 
     Size nbr = this->nbrDim();
@@ -311,16 +292,14 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const MultiDimAdressable&
-               MultiDimContainer< GUM_SCALAR >::getMasterRef() const {
+  INLINE const MultiDimAdressable& MultiDimContainer< GUM_SCALAR >::getMasterRef() const {
     return static_cast< const MultiDimAdressable& >(*content());
   }
 
   // display the content of an array
 
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                          out,
-                           const MultiDimContainer< GUM_SCALAR >& array) {
+  std::ostream& operator<<(std::ostream& out, const MultiDimContainer< GUM_SCALAR >& array) {
     out << array.toString();
     return out;
   }

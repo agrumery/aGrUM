@@ -61,8 +61,7 @@ namespace gum_tests {
     }
 
     void testMoves() {
-      gum::HashTable< int, int > t1{std::pair< int, int >(3, 4),
-                                    std::pair< int, int >(5, 6)};
+      gum::HashTable< int, int > t1{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
 
       gum::HashTable< int, int > t2{std::pair< int, int >(1, 4),
                                     std::pair< int, int >(3, 6),
@@ -97,8 +96,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(p));
       TS_ASSERT(table.exists(8));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         table.insert(std::pair< int, std::string >(9, "l")));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(std::pair< int, std::string >(9, "l")));
       TS_ASSERT(table.exists(9));
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.emplace(10, "m"));
@@ -241,13 +239,11 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)11);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2);
     }
 
@@ -365,9 +361,8 @@ namespace gum_tests {
     }
 
     void testGenCopyOperator() {
-      gum::HashTable< int, std::string, MyAlloc< std::pair< int, std::string > > >
-                                         t2;
-      gum::HashTable< int, std::string > t1, t3;
+      gum::HashTable< int, std::string, MyAlloc< std::pair< int, std::string > > > t2;
+      gum::HashTable< int, std::string >                                           t1, t3;
       fill(t1);
 
       TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1);
@@ -762,8 +757,7 @@ namespace gum_tests {
       table.insert(5, "e");
     }
 
-    gum::HashTable< int, std::string >
-       getIntersection(gum::HashTable< int, bool > table) {
+    gum::HashTable< int, std::string > getIntersection(gum::HashTable< int, bool > table) {
       gum::HashTable< int, std::string > full;
       fill(full);
       gum::HashTable< int, std::string > inter;
@@ -775,8 +769,7 @@ namespace gum_tests {
       return inter;
     }
 
-    gum::HashTable< int, std::string >
-       getUnion(gum::HashTable< int, bool > table) {
+    gum::HashTable< int, std::string > getUnion(gum::HashTable< int, bool > table) {
       gum::HashTable< int, std::string > full;
       fill(full);
       gum::HashTable< int, std::string > unionTable;
@@ -788,9 +781,7 @@ namespace gum_tests {
       return unionTable;
     }
 
-    static std::string mappingTestFunc_1(const std::string& s) {
-      return s + ".foo";
-    }
+    static std::string mappingTestFunc_1(const std::string& s) { return s + ".foo"; }
 
     static std::string mappingTestFunc_2(std::string& s) { return s + ".bar"; }
 

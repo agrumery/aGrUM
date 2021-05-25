@@ -56,10 +56,9 @@ namespace gum_tests {
   class LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
     public:
     void test_asia() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -76,11 +75,10 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     apriori(database);
       gum::learning::ScoreK2<>              score(parser, apriori);
 
-      gum::learning::StructuralConstraintSetStatic<
-         gum::learning::StructuralConstraintDAG,
-         gum::learning::StructuralConstraintIndegree,
-         gum::learning::StructuralConstraintSliceOrder,
-         gum::learning::StructuralConstraintTabuList >
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintIndegree,
+                                                    gum::learning::StructuralConstraintSliceOrder,
+                                                    gum::learning::StructuralConstraintTabuList >
          struct_constraint;
 
       struct_constraint.setMaxIndegree(2);
@@ -91,24 +89,20 @@ namespace gum_tests {
       struct_constraint.setSliceOrder(slices);
       struct_constraint.setDefaultSlice(1);
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);
 
       try {
-        gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
-        gum::BayesNet< double > bn2
-           = search.learnBN< double >(selector, estimator);
+        gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
+        gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 10);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

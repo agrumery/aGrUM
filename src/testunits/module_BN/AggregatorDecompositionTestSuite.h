@@ -44,13 +44,13 @@ namespace gum_tests {
 
   class AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
     private:
-    gum::prm::PRM< double >*                 _prm_;
-    float                                    _epsilon_{1e-6f};
-    gum::BayesNet< double >*                 _bn_;
-    gum::BayesNet< double >*                 _bn2_;
-    gum::LazyPropagation< double >*          _inf_;
-    gum::LazyPropagation< double >*          _inf2_;
-    gum::AggregatorDecomposition< double >*  _aggregatorDecomposition_;
+    gum::prm::PRM< double >*                _prm_;
+    float                                   _epsilon_{1e-6f};
+    gum::BayesNet< double >*                _bn_;
+    gum::BayesNet< double >*                _bn2_;
+    gum::LazyPropagation< double >*         _inf_;
+    gum::LazyPropagation< double >*         _inf2_;
+    gum::AggregatorDecomposition< double >* _aggregatorDecomposition_;
 
     public:
     void setUp() {
@@ -58,25 +58,23 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
         reader.showElegantErrorsAndWarnings();
-         _prm_ = reader.prm();
-        if (reader.errors() > 0) {
-          GUM_ERROR(gum::FatalError, "could not load ressource file")
-        }
+        _prm_ = reader.prm();
+        if (reader.errors() > 0) { GUM_ERROR(gum::FatalError, "could not load ressource file") }
       }
-       _bn_                      = new gum::BayesNet< double >();
-       _bn2_                     = new gum::BayesNet< double >();
-       _inf_                     = 0;
-       _inf2_                    = 0;
-       _aggregatorDecomposition_ = new gum::AggregatorDecomposition< double >();
+      _bn_                      = new gum::BayesNet< double >();
+      _bn2_                     = new gum::BayesNet< double >();
+      _inf_                     = 0;
+      _inf2_                    = 0;
+      _aggregatorDecomposition_ = new gum::AggregatorDecomposition< double >();
     }
 
     void tearDown() {
-      delete  _prm_;
-      delete  _bn_;
-      delete  _bn2_;
-      delete  _inf_;
-      delete  _inf2_;
-      delete  _aggregatorDecomposition_;
+      delete _prm_;
+      delete _bn_;
+      delete _bn2_;
+      delete _inf_;
+      delete _inf2_;
+      delete _aggregatorDecomposition_;
     }
 
     void testDecomposition() {
@@ -84,40 +82,34 @@ namespace gum_tests {
       gum::BayesNetFactory< double >* factory2 = 0;
       gum::NodeId                     node     = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory
-                                   = new gum::BayesNetFactory< double >( _bn_));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory2
-                                   = new gum::BayesNetFactory< double >( _bn2_));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(_bn_));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory2 = new gum::BayesNetFactory< double >(_bn2_));
 
-      TS_GUM_ASSERT_THROWS_NOTHING( _prm_->getSystem("aSys").groundedBN(*factory));
-      TS_GUM_ASSERT_THROWS_NOTHING( _prm_->getSystem("aSys").groundedBN(*factory2));
+      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory2));
 
-      TS_GUM_ASSERT_THROWS_NOTHING( _aggregatorDecomposition_->setMaximumArity(2));
-      TS_GUM_ASSERT_THROWS_NOTHING(* _bn_ =  _aggregatorDecomposition_
-                                              ->getDecomposedAggregator(* _bn_));
+      TS_GUM_ASSERT_THROWS_NOTHING(_aggregatorDecomposition_->setMaximumArity(2));
+      TS_GUM_ASSERT_THROWS_NOTHING(*_bn_
+                                   = _aggregatorDecomposition_->getDecomposedAggregator(*_bn_));
 
-      TS_GUM_ASSERT_THROWS_NOTHING( _inf_
-                                   = new gum::LazyPropagation< double >( _bn_))
-      TS_GUM_ASSERT_THROWS_NOTHING( _inf_->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf_ = new gum::LazyPropagation< double >(_bn_))
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf_->makeInference();)
 
-      TS_GUM_ASSERT_THROWS_NOTHING( _inf2_
-                                   = new gum::LazyPropagation< double >( _bn2_))
-      TS_GUM_ASSERT_THROWS_NOTHING( _inf2_->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf2_ = new gum::LazyPropagation< double >(_bn2_))
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf2_->makeInference();)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         node =  _bn_->idFromName("city.(total_quantity)waterlevel"));
+      TS_GUM_ASSERT_THROWS_NOTHING(node = _bn_->idFromName("city.(total_quantity)waterlevel"));
 
-      gum::Instantiation inst( _inf_->posterior(node));
-      gum::Instantiation inst2( _inf2_->posterior(node));
+      gum::Instantiation inst(_inf_->posterior(node));
+      gum::Instantiation inst2(_inf2_->posterior(node));
 
       inst.setFirst();
       inst2.setFirst();
 
       while (!inst.end()) {
-        TS_ASSERT_DELTA(abs( _inf_->posterior(node).get(inst)
-                            -  _inf2_->posterior(node).get(inst2)),
+        TS_ASSERT_DELTA(abs(_inf_->posterior(node).get(inst) - _inf2_->posterior(node).get(inst2)),
                         0,
-                         _epsilon_)
+                        _epsilon_)
         inst.inc();
         inst2.inc();
       }

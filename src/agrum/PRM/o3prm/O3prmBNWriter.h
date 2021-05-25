@@ -81,8 +81,7 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream&                  output,
-                       const IBayesNet< GUM_SCALAR >& bn) final;
+    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -93,27 +92,25 @@ namespace gum {
      * @param bn The bayes net written in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(const std::string&             filePath,
-                       const IBayesNet< GUM_SCALAR >& bn) final;
+    virtual void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
-    std::string  _extractAttribute_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractAttribute_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string  _extractType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
     template < typename VARTYPE >
-    std::string  _extractDiscretizedType_(const VARTYPE* var);
+    std::string _extractDiscretizedType_(const VARTYPE* var);
 
-    std::string  _extractName_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractName_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string  _extractParents_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractParents_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string  _extractCPT_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractCPT_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string  _extractRangeType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _extractRangeType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string  _extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn,
-                                       NodeId                         node);
+    std::string _extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
   };
 
 

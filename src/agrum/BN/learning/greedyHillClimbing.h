@@ -104,8 +104,7 @@ namespace gum {
        * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
        * @param initial_dag the DAG we start from for our learning */
       template < typename GRAPH_CHANGES_SELECTOR >
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                         DAG                     initial_dag = DAG());
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag = DAG());
 
       /// learns the structure and the parameters of a BN
       /** @param selector A selector class that computes the best changes that

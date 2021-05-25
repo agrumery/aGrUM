@@ -33,16 +33,14 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  ExactBNdistance< GUM_SCALAR >::ExactBNdistance(
-     const IBayesNet< GUM_SCALAR >& P,
-     const IBayesNet< GUM_SCALAR >& Q) :
+  ExactBNdistance< GUM_SCALAR >::ExactBNdistance(const IBayesNet< GUM_SCALAR >& P,
+                                                 const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q) {
     GUM_CONSTRUCTOR(ExactBNdistance);
   }
 
   template < typename GUM_SCALAR >
-  ExactBNdistance< GUM_SCALAR >::ExactBNdistance(
-     const BNdistance< GUM_SCALAR >& kl) :
+  ExactBNdistance< GUM_SCALAR >::ExactBNdistance(const BNdistance< GUM_SCALAR >& kl) :
       BNdistance< GUM_SCALAR >(kl) {
     GUM_CONSTRUCTOR(ExactBNdistance);
   }

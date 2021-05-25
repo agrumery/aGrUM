@@ -130,12 +130,10 @@ namespace gum {
       GraphChangesGenerator4DiGraph(STRUCT_CONSTRAINT& constraint);
 
       /// copy constructor
-      GraphChangesGenerator4DiGraph(
-         const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
+      GraphChangesGenerator4DiGraph(const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
-      GraphChangesGenerator4DiGraph(
-         GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
+      GraphChangesGenerator4DiGraph(GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4DiGraph();
@@ -221,9 +219,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size  _max_threads_number_{getMaxNumberOfThreads()};
+      Size _max_threads_number_{getMaxNumberOfThreads()};
 #else
-      Size  _max_threads_number_{1};
+      Size _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

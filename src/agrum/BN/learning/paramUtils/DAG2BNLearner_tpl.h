@@ -119,8 +119,7 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >&
-       DAG2BNLearner< ALLOC >::operator=(const DAG2BNLearner< ALLOC >& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::operator=(const DAG2BNLearner< ALLOC >& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
@@ -128,8 +127,7 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >&
-       DAG2BNLearner< ALLOC >::operator=(DAG2BNLearner< ALLOC >&& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::operator=(DAG2BNLearner< ALLOC >&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
@@ -138,13 +136,11 @@ namespace gum {
     /// copy a potential into another whose variables' sequence differs
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DAG2BNLearner< ALLOC >:: _probaVarReordering_(
-       gum::Potential< GUM_SCALAR >&       pot,
-       const gum::Potential< GUM_SCALAR >& other_pot) {
+    void
+       DAG2BNLearner< ALLOC >::_probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
+                                                    const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
-      if (!pot.variablesSequence()
-              .diffSet(other_pot.variablesSequence())
-              .empty()) {
+      if (!pot.variablesSequence().diffSet(other_pot.variablesSequence()).empty()) {
         GUM_ERROR(gum::CPTError, "the potentials do not have the same variables")
       }
 
@@ -160,9 +156,8 @@ namespace gum {
     /// create a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR >
-       DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& estimator,
-                                        const DAG&               dag) {
+    BayesNet< GUM_SCALAR > DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& estimator,
+                                                            const DAG&               dag) {
       BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
@@ -170,14 +165,12 @@ namespace gum {
       const auto& database  = estimator.database();
       if (node2cols.empty()) {
         for (const auto id: dag) {
-          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(id)),
-                 id);
+          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(id)), id);
         }
       } else {
         for (const auto id: dag) {
           const std::size_t col = node2cols.second(id);
-          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(col)),
-                 id);
+          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(col)), id);
         }
       }
 
@@ -211,10 +204,10 @@ namespace gum {
     /// create a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > DAG2BNLearner< ALLOC >::createBN(
-       ParamEstimator< ALLOC >& bootstrap_estimator,
-       ParamEstimator< ALLOC >& general_estimator,
-       const DAG&               dag) {
+    BayesNet< GUM_SCALAR >
+       DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
+                                        ParamEstimator< ALLOC >& general_estimator,
+                                        const DAG&               dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
       for (const auto& nod: bn.nodes()) {
@@ -234,8 +227,7 @@ namespace gum {
           xdag.children(node);
         }
 
-        BayesNet< GUM_SCALAR > new_bn
-           = createBN< GUM_SCALAR >(general_estimator, dag);
+        BayesNet< GUM_SCALAR > new_bn = createBN< GUM_SCALAR >(general_estimator, dag);
         updateApproximationScheme();
 
         delta = GUM_SCALAR(0.0);
@@ -251,8 +243,7 @@ namespace gum {
             if (old_val > 0.0) {
               const GUM_SCALAR new_val = new_cpt.get(new_inst);
               const GUM_SCALAR diff    = new_val - old_val;
-              const auto       diffrel
-                 = (diff < 0.0) ? (-diff / old_val) : (diff / old_val);
+              const auto       diffrel = (diff < 0.0) ? (-diff / old_val) : (diff / old_val);
               if (delta < diffrel) delta = diffrel;
             }
           }

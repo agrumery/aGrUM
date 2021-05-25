@@ -31,27 +31,25 @@
 #include <agrum/tools/core/signal/signaler0.h>
 
 namespace gum {
-  namespace  __sig__ {
+  namespace __sig__ {
 
     template < class TargetClass >
     Connector0< TargetClass >::Connector0() {
       GUM_CONSTRUCTOR(Connector0);
-       _target_ = nullptr;
-       _action_ = nullptr;
+      _target_ = nullptr;
+      _action_ = nullptr;
     }
 
     template < class TargetClass >
-    Connector0< TargetClass >::Connector0(
-       TargetClass* target,
-       void (TargetClass::*action)(const void*)) {
+    Connector0< TargetClass >::Connector0(TargetClass* target,
+                                          void (TargetClass::*action)(const void*)) {
       GUM_CONSTRUCTOR(Connector0);
-       _target_ = target;
-       _action_ = action;
+      _target_ = target;
+      _action_ = action;
     }
 
     template < class TargetClass >
-    Connector0< TargetClass >::Connector0(const Connector0< TargetClass >* src) :
-        IConnector0(src) {
+    Connector0< TargetClass >::Connector0(const Connector0< TargetClass >* src) : IConnector0(src) {
       GUM_CONS_CPY(Connector0);
     }
 
@@ -67,17 +65,17 @@ namespace gum {
 
     template < class TargetClass >
     IConnector0* Connector0< TargetClass >::duplicate(Listener* target) {
-      return new Connector0< TargetClass >((TargetClass*)target,  _action_);
+      return new Connector0< TargetClass >((TargetClass*)target, _action_);
     }
 
     template < class TargetClass >
     void Connector0< TargetClass >::notify(const void* src) {
-      ( _target_->* _action_)(src);
+      (_target_->*_action_)(src);
     }
 
     template < class TargetClass >
     Listener* Connector0< TargetClass >::target() const {
-      return  _target_;
+      return _target_;
     }
 
   }   // namespace  __sig__

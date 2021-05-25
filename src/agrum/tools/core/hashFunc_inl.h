@@ -43,7 +43,7 @@ namespace gum {
    * this restriction. Function  _hashTableLog2_ thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  INLINE unsigned int  _hashTableLog2_(const Size nb) {
+  INLINE unsigned int _hashTableLog2_(const Size nb) {
     unsigned int i = 0;
 
     for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {};
@@ -79,8 +79,7 @@ namespace gum {
   // ===========================================================================
 
   /// returns a hashed key for hash tables whose keys are vectors of Idx
-  INLINE Size
-     HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
+  INLINE Size HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
     Size h    = Size(0);
     Size size = Size(key.size());
     for (Size i = Size(0); i < size; ++i)
@@ -90,8 +89,7 @@ namespace gum {
   }
 
   // Returns the hashed value of a key.
-  INLINE Size HashFunc< std::vector< Idx > >::operator()(
-     const std::vector< Idx >& key) const {
+  INLINE Size HashFunc< std::vector< Idx > >::operator()(const std::vector< Idx >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

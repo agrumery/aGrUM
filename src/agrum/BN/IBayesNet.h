@@ -130,8 +130,7 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
     /// @}
 
     // ===========================================================================
@@ -229,12 +228,12 @@ namespace gum {
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     private:
-    void  _minimalCondSetVisitUp_(NodeId         node,
+    void _minimalCondSetVisitUp_(NodeId         node,
                                  const NodeSet& soids,
                                  NodeSet&       minimal,
                                  NodeSet&       alreadyVisitedUp,
                                  NodeSet&       alreadyVisitedDn) const;
-    void  _minimalCondSetVisitDn_(NodeId         node,
+    void _minimalCondSetVisitDn_(NodeId         node,
                                  const NodeSet& soids,
                                  NodeSet&       minimal,
                                  NodeSet&       alreadyVisitedUp,
@@ -249,8 +248,7 @@ namespace gum {
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                  output,
-                           const IBayesNet< GUM_SCALAR >& bn);
+  std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
 
 } /* namespace gum */
 

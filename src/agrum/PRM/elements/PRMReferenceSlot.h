@@ -89,8 +89,7 @@ namespace gum {
       /**
        * Implementation of the pure virtual method of PRMObject.
        */
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer
@@ -161,10 +160,10 @@ namespace gum {
       // @{
 
       /// The type of this PRMReferenceSlot.
-      PRMClassElementContainer< GUM_SCALAR >&  _slotType_;
+      PRMClassElementContainer< GUM_SCALAR >& _slotType_;
 
       /// Flag indicating if this slot is an array.
-      bool  _isArray_;
+      bool _isArray_;
 
       /// @}
     };

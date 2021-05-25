@@ -24,75 +24,74 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  UAIMNReader< GUM_SCALAR >::UAIMNReader(MarkovNet< GUM_SCALAR >* MN,
-                                         const std::string&       filename) :
+  UAIMNReader< GUM_SCALAR >::UAIMNReader(MarkovNet< GUM_SCALAR >* MN, const std::string& filename) :
       MNReader< GUM_SCALAR >(MN, filename) {
     GUM_CONSTRUCTOR(UAIMNReader);
-     _mn_ = MN;
-     _mn_->clear();
+    _mn_ = MN;
+    _mn_->clear();
 
-     _streamName_ = filename;
-     _parseDone_  = false;
+    _streamName_ = filename;
+    _parseDone_  = false;
 
-     _ioerror_ = false;
+    _ioerror_ = false;
 
     try {
-       _scanner_ = new UAIMN::Scanner( _streamName_.c_str());
-       _parser_  = new UAIMN::Parser( _scanner_);
-    } catch (IOError&) {  _ioerror_ = true; }
+      _scanner_ = new UAIMN::Scanner(_streamName_.c_str());
+      _parser_  = new UAIMN::Parser(_scanner_);
+    } catch (IOError&) { _ioerror_ = true; }
   }
 
   template < typename GUM_SCALAR >
   UAIMNReader< GUM_SCALAR >::~UAIMNReader() {
     GUM_DESTRUCTOR(UAIMNReader);
 
-    if (! _ioerror_) {
+    if (!_ioerror_) {
       // this could lead to memory leak !!
-      if ( _parser_) delete ( _parser_);
+      if (_parser_) delete (_parser_);
 
-      if ( _scanner_) delete ( _scanner_);
+      if (_scanner_) delete (_scanner_);
     }
   }
 
   template < typename GUM_SCALAR >
   INLINE UAIMN::Scanner& UAIMNReader< GUM_SCALAR >::scanner() {
-    if ( _ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
+    if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
-    return * _scanner_;
+    return *_scanner_;
   }
 
   template < typename GUM_SCALAR >
   INLINE const std::string& UAIMNReader< GUM_SCALAR >::streamName() const {
-    return  _streamName_;
+    return _streamName_;
   }
 
   template < typename GUM_SCALAR >
   INLINE bool UAIMNReader< GUM_SCALAR >::trace() const {
-    return  _traceScanning_;
+    return _traceScanning_;
   }
 
   template < typename GUM_SCALAR >
   INLINE void UAIMNReader< GUM_SCALAR >::trace(bool b) {
-     _traceScanning_ = b;
+    _traceScanning_ = b;
     scanner().setTrace(b);
   }
 
   template < typename GUM_SCALAR >
   Size UAIMNReader< GUM_SCALAR >::proceed() {
-    if ( _ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
+    if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
-    if (! _parseDone_) {
+    if (!_parseDone_) {
       try {
-         _parser_->Parse();
-         _parseDone_ = true;
-        buildFromQuartets( _parser_->getQuartets());
+        _parser_->Parse();
+        _parseDone_ = true;
+        buildFromQuartets(_parser_->getQuartets());
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        return 1 +  _parser_->errors().error_count;
+        return 1 + _parser_->errors().error_count;
       }
     }
 
-    return ( _parser_->errors().error_count);
+    return (_parser_->errors().error_count);
   }
 
   template < typename GUM_SCALAR >
@@ -101,7 +100,7 @@ namespace gum {
     Idx  current;
     Size max = quartets.size();
     if (max == 0) {
-       _addWarning_(1, 1, "Empty MarkovNet");
+      _addWarning_(1, 1, "Empty MarkovNet");
       return;
     }
 
@@ -116,17 +115,15 @@ namespace gum {
     };
 
     auto getInt = [&]() -> int {
-      if (!isInt()) this-> _addFatalError_(lig(), col(), "int expected");
+      if (!isInt()) this->_addFatalError_(lig(), col(), "int expected");
       return std::get< 1 >(quartets[current]);
     };
     auto getVal = [&]() -> GUM_SCALAR {
-      return (isInt()) ? (std::get< 1 >(quartets[current]))
-                       : (std::get< 0 >(quartets[current]));
+      return (isInt()) ? (std::get< 1 >(quartets[current])) : (std::get< 0 >(quartets[current]));
     };
     auto incCurrent = [&]() {
       current += 1;
-      if (current >= max)
-        this-> _addFatalError_(lig(), col(), "Not enough data in UAI file");
+      if (current >= max) this->_addFatalError_(lig(), col(), "Not enough data in UAI file");
     };
 
     current      = 0;
@@ -135,9 +132,8 @@ namespace gum {
     for (NodeId i = 0; i < nbrNode; i++) {
       incCurrent();
       int mod = getInt();
-      if (mod < 2)
-         _addError_(lig(), col(), "Number of modalities should be greater than 2.");
-       _mn_->add(gum::LabelizedVariable(std::to_string(i), "", mod));
+      if (mod < 2) _addError_(lig(), col(), "Number of modalities should be greater than 2.");
+      _mn_->add(gum::LabelizedVariable(std::to_string(i), "", mod));
     }
 
     incCurrent();
@@ -147,46 +143,43 @@ namespace gum {
     for (NodeId i = 0; i < nbrFactors; i++) {
       incCurrent();
       Size nbrVar = (Size)getInt();
-      if (nbrVar == 0)  _addError_(lig(), col(), "0 is not possible here");
+      if (nbrVar == 0) _addError_(lig(), col(), "0 is not possible here");
 
       NodeSet vars;
       for (NodeId j = 0; j < nbrVar; j++) {
         incCurrent();
         NodeId nod = (NodeId)getInt();
-        if (nod >= nbrNode)
-           _addError_(lig(), col(), "Not enough variables in the MarkovNet");
+        if (nod >= nbrNode) _addError_(lig(), col(), "Not enough variables in the MarkovNet");
         vars.insert(nod);
       }
-       _mn_->addFactor(vars);
+      _mn_->addFactor(vars);
       clicks.push_back(vars);
     }
 
     for (NodeId i = 0; i < nbrFactors; i++) {
       incCurrent();
       Size nbrParam = (Size)getInt();
-      if (nbrParam !=  _mn_->factor(clicks[i]).domainSize()) {
-         _addFatalError_(lig(),
-                        col(),
-                        "Size does not fit between clique and parameters");
+      if (nbrParam != _mn_->factor(clicks[i]).domainSize()) {
+        _addFatalError_(lig(), col(), "Size does not fit between clique and parameters");
       }
       std::vector< GUM_SCALAR > v;
       for (Idx j = 0; j < nbrParam; j++) {
         incCurrent();
         v.push_back(getVal());
       }
-       _mn_->factor(clicks[i]).fillWith(v);
+      _mn_->factor(clicks[i]).fillWith(v);
       v.clear();
     }
 
-    if (current != max - 1)  _addError_(lig(), col(), "Too many data in this file");
+    if (current != max - 1) _addError_(lig(), col(), "Too many data in this file");
   }
 
   // @{
   // publishing Errors API
   template < typename GUM_SCALAR >
   INLINE Idx UAIMNReader< GUM_SCALAR >::errLine(Idx i) {
-    if ( _parseDone_)
-      return  _parser_->errors().error(i).line;
+    if (_parseDone_)
+      return _parser_->errors().error(i).line;
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -194,8 +187,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Idx UAIMNReader< GUM_SCALAR >::errCol(Idx i) {
-    if ( _parseDone_)
-      return  _parser_->errors().error(i).column;
+    if (_parseDone_)
+      return _parser_->errors().error(i).column;
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -203,8 +196,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool UAIMNReader< GUM_SCALAR >::errIsError(Idx i) {
-    if ( _parseDone_)
-      return  _parser_->errors().error(i).is_error;
+    if (_parseDone_)
+      return _parser_->errors().error(i).is_error;
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -212,8 +205,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string UAIMNReader< GUM_SCALAR >::errMsg(Idx i) {
-    if ( _parseDone_)
-      return  _parser_->errors().error(i).msg;
+    if (_parseDone_)
+      return _parser_->errors().error(i).msg;
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -221,18 +214,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void UAIMNReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
-    if ( _parseDone_)
-       _parser_->errors().elegantErrors(o);
+    if (_parseDone_)
+      _parser_->errors().elegantErrors(o);
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
   }
 
   template < typename GUM_SCALAR >
-  INLINE void
-     UAIMNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
-    if ( _parseDone_)
-       _parser_->errors().elegantErrorsAndWarnings(o);
+  INLINE void UAIMNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    if (_parseDone_)
+      _parser_->errors().elegantErrorsAndWarnings(o);
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -240,8 +232,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void UAIMNReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
-    if ( _parseDone_)
-       _parser_->errors().simpleErrorsAndWarnings(o);
+    if (_parseDone_)
+      _parser_->errors().simpleErrorsAndWarnings(o);
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -249,8 +241,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void UAIMNReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
-    if ( _parseDone_)
-       _parser_->errors().syntheticResults(o);
+    if (_parseDone_)
+      _parser_->errors().syntheticResults(o);
     else {
       GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet")
     }
@@ -258,34 +250,28 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Size UAIMNReader< GUM_SCALAR >::errors() {
-    return (! _parseDone_) ? (Size)0 :  _parser_->errors().error_count;
+    return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
   template < typename GUM_SCALAR >
   INLINE Size UAIMNReader< GUM_SCALAR >::warnings() {
-    return (! _parseDone_) ? (Size)0 :  _parser_->errors().warning_count;
+    return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void UAIMNReader< GUM_SCALAR >:: _addFatalError_(Idx                lig,
-                                                         Idx                col,
-                                                         const std::string& s) {
-     _parser_->errors().addError(s,  _streamName_, lig, col);
+  INLINE void UAIMNReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, const std::string& s) {
+    _parser_->errors().addError(s, _streamName_, lig, col);
     GUM_ERROR(gum::OperationNotAllowed, s)
   }
 
   template < typename GUM_SCALAR >
-  INLINE void UAIMNReader< GUM_SCALAR >:: _addError_(Idx                lig,
-                                                    Idx                col,
-                                                    const std::string& s) {
-     _parser_->errors().addError(s,  _streamName_, lig, col);
+  INLINE void UAIMNReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, const std::string& s) {
+    _parser_->errors().addError(s, _streamName_, lig, col);
   }
 
   template < typename GUM_SCALAR >
-  INLINE void UAIMNReader< GUM_SCALAR >:: _addWarning_(Idx                lig,
-                                                      Idx                col,
-                                                      const std::string& s) {
-     _parser_->errors().addWarning(s,  _streamName_, lig, col);
+  INLINE void UAIMNReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, const std::string& s) {
+    _parser_->errors().addWarning(s, _streamName_, lig, col);
   }
 
   // @}

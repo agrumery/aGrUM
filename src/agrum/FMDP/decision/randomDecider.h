@@ -72,9 +72,7 @@ namespace gum {
     public:
     void checkState(const Instantiation& newState, Idx actionId) {}
 
-    ActionSet stateOptimalPolicy(const Instantiation& curState) {
-      return allActions_;
-    }
+    ActionSet stateOptimalPolicy(const Instantiation& curState) { return allActions_; }
   };
 }   // namespace gum
 #endif   // GUM_RANDOM_DECIDER_H

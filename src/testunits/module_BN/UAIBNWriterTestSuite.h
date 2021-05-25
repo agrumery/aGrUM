@@ -79,7 +79,7 @@ namespace gum_tests {
 
     void testWriter_ostream() {
       gum::UAIBNWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/uaibn_generated.uai");
+      std::string                file = GET_RESSOURCES_PATH("outputs/uaibn_generated.uai");
       // Uncomment this to check the ouput
       writer.write(file, *bn);
 
@@ -100,9 +100,8 @@ namespace gum_tests {
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
       bn.cpt(i4).fillWith({0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0});
-      bn.cpt(i5).fillWith({0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                           0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                           0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
+      bn.cpt(i5).fillWith({0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                           0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
     }
   };
 }   // namespace gum_tests

@@ -54,19 +54,18 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-     MCBayesNetGenerator(Size nbrNodes,
-                         Size maxArcs,
-                         Idx  maxModality,
-                         Size iteration,
-                         Idx  p,
-                         Idx  q) :
+  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::MCBayesNetGenerator(
+     Size nbrNodes,
+     Size maxArcs,
+     Idx  maxModality,
+     Size iteration,
+     Idx  p,
+     Idx  q) :
       IBNG(nbrNodes, maxArcs, maxModality),
       bayesNettemp_(), hashMarginal_() {
     if (p + q > 100)
-      GUM_ERROR(
-         OperationNotAllowed,
-         "the sum of the probabilities p and q must be at most equal to 100");
+      GUM_ERROR(OperationNotAllowed,
+                "the sum of the probabilities p and q must be at most equal to 100");
 
     iteration_  = iteration;
     p_          = p;
@@ -81,11 +80,11 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-     MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                         Size                   iteration,
-                         Idx                    p,
-                         Idx                    q) :
+  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::MCBayesNetGenerator(
+     BayesNet< GUM_SCALAR > bayesNet,
+     Size                   iteration,
+     Idx                    p,
+     Idx                    q) :
       MCBayesNetGenerator(bayesNet.size(),
                           (Size)(bayesNet.sizeArcs() * 1.1),
                           getMaxModality(bayesNet)) {
@@ -101,8 +100,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-     ~MCBayesNetGenerator() {
+  MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::~MCBayesNetGenerator() {
     GUM_DESTRUCTOR(MCBayesNetGenerator);
   }
 
@@ -116,10 +114,10 @@ namespace gum {
     Idx iteration = iteration_;
 
     // this->bayesNet_ = bayesNet;
-     _createTree_(this->nbrNodes_);
-     _transformPoly_(this->nbrNodes_ / 2);
+    _createTree_(this->nbrNodes_);
+    _transformPoly_(this->nbrNodes_ / 2);
     bayesNettemp_ = this->bayesNet_;
-     _PMMx_poly_();
+    _PMMx_poly_();
 
     this->fillCPT();
     iteration_ = iteration;
@@ -143,7 +141,7 @@ namespace gum {
 
     this->bayesNet_ = bayesNetinit;
 
-    if ( _checkConditions_()) {
+    if (_checkConditions_()) {
       LazyPropagation< GUM_SCALAR > inf(&bayesNetinit);
       inf.makeInference();
 
@@ -155,23 +153,21 @@ namespace gum {
 
       bayesNettemp_ = this->bayesNet_;
 
-      if ( _isPolytree_())
-         _PMMx_poly_();
+      if (_isPolytree_())
+        _PMMx_poly_();
       else
-         _PMMx_multi_();
+        _PMMx_multi_();
 
       bayesNetinit = (this->bayesNet_);
 
       while (hashMarginal_.size()) {
         delete (hashMarginal_.begin().val());
-        hashMarginal_.erase(
-           hashMarginal_.beginSafe());   // safe iterator needed here.
+        hashMarginal_.erase(hashMarginal_.beginSafe());   // safe iterator needed here.
       }
 
     } else {
       std::cout << this->bayesNet_.toDot() << std::endl;
-      GUM_ERROR(OperationNotAllowed,
-                "BN is not valid cause it does not respect constraint ")
+      GUM_ERROR(OperationNotAllowed, "BN is not valid cause it does not respect constraint ")
     }
 
     iteration_  = iter;
@@ -183,8 +179,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _checkConditions_() {
+  INLINE bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_checkConditions_() {
     return this->maxArcs_ >= this->bayesNet_.sizeArcs();
   }
 
@@ -196,42 +191,41 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _PMMx_poly_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_PMMx_poly_() {
     if (!iteration_--) return;
 
     Idx per = randomValue(100);
 
     if (per < p_) {
-       _AorR_();
+      _AorR_();
 
-      if ( _checkConditions_()) {
+      if (_checkConditions_()) {
         bayesNettemp_ = this->bayesNet_;
-         _PMMx_multi_();
+        _PMMx_multi_();
       } else {
         this->bayesNet_ = bayesNettemp_;
-         _PMMx_poly_();
+        _PMMx_poly_();
       }
     } else {
       if (per < p_ + q_) {
-         _AR_();
+        _AR_();
 
-        if (! _checkConditions_()) {
+        if (!_checkConditions_()) {
           this->bayesNet_ = bayesNettemp_;
         } else
           bayesNettemp_ = this->bayesNet_;
 
-         _PMMx_poly_();
+        _PMMx_poly_();
       } else {
-         _jump_poly_();
+        _jump_poly_();
 
-        if ( _checkConditions_()) {
+        if (_checkConditions_()) {
           bayesNettemp_ = this->bayesNet_;
-           _PMMx_multi_();
+          _PMMx_multi_();
 
         } else {
           this->bayesNet_ = bayesNettemp_;
-           _PMMx_poly_();
+          _PMMx_poly_();
         }
       }
     }
@@ -242,46 +236,45 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _PMMx_multi_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_PMMx_multi_() {
     if (!iteration_--) return;
 
     Idx per = randomValue(100);
 
     if (per < p_ + q_) {
-       _AorR_();
+      _AorR_();
 
-      if ( _checkConditions_()) {
-        if ( _isPolytree_()) {
+      if (_checkConditions_()) {
+        if (_isPolytree_()) {
           if (per < p_) {
             bayesNettemp_ = this->bayesNet_;
-             _PMMx_poly_();
+            _PMMx_poly_();
           } else {
             this->bayesNet_ = bayesNettemp_;
-             _PMMx_multi_();
+            _PMMx_multi_();
           }
         } else {
           bayesNettemp_ = this->bayesNet_;
-           _PMMx_multi_();
+          _PMMx_multi_();
         }
       } else {
         this->bayesNet_ = bayesNettemp_;
-         _PMMx_multi_();
+        _PMMx_multi_();
       }
     } else {
-       _jump_multi_();
+      _jump_multi_();
 
-      if ( _checkConditions_()) {
+      if (_checkConditions_()) {
         bayesNettemp_ = this->bayesNet_;
 
-        if ( _isPolytree_())
-           _PMMx_poly_();
+        if (_isPolytree_())
+          _PMMx_poly_();
         else
-           _PMMx_multi_();
+          _PMMx_multi_();
 
       } else {
         this->bayesNet_ = bayesNettemp_;
-         _PMMx_multi_();
+        _PMMx_multi_();
       }
     }
   }
@@ -291,17 +284,17 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _AorR_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_AorR_() {
     NodeId i, j;
-     _chooseNodes_(i, j);
-    const DAG  _dag_ = this->bayesNet_.dag();
+    _chooseNodes_(i, j);
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(i, j)) {
-       _eraseArc_(i, j);
+    if (_dag_.existsArc(i, j)) {
+      _eraseArc_(i, j);
 
       return;
     } else
-       _insertArc_(i, j);
+      _insertArc_(i, j);
   }
 
   template < typename GUM_SCALAR,
@@ -309,12 +302,12 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _AR_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_AR_() {
     NodeId i, j, head, tail;
-     _chooseNodes_(i, j);
-    const DAG  _dag_ = this->bayesNet_.dag();
+    _chooseNodes_(i, j);
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(i, j) ||  _dag_.existsArc(j, i)) {
+    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i)) {
       return;
     } else {
       Idx per = randomValue(100);
@@ -327,22 +320,22 @@ namespace gum {
         tail = i;
       }
 
-      for (auto node:  _dag_.parents(j)) {
+      for (auto node: _dag_.parents(j)) {
         NodeSet excluded;
         excluded.insert(j);
 
-        if ( _connect_(node, i, excluded)) {
+        if (_connect_(node, i, excluded)) {
           this->bayesNet_.eraseArc(node, j);
           this->bayesNet_.addArc(head, tail);
           return;
         }
       }
 
-      for (auto node:  _dag_.children(j)) {
+      for (auto node: _dag_.children(j)) {
         NodeSet excluded;
         excluded.insert(j);
 
-        if ( _connect_(node, i, excluded)) {
+        if (_connect_(node, i, excluded)) {
           this->bayesNet_.eraseArc(j, node);
           this->bayesNet_.addArc(head, tail);
           return;
@@ -356,13 +349,12 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _jump_poly_() {
+  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_jump_poly_() {
     NodeId i, j;
-     _chooseNodes_(i, j);
-    const DAG  _dag_ = this->bayesNet_.dag();
+    _chooseNodes_(i, j);
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if (! _dag_.existsArc(i, j))  _insertArc_(i, j);
+    if (!_dag_.existsArc(i, j)) _insertArc_(i, j);
   }
 
   template < typename GUM_SCALAR,
@@ -370,13 +362,12 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _jump_multi_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_jump_multi_() {
     NodeId i, j;
-     _chooseNodes_(i, j);
-    const DAG  _dag_ = this->bayesNet_.dag();
+    _chooseNodes_(i, j);
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(i, j)) {  _eraseArc_(i, j); }
+    if (_dag_.existsArc(i, j)) { _eraseArc_(i, j); }
   }
 
   template < typename GUM_SCALAR,
@@ -385,10 +376,9 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _insertArc_(
-        NodeId i,
-        NodeId j) {
-    if ( _directedPath_(j, i)) return;
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_insertArc_(NodeId i,
+                                                                                  NodeId j) {
+    if (_directedPath_(j, i)) return;
 
     if (disturbing_) {
       auto potj = this->bayesNet_.cpt(j);
@@ -404,18 +394,17 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _eraseArc_(
-        NodeId i,
-        NodeId j,
-        bool   mustbeconnex) {
+  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_eraseArc_(
+     NodeId i,
+     NodeId j,
+     bool   mustbeconnex) {
     if (disturbing_) {
       const BayesNet< GUM_SCALAR > bayesNet(this->bayesNet_);
       Potential< GUM_SCALAR >      potj;
       potj.copy(this->bayesNet_.cpt(j));
       this->bayesNet_.eraseArc(i, j);
 
-      if ( _connect_(i, j) || !mustbeconnex) {
+      if (_connect_(i, j) || !mustbeconnex) {
         auto marg = *hashMarginal_[i];
 
         this->disturbReducCPT(j, this->bayesNet_, potj, marg);
@@ -424,7 +413,7 @@ namespace gum {
     } else {
       this->bayesNet_.eraseArc(i, j);
 
-      if (! _connect_(i, j) && mustbeconnex) { this->bayesNet_.addArc(i, j); }
+      if (!_connect_(i, j) && mustbeconnex) { this->bayesNet_.addArc(i, j); }
     }
   }
 
@@ -433,8 +422,9 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _chooseNodes_(NodeId& i, NodeId& j) {
+  INLINE void
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_chooseNodes_(NodeId& i,
+                                                                                    NodeId& j) {
     i = randomValue(this->bayesNet_.size());
     j = randomValue(this->bayesNet_.size());
 
@@ -447,8 +437,9 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _chooseCloseNodes_(NodeId& i, NodeId& j) {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_chooseCloseNodes_(
+     NodeId& i,
+     NodeId& j) {
     NodeId temp = randomValue(this->bayesNet_.size());
     Size   co   = 0;
 
@@ -482,22 +473,19 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _createTree_(
-        Size BNSize) {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_createTree_(Size BNSize) {
     Idx               n      = 0;
     Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root
-       = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
-    Size maxNodes = BNSize - 1;
-    Size SubG     = 0;
+    NodeId root     = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
+    Size   maxNodes = BNSize - 1;
+    Size   SubG     = 0;
 
     while (maxNodes) {
       SubG         = randomValue(maxNodes) + 1;
       maxNodes     = maxNodes - SubG;
-      NodeId rootS =  _createPartTree_(SubG, n);
+      NodeId rootS = _createPartTree_(SubG, n);
       this->bayesNet_.addArc(root, rootS);
     }
   }
@@ -507,20 +495,20 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  NodeId MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _createPartTree_(Size BNSize, Idx& n) {
+  NodeId
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_createPartTree_(Size BNSize,
+                                                                                       Idx& n) {
     Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root
-       = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
-    Size maxNodes = BNSize - 1;
-    Size SubG     = 0;
+    NodeId root     = this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod));
+    Size   maxNodes = BNSize - 1;
+    Size   SubG     = 0;
 
     while (maxNodes) {
       SubG         = randomValue(maxNodes) + 1;
       maxNodes     = maxNodes - SubG;
-      NodeId rootS =  _createPartTree_(SubG, n);
+      NodeId rootS = _createPartTree_(SubG, n);
       this->bayesNet_.addArc(root, rootS);
     }
 
@@ -533,16 +521,16 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _transformPoly_(Idx nbiter) {
+  void
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_transformPoly_(Idx nbiter) {
     while (nbiter--) {
       NodeId i, j;
-       _chooseCloseNodes_(i, j);
+      _chooseCloseNodes_(i, j);
       bayesNettemp_ = this->bayesNet_;
-       _eraseArc_(i, j, false);
+      _eraseArc_(i, j, false);
       this->bayesNet_.addArc(j, i);
 
-      if (! _checkConditions_()) this->bayesNet_ = bayesNettemp_;
+      if (!_checkConditions_()) this->bayesNet_ = bayesNettemp_;
     }
   }
 
@@ -551,9 +539,8 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _isPolytree_() {
-    const DAG  _dag_ = this->bayesNet_.dag();
+  INLINE bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_isPolytree_() {
+    const DAG _dag_ = this->bayesNet_.dag();
     return this->bayesNet_.size() - 1 == this->bayesNet_.sizeArcs();
   }
 
@@ -562,23 +549,22 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _connect_(
-     const NodeId i,
-     const NodeId j) {
-    const DAG  _dag_ = this->bayesNet_.dag();
+  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_connect_(const NodeId i,
+                                                                                  const NodeId j) {
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(i, j) ||  _dag_.existsArc(j, i))
+    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i))
       return true;
     else {
       NodeSet excluded;
       excluded.insert(i);
 
-      for (auto par:  _dag_.parents(i)) {
-        if (!excluded.exists(par) &&  _connect_(par, j, excluded)) return true;
+      for (auto par: _dag_.parents(i)) {
+        if (!excluded.exists(par) && _connect_(par, j, excluded)) return true;
       }
 
-      for (auto chi:  _dag_.children(i)) {
-        if (!excluded.exists(chi) &&  _connect_(chi, j, excluded)) return true;
+      for (auto chi: _dag_.children(i)) {
+        if (!excluded.exists(chi) && _connect_(chi, j, excluded)) return true;
       }
 
       return false;
@@ -590,23 +576,23 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >:: _connect_(
-     const NodeId i,
-     const NodeId j,
-     NodeSet&     excluded) {
-    const DAG  _dag_ = this->bayesNet_.dag();
+  bool
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_connect_(const NodeId i,
+                                                                                const NodeId j,
+                                                                                NodeSet& excluded) {
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(i, j) ||  _dag_.existsArc(j, i))
+    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i))
       return true;
     else {
       excluded.insert(i);
 
-      for (auto par:  _dag_.parents(i)) {
-        if (!excluded.exists(par) &&  _connect_(par, j, excluded)) return true;
+      for (auto par: _dag_.parents(i)) {
+        if (!excluded.exists(par) && _connect_(par, j, excluded)) return true;
       }
 
-      for (auto chi:  _dag_.children(i)) {
-        if (!excluded.exists(chi) &&  _connect_(chi, j, excluded)) return true;
+      for (auto chi: _dag_.children(i)) {
+        if (!excluded.exists(chi) && _connect_(chi, j, excluded)) return true;
       }
 
       return false;
@@ -618,18 +604,19 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _directedPath_(NodeId tail, NodeId head) {
-    const DAG  _dag_ = this->bayesNet_.dag();
+  bool
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_directedPath_(NodeId tail,
+                                                                                     NodeId head) {
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(tail, head))
+    if (_dag_.existsArc(tail, head))
       return true;
     else {
       NodeSet excluded;
       excluded.insert(tail);
 
-      for (auto node:  _dag_.children(tail)) {
-        if ( _directedPath_(node, head, excluded)) return true;
+      for (auto node: _dag_.children(tail)) {
+        if (_directedPath_(node, head, excluded)) return true;
       }
 
       return false;
@@ -641,18 +628,19 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      _directedPath_(NodeId tail, NodeId head, NodeSet& excluded) {
-    const DAG  _dag_ = this->bayesNet_.dag();
+  bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_directedPath_(
+     NodeId   tail,
+     NodeId   head,
+     NodeSet& excluded) {
+    const DAG _dag_ = this->bayesNet_.dag();
 
-    if ( _dag_.existsArc(tail, head))
+    if (_dag_.existsArc(tail, head))
       return true;
     else {
       excluded.insert(tail);
 
-      for (auto node:  _dag_.children(tail)) {
-        if (!excluded.exists(node) &&  _directedPath_(node, head, excluded))
-          return true;
+      for (auto node: _dag_.children(tail)) {
+        if (!excluded.exists(node) && _directedPath_(node, head, excluded)) return true;
       }
 
       return false;
@@ -664,9 +652,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE Size
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::iteration()
-        const {
+  INLINE Size MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::iteration() const {
     return iteration_;
   }
 
@@ -675,8 +661,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE Idx
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::p() const {
+  INLINE Idx MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::p() const {
     return p_;
   }
 
@@ -685,8 +670,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE Idx
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::q() const {
+  INLINE Idx MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::q() const {
     return q_;
   }
 
@@ -696,8 +680,7 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setIteration(
-        Size iteration) {
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setIteration(Size iteration) {
     iteration_ = iteration;
   }
   template < typename GUM_SCALAR,
@@ -705,28 +688,24 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setP(Idx p) {
+  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setP(Idx p) {
     p_ = p;
 
     if (p + q_ > 100)
-      GUM_ERROR(
-         OperationNotAllowed,
-         "the sum of the probabilities p and q must be at most equal to 100");
+      GUM_ERROR(OperationNotAllowed,
+                "the sum of the probabilities p and q must be at most equal to 100");
   }
   template < typename GUM_SCALAR,
              template < typename >
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  INLINE void
-     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setQ(Idx q) {
+  INLINE void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setQ(Idx q) {
     q_ = q;
 
     if (p_ + q > 100)
-      GUM_ERROR(
-         OperationNotAllowed,
-         "the sum of the probabilities p and q must be at most equal to 100");
+      GUM_ERROR(OperationNotAllowed,
+                "the sum of the probabilities p and q must be at most equal to 100");
   }
 
 } /* namespace gum */

@@ -75,12 +75,8 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    void updateScore(const DiscreteVariable* var,
-                     double                  score,
-                     double                  secondaryscore);
-    void downdateScore(const DiscreteVariable* var,
-                       double                  score,
-                       double                  secondaryscore);
+    void updateScore(const DiscreteVariable* var, double score, double secondaryscore);
+    void downdateScore(const DiscreteVariable* var, double score, double secondaryscore);
 
 
     // ###################################################################
@@ -88,33 +84,33 @@ namespace gum {
     // ###################################################################
     const DiscreteVariable* select();
 
-    bool isEmpty() { return  _remainingVars_.empty(); }
+    bool isEmpty() { return _remainingVars_.empty(); }
 
-    void begin() {  _rvi_ =  _remainingVars_.beginSafe(); }
-    bool hasNext() { return  _rvi_ !=  _remainingVars_.endSafe(); }
-    void next() { ++ _rvi_; }
-    const DiscreteVariable* current() { return * _rvi_; }
+    void                    begin() { _rvi_ = _remainingVars_.beginSafe(); }
+    bool                    hasNext() { return _rvi_ != _remainingVars_.endSafe(); }
+    void                    next() { ++_rvi_; }
+    const DiscreteVariable* current() { return *_rvi_; }
 
     private:
-    void  _addVar_(const DiscreteVariable* var);
-    void  _removeVar_(const DiscreteVariable* var);
+    void _addVar_(const DiscreteVariable* var);
+    void _removeVar_(const DiscreteVariable* var);
 
     /// The set of remaining vars to select among
-    Set< const DiscreteVariable* >              _remainingVars_;
-    SetIteratorSafe< const DiscreteVariable* >  _rvi_;
+    Set< const DiscreteVariable* >             _remainingVars_;
+    SetIteratorSafe< const DiscreteVariable* > _rvi_;
 
     /// Heap keeping best score on top for immediate access
-    MultiPriorityQueue< double, double, std::greater< double > >  _remainingScores_;
+    MultiPriorityQueue< double, double, std::greater< double > > _remainingScores_;
 
     /// HashTable associating to each score the set of variable having that
     /// score
-    HashTable< double, Set< const DiscreteVariable* >* >  _remainingVarsByScore_;
+    HashTable< double, Set< const DiscreteVariable* >* > _remainingVarsByScore_;
 
     /// HashTable associating to each variable its score
-    HashTable< const DiscreteVariable*, double >  _remainingVarsScore_;
+    HashTable< const DiscreteVariable*, double > _remainingVarsScore_;
 
     /// HashTable associating to each variable its 2nd score
-    HashTable< const DiscreteVariable*, double >  _remainingVarsOtherScore_;
+    HashTable< const DiscreteVariable*, double > _remainingVarsOtherScore_;
   };
 
 }   // namespace gum

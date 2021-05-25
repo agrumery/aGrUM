@@ -194,8 +194,7 @@ namespace gum {
                                                  const int64_t&    den_max) {
     const GUM_SCALAR pnumber = (number > 0) ? number : -number;
 
-    const uint64_t denMax
-       = (uint64_t)den_max;   /// signed and unsigned comparison resolution ...
+    const uint64_t denMax = (uint64_t)den_max;   /// signed and unsigned comparison resolution ...
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;

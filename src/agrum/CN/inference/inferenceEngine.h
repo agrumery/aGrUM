@@ -19,8 +19,8 @@
  */
 
 
-#ifndef  __INFERENCE_ENGINE__H__
-#define  __INFERENCE_ENGINE__H__
+#ifndef __INFERENCE_ENGINE__H__
+#define __INFERENCE_ENGINE__H__
 
 /**
  * @file
@@ -58,8 +58,7 @@ namespace gum {
       using margi     = NodeProperty< std::vector< GUM_SCALAR > >;
       using expe      = NodeProperty< GUM_SCALAR >;
 
-      using dynExpe =
-         typename gum::HashTable< std::string, std::vector< GUM_SCALAR > >;
+      using dynExpe = typename gum::HashTable< std::string, std::vector< GUM_SCALAR > >;
 
       using query   = NodeProperty< std::vector< bool > >;
       using cluster = NodeProperty< std::vector< NodeId > >;
@@ -198,8 +197,7 @@ namespace gum {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void updateExpectations_(const NodeId&                    id,
-                                      const std::vector< GUM_SCALAR >& vertex);
+      inline void updateExpectations_(const NodeId& id, const std::vector< GUM_SCALAR >& vertex);
 
       /**
        * Given a node id and one of it's possible vertex, update it's credal
@@ -214,7 +212,7 @@ namespace gum {
        */
       inline void updateCredalSets_(const NodeId&                    id,
                                     const std::vector< GUM_SCALAR >& vertex,
-                                    const bool& elimRedund = false);
+                                    const bool&                      elimRedund = false);
 
       /// @}
 
@@ -329,8 +327,7 @@ namespace gum {
        * Insert variables modalities from map to compute expectations.
        * @param modals The map variable name - modalities.
        */
-      void insertModals(
-         const std::map< std::string, std::vector< GUM_SCALAR > >& modals);
+      void insertModals(const std::map< std::string, std::vector< GUM_SCALAR > >& modals);
 
       /**
        * Insert evidence from file.
@@ -342,15 +339,13 @@ namespace gum {
        * Insert evidence from map.
        * @param eviMap The map variable name - likelihood.
        */
-      void insertEvidence(
-         const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap);
+      void insertEvidence(const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap);
 
       /**
        * Insert evidence from Property.
        * @param evidence The on nodes Property containing likelihoods.
        */
-      void
-         insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
+      void insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
 
       /**
        * Insert query variables states from file.
@@ -444,8 +439,7 @@ namespace gum {
        * time
        * steps.
        */
-      const std::vector< GUM_SCALAR >&
-         dynamicExpMin(const std::string& varName) const;
+      const std::vector< GUM_SCALAR >& dynamicExpMin(const std::string& varName) const;
 
       /**
        * Get the upper dynamic expectation of a given variable prefix (without
@@ -458,16 +452,14 @@ namespace gum {
        * time
        * steps.
        */
-      const std::vector< GUM_SCALAR >&
-         dynamicExpMax(const std::string& varName) const;
+      const std::vector< GUM_SCALAR >& dynamicExpMax(const std::string& varName) const;
 
       /**
        * Get the vertice of a given node id.
        * @param id The node id which vertice we want.
        * @return A constant reference to this node vertice.
        */
-      const std::vector< std::vector< GUM_SCALAR > >&
-         vertices(const NodeId id) const;
+      const std::vector< std::vector< GUM_SCALAR > >& vertices(const NodeId id) const;
 
       /**
        * Saves marginals to file.
@@ -505,9 +497,7 @@ namespace gum {
        * Get approximation scheme state.
        * @return A constant string about approximation scheme state.
        */
-      const std::string getApproximationSchemeMsg() {
-        return this->messageApproximationScheme();
-      }
+      const std::string getApproximationSchemeMsg() { return this->messageApproximationScheme(); }
 
       /// @}
     };

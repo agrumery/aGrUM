@@ -49,8 +49,7 @@ namespace gum {
              class COMBINEOPERATOR,
              template < typename >
              class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy
-             = ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class Regress {
     public:
     // ============================================================================
@@ -59,12 +58,11 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    Regress(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
-       const Set< const DiscreteVariable* >*                          primedVars,
-       const DiscreteVariable*                                        targetVar,
-       const GUM_SCALAR                                               neutral);
+    Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
+            const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
+            const Set< const DiscreteVariable* >*                          primedVars,
+            const DiscreteVariable*                                        targetVar,
+            const GUM_SCALAR                                               neutral);
 
     /// Default destructor.
     ~Regress();
@@ -86,54 +84,54 @@ namespace gum {
     /// Computes an order for the final Decision graph that will minimize the
     /// number
     /// of re exploration
-    void  _establishVarOrder_();
+    void _establishVarOrder_();
 
     /// Establish for each node in both function graph if it has retrograde
     /// variables
     /// beneath it
-    void  _findRetrogradeVariables_(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-       HashTable< NodeId, short int* >&                               dgInstNeed);
+    void
+       _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+                                 HashTable< NodeId, short int* >& dgInstNeed);
 
     /// The main recursion function
-    NodeId  _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);
+    NodeId _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _DG1_;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _DG1_;
 
     /// The other one
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _DG2_;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _DG2_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _rd_;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
 
     /// The set of variables we want to keep at the end
-    const Set< const DiscreteVariable* >*  _primedVars_;
+    const Set< const DiscreteVariable* >* _primedVars_;
 
     /// The variable we work on to eleminate
-    const DiscreteVariable*  _targetVar_;
+    const DiscreteVariable* _targetVar_;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR  _neutral_;
+    const GUM_SCALAR _neutral_;
 
     /// The total number of variable implied in the operation
-    Idx  _nbVar_;
+    Idx _nbVar_;
 
     /// The functions to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR >  _combine_;
-    const PROJECTOPERATOR< GUM_SCALAR >  _project_;
+    const COMBINEOPERATOR< GUM_SCALAR > _combine_;
+    const PROJECTOPERATOR< GUM_SCALAR > _project_;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited
-    HashTable< double, NodeId >  _explorationTable_;
+    HashTable< double, NodeId > _explorationTable_;
 
     /// Table uses to know if a given node of given function graph has
     /// retrograde variables
-    HashTable< NodeId, short int* >  _DG1InstantiationNeeded_;
-    HashTable< NodeId, short int* >  _DG2InstantiationNeeded_;
+    HashTable< NodeId, short int* > _DG1InstantiationNeeded_;
+    HashTable< NodeId, short int* > _DG2InstantiationNeeded_;
 
     /// Just a computationnal trick
-    short int*  _default_;
+    short int* _default_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

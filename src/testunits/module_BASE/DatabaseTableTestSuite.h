@@ -72,11 +72,9 @@ namespace gum_tests {
         TS_ASSERT(database.variableNames()[0] == "x2");
         TS_ASSERT(database.variableNames()[1] == "x4");
         TS_ASSERT(database.variableNames()[2] == "x5");
-        TS_ASSERT_THROWS(
-           database.setVariableNames({"x1", "x2", "x3", "x4"}, false),
-           gum::SizeError);
-        TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, true),
+        TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2", "x3", "x4"}, false),
                          gum::SizeError);
+        TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, true), gum::SizeError);
         TS_ASSERT(database.nbVariables() == 3);
 
         std::vector< std::string > row(7, "toto");
@@ -92,9 +90,8 @@ namespace gum_tests {
         TS_ASSERT(db.nbVariables() == 3);
         TS_ASSERT(db.content().size() == 2);
 
-        gum::learning::DatabaseTable<> db2(
-           db,
-           std::allocator< gum::learning::DBTranslatedValue >());
+        gum::learning::DatabaseTable<> db2(db,
+                                           std::allocator< gum::learning::DBTranslatedValue >());
         TS_ASSERT(db2.variableNames().size() == 3);
         TS_ASSERT(db2.nbVariables() == 3);
         TS_ASSERT(db2.content().size() == 2);
@@ -105,9 +102,8 @@ namespace gum_tests {
         TS_ASSERT(db3.content().size() == 2);
 
         database.insertRow(row);
-        gum::learning::DatabaseTable<> db4(
-           std::move(database),
-           std::allocator< gum::learning::DBTranslatedValue >());
+        gum::learning::DatabaseTable<> db4(std::move(database),
+                                           std::allocator< gum::learning::DBTranslatedValue >());
         TS_ASSERT(db4.variableNames().size() == 3);
         TS_ASSERT(db4.nbVariables() == 3);
         TS_ASSERT(db4.content().size() == 3);
@@ -175,10 +171,7 @@ namespace gum_tests {
       var.addLabel("L0");
       var.addLabel("L1");
       var.addLabel("L2");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var,
-                                                                 missing,
-                                                                 true,
-                                                                 3);
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var, missing, true, 3);
       set.insertTranslator(translator, 0);
       set.insertTranslator(translator, 1);
       set.insertTranslator(translator, 2);
@@ -325,10 +318,7 @@ namespace gum_tests {
       var.addLabel("L0");
       var.addLabel("L1");
       var.addLabel("L2");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var,
-                                                                 missing,
-                                                                 true,
-                                                                 3);
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var, missing, true, 3);
       set.insertTranslator(translator, 0);
       set.insertTranslator(translator, 1);
       set.insertTranslator(translator, 2);
@@ -373,17 +363,13 @@ namespace gum_tests {
          4,
          gum::learning::DatabaseTable<>::IsMissing::False);
       database.insertRows(
-         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(
-            4,
-            row),
+         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
          is_miss);
       TS_ASSERT(database.content().size() == 7);
-      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
-         vectx(4, row2);
+      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
       TS_ASSERT(database.content().size() == 11);
-      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
-         vecty(2, row);
+      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vecty(2, row);
       is_miss.resize(2);
       database.insertRows(std::move(vecty), is_miss);
       TS_ASSERT(database.content().size() == 13);
@@ -408,9 +394,7 @@ namespace gum_tests {
         TS_ASSERT(database.variableNames()[1] == "v2");
         database.setVariableNames(new_names);
         TS_ASSERT(database.variableNames()[1] == "x2");
-        std::vector< std::string, MyAlloc< std::string > > names2{"y1",
-                                                                  "y2",
-                                                                  "y3"};
+        std::vector< std::string, MyAlloc< std::string > > names2{"y1", "y2", "y3"};
         database.setVariableNames(names2);
         TS_ASSERT(database.variableNames()[1] == "y2");
 
@@ -426,9 +410,7 @@ namespace gum_tests {
       gum::learning::DBTranslatorSet<>                 set;
       std::vector< std::string >                       missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >                var("var", "");
-      gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                  missing,
-                                                                  true);
+      gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
       set.insertTranslator(translator, 0);
       set.insertTranslator(translator, 1);
       set.insertTranslator(translator, 2);
@@ -520,12 +502,10 @@ namespace gum_tests {
 
     void test_db5() {
       {
-        gum::learning::DBTranslatorSet<>  set;
-        std::vector< std::string >        missing{"?", "N/A", "???"};
-        gum::ContinuousVariable< double > var("var", "");
-        gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                    missing,
-                                                                    true);
+        gum::learning::DBTranslatorSet<>                 set;
+        std::vector< std::string >                       missing{"?", "N/A", "???"};
+        gum::ContinuousVariable< double >                var("var", "");
+        gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
         set.insertTranslator(translator, 0);
         set.insertTranslator(translator, 1);
         set.insertTranslator(translator, 2);
@@ -586,9 +566,7 @@ namespace gum_tests {
     void test_db6() {
       std::vector< std::string >                       missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >                var("var", "");
-      gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                  missing,
-                                                                  true);
+      gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
 
       gum::learning::DatabaseTable<> database;
       translator.setVariableName("v1");
@@ -608,8 +586,7 @@ namespace gum_tests {
       TS_ASSERT(database.variable(2).name() == "v3");
 
       database.ignoreColumn(4);
-      TS_ASSERT_THROWS(database.insertTranslator(translator, 4),
-                       gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), gum::OperationNotAllowed);
 
       const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
@@ -625,8 +602,7 @@ namespace gum_tests {
       TS_ASSERT(!database.hasMissingValues());
 
       TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5));
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         database.insertTranslator(translator, 5, false));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5, false));
       TS_ASSERT(database.hasMissingValues());
       TS_ASSERT(database.nbVariables() == std::size_t(5));
       database.eraseTranslators(5, true);
@@ -662,12 +638,10 @@ namespace gum_tests {
 
     void test_db_parallel() {
       {
-        gum::learning::DBTranslatorSet<>  set;
-        std::vector< std::string >        missing{"?", "N/A", "???"};
-        gum::ContinuousVariable< double > var("var", "");
-        gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                    missing,
-                                                                    true);
+        gum::learning::DBTranslatorSet<>                 set;
+        std::vector< std::string >                       missing{"?", "N/A", "???"};
+        gum::ContinuousVariable< double >                var("var", "");
+        gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
         set.insertTranslator(translator, 0);
         set.insertTranslator(translator, 1);
         set.insertTranslator(translator, 2);
@@ -709,13 +683,12 @@ namespace gum_tests {
 
         const unsigned int num_threads = gum::thread::getMaxNumberOfThreads();
 
-        std::vector< gum::learning::DatabaseTable<>::Handler* > handlers(
-           num_threads);
-        std::vector< std::thread* > threads(num_threads);
-        std::vector< int >          nb(num_threads);
+        std::vector< gum::learning::DatabaseTable<>::Handler* > handlers(num_threads);
+        std::vector< std::thread* >                             threads(num_threads);
+        std::vector< int >                                      nb(num_threads);
 
         for (unsigned int i = 0; i < num_threads; ++i) {
-          threads[i] = new std::thread(&DatabaseTableTestSuite:: _create_handler_,
+          threads[i] = new std::thread(&DatabaseTableTestSuite::_create_handler_,
                                        this,
                                        &database,
                                        &(handlers[i]),
@@ -741,12 +714,10 @@ namespace gum_tests {
 
     void test_db_parallel2() {
       {
-        gum::learning::DBTranslatorSet<>  set;
-        std::vector< std::string >        missing{"?", "N/A", "???"};
-        gum::ContinuousVariable< double > var("var", "");
-        gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                    missing,
-                                                                    true);
+        gum::learning::DBTranslatorSet<>                 set;
+        std::vector< std::string >                       missing{"?", "N/A", "???"};
+        gum::ContinuousVariable< double >                var("var", "");
+        gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
         set.insertTranslator(translator, 0);
         set.insertTranslator(translator, 1);
         set.insertTranslator(translator, 2);
@@ -788,18 +759,16 @@ namespace gum_tests {
 
         const unsigned int num_threads = gum::thread::getMaxNumberOfThreads();
 
-        std::vector< gum::learning::DatabaseTable<>::HandlerSafe* > handlers(
-           num_threads);
-        std::vector< std::thread* > threads(num_threads);
-        std::vector< int >          nb(num_threads);
+        std::vector< gum::learning::DatabaseTable<>::HandlerSafe* > handlers(num_threads);
+        std::vector< std::thread* >                                 threads(num_threads);
+        std::vector< int >                                          nb(num_threads);
 
         for (unsigned int i = 0; i < num_threads; ++i) {
-          threads[i]
-             = new std::thread(&DatabaseTableTestSuite:: _create_handler_safe_,
-                               this,
-                               &database,
-                               &(handlers[i]),
-                               &(nb[i]));
+          threads[i] = new std::thread(&DatabaseTableTestSuite::_create_handler_safe_,
+                                       this,
+                                       &database,
+                                       &(handlers[i]),
+                                       &(nb[i]));
         }
 
         for (unsigned int i = 0; i < num_threads; ++i) {
@@ -821,12 +790,10 @@ namespace gum_tests {
 
     void test_iterators() {
       {
-        gum::learning::DBTranslatorSet<>  set;
-        std::vector< std::string >        missing{"?", "N/A", "???"};
-        gum::ContinuousVariable< double > var("var", "");
-        gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                    missing,
-                                                                    true);
+        gum::learning::DBTranslatorSet<>                 set;
+        std::vector< std::string >                       missing{"?", "N/A", "???"};
+        gum::ContinuousVariable< double >                var("var", "");
+        gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
         set.insertTranslator(translator, 0);
         set.insertTranslator(translator, 1);
         set.insertTranslator(translator, 2);
@@ -874,8 +841,7 @@ namespace gum_tests {
 
         nb_col1 = 0;
         nb_col2 = 0;
-        for (auto iter = database.beginSafe(); iter != database.endSafe();
-             ++iter) {
+        for (auto iter = database.beginSafe(); iter != database.endSafe(); ++iter) {
           const auto& r = (*iter).row();
           nb_col1 += (int)r[0].cont_val;
           nb_col2 += (int)r[1].cont_val;
@@ -885,8 +851,7 @@ namespace gum_tests {
 
         nb_col1 = 0;
         nb_col2 = 0;
-        for (auto iter = database.beginSafe(); iter != database.endSafe();
-             ++iter) {
+        for (auto iter = database.beginSafe(); iter != database.endSafe(); ++iter) {
           const auto& r = iter->row();
           nb_col1 += (int)r[0].cont_val;
           nb_col2 += (int)r[1].cont_val;
@@ -919,8 +884,7 @@ namespace gum_tests {
 
         nb_col1 = 0;
         nb_col2 = 0;
-        for (auto iter = database.beginSafe(); iter != database.endSafe();
-             ++iter) {
+        for (auto iter = database.beginSafe(); iter != database.endSafe(); ++iter) {
           const auto& r = (*iter).row();
           nb_col1 += (int)r[0].cont_val;
           nb_col2 += (int)r[1].cont_val;
@@ -936,9 +900,7 @@ namespace gum_tests {
       gum::learning::DBTranslatorSet<>                 set;
       std::vector< std::string >                       missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >                var("var", "");
-      gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                  missing,
-                                                                  true);
+      gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
       for (std::size_t i = std::size_t(0); i < std::size_t(6); ++i)
         set.insertTranslator(translator, i);
       gum::learning::DatabaseTable<> database(set);
@@ -1049,8 +1011,7 @@ namespace gum_tests {
         TS_ASSERT(ignored_vect[5] == std::size_t(6));
       }
 
-      TS_ASSERT_THROWS(database2.insertTranslator(translator, 1),
-                       gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(database2.insertTranslator(translator, 1), gum::OperationNotAllowed);
       database2.insertTranslator(translator, 2);
       {
         const auto cols = database2.inputColumns();
@@ -1124,18 +1085,14 @@ namespace gum_tests {
          4,
          gum::learning::DatabaseTable<>::IsMissing::False);
       database.insertRows(
-         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(
-            4,
-            row),
+         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
          is_miss);
       TS_ASSERT(database.content().size() == 7);
-      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
-         vectx(4, row2);
+      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
       TS_ASSERT(database.content().size() == 11);
       is_miss.resize(2);
-      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
-         vecty(2, row);
+      std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vecty(2, row);
       database.insertRows(std::move(vecty), is_miss);
       TS_ASSERT(database.content().size() == 13);
     }
@@ -1330,9 +1287,7 @@ namespace gum_tests {
     void test_threads() {
       std::vector< std::string >                       missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >                var("var", "");
-      gum::learning::DBTranslator4ContinuousVariable<> translator(var,
-                                                                  missing,
-                                                                  true);
+      gum::learning::DBTranslator4ContinuousVariable<> translator(var, missing, true);
 
       gum::learning::DatabaseTable<> database;
       translator.setVariableName("v1");
@@ -1352,8 +1307,7 @@ namespace gum_tests {
       TS_ASSERT(database.variable(2).name() == "v3");
 
       database.ignoreColumn(4);
-      TS_ASSERT_THROWS(database.insertTranslator(translator, 4),
-                       gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), gum::OperationNotAllowed);
 
       const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
@@ -1378,7 +1332,7 @@ namespace gum_tests {
 
 
     private:
-    void  _create_handler_(gum::learning::DatabaseTable<>*           database,
+    void _create_handler_(gum::learning::DatabaseTable<>*           database,
                           gum::learning::DatabaseTable<>::Handler** handler,
                           int*                                      nb) {
       *handler = new gum::learning::DatabaseTable<>::Handler(*database);
@@ -1392,10 +1346,9 @@ namespace gum_tests {
       *nb = x;
     }
 
-    void
-        _create_handler_safe_(gum::learning::DatabaseTable<>* database,
-                             gum::learning::DatabaseTable<>::HandlerSafe** handler,
-                             int*                                          nb) {
+    void _create_handler_safe_(gum::learning::DatabaseTable<>*               database,
+                               gum::learning::DatabaseTable<>::HandlerSafe** handler,
+                               int*                                          nb) {
       *handler = new gum::learning::DatabaseTable<>::HandlerSafe(*database);
 
       int x = 0;

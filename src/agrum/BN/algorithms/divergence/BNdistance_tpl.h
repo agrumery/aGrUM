@@ -37,26 +37,25 @@ namespace gum {
   BNdistance< GUM_SCALAR >::BNdistance(const IBayesNet< GUM_SCALAR >& P,
                                        const IBayesNet< GUM_SCALAR >& Q) :
       p_(P),
-      q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0),
-       _difficulty_(Complexity::Heavy),  _done_(false) {
-     _checkCompatibility_();   // may throw OperationNotAllowed
+      q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0), _difficulty_(Complexity::Heavy),
+      _done_(false) {
+    _checkCompatibility_();   // may throw OperationNotAllowed
     GUM_CONSTRUCTOR(BNdistance);
 
     double diff = p_.log10DomainSize();
 
     if (diff > GAP_COMPLEXITY_KL_HEAVY_DIFFICULT)
-       _difficulty_ = Complexity::Heavy;
+      _difficulty_ = Complexity::Heavy;
     else if (diff > GAP_COMPLEXITY_KL_DIFFICULT_CORRECT)
-       _difficulty_ = Complexity::Difficult;
+      _difficulty_ = Complexity::Difficult;
     else
-       _difficulty_ = Complexity::Correct;
+      _difficulty_ = Complexity::Correct;
   }
 
   template < typename GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const BNdistance< GUM_SCALAR >& kl) :
-      p_(kl.p_), q_(kl.q_), klPQ_(kl.klPQ_), klQP_(kl.klQP_),
-      errorPQ_(kl.errorPQ_), errorQP_(kl.errorQP_),  _difficulty_(kl. _difficulty_),
-       _done_(kl. _done_) {
+      p_(kl.p_), q_(kl.q_), klPQ_(kl.klPQ_), klQP_(kl.klQP_), errorPQ_(kl.errorPQ_),
+      errorQP_(kl.errorQP_), _difficulty_(kl._difficulty_), _done_(kl._done_) {
     GUM_CONSTRUCTOR(BNdistance);
   }
 
@@ -67,7 +66,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Complexity BNdistance< GUM_SCALAR >::difficulty() const {
-    return  _difficulty_;
+    return _difficulty_;
   }
 
   template < typename GUM_SCALAR >
@@ -124,7 +123,7 @@ namespace gum {
 
   // check if the 2 BNs are compatible
   template < typename GUM_SCALAR >
-  bool BNdistance< GUM_SCALAR >:: _checkCompatibility_() const {
+  bool BNdistance< GUM_SCALAR >::_checkCompatibility_() const {
     for (auto node: p_.nodes()) {
       const DiscreteVariable& vp = p_.variable(node);
 
@@ -151,8 +150,8 @@ namespace gum {
         }
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
-                  "BNdistance : the 2 BNs are not compatible (not the same vars : "
-                     + vp.name() + ")");
+                  "BNdistance : the 2 BNs are not compatible (not the same vars : " + vp.name()
+                     + ")");
       }
     }
 
@@ -162,11 +161,10 @@ namespace gum {
                 "BNdistance : the 2 BNs are not compatible (not the same size)")
 
     if (std::fabs(p_.log10DomainSize() - q_.log10DomainSize()) > 1e-14) {
-      GUM_ERROR(
-         OperationNotAllowed,
-         "BNdistance : the 2 BNs are not compatible (not the same domainSize) : p="
-            << p_.log10DomainSize() << " q=" << q_.log10DomainSize() << " => "
-            << p_.log10DomainSize() - q_.log10DomainSize());
+      GUM_ERROR(OperationNotAllowed,
+                "BNdistance : the 2 BNs are not compatible (not the same domainSize) : p="
+                   << p_.log10DomainSize() << " q=" << q_.log10DomainSize() << " => "
+                   << p_.log10DomainSize() - q_.log10DomainSize());
     }
 
     return true;
@@ -175,9 +173,9 @@ namespace gum {
   // do the job if not already  _done_
   template < typename GUM_SCALAR >
   void BNdistance< GUM_SCALAR >::process_() {
-    if (! _done_) {
+    if (!_done_) {
       computeKL_();
-       _done_ = true;
+      _done_ = true;
     }
   }
 

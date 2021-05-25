@@ -201,8 +201,7 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > mixedOrientedPath(const NodeId node1,
-                                                  const NodeId node2) const;
+    const std::vector< NodeId > mixedOrientedPath(const NodeId node1, const NodeId node2) const;
 
     /// returns a mixed/directed path from node1 to node2 in the arc/edge set
     /** This function returns, if any, a path from node1 to node2, using edges
@@ -211,8 +210,7 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > mixedUnorientedPath(const NodeId node1,
-                                                    const NodeId node2) const;
+    const std::vector< NodeId > mixedUnorientedPath(const NodeId node1, const NodeId node2) const;
 
     /// to friendly display mixed graph in DOT format
     virtual std::string toDot() const;

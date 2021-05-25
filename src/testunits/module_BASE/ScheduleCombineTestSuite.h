@@ -71,8 +71,8 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == 32);
 
       std::stringstream s1;
-      s1 << result1.toString() << " = combine ( " << f1.toString() << " , "
-         << f2.toString() << " )";
+      s1 << result1.toString() << " = combine ( " << f1.toString() << " , " << f2.toString()
+         << " )";
       TS_ASSERT(s1.str() == comb1.toString());
 
       gum::ScheduleCombine< double >         comb2(result1, f3, myadd);
@@ -90,10 +90,8 @@ namespace gum_tests {
       TS_ASSERT(result1.multiDim() == *pot4.content());
       TS_ASSERT(result2.multiDim() == *pot5.content());
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq
-         = comb2.multiDimArgs();
-      gum::SequenceIteratorSafe< const gum::ScheduleMultiDim< double >* > iter
-         = seq.begin();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = comb2.multiDimArgs();
+      gum::SequenceIteratorSafe< const gum::ScheduleMultiDim< double >* > iter = seq.begin();
       TS_ASSERT(**iter == result1);
       ++iter;
       TS_ASSERT(**iter == f3);

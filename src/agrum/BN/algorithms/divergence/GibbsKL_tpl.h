@@ -48,16 +48,14 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
-     const IBayesNet< GUM_SCALAR >& P,
-     const IBayesNet< GUM_SCALAR >& Q) :
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
+                                                 const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q),
-      ApproximationScheme(),
-      GibbsOperator< GUM_SCALAR >(
-         P,
-         nullptr,
-         1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-         GIBBSKL_DRAWN_AT_RANDOM) {
+      ApproximationScheme(), GibbsOperator< GUM_SCALAR >(
+                                P,
+                                nullptr,
+                                1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+                                GIBBSKL_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -70,17 +68,14 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
-     const BNdistance< GUM_SCALAR >& kl) :
-      BNdistance< GUM_SCALAR >(kl),
-      ApproximationScheme()
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl) :
+      BNdistance< GUM_SCALAR >(kl), ApproximationScheme()
       // Gibbs operator with 10% of nodes changes at random between each samples
       ,
-      GibbsOperator< GUM_SCALAR >(
-         kl.p(),
-         nullptr,
-         1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-         true) {
+      GibbsOperator< GUM_SCALAR >(kl.p(),
+                                  nullptr,
+                                  1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+                                  true) {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);

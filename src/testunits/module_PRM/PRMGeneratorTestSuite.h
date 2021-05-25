@@ -44,9 +44,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    void generateLayerLayer(
-       std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
-       size_t                                                        layer_count) {
+    void generateLayerLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
+                            size_t layer_count) {
       for (size_t lvl = 0; lvl < layer_count; ++lvl) {
         v.push_back(gum::prm::LayerGenerator< double >::LayerData());
         v[lvl].a              = 30;
@@ -69,8 +68,7 @@ namespace gum_tests {
       gum::prm::PRM< double >* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set
-         = prm->interfaces();
+      const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
 
       for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
@@ -88,8 +86,7 @@ namespace gum_tests {
         gum::Size                                            two  = 0;
         const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
-             = attr.begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
              a != attr.end();
              ++a) {
           if ((**a).type()->domainSize() == (gum::Size)6) {
@@ -109,8 +106,7 @@ namespace gum_tests {
       // testing classes
       const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
 
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c
-           = c_set.begin();
+      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
         TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);
@@ -134,8 +130,7 @@ namespace gum_tests {
 
     void testClusterGenerator() {
       gum::prm::ClusteredLayerGenerator< double >* gen = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::prm::ClusteredLayerGenerator< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >());
       gen->setDomainSize(6);
       gen->setMaxParents(5);
       gen->setClusterRatio(1.0);
@@ -145,12 +140,10 @@ namespace gum_tests {
       gum::prm::PRM< double >* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set
-         = prm->interfaces();
+      const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
 
-      for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter
-           = i_set.begin();
+      for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
            iter != i_set.end();
            ++iter) {
         const gum::prm::PRMInterface< double >& i = **iter;
@@ -167,8 +160,7 @@ namespace gum_tests {
         gum::Size                                            two  = 0;
         const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
 
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
-             = attr.begin();
+        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
              a != attr.end();
              ++a) {
           if ((**a).type()->domainSize() == (gum::Size)6) {
@@ -188,8 +180,7 @@ namespace gum_tests {
       // testing classes
       const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
 
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c
-           = c_set.begin();
+      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
         TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);

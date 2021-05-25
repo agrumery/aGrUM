@@ -49,7 +49,7 @@ namespace gum_tests {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator1(var1, miss);
         gum::learning::DBTranslator4LabelizedVariable<> translator2(var2, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -82,14 +82,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
       gum::learning::IdCondSet<> idset1(node0, cond_empty);   // #3,#0
-      gum::learning::IdCondSet<> idset2(node0,
-                                        node1,
-                                        cond_empty,
+      gum::learning::IdCondSet<> idset2(node0, node1, cond_empty,
                                         true);   // #12,#0
-      gum::learning::IdCondSet<> idset3(node1,
-                                        node0,
-                                        cond1,
-                                        true,
+      gum::learning::IdCondSet<> idset3(node1, node0, cond1, true,
                                         true);   // #576,#48
 
       std::vector< double > vect(3, 1.0);
@@ -351,7 +346,7 @@ namespace gum_tests {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator1(var1, miss);
         gum::learning::DBTranslator4LabelizedVariable<> translator2(var2, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -393,14 +388,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
       gum::learning::IdCondSet<> idset1(node0, cond_empty);   // #4,#0
-      gum::learning::IdCondSet<> idset2(node0,
-                                        node1,
-                                        cond_empty,
+      gum::learning::IdCondSet<> idset2(node0, node1, cond_empty,
                                         true);   // #16,#0
-      gum::learning::IdCondSet<> idset3(node1,
-                                        node0,
-                                        cond1,
-                                        true,
+      gum::learning::IdCondSet<> idset3(node1, node0, cond1, true,
                                         true);   // #576,#36
 
       std::vector< double > vect(4, 1.0);

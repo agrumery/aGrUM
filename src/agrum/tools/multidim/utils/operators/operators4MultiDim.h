@@ -78,9 +78,8 @@ namespace gum {
    * function if it is appropriate for your addition.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     add2MultiDimArrays(const MultiDimImplementation< T >* t1,
-                        const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* add2MultiDimArrays(const MultiDimImplementation< T >* t1,
+                                                  const MultiDimImplementation< T >* t2);
 
   /**
    * @brief a specialized function for summing two multiDimArrays
@@ -119,9 +118,8 @@ namespace gum {
    * function if it is appropriate for your addition.
    */
   template < typename T >
-  MultiDimImplementation< T* >*
-     add2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
-                                 const MultiDimImplementation< T* >* t2);
+  MultiDimImplementation< T* >* add2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
+                                                            const MultiDimImplementation< T* >* t2);
 
   /**
    * @brief a specialized function for summing two multiDimArrays
@@ -140,9 +138,8 @@ namespace gum {
    * function if it is appropriate for your addition.
    */
   template < typename T >
-  MultiDimFunctionGraph< T >*
-     add2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
-                                const MultiDimFunctionGraph< T >* t2);
+  MultiDimFunctionGraph< T >* add2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
+                                                         const MultiDimFunctionGraph< T >* t2);
 
   /**
    * @brief a specialized function for summing two multiDimArrays
@@ -161,9 +158,8 @@ namespace gum {
    * function if it is appropriate for your addition.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     add2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
-                                const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* add2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
+                                                          const MultiDimImplementation< T >* t2);
 
   /// @}
   // ==========================================================================
@@ -208,9 +204,8 @@ namespace gum {
    * function if it is appropriate for your subtraction.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     subtract2MultiDimArrays(const MultiDimImplementation< T >* t1,
-                             const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* subtract2MultiDimArrays(const MultiDimImplementation< T >* t1,
+                                                       const MultiDimImplementation< T >* t2);
 
   /**
    * @brief a specialized function for subtracting two multiDimArrays
@@ -229,9 +224,8 @@ namespace gum {
    * function if it is appropriate for your subtraction.
    */
   template < typename T >
-  MultiDimArray< T* >*
-     subtract2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
-                                      const MultiDimArray< T* >* t2);
+  MultiDimArray< T* >* subtract2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
+                                                        const MultiDimArray< T* >* t2);
 
   /**
    * @brief a specialized function for subtracting two multiDimArrays
@@ -271,9 +265,8 @@ namespace gum {
    * function if it is appropriate for your subtraction.
    */
   template < typename T >
-  MultiDimFunctionGraph< T >*
-     subtract2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
-                                     const MultiDimFunctionGraph< T >* t2);
+  MultiDimFunctionGraph< T >* subtract2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
+                                                              const MultiDimFunctionGraph< T >* t2);
 
   /**
    * @brief a specialized function for subtracting two multiDimArrays
@@ -339,9 +332,8 @@ namespace gum {
    * function if it is appropriate for your multiplication.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     multiply2MultiDimArrays(const MultiDimImplementation< T >* t1,
-                             const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* multiply2MultiDimArrays(const MultiDimImplementation< T >* t1,
+                                                       const MultiDimImplementation< T >* t2);
 
   /**
    * @brief a specialized function for multiplying two multiDimArrays
@@ -360,9 +352,8 @@ namespace gum {
    * function if it is appropriate for your multiplication.
    */
   template < typename T >
-  MultiDimArray< T* >*
-     multiply2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
-                                      const MultiDimArray< T* >* t2);
+  MultiDimArray< T* >* multiply2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
+                                                        const MultiDimArray< T* >* t2);
 
   /**
    * @brief a specialized function for multiplying two multiDimArrays
@@ -402,9 +393,8 @@ namespace gum {
    * function if it is appropriate for your multiplication.
    */
   template < typename T >
-  MultiDimFunctionGraph< T >*
-     multiply2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
-                                     const MultiDimFunctionGraph< T >* t2);
+  MultiDimFunctionGraph< T >* multiply2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
+                                                              const MultiDimFunctionGraph< T >* t2);
 
   /**
    * @brief a specialized function for multiplying two multiDimArrays
@@ -470,9 +460,8 @@ namespace gum {
    * function if it is appropriate for your division.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     divide2MultiDimArrays(const MultiDimImplementation< T >* t1,
-                           const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* divide2MultiDimArrays(const MultiDimImplementation< T >* t1,
+                                                     const MultiDimImplementation< T >* t2);
 
   /**
    * @brief a specialized function for dividing two multiDimArrays
@@ -491,9 +480,8 @@ namespace gum {
    * function if it is appropriate for your division.
    */
   template < typename T >
-  MultiDimArray< T* >*
-     divide2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
-                                    const MultiDimArray< T* >* t2);
+  MultiDimArray< T* >* divide2MultiDimArrays4Pointers(const MultiDimArray< T* >* t1,
+                                                      const MultiDimArray< T* >* t2);
 
   /**
    * @brief a specialized function for dividing two multiDimArrays
@@ -533,9 +521,8 @@ namespace gum {
    * function if it is appropriate for your division.
    */
   template < typename T >
-  MultiDimFunctionGraph< T >*
-     divide2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
-                                   const MultiDimFunctionGraph< T >* t2);
+  MultiDimFunctionGraph< T >* divide2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
+                                                            const MultiDimFunctionGraph< T >* t2);
 
   /**
    * @brief a specialized function for dividing two multiDimArrays
@@ -554,9 +541,8 @@ namespace gum {
    * function if it is appropriate for your division.
    */
   template < typename T >
-  MultiDimImplementation< T >*
-     divide2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
-                                   const MultiDimImplementation< T >* t2);
+  MultiDimImplementation< T >* divide2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
+                                                             const MultiDimImplementation< T >* t2);
 
   /// @}
   // ==========================================================================
@@ -579,9 +565,8 @@ namespace gum {
    * new T multiDimFunctionGraph and returns it
    */
   template < typename T >
-  MultiDimFunctionGraph< T >*
-     maximise2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
-                                     const MultiDimFunctionGraph< T >* t2);
+  MultiDimFunctionGraph< T >* maximise2MultiDimFunctionGraphs(const MultiDimFunctionGraph< T >* t1,
+                                                              const MultiDimFunctionGraph< T >* t2);
 
   /**
    * @brief a specialized function for compare value from two

@@ -46,8 +46,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintIndegree:
-        protected virtual StructuralConstraintSetStatic<
-           StructuralConstraintDiGraph > {
+        protected virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -80,8 +79,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintIndegree&
-         operator=(const StructuralConstraintIndegree& from);
+      StructuralConstraintIndegree& operator=(const StructuralConstraintIndegree& from);
 
       /// move operator
       StructuralConstraintIndegree& operator=(StructuralConstraintIndegree&& from);
@@ -206,10 +204,10 @@ namespace gum {
 
       protected:
       /// the max number of parents per node
-      NodeProperty< Size >  _Indegree_max_parents_;
+      NodeProperty< Size > _Indegree_max_parents_;
 
       /// a default max indegree to assign for nodes without specified indegree
-      Size  _Indegree_max_indegree_{std::numeric_limits< Size >::max()};
+      Size _Indegree_max_indegree_{std::numeric_limits< Size >::max()};
     };
 
   } /* namespace learning */

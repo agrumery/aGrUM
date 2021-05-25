@@ -46,8 +46,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintDAG:
-        public virtual StructuralConstraintSetStatic<
-           StructuralConstraintDiGraph > {
+        public virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -205,7 +204,7 @@ namespace gum {
 
       protected:
       /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector  _DAG_cycle_detector_;
+      DAGCycleDetector _DAG_cycle_detector_;
     };
 
   } /* namespace learning */

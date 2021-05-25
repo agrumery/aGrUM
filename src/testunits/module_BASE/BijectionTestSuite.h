@@ -67,8 +67,7 @@ namespace gum_tests {
       gum::Bijection< int, int, MyAlloc< int > > bij_ter(std::move(bij_bis));
       TS_ASSERT(bij_ter.size() == 4);
 
-      gum::Bijection< int, int > bij5{std::pair< int, int >(3, 4),
-                                      std::pair< int, int >(5, 6)};
+      gum::Bijection< int, int > bij5{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
       TS_ASSERT(bij5.size() == 2);
 
       bij5 = bijection;
@@ -98,8 +97,7 @@ namespace gum_tests {
       gum::Bijection< std::string, std::string > bijection2(bijection);
       TS_ASSERT(bijection2.size() == 3);
 
-      gum::Bijection< std::string, std::string, MyAlloc< int > > bij_bis(
-         bijection);
+      gum::Bijection< std::string, std::string, MyAlloc< int > > bij_bis(bijection);
       bij_bis.insert("d", "bd");
       TS_ASSERT(bij_bis.size() == 4);
 
@@ -116,8 +114,7 @@ namespace gum_tests {
       TS_ASSERT(bijection4.second("a") == "b");
       TS_ASSERT(bijection4.second("b") == "a");
 
-      gum::Bijection< std::string, std::string, MyAlloc< int > > bij_ter(
-         std::move(bij_bis));
+      gum::Bijection< std::string, std::string, MyAlloc< int > > bij_ter(std::move(bij_bis));
       TS_ASSERT(bij_ter.size() == 4);
 
       gum::Bijection< std::string, std::string > bij5{
@@ -359,8 +356,7 @@ namespace gum_tests {
 
       gum::Size nb = 0;
 
-      for (gum::Bijection< int, int >::iterator iter = bijection.begin();
-           iter != bijection.end();
+      for (gum::Bijection< int, int >::iterator iter = bijection.begin(); iter != bijection.end();
            ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
@@ -444,14 +440,12 @@ namespace gum_tests {
       bijection.insert("9", "7");
       bijection.insert("2", "1");
 
-      gum::Bijection< std::string, std::string >::iterator iter1
-         = bijection.begin();
+      gum::Bijection< std::string, std::string >::iterator iter1 = bijection.begin();
       gum::Bijection< std::string, std::string >::iterator iter2 = bijection.end();
 
       gum::Size nb = 0;
 
-      for (gum::Bijection< std::string, std::string >::iterator iter
-           = bijection.begin();
+      for (gum::Bijection< std::string, std::string >::iterator iter = bijection.begin();
            iter != bijection.end();
            ++iter, ++nb) {}
 

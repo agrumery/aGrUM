@@ -45,17 +45,15 @@ namespace gum {
    * Default constructor.
    */
   FMDPSimulator::FMDPSimulator(const FMDP< double >* fmdp) :
-      AbstractSimulator(),  _fmdp_(const_cast< FMDP< double >* >(fmdp)),
-       _loaded_(false) {
+      AbstractSimulator(), _fmdp_(const_cast< FMDP< double >* >(fmdp)), _loaded_(false) {
     GUM_CONSTRUCTOR(FMDPSimulator);
   }
 
-  FMDPSimulator::FMDPSimulator(const std::string& ressource) :
-      AbstractSimulator(),  _loaded_(true) {
+  FMDPSimulator::FMDPSimulator(const std::string& ressource) : AbstractSimulator(), _loaded_(true) {
     GUM_CONSTRUCTOR(FMDPSimulator);
 
-     _fmdp_ = new FMDP< double >(true);
-    FMDPDatReader< double > reader( _fmdp_, ressource);
+    _fmdp_ = new FMDP< double >(true);
+    FMDPDatReader< double > reader(_fmdp_, ressource);
     reader.trace(false);
     reader.proceed();
   }
@@ -65,7 +63,7 @@ namespace gum {
    */
   FMDPSimulator::~FMDPSimulator() {
     GUM_DESTRUCTOR(FMDPSimulator);
-    if ( _loaded_) delete  _fmdp_;
+    if (_loaded_) delete _fmdp_;
   }
 
 
@@ -75,16 +73,14 @@ namespace gum {
 
   void FMDPSimulator::perform(Idx actionId) {
     Instantiation newState;
-    for (auto varIter = this->beginVariables(); varIter != this->endVariables();
-         ++varIter) {
+    for (auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter) {
       newState.add(**varIter);
       Instantiation transit(currentState_);
       transit.add(*(this->primeVar(*varIter)));
 
       double proba = (double)std::rand() / (double)RAND_MAX;
       double cdd   = 0.0;
-      for (transit.setFirstOut(currentState_); !transit.end();
-           transit.incOut(currentState_)) {
+      for (transit.setFirstOut(currentState_); !transit.end(); transit.incOut(currentState_)) {
         cdd += this->transitionProbability_(*varIter, transit, actionId);
         if (proba <= cdd) {
           newState.chgVal(**varIter, transit.val(*(this->primeVar(*varIter))));

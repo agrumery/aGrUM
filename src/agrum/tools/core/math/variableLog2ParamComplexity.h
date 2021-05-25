@@ -88,8 +88,7 @@ namespace gum {
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from);
 
     /// move constructor with a given allocator
-    VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from,
-                                const allocator_type&         alloc);
+    VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from, const allocator_type& alloc);
 
     /// virtual copy constructor
     virtual VariableLog2ParamComplexity* clone() const;
@@ -109,8 +108,7 @@ namespace gum {
     /// @{
 
     /// copy operator
-    VariableLog2ParamComplexity&
-       operator=(const VariableLog2ParamComplexity& from);
+    VariableLog2ParamComplexity& operator=(const VariableLog2ParamComplexity& from);
 
     /// move operator
     VariableLog2ParamComplexity& operator=(VariableLog2ParamComplexity&& from);
@@ -143,7 +141,7 @@ namespace gum {
 
     private:
     /// the value of N above which we should use Szpankowski's approximation
-    const double  _Szpankowski_threshold_{VariableLog2ParamComplexityCTableNSize};
+    const double _Szpankowski_threshold_{VariableLog2ParamComplexityCTableNSize};
 
     // constants used to speed-up the computation of the Szpankowski
     // approximation.
@@ -158,15 +156,15 @@ namespace gum {
     // (3/36 - 4/(9*pi)) / n.
     // So, given the constants below, it is equal to:
     // 0.5 * std::log2 (n) +  _cst1_ +  _cst2_ / std::sqrt(n) +  _cst3_ / n
-    const double  _cst1_ = -0.5 + std::log2(std::sqrt(M_PI));
-    const double  _cst2_ = std::sqrt(2.0 / M_PI) / 3.0;
-    const double  _cst3_ = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
+    const double _cst1_ = -0.5 + std::log2(std::sqrt(M_PI));
+    const double _cst2_ = std::sqrt(2.0 / M_PI) / 3.0;
+    const double _cst3_ = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
 
     // indicates whether we should use a cache or not
-    bool  _use_cache_{true};
+    bool _use_cache_{true};
 
     // the cache used, eventually, to store the log2Cnr values
-    HashTable< std::pair< std::size_t, double >, double >  _cache_;
+    HashTable< std::pair< std::size_t, double >, double > _cache_;
   };
 
 } /* namespace gum */

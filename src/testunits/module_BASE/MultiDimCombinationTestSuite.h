@@ -46,16 +46,14 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >*
-       addPotential(const gum::Potential< double >& t1,
-                    const gum::Potential< double >& t2) {
+    static gum::Potential< double >* addPotential(const gum::Potential< double >& t1,
+                                                  const gum::Potential< double >& t2) {
       return new gum::Potential< double >(t1 + t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >*
-       multPotential(const gum::Potential< double >& t1,
-                     const gum::Potential< double >& t2) {
+    static gum::Potential< double >* multPotential(const gum::Potential< double >& t1,
+                                                   const gum::Potential< double >& t2) {
       return new gum::Potential< double >(t1 * t2);
     }
 
@@ -88,8 +86,7 @@ namespace gum_tests {
         gum::Set< const gum::Potential< double >* > set;
         set << &t1 << &t2 << &t3;
 
-        gum::MultiDimCombinationDefault< double, gum::Potential > xxx(
-           addPotential);
+        gum::MultiDimCombinationDefault< double, gum::Potential > xxx(addPotential);
         t6 = xxx.combine(set);
         TS_ASSERT(t6);
         TS_ASSERT(*t6 == *t5);

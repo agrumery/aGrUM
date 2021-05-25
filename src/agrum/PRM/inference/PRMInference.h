@@ -51,21 +51,18 @@ namespace gum {
     class PRMInference {
       public:
       /// Code alias.
-      typedef std::pair< const PRMInstance< GUM_SCALAR >*,
-                         const PRMAttribute< GUM_SCALAR >* >
+      typedef std::pair< const PRMInstance< GUM_SCALAR >*, const PRMAttribute< GUM_SCALAR >* >
          Chain;
 
       /// Code alias.
       typedef NodeProperty< const Potential< GUM_SCALAR >* > EMap;
 
       /// Code alias.
-      typedef
-         typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe
-            EMapIterator;
+      typedef typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe EMapIterator;
 
       /// Code alias.
-      typedef typename NodeProperty<
-         const Potential< GUM_SCALAR >* >::const_iterator_safe EMapConstIterator;
+      typedef typename NodeProperty< const Potential< GUM_SCALAR >* >::const_iterator_safe
+         EMapConstIterator;
 
       // ========================================================================
       /// @name Constructor & destructor.
@@ -73,8 +70,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      PRMInference(const PRM< GUM_SCALAR >&       prm,
-                   const PRMSystem< GUM_SCALAR >& system);
+      PRMInference(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system);
 
       /// Copy constructor.
       PRMInference(const PRMInference& source);
@@ -205,9 +201,7 @@ namespace gum {
       /// PRMAttribute<GUM_SCALAR>.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
-      virtual void joint_(const std::vector< Chain >& queries,
-                          Potential< GUM_SCALAR >&    j)
-         = 0;
+      virtual void joint_(const std::vector< Chain >& queries, Potential< GUM_SCALAR >& j) = 0;
 
       /// The PRM<GUM_SCALAR> on which inference is done.
       PRM< GUM_SCALAR > const* prm_;
@@ -224,18 +218,17 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename HashTable< const PRMInstance< GUM_SCALAR >*,
-                                  EMap* >::iterator_safe EvidenceIterator;
+      typedef typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::iterator_safe
+         EvidenceIterator;
       /// Code alias.
-      typedef
-         typename HashTable< const PRMInstance< GUM_SCALAR >*,
-                             EMap* >::const_iterator_safe EvidenceConstIterator;
+      typedef typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::const_iterator_safe
+         EvidenceConstIterator;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
-      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >  _evidences_;
+      HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > _evidences_;
 
       /// Private getter over  _evidences_, if necessary creates an EMap for i.
-      EMap&  _EMap_(const PRMInstance< GUM_SCALAR >* i);
+      EMap& _EMap_(const PRMInstance< GUM_SCALAR >* i);
 
       /// @}
     };

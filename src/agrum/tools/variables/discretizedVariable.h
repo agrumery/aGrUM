@@ -55,8 +55,8 @@ namespace gum {
   template < typename T_TICKS >
   class DiscretizedVariable: public IDiscretizedVariable {
     private:
-    std::vector< T_TICKS >  _ticks_;   // Array from 0 to domainSize-2
-    Size                    _ticks_size_;
+    std::vector< T_TICKS > _ticks_;   // Array from 0 to domainSize-2
+    Size                   _ticks_size_;
 
     protected:
     /**
@@ -129,8 +129,7 @@ namespace gum {
      * @param aDRV a labelized discrete random variable
      * @return a reference to *this
      **/
-    DiscretizedVariable< T_TICKS >&
-       operator=(const DiscretizedVariable< T_TICKS >& aDRV);
+    DiscretizedVariable< T_TICKS >& operator=(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *

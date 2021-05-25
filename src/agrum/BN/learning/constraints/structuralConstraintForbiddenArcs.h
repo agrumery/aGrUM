@@ -42,8 +42,7 @@ namespace gum {
      * during structure learning
      * @ingroup learning_group
      */
-    class StructuralConstraintForbiddenArcs:
-        public virtual StructuralConstraintEmpty {
+    class StructuralConstraintForbiddenArcs: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -57,8 +56,7 @@ namespace gum {
       StructuralConstraintForbiddenArcs(const DiGraph& graph);
 
       /// copy constructor
-      StructuralConstraintForbiddenArcs(
-         const StructuralConstraintForbiddenArcs& from);
+      StructuralConstraintForbiddenArcs(const StructuralConstraintForbiddenArcs& from);
 
       /// move constructor
       StructuralConstraintForbiddenArcs(StructuralConstraintForbiddenArcs&& from);
@@ -74,12 +72,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintForbiddenArcs&
-         operator=(const StructuralConstraintForbiddenArcs& from);
+      StructuralConstraintForbiddenArcs& operator=(const StructuralConstraintForbiddenArcs& from);
 
       /// move operator
-      StructuralConstraintForbiddenArcs&
-         operator=(StructuralConstraintForbiddenArcs&& from);
+      StructuralConstraintForbiddenArcs& operator=(StructuralConstraintForbiddenArcs&& from);
 
       /// @}
 
@@ -194,7 +190,7 @@ namespace gum {
 
       protected:
       /// the ForbiddenArcs on which we perform checks
-      ArcSet  _ForbiddenArcs_forbidden_arcs_;
+      ArcSet _ForbiddenArcs_forbidden_arcs_;
     };
 
   } /* namespace learning */

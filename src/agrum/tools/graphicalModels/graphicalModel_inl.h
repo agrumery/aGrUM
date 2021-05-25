@@ -37,7 +37,7 @@ namespace gum {
   INLINE
   const std::string& GraphicalModel::property(const std::string& name) const {
     try {
-      return  _properties_()[name];
+      return _properties_()[name];
     } catch (NotFound&) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name)
@@ -45,29 +45,27 @@ namespace gum {
   }
 
   INLINE
-  HashTable< std::string, std::string >& GraphicalModel:: _properties_() const {
-    if ( _propertiesMap_ == nullptr) {
-       _propertiesMap_ = new HashTable< std::string, std::string >();
+  HashTable< std::string, std::string >& GraphicalModel::_properties_() const {
+    if (_propertiesMap_ == nullptr) {
+      _propertiesMap_ = new HashTable< std::string, std::string >();
     }
 
-    return * _propertiesMap_;
+    return *_propertiesMap_;
   }
 
   INLINE
-  const std::string&
-     GraphicalModel::propertyWithDefault(const std::string& name,
-                                         const std::string& byDefault) const {
+  const std::string& GraphicalModel::propertyWithDefault(const std::string& name,
+                                                         const std::string& byDefault) const {
     try {
-      return  _properties_()[name];
+      return _properties_()[name];
     } catch (NotFound&) { return byDefault; }
   }
 
   INLINE
-  void GraphicalModel::setProperty(const std::string& name,
-                                   const std::string& value) {
+  void GraphicalModel::setProperty(const std::string& name, const std::string& value) {
     try {
-       _properties_()[name] = value;
-    } catch (NotFound&) {  _properties_().insert(name, value); }
+      _properties_()[name] = value;
+    } catch (NotFound&) { _properties_().insert(name, value); }
   }
 
 
@@ -96,14 +94,12 @@ namespace gum {
   bool GraphicalModel::empty() const { return size() == 0; }
 
   INLINE
-  std::vector< std::string >
-     GraphicalModel::names(const std::vector< NodeId >& ids) const {
+  std::vector< std::string > GraphicalModel::names(const std::vector< NodeId >& ids) const {
     std::vector< std::string > res;
     const VariableNodeMap&     v = variableNodeMap();
-    std::transform(ids.cbegin(),
-                   ids.cend(),
-                   std::back_inserter(res),
-                   [v](NodeId n) { return v[n].name(); });
+    std::transform(ids.cbegin(), ids.cend(), std::back_inserter(res), [v](NodeId n) {
+      return v[n].name();
+    });
     return res;
   }
 
@@ -118,8 +114,7 @@ namespace gum {
   }
 
   INLINE
-  std::vector< NodeId >
-     GraphicalModel::ids(const std::vector< std::string >& names) const {
+  std::vector< NodeId > GraphicalModel::ids(const std::vector< std::string >& names) const {
     std::vector< NodeId >  res;
     const VariableNodeMap& v = variableNodeMap();
     std::transform(names.cbegin(),

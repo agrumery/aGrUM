@@ -109,9 +109,7 @@ namespace gum {
      * Return true if this node exists in this graphical model.
      */
     virtual bool exists(NodeId node) const = 0;
-    bool         exists(const std::string& name) const {
-      return exists(idFromName(name));
-    };
+    bool         exists(const std::string& name) const { return exists(idFromName(name)); };
 
     /**
      * transform a vector of NodeId in a vector of names
@@ -160,8 +158,7 @@ namespace gum {
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
 
     /// @}
 
@@ -173,9 +170,7 @@ namespace gum {
 
     /** check if nodes X and nodes Y are independent given nodes Z
      */
-    virtual bool isIndependent(const NodeSet& X,
-                               const NodeSet& Y,
-                               const NodeSet& Z) const = 0;
+    virtual bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const = 0;
 
     protected:
     /**
@@ -186,11 +181,11 @@ namespace gum {
     private:
     /// The properties of this Directed Graphical Model.
     /// Initialized using a lazy instantiation.
-    mutable HashTable< std::string, std::string >*  _propertiesMap_;
+    mutable HashTable< std::string, std::string >* _propertiesMap_;
 
     /// Return the properties of this Directed Graphical Model and initialize
     /// the hash table is necessary.
-    HashTable< std::string, std::string >&  _properties_() const;
+    HashTable< std::string, std::string >& _properties_() const;
   };
 }   // namespace gum
 

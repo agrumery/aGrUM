@@ -38,18 +38,15 @@ namespace gum_tests {
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("toto").discr_val == 0);
 
-      TS_ASSERT(translator.missingValue().discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator.missingValue().discr_val == std::numeric_limits< std::size_t >::max());
 
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"));
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("titi").discr_val == 1);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "toto");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "titi");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
+                == "toto");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
+                == "titi");
 
       std::vector< std::string >                      missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable<> translator2(missing);
@@ -59,19 +56,15 @@ namespace gum_tests {
       TS_ASSERT(translator2.translate("titi").discr_val == 1);
       TS_ASSERT(translator2.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator2.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator2.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator2.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator2.translate("??").discr_val == 2);
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "toto");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "titi");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "??");
 
       gum::learning::DBTranslator4LabelizedVariable<> translator3(missing, 3);
@@ -81,28 +74,22 @@ namespace gum_tests {
       TS_ASSERT(translator3.translate("titi").discr_val == 1);
       TS_ASSERT(translator3.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator3.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator3.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator3.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator3.translate("??").discr_val == 2);
       TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError);
 
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "toto");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "titi");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "??");
-      TS_ASSERT_THROWS(translator3.translateBack(
-                          gum::learning::DBTranslatedValue{std::size_t{3}}),
+      TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        gum::UnknownLabelInDatabase);
-      const std::string back
-         = translator3.translateBack(gum::learning::DBTranslatedValue{
-            std::numeric_limits< std::size_t >::max()});
+      const std::string back = translator3.translateBack(
+         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator3.missingSymbols().exists(back));
     }
 
@@ -116,12 +103,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"));
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("titi").discr_val == 1);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "toto");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "titi");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
+                == "toto");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
+                == "titi");
 
       std::vector< std::string >                      missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable<> translator2(missing);
@@ -131,51 +116,41 @@ namespace gum_tests {
       TS_ASSERT(translator2.translate("titi").discr_val == 1);
       TS_ASSERT(translator2.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator2.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator2.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator2.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator2.translate("??").discr_val == 2);
 
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "toto");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "titi");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "??");
 
-      gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(missing,
-                                                                           3);
+      gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(missing, 3);
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"));
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"));
       TS_ASSERT(translator3.translate("toto").discr_val == 0);
       TS_ASSERT(translator3.translate("titi").discr_val == 1);
       TS_ASSERT(translator3.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator3.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator3.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator3.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator3.translate("??").discr_val == 2);
       TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError);
 
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "toto");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "titi");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "??");
-      TS_ASSERT_THROWS(translator3.translateBack(
-                          gum::learning::DBTranslatedValue{std::size_t{3}}),
+      TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        gum::UnknownLabelInDatabase);
-      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{
-                   std::numeric_limits< std::size_t >::max()})
+      TS_ASSERT(translator3.translateBack(
+                   gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
     }
 
@@ -194,12 +169,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("tutu"));
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("tutu").discr_val == 2);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "toto");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "titi");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
+                == "toto");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
+                == "titi");
 
       std::vector< std::string >                      missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable<> translator2(var, missing);
@@ -209,59 +182,47 @@ namespace gum_tests {
       TS_ASSERT(translator2.translate("titi").discr_val == 1);
       TS_ASSERT(translator2.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator2.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator2.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator2.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT_THROWS(translator2.translate("??"), gum::UnknownLabelInDatabase);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "toto");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "titi");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
-         == "tutu");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
+                == "toto");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
+                == "titi");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
+                == "tutu");
 
-      gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(var,
-                                                                           missing,
-                                                                           true,
-                                                                           3);
+      gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(var, missing, true, 3);
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"));
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"));
       TS_ASSERT(translator3.translate("toto").discr_val == 0);
       TS_ASSERT(translator3.translate("titi").discr_val == 1);
       TS_ASSERT(translator3.translate("N/A").discr_val
                 == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator3.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator3.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator3.translate("???").discr_val
                 == std::numeric_limits< std::size_t >::max());
       TS_ASSERT_THROWS(translator3.translate("??"), gum::SizeError);
       TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError);
 
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "toto");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "titi");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "tutu");
-      TS_ASSERT_THROWS(translator3.translateBack(
-                          gum::learning::DBTranslatedValue{std::size_t{3}}),
+      TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        gum::UnknownLabelInDatabase);
-      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{
-                   std::numeric_limits< std::size_t >::max()})
+      TS_ASSERT(translator3.translateBack(
+                   gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
 
       TS_ASSERT(translator3.domainSize() == 3);
 
-      TS_ASSERT_THROWS(gum::learning::DBTranslator4LabelizedVariable<>
-                          translator4(var, missing, true, 2),
-                       gum::SizeError);
+      TS_ASSERT_THROWS(
+         gum::learning::DBTranslator4LabelizedVariable<> translator4(var, missing, true, 2),
+         gum::SizeError);
     }
 
 
@@ -276,14 +237,11 @@ namespace gum_tests {
         TS_ASSERT(translator.translate("1").discr_val == 0);
         TS_ASSERT(translator.translate("4").discr_val == 1);
         TS_ASSERT(translator.translate("2").discr_val == 2);
-        TS_ASSERT(translator.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "4");
-        TS_ASSERT(translator.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "2");
         TS_ASSERT(translator.variable()->toString() == "X1<1,4,2>");
 
@@ -296,46 +254,35 @@ namespace gum_tests {
         TS_ASSERT(translator2.translate("1").discr_val == 0);
         TS_ASSERT(translator2.translate("2").discr_val == 1);
         TS_ASSERT(translator2.translate("4").discr_val == 2);
-        TS_ASSERT(translator2.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator2.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator2.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator2.variable()->toString() == "X2<1,2,4>");
 
-        gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(
-           translator);
+        gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator3(translator);
         TS_ASSERT(translator3.translate("1").discr_val == 0);
         TS_ASSERT(translator3.translate("4").discr_val == 1);
         TS_ASSERT(translator3.translate("2").discr_val == 2);
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "4");
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "2");
         TS_ASSERT(translator3.variable()->toString() == "X1<1,4,2>");
 
-        gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator4(
-           translator2);
+        gum::learning::DBTranslator4LabelizedVariable< MyAlloc > translator4(translator2);
         TS_ASSERT(translator4.translate("1").discr_val == 0);
         TS_ASSERT(translator4.translate("2").discr_val == 1);
         TS_ASSERT(translator4.translate("4").discr_val == 2);
-        TS_ASSERT(translator4.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator4.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator4.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator4.variable()->toString() == "X2<1,2,4>");
 
@@ -344,14 +291,11 @@ namespace gum_tests {
         TS_ASSERT(translator5.translate("1").discr_val == 0);
         TS_ASSERT(translator5.translate("4").discr_val == 1);
         TS_ASSERT(translator5.translate("2").discr_val == 2);
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "4");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "2");
         TS_ASSERT(translator5.variable()->toString() == "X1<1,4,2>");
 
@@ -360,35 +304,28 @@ namespace gum_tests {
         TS_ASSERT(translator6.translate("1").discr_val == 0);
         TS_ASSERT(translator6.translate("2").discr_val == 1);
         TS_ASSERT(translator6.translate("4").discr_val == 2);
-        TS_ASSERT(translator6.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator6.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator6.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator6.variable()->toString() == "X2<1,2,4>");
 
-        gum::learning::DBTranslator4LabelizedVariable< MyAlloc >* translator7
-           = translator6.clone();
+        gum::learning::DBTranslator4LabelizedVariable< MyAlloc >* translator7 = translator6.clone();
         TS_ASSERT(translator7->translate("1").discr_val == 0);
         TS_ASSERT(translator7->translate("2").discr_val == 1);
         TS_ASSERT(translator7->translate("4").discr_val == 2);
-        TS_ASSERT(translator7->translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator7->translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator7->translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator7->variable()->toString() == "X2<1,2,4>");
 
-        MyAlloc< gum::learning::DBTranslator4LabelizedVariable< MyAlloc > >
-           allocator(translator7->getAllocator());
+        MyAlloc< gum::learning::DBTranslator4LabelizedVariable< MyAlloc > > allocator(
+           translator7->getAllocator());
         allocator.destroy(translator7);
         allocator.deallocate(translator7, 1);
 
@@ -396,14 +333,11 @@ namespace gum_tests {
         TS_ASSERT(translator5.translate("1").discr_val == 0);
         TS_ASSERT(translator5.translate("2").discr_val == 1);
         TS_ASSERT(translator5.translate("4").discr_val == 2);
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator5.variable()->toString() == "X2<1,2,4>");
 
@@ -411,14 +345,11 @@ namespace gum_tests {
         TS_ASSERT(translator3.translate("1").discr_val == 0);
         TS_ASSERT(translator3.translate("2").discr_val == 1);
         TS_ASSERT(translator3.translate("4").discr_val == 2);
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator3.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator3.variable()->toString() == "X2<1,2,4>");
 
@@ -426,14 +357,11 @@ namespace gum_tests {
         TS_ASSERT(translator5.translate("1").discr_val == 0);
         TS_ASSERT(translator5.translate("2").discr_val == 1);
         TS_ASSERT(translator5.translate("4").discr_val == 2);
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{0}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                   == "1");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{1}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                   == "2");
-        TS_ASSERT(translator5.translateBack(
-                     gum::learning::DBTranslatedValue{std::size_t{2}})
+        TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
         TS_ASSERT(translator5.variable()->toString() == "X2<1,2,4>");
       }
@@ -450,11 +378,10 @@ namespace gum_tests {
 
       LearningAlloc< double > alloc(10000);
 
-      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator(
-         var,
-         false,
-         1000,
-         alloc);
+      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator(var,
+                                                                                false,
+                                                                                1000,
+                                                                                alloc);
 
       std::cout << alloc.toString() << std::endl;
       std::cout << translator.getAllocator().toString() << std::endl;
@@ -462,15 +389,9 @@ namespace gum_tests {
       TS_ASSERT(translator.translate("1").discr_val == 0);
       TS_ASSERT(translator.translate("4").discr_val == 1);
       TS_ASSERT(translator.translate("2").discr_val == 2);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "1");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "4");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
-         == "2");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "4");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "2");
       TS_ASSERT(translator.variable()->toString() == "X1<1,4,2>");
 
       const auto& allocator = translator.getAllocator();
@@ -482,52 +403,31 @@ namespace gum_tests {
       var2.addLabel("2");
       var2.addLabel("4");
 
-      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator2(
-         var2);
+      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator2(var2);
       TS_ASSERT(translator2.translate("1").discr_val == 0);
       TS_ASSERT(translator2.translate("2").discr_val == 1);
       TS_ASSERT(translator2.translate("4").discr_val == 2);
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator2.variable()->toString() == "X2<1,2,4>");
 
-      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator3(
-         translator);
+      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator3(translator);
       TS_ASSERT(translator3.translate("1").discr_val == 0);
       TS_ASSERT(translator3.translate("4").discr_val == 1);
       TS_ASSERT(translator3.translate("2").discr_val == 2);
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "4");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "2");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "4");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "2");
       TS_ASSERT(translator3.variable()->toString() == "X1<1,4,2>");
 
-      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator4(
-         translator2);
+      gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator4(translator2);
       TS_ASSERT(translator4.translate("1").discr_val == 0);
       TS_ASSERT(translator4.translate("2").discr_val == 1);
       TS_ASSERT(translator4.translate("4").discr_val == 2);
-      TS_ASSERT(translator4.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator4.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator4.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator4.variable()->toString() == "X2<1,2,4>");
 
       gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator5(
@@ -535,15 +435,9 @@ namespace gum_tests {
       TS_ASSERT(translator5.translate("1").discr_val == 0);
       TS_ASSERT(translator5.translate("4").discr_val == 1);
       TS_ASSERT(translator5.translate("2").discr_val == 2);
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "4");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "2");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "4");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "2");
       TS_ASSERT(translator5.variable()->toString() == "X1<1,4,2>");
 
       gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator6(
@@ -551,15 +445,9 @@ namespace gum_tests {
       TS_ASSERT(translator6.translate("1").discr_val == 0);
       TS_ASSERT(translator6.translate("2").discr_val == 1);
       TS_ASSERT(translator6.translate("4").discr_val == 2);
-      TS_ASSERT(translator6.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator6.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator6.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator6.variable()->toString() == "X2<1,2,4>");
 
       gum::learning::DBTranslator4LabelizedVariable< LearningAlloc >* translator7
@@ -567,20 +455,16 @@ namespace gum_tests {
       TS_ASSERT(translator7->translate("1").discr_val == 0);
       TS_ASSERT(translator7->translate("2").discr_val == 1);
       TS_ASSERT(translator7->translate("4").discr_val == 2);
-      TS_ASSERT(translator7->translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
+      TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
                 == "1");
-      TS_ASSERT(translator7->translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
+      TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
                 == "2");
-      TS_ASSERT(translator7->translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
+      TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "4");
       TS_ASSERT(translator7->variable()->toString() == "X2<1,2,4>");
 
-      LearningAlloc<
-         gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > >
-         allocator2(translator7->getAllocator());
+      LearningAlloc< gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > > allocator2(
+         translator7->getAllocator());
       allocator2.destroy(translator7);
       allocator2.deallocate(translator7, 1);
 
@@ -588,45 +472,27 @@ namespace gum_tests {
       TS_ASSERT(translator5.translate("1").discr_val == 0);
       TS_ASSERT(translator5.translate("2").discr_val == 1);
       TS_ASSERT(translator5.translate("4").discr_val == 2);
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator5.variable()->toString() == "X2<1,2,4>");
 
       translator3 = translator5;
       TS_ASSERT(translator3.translate("1").discr_val == 0);
       TS_ASSERT(translator3.translate("2").discr_val == 1);
       TS_ASSERT(translator3.translate("4").discr_val == 2);
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator3.variable()->toString() == "X2<1,2,4>");
 
       translator5 = std::move(translator3);
       TS_ASSERT(translator5.translate("1").discr_val == 0);
       TS_ASSERT(translator5.translate("2").discr_val == 1);
       TS_ASSERT(translator5.translate("4").discr_val == 2);
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "2");
-      TS_ASSERT(translator5.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "4");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "2");
+      TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "4");
       TS_ASSERT(translator5.variable()->toString() == "X2<1,2,4>");
     }
 
@@ -642,21 +508,16 @@ namespace gum_tests {
       gum::learning::DBTranslator4LabelizedVariable<> translator(var, missing);
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("toto").discr_val == 0);
-      TS_ASSERT(translator.translate("N/A").discr_val
-                == std::numeric_limits< std::size_t >::max());
-      TS_ASSERT(translator.translate("?").discr_val
-                == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator.translate("N/A").discr_val == std::numeric_limits< std::size_t >::max());
+      TS_ASSERT(translator.translate("?").discr_val == std::numeric_limits< std::size_t >::max());
       TS_ASSERT(translator.translate("???").discr_val == 2);
 
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "toto");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "titi");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
-         == "???");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
+                == "toto");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
+                == "titi");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
+                == "???");
     }
 
     void test_trans7() {
@@ -672,20 +533,13 @@ namespace gum_tests {
       TS_ASSERT(translator.domainSize() == 3);
 
       TS_ASSERT((translator << "7").discr_val == 0);
-      TS_ASSERT((translator >> gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "7");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "7");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "1");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
-         == "3");
+      TS_ASSERT((translator >> gum::learning::DBTranslatedValue{std::size_t{0}}) == "7");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "7");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "1");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "3");
 
-      std::string back = translator.translateBack(gum::learning::DBTranslatedValue{
-         std::numeric_limits< std::size_t >::max()});
+      std::string back = translator.translateBack(
+         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
 
       gum::Set< std::string > missing_kept{"N/A", "toto"};
       TS_ASSERT(missing_kept.exists(back));
@@ -700,15 +554,9 @@ namespace gum_tests {
       TS_ASSERT(translator.translate("7").discr_val == 2);
       TS_ASSERT(translator.translate("1").discr_val == 0);
       TS_ASSERT(translator.translate("3").discr_val == 1);
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
-         == "1");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
-         == "3");
-      TS_ASSERT(
-         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
-         == "7");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "3");
+      TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "7");
 
 
       gum::LabelizedVariable var2("X2", "", 0);
@@ -724,19 +572,12 @@ namespace gum_tests {
       TS_ASSERT(translator2.domainSize() == 3);
 
       TS_ASSERT((translator2 << "7").discr_val == 2);
-      TS_ASSERT((translator2 >> gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "7");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{0}})
-                == "1");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{1}})
-                == "3");
-      TS_ASSERT(translator2.translateBack(
-                   gum::learning::DBTranslatedValue{std::size_t{2}})
-                == "7");
-      back = translator2.translateBack(gum::learning::DBTranslatedValue{
-         std::numeric_limits< std::size_t >::max()});
+      TS_ASSERT((translator2 >> gum::learning::DBTranslatedValue{std::size_t{2}}) == "7");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}) == "3");
+      TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}) == "7");
+      back = translator2.translateBack(
+         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator2.missingSymbols().exists(back));
 
       gum::Set< std::string > missing_kept2{"N/A", "toto"};

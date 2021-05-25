@@ -57,10 +57,8 @@ namespace gum {
      * By default, the range of the variable is (-inf,+inf). */
     ContinuousVariable(const std::string& aName,
                        const std::string& aDesc,
-                       GUM_SCALAR         lower_bound
-                       = -std::numeric_limits< GUM_SCALAR >::infinity(),
-                       GUM_SCALAR upper_bound
-                       = std::numeric_limits< GUM_SCALAR >::infinity());
+                       GUM_SCALAR lower_bound = -std::numeric_limits< GUM_SCALAR >::infinity(),
+                       GUM_SCALAR upper_bound = std::numeric_limits< GUM_SCALAR >::infinity());
 
     /// Copy Constructor.
     ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& from);
@@ -89,17 +87,14 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ContinuousVariable< GUM_SCALAR >&
-       operator=(const ContinuousVariable< GUM_SCALAR >& from);
+    ContinuousVariable< GUM_SCALAR >& operator=(const ContinuousVariable< GUM_SCALAR >& from);
 
     /// generalized copy operator
     template < typename TX_VAL >
-    ContinuousVariable< GUM_SCALAR >&
-       operator=(const ContinuousVariable< TX_VAL >& from);
+    ContinuousVariable< GUM_SCALAR >& operator=(const ContinuousVariable< TX_VAL >& from);
 
     /// move operator
-    ContinuousVariable< GUM_SCALAR >&
-       operator=(ContinuousVariable< GUM_SCALAR >&& from);
+    ContinuousVariable< GUM_SCALAR >& operator=(ContinuousVariable< GUM_SCALAR >&& from);
 
     /// returns the T_VAL corresponding to a string
     /** @throw OutOfBounds is raised if the value does not belong to the
@@ -176,10 +171,10 @@ namespace gum {
 
     private:
     // the lower bound.
-    GUM_SCALAR  _lower_bound_;
+    GUM_SCALAR _lower_bound_;
 
     // the upper bound.
-    GUM_SCALAR  _upper_bound_;
+    GUM_SCALAR _upper_bound_;
 
     template < typename TX_VAL >
     friend class ContinuousVariable;

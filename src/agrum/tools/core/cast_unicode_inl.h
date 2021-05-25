@@ -38,8 +38,7 @@
 
 INLINE std::wstring widen(const std::string& str) {
   std::wostringstream          wstm;
-  const std::ctype< wchar_t >& ctfacet
-     = std::use_facet< std::ctype< wchar_t > >(wstm.getloc());
+  const std::ctype< wchar_t >& ctfacet = std::use_facet< std::ctype< wchar_t > >(wstm.getloc());
 
   for (size_t i = 0; i < str.size(); ++i) {
     wstm << ctfacet.widen(str[i]);
@@ -50,8 +49,7 @@ INLINE std::wstring widen(const std::string& str) {
 
 INLINE std::string narrow(const std::wstring& str) {
   std::ostringstream        stm;
-  const std::ctype< char >& ctfacet
-     = std::use_facet< std::ctype< char > >(stm.getloc());
+  const std::ctype< char >& ctfacet = std::use_facet< std::ctype< char > >(stm.getloc());
 
   for (std::size_t i = 0; i < str.size(); ++i) {
     stm << ctfacet.narrow(str[i], 0);

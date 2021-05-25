@@ -133,16 +133,14 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE< GUM_SCALAR >*
-       combine(const Set< const TABLE< GUM_SCALAR >* >& set)
-       = 0;
-    virtual void combine(TABLE< GUM_SCALAR >&                     container,
-                         const Set< const TABLE< GUM_SCALAR >* >& set)
+    virtual TABLE< GUM_SCALAR >* combine(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+    virtual void                 combine(TABLE< GUM_SCALAR >&                     container,
+                                         const Set< const TABLE< GUM_SCALAR >* >& set)
        = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
-       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&))
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                    const TABLE< GUM_SCALAR >&))
        = 0;
 
     /// returns the combination function currently used by the combinator
@@ -154,10 +152,9 @@ namespace gum {
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
+    virtual float nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
     virtual float
-       nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
-    virtual float nbOperations(
-       const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
+       nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     /**
      * @brief Returns the memory consumption used during the combination.
@@ -173,8 +170,8 @@ namespace gum {
      */
     virtual std::pair< long, long >
        memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
-    virtual std::pair< long, long > memoryUsage(
-       const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
+    virtual std::pair< long, long >
+       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     private:
     /// forbid copy operators

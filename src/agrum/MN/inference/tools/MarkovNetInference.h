@@ -194,7 +194,7 @@ namespace gum {
 
     private:
     /// assigns a MN during the inference engine construction
-    void  _setMarkovNetDuringConstruction_(const IMarkovNet< GUM_SCALAR >* mn);
+    void _setMarkovNetDuringConstruction_(const IMarkovNet< GUM_SCALAR >* mn);
 
 
     /// allow JointInference to access the single targets and inference states

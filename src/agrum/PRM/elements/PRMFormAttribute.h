@@ -57,21 +57,18 @@ namespace gum {
       virtual ~PRMFormAttribute();
 
       /// See gum::prm::PRMAttribute.
+      virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const;
+
+      /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >*
-         newFactory(const PRMClass< GUM_SCALAR >& c) const;
+         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMAttribute< GUM_SCALAR >* copy(
-         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+      virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+                           const PRMAttribute< GUM_SCALAR >& source);
 
       /// See gum::prm::PRMAttribute.
-      virtual void copyCpf(
-         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-         const PRMAttribute< GUM_SCALAR >& source);
-
-      /// See gum::prm::PRMAttribute.
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMType& type();
@@ -110,18 +107,18 @@ namespace gum {
       PRMFormAttribute& operator=(const PRMFormAttribute& source);
 
       /// The random variable type of this attribute
-      PRMType*  _type_;
+      PRMType* _type_;
 
       /// A pointer on the Potential of this attribute
-      mutable Potential< GUM_SCALAR >*  _cpf_;
+      mutable Potential< GUM_SCALAR >* _cpf_;
 
       /// A pointer on the Potential of this attribute
-      MultiDimImplementation< std::string >*  _formulas_;
+      MultiDimImplementation< std::string >* _formulas_;
 
       /// A pointe toward the class of this attribute
-      const PRMClass< GUM_SCALAR >*  _class_;
+      const PRMClass< GUM_SCALAR >* _class_;
 
-      void  _fillCpf_() const;
+      void _fillCpf_() const;
     };
 
 

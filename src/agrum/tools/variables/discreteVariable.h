@@ -136,7 +136,7 @@ namespace gum {
     ///  @warning This operation may have different complexity in different
     /// subclasses.
     /// @throws NotFound
-    Idx operator[](const std::string& label) const { return index(label); };
+    Idx         operator[](const std::string& label) const { return index(label); };
     virtual Idx index(const std::string& label) const = 0;
 
     /// get the indice-th label. This method is pure virtual.

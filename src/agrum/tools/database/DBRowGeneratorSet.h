@@ -127,15 +127,13 @@ namespace gum {
       DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from,
-                        const allocator_type&             alloc);
+      DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from,
-                        const allocator_type&        alloc);
+      DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual DBRowGeneratorSet< ALLOC >* clone() const;
@@ -156,8 +154,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorSet< ALLOC >&
-         operator=(const DBRowGeneratorSet< ALLOC >& from);
+      DBRowGeneratorSet< ALLOC >& operator=(const DBRowGeneratorSet< ALLOC >& from);
 
       /// move operator
       DBRowGeneratorSet< ALLOC >& operator=(DBRowGeneratorSet< ALLOC >&& from);
@@ -197,8 +194,7 @@ namespace gum {
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
       template < template < template < typename > class > class Generator >
-      void insertGenerator(const Generator< ALLOC >& generator,
-                           const std::size_t         i);
+      void insertGenerator(const Generator< ALLOC >& generator, const std::size_t i);
 
       /// returns the number of generators
       std::size_t nbGenerators() const noexcept;
@@ -272,12 +268,11 @@ namespace gum {
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-      void setColumnsOfInterest(
-         std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
+      void
+         setColumnsOfInterest(std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
 
       /// returns the current set of columns of interest
-      const std::vector< std::size_t, ALLOC< std::size_t > >&
-         columnsOfInterest() const;
+      const std::vector< std::size_t, ALLOC< std::size_t > >& columnsOfInterest() const;
 
       /// returns the allocator used
       allocator_type getAllocator() const;
@@ -289,14 +284,13 @@ namespace gum {
 
       private:
       // the vector of all the generators
-      std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > >
-          _generators_;
+      std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > > _generators_;
 
       // the number of generators
-      std::size_t  _nb_generators_{std::size_t(0)};
+      std::size_t _nb_generators_{std::size_t(0)};
 
       // the next output row to return when method generate is called
-      const DBRow< DBTranslatedValue, ALLOC >*  _output_row_{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* _output_row_{nullptr};
 
       // the generation of output rows can be viewed as the traversal of a
       // tree: each node of the tree correspond to the input row received by
@@ -317,7 +311,7 @@ namespace gum {
       // discrimination: when its cells equal 0, we need to call setInputDBrow()
       // first, else when they equal 1, we just need to call the generate()
       // method.
-      std::vector< int, ALLOC< int > >  _setInputRow_performed_;
+      std::vector< int, ALLOC< int > > _setInputRow_performed_;
 
 
       /// parse the row generation tree to produce a new row
@@ -326,8 +320,7 @@ namespace gum {
        * we call this method, passing in argument the input_row
        * @param i indicate the generator from which we start the traversal
        */
-      bool  _produceNextRow_(const DBRow< DBTranslatedValue, ALLOC >* input_row,
-                            std::size_t                              i);
+      bool _produceNextRow_(const DBRow< DBTranslatedValue, ALLOC >* input_row, std::size_t i);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

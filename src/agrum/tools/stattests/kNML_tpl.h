@@ -35,15 +35,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                     nodeId2columns,
-       const typename KNML< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename KNML< ALLOC >::allocator_type&                        alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-         _param_complexity_(alloc) {
+        _param_complexity_(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -51,24 +50,22 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                     nodeId2columns,
-       const typename KNML< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename KNML< ALLOC >::allocator_type&                 alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
-         _param_complexity_(alloc) {
+        _param_complexity_(alloc) {
       GUM_CONSTRUCTOR(KNML);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE
-       KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
-                           const typename KNML< ALLOC >::allocator_type& alloc) :
+    INLINE KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
+                               const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
-         _param_complexity_(from. _param_complexity_, alloc) {
+        _param_complexity_(from._param_complexity_, alloc) {
       GUM_CONS_CPY(KNML);
     }
 
@@ -81,11 +78,10 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE
-       KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
-                           const typename KNML< ALLOC >::allocator_type& alloc) :
+    INLINE KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
+                               const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
-         _param_complexity_(std::move(from. _param_complexity_), alloc) {
+        _param_complexity_(std::move(from._param_complexity_), alloc) {
       GUM_CONS_MOV(KNML);
     }
 
@@ -98,8 +94,7 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    KNML< ALLOC >* KNML< ALLOC >::clone(
-       const typename KNML< ALLOC >::allocator_type& alloc) const {
+    KNML< ALLOC >* KNML< ALLOC >::clone(const typename KNML< ALLOC >::allocator_type& alloc) const {
       ALLOC< KNML< ALLOC > > allocator(alloc);
       KNML< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -132,7 +127,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-         _param_complexity_                 = from. _param_complexity_;
+        _param_complexity_                 = from._param_complexity_;
       }
       return *this;
     }
@@ -143,7 +138,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(KNML< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
-         _param_complexity_                 = std::move(from. _param_complexity_);
+        _param_complexity_                 = std::move(from._param_complexity_);
       }
       return *this;
     }
@@ -153,7 +148,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clear() {
       IndependenceTest< ALLOC >::clear();
-       _param_complexity_.clearCache();
+      _param_complexity_.clearCache();
     }
 
 
@@ -161,7 +156,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::clearCache() {
       IndependenceTest< ALLOC >::clearCache();
-       _param_complexity_.clearCache();
+      _param_complexity_.clearCache();
     }
 
 
@@ -169,7 +164,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void KNML< ALLOC >::useCache(const bool on_off) {
       IndependenceTest< ALLOC >::useCache(on_off);
-       _param_complexity_.useCache(on_off);
+      _param_complexity_.useCache(on_off);
     }
 
 
@@ -207,10 +202,8 @@ namespace gum {
 
         std::vector< double, ALLOC< double > > N_ui
            = this->counter_.counts(idset.conditionalIdCondSet(), false);
-        std::vector< double, ALLOC< double > > N_xui
-           = this->counter_.counts(idset_xui, false);
-        std::vector< double, ALLOC< double > > N_yui
-           = this->counter_.counts(idset_yui, false);
+        std::vector< double, ALLOC< double > > N_xui = this->counter_.counts(idset_xui, false);
+        std::vector< double, ALLOC< double > > N_yui = this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->apriori_->addConditioningApriori(idset, N_ui);
@@ -224,12 +217,12 @@ namespace gum {
         // 		 sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
         double score = 0.0;
         for (auto n_xui: N_xui)
-          score +=  _param_complexity_.log2Cnr(r_y, n_xui);
+          score += _param_complexity_.log2Cnr(r_y, n_xui);
         for (auto n_yui: N_yui)
-          score +=  _param_complexity_.log2Cnr(r_x, n_yui);
+          score += _param_complexity_.log2Cnr(r_x, n_yui);
         for (auto n_ui: N_ui) {
-          score -=  _param_complexity_.log2Cnr(r_y, n_ui);
-          score -=  _param_complexity_.log2Cnr(r_x, n_ui);
+          score -= _param_complexity_.log2Cnr(r_y, n_ui);
+          score -= _param_complexity_.log2Cnr(r_x, n_ui);
         }
 
         score *= 0.5;
@@ -241,10 +234,8 @@ namespace gum {
         IdCondSet< ALLOC > idset_xui(idset[0], this->empty_ids_, true);
         IdCondSet< ALLOC > idset_yui(idset[1], this->empty_ids_, true);
 
-        std::vector< double, ALLOC< double > > N_xui
-           = this->counter_.counts(idset_xui, false);
-        std::vector< double, ALLOC< double > > N_yui
-           = this->counter_.counts(idset_yui, false);
+        std::vector< double, ALLOC< double > > N_xui = this->counter_.counts(idset_xui, false);
+        std::vector< double, ALLOC< double > > N_yui = this->counter_.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->apriori_->addAllApriori(idset, N_xui);
@@ -258,13 +249,13 @@ namespace gum {
         double N     = 0.0;
         double score = 0.0;
         for (auto n_xui: N_xui) {
-          score +=  _param_complexity_.log2Cnr(r_y, n_xui);
+          score += _param_complexity_.log2Cnr(r_y, n_xui);
           N += n_xui;
         }
         for (auto n_yui: N_yui)
-          score +=  _param_complexity_.log2Cnr(r_x, n_yui);
-        score -=  _param_complexity_.log2Cnr(r_y, N);
-        score -=  _param_complexity_.log2Cnr(r_x, N);
+          score += _param_complexity_.log2Cnr(r_x, n_yui);
+        score -= _param_complexity_.log2Cnr(r_y, N);
+        score -= _param_complexity_.log2Cnr(r_x, N);
 
         score *= 0.5;
 

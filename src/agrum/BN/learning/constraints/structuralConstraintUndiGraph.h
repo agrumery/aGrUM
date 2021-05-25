@@ -79,12 +79,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintUndiGraph&
-         operator=(const StructuralConstraintUndiGraph& from);
+      StructuralConstraintUndiGraph& operator=(const StructuralConstraintUndiGraph& from);
 
       /// move operator
-      StructuralConstraintUndiGraph&
-         operator=(StructuralConstraintUndiGraph&& from);
+      StructuralConstraintUndiGraph& operator=(StructuralConstraintUndiGraph&& from);
 
       /// @}
 
@@ -171,7 +169,7 @@ namespace gum {
 
       protected:
       /// the UndiGraph on which we perform checks
-      UndiGraph  _UndiGraph_graph_;
+      UndiGraph _UndiGraph_graph_;
     };
 
   } /* namespace learning */

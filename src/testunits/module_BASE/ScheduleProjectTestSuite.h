@@ -57,14 +57,13 @@ namespace gum_tests {
       std::pair< long, long > xxx = myproj.memoryUsage();
       TS_ASSERT(xxx.first == 4);
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims
-         = myproj.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims = myproj.multiDimArgs();
       TS_ASSERT(multidims.size() == 1);
       TS_ASSERT(*(multidims.atPos(0)) == f1);
 
       std::stringstream s1;
-      s1 << res.toString() << " = project ( " << f1.toString() << " , "
-         << del_vars.toString() << " )";
+      s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
+         << " )";
       TS_ASSERT(s1.str() == myproj.toString());
 
       gum::ScheduleProject< double > myproj2 = myproj;
@@ -109,13 +108,11 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double >*
-       proj(const gum::Potential< double >&                 table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars,
-            double                                          neutral_elt) {
-      gum::Potential< double >* result = new gum::Potential< double >;
-      const gum::Sequence< const gum::DiscreteVariable* >& vars
-         = table.variablesSequence();
+    gum::Potential< double >* proj(const gum::Potential< double >&                 table,
+                                   const gum::Set< const gum::DiscreteVariable* >& del_vars,
+                                   double                                          neutral_elt) {
+      gum::Potential< double >*                            result = new gum::Potential< double >;
+      const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
 
       for (const auto var: vars)

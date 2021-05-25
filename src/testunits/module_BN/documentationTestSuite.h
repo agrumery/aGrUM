@@ -42,10 +42,7 @@ namespace gum_tests {
         auto bn = gum::BayesNet< double >("Asia");
         // Variables are added by copy to the BayesNet, so you can use a single
         // gum::LabelizedVariable to add all varaibles with the same domain
-        auto var
-           = gum::LabelizedVariable("template",
-                                    "A variable of the Asia Bayesian network",
-                                    0);
+        auto var = gum::LabelizedVariable("template", "A variable of the Asia Bayesian network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -132,8 +129,7 @@ namespace gum_tests {
         factory.startVariableDeclaration();
         factory.variableName("Visit To Asia");
         factory.variableType(gum::VarType::Labelized);
-        factory.variableDescription(
-           "True if patient visited Asia in the past months");
+        factory.variableDescription("True if patient visited Asia in the past months");
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -270,10 +266,7 @@ namespace gum_tests {
       auto asia = gum::BayesNet< double >("Asia");
       // Constructing the BayesNet...
       {
-        auto var
-           = gum::LabelizedVariable("template",
-                                    "A variable of the Asia Bayesian network",
-                                    0);
+        auto var = gum::LabelizedVariable("template", "A variable of the Asia Bayesian network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -310,13 +303,12 @@ namespace gum_tests {
            .translate(TS_GUM_SMALL_ERROR)
            .normalizeAsCPT();
         asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
-        asia.cpt(dyspnea).fillWith(
-           {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
+        asia.cpt(dyspnea).fillWith({0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
       }
 
       try {
         gum::LazyPropagation< double > inference(&asia);
-        auto                           id = asia.idFromName("Has Lung Cancer");
+        auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior(id);
         TS_FAIL("Inference should not be correct with a undefined CPT");
       } catch (gum::IncompatibleEvidence&) {
@@ -328,8 +320,8 @@ namespace gum_tests {
       try {
         // To prevent warning for unused variable
         gum::LazyPropagation< double > inference(&asia);
-        auto                           id = asia.idFromName("Has Lung Cancer");
-        const auto& marginal              = inference.posterior("Has Lung Cancer");
+        auto                           id       = asia.idFromName("Has Lung Cancer");
+        const auto&                    marginal = inference.posterior("Has Lung Cancer");
         TS_ASSERT_EQUALS(marginal.domainSize(), gum::Size(2));
 
 
@@ -363,9 +355,7 @@ namespace gum_tests {
         // Constructing BayesNet...
         {
           auto var
-             = gum::LabelizedVariable("template",
-                                      "A variable of the Asia Bayesian network",
-                                      0);
+             = gum::LabelizedVariable("template", "A variable of the Asia Bayesian network", 0);
           var.addLabel("True");
           var.addLabel("False");
 
@@ -397,11 +387,9 @@ namespace gum_tests {
           asia.cpt(smoker).fillWith({0.7f, 0.3f});
           asia.cpt(hasTuberculosis).fillWith({0.05f, 0.01f, 0.95f, 0.99f});
           asia.cpt(hasLungCancer).fillWith({0.10f, 0.90f, 0.01f, 0.99f});
-          asia.cpt(tubOrCancer)
-             .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f});
+          asia.cpt(tubOrCancer).fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f});
           asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
-          asia.cpt(dyspnea).fillWith(
-             {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
+          asia.cpt(dyspnea).fillWith({0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
         }
         // One implementation of the gum::BNWriter class
         auto writer = gum::BIFWriter< double >();

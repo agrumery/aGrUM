@@ -53,8 +53,7 @@ namespace gum {
    * is designed to be used in incremental inference engines.
    */
   template < typename GUM_SCALAR >
-  class MarginalTargetedMNInference:
-      public virtual MarkovNetInference< GUM_SCALAR > {
+  class MarginalTargetedMNInference: public virtual MarkovNetInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -206,7 +205,7 @@ namespace gum {
      * @param evs the nodeId of the observed variable
      * @return a Potential
      */
-    Potential< GUM_SCALAR > evidenceImpact(const std::string& target,
+    Potential< GUM_SCALAR > evidenceImpact(const std::string&                target,
                                            const std::vector< std::string >& evs);
 
     protected:
@@ -237,17 +236,17 @@ namespace gum {
 
     private:
     /// whether the actual targets are default
-    bool  _targeted_mode_;
+    bool _targeted_mode_;
 
     /// the set of marginal targets
-    NodeSet  _targets_;
+    NodeSet _targets_;
 
 
     /*/// remove all the marginal posteriors computed
     void  _invalidatePosteriors_() noexcept;*/
 
     /// sets all the nodes of the Markov net as targets
-    void  _setAllMarginalTargets_();
+    void _setAllMarginalTargets_();
   };
 
 

@@ -95,12 +95,10 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb12(f2, f3, schedule_comb_myadd);
       comb12.execute();
       const gum::ScheduleMultiDim< double >& result12 = comb12.result();
-      gum::ScheduleCombine< double > comb13(result12, f4, schedule_comb_myadd);
+      gum::ScheduleCombine< double >         comb13(result12, f4, schedule_comb_myadd);
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();
-      gum::ScheduleCombine< double >         comb14(result11,
-                                            result13,
-                                            schedule_comb_myadd);
+      gum::ScheduleCombine< double >         comb14(result11, result13, schedule_comb_myadd);
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
@@ -147,7 +145,7 @@ namespace gum_tests {
       pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
       randomInit(pot4);
 
-      gum::ScheduleCombinationBasic< double > comb(schedule_comb_myadd);
+      gum::ScheduleCombinationBasic< double >                  comb(schedule_comb_myadd);
       gum::Set< const gum::MultiDimImplementation< double >* > set;
       set << pot1.content() << pot2.content() << pot3.content() << pot4.content();
       gum::Schedule< double >               schedule;
@@ -166,8 +164,8 @@ namespace gum_tests {
         }
       }
 
-      gum::MultiDimCombinationDefault< double, gum::MultiDimImplementation >
-                                             comb11(schedule_comb_myadd);
+      gum::MultiDimCombinationDefault< double, gum::MultiDimImplementation > comb11(
+         schedule_comb_myadd);
       gum::MultiDimImplementation< double >* res11 = comb11.combine(set);
 
       TS_ASSERT(*res11 == result.multiDim());
@@ -225,8 +223,8 @@ namespace gum_tests {
         }
       }
 
-      gum::MultiDimCombinationDefault< double, gum::MultiDimImplementation >
-         comb11(schedule_comb_myadd);
+      gum::MultiDimCombinationDefault< double, gum::MultiDimImplementation > comb11(
+         schedule_comb_myadd);
       gum::Set< const gum::MultiDimImplementation< double >* > set2;
       set2 << pot1.content() << pot2.content() << pot3.content() << pot4.content();
       gum::MultiDimImplementation< double >* res11 = comb11.combine(set2);

@@ -34,7 +34,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
-     _arity_ = 2;
+    _arity_ = 2;
     GUM_CONSTRUCTOR(AggregatorDecomposition);
   }
 
@@ -45,12 +45,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
-     AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(
-        BayesNet< GUM_SCALAR >& bn) {
+     AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn) {
     for (NodeId node: bn.nodes().asNodeSet()) {
       std::string description = bn.cpt(node).toString();
-      auto        p           = dynamic_cast<
-         const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+      auto        p = dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
          bn.cpt(node).content());
       if (p != nullptr && p->isDecomposable()) { decomposeAggregator_(bn, node); }
     }
@@ -58,11 +56,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  NodeId AggregatorDecomposition< GUM_SCALAR >::addAggregator_(
-     BayesNet< GUM_SCALAR >& bn,
-     std::string             aggType,
-     const DiscreteVariable& var,
-     Idx                     value) {
+  NodeId AggregatorDecomposition< GUM_SCALAR >::addAggregator_(BayesNet< GUM_SCALAR >& bn,
+                                                               std::string             aggType,
+                                                               const DiscreteVariable& var,
+                                                               Idx                     value) {
     if (toLower(aggType) == "min") {
       return bn.addMIN(var);
     } else if (toLower(aggType) == "max") {
@@ -92,12 +89,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
-     AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(
-        BayesNet< GUM_SCALAR >& bn,
-        NodeId                  initialAggregator) {
-    auto p
-       = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-          bn.cpt(initialAggregator).content());
+     AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
+                                                                 NodeId initialAggregator) {
+    auto p = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+       bn.cpt(initialAggregator).content());
     auto newAgg = bn.variable(initialAggregator).clone();
 
     Set< NodeId > parents = bn.parents(initialAggregator);
@@ -122,8 +117,8 @@ namespace gum {
 
     int j = 1;
 
-    std::string newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                        + std::to_string(j);
+    std::string newName
+       = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
     std::string aggType = p->aggregatorName();
 
     for (auto parent: parents) {
@@ -150,8 +145,7 @@ namespace gum {
             static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
             addAggregator_(bn, aggType, *newAgg, 0);
           } else {
-            GUM_ERROR(OperationNotAllowed,
-                      "Decomposition is not available for type : " + aggType)
+            GUM_ERROR(OperationNotAllowed, "Decomposition is not available for type : " + aggType)
           }
 
           /*
@@ -172,8 +166,7 @@ namespace gum {
           minVal = 0;
           maxVal = 0;
 
-          newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                  + std::to_string(j);
+          newName = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
           delete (newAgg);
           newAgg = bn.variable(initialAggregator).clone();
@@ -181,20 +174,16 @@ namespace gum {
           newAgg->setDescription(aggType);
 
           if (bn.variable(*it).varType() == VarType::Range) {
-            minVal
-               += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal
-               += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+            maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
           }
 
           newAggParents.push_back(*it);
           i++;
         } else {
           if (bn.variable(*it).varType() == VarType::Range) {
-            minVal
-               += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal
-               += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+            maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
           }
 
           newAggParents.push_back(*it);
@@ -213,8 +202,7 @@ namespace gum {
       static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
       addAggregator_(bn, aggType, *newAgg, 0);
     } else {
-      GUM_ERROR(OperationNotAllowed,
-                "Decomposition is not available for type : " + aggType)
+      GUM_ERROR(OperationNotAllowed, "Decomposition is not available for type : " + aggType)
     }
 
     newAggs.insert(bn.idFromName(newName));
@@ -234,14 +222,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Set< NodeId > AggregatorDecomposition< GUM_SCALAR >::addDepthLayer_(
-     BayesNet< GUM_SCALAR >& bn,
-     Set< NodeId >           nodes,
-     NodeId                  initialAggregator,
-     int&                    j) {
-    auto p
-       = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-          bn.cpt(initialAggregator).content());
+  Set< NodeId > AggregatorDecomposition< GUM_SCALAR >::addDepthLayer_(BayesNet< GUM_SCALAR >& bn,
+                                                                      Set< NodeId >           nodes,
+                                                                      NodeId initialAggregator,
+                                                                      int&   j) {
+    auto p = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+       bn.cpt(initialAggregator).content());
 
     gum::Size   arity   = getMaximumArity();
     std::string aggType = p->aggregatorName();
@@ -270,8 +256,8 @@ namespace gum {
 
       j++;
 
-      std::string newName = std::string(bn.variable(initialAggregator).name())
-                          + "_" + std::to_string(j);
+      std::string newName
+         = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
       newAgg->setName(newName);
       newAgg->setDescription(aggType);
@@ -290,8 +276,7 @@ namespace gum {
               static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
               addAggregator_(bn, aggType, *newAgg, 0);
             } else {
-              GUM_ERROR(OperationNotAllowed,
-                        "Decomposition is not available for type : " + aggType)
+              GUM_ERROR(OperationNotAllowed, "Decomposition is not available for type : " + aggType)
             }
 
             for (NodeId node: newAggParents) {
@@ -305,8 +290,7 @@ namespace gum {
             minVal = 0;
             maxVal = 0;
 
-            newName = std::string(bn.variable(initialAggregator).name()) + "_"
-                    + std::to_string(j);
+            newName = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
             delete (newAgg);
             newAgg = bn.variable(initialAggregator).clone();
@@ -314,20 +298,16 @@ namespace gum {
             newAgg->setDescription(aggType);
 
             if (bn.variable(*it).varType() == VarType::Range) {
-              minVal
-                 += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal
-                 += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+              minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+              maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
             }
 
             newAggParents.push_back(*it);
             i++;
           } else {
             if (bn.variable(*it).varType() == VarType::Range) {
-              minVal
-                 += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal
-                 += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+              minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
+              maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
             }
 
             newAggParents.push_back(*it);
@@ -346,8 +326,7 @@ namespace gum {
         static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
         addAggregator_(bn, aggType, *newAgg, 0);
       } else {
-        GUM_ERROR(OperationNotAllowed,
-                  "Decomposition is not available for type : " + aggType)
+        GUM_ERROR(OperationNotAllowed, "Decomposition is not available for type : " + aggType)
       }
 
       newAggs.insert(bn.idFromName(newName));
@@ -363,17 +342,14 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  INLINE void
-     AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
-    if (arity < 2) {
-      GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2")
-    }
-     _arity_ = arity;
+  INLINE void AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
+    if (arity < 2) { GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2") }
+    _arity_ = arity;
   }
 
   template < typename GUM_SCALAR >
   gum::Size AggregatorDecomposition< GUM_SCALAR >::getMaximumArity() {
-    return  _arity_;
+    return _arity_;
   }
 
   template < typename GUM_SCALAR >

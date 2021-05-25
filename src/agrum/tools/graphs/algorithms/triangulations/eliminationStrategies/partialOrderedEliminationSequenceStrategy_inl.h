@@ -35,14 +35,13 @@ namespace gum {
 
   // returns the current partial ordering
   INLINE const List< NodeSet >*
-     PartialOrderedEliminationSequenceStrategy::partialOrder() const noexcept {
+               PartialOrderedEliminationSequenceStrategy::partialOrder() const noexcept {
     return subsets_;
   }
 
 
   // indicates if a new partial ordering is needed
-  INLINE bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded()
-     const noexcept {
+  INLINE bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded() const noexcept {
     return partial_order_needed_;
   }
 

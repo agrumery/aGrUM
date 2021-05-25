@@ -34,15 +34,13 @@ namespace gum {
 
   /// Default constructor
   INLINE
-  IContinuousVariable::IContinuousVariable(const std::string& aName,
-                                           const std::string& aDesc) :
+  IContinuousVariable::IContinuousVariable(const std::string& aName, const std::string& aDesc) :
       Variable(aName, aDesc) {}
 
 
   /// Copy Constructor
   INLINE
-  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) :
-      Variable(from) {}
+  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) : Variable(from) {}
 
 
   /// move constructor
@@ -57,16 +55,14 @@ namespace gum {
 
 
   /// copy operator
-  INLINE IContinuousVariable&
-     IContinuousVariable::operator=(const IContinuousVariable& from) {
+  INLINE IContinuousVariable& IContinuousVariable::operator=(const IContinuousVariable& from) {
     Variable::operator=(from);
     return *this;
   }
 
 
   /// move operator
-  INLINE IContinuousVariable&
-     IContinuousVariable::operator=(IContinuousVariable&& from) {
+  INLINE IContinuousVariable& IContinuousVariable::operator=(IContinuousVariable&& from) {
     Variable::operator=(std::move(from));
     return *this;
   }

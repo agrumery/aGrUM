@@ -195,8 +195,7 @@ namespace gum {
     /// node2
     /** @throws NotFound such path cannot be found */
 
-    std::vector< NodeId > containerPath(const NodeId node1,
-                                        const NodeId node2) const;
+    std::vector< NodeId > containerPath(const NodeId node1, const NodeId node2) const;
 
     /// indicates whether the running intersection property holds
     /** The function works properly even if the graph contains cycles. */
@@ -238,18 +237,18 @@ namespace gum {
 
     private:
     /// the set of nodes contained into the cliques
-    NodeProperty< NodeSet >  _cliques_;
+    NodeProperty< NodeSet > _cliques_;
 
     /// the set of nodes contained into the separators
-    EdgeProperty< NodeSet >  _separators_;
+    EdgeProperty< NodeSet > _separators_;
 
     /// function used to update the separators when a clique is modified
 
-    void  _updateSeparators_(const NodeId clique1);
+    void _updateSeparators_(const NodeId clique1);
 
     /// structure used for the computation of the running intersection property
 
-    struct  _RunningIntersect_ {
+    struct _RunningIntersect_ {
       /** @brief structure indicating for each clique whether it has been
        * examined by a DFS (Depth First Search) */
       NodeSet visited_cliques;
@@ -290,9 +289,9 @@ namespace gum {
 
     /// function used for the computation of the running intersection property
 
-    bool  _runningIntersectionDFS_(const NodeId        clique,
+    bool _runningIntersectionDFS_(const NodeId        clique,
                                   const NodeId        from,
-                                   _RunningIntersect_& infos_DFS) const;
+                                  _RunningIntersect_& infos_DFS) const;
   };
 
   /** @brief a junction tree is a clique graph satisfying the running

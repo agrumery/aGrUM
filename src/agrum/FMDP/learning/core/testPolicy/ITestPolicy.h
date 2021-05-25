@@ -57,9 +57,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    ITestPolicy() :  _isModified_(false),  _nbObs_(0) {
-      GUM_CONSTRUCTOR(ITestPolicy);
-    }
+    ITestPolicy() : _isModified_(false), _nbObs_(0) { GUM_CONSTRUCTOR(ITestPolicy); }
 
     // ============================================================================
     ///
@@ -72,10 +70,8 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) {
-      return SmallObjectAllocator::instance().allocate(s);
-    }
-    void operator delete(void* p) {
+    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void  operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));
     }
 
@@ -91,14 +87,14 @@ namespace gum {
     /// Comptabilizes the new observation
     // ============================================================================
     virtual void addObservation(Idx attr, GUM_SCALAR value) {
-       _isModified_ = true;
-       _nbObs_++;
+      _isModified_ = true;
+      _nbObs_++;
     }
 
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    Idx nbObservation() const { return  _nbObs_; }
+    Idx nbObservation() const { return _nbObs_; }
 
     /// @}
 
@@ -117,7 +113,7 @@ namespace gum {
     // ============================================================================
     /// Recomputes the statistic from the beginning
     // ============================================================================
-    virtual void computeScore() const {  _isModified_ = false; }
+    virtual void computeScore() const { _isModified_ = false; }
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
@@ -141,8 +137,8 @@ namespace gum {
     ///
     // ============================================================================
     void add(const ITestPolicy< GUM_SCALAR >& src) {
-       _isModified_ = true;
-       _nbObs_ += src.nbObservation();
+      _isModified_ = true;
+      _nbObs_ += src.nbObservation();
     }
 
     /// @}
@@ -158,21 +154,21 @@ namespace gum {
     // ============================================================================
     std::string toString() const {
       std::stringstream ss;
-      ss << "\t\t\tNb Obs : " <<  _nbObs_ << std::endl;
+      ss << "\t\t\tNb Obs : " << _nbObs_ << std::endl;
       return ss.str();
     }
 
     /// @}
 
     protected:
-    bool isModified_() const { return  _isModified_; }
+    bool isModified_() const { return _isModified_; }
 
     private:
     ///  Booleans indicating if we have to re eval test
-    mutable bool  _isModified_;
+    mutable bool _isModified_;
 
     ///
-    Idx  _nbObs_;
+    Idx _nbObs_;
   };
 
 }   // End of namespace gum

@@ -38,23 +38,17 @@ namespace gum {
                                                   LabelData* a_l_v,
                                                   NodeId     a_v) :
           u(a_u),
-          edge(an_edge), l_v(a_l_v), v(a_v),
-          degree_list(new std::vector< NodeId >()) {
+          edge(an_edge), l_v(a_l_v), v(a_v), degree_list(new std::vector< NodeId >()) {
         GUM_CONSTRUCTOR(EdgeGrowth);
       }
 
       template < typename GUM_SCALAR >
-      INLINE EdgeGrowth< GUM_SCALAR >::EdgeGrowth(
-         const EdgeGrowth< GUM_SCALAR >& from) :
-          u(from.u),
-          edge(from.edge), v(from.v), matches(from.matches),
-          iso_graph(from.iso_graph), degree_list(0),
-          max_indep_set(from.max_indep_set) {
+      INLINE EdgeGrowth< GUM_SCALAR >::EdgeGrowth(const EdgeGrowth< GUM_SCALAR >& from) :
+          u(from.u), edge(from.edge), v(from.v), matches(from.matches), iso_graph(from.iso_graph),
+          degree_list(0), max_indep_set(from.max_indep_set) {
         GUM_CONS_CPY(EdgeGrowth);
 
-        if (from.degree_list != 0) {
-          degree_list = new std::vector< NodeId >(*(from.degree_list));
-        }
+        if (from.degree_list != 0) { degree_list = new std::vector< NodeId >(*(from.degree_list)); }
       }
 
       template < typename GUM_SCALAR >
@@ -78,8 +72,8 @@ namespace gum {
         degree_list->push_back(id);
 
         for (const auto& elt: matches) {
-          if ((elt.second.first == u) || (elt.second.second == u)
-              || (elt.second.first == v) || (elt.second.second == v)) {
+          if ((elt.second.first == u) || (elt.second.second == u) || (elt.second.first == v)
+              || (elt.second.second == v)) {
             iso_graph.addEdge(elt.first, id);
           }
         }

@@ -48,8 +48,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    explicit InfluenceDiagramInference(
-       const InfluenceDiagram< GUM_SCALAR >* infDiag);
+    explicit InfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >* infDiag);
 
     /**
      * Destructor.
@@ -62,36 +61,30 @@ namespace gum {
      * that the ID has changed.
      * @warning note that, by aGrUM's rule, the influence Diagram is not copied
      * into the inference engine but only referenced. */
-    virtual void
-       setInfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >* infdiag);
+    virtual void setInfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >* infdiag);
 
     /// Returns a constant reference over the IBayesNet referenced by this class
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
      * the inference. */
     virtual const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const final;
 
-    virtual gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId) = 0;
-    virtual gum::Potential< GUM_SCALAR >
-       optimalDecision(const std::string& nodename) = 0;
+    virtual gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId)           = 0;
+    virtual gum::Potential< GUM_SCALAR > optimalDecision(const std::string& nodename) = 0;
 
-    virtual const Potential< GUM_SCALAR >& posterior(NodeId node) = 0;
-    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodename)
-       = 0;
+    virtual const Potential< GUM_SCALAR >& posterior(NodeId node)                 = 0;
+    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodename) = 0;
 
-    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) = 0;
-    virtual const Potential< GUM_SCALAR >&
-       posteriorUtility(const std::string& nodename)
-       = 0;
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node)                 = 0;
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& nodename) = 0;
 
-    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) = 0;
-    virtual std::pair< GUM_SCALAR, GUM_SCALAR >
-       meanVar(const std::string& nodename) = 0;
+    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node)                 = 0;
+    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& nodename) = 0;
 
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > MEU() = 0;
 
     private:
     /// assigns a influence diagram during the inference engine construction
-    void  _setIDDuringConstruction_(const InfluenceDiagram< GUM_SCALAR >* infdiag);
+    void _setIDDuringConstruction_(const InfluenceDiagram< GUM_SCALAR >* infdiag);
   };
 
 } /* namespace gum */

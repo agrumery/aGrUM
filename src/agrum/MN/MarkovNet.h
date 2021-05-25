@@ -93,8 +93,7 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static MarkovNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                 Size domainSize = 2);
+    static MarkovNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize = 2);
 
     /**
      * build a Markov Network from a Bayesian network
@@ -157,8 +156,7 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >&
-       factor(const NodeSet& varIds) const final;
+    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
     virtual const Potential< GUM_SCALAR >&
        factor(const std::vector< std::string >& varnames) const final;
@@ -315,9 +313,7 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id or if the variable is not
      * a LabelizedVariable
      */
-    void changeVariableLabel(NodeId             id,
-                             const std::string& old_label,
-                             const std::string& new_label);
+    void changeVariableLabel(NodeId id, const std::string& old_label, const std::string& new_label);
 
     /**
      * @brief Changes a variable's name.
@@ -378,13 +374,11 @@ namespace gum {
      * @warning in order to be deterministic, the Potential contains all the vars
      * of the clique sorted by id.
      */
-    const Potential< GUM_SCALAR >&
-       addFactor(const std::vector< std::string >& varnames);
+    const Potential< GUM_SCALAR >& addFactor(const std::vector< std::string >& varnames);
 
     const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
 
-    const Potential< GUM_SCALAR >&
-       addFactor(const Potential< GUM_SCALAR >& factor);
+    const Potential< GUM_SCALAR >& addFactor(const Potential< GUM_SCALAR >& factor);
 
     /**
      * Removes a factor in the MN, and update head's CTP.
@@ -411,28 +405,27 @@ namespace gum {
     void endTopologyTransformation();
 
     private:
-    bool  _topologyTransformationInProgress_;
+    bool _topologyTransformationInProgress_;
 
     /// clear all potentials
-    void  _clearFactors_();
+    void _clearFactors_();
 
     /// copy of potentials from a MN to another, using names of vars as ref.
-    void  _copyFactors_(const MarkovNet< GUM_SCALAR >& source);
+    void _copyFactors_(const MarkovNet< GUM_SCALAR >& source);
 
     /// rebuild the graph after strucural changes in the factors
-    void  _rebuildGraph_();
+    void _rebuildGraph_();
 
     /// the map between variable and id
-    VariableNodeMap  _varMap_;
+    VariableNodeMap _varMap_;
 
     /// the factors
-    FactorTable< GUM_SCALAR >  _factors_;
+    FactorTable< GUM_SCALAR > _factors_;
 
-    const Potential< GUM_SCALAR >*  _addFactor_(const NodeSet&                 vars,
-                                               const Potential< GUM_SCALAR >* src
-                                               = nullptr);
+    const Potential< GUM_SCALAR >* _addFactor_(const NodeSet&                 vars,
+                                               const Potential< GUM_SCALAR >* src = nullptr);
 
-    void  _eraseFactor_(const NodeSet& vars);
+    void _eraseFactor_(const NodeSet& vars);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;
@@ -443,8 +436,7 @@ namespace gum {
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                  output,
-                           const MarkovNet< GUM_SCALAR >& bn);
+  std::ostream& operator<<(std::ostream& output, const MarkovNet< GUM_SCALAR >& bn);
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

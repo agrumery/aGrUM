@@ -40,34 +40,22 @@ namespace gum {
   namespace learning {
 
     // create the static members
-    int DBCell:: _string_max_index_ = 0;
+    int DBCell::_string_max_index_ = 0;
 
 
-    Bijection< std::string, int >& DBCell:: _strings_() {
+    Bijection< std::string, int >& DBCell::_strings_() {
 #  ifdef GUM_DEBUG_MODE
       static bool first_time = true;
       if (first_time) {
         first_time = false;
-         __debug__:: _dec_creation_("Bijection",
+        __debug__::_dec_creation_("Bijection", " __strings", 0, "BCell string bijection", 0);
+        __debug__::_dec_creation_("BijectionImplementation",
                                   " __strings",
                                   0,
                                   "BCell string bijection",
                                   0);
-         __debug__:: _dec_creation_("BijectionImplementation",
-                                  " __strings",
-                                  0,
-                                  "BCell string bijection",
-                                  0);
-         __debug__:: _dec_creation_("HashTable",
-                                  " __strings",
-                                  0,
-                                  "BCell string bijection",
-                                  0);
-         __debug__:: _dec_creation_("HashTable",
-                                  " __strings",
-                                  0,
-                                  "BCell string bijection",
-                                  0);
+        __debug__::_dec_creation_("HashTable", " __strings", 0, "BCell string bijection", 0);
+        __debug__::_dec_creation_("HashTable", " __strings", 0, "BCell string bijection", 0);
       }
 #  endif
       static Bijection< std::string, int > strings;
@@ -134,22 +122,22 @@ namespace gum {
 
     // try to convert the content of the DBCell into another type
     bool DBCell::convertType(const EltType new_type) {
-      if (new_type ==  _type_) return true;
+      if (new_type == _type_) return true;
       switch (new_type) {
           // ===================================
         case EltType::REAL:
-          switch ( _type_) {
+          switch (_type_) {
             case EltType::INTEGER:
-               _val_real_ = float( _val_integer_);
-               _type_     = EltType::REAL;
+              _val_real_ = float(_val_integer_);
+              _type_     = EltType::REAL;
               return true;
 
             case EltType::STRING:
               try {
-                const std::string& str =  _strings_().first( _val_index_);
+                const std::string& str = _strings_().first(_val_index_);
                 if (!isReal(str)) return false;
-                 _val_real_ = std::stof(str);
-                 _type_     = EltType::REAL;
+                _val_real_ = std::stof(str);
+                _type_     = EltType::REAL;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
@@ -157,18 +145,17 @@ namespace gum {
               return false;
 
             default:
-              GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType")
+              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
         case EltType::INTEGER:
-          switch ( _type_) {
+          switch (_type_) {
             case EltType::REAL: {
-              const int nb = int( _val_real_);
-              if (nb ==  _val_real_) {
-                 _val_integer_ = nb;
-                 _type_        = EltType::INTEGER;
+              const int nb = int(_val_real_);
+              if (nb == _val_real_) {
+                _val_integer_ = nb;
+                _type_        = EltType::INTEGER;
                 return true;
               } else
                 return false;
@@ -176,10 +163,10 @@ namespace gum {
 
             case EltType::STRING:
               try {
-                const std::string& str =  _strings_().first( _val_index_);
+                const std::string& str = _strings_().first(_val_index_);
                 if (!isInteger(str)) return false;
-                 _val_integer_ = std::stoi(str);
-                 _type_        = EltType::INTEGER;
+                _val_integer_ = std::stoi(str);
+                _type_        = EltType::INTEGER;
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
@@ -187,52 +174,50 @@ namespace gum {
               return false;
 
             default:
-              GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType")
+              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
         case EltType::STRING:
-          switch ( _type_) {
+          switch (_type_) {
             case EltType::REAL: {
               char buffer[100];
-              sprintf(buffer, "%g",  _val_real_);
+              sprintf(buffer, "%g", _val_real_);
               const std::string str(buffer);
-              if (! _strings_().existsFirst(str)) {
-                 _strings_().insert(str,  _string_max_index_);
-                 _val_index_ =  _string_max_index_;
-                ++ _string_max_index_;
+              if (!_strings_().existsFirst(str)) {
+                _strings_().insert(str, _string_max_index_);
+                _val_index_ = _string_max_index_;
+                ++_string_max_index_;
               } else {
-                 _val_index_ =  _strings_().second(str);
+                _val_index_ = _strings_().second(str);
               }
             }
-               _type_ = EltType::STRING;
+              _type_ = EltType::STRING;
               return true;
 
             case EltType::INTEGER: {
-              const std::string str = std::to_string( _val_integer_);
-              if (! _strings_().existsFirst(str)) {
-                 _strings_().insert(str,  _string_max_index_);
-                 _val_index_ =  _string_max_index_;
-                ++ _string_max_index_;
+              const std::string str = std::to_string(_val_integer_);
+              if (!_strings_().existsFirst(str)) {
+                _strings_().insert(str, _string_max_index_);
+                _val_index_ = _string_max_index_;
+                ++_string_max_index_;
               } else {
-                 _val_index_ =  _strings_().second(str);
+                _val_index_ = _strings_().second(str);
               }
             }
-               _type_ = EltType::STRING;
+              _type_ = EltType::STRING;
               return true;
 
             case EltType::MISSING:
               return false;
 
             default:
-              GUM_ERROR(NotImplementedYet,
-                        "type not supported by DBCell convertType")
+              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
         case EltType::MISSING:
-           _type_ = EltType::MISSING;
+          _type_ = EltType::MISSING;
           return true;
 
         default:
@@ -244,9 +229,9 @@ namespace gum {
 
 
     // raises an appropriate exception when encountering a type error
-    std::string DBCell:: _typeErrorMsg_(const std::string& true_type) const {
+    std::string DBCell::_typeErrorMsg_(const std::string& true_type) const {
       std::stringstream str;
-      switch ( _type_) {
+      switch (_type_) {
         case EltType::REAL:
           str << "The DBCell contains a real number instead of " << true_type;
           break;

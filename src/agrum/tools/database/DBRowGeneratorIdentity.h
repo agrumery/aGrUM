@@ -85,8 +85,7 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorIdentity(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                               column_types,
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor
@@ -100,8 +99,7 @@ namespace gum {
       DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from,
-                             const allocator_type&             alloc);
+      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual DBRowGeneratorIdentity< ALLOC >* clone() const override final;
@@ -123,12 +121,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorIdentity< ALLOC >&
-         operator=(const DBRowGeneratorIdentity< ALLOC >& from);
+      DBRowGeneratorIdentity< ALLOC >& operator=(const DBRowGeneratorIdentity< ALLOC >& from);
 
       /// move operator
-      DBRowGeneratorIdentity< ALLOC >&
-         operator=(DBRowGeneratorIdentity< ALLOC >&& from);
+      DBRowGeneratorIdentity< ALLOC >& operator=(DBRowGeneratorIdentity< ALLOC >&& from);
 
       /// @}
 
@@ -150,15 +146,14 @@ namespace gum {
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t
-         computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >*  _input_row_{nullptr};
+      const DBRow< DBTranslatedValue, ALLOC >* _input_row_{nullptr};
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

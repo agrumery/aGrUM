@@ -44,16 +44,14 @@ namespace gum_tests {
     void testCreationDeletion_1() {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletion_2() {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -112,18 +110,15 @@ namespace gum_tests {
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >();
-                                   gen.generateBN(*bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
                                    delete bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >();
-                                   gen.generateBN(*bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
                                    delete bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >();
-                                   gen.generateBN(*bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
                                    delete bn);

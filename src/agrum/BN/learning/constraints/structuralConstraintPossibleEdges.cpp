@@ -43,8 +43,7 @@ namespace gum {
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
-       const DiGraph& graph) {
+    StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(const DiGraph& graph) {
       setGraph(graph);
       GUM_CONSTRUCTOR(StructuralConstraintPossibleEdges);
     }
@@ -52,15 +51,14 @@ namespace gum {
     /// copy constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
        const StructuralConstraintPossibleEdges& from) :
-         _PossibleEdges_possible_edges_(from. _PossibleEdges_possible_edges_) {
+        _PossibleEdges_possible_edges_(from._PossibleEdges_possible_edges_) {
       GUM_CONS_CPY(StructuralConstraintPossibleEdges);
     }
 
     /// move constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
        StructuralConstraintPossibleEdges&& from) :
-         _PossibleEdges_possible_edges_(
-           std::move(from. _PossibleEdges_possible_edges_)) {
+        _PossibleEdges_possible_edges_(std::move(from._PossibleEdges_possible_edges_)) {
       GUM_CONS_MOV(StructuralConstraintPossibleEdges);
     }
 
@@ -71,21 +69,16 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintPossibleEdges&
-       StructuralConstraintPossibleEdges::operator=(
-          const StructuralConstraintPossibleEdges& from) {
-      if (this != &from) {
-         _PossibleEdges_possible_edges_ = from. _PossibleEdges_possible_edges_;
-      }
+       StructuralConstraintPossibleEdges::operator=(const StructuralConstraintPossibleEdges& from) {
+      if (this != &from) { _PossibleEdges_possible_edges_ = from._PossibleEdges_possible_edges_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintPossibleEdges&
-       StructuralConstraintPossibleEdges::operator=(
-          StructuralConstraintPossibleEdges&& from) {
+       StructuralConstraintPossibleEdges::operator=(StructuralConstraintPossibleEdges&& from) {
       if (this != &from) {
-         _PossibleEdges_possible_edges_
-           = std::move(from. _PossibleEdges_possible_edges_);
+        _PossibleEdges_possible_edges_ = std::move(from._PossibleEdges_possible_edges_);
       }
       return *this;
     }

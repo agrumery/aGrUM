@@ -104,8 +104,7 @@ namespace gum {
        * @return Returns out.
        */
       template < typename GUM_SCALAR >
-      std::ostream& operator<<(std::ostream&                 out,
-                               const NodeData< GUM_SCALAR >& data);
+      std::ostream& operator<<(std::ostream& out, const NodeData< GUM_SCALAR >& data);
 
       /**
        * @struct EdgeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
@@ -143,8 +142,7 @@ namespace gum {
        * @return Returns out.
        */
       template < typename GUM_SCALAR >
-      std::ostream& operator<<(std::ostream&                 out,
-                               const EdgeData< GUM_SCALAR >& data);
+      std::ostream& operator<<(std::ostream& out, const EdgeData< GUM_SCALAR >& data);
 
       /**
        * @class InterfaceGraph
@@ -223,8 +221,7 @@ namespace gum {
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData< GUM_SCALAR >&
-           node(const PRMInstance< GUM_SCALAR >* i) const;
+        const NodeData< GUM_SCALAR >& node(const PRMInstance< GUM_SCALAR >* i) const;
 
         /// Returns data about a node.
         /// @throw NotFound
@@ -245,48 +242,46 @@ namespace gum {
         private:
         /// The gum::prm::PRMSystem<GUM_SCALAR> represented by this interface
         /// graph.
-        const PRMSystem< GUM_SCALAR >*  _sys_;
+        const PRMSystem< GUM_SCALAR >* _sys_;
 
         /// The interface graph.
-        UndiGraph  _graph_;
+        UndiGraph _graph_;
 
         /// Data associated with a node in  _graph_.
-        NodeProperty< NodeData< GUM_SCALAR >* >  _nodes_;
+        NodeProperty< NodeData< GUM_SCALAR >* > _nodes_;
 
         /// Mapping between PRMInstance<GUM_SCALAR> dans their id in  _graph_.
-        HashTable< PRMInstance< GUM_SCALAR >*, NodeId >  _idMap_;
+        HashTable< PRMInstance< GUM_SCALAR >*, NodeId > _idMap_;
 
         /// Data associated with edges in  _graph_.
-        EdgeProperty< EdgeData< GUM_SCALAR >* >  _edges_;
+        EdgeProperty< EdgeData< GUM_SCALAR >* > _edges_;
 
         /// Bijection between labels and their ids.
-        Bijection< Idx, LabelData* >*  _labels_;
+        Bijection< Idx, LabelData* >* _labels_;
 
         /// Mapping between a LabelData and the set of NodeData<GUM_SCALAR> with
         /// that
         /// label.
-        HashTable< LabelData*, Set< NodeData< GUM_SCALAR >* >* >  _nodeMap_;
+        HashTable< LabelData*, Set< NodeData< GUM_SCALAR >* >* > _nodeMap_;
 
         /// Mapping between a LabelData and the set of EdgeData<GUM_SCALAR> with
         /// that
         /// label.
-        HashTable< LabelData*, Set< EdgeData< GUM_SCALAR >* >* >  _edgeMap_;
+        HashTable< LabelData*, Set< EdgeData< GUM_SCALAR >* >* > _edgeMap_;
 
         /// A counter used of assigning ids to labels.
-        Idx  _counter_;
+        Idx _counter_;
 
         /// For shallow copies
-        bool  _erase_flag_;
+        bool _erase_flag_;
 
         /// Compute the label of node and add it to  _labels_ if it does not
         /// exists yet. Update node with the correct label's id.
-        void  _label_(NodeData< GUM_SCALAR >*               node,
-                     HashTable< std::string, LabelData* >& label_map);
+        void _label_(NodeData< GUM_SCALAR >* node, HashTable< std::string, LabelData* >& label_map);
 
         /// Compute the label of edge and add it to  _labels_ if it does not
         /// exists yet. Update edge with the correct label's id.
-        void  _label_(EdgeData< GUM_SCALAR >*               edge,
-                     HashTable< std::string, LabelData* >& label_map);
+        void _label_(EdgeData< GUM_SCALAR >* edge, HashTable< std::string, LabelData* >& label_map);
       };
 
 

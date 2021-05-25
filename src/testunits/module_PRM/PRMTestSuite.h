@@ -36,8 +36,7 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#define GET_RESSOURCES_PATH_O3PRM(x) \
-  xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
+#define GET_RESSOURCES_PATH_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
 
   class PRMTestSuite: public CxxTest::TestSuite {
@@ -71,16 +70,16 @@ namespace gum_tests {
          c = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete c);
       gum::prm::InstanceBayesNet< double >* inst = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::prm::InstanceBayesNet< double >(
-                                      prm->getSystem("aSys").get("c1")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         inst = new gum::prm::InstanceBayesNet< double >(prm->getSystem("aSys").get("c1")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete inst);
     }
 
     void testClassAccess() {
       gum::prm::PRMClass< double >&      c  = prm->getClass("SafeComputer");
       gum::prm::ClassBayesNet< double >* bn = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::prm::ClassBayesNet< double >(
-                                      prm->getClass("SafeComputer")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       gum::Size elts = c.attributes().size() + c.aggregates().size();
       TS_ASSERT_EQUALS(bn->size(), elts);
 
@@ -100,19 +99,16 @@ namespace gum_tests {
     void testInstanceAccess() {
       gum::prm::InstanceBayesNet< double >* bn = 0;
       gum::prm::PRMInstance< double >&      i  = prm->getSystem("aSys").get("c1");
-      TS_GUM_ASSERT_THROWS_NOTHING(bn
-                                   = new gum::prm::InstanceBayesNet< double >(i));
+      TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::prm::InstanceBayesNet< double >(i));
       TS_ASSERT_EQUALS(bn->size(), i.size());
 
       for (auto attr = i.begin(); attr != i.end(); ++attr) {
         gum::NodeId id = 0;
         TS_GUM_ASSERT_THROWS_NOTHING((*(attr.val())).cpf());
-        TS_GUM_ASSERT_THROWS_NOTHING(id
-                                     = bn->idFromName((*(attr.val())).safeName()));
+        TS_GUM_ASSERT_THROWS_NOTHING(id = bn->idFromName((*(attr.val())).safeName()));
         TS_GUM_ASSERT_THROWS_NOTHING(bn->cpt(id));
         TS_ASSERT_EQUALS((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        TS_ASSERT_EQUALS((*(attr.val())).cpf().domainSize(),
-                         bn->cpt(id).domainSize());
+        TS_ASSERT_EQUALS((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
       }
 
       TS_ASSERT(bn->modalities().size() > 0);
@@ -127,8 +123,7 @@ namespace gum_tests {
       int count = 0;
 
       for (auto iter = sys.begin(); iter != sys.end(); ++iter) {
-        for (auto jter = (*(iter.val())).begin(); jter != (*(iter.val())).end();
-             ++jter) {
+        for (auto jter = (*(iter.val())).begin(); jter != (*(iter.val())).end(); ++jter) {
           ++count;
         }
       }
@@ -140,11 +135,10 @@ namespace gum_tests {
         std::string                       var      = bn.variable(node).name();
         size_t                            pos      = var.find_first_of('.');
         gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
-        gum::prm::PRMAttribute< double >& attr = instance.get(var.substr(pos + 1));
+        gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
         TS_ASSERT_DIFFERS(bn.cpt(node).nbrDim(), (gum::Size)0);
 
-        if (gum::prm::PRMClassElement< double >::isAggregate(
-               instance.type().get(attr.id()))) {
+        if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
           TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), (gum::Size)1);
         }
       }
@@ -162,11 +156,8 @@ namespace gum_tests {
     void testCPF() {
       gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
 
-      for (gum::prm::PRMSystem< double >::iterator iter = sys.begin();
-           iter != sys.end();
-           ++iter) {
-        for (gum::prm::PRMInstance< double >::iterator jter
-             = (*(iter.val())).begin();
+      for (gum::prm::PRMSystem< double >::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
+        for (gum::prm::PRMInstance< double >::iterator jter = (*(iter.val())).begin();
              jter != (*(iter.val())).end();
              ++jter) {
           gum::Instantiation i((*(jter.val())).cpf()), var;

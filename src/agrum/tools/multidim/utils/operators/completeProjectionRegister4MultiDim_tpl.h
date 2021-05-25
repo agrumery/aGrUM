@@ -40,25 +40,21 @@ namespace gum {
   void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::insert(
      const std::string& projection_name,
      const std::string& type_multidim,
-     typename CompleteProjectionRegister4MultiDim<
-        GUM_SCALAR >::CompleteProjectionPtr newFunction) {
+     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr
+        newFunction) {
     // insert the new entry
     CompleteProjectionSet* theset;
 
-    if (! _set_.exists(projection_name)) {
-      theset =  _set_.insert(projection_name, new CompleteProjectionSet).second;
+    if (!_set_.exists(projection_name)) {
+      theset = _set_.insert(projection_name, new CompleteProjectionSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-       __debug__:: _inc_deletion_("HashTable",
-                                  __FILE__,
-                                  __LINE__,
-                                "destructor of",
-                                (void*)theset);
+      __debug__::_inc_deletion_("HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
-      theset =  _set_[projection_name];
+      theset = _set_[projection_name];
     }
 
     theset->insert(type_multidim, newFunction);
@@ -66,12 +62,11 @@ namespace gum {
 
   // removes a given entry from the register
   template < typename GUM_SCALAR >
-  void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::erase(
-     const std::string& projection_name,
-     const std::string& type_multidim) {
-    if (! _set_.exists(projection_name)) return;
+  void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::erase(const std::string& projection_name,
+                                                                const std::string& type_multidim) {
+    if (!_set_.exists(projection_name)) return;
 
-    CompleteProjectionSet* theset =  _set_[projection_name];
+    CompleteProjectionSet* theset = _set_[projection_name];
 
     theset->erase(type_multidim);
   }
@@ -81,20 +76,19 @@ namespace gum {
   INLINE bool CompleteProjectionRegister4MultiDim< GUM_SCALAR >::exists(
      const std::string& projection_name,
      const std::string& type_multidim) const {
-    if (! _set_.exists(projection_name)) return false;
+    if (!_set_.exists(projection_name)) return false;
 
-    return  _set_[projection_name].exists(type_multidim);
+    return _set_[projection_name].exists(type_multidim);
   }
 
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
   template < typename GUM_SCALAR >
-  INLINE typename CompleteProjectionRegister4MultiDim<
-     GUM_SCALAR >::CompleteProjectionPtr
+  INLINE typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr
      CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
         const std::string& projection_name,
         const std::string& type_multidim) const {
-    CompleteProjectionSet* theset =  _set_[projection_name];
+    CompleteProjectionSet* theset = _set_[projection_name];
     return theset->        operator[](type_multidim);
   }
 
@@ -113,11 +107,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-       __debug__:: _inc_deletion_("HashTable",
-                                  __FILE__,
-                                  __LINE__,
+      __debug__::_inc_deletion_("HashTable",
+                                __FILE__,
+                                __LINE__,
                                 "destructor of",
-                                (void*)&container. _set_);
+                                (void*)&container._set_);
     }
 
 #  endif /* GUM_DEBUG_MODE */
@@ -127,33 +121,28 @@ namespace gum {
 
   // Default constructor: creates an empty register
   template < typename GUM_SCALAR >
-  CompleteProjectionRegister4MultiDim<
-     GUM_SCALAR >::CompleteProjectionRegister4MultiDim() {}
+  CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionRegister4MultiDim() {}
 
   // destructor
   template < typename GUM_SCALAR >
-  CompleteProjectionRegister4MultiDim<
-     GUM_SCALAR >::~CompleteProjectionRegister4MultiDim() {
+  CompleteProjectionRegister4MultiDim< GUM_SCALAR >::~CompleteProjectionRegister4MultiDim() {
     // remove all the sets
-    for (typename HashTable< std::string, CompleteProjectionSet* >::iterator_safe
-            iter
-         =  _set_.beginSafe();
-         iter !=  _set_.endSafe();
+    for (typename HashTable< std::string, CompleteProjectionSet* >::iterator_safe iter
+         = _set_.beginSafe();
+         iter != _set_.endSafe();
          ++iter)
       delete iter.val();
   }
 
   // a function to more easily register new projection functions in MultiDims
   template < typename GUM_SCALAR >
-  void
-     registerCompleteProjection(const std::string& projection_name,
-                                const std::string& type_multidim,
-                                typename CompleteProjectionRegister4MultiDim<
-                                   GUM_SCALAR >::CompleteProjectionPtr function) {
-    CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(
-       projection_name,
-       type_multidim,
-       function);
+  void registerCompleteProjection(
+     const std::string& projection_name,
+     const std::string& type_multidim,
+     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr function) {
+    CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(projection_name,
+                                                                         type_multidim,
+                                                                         function);
   }
 
 } /* namespace gum */

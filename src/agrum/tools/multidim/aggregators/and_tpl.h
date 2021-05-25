@@ -59,7 +59,7 @@ namespace gum {
     INLINE Idx And< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
-                                        bool& stop_iteration) const {
+                                        bool&                   stop_iteration) const {
       if (i1 == 1) {
         return (Idx)1;
       } else {

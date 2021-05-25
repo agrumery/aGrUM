@@ -30,8 +30,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#  undef  _COCO_PARSER_H_
-#  undef  _COCO_SCANNER_H_
+#  undef _COCO_PARSER_H_
+#  undef _COCO_SCANNER_H_
 #  include <agrum/BN/io/net/cocoR/Parser.h>
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -114,18 +114,18 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*         _bn_;
-    BayesNetFactory< GUM_SCALAR >*  _factory_;
-    net::Scanner*                   _scanner_;
-    net::Parser*                    _parser_;
+    BayesNet< GUM_SCALAR >*        _bn_;
+    BayesNetFactory< GUM_SCALAR >* _factory_;
+    net::Scanner*                  _scanner_;
+    net::Parser*                   _parser_;
 
-    std::string  _streamName_;
-    bool         _traceScanning_;
-    bool         _parseDone_;
+    std::string _streamName_;
+    bool        _traceScanning_;
+    bool        _parseDone_;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool  _ioerror_;
+    bool _ioerror_;
   };
 
 

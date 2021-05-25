@@ -49,14 +49,11 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(
-     std::ostream&                         output,
-     const InfluenceDiagram< GUM_SCALAR >& infdiag) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
-    }
+  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
+                                                  const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
 
-    output <<  _heading_() << std::endl;
+    output << _heading_() << std::endl;
     output << "<!-- Variables -->" << std::endl;
 
     for (const auto node: infdiag.nodes()) {
@@ -67,16 +64,16 @@ namespace gum {
       else if (infdiag.isUtilityNode(node))
         nodeType = 3;
 
-      output <<  _variableBloc_(infdiag.variable(node), nodeType) << std::endl;
+      output << _variableBloc_(infdiag.variable(node), nodeType) << std::endl;
     }
 
     output << "<!-- Probability distributions -->" << std::endl;
 
     for (const auto node: infdiag.nodes())
-      output <<  _variableDefinition_(node, infdiag);
+      output << _variableDefinition_(node, infdiag);
 
     output << std::endl;
-    output <<  _documentend_();
+    output << _documentend_();
     output.flush();
 
     if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
@@ -92,9 +89,8 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(
-     std::string                           filePath,
-     const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(std::string                           filePath,
+                                                  const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, infdiag);
@@ -108,7 +104,7 @@ namespace gum {
    * Returns the header of the BIF file.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _heading_() {
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::_heading_() {
     std::stringstream str;
 
     // Header for every xml
@@ -150,9 +146,8 @@ namespace gum {
    * Returns a bloc defining a variable in the BIF format.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string
-         BIFXMLIDWriter< GUM_SCALAR >:: _variableBloc_(const DiscreteVariable& var,
-                                                  int varType) {
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var,
+                                                                  int                     varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -203,7 +198,7 @@ namespace gum {
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _variableDefinition_(
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::_variableDefinition_(
      const NodeId&                         varNodeId,
      const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     //<DEFINITION>
@@ -213,14 +208,12 @@ namespace gum {
     //</DEFINITION>
     std::stringstream str;
 
-    if (!((infdiag.isDecisionNode(varNodeId))
-          && (infdiag.parents(varNodeId).empty()))) {
+    if (!((infdiag.isDecisionNode(varNodeId)) && (infdiag.parents(varNodeId).empty()))) {
       // Declaration
       str << "<DEFINITION>" << std::endl;
 
       // Variable
-      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>"
-          << std::endl;
+      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>" << std::endl;
 
       // Conditional Parents
       List< std::string > parentList;
@@ -263,7 +256,7 @@ namespace gum {
    * Returns the end of the BIF file.
    */
   template < typename GUM_SCALAR >
-  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >:: _documentend_() {
+  INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::_documentend_() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

@@ -32,7 +32,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  namespace  __sig__ {
+  namespace __sig__ {
 
     BasicSignaler0::BasicSignaler0() {
       GUM_CONSTRUCTOR(BasicSignaler0);
@@ -43,7 +43,7 @@ namespace gum {
       GUM_CONS_CPY(BasicSignaler0);
 
       for (const auto el: connectors_) {
-        el->target()-> _attachSignal_(this);
+        el->target()->_attachSignal_(this);
         connectors_.push_back(el->clone());
       }
     }
@@ -52,7 +52,7 @@ namespace gum {
       GUM_DESTRUCTOR(BasicSignaler0);
 
       for (const auto el: connectors_) {
-        el->target()-> _detachSignal_(this);
+        el->target()->_detachSignal_(this);
         delete el;
       }
 

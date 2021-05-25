@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class DAG2BNLearnerTestSuite: public CxxTest::TestSuite {
     private:
-    std::vector< double >  _normalize_(const std::vector< double >& vin) {
+    std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;
       for (const auto& val: vin)
         sum += val;
@@ -46,7 +46,7 @@ namespace gum_tests {
       return vout;
     }
 
-    std::vector< double >  _xnormalize_(const std::vector< double >& vin) {
+    std::vector< double > _xnormalize_(const std::vector< double >& vin) {
       std::vector< double > vout(vin);
       for (std::size_t i = 0; i < vin.size(); i += 3) {
         double sum = 0;
@@ -58,8 +58,7 @@ namespace gum_tests {
       return vout;
     }
 
-    std::vector< double >  _getProba_(const gum::BayesNet< double >& bn,
-                                     const gum::NodeId              id) {
+    std::vector< double > _getProba_(const gum::BayesNet< double >& bn, const gum::NodeId id) {
       const gum::Potential< double >& pot = bn.cpt(id);
       std::vector< double >           vect;
       for (gum::Instantiation inst(pot); !inst.end(); ++inst) {
@@ -80,7 +79,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -112,9 +111,7 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     extern_apriori(database);
       gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser,
-                                                        extern_apriori,
-                                                        intern_apriori);
+      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
 
       gum::learning::DAG2BNLearner<> learner;
 
@@ -127,12 +124,12 @@ namespace gum_tests {
 
       auto bn1 = learner.createBN(param_estimator, dag);
 
-      auto                  v2  =  _getProba_(bn1, 2);
-      std::vector< double > xv2 =  _normalize_({1401, 1, 1});
+      auto                  v2  = _getProba_(bn1, 2);
+      std::vector< double > xv2 = _normalize_({1401, 1, 1});
       TS_ASSERT(v2 == xv2);
 
-      auto                  v02  =  _getProba_(bn1, 0);
-      std::vector< double > xv02 =  _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
+      auto                  v02  = _getProba_(bn1, 0);
+      std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
     }
 
@@ -192,8 +189,7 @@ namespace gum_tests {
       gum::learning::DBRowGenerator4CompleteRows<> generator_id(col_types);
       gum::learning::DBRowGeneratorSet<>           genset_id;
       genset_id.insertGenerator(generator_id);
-      gum::learning::DBRowGeneratorParser<> parser_id(database.handler(),
-                                                      genset_id);
+      gum::learning::DBRowGeneratorParser<> parser_id(database.handler(), genset_id);
 
       gum::learning::AprioriSmoothing<> extern_apriori(database);
       gum::learning::AprioriNoApriori<> intern_apriori(database);
@@ -201,12 +197,11 @@ namespace gum_tests {
                                                            extern_apriori,
                                                            intern_apriori);
 
-      gum::learning::DBRowGeneratorEM<> generator_EM(col_types, bn);
-      gum::learning::DBRowGenerator<>&  gen_EM = generator_EM;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorEM<>  generator_EM(col_types, bn);
+      gum::learning::DBRowGenerator<>&   gen_EM = generator_EM;   // fix for g++-4.8
       gum::learning::DBRowGeneratorSet<> genset_EM;
       genset_EM.insertGenerator(gen_EM);
-      gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(),
-                                                      genset_EM);
+      gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);
       gum::learning::ParamEstimatorML<>     param_estimator_EM(parser_EM,
                                                            extern_apriori,
                                                            intern_apriori);
@@ -224,13 +219,13 @@ namespace gum_tests {
       learner.setEpsilon(1e-3);
       bool ok;
       for (int i = 0; i < 10; i++) {
-        ok         = true;
-        auto bn1   = learner.createBN(param_estimator_id, param_estimator_EM, dag);
-        auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
-                        .margSumIn(gum::Set< const gum::DiscreteVariable* >(
-                           {&bn1.variableFromName("B")}));
-        if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6)
-            && (margB.max() > 0.5) && (margB.max() < 0.6))
+        ok       = true;
+        auto bn1 = learner.createBN(param_estimator_id, param_estimator_EM, dag);
+        auto margB
+           = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
+                .margSumIn(gum::Set< const gum::DiscreteVariable* >({&bn1.variableFromName("B")}));
+        if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6) && (margB.max() > 0.5)
+            && (margB.max() < 0.6))
           break;
         ok = false;
       }

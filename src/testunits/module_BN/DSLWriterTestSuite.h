@@ -82,7 +82,7 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::DSLWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
+      std::string              file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 

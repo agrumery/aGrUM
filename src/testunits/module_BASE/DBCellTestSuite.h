@@ -111,8 +111,7 @@ namespace gum_tests {
       cell4.setReal(4.5);
       TS_ASSERT(cell4.type() == gum::learning::DBCell::EltType::REAL);
       TS_ASSERT(cell4.real() == 4.5f);
-      TS_ASSERT(cell4.convertType(gum::learning::DBCell::EltType::INTEGER)
-                == false);
+      TS_ASSERT(cell4.convertType(gum::learning::DBCell::EltType::INTEGER) == false);
 
       cell4.setReal(5);
       TS_ASSERT(cell4.type() == gum::learning::DBCell::EltType::REAL);

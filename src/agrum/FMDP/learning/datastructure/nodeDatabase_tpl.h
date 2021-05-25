@@ -42,16 +42,15 @@ namespace gum {
   NodeDatabase< AttributeSelection, isScalar >::NodeDatabase(
      const Set< const DiscreteVariable* >* attrSet,
      const DiscreteVariable*               value) :
-       _value_(value) {
+      _value_(value) {
     GUM_CONSTRUCTOR(NodeDatabase);
 
-    for (SetIteratorSafe< const DiscreteVariable* > varIter
-         = attrSet->cbeginSafe();
+    for (SetIteratorSafe< const DiscreteVariable* > varIter = attrSet->cbeginSafe();
          varIter != attrSet->cendSafe();
          ++varIter)
-       _attrTable_.insert(*varIter, new TestPolicy< ValueType >());
+      _attrTable_.insert(*varIter, new TestPolicy< ValueType >());
 
-     _nbObservation_ = 0;
+    _nbObservation_ = 0;
   }
 
 
@@ -60,8 +59,7 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeDatabase< AttributeSelection, isScalar >::~NodeDatabase() {
-    for (auto varIter =  _attrTable_.beginSafe(); varIter !=  _attrTable_.endSafe();
-         ++varIter)
+    for (auto varIter = _attrTable_.beginSafe(); varIter != _attrTable_.endSafe(); ++varIter)
       delete varIter.val();
 
     GUM_DESTRUCTOR(NodeDatabase);
@@ -81,42 +79,33 @@ namespace gum {
    */
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  void NodeDatabase< AttributeSelection, isScalar >::addObservation(
-     const Observation* newObs) {
-     _nbObservation_++;
-    this-> _addObservation_(newObs, Int2Type< isScalar >());
+  void NodeDatabase< AttributeSelection, isScalar >::addObservation(const Observation* newObs) {
+    _nbObservation_++;
+    this->_addObservation_(newObs, Int2Type< isScalar >());
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  void NodeDatabase< AttributeSelection, isScalar >:: _addObservation_(
-     const Observation* newObs,
-     Int2Type< true >) {
-    for (auto varIter =  _attrTable_.cbeginSafe();
-         varIter !=  _attrTable_.cendSafe();
-         ++varIter)
-      varIter.val()->addObservation(newObs->rModality(varIter.key()),
-                                    newObs->reward());
+  void NodeDatabase< AttributeSelection, isScalar >::_addObservation_(const Observation* newObs,
+                                                                      Int2Type< true >) {
+    for (auto varIter = _attrTable_.cbeginSafe(); varIter != _attrTable_.cendSafe(); ++varIter)
+      varIter.val()->addObservation(newObs->rModality(varIter.key()), newObs->reward());
 
-    if ( _valueCount_.exists(newObs->reward()))
-       _valueCount_[newObs->reward()]++;
+    if (_valueCount_.exists(newObs->reward()))
+      _valueCount_[newObs->reward()]++;
     else
-       _valueCount_.insert(newObs->reward(), 1);
+      _valueCount_.insert(newObs->reward(), 1);
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  void NodeDatabase< AttributeSelection, isScalar >:: _addObservation_(
-     const Observation* newObs,
-     Int2Type< false >) {
-    for (auto varIter =  _attrTable_.cbeginSafe();
-         varIter !=  _attrTable_.cendSafe();
-         ++varIter)
-      varIter.val()->addObservation(newObs->modality(varIter.key()),
-                                    newObs->modality( _value_));
+  void NodeDatabase< AttributeSelection, isScalar >::_addObservation_(const Observation* newObs,
+                                                                      Int2Type< false >) {
+    for (auto varIter = _attrTable_.cbeginSafe(); varIter != _attrTable_.cendSafe(); ++varIter)
+      varIter.val()->addObservation(newObs->modality(varIter.key()), newObs->modality(_value_));
 
-    if ( _valueCount_.exists(newObs->modality( _value_)))
-       _valueCount_[newObs->modality( _value_)]++;
+    if (_valueCount_.exists(newObs->modality(_value_)))
+      _valueCount_[newObs->modality(_value_)]++;
     else
-       _valueCount_.insert(newObs->modality( _value_), 1);
+      _valueCount_.insert(newObs->modality(_value_), 1);
   }
 
 
@@ -132,17 +121,16 @@ namespace gum {
   NodeDatabase< AttributeSelection, isScalar >&
      NodeDatabase< AttributeSelection, isScalar >::operator+=(
         const NodeDatabase< AttributeSelection, isScalar >& src) {
-    this-> _nbObservation_ += src.nbObservation();
+    this->_nbObservation_ += src.nbObservation();
 
-    for (auto varIter =  _attrTable_.beginSafe(); varIter !=  _attrTable_.endSafe();
-         ++varIter)
+    for (auto varIter = _attrTable_.beginSafe(); varIter != _attrTable_.endSafe(); ++varIter)
       varIter.val()->add(*(src.testPolicy(varIter.key())));
 
     for (auto valIter = src.cbeginValues(); valIter != src.cendValues(); ++valIter)
-      if ( _valueCount_.exists(valIter.key()))
-         _valueCount_[valIter.key()] += valIter.val();
+      if (_valueCount_.exists(valIter.key()))
+        _valueCount_[valIter.key()] += valIter.val();
       else
-         _valueCount_.insert(valIter.key(), valIter.val());
+        _valueCount_.insert(valIter.key(), valIter.val());
 
     return *this;
   }
@@ -153,11 +141,9 @@ namespace gum {
     std::stringstream ss;
 
     ss << "NbObservation : " << this->nbObservation() << std::endl;
-    for (auto varIter =  _attrTable_.beginSafe(); varIter !=  _attrTable_.endSafe();
-         ++varIter)
+    for (auto varIter = _attrTable_.beginSafe(); varIter != _attrTable_.endSafe(); ++varIter)
       ss << "\t\tVariable : " << varIter.key()->name()
-         << " - Associated Test : " <<  _attrTable_[varIter.key()]->toString()
-         << std::endl;
+         << " - Associated Test : " << _attrTable_[varIter.key()]->toString() << std::endl;
 
     return ss.str();
   }

@@ -53,9 +53,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 
-  wchar_t* coco_string_create(const wchar_t* value) {
-    return coco_string_create(value, 0);
-  }
+  wchar_t* coco_string_create(const wchar_t* value) { return coco_string_create(value, 0); }
 
   wchar_t* coco_string_create(const wchar_t* value, int startIndex) {
     std::size_t valueLen = 0;
@@ -110,8 +108,7 @@ namespace gum {
     return coco_string_create_lower(data, 0, int(dataLen));
   }
 
-  wchar_t*
-     coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
+  wchar_t* coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
     if (!data) { return nullptr; }
 
     wchar_t* newData = new wchar_t[dataLen + 1];
@@ -150,8 +147,7 @@ namespace gum {
     return data;
   }
 
-  wchar_t* coco_string_create_append(const wchar_t* target,
-                                     const wchar_t  appendix) {
+  wchar_t* coco_string_create_append(const wchar_t* target, const wchar_t appendix) {
     int      targetLen = coco_string_length(target);
     wchar_t* data      = new wchar_t[targetLen + 2];
     wcsncpy(data, target, targetLen);

@@ -88,8 +88,8 @@ namespace gum_tests {
     }
 
     void testReadAfterWrite() {
-      std::string             rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
-      gum::BayesNet< double > bn;
+      std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
+      gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
@@ -100,7 +100,7 @@ namespace gum_tests {
 
 
       gum::O3prmBNWriter< double > writer;
-      std::string wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
+      std::string                  wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 
@@ -115,8 +115,7 @@ namespace gum_tests {
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(),
-                         bn2.variable(nam).toString());
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString());
         const gum::Potential< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
@@ -132,7 +131,7 @@ namespace gum_tests {
       bn.setProperty("name", "random_written");
 
       gum::O3prmBNWriter< double > writer;
-      std::string wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
+      std::string                  wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 
@@ -146,8 +145,7 @@ namespace gum_tests {
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(),
-                         bn2.variable(nam).toString());
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString());
         const gum::Potential< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
@@ -164,9 +162,8 @@ namespace gum_tests {
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
       bn.cpt(i4).fillWith({0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0});
-      bn.cpt(i5).fillWith({0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                           0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                           0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
+      bn.cpt(i5).fillWith({0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                           0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
     }
   };
 }   // namespace gum_tests

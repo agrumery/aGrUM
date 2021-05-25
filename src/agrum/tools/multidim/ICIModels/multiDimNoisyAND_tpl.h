@@ -33,9 +33,8 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE
-     MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
-                                                      GUM_SCALAR default_weight) :
+  INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
+                                                          GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     if (external_weight == 0) {
       GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND")
@@ -46,8 +45,8 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
-     const MultiDimNoisyAND< GUM_SCALAR >& from) :
+  INLINE
+     MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(const MultiDimNoisyAND< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyAND);
   }
@@ -100,8 +99,7 @@ namespace gum {
 
     for (Idx i = 1; i < MultiDimImplementation< GUM_SCALAR >::nbrDim(); i++) {
       s << MultiDimImplementation< GUM_SCALAR >::variable(i) << "["
-        << this->causalWeight(MultiDimImplementation< GUM_SCALAR >::variable(i))
-        << "]";
+        << this->causalWeight(MultiDimImplementation< GUM_SCALAR >::variable(i)) << "]";
     }
 
     s << ")";
@@ -114,16 +112,13 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template < typename GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream&                         s,
-                                  const MultiDimNoisyAND< GUM_SCALAR >& ag) {
+  INLINE std::ostream& operator<<(std::ostream& s, const MultiDimNoisyAND< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >*
-         MultiDimNoisyAND< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyAND< GUM_SCALAR >(this-> _external_weight_,
-                                              this-> _default_weight_);
+  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimNoisyAND< GUM_SCALAR >::newFactory() const {
+    return new MultiDimNoisyAND< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation

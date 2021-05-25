@@ -69,16 +69,14 @@ namespace gum {
    * defined.
    */
   template < typename GUM_SCALAR >
-  class BayesNetFragment:
-      public IBayesNet< GUM_SCALAR >,
-      public gum::DiGraphListener {
+  class BayesNetFragment: public IBayesNet< GUM_SCALAR >, public gum::DiGraphListener {
     private:
     /// The referred BayesNet
-    const IBayesNet< GUM_SCALAR >&  _bn_;
+    const IBayesNet< GUM_SCALAR >& _bn_;
 
     /// Mapping between the variable's id and their CPT specific to this
     /// Fragment.
-    NodeProperty< const Potential< GUM_SCALAR >* >  _localCPTs_;
+    NodeProperty< const Potential< GUM_SCALAR >* > _localCPTs_;
 
     public:
     /// @name Constructors / Destructors
@@ -165,8 +163,7 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable&
-       variableFromName(const std::string& name) const final;
+    virtual const DiscreteVariable& variableFromName(const std::string& name) const final;
 
     /**
      * creates a dot representing the whole referred BN hilighting the fragment.
@@ -194,9 +191,7 @@ namespace gum {
      * @warning nothing happens if the node is already installed
      */
     void installNode(NodeId id);
-    void installNode(const std::string& name) {
-      installNode( _bn_.idFromName(name));
-    }
+    void installNode(const std::string& name) { installNode(_bn_.idFromName(name)); }
 
     /**
      * install a node and all its ascendants
@@ -205,9 +200,7 @@ namespace gum {
      * @warning nothing happens if the node is already installed
      */
     void installAscendants(NodeId id);
-    void installAscendants(const std::string& name) {
-      installAscendants( _bn_.idFromName(name));
-    }
+    void installAscendants(const std::string& name) { installAscendants(_bn_.idFromName(name)); }
 
     /**
      * uninstall a node referenced by its nodeId
@@ -215,9 +208,7 @@ namespace gum {
      * @warning nothing happens if the node is not installed
      */
     void uninstallNode(NodeId id);
-    void uninstallNode(const std::string& name) {
-      uninstallNode(idFromName(name));
-    }
+    void uninstallNode(const std::string& name) { uninstallNode(idFromName(name)); }
 
     /**
      * install a local marginal BY COPY for a node into the fragment.
@@ -230,9 +221,8 @@ namespace gum {
      *(or is not a marginal)
      **/
     void installMarginal(NodeId id, const Potential< GUM_SCALAR >& pot);
-    void installMarginal(const std::string&             name,
-                         const Potential< GUM_SCALAR >& pot) {
-      installMarginal( _bn_.idFromName(name), pot);
+    void installMarginal(const std::string& name, const Potential< GUM_SCALAR >& pot) {
+      installMarginal(_bn_.idFromName(name), pot);
     }
 
     /**
@@ -249,7 +239,7 @@ namespace gum {
      **/
     void installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
     void installCPT(const std::string& name, const Potential< GUM_SCALAR >& pot) {
-      installCPT( _bn_.idFromName(name), pot);
+      installCPT(_bn_.idFromName(name), pot);
     };
 
     /**

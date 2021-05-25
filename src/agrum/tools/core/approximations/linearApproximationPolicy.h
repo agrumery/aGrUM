@@ -51,8 +51,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type used for computations.
    */
   template < typename GUM_SCALAR >
-  class LinearApproximationPolicy:
-      public virtual ApproximationPolicy< GUM_SCALAR > {
+  class LinearApproximationPolicy: public virtual ApproximationPolicy< GUM_SCALAR > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -169,8 +168,7 @@ namespace gum {
      * @param newHighLimit New higher bound.
      * @throw OutOfBounds Raised if new bounds are not legit.
      */
-    virtual void setLimits(const GUM_SCALAR& newLowLimit,
-                           const GUM_SCALAR& newHighLimit);
+    virtual void setLimits(const GUM_SCALAR& newLowLimit, const GUM_SCALAR& newHighLimit);
 
     /**
      * @brief Sets lowest possible value.
@@ -218,14 +216,14 @@ namespace gum {
      * @param value The value to encode.
      * @return The encoded value.
      */
-    Idx  _encode_(const GUM_SCALAR& value) const;
+    Idx _encode_(const GUM_SCALAR& value) const;
 
     /**
      * @brief Concretely computes the approximate value from representation.
      * @param representation The approximate value to decode.
      * @return The decoded value.
      */
-    GUM_SCALAR  _decode_(const GUM_SCALAR& representation) const;
+    GUM_SCALAR _decode_(const GUM_SCALAR& representation) const;
 
     /**
      * @brief Get the number of interval.

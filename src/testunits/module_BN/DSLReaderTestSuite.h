@@ -40,17 +40,16 @@ namespace gum_tests {
   class DSLReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
+      std::string             file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
       gum::BayesNet< double > net;
 
       gum::DSLReader< double >* reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader
-                                   = new gum::DSLReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::DSLReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
     void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
 
       reader.trace(false);
@@ -69,8 +68,8 @@ namespace gum_tests {
       }
     }
     void testRead_file2_float() {
-      std::string file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -118,8 +117,8 @@ namespace gum_tests {
       }
     }
     void testRead_file2_double() {
-      std::string file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
 
       gum::Size nbrErr = gum::Size(0);
@@ -167,8 +166,8 @@ namespace gum_tests {
       }
     }
     void testRead_file3() {
-      std::string file = GET_RESSOURCES_PATH("DSL/DSLReader_file3.txt");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file3.txt");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -179,7 +178,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(net->size(), (gum::Size)6);
       TS_ASSERT(net != nullptr);
       gum::DSLWriter< double > writer;
-      std::string file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
+      std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
 
       if (net) delete net;
@@ -198,7 +197,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(net->size(), (gum::Size)13);
       TS_ASSERT(net != nullptr);
       gum::DSLWriter< double > writer;
-      std::string file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
+      std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
 
       if (net) delete net;
@@ -259,14 +258,12 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HRBP"));
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
-        const gum::DiscreteVariable& errlowoutput
-           = net->variable(idMap["ERRLOWOUTPUT"]);
+        const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
         TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE");
         TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE");
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
-        const gum::Potential< double >& errlowoutputCPT
-           = net->cpt(idMap["ERRLOWOUTPUT"]);
+        const gum::Potential< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
         TS_ASSERT(errlowoutputCPT.contains(errlowoutput));
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
@@ -282,13 +279,10 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HYPOVOLEMIA"));
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
-      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
-          && idMap.exists("LVFAILURE")) {
-        const gum::DiscreteVariable& lvedvolume
-           = net->variable(idMap["LVEDVOLUME"]);
-        const gum::DiscreteVariable& hypovolemia
-           = net->variable(idMap["HYPOVOLEMIA"]);
-        const gum::DiscreteVariable& lvfailure = net->variable(idMap["LVFAILURE"]);
+      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") && idMap.exists("LVFAILURE")) {
+        const gum::DiscreteVariable& lvedvolume  = net->variable(idMap["LVEDVOLUME"]);
+        const gum::DiscreteVariable& hypovolemia = net->variable(idMap["HYPOVOLEMIA"]);
+        const gum::DiscreteVariable& lvfailure   = net->variable(idMap["LVFAILURE"]);
         // checking label order
         TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW");
         TS_ASSERT_EQUALS(lvedvolume.label(1), "NORMAL");

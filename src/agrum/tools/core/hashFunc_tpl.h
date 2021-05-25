@@ -43,7 +43,7 @@ namespace gum {
                    << new_size << " was provided to the resize function.");
     }
 
-    hash_log2_size_ =  _hashTableLog2_(new_size);
+    hash_log2_size_ = _hashTableLog2_(new_size);
     hash_size_      = Size(1) << hash_log2_size_;
     hash_mask_      = hash_size_ - 1;
     right_shift_    = HashFuncConst::offset - hash_log2_size_;
@@ -148,16 +148,15 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key1, typename Key2 >
-  INLINE Size HashFunc< std::pair< Key1, Key2 > >::castToSize(
-     const std::pair< Key1, Key2 >& key) {
+  INLINE Size HashFunc< std::pair< Key1, Key2 > >::castToSize(const std::pair< Key1, Key2 >& key) {
     return HashFunc< Key1 >::castToSize(key.first) * HashFuncConst::pi
          + HashFunc< Key2 >::castToSize(key.second);
   }
 
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
-  INLINE Size HashFunc< std::pair< Key1, Key2 > >::operator()(
-     const std::pair< Key1, Key2 >& key) const {
+  INLINE Size
+     HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -166,13 +165,12 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Type >
   INLINE Size HashFunc< RefPtr< Type > >::castToSize(const RefPtr< Type >& key) {
-    return HashFunc< Type* >::castToSize(key. _refCountPtr_());
+    return HashFunc< Type* >::castToSize(key._refCountPtr_());
   }
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size
-     HashFunc< RefPtr< Type > >::operator()(const RefPtr< Type >& key) const {
+  INLINE Size HashFunc< RefPtr< Type > >::operator()(const RefPtr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

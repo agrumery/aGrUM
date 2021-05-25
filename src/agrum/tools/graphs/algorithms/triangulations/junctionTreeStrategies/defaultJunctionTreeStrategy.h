@@ -66,8 +66,8 @@ namespace gum {
     /** @param triangulation if triangulation is different from nullptr, this
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
-    virtual DefaultJunctionTreeStrategy*
-       copyFactory(StaticTriangulation* triangulation = nullptr) const final;
+    virtual DefaultJunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation
+                                                     = nullptr) const final;
 
     /// @}
 
@@ -126,17 +126,17 @@ namespace gum {
 
     private:
     /// a boolean indicating whether the junction tree has been constructed
-    bool  _has_junction_tree_{false};
+    bool _has_junction_tree_{false};
 
     /// the junction tree computed by the algorithm
-    CliqueGraph  _junction_tree_;
+    CliqueGraph _junction_tree_;
 
     /** @brief indicates which clique of the junction tree was created
      * by the elimination of a given node (the key of the table) */
-    NodeProperty< NodeId >  _node_2_junction_clique_;
+    NodeProperty< NodeId > _node_2_junction_clique_;
 
     /// computes a junction tree from an elimination tree
-    void  _computeJunctionTree_();
+    void _computeJunctionTree_();
   };
 
 } /* namespace gum */

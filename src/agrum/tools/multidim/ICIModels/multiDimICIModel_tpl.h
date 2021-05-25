@@ -37,23 +37,22 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE
-     MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(GUM_SCALAR external_weight,
-                                                      GUM_SCALAR default_weight) :
+  INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(GUM_SCALAR external_weight,
+                                                          GUM_SCALAR default_weight) :
       MultiDimReadOnly< GUM_SCALAR >(),
-       _external_weight_(external_weight),  _default_weight_(default_weight) {
+      _external_weight_(external_weight), _default_weight_(default_weight) {
     GUM_CONSTRUCTOR(MultiDimICIModel);
   }
 
   // Default constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(
-     const MultiDimICIModel< GUM_SCALAR >& from) :
+  INLINE
+     MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from) :
       MultiDimReadOnly< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimICIModel);
-     _default_weight_  = from. _default_weight_;
-     _external_weight_ = from. _external_weight_;
-     _causal_weights_  = from. _causal_weights_;
+    _default_weight_  = from._default_weight_;
+    _external_weight_ = from._external_weight_;
+    _causal_weights_  = from._causal_weights_;
   }
 
   // Copy constructor using a bijection to replace variables from source.
@@ -63,12 +62,12 @@ namespace gum {
      const MultiDimICIModel< GUM_SCALAR >&                                from) :
       MultiDimReadOnly< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MultiDimICIModel);
-     _default_weight_  = from. _default_weight_;
-     _external_weight_ = from. _external_weight_;
+    _default_weight_  = from._default_weight_;
+    _external_weight_ = from._external_weight_;
 
     for (HashTableConstIteratorSafe< const DiscreteVariable*, GUM_SCALAR > iter
-         = from. _causal_weights_.beginSafe();
-         iter != from. _causal_weights_.endSafe();
+         = from._causal_weights_.beginSafe();
+         iter != from._causal_weights_.endSafe();
          ++iter) {
       try {
         causalWeight(*(bij.first(iter.key())), iter.val());
@@ -83,34 +82,30 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR MultiDimICIModel< GUM_SCALAR >::causalWeight(
-     const DiscreteVariable& v) const {
-    return ( _causal_weights_.exists(&v)) ?  _causal_weights_[&v] :  _default_weight_;
+  INLINE GUM_SCALAR MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v) const {
+    return (_causal_weights_.exists(&v)) ? _causal_weights_[&v] : _default_weight_;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void
-     MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v,
-                                                  GUM_SCALAR w) const {
+  INLINE void MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v,
+                                                           GUM_SCALAR              w) const {
     if (!this->contains(v)) {
       GUM_ERROR(InvalidArgument, v.name() << " is not a cause for this CI Model")
     }
 
-    if (w == (GUM_SCALAR)0) {
-      GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0")
-    }
+    if (w == (GUM_SCALAR)0) { GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0") }
 
-     _causal_weights_.set(&v, w);
+    _causal_weights_.set(&v, w);
   }
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR MultiDimICIModel< GUM_SCALAR >::externalWeight() const {
-    return  _external_weight_;
+    return _external_weight_;
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimICIModel< GUM_SCALAR >::externalWeight(GUM_SCALAR w) const {
-     _external_weight_ = w;
+    _external_weight_ = w;
   }
 
   template < typename GUM_SCALAR >
@@ -129,8 +124,7 @@ namespace gum {
     return res;
   }
   template < typename GUM_SCALAR >
-  void MultiDimICIModel< GUM_SCALAR >::copyFrom(
-     const MultiDimContainer< GUM_SCALAR >& src) const {
+  void MultiDimICIModel< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
     auto p = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(&src);
     if (p == nullptr)
       MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
@@ -138,12 +132,11 @@ namespace gum {
       if (src.domainSize() != this->domainSize()) {
         GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit")
       }
-       _external_weight_ = p-> _external_weight_;
-       _default_weight_  = p-> _default_weight_;
+      _external_weight_ = p->_external_weight_;
+      _default_weight_  = p->_default_weight_;
       for (Idx i = 1; i < this->nbrDim(); i++) {
-         _causal_weights_.set(
-           const_cast< const DiscreteVariable* >(&this->variable(i)),
-           p->causalWeight(this->variable(i)));
+        _causal_weights_.set(const_cast< const DiscreteVariable* >(&this->variable(i)),
+                             p->causalWeight(this->variable(i)));
       }
     }
   }
@@ -159,8 +152,8 @@ namespace gum {
   INLINE void MultiDimICIModel< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                        const DiscreteVariable* y) {
     MultiDimReadOnly< GUM_SCALAR >::replace_(x, y);
-     _causal_weights_.insert(y,  _causal_weights_[x]);
-     _causal_weights_.erase(x);
+    _causal_weights_.insert(y, _causal_weights_[x]);
+    _causal_weights_.erase(x);
   }
 
 } /* namespace gum */

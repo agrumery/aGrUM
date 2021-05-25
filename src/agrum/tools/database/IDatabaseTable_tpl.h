@@ -41,8 +41,7 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::Handler::Handler(
        const IDatabaseTable< T_DATA, ALLOC >& db) :
         DBHandler< T_DATA, ALLOC >(),
-         _db_(&db),  _row_(&(db.content())),
-         _end_index_(std::size_t( _row_->size())) {
+        _db_(&db), _row_(&(db.content())), _end_index_(std::size_t(_row_->size())) {
       GUM_CONSTRUCTOR(IDatabaseTable::Handler);
     }
 
@@ -52,8 +51,8 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::Handler::Handler(
        const typename IDatabaseTable< T_DATA, ALLOC >::Handler& h) :
         DBHandler< T_DATA, ALLOC >(),
-         _db_(h. _db_),  _row_(h. _row_),  _index_(h. _index_),
-         _begin_index_(h. _begin_index_),  _end_index_(h. _end_index_) {
+        _db_(h._db_), _row_(h._row_), _index_(h._index_), _begin_index_(h._begin_index_),
+        _end_index_(h._end_index_) {
       GUM_CONS_CPY(IDatabaseTable::Handler);
     }
 
@@ -63,8 +62,8 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::Handler::Handler(
        typename IDatabaseTable< T_DATA, ALLOC >::Handler&& h) :
         DBHandler< T_DATA, ALLOC >(),
-         _db_(h. _db_),  _row_(h. _row_),  _index_(h. _index_),
-         _begin_index_(h. _begin_index_),  _end_index_(h. _end_index_) {
+        _db_(h._db_), _row_(h._row_), _index_(h._index_), _begin_index_(h._begin_index_),
+        _end_index_(h._end_index_) {
       GUM_CONS_MOV(IDatabaseTable::Handler);
     }
 
@@ -81,11 +80,11 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(
           const typename IDatabaseTable< T_DATA, ALLOC >::Handler& h) {
-       _db_          = h. _db_;
-       _row_         = h. _row_;
-       _index_       = h. _index_;
-       _begin_index_ = h. _begin_index_;
-       _end_index_   = h. _end_index_;
+      _db_          = h._db_;
+      _row_         = h._row_;
+      _index_       = h._index_;
+      _begin_index_ = h._begin_index_;
+      _end_index_   = h._end_index_;
       return *this;
     }
 
@@ -95,11 +94,11 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(
           typename IDatabaseTable< T_DATA, ALLOC >::Handler&& h) {
-       _db_          = h. _db_;
-       _row_         = h. _row_;
-       _index_       = h. _index_;
-       _begin_index_ = h. _begin_index_;
-       _end_index_   = h. _end_index_;
+      _db_          = h._db_;
+      _row_         = h._row_;
+      _index_       = h._index_;
+      _begin_index_ = h._begin_index_;
+      _end_index_   = h._end_index_;
       return *this;
     }
 
@@ -108,7 +107,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::const_reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator*() const {
-      return  _row_->operator[]( _index_);
+      return _row_->operator[](_index_);
     }
 
 
@@ -116,7 +115,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::const_pointer
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator->() const {
-      return &( _row_->operator[]( _index_));
+      return &(_row_->operator[](_index_));
     }
 
 
@@ -124,7 +123,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator++() {
-      ++ _index_;
+      ++_index_;
       return *this;
     }
 
@@ -133,7 +132,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator--() {
-      if ( _index_ >  _begin_index_) -- _index_;
+      if (_index_ > _begin_index_) --_index_;
       return *this;
     }
 
@@ -142,7 +141,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator+=(const std::size_t i) {
-       _index_ += i;
+      _index_ += i;
       return *this;
     }
 
@@ -151,42 +150,40 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::Handler::operator-=(const std::size_t i) {
-      if ( _index_ >=  _begin_index_ + i)
-         _index_ -= i;
+      if (_index_ >= _begin_index_ + i)
+        _index_ -= i;
       else
-         _index_ =  _begin_index_;
+        _index_ = _begin_index_;
       return *this;
     }
 
 
     // checks whether two handlers point on the same row
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE bool IDatabaseTable< T_DATA, ALLOC >::Handler::operator==(
-       const Handler& handler) const {
-      return  _index_ == handler. _index_;
+    INLINE bool IDatabaseTable< T_DATA, ALLOC >::Handler::operator==(const Handler& handler) const {
+      return _index_ == handler._index_;
     }
 
 
     // checks whether two handlers point to different rows
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE bool IDatabaseTable< T_DATA, ALLOC >::Handler::operator!=(
-       const Handler& handler) const {
-      return  _index_ != handler. _index_;
+    INLINE bool IDatabaseTable< T_DATA, ALLOC >::Handler::operator!=(const Handler& handler) const {
+      return _index_ != handler._index_;
     }
 
 
     // returns the number of rows managed by the handler
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::Handler::size() const {
-      return  _end_index_ -  _begin_index_;
+      return _end_index_ - _begin_index_;
     }
 
 
     // return the number of rows of the whole database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::Handler::DBSize() const {
-      if ( _row_ != nullptr)
-        return  _row_->size();
+      if (_row_ != nullptr)
+        return _row_->size();
       else
         return std::size_t(0);
     }
@@ -196,11 +193,9 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::const_reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::rowSafe() const {
-      if ( _index_ >=  _end_index_) {
-        GUM_ERROR(OutOfBounds, "the handler has reached its end")
-      }
+      if (_index_ >= _end_index_) { GUM_ERROR(OutOfBounds, "the handler has reached its end") }
 
-      return  _row_->operator[]( _index_);
+      return _row_->operator[](_index_);
     }
 
 
@@ -208,11 +203,9 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::rowSafe() {
-      if ( _index_ >=  _end_index_) {
-        GUM_ERROR(OutOfBounds, "the handler has reached its end")
-      }
+      if (_index_ >= _end_index_) { GUM_ERROR(OutOfBounds, "the handler has reached its end") }
 
-      return const_cast< Matrix< T_DATA >* >( _row_)->operator[]( _index_);
+      return const_cast< Matrix< T_DATA >* >(_row_)->operator[](_index_);
     }
 
 
@@ -220,7 +213,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::const_reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::row() const {
-      return  _row_->operator[]( _index_);
+      return _row_->operator[](_index_);
     }
 
 
@@ -228,33 +221,33 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler::reference
        IDatabaseTable< T_DATA, ALLOC >::Handler::row() {
-      return const_cast< Matrix< T_DATA >* >( _row_)->operator[]( _index_);
+      return const_cast< Matrix< T_DATA >* >(_row_)->operator[](_index_);
     }
 
 
     // makes the handler point to the next row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void IDatabaseTable< T_DATA, ALLOC >::Handler::nextRow() {
-      ++ _index_;
+      ++_index_;
     }
 
 
     // returns the number of the current row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::Handler::numRow() const {
-      return ( _index_ >=  _begin_index_) ?  _index_ -  _begin_index_ : 0;
+      return (_index_ >= _begin_index_) ? _index_ - _begin_index_ : 0;
     }
 
     // indicates whether the handler has reached its end or not
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE bool IDatabaseTable< T_DATA, ALLOC >::Handler::hasRows() const {
-      return ( _index_ <  _end_index_);
+      return (_index_ < _end_index_);
     }
 
     // puts the handler to the beginning of the database area it handles
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void IDatabaseTable< T_DATA, ALLOC >::Handler::reset() {
-       _index_ =  _begin_index_;
+      _index_ = _begin_index_;
     }
 
 
@@ -275,31 +268,28 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler
        IDatabaseTable< T_DATA, ALLOC >::Handler::end() const {
       Handler handler(*this);
-      handler. _index_ =  _end_index_;
+      handler._index_ = _end_index_;
       return handler;
     }
 
 
     // sets the area in the database the handler will handle
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void
-       IDatabaseTable< T_DATA, ALLOC >::Handler::setRange(std::size_t first,
-                                                          std::size_t last) {
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::Handler::setRange(std::size_t first,
+                                                                   std::size_t last) {
       if (first > last) std::swap(first, last);
 
       // check that the end belongs to the database, else raise an exception
-      if ( _row_ == nullptr)
-        GUM_ERROR(NullElement, "the handler does not point to any database")
+      if (_row_ == nullptr) GUM_ERROR(NullElement, "the handler does not point to any database")
 
-      if (last >  _row_->size())
+      if (last > _row_->size())
         GUM_ERROR(SizeError,
-                  "the database has fewer rows ("
-                     <<  _row_->size() << ") than the upper range (" << last
-                     << ") specified to the handler")
+                  "the database has fewer rows (" << _row_->size() << ") than the upper range ("
+                                                  << last << ") specified to the handler")
 
-       _begin_index_ = first;
-       _end_index_   = last;
-       _index_       = first;
+      _begin_index_ = first;
+      _end_index_   = last;
+      _index_       = first;
     }
 
 
@@ -307,25 +297,24 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::pair< std::size_t, std::size_t >
            IDatabaseTable< T_DATA, ALLOC >::Handler::range() const {
-      return std::pair< std::size_t, std::size_t >( _begin_index_,  _end_index_);
+      return std::pair< std::size_t, std::size_t >(_begin_index_, _end_index_);
     }
 
 
     // returns the names of the variables
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE const typename IDatabaseTable< T_DATA, ALLOC >::Handler::
-       template DBVector< std::string >&
+    INLINE const typename IDatabaseTable< T_DATA,
+                                          ALLOC >::Handler::template DBVector< std::string >&
        IDatabaseTable< T_DATA, ALLOC >::Handler::variableNames() const {
-      return  _db_->variableNames();
+      return _db_->variableNames();
     }
 
 
     // returns the number of variables (columns) of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE std::size_t
-           IDatabaseTable< T_DATA, ALLOC >::Handler::nbVariables() const {
-      if ( _db_ != nullptr)
-        return  _db_->variableNames().size();
+    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::Handler::nbVariables() const {
+      if (_db_ != nullptr)
+        return _db_->variableNames().size();
       else
         return 0;
     }
@@ -335,11 +324,10 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const IDatabaseTable< T_DATA, ALLOC >&
                  IDatabaseTable< T_DATA, ALLOC >::Handler::database() const {
-      if ( _db_ == nullptr) {
-        GUM_ERROR(NullElement,
-                  "The database handler does not point toward a database")
+      if (_db_ == nullptr) {
+        GUM_ERROR(NullElement, "The database handler does not point toward a database")
       }
-      return * _db_;
+      return *_db_;
     }
 
 
@@ -349,15 +337,15 @@ namespace gum {
 
     // attach a new handler to the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void IDatabaseTable< T_DATA, ALLOC >::HandlerSafe:: _attachHandler_() {
-      if (this-> _db_ != nullptr) { this-> _db_-> _attachHandler_(this); }
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::_attachHandler_() {
+      if (this->_db_ != nullptr) { this->_db_->_attachHandler_(this); }
     }
 
 
     // detach a handler
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void IDatabaseTable< T_DATA, ALLOC >::HandlerSafe:: _detachHandler_() {
-      if (this-> _db_ != nullptr) { this-> _db_-> _detachHandler_(this); }
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::_detachHandler_() {
+      if (this->_db_ != nullptr) { this->_db_->_detachHandler_(this); }
     }
 
 
@@ -366,7 +354,7 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::HandlerSafe(
        const IDatabaseTable< T_DATA, ALLOC >& db) :
         IDatabaseTable< T_DATA, ALLOC >::Handler(db) {
-       _attachHandler_();
+      _attachHandler_();
       GUM_CONSTRUCTOR(IDatabaseTable::HandlerSafe);
     }
 
@@ -376,7 +364,7 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::HandlerSafe(
        const typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe& h) :
         IDatabaseTable< T_DATA, ALLOC >::Handler(h) {
-       _attachHandler_();
+      _attachHandler_();
       GUM_CONS_CPY(IDatabaseTable::HandlerSafe);
     }
 
@@ -386,7 +374,7 @@ namespace gum {
     INLINE IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::HandlerSafe(
        typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&& h) :
         IDatabaseTable< T_DATA, ALLOC >::Handler(std::move(h)) {
-       _attachHandler_();
+      _attachHandler_();
       GUM_CONS_MOV(IDatabaseTable::HandlerSafe);
     }
 
@@ -394,7 +382,7 @@ namespace gum {
     // destructor
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::~HandlerSafe() {
-       _detachHandler_();
+      _detachHandler_();
       GUM_DESTRUCTOR(IDatabaseTable::HandlerSafe);
     }
 
@@ -404,10 +392,10 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&
        IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::operator=(
           const typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe& h) {
-      if (this-> _db_ != h. _db_) {
-         _detachHandler_();
-        this-> _db_ = h. _db_;
-         _attachHandler_();
+      if (this->_db_ != h._db_) {
+        _detachHandler_();
+        this->_db_ = h._db_;
+        _attachHandler_();
       }
 
       IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(h);
@@ -430,10 +418,10 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&
        IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::operator=(
           typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&& h) {
-      if (this-> _db_ != h. _db_) {
-         _detachHandler_();
-        this-> _db_ = h. _db_;
-         _attachHandler_();
+      if (this->_db_ != h._db_) {
+        _detachHandler_();
+        this->_db_ = h._db_;
+        _attachHandler_();
       }
 
       IDatabaseTable< T_DATA, ALLOC >::Handler::operator=(std::move(h));
@@ -446,8 +434,8 @@ namespace gum {
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&
        IDatabaseTable< T_DATA, ALLOC >::HandlerSafe::operator=(
           typename IDatabaseTable< T_DATA, ALLOC >::Handler&& h) {
-      return this->operator=(std::move(
-         dynamic_cast< IDatabaseTable< T_DATA, ALLOC >::HandlerSafe& >(h)));
+      return this->operator=(
+         std::move(dynamic_cast< IDatabaseTable< T_DATA, ALLOC >::HandlerSafe& >(h)));
     }
 
 
@@ -464,29 +452,29 @@ namespace gum {
 
     // create the end iterators
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >:: _createEndIterators_() {
+    void IDatabaseTable< T_DATA, ALLOC >::_createEndIterators_() {
       const IDatabaseTable< T_DATA, ALLOC >& db = *this;
       ALLOC< iterator >                      allocator1(*this);
-       _end_ = allocator1.allocate(1);
+      _end_ = allocator1.allocate(1);
       try {
-        allocator1.construct( _end_, db);
+        allocator1.construct(_end_, db);
       } catch (...) {
-        allocator1.deallocate( _end_, 1);
+        allocator1.deallocate(_end_, 1);
         throw;
       }
 
       ALLOC< iterator_safe > allocator2(*this);
       try {
-         _end_safe_ = allocator2.allocate(1);
+        _end_safe_ = allocator2.allocate(1);
         try {
-          allocator2.construct( _end_safe_, *this);
+          allocator2.construct(_end_safe_, *this);
         } catch (...) {
-          allocator2.deallocate( _end_safe_, 1);
+          allocator2.deallocate(_end_safe_, 1);
           throw;
         }
       } catch (...) {
-        allocator1.destroy( _end_);
-        allocator1.deallocate( _end_, 1);
+        allocator1.destroy(_end_);
+        allocator1.deallocate(_end_, 1);
         throw;
       }
     }
@@ -494,17 +482,15 @@ namespace gum {
 
     // default constructor
     template < typename T_DATA, template < typename > class ALLOC >
-    template < template < typename > class VARALLOC,
-               template < typename >
-               class MISSALLOC >
+    template < template < typename > class VARALLOC, template < typename > class MISSALLOC >
     IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(
-       const typename IDatabaseTable< T_DATA, ALLOC >::template MissingValType<
-          MISSALLOC >&                                            missing_symbols,
+       const typename IDatabaseTable< T_DATA, ALLOC >::template MissingValType< MISSALLOC >&
+                                                                  missing_symbols,
        const std::vector< std::string, VARALLOC< std::string > >& var_names,
        const ALLOC< T_DATA >&                                     alloc) :
         ALLOC< T_DATA >(alloc),
-        variable_names_(alloc), rows_(alloc), missing_symbols_(alloc),
-        has_row_missing_val_(alloc),  _list_of_safe_handlers_(alloc) {
+        variable_names_(alloc), rows_(alloc), missing_symbols_(alloc), has_row_missing_val_(alloc),
+        _list_of_safe_handlers_(alloc) {
       // copy the names
       variable_names_.reserve(var_names.size());
       for (const auto& name: var_names)
@@ -516,7 +502,7 @@ namespace gum {
         missing_symbols_.push_back(missing_symbol);
 
       // create the end iterators
-       _createEndIterators_();
+      _createEndIterators_();
 
       GUM_CONSTRUCTOR(IDatabaseTable);
     }
@@ -532,10 +518,9 @@ namespace gum {
         missing_symbols_(from.missing_symbols_, alloc),
         has_row_missing_val_(from.has_row_missing_val_, alloc),
         max_nb_threads_(from.max_nb_threads_),
-        min_nb_rows_per_thread_(from.min_nb_rows_per_thread_),
-         _list_of_safe_handlers_(alloc) {
+        min_nb_rows_per_thread_(from.min_nb_rows_per_thread_), _list_of_safe_handlers_(alloc) {
       // create the end iterators
-       _createEndIterators_();
+      _createEndIterators_();
 
       GUM_CONS_CPY(IDatabaseTable);
     }
@@ -543,8 +528,7 @@ namespace gum {
 
     // copy constructor
     template < typename T_DATA, template < typename > class ALLOC >
-    IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(
-       const IDatabaseTable< T_DATA, ALLOC >& from) :
+    IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(const IDatabaseTable< T_DATA, ALLOC >& from) :
         IDatabaseTable< T_DATA, ALLOC >(from, from.getAllocator()) {}
 
 
@@ -559,10 +543,9 @@ namespace gum {
         missing_symbols_(std::move(from.missing_symbols_), alloc),
         has_row_missing_val_(std::move(from.has_row_missing_val_), alloc),
         max_nb_threads_(from.max_nb_threads_),
-        min_nb_rows_per_thread_(from.min_nb_rows_per_thread_),
-         _list_of_safe_handlers_(alloc) {
+        min_nb_rows_per_thread_(from.min_nb_rows_per_thread_), _list_of_safe_handlers_(alloc) {
       // create the end iterators
-       _createEndIterators_();
+      _createEndIterators_();
 
       GUM_CONS_MOV(IDatabaseTable);
     }
@@ -570,8 +553,7 @@ namespace gum {
 
     // move constructor
     template < typename T_DATA, template < typename > class ALLOC >
-    IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(
-       IDatabaseTable< T_DATA, ALLOC >&& from) :
+    IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(IDatabaseTable< T_DATA, ALLOC >&& from) :
         IDatabaseTable< T_DATA, ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -579,22 +561,22 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     IDatabaseTable< T_DATA, ALLOC >::~IDatabaseTable() {
       // indicate to all the handlers that we are destructing the database
-       _safe_handlers_mutex_.lock();
-      for (auto handler:  _list_of_safe_handlers_) {
-        handler-> _db_        = nullptr;
-        handler-> _row_       = nullptr;
-        handler-> _end_index_ = 0;
-        handler-> _index_     = 0;
+      _safe_handlers_mutex_.lock();
+      for (auto handler: _list_of_safe_handlers_) {
+        handler->_db_        = nullptr;
+        handler->_row_       = nullptr;
+        handler->_end_index_ = 0;
+        handler->_index_     = 0;
       }
-       _safe_handlers_mutex_.unlock();
+      _safe_handlers_mutex_.unlock();
 
       ALLOC< iterator > allocator1(this->getAllocator());
-      allocator1.destroy( _end_);
-      allocator1.deallocate( _end_, 1);
+      allocator1.destroy(_end_);
+      allocator1.deallocate(_end_, 1);
 
       ALLOC< iterator_safe > allocator2(this->getAllocator());
-      allocator2.destroy( _end_safe_);
-      allocator2.deallocate( _end_safe_, 1);
+      allocator2.destroy(_end_safe_);
+      allocator2.deallocate(_end_safe_, 1);
 
       GUM_DESTRUCTOR(IDatabaseTable);
     }
@@ -602,19 +584,19 @@ namespace gum {
 
     // copy operator
     template < typename T_DATA, template < typename > class ALLOC >
-    IDatabaseTable< T_DATA, ALLOC >& IDatabaseTable< T_DATA, ALLOC >::operator=(
-       const IDatabaseTable< T_DATA, ALLOC >& from) {
+    IDatabaseTable< T_DATA, ALLOC >&
+       IDatabaseTable< T_DATA, ALLOC >::operator=(const IDatabaseTable< T_DATA, ALLOC >& from) {
       if (this != &from) {
         // invalidate the current handlers
-         _safe_handlers_mutex_.lock();
-        for (auto handler:  _list_of_safe_handlers_) {
-          handler-> _db_        = nullptr;
-          handler-> _row_       = nullptr;
-          handler-> _end_index_ = 0;
-          handler-> _index_     = 0;
+        _safe_handlers_mutex_.lock();
+        for (auto handler: _list_of_safe_handlers_) {
+          handler->_db_        = nullptr;
+          handler->_row_       = nullptr;
+          handler->_end_index_ = 0;
+          handler->_index_     = 0;
         }
-         _list_of_safe_handlers_.clear();
-         _safe_handlers_mutex_.unlock();
+        _list_of_safe_handlers_.clear();
+        _safe_handlers_mutex_.unlock();
 
         rows_                   = from.rows_;
         variable_names_         = from.variable_names_;
@@ -625,10 +607,10 @@ namespace gum {
 
         // update the end iterators
         const std::size_t db_size = rows_.size();
-         _end_-> _index_            = db_size;
-         _end_-> _end_index_        = db_size;
-         _end_safe_-> _index_       = db_size;
-         _end_safe_-> _end_index_   = db_size;
+        _end_->_index_            = db_size;
+        _end_->_end_index_        = db_size;
+        _end_safe_->_index_       = db_size;
+        _end_safe_->_end_index_   = db_size;
       }
 
       return *this;
@@ -637,18 +619,18 @@ namespace gum {
 
     // move operator
     template < typename T_DATA, template < typename > class ALLOC >
-    IDatabaseTable< T_DATA, ALLOC >& IDatabaseTable< T_DATA, ALLOC >::operator=(
-       IDatabaseTable< T_DATA, ALLOC >&& from) {
+    IDatabaseTable< T_DATA, ALLOC >&
+       IDatabaseTable< T_DATA, ALLOC >::operator=(IDatabaseTable< T_DATA, ALLOC >&& from) {
       if (this != &from) {
         // invalidate the current handlers
-         _safe_handlers_mutex_.lock();
-        for (auto handler:  _list_of_safe_handlers_) {
-          handler-> _db_        = nullptr;
-          handler-> _row_       = nullptr;
-          handler-> _end_index_ = 0;
-          handler-> _index_     = 0;
+        _safe_handlers_mutex_.lock();
+        for (auto handler: _list_of_safe_handlers_) {
+          handler->_db_        = nullptr;
+          handler->_row_       = nullptr;
+          handler->_end_index_ = 0;
+          handler->_index_     = 0;
         }
-         _safe_handlers_mutex_.unlock();
+        _safe_handlers_mutex_.unlock();
 
         rows_                   = std::move(from.rows_);
         variable_names_         = std::move(from.variable_names_);
@@ -659,10 +641,10 @@ namespace gum {
 
         // update the end iterators
         const std::size_t db_size = rows_.size();
-         _end_-> _index_            = db_size;
-         _end_-> _end_index_        = db_size;
-         _end_safe_-> _index_       = db_size;
-         _end_safe_-> _end_index_   = db_size;
+        _end_->_index_            = db_size;
+        _end_->_end_index_        = db_size;
+        _end_safe_->_index_       = db_size;
+        _end_safe_->_end_index_   = db_size;
       }
 
       return *this;
@@ -689,7 +671,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const typename IDatabaseTable< T_DATA, ALLOC >::Handler&
        IDatabaseTable< T_DATA, ALLOC >::end() const noexcept {
-      return * _end_;
+      return *_end_;
     }
 
 
@@ -697,7 +679,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const typename IDatabaseTable< T_DATA, ALLOC >::HandlerSafe&
        IDatabaseTable< T_DATA, ALLOC >::endSafe() const noexcept {
-      return * _end_safe_;
+      return *_end_safe_;
     }
 
 
@@ -719,8 +701,7 @@ namespace gum {
 
     // returns the content of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE const typename IDatabaseTable< T_DATA,
-                                          ALLOC >::template Matrix< T_DATA >&
+    INLINE const typename IDatabaseTable< T_DATA, ALLOC >::template Matrix< T_DATA >&
        IDatabaseTable< T_DATA, ALLOC >::content() const noexcept {
       return rows_;
     }
@@ -737,8 +718,7 @@ namespace gum {
 
     /// indicates whether the kth row contains some missing values
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE bool IDatabaseTable< T_DATA, ALLOC >::hasMissingValues(
-       const std::size_t k) const {
+    INLINE bool IDatabaseTable< T_DATA, ALLOC >::hasMissingValues(const std::size_t k) const {
       return has_row_missing_val_[k] == IsMissing::True;
     }
 
@@ -756,7 +736,7 @@ namespace gum {
     template < template < typename > class OTHER_ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::setVariableNames(
        const std::vector< std::string, OTHER_ALLOC< std::string > >& names,
-       const bool from_external_object) {
+       const bool                                                    from_external_object) {
       // copy the variable names into a vector allocated with the allocator
       // used by the database
       const std::size_t       size = names.size();
@@ -771,7 +751,7 @@ namespace gum {
     /// returns the name of the kth column of the database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const std::string&
-       IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
+                 IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
       if (variable_names_.size() <= k)
         GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k)
       return variable_names_[k];
@@ -780,31 +760,27 @@ namespace gum {
 
     /// returns the index of the column whose name is passed in argument
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::columnFromVariableName(
-       const std::string& name) const {
+    INLINE std::size_t
+           IDatabaseTable< T_DATA, ALLOC >::columnFromVariableName(const std::string& name) const {
       const std::size_t size = variable_names_.size();
       for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) return i;
 
-      GUM_ERROR(UndefinedElement,
-                "the database contains no column whose name is " << name)
+      GUM_ERROR(UndefinedElement, "the database contains no column whose name is " << name)
     }
 
 
     /// returns the indices of the columns whose name is passed in argument
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE
-       typename IDatabaseTable< T_DATA, ALLOC >::template DBVector< std::size_t >
-       IDatabaseTable< T_DATA, ALLOC >::columnsFromVariableName(
-          const std::string& name) const {
+    INLINE typename IDatabaseTable< T_DATA, ALLOC >::template DBVector< std::size_t >
+       IDatabaseTable< T_DATA, ALLOC >::columnsFromVariableName(const std::string& name) const {
       const std::size_t       size = variable_names_.size();
       DBVector< std::size_t > cols;
       for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) cols.push_back(i);
 
       if (cols.empty())
-        GUM_ERROR(UndefinedElement,
-                  "the database contains no column whose name is " << name)
+        GUM_ERROR(UndefinedElement, "the database contains no column whose name is " << name)
 
       return cols;
     }
@@ -812,8 +788,7 @@ namespace gum {
 
     // returns the number of variables (columns) of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE std::size_t
-           IDatabaseTable< T_DATA, ALLOC >::nbVariables() const noexcept {
+    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::nbVariables() const noexcept {
       return variable_names_.size();
     }
 
@@ -841,64 +816,58 @@ namespace gum {
 
     // update the handlers when the size of the database changes
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >:: _updateHandlers_(
-       std::size_t new_size) const {
+    void IDatabaseTable< T_DATA, ALLOC >::_updateHandlers_(std::size_t new_size) const {
       const std::size_t db_size = rows_.size();
 
-       _safe_handlers_mutex_.lock();
-      for (auto handler:  _list_of_safe_handlers_) {
-        if ((handler-> _end_index_ == db_size)
-            || (handler-> _end_index_ > new_size)) {
-          handler-> _end_index_ = new_size;
+      _safe_handlers_mutex_.lock();
+      for (auto handler: _list_of_safe_handlers_) {
+        if ((handler->_end_index_ == db_size) || (handler->_end_index_ > new_size)) {
+          handler->_end_index_ = new_size;
           // there is no need to update the index because, in safe handlers,
           // we always check that the index is less than end_index when trying
           // to access the rows
         }
       }
-       _safe_handlers_mutex_.unlock();
+      _safe_handlers_mutex_.unlock();
 
       // update the end iterators
-       _end_-> _index_          = new_size;
-       _end_-> _end_index_      = new_size;
-       _end_safe_-> _index_     = new_size;
-       _end_safe_-> _end_index_ = new_size;
+      _end_->_index_          = new_size;
+      _end_->_end_index_      = new_size;
+      _end_safe_->_index_     = new_size;
+      _end_safe_->_end_index_ = new_size;
     }
 
 
     // attach a new handler to the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void IDatabaseTable< T_DATA, ALLOC >:: _attachHandler_(
-       HandlerSafe* handler) const {
-       _safe_handlers_mutex_.lock();
-       _list_of_safe_handlers_.push_back(handler);
-       _safe_handlers_mutex_.unlock();
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::_attachHandler_(HandlerSafe* handler) const {
+      _safe_handlers_mutex_.lock();
+      _list_of_safe_handlers_.push_back(handler);
+      _safe_handlers_mutex_.unlock();
     }
 
 
     // detach a handler
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >:: _detachHandler_(
-       HandlerSafe* handler) const {
-       _safe_handlers_mutex_.lock();
+    void IDatabaseTable< T_DATA, ALLOC >::_detachHandler_(HandlerSafe* handler) const {
+      _safe_handlers_mutex_.lock();
 
-      for (auto iter =  _list_of_safe_handlers_.rbegin();
-           iter !=  _list_of_safe_handlers_.rend();
+      for (auto iter = _list_of_safe_handlers_.rbegin(); iter != _list_of_safe_handlers_.rend();
            ++iter) {
         if (*iter == handler) {
-          *iter =  _list_of_safe_handlers_.back();
-           _list_of_safe_handlers_.pop_back();
+          *iter = _list_of_safe_handlers_.back();
+          _list_of_safe_handlers_.pop_back();
           break;
         }
       }
 
-       _safe_handlers_mutex_.unlock();
+      _safe_handlers_mutex_.unlock();
     }
 
 
     // checks whether a new row has the same size as the rest of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE bool IDatabaseTable< T_DATA, ALLOC >::isRowSizeOK_(
-       const std::size_t size) const {
+    INLINE bool IDatabaseTable< T_DATA, ALLOC >::isRowSizeOK_(const std::size_t size) const {
       return (size == variable_names_.size());
     }
 
@@ -920,17 +889,15 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::insertRow(
        typename IDatabaseTable< T_DATA, ALLOC >::template Row< T_DATA >&& new_row,
-       const typename IDatabaseTable< T_DATA, ALLOC >::IsMissing
-          contains_missing) {
+       const typename IDatabaseTable< T_DATA, ALLOC >::IsMissing          contains_missing) {
       // check that the size of the row is the same as the rest of the database
       if (!isRowSizeOK_(new_row.size()))
         GUM_ERROR(SizeError,
-                  "the new row is of size "
-                     << new_row.size()
-                     << ", which is different from the number of columns "
-                     << "of the database, i.e., " << variable_names_.size());
+                  "the new row is of size " << new_row.size()
+                                            << ", which is different from the number of columns "
+                                            << "of the database, i.e., " << variable_names_.size());
 
-       _updateHandlers_(rows_.size() + 1);
+      _updateHandlers_(rows_.size() + 1);
       rows_.push_back(std::move(new_row));
       try {
         has_row_missing_val_.push_back(contains_missing);
@@ -945,41 +912,35 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void IDatabaseTable< T_DATA, ALLOC >::insertRow(
        const typename IDatabaseTable< T_DATA, ALLOC >::template Row< T_DATA >& row,
-       const typename IDatabaseTable< T_DATA, ALLOC >::IsMissing
-          contains_missing) {
-      this->insertRow(
-         typename IDatabaseTable< T_DATA, ALLOC >::template Row< T_DATA >(row),
-         contains_missing);
+       const typename IDatabaseTable< T_DATA, ALLOC >::IsMissing               contains_missing) {
+      this->insertRow(typename IDatabaseTable< T_DATA, ALLOC >::template Row< T_DATA >(row),
+                      contains_missing);
     }
 
 
     // insert a set of new DBRow at the end of the database
     template < typename T_DATA, template < typename > class ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::insertRows(
-       typename IDatabaseTable< T_DATA, ALLOC >::template Matrix< T_DATA >&&
-          new_rows,
+       typename IDatabaseTable< T_DATA, ALLOC >::template Matrix< T_DATA >&& new_rows,
        const typename IDatabaseTable< T_DATA, ALLOC >::template DBVector<
-          typename IDatabaseTable< T_DATA, ALLOC >::IsMissing >&
-          rows_have_missing_vals) {
+          typename IDatabaseTable< T_DATA, ALLOC >::IsMissing >& rows_have_missing_vals) {
       if (new_rows.empty()) return;
 
       // check that the missing values indicators vector has the same size
       // as the new rows
       if (rows_have_missing_vals.size() != new_rows.size())
-        GUM_ERROR(
-           SizeError,
-           "the number of new rows (i.e., "
-              << new_rows.size()
-              << ") is different from the number of missing values indicators ("
-              << rows_have_missing_vals.size());
+        GUM_ERROR(SizeError,
+                  "the number of new rows (i.e., "
+                     << new_rows.size()
+                     << ") is different from the number of missing values indicators ("
+                     << rows_have_missing_vals.size());
 
       // check that all the rows have the same size
       const std::size_t new_size = new_rows[0].size();
 
       for (const auto& row: new_rows) {
         if (row.size() != new_size) {
-          GUM_ERROR(SizeError,
-                    "all the new rows do not have the same number of columns")
+          GUM_ERROR(SizeError, "all the new rows do not have the same number of columns")
         }
       }
 
@@ -987,10 +948,9 @@ namespace gum {
       // the database
       if (!isRowSizeOK_(new_size)) {
         GUM_ERROR(SizeError,
-                  "the new rows have "
-                     << new_size
-                     << " columns, which is different from the number of columns "
-                     << "of the database, i.e., " << variable_names_.size());
+                  "the new rows have " << new_size
+                                       << " columns, which is different from the number of columns "
+                                       << "of the database, i.e., " << variable_names_.size());
       }
 
       const std::size_t nb_new_rows = new_rows.size();
@@ -1004,37 +964,33 @@ namespace gum {
         has_row_missing_val_.push_back(rows_have_missing_vals[i]);
       }
 
-       _updateHandlers_(new_db_size);
+      _updateHandlers_(new_db_size);
     }
 
 
     // insert a set of new DBRow at the end of the database
     template < typename T_DATA, template < typename > class ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::insertRows(
-       const typename IDatabaseTable< T_DATA, ALLOC >::template Matrix< T_DATA >&
-          new_rows,
+       const typename IDatabaseTable< T_DATA, ALLOC >::template Matrix< T_DATA >& new_rows,
        const typename IDatabaseTable< T_DATA, ALLOC >::template DBVector<
-          typename IDatabaseTable< T_DATA, ALLOC >::IsMissing >&
-          rows_have_missing_vals) {
+          typename IDatabaseTable< T_DATA, ALLOC >::IsMissing >& rows_have_missing_vals) {
       if (new_rows.empty()) return;
 
       // check that the missing values indicators vector has the same size
       // as the new rows
       if (rows_have_missing_vals.size() != new_rows.size())
-        GUM_ERROR(
-           SizeError,
-           "the number of new rows (i.e., "
-              << new_rows.size()
-              << ") is different from the number of missing values indicators ("
-              << rows_have_missing_vals.size());
+        GUM_ERROR(SizeError,
+                  "the number of new rows (i.e., "
+                     << new_rows.size()
+                     << ") is different from the number of missing values indicators ("
+                     << rows_have_missing_vals.size());
 
       // check that all the rows have the same size
       const std::size_t new_size = new_rows[0].size();
 
       for (const auto& row: new_rows) {
         if (row.size() != new_size) {
-          GUM_ERROR(SizeError,
-                    "all the new rows do not have the same number of columns")
+          GUM_ERROR(SizeError, "all the new rows do not have the same number of columns")
         }
       }
 
@@ -1044,10 +1000,9 @@ namespace gum {
 
       if (!isRowSizeOK_(new_size)) {
         GUM_ERROR(SizeError,
-                  "the new rows have "
-                     << new_size
-                     << " columns, which is different from the number of columns "
-                     << "of the database, i.e., " << variable_names_.size());
+                  "the new rows have " << new_size
+                                       << " columns, which is different from the number of columns "
+                                       << "of the database, i.e., " << variable_names_.size());
       }
 
       const std::size_t nb_new_rows = new_rows.size();
@@ -1061,7 +1016,7 @@ namespace gum {
         has_row_missing_val_.push_back(rows_have_missing_vals[i]);
       }
 
-       _updateHandlers_(db_size);
+      _updateHandlers_(db_size);
     }
 
 
@@ -1071,7 +1026,7 @@ namespace gum {
       const std::size_t db_size = rows_.size();
 
       if (index < db_size) {
-         _updateHandlers_(db_size - 1);
+        _updateHandlers_(db_size - 1);
         rows_.erase(rows_.begin() + index);
         has_row_missing_val_.erase(has_row_missing_val_.begin() + index);
       }
@@ -1084,7 +1039,7 @@ namespace gum {
       const std::size_t db_size = rows_.size();
 
       if (db_size) {
-         _updateHandlers_(db_size - 1);
+        _updateHandlers_(db_size - 1);
         rows_.pop_back();
         has_row_missing_val_.pop_back();
       }
@@ -1097,7 +1052,7 @@ namespace gum {
       const std::size_t db_size = rows_.size();
 
       if (db_size) {
-         _updateHandlers_(db_size - 1);
+        _updateHandlers_(db_size - 1);
         rows_.erase(rows_.begin());
         has_row_missing_val_.erase(has_row_missing_val_.begin());
       }
@@ -1107,7 +1062,7 @@ namespace gum {
     // erase all the rows
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void IDatabaseTable< T_DATA, ALLOC >::eraseAllRows() {
-       _updateHandlers_(0);
+      _updateHandlers_(0);
       rows_.clear();
       has_row_missing_val_.clear();
     }
@@ -1115,14 +1070,13 @@ namespace gum {
 
     // erase the k first rows
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void
-       IDatabaseTable< T_DATA, ALLOC >::eraseFirstRows(const std::size_t nb_rows) {
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::eraseFirstRows(const std::size_t nb_rows) {
       const std::size_t db_size = rows_.size();
 
       if (nb_rows >= db_size) {
         eraseAllRows();
       } else {
-         _updateHandlers_(db_size - nb_rows);
+        _updateHandlers_(db_size - nb_rows);
         rows_.erase(rows_.begin(), rows_.begin() + nb_rows);
         has_row_missing_val_.erase(has_row_missing_val_.begin(),
                                    has_row_missing_val_.begin() + nb_rows);
@@ -1132,17 +1086,15 @@ namespace gum {
 
     // erase the k last rows
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void
-       IDatabaseTable< T_DATA, ALLOC >::eraseLastRows(const std::size_t nb_rows) {
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::eraseLastRows(const std::size_t nb_rows) {
       const std::size_t db_size = rows_.size();
 
       if (nb_rows >= db_size) {
         eraseAllRows();
       } else {
-         _updateHandlers_(db_size - nb_rows);
+        _updateHandlers_(db_size - nb_rows);
         rows_.erase(rows_.begin() + (db_size - nb_rows), rows_.begin() + db_size);
-        has_row_missing_val_.erase(has_row_missing_val_.begin()
-                                      + (db_size - nb_rows),
+        has_row_missing_val_.erase(has_row_missing_val_.begin() + (db_size - nb_rows),
                                    has_row_missing_val_.begin() + db_size);
       }
     }
@@ -1150,8 +1102,7 @@ namespace gum {
 
     // erase the rows from the debth to the endth (not included)
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE void IDatabaseTable< T_DATA, ALLOC >::eraseRows(std::size_t deb,
-                                                           std::size_t end) {
+    INLINE void IDatabaseTable< T_DATA, ALLOC >::eraseRows(std::size_t deb, std::size_t end) {
       if (deb > end) std::swap(deb, end);
 
       const std::size_t db_size = rows_.size();
@@ -1163,7 +1114,7 @@ namespace gum {
           eraseLastRows(db_size - deb);
         }
       } else {
-         _updateHandlers_(db_size - (end - deb));
+        _updateHandlers_(db_size - (end - deb));
         rows_.erase(rows_.begin() + deb, rows_.begin() + end);
         has_row_missing_val_.erase(has_row_missing_val_.begin() + deb,
                                    has_row_missing_val_.begin() + end);
@@ -1174,7 +1125,7 @@ namespace gum {
     // erase the content of the database, including the names of the variables
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void IDatabaseTable< T_DATA, ALLOC >::clear() {
-       _updateHandlers_(0);
+      _updateHandlers_(0);
       rows_.clear();
       has_row_missing_val_.clear();
       variable_names_.clear();
@@ -1191,8 +1142,7 @@ namespace gum {
 
     /// changes the max number of threads that a database can use
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setMaxNbThreads(
-       const std::size_t nb) const {
+    void IDatabaseTable< T_DATA, ALLOC >::setMaxNbThreads(const std::size_t nb) const {
       if (nb == std::size_t(0))
         max_nb_threads_ = std::size_t(1);
       else
@@ -1210,8 +1160,7 @@ namespace gum {
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setMinNbRowsPerThread(
-       const std::size_t nb) const {
+    void IDatabaseTable< T_DATA, ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       if (nb == std::size_t(0))
         min_nb_rows_per_thread_ = std::size_t(1);
       else
@@ -1221,8 +1170,7 @@ namespace gum {
 
     /// returns the minimum of rows that each thread should process
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE std::size_t
-           IDatabaseTable< T_DATA, ALLOC >::minNbRowsPerThread() const {
+    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::minNbRowsPerThread() const {
       return min_nb_rows_per_thread_;
     }
 
@@ -1230,8 +1178,8 @@ namespace gum {
     /// insert new rows at the end of the database
     template < template < typename > class ALLOC >
     void IDatabaseTableInsert4DBCell< ALLOC, true >::insertRows(
-       const typename IDatabaseTableInsert4DBCell< ALLOC, true >::
-          template DBVector< DBVector< std::string > >& new_rows) {
+       const typename IDatabaseTableInsert4DBCell< ALLOC, true >::template DBVector<
+          DBVector< std::string > >& new_rows) {
       for (const auto& new_row: new_rows)
         this->insertRow(new_row);
     }
@@ -1240,8 +1188,8 @@ namespace gum {
     /// insert new rows at the end of the database
     template < template < typename > class ALLOC >
     void IDatabaseTableInsert4DBCell< ALLOC, false >::insertRows(
-       const typename IDatabaseTableInsert4DBCell< ALLOC, false >::
-          template DBVector< DBVector< std::string > >& new_rows) {
+       const typename IDatabaseTableInsert4DBCell< ALLOC, false >::template DBVector<
+          DBVector< std::string > >& new_rows) {
       for (const auto& new_row: new_rows)
         this->insertRow(new_row);
     }
@@ -1249,8 +1197,7 @@ namespace gum {
 
     /// assign a given weight to all the rows of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    void
-       IDatabaseTable< T_DATA, ALLOC >::setAllRowsWeight(const double new_weight) {
+    void IDatabaseTable< T_DATA, ALLOC >::setAllRowsWeight(const double new_weight) {
       // determine the number of threads to use and the number of rows
       // they should process
       std::vector< std::pair< std::size_t, std::size_t > > ranges;
@@ -1272,8 +1219,7 @@ namespace gum {
           ++end_index;
           --rest_rows;
         }
-        ranges.push_back(
-           std::pair< std::size_t, std::size_t >(begin_index, end_index));
+        ranges.push_back(std::pair< std::size_t, std::size_t >(begin_index, end_index));
         begin_index = end_index;
       }
 
@@ -1297,23 +1243,20 @@ namespace gum {
 
     /// assigns a given weight to the ith row of the database
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setWeight(const std::size_t i,
-                                                    const double      weight) {
+    void IDatabaseTable< T_DATA, ALLOC >::setWeight(const std::size_t i, const double weight) {
       // check that i is less than the number of rows
       const std::size_t dbsize = nbRows();
       if (i >= dbsize) {
         GUM_ERROR(OutOfBounds,
                   "it is impossible to set the weight of record #"
-                     << i << " because the database contains only " << nbRows()
-                     << " records");
+                     << i << " because the database contains only " << nbRows() << " records");
       }
 
       // check that the weight is positive
       if (weight < 0) {
         GUM_ERROR(OutOfBounds,
-                  "it is impossible to set "
-                     << weight << " as a weight of record #" << i
-                     << "  because this weight is negative");
+                  "it is impossible to set " << weight << " as a weight of record #" << i
+                                             << "  because this weight is negative");
       }
 
       rows_[i].setWeight(weight);
@@ -1328,8 +1271,7 @@ namespace gum {
       if (i >= dbsize) {
         GUM_ERROR(OutOfBounds,
                   "it is impossible to get the weight of record #"
-                     << i << " because the database contains only " << nbRows()
-                     << " records");
+                     << i << " because the database contains only " << nbRows() << " records");
       }
 
       return rows_[i].weight();

@@ -57,10 +57,8 @@ namespace gum {
       ;
     }
 
-    DecisionPotential(const Potential< GUM_SCALAR >& prob,
-                      const Potential< GUM_SCALAR >& util) :
-        probPot(prob),
-        utilPot(util) {
+    DecisionPotential(const Potential< GUM_SCALAR >& prob, const Potential< GUM_SCALAR >& util) :
+        probPot(prob), utilPot(util) {
       GUM_CONSTRUCTOR(DecisionPotential);
     }
 
@@ -77,8 +75,7 @@ namespace gum {
       utilPot = p;
     }
 
-    DecisionPotential< GUM_SCALAR >&
-       operator=(const DecisionPotential< GUM_SCALAR >& src) {
+    DecisionPotential< GUM_SCALAR >& operator=(const DecisionPotential< GUM_SCALAR >& src) {
       GUM_OP_CPY(DecisionPotential);
       if (&src == this) return *this;
       probPot = src.probPot;
@@ -92,8 +89,7 @@ namespace gum {
       GUM_CONS_MOV(DecisionPotential);
     }
 
-    DecisionPotential< GUM_SCALAR >&
-       operator=(DecisionPotential< GUM_SCALAR >&& src) {
+    DecisionPotential< GUM_SCALAR >& operator=(DecisionPotential< GUM_SCALAR >&& src) {
       GUM_OP_MOV(DecisionPotential);
       if (&src == this) return *this;
       probPot = std::forward< Potential< GUM_SCALAR > >(src.probPot);
@@ -107,9 +103,7 @@ namespace gum {
               && (p.probPot * p.utilPot == this->probPot * this->utilPot));
     }
 
-    bool operator!=(const DecisionPotential< GUM_SCALAR >& p) const {
-      return !operator==(p);
-    }
+    bool operator!=(const DecisionPotential< GUM_SCALAR >& p) const { return !operator==(p); }
 
     const DiscreteVariable* variable(const std::string& name) const {
       for (const auto& v: probPot.variablesSequence()) {
@@ -119,43 +113,33 @@ namespace gum {
         if (v->name() == name) return v;
       }
 
-      GUM_ERROR(NotFound,
-                "'" << name << "' can not be found in DecisionPotential.")
+      GUM_ERROR(NotFound, "'" << name << "' can not be found in DecisionPotential.")
     }
 
-    void insertProba(const gum::Potential< GUM_SCALAR >& proba) {
-      probPot *= proba;
-    }
+    void insertProba(const gum::Potential< GUM_SCALAR >& proba) { probPot *= proba; }
 
-    void insertUtility(const gum::Potential< GUM_SCALAR >& util) {
-      utilPot += util;
-    }
+    void insertUtility(const gum::Potential< GUM_SCALAR >& util) { utilPot += util; }
 
-    DecisionPotential< GUM_SCALAR >
-       operator*(const DecisionPotential< GUM_SCALAR >& dp1) const {
+    DecisionPotential< GUM_SCALAR > operator*(const DecisionPotential< GUM_SCALAR >& dp1) const {
       return DecisionPotential< GUM_SCALAR >::combination(*this, dp1);
     }
 
-    DecisionPotential< GUM_SCALAR >
-       operator*=(const DecisionPotential< GUM_SCALAR >& dp1) {
+    DecisionPotential< GUM_SCALAR > operator*=(const DecisionPotential< GUM_SCALAR >& dp1) {
       *this = DecisionPotential< GUM_SCALAR >::combination(*this, dp1);
       return *this;
     }
 
-    DecisionPotential< GUM_SCALAR >
-       operator^(const Set< const DiscreteVariable* >& onto) const {
+    DecisionPotential< GUM_SCALAR > operator^(const Set< const DiscreteVariable* >& onto) const {
       return DecisionPotential< GUM_SCALAR >::marginalization(*this, onto);
     }
 
-    DecisionPotential< GUM_SCALAR >
-       operator^(const std::vector< std::string >& ontonames) const {
+    DecisionPotential< GUM_SCALAR > operator^(const std::vector< std::string >& ontonames) const {
       return DecisionPotential< GUM_SCALAR >::marginalization(*this, ontonames);
     }
 
 
-    static Potential< GUM_SCALAR >
-       divideEvenZero(const Potential< GUM_SCALAR >& p1,
-                      const Potential< GUM_SCALAR >& p2) {
+    static Potential< GUM_SCALAR > divideEvenZero(const Potential< GUM_SCALAR >& p1,
+                                                  const Potential< GUM_SCALAR >& p2) {
       Potential< GUM_SCALAR > res(p1);
       Instantiation           I(res);
       for (I.setFirst(); !I.end(); I.inc()) {
@@ -164,20 +148,16 @@ namespace gum {
       return res;
     }
 
-    static DecisionPotential< GUM_SCALAR >
-       combination(const DecisionPotential< GUM_SCALAR >& dp1,
-                   const DecisionPotential< GUM_SCALAR >& dp2) {
-      return DecisionPotential< GUM_SCALAR >(dp1.probPot * dp2.probPot,
-                                             dp1.utilPot + dp2.utilPot);
+    static DecisionPotential< GUM_SCALAR > combination(const DecisionPotential< GUM_SCALAR >& dp1,
+                                                       const DecisionPotential< GUM_SCALAR >& dp2) {
+      return DecisionPotential< GUM_SCALAR >(dp1.probPot * dp2.probPot, dp1.utilPot + dp2.utilPot);
     }
 
     static DecisionPotential< GUM_SCALAR >
        marginalization(const DecisionPotential< GUM_SCALAR >& dp,
                        const Set< const DiscreteVariable* >&  onto) {
       const auto pr = dp.probPot.margSumIn(onto);
-      return DecisionPotential(
-         pr,
-         divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
+      return DecisionPotential(pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
     }
 
     static DecisionPotential< GUM_SCALAR >
@@ -204,8 +184,7 @@ namespace gum {
   };
 
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                          out,
-                           const DecisionPotential< GUM_SCALAR >& array) {
+  std::ostream& operator<<(std::ostream& out, const DecisionPotential< GUM_SCALAR >& array) {
     out << array.toString();
     return out;
   }

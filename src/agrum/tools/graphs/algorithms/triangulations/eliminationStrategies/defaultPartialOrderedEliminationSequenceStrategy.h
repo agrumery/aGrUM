@@ -91,10 +91,8 @@ namespace gum {
      * DefaultEliminationSequenceStrategy
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
-    DefaultPartialOrderedEliminationSequenceStrategy(double theRatio
-                                                     = GUM_QUASI_RATIO,
-                                                     double theThreshold
-                                                     = GUM_WEIGHT_THRESHOLD);
+    DefaultPartialOrderedEliminationSequenceStrategy(double theRatio     = GUM_QUASI_RATIO,
+                                                     double theThreshold = GUM_WEIGHT_THRESHOLD);
 
     /// constructor for an a priori non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -112,12 +110,11 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph, the domain sizes and
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
-    DefaultPartialOrderedEliminationSequenceStrategy(
-       UndiGraph*                  graph,
-       const NodeProperty< Size >* dom_sizes,
-       const List< NodeSet >*      subsets,
-       double                      ratio     = GUM_QUASI_RATIO,
-       double                      threshold = GUM_WEIGHT_THRESHOLD);
+    DefaultPartialOrderedEliminationSequenceStrategy(UndiGraph*                  graph,
+                                                     const NodeProperty< Size >* dom_sizes,
+                                                     const List< NodeSet >*      subsets,
+                                                     double ratio     = GUM_QUASI_RATIO,
+                                                     double threshold = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -143,8 +140,7 @@ namespace gum {
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual DefaultPartialOrderedEliminationSequenceStrategy*
-       newFactory() const final;
+    virtual DefaultPartialOrderedEliminationSequenceStrategy* newFactory() const final;
 
     /// virtual copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -156,8 +152,7 @@ namespace gum {
      * virtual copy constructor, be sure that either the current or the newly
      * created strategy is used for a triangulation but not both. This will
      * necessarily be OK in DefaultTriangulations. */
-    virtual DefaultPartialOrderedEliminationSequenceStrategy*
-       copyFactory() const final;
+    virtual DefaultPartialOrderedEliminationSequenceStrategy* copyFactory() const final;
 
     /// @}
 
@@ -179,8 +174,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph(UndiGraph*                  graph,
-                          const NodeProperty< Size >* dom_sizes) final;
+    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) final;
 
     /// clears the sequence (to prepare, for instance, a new elimination
     /// sequence)
@@ -226,27 +220,27 @@ namespace gum {
     private:
     /// for each node, the weight of the clique created by the node's
     /// elimination
-    NodeProperty< double >  _log_weights_;
+    NodeProperty< double > _log_weights_;
 
     /// the simplicial set used for determining the best nodes to eliminate
-    SimplicialSet*  _simplicial_set_{nullptr};
+    SimplicialSet* _simplicial_set_{nullptr};
 
     /// the ratio used by  _simplicial_set_ for its quasi-simplicial nodes
-    double  _simplicial_ratio_;
+    double _simplicial_ratio_;
 
     /// the threshold used by   _simplicial_set_ to determine small cliques
-    double  _simplicial_threshold_;
+    double _simplicial_threshold_;
 
     /// indicates whether we compute new fill-ins
-    bool  _provide_fill_ins_{false};
+    bool _provide_fill_ins_{false};
 
 
     /// returns the best possible node to be eliminated
     /** this function is used by method nextNodeToEliminate */
-    NodeId  _nodeToEliminate_(const PriorityQueue< NodeId, double >& possibleNodes);
+    NodeId _nodeToEliminate_(const PriorityQueue< NodeId, double >& possibleNodes);
 
     /// create a new simplicial set suited for the current graph
-    void  _createSimplicialSet_();
+    void _createSimplicialSet_();
   };
 
 } /* namespace gum */

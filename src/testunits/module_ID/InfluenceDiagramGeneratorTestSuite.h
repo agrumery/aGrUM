@@ -42,18 +42,15 @@ namespace gum_tests {
     void testCreationDeletion_1() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::InfluenceDiagramGenerator< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >());
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletion_2() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
-      gum::SimpleCPTGenerator< double >* cptGen
-         = new gum::SimpleCPTGenerator< double >();
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::InfluenceDiagramGenerator< double >(cptGen));
+      gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(cptGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -61,19 +58,17 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::InfluenceDiagramGenerator< double >(utGen));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(utGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletion_4() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
-      gum::SimpleCPTGenerator< double >* cptGen
-         = new gum::SimpleCPTGenerator< double >();
-      gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
+      gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
+      gum::SimpleUTGenerator*            utGen  = new gum::SimpleUTGenerator();
+      TS_GUM_ASSERT_THROWS_NOTHING(gen
+                                   = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -91,8 +86,7 @@ namespace gum_tests {
     void testGenerationFloat_2() {
       gum::InfluenceDiagramGenerator< double > gen;
 
-      gum::InfluenceDiagram< double >* id
-         = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
+      gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
       // Test for cicuits
       std::vector< gum::NodeId > stack;
       gum::Set< gum::NodeId >    passed;
@@ -119,8 +113,7 @@ namespace gum_tests {
     void testGenerationDouble_2() {
       gum::InfluenceDiagramGenerator< double > gen;
 
-      gum::InfluenceDiagram< double >* id
-         = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
+      gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
       // Test for cicuits
       std::vector< gum::NodeId > stack;
       gum::Set< gum::NodeId >    passed;

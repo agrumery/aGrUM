@@ -45,20 +45,16 @@ namespace gum {
     // insert the new entry
     OperatorSet* theset;
 
-    if (! _set_.exists(operation_name)) {
-      theset =  _set_.insert(operation_name, new OperatorSet).second;
+    if (!_set_.exists(operation_name)) {
+      theset = _set_.insert(operation_name, new OperatorSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-       __debug__:: _inc_deletion_("HashTable",
-                                  __FILE__,
-                                  __LINE__,
-                                "destructor of",
-                                (void*)theset);
+      __debug__::_inc_deletion_("HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
 #  endif /* GUM_DEBUG_MODE */
     } else {
-      theset =  _set_[operation_name];
+      theset = _set_[operation_name];
     }
 
     std::pair< std::string, std::string > thepair(type1, type2);
@@ -68,25 +64,23 @@ namespace gum {
 
   // removes a given entry from the register
   template < typename GUM_SCALAR >
-  void OperatorRegister4MultiDim< GUM_SCALAR >::erase(
-     const std::string& operation_name,
-     const std::string& type1,
-     const std::string& type2) {
-    if (! _set_.exists(operation_name)) return;
+  void OperatorRegister4MultiDim< GUM_SCALAR >::erase(const std::string& operation_name,
+                                                      const std::string& type1,
+                                                      const std::string& type2) {
+    if (!_set_.exists(operation_name)) return;
 
-    OperatorSet* theset =  _set_[operation_name];
+    OperatorSet* theset = _set_[operation_name];
 
     theset->erase(std::pair< std::string, std::string >(type1, type2));
   }
 
   // indicates whether a given entry exists in the register
   template < typename GUM_SCALAR >
-  INLINE bool OperatorRegister4MultiDim< GUM_SCALAR >::exists(
-     const std::string& operation_name,
-     const std::string& type1,
-     const std::string& type2) const {
-    if (! _set_.exists(operation_name)) return false;
-    OperatorSet* theset =  _set_[operation_name];
+  INLINE bool OperatorRegister4MultiDim< GUM_SCALAR >::exists(const std::string& operation_name,
+                                                              const std::string& type1,
+                                                              const std::string& type2) const {
+    if (!_set_.exists(operation_name)) return false;
+    OperatorSet* theset = _set_[operation_name];
     return theset->exists(std::pair< std::string, std::string >(type1, type2));
   }
 
@@ -94,19 +88,17 @@ namespace gum {
    * MultiDimImplementations */
   template < typename GUM_SCALAR >
   INLINE typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr
-     OperatorRegister4MultiDim< GUM_SCALAR >::get(
-        const std::string& operation_name,
-        const std::string& type1,
-        const std::string& type2) const {
-    OperatorSet* theset =  _set_[operation_name];
+     OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
+                                                  const std::string& type1,
+                                                  const std::string& type2) const {
+    OperatorSet* theset = _set_[operation_name];
     return (*theset)[std::pair< std::string, std::string >(type1, type2)];
   }
 
   // a named constructor that constructs one and only one Register per data
   // type
   template < typename GUM_SCALAR >
-  OperatorRegister4MultiDim< GUM_SCALAR >&
-     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
+  OperatorRegister4MultiDim< GUM_SCALAR >& OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim< GUM_SCALAR >* container = nullptr;
     static bool                                     first     = true;
 
@@ -118,11 +110,11 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-       __debug__:: _inc_deletion_("HashTable",
-                                  __FILE__,
-                                  __LINE__,
+      __debug__::_inc_deletion_("HashTable",
+                                __FILE__,
+                                __LINE__,
                                 "destructor of",
-                                (void*)&container-> _set_);
+                                (void*)&container->_set_);
 #  endif /* GUM_DEBUG_MODE */
     }
 
@@ -138,20 +130,18 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >::~OperatorRegister4MultiDim() {
     // remove all the sets
-    for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter
-         =  _set_.beginSafe();
-         iter !=  _set_.endSafe();
+    for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter = _set_.beginSafe();
+         iter != _set_.endSafe();
          ++iter)
       delete iter.val();
   }
 
   // a function to more easily register new operators in MultiDims
   template < typename GUM_SCALAR >
-  void registerOperator(
-     const std::string&                                            operation_name,
-     const std::string&                                            type1,
-     const std::string&                                            type2,
-     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function) {
+  void registerOperator(const std::string& operation_name,
+                        const std::string& type1,
+                        const std::string& type2,
+                        typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function) {
     OperatorRegister4MultiDim< GUM_SCALAR >::Register().insert(operation_name,
                                                                type1,
                                                                type2,

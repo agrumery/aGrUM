@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
 
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto                                   mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.makeInference();
 
@@ -75,7 +75,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
 
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto                                   mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.makeInference();
 
@@ -98,7 +98,7 @@ namespace gum_tests {
       iebn.addEvidence("B", 1);
       iebn.makeInference();
 
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto                                   mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
@@ -121,7 +121,7 @@ namespace gum_tests {
       iebn.addEvidence("B", 1);
       iebn.makeInference();
 
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto                                   mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
@@ -144,7 +144,7 @@ namespace gum_tests {
       iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iebn.makeInference();
 
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto                                   mn = gum::MarkovNet< double >::fromBN(bn);
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iemn.makeInference();
@@ -238,8 +238,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
-                              1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
 
@@ -260,8 +259,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
-                              1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
     }
@@ -288,8 +286,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
-                              1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
     }
@@ -300,8 +297,7 @@ namespace gum_tests {
         auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
-        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}),
-                         gum::UndefinedElement);
+        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), gum::UndefinedElement);
       }
       {
         auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");

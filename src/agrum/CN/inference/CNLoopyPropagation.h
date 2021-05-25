@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef  __CN_LOOPY_PROPAGATION__H__
-#define  __CN_LOOPY_PROPAGATION__H__
+#ifndef __CN_LOOPY_PROPAGATION__H__
+#define __CN_LOOPY_PROPAGATION__H__
 
 #include <cstdlib>
 #include <ctime>
@@ -168,9 +168,8 @@ namespace gum {
        * @param demanding_parent The constant node id of the node receiving the
        * message.
        */
-      void msgL_(
-         const NodeId X,
-         const NodeId demanding_parent);   // allways sent from X to demanding_X
+      void msgL_(const NodeId X,
+                 const NodeId demanding_parent);   // allways sent from X to demanding_X
 
       /**
        * Used by msgL_. Compute the final message for the given parent's message
@@ -240,13 +239,12 @@ namespace gum {
        * the CPT
        * of the one sending the message ( first parent, second ... ).
        */
-      void enum_combi_(
-         std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-         const NodeId&                                            id,
-         GUM_SCALAR&                                              msg_l_min,
-         GUM_SCALAR&                                              msg_l_max,
-         std::vector< GUM_SCALAR >&                               lx,
-         const Idx&                                               pos);
+      void enum_combi_(std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+                       const NodeId&                                            id,
+                       GUM_SCALAR&                                              msg_l_min,
+                       GUM_SCALAR&                                              msg_l_max,
+                       std::vector< GUM_SCALAR >&                               lx,
+                       const Idx&                                               pos);
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a
@@ -269,11 +267,10 @@ namespace gum {
        * message to
        * be sent.
        */
-      void enum_combi_(
-         std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-         const NodeId&                                            id,
-         GUM_SCALAR&                                              msg_p_min,
-         GUM_SCALAR&                                              msg_p_max);
+      void enum_combi_(std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+                       const NodeId&                                            id,
+                       GUM_SCALAR&                                              msg_p_min,
+                       GUM_SCALAR&                                              msg_p_max);
 
       /**
        * Used by msgP_. Marginalisation.
@@ -365,16 +362,16 @@ namespace gum {
 
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      using  _infE_ = InferenceEngine< GUM_SCALAR >;
+      using _infE_ = InferenceEngine< GUM_SCALAR >;
 
       /** The choosen inference type. nodeToNeighbours by Default. */
-      InferenceType  _inferenceType_;
+      InferenceType _inferenceType_;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet< GUM_SCALAR >*  _cn_;
+      const CredalNet< GUM_SCALAR >* _cn_;
 
       /** A pointer to it's IBayesNet used as a DAG. */
-      const IBayesNet< GUM_SCALAR >*  _bnet_;
+      const IBayesNet< GUM_SCALAR >* _bnet_;
 
       // typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       // cnfunc getCN = &infE::getCN;

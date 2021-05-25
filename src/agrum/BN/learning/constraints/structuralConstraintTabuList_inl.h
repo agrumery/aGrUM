@@ -34,75 +34,68 @@ namespace gum {
     /// sets the size of the tabu list
     INLINE
     void StructuralConstraintTabuList::setTabuListSize(Size new_size) {
-      if (new_size ==  _TabuList_changes_.size()) return;
+      if (new_size == _TabuList_changes_.size()) return;
 
-      if ( _TabuList_changes_.size() > new_size) {
+      if (_TabuList_changes_.size() > new_size) {
         // remove the oldest elements, so that only newsize elements remain
-        while ( _TabuList_changes_.size() > new_size) {
-           _TabuList_changes_.eraseSecond( _TabuList_offset_);
-          ++ _TabuList_offset_;
+        while (_TabuList_changes_.size() > new_size) {
+          _TabuList_changes_.eraseSecond(_TabuList_offset_);
+          ++_TabuList_offset_;
         }
       } else {
         // add dummy elements
-        while ( _TabuList_changes_.size() < new_size) {
-          -- _TabuList_offset_;
-           _TabuList_changes_.insert(
-             ArcAddition(std::numeric_limits< NodeId >::max() -  _TabuList_offset_,
+        while (_TabuList_changes_.size() < new_size) {
+          --_TabuList_offset_;
+          _TabuList_changes_.insert(
+             ArcAddition(std::numeric_limits< NodeId >::max() - _TabuList_offset_,
                          std::numeric_limits< NodeId >::max()),
-              _TabuList_offset_);
+             _TabuList_offset_);
         }
       }
     }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintTabuList::setGraphAlone(const DiGraph& graph) {
-    }
+    INLINE void StructuralConstraintTabuList::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-       StructuralConstraintTabuList::checkArcAdditionAlone(NodeId x,
-                                                           NodeId y) const {
-      return ! _TabuList_changes_.existsFirst(ArcDeletion(x, y))
-          && ! _TabuList_changes_.existsFirst(ArcAddition(x, y));
+    INLINE bool StructuralConstraintTabuList::checkArcAdditionAlone(NodeId x, NodeId y) const {
+      return !_TabuList_changes_.existsFirst(ArcDeletion(x, y))
+          && !_TabuList_changes_.existsFirst(ArcAddition(x, y));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-       StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x,
-                                                           NodeId y) const {
-      return ! _TabuList_changes_.existsFirst(ArcAddition(x, y))
-          && ! _TabuList_changes_.existsFirst(ArcDeletion(x, y));
+    INLINE bool StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x, NodeId y) const {
+      return !_TabuList_changes_.existsFirst(ArcAddition(x, y))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(x, y));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-       StructuralConstraintTabuList::checkArcReversalAlone(NodeId x,
-                                                           NodeId y) const {
-      return ! _TabuList_changes_.existsFirst(ArcReversal(y, x))
-          && ! _TabuList_changes_.existsFirst(ArcReversal(x, y));
+    INLINE bool StructuralConstraintTabuList::checkArcReversalAlone(NodeId x, NodeId y) const {
+      return !_TabuList_changes_.existsFirst(ArcReversal(y, x))
+          && !_TabuList_changes_.existsFirst(ArcReversal(x, y));
     }
 
     /// checks whether the constraints enable to add an arc
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-       const ArcAddition& change) const {
+    INLINE bool
+       StructuralConstraintTabuList::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-       const ArcDeletion& change) const {
+    INLINE bool
+       StructuralConstraintTabuList::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-       const ArcReversal& change) const {
+    INLINE bool
+       StructuralConstraintTabuList::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-       const GraphChange& change) const {
+    INLINE bool
+       StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -121,38 +114,28 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void
-       StructuralConstraintTabuList::modifyGraphAlone(const ArcAddition& change) {
-       _TabuList_changes_.eraseSecond( _TabuList_offset_);
-      ++ _TabuList_offset_;
-       _TabuList_changes_.insert(
-         change,
-         NodeId( _TabuList_offset_ +  _TabuList_changes_.size()));
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcAddition& change) {
+      _TabuList_changes_.eraseSecond(_TabuList_offset_);
+      ++_TabuList_offset_;
+      _TabuList_changes_.insert(change, NodeId(_TabuList_offset_ + _TabuList_changes_.size()));
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void
-       StructuralConstraintTabuList::modifyGraphAlone(const ArcDeletion& change) {
-       _TabuList_changes_.eraseSecond( _TabuList_offset_);
-      ++ _TabuList_offset_;
-       _TabuList_changes_.insert(change,
-                                 _TabuList_offset_
-                                   + NodeId( _TabuList_changes_.size()));
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcDeletion& change) {
+      _TabuList_changes_.eraseSecond(_TabuList_offset_);
+      ++_TabuList_offset_;
+      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void
-       StructuralConstraintTabuList::modifyGraphAlone(const ArcReversal& change) {
-       _TabuList_changes_.eraseSecond( _TabuList_offset_);
-      ++ _TabuList_offset_;
-       _TabuList_changes_.insert(change,
-                                 _TabuList_offset_
-                                   + NodeId( _TabuList_changes_.size()));
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcReversal& change) {
+      _TabuList_changes_.eraseSecond(_TabuList_offset_);
+      ++_TabuList_offset_;
+      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void
-       StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           modifyGraphAlone(static_cast< const ArcAddition& >(change));
@@ -173,8 +156,7 @@ namespace gum {
     }
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool StructuralConstraintTabuList::isAlwaysInvalidAlone(
-       const GraphChange&) const {
+    INLINE bool StructuralConstraintTabuList::isAlwaysInvalidAlone(const GraphChange&) const {
       return false;
     }
 

@@ -154,8 +154,7 @@ namespace gum {
 
     virtual void erase(const DiscreteVariable& v) override;
 
-    virtual const Sequence< const DiscreteVariable* >&
-       variablesSequence() const override;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const override;
 
     const DiscreteVariable& variable(Idx i) const override;
     const DiscreteVariable& variable(const std::string& name) const override;
@@ -240,8 +239,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void replace_(const DiscreteVariable* x,
-                          const DiscreteVariable* y) override;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     /**
      * @brief Inverts variables at position p1 and p2
@@ -268,38 +266,38 @@ namespace gum {
 
     private:
     /// List of discrete variables (dimensions).
-    Sequence< const DiscreteVariable* >  _vars_;
+    Sequence< const DiscreteVariable* > _vars_;
 
     /// List of instantiations of the tuples (sequences) of variables.
-    List< Instantiation* >  _slaveInstantiations_;
+    List< Instantiation* > _slaveInstantiations_;
 
     /// Used to represent in which change method this MultiDimImplementation is.
-    enum class  _InternalChangeMethod_ : char
+    enum class _InternalChangeMethod_ : char
     {
       DIRECT_CHANGE,
       MULTIPLE_CHANGE
     };
 
     /// Used to represent in which change state this MultiDimImplementation is.
-    enum class  _InternalChangeState_ : char
+    enum class _InternalChangeState_ : char
     {
       NO_CHANGE,
       NOT_COMMITTED_CHANGE
     };
 
     /// The current change method.
-     _InternalChangeMethod_  _internalChangeMethod_;
+    _InternalChangeMethod_ _internalChangeMethod_;
 
     /// The current change state.
-     _InternalChangeState_  _internalChangeState_;
+    _InternalChangeState_ _internalChangeState_;
 
     /// This MultiDimImplementation domain size.
-    Size  _domainSize_;
+    Size _domainSize_;
 
     /**
      * @brief Change the  _internalChangeState_ to NOT_COMMITTED_CHANGE.
      */
-    void  _setNotCommitedChange_();
+    void _setNotCommitedChange_();
   };
 
   /**
@@ -307,8 +305,7 @@ namespace gum {
    * @ingroup multidim_group
    */
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&,
-                           const MultiDimImplementation< GUM_SCALAR >&);
+  std::ostream& operator<<(std::ostream&, const MultiDimImplementation< GUM_SCALAR >&);
 
 } /* namespace gum */
 

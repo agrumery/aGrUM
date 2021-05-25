@@ -94,8 +94,7 @@ namespace gum {
        = reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
 #  endif
     // get the variables of the uninstantiated table
-    const Sequence< const DiscreteVariable* >& table_vars
-       = table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars = table->variablesSequence();
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
@@ -184,8 +183,7 @@ namespace gum {
        = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
           &(table->unsafeGet(table_alone_offset)));
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult
-       = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
-          &(result->unsafeGet(0)));
+       = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
 
     // but before doing so, check whether the instantiated variables are the
     // last ones or not. If so, we can optimize the parsing of ptable and

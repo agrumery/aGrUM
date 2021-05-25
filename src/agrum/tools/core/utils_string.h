@@ -68,8 +68,7 @@ namespace gum {
    * @param delimiter string
    * @return Vector of splitted strings
    */
-  std::vector< std::string > split(const std::string& orig,
-                                   const std::string& delimiter);
+  std::vector< std::string > split(const std::string& orig, const std::string& delimiter);
 
   /**
    * @brief Replace val by new_val in s.
@@ -78,9 +77,7 @@ namespace gum {
    * @param new_val The new value to replace val in s.
    * @return A new string with val replaced by new_val.
    */
-  std::string replace(const std::string& s,
-                      const std::string& val,
-                      const std::string& new_val);
+  std::string replace(const std::string& s, const std::string& val, const std::string& new_val);
 
   /// @}
 } /* namespace gum */

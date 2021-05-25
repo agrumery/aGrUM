@@ -72,8 +72,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class DefaultEliminationSequenceStrategy:
-      public UnconstrainedEliminationSequenceStrategy {
+  class DefaultEliminationSequenceStrategy: public UnconstrainedEliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -104,8 +103,8 @@ namespace gum {
      * not copied but only referenced by the elimination sequence algorithm. */
     DefaultEliminationSequenceStrategy(UndiGraph*                  graph,
                                        const NodeProperty< Size >* dom_sizes,
-                                       double ratio     = GUM_QUASI_RATIO,
-                                       double threshold = GUM_WEIGHT_THRESHOLD);
+                                       double                      ratio = GUM_QUASI_RATIO,
+                                       double threshold                  = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -117,8 +116,7 @@ namespace gum {
      * sure that either from or the newly created strategy is used for a
      * triangulation but not both. This will necessarily be OK in
      * DefaultTriangulations. */
-    DefaultEliminationSequenceStrategy(
-       const DefaultEliminationSequenceStrategy& from);
+    DefaultEliminationSequenceStrategy(const DefaultEliminationSequenceStrategy& from);
 
     /// move constructor
     DefaultEliminationSequenceStrategy(DefaultEliminationSequenceStrategy&&);
@@ -164,8 +162,7 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
-    virtual bool setGraph(UndiGraph*                  graph,
-                          const NodeProperty< Size >* dom_sizes) final;
+    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) final;
 
     /** @brief clears the sequence (to prepare, for instance, a new elimination
      * sequence) */
@@ -219,23 +216,23 @@ namespace gum {
     private:
     /// for each node, the weight of the clique created by the node's
     /// elimination
-    NodeProperty< double >  _log_weights_;
+    NodeProperty< double > _log_weights_;
 
     /// the simplicial set used for determining the best nodes to eliminate
-    SimplicialSet*  _simplicial_set_{nullptr};
+    SimplicialSet* _simplicial_set_{nullptr};
 
     /// the ratio used by  _simplicial_set_ for its quasi-simplicial nodes
-    double  _simplicial_ratio_;
+    double _simplicial_ratio_;
 
     /// the threshold used by   _simplicial_set_ to determine small cliques
-    double  _simplicial_threshold_;
+    double _simplicial_threshold_;
 
     /// indicates whether we compute new fill-ins
-    bool  _provide_fill_ins_{false};
+    bool _provide_fill_ins_{false};
 
 
     /// create a new simplicial set suited for the current graph
-    void  _createSimplicialSet_();
+    void _createSimplicialSet_();
   };
 
 

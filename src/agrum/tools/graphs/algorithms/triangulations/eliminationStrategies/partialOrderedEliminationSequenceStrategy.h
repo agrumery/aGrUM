@@ -51,8 +51,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class PartialOrderedEliminationSequenceStrategy:
-      public EliminationSequenceStrategy {
+  class PartialOrderedEliminationSequenceStrategy: public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -165,18 +164,15 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph, the domain sizes and
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
-    PartialOrderedEliminationSequenceStrategy(
-       UndiGraph*                  graph,
-       const NodeProperty< Size >* dom_sizes,
-       const List< NodeSet >*      subsets);
+    PartialOrderedEliminationSequenceStrategy(UndiGraph*                  graph,
+                                              const NodeProperty< Size >* dom_sizes,
+                                              const List< NodeSet >*      subsets);
 
     /// copy constructor
-    PartialOrderedEliminationSequenceStrategy(
-       const PartialOrderedEliminationSequenceStrategy&);
+    PartialOrderedEliminationSequenceStrategy(const PartialOrderedEliminationSequenceStrategy&);
 
     /// move constructor
-    PartialOrderedEliminationSequenceStrategy(
-       PartialOrderedEliminationSequenceStrategy&&);
+    PartialOrderedEliminationSequenceStrategy(PartialOrderedEliminationSequenceStrategy&&);
 
     /// @}
   };

@@ -43,13 +43,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE PseudoCount< ALLOC >::PseudoCount(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                            nodeId2columns,
-       const typename PseudoCount< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename PseudoCount< ALLOC >::allocator_type&                 alloc) :
         apriori_(apriori.clone(alloc)),
         counter_(parser, ranges, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(PseudoCount);
@@ -59,11 +58,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE PseudoCount< ALLOC >::PseudoCount(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                            nodeId2columns,
-       const typename PseudoCount< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename PseudoCount< ALLOC >::allocator_type&          alloc) :
         apriori_(apriori.clone(alloc)),
         counter_(parser, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(PseudoCount);
@@ -119,8 +117,7 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    PseudoCount< ALLOC >&
-       PseudoCount< ALLOC >::operator=(const PseudoCount< ALLOC >& from) {
+    PseudoCount< ALLOC >& PseudoCount< ALLOC >::operator=(const PseudoCount< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from.apriori_->clone();
         RecordCounter< ALLOC > new_counter = from.counter_;
@@ -140,8 +137,7 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    PseudoCount< ALLOC >&
-       PseudoCount< ALLOC >::operator=(PseudoCount< ALLOC >&& from) {
+    PseudoCount< ALLOC >& PseudoCount< ALLOC >::operator=(PseudoCount< ALLOC >&& from) {
       if (this != &from) {
         std::swap(apriori_, from.apriori_);
 
@@ -168,8 +164,7 @@ namespace gum {
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < template < typename > class ALLOC >
-    INLINE void
-       PseudoCount< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+    INLINE void PseudoCount< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       counter_.setMinNbRowsPerThread(nb);
     }
 
@@ -192,8 +187,7 @@ namespace gum {
     template < template < typename > class XALLOC >
     void PseudoCount< ALLOC >::setRanges(
        const std::vector< std::pair< std::size_t, std::size_t >,
-                          XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges) {
+                          XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
@@ -250,14 +244,12 @@ namespace gum {
      * - 2 means that Z should be marginalized
      */
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > > PseudoCount< ALLOC >::get(
-       const std::vector< NodeId, ALLOC< NodeId > >& ids) {
+    std::vector< double, ALLOC< double > >
+       PseudoCount< ALLOC >::get(const std::vector< NodeId, ALLOC< NodeId > >& ids) {
       IdCondSet< ALLOC >                     idset(ids, false, true);
-      std::vector< double, ALLOC< double > > N_xyz(
-         this->counter_.counts(idset, true));
+      std::vector< double, ALLOC< double > > N_xyz(this->counter_.counts(idset, true));
       const bool informative_external_apriori = this->apriori_->isInformative();
-      if (informative_external_apriori)
-        this->apriori_->addAllApriori(idset, N_xyz);
+      if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_xyz);
       return N_xyz;
     }
 

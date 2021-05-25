@@ -76,9 +76,8 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriBDeu(const DatabaseTable< ALLOC >& database,
-                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                     nodeId2columns
+      AprioriBDeu(const DatabaseTable< ALLOC >&                                 database,
+                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
                   = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                   const allocator_type& alloc = allocator_type());
 
@@ -153,18 +152,16 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void
-         addAllApriori(const IdCondSet< ALLOC >&               idset,
-                       std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
+                                 std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(
-         const IdCondSet< ALLOC >&               idset,
-         std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
+                                          std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
     };

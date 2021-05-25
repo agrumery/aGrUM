@@ -37,10 +37,9 @@ namespace gum_tests {
   class PseudoCountTestSuite: public CxxTest::TestSuite {
     public:
     void test_simple_counts() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/minimal.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -60,8 +59,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}));
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}),
-                         std::vector< double >({2, 1, 1, 1, 0, 2}));
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}));
       }
       {
         gum::learning::AprioriSmoothing<> apriori(database);
@@ -69,8 +67,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}));
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}),
-                         std::vector< double >({3, 2, 2, 2, 1, 3}));
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}));
       }
       {
         gum::learning::AprioriSmoothing<> apriori(database);
@@ -79,8 +76,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4.1, 3.1}));
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}),
-                         std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
       }
     }
   };

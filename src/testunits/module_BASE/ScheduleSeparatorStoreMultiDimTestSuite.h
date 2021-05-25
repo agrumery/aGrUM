@@ -50,18 +50,11 @@ namespace gum_tests {
       pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       gum::ScheduleMultiDim< double > f2(pot2);
 
-      gum::ArcProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
-         set;
+      gum::ArcProperty< gum::Set< const gum::MultiDimImplementation< double >* > > set;
       TS_ASSERT(set.size() == 0);
-      gum::ScheduleSeparatorStoreMultiDim< double > store1(f1,
-                                                           set,
-                                                           gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim< double > store2(f2,
-                                                           set,
-                                                           gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim< double > store3(f2,
-                                                           set,
-                                                           gum::Arc(2, 3));
+      gum::ScheduleSeparatorStoreMultiDim< double > store1(f1, set, gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim< double > store2(f2, set, gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim< double > store3(f2, set, gum::Arc(2, 3));
       TS_ASSERT(store1 != store2);
       TS_ASSERT(store2 != store3);
       TS_ASSERT(!(store2 == store3));
@@ -70,8 +63,7 @@ namespace gum_tests {
       std::pair< long, long > xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq
-         = store1.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 
@@ -91,9 +83,7 @@ namespace gum_tests {
       store4 = store1;
       TS_ASSERT(store4 == store1);
 
-      TS_ASSERT(
-         store4.type()
-         == gum::ScheduleOperation< double >::Type::SEPARATOR_STORE_MULTIDIM);
+      TS_ASSERT(store4.type() == gum::ScheduleOperation< double >::Type::SEPARATOR_STORE_MULTIDIM);
 
       gum::ScheduleSeparatorStoreMultiDim< double >* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);

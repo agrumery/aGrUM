@@ -44,43 +44,37 @@
       error_stream << msg;             \
       throw(type(error_stream.str())); \
     }
-#  define GUM_SHOWERROR(e)                                                      \
-    {                                                                           \
-      std::cout << std::endl                                                    \
-                << (e).errorType() << " : " << (e).errorContent() << std::endl; \
-    }
+#  define GUM_SHOWERROR(e) \
+    { std::cout << std::endl << (e).errorType() << " : " << (e).errorContent() << std::endl; }
 #else
 #  ifndef GUM_DEBUG_MODE
 #    define GUM_ERROR(type, msg)                                    \
       {                                                             \
         std::ostringstream error_stream;                            \
-        error_stream <<   __FILE__ << ":" <<   __LINE__ << ": " << msg; \
+        error_stream << __FILE__ << ":" << __LINE__ << ": " << msg; \
         throw(type(error_stream.str()));                            \
       }
-#    define GUM_SHOWERROR(e)                                               \
-      {                                                                    \
-        std::cout << std::endl                                             \
-                  <<   __FILE__ << ":" <<   __LINE__ << " " << (e).errorType() \
-                  << " from " << std::endl                                 \
-                  << (e).errorContent() << std::endl;                      \
+#    define GUM_SHOWERROR(e)                                                           \
+      {                                                                                \
+        std::cout << std::endl                                                         \
+                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() << " from " \
+                  << std::endl                                                         \
+                  << (e).errorContent() << std::endl;                                  \
       }
 #  else   // GUM_FOR_SWIG
-#    define GUM_ERROR(type, msg)                           \
-      {                                                    \
-        std::ostringstream error_stream;                   \
-        error_stream << msg;                               \
-        throw(type(gum:: _createMsg_(  __FILE__,              \
-                                     __FUNCTION__,          \
-                                      __LINE__,              \
-                                    error_stream.str()))); \
+#    define GUM_ERROR(type, msg)                                                             \
+      {                                                                                      \
+        std::ostringstream error_stream;                                                     \
+        error_stream << msg;                                                                 \
+        throw(type(gum::_createMsg_(__FILE__, __FUNCTION__, __LINE__, error_stream.str()))); \
       }
-#    define GUM_SHOWERROR(e)                                               \
-      {                                                                    \
-        std::cout << std::endl                                             \
-                  <<   __FILE__ << ":" <<   __LINE__ << " " << (e).errorType() \
-                  << " from " << std::endl                                 \
-                  << (e).errorContent() << std::endl;                      \
-        std::cout << (e).errorCallStack() << std::endl;                    \
+#    define GUM_SHOWERROR(e)                                                           \
+      {                                                                                \
+        std::cout << std::endl                                                         \
+                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() << " from " \
+                  << std::endl                                                         \
+                  << (e).errorContent() << std::endl;                                  \
+        std::cout << (e).errorCallStack() << std::endl;                                \
       }
 #  endif   // GUM_DEBUG_MODE
 #endif     //  GUM_FOR_SWIG
@@ -485,7 +479,7 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  const std::string  _createMsg_(const std::string& filename,
+  const std::string _createMsg_(const std::string& filename,
                                 const std::string& function,
                                 int                line,
                                 const std::string& msg);
@@ -531,22 +525,14 @@ namespace gum {
   GUM_MAKE_ERROR(WrongClassElement, FactoryError, "Wrong ClassElement")
   GUM_MAKE_ERROR(PRMTypeError, FactoryError, "Wrong subtype or subclass")
   GUM_MAKE_ERROR(LearningError, Exception, "Factory error")
-  GUM_MAKE_ERROR(IncompatibleScoreApriori,
-                 LearningError,
-                 "Incompatible (maybe implicit) priors")
+  GUM_MAKE_ERROR(IncompatibleScoreApriori, LearningError, "Incompatible (maybe implicit) priors")
   GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori,
                  LearningError,
                  "Possible incompatibility between score and prior")
   GUM_MAKE_ERROR(DatabaseError, LearningError, "Database error")
-  GUM_MAKE_ERROR(MissingVariableInDatabase,
-                 LearningError,
-                 "Missing variable name in database")
-  GUM_MAKE_ERROR(MissingValueInDatabase,
-                 LearningError,
-                 "The database contains some missing values")
-  GUM_MAKE_ERROR(UnknownLabelInDatabase,
-                 LearningError,
-                 "Unknown label found in database")
+  GUM_MAKE_ERROR(MissingVariableInDatabase, LearningError, "Missing variable name in database")
+  GUM_MAKE_ERROR(MissingValueInDatabase, LearningError, "The database contains some missing values")
+  GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError, "Unknown label found in database")
 
   class SyntaxError: public IOError {
     protected:

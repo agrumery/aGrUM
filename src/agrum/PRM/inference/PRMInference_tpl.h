@@ -33,25 +33,23 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInference< GUM_SCALAR >::clearEvidence() {
-      for (const auto& elt:  _evidences_) {
+      for (const auto& elt: _evidences_) {
         for (const auto& elt2: *elt.second)
           delete elt2.second;
 
         delete elt.second;
       }
 
-       _evidences_.clear();
+      _evidences_.clear();
     }
 
     template < typename GUM_SCALAR >
-    PRMInference< GUM_SCALAR >::PRMInference(
-       const PRMInference< GUM_SCALAR >& source) :
-        prm_(source.prm_),
-        sys_(source.sys_) {
+    PRMInference< GUM_SCALAR >::PRMInference(const PRMInference< GUM_SCALAR >& source) :
+        prm_(source.prm_), sys_(source.sys_) {
       GUM_CONS_CPY(PRMInference);
 
-      for (const auto& elt: source. _evidences_) {
-         _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
+      for (const auto& elt: source._evidences_) {
+        _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
         for (const auto& elt2: *elt.second) {
           Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
@@ -61,20 +59,20 @@ namespace gum {
           for (i.setFirst(); !i.end(); i.inc())
             e->set(i, elt2.second->get(i));
 
-           _evidences_[elt.first]->insert(elt2.first, e);
+          _evidences_[elt.first]->insert(elt2.first, e);
         }
       }
     }
 
     template < typename GUM_SCALAR >
-    PRMInference< GUM_SCALAR >& PRMInference< GUM_SCALAR >::operator=(
-       const PRMInference< GUM_SCALAR >& source) {
+    PRMInference< GUM_SCALAR >&
+       PRMInference< GUM_SCALAR >::operator=(const PRMInference< GUM_SCALAR >& source) {
       clearEvidence();
       prm_ = source.prm_;
       sys_ = source.sys_;
 
-      for (const auto& elt: source. _evidences_) {
-         _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
+      for (const auto& elt: source._evidences_) {
+        _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
         for (const auto& elt2: *elt.second) {
           Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
@@ -85,7 +83,7 @@ namespace gum {
             e->set(i, elt2.second->get(i));
           }
 
-           _evidences_[elt.first]->insert(elt2.first, e);
+          _evidences_[elt.first]->insert(elt2.first, e);
         }
       }
 
@@ -94,23 +92,21 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >:: _EMap_(const PRMInstance< GUM_SCALAR >* i) {
-      if ( _evidences_.exists(i)) {
-        return *( _evidences_[i]);
+       PRMInference< GUM_SCALAR >::_EMap_(const PRMInstance< GUM_SCALAR >* i) {
+      if (_evidences_.exists(i)) {
+        return *(_evidences_[i]);
       } else {
-         _evidences_.insert(i, new PRMInference< GUM_SCALAR >::EMap());
-        return *( _evidences_[i]);
+        _evidences_.insert(i, new PRMInference< GUM_SCALAR >::EMap());
+        return *(_evidences_[i]);
       }
     }
 
     template < typename GUM_SCALAR >
-    void
-       PRMInference< GUM_SCALAR >::addEvidence(const Chain& chain,
-                                               const Potential< GUM_SCALAR >& p) {
+    void PRMInference< GUM_SCALAR >::addEvidence(const Chain&                   chain,
+                                                 const Potential< GUM_SCALAR >& p) {
       if (chain.first->exists(chain.second->id())) {
         if ((p.nbrDim() != 1) || (!p.contains(chain.second->type().variable())))
-          GUM_ERROR(OperationNotAllowed,
-                    "illegal evidence for the given PRMAttribute.")
+          GUM_ERROR(OperationNotAllowed, "illegal evidence for the given PRMAttribute.")
 
         Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
         e->add(chain.second->type().variable());
@@ -119,7 +115,7 @@ namespace gum {
         for (i.setFirst(); !i.end(); i.inc())
           e->set(i, p.get(i));
 
-        PRMInference< GUM_SCALAR >::EMap& emap =  _EMap_(chain.first);
+        PRMInference< GUM_SCALAR >::EMap& emap = _EMap_(chain.first);
 
         if (emap.exists(chain.second->id())) {
           delete emap[chain.second->id()];
@@ -137,9 +133,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMInference< GUM_SCALAR >::PRMInference(
-       const PRM< GUM_SCALAR >&       prm,
-       const PRMSystem< GUM_SCALAR >& system) :
+    INLINE PRMInference< GUM_SCALAR >::PRMInference(const PRM< GUM_SCALAR >&       prm,
+                                                    const PRMSystem< GUM_SCALAR >& system) :
         prm_(&prm),
         sys_(&system) {
       GUM_CONSTRUCTOR(PRMInference);
@@ -155,16 +150,15 @@ namespace gum {
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       try {
-        return *( _evidences_[&i]);
+        return *(_evidences_[&i]);
       } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(
-          const PRMInstance< GUM_SCALAR >& i) const {
+       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
       try {
-        return *( _evidences_[&i]);
+        return *(_evidences_[&i]);
       } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
@@ -172,50 +166,45 @@ namespace gum {
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       try {
-        return *( _evidences_[i]);
+        return *(_evidences_[i]);
       } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(
-          const PRMInstance< GUM_SCALAR >* i) const {
+       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
       try {
-        return *( _evidences_[i]);
+        return *(_evidences_[i]);
       } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(
-       const PRMInstance< GUM_SCALAR >& i) const {
-      return  _evidences_.exists(&i);
+    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >& i) const {
+      return _evidences_.exists(&i);
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(
-       const PRMInstance< GUM_SCALAR >* i) const {
-      return  _evidences_.exists(i);
+    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >* i) const {
+      return _evidences_.exists(i);
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const Chain& chain) const {
-      return (hasEvidence(chain.first))
-              ? evidence(chain.first).exists(chain.second->id())
-              : false;
+      return (hasEvidence(chain.first)) ? evidence(chain.first).exists(chain.second->id()) : false;
     }
 
     template < typename GUM_SCALAR >
     INLINE bool PRMInference< GUM_SCALAR >::hasEvidence() const {
-      return ( _evidences_.size() != (Size)0);
+      return (_evidences_.size() != (Size)0);
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::removeEvidence(const Chain& chain) {
       try {
-        if ( _EMap_(chain.first).exists(chain.second->id())) {
+        if (_EMap_(chain.first).exists(chain.second->id())) {
           evidenceRemoved_(chain);
-          delete  _EMap_(chain.first)[chain.second->id()];
-           _EMap_(chain.first).erase(chain.second->id());
+          delete _EMap_(chain.first)[chain.second->id()];
+          _EMap_(chain.first).erase(chain.second->id());
         }
       } catch (NotFound&) {
         // Ok, we are only removing
@@ -226,23 +215,19 @@ namespace gum {
     INLINE void PRMInference< GUM_SCALAR >::posterior(
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
-      if (m.nbrDim() > 0) {
-        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.")
-      }
+      if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
 
       if (hasEvidence(chain)) {
         m.add(chain.second->type().variable());
-        const Potential< GUM_SCALAR >& e
-           = *(evidence(chain.first)[chain.second->id()]);
-        Instantiation i(m), j(e);
+        const Potential< GUM_SCALAR >& e = *(evidence(chain.first)[chain.second->id()]);
+        Instantiation                  i(m), j(e);
 
         for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
           m.set(i, e.get(j));
       } else {
         if (chain.second != &(chain.first->get(chain.second->safeName()))) {
           typename PRMInference< GUM_SCALAR >::Chain good_chain
-             = std::make_pair(chain.first,
-                              &(chain.first->get(chain.second->safeName())));
+             = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
           m.add(good_chain.second->type().variable());
           posterior_(good_chain, m);
         } else {
@@ -256,9 +241,7 @@ namespace gum {
     INLINE void PRMInference< GUM_SCALAR >::joint(
        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
        Potential< GUM_SCALAR >&                                         j) {
-      if (j.nbrDim() > 0) {
-        GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.")
-      }
+      if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
 
       for (auto chain = chains.begin(); chain != chains.end(); ++chain) {
         j.add(chain->second->type().variable());

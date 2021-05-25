@@ -43,32 +43,28 @@ namespace gum_tests {
 
   class aSimpleImportanceListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __mess;
+    int         __nbr;
+    std::string __mess;
 
     public:
     aSimpleImportanceListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
     void whenStop(const void* buffer, const std::string s) {
-       __nbr++;
-       __mess = s;
+      __nbr++;
+      __mess = s;
     }
 
-    int         getNbr() { return  __nbr; }
-    std::string getMess() { return  __mess; }
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
   };
 
   class ImportanceSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testImportanceBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -91,8 +87,7 @@ namespace gum_tests {
 
 
     void testImportanceBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
 
@@ -115,8 +110,7 @@ namespace gum_tests {
 
 
     void testImportanceBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
@@ -140,8 +134,7 @@ namespace gum_tests {
     }
 
     void testImportanceBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
@@ -166,8 +159,7 @@ namespace gum_tests {
 
 
     void testImportanceBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {
@@ -350,8 +342,7 @@ namespace gum_tests {
       try {
         gum::ImportanceSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
-        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}),
-                         gum::FatalError);
+        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}), gum::FatalError);
 
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
@@ -416,8 +407,7 @@ namespace gum_tests {
 
     void testImportanceDiabetes() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn,
-                                      GET_RESSOURCES_PATH("bif/Diabetes.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/Diabetes.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));

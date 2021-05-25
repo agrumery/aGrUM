@@ -52,11 +52,11 @@ namespace gum {
 
     /// default constructor
     /** @warning table and del_vars are passed by copy */
-    ScheduleProject(const ScheduleMultiDim< GUM_SCALAR >& table,
-                    const Set< const DiscreteVariable* >& del_vars,
-                    MultiDimImplementation< GUM_SCALAR >* (*project)(
-                       const MultiDimImplementation< GUM_SCALAR >&,
-                       const Set< const DiscreteVariable* >&));
+    ScheduleProject(
+       const ScheduleMultiDim< GUM_SCALAR >& table,
+       const Set< const DiscreteVariable* >& del_vars,
+       MultiDimImplementation< GUM_SCALAR >* (*project)(const MultiDimImplementation< GUM_SCALAR >&,
+                                                        const Set< const DiscreteVariable* >&));
 
     /// copy constructor
     ScheduleProject(const ScheduleProject< GUM_SCALAR >&);
@@ -120,8 +120,7 @@ namespace gum {
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-       multiDimResults() const;
+    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -130,24 +129,23 @@ namespace gum {
 
     private:
     // the table to project
-    ScheduleMultiDim< GUM_SCALAR >  _table_;
+    ScheduleMultiDim< GUM_SCALAR > _table_;
 
     // the set of variables that should be removed from the table
-    Set< const DiscreteVariable* >  _del_vars_;
+    Set< const DiscreteVariable* > _del_vars_;
 
     /// the result of the operation
-    ScheduleMultiDim< GUM_SCALAR >*  _result_;
+    ScheduleMultiDim< GUM_SCALAR >* _result_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* _args_;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _results_;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* _results_;
 
     /// the projection operator
-    MultiDimImplementation< GUM_SCALAR >* (* _project_)(
-       const MultiDimImplementation< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&);
+    MultiDimImplementation< GUM_SCALAR >* (*_project_)(const MultiDimImplementation< GUM_SCALAR >&,
+                                                       const Set< const DiscreteVariable* >&);
   };
 
 } /* namespace gum */

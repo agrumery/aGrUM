@@ -35,8 +35,7 @@
        TS_FAIL("gum::Exception thrown");         \
      })
 
-#define TS_GUM_POTENTIAL_DELTA(p1, p2, delta) \
-  TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
+#define TS_GUM_POTENTIAL_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
 
 #define TS_GUM_POTENTIAL_SHOW_DELTA(p1, p2, delta)           \
   {                                                          \

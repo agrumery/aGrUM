@@ -48,13 +48,11 @@
 #include <agrum/tools/multidim/utils/patterns/partialInstantiationPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME \
-  partialInstantiationMultiDimArray
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME partialInstantiationMultiDimArray
 #include <agrum/tools/multidim/utils/patterns/partialInstantiationPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
 
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME \
-  partialInstantiationMultiDimArray4Pointers
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME partialInstantiationMultiDimArray4Pointers
 #include <agrum/tools/multidim/utils/patterns/partialInstantiationPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
 
@@ -65,8 +63,7 @@
 
 /// default "basename" functions for instantiating MultiDimImplementations
 
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME \
-  partialInstantiationMultiDimImplementation
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME partialInstantiationMultiDimImplementation
 #include <agrum/tools/multidim/utils/patterns/partialInstantiationPattern4BaseName.h>
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 
@@ -105,16 +102,14 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerPartialInstantiation< GUM_SCALAR >(
-         "i",
-         MultiDimArrayString,
-         &partialInstantiationMultiDimArray);
+      registerPartialInstantiation< GUM_SCALAR >("i",
+                                                 MultiDimArrayString,
+                                                 &partialInstantiationMultiDimArray);
 
       // register default basename functions
-      registerPartialInstantiation< GUM_SCALAR >(
-         "i",
-         BaseNameString,
-         &partialInstantiationMultiDimImplementation);
+      registerPartialInstantiation< GUM_SCALAR >("i",
+                                                 BaseNameString,
+                                                 &partialInstantiationMultiDimImplementation);
     }
   }
 
@@ -130,10 +125,9 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerPartialInstantiation< GUM_SCALAR* >(
-         "i",
-         MultiDimArrayString,
-         &partialInstantiationMultiDimArray4Pointers);
+      registerPartialInstantiation< GUM_SCALAR* >("i",
+                                                  MultiDimArrayString,
+                                                  &partialInstantiationMultiDimArray4Pointers);
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR* >(

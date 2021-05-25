@@ -61,12 +61,12 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   AdaptiveRMaxPlaner::AdaptiveRMaxPlaner(IOperatorStrategy< double >* opi,
-                                         double                   discountFactor,
-                                         double                   epsilon,
-                                         const ILearningStrategy* learner,
-                                         bool                     verbose) :
+                                         double                       discountFactor,
+                                         double                       epsilon,
+                                         const ILearningStrategy*     learner,
+                                         bool                         verbose) :
       StructuredPlaner(opi, discountFactor, epsilon, verbose),
-      IDecisionStrategy(),  _fmdpLearner_(learner),  _initialized_(false) {
+      IDecisionStrategy(), _fmdpLearner_(learner), _initialized_(false) {
     GUM_CONSTRUCTOR(AdaptiveRMaxPlaner);
   }
 
@@ -76,9 +76,8 @@ namespace gum {
   AdaptiveRMaxPlaner::~AdaptiveRMaxPlaner() {
     GUM_DESTRUCTOR(AdaptiveRMaxPlaner);
 
-    for (HashTableIteratorSafe< Idx, StatesCounter* > scIter
-         =  _counterTable_.beginSafe();
-         scIter !=  _counterTable_.endSafe();
+    for (HashTableIteratorSafe< Idx, StatesCounter* > scIter = _counterTable_.beginSafe();
+         scIter != _counterTable_.endSafe();
          ++scIter)
       delete scIter.val();
   }
@@ -95,16 +94,14 @@ namespace gum {
   // Initializes data structure needed for making the planning
   // ==========================================================================
   void AdaptiveRMaxPlaner::initialize(const FMDP< double >* fmdp) {
-    if (! _initialized_) {
+    if (!_initialized_) {
       StructuredPlaner::initialize(fmdp);
       IDecisionStrategy::initialize(fmdp);
-      for (auto actionIter = fmdp->beginActions();
-           actionIter != fmdp->endActions();
-           ++actionIter) {
-         _counterTable_.insert(*actionIter, new StatesCounter());
-         _initializedTable_.insert(*actionIter, false);
+      for (auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter) {
+        _counterTable_.insert(*actionIter, new StatesCounter());
+        _initializedTable_.insert(*actionIter, false);
       }
-       _initialized_ = true;
+      _initialized_ = true;
     }
   }
 
@@ -112,11 +109,11 @@ namespace gum {
   // Performs a value iteration
   // ===========================================================================
   void AdaptiveRMaxPlaner::makePlanning(Idx nbStep) {
-     _makeRMaxFunctionGraphs_();
+    _makeRMaxFunctionGraphs_();
 
     StructuredPlaner::makePlanning(nbStep);
 
-     _clearTables_();
+    _clearTables_();
   }
 
   /* **************************************************************************************************
@@ -131,14 +128,9 @@ namespace gum {
   // Performs a single step of value iteration
   // ===========================================================================
   void AdaptiveRMaxPlaner::initVFunction_() {
-    vFunction_->manager()->setRootNode(
-       vFunction_->manager()->addTerminalNode(0.0));
-    for (auto actionIter = fmdp_->beginActions();
-         actionIter != fmdp_->endActions();
-         ++actionIter)
-      vFunction_ = this->operator_->add(vFunction_,
-                                        RECASTED(this->fmdp_->reward(*actionIter)),
-                                        1);
+    vFunction_->manager()->setRootNode(vFunction_->manager()->addTerminalNode(0.0));
+    for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter)
+      vFunction_ = this->operator_->add(vFunction_, RECASTED(this->fmdp_->reward(*actionIter)), 1);
   }
 
   // ===========================================================================
@@ -147,26 +139,22 @@ namespace gum {
   MultiDimFunctionGraph< double >* AdaptiveRMaxPlaner::valueIteration_() {
     // *****************************************************************************************
     // Loop reset
-    MultiDimFunctionGraph< double >* newVFunction
-       = operator_->getFunctionInstance();
+    MultiDimFunctionGraph< double >* newVFunction = operator_->getFunctionInstance();
     newVFunction->copyAndReassign(*vFunction_, fmdp_->mapMainPrime());
 
     // *****************************************************************************************
     // For each action
     std::vector< MultiDimFunctionGraph< double >* > qActionsSet;
-    for (auto actionIter = fmdp_->beginActions();
-         actionIter != fmdp_->endActions();
-         ++actionIter) {
-      MultiDimFunctionGraph< double >* qAction
-         = evalQaction_(newVFunction, *actionIter);
+    for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
+      MultiDimFunctionGraph< double >* qAction = evalQaction_(newVFunction, *actionIter);
 
       // *******************************************************************************************
       // Next, we add the reward
       qAction = addReward_(qAction, *actionIter);
 
       qAction = this->operator_->maximize(
-          _actionsRMaxTable_[*actionIter],
-         this->operator_->multiply(qAction,  _actionsBoolTable_[*actionIter], 1),
+         _actionsRMaxTable_[*actionIter],
+         this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
          2);
 
       qActionsSet.push_back(qAction);
@@ -195,26 +183,21 @@ namespace gum {
   void AdaptiveRMaxPlaner::evalPolicy_() {
     // *****************************************************************************************
     // Loop reset
-    MultiDimFunctionGraph< double >* newVFunction
-       = operator_->getFunctionInstance();
+    MultiDimFunctionGraph< double >* newVFunction = operator_->getFunctionInstance();
     newVFunction->copyAndReassign(*vFunction_, fmdp_->mapMainPrime());
 
-    std::vector<
-       MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >* >
+    std::vector< MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >* >
        argMaxQActionsSet;
     // *****************************************************************************************
     // For each action
-    for (auto actionIter = fmdp_->beginActions();
-         actionIter != fmdp_->endActions();
-         ++actionIter) {
-      MultiDimFunctionGraph< double >* qAction
-         = this->evalQaction_(newVFunction, *actionIter);
+    for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
+      MultiDimFunctionGraph< double >* qAction = this->evalQaction_(newVFunction, *actionIter);
 
       qAction = this->addReward_(qAction, *actionIter);
 
       qAction = this->operator_->maximize(
-          _actionsRMaxTable_[*actionIter],
-         this->operator_->multiply(qAction,  _actionsBoolTable_[*actionIter], 1),
+         _actionsRMaxTable_[*actionIter],
+         this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
          2);
 
       argMaxQActionsSet.push_back(makeArgMax_(qAction, *actionIter));
@@ -224,8 +207,7 @@ namespace gum {
     // *****************************************************************************************
     // Next to evaluate main value function, we take maximise over all action
     // value, ...
-    MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >*
-       argMaxVFunction
+    MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >* argMaxVFunction
        = argmaximiseQactions_(argMaxQActionsSet);
 
     // *****************************************************************************************
@@ -237,32 +219,27 @@ namespace gum {
   // ===========================================================================
   //
   // ===========================================================================
-  void AdaptiveRMaxPlaner:: _makeRMaxFunctionGraphs_() {
-     _rThreshold_
-       =  _fmdpLearner_->modaMax() * 5 > 30 ?  _fmdpLearner_->modaMax() * 5 : 30;
-     _rmax_ =  _fmdpLearner_->rMax() / (1.0 - this->discountFactor_);
+  void AdaptiveRMaxPlaner::_makeRMaxFunctionGraphs_() {
+    _rThreshold_ = _fmdpLearner_->modaMax() * 5 > 30 ? _fmdpLearner_->modaMax() * 5 : 30;
+    _rmax_       = _fmdpLearner_->rMax() / (1.0 - this->discountFactor_);
 
-    for (auto actionIter = this->fmdp()->beginActions();
-         actionIter != this->fmdp()->endActions();
+    for (auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions();
          ++actionIter) {
       std::vector< MultiDimFunctionGraph< double >* > rmaxs;
       std::vector< MultiDimFunctionGraph< double >* > boolQs;
 
-      for (auto varIter = this->fmdp()->beginVariables();
-           varIter != this->fmdp()->endVariables();
+      for (auto varIter = this->fmdp()->beginVariables(); varIter != this->fmdp()->endVariables();
            ++varIter) {
-        const IVisitableGraphLearner* visited =  _counterTable_[*actionIter];
+        const IVisitableGraphLearner* visited = _counterTable_[*actionIter];
 
-        MultiDimFunctionGraph< double >* varRMax
-           = this->operator_->getFunctionInstance();
-        MultiDimFunctionGraph< double >* varBoolQ
-           = this->operator_->getFunctionInstance();
+        MultiDimFunctionGraph< double >* varRMax  = this->operator_->getFunctionInstance();
+        MultiDimFunctionGraph< double >* varBoolQ = this->operator_->getFunctionInstance();
 
         visited->insertSetOfVars(varRMax);
         visited->insertSetOfVars(varBoolQ);
 
         std::pair< NodeId, NodeId > rooty
-           =  _visitLearner_(visited, visited->root(), varRMax, varBoolQ);
+           = _visitLearner_(visited, visited->root(), varRMax, varBoolQ);
         varRMax->manager()->setRootNode(rooty.first);
         varRMax->manager()->reduce();
         varRMax->manager()->clean();
@@ -299,8 +276,8 @@ namespace gum {
       }
 
       //        std::cout << "Maximising" << std::endl;
-       _actionsRMaxTable_.insert(*actionIter, this->maximiseQactions_(rmaxs));
-       _actionsBoolTable_.insert(*actionIter, this->minimiseFunctions_(boolQs));
+      _actionsRMaxTable_.insert(*actionIter, this->maximiseQactions_(rmaxs));
+      _actionsBoolTable_.insert(*actionIter, this->minimiseFunctions_(boolQs));
     }
   }
 
@@ -308,54 +285,47 @@ namespace gum {
   //
   // ===========================================================================
   std::pair< NodeId, NodeId >
-     AdaptiveRMaxPlaner:: _visitLearner_(const IVisitableGraphLearner* visited,
-                                        NodeId currentNodeId,
+     AdaptiveRMaxPlaner::_visitLearner_(const IVisitableGraphLearner*    visited,
+                                        NodeId                           currentNodeId,
                                         MultiDimFunctionGraph< double >* rmax,
                                         MultiDimFunctionGraph< double >* boolQ) {
     std::pair< NodeId, NodeId > rep;
     if (visited->isTerminal(currentNodeId)) {
       rep.first = rmax->manager()->addTerminalNode(
-         visited->nodeNbObservation(currentNodeId) <  _rThreshold_ ?  _rmax_ : 0.0);
+         visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? _rmax_ : 0.0);
       rep.second = boolQ->manager()->addTerminalNode(
-         visited->nodeNbObservation(currentNodeId) <  _rThreshold_ ? 0.0 : 1.0);
+         visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? 0.0 : 1.0);
       return rep;
     }
 
-    NodeId* rmaxsons = static_cast< NodeId* >(SOA_ALLOCATE(
-       sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
-    NodeId* bqsons   = static_cast< NodeId* >(SOA_ALLOCATE(
-       sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
+    NodeId* rmaxsons = static_cast< NodeId* >(
+       SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
+    NodeId* bqsons = static_cast< NodeId* >(
+       SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
 
-    for (Idx moda = 0; moda < visited->nodeVar(currentNodeId)->domainSize();
-         ++moda) {
+    for (Idx moda = 0; moda < visited->nodeVar(currentNodeId)->domainSize(); ++moda) {
       std::pair< NodeId, NodeId > sonp
-         =  _visitLearner_(visited,
-                          visited->nodeSon(currentNodeId, moda),
-                          rmax,
-                          boolQ);
+         = _visitLearner_(visited, visited->nodeSon(currentNodeId, moda), rmax, boolQ);
       rmaxsons[moda] = sonp.first;
       bqsons[moda]   = sonp.second;
     }
 
-    rep.first  = rmax->manager()->addInternalNode(visited->nodeVar(currentNodeId),
-                                                 rmaxsons);
-    rep.second = boolQ->manager()->addInternalNode(visited->nodeVar(currentNodeId),
-                                                   bqsons);
+    rep.first  = rmax->manager()->addInternalNode(visited->nodeVar(currentNodeId), rmaxsons);
+    rep.second = boolQ->manager()->addInternalNode(visited->nodeVar(currentNodeId), bqsons);
     return rep;
   }
 
   // ===========================================================================
   //
   // ===========================================================================
-  void AdaptiveRMaxPlaner:: _clearTables_() {
-    for (auto actionIter = this->fmdp()->beginActions();
-         actionIter != this->fmdp()->endActions();
+  void AdaptiveRMaxPlaner::_clearTables_() {
+    for (auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions();
          ++actionIter) {
-      delete  _actionsBoolTable_[*actionIter];
-      delete  _actionsRMaxTable_[*actionIter];
+      delete _actionsBoolTable_[*actionIter];
+      delete _actionsRMaxTable_[*actionIter];
     }
-     _actionsRMaxTable_.clear();
-     _actionsBoolTable_.clear();
+    _actionsRMaxTable_.clear();
+    _actionsBoolTable_.clear();
   }
 
 }   // end of namespace gum

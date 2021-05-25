@@ -67,9 +67,7 @@ namespace gum {
      * @param infdiag The influence diagram writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream&                         output,
-                       const InfluenceDiagram< GUM_SCALAR >& infdiag)
-       = 0;
+    virtual void write(std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
 
     /**
      * Writes an Influence Diagram in the file referenced by filePath.
@@ -80,9 +78,7 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string                           filePath,
-                       const InfluenceDiagram< GUM_SCALAR >& infdiag)
-       = 0;
+    virtual void write(std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
   };
 } /* namespace gum */
 

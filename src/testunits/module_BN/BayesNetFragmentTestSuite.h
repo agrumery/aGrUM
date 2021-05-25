@@ -79,8 +79,7 @@ namespace gum_tests {
     }
 
     // the same BN but with no 4-->5
-    void fill2(gum::BayesNet< double >&       bn,
-               const gum::BayesNet< double >& source) {
+    void fill2(gum::BayesNet< double >& bn, const gum::BayesNet< double >& source) {
       try {
         auto var1 = gum::LabelizedVariable("v1", "1", 2);
         auto var2 = gum::LabelizedVariable("v2", "2", 2);
@@ -132,8 +131,7 @@ namespace gum_tests {
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
-      gum::BayesNetFragment< double > frag2(
-         static_cast< const gum::IBayesNet< double >& >(frag));
+      gum::BayesNetFragment< double > frag2(static_cast< const gum::IBayesNet< double >& >(frag));
     }
 
     void testInstallNodes() {
@@ -290,11 +288,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(2));
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(frag.dim(),
-                       gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()),
-                      2 * 2 * 3,
-                      TS_GUM_SMALL_ERROR);
+      TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -356,11 +351,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(2));
       TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(frag.dim(),
-                       gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()),
-                      2 * 2 * 3,
-                      TS_GUM_SMALL_ERROR);
+      TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
       auto I = frag.completeInstantiation();
       I.setFirst();
@@ -413,28 +405,20 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)3);
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
-                       (gum::Size)2);
-      TS_ASSERT(
-         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      TS_ASSERT(
-         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      TS_ASSERT(
-         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), (gum::Size)2);
+      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
-                       (gum::Size)1);
-      TS_ASSERT(
-         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      TS_ASSERT(
-         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      TS_ASSERT(
-         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), (gum::Size)1);
+      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       // nothing should change here
       gum::BayesNet< double > bn2;
@@ -460,8 +444,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(frag2.toString(), tostr2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
+      TS_GUM_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
 
       TS_ASSERT_EQUALS(frag2.toString(), tostr2);
     }
@@ -484,9 +467,8 @@ namespace gum_tests {
         inf_complete.addEvidence(ev);
         inf_complete.makeInference();
 
-        auto p = inf_complete.posterior(bn.idFromName("v6"));
-        const gum::Potential< double >& p1
-           = inf_complete.posterior(bn.idFromName("v6"));
+        auto                            p  = inf_complete.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p1 = inf_complete.posterior(bn.idFromName("v6"));
 
         // propagation in the fragment
         gum::BayesNetFragment< double > frag(bn);
@@ -502,8 +484,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inf_frag(&frag);
         inf_frag.makeInference();
 
-        const gum::Potential< double >& p2
-           = inf_frag.posterior(bn.idFromName("v6"));
+        const gum::Potential< double >& p2 = inf_frag.posterior(bn.idFromName("v6"));
 
         // comparison
         gum::Instantiation I(p1);
@@ -564,8 +545,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)4);
 
       gum::Potential< double > newV5bis;
-      newV5bis << bn.variable(bn.idFromName("v5"))
-               << bn.variable(bn.idFromName("v2"))
+      newV5bis << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
                << bn.variable(bn.idFromName("v3"));
       frag.installCPT(frag.idFromName("v5"), newV5bis);
       TS_ASSERT(frag.checkConsistency());

@@ -43,39 +43,39 @@ namespace gum_tests {
     private:
     typedef gum::prm::PRMAggregate< double >                PRMAggregate;
     typedef gum::prm::PRMAggregate< double >::AggregateType AggType;
-    ClassElementTestSuiteAbstract*                           _classEltTestSuite_;
-    gum::prm::PRMType*                                       _boolean_;
-    gum::prm::PRMType*                                       _state_;
-    std::vector< AggType >*                                  _types_;
-    gum::prm::PRMClass< double >*                            _class_;
+    ClassElementTestSuiteAbstract*                          _classEltTestSuite_;
+    gum::prm::PRMType*                                      _boolean_;
+    gum::prm::PRMType*                                      _state_;
+    std::vector< AggType >*                                 _types_;
+    gum::prm::PRMClass< double >*                           _class_;
 
     public:
     void setUp() {
-       _classEltTestSuite_ = new ClassElementTestSuiteAbstract;
-       _boolean_           = gum::prm::PRMType::boolean();
+      _classEltTestSuite_ = new ClassElementTestSuiteAbstract;
+      _boolean_           = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
-       _state_ = new gum::prm::PRMType{* _boolean_, map, state};
-       _types_ = new std::vector< AggType >{AggType::MIN,
+      _state_ = new gum::prm::PRMType{*_boolean_, map, state};
+      _types_ = new std::vector< AggType >{AggType::MIN,
                                            AggType::MAX,
                                            AggType::COUNT,
                                            AggType::EXISTS,
                                            AggType::FORALL,
                                            AggType::OR,
                                            AggType::AND};
-       _class_ = new gum::prm::PRMClass< double >("dummy");
+      _class_ = new gum::prm::PRMClass< double >("dummy");
     }
 
     void tearDown() {
-      delete  _classEltTestSuite_;
-      delete  _boolean_;
-      delete  _state_;
-      delete  _types_;
-      delete  _class_;
+      delete _classEltTestSuite_;
+      delete _boolean_;
+      delete _state_;
+      delete _types_;
+      delete _class_;
     }
 
     /// PRMClassElement Tests
@@ -86,10 +86,10 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
-      bool         expected = false;
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      bool              expected = false;
       // Act & Assert
-       _classEltTestSuite_->testIsReferenceSlot(agg, expected);
+      _classEltTestSuite_->testIsReferenceSlot(agg, expected);
     }
 
     void testIsAttribute() {
@@ -98,10 +98,10 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
-      bool         expected = false;
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      bool              expected = false;
       // Act & Assert
-       _classEltTestSuite_->testIsAttribute(agg, expected);
+      _classEltTestSuite_->testIsAttribute(agg, expected);
     }
 
     void testIsSlotChain() {
@@ -110,10 +110,10 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
-      bool         expected = false;
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      bool              expected = false;
       // Act & Assert
-       _classEltTestSuite_->testIsSlotChain(agg, expected);
+      _classEltTestSuite_->testIsSlotChain(agg, expected);
     }
 
     void testSetNodeId() {
@@ -122,9 +122,9 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       // Act & Assert
-       _classEltTestSuite_->testSetNodeId(agg);
+      _classEltTestSuite_->testSetNodeId(agg);
     }
 
     void testObjType() {
@@ -133,9 +133,9 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       // Act & Assert
-       _classEltTestSuite_->test_obj_type(agg);
+      _classEltTestSuite_->test_obj_type(agg);
     }
 
     void testSafeName() {
@@ -144,10 +144,10 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
 
       // Act & Assert
-       _classEltTestSuite_->testSafeName(agg);
+      _classEltTestSuite_->testSafeName(agg);
     }
 
     void testCast_NotAllowed() {
@@ -156,24 +156,21 @@ namespace gum_tests {
       var.addLabel("False");
       var.addLabel("True");
       gum::prm::PRMType type{var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
 
       // Act & Assert
-       _classEltTestSuite_->testCast_NotAllowed(agg);
+      _classEltTestSuite_->testCast_NotAllowed(agg);
     }
 
     void testCast() {
       // Arrange
-      gum::LabelizedVariable boolean_var{"boolean",
-                                         "A boolean discrete variable",
-                                         0};
+      gum::LabelizedVariable boolean_var{"boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel("False");
       boolean_var.addLabel("True");
 
-      gum::LabelizedVariable state_var{
-         "state",
-         "A binary discete variable to represent a state",
-         0};
+      gum::LabelizedVariable state_var{"state",
+                                       "A binary discete variable to represent a state",
+                                       0};
       state_var.addLabel("OK");
       state_var.addLabel("NOK");
 
@@ -183,10 +180,10 @@ namespace gum_tests {
 
       gum::prm::PRMType boolean{boolean_var};
       gum::prm::PRMType state{boolean, map, state_var};
-      PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, state, 0};
+      PRMAggregate      agg{"my_agg", PRMAggregate::AggregateType::FORALL, state, 0};
 
       // Act & Assert
-       _classEltTestSuite_->testCast(agg, boolean);
+      _classEltTestSuite_->testCast(agg, boolean);
     }
     /// @}
 
@@ -195,9 +192,9 @@ namespace gum_tests {
     void testFirstConstructor() {
       // Arrange
       PRMAggregate* agg = nullptr;
-      for (auto t: * _types_) {
+      for (auto t: *_types_) {
         // Act
-        TS_ASSERT_THROWS_NOTHING(agg = new PRMAggregate("my_agg", t, * _boolean_));
+        TS_ASSERT_THROWS_NOTHING(agg = new PRMAggregate("my_agg", t, *_boolean_));
         // Assert
         TS_ASSERT_THROWS_NOTHING(delete agg);
       }
@@ -206,10 +203,9 @@ namespace gum_tests {
     void testSecondConstructor() {
       // Arrange
       PRMAggregate* agg = nullptr;
-      for (auto t: * _types_) {
+      for (auto t: *_types_) {
         // Act
-        TS_ASSERT_THROWS_NOTHING(agg
-                                 = new PRMAggregate("my_agg", t, * _boolean_, 0));
+        TS_ASSERT_THROWS_NOTHING(agg = new PRMAggregate("my_agg", t, *_boolean_, 0));
         // Assert
         TS_ASSERT_THROWS_NOTHING(delete agg);
       }
@@ -220,9 +216,9 @@ namespace gum_tests {
     /// @{
     void testAggTypeNoLabel() {
       // Arrange
-      for (auto t: * _types_) {
+      for (auto t: *_types_) {
         // Act
-        PRMAggregate agg("my_agg", t, * _boolean_);
+        PRMAggregate agg("my_agg", t, *_boolean_);
         // Assert
         TS_ASSERT_EQUALS(agg.agg_type(), t);
       }
@@ -231,7 +227,7 @@ namespace gum_tests {
     void testLabel() {
       // Arrange
       gum::Idx     actual = 1;
-      PRMAggregate agg("my_agg", AggType::MIN, * _boolean_, actual);
+      PRMAggregate agg("my_agg", AggType::MIN, *_boolean_, actual);
       gum::Idx     expected = 0;
       // Act
       TS_ASSERT_THROWS_NOTHING(expected = agg.label());
@@ -241,7 +237,7 @@ namespace gum_tests {
 
     void testLabelOperationNotAllowed() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::MIN, * _boolean_);
+      PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act
       TS_ASSERT_THROWS(agg.label(), gum::OperationNotAllowed);
       // Assert
@@ -249,9 +245,9 @@ namespace gum_tests {
 
     void testAddParent() {
       // Arrange
-      gum::prm::PRMFormAttribute< double > parent(* _class_, "attr", * _boolean_);
-      PRMAggregate child("my_agg", AggType::MIN, * _boolean_);
-      auto         before = parent.cpf().variablesSequence().size();
+      gum::prm::PRMFormAttribute< double > parent(*_class_, "attr", *_boolean_);
+      PRMAggregate                         child("my_agg", AggType::MIN, *_boolean_);
+      auto                                 before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
       // Assert
@@ -262,9 +258,9 @@ namespace gum_tests {
 
     void testAddChild() {
       // Arrange
-      gum::prm::PRMFormAttribute< double > child(* _class_, "attr", * _boolean_);
-      PRMAggregate parent("my_agg", AggType::MIN, * _boolean_);
-      auto         before = child.cpf().variablesSequence().size();
+      gum::prm::PRMFormAttribute< double > child(*_class_, "attr", *_boolean_);
+      PRMAggregate                         parent("my_agg", AggType::MIN, *_boolean_);
+      auto                                 before = child.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING(parent.addChild(child));
       // Assert
@@ -275,14 +271,14 @@ namespace gum_tests {
 
     void testCpf() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::MIN, * _boolean_);
+      PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act & Assert
       TS_ASSERT_THROWS(agg.cpf(), gum::OperationNotAllowed);
     }
 
     void testCpfConst() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::MIN, * _boolean_);
+      PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       const auto&  const_agg = agg;
       // Act & Assert
       TS_ASSERT_THROWS(const_agg.cpf(), gum::OperationNotAllowed);
@@ -290,7 +286,7 @@ namespace gum_tests {
 
     void testBuildImplMin() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::MIN, * _boolean_);
+      PRMAggregate                           agg("my_agg", AggType::MIN, *_boolean_);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -301,7 +297,7 @@ namespace gum_tests {
 
     void testBuildImplMax() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::MAX, * _boolean_);
+      PRMAggregate                           agg("my_agg", AggType::MAX, *_boolean_);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -312,7 +308,7 @@ namespace gum_tests {
 
     void testBuildImplExists() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::EXISTS, * _boolean_, 0);
+      PRMAggregate                           agg("my_agg", AggType::EXISTS, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -323,7 +319,7 @@ namespace gum_tests {
 
     void testBuildImplForAll() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::FORALL, * _boolean_, 0);
+      PRMAggregate                           agg("my_agg", AggType::FORALL, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -334,7 +330,7 @@ namespace gum_tests {
 
     void testBuildImplCount() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::COUNT, * _boolean_, 0);
+      PRMAggregate                           agg("my_agg", AggType::COUNT, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -345,7 +341,7 @@ namespace gum_tests {
 
     void testBuildImplOr() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::OR, * _boolean_, 0);
+      PRMAggregate                           agg("my_agg", AggType::OR, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());
@@ -356,7 +352,7 @@ namespace gum_tests {
 
     void testBuildImplAnd() {
       // Arrange
-      PRMAggregate agg("my_agg", AggType::AND, * _boolean_, 0);
+      PRMAggregate                           agg("my_agg", AggType::AND, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(impl = agg.buildImpl());

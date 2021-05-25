@@ -46,10 +46,9 @@ namespace gum_tests {
   class ThreeOffTwoTestSuite: public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -63,9 +62,9 @@ namespace gum_tests {
 
       database.reorder();
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::DBRowGeneratorSet<>          genset;
+      gum::learning::DBRowGeneratorParser<>       parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> I(parser, apriori);
       I.useNoCorr();
 
@@ -85,10 +84,9 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_MDLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -130,10 +128,9 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -177,10 +174,9 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_dag() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -268,10 +264,9 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -323,10 +318,9 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -353,7 +347,7 @@ namespace gum_tests {
 
       gum::learning::Miic search;
       search.setMiicBehaviour();
-        search.set3of2Behaviour();
+      search.set3of2Behaviour();
       search.setMiicBehaviour();
       // creating complete graph
       gum::MixedGraph graph, g;
@@ -373,10 +367,9 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           var_lab("x", "", 0);
@@ -403,7 +396,7 @@ namespace gum_tests {
 
       gum::learning::Miic search;
       search.setMiicBehaviour();
-        search.set3of2Behaviour();
+      search.set3of2Behaviour();
       search.setMiicBehaviour();
 
       // adding constraints

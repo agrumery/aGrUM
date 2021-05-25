@@ -220,14 +220,11 @@ namespace gum {
 #endif
 
   template < typename GUM_SCALAR >
-  using HybridMonteCarloSampling
-     = LoopySamplingInference< GUM_SCALAR, MonteCarloSampling >;
+  using HybridMonteCarloSampling = LoopySamplingInference< GUM_SCALAR, MonteCarloSampling >;
   template < typename GUM_SCALAR >
-  using HybridWeightedSampling
-     = LoopySamplingInference< GUM_SCALAR, WeightedSampling >;
+  using HybridWeightedSampling = LoopySamplingInference< GUM_SCALAR, WeightedSampling >;
   template < typename GUM_SCALAR >
-  using HybridImportanceSampling
-     = LoopySamplingInference< GUM_SCALAR, ImportanceSampling >;
+  using HybridImportanceSampling = LoopySamplingInference< GUM_SCALAR, ImportanceSampling >;
   template < typename GUM_SCALAR >
   using HybridGibbsSampling = LoopySamplingInference< GUM_SCALAR, GibbsSampling >;
 }   // namespace gum

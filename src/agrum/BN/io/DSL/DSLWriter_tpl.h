@@ -52,20 +52,16 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  void DSLWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                      const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
-    }
+  void DSLWriter< GUM_SCALAR >::write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
+    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
 
     output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl
            << "{" << std::endl;
 
-    output << "// property softwar aGrUM " << GUM_VERSION << std::endl
-           << std::endl;
+    output << "// property softwar aGrUM " << GUM_VERSION << std::endl << std::endl;
 
     for (auto node: bn.topologicalOrder()) {
-      output <<  _variableBloc_(bn, bn.variable(node));
+      output << _variableBloc_(bn, bn.variable(node));
     }
 
     output << "};";
@@ -98,9 +94,8 @@ namespace gum {
    * Returns a bloc defining a variable in the DSL format.
    */
   template < typename GUM_SCALAR >
-  std::string
-     DSLWriter< GUM_SCALAR >:: _variableBloc_(const IBayesNet< GUM_SCALAR >& bn,
-                                             const DiscreteVariable&        var) {
+  std::string DSLWriter< GUM_SCALAR >::_variableBloc_(const IBayesNet< GUM_SCALAR >& bn,
+                                                      const DiscreteVariable&        var) {
     NodeId             id;
     std::ostringstream oss;
 
@@ -116,8 +111,7 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-    const Sequence< const DiscreteVariable* >& tmp_vars
-       = bn.cpt(id).variablesSequence();
+    const Sequence< const DiscreteVariable* >& tmp_vars = bn.cpt(id).variablesSequence();
 
     for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
       if (i < tmp_vars.size() - 1) oss << ", ";

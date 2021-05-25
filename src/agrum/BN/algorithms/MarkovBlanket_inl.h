@@ -31,31 +31,23 @@
 
 namespace gum {
 
-  INLINE DAG MarkovBlanket::dag() { return  _mb_; }
+  INLINE DAG MarkovBlanket::dag() { return _mb_; }
 
-  INLINE const NodeSet& MarkovBlanket::parents(NodeId id) const {
-    return  _mb_.parents(id);
-  }
+  INLINE const NodeSet& MarkovBlanket::parents(NodeId id) const { return _mb_.parents(id); }
 
-  INLINE const NodeSet& MarkovBlanket::children(NodeId id) const {
-    return  _mb_.children(id);
-  }
+  INLINE const NodeSet& MarkovBlanket::children(NodeId id) const { return _mb_.children(id); }
 
-  INLINE NodeSet MarkovBlanket::parents(const NodeSet& ids) const {
-    return  _mb_.parents(ids);
-  }
+  INLINE NodeSet MarkovBlanket::parents(const NodeSet& ids) const { return _mb_.parents(ids); }
 
-  INLINE NodeSet MarkovBlanket::children(const NodeSet& ids) const {
-    return  _mb_.children(ids);
-  }
+  INLINE NodeSet MarkovBlanket::children(const NodeSet& ids) const { return _mb_.children(ids); }
 
-  INLINE Size MarkovBlanket::sizeArcs() const { return  _mb_.sizeArcs(); }
+  INLINE Size MarkovBlanket::sizeArcs() const { return _mb_.sizeArcs(); }
 
-  INLINE const ArcSet& MarkovBlanket::arcs() const { return  _mb_.arcs(); }
+  INLINE const ArcSet& MarkovBlanket::arcs() const { return _mb_.arcs(); }
 
-  INLINE Size MarkovBlanket::sizeNodes() const { return  _mb_.sizeNodes(); }
+  INLINE Size MarkovBlanket::sizeNodes() const { return _mb_.sizeNodes(); }
 
-  INLINE Size MarkovBlanket::size() const { return  _mb_.size(); }
+  INLINE Size MarkovBlanket::size() const { return _mb_.size(); }
 
-  INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return  _mb_.nodes(); }
+  INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return _mb_.nodes(); }
 }   // namespace gum

@@ -27,8 +27,8 @@
  * easy use of lrs lib
  */
 
-#ifndef  __LRSWrapper_WRAPPER__H__
-#define  __LRSWrapper_WRAPPER__H__
+#ifndef __LRSWrapper_WRAPPER__H__
+#define __LRSWrapper_WRAPPER__H__
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
@@ -79,8 +79,8 @@ extern "C" {
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef  __int64          int64_t;
-typedef unsigned  __int64 uint64_t;
+typedef __int64          int64_t;
+typedef unsigned __int64 uint64_t;
 #else
 #  include <stdint.h>
 #endif
@@ -110,37 +110,37 @@ namespace gum {
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */
-      matrix  _input_;
+      matrix _input_;
 
       /** @brief Output matrix - either a V-representation or an
        * H-representation. */
-      matrix  _output_;
+      matrix _output_;
 
       /** @brief Cardinality of the variable. */
-      unsigned int  _card_;
+      unsigned int _card_;
 
       /** @brief To keep track of which constraints over modalities have been
        * inserted. When the set is full, the state changes from up to ready. */
-      std::unordered_set< int >  _insertedModals_;
+      std::unordered_set< int > _insertedModals_;
 
       /** @brief The number of vertices of the polytope. */
-      unsigned int  _vertices_;
+      unsigned int _vertices_;
 
       /** @brief To keep track of inserted vertices and total. When set is full,
        * the
        * state changes from up to ready. */
-      std::vector< std::vector< GUM_SCALAR > >  _insertedVertices_;
+      std::vector< std::vector< GUM_SCALAR > > _insertedVertices_;
 
       /** @brief In case we have lower = upper for all modalities, a point
        * probability, there is no need to use lrs. */
-      std::vector< GUM_SCALAR >  _vertex_;
+      std::vector< GUM_SCALAR > _vertex_;
 
       /** @enum  _states_ The possible states of the LrsWrapper. Some functions
        * will
        * throw an exception if the state is not correct. It allows the user to
        * avoid
        * making - invisible - mistakes. */
-      enum class  _states_ : char
+      enum class _states_ : char
       {
         none     = char(0),
         Hup      = char(1),
@@ -150,19 +150,19 @@ namespace gum {
       };
 
       /** @brief The current state of the LrsWrapper. */
-       _states_  _state_;
+      _states_ _state_;
 
       /** @brief The volume of the polytope, if computed, 0 otherwise. */
-      GUM_SCALAR  _volume_;
+      GUM_SCALAR _volume_;
 
       /** @brief To print an enum field name instead of it's value. Used with
        * GUM_ERROR. */
-      const char*  _setUpStateNames_[5] = {
-         enumStringify( _states_::none),
-         enumStringify( _states_::nHup),
-         enumStringify( _states_::nVup),
-         enumStringify( _states_::nH2Vready),
-         enumStringify( _states_::nV2Hready),
+      const char* _setUpStateNames_[5] = {
+         enumStringify(_states_::none),
+         enumStringify(_states_::nHup),
+         enumStringify(_states_::nVup),
+         enumStringify(_states_::nH2Vready),
+         enumStringify(_states_::nV2Hready),
       };
 
       /**
@@ -173,35 +173,35 @@ namespace gum {
        * to /dev/null when calling lrs.
        * The standard cout is restored when lrs is done.
        */
-      mutable int  _oldCout_;
+      mutable int _oldCout_;
 
       /// @name lrs structs
       /// @{
 
       /** @brief Structure for holding current dictionary and indices of lrs. */
-      lrs_dic*  _dic_;
+      lrs_dic* _dic_;
 
       /** @brief Structure for holding static problem data of lrs.*/
-      lrs_dat*  _dat_;
+      lrs_dat* _dat_;
 
       /** @brief One line of output of lrs : aither a ray, a vertex, a facet or
        * a
        * linearity. */
-      lrs_mp_vector  _lrsOutput_;
+      lrs_mp_vector _lrsOutput_;
 
       /** @brief Holds lrs input linearities if any are found. */
-      lrs_mp_matrix  _Lin_;
+      lrs_mp_matrix _Lin_;
 
       /// @}
 
       /// @name flags
       /// @{
 
-      bool  _getVolume_;
+      bool _getVolume_;
 
-      bool  _hull_;
+      bool _hull_;
 
-      bool  _polytope_;
+      bool _polytope_;
 
       /// @}
 
@@ -209,10 +209,10 @@ namespace gum {
       /// @{
 
       /** @brief The function that redirects standard cout to /dev/null. */
-      void  _coutOff_() const;
+      void _coutOff_() const;
 
       /** @brief The function that restores standard cout. */
-      void  _coutOn_() const;
+      void _coutOn_() const;
 
       /// @}
 
@@ -220,10 +220,10 @@ namespace gum {
       /// @{
 
       /** @brief Free lrs space. */
-      void  _freeLrs_();
+      void _freeLrs_();
 
       /** @brief Initialize lrs structs and first basis according to flags. */
-      void  _initLrs_();
+      void _initLrs_();
 
       /**
        * @brief Fill lrs_dictionnary and datas from \c  _input_ using integer
@@ -233,7 +233,7 @@ namespace gum {
        * Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to
        *approximate reals by integer rationals.
        */
-      void  _fill_() const;
+      void _fill_() const;
 
       /**
        * @brief Translate a single output from lrs.
@@ -245,7 +245,7 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void  _getLRSWrapperOutput_(lrs_mp                  Nin,
+      void _getLRSWrapperOutput_(lrs_mp                  Nin,
                                  lrs_mp                  Din,
                                  std::vector< int64_t >& Num,
                                  std::vector< int64_t >& Den) const;

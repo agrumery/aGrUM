@@ -37,22 +37,19 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DatabaseTable< ALLOC >::DatabaseTable(
-       const typename DatabaseTable< ALLOC >::template MissingValType< XALLOC >&
-                                                              missing_symbols,
-       const DBTranslatorSet< ALLOC >&                        translators,
-       const typename DatabaseTable< ALLOC >::allocator_type& alloc) :
+       const typename DatabaseTable< ALLOC >::template MissingValType< XALLOC >& missing_symbols,
+       const DBTranslatorSet< ALLOC >&                                           translators,
+       const typename DatabaseTable< ALLOC >::allocator_type&                    alloc) :
         IDatabaseTable< DBTranslatedValue, ALLOC >(
            missing_symbols,
            std::vector< std::string, ALLOC< std::string > >(),
            alloc),
-         _translators_(translators, alloc) {
+        _translators_(translators, alloc) {
       if (translators.size()) {
         // set the variables names according to those of the translators
-        std::vector< std::string, ALLOC< std::string > > var_names(
-           translators.size());
-        for (std::size_t i = std::size_t(0), size = translators.size(); i < size;
-             ++i) {
-          var_names[i] =  _translators_.translator(i).variable()->name();
+        std::vector< std::string, ALLOC< std::string > > var_names(translators.size());
+        for (std::size_t i = std::size_t(0), size = translators.size(); i < size; ++i) {
+          var_names[i] = _translators_.translator(i).variable()->name();
         }
         setVariableNames(var_names, false);
       }
@@ -70,14 +67,12 @@ namespace gum {
            std::vector< std::string, ALLOC< std::string > >(),
            std::vector< std::string, ALLOC< std::string > >(),
            alloc),
-         _translators_(translators, alloc) {
+        _translators_(translators, alloc) {
       if (translators.size()) {
         // set the variables names according to those of the translators
-        std::vector< std::string, ALLOC< std::string > > var_names(
-           translators.size());
-        for (std::size_t i = std::size_t(0), size = translators.size(); i < size;
-             ++i) {
-          var_names[i] =  _translators_.translator(i).variable()->name();
+        std::vector< std::string, ALLOC< std::string > > var_names(translators.size());
+        for (std::size_t i = std::size_t(0), size = translators.size(); i < size; ++i) {
+          var_names[i] = _translators_.translator(i).variable()->name();
         }
         setVariableNames(var_names, false);
       }
@@ -92,16 +87,14 @@ namespace gum {
        const DatabaseTable< ALLOC >&                          from,
        const typename DatabaseTable< ALLOC >::allocator_type& alloc) :
         IDatabaseTable< DBTranslatedValue, ALLOC >(from, alloc),
-         _translators_(from. _translators_, alloc),
-         _ignored_cols_(from. _ignored_cols_) {
+        _translators_(from._translators_, alloc), _ignored_cols_(from._ignored_cols_) {
       GUM_CONS_CPY(DatabaseTable);
     }
 
 
     // copy constructor
     template < template < typename > class ALLOC >
-    INLINE
-       DatabaseTable< ALLOC >::DatabaseTable(const DatabaseTable< ALLOC >& from) :
+    INLINE DatabaseTable< ALLOC >::DatabaseTable(const DatabaseTable< ALLOC >& from) :
         DatabaseTable< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -111,8 +104,8 @@ namespace gum {
        DatabaseTable< ALLOC >&&                               from,
        const typename DatabaseTable< ALLOC >::allocator_type& alloc) :
         IDatabaseTable< DBTranslatedValue, ALLOC >(std::move(from), alloc),
-         _translators_(std::move(from. _translators_), alloc),
-         _ignored_cols_(std::move(from. _ignored_cols_)) {
+        _translators_(std::move(from._translators_), alloc),
+        _ignored_cols_(std::move(from._ignored_cols_)) {
       GUM_CONS_MOV(DatabaseTable);
     }
 
@@ -156,12 +149,11 @@ namespace gum {
 
     // copy operator
     template < template < typename > class ALLOC >
-    DatabaseTable< ALLOC >&
-       DatabaseTable< ALLOC >::operator=(const DatabaseTable< ALLOC >& from) {
+    DatabaseTable< ALLOC >& DatabaseTable< ALLOC >::operator=(const DatabaseTable< ALLOC >& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(from);
-         _translators_                                       = from. _translators_;
-         _ignored_cols_                                      = from. _ignored_cols_;
+        _translators_                                       = from._translators_;
+        _ignored_cols_                                      = from._ignored_cols_;
       }
 
       return *this;
@@ -170,12 +162,11 @@ namespace gum {
 
     // move constructor
     template < template < typename > class ALLOC >
-    DatabaseTable< ALLOC >&
-       DatabaseTable< ALLOC >::operator=(DatabaseTable< ALLOC >&& from) {
+    DatabaseTable< ALLOC >& DatabaseTable< ALLOC >::operator=(DatabaseTable< ALLOC >&& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(std::move(from));
-         _translators_  = std::move(from. _translators_);
-         _ignored_cols_ = std::move(from. _ignored_cols_);
+        _translators_                                       = std::move(from._translators_);
+        _ignored_cols_                                      = std::move(from._ignored_cols_);
       }
 
       return *this;
@@ -185,8 +176,7 @@ namespace gum {
     // a method to process the rows of the database in multithreading
     template < template < typename > class ALLOC >
     template < typename Functor1, typename Functor2 >
-    void DatabaseTable< ALLOC >:: _threadProcessDatabase_(Functor1& exec_func,
-                                                         Functor2& undo_func) {
+    void DatabaseTable< ALLOC >::_threadProcessDatabase_(Functor1& exec_func, Functor2& undo_func) {
       // compute the number of threads to execute the code, the number N of
       // rows that each thread should process and the number of rows that
       // would remain after each thread has processed its N rows. For instance,
@@ -215,9 +205,8 @@ namespace gum {
       std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
       // create a lambda that will execute exec_func while catching its exceptions
-      auto real_exec_func = [&exec_func](std::size_t         begin,
-                                         std::size_t         end,
-                                         std::exception_ptr& exc) -> void {
+      auto real_exec_func
+         = [&exec_func](std::size_t begin, std::size_t end, std::exception_ptr& exc) -> void {
         try {
           exec_func(begin, end);
         } catch (...) { exc = std::current_exception(); }
@@ -239,9 +228,7 @@ namespace gum {
       }
 
       // wait for the threads to complete their executions
-      std::for_each(threads.begin(),
-                    threads.end(),
-                    std::mem_fn(&std::thread::join));
+      std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
       // now, check if one exception has been raised
       bool exception_raised = false;
@@ -255,9 +242,8 @@ namespace gum {
       if (exception_raised) {
         // create a lambda that will execute undo_func while catching
         // its exceptions
-        auto real_undo_func = [&undo_func](std::size_t         begin,
-                                           std::size_t         end,
-                                           std::exception_ptr& exc) -> void {
+        auto real_undo_func
+           = [&undo_func](std::size_t begin, std::size_t end, std::exception_ptr& exc) -> void {
           try {
             undo_func(begin, end);
           } catch (...) { exc = std::current_exception(); }
@@ -266,8 +252,7 @@ namespace gum {
         // launch the repair threads
         threads.clear();
         begin_index = std::size_t(0);
-        std::vector< std::exception_ptr > undo_func_exceptions(nb_threads,
-                                                               nullptr);
+        std::vector< std::exception_ptr > undo_func_exceptions(nb_threads, nullptr);
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
           std::size_t end_index = begin_index + nb_rows_par_thread;
           if (rest_rows != std::size_t(0)) {
@@ -284,9 +269,7 @@ namespace gum {
         }
 
         // wait for the threads to complete their executions
-        std::for_each(threads.begin(),
-                      threads.end(),
-                      std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
         // rethrow the exception
         for (const auto& exc: func_exceptions) {
@@ -298,17 +281,14 @@ namespace gum {
 
     /// insert a new translator into the database
     template < template < typename > class ALLOC >
-    std::size_t DatabaseTable< ALLOC >::insertTranslator(
-       const DBTranslator< ALLOC >& translator,
-       const std::size_t            input_column,
-       const bool                   unique_column) {
+    std::size_t DatabaseTable< ALLOC >::insertTranslator(const DBTranslator< ALLOC >& translator,
+                                                         const std::size_t            input_column,
+                                                         const bool unique_column) {
       // check that there is no ignored_column corresponding to column
-      if ( _ignored_cols_.exists(input_column))
-        GUM_ERROR(
-           OperationNotAllowed,
-           "Column "
-              << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.")
+      if (_ignored_cols_.exists(input_column))
+        GUM_ERROR(OperationNotAllowed,
+                  "Column " << input_column << " is marked as being ignored. "
+                            << "So it is forbidden to create a translator for that column.")
 
       // reserve some place for the new column in the records of the database
       const std::size_t new_size = this->nbVariables() + 1;
@@ -316,8 +296,7 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda
-         = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
@@ -326,28 +305,27 @@ namespace gum {
       };
 
       // launch the threads executing the lambdas
-      this-> _threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
+      this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
       const std::size_t pos
-         =  _translators_.insertTranslator(translator, input_column, unique_column);
+         = _translators_.insertTranslator(translator, input_column, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
         this->variable_names_.push_back(translator.variable()->name());
       } catch (...) {
-         _translators_.eraseTranslator(pos);
+        _translators_.eraseTranslator(pos);
         throw;
       }
 
       // if the databaseTable is not empty, fill the column of the database
       // corresponding to the translator with missing values
       if (!IDatabaseTable< DBTranslatedValue, ALLOC >::empty()) {
-        const DBTranslatedValue missing =  _translators_[pos].missingValue();
+        const DBTranslatedValue missing = _translators_[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda
-           = [this, missing](std::size_t begin, std::size_t end) -> void {
+        auto fill_lambda = [this, missing](std::size_t begin, std::size_t end) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -361,14 +339,13 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda
-           = [this](std::size_t begin, std::size_t end) -> void {
+        auto undo_fill_lambda = [this](std::size_t begin, std::size_t end) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
 
         // launch the threads executing the lambdas
-        this-> _threadProcessDatabase_(fill_lambda, undo_fill_lambda);
+        this->_threadProcessDatabase_(fill_lambda, undo_fill_lambda);
       }
 
       return pos;
@@ -377,28 +354,24 @@ namespace gum {
 
     /// insert a new translator into the database
     template < template < typename > class ALLOC >
-    std::size_t
-       DatabaseTable< ALLOC >::insertTranslator(const Variable&   var,
-                                                const std::size_t input_column,
-                                                const bool        unique_column) {
+    std::size_t DatabaseTable< ALLOC >::insertTranslator(const Variable&   var,
+                                                         const std::size_t input_column,
+                                                         const bool        unique_column) {
       // check that there is no ignored_column corresponding to column
-      if ( _ignored_cols_.exists(input_column))
-        GUM_ERROR(
-           OperationNotAllowed,
-           "Column "
-              << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.")
+      if (_ignored_cols_.exists(input_column))
+        GUM_ERROR(OperationNotAllowed,
+                  "Column " << input_column << " is marked as being ignored. "
+                            << "So it is forbidden to create a translator for that column.")
 
       // if the databaseTable is not empty, we should fill the column of the
       // database corresponding to the new translator with missing values. But, the
       // current method assumes that the list of missing values is empty. Hence, it
       // should raise an exception
       if (!IDatabaseTable< DBTranslatedValue, ALLOC >::empty()) {
-        GUM_ERROR(
-           MissingValueInDatabase,
-           "inserting a new translator into a database creates a new column "
-              << "with missing values. However, you did not define any symbol for "
-              << "such values.")
+        GUM_ERROR(MissingValueInDatabase,
+                  "inserting a new translator into a database creates a new column "
+                     << "with missing values. However, you did not define any symbol for "
+                     << "such values.")
       }
 
       // reserve some place for the new column in the records of the database
@@ -407,8 +380,7 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda
-         = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
@@ -417,17 +389,16 @@ namespace gum {
       };
 
       // launch the threads executing the lambdas
-      this-> _threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
+      this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos
-         =  _translators_.insertTranslator(var, input_column, unique_column);
+      const std::size_t pos = _translators_.insertTranslator(var, input_column, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
         this->variable_names_.push_back(var.name());
       } catch (...) {
-         _translators_.eraseTranslator(pos);
+        _translators_.eraseTranslator(pos);
         throw;
       }
 
@@ -444,12 +415,10 @@ namespace gum {
        std::vector< std::string, XALLOC< std::string > > missing_symbols,
        const bool                                        unique_column) {
       // check that there is no ignored_column corresponding to column
-      if ( _ignored_cols_.exists(input_column))
-        GUM_ERROR(
-           OperationNotAllowed,
-           "Column "
-              << input_column << " is marked as being ignored. "
-              << "So it is forbidden to create a translator for that column.")
+      if (_ignored_cols_.exists(input_column))
+        GUM_ERROR(OperationNotAllowed,
+                  "Column " << input_column << " is marked as being ignored. "
+                            << "So it is forbidden to create a translator for that column.")
 
       // reserve some place for the new column in the records of the database
       const std::size_t new_size = this->nbVariables() + 1;
@@ -457,8 +426,7 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda
-         = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
@@ -467,30 +435,27 @@ namespace gum {
       };
 
       // launch the threads executing the lambdas
-      this-> _threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
+      this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos =  _translators_.insertTranslator(var,
-                                                             input_column,
-                                                             missing_symbols,
-                                                             unique_column);
+      const std::size_t pos
+         = _translators_.insertTranslator(var, input_column, missing_symbols, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
         this->variable_names_.push_back(var.name());
       } catch (...) {
-         _translators_.eraseTranslator(pos);
+        _translators_.eraseTranslator(pos);
         throw;
       }
 
       // if the databaseTable is not empty, fill the column of the database
       // corresponding to the translator with missing values
       if (!IDatabaseTable< DBTranslatedValue, ALLOC >::empty()) {
-        const DBTranslatedValue missing =  _translators_[pos].missingValue();
+        const DBTranslatedValue missing = _translators_[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda
-           = [this, missing](std::size_t begin, std::size_t end) -> void {
+        auto fill_lambda = [this, missing](std::size_t begin, std::size_t end) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -504,14 +469,13 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda
-           = [this](std::size_t begin, std::size_t end) -> void {
+        auto undo_fill_lambda = [this](std::size_t begin, std::size_t end) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
 
         // launch the threads executing the lambdas
-        this-> _threadProcessDatabase_(fill_lambda, undo_fill_lambda);
+        this->_threadProcessDatabase_(fill_lambda, undo_fill_lambda);
       }
 
       return pos;
@@ -524,9 +488,9 @@ namespace gum {
      * @warning the indices are sorted by deacreasing order */
     template < template < typename > class ALLOC >
     INLINE typename DatabaseTable< ALLOC >::template DBVector< std::size_t >
-       DatabaseTable< ALLOC >:: _getKthIndices_(const std::size_t k,
-                                               const bool k_is_input_col) const {
-      const std::size_t nb_trans =  _translators_.size();
+       DatabaseTable< ALLOC >::_getKthIndices_(const std::size_t k,
+                                               const bool        k_is_input_col) const {
+      const std::size_t nb_trans = _translators_.size();
       if (!k_is_input_col) {
         if (k < nb_trans)
           return DBVector< std::size_t >{k};
@@ -534,9 +498,8 @@ namespace gum {
           return DBVector< std::size_t >();
       } else {
         DBVector< std::size_t > trans;
-        for (std::size_t i = std::size_t(0), kk = nb_trans - 1; i < nb_trans;
-             ++i, --kk) {
-          if ( _translators_.inputColumn(kk) == k) trans.push_back(kk);
+        for (std::size_t i = std::size_t(0), kk = nb_trans - 1; i < nb_trans; ++i, --kk) {
+          if (_translators_.inputColumn(kk) == k) trans.push_back(kk);
         }
         return trans;
       }
@@ -546,9 +509,8 @@ namespace gum {
     // erases the kth translator or all those parsing the kth column of
     // the input dataset
     template < template < typename > class ALLOC >
-    void DatabaseTable< ALLOC >::eraseTranslators(const std::size_t k,
-                                                  const bool k_is_input_col) {
-      for (const auto kk:  _getKthIndices_(k, k_is_input_col)) {
+    void DatabaseTable< ALLOC >::eraseTranslators(const std::size_t k, const bool k_is_input_col) {
+      for (const auto kk: _getKthIndices_(k, k_is_input_col)) {
         // erase the translator of index kk and the corresponding variable
         // name. If there remains no more translator in the translator set,
         // rows_ should become empty
@@ -556,22 +518,20 @@ namespace gum {
         if (this->variable_names_.empty()) {
           IDatabaseTable< DBTranslatedValue, ALLOC >::eraseAllRows();
         } else {
-          const std::size_t nb_trans =  _translators_.size();
+          const std::size_t nb_trans = _translators_.size();
 
-          auto erase_lambda
-             = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
+          auto erase_lambda = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
             for (std::size_t i = begin; i < end; ++i) {
               auto& row = this->rows_[i].row();
-              if (this-> _translators_.isMissingValue(row[kk], kk)) {
+              if (this->_translators_.isMissingValue(row[kk], kk)) {
                 bool has_missing_val = false;
                 for (std::size_t j = std::size_t(0); j < nb_trans; ++j) {
-                  if ((j != kk) && this-> _translators_.isMissingValue(row[j], j)) {
+                  if ((j != kk) && this->_translators_.isMissingValue(row[j], j)) {
                     has_missing_val = true;
                     break;
                   }
                 }
-                if (!has_missing_val)
-                  this->has_row_missing_val_[i] = IsMissing::False;
+                if (!has_missing_val) this->has_row_missing_val_[i] = IsMissing::False;
               }
               row.erase(row.begin() + kk);
             }
@@ -581,18 +541,17 @@ namespace gum {
           };
 
           // launch the threads executing the lambdas
-          this-> _threadProcessDatabase_(erase_lambda, undo_erase_lambda);
+          this->_threadProcessDatabase_(erase_lambda, undo_erase_lambda);
         }
-         _translators_.eraseTranslator(kk);
+        _translators_.eraseTranslator(kk);
       }
     }
 
 
     /// returns the set of translators
     template < template < typename > class ALLOC >
-    INLINE const DBTranslatorSet< ALLOC >&
-                 DatabaseTable< ALLOC >::translatorSet() const {
-      return  _translators_;
+    INLINE const DBTranslatorSet< ALLOC >& DatabaseTable< ALLOC >::translatorSet() const {
+      return _translators_;
     }
 
 
@@ -600,13 +559,12 @@ namespace gum {
      * to that of the first translator parsing the kth column of the
      * input dataset */
     template < template < typename > class ALLOC >
-    INLINE std::size_t
-           DatabaseTable< ALLOC >:: _getKthIndex_(const std::size_t k,
-                                             const bool k_is_input_col) const {
+    INLINE std::size_t DatabaseTable< ALLOC >::_getKthIndex_(const std::size_t k,
+                                                             const bool k_is_input_col) const {
       if (k_is_input_col) {
-        const std::size_t nb_trans =  _translators_.size();
+        const std::size_t nb_trans = _translators_.size();
         for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-          if ( _translators_.inputColumn(i) == k) { return i; }
+          if (_translators_.inputColumn(i) == k) { return i; }
         }
         return nb_trans + 1;
       } else {
@@ -618,12 +576,11 @@ namespace gum {
     /// returns the kth translator of the database
     template < template < typename > class ALLOC >
     const DBTranslator< ALLOC >&
-       DatabaseTable< ALLOC >::translator(const std::size_t k,
-                                          const bool        k_is_input_col) const {
+       DatabaseTable< ALLOC >::translator(const std::size_t k, const bool k_is_input_col) const {
       // find the position of the translator that we look for. This
       // is variable kk below
-      const std::size_t nb_trans =  _translators_.size();
-      const std::size_t kk       =  _getKthIndex_(k, k_is_input_col);
+      const std::size_t nb_trans = _translators_.size();
+      const std::size_t kk       = _getKthIndex_(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -633,25 +590,23 @@ namespace gum {
                        << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
-                    "the database has " << nb_trans
-                                        << " translators, so Translator #" << k
+                    "the database has " << nb_trans << " translators, so Translator #" << k
                                         << " does not exist")
         }
       }
 
-      return  _translators_.translator(kk);
+      return _translators_.translator(kk);
     }
 
 
     /// returns the kth variable of the database
     template < template < typename > class ALLOC >
-    const Variable&
-       DatabaseTable< ALLOC >::variable(const std::size_t k,
-                                        const bool        k_is_input_col) const {
+    const Variable& DatabaseTable< ALLOC >::variable(const std::size_t k,
+                                                     const bool        k_is_input_col) const {
       // find the position of the translator that contains the variable.
       // This is variable kk below
-      const std::size_t nb_trans =  _translators_.size();
-      const std::size_t kk       =  _getKthIndex_(k, k_is_input_col);
+      const std::size_t nb_trans = _translators_.size();
+      const std::size_t kk       = _getKthIndex_(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -661,12 +616,12 @@ namespace gum {
                        << "corresponds to Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
-                    "the database has " << nb_trans << " variables, so Variable #"
-                                        << k << " does not exist")
+                    "the database has " << nb_trans << " variables, so Variable #" << k
+                                        << " does not exist")
         }
       }
 
-      return  _translators_.variable(kk);
+      return _translators_.variable(kk);
     }
 
 
@@ -674,42 +629,40 @@ namespace gum {
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::setVariableNames(
        const std::vector< std::string, ALLOC< std::string > >& names,
-       const bool from_external_object) {
+       const bool                                              from_external_object) {
       const std::size_t size     = names.size();
-      const std::size_t nb_trans =  _translators_.size();
+      const std::size_t nb_trans = _translators_.size();
       if (!from_external_object) {
         if (nb_trans != size) {
           GUM_ERROR(SizeError,
                     "the number of variable's names (i.e., "
-                       << size
-                       << ") does not correspond to the number of columns of the "
+                       << size << ") does not correspond to the number of columns of the "
                        << "database table (i.e.," << nb_trans << ")")
         }
 
         // update the translator names
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-           _translators_.translator(i).setVariableName(names[i]);
+          _translators_.translator(i).setVariableName(names[i]);
         }
       } else {
-        if (nb_trans && ( _translators_.highestInputColumn() >= size)) {
+        if (nb_trans && (_translators_.highestInputColumn() >= size)) {
           GUM_ERROR(SizeError,
                     "the names vector has "
                        << size << " elements whereas it should have at least "
-                       << ( _translators_.highestInputColumn() + 1)
+                       << (_translators_.highestInputColumn() + 1)
                        << "elements so that each translator is assigned a name")
         }
 
         // update the translator names
         for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-           _translators_.translator(i).setVariableName(
-             names[ _translators_.inputColumn(i)]);
+          _translators_.translator(i).setVariableName(names[_translators_.inputColumn(i)]);
         }
       }
 
       // update variable_names_ using the newly assigned translators names
       this->variable_names_.resize(nb_trans);
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-        this->variable_names_[i] =  _translators_.variable(i).name();
+        this->variable_names_[i] = _translators_.variable(i).name();
       }
     }
 
@@ -717,23 +670,21 @@ namespace gum {
     /** @brief indicates that we should ignore the kth column of the original
      * database when inserting new rows */
     template < template < typename > class ALLOC >
-    void DatabaseTable< ALLOC >::ignoreColumn(const std::size_t k,
-                                              const bool        k_is_input_col) {
+    void DatabaseTable< ALLOC >::ignoreColumn(const std::size_t k, const bool k_is_input_col) {
       // indicate that the column will be forbidden. If the column is already
       // forbidden, do nothing. But if the column is assigned to a translator
       // that does not exist, raise an UndefinedElement exception
-      const std::size_t nb_trans =  _translators_.size();
+      const std::size_t nb_trans = _translators_.size();
       if (k_is_input_col) {
-        if ( _ignored_cols_.exists(k)) return;
-         _ignored_cols_.insert(k);
+        if (_ignored_cols_.exists(k)) return;
+        _ignored_cols_.insert(k);
       } else {
         if (k < nb_trans) {
-           _ignored_cols_.insert( _translators_.inputColumn(k));
+          _ignored_cols_.insert(_translators_.inputColumn(k));
         } else {
           GUM_ERROR(UndefinedElement,
                     "It is impossible to ignore the column parsed by Translator #"
-                       << k << "because there exist only " << nb_trans
-                       << " translators")
+                       << k << "because there exist only " << nb_trans << " translators")
         }
       }
 
@@ -746,28 +697,23 @@ namespace gum {
     template < template < typename > class ALLOC >
     const typename DatabaseTable< ALLOC >::template DBVector< std::size_t >
        DatabaseTable< ALLOC >::ignoredColumns() const {
-      const std::size_t nb_trans =  _translators_.size();
+      const std::size_t nb_trans = _translators_.size();
 
-      if (nb_trans == std::size_t(0)) {
-        return DBVector< std::size_t >{std::size_t(0)};
-      }
+      if (nb_trans == std::size_t(0)) { return DBVector< std::size_t >{std::size_t(0)}; }
 
       // get the columns handled by the translators, sorted by increasing order
       DBVector< std::size_t > cols(nb_trans);
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i)
-        cols[i] =  _translators_.inputColumn(i);
+        cols[i] = _translators_.inputColumn(i);
       std::sort(cols.begin(), cols.end());
 
       // create a vector with all the possible input columns
-      const std::size_t       highest =  _translators_.highestInputColumn() + 1;
+      const std::size_t       highest = _translators_.highestInputColumn() + 1;
       DBVector< std::size_t > ignored_cols(highest);
       std::iota(ignored_cols.begin(), ignored_cols.end(), 0);
 
       // remove from ignored_cols the elements of cols
-      for (std::size_t i  = std::size_t(0),
-                       ii = highest - 1,
-                       k  = std::size_t(0),
-                       kk = nb_trans - 1;
+      for (std::size_t i = std::size_t(0), ii = highest - 1, k = std::size_t(0), kk = nb_trans - 1;
            i < highest;
            ++i, --ii) {
         if (cols[kk] == ii) {
@@ -791,12 +737,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     const typename DatabaseTable< ALLOC >::template DBVector< std::size_t >
        DatabaseTable< ALLOC >::inputColumns() const {
-      const std::size_t nb_trans =  _translators_.size();
+      const std::size_t nb_trans = _translators_.size();
       if (nb_trans == std::size_t(0)) { return DBVector< std::size_t >(); }
 
       DBVector< std::size_t > input_cols(nb_trans);
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-        input_cols[i] =  _translators_.inputColumn(i);
+        input_cols[i] = _translators_.inputColumn(i);
       }
       return input_cols;
     }
@@ -804,12 +750,11 @@ namespace gum {
 
     /// returns the domain size of the kth variable
     template < template < typename > class ALLOC >
-    std::size_t
-       DatabaseTable< ALLOC >::domainSize(const std::size_t k,
-                                          const bool        k_is_input_col) const {
+    std::size_t DatabaseTable< ALLOC >::domainSize(const std::size_t k,
+                                                   const bool        k_is_input_col) const {
       // find the position kk of the translator that contains the variable
-      const std::size_t nb_trans =  _translators_.size();
-      const std::size_t kk       =  _getKthIndex_(k, k_is_input_col);
+      const std::size_t nb_trans = _translators_.size();
+      const std::size_t kk       = _getKthIndex_(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -819,12 +764,12 @@ namespace gum {
                        << "corresponds to Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
-                    "the database has " << nb_trans << " variables, so Variable #"
-                                        << k << " does not exist")
+                    "the database has " << nb_trans << " variables, so Variable #" << k
+                                        << " does not exist")
         }
       }
 
-      return  _translators_.domainSize(kk);
+      return _translators_.domainSize(kk);
     }
 
 
@@ -832,10 +777,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::vector< std::size_t, ALLOC< std::size_t > >
            DatabaseTable< ALLOC >::domainSizes() const {
-      const std::size_t          nb_trans =  _translators_.size();
+      const std::size_t          nb_trans = _translators_.size();
       std::vector< std::size_t > dom(nb_trans);
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-        dom[i] =  _translators_.domainSize(i);
+        dom[i] = _translators_.domainSize(i);
       }
       return dom;
     }
@@ -845,10 +790,10 @@ namespace gum {
     // translator sorted by lexicographical order
     template < template < typename > class ALLOC >
     bool DatabaseTable< ALLOC >::needsReordering(const std::size_t k,
-                                                 const bool k_is_input_col) const {
+                                                 const bool        k_is_input_col) const {
       // find the position kk of the translator that contains the variable
-      const std::size_t nb_trans =  _translators_.size();
-      const std::size_t kk       =  _getKthIndex_(k, k_is_input_col);
+      const std::size_t nb_trans = _translators_.size();
+      const std::size_t kk       = _getKthIndex_(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -858,24 +803,22 @@ namespace gum {
                        << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
-                    "the database has " << nb_trans
-                                        << " translators, so Translator #" << k
+                    "the database has " << nb_trans << " translators, so Translator #" << k
                                         << " does not exist")
         }
       }
 
-      return  _translators_.needsReordering(kk);
+      return _translators_.needsReordering(kk);
     }
 
 
     // performs a reordering of the kth translator or of the first
     // translator corresponding to the kth column of the input database
     template < template < typename > class ALLOC >
-    void DatabaseTable< ALLOC >::reorder(const std::size_t k,
-                                         const bool        k_is_input_col) {
+    void DatabaseTable< ALLOC >::reorder(const std::size_t k, const bool k_is_input_col) {
       // find the position kk of the translator that contains the variable
-      const std::size_t nb_trans =  _translators_.size();
-      const std::size_t kk       =  _getKthIndex_(k, k_is_input_col);
+      const std::size_t nb_trans = _translators_.size();
+      const std::size_t kk       = _getKthIndex_(k, k_is_input_col);
 
       // check if the translator exists
       if (nb_trans <= kk) {
@@ -885,20 +828,17 @@ namespace gum {
                        << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
-                    "the database has " << nb_trans
-                                        << " translators, so Translator #" << k
+                    "the database has " << nb_trans << " translators, so Translator #" << k
                                         << " does not exist")
         }
       }
 
       // if the translator is not designed for a discrete variable, there
       // is no reordering to apply
-      if ( _translators_.translator(kk).getValType()
-          != DBTranslatedValueType::DISCRETE)
-        return;
+      if (_translators_.translator(kk).getValType() != DBTranslatedValueType::DISCRETE) return;
 
       // get the translation to perform
-      auto updates =  _translators_.reorder(kk);
+      auto updates = _translators_.reorder(kk);
       if (updates.empty()) return;
 
       std::size_t                                      size = updates.size();
@@ -912,12 +852,10 @@ namespace gum {
       }
 
       // apply the translations
-      auto newtrans_lambda
-         = [this, kk, &new_values](std::size_t begin, std::size_t end) -> void {
+      auto newtrans_lambda = [this, kk, &new_values](std::size_t begin, std::size_t end) -> void {
         for (std::size_t i = begin; i < end; ++i) {
           auto& elt = this->rows_[i][kk].discr_val;
-          if (elt != std::numeric_limits< std::size_t >::max())
-            elt = new_values[elt];
+          if (elt != std::numeric_limits< std::size_t >::max()) elt = new_values[elt];
         }
       };
 
@@ -925,14 +863,14 @@ namespace gum {
       };
 
       // launch the threads executing the lambdas
-      this-> _threadProcessDatabase_(newtrans_lambda, undo_newtrans_lambda);
+      this->_threadProcessDatabase_(newtrans_lambda, undo_newtrans_lambda);
     }
 
 
     /// performs a reordering of all the columns
     template < template < typename > class ALLOC >
     INLINE void DatabaseTable< ALLOC >::reorder() {
-      const std::size_t nb_trans =  _translators_.size();
+      const std::size_t nb_trans = _translators_.size();
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i)
         reorder(i, false);
     }
@@ -947,41 +885,38 @@ namespace gum {
       const std::size_t row_size = new_row.size();
       if (row_size == std::size_t(0)) return;
 
-      if ( _translators_.highestInputColumn() >= row_size) {
+      if (_translators_.highestInputColumn() >= row_size) {
         GUM_ERROR(SizeError,
-                  "the new row has "
-                     << row_size
-                     << " columns whereas the database requires at least "
-                     << ( _translators_.highestInputColumn() + 1) << " columns")
+                  "the new row has " << row_size
+                                     << " columns whereas the database requires at least "
+                                     << (_translators_.highestInputColumn() + 1) << " columns")
       }
 
       // convert the new_row into a row of DBTranslatedValue
-      const std::size_t        nb_trans =  _translators_.size();
+      const std::size_t        nb_trans = _translators_.size();
       Row< DBTranslatedValue > dbrow;
       dbrow.reserve(nb_trans);
       bool has_missing_val = false;
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-        const DBTranslatedValue new_val( _translators_.translate(new_row, i));
-        if ( _translators_.isMissingValue(new_val, i)) has_missing_val = true;
+        const DBTranslatedValue new_val(_translators_.translate(new_row, i));
+        if (_translators_.isMissingValue(new_val, i)) has_missing_val = true;
         dbrow.pushBack(std::move(new_val));
       }
 
-      this->insertRow(std::move(dbrow),
-                      has_missing_val ? IsMissing::True : IsMissing::False);
+      this->insertRow(std::move(dbrow), has_missing_val ? IsMissing::True : IsMissing::False);
     }
 
 
     /** @brief check that a row's values are compatible with those of the
      * translators' variables */
     template < template < typename > class ALLOC >
-    bool DatabaseTable< ALLOC >:: _isRowCompatible_(
-       const typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >&
-          row) const {
+    bool DatabaseTable< ALLOC >::_isRowCompatible_(
+       const typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >& row) const {
       // check that the size of the row corresponds to that of the translators
       const std::size_t row_size = row.size();
-      if (row_size !=  _translators_.size()) return false;
+      if (row_size != _translators_.size()) return false;
 
-      const auto& translators =  _translators_.translators();
+      const auto& translators = _translators_.translators();
       for (std::size_t i = std::size_t(0); i < row_size; ++i) {
         switch (translators[i]->getValType()) {
           case DBTranslatedValueType::DISCRETE:
@@ -992,8 +927,7 @@ namespace gum {
 
           case DBTranslatedValueType::CONTINUOUS: {
             const IContinuousVariable& var
-               = static_cast< const IContinuousVariable& >(
-                  *(translators[i]->variable()));
+               = static_cast< const IContinuousVariable& >(*(translators[i]->variable()));
             if (((var.lowerBoundAsDouble() > (double)row[i].cont_val)
                  || (var.upperBoundAsDouble() < (double)row[i].cont_val))
                 && (row[i].cont_val != std::numeric_limits< float >::max()))
@@ -1013,21 +947,18 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     template < template < typename > class ALLOC >
     INLINE void DatabaseTable< ALLOC >::insertRow(
-       typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >&&
-                                                        new_row,
-       const typename DatabaseTable< ALLOC >::IsMissing contains_missing_data) {
+       typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >&& new_row,
+       const typename DatabaseTable< ALLOC >::IsMissing                     contains_missing_data) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
-      if (! _isRowCompatible_(new_row)) {
-        if (new_row.size() !=  _translators_.size()) {
+      if (!_isRowCompatible_(new_row)) {
+        if (new_row.size() != _translators_.size()) {
           GUM_ERROR(SizeError,
-                    "The new row has "
-                       << new_row.size()
-                       << " elements whereas the database table has "
-                       <<  _translators_.size() << " columns")
+                    "The new row has " << new_row.size()
+                                       << " elements whereas the database table has "
+                                       << _translators_.size() << " columns")
         } else {
-          GUM_ERROR(InvalidArgument,
-                    "the new row is not compatible with the current translators")
+          GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
         }
       }
 
@@ -1039,26 +970,22 @@ namespace gum {
     /// insert a new row at the end of the database
     template < template < typename > class ALLOC >
     INLINE void DatabaseTable< ALLOC >::insertRow(
-       const typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >&
-                                                        new_row,
+       const typename DatabaseTable< ALLOC >::template Row< DBTranslatedValue >& new_row,
        const typename DatabaseTable< ALLOC >::IsMissing contains_missing_data) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
-      if (! _isRowCompatible_(new_row)) {
-        if (new_row.size() !=  _translators_.size()) {
+      if (!_isRowCompatible_(new_row)) {
+        if (new_row.size() != _translators_.size()) {
           GUM_ERROR(SizeError,
-                    "The new row has "
-                       << new_row.size()
-                       << " elements whereas the database table has "
-                       <<  _translators_.size() << " columns")
+                    "The new row has " << new_row.size()
+                                       << " elements whereas the database table has "
+                                       << _translators_.size() << " columns")
         } else {
-          GUM_ERROR(InvalidArgument,
-                    "the new row is not compatible with the current translators")
+          GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
         }
       }
 
-      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRow(new_row,
-                                                            contains_missing_data);
+      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRow(new_row, contains_missing_data);
     }
 
 
@@ -1080,62 +1007,51 @@ namespace gum {
     /// insert a set of new DBRows at the end of the database
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRows(
-       typename DatabaseTable< ALLOC >::template Matrix< DBTranslatedValue >&&
-          rows,
+       typename DatabaseTable< ALLOC >::template Matrix< DBTranslatedValue >&& rows,
        const typename DatabaseTable< ALLOC >::template DBVector< IsMissing >&
           rows_have_missing_vals) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       for (const auto& new_row: rows) {
-        if (! _isRowCompatible_(new_row)) {
-          if (new_row.size() !=  _translators_.size()) {
+        if (!_isRowCompatible_(new_row)) {
+          if (new_row.size() != _translators_.size()) {
             GUM_ERROR(SizeError,
-                      "The new row has "
-                         << new_row.size()
-                         << " elements whereas the database table has "
-                         <<  _translators_.size() << " columns")
+                      "The new row has " << new_row.size()
+                                         << " elements whereas the database table has "
+                                         << _translators_.size() << " columns")
           } else {
-            GUM_ERROR(
-               InvalidArgument,
-               "the new row is not compatible with the current translators")
+            GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
           }
         }
       }
 
-      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(
-         std::move(rows),
-         rows_have_missing_vals);
+      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(std::move(rows),
+                                                             rows_have_missing_vals);
     }
 
 
     /// insert a set of new DBRows at the end of the database
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRows(
-       const typename DatabaseTable< ALLOC >::template Matrix< DBTranslatedValue >&
-          new_rows,
+       const typename DatabaseTable< ALLOC >::template Matrix< DBTranslatedValue >& new_rows,
        const typename DatabaseTable< ALLOC >::template DBVector< IsMissing >&
           rows_have_missing_vals) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       for (const auto& new_row: new_rows) {
-        if (! _isRowCompatible_(new_row)) {
-          if (new_row.size() !=  _translators_.size()) {
+        if (!_isRowCompatible_(new_row)) {
+          if (new_row.size() != _translators_.size()) {
             GUM_ERROR(SizeError,
-                      "The new row has "
-                         << new_row.size()
-                         << " elements whereas the database table has "
-                         <<  _translators_.size() << " columns")
+                      "The new row has " << new_row.size()
+                                         << " elements whereas the database table has "
+                                         << _translators_.size() << " columns")
           } else {
-            GUM_ERROR(
-               InvalidArgument,
-               "the new row is not compatible with the current translators")
+            GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
           }
         }
       }
 
-      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(
-         new_rows,
-         rows_have_missing_vals);
+      IDatabaseTable< DBTranslatedValue, ALLOC >::insertRows(new_rows, rows_have_missing_vals);
     }
 
 
@@ -1150,8 +1066,7 @@ namespace gum {
     /// insert a set of new DBRows at the end of the database
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::insertRows(
-       const typename DatabaseTable< ALLOC >::template Matrix< DBCell >&
-          new_rows) {
+       const typename DatabaseTable< ALLOC >::template Matrix< DBCell >& new_rows) {
       GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
@@ -1159,8 +1074,8 @@ namespace gum {
     /// erase the content of the database, including the names of the variables
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::clear() {
-       _translators_.clear();
-       _ignored_cols_.clear();
+      _translators_.clear();
+      _ignored_cols_.clear();
       IDatabaseTable< DBTranslatedValue, ALLOC >::clear();
     }
 

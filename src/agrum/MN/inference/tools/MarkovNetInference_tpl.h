@@ -32,8 +32,7 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  MarkovNetInference< GUM_SCALAR >::MarkovNetInference(
-     const IMarkovNet< GUM_SCALAR >* mn) :
+  MarkovNetInference< GUM_SCALAR >::MarkovNetInference(const IMarkovNet< GUM_SCALAR >* mn) :
       GraphicalModelInference< GUM_SCALAR >(mn) {
     GUM_CONSTRUCTOR(MarkovNetInference);
   }
@@ -55,23 +54,21 @@ namespace gum {
 
   // Returns a constant reference over the IMarkovNet referenced by this class
   template < typename GUM_SCALAR >
-  INLINE const IMarkovNet< GUM_SCALAR >&
-               MarkovNetInference< GUM_SCALAR >::MN() const {
+  INLINE const IMarkovNet< GUM_SCALAR >& MarkovNetInference< GUM_SCALAR >::MN() const {
     return static_cast< const IMarkovNet< GUM_SCALAR >& >(this->model());
   }
 
 
   // assigns a new MN to the inference engine
   template < typename GUM_SCALAR >
-  void
-     MarkovNetInference< GUM_SCALAR >::setMN(const IMarkovNet< GUM_SCALAR >* mn) {
+  void MarkovNetInference< GUM_SCALAR >::setMN(const IMarkovNet< GUM_SCALAR >* mn) {
     this->setModel_(mn);
   }
 
 
   // assigns a MN to a newly constructed inference engine
   template < typename GUM_SCALAR >
-  void MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(
+  void MarkovNetInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(
      const IMarkovNet< GUM_SCALAR >* mn) {
     this->setModelDuringConstruction_(mn);
   }

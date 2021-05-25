@@ -62,8 +62,7 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyLIMIDInference:
-      public InfluenceDiagramInference< GUM_SCALAR > {
+  class ShaferShenoyLIMIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
     using PhiNodeProperty = NodeProperty< DecisionPotential< GUM_SCALAR > >;
     using PsiArcProperty  = ArcProperty< DecisionPotential< GUM_SCALAR > >;
     using SetOfVars       = Set< const DiscreteVariable* >;
@@ -79,8 +78,7 @@ namespace gum {
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    explicit ShaferShenoyLIMIDInference(
-       const InfluenceDiagram< GUM_SCALAR >* infDiag);
+    explicit ShaferShenoyLIMIDInference(const InfluenceDiagram< GUM_SCALAR >* infDiag);
 
     /**
      * Destructor.
@@ -108,8 +106,7 @@ namespace gum {
 
 
     gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
-    gum::Potential< GUM_SCALAR >
-       optimalDecision(const std::string& decisionName) final {
+    gum::Potential< GUM_SCALAR > optimalDecision(const std::string& decisionName) final {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
 
@@ -120,7 +117,7 @@ namespace gum {
      * @return the posterior probability
      */
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
-    const Potential< GUM_SCALAR >& posterior(const std::string& name) final {
+    const Potential< GUM_SCALAR >&         posterior(const std::string& name) final {
       return posterior(this->influenceDiagram().idFromName(name));
     };
 
@@ -131,8 +128,7 @@ namespace gum {
      * @return the posterior utility of a node
      */
     virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) final;
-    virtual const Potential< GUM_SCALAR >&
-       posteriorUtility(const std::string& name) final {
+    virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& name) final {
       return posteriorUtility(this->influenceDiagram().idFromName(name));
     };
 
@@ -143,7 +139,7 @@ namespace gum {
      * @return the pair (mean,variance) for a node
      */
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) final;
-    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) final {
+    std::pair< GUM_SCALAR, GUM_SCALAR >         meanVar(const std::string& name) final {
       return meanVar(this->influenceDiagram().idFromName(name));
     };
 
@@ -182,17 +178,15 @@ namespace gum {
     std::vector< NodeId >  noForgettingOrder_;
 
     private:
-    void  _completingNoForgettingAssumption_();
-    void  _reducingLIMID_();
-    void  _creatingPartialOrder_(const NodeSet& utilities);
-    void  _checkingSolvability_(const NodeSet& utilities);
-    void  _creatingJunctionTree_();
-    void  _findingCliqueForEachNode_(DefaultTriangulation& triangulation);
+    void _completingNoForgettingAssumption_();
+    void _reducingLIMID_();
+    void _creatingPartialOrder_(const NodeSet& utilities);
+    void _checkingSolvability_(const NodeSet& utilities);
+    void _creatingJunctionTree_();
+    void _findingCliqueForEachNode_(DefaultTriangulation& triangulation);
 
     void initializingInference_(PhiNodeProperty& phi, PsiArcProperty& psi);
-    void collectingMessage_(PhiNodeProperty& phi,
-                            PsiArcProperty&  psi,
-                            NodeId           rootClique);
+    void collectingMessage_(PhiNodeProperty& phi, PsiArcProperty& psi, NodeId rootClique);
     void collectingToFollowingRoot_(PhiNodeProperty& phi,
                                     PsiArcProperty&  psi,
                                     NodeId           fromClique,
@@ -206,18 +200,14 @@ namespace gum {
                                    PsiArcProperty&  psi,
                                    NodeId           fromClique,
                                    NodeId           toClique);
-    void distributingMessage_(PhiNodeProperty& phi,
-                              PsiArcProperty&  psi,
-                              NodeId           rootClique);
-    void computingPosteriors_(const PhiNodeProperty& phi,
-                              const PsiArcProperty&  psi);
+    void distributingMessage_(PhiNodeProperty& phi, PsiArcProperty& psi, NodeId rootClique);
+    void computingPosteriors_(const PhiNodeProperty& phi, const PsiArcProperty& psi);
     DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
                                              const PsiArcProperty&  psi,
                                              NodeId                 clique,
                                              NodeId                 except) const;
-    DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
-                                             const PsiArcProperty&  psi,
-                                             NodeId                 clique) const;
+    DecisionPotential< double >
+         integrating_(const PhiNodeProperty& phi, const PsiArcProperty& psi, NodeId clique) const;
     void binarizingMax_(const Potential< GUM_SCALAR >& decision,
                         const Potential< GUM_SCALAR >& proba) const;
   };

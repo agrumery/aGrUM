@@ -38,18 +38,18 @@ namespace gum {
   namespace prm {
 
 
-    void PRMType:: _updateName_() {
+    void PRMType::_updateName_() {
       const void*       address = static_cast< const void* >(this);
       std::stringstream ss;
       ss << this->name() << "-" << address;
-      this-> _var_->setName(ss.str());
+      this->_var_->setName(ss.str());
     }
 
 
     PRMType::PRMType(const DiscreteVariable& var) :
-        PRMObject(var.name()),  _var_(var.clone()),  _superType_(0),  _label_map_(0) {
+        PRMObject(var.name()), _var_(var.clone()), _superType_(0), _label_map_(0) {
       GUM_CONSTRUCTOR(PRMType);
-      this-> _updateName_();
+      this->_updateName_();
     }
 
 
@@ -57,26 +57,25 @@ namespace gum {
                      const std::vector< Idx >& label_map,
                      const DiscreteVariable&   var) :
         PRMObject(var.name()),
-         _var_(var.clone()),  _superType_(&super_type),
-         _label_map_(new std::vector< Idx >(label_map)) {
+        _var_(var.clone()), _superType_(&super_type),
+        _label_map_(new std::vector< Idx >(label_map)) {
       GUM_CONSTRUCTOR(PRMType);
-      this-> _updateName_();
+      this->_updateName_();
 
-      if (! _isValid_()) {
-        delete  _label_map_;
-         _label_map_ = 0;
+      if (!_isValid_()) {
+        delete _label_map_;
+        _label_map_ = 0;
         GUM_ERROR(OperationNotAllowed, "Invalid label map.")
       }
     }
 
 
     PRMType::PRMType(const PRMType& from) :
-        PRMObject(from),  _var_(from. _var_->clone()),  _superType_(from. _superType_),
-         _label_map_(0) {
+        PRMObject(from), _var_(from._var_->clone()), _superType_(from._superType_), _label_map_(0) {
       GUM_CONS_CPY(PRMType);
-      this-> _updateName_();
+      this->_updateName_();
 
-      if ( _superType_) {  _label_map_ = new std::vector< Idx >(from.label_map()); }
+      if (_superType_) { _label_map_ = new std::vector< Idx >(from.label_map()); }
     }
 
 
@@ -88,8 +87,8 @@ namespace gum {
 
     PRMType::~PRMType() {
       GUM_DESTRUCTOR(PRMType);
-      delete  _var_;
-      if ( _label_map_) { delete  _label_map_; }
+      delete _var_;
+      if (_label_map_) { delete _label_map_; }
     }
 
 
@@ -105,20 +104,20 @@ namespace gum {
     bool PRMType::isSubTypeOf(const PRMType& super) const {
       if ((*this) == super) {
         return true;
-      } else if ( _superType_) {
-        return  _superType_->isSubTypeOf(super);
+      } else if (_superType_) {
+        return _superType_->isSubTypeOf(super);
       } else {
         return false;
       }
     }
 
 
-    bool PRMType:: _isValid_() const {
-      if (! _superType_) { return  _var_->domainSize() > 1; }
+    bool PRMType::_isValid_() const {
+      if (!_superType_) { return _var_->domainSize() > 1; }
 
-      if ( _label_map_->size() ==  _var_->domainSize()) {
-        for (size_t i = 0; i <  _label_map_->size(); ++i) {
-          if ( _label_map_->at(i) >= (** _superType_).domainSize()) { return false; }
+      if (_label_map_->size() == _var_->domainSize()) {
+        for (size_t i = 0; i < _label_map_->size(); ++i) {
+          if (_label_map_->at(i) >= (**_superType_).domainSize()) { return false; }
         }
 
         return true;

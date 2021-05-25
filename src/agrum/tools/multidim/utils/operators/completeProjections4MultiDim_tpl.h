@@ -39,8 +39,7 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMaxMultiDimArray
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (y > x) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::min()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -49,30 +48,25 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectMaxMultiDimArray
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (y > x) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::min()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
-    projectMaxMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME projectMaxMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (*(y) > *(x)) *(x) = *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::min()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME \
-    projectMaxMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMaxMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (*(y) > *(x)) *(x) = *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::min()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -83,8 +77,7 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMinMultiDimArray
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (x > y) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -93,30 +86,25 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectMinMultiDimArray
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (x > y) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
-    projectMinMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME projectMinMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (*(x) > *(y)) *(x) = *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME \
-    projectMinMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMinMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (*(x) > *(y)) *(x) = *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -140,19 +128,17 @@
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
-    projectSumMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   *(x) += *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME projectSumMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)        *(x) += *(y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL      (GUM_SCALAR)0
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME \
-    projectSumMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   *(x) += *(y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME projectSumMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)                   *(x) += *(y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL                 (GUM_SCALAR)0
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -168,19 +154,17 @@
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME \
-    projectProductMultiDimArray
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (x) *= (y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectProductMultiDimArray
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)           (x) *= (y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL         (GUM_SCALAR)1
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
-    projectProductMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (*x) *= (*y)
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME projectProductMultiDimArray4Pointers
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)        (*x) *= (*y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL      (GUM_SCALAR)1
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -231,8 +215,7 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMaxMultiDimImplementation
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (y > x) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::min()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -241,8 +224,7 @@
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMinMultiDimImplementation
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) \
     if (x > y) x = y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
-    std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -256,8 +238,7 @@
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME \
-    projectProductMultiDimImplementation
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME    projectProductMultiDimImplementation
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   x *= y
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/tools/multidim/utils/patterns/completeProjectionPattern4BaseName.h>
@@ -306,10 +287,9 @@ namespace gum {
       registerCompleteProjection< GUM_SCALAR >("sum",
                                                BaseNameString,
                                                &projectSumMultiDimImplementation);
-      registerCompleteProjection< GUM_SCALAR >(
-         "product",
-         BaseNameString,
-         &projectProductMultiDimImplementation);
+      registerCompleteProjection< GUM_SCALAR >("product",
+                                               BaseNameString,
+                                               &projectProductMultiDimImplementation);
     }
   }
 
@@ -334,10 +314,9 @@ namespace gum {
       registerCompleteProjection< GUM_SCALAR* >("sum",
                                                 MultiDimArrayString,
                                                 &projectSumMultiDimArray4Pointers);
-      registerCompleteProjection< GUM_SCALAR* >(
-         "product",
-         MultiDimArrayString,
-         &projectProductMultiDimArray4Pointers);
+      registerCompleteProjection< GUM_SCALAR* >("product",
+                                                MultiDimArrayString,
+                                                &projectProductMultiDimArray4Pointers);
     }
   }
 

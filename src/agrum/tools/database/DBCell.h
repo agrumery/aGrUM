@@ -224,9 +224,8 @@ namespace gum {
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned EltType represents a missing value. */
       template < template < typename > class ALLOC = std::allocator >
-      static EltType bestType(
-         const std::string&                                      str,
-         const std::vector< std::string, ALLOC< std::string > >& missingVals);
+      static EltType bestType(const std::string&                                      str,
+                              const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the DBCell with the best type for an element encoded as a string
       /** @param str the string to convert into a DBCell
@@ -234,17 +233,16 @@ namespace gum {
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned DBCell represents a missing value. */
       template < template < typename > class ALLOC = std::allocator >
-      static DBCell bestDBCell(
-         const std::string&                                      str,
-         const std::vector< std::string, ALLOC< std::string > >& missingVals);
+      static DBCell bestDBCell(const std::string&                                      str,
+                               const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the content of the DBCell as a string, whatever its type
       /** @throw UndefinedElement is raised if the DBCell corresponds to a
        * missing value but the set of missing values passed in argument is
        * empty. */
       template < template < typename > class ALLOC = std::allocator >
-      std::string toString(const std::vector< std::string, ALLOC< std::string > >&
-                              missingVals) const;
+      std::string
+         toString(const std::vector< std::string, ALLOC< std::string > >& missingVals) const;
 
       /// determines whether a string corresponds precisely to an integer
       static bool isInteger(const std::string& str);
@@ -254,9 +252,8 @@ namespace gum {
 
       /// checks whether a string correspond to a missing value
       template < template < typename > class ALLOC = std::allocator >
-      static bool isMissing(
-         const std::string&                                      str,
-         const std::vector< std::string, ALLOC< std::string > >& missingVals);
+      static bool isMissing(const std::string&                                      str,
+                            const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// @}
 
@@ -265,30 +262,29 @@ namespace gum {
 
       private:
       // the real type of the last element read from the database
-      EltType  _type_{EltType::MISSING};
+      EltType _type_{EltType::MISSING};
 
       // the element read from the database
       union {
-        int    _val_index_;     // stores string indices. Basically, it should have
-        int    _val_integer_;   // been an Idx, but int are shorter than Idx.
-        float  _val_real_;
+        int   _val_index_;     // stores string indices. Basically, it should have
+        int   _val_integer_;   // been an Idx, but int are shorter than Idx.
+        float _val_real_;
       };
 
 
       // determine the longest type of the union. This is used for fast
       // copying/moving DBCells
-      using UnionType = typename std::
-         conditional< sizeof(int) < sizeof(float), float, int >::type;
+      using UnionType = typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
 
       // raises an appropriate exception when encountering a type error
-      std::string  _typeErrorMsg_(const std::string& real_type) const;
+      std::string _typeErrorMsg_(const std::string& real_type) const;
 
 
       // a bijection assigning to each string index its corresponding string
-      static Bijection< std::string, int >&  _strings_();
+      static Bijection< std::string, int >& _strings_();
 
       // the last index used so far
-      static int  _string_max_index_;
+      static int _string_max_index_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

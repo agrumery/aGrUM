@@ -74,20 +74,16 @@ namespace gum {
       // ========================================================================
       /// @{
 
+      virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
       virtual PRMAttribute< GUM_SCALAR >*
-         newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
-      virtual PRMAttribute< GUM_SCALAR >*
-         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij)
-            const = 0;
+         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const = 0;
 
-      virtual void copyCpf(
-         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-         const PRMAttribute< GUM_SCALAR >& source)
+      virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+                           const PRMAttribute< GUM_SCALAR >& source)
          = 0;
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const = 0;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const = 0;
 
       /// See gum::PRMClassElement::type().
       virtual PRMType& type() = 0;

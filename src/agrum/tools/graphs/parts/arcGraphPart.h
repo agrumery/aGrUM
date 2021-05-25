@@ -298,23 +298,23 @@ namespace gum {
 
     private:
     /// the set of all the arcs contained within the ArcGraphPart
-    Set< Arc >  _arcs_;
+    Set< Arc > _arcs_;
 
     /// for each arc, the sets of its parents
-    mutable NodeProperty< NodeSet* >  _parents_;
+    mutable NodeProperty< NodeSet* > _parents_;
 
     /// for each arc, the set of its children
-    mutable NodeProperty< NodeSet* >  _children_;
+    mutable NodeProperty< NodeSet* > _children_;
 
     /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
      * this function adds an empty set entry to  _parents_[id]
      * @param id the node whose  _parents_[id] is checked */
-    void  _checkParents_(NodeId id) const;
+    void _checkParents_(NodeId id) const;
 
     /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
      * this function adds an empty set entry to  _children_[id]
      * @param id the node whose  _children_[id] is checked */
-    void  _checkChildren_(NodeId id) const;
+    void _checkChildren_(NodeId id) const;
   };
 
   /// for friendly displaying the content of arc set

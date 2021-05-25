@@ -33,10 +33,10 @@ namespace gum_tests {
 
   class RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
-    gum::Potential< double >  _infer_(
-       const gum::BayesNet< double >&                                  bn,
-       const std::vector< std::size_t >&                               targets,
-       const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+    gum::Potential< double >
+       _infer_(const gum::BayesNet< double >&                                  bn,
+               const std::vector< std::size_t >&                               targets,
+               const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -57,7 +57,7 @@ namespace gum_tests {
     }
 
     public:
-    void  _test_no_range_no_nodeId2col() {
+    void _test_no_range_no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -68,7 +68,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -268,7 +268,7 @@ namespace gum_tests {
     }
 
 
-    void  _test_no_range_has_nodeId2col() {
+    void _test_no_range_has_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -279,7 +279,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -519,7 +519,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -601,7 +601,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -631,8 +631,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
-                                                                  {1050, 1400}};
+      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
       // create the record counter
       gum::learning::RecordCounter<> counter(parser, ranges);
@@ -814,7 +813,7 @@ namespace gum_tests {
       {
         const std::vector< std::string >                miss;
         gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           // translator.setName ( name );
@@ -844,8 +843,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
-                                                                  {1050, 1400}};
+      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         // create the record counter
@@ -1061,10 +1059,10 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
       gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
-      gum::learning::DBRowGenerator<>& gen2 = generator2;   // fix for g++-4.8
+      gum::learning::DBRowGenerator<>&        gen2 = generator2;   // fix for g++-4.8
       gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
       gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
-      gum::learning::DBRowGenerator<>& gen4 = generator4;   // fix for g++-4.8
+      gum::learning::DBRowGenerator<>&        gen4 = generator4;   // fix for g++-4.8
 
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
@@ -1099,8 +1097,7 @@ namespace gum_tests {
       std::vector< double > xcounts(4, 0.0);
       int                   nb_row = 0;
       for (const auto& row: database) {
-        gum::Potential< double > proba
-           =  _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
+        gum::Potential< double > proba = _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

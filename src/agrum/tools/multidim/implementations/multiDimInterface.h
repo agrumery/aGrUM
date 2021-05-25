@@ -115,8 +115,7 @@ namespace gum {
      * @brief Returns a const ref to the sequence of DiscreteVariable*.
      * @return Returns a const ref to the sequence of DiscreteVariable*.
      */
-    virtual const Sequence< const DiscreteVariable* >&
-       variablesSequence() const = 0;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const = 0;
 
     /**
      * @brief Returns a const ref to the ith var.
@@ -184,8 +183,7 @@ namespace gum {
      * @param x The variable to replace in
      * @param y The second variable to swap.
      */
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y)
-       = 0;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) = 0;
   };
 
   /**

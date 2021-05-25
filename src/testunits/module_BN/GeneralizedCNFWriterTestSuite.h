@@ -72,15 +72,13 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::GeneralizedCNFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer
-                                   = new gum::GeneralizedCNFWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >());
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
-      typedef gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >
-              typCNF;
-      typCNF* writer = nullptr;
+      typedef gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > typCNF;
+      typCNF*                                                                     writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
       writer->setEpsilon(0.2);
       writer->setLowLimit(0);
@@ -116,8 +114,7 @@ namespace gum_tests {
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
-      std::string file
-         = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
+      std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 

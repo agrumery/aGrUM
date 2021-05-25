@@ -51,8 +51,7 @@ namespace gum {
     return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
   }
 
-  std::vector< std::string > split(const std::string& str,
-                                   const std::string& delim) {
+  std::vector< std::string > split(const std::string& str, const std::string& delim) {
     std::vector< std::string > tokens;
     size_t                     prev = 0, pos = 0;
     do {
@@ -76,15 +75,12 @@ std::vector<std::string> split( const std::string& orig,
   return {first, last};
 } */
 
-  std::string replace(const std::string& s,
-                      const std::string& val,
-                      const std::string& new_val) {
+  std::string replace(const std::string& s, const std::string& val, const std::string& new_val) {
     auto retVal = s;
     auto pos    = retVal.find(val);
     while (pos != std::string::npos) {
       std::stringstream sBuff;
-      sBuff << s.substr(0, pos) << new_val
-            << s.substr(pos + val.size(), std::string::npos);
+      sBuff << s.substr(0, pos) << new_val << s.substr(pos + val.size(), std::string::npos);
       retVal = sBuff.str();
       pos    = retVal.find(val);
     }

@@ -66,8 +66,8 @@ namespace gum {
      * @brief Class constructor.
      * @param aContent The implementation used by this MultiDimDecorator.
      */
-    MultiDimDecorator(MultiDimImplementation< GUM_SCALAR >* aContent = nullptr,
-                      GUM_SCALAR empty_value = (GUM_SCALAR)0);
+    MultiDimDecorator(MultiDimImplementation< GUM_SCALAR >* aContent    = nullptr,
+                      GUM_SCALAR                            empty_value = (GUM_SCALAR)0);
 
     /**
      * @brief copy constructor & assignment
@@ -77,8 +77,7 @@ namespace gum {
     /**
      * @brief copy operator
      */
-    MultiDimDecorator< GUM_SCALAR >&
-       operator=(const MultiDimDecorator& from) noexcept;
+    MultiDimDecorator< GUM_SCALAR >& operator=(const MultiDimDecorator& from) noexcept;
 
     /**
      * @brief Class move constructor
@@ -110,9 +109,8 @@ namespace gum {
     virtual void erase(const DiscreteVariable& var) final;
     virtual void erase(const std::string& name) final;
 
-    virtual const Sequence< const DiscreteVariable* >&
-                                    variablesSequence() const final;
-    virtual const DiscreteVariable& variable(Idx) const final;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const final;
+    virtual const DiscreteVariable&                    variable(Idx) const final;
     virtual const DiscreteVariable& variable(const std::string& name) const final;
 
     virtual Idx pos(const DiscreteVariable& var) const final;
@@ -201,9 +199,8 @@ namespace gum {
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_SCALAR
-       reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-              GUM_SCALAR base) const final;
+    virtual GUM_SCALAR reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                              GUM_SCALAR                                          base) const final;
 
     virtual MultiDimDecorator< GUM_SCALAR >* newFactory() const = 0;
 

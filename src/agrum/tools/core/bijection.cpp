@@ -39,20 +39,19 @@
 namespace gum {
 
   // creates (if needed) and returns the safe iterator  _BijectionIterEndSafe_
-  const BijectionIteratorSafe< int, int >*
-     BijectionIteratorStaticEnd::endSafe4Statics() {
+  const BijectionIteratorSafe< int, int >* BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time             = false;
-       _BijectionIterEndSafe_ = new BijectionIteratorSafe< int, int >;
+      _BijectionIterEndSafe_ = new BijectionIteratorSafe< int, int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("BijectionIteratorSafe",
+      __debug__::_dec_creation_("BijectionIteratorSafe",
                                 " __bijection_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIteratorSafe",
+      __debug__::_dec_creation_("HashTableConstIteratorSafe",
                                 " __bijection_static_end",
                                 0,
                                 "static variable correction",
@@ -60,7 +59,7 @@ namespace gum {
 #  endif
     }
 
-    return  _BijectionIterEndSafe_;
+    return _BijectionIterEndSafe_;
   }
 
   // creates (if needed) and returns the unsafe iterator  _BijectionIterEnd_
@@ -69,14 +68,14 @@ namespace gum {
 
     if (first_time) {
       first_time         = false;
-       _BijectionIterEnd_ = new BijectionIterator< int, int >;
+      _BijectionIterEnd_ = new BijectionIterator< int, int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("BijectionIterator",
+      __debug__::_dec_creation_("BijectionIterator",
                                 " __bijection_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIterator",
+      __debug__::_dec_creation_("HashTableConstIterator",
                                 " __bijection_static_end",
                                 0,
                                 "static variable correction",
@@ -84,17 +83,15 @@ namespace gum {
 #  endif
     }
 
-    return  _BijectionIterEnd_;
+    return _BijectionIterEnd_;
   }
 
   // create the end iterator for all Bijections
-  const BijectionIteratorSafe< int, int >*
-     BijectionIteratorStaticEnd:: _BijectionIterEndSafe_
+  const BijectionIteratorSafe< int, int >* BijectionIteratorStaticEnd::_BijectionIterEndSafe_
      = BijectionIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Bijections
-  const BijectionIterator< int, int >*
-     BijectionIteratorStaticEnd:: _BijectionIterEnd_
+  const BijectionIterator< int, int >* BijectionIteratorStaticEnd::_BijectionIterEnd_
      = BijectionIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */

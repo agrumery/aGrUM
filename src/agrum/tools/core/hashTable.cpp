@@ -41,14 +41,14 @@ namespace gum {
 
     if (first_time) {
       first_time         = false;
-       _HashTableIterEnd_ = new HashTableIterator< int, int >;
+      _HashTableIterEnd_ = new HashTableIterator< int, int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("HashTableIterator",
+      __debug__::_dec_creation_("HashTableIterator",
                                 " __hash_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIterator",
+      __debug__::_dec_creation_("HashTableConstIterator",
                                 " __hash_static_end",
                                 0,
                                 "static variable correction",
@@ -56,29 +56,26 @@ namespace gum {
 #  endif
     }
 
-    return  _HashTableIterEnd_;
+    return _HashTableIterEnd_;
   }
 
-  const HashTableConstIterator< int, int >*
-     HashTableIteratorStaticEnd::constEnd4Statics() {
-    return reinterpret_cast< const HashTableConstIterator< int, int >* >(
-       end4Statics());
+  const HashTableConstIterator< int, int >* HashTableIteratorStaticEnd::constEnd4Statics() {
+    return reinterpret_cast< const HashTableConstIterator< int, int >* >(end4Statics());
   }
 
-  const HashTableIteratorSafe< int, int >*
-     HashTableIteratorStaticEnd::endSafe4Statics() {
+  const HashTableIteratorSafe< int, int >* HashTableIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time             = false;
-       _HashTableIterEndSafe_ = new HashTableIteratorSafe< int, int >;
+      _HashTableIterEndSafe_ = new HashTableIteratorSafe< int, int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("HashTableIteratorSafe",
+      __debug__::_dec_creation_("HashTableIteratorSafe",
                                 " __hash_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIteratorSafe",
+      __debug__::_dec_creation_("HashTableConstIteratorSafe",
                                 " __hash_static_end",
                                 0,
                                 "static variable correction",
@@ -86,21 +83,17 @@ namespace gum {
 #  endif
     }
 
-    return  _HashTableIterEndSafe_;
+    return _HashTableIterEndSafe_;
   }
 
-  const HashTableConstIteratorSafe< int, int >*
-     HashTableIteratorStaticEnd::constEndSafe4Statics() {
-    return reinterpret_cast< const HashTableConstIteratorSafe< int, int >* >(
-       endSafe4Statics());
+  const HashTableConstIteratorSafe< int, int >* HashTableIteratorStaticEnd::constEndSafe4Statics() {
+    return reinterpret_cast< const HashTableConstIteratorSafe< int, int >* >(endSafe4Statics());
   }
 
-  const HashTableIterator< int, int >*
-     HashTableIteratorStaticEnd:: _HashTableIterEnd_
+  const HashTableIterator< int, int >* HashTableIteratorStaticEnd::_HashTableIterEnd_
      = HashTableIteratorStaticEnd::end4Statics();
 
-  const HashTableIteratorSafe< int, int >*
-     HashTableIteratorStaticEnd:: _HashTableIterEndSafe_
+  const HashTableIteratorSafe< int, int >* HashTableIteratorStaticEnd::_HashTableIterEndSafe_
      = HashTableIteratorStaticEnd::endSafe4Statics();
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

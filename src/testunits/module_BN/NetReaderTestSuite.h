@@ -49,8 +49,7 @@ namespace gum_tests {
 
       gum::NetReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader
-                                   = new gum::NetReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }

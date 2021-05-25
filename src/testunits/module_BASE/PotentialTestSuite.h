@@ -84,13 +84,12 @@ namespace gum_tests {
 
     void testDomainSizeChanges() {
       gum::Potential< double > p1(new gum::MultiDimArray< double >());
-      gum::LabelizedVariable   var1("var1", "first var", 2),
-         var2("var2", "second var", 2), var3("var3", "third var", 2);
+      gum::LabelizedVariable   var1("var1", "first var", 2), var2("var2", "second var", 2),
+         var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
-      TS_ASSERT_EQUALS(
-         p1.domainSize(),
-         (var1.domainSize() * var2.domainSize() * var3.domainSize()));
+      TS_ASSERT_EQUALS(p1.domainSize(),
+                       (var1.domainSize() * var2.domainSize() * var3.domainSize()));
     }
 
     void testAddAnyNumber() {
@@ -239,35 +238,33 @@ namespace gum_tests {
       // just checking memory allocation (what else ?)
       auto pA = p1 * p2;
 
-      TS_ASSERT_EQUALS(pA,
-                       (gum::Potential< int >() << b << c << a)
-                          .fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
+      TS_ASSERT_EQUALS(
+         pA,
+         (gum::Potential< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
 
       auto pB = p1 + p2;
-      TS_ASSERT_EQUALS(pB,
-                       (gum::Potential< int >() << b << c << a)
-                          .fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
+      TS_ASSERT_EQUALS(
+         pB,
+         (gum::Potential< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
 
       auto pC = p2 / p1;
       TS_ASSERT_EQUALS(pC,
-                       (gum::Potential< int >() << b << a << c)
-                          .fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
+                       (gum::Potential< int >() << b << a << c).fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
 
       auto pD = p2 - p1;
       TS_ASSERT_EQUALS(pD,
-                       (gum::Potential< int >() << b << a << c)
-                          .fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
+                       (gum::Potential< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
 
-      TS_ASSERT_EQUALS(((p1 * p2) - (p2 / p1) + p1),
-                       (gum::Potential< int >() << b << a << c)
-                          .fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+      TS_ASSERT_EQUALS(
+         ((p1 * p2) - (p2 / p1) + p1),
+         (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
 
       p = p1 * p2;
       p -= (p2 / p1);
       p += p1;
-      TS_ASSERT_EQUALS(p,
-                       (gum::Potential< int >() << b << a << c)
-                          .fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+      TS_ASSERT_EQUALS(
+         p,
+         (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
     }
 
     void testMargOutFunctions() {
@@ -309,15 +306,11 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(p.margProdOut({&b}),
                          (gum::Potential< double >() << a).fillWith({28, 80, 162}))
 
-        TS_ASSERT_EQUALS(p.margMaxOut({&a}),
-                         (gum::Potential< double >() << b).fillWith({3, 6, 9}))
-        TS_ASSERT_EQUALS(p.margMaxOut({&b}),
-                         (gum::Potential< double >() << a).fillWith({7, 8, 9}))
+        TS_ASSERT_EQUALS(p.margMaxOut({&a}), (gum::Potential< double >() << b).fillWith({3, 6, 9}))
+        TS_ASSERT_EQUALS(p.margMaxOut({&b}), (gum::Potential< double >() << a).fillWith({7, 8, 9}))
 
-        TS_ASSERT_EQUALS(p.margMinOut({&a}),
-                         (gum::Potential< double >() << b).fillWith({1, 4, 7}))
-        TS_ASSERT_EQUALS(p.margMinOut({&b}),
-                         (gum::Potential< double >() << a).fillWith({1, 2, 3}))
+        TS_ASSERT_EQUALS(p.margMinOut({&a}), (gum::Potential< double >() << b).fillWith({1, 4, 7}))
+        TS_ASSERT_EQUALS(p.margMinOut({&b}), (gum::Potential< double >() << a).fillWith({1, 2, 3}))
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -359,12 +352,8 @@ namespace gum_tests {
       q << a << b;
       q.fillWith({0, 3, 0, 3});
 
-      TS_ASSERT_EQUALS(
-         (p - q).abs(),
-         (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
-      TS_ASSERT_EQUALS(
-         (q - p).abs(),
-         (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
+      TS_ASSERT_EQUALS((p - q).abs(), (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
+      TS_ASSERT_EQUALS((q - p).abs(), (gum::Potential< double >() << a << b).fillWith({0, 2, 2, 0}))
       TS_ASSERT_EQUALS((q - p).abs().max(), 2);
       TS_ASSERT_EQUALS((q - p).abs().min(), 0);
     }
@@ -381,12 +370,8 @@ namespace gum_tests {
       q << b << a;
       q.fillWith({0, 0, 3, 3});
 
-      TS_ASSERT_EQUALS(
-         (p - q).sq(),
-         (gum::Potential< double >() << a << b).fillWith({0, 4, 4, 0}))
-      TS_ASSERT_EQUALS(
-         (q - p).sq(),
-         (gum::Potential< double >() << b << a).fillWith({0, 4, 4, 0}))
+      TS_ASSERT_EQUALS((p - q).sq(), (gum::Potential< double >() << a << b).fillWith({0, 4, 4, 0}))
+      TS_ASSERT_EQUALS((q - p).sq(), (gum::Potential< double >() << b << a).fillWith({0, 4, 4, 0}))
       TS_ASSERT_EQUALS((q - p).sq().max(), 4);
       TS_ASSERT_EQUALS((q - p).sq().min(), 0);
     }
@@ -428,12 +413,10 @@ namespace gum_tests {
       }
 
       TS_ASSERT_THROWS(p.reorganize({&a, &b, &c}), gum::InvalidArgument);
-      TS_ASSERT_THROWS(
-         p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}),
-         gum::InvalidArgument);
-      TS_ASSERT_THROWS(
-         p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}),
-         gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}),
+                       gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}),
+                       gum::InvalidArgument);
     }
 
     void testReorganizePotentialFromNames() {
@@ -464,8 +447,7 @@ namespace gum_tests {
       }
 
       TS_ASSERT_THROWS(p.reorganize({"a", "b", "c"}), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.reorganize({std::string("a"), "d"}),
-                       gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.reorganize({std::string("a"), "d"}), gum::InvalidArgument);
       TS_ASSERT_THROWS(p.reorganize({std::string("a")}), gum::InvalidArgument);
       TS_ASSERT_THROWS(p.reorganize({std::string("héhé")}), gum::InvalidArgument);
     }
@@ -653,16 +635,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p[inst], 1.0f);
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate(std::vector< double >{2.0f}));
       TS_ASSERT_EQUALS(p[inst], 2.0f);
-      TS_ASSERT_THROWS(p.populate(std::vector< double >{2.0f, 3.0f}),
-                       gum::SizeError)
+      TS_ASSERT_THROWS(p.populate(std::vector< double >{2.0f, 3.0f}), gum::SizeError)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         p.apply([](double x) { return x * 2.0f + 1.0f; }););
+      TS_GUM_ASSERT_THROWS_NOTHING(p.apply([](double x) { return x * 2.0f + 1.0f; }););
       TS_ASSERT_EQUALS(p[inst], 5.0f);
 
       a = 0.3f;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         a = p.reduce([](double x, double y) { return x + y; }, 0.0f););
+      TS_GUM_ASSERT_THROWS_NOTHING(a = p.reduce([](double x, double y) { return x + y; }, 0.0f););
       TS_ASSERT_EQUALS(a, 0.0f);
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate({33.0f}));
@@ -921,14 +900,10 @@ namespace gum_tests {
       TS_ASSERT_THROWS(res = r.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r));
-      TS_ASSERT_DELTA(res,
-                      0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3),
-                      TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = r.KL(q));
-      TS_ASSERT_DELTA(res,
-                      0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5),
-                      TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR);
     }
 
     void testPotentialDraw() {
@@ -1053,7 +1028,7 @@ namespace gum_tests {
     }
 
     private:
-    void  _testval_for_set_(const gum::Potential< int >&         p,
+    void _testval_for_set_(const gum::Potential< int >&         p,
                            int                                  val,
                            const gum::Set< gum::Instantiation > s,
                            gum::Size                            expected_size) {
@@ -1073,16 +1048,16 @@ namespace gum_tests {
     void testArgMaxMinFindAll() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Potential< int >  p;
-       _testval_for_set_(p, 4, p.findAll(4), 0);
+      _testval_for_set_(p, 4, p.findAll(4), 0);
 
       p.add(v);
       p.add(w);
       p.fillWith({1, 3, 2, 4, 1, 4});
 
-       _testval_for_set_(p, 3, p.findAll(3), 1);
-       _testval_for_set_(p, 10, p.findAll(10), 0);
-       _testval_for_set_(p, 4, p.argmax(), 2);
-       _testval_for_set_(p, 1, p.argmin(), 2);
+      _testval_for_set_(p, 3, p.findAll(3), 1);
+      _testval_for_set_(p, 10, p.findAll(10), 0);
+      _testval_for_set_(p, 4, p.argmax(), 2);
+      _testval_for_set_(p, 1, p.argmin(), 2);
     }
 
     void testAddDummyVariables() {

@@ -42,18 +42,17 @@ namespace gum_tests {
   class UAIMNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
-      std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      std::string              file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovNet< double > net;
 
       gum::UAIMNReader< double >* reader = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader
-                                   = new gum::UAIMNReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIMNReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
     void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovNet< double >* net = new gum::MarkovNet< double >();
+      std::string               file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      gum::MarkovNet< double >* net  = new gum::MarkovNet< double >();
 
       TS_ASSERT(net != nullptr);
 
@@ -67,8 +66,8 @@ namespace gum_tests {
     }
 
     void testRead_file2() {
-      std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovNet< double >*  net = new gum::MarkovNet< double >();
+      std::string                file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      gum::MarkovNet< double >*  net  = new gum::MarkovNet< double >();
       gum::UAIMNReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
@@ -121,7 +120,7 @@ namespace gum_tests {
     }
 
     void testReadInFilledMN() {
-      std::string file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      std::string                file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovNet< double >   net;
       gum::UAIMNReader< double > reader(&net, file);
 

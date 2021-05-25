@@ -61,8 +61,7 @@ namespace gum {
      *
      * default_weight is 0 for logit model.
      **/
-    MultiDimLogit(GUM_SCALAR external_weight,
-                  GUM_SCALAR default_weight = (GUM_SCALAR)0.0);
+    MultiDimLogit(GUM_SCALAR external_weight, GUM_SCALAR default_weight = (GUM_SCALAR)0.0);
 
     MultiDimLogit(const MultiDimLogit< GUM_SCALAR >& from);
 
@@ -72,9 +71,8 @@ namespace gum {
      * @param bij First variables are new variables, seconds are in from.
      * @param from the copied instance
      */
-    MultiDimLogit(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const MultiDimLogit< GUM_SCALAR >&                                   from);
+    MultiDimLogit(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                  const MultiDimLogit< GUM_SCALAR >&                                   from);
 
     /// Destructor.
     virtual ~MultiDimLogit();

@@ -185,22 +185,19 @@ namespace gum {
       /// copy constructor with a given allocator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from,
-                           const allocator_type&                alloc);
+      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from,
-                           const allocator_type&           alloc);
+      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual DBInitializerFromSQL< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBInitializerFromSQL< ALLOC >*
-         clone(const allocator_type& alloc) const;
+      virtual DBInitializerFromSQL< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBInitializerFromSQL();
@@ -217,26 +214,22 @@ namespace gum {
       /// copy operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL< ALLOC >&
-         operator=(const DBInitializerFromSQL< ALLOC >& from);
+      DBInitializerFromSQL< ALLOC >& operator=(const DBInitializerFromSQL< ALLOC >& from);
 
       /// move operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL< ALLOC >&
-         operator=(DBInitializerFromSQL< ALLOC >&& from);
+      DBInitializerFromSQL< ALLOC >& operator=(DBInitializerFromSQL< ALLOC >&& from);
 
       /// @}
 
 
       protected:
       /// returns the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > >
-         variableNames_() final;
+      virtual std::vector< std::string, ALLOC< std::string > > variableNames_() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector< std::string, ALLOC< std::string > >&
-         currentStringRow_() final;
+      virtual const std::vector< std::string, ALLOC< std::string > >& currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool nextRow_() final;
@@ -246,25 +239,25 @@ namespace gum {
 
       private:
       // the string specifying how to connect to the database
-      std::string  _connection_string_;
+      std::string _connection_string_;
 
       // the current query
-      std::string  _query_;
+      std::string _query_;
 
       // the timeout for executing the queries
-      long  _timeout_;
+      long _timeout_;
 
       // the names of the columns in the query result
-      std::vector< std::string, ALLOC< std::string > >  _var_names_;
+      std::vector< std::string, ALLOC< std::string > > _var_names_;
 
       // the nanodbc connection to the database
-      nanodbc::connection  _connection_;
+      nanodbc::connection _connection_;
 
       // the parser used for parsing the query results
-      NanodbcParser< ALLOC >  _parser_;
+      NanodbcParser< ALLOC > _parser_;
 
       /// perform a connection from a connection string
-      void  _connect_(const std::string& connection_string, long timeout);
+      void _connect_(const std::string& connection_string, long timeout);
 
 
 #    endif /* DOXYGEN_SHOULD_SKIP_THIS */

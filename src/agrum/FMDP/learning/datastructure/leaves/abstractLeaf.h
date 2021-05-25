@@ -59,9 +59,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf(NodeId leafId) :  _leafId_(leafId) {
-      GUM_CONSTRUCTOR(AbstractLeaf);
-    }
+    AbstractLeaf(NodeId leafId) : _leafId_(leafId) { GUM_CONSTRUCTOR(AbstractLeaf); }
 
     // ###################################################################
     /// Default destructor
@@ -74,10 +72,8 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) {
-      return SmallObjectAllocator::instance().allocate(s);
-    }
-    void operator delete(void* p) {
+    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void  operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(AbstractLeaf));
     }
 
@@ -92,16 +88,16 @@ namespace gum {
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains(NodeId testedId) const { return  _leafId_ == testedId; }
+    virtual bool contains(NodeId testedId) const { return _leafId_ == testedId; }
 
-    NodeId id() { return  _leafId_; }
+    NodeId id() { return _leafId_; }
 
     virtual Idx nbModa() const = 0;
 
     virtual std::string toString() = 0;
 
     private:
-    NodeId  _leafId_;
+    NodeId _leafId_;
   };
 
 

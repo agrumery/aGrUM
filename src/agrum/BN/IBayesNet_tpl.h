@@ -57,8 +57,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source) :
-      DAGmodel(source) {
+  IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source) : DAGmodel(source) {
     GUM_CONS_CPY(IBayesNet);
   }
 
@@ -174,10 +173,8 @@ namespace gum {
     } catch (NotFound&) { bn_name = "no_name"; }
 
     output << bn_name << "\" {" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
-           << std::endl;
-    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl
-           << std::endl;
+    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
+    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
     for (auto node: nodes())
       output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
@@ -207,8 +204,7 @@ namespace gum {
   /// instantiation
   /// of the vars)
   template < typename GUM_SCALAR >
-  GUM_SCALAR
-     IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
+  GUM_SCALAR IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
@@ -226,8 +222,7 @@ namespace gum {
   /// instantiation
   /// of the vars)
   template < typename GUM_SCALAR >
-  GUM_SCALAR
-     IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
+  GUM_SCALAR IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
@@ -254,8 +249,7 @@ namespace gum {
 
     for (auto node: nodes()) {
       try {
-        alignment.insert(&variable(node),
-                         &from.variableFromName(variable(node).name()));
+        alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
       } catch (NotFound&) {
         // a name is not found in from
         return false;
@@ -267,9 +261,7 @@ namespace gum {
 
       if (cpt(node).nbrDim() != from.cpt(fromnode).nbrDim()) { return false; }
 
-      if (cpt(node).domainSize() != from.cpt(fromnode).domainSize()) {
-        return false;
-      }
+      if (cpt(node).domainSize() != from.cpt(fromnode).domainSize()) { return false; }
 
       Instantiation i(cpt(node));
       Instantiation j(from.cpt(fromnode));
@@ -297,12 +289,11 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >:: _minimalCondSetVisitUp_(
-     NodeId         node,
-     const NodeSet& soids,
-     NodeSet&       minimal,
-     NodeSet&       alreadyVisitedUp,
-     NodeSet&       alreadyVisitedDn) const {
+  void IBayesNet< GUM_SCALAR >::_minimalCondSetVisitUp_(NodeId         node,
+                                                        const NodeSet& soids,
+                                                        NodeSet&       minimal,
+                                                        NodeSet&       alreadyVisitedUp,
+                                                        NodeSet&       alreadyVisitedDn) const {
     if (alreadyVisitedUp.contains(node)) return;
     alreadyVisitedUp << node;
 
@@ -310,53 +301,35 @@ namespace gum {
       minimal << node;
     } else {
       for (auto fath: dag_.parents(node))
-         _minimalCondSetVisitUp_(fath,
-                                soids,
-                                minimal,
-                                alreadyVisitedUp,
-                                alreadyVisitedDn);
+        _minimalCondSetVisitUp_(fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
       for (auto chil: dag_.children(node))
-         _minimalCondSetVisitDn_(chil,
-                                soids,
-                                minimal,
-                                alreadyVisitedUp,
-                                alreadyVisitedDn);
+        _minimalCondSetVisitDn_(chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
-  void IBayesNet< GUM_SCALAR >:: _minimalCondSetVisitDn_(
-     NodeId         node,
-     const NodeSet& soids,
-     NodeSet&       minimal,
-     NodeSet&       alreadyVisitedUp,
-     NodeSet&       alreadyVisitedDn) const {
+  void IBayesNet< GUM_SCALAR >::_minimalCondSetVisitDn_(NodeId         node,
+                                                        const NodeSet& soids,
+                                                        NodeSet&       minimal,
+                                                        NodeSet&       alreadyVisitedUp,
+                                                        NodeSet&       alreadyVisitedDn) const {
     if (alreadyVisitedDn.contains(node)) return;
     alreadyVisitedDn << node;
 
     if (soids.contains(node)) {
       minimal << node;
       for (auto fath: dag_.parents(node))
-         _minimalCondSetVisitUp_(fath,
-                                soids,
-                                minimal,
-                                alreadyVisitedUp,
-                                alreadyVisitedDn);
+        _minimalCondSetVisitUp_(fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     } else {
       for (auto chil: dag_.children(node))
-         _minimalCondSetVisitDn_(chil,
-                                soids,
-                                minimal,
-                                alreadyVisitedUp,
-                                alreadyVisitedDn);
+        _minimalCondSetVisitDn_(chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
 
 
   template < typename GUM_SCALAR >
-  NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(NodeId         target,
-                                                  const NodeSet& soids) const {
+  NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(NodeId target, const NodeSet& soids) const {
     if (soids.contains(target)) return NodeSet({target});
 
     NodeSet res;
@@ -366,17 +339,9 @@ namespace gum {
     alreadyVisitedUp << target;
 
     for (auto fath: dag_.parents(target))
-       _minimalCondSetVisitUp_(fath,
-                              soids,
-                              res,
-                              alreadyVisitedUp,
-                              alreadyVisitedDn);
+      _minimalCondSetVisitUp_(fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     for (auto chil: dag_.children(target))
-       _minimalCondSetVisitDn_(chil,
-                              soids,
-                              res,
-                              alreadyVisitedUp,
-                              alreadyVisitedDn);
+      _minimalCondSetVisitDn_(chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     return res;
   }
 
@@ -391,8 +356,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream&                  output,
-                                  const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }

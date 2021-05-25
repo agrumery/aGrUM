@@ -27,8 +27,7 @@ namespace gum {
 
   /// Default constructor
   INLINE
-  IDiscretizedVariable::IDiscretizedVariable(const std::string& aName,
-                                             const std::string& aDesc) :
+  IDiscretizedVariable::IDiscretizedVariable(const std::string& aName, const std::string& aDesc) :
       DiscreteVariable(aName, aDesc) {}
 
 
@@ -45,8 +44,7 @@ namespace gum {
 
   /// copy assignment
   INLINE
-  IDiscretizedVariable&
-     IDiscretizedVariable::operator=(const IDiscretizedVariable& from) {
+  IDiscretizedVariable& IDiscretizedVariable::operator=(const IDiscretizedVariable& from) {
     DiscreteVariable::operator=(from);
     return *this;
   }

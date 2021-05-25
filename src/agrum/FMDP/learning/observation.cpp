@@ -25,11 +25,10 @@ namespace gum {
 
   std::string Observation::toString() const {
     std::stringstream status;
-    for (auto varIter =  _varInst_.beginSafe(); varIter !=  _varInst_.endSafe();
-         ++varIter)
-      if ( _rInst_.exists(varIter.key()))
+    for (auto varIter = _varInst_.beginSafe(); varIter != _varInst_.endSafe(); ++varIter)
+      if (_rInst_.exists(varIter.key()))
         status << "| " << varIter.key()->name() << " : " << varIter.val() << " -> "
-               <<  _rInst_[varIter.key()] << " |";
+               << _rInst_[varIter.key()] << " |";
     status << std::endl;
     return status.str();
   }

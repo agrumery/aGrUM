@@ -35,10 +35,9 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGenerator< ALLOC >::DBRowGenerator(
-       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                               column_types,
-       const DBRowGeneratorGoal                                goal,
-       const typename DBRowGenerator< ALLOC >::allocator_type& alloc) :
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+       const DBRowGeneratorGoal                                                   goal,
+       const typename DBRowGenerator< ALLOC >::allocator_type&                    alloc) :
         column_types_(column_types, alloc),
         columns_of_interest_(alloc), goal_(goal) {
       GUM_CONSTRUCTOR(DBRowGenerator);
@@ -59,8 +58,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE DBRowGenerator< ALLOC >::DBRowGenerator(
-       const DBRowGenerator< ALLOC >& from) :
+    INLINE DBRowGenerator< ALLOC >::DBRowGenerator(const DBRowGenerator< ALLOC >& from) :
         DBRowGenerator< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -71,16 +69,14 @@ namespace gum {
        const typename DBRowGenerator< ALLOC >::allocator_type& alloc) :
         nb_remaining_output_rows_(from.nb_remaining_output_rows_),
         column_types_(std::move(from.column_types_), alloc),
-        columns_of_interest_(std::move(from.columns_of_interest_), alloc),
-        goal_(from.goal_) {
+        columns_of_interest_(std::move(from.columns_of_interest_), alloc), goal_(from.goal_) {
       GUM_CONS_MOV(DBRowGenerator);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE
-       DBRowGenerator< ALLOC >::DBRowGenerator(DBRowGenerator< ALLOC >&& from) :
+    INLINE DBRowGenerator< ALLOC >::DBRowGenerator(DBRowGenerator< ALLOC >&& from) :
         DBRowGenerator< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -124,8 +120,7 @@ namespace gum {
 
     /// sets the input row from which the generator will create new rows
     template < template < typename > class ALLOC >
-    INLINE bool DBRowGenerator< ALLOC >::setInputRow(
-       const DBRow< DBTranslatedValue, ALLOC >& row) {
+    INLINE bool DBRowGenerator< ALLOC >::setInputRow(const DBRow< DBTranslatedValue, ALLOC >& row) {
       nb_remaining_output_rows_ = computeRows_(row);
       return hasRows();
     }
@@ -173,8 +168,7 @@ namespace gum {
 
     /// returns the allocator used
     template < template < typename > class ALLOC >
-    typename DBRowGenerator< ALLOC >::allocator_type
-       DBRowGenerator< ALLOC >::getAllocator() const {
+    typename DBRowGenerator< ALLOC >::allocator_type DBRowGenerator< ALLOC >::getAllocator() const {
       return columns_of_interest_.get_allocator();
     }
 

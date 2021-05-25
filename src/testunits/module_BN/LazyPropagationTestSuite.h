@@ -52,7 +52,7 @@ namespace gum_tests {
     gum::NodeId              i1, i2, i3, i4, i5;
     gum::Potential< double >*e_i1, *e_i4;
 
-    float  __epsilon{1e-6f};
+    float __epsilon{1e-6f};
 
     void setUp() {
       bn = new gum::BayesNet< double >();
@@ -94,17 +94,16 @@ namespace gum_tests {
       delete e_i4;
     }
 
-    bool equalPotentials(const gum::Potential< double >& p1,
-                         const gum::Potential< double >& p2) {
+    bool equalPotentials(const gum::Potential< double >& p1, const gum::Potential< double >& p2) {
       gum::Instantiation i1(p1);
       gum::Instantiation i2(p2);
 
       for (i1.setFirst(), i2.setFirst(); !i1.end(); i1.inc(), i2.inc()) {
-        if ((p1[i1] == 0) && (std::fabs(p2[i2]) >  __epsilon)) return false;
+        if ((p1[i1] == 0) && (std::fabs(p2[i2]) > __epsilon)) return false;
         if (p1[i1] > p2[i2]) {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) >  __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > __epsilon) return false;
         } else {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) >  __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > __epsilon) return false;
         }
       }
 
@@ -253,8 +252,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4));
-      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2),
-                       gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4));
 
@@ -282,21 +280,16 @@ namespace gum_tests {
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H(bn->variable(2).name()));
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         inf.I(bn->variable(2).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(2).name(), bn->variable(4).name()));
       TS_ASSERT_THROWS(inf.I(bn->variable(2).name(), bn->variable(2).name()),
                        gum::OperationNotAllowed);
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         inf.VI(bn->variable(2).name(), bn->variable(4).name()));
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         inf.I(bn->variable(0).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(bn->variable(2).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(0).name(), bn->variable(4).name()));
 
       for (const auto node: bn->dag()) {
         for (const auto par: bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(
-             inf.I(bn->variable(node).name(), bn->variable(par).name()));
-          TS_GUM_ASSERT_THROWS_NOTHING(
-             inf.I(bn->variable(par).name(), bn->variable(node).name()));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(node).name(), bn->variable(par).name()));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(par).name(), bn->variable(node).name()));
         }
       }
 
@@ -323,8 +316,7 @@ namespace gum_tests {
     void testEvidenceProbability() {
       fill(*bn);
       gum::LazyPropagation< double > inf(bn);
-      inf.setRelevantPotentialsFinderType(
-         gum::RelevantPotentialsFinderType::FIND_ALL);
+      inf.setRelevantPotentialsFinderType(gum::RelevantPotentialsFinderType::FIND_ALL);
       inf.makeInference();
       auto p     = inf.posterior(0);
       auto I     = gum::Instantiation(p);
@@ -364,8 +356,7 @@ namespace gum_tests {
       auto id = bn.idFromName("lung_cancer");
 
       gum::LazyPropagation< double > inf(&bn);
-      inf.setRelevantPotentialsFinderType(
-         gum::RelevantPotentialsFinderType::FIND_ALL);
+      inf.setRelevantPotentialsFinderType(gum::RelevantPotentialsFinderType::FIND_ALL);
       inf.makeInference();
       auto p     = inf.posterior(id);
       auto I     = gum::Instantiation(p);
@@ -436,7 +427,7 @@ namespace gum_tests {
         TS_ASSERT(equalPotentials(inf1.posterior(node), inf2.posterior(node)));
       }
 
-      std::vector< gum::NodeId > ev_nodes{2, 6, 7, 10, 12, 14, 16};
+      std::vector< gum::NodeId >                   ev_nodes{2, 6, 7, 10, 12, 14, 16};
       gum::List< const gum::Potential< double >* > evidences;
       for (const auto node: ev_nodes) {
         gum::Potential< double >* ev_pot = new gum::Potential< double >;
@@ -481,8 +472,7 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation< double > inf5(&bn);
-      inf5.setRelevantPotentialsFinderType(
-         gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
+      inf5.setRelevantPotentialsFinderType(gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
       for (auto pot: evidences) {
         TS_ASSERT_THROWS_NOTHING(inf5.addEvidence(*pot));
       }
@@ -540,8 +530,7 @@ namespace gum_tests {
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
                 for (auto xnode: bn.dag()) {
-                  TS_ASSERT(equalPotentials(inf1.posterior(xnode),
-                                            inf2.posterior(xnode)));
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -599,8 +588,7 @@ namespace gum_tests {
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
                 for (auto xnode: bn.dag()) {
-                  TS_ASSERT(equalPotentials(inf1.posterior(xnode),
-                                            inf2.posterior(xnode)));
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -766,9 +754,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       gum::LazyPropagation< double > ie_all(&bn);
-      TS_ASSERT_THROWS(
-         ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-         gum::InvalidArgument);
+      TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+                       gum::InvalidArgument);
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
@@ -806,16 +793,13 @@ namespace gum_tests {
 
 
       gum::LazyPropagation< double > ie_all(&bn);
-      TS_ASSERT_THROWS(
-         ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-         gum::InvalidArgument);
+      TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+                       gum::InvalidArgument);
 
-      TS_ASSERT_THROWS(
-         ie_all.evidenceImpact("visit_to_asia", {"tuberculosis", "toto"}),
-         gum::NotFound);
+      TS_ASSERT_THROWS(ie_all.evidenceImpact("visit_to_asia", {"tuberculosis", "toto"}),
+                       gum::NotFound);
 
-      auto res = ie_all.evidenceImpact("visit_to_Asia",
-                                       {"tuberculosis", "tuberculos_or_cancer"});
+      auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
@@ -849,17 +833,15 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn
-         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
       try {
-        auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D")
-                   * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
+        auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E")
+                   * bn.cpt("F") * bn.cpt("H");
         auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
                                       &bn.variableFromName("C"),
                                       &bn.variableFromName("D"),
@@ -878,14 +860,11 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn
-         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       ie.addEvidence("B", 0);
-      gum::NodeSet joint{bn.idFromName("A"),
-                         bn.idFromName("B"),
-                         bn.idFromName("D")};
+      gum::NodeSet joint{bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
 
       ie.addJointTarget(joint);
       ie.makeInference();
@@ -906,39 +885,32 @@ namespace gum_tests {
       / \ /
       H  D
       */
-      auto bn
-         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         res = ie.evidenceJointImpact({"D", "E"}, {"A", "B", "C", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceJointImpact({"D", "E"}, {"A", "B", "C", "F"}));
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
       try {
-        auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D")
-                   * bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
+        auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E")
+                   * bn.cpt("F") * bn.cpt("H");
         auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
                                       &bn.variableFromName("C"),
                                       &bn.variableFromName("D"),
                                       &bn.variableFromName("E")});
-        auto pAC   = pADCE.margSumOut(
-           {&bn.variableFromName("D"), &bn.variableFromName("E")});
+        auto pAC   = pADCE.margSumOut({&bn.variableFromName("D"), &bn.variableFromName("E")});
         TS_ASSERT_EQUALS(res, pADCE / pAC);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testJointMutualInformation() {
-      auto bn
-         = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > ie(&bn);
       ie.makeInference();
 
-      TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}),
-                       gum::InvalidArgument);
-      TS_ASSERT_DELTA(ie.I(0, 1),
-                      ie.jointMutualInformation(gum::NodeSet{0, 1}),
-                      1e-7);
+      TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}), gum::InvalidArgument);
+      TS_ASSERT_DELTA(ie.I(0, 1), ie.jointMutualInformation(gum::NodeSet{0, 1}), 1e-7);
 
       ie.addJointTarget({1, 4, 3});
       ie.makeInference();
@@ -946,11 +918,10 @@ namespace gum_tests {
       double JMI;
 
       byHandJMI = -ie.jointPosterior({1, 3, 4}).entropy();
-      byHandJMI += ie.jointPosterior({1, 4}).entropy()
-                 + ie.jointPosterior({1, 3}).entropy()
+      byHandJMI += ie.jointPosterior({1, 4}).entropy() + ie.jointPosterior({1, 3}).entropy()
                  + ie.jointPosterior({4, 3}).entropy();
-      byHandJMI -= ie.posterior(1).entropy() + ie.posterior(4).entropy()
-                 + ie.posterior(3).entropy();
+      byHandJMI
+         -= ie.posterior(1).entropy() + ie.posterior(4).entropy() + ie.posterior(3).entropy();
 
       //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie2(&bn);
@@ -962,18 +933,13 @@ namespace gum_tests {
       ie.addJointTarget({0, 1, 2, 3});
       ie.makeInference();
       byHandJMI = -ie.jointPosterior({0, 1, 2, 3}).entropy();
-      byHandJMI += ie.jointPosterior({0, 1, 2}).entropy()
-                 + ie.jointPosterior({0, 1, 3}).entropy()
-                 + ie.jointPosterior({0, 2, 3}).entropy()
-                 + ie.jointPosterior({1, 2, 3}).entropy();
-      byHandJMI -= ie.jointPosterior({0, 1}).entropy()
-                 + ie.jointPosterior({0, 2}).entropy()
-                 + ie.jointPosterior({0, 3}).entropy()
-                 + ie.jointPosterior({1, 2}).entropy()
-                 + ie.jointPosterior({1, 3}).entropy()
-                 + ie.jointPosterior({2, 3}).entropy();
-      byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy()
-                 + ie.posterior(2).entropy() + ie.posterior(3).entropy();
+      byHandJMI += ie.jointPosterior({0, 1, 2}).entropy() + ie.jointPosterior({0, 1, 3}).entropy()
+                 + ie.jointPosterior({0, 2, 3}).entropy() + ie.jointPosterior({1, 2, 3}).entropy();
+      byHandJMI -= ie.jointPosterior({0, 1}).entropy() + ie.jointPosterior({0, 2}).entropy()
+                 + ie.jointPosterior({0, 3}).entropy() + ie.jointPosterior({1, 2}).entropy()
+                 + ie.jointPosterior({1, 3}).entropy() + ie.jointPosterior({2, 3}).entropy();
+      byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy() + ie.posterior(2).entropy()
+                 + ie.posterior(3).entropy();
 
       //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie3(&bn);
@@ -1006,8 +972,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
-                       gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -1060,7 +1025,7 @@ namespace gum_tests {
     }
 
     void testMultipleJointMutualInformation() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B;A->C->D");
+      auto                           bn = gum::BayesNet< double >::fastPrototype("A->B;A->C->D");
       gum::LazyPropagation< double > ie(&bn);
 
       try {
@@ -1095,7 +1060,7 @@ namespace gum_tests {
               {0.4f, 0.6f,
                0.5f, 0.5f,
                0.5f, 0.5f,
-               1.0f, 0.0f});   // clang-format on
+               1.0f, 0.0f});                     // clang-format on
       bn.cpt(i5).fillWith(   // clang-format off
               {0.3f, 0.6f, 0.1f,
                0.5f, 0.5f, 0.0f,

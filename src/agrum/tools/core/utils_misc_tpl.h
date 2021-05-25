@@ -61,27 +61,25 @@ namespace std {
   }
 
   template < size_t N >
-  struct  _auxiliary_print_tuple_ {
+  struct _auxiliary_print_tuple_ {
     template < typename... T >
-    static typename std::enable_if< (N < sizeof...(T)) >::type
-       print(std::ostream& os, const std::tuple< T... >& t) {
+    static typename std::enable_if< (N < sizeof...(T)) >::type print(std::ostream&             os,
+                                                                     const std::tuple< T... >& t) {
       char quote
-         = (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
-            ? '"'
-            : 0;
+         = (std::is_convertible< decltype(std::get< N >(t)), std::string >::value) ? '"' : 0;
       os << ", " << quote << std::get< N >(t) << quote;
-       _auxiliary_print_tuple_< N + 1 >::print(os, t);
+      _auxiliary_print_tuple_< N + 1 >::print(os, t);
     }
     template < typename... T >
-    static typename std::enable_if< !(N < sizeof...(T)) >::type
-       print(std::ostream&, const std::tuple< T... >&) {}
+    static typename std::enable_if< !(N < sizeof...(T)) >::type print(std::ostream&,
+                                                                      const std::tuple< T... >&) {}
   };
 
   template < typename T0, typename... T >
   std::ostream& operator<<(std::ostream& os, const std::tuple< T0, T... >& t) {
     char quote = (std::is_convertible< T0, std::string >::value) ? '"' : 0;
     os << '(' << quote << std::get< 0 >(t) << quote;
-     _auxiliary_print_tuple_< 1 >::print(os, t);
+    _auxiliary_print_tuple_< 1 >::print(os, t);
     return os << ')';
   }
 

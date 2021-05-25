@@ -314,10 +314,10 @@ namespace gum {
     NodeId n1, n2;
 
     /// modifies the tail of the arc
-    void  _setTail_(NodeId id);
+    void _setTail_(NodeId id);
 
     /// modifies the head of the arc
-    void  _setHead_(NodeId id);
+    void _setHead_(NodeId id);
 
     /// reverses the direction of the arc
     void operator-();

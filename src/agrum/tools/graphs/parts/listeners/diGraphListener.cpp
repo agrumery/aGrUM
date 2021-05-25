@@ -44,18 +44,13 @@ namespace gum {
   }
 
   DiGraphListener::DiGraphListener(const DiGraph* g) {
-    if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
-    }
+    if (!g) { GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to") }
 
     GUM_CONSTRUCTOR(DiGraphListener);
     graph_ = const_cast< DiGraph* >(g);
 
     GUM_CONNECT((*graph_), onNodeAdded, (*this), DiGraphListener::whenNodeAdded);
-    GUM_CONNECT((*graph_),
-                onNodeDeleted,
-                (*this),
-                DiGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onNodeDeleted, (*this), DiGraphListener::whenNodeDeleted);
     GUM_CONNECT((*graph_), onArcAdded, (*this), DiGraphListener::whenArcAdded);
     GUM_CONNECT((*graph_), onArcDeleted, (*this), DiGraphListener::whenArcDeleted);
   }

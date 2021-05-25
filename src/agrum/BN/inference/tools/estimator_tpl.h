@@ -39,16 +39,12 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) :
-      Estimator() {
+  Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) : Estimator() {
     bn_ = bn;
 
-    for (gum::NodeGraphPartIterator iter = bn->nodes().begin();
-         iter != bn->nodes().end();
-         ++iter)
-      estimator_.insert(
-         bn->variable(*iter).name(),
-         std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), 0.0));
+    for (gum::NodeGraphPartIterator iter = bn->nodes().begin(); iter != bn->nodes().end(); ++iter)
+      estimator_.insert(bn->variable(*iter).name(),
+                        std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), 0.0));
 
     GUM_CONSTRUCTOR(Estimator);
   }
@@ -66,22 +62,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromBN(const IBayesNet< GUM_SCALAR >* bn,
-                                          const NodeSet& hardEvidence) {
-    for (gum::NodeGraphPartIterator iter = bn->nodes().begin();
-         iter != bn->nodes().end();
-         ++iter) {
+                                          const NodeSet&                 hardEvidence) {
+    for (gum::NodeGraphPartIterator iter = bn->nodes().begin(); iter != bn->nodes().end(); ++iter) {
       auto v = bn->variable(*iter).name();
 
       if (!hardEvidence.contains(*iter)) {
         if (estimator_.exists(v))
           estimator_[v]
-             = std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(),
-                                         (GUM_SCALAR)0.0);
+             = std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
         else
           estimator_.insert(
              v,
-             std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(),
-                                       (GUM_SCALAR)0.0));
+             std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
       }
     }
   }
@@ -89,10 +81,9 @@ namespace gum {
   // we multiply the posteriors obtained by LoopyBeliefPropagation by the it's
   // number of iterations
   template < typename GUM_SCALAR >
-  void
-     Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-                                         const NodeSet& hardEvidence,
-                                         GUM_SCALAR     virtualLBPSize) {
+  void Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+                                           const NodeSet&                        hardEvidence,
+                                           GUM_SCALAR                            virtualLBPSize) {
     for (const auto& node: lbp->BN().nodes()) {
       if (!hardEvidence.contains(node)) {
         std::vector< GUM_SCALAR > v;
@@ -118,28 +109,25 @@ namespace gum {
     ntotal_ += (Size)1;
 
     for (Idx i = 0; i < I.nbrDim(); i++) {
-      if (estimator_.exists(I.variable(i).name()))
-        estimator_[I.variable(i).name()][I.val(i)] += w;
+      if (estimator_.exists(I.variable(i).name())) estimator_[I.variable(i).name()][I.val(i)] += w;
     }
   }
 
   /* returns the approximation CPT of a variable */
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
-     Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
+  const Potential< GUM_SCALAR >& Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
     Potential< GUM_SCALAR >* p = nullptr;
 
-    if (!estimator_.exists(var.name()))
-      GUM_ERROR(NotFound, "Target variable not found")
+    if (!estimator_.exists(var.name())) GUM_ERROR(NotFound, "Target variable not found")
 
     // check if we have already computed the posterior
-    if ( _target_posteriors_.exists(var.name())) {
-      p =  _target_posteriors_[var.name()];
+    if (_target_posteriors_.exists(var.name())) {
+      p = _target_posteriors_[var.name()];
     } else {
       p = new Potential< GUM_SCALAR >();
       *p << var;
-       _target_posteriors_.insert(var.name(), p);
+      _target_posteriors_.insert(var.name(), p);
     }
 
     p->fillWith(estimator_[var.name()]);
@@ -174,8 +162,7 @@ namespace gum {
 
     for (auto iter = estimator_.begin(); iter != estimator_.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
-        GUM_SCALAR ic = GUM_SCALAR(
-           2 * 1.96 * std::sqrt(variance(iter.key(), i) / (ntotal_ - 1)));
+        GUM_SCALAR ic = GUM_SCALAR(2 * 1.96 * std::sqrt(variance(iter.key(), i) / (ntotal_ - 1)));
         if (ic > ic_max) ic_max = ic;
       }
     }
@@ -188,8 +175,8 @@ namespace gum {
     estimator_.clear();
     wtotal_ = (GUM_SCALAR)0;
     ntotal_ = Size(0);
-    for (const auto& pot:  _target_posteriors_)
+    for (const auto& pot: _target_posteriors_)
       delete pot.second;
-     _target_posteriors_.clear();
+    _target_posteriors_.clear();
   }
 }   // namespace gum

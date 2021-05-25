@@ -45,16 +45,16 @@ namespace gum_tests {
     void testCreationDeletionFloat() {
       gum::MCBayesNetGenerator< float >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MCBayesNetGenerator< float >(10, 15, 3, 15, 20, 25));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen
+                                   = new gum::MCBayesNetGenerator< float >(10, 15, 3, 15, 20, 25));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionDouble() {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gen = new gum::MCBayesNetGenerator< double >(10, 15, 3, 15, 20, 25));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen
+                                   = new gum::MCBayesNetGenerator< double >(10, 15, 3, 15, 20, 25));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 

@@ -206,11 +206,11 @@ namespace gum {
 
     private:
     /// The topology sequence of this Directed Graphical Model.
-    mutable Sequence< NodeId >*  _mutableTopologicalOrder_;
+    mutable Sequence< NodeId >* _mutableTopologicalOrder_;
 
     /// Returns a topological order of this DAGModel.
     /// @warning  _mutableTopologicalOrder_ is assumed to be valid and empty
-    void  _topologicalOrder_() const;
+    void _topologicalOrder_() const;
   };
 
   /// for friendly displaying the content of directed graphs

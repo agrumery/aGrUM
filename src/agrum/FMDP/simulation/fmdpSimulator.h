@@ -71,7 +71,7 @@ namespace gum {
     /// @{
 
     ///
-    double reward() { return  _fmdp_->reward()->get(this->currentState_); }
+    double reward() { return _fmdp_->reward()->get(this->currentState_); }
 
     void perform(Idx);
 
@@ -83,15 +83,15 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return  _fmdp_->main2prime(mainVar);
+      return _fmdp_->main2prime(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return  _fmdp_->beginVariables();
+      return _fmdp_->beginVariables();
     }
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return  _fmdp_->endVariables();
+      return _fmdp_->endVariables();
     }
 
     /// @}
@@ -101,13 +101,11 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    virtual const std::string& actionName(Idx actionId) {
-      return  _fmdp_->actionName(actionId);
-    }
+    virtual const std::string& actionName(Idx actionId) { return _fmdp_->actionName(actionId); }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() { return  _fmdp_->beginActions(); }
-    SequenceIteratorSafe< Idx > endActions() { return  _fmdp_->endActions(); }
+    SequenceIteratorSafe< Idx > beginActions() { return _fmdp_->beginActions(); }
+    SequenceIteratorSafe< Idx > endActions() { return _fmdp_->endActions(); }
     /// @}
 
     protected:
@@ -115,17 +113,17 @@ namespace gum {
                                           const Instantiation&    transit,
                                           Idx                     actionId) {
       return reinterpret_cast< const MultiDimFunctionGraph< double >* >(
-                 _fmdp_->transition(actionId, var))
+                _fmdp_->transition(actionId, var))
          ->get(transit);
     }
 
     private:
     /// The Factored Markov Decision Process that describes how the system
     /// evolves
-    FMDP< double >*  _fmdp_;
+    FMDP< double >* _fmdp_;
 
     /// Just to know if it should be deleted in the end
-    const bool  _loaded_;
+    const bool _loaded_;
   };
 
 } /* namespace gum */

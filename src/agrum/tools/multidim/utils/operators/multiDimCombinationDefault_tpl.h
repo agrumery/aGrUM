@@ -40,8 +40,7 @@ namespace gum {
   // constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::MultiDimCombinationDefault(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                     const TABLE< GUM_SCALAR >&)) :
+     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) :
       MultiDimCombination< GUM_SCALAR, TABLE >(),
       combine_(combine) {
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
@@ -74,15 +73,13 @@ namespace gum {
   // changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void MultiDimCombinationDefault< GUM_SCALAR, TABLE >::setCombineFunction(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                     const TABLE< GUM_SCALAR >&)) {
+     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
     combine_ = combine;
   }
 
   // returns the combination function currently used by the combinator
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combineFunction())(
+  INLINE TABLE< GUM_SCALAR >* (*MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combineFunction())(
      const TABLE< GUM_SCALAR >&,
      const TABLE< GUM_SCALAR >&) {
     return combine_;
@@ -151,9 +148,8 @@ namespace gum {
     PriorityQueue< std::pair< Size, Size >, Size > queue;
 
     for (Size i = Size(0); i < tabsize; ++i) {
-      pair.first = i;
-      const Sequence< const DiscreteVariable* >& seq1
-         = tables[i]->variablesSequence();
+      pair.first                                      = i;
+      const Sequence< const DiscreteVariable* >& seq1 = tables[i]->variablesSequence();
 
       for (Size j = i + 1; j < tabsize; ++j) {
         pair.second = j;
@@ -200,9 +196,8 @@ namespace gum {
 
       // update the "combinated" size of all the pairs involving "result"
       {
-        const Sequence< const DiscreteVariable* >& seq1
-           = tables[ti]->variablesSequence();
-        pair.second = ti;
+        const Sequence< const DiscreteVariable* >& seq1 = tables[ti]->variablesSequence();
+        pair.second                                     = ti;
         Size newsize;
 
         for (Size ind = 0; ind < ti; ++ind) {
@@ -245,7 +240,7 @@ namespace gum {
 
     // create a vector with all the tables to combine
     std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-    const Size tabsize = tables.size();
+    const Size                                                tabsize = tables.size();
 
     {
       Size i = Size(0);
@@ -286,10 +281,9 @@ namespace gum {
       const Size tj = pair.second;
 
       // compute the result
-      Sequence< const DiscreteVariable* >* new_seq
-         = new Sequence< const DiscreteVariable* >;
-      const Sequence< const DiscreteVariable* >& seq1 = *(tables[ti]);
-      const Sequence< const DiscreteVariable* >& seq2 = *(tables[tj]);
+      Sequence< const DiscreteVariable* >*       new_seq = new Sequence< const DiscreteVariable* >;
+      const Sequence< const DiscreteVariable* >& seq1    = *(tables[ti]);
+      const Sequence< const DiscreteVariable* >& seq2    = *(tables[tj]);
 
       Size new_size = 1;
 
@@ -388,9 +382,8 @@ namespace gum {
 
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< long, long >
-     MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
-        const Set< const Sequence< const DiscreteVariable* >* >& set) const {
+  std::pair< long, long > MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
+     const Set< const Sequence< const DiscreteVariable* >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return std::pair< long, long >(0, 0);
 
@@ -399,7 +392,7 @@ namespace gum {
 
     // create a vector with all the tables to combine
     std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-    const Size tabsize = tables.size();
+    const Size                                                tabsize = tables.size();
 
     std::vector< Size > table_size(set.size());
 
@@ -452,10 +445,9 @@ namespace gum {
       const Size tj = pair.second;
 
       // compute the result
-      Sequence< const DiscreteVariable* >* new_seq
-         = new Sequence< const DiscreteVariable* >;
-      const Sequence< const DiscreteVariable* >& seq1 = *(tables[ti]);
-      const Sequence< const DiscreteVariable* >& seq2 = *(tables[tj]);
+      Sequence< const DiscreteVariable* >*       new_seq = new Sequence< const DiscreteVariable* >;
+      const Sequence< const DiscreteVariable* >& seq1    = *(tables[ti]);
+      const Sequence< const DiscreteVariable* >& seq2    = *(tables[tj]);
 
       Size new_size = Size(1);
 
@@ -471,8 +463,7 @@ namespace gum {
 
       for (const auto ptrVar: seq2) {
         if (!seq1.exists(ptrVar)) {
-          if (std::numeric_limits< Size >::max() / ptrVar->domainSize()
-              < new_size) {
+          if (std::numeric_limits< Size >::max() / ptrVar->domainSize() < new_size) {
             GUM_ERROR(OutOfBounds, "memory usage out of long int range")
           }
 
@@ -562,9 +553,8 @@ namespace gum {
 
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< long, long >
-     MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
-        const Set< const TABLE< GUM_SCALAR >* >& set) const {
+  std::pair< long, long > MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
+     const Set< const TABLE< GUM_SCALAR >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return std::pair< long, long >(0, 0);
 

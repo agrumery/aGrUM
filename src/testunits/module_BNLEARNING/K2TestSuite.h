@@ -55,10 +55,9 @@ namespace gum_tests {
   class K2TestSuite: public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -77,20 +76,17 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
         order[i] = i;
       }
 
-      gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::K2 k2;

@@ -50,8 +50,7 @@ namespace gum_tests {
       pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       gum::ScheduleMultiDim< double > f2(pot2);
 
-      gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
-         set;
+      gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< double >* > > set;
       TS_ASSERT(set.size() == 0);
       gum::ScheduleCliqueStoreMultiDim< double > store1(f1, set, 3);
       gum::ScheduleCliqueStoreMultiDim< double > store2(f2, set, 3);
@@ -64,8 +63,7 @@ namespace gum_tests {
       std::pair< long, long > xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq
-         = store1.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 
@@ -85,8 +83,7 @@ namespace gum_tests {
       store4 = store1;
       TS_ASSERT(store4 == store1);
 
-      TS_ASSERT(store4.type()
-                == gum::ScheduleOperation< double >::Type::CLIQUE_STORE_MULTIDIM);
+      TS_ASSERT(store4.type() == gum::ScheduleOperation< double >::Type::CLIQUE_STORE_MULTIDIM);
 
       gum::ScheduleCliqueStoreMultiDim< double >* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);

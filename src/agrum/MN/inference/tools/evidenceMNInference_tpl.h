@@ -31,12 +31,11 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  EvidenceMNInference< GUM_SCALAR >::EvidenceMNInference(
-     const IMarkovNet< GUM_SCALAR >* mn) :
+  EvidenceMNInference< GUM_SCALAR >::EvidenceMNInference(const IMarkovNet< GUM_SCALAR >* mn) :
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(mn);
+      MarkovNetInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
     }
 
     GUM_CONSTRUCTOR(EvidenceMNInference);

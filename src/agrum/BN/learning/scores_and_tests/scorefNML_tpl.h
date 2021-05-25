@@ -36,15 +36,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScorefNML< ALLOC >::ScorefNML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                          nodeId2columns,
-       const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename ScorefNML< ALLOC >::allocator_type&                   alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
@@ -52,24 +51,22 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScorefNML< ALLOC >::ScorefNML(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                          nodeId2columns,
-       const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename ScorefNML< ALLOC >::allocator_type&            alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
-         _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScorefNML< ALLOC >::ScorefNML(
-       const ScorefNML< ALLOC >&                          from,
-       const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+    INLINE ScorefNML< ALLOC >::ScorefNML(const ScorefNML< ALLOC >&                          from,
+                                         const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
-         _internal_apriori_(from. _internal_apriori_, alloc) {
+        _internal_apriori_(from._internal_apriori_, alloc) {
       GUM_CONS_CPY(ScorefNML);
     }
 
@@ -82,11 +79,10 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScorefNML< ALLOC >::ScorefNML(
-       ScorefNML< ALLOC >&&                               from,
-       const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+    INLINE ScorefNML< ALLOC >::ScorefNML(ScorefNML< ALLOC >&&                               from,
+                                         const typename ScorefNML< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
-         _internal_apriori_(std::move(from. _internal_apriori_), alloc) {
+        _internal_apriori_(std::move(from._internal_apriori_), alloc) {
       GUM_CONS_MOV(ScorefNML);
     }
 
@@ -99,8 +95,8 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScorefNML< ALLOC >* ScorefNML< ALLOC >::clone(
-       const typename ScorefNML< ALLOC >::allocator_type& alloc) const {
+    ScorefNML< ALLOC >*
+       ScorefNML< ALLOC >::clone(const typename ScorefNML< ALLOC >::allocator_type& alloc) const {
       ALLOC< ScorefNML< ALLOC > > allocator(alloc);
       ScorefNML< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -130,11 +126,10 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScorefNML< ALLOC >&
-       ScorefNML< ALLOC >::operator=(const ScorefNML< ALLOC >& from) {
+    ScorefNML< ALLOC >& ScorefNML< ALLOC >::operator=(const ScorefNML< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
-         _internal_apriori_      = from. _internal_apriori_;
+        _internal_apriori_      = from._internal_apriori_;
       }
       return *this;
     }
@@ -145,7 +140,7 @@ namespace gum {
     ScorefNML< ALLOC >& ScorefNML< ALLOC >::operator=(ScorefNML< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
-         _internal_apriori_      = std::move(from. _internal_apriori_);
+        _internal_apriori_      = std::move(from._internal_apriori_);
       }
       return *this;
     }
@@ -153,9 +148,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string
-       ScorefNML< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                               double             weight) {
+    std::string ScorefNML< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                                        double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
@@ -173,8 +167,7 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string
-       ScorefNML< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
+    INLINE std::string ScorefNML< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -189,7 +182,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori< ALLOC >& ScorefNML< ALLOC >::internalApriori() const {
-      return  _internal_apriori_;
+      return _internal_apriori_;
     }
 
 
@@ -197,20 +190,17 @@ namespace gum {
     template < template < typename > class ALLOC >
     double ScorefNML< ALLOC >::score_(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
-      std::vector< double, ALLOC< double > > N_ijk(
-         this->counter_.counts(idset, true));
+      std::vector< double, ALLOC< double > > N_ijk(this->counter_.counts(idset, true));
       const bool informative_external_apriori = this->apriori_->isInformative();
-      if (informative_external_apriori)
-        this->apriori_->addAllApriori(idset, N_ijk);
+      if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_ijk);
       const std::size_t all_size = N_ijk.size();
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_ij(
-           this->marginalize_(idset[0], N_ijk));
-        const std::size_t target_domsize = all_size / N_ij.size();
+        std::vector< double, ALLOC< double > > N_ij(this->marginalize_(idset[0], N_ijk));
+        const std::size_t                      target_domsize = all_size / N_ij.size();
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
@@ -230,7 +220,7 @@ namespace gum {
         // finally, remove the penalty
         double penalty = 0.0;
         for (const auto n_ij: N_ij) {
-          penalty +=  _ctable_.log2Cnr(target_domsize, n_ij);
+          penalty += _ctable_.log2Cnr(target_domsize, n_ij);
         }
 
         score -= penalty;
@@ -257,7 +247,7 @@ namespace gum {
         score *= this->one_log2_;
 
         // finally, remove the penalty
-        score -=  _ctable_.log2Cnr(all_size, N);
+        score -= _ctable_.log2Cnr(all_size, N);
 
         return score;
       }

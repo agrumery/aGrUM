@@ -122,16 +122,15 @@ namespace gum_tests {
 
       /// hardcoded lps to check solutions
       std::vector< std::vector< gum::credal::lp::LpInterface< double > > > lps(3);
-      std::vector< std::vector< std::vector< std::vector< double > > > > lps_sols(
-         3);
+      std::vector< std::vector< std::vector< std::vector< double > > > >   lps_sols(3);
 
-      lps[0] = std::vector< gum::credal::lp::LpInterface< double > >(1);   // A lp
+      lps[0]      = std::vector< gum::credal::lp::LpInterface< double > >(1);   // A lp
       lps_sols[0] = std::vector< std::vector< std::vector< double > > >(1);
 
-      lps[1] = std::vector< gum::credal::lp::LpInterface< double > >(1);   // B lp
+      lps[1]      = std::vector< gum::credal::lp::LpInterface< double > >(1);   // B lp
       lps_sols[1] = std::vector< std::vector< std::vector< double > > >(1);
 
-      lps[2] = std::vector< gum::credal::lp::LpInterface< double > >(9);   // C lps
+      lps[2]      = std::vector< gum::credal::lp::LpInterface< double > >(9);   // C lps
       lps_sols[2] = std::vector< std::vector< std::vector< double > > >(9);
 
       /// A - intervals ( not a linear - vacuous mixture, i.e. exists i : max
@@ -169,9 +168,8 @@ namespace gum_tests {
       lps[2][0].addRow(A[1] <= A[0] + A[2]);
       lps[2][0].addProba();
 
-      lps_sols[2][0] = {{1. / 4, 1. / 2, 1. / 4},
-                        {0, 0, 1},
-                        {0, 1. / 2, 1. / 2}};   // C lp solution A:0 B:0
+      lps_sols[2][0]
+         = {{1. / 4, 1. / 2, 1. / 4}, {0, 0, 1}, {0, 1. / 2, 1. / 2}};   // C lp solution A:0 B:0
 
       /// C : ins idx = 1, A:1 B:0
       /// 2 * x0 + x1 <= x2 written as x0 + x1 <= x2 - x0
@@ -193,16 +191,14 @@ namespace gum_tests {
       lps[2][2].addRow(A[2] <= 0.5 * A[0] + 0.5 * A[1]);
       lps[2][2].addProba();
 
-      lps_sols[2][2]
-         = {{2. / 3, 0, 1. / 3}, {0, 2. / 3, 1. / 3}};   // C lp solution A:2 B:0
+      lps_sols[2][2] = {{2. / 3, 0, 1. / 3}, {0, 2. / 3, 1. / 3}};   // C lp solution A:2 B:0
 
       /// C : ins idx = 3, A:0 B:1
       /// vacuous
       A = lps[2][3].addCols(3);
       lps[2][3].addProba();
 
-      lps_sols[2][3]
-         = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
+      lps_sols[2][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -224,9 +220,8 @@ namespace gum_tests {
       lps[2][5].addRow(2 * A[0] <= A[1]);
       lps[2][5].addProba();
 
-      lps_sols[2][5] = {{1. / 7, 2. / 7, 4. / 7},
-                        {0, 1. / 3, 2. / 3},
-                        {0, 0, 1}};   // C lp solution A:2 B:1
+      lps_sols[2][5]
+         = {{1. / 7, 2. / 7, 4. / 7}, {0, 1. / 3, 2. / 3}, {0, 0, 1}};   // C lp solution A:2 B:1
 
       /// C : ins idx = 6, A:0 B:2
       /// x2 - x1 <= x0
@@ -244,8 +239,7 @@ namespace gum_tests {
       A = lps[2][7].addCols(3);
       lps[2][7].addProba();
 
-      lps_sols[2][7]
-         = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
+      lps_sols[2][7] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -254,8 +248,7 @@ namespace gum_tests {
       lps[2][8].addRow(1. / 3 * A[0] + 2. / 3 * A[1] <= A[2]);
       lps[2][8].addProba();
 
-      lps_sols[2][8]
-         = {{3. / 4, 0, 1. / 4}, {0, 3. / 5, 2. / 5}};   // C lp solution A:2 B:2
+      lps_sols[2][8] = {{3. / 4, 0, 1. / 4}, {0, 3. / 5, 2. / 5}};   // C lp solution A:2 B:2
 
       /// compute solutions, check bijection
       for (const auto& id: ids) {
@@ -335,18 +328,12 @@ namespace gum_tests {
       const auto& valsmax = cnet.get_binaryCPT_max();
 
       for (gum::Idx i = 0; i < 4; i++) {
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i],
-                         (i == 0 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i],
-                         (i == 0 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i],
-                         (i == 1 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i],
-                         (i == 1 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i],
-                         (i == 2 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i],
-                         (i == 2 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0))
+        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0))
       }
     }
 

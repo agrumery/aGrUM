@@ -135,8 +135,7 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual const PRMClassElement< GUM_SCALAR >&
-         get(const std::string& name) const;
+      virtual const PRMClassElement< GUM_SCALAR >& get(const std::string& name) const;
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -218,8 +217,7 @@ namespace gum {
        *            PRMInterface is a sub PRMInterface of it.
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
-      virtual bool
-         isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+      virtual bool isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /**
        * @brief Returns the superInterface of this PRMInterface.
@@ -271,8 +269,7 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >&
-         operator[](const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& operator[](const std::string& name) const;
 
       /// @}
       // ========================================================================
@@ -280,13 +277,11 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      typedef typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::iterator
-                              ClassEltIterator;
-      ClassEltIterator        begin();
-      const ClassEltIterator& end();
+      typedef typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::iterator ClassEltIterator;
+      ClassEltIterator                                                          begin();
+      const ClassEltIterator&                                                   end();
 
-      typedef
-         typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator
+      typedef typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator
                                     const_ClassEltIterator;
       const_ClassEltIterator        begin() const;
       const const_ClassEltIterator& end() const;
@@ -310,11 +305,10 @@ namespace gum {
 
       private:
       /// Copy operator. Don't use it.
-      PRMInterface< GUM_SCALAR >&
-         operator=(const PRMInterface< GUM_SCALAR >& source);
+      PRMInterface< GUM_SCALAR >& operator=(const PRMInterface< GUM_SCALAR >& source);
 
       /// Proceed with the copy of i in this.
-      void  _inheritInterface_(const PRMInterface< GUM_SCALAR >& i);
+      void _inheritInterface_(const PRMInterface< GUM_SCALAR >& i);
 
       // ========================================================================
       /// @name Graphical model members
@@ -323,11 +317,11 @@ namespace gum {
 
       /// The dag representing dependencies between formal attributes and
       /// slots.
-      DAG  _dag_;
+      DAG _dag_;
 
       /// Mapping between node's id and their name (being an attribute or a
       /// slot). Used for fast access to a member given it's node id.
-      NodeProperty< PRMClassElement< GUM_SCALAR >* >  _nodeIdMap_;
+      NodeProperty< PRMClassElement< GUM_SCALAR >* > _nodeIdMap_;
 
       /// @}
       // ========================================================================
@@ -337,13 +331,13 @@ namespace gum {
 
       /// Mapping between a member's name and itself.
       /// Used for fast access to a member given it's name.
-      HashTable< std::string, PRMClassElement< GUM_SCALAR >* >  _nameMap_;
+      HashTable< std::string, PRMClassElement< GUM_SCALAR >* > _nameMap_;
 
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
-      Set< PRMAttribute< GUM_SCALAR >* >  _attributes_;
+      Set< PRMAttribute< GUM_SCALAR >* > _attributes_;
 
       /// The sequence of PRMReferenceSlot<GUM_SCALAR>.
-      Set< PRMReferenceSlot< GUM_SCALAR >* >  _referenceSlots_;
+      Set< PRMReferenceSlot< GUM_SCALAR >* > _referenceSlots_;
 
       /// @}
       // ========================================================================
@@ -355,36 +349,34 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
-      PRMInterface< GUM_SCALAR >*  _superInterface_;
+      PRMInterface< GUM_SCALAR >* _superInterface_;
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
-      Set< PRMClass< GUM_SCALAR >* >  _implementations_;
+      Set< PRMClass< GUM_SCALAR >* > _implementations_;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this PRMInterface.
-      void  _addImplementation_(PRMClass< GUM_SCALAR >* c);
+      void _addImplementation_(PRMClass< GUM_SCALAR >* c);
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
-      Set< PRMInterface< GUM_SCALAR >* >  _extensions_;
+      Set< PRMInterface< GUM_SCALAR >* > _extensions_;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this PRMInterface.
-      void  _addExtension_(PRMInterface< GUM_SCALAR >* c);
+      void _addExtension_(PRMInterface< GUM_SCALAR >* c);
 
-      bool
-          _checkOverloadLegality_(const PRMClassElement< GUM_SCALAR >* overloaded,
-                                 const PRMClassElement< GUM_SCALAR >* overloader);
+      bool _checkOverloadLegality_(const PRMClassElement< GUM_SCALAR >* overloaded,
+                                   const PRMClassElement< GUM_SCALAR >* overloader);
 
-      void  _overloadAttribute_(PRMAttribute< GUM_SCALAR >* overloader,
+      void _overloadAttribute_(PRMAttribute< GUM_SCALAR >* overloader,
                                PRMAttribute< GUM_SCALAR >* overloaded);
 
-      void  _overloadReferenceSlot_(PRMReferenceSlot< GUM_SCALAR >* overloader,
+      void _overloadReferenceSlot_(PRMReferenceSlot< GUM_SCALAR >* overloader,
                                    PRMReferenceSlot< GUM_SCALAR >* overloaded);
 
-      void  _addCastDescendants_(PRMAttribute< GUM_SCALAR >* start,
-                                PRMAttribute< GUM_SCALAR >* end);
+      void _addCastDescendants_(PRMAttribute< GUM_SCALAR >* start, PRMAttribute< GUM_SCALAR >* end);
 
       /// @}
     };

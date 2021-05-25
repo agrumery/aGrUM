@@ -47,7 +47,7 @@ namespace gum {
   VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
     GUM_CONS_CPY(VariableNodeMap);
 
-     _copy_(source);
+    _copy_(source);
   }
 
   // Destructor
@@ -60,17 +60,17 @@ namespace gum {
   // Copy operator.
   VariableNodeMap& VariableNodeMap::operator=(const VariableNodeMap& source) {
     clear();
-     _copy_(source);
+    _copy_(source);
 
     return *this;
   }
 
   void VariableNodeMap::clear() {
-    for (auto iter =  _nodes2vars_.begin(); iter !=  _nodes2vars_.end(); ++iter)
+    for (auto iter = _nodes2vars_.begin(); iter != _nodes2vars_.end(); ++iter)
       delete iter.second();
 
-     _nodes2vars_.clear();
-     _names2nodes_.clear();
+    _nodes2vars_.clear();
+    _names2nodes_.clear();
   }
 
   /// friendly displays the content of the VariableNodeMap
@@ -78,23 +78,21 @@ namespace gum {
     std::stringstream stream;
 
     stream << "list of associations:" << std::endl;
-    stream <<  _nodes2vars_ << std::endl << std::endl;
+    stream << _nodes2vars_ << std::endl << std::endl;
     stream << "list of variable names:" << std::endl;
-    stream <<  _names2nodes_ << std::endl;
+    stream << _names2nodes_ << std::endl;
 
     return stream.str();
   }
 
   /// do the copy
-  void VariableNodeMap:: _copy_(const VariableNodeMap& source) {
-    for (auto iter = source. _nodes2vars_.begin();
-         iter != source. _nodes2vars_.end();
-         ++iter)
-       _nodes2vars_.insert(iter.first(), iter.second()->clone());
+  void VariableNodeMap::_copy_(const VariableNodeMap& source) {
+    for (auto iter = source._nodes2vars_.begin(); iter != source._nodes2vars_.end(); ++iter)
+      _nodes2vars_.insert(iter.first(), iter.second()->clone());
 
     // copy factory is used inside insert
 
-     _names2nodes_ = source. _names2nodes_;
+    _names2nodes_ = source._names2nodes_;
   }
 
   /// for friendly displaying the content of clique graphs

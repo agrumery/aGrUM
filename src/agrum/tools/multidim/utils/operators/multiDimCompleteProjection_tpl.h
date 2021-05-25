@@ -68,9 +68,9 @@ namespace gum {
 
   // creates and returns the projection of the table over a subset of its vars
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE GUM_SCALAR MultiDimCompleteProjection< GUM_SCALAR, TABLE >::project(
-     const TABLE< GUM_SCALAR >& table,
-     Instantiation*             inst) {
+  INLINE GUM_SCALAR
+     MultiDimCompleteProjection< GUM_SCALAR, TABLE >::project(const TABLE< GUM_SCALAR >& table,
+                                                              Instantiation*             inst) {
     return proj_(table, inst);
   }
 
@@ -83,8 +83,7 @@ namespace gum {
 
   // returns the projection function currently used by the projector
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE GUM_SCALAR (
-     *MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
+  INLINE GUM_SCALAR (*MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
      const TABLE< GUM_SCALAR >&,
      Instantiation*) {
     return proj_;

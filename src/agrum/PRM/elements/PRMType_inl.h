@@ -33,43 +33,41 @@ namespace gum {
 
 
     INLINE PRMType& PRMType::superType() {
-      if ( _superType_) {
-        return * _superType_;
+      if (_superType_) {
+        return *_superType_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
 
-    INLINE DiscreteVariable& PRMType::variable() { return * _var_; }
+    INLINE DiscreteVariable& PRMType::variable() { return *_var_; }
 
 
-    INLINE const DiscreteVariable& PRMType::variable() const { return * _var_; }
+    INLINE const DiscreteVariable& PRMType::variable() const { return *_var_; }
 
 
-    INLINE DiscreteVariable& PRMType::operator*() { return * _var_; }
+    INLINE DiscreteVariable& PRMType::operator*() { return *_var_; }
 
 
-    INLINE const DiscreteVariable& PRMType::operator*() const { return * _var_; }
+    INLINE const DiscreteVariable& PRMType::operator*() const { return *_var_; }
 
 
-    INLINE DiscreteVariable* PRMType::operator->() { return  _var_; }
+    INLINE DiscreteVariable* PRMType::operator->() { return _var_; }
 
 
-    INLINE DiscreteVariable const* PRMType::operator->() const { return  _var_; }
+    INLINE DiscreteVariable const* PRMType::operator->() const { return _var_; }
 
 
-    INLINE PRMObject::prm_type PRMType::obj_type() const {
-      return PRMObject::prm_type::TYPE;
-    }
+    INLINE PRMObject::prm_type PRMType::obj_type() const { return PRMObject::prm_type::TYPE; }
 
 
     INLINE const std::string& PRMType::name() const { return PRMObject::name(); }
 
 
     INLINE const PRMType& PRMType::superType() const {
-      if ( _superType_) {
-        return * _superType_;
+      if (_superType_) {
+        return *_superType_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
@@ -79,42 +77,33 @@ namespace gum {
     INLINE void PRMType::setSuper(PRMType& t) {
       try {
         if (t != superType()) {
-          GUM_ERROR(TypeError,
-                    "The given type is not a valid super type for this Type")
+          GUM_ERROR(TypeError, "The given type is not a valid super type for this Type")
         }
-      } catch (NotFound&) {
-        GUM_ERROR(OperationNotAllowed, "This Type has no super Type")
-      }
+      } catch (NotFound&) { GUM_ERROR(OperationNotAllowed, "This Type has no super Type") }
 
-       _superType_ = &t;
+      _superType_ = &t;
     }
 
 
     INLINE const std::vector< Idx >& PRMType::label_map() const {
-      if ( _label_map_) {
-        return * _label_map_;
+      if (_label_map_) {
+        return *_label_map_;
       } else {
         GUM_ERROR(NotFound, "No super type for this type.")
       }
     }
 
 
-    INLINE bool PRMType::isSubType() const { return  _superType_ != nullptr; }
+    INLINE bool PRMType::isSubType() const { return _superType_ != nullptr; }
 
 
-    INLINE bool PRMType::isSuperTypeOf(const PRMType& t) const {
-      return t.isSubTypeOf(*this);
-    }
+    INLINE bool PRMType::isSuperTypeOf(const PRMType& t) const { return t.isSubTypeOf(*this); }
 
 
-    INLINE bool PRMType::operator==(const PRMObject& obj) const {
-      return name() == obj.name();
-    }
+    INLINE bool PRMType::operator==(const PRMObject& obj) const { return name() == obj.name(); }
 
 
-    INLINE bool PRMType::operator!=(const PRMObject& obj) const {
-      return name() != obj.name();
-    }
+    INLINE bool PRMType::operator!=(const PRMObject& obj) const { return name() != obj.name(); }
 
   } /* namespace prm */
 } /* namespace gum */

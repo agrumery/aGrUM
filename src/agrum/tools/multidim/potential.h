@@ -139,64 +139,56 @@ namespace gum {
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR >
-       margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR >
-       margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR >
-       margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR >
-       margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR >
-       margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR >
-       margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR >
-       margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR >
-       margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * create a boolean-like potential using the predicate isNonZero
@@ -232,15 +224,13 @@ namespace gum {
      * @throw InvalidArgument if not all and only the vars of the potential are
      * in vars
      */
-    Potential< GUM_SCALAR >
-       reorganize(const std::vector< const DiscreteVariable* >& vars) const;
+    Potential< GUM_SCALAR > reorganize(const std::vector< const DiscreteVariable* >& vars) const;
 
     /** create a new Potential with another order
      * @throw InvalidArgument if not all and only the vars of the potential are
      * in vars
      */
-    Potential< GUM_SCALAR >
-       reorganize(const std::vector< std::string >& vars) const;
+    Potential< GUM_SCALAR > reorganize(const std::vector< std::string >& vars) const;
 
     /** create a new Potential extracted from *this given a partial
      * instantiation
@@ -265,8 +255,7 @@ namespace gum {
      *
      * @throw InvalidArgument if the Potential is not compatible with this
      */
-    const Potential< GUM_SCALAR >&
-       fillWith(const Potential< GUM_SCALAR >& src) const;
+    const Potential< GUM_SCALAR >& fillWith(const Potential< GUM_SCALAR >& src) const;
 
     /**
      * @brief copy a Potential data using the sequence of names in mapSrc to find
@@ -284,9 +273,8 @@ namespace gum {
      *
      * @throw InvalidArgument if the Potential is not compatible with this
      * */
-    const Potential< GUM_SCALAR >&
-       fillWith(const Potential< GUM_SCALAR >&    src,
-                const std::vector< std::string >& mapSrc) const;
+    const Potential< GUM_SCALAR >& fillWith(const Potential< GUM_SCALAR >&    src,
+                                            const std::vector< std::string >& mapSrc) const;
 
     /**
      * @brief Automatically fills the potential with the values in
@@ -296,8 +284,7 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    const Potential< GUM_SCALAR >&
-       fillWith(const std::vector< GUM_SCALAR >& data) const;
+    const Potential< GUM_SCALAR >& fillWith(const std::vector< GUM_SCALAR >& data) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
@@ -395,10 +382,8 @@ namespace gum {
 
     /// the function to be used to add two Potentials
     Potential< GUM_SCALAR > operator+(const Potential< GUM_SCALAR >& p2) const {
-      if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).translate(p2.empty_value_);
-      if (this->empty())
-        return Potential< GUM_SCALAR >(p2).translate(this->empty_value_);
+      if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(p2.empty_value_);
+      if (this->empty()) return Potential< GUM_SCALAR >(p2).translate(this->empty_value_);
 
       return Potential< GUM_SCALAR >(*this->content() + *p2.content());
     }
@@ -410,8 +395,7 @@ namespace gum {
 
     /// the function to be used to subtract two Potentials
     Potential< GUM_SCALAR > operator-(const Potential< GUM_SCALAR >& p2) const {
-      if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).translate(-p2.empty_value_);
+      if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(-p2.empty_value_);
       if (this->empty()) {
         auto p = Potential< GUM_SCALAR >(p2);
         p.apply([this](GUM_SCALAR x) { return this->empty_value_ - x; });
@@ -428,8 +412,7 @@ namespace gum {
     /// the function to be used to multiply two Potentials
     Potential< GUM_SCALAR > operator*(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2.empty_value_);
-      if (this->empty())
-        return Potential< GUM_SCALAR >(p2).scale(this->empty_value_);
+      if (this->empty()) return Potential< GUM_SCALAR >(p2).scale(this->empty_value_);
 
       return Potential< GUM_SCALAR >(*this->content() * *p2.content());
     }
@@ -441,8 +424,7 @@ namespace gum {
 
     /// the function to be used to divide two Potentials
     Potential< GUM_SCALAR > operator/(const Potential< GUM_SCALAR >& p2) const {
-      if (p2.empty())
-        return Potential< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
+      if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
       if (this->empty()) {
         auto p = Potential< GUM_SCALAR >(p2);
         p.apply([this](GUM_SCALAR x) { return this->empty_value_ / x; });
@@ -505,9 +487,7 @@ namespace gum {
       }
     }
 
-    bool operator!=(const Potential< GUM_SCALAR >& r) const {
-      return !operator==(r);
-    }
+    bool operator!=(const Potential< GUM_SCALAR >& r) const { return !operator==(r); }
 
     Potential< GUM_SCALAR >& operator<<(const DiscreteVariable& v) {
       this->add(v);
@@ -541,8 +521,7 @@ namespace gum {
 
       if (nbparents > 0) {
         for (Idx i = 1; i <= nbparents; i++)
-          ss << std::setw(colwidth)
-             << table->variable(i).name().substr(0, colwidth) << "|";
+          ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth) << "|";
         ss << "|";
       }
       for (Idx i = 0; i < nbcol; i++)
@@ -563,8 +542,8 @@ namespace gum {
       auto drawligne = [&]() {
         if (nbparents > 0) {
           for (Idx i = 1; i <= nbparents; i++)
-            ss << std::setw(colwidth)
-               << table->variable(i).label(I.val(i)).substr(0, colwidth) << "|";
+            ss << std::setw(colwidth) << table->variable(i).label(I.val(i)).substr(0, colwidth)
+               << "|";
           ss << "|";
         }
         for (I.setFirstVar(var); !I.end(); I.incVar(var))
@@ -584,8 +563,7 @@ namespace gum {
           if (cpt > nbrLigMax) break;
           drawligne();
         }
-        ss << "[..." << nbrLig - nbrLigMax * 2 << " more line(s) ...]"
-           << std::endl;
+        ss << "[..." << nbrLig - nbrLigMax * 2 << " more line(s) ...]" << std::endl;
         I.setLast();
         for (Idx revi = 1; revi < nbrLigMax; revi++)
           I.decNotVar(var);

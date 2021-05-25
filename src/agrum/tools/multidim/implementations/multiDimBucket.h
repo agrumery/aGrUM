@@ -262,8 +262,7 @@ namespace gum {
      * @brief Returns the MultiDimContainer and their respective Instantiation.
      * @return Returns the MultiDimContainer and their respective Instantiation.
      */
-    const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
-       multidims() const;
+    const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >& multidims() const;
 
     protected:
     virtual void commitMultipleChanges_() override;
@@ -274,29 +273,27 @@ namespace gum {
      */
     virtual GUM_SCALAR& get_(const Instantiation& i) const override;
 
-    virtual void replace_(const DiscreteVariable* x,
-                          const DiscreteVariable* y) override;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     private:
     /// The number of element allowed in  _bucket_.
-    Size  _bufferSize_;
+    Size _bufferSize_;
 
     /// Bijection between instantiations registered on this and
     /// their equivalent on  _bucket_
-    Bijection< Instantiation*, Instantiation* >  _instantiations_;
+    Bijection< Instantiation*, Instantiation* > _instantiations_;
 
     /// The result table of this bucket.
-    MultiDimArray< GUM_SCALAR >*  _bucket_;
+    MultiDimArray< GUM_SCALAR >* _bucket_;
 
     /// The set of MultiDimContainer in this bucket.
-    mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >
-        _multiDims_;
+    mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* > _multiDims_;
 
     /// The set of all variables of the multidims in this bucket.
-    Set< const DiscreteVariable* >  _allVariables_;
+    Set< const DiscreteVariable* > _allVariables_;
 
     /// Instantiation over all variable in this
-    mutable Instantiation  _allVarsInst_;
+    mutable Instantiation _allVarsInst_;
 
     /**
      * @brief Add a variable to  _allVariables_, and do nothing if var is already
@@ -304,7 +301,7 @@ namespace gum {
      * the set.
      * @param var The DiscreteVariable to add.
      */
-    void  _addVariable_(const DiscreteVariable* var);
+    void _addVariable_(const DiscreteVariable* var);
 
     /**
      * @brief Erase a variable from  _allVariables_ if no other multidimensional
@@ -312,19 +309,19 @@ namespace gum {
      * uses it in this bucket.
      * @param var The DiscreteVariable to remove.
      */
-    void  _eraseVariable_(const DiscreteVariable* var);
+    void _eraseVariable_(const DiscreteVariable* var);
 
     /**
      * @brief Initialize the internal buffer.
      *
      * This method delete  _bucket_ after saving it's slave instantiations.
      */
-    void  _initializeBuffer_();
+    void _initializeBuffer_();
 
     /**
      * @brief Clean the buffer and switch it's instantiation to this bucket.
      */
-    void  _eraseBuffer_();
+    void _eraseBuffer_();
 
     /**
      * @brief Compute the value of the final table of this bucket given i.
@@ -335,18 +332,18 @@ namespace gum {
      * @param value The value to compute.
      * @throw SizeError Raised if the bucket is empty.
      */
-    GUM_SCALAR  _computeValue_(const Instantiation& value) const;
+    GUM_SCALAR _computeValue_(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last
     /// computation.
-    mutable bool  _changed_;
+    mutable bool _changed_;
 
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
-    mutable HashTable< const Instantiation*, GUM_SCALAR >  _slavesValue_;
+    mutable HashTable< const Instantiation*, GUM_SCALAR > _slavesValue_;
 
     /// The class name.
-    std::string  _name_;
+    std::string _name_;
   };
 
 

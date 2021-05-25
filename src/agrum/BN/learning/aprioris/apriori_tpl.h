@@ -33,10 +33,9 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE Apriori< ALLOC >::Apriori(
-       const DatabaseTable< ALLOC >& database,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                        nodeId2columns,
-       const typename Apriori< ALLOC >::allocator_type& alloc) :
+       const DatabaseTable< ALLOC >&                                 database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename Apriori< ALLOC >::allocator_type&              alloc) :
         ALLOC< NodeId >(alloc),
         database_(&database), nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(Apriori);
@@ -45,12 +44,10 @@ namespace gum {
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE Apriori< ALLOC >::Apriori(
-       const Apriori< ALLOC >&                          from,
-       const typename Apriori< ALLOC >::allocator_type& alloc) :
+    INLINE Apriori< ALLOC >::Apriori(const Apriori< ALLOC >&                          from,
+                                     const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        weight_(from.weight_), database_(from.database_),
-        nodeId2columns_(from.nodeId2columns_) {
+        weight_(from.weight_), database_(from.database_), nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(Apriori);
     }
 
@@ -63,9 +60,8 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Apriori< ALLOC >::Apriori(
-       Apriori< ALLOC >&&                               from,
-       const typename Apriori< ALLOC >::allocator_type& alloc) :
+    INLINE Apriori< ALLOC >::Apriori(Apriori< ALLOC >&&                               from,
+                                     const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         weight_(from.weight_), database_(from.database_),
         nodeId2columns_(std::move(from.nodeId2columns_)) {
@@ -114,9 +110,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void Apriori< ALLOC >::setWeight(const double weight) {
       if (weight < 0.0) {
-        GUM_ERROR(OutOfBounds,
-                  "A negative weight (" << weight
-                                        << ") is forbidden for an apriori");
+        GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for an apriori");
       }
       weight_ = weight;
     }
@@ -131,8 +125,7 @@ namespace gum {
 
     /// returns the allocator used by the translator
     template < template < typename > class ALLOC >
-    INLINE typename Apriori< ALLOC >::allocator_type
-       Apriori< ALLOC >::getAllocator() const {
+    INLINE typename Apriori< ALLOC >::allocator_type Apriori< ALLOC >::getAllocator() const {
       return *this;
     }
 

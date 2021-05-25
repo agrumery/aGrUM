@@ -31,15 +31,15 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::
-     FactorisedValuesCNFWriter() {
+  INLINE
+     FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
   // Default destructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::
-     ~FactorisedValuesCNFWriter() {
+  INLINE
+     FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
     GUM_DESTRUCTOR(FactorisedValuesCNFWriter);
   }
 
@@ -53,8 +53,7 @@ namespace gum {
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
      std::ostream&                  output,
      const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     std::stringstream strfile, strfile2;
 
@@ -132,8 +131,7 @@ namespace gum {
       clausstr << str2.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n"
-           << clausstr.str() << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
     output.flush();
   }
 
@@ -151,13 +149,11 @@ namespace gum {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
-    if (!output.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     std::stringstream strfile, strfile2;
 
-    if (!outputvar.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!outputvar.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
 
     Idx num      = 0;
     Idx numparam = 0;
@@ -237,8 +233,7 @@ namespace gum {
       clausstr << str2.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n"
-           << clausstr.str() << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
     output.flush();
     outputvar << strfile.str() << strfile2.str();
     outputvar.flush();

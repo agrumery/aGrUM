@@ -106,9 +106,7 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type Class.
-      static INLINE bool isClass(const PRMObject& obj) {
-        return obj.obj_type() == prm_type::CLASS;
-      }
+      static INLINE bool isClass(const PRMObject& obj) { return obj.obj_type() == prm_type::CLASS; }
 
       /// Returns true if obj_ptr is of type PRMInterface.
       static INLINE bool isInterface(const PRMObject& obj) {
@@ -204,7 +202,7 @@ namespace gum {
 
       // The name of this object
       // ======================================================================
-      std::string  _name_;
+      std::string _name_;
 
       /// @}
     };

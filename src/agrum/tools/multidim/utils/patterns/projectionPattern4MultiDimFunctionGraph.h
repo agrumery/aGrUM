@@ -50,18 +50,18 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PROJECTION_NAME
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
-     const MultiDimFunctionGraph< GUM_SCALAR >* table,
-     const Set< const DiscreteVariable* >&      delVars)
+  MultiDimFunctionGraph< GUM_SCALAR >*
+     GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimFunctionGraph< GUM_SCALAR >* table,
+                                   const Set< const DiscreteVariable* >&      delVars)
 #  endif
 
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
-     template < typename GUM_SCALAR >
-     MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
-        const MultiDimImplementation< GUM_SCALAR >* ttable,
-        const Set< const DiscreteVariable* >&       delVars)
+        template < typename GUM_SCALAR >
+        MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
+           const MultiDimImplementation< GUM_SCALAR >* ttable,
+           const Set< const DiscreteVariable* >&       delVars)
 #  endif
   {
 

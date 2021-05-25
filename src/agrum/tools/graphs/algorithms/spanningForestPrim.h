@@ -58,8 +58,7 @@ namespace gum {
      * copied but only referenced by the elimination sequence algorithm.
      * @throws GraphError if the grand and/or the cost table are null pointers
      */
-    SpanningForestPrim(const UndiGraph*             graph,
-                       const EdgeProperty< float >* costTable);
+    SpanningForestPrim(const UndiGraph* graph, const EdgeProperty< float >* costTable);
 
     /// Copy constructor
     SpanningForestPrim(const SpanningForestPrim& toCopy);
@@ -90,31 +89,31 @@ namespace gum {
 
     private:
     /// the graph the spanning tree of which we wish to compute
-    const UndiGraph&  _graph_;
+    const UndiGraph& _graph_;
 
     /// the costs of the edges
-    const EdgeProperty< float >&  _costTable_;
+    const EdgeProperty< float >& _costTable_;
 
     /// the next edges that may be added to the spanning tree
-    PriorityQueue< Edge, float >  _edgesToExplore_;
+    PriorityQueue< Edge, float > _edgesToExplore_;
 
     /// the computed spanning tree
-    UndiGraph  _spanning_tree_;
+    UndiGraph _spanning_tree_;
 
     /// the cost of the spanning tree
-    float  _spanning_tree_cost_;
+    float _spanning_tree_cost_;
 
     /// a Boolean indicating whether we need recompute the spanning tree
-    bool  _require_computation_;
+    bool _require_computation_;
 
     /// Computes the spanning forest
-    void  _compute_();
+    void _compute_();
 
     /// compute a spanning tree in a given connected component of  _graph_
-    void  _computeInAComponent_(const NodeId id);
+    void _computeInAComponent_(const NodeId id);
 
     /// explore the neighborhood of a node belonging to the spanning tree
-    void  _exploreNode_(const NodeId id);
+    void _exploreNode_(const NodeId id);
 
     /// Copy operator: private to prevent using it
     SpanningForestPrim& operator=(const SpanningForestPrim& toCopy);

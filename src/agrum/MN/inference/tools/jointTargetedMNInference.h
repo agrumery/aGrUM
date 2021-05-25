@@ -53,8 +53,7 @@ namespace gum {
    * is designed to be used in incremental inference engines.
    */
   template < typename GUM_SCALAR >
-  class JointTargetedMNInference:
-      public MarginalTargetedMNInference< GUM_SCALAR > {
+  class JointTargetedMNInference: public MarginalTargetedMNInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -92,8 +91,7 @@ namespace gum {
      *
      * @throw UndefinedElement if nodes is not in the targets
      */
-    virtual const Potential< GUM_SCALAR >&
-       jointPosterior(const NodeSet& nodes) final;
+    virtual const Potential< GUM_SCALAR >& jointPosterior(const NodeSet& nodes) final;
 
     /// Computes and returns the posterior of a node.
     /**
@@ -127,8 +125,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential< GUM_SCALAR >&
-       posterior(const std::string& nodeName) final;
+    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodeName) final;
     /// @}
 
 
@@ -185,8 +182,7 @@ namespace gum {
      * @param evs the NodeSet of observed variables
      * @return a Potential
      */
-    Potential< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets,
-                                                const NodeSet& evs);
+    Potential< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets, const NodeSet& evs);
 
     /**
      * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
@@ -199,9 +195,8 @@ namespace gum {
      * @param evs the vector of std::string of observed variables
      * @return a Potential
      */
-    Potential< GUM_SCALAR >
-       evidenceJointImpact(const std::vector< std::string >& targets,
-                           const std::vector< std::string >& evs);
+    Potential< GUM_SCALAR > evidenceJointImpact(const std::vector< std::string >& targets,
+                                                const std::vector< std::string >& evs);
 
     // ############################################################################
     /// @name Information Theory related functions
@@ -294,18 +289,15 @@ namespace gum {
      * posterior is looked for.
      * @param declared_target the joint target declared by the user that
      * contains set */
-    virtual const Potential< GUM_SCALAR >&
-       jointPosterior_(const NodeSet& wanted_target,
-                       const NodeSet& declared_target)
+    virtual const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
+                                                           const NodeSet& declared_target)
        = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables
      * @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual Potential< GUM_SCALAR >*
-       unnormalizedJointPosterior_(const NodeSet& set)
-       = 0;
+    virtual Potential< GUM_SCALAR >* unnormalizedJointPosterior_(const NodeSet& set) = 0;
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) = 0;
@@ -313,7 +305,7 @@ namespace gum {
 
     private:
     /// the set of joint targets
-    Set< NodeSet >  _joint_targets_;
+    Set< NodeSet > _joint_targets_;
   };
 
 

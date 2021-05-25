@@ -46,30 +46,26 @@ namespace gum_tests {
 
   class aSimpleHybridListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __mess;
+    int         __nbr;
+    std::string __mess;
 
     public:
     aSimpleHybridListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
 
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) {  __mess = s; }
+    void whenStop(const void* buffer, const std::string s) { __mess = s; }
 
-    int         getNbr() { return  __nbr; }
-    std::string getMess() { return  __mess; }
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
   };
 
   class loopySamplingInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testHybridBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -77,7 +73,7 @@ namespace gum_tests {
 
         gum::LoopyBeliefPropagation< double > lbp(&bn);
         lbp.makeInference();
-        compareInference(  __FILE__,   __LINE__, bn, lazy, lbp);
+        compareInference(__FILE__, __LINE__, bn, lazy, lbp);
 
         GUM_APPROX_TEST_BEGIN_ITERATION
         gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
@@ -93,8 +89,7 @@ namespace gum_tests {
 
 
     void testHybridBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "b";
 
       try {
@@ -115,8 +110,7 @@ namespace gum_tests {
     }
 
     void testHybridBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "h";
 
       try {
@@ -139,8 +133,7 @@ namespace gum_tests {
     }
 
     void testHybridBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "e";
 
       try {
@@ -163,8 +156,7 @@ namespace gum_tests {
     }
 
     void testHybridBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
         gum::LazyPropagation< double > lazy(&bn);

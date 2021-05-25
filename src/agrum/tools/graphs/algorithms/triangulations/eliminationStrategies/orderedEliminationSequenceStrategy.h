@@ -68,8 +68,7 @@ namespace gum {
                                        const std::vector< NodeId >* order);
 
     /// copy constructor
-    OrderedEliminationSequenceStrategy(
-       const OrderedEliminationSequenceStrategy& from);
+    OrderedEliminationSequenceStrategy(const OrderedEliminationSequenceStrategy& from);
 
     /// move constructor
     OrderedEliminationSequenceStrategy(OrderedEliminationSequenceStrategy&& from);
@@ -106,8 +105,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph(UndiGraph*                  graph,
-                          const NodeProperty< Size >* dom_sizes) final;
+    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) final;
 
     /// sets the sequence of elimination
     /** @param order the order in which the nodes should be eliminated
@@ -174,18 +172,18 @@ namespace gum {
 
     private:
     /// the vector indicating in which order we should eliminate the nodes
-    const std::vector< NodeId >*  _order_{nullptr};
+    const std::vector< NodeId >* _order_{nullptr};
 
     /// the index in the order indicating the new node to eliminate
-    std::size_t  _order_index_{std::size_t(0)};
+    std::size_t _order_index_{std::size_t(0)};
 
     /// indicate whether a new complete ordering is necessary for the
     /// elimination
-    bool  _order_needed_{true};
+    bool _order_needed_{true};
 
 
     /// indicates whether an order is compatible with the current graph
-    bool  _isOrderNeeded_(const std::vector< NodeId >* order) const;
+    bool _isOrderNeeded_(const std::vector< NodeId >* order) const;
   };
 
 

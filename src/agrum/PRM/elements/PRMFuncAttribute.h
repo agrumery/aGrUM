@@ -88,8 +88,7 @@ namespace gum {
       PRMFuncAttribute(const PRMFuncAttribute< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMFuncAttribute< GUM_SCALAR >&
-         operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
+      PRMFuncAttribute< GUM_SCALAR >& operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
 
       virtual void setCpf_(Potential< GUM_SCALAR >* cpf);
     };

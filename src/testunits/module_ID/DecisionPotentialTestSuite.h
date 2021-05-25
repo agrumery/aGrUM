@@ -80,8 +80,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.probPot, gum::Potential< double >().fillWith(1));
       TS_ASSERT_EQUALS(
          res.utilPot,
-         (gum::Potential< double >() << infdiag.variableFromName("C"))
-            .fillWith({37, 58}));
+         (gum::Potential< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
     }
 
     void testEqualities() {
@@ -103,8 +102,7 @@ namespace gum_tests {
     }
 
     void testSuperSetForMarginalization() {
-      auto infdiag
-         = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
+      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
       infdiag.cpt("A").fillWith({0.3, 0.7});
       infdiag.cpt("D").fillWith({0.1, 0.9, 0.9, 0.1});
       infdiag.utility("B").fillWith({100, 10, 30, 70});

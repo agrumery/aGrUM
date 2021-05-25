@@ -102,20 +102,19 @@ namespace gum {
     /// returns the set of barren potentials in messages sent in a junction tree
     template < typename GUM_SCALAR >
     ArcProperty< Set< const Potential< GUM_SCALAR >* > >
-       barrenPotentials(const CliqueGraph&             junction_tree,
-                        const IBayesNet< GUM_SCALAR >& bn);
+       barrenPotentials(const CliqueGraph& junction_tree, const IBayesNet< GUM_SCALAR >& bn);
 
     /// @}
 
     private:
     /// the DAG on which we compute the barren nodes
-    const DAG*  _dag_;
+    const DAG* _dag_;
 
     /// the set of observed nodes
-    const NodeSet*  _observed_nodes_;
+    const NodeSet* _observed_nodes_;
 
     /// the set of targeted nodes
-    const NodeSet*  _target_nodes_;
+    const NodeSet* _target_nodes_;
   };
 
 

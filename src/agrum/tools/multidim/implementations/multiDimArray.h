@@ -118,9 +118,8 @@ namespace gum {
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_SCALAR
-       reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-              GUM_SCALAR                                          base) const;
+    virtual GUM_SCALAR reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                              GUM_SCALAR                                          base) const;
 
     /**
      * @brief Adds a variable.

@@ -292,29 +292,29 @@ namespace gum {
     /**
      * The function that verify if graph is a polytree.
      **/
-    bool  _isPolytree_();
+    bool _isPolytree_();
     /**
      * The function that verify if node i and j are connected.
      **/
-    bool  _connect_(NodeId i, NodeId j);
+    bool _connect_(NodeId i, NodeId j);
     /**
      * The function that verify if there is a oriented path from node i to node
      *j.
      **/
-    bool  _directedPath_(NodeId tail, NodeId head);
+    bool _directedPath_(NodeId tail, NodeId head);
     /**
      * The function that will insert an arc between node i to node j, but only
      *if
      *there isn't any cycle created.
      **/
-    void  _insertArc_(NodeId i, NodeId j);
+    void _insertArc_(NodeId i, NodeId j);
     /**
      * The function that will remove the arc between node i and node j. If the
      *boolean parameter mustbeconnex is true, the function will assert that the
      *graph
      *remain connected and will restore the arc otherwise.
      **/
-    void  _eraseArc_(NodeId i, NodeId j, bool mustbeconnex = true);
+    void _eraseArc_(NodeId i, NodeId j, bool mustbeconnex = true);
 
     /**
      * In the case that the graph is a polytree, the function will, according to
@@ -326,7 +326,7 @@ namespace gum {
      *will return to the previous topology.
      **/
 
-    void  _PMMx_poly_();
+    void _PMMx_poly_();
     /**
      * In the case that the graph is a multiconnected graph, the function will,
      *according to the probability p and q, choose which change of state must
@@ -335,14 +335,14 @@ namespace gum {
      *and if
      *not, will return to the previous topology.
      **/
-    void  _PMMx_multi_();
+    void _PMMx_multi_();
     /**
      * In the case that the graph is a polytree, the function will add a ramdom
      *arc
      *by the use of the function  _insertArc_ if the arc does not exist allready.
      **/
 
-    void  _jump_poly_();
+    void _jump_poly_();
 
     /**
      * In the case that the graph is a multiconnect graph, the function will
@@ -351,23 +351,23 @@ namespace gum {
      *function  _insertArc_ if the arc exists.
      **/
 
-    void  _jump_multi_();
+    void _jump_multi_();
 
     /**
      * The function will add or remove a random arc in the graph using the
      *functions
      * _insertArc_ and  _removeArc_.
      **/
-    void  _AorR_();
+    void _AorR_();
     /**
      * The function will remove and add a random arc changing the topology of the
      *graph but asserting its connectivity.
      **/
-    void  _AR_();
+    void _AR_();
     /**
      * The boolean function that will assert the respect of the constraint.
      **/
-    virtual bool  _checkConditions_();
+    virtual bool _checkConditions_();
 
     // NOT USED ? void  _createDAG_( Size BNSize, Size iniRoot );
 
@@ -382,36 +382,36 @@ namespace gum {
      *listed in excluded.
      **/
 
-    bool  _connect_(NodeId i, NodeId j, NodeSet& excluded);
+    bool _connect_(NodeId i, NodeId j, NodeSet& excluded);
 
     /**
      * The internal function used by the previous  _directedPath_. It asserts the
      *existence of an oriented path between node i and node j avoiding passing
      *through nodes listed in excluded.
      **/
-    bool  _directedPath_(NodeId tail, NodeId head, NodeSet& excluded);
+    bool _directedPath_(NodeId tail, NodeId head, NodeSet& excluded);
 
     /**
      * The function that randomly choose two nodes of the graph.
      **/
 
-    void  _chooseNodes_(NodeId& i, NodeId& j);
+    void _chooseNodes_(NodeId& i, NodeId& j);
 
     /**
      * The function that randomly choose two neighbours nodes of the graph.
      **/
-    void  _chooseCloseNodes_(NodeId& i, NodeId& j);
+    void _chooseCloseNodes_(NodeId& i, NodeId& j);
 
     /**
      * The function that randomly change the simple tree into a polytree.
      **/
 
-    void  _transformPoly_(Idx nbiter);
+    void _transformPoly_(Idx nbiter);
 
     /**
      * The function that randomly generate a simple tree.
      **/
-    void  _createTree_(Size BNSize);
+    void _createTree_(Size BNSize);
 
     /**
      * The internal function used by  _createTree_ that randomly generate a
@@ -419,7 +419,7 @@ namespace gum {
      *tree.
      * n : id number for node label
      **/
-    NodeId  _createPartTree_(Size BNSize, Idx& n);
+    NodeId _createPartTree_(Size BNSize, Idx& n);
   };
 
 

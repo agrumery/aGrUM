@@ -19,8 +19,8 @@
  */
 
 
-#ifndef  __MULTIPLE_INFERENCE_ENGINES__H__
-#define  __MULTIPLE_INFERENCE_ENGINES__H__
+#ifndef __MULTIPLE_INFERENCE_ENGINES__H__
+#define __MULTIPLE_INFERENCE_ENGINES__H__
 
 /**
  * @file
@@ -54,22 +54,20 @@ namespace gum {
     class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine< GUM_SCALAR >  _infE_;
+      typedef InferenceEngine< GUM_SCALAR > _infE_;
 
-      typedef NodeProperty< std::vector< NodeId > >                     _cluster_;
-      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > >  _credalSet_;
-      typedef NodeProperty< std::vector< GUM_SCALAR > >                 _margi_;
-      typedef NodeProperty< GUM_SCALAR >                                _expe_;
+      typedef NodeProperty< std::vector< NodeId > >                    _cluster_;
+      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > _credalSet_;
+      typedef NodeProperty< std::vector< GUM_SCALAR > >                _margi_;
+      typedef NodeProperty< GUM_SCALAR >                               _expe_;
 
-      typedef IBayesNet< GUM_SCALAR >                  _bnet_;
-      typedef std::vector<  _margi_ >                   _margis_;
-      typedef std::vector<  _expe_ >                    _expes_;
-      typedef std::vector<  _credalSet_ >               _credalSets_;
-      typedef std::vector< std::vector<  _cluster_ > >  _clusters_;
+      typedef IBayesNet< GUM_SCALAR >                 _bnet_;
+      typedef std::vector< _margi_ >                  _margis_;
+      typedef std::vector< _expe_ >                   _expes_;
+      typedef std::vector< _credalSet_ >              _credalSets_;
+      typedef std::vector< std::vector< _cluster_ > > _clusters_;
 
-      typedef typename std::vector<
-         HashTable< std::string, std::vector< GUM_SCALAR > > >
-          _modals_;
+      typedef typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > > _modals_;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
@@ -84,30 +82,30 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void  _updateThreadCredalSets_(const NodeId&                    id,
+      inline void _updateThreadCredalSets_(const NodeId&                    id,
                                            const std::vector< GUM_SCALAR >& vertex,
-                                           const bool& elimRedund);
+                                           const bool&                      elimRedund);
 
       protected:
       /** Threads lower marginals, one per thread. */
-       _margis_ l_marginalMin_;
+      _margis_ l_marginalMin_;
       /** Threads upper marginals, one per thread. */
-       _margis_ l_marginalMax_;
+      _margis_ l_marginalMax_;
       /** Threads lower expectations, one per thread. */
-       _expes_ l_expectationMin_;
+      _expes_ l_expectationMin_;
       /** Threads upper expectations, one per thread. */
-       _expes_ l_expectationMax_;
+      _expes_ l_expectationMax_;
       /** Threads modalities. */
-       _modals_ l_modal_;
+      _modals_ l_modal_;
       /** Threads vertices. */
-       _credalSets_ l_marginalSets_;
+      _credalSets_ l_marginalSets_;
       /** Threads evidence. */
-       _margis_ l_evidence_;
+      _margis_ l_evidence_;
       /** Threads clusters. */
-       _clusters_ l_clusters_;
+      _clusters_ l_clusters_;
 
       /** Threads IBayesNet. */
-      typename std::vector<  _bnet_* > workingSet_;
+      typename std::vector< _bnet_* > workingSet_;
       /** Threads evidence. */
       typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
 
@@ -135,8 +133,8 @@ namespace gum {
        *otherwise.
        */
       void initThreadsData_(const Size& num_threads,
-                            const bool   _storeVertices_,
-                            const bool   _storeBNOpt_);
+                            const bool  _storeVertices_,
+                            const bool  _storeBNOpt_);
 
       /// @}
 
@@ -156,7 +154,7 @@ namespace gum {
        */
       inline bool updateThread_(const NodeId&                    id,
                                 const std::vector< GUM_SCALAR >& vertex,
-                                const bool& elimRedund = false);
+                                const bool&                      elimRedund = false);
 
       /**
        * @brief Fusion of threads marginals.
@@ -229,12 +227,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class MultipleInferenceEngine<
-       double,
-       gum::LazyPropagation< double > >;
+    extern template class MultipleInferenceEngine< double, gum::LazyPropagation< double > >;
 
-    extern template class MultipleInferenceEngine< float,
-                                                   gum::LazyPropagation< float > >;
+    extern template class MultipleInferenceEngine< float, gum::LazyPropagation< float > >;
 #endif
 
   }   // namespace credal

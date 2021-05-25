@@ -36,17 +36,13 @@
 namespace gum {
 
   // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet& EliminationSequenceStrategy:: _empty_fill_ins_() {
+  const EdgeSet& EliminationSequenceStrategy::_empty_fill_ins_() {
 #ifdef GUM_DEBUG_MODE
     static bool first_use = true;
     if (first_use) {
       first_use = false;
-       __debug__:: _dec_creation_("Set",
-                                " __empty_edge_set",
-                                0,
-                                "static variable correction",
-                                0);
-       __debug__:: _dec_creation_("HashTable",
+      __debug__::_dec_creation_("Set", " __empty_edge_set", 0, "static variable correction", 0);
+      __debug__::_dec_creation_("HashTable",
                                 " __empty_edge_set",
                                 0,
                                 "static variable correction",
@@ -75,16 +71,13 @@ namespace gum {
   EliminationSequenceStrategy::EliminationSequenceStrategy(
      const EliminationSequenceStrategy& from) :
       graph_(from.graph_),
-      domain_sizes_(from.domain_sizes_),
-      log_domain_sizes_(from.log_domain_sizes_) {
+      domain_sizes_(from.domain_sizes_), log_domain_sizes_(from.log_domain_sizes_) {
     GUM_CONS_CPY(EliminationSequenceStrategy);
   }
 
   /// move constructor
-  EliminationSequenceStrategy::EliminationSequenceStrategy(
-     EliminationSequenceStrategy&& from) :
-      graph_(from.graph_),
-      domain_sizes_(from.domain_sizes_),
+  EliminationSequenceStrategy::EliminationSequenceStrategy(EliminationSequenceStrategy&& from) :
+      graph_(from.graph_), domain_sizes_(from.domain_sizes_),
       log_domain_sizes_(std::move(from.log_domain_sizes_)) {
     GUM_CONS_MOV(EliminationSequenceStrategy);
   }
@@ -99,9 +92,7 @@ namespace gum {
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */
-  const EdgeSet& EliminationSequenceStrategy::fillIns() {
-    return  _empty_fill_ins_();
-  }
+  const EdgeSet& EliminationSequenceStrategy::fillIns() { return _empty_fill_ins_(); }
 
   // clears the sequence (to prepare, for instance, a new elimination sequence)
   void EliminationSequenceStrategy::clear() {
@@ -111,9 +102,8 @@ namespace gum {
   }
 
   // sets a new graph to be triangulated
-  bool
-     EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
-                                           const NodeProperty< Size >* dom_sizes) {
+  bool EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
+                                             const NodeProperty< Size >* dom_sizes) {
     // check that both the graph and the domain sizes are different from nullptr
     // or else that both are equal to nullptr
     if (((graph != nullptr) && (dom_sizes == nullptr))

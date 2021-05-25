@@ -143,8 +143,7 @@ namespace gum_tests {
 
       unsigned int i = 0;
 
-      for (gum::BinSearchTree< int >::iterator iter = tree.begin();
-           iter != tree.end();
+      for (gum::BinSearchTree< int >::iterator iter = tree.begin(); iter != tree.end();
            ++iter, ++i) {
         switch (i) {
           case 0:
@@ -175,8 +174,7 @@ namespace gum_tests {
 
       i = 5;
 
-      for (gum::BinSearchTree< int >::iterator iter = tree.rbegin();
-           iter != tree.rend();
+      for (gum::BinSearchTree< int >::iterator iter = tree.rbegin(); iter != tree.rend();
            --iter, --i) {
         switch (i) {
           case 0:

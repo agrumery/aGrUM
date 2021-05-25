@@ -42,8 +42,7 @@ namespace gum {
      * except those defined in the class during structure learning
      * @ingroup learning_group
      */
-    class StructuralConstraintPossibleEdges:
-        public virtual StructuralConstraintEmpty {
+    class StructuralConstraintPossibleEdges: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -57,8 +56,7 @@ namespace gum {
       StructuralConstraintPossibleEdges(const DiGraph& graph);
 
       /// copy constructor
-      StructuralConstraintPossibleEdges(
-         const StructuralConstraintPossibleEdges& from);
+      StructuralConstraintPossibleEdges(const StructuralConstraintPossibleEdges& from);
 
       /// move constructor
       StructuralConstraintPossibleEdges(StructuralConstraintPossibleEdges&& from);
@@ -74,12 +72,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintPossibleEdges&
-         operator=(const StructuralConstraintPossibleEdges& from);
+      StructuralConstraintPossibleEdges& operator=(const StructuralConstraintPossibleEdges& from);
 
       /// move operator
-      StructuralConstraintPossibleEdges&
-         operator=(StructuralConstraintPossibleEdges&& from);
+      StructuralConstraintPossibleEdges& operator=(StructuralConstraintPossibleEdges&& from);
 
       /// @}
 
@@ -194,7 +190,7 @@ namespace gum {
 
       protected:
       /// the PossibleEdges on which we perform checks
-      EdgeSet  _PossibleEdges_possible_edges_;
+      EdgeSet _PossibleEdges_possible_edges_;
     };
 
   } /* namespace learning */

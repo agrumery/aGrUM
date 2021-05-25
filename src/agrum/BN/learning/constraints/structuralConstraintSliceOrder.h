@@ -64,8 +64,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintSliceOrder:
-        protected virtual StructuralConstraintSetStatic<
-           StructuralConstraintDiGraph > {
+        protected virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -80,8 +79,7 @@ namespace gum {
       StructuralConstraintSliceOrder(const NodeProperty< NodeId >& order);
 
       /// constructor starting with a given graph
-      StructuralConstraintSliceOrder(const DiGraph&                graph,
-                                     const NodeProperty< NodeId >& order);
+      StructuralConstraintSliceOrder(const DiGraph& graph, const NodeProperty< NodeId >& order);
 
       /// copy constructor
       StructuralConstraintSliceOrder(const StructuralConstraintSliceOrder& from);
@@ -100,12 +98,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintSliceOrder&
-         operator=(const StructuralConstraintSliceOrder& from);
+      StructuralConstraintSliceOrder& operator=(const StructuralConstraintSliceOrder& from);
 
       /// move operator
-      StructuralConstraintSliceOrder&
-         operator=(StructuralConstraintSliceOrder&& from);
+      StructuralConstraintSliceOrder& operator=(StructuralConstraintSliceOrder&& from);
 
       /// @}
 
@@ -230,7 +226,7 @@ namespace gum {
 
       protected:
       /// slices to which belong the nodes
-      NodeProperty< NodeId >  _SliceOrder_order_;
+      NodeProperty< NodeId > _SliceOrder_order_;
     };
 
   } /* namespace learning */

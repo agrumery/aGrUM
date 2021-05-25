@@ -44,9 +44,8 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR >*
-     LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
-                         const Potential< GUM_SCALAR >& t2) {
+  INLINE static Potential< GUM_SCALAR >* LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
+                                                             const Potential< GUM_SCALAR >& t2) {
     return new Potential< GUM_SCALAR >(t1 * t2);
   }
 
@@ -77,19 +76,17 @@ namespace gum {
     /// @{
 
     /// default constructor
-    explicit LazyPropagation(
-       const IBayesNet< GUM_SCALAR >* BN,
-       RelevantPotentialsFinderType
-       = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-       FindBarrenNodesType       = FindBarrenNodesType::FIND_BARREN_NODES,
-       bool use_binary_join_tree = true);
+    explicit LazyPropagation(const IBayesNet< GUM_SCALAR >* BN,
+                             RelevantPotentialsFinderType
+                             = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+                             FindBarrenNodesType       = FindBarrenNodesType::FIND_BARREN_NODES,
+                             bool use_binary_join_tree = true);
 
     /// avoid copy constructors
     LazyPropagation(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// avoid copy operators
-    LazyPropagation< GUM_SCALAR >& operator=(const LazyPropagation< GUM_SCALAR >&)
-       = delete;
+    LazyPropagation< GUM_SCALAR >& operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
     ~LazyPropagation() final;
@@ -229,9 +226,8 @@ namespace gum {
      * posterior is looked for.
      * @param declared_target the joint target declared by the user that contains
      * set */
-    const Potential< GUM_SCALAR >&
-       jointPosterior_(const NodeSet& wanted_target,
-                       const NodeSet& declared_target) final;
+    const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
+                                                   const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
     Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
@@ -241,39 +237,38 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* >  _PotentialSet_;
-    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-        _PotentialSetIterator_;
+    typedef Set< const Potential< GUM_SCALAR >* >             _PotentialSet_;
+    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType  _find_relevant_potential_type_;
+    RelevantPotentialsFinderType _find_relevant_potential_type_;
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void (LazyPropagation< GUM_SCALAR >::* _findRelevantPotentials_)(
+    void (LazyPropagation< GUM_SCALAR >::*_findRelevantPotentials_)(
        Set< const Potential< GUM_SCALAR >* >& pot_list,
        Set< const DiscreteVariable* >&        kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType  _barren_nodes_type_;
+    FindBarrenNodesType _barren_nodes_type_;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (* _projection_op_)(
-       const Potential< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&){LPNewprojPotential};
+    Potential< GUM_SCALAR >* (*_projection_op_)(const Potential< GUM_SCALAR >&,
+                                                const Set< const DiscreteVariable* >&){
+       LPNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (* _combination_op_)(const Potential< GUM_SCALAR >&,
+    Potential< GUM_SCALAR >* (*_combination_op_)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
        LPNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
-    Triangulation*  _triangulation_;
+    Triangulation* _triangulation_;
 
     /** @brief indicates whether we should transform junction trees into
      * binary join trees */
-    bool  _use_binary_join_tree_{true};
+    bool _use_binary_join_tree_{true};
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
@@ -281,19 +276,19 @@ namespace gum {
      * instance if the BN is A->B->C and only B is a target,  _graph_ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
-    UndiGraph  _graph_;
+    UndiGraph _graph_;
 
     /// the join (or junction) tree used to answer the last inference query
-    JoinTree*  _JT_{nullptr};
+    JoinTree* _JT_{nullptr};
 
     /// the junction tree to answer the last inference query
-    JunctionTree*  _junctionTree_{nullptr};
+    JunctionTree* _junctionTree_{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
      * the current JT is no more appropriate for inference. This variable
      * enables us to keep track of this. */
-    bool  _is_new_jt_needed_{true};
+    bool _is_new_jt_needed_{true};
 
     /// a clique node used as a root in each connected component of  _JT_
     /** For usual probabilistic inference, roots is useless. This is useful
@@ -302,13 +297,13 @@ namespace gum {
      * them to get the overall probability of evidence.
      * @warning  _roots_ should be computed only when evidenceProbability
      * is called. */
-    NodeSet  _roots_;
+    NodeSet _roots_;
 
     /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId >  _node_to_clique_;
+    HashTable< NodeId, NodeId > _node_to_clique_;
 
     /// for each set target, assign a clique in the JT that contains it
-    HashTable< NodeSet, NodeId >  _joint_target_to_clique_;
+    HashTable< NodeSet, NodeId > _joint_target_to_clique_;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
@@ -316,12 +311,12 @@ namespace gum {
      * the entry for the clique does exist. Note that clique potentials
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. */
-    NodeProperty<  _PotentialSet_ >  _clique_potentials_;
+    NodeProperty< _PotentialSet_ > _clique_potentials_;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
      * directions) whether the arc received any potential or not. */
-    ArcProperty<  _PotentialSet_ >  _separator_potentials_;
+    ArcProperty< _PotentialSet_ > _separator_potentials_;
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
@@ -329,28 +324,28 @@ namespace gum {
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
      *  _hard_ev_projected_CPTs_. */
-    ArcProperty<  _PotentialSet_ >  _created_potentials_;
+    ArcProperty< _PotentialSet_ > _created_potentials_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* >  _target_posteriors_;
+    NodeProperty< const Potential< GUM_SCALAR >* > _target_posteriors_;
 
     /// the set of set target posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable< NodeSet, const Potential< GUM_SCALAR >* >  _joint_target_posteriors_;
+    HashTable< NodeSet, const Potential< GUM_SCALAR >* > _joint_target_posteriors_;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
      * @TODO remove this constant and insert the notion of a constant into
      * potentials/multidim arrays */
-    NodeProperty< GUM_SCALAR >  _constants_;
+    NodeProperty< GUM_SCALAR > _constants_;
 
     /// indicates whether a message (from one clique to another) has been
     /// computed
     /** Here, all the messages, computed or not, are put into the property, only
      * the Boolean makes the difference between messages computed and those that
      * were not computed */
-    ArcProperty< bool >  _messages_computed_;
+    ArcProperty< bool > _messages_computed_;
 
     /// the soft evidence stored in the cliques per their assigned node in the BN
     /** This variable is useful for method updateOutdatedPotentials_: it
@@ -359,17 +354,17 @@ namespace gum {
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
-    NodeProperty< const Potential< GUM_SCALAR >* >  _node_to_soft_evidence_;
+    NodeProperty< const Potential< GUM_SCALAR >* > _node_to_soft_evidence_;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* >  _hard_ev_projected_CPTs_;
+    NodeProperty< const Potential< GUM_SCALAR >* > _hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
-    NodeSet  _hard_ev_nodes_;
+    NodeSet _hard_ev_nodes_;
 
     /// the possible types of evidence changes
     enum EvidenceChangeType
@@ -381,86 +376,79 @@ namespace gum {
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
-    NodeProperty< EvidenceChangeType >  _evidence_changes_;
+    NodeProperty< EvidenceChangeType > _evidence_changes_;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR  _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
+    const GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// check whether a new join tree is really needed for the next inference
-    bool  _isNewJTNeeded_() const;
+    bool _isNewJTNeeded_() const;
 
     /// create a new junction tree as well as its related data structures
-    void  _createNewJT_();
+    void _createNewJT_();
     /// sets the operator for performing the projections
-    void  _setProjectionFunction_(
-       Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
-                                        const Set< const DiscreteVariable* >&));
+    void _setProjectionFunction_(Potential< GUM_SCALAR >* (
+       *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void  _setCombinationFunction_(Potential< GUM_SCALAR >* (
-       *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
+    void _setCombinationFunction_(Potential< GUM_SCALAR >* (*comb)(const Potential< GUM_SCALAR >&,
+                                                                   const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
-    void  _diffuseMessageInvalidations_(NodeId   from_id,
-                                       NodeId   to_id,
-                                       NodeSet& invalidated_cliques);
+    void _diffuseMessageInvalidations_(NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques);
 
     /// invalidate all messages, posteriors and created potentials
-    void  _invalidateAllMessages_();
+    void _invalidateAllMessages_();
 
     /// compute a root for each connected component of  _JT_
-    void  _computeJoinTreeRoots_();
+    void _computeJoinTreeRoots_();
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void  _findRelevantPotentialsWithdSeparation_(
-        _PotentialSet_&                 pot_list,
-       Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation_(_PotentialSet_&                 pot_list,
+                                                 Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void  _findRelevantPotentialsWithdSeparation2_(
-        _PotentialSet_&                 pot_list,
-       Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation2_(_PotentialSet_&                 pot_list,
+                                                  Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void  _findRelevantPotentialsWithdSeparation3_(
-        _PotentialSet_&                 pot_list,
-       Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation3_(_PotentialSet_&                 pot_list,
+                                                  Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void  _findRelevantPotentialsGetAll_( _PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsGetAll_(_PotentialSet_&                 pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void  _findRelevantPotentialsXX_( _PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsXX_(_PotentialSet_&                 pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-     _PotentialSet_
-        _removeBarrenVariables_( _PotentialSet_&                 pot_list,
-                               Set< const DiscreteVariable* >& del_vars);
+    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
+                                           Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-     _PotentialSet_  _marginalizeOut_( _PotentialSet_                  pot_list,
+    _PotentialSet_ _marginalizeOut_(_PotentialSet_                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void  _produceMessage_(NodeId from_id, NodeId to_id);
+    void _produceMessage_(NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void  _collectMessage_(NodeId id, NodeId from);
+    void _collectMessage_(NodeId id, NodeId from);
   };
 
 

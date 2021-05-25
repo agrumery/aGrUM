@@ -169,12 +169,7 @@ namespace gum_tests {
       delete set12;
       delete set13;
 
-      gum::learning::IdCondSet<> set14(node1,
-                                       node0,
-                                       empty,
-                                       true,
-                                       false,
-                                       std::allocator< int >());
+      gum::learning::IdCondSet<> set14(node1, node0, empty, true, false, std::allocator< int >());
       TS_ASSERT(set14.nbLHSIds() == std::size_t(2));
       TS_ASSERT(set14[0] == node1);
       TS_ASSERT(set14[1] == node0);
@@ -186,12 +181,7 @@ namespace gum_tests {
       TS_ASSERT(set15[1] == node0);
       TS_ASSERT(set15 != set2);
 
-      gum::learning::IdCondSet<> set16(node1,
-                                       node0,
-                                       empty,
-                                       false,
-                                       false,
-                                       std::allocator< int >());
+      gum::learning::IdCondSet<> set16(node1, node0, empty, false, false, std::allocator< int >());
       TS_ASSERT(set16.nbLHSIds() == std::size_t(2));
       TS_ASSERT(set16[0] == node0);
       TS_ASSERT(set16[1] == node1);
@@ -203,12 +193,7 @@ namespace gum_tests {
       TS_ASSERT(set17[1] == node1);
       TS_ASSERT(set17 != set2);
 
-      gum::learning::IdCondSet<> set18(node1,
-                                       node0,
-                                       seq1,
-                                       true,
-                                       false,
-                                       std::allocator< int >());
+      gum::learning::IdCondSet<> set18(node1, node0, seq1, true, false, std::allocator< int >());
       TS_ASSERT(set18.nbLHSIds() == std::size_t(2));
       TS_ASSERT(set18[0] == node1);
       TS_ASSERT(set18[1] == node0);
@@ -218,12 +203,7 @@ namespace gum_tests {
       TS_ASSERT(set18[5] == node6);
       TS_ASSERT(set18 != set2);
 
-      gum::learning::IdCondSet<> set19(node1,
-                                       node0,
-                                       seq1,
-                                       false,
-                                       false,
-                                       std::allocator< int >());
+      gum::learning::IdCondSet<> set19(node1, node0, seq1, false, false, std::allocator< int >());
       TS_ASSERT(set19.nbLHSIds() == std::size_t(2));
       TS_ASSERT(set19[0] == node0);
       TS_ASSERT(set19[1] == node1);

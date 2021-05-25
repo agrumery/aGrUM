@@ -83,8 +83,7 @@ namespace gum {
      * @param infdiag The influence diagram writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream&                         output,
-                       const InfluenceDiagram< GUM_SCALAR >& infdiag);
+    virtual void write(std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& infdiag);
 
     /**
      * Writes an Influence Diagram in the file referenced by filePath.
@@ -95,32 +94,30 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string                           filePath,
-                       const InfluenceDiagram< GUM_SCALAR >& infdiag);
+    virtual void write(std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag);
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string  _heading_();
+    std::string _heading_();
 
     /**
      * Returns the end of the BIF file.
      */
-    std::string  _documentend_();
+    std::string _documentend_();
 
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string  _variableBloc_(const DiscreteVariable& var, int nodeType);
+    std::string _variableBloc_(const DiscreteVariable& var, int nodeType);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string
-        _variableDefinition_(const NodeId&                         varNodeId,
-                            const InfluenceDiagram< GUM_SCALAR >& infdiag);
+    std::string _variableDefinition_(const NodeId&                         varNodeId,
+                                     const InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */
 

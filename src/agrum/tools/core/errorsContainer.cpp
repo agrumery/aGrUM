@@ -38,8 +38,7 @@
 namespace gum {
 
   ParseError::ParseError(bool is_error, const std::string& msg, Idx line) :
-      is_error(is_error), line(line), column(0), msg(msg), filename(""), code("") {
-  }
+      is_error(is_error), line(line), column(0), msg(msg), filename(""), code("") {}
 
   ParseError::ParseError(bool               is_error,
                          const std::string& msg,

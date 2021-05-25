@@ -94,17 +94,13 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
-    const MultiDimArray< T >* t1
-       = reinterpret_cast< const MultiDimArray< T >* >(tt1);
-    const MultiDimArray< T >* t2
-       = reinterpret_cast< const MultiDimArray< T >* >(tt2);
+    const MultiDimArray< T >*  t1 = reinterpret_cast< const MultiDimArray< T >* >(tt1);
+    const MultiDimArray< T >*  t2 = reinterpret_cast< const MultiDimArray< T >* >(tt2);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
-    const MultiDimArray< T* >* t1
-       = reinterpret_cast< const MultiDimArray< T* >* >(tt1);
-    const MultiDimArray< T* >* t2
-       = reinterpret_cast< const MultiDimArray< T* >* >(tt2);
+    const MultiDimArray< T* >* t1 = reinterpret_cast< const MultiDimArray< T* >* >(tt1);
+    const MultiDimArray< T* >* t2 = reinterpret_cast< const MultiDimArray< T* >* >(tt2);
 #  endif
 
     // get the variables of the tables
@@ -196,9 +192,7 @@ namespace gum {
              ++iter, ++nb_t1_t2_vars)
           if (*iter != t1_and_t2_vars[nb_t1_t2_vars]) break;
 
-        if (nb_t1_t2_vars == t1_and_t2_vars.size()) {
-          t1_and_t2_begin_vars = true;
-        }
+        if (nb_t1_t2_vars == t1_and_t2_vars.size()) { t1_and_t2_begin_vars = true; }
       }
     }
 

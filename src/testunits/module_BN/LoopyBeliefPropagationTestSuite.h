@@ -45,25 +45,22 @@ namespace gum_tests {
 
   class aSimpleLBPListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __mess;
+    int         __nbr;
+    std::string __mess;
 
     public:
     aSimpleLBPListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  __nbr(0),  __mess(""){};
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
     void whenStop(const void* buffer, const std::string s) {
-       __nbr++;
-       __mess = s;
+      __nbr++;
+      __mess = s;
     }
 
-    int         getNbr() { return  __nbr; }
-    std::string getMess() { return  __mess; }
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
   };
 
 #define MAX_ITER 10
@@ -72,8 +69,8 @@ namespace gum_tests {
     public:
     void testLBPBinaryTreeWithoutEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
@@ -82,7 +79,7 @@ namespace gum_tests {
         try {
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -93,8 +90,8 @@ namespace gum_tests {
     void testLBPBinaryTreeWithEvidenceOnRoot() {
       const std::string ev = "b";
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -105,7 +102,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -113,8 +110,8 @@ namespace gum_tests {
       }
 
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -124,7 +121,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -135,8 +132,8 @@ namespace gum_tests {
     void testLBPBinaryTreeWithEvidenceOnLeaf() {
       const std::string ev = "h";
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -147,15 +144,15 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -165,7 +162,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -176,8 +173,8 @@ namespace gum_tests {
     void testLBPBinaryTreeWithEvidenceOnMid() {
       const std::string ev = "e";
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -188,15 +185,15 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -206,7 +203,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -216,8 +213,8 @@ namespace gum_tests {
 
     void testLBPBinaryTreeWithMultipleEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -232,15 +229,15 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+        const auto bn
+           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName("e"), std::vector< double >{0.2f, 0.8f});
@@ -254,7 +251,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), std::vector< double >{0.7f, 0.3f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -279,7 +276,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -290,20 +287,18 @@ namespace gum_tests {
            "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
-          lazy.addEvidence(bn.idFromName("e"),
-                           std::vector< double >{0.1f, 0.3f, 0.4f, 0.7f});
+          lazy.addEvidence(bn.idFromName("e"), std::vector< double >{0.1f, 0.3f, 0.4f, 0.7f});
           lazy.addEvidence(bn.idFromName("b"), 0);
           lazy.addEvidence(bn.idFromName("h"), std::vector< double >{0.7f, 0.3f});
           lazy.makeInference();
 
           gum::LoopyBeliefPropagation< double > inf(&bn);
-          inf.addEvidence(bn.idFromName("e"),
-                          std::vector< double >{0.1f, 0.3f, 0.4f, 0.7f});
+          inf.addEvidence(bn.idFromName("e"), std::vector< double >{0.1f, 0.3f, 0.4f, 0.7f});
           inf.addEvidence(bn.idFromName("b"), 0);
           inf.addEvidence(bn.idFromName("h"), std::vector< double >{0.7f, 0.3f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -313,8 +308,7 @@ namespace gum_tests {
 
     void testLBPSimpleBN() {
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -323,15 +317,14 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -342,15 +335,14 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -361,49 +353,43 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
-          lazy.addEvidence(bn.idFromName("a"),
-                           std::vector< double >{0.7f, 0.3f, 1.0f});
+          lazy.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           lazy.makeInference();
 
           gum::LoopyBeliefPropagation< double > inf(&bn);
-          inf.addEvidence(bn.idFromName("a"),
-                          std::vector< double >{0.7f, 0.3f, 1.0f});
+          inf.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
-        const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
+        const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
-          lazy.addEvidence(bn.idFromName("d"),
-                           std::vector< double >{0.7f, 0.3f, 1.0f});
+          lazy.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           lazy.makeInference();
 
           gum::LoopyBeliefPropagation< double > inf(&bn);
-          inf.addEvidence(bn.idFromName("d"),
-                          std::vector< double >{0.7f, 0.3f, 1.0f});
+          inf.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -424,7 +410,7 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -444,7 +430,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -464,7 +450,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -477,16 +463,14 @@ namespace gum_tests {
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
-          lazy.addEvidence(bn.idFromName("a"),
-                           std::vector< double >{0.7f, 0.3f, 1.0f});
+          lazy.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           lazy.makeInference();
 
           gum::LoopyBeliefPropagation< double > inf(&bn);
-          inf.addEvidence(bn.idFromName("a"),
-                          std::vector< double >{0.7f, 0.3f, 1.0f});
+          inf.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -499,16 +483,14 @@ namespace gum_tests {
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
-          lazy.addEvidence(bn.idFromName("d"),
-                           std::vector< double >{0.7f, 0.3f, 1.0f});
+          lazy.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           lazy.makeInference();
 
           gum::LoopyBeliefPropagation< double > inf(&bn);
-          inf.addEvidence(bn.idFromName("d"),
-                          std::vector< double >{0.7f, 0.3f, 1.0f});
+          inf.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -531,7 +513,7 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if ( __compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -556,7 +538,7 @@ namespace gum_tests {
           inf.makeInference();
 
           // alarm is not good for LBP
-          if ( __compareInference(bn, lazy, inf, 2.5e-1)) break;
+          if (__compareInference(bn, lazy, inf, 2.5e-1)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           TS_ASSERT(false);
@@ -621,8 +603,7 @@ namespace gum_tests {
       bn.addWeightedArc("Flu", "Fever", 0.8f);
       bn.addWeightedArc("Cold", "Fever", 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f),
-                       gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), gum::InvalidArc);
 
       bn.addArc("Y", "X");
       bn.addArc("Fever", "X");
@@ -634,18 +615,17 @@ namespace gum_tests {
 
     private:
     template < typename GUM_SCALAR >
-    bool  __compareInference(const gum::BayesNet< GUM_SCALAR >&         bn,
+    bool __compareInference(const gum::BayesNet< GUM_SCALAR >&         bn,
                             gum::LazyPropagation< GUM_SCALAR >&        lazy,
                             gum::LoopyBeliefPropagation< GUM_SCALAR >& inf,
-                            double errmax = 1e-2) {
+                            double                                     errmax = 1e-2) {
       GUM_SCALAR  err    = static_cast< GUM_SCALAR >(0);
       std::string argstr = "";
       for (const auto& node: bn.nodes()) {
         GUM_SCALAR e = lazy.posterior(node).KL(inf.posterior(node));
         if (e > err) {
           err    = e;
-          argstr = bn.variable(node).name() + " (err=" + std::to_string(err)
-                 + ") : \n";
+          argstr = bn.variable(node).name() + " (err=" + std::to_string(err) + ") : \n";
           argstr += "  lazy : " + lazy.posterior(node).toString() + "\n";
           argstr += "  inf : " + inf.posterior(node).toString() + " \n";
         }

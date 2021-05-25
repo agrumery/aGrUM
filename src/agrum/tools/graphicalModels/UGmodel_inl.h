@@ -46,31 +46,24 @@ namespace gum {
     return graph_.existsEdge(node1, node2);
   }
 
-  INLINE bool UGmodel::existsEdge(const std::string& name1,
-                                  const std::string& name2) const {
+  INLINE bool UGmodel::existsEdge(const std::string& name1, const std::string& name2) const {
     return existsEdge(idFromName(name1), idFromName(name2));
   }
 
-  INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const {
-    return graph_.neighbours(id);
-  }
+  INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const { return graph_.neighbours(id); }
   INLINE const NodeSet& UGmodel::neighbours(const std::string& name) const {
     return neighbours(idFromName(name));
   }
 
   INLINE bool UGmodel::exists(NodeId node) const { return graph_.exists(node); }
 
-  INLINE const NodeGraphPart& UGmodel::nodes() const {
-    return (NodeGraphPart&)graph_;
-  }
+  INLINE const NodeGraphPart& UGmodel::nodes() const { return (NodeGraphPart&)graph_; }
 
   INLINE bool UGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
     return !graph().hasUndirectedPath(X, Y, Z);
   }
 
-  INLINE bool UGmodel::isIndependent(const NodeSet& X,
-                                     const NodeSet& Y,
-                                     const NodeSet& Z) const {
+  INLINE bool UGmodel::isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
     return !graph().hasUndirectedPath(X, Y, Z);
   }
 

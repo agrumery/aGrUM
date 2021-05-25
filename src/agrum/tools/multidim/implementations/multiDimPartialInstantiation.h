@@ -72,8 +72,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param src The MultiDimPartialInstantiation to copy.
      */
-    MultiDimPartialInstantiation(
-       const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
+    MultiDimPartialInstantiation(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
 
     /**
      * @brief Class destructor.
@@ -116,9 +115,8 @@ namespace gum {
      * instantiation of a subset of the variables of the TABLE passed in
      * argument.
      */
-    TABLE< GUM_SCALAR >*
-       instantiate(const TABLE< GUM_SCALAR >&                       table,
-                   const HashTable< const DiscreteVariable*, Idx >& inst_vars);
+    TABLE< GUM_SCALAR >* instantiate(const TABLE< GUM_SCALAR >&                       table,
+                                     const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
     /**
      * @brief Creates and returns the partial instantiation of the table over a

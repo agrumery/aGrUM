@@ -61,29 +61,28 @@ namespace gum {
                Idx                          nbValueIterationStep,
                bool                         actionReward,
                bool                         verbose) :
-       _learner_(learner),
-       _planer_(planer),  _decider_(decider),
-       _observationPhaseLenght_(observationPhaseLenght),
-       _nbValueIterationStep_(nbValueIterationStep),  _actionReward_(actionReward),
+      _learner_(learner),
+      _planer_(planer), _decider_(decider), _observationPhaseLenght_(observationPhaseLenght),
+      _nbValueIterationStep_(nbValueIterationStep), _actionReward_(actionReward),
       verbose_(verbose) {
     GUM_CONSTRUCTOR(SDYNA);
 
     fmdp_ = new FMDP< double >();
 
-     _nbObservation_ = 1;
+    _nbObservation_ = 1;
   }
 
   // ###################################################################
   // Destructor
   // ###################################################################
   SDYNA::~SDYNA() {
-    delete  _decider_;
+    delete _decider_;
 
-    delete  _learner_;
+    delete _learner_;
 
-    delete  _planer_;
+    delete _planer_;
 
-    for (auto obsIter =  _bin_.beginSafe(); obsIter !=  _bin_.endSafe(); ++obsIter)
+    for (auto obsIter = _bin_.beginSafe(); obsIter != _bin_.endSafe(); ++obsIter)
       delete *obsIter;
 
     delete fmdp_;
@@ -96,9 +95,9 @@ namespace gum {
   // ==========================================================================
 
   void SDYNA::initialize() {
-     _learner_->initialize(fmdp_);
-     _planer_->initialize(fmdp_);
-     _decider_->initialize(fmdp_);
+    _learner_->initialize(fmdp_);
+    _planer_->initialize(fmdp_);
+    _decider_->initialize(fmdp_);
   }
 
   // ###################################################################
@@ -131,7 +130,7 @@ namespace gum {
                        const Instantiation& prevState,
                        Idx                  lastAction,
                        double               reward) {
-     _lastAction_ = lastAction;
+    _lastAction_ = lastAction;
     lastState_   = prevState;
     feedback(curState, reward);
   }
@@ -160,7 +159,7 @@ namespace gum {
          ++varIter) {
       obs->setModality(fmdp_->main2prime(*varIter), newState.val(**varIter));
 
-      if (this-> _actionReward_)
+      if (this->_actionReward_)
         obs->setRModality(*varIter, lastState_.val(**varIter));
       else
         obs->setRModality(*varIter, newState.val(**varIter));
@@ -168,16 +167,15 @@ namespace gum {
 
     obs->setReward(reward);
 
-     _learner_->addObservation( _lastAction_, obs);
-     _bin_.insert(obs);
+    _learner_->addObservation(_lastAction_, obs);
+    _bin_.insert(obs);
 
     setCurrentState(newState);
-     _decider_->checkState(lastState_,  _lastAction_);
+    _decider_->checkState(lastState_, _lastAction_);
 
-    if ( _nbObservation_ %  _observationPhaseLenght_ == 0)
-      makePlanning( _nbValueIterationStep_);
+    if (_nbObservation_ % _observationPhaseLenght_ == 0) makePlanning(_nbValueIterationStep_);
 
-     _nbObservation_++;
+    _nbObservation_++;
   }
 
   // ###################################################################
@@ -189,14 +187,14 @@ namespace gum {
   // ###################################################################
   void SDYNA::makePlanning(Idx nbValueIterationStep) {
     if (verbose_) std::cout << "Updating decision trees ..." << std::endl;
-     _learner_->updateFMDP();
+    _learner_->updateFMDP();
     // std::cout << << "Done" << std::endl;
 
     if (verbose_) std::cout << "Planning ..." << std::endl;
-     _planer_->makePlanning(nbValueIterationStep);
+    _planer_->makePlanning(nbValueIterationStep);
     // std::cout << << "Done" << std::endl;
 
-     _decider_->setOptimalStrategy( _planer_->optimalPolicy());
+    _decider_->setOptimalStrategy(_planer_->optimalPolicy());
   }
 
   // ##################################################################
@@ -216,14 +214,14 @@ namespace gum {
    */
   // ###################################################################
   Idx SDYNA::takeAction() {
-    ActionSet actionSet =  _decider_->stateOptimalPolicy(lastState_);
+    ActionSet actionSet = _decider_->stateOptimalPolicy(lastState_);
     if (actionSet.size() == 1) {
-       _lastAction_ = actionSet[0];
+      _lastAction_ = actionSet[0];
     } else {
-      Idx randy = (Idx)((double)std::rand() / (double)RAND_MAX * actionSet.size());
-       _lastAction_ = actionSet[randy == actionSet.size() ? 0 : randy];
+      Idx randy    = (Idx)((double)std::rand() / (double)RAND_MAX * actionSet.size());
+      _lastAction_ = actionSet[randy == actionSet.size() ? 0 : randy];
     }
-    return  _lastAction_;
+    return _lastAction_;
   }
 
   // ###################################################################
@@ -233,7 +231,7 @@ namespace gum {
     std::stringstream description;
 
     description << fmdp_->toString() << std::endl;
-    description <<  _planer_->optimalPolicy2String() << std::endl;
+    description << _planer_->optimalPolicy2String() << std::endl;
 
     return description.str();
   }

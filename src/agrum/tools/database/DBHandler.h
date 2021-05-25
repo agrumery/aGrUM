@@ -115,8 +115,7 @@ namespace gum {
      * @endcode
      * @ingroup learning_database
      */
-    template < typename T_DATA,
-               template < typename > class ALLOC = std::allocator >
+    template < typename T_DATA, template < typename > class ALLOC = std::allocator >
     class DBHandler {
       public:
       /// Types for STL compliance.

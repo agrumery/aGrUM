@@ -62,11 +62,8 @@ namespace gum {
    * for information on this format.
    *
    */
-  template < typename GUM_SCALAR,
-             template < typename > class IApproximationPolicy = ExactPolicy >
-  class CNFWriter:
-      public BNWriter< GUM_SCALAR >,
-      public IApproximationPolicy< GUM_SCALAR > {
+  template < typename GUM_SCALAR, template < typename > class IApproximationPolicy = ExactPolicy >
+  class CNFWriter: public BNWriter< GUM_SCALAR >, public IApproximationPolicy< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -92,8 +89,7 @@ namespace gum {
      * @param bn The Bayesian network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(std::ostream&                  output,
-               const IBayesNet< GUM_SCALAR >& bn) override = 0;
+    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) override = 0;
 
     /**
      * Writes a Bayesian network in the referenced file using the BN format.
@@ -103,8 +99,7 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) override = 0;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) override = 0;
 
     inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const override {
       return IApproximationPolicy< GUM_SCALAR >::fromExact(value);

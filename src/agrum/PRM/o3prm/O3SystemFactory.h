@@ -63,37 +63,34 @@ namespace gum {
         O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src);
         O3SystemFactory(O3SystemFactory< GUM_SCALAR >&& src);
         ~O3SystemFactory();
-        O3SystemFactory< GUM_SCALAR >&
-           operator=(const O3SystemFactory< GUM_SCALAR >& src);
-        O3SystemFactory< GUM_SCALAR >&
-           operator=(O3SystemFactory< GUM_SCALAR >&& src);
+        O3SystemFactory< GUM_SCALAR >& operator=(const O3SystemFactory< GUM_SCALAR >& src);
+        O3SystemFactory< GUM_SCALAR >& operator=(O3SystemFactory< GUM_SCALAR >&& src);
 
         void build();
 
         private:
-        PRM< GUM_SCALAR >*           _prm_;
-        O3PRM*                       _o3_prm_;
-        O3NameSolver< GUM_SCALAR >*  _solver_;
-        ErrorsContainer*             _errors_;
+        PRM< GUM_SCALAR >*          _prm_;
+        O3PRM*                      _o3_prm_;
+        O3NameSolver< GUM_SCALAR >* _solver_;
+        ErrorsContainer*            _errors_;
 
-        HashTable< std::string, O3Instance* >  _nameMap_;
+        HashTable< std::string, O3Instance* > _nameMap_;
 
-        void  _addInstances_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void _addInstances_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void  _addAssignments_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void _addAssignments_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void  _addIncrements_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
+        void _addIncrements_(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        bool  _checkSystem_(O3System& sys);
+        bool _checkSystem_(O3System& sys);
 
-        bool  _checkIncrements_(O3System& sys);
+        bool _checkIncrements_(O3System& sys);
 
-        bool  _checkParameters_(const PRMClass< GUM_SCALAR >& type,
-                               const O3Instance&             inst);
+        bool _checkParameters_(const PRMClass< GUM_SCALAR >& type, const O3Instance& inst);
 
-        bool  _checkInstance_(O3System& sys);
+        bool _checkInstance_(O3System& sys);
 
-        bool  _checkAssignments_(O3System& sys);
+        bool _checkAssignments_(O3System& sys);
       };
 
     }   // namespace o3prm

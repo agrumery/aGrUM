@@ -45,14 +45,12 @@ namespace gum {
   /// Display the node
 
   template < typename Element >
-  INLINE std::ostream& operator<<(std::ostream&                     out,
-                                  const SplayBinaryNode< Element >& e);
+  INLINE std::ostream& operator<<(std::ostream& out, const SplayBinaryNode< Element >& e);
 
   /// Display the tree
 
   template < typename Element >
-  INLINE std::ostream& operator<<(std::ostream&               out,
-                                  const SplayTree< Element >& s);
+  INLINE std::ostream& operator<<(std::ostream& out, const SplayTree< Element >& s);
 
   // =========================================================================
   // ===                                   NODE                            ===
@@ -176,9 +174,8 @@ namespace gum {
      * @param addr TODO Don't know what to do here.
      * @return Returns the root of the created tree.
      */
-    SplayBinaryNode< Element >*
-       join(const SplayBinaryNode< Element >*                  e,
-            HashTable< Element, SplayBinaryNode< Element >* >& addr);
+    SplayBinaryNode< Element >* join(const SplayBinaryNode< Element >*                  e,
+                                     HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /// @}
     // ============================================================================
@@ -207,8 +204,7 @@ namespace gum {
     friend class SplayTree< Element >;
 
     /// Friendly to display
-    friend std::ostream& operator<<<>(std::ostream& out,
-                                      const SplayBinaryNode< Element >&);
+    friend std::ostream& operator<<<>(std::ostream& out, const SplayBinaryNode< Element >&);
   };
 
   // ============================================================================
@@ -425,8 +421,7 @@ namespace gum {
     void copy_(const SplayTree< Element >&);
 
     /// Friendly to display
-    friend std::ostream& operator<<<>(std::ostream& out,
-                                      const SplayTree< Element >&);
+    friend std::ostream& operator<<<>(std::ostream& out, const SplayTree< Element >&);
   };
 
 } /* namespace gum */

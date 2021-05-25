@@ -73,12 +73,10 @@ namespace gum {
       const std::string& key(const PRMInstance< GUM_SCALAR >& i) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set< NodeId >&
-         requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
+      const Set< NodeId >& requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set< NodeId >&
-         requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
+      const Set< NodeId >& requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
 
       /// Returns the number of occurrence of the given key, which is the number
       /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
@@ -107,7 +105,7 @@ namespace gum {
       void compute(const PRMInstance< GUM_SCALAR >& i, NodeId n);
 
       /// Returns true if there is a hard evidence on i->get(n).
-      bool  _isHardEvidence_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      bool _isHardEvidence_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       private:
       /// Copy constructor.
@@ -121,50 +119,42 @@ namespace gum {
       /// Code alias
       typedef HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* > InstanceMap;
       /// Code alias
-      std::pair< bool, bool >&  _getMark_(InstanceMap&                     marks,
-                                         const PRMInstance< GUM_SCALAR >* i,
-                                         NodeId                           n);
+      std::pair< bool, bool >&
+         _getMark_(InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n);
       /// Code alias
-      const PRMSlotChain< GUM_SCALAR >&  _getSC_(const PRMInstance< GUM_SCALAR >* i,
-                                                NodeId n);
+      const PRMSlotChain< GUM_SCALAR >& _getSC_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       /// Cleans this before a new computation.
-      void  _clean_();
+      void _clean_();
 
       /// The real compute method.
-      void  _compute_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      void _compute_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
       /// When the ball is received on i->get(n) from a child.
-      void  _fromChild_(const PRMInstance< GUM_SCALAR >* i,
-                       NodeId                           n,
-                       InstanceMap&                     marks);
+      void _fromChild_(const PRMInstance< GUM_SCALAR >* i, NodeId n, InstanceMap& marks);
 
       /// When the ball is receive on i->get(n) from a parent.
-      void  _fromParent_(const PRMInstance< GUM_SCALAR >* i,
-                        NodeId                           n,
-                        InstanceMap&                     marks);
+      void _fromParent_(const PRMInstance< GUM_SCALAR >* i, NodeId n, InstanceMap& marks);
 
       /// Fill  _keyMap_ and  _reqMap_.
-      void  _fillMaps_(InstanceMap& marks);
+      void _fillMaps_(InstanceMap& marks);
 
       /// Builds the HashKey for the given instance and requisite nodes set.
-      std::string  _buildHashKey_(const PRMInstance< GUM_SCALAR >* i,
-                                 Set< NodeId >&                   req_nodes);
+      std::string _buildHashKey_(const PRMInstance< GUM_SCALAR >* i, Set< NodeId >& req_nodes);
 
       /// The PRM at which  _model_ belongs.
-      const PRMInference< GUM_SCALAR >*  _inf_;
+      const PRMInference< GUM_SCALAR >* _inf_;
 
       /// Associate an PRMInstance<GUM_SCALAR> with a unique key w.r.t.
       /// d-separation and
       /// the
       /// set of requisite nodes deduced from d-separation analysis.
-      HashTable< const PRMInstance< GUM_SCALAR >*,
-                 std::pair< std::string, Set< NodeId >* > >
-          _keyMap_;
+      HashTable< const PRMInstance< GUM_SCALAR >*, std::pair< std::string, Set< NodeId >* > >
+         _keyMap_;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.
-      HashTable< std::string, std::pair< Set< NodeId >*, Size > >  _reqMap_;
+      HashTable< std::string, std::pair< Set< NodeId >*, Size > > _reqMap_;
     };
 
 

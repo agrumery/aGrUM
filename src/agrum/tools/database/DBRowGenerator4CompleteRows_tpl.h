@@ -44,10 +44,8 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-          column_types,
-       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
-          alloc) :
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&       alloc) :
         DBRowGenerator< ALLOC >(column_types,
                                 DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
                                 alloc) {
@@ -58,11 +56,10 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-       const DBRowGenerator4CompleteRows< ALLOC >& from,
-       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
-          alloc) :
+       const DBRowGenerator4CompleteRows< ALLOC >&                          from,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-         _input_row_(from. _input_row_) {
+        _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
     }
 
@@ -77,11 +74,10 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-       DBRowGenerator4CompleteRows< ALLOC >&& from,
-       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
-          alloc) :
+       DBRowGenerator4CompleteRows< ALLOC >&&                               from,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-         _input_row_(from. _input_row_) {
+        _input_row_(from._input_row_) {
       GUM_CONS_MOV(DBRowGenerator4CompleteRows);
     }
 
@@ -90,18 +86,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
        DBRowGenerator4CompleteRows< ALLOC >&& from) :
-        DBRowGenerator4CompleteRows< ALLOC >(std::move(from),
-                                             from.getAllocator()) {}
+        DBRowGenerator4CompleteRows< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >*
-       DBRowGenerator4CompleteRows< ALLOC >::clone(
-          const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
-             alloc) const {
+    DBRowGenerator4CompleteRows< ALLOC >* DBRowGenerator4CompleteRows< ALLOC >::clone(
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBRowGenerator4CompleteRows< ALLOC > > allocator(alloc);
-      DBRowGenerator4CompleteRows< ALLOC >* generator = allocator.allocate(1);
+      DBRowGenerator4CompleteRows< ALLOC >*         generator = allocator.allocate(1);
       try {
         allocator.construct(generator, *this, alloc);
       } catch (...) {
@@ -114,8 +107,7 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >*
-       DBRowGenerator4CompleteRows< ALLOC >::clone() const {
+    DBRowGenerator4CompleteRows< ALLOC >* DBRowGenerator4CompleteRows< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -129,22 +121,20 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >&
-       DBRowGenerator4CompleteRows< ALLOC >::operator=(
-          const DBRowGenerator4CompleteRows< ALLOC >& from) {
+    DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::operator=(
+       const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-       _input_row_                      = from. _input_row_;
+      _input_row_                      = from._input_row_;
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >&
-       DBRowGenerator4CompleteRows< ALLOC >::operator=(
-          DBRowGenerator4CompleteRows< ALLOC >&& from) {
+    DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::operator=(
+       DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-       _input_row_                      = from. _input_row_;
+      _input_row_                      = from._input_row_;
       return *this;
     }
 
@@ -154,7 +144,7 @@ namespace gum {
     INLINE const DBRow< DBTranslatedValue, ALLOC >&
                  DBRowGenerator4CompleteRows< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return * _input_row_;
+      return *_input_row_;
     }
 
 
@@ -168,14 +158,14 @@ namespace gum {
         switch (this->column_types_[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
-               _input_row_ = nullptr;
+              _input_row_ = nullptr;
               return std::size_t(0);
             }
             break;
 
           case DBTranslatedValueType::CONTINUOUS:
             if (xrow[col].cont_val == std::numeric_limits< float >::max()) {
-               _input_row_ = nullptr;
+              _input_row_ = nullptr;
               return std::size_t(0);
             }
             break;
@@ -187,7 +177,7 @@ namespace gum {
             break;
         }
       }
-       _input_row_ = &row;
+      _input_row_ = &row;
       return std::size_t(1);
     }
 

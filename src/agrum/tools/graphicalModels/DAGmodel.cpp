@@ -26,18 +26,15 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel() :  _mutableMoralGraph_(nullptr) {
-    GUM_CONSTRUCTOR(DAGmodel);
-  }
+  DAGmodel::DAGmodel() : _mutableMoralGraph_(nullptr) { GUM_CONSTRUCTOR(DAGmodel); }
 
-  DAGmodel::DAGmodel(const DAGmodel& from) :
-      dag_(from.dag_),  _mutableMoralGraph_(nullptr) {
+  DAGmodel::DAGmodel(const DAGmodel& from) : dag_(from.dag_), _mutableMoralGraph_(nullptr) {
     GUM_CONS_CPY(DAGmodel);
   }
 
   DAGmodel::~DAGmodel() {
     GUM_DESTRUCTOR(DAGmodel);
-    if ( _mutableMoralGraph_ != nullptr) { delete  _mutableMoralGraph_; }
+    if (_mutableMoralGraph_ != nullptr) { delete _mutableMoralGraph_; }
   }
 
 
@@ -45,9 +42,9 @@ namespace gum {
     if (this != &source) {
       GraphicalModel::operator=(source);
 
-      if ( _mutableMoralGraph_) {
-        delete  _mutableMoralGraph_;
-         _mutableMoralGraph_ = nullptr;
+      if (_mutableMoralGraph_) {
+        delete _mutableMoralGraph_;
+        _mutableMoralGraph_ = nullptr;
       }
       dag_ = source.dag_;
     }
@@ -56,19 +53,17 @@ namespace gum {
   }
 
   const UndiGraph& DAGmodel::moralGraph(bool clear) const {
-    if (clear
-        || ( _mutableMoralGraph_
-            == nullptr)) {   // we have to call dag().moralGraph()
-      if ( _mutableMoralGraph_ == nullptr) {
-         _mutableMoralGraph_ = new UndiGraph();
+    if (clear || (_mutableMoralGraph_ == nullptr)) {   // we have to call dag().moralGraph()
+      if (_mutableMoralGraph_ == nullptr) {
+        _mutableMoralGraph_ = new UndiGraph();
       } else {
         // clear is True , __mutableMoralGraph exists
-         _mutableMoralGraph_->clear();
+        _mutableMoralGraph_->clear();
       }
-      * _mutableMoralGraph_ = dag().moralGraph();
+      *_mutableMoralGraph_ = dag().moralGraph();
     }
 
-    return * _mutableMoralGraph_;
+    return *_mutableMoralGraph_;
   }
 
   bool DAGmodel::hasSameStructure(const DAGmodel& other) {

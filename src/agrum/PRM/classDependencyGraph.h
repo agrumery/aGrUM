@@ -102,45 +102,43 @@ namespace gum {
       /// @}
       private:
       /// Build the class dependency graph.
-      void  _buildGraph_(const PRM< GUM_SCALAR >& prm);
+      void _buildGraph_(const PRM< GUM_SCALAR >& prm);
 
       /// Add nodes in  _graph_ while updating consequently all the mappings.
-      void  _addNode_(const PRMClassElementContainer< GUM_SCALAR >* c,
+      void _addNode_(const PRMClassElementContainer< GUM_SCALAR >* c,
                      const PRMClassElement< GUM_SCALAR >&          elt);
 
       /// Add arcs in  _graph_.
-      void
-          _addArcs_(const PRMClassElementContainer< GUM_SCALAR >&              c,
-                   NodeId                                                     node,
-                   HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
+      void _addArcs_(const PRMClassElementContainer< GUM_SCALAR >&              c,
+                     NodeId                                                     node,
+                     HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
 
       /// The graph itself.
-      DAG  _graph_;
+      DAG _graph_;
 
       /// The modalities map for each node in the
       /// ClassDependencyGraph<GUM_SCALAR>.
       /// This
       /// is useful when using a Triangulation class over a
       /// ClassDependencyGraph<GUM_SCALAR>.
-      NodeProperty< Size >  _modalitites_;
+      NodeProperty< Size > _modalitites_;
 
       /// Mapping between the nodes in  _graph_ with the
       /// PRMClassElement<GUM_SCALAR>
       /// in
       /// the
       /// PRM<GUM_SCALAR>.
-      NodeProperty< EltPair* >  _elt_map_;
+      NodeProperty< EltPair* > _elt_map_;
 
       /// Code shortcut.
-      typedef HashTable<
-         const PRMClassElementContainer< GUM_SCALAR >*,
-         HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >
+      typedef HashTable< const PRMClassElementContainer< GUM_SCALAR >*,
+                         HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >
          NodeMap;
 
       /// Map each Class to a HashTable mapping the Class's ClassElements to
       /// their
       /// assigned NodeId in  _graph_.
-      NodeMap  _node_map_;
+      NodeMap _node_map_;
     };
 
 

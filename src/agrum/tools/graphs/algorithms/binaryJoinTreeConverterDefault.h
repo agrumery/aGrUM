@@ -75,36 +75,35 @@ namespace gum {
 
     private:
     /// the new roots that have been created to compute the last query
-    NodeSet  _roots_;
+    NodeSet _roots_;
 
     /// forbid copy constructor
     BinaryJoinTreeConverterDefault(const BinaryJoinTreeConverterDefault&);
 
     /// forbid copy operator
-    BinaryJoinTreeConverterDefault&
-       operator=(const BinaryJoinTreeConverterDefault&);
+    BinaryJoinTreeConverterDefault& operator=(const BinaryJoinTreeConverterDefault&);
 
     /** @brief a function used to mark the nodes belonging to a given
      * connected component */
-    void  _markConnectedComponent_(const CliqueGraph&    JT,
+    void _markConnectedComponent_(const CliqueGraph&    JT,
                                   NodeId                root,
                                   NodeProperty< bool >& mark) const;
 
     /// convert a whole connected component into a binary join tree
-    void  _convertConnectedComponent_(CliqueGraph&                JT,
+    void _convertConnectedComponent_(CliqueGraph&                JT,
                                      NodeId                      current_node,
                                      NodeId                      from,
                                      const NodeProperty< Size >& domain_sizes,
                                      NodeProperty< bool >&       mark) const;
 
     /// convert a clique and its adjacent cliques into a binary join tree
-    void  _convertClique_(CliqueGraph&                JT,
+    void _convertClique_(CliqueGraph&                JT,
                          NodeId                      clique,
                          NodeId                      from,
                          const NodeProperty< Size >& domain_sizes) const;
 
     /// returns the domain size of the union of two cliques
-    float  _combinedSize_(const NodeSet&              nodes1,
+    float _combinedSize_(const NodeSet&              nodes1,
                          const NodeSet&              nodes2,
                          const NodeProperty< Size >& domain_sizes) const;
   };

@@ -145,8 +145,7 @@ namespace gum {
 
       /// Returns the sequence of all instances of the given type
       /// @throw NotFound Raised if there is instantiation of type.
-      const Set< PRMInstance< GUM_SCALAR >* >&
-         get(const PRMClass< GUM_SCALAR >& type) const;
+      const Set< PRMInstance< GUM_SCALAR >* >& get(const PRMClass< GUM_SCALAR >& type) const;
 
       /// Add an PRMInstance to this system.
       /// @throw DuplicateElement Raised if an PRMInstance with the same name
@@ -161,18 +160,15 @@ namespace gum {
 
       /// Returns the sequence of instances of a given array.
       /// @throw NotFound Raised if no array matches name.
-      const Sequence< PRMInstance< GUM_SCALAR >* >&
-         getArray(const std::string& name) const;
+      const Sequence< PRMInstance< GUM_SCALAR >* >& getArray(const std::string& name) const;
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      PRMClassElementContainer< GUM_SCALAR >&
-         getArrayType(const std::string& name);
+      PRMClassElementContainer< GUM_SCALAR >& getArrayType(const std::string& name);
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      const PRMClassElementContainer< GUM_SCALAR >&
-         getArrayType(const std::string& name) const;
+      const PRMClassElementContainer< GUM_SCALAR >& getArrayType(const std::string& name) const;
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
@@ -194,8 +190,7 @@ namespace gum {
       /// If the array doesn't exists it is created.
       /// @throw DuplicateElement Raised if an existing array with the same name
       ///                         already exists.
-      void addArray(const std::string&                      array,
-                    PRMClassElementContainer< GUM_SCALAR >& type);
+      void addArray(const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type);
 
       /// @}
       // ========================================================================
@@ -204,8 +199,7 @@ namespace gum {
       /// @{
 
       /// Iterator over the PRMInstance of this PRMSystem.
-      typedef
-         typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator iterator;
+      typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator iterator;
 
       /// Returns an iterator over the instances in this system.
       iterator begin();
@@ -215,8 +209,7 @@ namespace gum {
       const iterator& end();
 
       /// Constant Iterator over the PRMInstance of this PRMSystem.
-      typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::const_iterator
-         const_iterator;
+      typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::const_iterator const_iterator;
 
       /// Returns a constant iterator over the instances in this system.
       const_iterator begin() const;
@@ -226,8 +219,7 @@ namespace gum {
       const const_iterator& end() const;
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
-      typedef
-         typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator array_iterator;
+      typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -240,8 +232,7 @@ namespace gum {
       const array_iterator& end(const std::string& a);
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
-      typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator
-         const_array_iterator;
+      typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator const_array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -259,8 +250,7 @@ namespace gum {
       PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
       /// Copy operator. Don't use it.
-      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from)
-         = delete;
+      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from) = delete;
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.
@@ -278,8 +268,7 @@ namespace gum {
       HashTable< std::string, PRMInstance< GUM_SCALAR >* > nameMap_;
 
       /// Mapping between a class and all it's PRMInstance in this system
-      HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* >
-         instanceMap_;
+      HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* > instanceMap_;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
@@ -302,14 +291,14 @@ namespace gum {
       ///        in the IBayesNet.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void  _groundRef_(const PRMInstance< GUM_SCALAR >& instance,
+      void _groundRef_(const PRMInstance< GUM_SCALAR >& instance,
                        BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which ground Atttributes and Aggregators of
       ///        an PRMInstance.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void  _groundAttr_(const PRMInstance< GUM_SCALAR >& instance,
+      void _groundAttr_(const PRMInstance< GUM_SCALAR >& instance,
                         BayesNetFactory< GUM_SCALAR >&   factory) const;
 
       /// @brief Method which copy node's Potential of an PRMInstance to the
@@ -320,7 +309,7 @@ namespace gum {
       /// is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void  _groundPotential_(const PRMInstance< GUM_SCALAR >&  instance,
+      void _groundPotential_(const PRMInstance< GUM_SCALAR >&  instance,
                              const PRMAttribute< GUM_SCALAR >& attr,
                              BayesNetFactory< GUM_SCALAR >&    factory) const;
 
@@ -329,7 +318,7 @@ namespace gum {
       /// @param elt     The aggregator grounded.
       /// @param name    The aggregator's name in the grounded IBayesNet.
       /// @param factory The factory used to build the grounded IBayesNet.
-      void  _groundAgg_(const PRMClassElement< GUM_SCALAR >& elt,
+      void _groundAgg_(const PRMClassElement< GUM_SCALAR >& elt,
                        const std::string&                   name,
                        BayesNetFactory< GUM_SCALAR >&       factory) const;
       /// @}

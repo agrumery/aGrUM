@@ -41,8 +41,7 @@ namespace gum {
 
   /// copy constructor
   template < typename GUM_SCALAR >
-  SchedulerBasic< GUM_SCALAR >::SchedulerBasic(
-     const SchedulerBasic< GUM_SCALAR >& from) :
+  SchedulerBasic< GUM_SCALAR >::SchedulerBasic(const SchedulerBasic< GUM_SCALAR >& from) :
       Scheduler< GUM_SCALAR >(from) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerBasic);
@@ -79,8 +78,7 @@ namespace gum {
 
   /// execute only k operations of a given schedule (default k = 1)
   template < typename GUM_SCALAR >
-  bool SchedulerBasic< GUM_SCALAR >::execute(Schedule< GUM_SCALAR >& schedule,
-                                             Size                    k) {
+  bool SchedulerBasic< GUM_SCALAR >::execute(Schedule< GUM_SCALAR >& schedule, Size k) {
     const NodeSet& available = schedule.availableOperations();
 
     while (!available.empty() && k) {
@@ -97,8 +95,7 @@ namespace gum {
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given schedule */
   template < typename GUM_SCALAR >
-  float SchedulerBasic< GUM_SCALAR >::nbOperations(
-     const Schedule< GUM_SCALAR >& schedule) const {
+  float SchedulerBasic< GUM_SCALAR >::nbOperations(const Schedule< GUM_SCALAR >& schedule) const {
     NodeSet available     = schedule.availableOperations();
     DAG     dag           = schedule.scheduling_dag();
     float   nb_operations = 0;
@@ -111,13 +108,10 @@ namespace gum {
         nb_operations += schedule.nbOperations(id);
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children
-             = children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
-          if (dag.parents(*iter_children).size() == 1) {
-            available.insert(*iter_children);
-          }
+          if (dag.parents(*iter_children).size() == 1) { available.insert(*iter_children); }
         }
 
         dag.eraseNode(id);
@@ -131,9 +125,8 @@ namespace gum {
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform the k first ScheduleOperations of a given schedule */
   template < typename GUM_SCALAR >
-  float SchedulerBasic< GUM_SCALAR >::nbOperations(
-     const Schedule< GUM_SCALAR >& schedule,
-     Size                          k) const {
+  float SchedulerBasic< GUM_SCALAR >::nbOperations(const Schedule< GUM_SCALAR >& schedule,
+                                                   Size                          k) const {
     NodeSet available     = schedule.availableOperations();
     DAG     dag           = schedule.scheduling_dag();
     float   nb_operations = 0;
@@ -146,13 +139,10 @@ namespace gum {
         nb_operations += schedule.nbOperations(id);
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children
-             = children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
-          if (dag.parents(*iter_children).size() == 1) {
-            available.insert(*iter_children);
-          }
+          if (dag.parents(*iter_children).size() == 1) { available.insert(*iter_children); }
         }
 
         dag.eraseNode(id);
@@ -165,8 +155,8 @@ namespace gum {
 
   /// returns the memory consumption used during the execution of a schedule
   template < typename GUM_SCALAR >
-  std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
-     const Schedule< GUM_SCALAR >& schedule) const {
+  std::pair< long, long >
+     SchedulerBasic< GUM_SCALAR >::memoryUsage(const Schedule< GUM_SCALAR >& schedule) const {
     NodeSet available      = schedule.availableOperations();
     DAG     dag            = schedule.scheduling_dag();
     long    max_memory     = 0;
@@ -181,25 +171,20 @@ namespace gum {
         std::pair< long, long > mem_op = schedule.memoryUsage(id);
 
         if ((std::numeric_limits< long >::max() - current_memory < mem_op.first)
-            || (std::numeric_limits< long >::max() - current_memory
-                < mem_op.second)) {
+            || (std::numeric_limits< long >::max() - current_memory < mem_op.second)) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
-        if (current_memory + mem_op.first > max_memory)
-          max_memory = current_memory + mem_op.first;
+        if (current_memory + mem_op.first > max_memory) max_memory = current_memory + mem_op.first;
 
         current_memory += mem_op.second;
 
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children
-             = children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
-          if (dag.parents(*iter_children).size() == 1) {
-            available.insert(*iter_children);
-          }
+          if (dag.parents(*iter_children).size() == 1) { available.insert(*iter_children); }
         }
 
         dag.eraseNode(id);
@@ -213,9 +198,9 @@ namespace gum {
   /** @brief returns the memory consumption used during the execution of the
    * k first ScheduleOperations of a given schedule */
   template < typename GUM_SCALAR >
-  std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
-     const Schedule< GUM_SCALAR >& schedule,
-     Size                          k) const {
+  std::pair< long, long >
+     SchedulerBasic< GUM_SCALAR >::memoryUsage(const Schedule< GUM_SCALAR >& schedule,
+                                               Size                          k) const {
     NodeSet available      = schedule.availableOperations();
     DAG     dag            = schedule.scheduling_dag();
     long    max_memory     = 0;
@@ -230,25 +215,20 @@ namespace gum {
         std::pair< long, long > mem_op = schedule.memoryUsage(id);
 
         if ((std::numeric_limits< long >::max() - current_memory < mem_op.first)
-            || (std::numeric_limits< long >::max() - current_memory
-                < mem_op.second)) {
+            || (std::numeric_limits< long >::max() - current_memory < mem_op.second)) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range")
         }
 
-        if (current_memory + mem_op.first > max_memory)
-          max_memory = current_memory + mem_op.first;
+        if (current_memory + mem_op.first > max_memory) max_memory = current_memory + mem_op.first;
 
         current_memory += mem_op.second;
 
         const NodeSet& children = dag.children(id);
 
-        for (typename NodeSet::const_iterator_safe iter_children
-             = children.beginSafe();
+        for (typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
              iter_children != children.endSafe();
              ++iter_children) {
-          if (dag.parents(*iter_children).size() == 1) {
-            available.insert(*iter_children);
-          }
+          if (dag.parents(*iter_children).size() == 1) { available.insert(*iter_children); }
         }
 
         dag.eraseNode(id);

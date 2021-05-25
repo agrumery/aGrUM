@@ -40,7 +40,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
-                           gum::Size default_domain_size) {
+                           gum::Size                            default_domain_size) {
     auto                       ds        = default_domain_size;
     long                       range_min = 0;
     long                       range_max = long(ds) - 1;
@@ -86,8 +86,7 @@ namespace gum {
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
           for (const auto& tick: args) {
-            ticks.push_back(
-               static_cast< GUM_SCALAR >(std::strtod(tick.c_str(), nullptr)));
+            ticks.push_back(static_cast< GUM_SCALAR >(std::strtod(tick.c_str(), nullptr)));
           }
           ds = static_cast< Size >(args.size() - 1);
         }
@@ -97,9 +96,7 @@ namespace gum {
       if (posBrack != std::string::npos) {
         name   = node.substr(0, posBrack);
         labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
-        if (labels.size() < 2) {
-          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node)
-        }
+        if (labels.size() < 2) { GUM_ERROR(InvalidArgument, "Not enough labels in node " << node) }
         if (!hasUniqueElts(labels)) {
           GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node)
         }
@@ -111,8 +108,7 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "No value for variable " << name << ".")
     } else if (ds == 1) {
       GUM_ERROR(InvalidArgument,
-                "Only one value for variable " << name
-                                               << " (2 at least are needed).")
+                "Only one value for variable " << name << " (2 at least are needed).")
     }
 
     // now we add the node in the BN
@@ -124,28 +120,23 @@ namespace gum {
         if (!labels.empty()) {
           idVar = infdiag.addChanceNode(LabelizedVariable(name, name, labels));
         } else if (!ticks.empty()) {
-          idVar = infdiag.addChanceNode(
-             DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
+          idVar = infdiag.addChanceNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
         } else {
-          idVar = infdiag.addChanceNode(
-             RangeVariable(name, name, range_min, range_max));
+          idVar = infdiag.addChanceNode(RangeVariable(name, name, range_min, range_max));
         }
       } else if (isDeci) {
         if (!labels.empty()) {
           idVar = infdiag.addDecisionNode(LabelizedVariable(name, name, labels));
         } else if (!ticks.empty()) {
-          idVar = infdiag.addDecisionNode(
-             DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
+          idVar = infdiag.addDecisionNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
         } else {
-          idVar = infdiag.addDecisionNode(
-             RangeVariable(name, name, range_min, range_max));
+          idVar = infdiag.addDecisionNode(RangeVariable(name, name, range_min, range_max));
         }
       } else if (isUtil) {
         idVar = infdiag.addUtilityNode(LabelizedVariable(name, name, 1));
       } else {
         GUM_ERROR(FatalError,
-                  "No type (chance, decision or utility) for the node '" << node
-                                                                         << "'.")
+                  "No type (chance, decision or utility) for the node '" << node << "'.")
       }
     }
 
@@ -155,8 +146,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
-     InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                   Size               domainSize) {
+     InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike, Size domainSize) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
     for (const auto& chaine: split(dotlike, ";")) {
@@ -218,8 +208,7 @@ namespace gum {
    * Copy Constructor
    */
   template < typename GUM_SCALAR >
-  InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(
-     const InfluenceDiagram< GUM_SCALAR >& source) {
+  InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >& source) {
     GUM_CONS_CPY(InfluenceDiagram);
     copyStructureAndTables_(source);
   }
@@ -228,8 +217,8 @@ namespace gum {
    * Copy Operator
    */
   template < typename GUM_SCALAR >
-  InfluenceDiagram< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::operator=(
-     const InfluenceDiagram< GUM_SCALAR >& source) {
+  InfluenceDiagram< GUM_SCALAR >&
+     InfluenceDiagram< GUM_SCALAR >::operator=(const InfluenceDiagram< GUM_SCALAR >& source) {
     if (this != &source) {
       clear();
       // Copying tables and structure
@@ -243,10 +232,10 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram::clear() {
     // Removing previous potentials
     removeTables_();
-     _variableMap_.clear();
+    _variableMap_.clear();
     dag_.clear();
-     _potentialMap_.clear();
-     _utilityMap_.clear();
+    _potentialMap_.clear();
+    _utilityMap_.clear();
   }
 
   /*
@@ -385,9 +374,8 @@ namespace gum {
    * Returns the CPT of a chance variable.
    */
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
-               InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
-    return *( _potentialMap_[varId]);
+  INLINE const Potential< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
+    return *(_potentialMap_[varId]);
   }
 
   /*
@@ -396,7 +384,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
-    return *( _utilityMap_[varId]);
+    return *(_utilityMap_[varId]);
   }
 
   /*
@@ -404,7 +392,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE bool InfluenceDiagram< GUM_SCALAR >::isUtilityNode(NodeId varId) const {
-    return  _utilityMap_.exists(varId);
+    return _utilityMap_.exists(varId);
   }
 
   /*
@@ -424,7 +412,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE bool InfluenceDiagram< GUM_SCALAR >::isChanceNode(NodeId varId) const {
-    return  _potentialMap_.exists(varId);
+    return _potentialMap_.exists(varId);
   }
 
   /*
@@ -432,7 +420,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE Size InfluenceDiagram< GUM_SCALAR >::utilityNodeSize() const {
-    return  _utilityMap_.size();
+    return _utilityMap_.size();
   }
 
   /*
@@ -440,7 +428,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE Size InfluenceDiagram< GUM_SCALAR >::chanceNodeSize() const {
-    return  _potentialMap_.size();
+    return _potentialMap_.size();
   }
 
   /*
@@ -448,7 +436,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE Size InfluenceDiagram< GUM_SCALAR >::decisionNodeSize() const {
-    return (size() -  _utilityMap_.size() -  _potentialMap_.size());
+    return (size() - _utilityMap_.size() - _potentialMap_.size());
   }
 
   /*
@@ -456,41 +444,37 @@ namespace gum {
    * Diagram
    */
   template < typename GUM_SCALAR >
-  INLINE const VariableNodeMap&
-               InfluenceDiagram< GUM_SCALAR >::variableNodeMap() const {
-    return  _variableMap_;
+  INLINE const VariableNodeMap& InfluenceDiagram< GUM_SCALAR >::variableNodeMap() const {
+    return _variableMap_;
   }
 
   /*
    * Returns a constant reference over a variable given it's node id.
    */
   template < typename GUM_SCALAR >
-  INLINE const DiscreteVariable&
-               InfluenceDiagram< GUM_SCALAR >::variable(NodeId id) const {
-    return  _variableMap_[id];
+  INLINE const DiscreteVariable& InfluenceDiagram< GUM_SCALAR >::variable(NodeId id) const {
+    return _variableMap_[id];
   }
 
   /*
    * Return id node from discrete var pointer.
    */
   template < typename GUM_SCALAR >
-  INLINE NodeId
-     InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return  _variableMap_.get(var);
+  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+    return _variableMap_.get(var);
   }
 
   // Getter by name
   template < typename GUM_SCALAR >
-  INLINE NodeId
-     InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
-    return  _variableMap_.idFromName(name);
+  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
+    return _variableMap_.idFromName(name);
   }
 
   // Getter by name
   template < typename GUM_SCALAR >
-  INLINE const DiscreteVariable& InfluenceDiagram< GUM_SCALAR >::variableFromName(
-     const std::string& name) const {
-    return  _variableMap_.variableFromName(name);
+  INLINE const DiscreteVariable&
+               InfluenceDiagram< GUM_SCALAR >::variableFromName(const std::string& name) const {
+    return _variableMap_.variableFromName(name);
   }
 
   /*
@@ -498,8 +482,7 @@ namespace gum {
    * variable is automatically generated.
    */
   template < typename GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::add(const DiscreteVariable& var,
-                                             NodeId                  varId) {
+  NodeId InfluenceDiagram< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId varId) {
     return addChanceNode(var, varId);
   }
 
@@ -509,9 +492,7 @@ namespace gum {
    * @Throws : Gum::InvalidArgument if var has more than one state
    */
   template < typename GUM_SCALAR >
-  NodeId
-     InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const DiscreteVariable& var,
-                                                    NodeId varId) {
+  NodeId InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const DiscreteVariable& var, NodeId varId) {
     auto   newMultiDim = new MultiDimArray< GUM_SCALAR >();
     NodeId res;
 
@@ -530,9 +511,8 @@ namespace gum {
    * variable is automatically generated.
    */
   template < typename GUM_SCALAR >
-  NodeId
-     InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const DiscreteVariable& var,
-                                                     NodeId varId) {
+  NodeId InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const DiscreteVariable& var,
+                                                         NodeId                  varId) {
     return addNode_(var, varId);
   }
 
@@ -541,8 +521,7 @@ namespace gum {
    * variable is automatically generated.
    */
   template < typename GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(const DiscreteVariable& var,
-                                                       NodeId varId) {
+  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(const DiscreteVariable& var, NodeId varId) {
     auto   newMultiDim = new MultiDimArray< GUM_SCALAR >();
     NodeId res;
 
@@ -561,15 +540,15 @@ namespace gum {
    * variable is automatically generated.
    */
   template < typename GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(
-     const DiscreteVariable&               var,
-     MultiDimImplementation< GUM_SCALAR >* aContent,
-     NodeId                                DesiredId) {
+  NodeId
+     InfluenceDiagram< GUM_SCALAR >::addChanceNode(const DiscreteVariable&               var,
+                                                   MultiDimImplementation< GUM_SCALAR >* aContent,
+                                                   NodeId DesiredId) {
     NodeId proposedId = addNode_(var, DesiredId);
 
     auto varcpt = new Potential< GUM_SCALAR >(aContent);
     (*varcpt) << variable(proposedId);
-     _potentialMap_.insert(proposedId, varcpt);
+    _potentialMap_.insert(proposedId, varcpt);
 
     return proposedId;
   }
@@ -580,10 +559,10 @@ namespace gum {
    * @Throws : Gum::InvalidArgument if var has more than one state
    */
   template < typename GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addUtilityNode(
-     const DiscreteVariable&               var,
-     MultiDimImplementation< GUM_SCALAR >* aContent,
-     NodeId                                DesiredId) {
+  NodeId
+     InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const DiscreteVariable&               var,
+                                                    MultiDimImplementation< GUM_SCALAR >* aContent,
+                                                    NodeId DesiredId) {
     if (var.domainSize() != 1) {
       GUM_ERROR(InvalidArgument,
                 "Utility var have no state ( which implicates a "
@@ -596,7 +575,7 @@ namespace gum {
 
     (*varut) << variable(proposedId);
 
-     _utilityMap_.insert(proposedId, varut);
+    _utilityMap_.insert(proposedId, varut);
 
     return proposedId;
   }
@@ -605,9 +584,8 @@ namespace gum {
    * Add a node
    */
   template < typename GUM_SCALAR >
-  NodeId
-     InfluenceDiagram< GUM_SCALAR >::addNode_(const DiscreteVariable& variableType,
-                                              NodeId                  DesiredId) {
+  NodeId InfluenceDiagram< GUM_SCALAR >::addNode_(const DiscreteVariable& variableType,
+                                                  NodeId                  DesiredId) {
     // None thread safe code!
     NodeId proposedId;
 
@@ -616,7 +594,7 @@ namespace gum {
     else
       proposedId = DesiredId;
 
-     _variableMap_.insert(proposedId, variableType);
+    _variableMap_.insert(proposedId, variableType);
 
     dag_.addNodeWithId(proposedId);
 
@@ -631,23 +609,23 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::erase(NodeId varId) {
-    if ( _variableMap_.exists(varId)) {
+    if (_variableMap_.exists(varId)) {
       // Reduce the variable child's CPT or Utility Table if necessary
       for (const auto chi: dag_.children(varId))
         if (isChanceNode(chi))
-           _potentialMap_[chi]->erase(variable(varId));
+          _potentialMap_[chi]->erase(variable(varId));
         else if (isUtilityNode(chi))
-           _utilityMap_[chi]->erase(variable(varId));
+          _utilityMap_[chi]->erase(variable(varId));
 
       if (isChanceNode(varId)) {
-        delete  _potentialMap_[varId];
-         _potentialMap_.erase(varId);
+        delete _potentialMap_[varId];
+        _potentialMap_.erase(varId);
       } else if (isUtilityNode(varId)) {
-        delete  _utilityMap_[varId];
-         _utilityMap_.erase(varId);
+        delete _utilityMap_[varId];
+        _utilityMap_.erase(varId);
       }
 
-       _variableMap_.erase(varId);
+      _variableMap_.erase(varId);
       dag_.eraseNode(varId);
     }
   }
@@ -659,16 +637,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase( _variableMap_.get(var));
+    erase(_variableMap_.get(var));
   }
 
   /* we allow the user to change the name of a variable
    */
   template < typename GUM_SCALAR >
-  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(
-     NodeId             id,
-     const std::string& new_name) {
-     _variableMap_.changeName(id, new_name);
+  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId             id,
+                                                                 const std::string& new_name) {
+    _variableMap_.changeName(id, new_name);
   }
 
   // ===========================================================================
@@ -679,18 +656,16 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::addArc(NodeId tail, NodeId head) {
-    if (isUtilityNode(tail)) {
-      GUM_ERROR(InvalidArc, "Tail cannot be a utility node")
-    }
+    if (isUtilityNode(tail)) { GUM_ERROR(InvalidArc, "Tail cannot be a utility node") }
 
     dag_.addArc(tail, head);
 
     if (isChanceNode(head))
       // Add parent in the child's CPT
-      (*( _potentialMap_[head])) << variable(tail);
+      (*(_potentialMap_[head])) << variable(tail);
     else if (isUtilityNode(head)) {
       // Add parent in the child's UT
-      (*( _utilityMap_[head])) << variable(tail);
+      (*(_utilityMap_[head])) << variable(tail);
     }
   }
 
@@ -707,10 +682,10 @@ namespace gum {
 
       if (isChanceNode(head))
         // Removes parent in the child's CPT
-        (*( _potentialMap_[head])) >> variable(tail);
+        (*(_potentialMap_[head])) >> variable(tail);
       else if (isUtilityNode(head))
         // Removes parent in the child's UT
-        (*( _utilityMap_[head])) >> variable(tail);
+        (*(_utilityMap_[head])) >> variable(tail);
     }
   }
 
@@ -783,8 +758,7 @@ namespace gum {
    * Returns true if a path exists between source and destination
    */
   template < typename GUM_SCALAR >
-  bool InfluenceDiagram< GUM_SCALAR >::existsPathBetween(NodeId src,
-                                                         NodeId dest) const {
+  bool InfluenceDiagram< GUM_SCALAR >::existsPathBetween(NodeId src, NodeId dest) const {
     List< NodeId > nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
@@ -799,8 +773,7 @@ namespace gum {
       nodeFIFO.popFront();
 
       for (const auto new_one: dag_.children(current)) {
-        if (mark[new_one] != -1)
-          continue;   // if this node is already marked, continue
+        if (mark[new_one] != -1) continue;   // if this node is already marked, continue
 
         mark[new_one] = (int)current;
 
@@ -841,8 +814,8 @@ namespace gum {
    * Returns the list of children decision for a given nodeId
    */
   template < typename GUM_SCALAR >
-  Sequence< NodeId > InfluenceDiagram< GUM_SCALAR >::getChildrenDecision_(
-     NodeId parentDecision) const {
+  Sequence< NodeId >
+     InfluenceDiagram< GUM_SCALAR >::getChildrenDecision_(NodeId parentDecision) const {
     Sequence< NodeId > childrenSeq;
 
     List< NodeId > nodeFIFO;
@@ -896,10 +869,9 @@ namespace gum {
    * @throw NotFound if such a sequence does not exist
    */
   template < typename GUM_SCALAR >
-  const List< NodeSet >&
-     InfluenceDiagram< GUM_SCALAR >::getPartialTemporalOrder(bool clear) const {
+  const List< NodeSet >& InfluenceDiagram< GUM_SCALAR >::getPartialTemporalOrder(bool clear) const {
     if (clear) {
-       _temporalOrder_.clear();
+      _temporalOrder_.clear();
 
       std::vector< NodeId > order    = decisionOrder();
       NodeSet               nodeList = dag_.asNodeSet();
@@ -914,14 +886,13 @@ namespace gum {
           }
         }
 
-        if (!partialOrderedSet.empty())
-           _temporalOrder_.pushFront(partialOrderedSet);
+        if (!partialOrderedSet.empty()) _temporalOrder_.pushFront(partialOrderedSet);
 
         NodeSet decisionSet;
 
         decisionSet.insert(i);
 
-         _temporalOrder_.pushFront(decisionSet);
+        _temporalOrder_.pushFront(decisionSet);
       }
 
       NodeSet lastSet;   //= new gum::NodeSet();
@@ -929,9 +900,9 @@ namespace gum {
       for (const auto node: nodeList)
         if (isChanceNode(node)) lastSet.insert(node);
 
-      if (!lastSet.empty())  _temporalOrder_.pushFront(lastSet);
+      if (!lastSet.empty()) _temporalOrder_.pushFront(lastSet);
     }
 
-    return  _temporalOrder_;
+    return _temporalOrder_;
   }
 }   // namespace gum

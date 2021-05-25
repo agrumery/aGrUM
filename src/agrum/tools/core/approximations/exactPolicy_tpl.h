@@ -38,41 +38,34 @@ namespace gum {
 
   // @brief Convert value to approximation representation.
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     ExactPolicy< GUM_SCALAR >::fromExact(const GUM_SCALAR& value) const {
+  INLINE GUM_SCALAR ExactPolicy< GUM_SCALAR >::fromExact(const GUM_SCALAR& value) const {
     return value;
   }
 
   // @brief Combine using addition with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineAdd(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using substraction with the given
   // gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineSub(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineSub(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using multiplication with the given
   // gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineMult(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineMult(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using division with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineDiv(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineDiv(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using max with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineMax(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineMax(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using min with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
-  void ExactPolicy< GUM_SCALAR >::combineMin(
-     const ApproximationPolicy< GUM_SCALAR >* ap) {}
+  void ExactPolicy< GUM_SCALAR >::combineMin(const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
 }   // namespace gum

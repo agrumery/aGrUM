@@ -57,8 +57,7 @@ namespace gum {
     MultiDimCombineAndProject();
 
     /// copy constructor
-    MultiDimCombineAndProject(
-       const MultiDimCombineAndProject< GUM_SCALAR, TABLE >&);
+    MultiDimCombineAndProject(const MultiDimCombineAndProject< GUM_SCALAR, TABLE >&);
 
     /// destructor
     virtual ~MultiDimCombineAndProject();
@@ -93,8 +92,8 @@ namespace gum {
        = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (
-       *combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&))
+    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                    const TABLE< GUM_SCALAR >&))
        = 0;
 
     /// returns the current combination function
@@ -103,26 +102,25 @@ namespace gum {
        = 0;
 
     /// changes the function used for projecting TABLES
-    virtual void setProjectFunction(TABLE< GUM_SCALAR >* (
-       *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&))
+    virtual void
+       setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
+                                                       const Set< const DiscreteVariable* >&))
        = 0;
 
     /// returns the current projection function
-    virtual TABLE< GUM_SCALAR >* (*projectFunction())(
-       const TABLE< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&)
+    virtual TABLE< GUM_SCALAR >* (*projectFunction())(const TABLE< GUM_SCALAR >&,
+                                                      const Set< const DiscreteVariable* >&)
        = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual float
-       nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
-                    const Set< const DiscreteVariable* >&    del_vars) const = 0;
+    virtual float nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+                               const Set< const DiscreteVariable* >&    del_vars) const = 0;
     virtual std::pair< long, long >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                   Set< const DiscreteVariable* > del_vars) const = 0;
+                   Set< const DiscreteVariable* >                           del_vars) const = 0;
 
     /// @}
 

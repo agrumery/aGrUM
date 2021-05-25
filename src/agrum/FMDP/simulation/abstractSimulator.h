@@ -69,10 +69,8 @@ namespace gum {
     /// @{
 
     /// Sets the intial statefrom which we begun the simulation
-    INLINE void setInitialState(const Instantiation& initialState) {
-      currentState_ = initialState;
-    }
-    void setInitialStateRandomly();
+    INLINE void setInitialState(const Instantiation& initialState) { currentState_ = initialState; }
+    void        setInitialStateRandomly();
 
     protected:
     /// Choses a random state as the first test for a run
@@ -80,9 +78,7 @@ namespace gum {
 
     public:
     /// Sets the final states upon which a run is over
-    INLINE void setEndState(const Instantiation& endState) {
-      endState_ = endState;
-    }
+    INLINE void setEndState(const Instantiation& endState) { endState_ = endState; }
 
     /// Tests if end state has been reached
     virtual bool hasReachEnd();

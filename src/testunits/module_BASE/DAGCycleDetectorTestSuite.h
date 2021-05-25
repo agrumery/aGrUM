@@ -31,7 +31,7 @@
 namespace gum_tests {
 
   class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
-    gum::DAG  _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
+    gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
@@ -52,16 +52,14 @@ namespace gum_tests {
       return dag;
     }
 
-    void  _createChanges_(
-       const gum::DAG&                               g,
-       std::vector< gum::DAGCycleDetector::Change >& changes,
-       std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
-       gum::Size                                     length) {
+    void _createChanges_(const gum::DAG&                               g,
+                         std::vector< gum::DAGCycleDetector::Change >& changes,
+                         std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
+                         gum::Size                                     length) {
       std::default_random_engine           generator = gum::getRandomGenerator();
       std::uniform_int_distribution< int > distrib_type(0, 2);
       std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
-      std::uniform_int_distribution< int > distrib_arc(0,
-                                                       int(g.size() * g.size()));
+      std::uniform_int_distribution< int > distrib_arc(0, int(g.size() * g.size()));
 
       changes.clear();
       del_add_changes.clear();
@@ -81,11 +79,9 @@ namespace gum_tests {
             nb_arcs /= g.size() * g.size();
             gum::Size nb_del_arc = (gum::Size)(distrib_arc(generator) * nb_arcs);
             if (nb_del_arc >= gg.sizeArcs()) nb_del_arc = gg.sizeArcs() - 1;
-            for (auto iter = gg.arcs().begin(); iter != gg.arcs().end();
-                 ++iter, --nb_del_arc) {
+            for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter, --nb_del_arc) {
               if (!nb_del_arc) {
-                changes.push_back(
-                   gum::DAGCycleDetector::ArcDel(iter->tail(), iter->head()));
+                changes.push_back(gum::DAGCycleDetector::ArcDel(iter->tail(), iter->head()));
                 gg.eraseArc(gum::Arc(iter->tail(), iter->head()));
                 break;
               }
@@ -97,8 +93,7 @@ namespace gum_tests {
             while (true) {
               node1 = distrib_node(generator);
               node2 = distrib_node(generator);
-              if ((node1 != node2) && !gg.existsArc(node1, node2)
-                  && !gg.existsArc(node2, node1)) {
+              if ((node1 != node2) && !gg.existsArc(node1, node2) && !gg.existsArc(node2, node1)) {
                 changes.push_back(gum::DAGCycleDetector::ArcAdd(node1, node2));
                 gg.addArc(node1, node2);
                 break;
@@ -115,8 +110,7 @@ namespace gum_tests {
             nb_arcs /= g.size() * g.size();
             gum::Size nb_del_arc = gum::Size(distrib_arc(generator) * nb_arcs);
             if (nb_del_arc >= gg.sizeArcs()) nb_del_arc = gg.sizeArcs() - 1;
-            for (auto iter = gg.arcs().begin(); iter != gg.arcs().end();
-                 ++iter, --nb_del_arc) {
+            for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter, --nb_del_arc) {
               if (!nb_del_arc) {
                 gum::NodeId tail = iter->tail(), head = iter->head();
                 changes.push_back(gum::DAGCycleDetector::ArcReverse(tail, head));
@@ -268,14 +262,14 @@ namespace gum_tests {
     }
 
     void testRandom() {
-      std::default_random_engine generator = gum::getRandomGenerator();
-      gum::DAGCycleDetector      detector;
+      std::default_random_engine                   generator = gum::getRandomGenerator();
+      gum::DAGCycleDetector                        detector;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
       std::uniform_int_distribution< int >         distrib_length(1, 10);
 
       for (gum::Idx i = 15; i < 25; ++i) {
-        gum::DAG g =  _createDAG_(20, i);
+        gum::DAG g = _createDAG_(20, i);
         detector.setDAG(g);
 
         changes.clear();
@@ -283,7 +277,7 @@ namespace gum_tests {
 
         for (gum::Idx j = 0; j < 20; ++j) {
           gum::Size length = distrib_length(generator);
-           _createChanges_(g, changes, del_add_changes, length);
+          _createChanges_(g, changes, del_add_changes, length);
 
           bool hasCycle = false;
           {
@@ -308,8 +302,7 @@ namespace gum_tests {
               for (auto iter = g.arcs().begin(); iter != g.arcs().end(); ++iter) {
                 dag.eraseArc(*iter);
               }
-              for (auto iter = gg.arcs().begin(); iter != gg.arcs().end();
-                   ++iter) {
+              for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter) {
                 dag.addArc(iter->tail(), iter->head());
               }
             } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
@@ -326,14 +319,14 @@ namespace gum_tests {
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
 
       for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g =  _createDAG_(10, i);
+        gum::DAG g = _createDAG_(10, i);
         detector1.setDAG(g);
         detector2.setDAG(g);
 
         TS_ASSERT(detector1 == detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
-           _createChanges_(g, changes, del_add_changes, 1);
+          _createChanges_(g, changes, del_add_changes, 1);
           TS_ASSERT(changes.size() == 1);
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
@@ -375,14 +368,14 @@ namespace gum_tests {
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
 
       for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g =  _createDAG_(10, i);
+        gum::DAG g = _createDAG_(10, i);
         detector1.setDAG(g);
         detector2.setDAG(g);
 
         TS_ASSERT(detector1 == detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
-           _createChanges_(g, changes, del_add_changes, 1);
+          _createChanges_(g, changes, del_add_changes, 1);
           TS_ASSERT(changes.size() == 1);
 
           for (auto& chgt: changes) {

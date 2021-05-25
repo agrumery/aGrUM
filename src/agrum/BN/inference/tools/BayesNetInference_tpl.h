@@ -32,8 +32,7 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  BayesNetInference< GUM_SCALAR >::BayesNetInference(
-     const IBayesNet< GUM_SCALAR >* bn) :
+  BayesNetInference< GUM_SCALAR >::BayesNetInference(const IBayesNet< GUM_SCALAR >* bn) :
       GraphicalModelInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(BayesNetInference);
   }
@@ -55,8 +54,7 @@ namespace gum {
 
   // Returns a constant reference over the IBayesNet referenced by this class
   template < typename GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >&
-               BayesNetInference< GUM_SCALAR >::BN() const {
+  INLINE const IBayesNet< GUM_SCALAR >& BayesNetInference< GUM_SCALAR >::BN() const {
     return static_cast< const IBayesNet< GUM_SCALAR >& >(this->model());
   }
 
@@ -70,7 +68,7 @@ namespace gum {
 
   // assigns a BN to a newly constructed inference engine
   template < typename GUM_SCALAR >
-  void BayesNetInference< GUM_SCALAR >:: _setBayesNetDuringConstruction_(
+  void BayesNetInference< GUM_SCALAR >::_setBayesNetDuringConstruction_(
      const IBayesNet< GUM_SCALAR >* bn) {
     this->setModelDuringConstruction_(bn);
   }

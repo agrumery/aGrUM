@@ -90,16 +90,15 @@ namespace gum {
      * @param bn The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) final;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string  _preambule_(const IBayesNet< GUM_SCALAR >& bn);
+    std::string _preambule_(const IBayesNet< GUM_SCALAR >& bn);
 
-    std::string  _cptBloc_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
+    std::string _cptBloc_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
   };
 
 

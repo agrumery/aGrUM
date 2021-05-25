@@ -42,9 +42,9 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PROJECTION_NAME
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
-     const MultiDimImplementation< GUM_SCALAR >* table,
-     const Set< const DiscreteVariable* >&       del_vars)
+  MultiDimImplementation< GUM_SCALAR >*
+     GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
+                                   const Set< const DiscreteVariable* >&       del_vars)
 #  endif
 
   // clang-format off
@@ -89,8 +89,7 @@ namespace gum {
 
     // first, compute whether we should loop over table or over the projected
     // table first to get a faster algorithm.
-    const Sequence< const DiscreteVariable* >& table_vars
-       = table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars = table->variablesSequence();
     bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
     if (!need_swapping) {
@@ -197,8 +196,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(
-                  result->unsafeGet(result_offset));
+               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -219,11 +217,10 @@ namespace gum {
         for (Idx i = 0; i < table_domain_size; ++i) {
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
           GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet(result_offset);
-          *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
+          *res                              = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
           GUM_MULTI_DIM_PROJECTION_TYPE& res
-             = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(
-                result->unsafeGet(result_offset));
+             = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
           res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -374,8 +371,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(
-                  result->unsafeGet(result_offset));
+               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -399,8 +395,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(
-                  result->unsafeGet(result_offset));
+               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 

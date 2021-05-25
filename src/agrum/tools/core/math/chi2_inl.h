@@ -33,11 +33,10 @@
 namespace gum {
 
   // sets the conditioning nodes (useful for computing degrees of freedom)
-  INLINE void
-     Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
-     _conditioning_size_ = 1;
+  INLINE void Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
+    _conditioning_size_ = 1;
     for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
-       _conditioning_size_ *=  _modalities_[db_conditioning_ids[i]];
+      _conditioning_size_ *= _modalities_[db_conditioning_ids[i]];
     }
   }
 
@@ -48,8 +47,7 @@ namespace gum {
 
   // returns the number of degrees of freedom
   INLINE Size Chi2::degreesOfFreedom(Idx var1, Idx var2) {
-    return ( _conditioning_size_ * ( _modalities_[var1] - 1)
-            * ( _modalities_[var2] - 1));
+    return (_conditioning_size_ * (_modalities_[var1] - 1) * (_modalities_[var2] - 1));
   }
 
   // computes the critical value according to the number of degrees of freedom
@@ -63,12 +61,12 @@ namespace gum {
 
     // try to see if the threshold is not already in cache
     try {
-      return  _critical_values_[DF];
+      return _critical_values_[DF];
     } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      double value =  _criticalValue_( _confidence_proba_, DF);
-       _critical_values_.insert(DF, value);
+      double value = _criticalValue_(_confidence_proba_, DF);
+      _critical_values_.insert(DF, value);
       return value;
     }
   }
@@ -76,12 +74,12 @@ namespace gum {
   // modifies the confidence proba
   INLINE void Chi2::setConfidenceProba(double new_proba) {
     // if we did not change the confidence proba, do nothing
-    if ( _confidence_proba_ == new_proba) return;
+    if (_confidence_proba_ == new_proba) return;
 
-     _confidence_proba_ = new_proba;
+    _confidence_proba_ = new_proba;
 
     // remove the currently stored critical values
-     _critical_values_.clear();
+    _critical_values_.clear();
   }
 
 } /* namespace gum */

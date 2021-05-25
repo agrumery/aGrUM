@@ -72,15 +72,13 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         writer = new gum::ContextualDependenciesCNFWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::ContextualDependenciesCNFWriter< double >());
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
-      typedef gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy >
-              typCNF;
-      typCNF* writer = nullptr;
+      typedef gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy > typCNF;
+      typCNF*                                                                  writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
       //   writer->setEpsilon( 0.2 );
       //         writer->setLowLimit ( 0 );
@@ -96,9 +94,7 @@ namespace gum_tests {
     }
 
     void testWriter_ostream_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter< double,
-                                            gum::LinearApproximationPolicy >
-         writer;
+      gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
@@ -109,15 +105,13 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter< double > writer;
-      std::string                                    file = GET_RESSOURCES_PATH(
-         "outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
+      std::string                                    file
+         = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 
     void testWriter_string_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter< double,
-                                            gum::LinearApproximationPolicy >
-         writer;
+      gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
 
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);

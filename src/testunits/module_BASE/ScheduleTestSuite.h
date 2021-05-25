@@ -77,7 +77,7 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb3(result2, f4, schedule_myadd);
       const gum::ScheduleMultiDim< double >& result3 = comb3.result();
 
-      gum::ScheduleCombine< double > comb4(result1, result3, schedule_myadd);
+      gum::ScheduleCombine< double >         comb4(result1, result3, schedule_myadd);
       const gum::ScheduleMultiDim< double >& result4 = comb4.result();
 
       gum::ScheduleDeleteMultiDim< double > del1(result1);
@@ -111,8 +111,7 @@ namespace gum_tests {
       const gum::NodeSet& ops2 = schedule.operationsInvolving(result2.id());
       gum::Set< const gum::ScheduleOperation< double >* > oops2;
 
-      for (gum::NodeSet::const_iterator_safe iter
-           = ops2.beginSafe();   // safe iterator needed here
+      for (gum::NodeSet::const_iterator_safe iter = ops2.beginSafe();   // safe iterator needed here
            iter != ops2.endSafe();
            ++iter) {
         oops2.insert(&(schedule.operation(*iter)));
@@ -147,7 +146,7 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb13(result12, f4, schedule_myadd);
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();
-      gum::ScheduleCombine< double > comb14(result11, result13, schedule_myadd);
+      gum::ScheduleCombine< double >         comb14(result11, result13, schedule_myadd);
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
@@ -206,7 +205,7 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb3(result2, f4, schedule_myadd);
       const gum::ScheduleMultiDim< double >& result3 = comb3.result();
 
-      gum::ScheduleCombine< double > comb4(result1, result3, schedule_myadd);
+      gum::ScheduleCombine< double >         comb4(result1, result3, schedule_myadd);
       const gum::ScheduleMultiDim< double >& result4 = comb4.result();
 
       gum::ScheduleDeleteMultiDim< double > del1(result1);
@@ -271,7 +270,7 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb13(result12, f4, schedule_myadd);
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();
-      gum::ScheduleCombine< double > comb14(result11, result13, schedule_myadd);
+      gum::ScheduleCombine< double >         comb14(result11, result13, schedule_myadd);
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 

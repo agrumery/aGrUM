@@ -48,43 +48,34 @@ namespace gum_tests {
     void testConstructor() {
       gum::BayesNet< double > net1;
       {
-        gum::BIFReader< double > reader(
-           &net1,
-           GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
+        gum::BIFReader< double > reader(&net1, GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
         reader.trace(false);
         reader.proceed();
       }
 
       gum::BayesNet< double > net2;
       {
-        gum::BIFReader< double > reader(
-           &net2,
-           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+        gum::BIFReader< double > reader(&net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
 
       gum::BayesNet< double > net3;
       {
-        gum::BIFReader< double > reader(
-           &net3,
-           GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
+        gum::BIFReader< double > reader(&net3, GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1));
-      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2),
-                       gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3));
     }
 
     void testDifficulty1() {
       gum::BayesNet< double > net2;
       {
-        gum::BIFReader< double > reader(
-           &net2,
-           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+        gum::BIFReader< double > reader(&net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -94,8 +85,7 @@ namespace gum_tests {
 
       gum::BayesNet< double > net;
       {
-        gum::BIFReader< double > reader(&net,
-                                        GET_RESSOURCES_PATH("bif/hailfinder.bif"));
+        gum::BIFReader< double > reader(&net, GET_RESSOURCES_PATH("bif/hailfinder.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -107,9 +97,7 @@ namespace gum_tests {
     void testKLComputation() {
       gum::BayesNet< double > net3;
       {
-        gum::BIFReader< double > reader(
-           &net3,
-           GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
+        gum::BIFReader< double > reader(&net3, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -124,9 +112,7 @@ namespace gum_tests {
 
       gum::BayesNet< double > net4;
       {
-        gum::BIFReader< double > reader(
-           &net4,
-           GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
+        gum::BIFReader< double > reader(&net4, GET_RESSOURCES_PATH("bif/BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -216,9 +202,7 @@ namespace gum_tests {
         if (fabs(kl.hellinger() - 0.321089688) >= 1e-1) continue;    // next try
         if (fabs(kl.jsd() - 0.0696153) >= 1e-1) continue;            // next try
         if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try
-        if (kl.history().size()
-               - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
-            >= 2)
+        if (kl.history().size() - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize() >= 2)
           continue;   // next try
 
         break;   // everything is ok : can stop the loop

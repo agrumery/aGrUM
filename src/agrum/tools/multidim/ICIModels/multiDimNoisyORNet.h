@@ -59,8 +59,7 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    MultiDimNoisyORNet(GUM_SCALAR external_weight,
-                       GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
+    MultiDimNoisyORNet(GUM_SCALAR external_weight, GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
     MultiDimNoisyORNet(const MultiDimNoisyORNet< GUM_SCALAR >& from);
 
@@ -70,9 +69,8 @@ namespace gum {
      * @param bij First variables are new variables, seconds are in from.
      * @param from the copied instance
      */
-    MultiDimNoisyORNet(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
+    MultiDimNoisyORNet(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                       const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORNet();
@@ -132,8 +130,7 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                           s,
-                           const MultiDimNoisyORNet< GUM_SCALAR >& ag);
+  std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORNet< GUM_SCALAR >& ag);
 
 } /* namespace gum */
 

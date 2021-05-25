@@ -56,10 +56,7 @@ namespace gum {
 
     /// @{
     ///  constructors
-    RangeVariable(const std::string& aName,
-                  const std::string& aDesc,
-                  long               minVal,
-                  long               maxVal);
+    RangeVariable(const std::string& aName, const std::string& aDesc, long minVal, long maxVal);
 
     /// by de default min=0, max=1
     RangeVariable(const std::string& aName, const std::string& aDesc);
@@ -157,10 +154,10 @@ namespace gum {
 
     /// @{
     /// The lower bound.
-    long  _minBound_;
+    long _minBound_;
 
     /// The upper bound.
-    long  _maxBound_;
+    long _maxBound_;
 
     /// @}
   };

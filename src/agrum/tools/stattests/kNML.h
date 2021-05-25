@@ -79,13 +79,11 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser< ALLOC >& parser,
-           const Apriori< ALLOC >&              apriori,
+      KNML(const DBRowGeneratorParser< ALLOC >&                                 parser,
+           const Apriori< ALLOC >&                                              apriori,
            const std::vector< std::pair< std::size_t, std::size_t >,
-                              ALLOC< std::pair< std::size_t, std::size_t > > >&
-              ranges,
-           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns
+                              ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
            = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
            const allocator_type& alloc = allocator_type());
 
@@ -107,10 +105,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser< ALLOC >& parser,
-           const Apriori< ALLOC >&              apriori,
-           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns
+      KNML(const DBRowGeneratorParser< ALLOC >&                          parser,
+           const Apriori< ALLOC >&                                       apriori,
+           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
            = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
            const allocator_type& alloc = allocator_type());
 
@@ -232,7 +229,7 @@ namespace gum {
 
       private:
       /// the CTable computation
-      VariableLog2ParamComplexity< ALLOC >  _param_complexity_;
+      VariableLog2ParamComplexity< ALLOC > _param_complexity_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

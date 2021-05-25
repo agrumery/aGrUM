@@ -64,9 +64,7 @@ namespace gum_tests {
       randomInitP(t5);
       randomInitP(t6);
 
-      gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb(
-         multPot,
-         mySum);
+      gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb(multPot, mySum);
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -87,9 +85,8 @@ namespace gum_tests {
         TS_ASSERT(nb_ops == 416);
         TS_ASSERT(res.size() == 3);
 
-        gum::Set< const gum::Potential< double >* >::const_iterator iter
-           = res.begin();
-        const gum::Potential< double >* res1 = *iter;
+        gum::Set< const gum::Potential< double >* >::const_iterator iter = res.begin();
+        const gum::Potential< double >*                             res1 = *iter;
         ++iter;
         const gum::Potential< double >* res2 = *iter;
         ++iter;
@@ -124,8 +121,7 @@ namespace gum_tests {
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
         delete tt2;
 
-        gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2
-           = projcomb;
+        gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2 = projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
@@ -172,9 +168,7 @@ namespace gum_tests {
       randomInitP(t5);
       randomInitP(t6);
 
-      gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
-         multPot,
-         mySum);
+      gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(multPot, mySum);
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -195,9 +189,8 @@ namespace gum_tests {
         TS_ASSERT(nb_ops == 416);
         TS_ASSERT(res.size() == 3);
 
-        gum::Set< const gum::Potential< float >* >::const_iterator iter
-           = res.begin();
-        const gum::Potential< float >* res1 = *iter;
+        gum::Set< const gum::Potential< float >* >::const_iterator iter = res.begin();
+        const gum::Potential< float >*                             res1 = *iter;
         ++iter;
         const gum::Potential< float >* res2 = *iter;
         ++iter;
@@ -233,8 +226,7 @@ namespace gum_tests {
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
         delete tt2;
 
-        gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2
-           = projcomb;
+        gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2 = projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
@@ -274,9 +266,7 @@ namespace gum_tests {
       t2.set(I2, 3.0);
       t3.set(I3, 5.0);
 
-      gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
-         multPot,
-         mySum);
+      gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(multPot, mySum);
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3;

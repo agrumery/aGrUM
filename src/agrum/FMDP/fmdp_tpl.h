@@ -52,13 +52,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE FMDP< GUM_SCALAR >::FMDP(bool onDestructionDeleteVar) {
     GUM_CONSTRUCTOR(FMDP);
-     _onDestructionDeleteVars_ = onDestructionDeleteVar;
+    _onDestructionDeleteVars_ = onDestructionDeleteVar;
 
     // Default Action initialisation
-     _actionMap_.insert(0, new std::string("DEFAULT"));
-     _actionTransitionTable_.insert(0, new VarTransitionTable< GUM_SCALAR >());
-     _actionCostTable_.insert(0, nullptr);
-     _actionRewardTable_.insert(0, nullptr);
+    _actionMap_.insert(0, new std::string("DEFAULT"));
+    _actionTransitionTable_.insert(0, new VarTransitionTable< GUM_SCALAR >());
+    _actionCostTable_.insert(0, nullptr);
+    _actionRewardTable_.insert(0, nullptr);
   }
 
   // ===========================================================================
@@ -67,41 +67,33 @@ namespace gum {
   template < typename GUM_SCALAR >
   FMDP< GUM_SCALAR >::~FMDP() {
     // Action Transition Graph deletion
-    for (auto iterA =  _actionTransitionTable_.beginSafe();
-         iterA !=  _actionTransitionTable_.endSafe();
+    for (auto iterA = _actionTransitionTable_.beginSafe();
+         iterA != _actionTransitionTable_.endSafe();
          ++iterA) {
       if (iterA.val()) {
-        for (auto iterH = (iterA.val())->beginSafe();
-             iterH != (iterA.val())->endSafe();
-             ++iterH)
+        for (auto iterH = (iterA.val())->beginSafe(); iterH != (iterA.val())->endSafe(); ++iterH)
           if (iterH.val()) delete iterH.val();
         delete iterA.val();
       }
     }
 
     // Action cost graph deletion
-    for (auto iterA =  _actionCostTable_.beginSafe();
-         iterA !=  _actionCostTable_.endSafe();
-         ++iterA)
+    for (auto iterA = _actionCostTable_.beginSafe(); iterA != _actionCostTable_.endSafe(); ++iterA)
       if (iterA.val()) delete iterA.val();
 
     // Action reward graph deletion
-    for (auto iterA =  _actionRewardTable_.beginSafe();
-         iterA !=  _actionRewardTable_.endSafe();
+    for (auto iterA = _actionRewardTable_.beginSafe(); iterA != _actionRewardTable_.endSafe();
          ++iterA)
       if (iterA.val()) delete iterA.val();
 
     // Action Name deletion
-    for (auto iterId =  _actionMap_.beginSafe(); iterId !=  _actionMap_.endSafe();
-         ++iterId)
+    for (auto iterId = _actionMap_.beginSafe(); iterId != _actionMap_.endSafe(); ++iterId)
       delete iterId.second();
 
     // Primed Variables deletion
-    for (auto varIter =  _main2primed_.beginSafe();
-         varIter !=  _main2primed_.endSafe();
-         ++varIter) {
+    for (auto varIter = _main2primed_.beginSafe(); varIter != _main2primed_.endSafe(); ++varIter) {
       delete varIter.second();
-      if ( _onDestructionDeleteVars_) delete varIter.first();
+      if (_onDestructionDeleteVars_) delete varIter.first();
     }
 
     GUM_DESTRUCTOR(FMDP);
@@ -122,18 +114,17 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addVariable(const DiscreteVariable* var) {
-    if ( _varSeq_.exists(var))
+    if (_varSeq_.exists(var))
       GUM_ERROR(DuplicateElement,
-                " Variable " << var->name()
-                             << " has already been inserted in FMDP.");
+                " Variable " << var->name() << " has already been inserted in FMDP.");
 
 
-     _varSeq_.insert(var);
+    _varSeq_.insert(var);
 
     // Prime version creation
     DiscreteVariable* primeVar = var->clone();
     primeVar->setName(var->name() + "'");
-     _main2primed_.insert(var, primeVar);
+    _main2primed_.insert(var, primeVar);
   }
 
 
@@ -150,33 +141,27 @@ namespace gum {
   // @throw DuplicateElement if an action with same name already exists
   // ===========================================================================
   template < typename GUM_SCALAR >
-  INLINE void FMDP< GUM_SCALAR >::addAction(Idx                actionId,
-                                            const std::string& action) {
+  INLINE void FMDP< GUM_SCALAR >::addAction(Idx actionId, const std::string& action) {
     if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.")
 
-    for (BijectionIteratorSafe< Idx, const std::string* > actIter
-         =  _actionMap_.beginSafe();
-         actIter !=  _actionMap_.endSafe();
+    for (BijectionIteratorSafe< Idx, const std::string* > actIter = _actionMap_.beginSafe();
+         actIter != _actionMap_.endSafe();
          ++actIter)
       if (*(actIter.second()) == action)
         GUM_ERROR(DuplicateElement,
-                  " Action "
-                     << action
-                     << " has already been inserted in FMDP with this name.");
+                  " Action " << action << " has already been inserted in FMDP with this name.");
 
-    if ( _actionMap_.existsFirst(actionId))
+    if (_actionMap_.existsFirst(actionId))
       GUM_ERROR(DuplicateElement,
-                " An action with same id (" << actionId
-                                            << ") has already been inserted.");
+                " An action with same id (" << actionId << ") has already been inserted.");
 
-     _actionMap_.insert(actionId, new std::string(action));
+    _actionMap_.insert(actionId, new std::string(action));
 
-     _actionTransitionTable_.insert(actionId,
-                                   new VarTransitionTable< GUM_SCALAR >());
-     _actionCostTable_.insert(actionId, nullptr);
-     _actionRewardTable_.insert(actionId, nullptr);
+    _actionTransitionTable_.insert(actionId, new VarTransitionTable< GUM_SCALAR >());
+    _actionCostTable_.insert(actionId, nullptr);
+    _actionRewardTable_.insert(actionId, nullptr);
 
-     _actionSeq_.insert(actionId);
+    _actionSeq_.insert(actionId);
   }
 
 
@@ -199,22 +184,18 @@ namespace gum {
      Idx                                         actionId,
      const DiscreteVariable*                     var,
      const MultiDimImplementation< GUM_SCALAR >* transition) {
-    if (! _varSeq_.exists(var))
-      GUM_ERROR(NotFound,
-                " Variable " << var->name() << " has not been declared before.")
+    if (!_varSeq_.exists(var))
+      GUM_ERROR(NotFound, " Variable " << var->name() << " has not been declared before.")
 
-    if (! _actionTransitionTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+    if (!_actionTransitionTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionTransitionTable_[actionId]->exists(var))
+    if (_actionTransitionTable_[actionId]->exists(var))
       GUM_ERROR(DuplicateElement,
-                " Variable " << var->name()
-                             << " already has a transition table in " << actionId
+                " Variable " << var->name() << " already has a transition table in " << actionId
                              << " table.");
 
-     _actionTransitionTable_[actionId]->insert(var, transition);
+    _actionTransitionTable_[actionId]->insert(var, transition);
   }
 
 
@@ -224,19 +205,14 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
-               FMDP< GUM_SCALAR >::transition(Idx                     actionId,
-                                    const DiscreteVariable* v) const {
-    if (! _actionTransitionTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+               FMDP< GUM_SCALAR >::transition(Idx actionId, const DiscreteVariable* v) const {
+    if (!_actionTransitionTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionTransitionTable_[actionId]->exists(v))
-      return (* _actionTransitionTable_[actionId])[v];
+    if (_actionTransitionTable_[actionId]->exists(v))
+      return (*_actionTransitionTable_[actionId])[v];
     else
-      return (* _actionTransitionTable_[0]).exists(v)
-                        ? (* _actionTransitionTable_[0])[v]
-                        : nullptr;
+      return (*_actionTransitionTable_[0]).exists(v) ? (*_actionTransitionTable_[0])[v] : nullptr;
   }
 
 
@@ -254,19 +230,16 @@ namespace gum {
   // @throw DuplicateElement if action already has a cost
   // ===========================================================================
   template < typename GUM_SCALAR >
-  INLINE void FMDP< GUM_SCALAR >::addCostForAction(
-     Idx                                         actionId,
-     const MultiDimImplementation< GUM_SCALAR >* cost) {
-    if (! _actionCostTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+  INLINE void
+     FMDP< GUM_SCALAR >::addCostForAction(Idx                                         actionId,
+                                          const MultiDimImplementation< GUM_SCALAR >* cost) {
+    if (!_actionCostTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionCostTable_[actionId] != nullptr)
-      GUM_ERROR(DuplicateElement,
-                " Action " << actionName(actionId) << " already has a cost table")
+    if (_actionCostTable_[actionId] != nullptr)
+      GUM_ERROR(DuplicateElement, " Action " << actionName(actionId) << " already has a cost table")
 
-     _actionCostTable_[actionId] = cost;
+    _actionCostTable_[actionId] = cost;
   }
 
 
@@ -275,15 +248,12 @@ namespace gum {
   // action
   // ===========================================================================
   template < typename GUM_SCALAR >
-  INLINE const MultiDimImplementation< GUM_SCALAR >*
-               FMDP< GUM_SCALAR >::cost(Idx actionId) const {
-    if (! _actionCostTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+  INLINE const MultiDimImplementation< GUM_SCALAR >* FMDP< GUM_SCALAR >::cost(Idx actionId) const {
+    if (!_actionCostTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionCostTable_[actionId]) return  _actionCostTable_[actionId];
-    return  _actionCostTable_[0];
+    if (_actionCostTable_[actionId]) return _actionCostTable_[actionId];
+    return _actionCostTable_[0];
   }
 
 
@@ -300,20 +270,17 @@ namespace gum {
   // @throw DuplicateElement if a default reward exists already
   // ===========================================================================
   template < typename GUM_SCALAR >
-  INLINE void FMDP< GUM_SCALAR >::addRewardForAction(
-     Idx                                         actionId,
-     const MultiDimImplementation< GUM_SCALAR >* reward) {
-    if (! _actionRewardTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+  INLINE void
+     FMDP< GUM_SCALAR >::addRewardForAction(Idx                                         actionId,
+                                            const MultiDimImplementation< GUM_SCALAR >* reward) {
+    if (!_actionRewardTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionRewardTable_[actionId] != nullptr)
+    if (_actionRewardTable_[actionId] != nullptr)
       GUM_ERROR(DuplicateElement,
-                " Action " << actionName(actionId)
-                           << " already has a reward table");
+                " Action " << actionName(actionId) << " already has a reward table");
 
-     _actionRewardTable_[actionId] = reward;
+    _actionRewardTable_[actionId] = reward;
   }
 
 
@@ -324,13 +291,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                FMDP< GUM_SCALAR >::reward(Idx actionId) const {
-    if (! _actionRewardTable_.exists(actionId))
-      GUM_ERROR(NotFound,
-                " Action " << actionName(actionId)
-                           << " has not been declared before.");
+    if (!_actionRewardTable_.exists(actionId))
+      GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
-    if ( _actionRewardTable_[actionId]) return  _actionRewardTable_[actionId];
-    return  _actionRewardTable_[0];
+    if (_actionRewardTable_[actionId]) return _actionRewardTable_[actionId];
+    return _actionRewardTable_[0];
   }
 
 
@@ -347,10 +312,10 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const std::string& FMDP< GUM_SCALAR >::actionName(Idx actionId) const {
-    if (! _actionMap_.existsFirst(actionId))
+    if (!_actionMap_.existsFirst(actionId))
       GUM_ERROR(NotFound, "No action with " << actionId << " as identifiant.")
 
-    return *( _actionMap_.second(actionId));
+    return *(_actionMap_.second(actionId));
   }
 
   // ===========================================================================
@@ -358,9 +323,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE Idx FMDP< GUM_SCALAR >::actionId(const std::string& action) const {
-    for (BijectionIterator< Idx, const std::string* > actIter
-         =  _actionMap_.begin();
-         actIter !=  _actionMap_.end();
+    for (BijectionIterator< Idx, const std::string* > actIter = _actionMap_.begin();
+         actIter != _actionMap_.end();
          ++actIter)
       if (*(actIter.second()) == action) { return actIter.first(); }
 
@@ -372,12 +336,10 @@ namespace gum {
   INLINE std::string FMDP< GUM_SCALAR >::toString() const {
     std::stringstream fmdpCore;
 
-    for (auto actionIter = beginActions(); actionIter != endActions();
-         ++actionIter) {
+    for (auto actionIter = beginActions(); actionIter != endActions(); ++actionIter) {
       for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
         if (this->transition(*actionIter, *varIter))
-          fmdpCore << RECAST(this->transition(*actionIter, *varIter))->toDot()
-                   << std::endl;
+          fmdpCore << RECAST(this->transition(*actionIter, *varIter))->toDot() << std::endl;
       if (this->reward(*actionIter))
         fmdpCore << RECAST(this->reward(*actionIter))->toDot() << std::endl;
     }
@@ -393,8 +355,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Size FMDP< GUM_SCALAR >::size() const {
     Size s = 0;
-    for (auto actionIter = beginActions(); actionIter != endActions();
-         ++actionIter) {
+    for (auto actionIter = beginActions(); actionIter != endActions(); ++actionIter) {
       for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
         if (this->transition(*actionIter, *varIter))
           s += this->transition(*actionIter, *varIter)->realSize();
@@ -402,8 +363,7 @@ namespace gum {
     }
 
     for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
-      if (this->transition(0, *varIter))
-        s += this->transition(0, *varIter)->realSize();
+      if (this->transition(0, *varIter)) s += this->transition(0, *varIter)->realSize();
     if (this->reward()) s += this->reward()->realSize();
     return s;
   }

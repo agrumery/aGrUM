@@ -37,14 +37,14 @@ namespace gum {
 
     if (first_time) {
       first_time       = false;
-       _SetIterEndSafe_ = new SetIteratorSafe< int >;
+      _SetIterEndSafe_ = new SetIteratorSafe< int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("SetIteratorSafe",
+      __debug__::_dec_creation_("SetIteratorSafe",
                                 " __set_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIteratorSafe",
+      __debug__::_dec_creation_("HashTableConstIteratorSafe",
                                 " __set_static_end",
                                 0,
                                 "static variable correction",
@@ -52,7 +52,7 @@ namespace gum {
 #  endif
     }
 
-    return  _SetIterEndSafe_;
+    return _SetIterEndSafe_;
   }
 
   // creates (if needed) and returns the iterator  _SetIterEndSafe_
@@ -66,14 +66,14 @@ namespace gum {
 
     if (first_time) {
       first_time   = false;
-       _SetIterEnd_ = new SetIterator< int >;
+      _SetIterEnd_ = new SetIterator< int >;
 #  ifdef GUM_DEBUG_MODE
-       __debug__:: _dec_creation_("SetIterator",
+      __debug__::_dec_creation_("SetIterator",
                                 " __set_static_end",
                                 0,
                                 "static variable correction",
                                 0);
-       __debug__:: _dec_creation_("HashTableConstIterator",
+      __debug__::_dec_creation_("HashTableConstIterator",
                                 " __set_static_end",
                                 0,
                                 "static variable correction",
@@ -81,20 +81,18 @@ namespace gum {
 #  endif
     }
 
-    return  _SetIterEnd_;
+    return _SetIterEnd_;
   }
 
   // creates (if needed) and returns the iterator  _SetIterEnd_
-  const SetIterator< int >* SetIteratorStaticEnd::constEnd4Statics() {
-    return end4Statics();
-  }
+  const SetIterator< int >* SetIteratorStaticEnd::constEnd4Statics() { return end4Statics(); }
 
   // create the end iterator for all Sets
-  const SetIteratorSafe< int >* SetIteratorStaticEnd:: _SetIterEndSafe_
+  const SetIteratorSafe< int >* SetIteratorStaticEnd::_SetIterEndSafe_
      = SetIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Sets
-  const SetIterator< int >* SetIteratorStaticEnd:: _SetIterEnd_
+  const SetIterator< int >* SetIteratorStaticEnd::_SetIterEnd_
      = SetIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */

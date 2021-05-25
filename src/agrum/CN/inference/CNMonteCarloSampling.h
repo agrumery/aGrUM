@@ -26,8 +26,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef  __CN_MC_SAMPLING__H__
-#define  __CN_MC_SAMPLING__H__
+#ifndef __CN_MC_SAMPLING__H__
+#define __CN_MC_SAMPLING__H__
 
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 #include <limits>
@@ -56,38 +56,36 @@ namespace gum {
      *0 for a sample
      * the test is made once
      */
-    template < typename GUM_SCALAR,
-               class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
-    class CNMonteCarloSampling:
-        public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+    template < typename GUM_SCALAR, class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
+    class CNMonteCarloSampling: public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      using  _infEs_ = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
+      using _infEs_ = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
 
       /// @name Private initialization methods
       /// @{
       /** Initialize approximation Scheme. */
-      void  _mcInitApproximationScheme_();
+      void _mcInitApproximationScheme_();
       /** Initialize threads data. */
-      void  _mcThreadDataCopy_();
+      void _mcThreadDataCopy_();
       /// @}
 
       /// @name Private algorithm methods
       /// @{
       /** Thread samples a IBayesNet from the CredalNet. */
-      inline void  _verticesSampling_();
+      inline void _verticesSampling_();
 
       /** Insert CredalNet evidence into a thread BNInferenceEngine. */
-      inline void  _insertEvidence_();
+      inline void _insertEvidence_();
 
       /** Thread performs an inference using BNInferenceEngine. Calls
        *  _verticesSampling_ and  _insertEvidence_. */
-      inline void  _threadInference_();
+      inline void _threadInference_();
 
       /** Update thread data after a IBayesNet inference. */
-      inline void  _threadUpdate_();
+      inline void _threadUpdate_();
 
       /**
        * Get the binary representation of a given value.
@@ -96,7 +94,7 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void  _binaryRep_(std::vector< bool >& toFill, const Idx value) const;
+      inline void _binaryRep_(std::vector< bool >& toFill, const Idx value) const;
 
       /// @}
 
@@ -135,8 +133,7 @@ namespace gum {
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class CNMonteCarloSampling< float, LazyPropagation< float > >;
 
-    extern template class CNMonteCarloSampling< double,
-                                                LazyPropagation< double > >;
+    extern template class CNMonteCarloSampling< double, LazyPropagation< double > >;
 #endif
 
 

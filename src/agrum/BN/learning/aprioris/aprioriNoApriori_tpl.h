@@ -34,10 +34,9 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-       const DatabaseTable< ALLOC >& database,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                 nodeId2columns,
-       const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
+       const DatabaseTable< ALLOC >&                                 database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename AprioriNoApriori< ALLOC >::allocator_type&     alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       Apriori< ALLOC >::setWeight(0.0);
       GUM_CONSTRUCTOR(AprioriNoApriori);
@@ -56,8 +55,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-       const AprioriNoApriori< ALLOC >& from) :
+    INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(const AprioriNoApriori< ALLOC >& from) :
         AprioriNoApriori< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -73,8 +71,7 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-       AprioriNoApriori< ALLOC >&& from) :
+    INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(AprioriNoApriori< ALLOC >&& from) :
         AprioriNoApriori< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -111,8 +108,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriNoApriori< ALLOC >& AprioriNoApriori< ALLOC >::operator=(
-       const AprioriNoApriori< ALLOC >& from) {
+    INLINE AprioriNoApriori< ALLOC >&
+       AprioriNoApriori< ALLOC >::operator=(const AprioriNoApriori< ALLOC >& from) {
       Apriori< ALLOC >::operator=(from);
       return *this;
     }
@@ -155,9 +152,9 @@ namespace gum {
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    INLINE void AprioriNoApriori< ALLOC >::addAllApriori(
-       const IdCondSet< ALLOC >&               idset,
-       std::vector< double, ALLOC< double > >& counts) {}
+    INLINE void
+       AprioriNoApriori< ALLOC >::addAllApriori(const IdCondSet< ALLOC >&               idset,
+                                                std::vector< double, ALLOC< double > >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset

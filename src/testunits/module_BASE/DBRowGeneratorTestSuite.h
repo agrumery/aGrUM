@@ -69,8 +69,7 @@ namespace gum_tests {
       TS_ASSERT(xoutput_row2[3].discr_val == std::size_t(7));
       TS_ASSERT(!generator.hasRows());
 
-      const std::vector< std::size_t > cols_of_interest{std::size_t(0),
-                                                        std::size_t(2)};
+      const std::vector< std::size_t > cols_of_interest{std::size_t(0), std::size_t(2)};
       generator.setColumnsOfInterest(cols_of_interest);
       const auto& xcols = generator.columnsOfInterest();
       TS_ASSERT(xcols.size() == std::size_t(2));
@@ -87,7 +86,7 @@ namespace gum_tests {
       TS_ASSERT(generator.hasRows());
 
       std::allocator< gum::learning::DBTranslatedValue > alloc;
-      gum::learning::DBRowGeneratorIdentity<> generator2(generator, alloc);
+      gum::learning::DBRowGeneratorIdentity<>            generator2(generator, alloc);
       TS_ASSERT(generator2.hasRows());
       TS_ASSERT(generator2.columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator2.columnsOfInterest()[0] == std::size_t(0));
@@ -111,8 +110,7 @@ namespace gum_tests {
       TS_ASSERT(!generator3.hasRows());
       generator3.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<> generator4(std::move(generator2),
-                                                         alloc);
+      gum::learning::DBRowGeneratorIdentity<> generator4(std::move(generator2), alloc);
       TS_ASSERT(generator4.hasRows());
       TS_ASSERT(generator4.columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator4.columnsOfInterest()[0] == std::size_t(0));
@@ -136,8 +134,7 @@ namespace gum_tests {
       TS_ASSERT(!generator5.hasRows());
       generator5.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<>* generator6
-         = generator4.clone(alloc);
+      gum::learning::DBRowGeneratorIdentity<>* generator6 = generator4.clone(alloc);
       TS_ASSERT(generator6->hasRows());
       TS_ASSERT(generator6->columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator6->columnsOfInterest()[0] == std::size_t(0));

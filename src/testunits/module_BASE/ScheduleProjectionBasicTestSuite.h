@@ -32,15 +32,15 @@
 
 namespace gum_tests {
 
-  static gum::MultiDimImplementation< double >* schedule_proj_mysum(
-     const gum::MultiDimImplementation< double >&    t,
-     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >*
+     schedule_proj_mysum(const gum::MultiDimImplementation< double >&    t,
+                         const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectSumMultiDimArray(&t, del_vars);
   }
 
-  static gum::MultiDimImplementation< double >* schedule_proj_mymin(
-     const gum::MultiDimImplementation< double >&    t,
-     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >*
+     schedule_proj_mymin(const gum::MultiDimImplementation< double >&    t,
+                         const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
@@ -57,8 +57,8 @@ namespace gum_tests {
       }
 
       gum::Potential< double > t1;
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
       gum::Set< const gum::DiscreteVariable* > proj_set;
       proj_set.insert(vars[2]);
@@ -75,13 +75,12 @@ namespace gum_tests {
 
       gum::MultiDimProjection< double, gum::MultiDimImplementation > mymultiproj(
          schedule_proj_mysum);
-      gum::MultiDimImplementation< double >* t2
-         = mymultiproj.project(*(t1.content()), del_vars);
+      gum::MultiDimImplementation< double >* t2 = mymultiproj.project(*(t1.content()), del_vars);
 
       gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
       gum::Schedule< double >                schedule;
-      gum::ScheduleMultiDim< double > tt2 = myproj.project(t1, del_vars, schedule);
-      const gum::NodeSet&             available = schedule.availableOperations();
+      gum::ScheduleMultiDim< double >        tt2       = myproj.project(t1, del_vars, schedule);
+      const gum::NodeSet&                    available = schedule.availableOperations();
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter
@@ -136,7 +135,7 @@ namespace gum_tests {
       del4.execute();
 
       gum::ScheduleProjectionBasic< double > xxx = myproj;
-      tt2 = xxx.project(t3, del_vars, schedule);
+      tt2                                        = xxx.project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter
@@ -153,7 +152,7 @@ namespace gum_tests {
       del5.execute();
 
       gum::ScheduleProjectionBasic< double >* yyy = myproj.newFactory();
-      tt2 = yyy->project(t3, del_vars, schedule);
+      tt2                                         = yyy->project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter
@@ -187,8 +186,8 @@ namespace gum_tests {
       }
 
       gum::Potential< double > t1;
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
-         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
+         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
       gum::Set< const gum::DiscreteVariable* > proj_set;
       proj_set.insert(vars[2]);
@@ -205,7 +204,7 @@ namespace gum_tests {
 
       gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
       gum::Schedule< double >                schedule;
-      std::pair< long, long > xxx = myproj.memoryUsage(t1, del_vars, schedule);
+      std::pair< long, long >                xxx = myproj.memoryUsage(t1, del_vars, schedule);
       TS_ASSERT(xxx.first == 16384);
       TS_ASSERT(xxx.second == 16384);
 

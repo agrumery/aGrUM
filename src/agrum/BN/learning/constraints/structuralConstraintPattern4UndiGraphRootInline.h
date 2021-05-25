@@ -31,9 +31,7 @@
 #ifdef GUM_CONSTRAINT_CLASS_NAME
 
 /// sets a new graph from which we will perform checkings
-INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph(const UndiGraph& graph) {
-  setGraphAlone(graph);
-}
+INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph(const UndiGraph& graph) { setGraphAlone(graph); }
 
 /// notify the constraint of a modification of the graph
 INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const EdgeAddition& change) {
@@ -51,38 +49,32 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const GraphChange& change) {
 }
 
 /// checks whether the constraints enable to add arc (x,y)
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition(NodeId x,
-                                                         NodeId y) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition(NodeId x, NodeId y) const {
   return checkEdgeAdditionAlone(x, y);
 }
 
 /// checks whether the constraints enable to remove arc (x,y)
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion(NodeId x,
-                                                         NodeId y) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion(NodeId x, NodeId y) const {
   return checkEdgeDeletionAlone(x, y);
 }
 
 /// checks whether the constraints enable to add an arc
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeAddition& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeAddition& change) const {
   return checkModificationAlone(change);
 }
 
 /// checks whether the constraints enable to remove an arc
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeDeletion& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeDeletion& change) const {
   return checkModificationAlone(change);
 }
 
 /// checks whether the constraints enable to perform a graph change
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   return checkModificationAlone(change);
 }
 
 /// indicates whether a change will always violate the constraint
-INLINE bool
-   GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange& change) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange& change) const {
   return isAlwaysInvalidAlone(change);
 }
 

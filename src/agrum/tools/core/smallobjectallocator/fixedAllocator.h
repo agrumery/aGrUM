@@ -77,41 +77,41 @@ namespace gum {
      * @ingroup core
      */
     // clang-format on
-    struct  _Chunk_ {
+    struct _Chunk_ {
       // ============================================================================
       /// Initializes a Chunk object
       // ============================================================================
-      void  _init_(const std::size_t& blockSize, const unsigned char& numBlocks);
+      void _init_(const std::size_t& blockSize, const unsigned char& numBlocks);
 
       // ============================================================================
       /// Allocates a block of memory
       // ============================================================================
-      void*  _allocate_(const std::size_t& blockSize);
+      void* _allocate_(const std::size_t& blockSize);
 
       // ============================================================================
       /// Deallocates a block of memory
       // ============================================================================
-      void  _deallocat_(void* p, const std::size_t& blockSize);
+      void _deallocat_(void* p, const std::size_t& blockSize);
 
       // ============================================================================
       /// Releases the allocated memory
       // ============================================================================
-      void  _release_();
+      void _release_();
 
       // ============================================================================
       /// Pointer to the managed memory itself
       // ============================================================================
-      unsigned char*  _pData_;
+      unsigned char* _pData_;
 
       // ============================================================================
       /// Holds the index of the first block available in this chunck
       // ============================================================================
-      unsigned char  _firstAvailableBlock_;
+      unsigned char _firstAvailableBlock_;
 
       // ============================================================================
       /// Number of blocks available in this chunck
       // ============================================================================
-      unsigned char  _blocksAvailable_;
+      unsigned char _blocksAvailable_;
     };
 
     public:
@@ -129,8 +129,7 @@ namespace gum {
      * when it is created
      */
     // ============================================================================
-    FixedAllocator(const std::size_t&   blockSize,
-                   const unsigned char& numBlocks = UCHAR_MAX);
+    FixedAllocator(const std::size_t& blockSize, const unsigned char& numBlocks = UCHAR_MAX);
 
     // ============================================================================
     /// Destructor.
@@ -159,34 +158,34 @@ namespace gum {
     // ============================================================================
     /// Returns the size of block allocated by this FixedAllocator
     // ============================================================================
-    const size_t& objectSize() { return  _blockSize_; }
+    const size_t& objectSize() { return _blockSize_; }
 
     private:
     // ============================================================================
     /// Size of a memory block allocated
     // ============================================================================
-    std::size_t  _blockSize_;
+    std::size_t _blockSize_;
 
     // ============================================================================
     /// The maximum number of blocks a chunk can allocate
     // ============================================================================
-    unsigned char  _numBlocks_;
+    unsigned char _numBlocks_;
 
     // ============================================================================
     /// Vector of  _Chunk_ objects
     // ============================================================================
-    typedef std::vector<  _Chunk_ >  _Chunks_;
-     _Chunks_                        _chunks_;
+    typedef std::vector< _Chunk_ > _Chunks_;
+    _Chunks_                       _chunks_;
 
     // ============================================================================
     /// Last Chunk used for an allocation
     // ============================================================================
-     _Chunks_::iterator  _allocChunk_;
+    _Chunks_::iterator _allocChunk_;
 
     // ============================================================================
     /// Last Chunk used for a deallocation
     // ============================================================================
-     _Chunks_::iterator  _deallocChunk_;
+    _Chunks_::iterator _deallocChunk_;
   };
 
 }   // namespace gum

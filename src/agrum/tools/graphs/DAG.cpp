@@ -34,10 +34,7 @@
 namespace gum {
 
   // diamond structure require to explicitly initialize NodeGraphPart
-  DAG::DAG(Size nodes_size,
-           bool nodes_resize_policy,
-           Size arcs_size,
-           bool arcs_resize_policy) :
+  DAG::DAG(Size nodes_size, bool nodes_resize_policy, Size arcs_size, bool arcs_resize_policy) :
       NodeGraphPart(nodes_size, nodes_resize_policy),
       DiGraph(nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(DAG);
@@ -114,11 +111,9 @@ namespace gum {
     return !g.hasUndirectedPath(X, Y);
   }
 
-  bool
-     DAG::dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
+  bool DAG::dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
     if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument,
-                "NodeSets " << X << ", " << Y << " should have no intersection")
+      GUM_ERROR(InvalidArgument, "NodeSets " << X << ", " << Y << " should have no intersection")
 
     NodeSet cumul{Z};
     cumul += X;

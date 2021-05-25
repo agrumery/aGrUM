@@ -77,8 +77,7 @@ namespace gum {
      * }
      * @endcode
      */
-    template < typename GUM_SCALAR               = double,
-               template < typename > class ALLOC = std::allocator >
+    template < typename GUM_SCALAR = double, template < typename > class ALLOC = std::allocator >
     class DBRowGeneratorWithBN: public DBRowGenerator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
@@ -92,12 +91,10 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorWithBN(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                       column_types,
-         const BayesNet< GUM_SCALAR >& bn,
-         const DBRowGeneratorGoal      goal,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+         const BayesNet< GUM_SCALAR >&                                              bn,
+         const DBRowGeneratorGoal                                                   goal,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&              nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 

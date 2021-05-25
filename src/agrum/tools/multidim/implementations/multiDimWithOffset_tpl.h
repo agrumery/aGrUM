@@ -37,8 +37,7 @@ namespace gum {
   // Default constructor: creates an empty null dimensional matrix
 
   template < typename GUM_SCALAR >
-  MultiDimWithOffset< GUM_SCALAR >::MultiDimWithOffset() :
-      MultiDimImplementation< GUM_SCALAR >() {
+  MultiDimWithOffset< GUM_SCALAR >::MultiDimWithOffset() : MultiDimImplementation< GUM_SCALAR >() {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimWithOffset);
   }
@@ -83,7 +82,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimWithOffset< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     Sequence< const DiscreteVariable* > variables = this->variablesSequence();
-    Idx pos = variables.pos(&v);   // throw a NotFound if necessary
+    Idx                                 pos = variables.pos(&v);   // throw a NotFound if necessary
 
     if (variables.size() == 1) {
       gaps_.clear();
@@ -103,11 +102,11 @@ namespace gum {
   // listen to change in each recorded Instantiation.
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimWithOffset< GUM_SCALAR >::changeNotification(
-     const Instantiation&          i,
-     const DiscreteVariable* const var,
-     Idx                           oldval,
-     Idx                           newval) {
+  INLINE void
+     MultiDimWithOffset< GUM_SCALAR >::changeNotification(const Instantiation&          i,
+                                                          const DiscreteVariable* const var,
+                                                          Idx                           oldval,
+                                                          Idx                           newval) {
     GUM_ASSERT(offsets_.exists(&i));
     GUM_ASSERT(offsets_[&i] < this->domainSize());
     GUM_ASSERT(newval < var->domainSize());
@@ -125,8 +124,7 @@ namespace gum {
   // listen to an assignment of a value in a Instantiation
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimWithOffset< GUM_SCALAR >::setChangeNotification(
-     const Instantiation& i) {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
     GUM_ASSERT(offsets_.exists(&i));
     offsets_[&i] = getOffs_(i);
   }
@@ -134,8 +132,7 @@ namespace gum {
   // listen to setFirst in each recorded Instantiation.
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimWithOffset< GUM_SCALAR >::setFirstNotification(
-     const Instantiation& i) {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     GUM_ASSERT(offsets_.exists(&i));
     offsets_[&i] = 0;
   }
@@ -143,8 +140,7 @@ namespace gum {
   // listen to setLast in each recorded Instantiation.
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimWithOffset< GUM_SCALAR >::setLastNotification(
-     const Instantiation& i) {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     GUM_ASSERT(offsets_.exists(&i));
     offsets_[&i] = this->domainSize() - 1;
   }
@@ -152,8 +148,7 @@ namespace gum {
   // listen to increment in each recorded Instantiation.
 
   template < typename GUM_SCALAR >
-  INLINE void
-     MultiDimWithOffset< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
     GUM_ASSERT(offsets_.exists(&i));
     GUM_ASSERT(offsets_[&i] != this->domainSize() - 1);
     ++offsets_[&i];
@@ -162,8 +157,7 @@ namespace gum {
   // listen to increment in each recorded Instantiation.
 
   template < typename GUM_SCALAR >
-  INLINE void
-     MultiDimWithOffset< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
     GUM_ASSERT(offsets_.exists(&i));
     GUM_ASSERT(offsets_[&i] != 0);
     --offsets_[&i];
@@ -200,19 +194,16 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  INLINE Size
-     MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
+  INLINE Size MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
     Idx off = 0;
 
-    for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter
-         = gaps_.beginSafe();
+    for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter = gaps_.beginSafe();
          iter != gaps_.endSafe();
          ++iter)
       if (i.contains(iter.key()))
         off += iter.val() * i.valFromPtr(iter.key());
       else
-        GUM_ERROR(InvalidArgument,
-                  iter.key()->name() << " not present in the instantiation " << i)
+        GUM_ERROR(InvalidArgument, iter.key()->name() << " not present in the instantiation " << i)
 
     return off;
   }
@@ -229,9 +220,8 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimWithOffset< GUM_SCALAR >::computeInstantiationValue_(
-     Instantiation& result,
-     Size           indice) const {
+  INLINE void MultiDimWithOffset< GUM_SCALAR >::computeInstantiationValue_(Instantiation& result,
+                                                                           Size indice) const {
     for (Idx i = 0; i < this->nbrDim(); ++i) {
       const DiscreteVariable& var        = this->variable(i);
       Idx                     domainSize = var.domainSize();
@@ -244,8 +234,7 @@ namespace gum {
 
   // string representation of internal data about i in this.
   template < typename GUM_SCALAR >
-  INLINE std::string
-         MultiDimWithOffset< GUM_SCALAR >::toString(const Instantiation* i) const {
+  INLINE std::string MultiDimWithOffset< GUM_SCALAR >::toString(const Instantiation* i) const {
     if (i->isMaster(this)) {
       std::stringstream s;
       s << offsets_[i];
@@ -258,17 +247,15 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size
-     MultiDimWithOffset< GUM_SCALAR >::toOffset(const Instantiation& i) const {
+  INLINE Size MultiDimWithOffset< GUM_SCALAR >::toOffset(const Instantiation& i) const {
     return getOffs_(i);
   }
 
   // set the Instantiation to the values corresponding to the offset (in this
   // array)
   template < typename GUM_SCALAR >
-  INLINE Instantiation&
-         MultiDimWithOffset< GUM_SCALAR >::fromOffset(Instantiation& i,
-                                                  Size           offset) const {
+  INLINE Instantiation& MultiDimWithOffset< GUM_SCALAR >::fromOffset(Instantiation& i,
+                                                                     Size           offset) const {
     this->computeInstantiationValue_(i, offset);
     return i;
   }

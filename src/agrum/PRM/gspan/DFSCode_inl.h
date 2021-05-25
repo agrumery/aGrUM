@@ -94,8 +94,7 @@ namespace gum {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for (; (iter != codes.end()) && (jter != from.codes.end());
-             ++iter, ++jter) {
+        for (; (iter != codes.end()) && (jter != from.codes.end()); ++iter, ++jter) {
           if ((**iter) != (**jter)) {
             EdgeCode& alpha = **iter;
             EdgeCode& beta  = **jter;
@@ -145,8 +144,7 @@ namespace gum {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for (; (iter != codes.end()) && (jter != from.codes.end());
-             ++iter, ++jter) {
+        for (; (iter != codes.end()) && (jter != from.codes.end()); ++iter, ++jter) {
           if ((**iter) != (**jter)) { return (**iter) < (**jter); }
         }
 

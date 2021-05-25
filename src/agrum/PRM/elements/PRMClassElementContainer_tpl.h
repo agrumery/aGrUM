@@ -35,13 +35,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMClassElementContainer< GUM_SCALAR >::copyIOFlags_(
        const PRMClassElementContainer< GUM_SCALAR >& c) {
-      for (const auto& flag: c. _IOFlags_)
+      for (const auto& flag: c._IOFlags_)
         setIOFlag_(get(flag.first), flag.second);
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-       const std::string& name) :
+    INLINE
+       PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(const std::string& name) :
         PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }
@@ -63,8 +63,7 @@ namespace gum {
        const PRMClassElementContainer< GUM_SCALAR >& source) :
         PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
-      GUM_ERROR(FatalError,
-                "illegal call to ClassElementContainer copy constructor")
+      GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy constructor")
     }
 
     template < typename GUM_SCALAR >
@@ -80,16 +79,14 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt,
        bool                                 b) {
       if (!exists(elt.safeName())) {
-        GUM_ERROR(NotFound,
-                  ": <" + elt.safeName() + "> is not in <" + name() + ">")
+        GUM_ERROR(NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
           getIOFlag_(elt).first = b;
         } catch (NotFound&) { setIOFlag_(elt, std::make_pair(b, false)); }
       } else {
-        GUM_ERROR(WrongClassElement,
-                  "given id is not an PRMAttribute or an PRMAggregate")
+        GUM_ERROR(WrongClassElement, "given id is not an PRMAttribute or an PRMAggregate")
       }
     }
 
@@ -128,36 +125,32 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::pair< bool, bool >&
-           PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
-          const PRMClassElement< GUM_SCALAR >& elt) {
+    INLINE std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
+       const PRMClassElement< GUM_SCALAR >& elt) {
       try {
-        return  _IOFlags_[elt.safeName()];
+        return _IOFlags_[elt.safeName()];
       } catch (NotFound&) {
-        GUM_ERROR(NotFound,
-                  "this ClassElement<GUM_SCALAR> does not have any IO flags")
+        GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
 
     template < typename GUM_SCALAR >
-    INLINE const std::pair< bool, bool >&
-                 PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
-          const PRMClassElement< GUM_SCALAR >& elt) const {
+    INLINE const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
+       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
-        return  _IOFlags_[elt.safeName()];
+        return _IOFlags_[elt.safeName()];
       } catch (NotFound&) {
-        GUM_ERROR(NotFound,
-                  "this ClassElement<GUM_SCALAR> does not have any IO flags")
+        GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMClassElementContainer< GUM_SCALAR >::setIOFlag_(
-       const PRMClassElement< GUM_SCALAR >& elt,
-       const std::pair< bool, bool >&       flags) {
+    INLINE void
+       PRMClassElementContainer< GUM_SCALAR >::setIOFlag_(const PRMClassElement< GUM_SCALAR >& elt,
+                                                          const std::pair< bool, bool >& flags) {
       try {
-         _IOFlags_[elt.safeName()] = flags;
-      } catch (NotFound&) {  _IOFlags_.insert(elt.safeName(), flags); }
+        _IOFlags_[elt.safeName()] = flags;
+      } catch (NotFound&) { _IOFlags_.insert(elt.safeName(), flags); }
     }
 
     template < typename GUM_SCALAR >
@@ -166,8 +159,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(
-       const std::string& name) const {
+    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(const std::string& name) const {
       try {
         get(name);
         return true;
@@ -183,8 +175,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const DAG&
-                 PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
+    INLINE const DAG& PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
       return dag_();
     }
 
@@ -192,9 +183,8 @@ namespace gum {
 } /* namespace gum */
 
 template < typename GUM_SCALAR >
-std::ostream&
-   operator<<(std::ostream&                                           output,
-              const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
+std::ostream& operator<<(std::ostream&                                           output,
+                         const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 

@@ -60,34 +60,29 @@ namespace gum_tests {
 
   class simpleListenerForGHC: public gum::ApproximationSchemeListener {
     private:
-    int          _nbr_;
-    std::string  _mess_;
+    int         _nbr_;
+    std::string _mess_;
 
     public:
     simpleListenerForGHC(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch),  _nbr_(0),  _mess_(""){};
+        gum::ApproximationSchemeListener(sch), _nbr_(0), _mess_(""){};
 
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       _nbr_++;
-      std::cout <<  _nbr_ << ": error = " << b << std::endl;
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      _nbr_++;
+      std::cout << _nbr_ << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void* buffer, const std::string s) {  _mess_ = s; }
+    void whenStop(const void* buffer, const std::string s) { _mess_ = s; }
 
-    int getNbr() { return  _nbr_; }
+    int getNbr() { return _nbr_; }
 
-    std::string getMess() { return  _mess_; }
+    std::string getMess() { return _mess_; }
   };
 
 
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
-    double  _score_(gum::learning::ScoreBIC<>& score,
-                   const gum::NodeId&         node,
-                   const gum::DAG&            dag) {
+    double _score_(gum::learning::ScoreBIC<>& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;
       for (const auto par: dag.parents(node)) {
         cond_set.push_back(par);
@@ -95,7 +90,7 @@ namespace gum_tests {
       return score.score(node, cond_set);
     }
 
-    bool  _applyNextChange_(gum::learning::ScoreBIC<>& score,
+    bool _applyNextChange_(gum::learning::ScoreBIC<>& score,
                            std::vector< double >&     current_scores,
                            gum::DAG&                  dag) {
       const int nb_vars = int(dag.size());
@@ -109,15 +104,13 @@ namespace gum_tests {
             if (!dag.existsArc(gum::Arc(i, j))) {
               try {
                 dag.addArc(gum::NodeId(i), gum::NodeId(j));
-                double new_score =  _score_(score, j, dag) - current_scores[j];
+                double new_score = _score_(score, j, dag) - current_scores[j];
                 if (new_score > 0) {
-                  changes.push_back(
-                     std::pair< gum::learning::GraphChange, double >(
-                        gum::learning::GraphChange(
-                           gum::learning::GraphChangeType::ARC_ADDITION,
-                           gum::NodeId(i),
-                           gum::NodeId(j)),
-                        new_score));
+                  changes.push_back(std::pair< gum::learning::GraphChange, double >(
+                     gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_ADDITION,
+                                                gum::NodeId(i),
+                                                gum::NodeId(j)),
+                     new_score));
                 }
                 dag.eraseArc(gum::Arc(i, j));
               } catch (...) {}
@@ -126,13 +119,12 @@ namespace gum_tests {
             // check remove arc
             if (dag.existsArc(gum::Arc(i, j))) {
               dag.eraseArc(gum::Arc(i, j));
-              double new_score =  _score_(score, j, dag) - current_scores[j];
+              double new_score = _score_(score, j, dag) - current_scores[j];
               if (new_score > 0) {
                 changes.push_back(std::pair< gum::learning::GraphChange, double >(
-                   gum::learning::GraphChange(
-                      gum::learning::GraphChangeType::ARC_DELETION,
-                      gum::NodeId(i),
-                      gum::NodeId(j)),
+                   gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_DELETION,
+                                              gum::NodeId(i),
+                                              gum::NodeId(j)),
                    new_score));
               }
               dag.addArc(gum::NodeId(i), gum::NodeId(j));
@@ -143,17 +135,15 @@ namespace gum_tests {
               dag.eraseArc(gum::Arc(i, j));
               try {
                 dag.addArc(j, i);
-                double new_score_i =  _score_(score, i, dag) - current_scores[i];
-                double new_score_j =  _score_(score, j, dag) - current_scores[j];
+                double new_score_i = _score_(score, i, dag) - current_scores[i];
+                double new_score_j = _score_(score, j, dag) - current_scores[j];
                 double new_score   = new_score_i + new_score_j;
                 if (new_score > 0) {
-                  changes.push_back(
-                     std::pair< gum::learning::GraphChange, double >(
-                        gum::learning::GraphChange(
-                           gum::learning::GraphChangeType::ARC_REVERSAL,
-                           gum::NodeId(i),
-                           gum::NodeId(j)),
-                        new_score));
+                  changes.push_back(std::pair< gum::learning::GraphChange, double >(
+                     gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_REVERSAL,
+                                                gum::NodeId(i),
+                                                gum::NodeId(j)),
+                     new_score));
                 }
                 dag.eraseArc(gum::Arc(j, i));
                 dag.addArc(i, j);
@@ -179,19 +169,17 @@ namespace gum_tests {
           break;
 
         case gum::learning::GraphChangeType::ARC_DELETION:
-          dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
-                                changes[best_i].first.node2()));
+          dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           current_scores[changes[best_i].first.node2()] += changes[best_i].second;
           break;
 
         case gum::learning::GraphChangeType::ARC_REVERSAL:
-          dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
-                                changes[best_i].first.node2()));
+          dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()]
-             =  _score_(score, changes[best_i].first.node1(), dag);
+             = _score_(score, changes[best_i].first.node1(), dag);
           current_scores[changes[best_i].first.node2()]
-             =  _score_(score, changes[best_i].first.node2(), dag);
+             = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
         default:
@@ -204,10 +192,9 @@ namespace gum_tests {
 
     public:
     void test_k2_asia() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -225,11 +212,10 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     apriori(database);
       gum::learning::ScoreK2<>              score(parser, apriori);
 
-      gum::learning::StructuralConstraintSetStatic<
-         gum::learning::StructuralConstraintDAG,
-         gum::learning::StructuralConstraintIndegree
-         // gum::learning::StructuralConstraintSliceOrder
-         >
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintIndegree
+                                                    // gum::learning::StructuralConstraintSliceOrder
+                                                    >
          struct_constraint;
 
       struct_constraint.setMaxIndegree(1);
@@ -244,19 +230,14 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint)
-         = constraint1;
+      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -278,10 +259,9 @@ namespace gum_tests {
     }
 
     void test_asia_with_ordered_values() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -301,11 +281,10 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     apriori(database);
       gum::learning::ScoreK2<>              score(parser, apriori);
 
-      gum::learning::StructuralConstraintSetStatic<
-         gum::learning::StructuralConstraintDAG,
-         gum::learning::StructuralConstraintIndegree
-         // gum::learning::StructuralConstraintSliceOrder
-         >
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintIndegree
+                                                    // gum::learning::StructuralConstraintSliceOrder
+                                                    >
          struct_constraint;
 
       struct_constraint.setMaxIndegree(1);
@@ -320,19 +299,14 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint)
-         = constraint1;
+      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -355,10 +329,9 @@ namespace gum_tests {
 
 
     void test_alarm_with_ordered_values() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/alarm.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -381,11 +354,10 @@ namespace gum_tests {
       gum::learning::ScoreK2<>              score(parser, apriori);
       // score.setMaxNbThreads(24);
 
-      gum::learning::StructuralConstraintSetStatic<
-         gum::learning::StructuralConstraintDAG,
-         gum::learning::StructuralConstraintIndegree
-         // gum::learning::StructuralConstraintSliceOrder
-         >
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintIndegree
+                                                    // gum::learning::StructuralConstraintSliceOrder
+                                                    >
          struct_constraint;
 
       struct_constraint.setMaxIndegree(1);
@@ -400,19 +372,14 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint)
-         = constraint1;
+      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -434,10 +401,9 @@ namespace gum_tests {
     }
 
     void test_alarm_with_ordered_values2() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("csv/alarm.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      const auto&                           var_names = initializer.variableNames();
+      const std::size_t                     nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet<> translator_set;
       gum::LabelizedVariable           xvar("var", "", 0);
@@ -463,11 +429,10 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<>     apriori(database);
       gum::learning::ScoreK2<>              score(parser, apriori);
 
-      gum::learning::StructuralConstraintSetStatic<
-         gum::learning::StructuralConstraintDAG,
-         gum::learning::StructuralConstraintIndegree
-         // gum::learning::StructuralConstraintSliceOrder
-         >
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintIndegree
+                                                    // gum::learning::StructuralConstraintSliceOrder
+                                                    >
          struct_constraint;
 
       struct_constraint.setMaxIndegree(1);
@@ -482,19 +447,14 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast< gum::learning::StructuralConstraintIndegree& >(
-         struct_constraint)
-         = constraint1;
+      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser,
-                                                  apriori,
-                                                  score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-         op_set(struct_constraint);
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
          selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -551,12 +511,10 @@ namespace gum_tests {
 
 
       // create the score and the apriori
-      gum::learning::DBRowGeneratorSet<>    dirichlet_genset;
-      gum::learning::DBRowGeneratorParser<> dirichlet_parser(
-         dirichlet_database.handler(),
-         dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database,
-                                                            dirichlet_parser);
+      gum::learning::DBRowGeneratorSet<>            dirichlet_genset;
+      gum::learning::DBRowGeneratorParser<>         dirichlet_parser(dirichlet_database.handler(),
+                                                             dirichlet_genset);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
@@ -569,19 +527,15 @@ namespace gum_tests {
 
 
         // finalize the learning algorithm
-        gum::learning::StructuralConstraintSetStatic<
-           gum::learning::StructuralConstraintDAG >
+        gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML<> estimator(parser,
-                                                    apriori,
-                                                    score.internalApriori());
+        gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
 
-        gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-           op_set(struct_constraint);
+        gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+           struct_constraint);
 
-        gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                     decltype(op_set) >
+        gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
            selector(score, struct_constraint, op_set);
 
         gum::learning::GreedyHillClimbing search;
@@ -595,9 +549,9 @@ namespace gum_tests {
 
         std::vector< double > scores(nb_vars);
         for (auto node: xdag)
-          scores[std::size_t(node)] =  _score_(score, node, xdag);
+          scores[std::size_t(node)] = _score_(score, node, xdag);
 
-        while ( _applyNextChange_(score, scores, xdag)) {}
+        while (_applyNextChange_(score, scores, xdag)) {}
 
         TS_ASSERT(xdag == dag);
       }

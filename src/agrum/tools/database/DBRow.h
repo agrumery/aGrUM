@@ -50,8 +50,7 @@ namespace gum {
      * DBRow are specified as template parameters of the DBRow.
      *
      * @ingroup learning_database */
-    template < typename T_DATA,
-               template < typename > class ALLOC = std::allocator >
+    template < typename T_DATA, template < typename > class ALLOC = std::allocator >
     class DBRow {
       public:
       using allocator_type = ALLOC< T_DATA >;
@@ -88,7 +87,7 @@ namespace gum {
       template < template < typename > class OTHER_ALLOC >
       DBRow(const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& cells,
             const double                                        weight = 1.0,
-            const ALLOC< T_DATA >& alloc = ALLOC< T_DATA >());
+            const ALLOC< T_DATA >&                              alloc  = ALLOC< T_DATA >());
 
       /// initializer with a move from a vector of cells
       DBRow(std::vector< T_DATA, ALLOC< T_DATA > >&& cells,

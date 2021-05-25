@@ -66,8 +66,7 @@ namespace gum {
     /**
      * Default constructor.
      */
-    MultiDimICIModel(GUM_SCALAR external_weight,
-                     GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
+    MultiDimICIModel(GUM_SCALAR external_weight, GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
     /**
      * Default constructor.
@@ -80,9 +79,8 @@ namespace gum {
      * @param bij First variables are new variables, seconds are in from.
      * @param from the copied instance
      */
-    MultiDimICIModel(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const MultiDimICIModel< GUM_SCALAR >&                                from);
+    MultiDimICIModel(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                     const MultiDimICIModel< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.
@@ -113,9 +111,7 @@ namespace gum {
 
     virtual void setChangeNotification(const gum::Instantiation&) override{};
 
-    std::string toString(const gum::Instantiation* i) const override {
-      return i->toString();
-    };
+    std::string toString(const gum::Instantiation* i) const override { return i->toString(); };
 
     /**
      * @brief Copy of a multiDimICIModel.
@@ -126,8 +122,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      **/
-    virtual void
-       copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
     /**
      * @return the real number of parameters used for this table. This function
@@ -159,7 +154,7 @@ namespace gum {
     /// @}
     protected:
     /// \f$ p_0 \f$ in Henrion (89).
-    mutable GUM_SCALAR  _external_weight_;
+    mutable GUM_SCALAR _external_weight_;
 
     // ============================================================================
     /// @name causal weights
@@ -167,13 +162,12 @@ namespace gum {
     /// @{
 
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-    mutable GUM_SCALAR  _default_weight_;
+    mutable GUM_SCALAR _default_weight_;
 
-    mutable HashTable< const DiscreteVariable*, GUM_SCALAR >  _causal_weights_;
+    mutable HashTable< const DiscreteVariable*, GUM_SCALAR > _causal_weights_;
     /// @}
 
-    virtual void replace_(const DiscreteVariable* x,
-                          const DiscreteVariable* y) override;
+    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
   };
 
 

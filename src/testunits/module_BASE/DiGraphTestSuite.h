@@ -36,9 +36,7 @@ namespace gum_tests {
 
   class DiGraphTestSuite: public CxxTest::TestSuite {
     private:
-    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
-      return aNodeId * 2;
-    }
+    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 
     static gum::Size simpleArcMapFunction(const gum::Arc& anArc) {
       return anArc.tail() + anArc.head();
@@ -262,9 +260,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (gum::List< gum::Size >::iterator iter = list.begin();
-           iter != list.end();
-           ++iter) {
+      for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
         s += *iter;
       }
 
@@ -283,8 +279,7 @@ namespace gum_tests {
     void testHashMapNodes() {
       gum::DiGraph graph = buildGraph();
 
-      gum::NodeProperty< gum::Size > hashmap
-         = graph.nodesProperty(&simpleDoubleFunction);
+      gum::NodeProperty< gum::Size > hashmap = graph.nodesProperty(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
@@ -302,8 +297,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap
-                                = graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -316,21 +310,17 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (gum::List< gum::Size >::iterator iter = list.begin();
-           iter != list.end();
-           ++iter) {
+      for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
         s += *iter;
       }
 
-      TS_ASSERT_EQUALS(s,
-                       (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      TS_ASSERT_EQUALS(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapArcs() {
       gum::DiGraph graph = buildGraph();
 
-      gum::ArcProperty< gum::Size > hashmap
-         = graph.arcsProperty(&simpleArcMapFunction);
+      gum::ArcProperty< gum::Size > hashmap = graph.arcsProperty(&simpleArcMapFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;

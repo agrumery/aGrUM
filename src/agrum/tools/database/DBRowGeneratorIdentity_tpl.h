@@ -44,13 +44,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-          column_types,
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(
-           column_types,
-           DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES,
-           alloc) {
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type&            alloc) :
+        DBRowGenerator< ALLOC >(column_types,
+                                DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES,
+                                alloc) {
       GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
     }
 
@@ -61,7 +59,7 @@ namespace gum {
        const DBRowGeneratorIdentity< ALLOC >&                          from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
-         _input_row_(from. _input_row_) {
+        _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGeneratorIdentity);
     }
 
@@ -79,7 +77,7 @@ namespace gum {
        DBRowGeneratorIdentity< ALLOC >&&                               from,
        const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
-         _input_row_(from. _input_row_) {
+        _input_row_(from._input_row_) {
       GUM_CONS_MOV(DBRowGeneratorIdentity);
     }
 
@@ -94,8 +92,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGeneratorIdentity< ALLOC >* DBRowGeneratorIdentity< ALLOC >::clone(
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc)
-       const {
+       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBRowGeneratorIdentity< ALLOC > > allocator(alloc);
       DBRowGeneratorIdentity< ALLOC >*         generator = allocator.allocate(1);
       try {
@@ -110,8 +107,7 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >*
-       DBRowGeneratorIdentity< ALLOC >::clone() const {
+    DBRowGeneratorIdentity< ALLOC >* DBRowGeneratorIdentity< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -125,38 +121,37 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
-       const DBRowGeneratorIdentity< ALLOC >& from) {
+    DBRowGeneratorIdentity< ALLOC >&
+       DBRowGeneratorIdentity< ALLOC >::operator=(const DBRowGeneratorIdentity< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
-       _input_row_                      = from. _input_row_;
+      _input_row_                      = from._input_row_;
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
-       DBRowGeneratorIdentity< ALLOC >&& from) {
+    DBRowGeneratorIdentity< ALLOC >&
+       DBRowGeneratorIdentity< ALLOC >::operator=(DBRowGeneratorIdentity< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
-       _input_row_                      = from. _input_row_;
+      _input_row_                      = from._input_row_;
       return *this;
     }
 
 
     /// generates new lines from those the generator gets in input
     template < template < typename > class ALLOC >
-    INLINE const DBRow< DBTranslatedValue, ALLOC >&
-                 DBRowGeneratorIdentity< ALLOC >::generate() {
+    INLINE const DBRow< DBTranslatedValue, ALLOC >& DBRowGeneratorIdentity< ALLOC >::generate() {
       this->decreaseRemainingRows();
-      return * _input_row_;
+      return *_input_row_;
     }
 
 
     /// computes the rows it will provide in output
     template < template < typename > class ALLOC >
-    INLINE std::size_t DBRowGeneratorIdentity< ALLOC >::computeRows_(
-       const DBRow< DBTranslatedValue, ALLOC >& row) {
-       _input_row_ = &row;
+    INLINE std::size_t
+       DBRowGeneratorIdentity< ALLOC >::computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) {
+      _input_row_ = &row;
       return std::size_t(1);
     }
 

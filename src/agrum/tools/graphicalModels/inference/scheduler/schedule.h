@@ -120,8 +120,7 @@ namespace gum {
     /** @brief adds a constraint indicating that an operation cannot be
      * performed
      * before a set of operations */
-    void
-         forceAfter(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
+    void forceAfter(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
                     const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_before);
     void forceAfter(NodeId op_to_force, const NodeSet& ops_before);
 
@@ -133,8 +132,7 @@ namespace gum {
 
     /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
-    void
-         forceBefore(const ScheduleOperation< GUM_SCALAR >& op_to_force,
+    void forceBefore(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
                      const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_after);
     void forceBefore(NodeId op_to_force, const NodeSet& ops_after);
 
@@ -154,12 +152,10 @@ namespace gum {
     NodeId nodeId(const ScheduleOperation< GUM_SCALAR >&) const;
 
     /// resturns the association between operations anf nodeIds
-    const NodeProperty< const ScheduleOperation< GUM_SCALAR >* >&
-       operations() const;
+    const NodeProperty< const ScheduleOperation< GUM_SCALAR >* >& operations() const;
 
     /// returns the set of operations involving a given multidim table
-    const NodeSet&
-       operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
+    const NodeSet& operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
     const NodeSet& operationsInvolving(MultiDimId table_id) const;
 
     /// returns the set of ScheduleOperations that can be executed at once
@@ -204,17 +200,17 @@ namespace gum {
     /** Operations can be scheduled as a DAG: nodes without parents can be
      * executed directly. The other nodes need their parents to be executed to
      * get all their arguments constructed. */
-    mutable DAG  _dag_;
+    mutable DAG _dag_;
 
     /// a hashtable assigning to each node of the DAG an operation
-    NodeProperty< ScheduleOperation< GUM_SCALAR >* >  _node2operation_;
+    NodeProperty< ScheduleOperation< GUM_SCALAR >* > _node2operation_;
 
     /// a hashtable assigning to each operation id a node id in the DAG
-    HashTable< OperationId, NodeId >  _operation2node_;
+    HashTable< OperationId, NodeId > _operation2node_;
 
     /** @brief a hashtable assigning to each ScheduleMultiDim resulting from a
      * computation the MultiDimOperation node id that created it */
-    HashTable< MultiDimId, NodeId >  _created_multidims_;
+    HashTable< MultiDimId, NodeId > _created_multidims_;
 
     /// a list of operations whose parents are not properly set
     /** when entering operations to be performed in a "wrong" order, it may
@@ -224,17 +220,17 @@ namespace gum {
      * we compute the correct set of parents of the operations of this list
      * and, when this is done, we remove them from the list. As such, when the
      * list is empty, the schedule can be performed. */
-    mutable NodeSet  _operations_with_wrong_parents_;
+    mutable NodeSet _operations_with_wrong_parents_;
 
     /// the set of operations that can be executed at once
-    mutable NodeSet  _operations_available_;
+    mutable NodeSet _operations_available_;
 
     /// for each multidim, store the set of operations involving it
-    HashTable< MultiDimId, NodeSet* >  _multidim2operations_;
+    HashTable< MultiDimId, NodeSet* > _multidim2operations_;
 
     /** @brief updates the set of parents for the nodes whoses parents are not
      * correct yet and update accordingly the available operations */
-    void  _updateWrongParents_() const;
+    void _updateWrongParents_() const;
   };
 
 } /* namespace gum */

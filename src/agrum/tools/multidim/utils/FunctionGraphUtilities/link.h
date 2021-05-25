@@ -115,10 +115,10 @@ namespace gum {
 
     private:
     /// The element embedded in this link
-    T  _element_;
+    T _element_;
 
     /// The next link in the list
-    Link< T >*  _nextLink_;
+    Link< T >* _nextLink_;
   };
 
   /**
@@ -193,7 +193,7 @@ namespace gum {
 
     private:
     /// The first link of our list
-    Link< T >*  _firstLink_;
+    Link< T >* _firstLink_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

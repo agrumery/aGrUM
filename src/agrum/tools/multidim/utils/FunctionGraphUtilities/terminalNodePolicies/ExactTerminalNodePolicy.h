@@ -55,15 +55,13 @@ namespace gum {
     /// @{
 
     /// Insert a new terminal node with given value
-    void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) {
-       _map_.insert(n, v);
-    }
+    void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) { _map_.insert(n, v); }
 
     /// Remove node matching given id
-    void eraseTerminalNode(const NodeId& n) {  _map_.eraseFirst(n); }
+    void eraseTerminalNode(const NodeId& n) { _map_.eraseFirst(n); }
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes() {  _map_.clear(); }
+    void clearAllTerminalNodes() { _map_.clear(); }
 
     /// @}
     // ============================================================================
@@ -72,14 +70,10 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNodeWithId(const NodeId& n) const {
-      return  _map_.existsFirst(n);
-    }
+    bool existsTerminalNodeWithId(const NodeId& n) const { return _map_.existsFirst(n); }
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNodeWithValue(const GUM_SCALAR& v) const {
-      return  _map_.existsSecond(v);
-    }
+    bool existsTerminalNodeWithValue(const GUM_SCALAR& v) const { return _map_.existsSecond(v); }
 
     /// @}
     // ============================================================================
@@ -88,14 +82,10 @@ namespace gum {
     /// @{
 
     /// Returns the value of the terminal node that has the given id
-    const GUM_SCALAR& terminalNodeValue(const NodeId& n) const {
-      return  _map_.second(n);
-    }
+    const GUM_SCALAR& terminalNodeValue(const NodeId& n) const { return _map_.second(n); }
 
     /// Returns the id of the terminal node that has the given value
-    const NodeId& terminalNodeId(const GUM_SCALAR& v) const {
-      return  _map_.first(v);
-    }
+    const NodeId& terminalNodeId(const GUM_SCALAR& v) const { return _map_.first(v); }
 
     /// @}
     // ============================================================================
@@ -104,27 +94,27 @@ namespace gum {
     /// @{
 
     /// Initializes the constant safe iterator on terminal nodes
-    void beginValues() const {  _mappy_ =  _map_.beginSafe(); }
+    void beginValues() const { _mappy_ = _map_.beginSafe(); }
 
     /// Indicates if constant safe iterator has reach end of terminal nodes list
-    bool hasValue() const { return  _mappy_ !=  _map_.endSafe(); }
+    bool hasValue() const { return _mappy_ != _map_.endSafe(); }
 
     /// Increments the constant safe iterator
-    void nextValue() const { ++ _mappy_; }
+    void nextValue() const { ++_mappy_; }
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_SCALAR& value() const { return  _mappy_.second(); }
+    const GUM_SCALAR& value() const { return _mappy_.second(); }
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
-    const NodeId& id() const { return  _mappy_.first(); }
+    const NodeId& id() const { return _mappy_.first(); }
 
     /// @}
 
     private:
-    Bijection< NodeId, GUM_SCALAR >                      _map_;
-    mutable BijectionIteratorSafe< NodeId, GUM_SCALAR >  _mappy_;
+    Bijection< NodeId, GUM_SCALAR >                     _map_;
+    mutable BijectionIteratorSafe< NodeId, GUM_SCALAR > _mappy_;
   };
 
 }   // End of namespace gum

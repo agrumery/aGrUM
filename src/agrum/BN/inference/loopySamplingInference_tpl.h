@@ -59,9 +59,7 @@ namespace gum {
     }
     lbp.makeInference();
 
-    if (!this->isSetEstimator) {
-      this->setEstimatorFromLBP_(&lbp, virtualLBPSize_);
-    }
+    if (!this->isSetEstimator) { this->setEstimatorFromLBP_(&lbp, virtualLBPSize_); }
 
     this->loopApproxInference_();
   }

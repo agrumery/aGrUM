@@ -61,15 +61,13 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >*
-           Median< GUM_SCALAR >::newFactory() const {
+    INLINE MultiDimContainer< GUM_SCALAR >* Median< GUM_SCALAR >::newFactory() const {
       return new Median< GUM_SCALAR >();
     }
 
     template < typename GUM_SCALAR >
     Idx Median< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
-      if (i.nbrDim() < 2)
-        return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
+      if (i.nbrDim() < 2) return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
 
       // we assume that every (parent) variable has the same domainSize
       Idx maxVal = i.variable(1).domainSize();
@@ -102,7 +100,7 @@ namespace gum {
     INLINE Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
-                                           bool& stop_iteration) const {
+                                           bool&                   stop_iteration) const {
       return 0;
     }
 

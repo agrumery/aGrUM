@@ -59,9 +59,8 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion */
     OrderedTriangulation(const OrderedEliminationSequenceStrategy& elimSeq
                          = OrderedEliminationSequenceStrategy(),
-                         const JunctionTreeStrategy& JTStrategy
-                         = DefaultJunctionTreeStrategy(),
-                         bool minimality = false);
+                         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+                         bool                        minimality = false);
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -86,9 +85,8 @@ namespace gum {
                          const std::vector< NodeId >*              sequence,
                          const OrderedEliminationSequenceStrategy& elimSeq
                          = OrderedEliminationSequenceStrategy(),
-                         const JunctionTreeStrategy& JTStrategy
-                         = DefaultJunctionTreeStrategy(),
-                         bool minimality = false);
+                         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+                         bool                        minimality = false);
 
     /// copy constructor
     OrderedTriangulation(const OrderedTriangulation& from);
@@ -125,8 +123,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not
      *  notcopied but only referenced by the triangulation algorithm. */
-    virtual void setGraph(const UndiGraph*            graph,
-                          const NodeProperty< Size >* domsizes) final;
+    virtual void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) final;
 
     /// sets the sequence of elimination (only the reference is stored)
     /** The elimination sequence is kept outside this class for efficiency
@@ -151,7 +148,7 @@ namespace gum {
 
     /// the elimination sequence to apply
     /** @warning  _order_ is not owned by the orderedTriangulation class */
-    const std::vector< NodeId >*  _order_{nullptr};
+    const std::vector< NodeId >* _order_{nullptr};
 
     /// @}
 

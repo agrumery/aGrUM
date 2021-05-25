@@ -35,8 +35,7 @@ namespace gum {
 
   /// Default constructor
   template < typename GUM_SCALAR >
-  WeightedSampling< GUM_SCALAR >::WeightedSampling(
-     const IBayesNet< GUM_SCALAR >* bn) :
+  WeightedSampling< GUM_SCALAR >::WeightedSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(WeightedSampling);
   }
@@ -58,8 +57,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
-                                                      Instantiation prev) {
+  Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     *w              = 1.0f;
     bool wrongValue = false;
     do {

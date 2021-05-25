@@ -31,12 +31,11 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  EvidenceInference< GUM_SCALAR >::EvidenceInference(
-     const IBayesNet< GUM_SCALAR >* bn) :
+  EvidenceInference< GUM_SCALAR >::EvidenceInference(const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      BayesNetInference< GUM_SCALAR >:: _setBayesNetDuringConstruction_(bn);
+      BayesNetInference< GUM_SCALAR >::_setBayesNetDuringConstruction_(bn);
     }
 
     GUM_CONSTRUCTOR(EvidenceInference);

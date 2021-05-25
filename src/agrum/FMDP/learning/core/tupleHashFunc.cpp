@@ -33,17 +33,15 @@
 namespace gum {
 
   // Returns the value of a key as a Size.
-  Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::
-     castToSize(
-        const std::tuple< unsigned int, unsigned int, unsigned int >& key) {
-    return HashFuncConst::pi * Size(std::get< 0 >(key)) * Size(2)
-         * Size(std::get< 1 >(key)) * Size(3) * Size(std::get< 2 >(key));
+  Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::castToSize(
+     const std::tuple< unsigned int, unsigned int, unsigned int >& key) {
+    return HashFuncConst::pi * Size(std::get< 0 >(key)) * Size(2) * Size(std::get< 1 >(key))
+         * Size(3) * Size(std::get< 2 >(key));
   }
 
   // the hash function for tuple (unsigned int, unsigned int, unsigned int)
-  Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::
-       operator()(
-        const std::tuple< unsigned int, unsigned int, unsigned int >& key) const {
+  Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::operator()(
+     const std::tuple< unsigned int, unsigned int, unsigned int >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

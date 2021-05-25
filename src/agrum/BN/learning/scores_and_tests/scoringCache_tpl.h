@@ -54,7 +54,7 @@ namespace gum {
        const ScoringCache< ALLOC >&                          from,
        const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-         _scores_(from. _scores_) {
+        _scores_(from._scores_) {
       GUM_CONS_CPY(ScoringCache);
     }
 
@@ -71,7 +71,7 @@ namespace gum {
        ScoringCache< ALLOC >&&                               from,
        const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-         _scores_(std::move(from. _scores_)) {
+        _scores_(std::move(from._scores_)) {
       GUM_CONS_MOV(ScoringCache);
     }
 
@@ -116,68 +116,65 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >&
        ScoringCache< ALLOC >::operator=(const ScoringCache< ALLOC >& from) {
-      if (&from != this) {  _scores_ = from. _scores_; }
+      if (&from != this) { _scores_ = from._scores_; }
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE ScoringCache< ALLOC >&
-       ScoringCache< ALLOC >::operator=(ScoringCache< ALLOC >&& from) {
-      if (&from != this) {  _scores_ = std::move(from. _scores_); }
+    INLINE ScoringCache< ALLOC >& ScoringCache< ALLOC >::operator=(ScoringCache< ALLOC >&& from) {
+      if (&from != this) { _scores_ = std::move(from._scores_); }
       return *this;
     }
 
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache< ALLOC >::insert(const IdCondSet< ALLOC >& idset,
-                                              double                    score) {
-       _scores_.insert(idset, score);
+    INLINE void ScoringCache< ALLOC >::insert(const IdCondSet< ALLOC >& idset, double score) {
+      _scores_.insert(idset, score);
     }
 
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache< ALLOC >::insert(IdCondSet< ALLOC >&& idset,
-                                              double               score) {
-       _scores_.insert(std::move(idset), std::move(score));
+    INLINE void ScoringCache< ALLOC >::insert(IdCondSet< ALLOC >&& idset, double score) {
+      _scores_.insert(std::move(idset), std::move(score));
     }
 
 
     /// removes a score (if it exists)
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::erase(const IdCondSet< ALLOC >& idset) {
-       _scores_.erase(idset);
+      _scores_.erase(idset);
     }
 
 
     /// indicates whether a given score exists
     template < template < typename > class ALLOC >
     INLINE bool ScoringCache< ALLOC >::exists(const IdCondSet< ALLOC >& idset) {
-      return  _scores_.exists(idset);
+      return _scores_.exists(idset);
     }
 
 
     /// returns a given score
     template < template < typename > class ALLOC >
     INLINE double ScoringCache< ALLOC >::score(const IdCondSet< ALLOC >& idset) {
-      return  _scores_[idset];
+      return _scores_[idset];
     }
 
 
     /// removes all the stored scores
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::clear() {
-       _scores_.clear();
+      _scores_.clear();
     }
 
 
     /// returns the number of scores saved in the cache
     template < template < typename > class ALLOC >
     INLINE std::size_t ScoringCache< ALLOC >::size() const {
-      return  _scores_.size();
+      return _scores_.size();
     }
 
 

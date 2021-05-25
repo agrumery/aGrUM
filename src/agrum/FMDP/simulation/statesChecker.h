@@ -70,25 +70,25 @@ namespace gum {
     // ==========================================================================
     /// @{
 
-    bool checkState(const Instantiation& state) { return  _checker_->get(state); }
+    bool checkState(const Instantiation& state) { return _checker_->get(state); }
 
     void addState(const Instantiation&);
 
-    Idx nbVisitedStates() { return  _nbVisitedStates_; }
+    Idx nbVisitedStates() { return _nbVisitedStates_; }
 
     void reset(const Instantiation&);
 
     /// @}
 
     private:
-    void  _insertState_(const Instantiation&, NodeId, Idx);
+    void _insertState_(const Instantiation&, NodeId, Idx);
 
-    Idx  _nbVisitedStates_;
+    Idx _nbVisitedStates_;
 
-    MultiDimFunctionGraph< bool >*  _checker_;
-    NodeId                          _checkerTrueId_,  _checkerFalseId_;
+    MultiDimFunctionGraph< bool >* _checker_;
+    NodeId                         _checkerTrueId_, _checkerFalseId_;
 
-    Set< Instantiation* >  _visitedStates_;
+    Set< Instantiation* > _visitedStates_;
   };
 } /* namespace gum */
 

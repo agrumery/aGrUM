@@ -33,38 +33,33 @@
 namespace gum {
 
   /// default constructor
-  UnconstrainedEliminationSequenceStrategy::
-     UnconstrainedEliminationSequenceStrategy() {
+  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy() {
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 
   /// constructor for an a priori non empty graph
-  UnconstrainedEliminationSequenceStrategy::
-     UnconstrainedEliminationSequenceStrategy(
-        UndiGraph*                  graph,
-        const NodeProperty< Size >* dom_sizes) :
+  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* dom_sizes) :
       EliminationSequenceStrategy(graph, dom_sizes) {
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 
   /// copy constructor
-  UnconstrainedEliminationSequenceStrategy::
-     UnconstrainedEliminationSequenceStrategy(
-        const UnconstrainedEliminationSequenceStrategy& from) :
+  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
+     const UnconstrainedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from) {
     GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }
 
   /// move constructor
-  UnconstrainedEliminationSequenceStrategy::
-     UnconstrainedEliminationSequenceStrategy(
-        UnconstrainedEliminationSequenceStrategy&& from) :
+  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
+     UnconstrainedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)){
          GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy)}
 
       /// destructor
-      UnconstrainedEliminationSequenceStrategy::
-         ~UnconstrainedEliminationSequenceStrategy() {
+      UnconstrainedEliminationSequenceStrategy::~UnconstrainedEliminationSequenceStrategy() {
     GUM_DESTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 

@@ -87,13 +87,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              apriori,
+         const DBRowGeneratorParser< ALLOC >&                                 parser,
+         const Apriori< ALLOC >&                                              apriori,
          const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >&
-            ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+                            ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
@@ -115,10 +113,9 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              apriori,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+         const DBRowGeneratorParser< ALLOC >&                          parser,
+         const Apriori< ALLOC >&                                       apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
@@ -140,8 +137,7 @@ namespace gum {
       virtual CorrectedMutualInformation< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual CorrectedMutualInformation< ALLOC >*
-         clone(const allocator_type& alloc) const;
+      virtual CorrectedMutualInformation< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~CorrectedMutualInformation();
@@ -160,8 +156,7 @@ namespace gum {
          operator=(const CorrectedMutualInformation< ALLOC >& from);
 
       /// move operator
-      CorrectedMutualInformation< ALLOC >&
-         operator=(CorrectedMutualInformation< ALLOC >&& from);
+      CorrectedMutualInformation< ALLOC >& operator=(CorrectedMutualInformation< ALLOC >&& from);
 
       /// @}
 
@@ -292,8 +287,7 @@ namespace gum {
       template < template < typename > class XALLOC >
       void setRanges(
          const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >&
-            new_ranges);
+                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
@@ -324,76 +318,76 @@ namespace gum {
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
-      ScoreLog2Likelihood< ALLOC >  _NH_;
+      ScoreLog2Likelihood< ALLOC > _NH_;
 
       /// the object computing the NML k score
-      KNML< ALLOC >  _k_NML_;
+      KNML< ALLOC > _k_NML_;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
-      ScoreMDL< ALLOC >  _score_MDL_;
+      ScoreMDL< ALLOC > _score_MDL_;
 
       /// the mode used for the correction
-      KModeTypes  _kmode_{KModeTypes::MDL};
+      KModeTypes _kmode_{KModeTypes::MDL};
 
 
       /// a Boolean indicating whether we wish to use the I cache
       /** The I cache is the cache used to store N times the values of
        * mutual informations */
-      bool  _use_ICache_{true};
+      bool _use_ICache_{true};
 
       /// a Boolean indicating whether we wish to use the H cache
       /** The H cache is the cache for storing N times the entropy. Mutual
        * information is computed as a summation/subtraction of entropies. The
        * latter are cached directly within the  _NH_ instance. */
-      bool  _use_HCache_{true};
+      bool _use_HCache_{true};
 
       /// a Boolean indicating whether we wish to use the K cache
       /** The K cache is used to cache K-scores, which corresponds to
        * summations/subtractions of kNML individual values. The cache for the
        * latter is called the Cnr cache because it uses Cnr values */
-      bool  _use_KCache_{true};
+      bool _use_KCache_{true};
 
       /// a Boolean indicating whether we wish to use the Cnr cache
       /** When using the kNML class, the computation of the K-scores
        * consists of summations/subtractions of kNML scores. The latter
        * essentially amount to computing Cnr values. Those can be
        * cached directly within the  _k_NML_ instance */
-      bool  _use_CnrCache_{true};
+      bool _use_CnrCache_{true};
 
 
       /// the ICache
-      ScoringCache< ALLOC >  _ICache_;
+      ScoringCache< ALLOC > _ICache_;
 
       /// the KCache
-      ScoringCache< ALLOC >  _KCache_;
+      ScoringCache< ALLOC > _KCache_;
 
 
       /// an empty conditioning set
-      const std::vector< NodeId, ALLOC< NodeId > >  _empty_conditioning_set_;
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_conditioning_set_;
 
       /// a constant used to prevent numerical instabilities
-      const double  _threshold_{1e-10};
+      const double _threshold_{1e-10};
 
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double  _NI_score_(NodeId                                        var_x,
+      double _NI_score_(NodeId                                        var_x,
                         NodeId                                        var_y,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double  _NI_score_(NodeId                                        var_x,
+      double _NI_score_(NodeId                                        var_x,
                         NodeId                                        var_y,
                         NodeId                                        var_z,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
 
       /// computes the complexity correction for the mutual information
-      double  _K_score_(NodeId                                        var_x,
+      double _K_score_(NodeId                                        var_x,
                        NodeId                                        var_y,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// computes the complexity correction for the mutual information
-      double  _K_score_(NodeId                                        var_x,
+      double _K_score_(NodeId                                        var_x,
                        NodeId                                        var_y,
                        NodeId                                        var_z,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);

@@ -78,21 +78,18 @@ namespace gum {
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
       AprioriDirichletFromDatabase(
-         const DatabaseTable< ALLOC >&        learning_db,
-         const DBRowGeneratorParser< ALLOC >& apriori_parser,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
+         const DatabaseTable< ALLOC >&                                 learning_db,
+         const DBRowGeneratorParser< ALLOC >&                          apriori_parser,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriDirichletFromDatabase(
-         const AprioriDirichletFromDatabase< ALLOC >& from);
+      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriDirichletFromDatabase(
-         const AprioriDirichletFromDatabase< ALLOC >& from,
-         const allocator_type&                        alloc);
+      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase< ALLOC >& from,
+                                   const allocator_type&                        alloc);
 
       /// move constructor
       AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from);
@@ -105,8 +102,7 @@ namespace gum {
       virtual AprioriDirichletFromDatabase< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriDirichletFromDatabase< ALLOC >*
-         clone(const allocator_type& alloc) const;
+      virtual AprioriDirichletFromDatabase< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~AprioriDirichletFromDatabase();
@@ -160,18 +156,16 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void
-         addAllApriori(const IdCondSet< ALLOC >&               idset,
-                       std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
+                                 std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(
-         const IdCondSet< ALLOC >&               idset,
-         std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
+                                          std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
 
@@ -180,13 +174,13 @@ namespace gum {
 
       private:
       // the record counter used to parse the apriori database
-      RecordCounter< ALLOC >  _counter_;
+      RecordCounter< ALLOC > _counter_;
 
       // the internal weight is equal to weight_ / nb rows of apriori database
       // this internal weight is used to ensure that assigning a weight of 1
       // to the apriori is equivalent to adding just one row to the learning
       // database
-      double  _internal_weight_;
+      double _internal_weight_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -28,15 +28,14 @@ namespace gum {
   namespace learning {
 
     template < typename GUM_SCALAR >
-    genericBNLearner::Database::Database(
-       const std::string&                filename,
-       const BayesNet< GUM_SCALAR >&     bn,
-       const std::vector< std::string >& missing_symbols) {
+    genericBNLearner::Database::Database(const std::string&                filename,
+                                         const BayesNet< GUM_SCALAR >&     bn,
+                                         const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      genericBNLearner:: _checkFileName_(filename);
-      DBInitializerFromCSV<> initializer(filename);
-      const auto&            xvar_names = initializer.variableNames();
-      std::size_t            nb_vars    = xvar_names.size();
+      genericBNLearner::_checkFileName_(filename);
+      DBInitializerFromCSV<>                initializer(filename);
+      const auto&                           xvar_names = initializer.variableNames();
+      std::size_t                           nb_vars    = xvar_names.size();
       HashTable< std::string, std::size_t > var_names(nb_vars);
       for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
         var_names.insert(xvar_names[i], i);
@@ -51,34 +50,32 @@ namespace gum {
       for (auto node: nodes) {
         const Variable& var = bn.variable(node);
         try {
-           _database_.insertTranslator(var, var_names[var.name()], missing_symbols);
+          _database_.insertTranslator(var, var_names[var.name()], missing_symbols);
         } catch (NotFound&) {
-          GUM_ERROR(MissingVariableInDatabase,
-                    "Variable '" << var.name() << "' is missing")
+          GUM_ERROR(MissingVariableInDatabase, "Variable '" << var.name() << "' is missing")
         }
-         _nodeId2cols_.insert(NodeId(node), i++);
+        _nodeId2cols_.insert(NodeId(node), i++);
       }
 
       // fill the database
-      initializer.fillDatabase( _database_);
+      initializer.fillDatabase(_database_);
 
       // get the domain sizes of the variables
-      for (auto dom:  _database_.domainSizes())
-         _domain_sizes_.push_back(dom);
+      for (auto dom: _database_.domainSizes())
+        _domain_sizes_.push_back(dom);
 
       // create the parser
-       _parser_
-         = new DBRowGeneratorParser<>( _database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
     }
 
 
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > genericBNLearner::Database:: _BNVars_() const {
+    BayesNet< GUM_SCALAR > genericBNLearner::Database::_BNVars_() const {
       BayesNet< GUM_SCALAR > bn;
-      const std::size_t      nb_vars =  _database_.nbVariables();
+      const std::size_t      nb_vars = _database_.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
         const DiscreteVariable& var
-           = dynamic_cast< const DiscreteVariable& >( _database_.variable(i));
+           = dynamic_cast< const DiscreteVariable& >(_database_.variable(i));
         bn.add(var);
       }
       return bn;
@@ -86,12 +83,11 @@ namespace gum {
 
 
     template < typename GUM_SCALAR >
-    genericBNLearner::genericBNLearner(
-       const std::string&                 filename,
-       const gum::BayesNet< GUM_SCALAR >& bn,
-       const std::vector< std::string >&  missing_symbols) :
-         _score_database_(filename, bn, missing_symbols) {
-       _no_apriori_ = new AprioriNoApriori<>( _score_database_.databaseTable());
+    genericBNLearner::genericBNLearner(const std::string&                 filename,
+                                       const gum::BayesNet< GUM_SCALAR >& bn,
+                                       const std::vector< std::string >&  missing_symbols) :
+        _score_database_(filename, bn, missing_symbols) {
+      _no_apriori_ = new AprioriNoApriori<>(_score_database_.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
@@ -100,12 +96,11 @@ namespace gum {
     template < template < typename > class XALLOC >
     void genericBNLearner::useDatabaseRanges(
        const std::vector< std::pair< std::size_t, std::size_t >,
-                          XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges) {
+                          XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) {
       // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood<> score( _score_database_.parser(), * _no_apriori_);
+      ScoreLog2Likelihood<> score(_score_database_.parser(), *_no_apriori_);
       score.setRanges(new_ranges);
-       _ranges_ = score.ranges();
+      _ranges_ = score.ranges();
     }
   }   // namespace learning
 }   // namespace gum

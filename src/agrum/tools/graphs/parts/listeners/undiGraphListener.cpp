@@ -44,23 +44,15 @@ namespace gum {
   }
 
   UndiGraphListener::UndiGraphListener(UndiGraph* g) {
-    if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
-    }
+    if (!g) { GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to") }
 
     GUM_CONSTRUCTOR(UndiGraphListener);
     graph_ = g;
 
     GUM_CONNECT((*graph_), onNodeAdded, (*this), UndiGraphListener::whenNodeAdded);
-    GUM_CONNECT((*graph_),
-                onNodeDeleted,
-                (*this),
-                UndiGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onNodeDeleted, (*this), UndiGraphListener::whenNodeDeleted);
     GUM_CONNECT((*graph_), onEdgeAdded, (*this), UndiGraphListener::whenEdgeAdded);
-    GUM_CONNECT((*graph_),
-                onEdgeDeleted,
-                (*this),
-                UndiGraphListener::whenEdgeDeleted);
+    GUM_CONNECT((*graph_), onEdgeDeleted, (*this), UndiGraphListener::whenEdgeDeleted);
   }
 
   UndiGraphListener::~UndiGraphListener() {

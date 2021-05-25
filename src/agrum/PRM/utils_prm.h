@@ -67,9 +67,9 @@ namespace gum {
      *encountered.
      */
     template < typename GUM_SCALAR >
-    Potential< GUM_SCALAR >* copyPotential(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const Potential< GUM_SCALAR >& source);
+    Potential< GUM_SCALAR >*
+       copyPotential(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+                     const Potential< GUM_SCALAR >&                                       source);
 
     template < typename GUM_SCALAR >
     Potential< GUM_SCALAR >* multPotential(const Potential< GUM_SCALAR >& t1,

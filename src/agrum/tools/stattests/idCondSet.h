@@ -98,8 +98,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IdCondSetIterator< ALLOC >&
-         operator=(const IdCondSetIterator< ALLOC >& from);
+      IdCondSetIterator< ALLOC >& operator=(const IdCondSetIterator< ALLOC >& from);
 
       /// move operator
       IdCondSetIterator< ALLOC >& operator=(IdCondSetIterator< ALLOC >&& from);
@@ -166,14 +165,14 @@ namespace gum {
 
       private:
       /// a pointer on the sequence stored in the IdCondSet
-      const Sequence< NodeId, ALLOC< NodeId > >*  _seq_{nullptr};
+      const Sequence< NodeId, ALLOC< NodeId > >* _seq_{nullptr};
 
       /// The index in the IdCondSet's sequence where the iterator is pointing.
-      std::size_t  _index_{std::size_t(0)};
+      std::size_t _index_{std::size_t(0)};
 
 
       /// places the index to the end of the sequence
-      void  _gotoEnd_();
+      void _gotoEnd_();
 
       friend class IdCondSet< ALLOC >;
 
@@ -223,7 +222,7 @@ namespace gum {
       IdCondSet(const std::vector< NodeId, ALLOC< NodeId > >& ids,
                 const bool                                    rhs_ids,
                 const bool                                    ordered_ids,
-                const allocator_type& alloc = allocator_type());
+                const allocator_type&                         alloc = allocator_type());
 
       /// default constructor with one variable on the left side
       /** @param var1 the variable on the left side of the conditioning bar
@@ -234,8 +233,8 @@ namespace gum {
        * @param alloc the allocator used to store the data in the IdCondSet */
       IdCondSet(NodeId                                        var1,
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-                const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc           = allocator_type());
+                const bool                                    ordered_rhs_ids = false,
+                const allocator_type&                         alloc           = allocator_type());
 
       /// default constructor with two variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -253,8 +252,8 @@ namespace gum {
                 NodeId                                        var2,
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
                 const bool                                    ordered_lhs_vars,
-                const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc           = allocator_type());
+                const bool                                    ordered_rhs_ids = false,
+                const allocator_type&                         alloc           = allocator_type());
 
       /// default constructor with three variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -272,8 +271,8 @@ namespace gum {
                 NodeId                                        var3,
                 const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
                 const bool                                    ordered_lhs_vars,
-                const bool            ordered_rhs_ids = false,
-                const allocator_type& alloc           = allocator_type());
+                const bool                                    ordered_rhs_ids = false,
+                const allocator_type&                         alloc           = allocator_type());
 
       /// copy constructor
       IdCondSet(const IdCondSet< ALLOC >& from);
@@ -411,13 +410,13 @@ namespace gum {
 
       private:
       /// the ordered set of ids on the right side of the conditioning bar
-      Sequence< NodeId, ALLOC< NodeId > >  _ids_;
+      Sequence< NodeId, ALLOC< NodeId > > _ids_;
 
       /// the number of left ids
-      std::size_t  _nb_lhs_ids_{std::size_t(0)};
+      std::size_t _nb_lhs_ids_{std::size_t(0)};
 
       /// Stores the end iterator for fast access.
-      IdCondSetIterator< ALLOC >  _end_safe_;
+      IdCondSetIterator< ALLOC > _end_safe_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -425,8 +424,7 @@ namespace gum {
 
     /// the display operator
     template < template < typename > class ALLOC >
-    std::ostream& operator<<(std::ostream&             stream,
-                             const IdCondSet< ALLOC >& idset);
+    std::ostream& operator<<(std::ostream& stream, const IdCondSet< ALLOC >& idset);
 
   } /* namespace learning */
 
@@ -444,8 +442,7 @@ namespace gum {
     static Size castToSize(const learning::IdCondSet< ALLOC >& key);
 
     /// computes the hashed value of a key
-    virtual Size
-       operator()(const learning::IdCondSet< ALLOC >& key) const override final;
+    virtual Size operator()(const learning::IdCondSet< ALLOC >& key) const override final;
   };
 
 

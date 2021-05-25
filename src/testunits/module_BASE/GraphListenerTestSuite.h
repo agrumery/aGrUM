@@ -47,116 +47,114 @@ namespace gum_tests {
   class GraphListenerTestSuite: public CxxTest::TestSuite {
     class CountListener: public gum::Listener {
       private:
-      int   _nbrNode_,  _nbrArcs_,  _nbrEdges_;
-      bool  _isOn_;
+      int  _nbrNode_, _nbrArcs_, _nbrEdges_;
+      bool _isOn_;
 
       public:
       CountListener() {
-         _nbrNode_ =  _nbrArcs_ =  _nbrEdges_ = 0;
-         _isOn_                             = false;
+        _nbrNode_ = _nbrArcs_ = _nbrEdges_ = 0;
+        _isOn_                             = false;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) {  _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) {  _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
 
       void whenEdgeAdded(const void*, gum::NodeId f, gum::NodeId s) {
-         _nbrEdges_++;
+        _nbrEdges_++;
 
-        if ( _isOn_) GUM_TRACE(f << "--" << s << "(" <<  _nbrEdges_ << ")");
+        if (_isOn_) GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")");
       }
 
       void whenEdgeDeleted(const void*, gum::NodeId f, gum::NodeId s) {
-         _nbrEdges_--;
+        _nbrEdges_--;
 
-        if ( _isOn_) GUM_TRACE(f << "--" << s << "(" <<  _nbrEdges_ << ")");
+        if (_isOn_) GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")");
       }
 
-      const int nodes() const { return  _nbrNode_; }
+      const int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return  _nbrArcs_; }
+      const int arcs() const { return _nbrArcs_; }
 
-      const int edges() const { return  _nbrEdges_; }
+      const int edges() const { return _nbrEdges_; }
 
-      void on() {  _isOn_ = true; }
+      void on() { _isOn_ = true; }
 
-      void off() {  _isOn_ = false; }
+      void off() { _isOn_ = false; }
     };
 
     class DiGraphCounter: public gum::DiGraphListener {
       private:
-      int  _nbrNode_,  _nbrArcs_;
+      int _nbrNode_, _nbrArcs_;
 
       public:
-      DiGraphCounter(gum::DiGraph* g) : gum::DiGraphListener(g) {
-         _nbrNode_ =  _nbrArcs_ = 0;
-      }
+      DiGraphCounter(gum::DiGraph* g) : gum::DiGraphListener(g) { _nbrNode_ = _nbrArcs_ = 0; }
 
-      void whenNodeAdded(const void*, gum::NodeId) {  _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) {  _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
 
-      const int nodes() const { return  _nbrNode_; }
+      const int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return  _nbrArcs_; }
+      const int arcs() const { return _nbrArcs_; }
     };
 
     class UndiGraphCounter: public gum::UndiGraphListener {
       private:
-      int  _nbrNode_,  _nbrEdges_;
+      int _nbrNode_, _nbrEdges_;
 
       public:
       UndiGraphCounter(gum::UndiGraph* g) : gum::UndiGraphListener(g) {
-         _nbrNode_ =  _nbrEdges_ = 0;
+        _nbrNode_ = _nbrEdges_ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) {  _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) {  _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) {  _nbrEdges_++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) {  _nbrEdges_--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
 
-      const int nodes() const { return  _nbrNode_; }
+      const int nodes() const { return _nbrNode_; }
 
-      const int edges() const { return  _nbrEdges_; }
+      const int edges() const { return _nbrEdges_; }
     };
 
     class MixedGraphCounter: public gum::MixedGraphListener {
       private:
-      int  _nbrNode_,  _nbrArcs_,  _nbrEdges_;
+      int _nbrNode_, _nbrArcs_, _nbrEdges_;
 
       public:
       MixedGraphCounter(gum::MixedGraph* g) : gum::MixedGraphListener(g) {
-         _nbrNode_ =  _nbrArcs_ =  _nbrEdges_ = 0;
+        _nbrNode_ = _nbrArcs_ = _nbrEdges_ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) {  _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) {  _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) {  _nbrArcs_--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) {  _nbrEdges_++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) {  _nbrEdges_--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
 
-      const int nodes() const { return  _nbrNode_; }
+      const int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return  _nbrArcs_; }
+      const int arcs() const { return _nbrArcs_; }
 
-      const int edges() const { return  _nbrEdges_; }
+      const int edges() const { return _nbrEdges_; }
     };
 
     private:
@@ -412,9 +410,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c2.edges(), 2 + 3);
       TS_ASSERT_EQUALS(c2.arcs(), 2 + 3);
 
-      g1.eraseEdge(
-         gum::Edge(id1,
-                   id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
+      g1.eraseEdge(gum::Edge(id1,
+                             id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
 
       TS_ASSERT_EQUALS(c1.nodes(), 6);
       TS_ASSERT_EQUALS(c1.edges(), 2);

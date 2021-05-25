@@ -36,13 +36,13 @@ namespace gum {
       MarkovNetInference< GUM_SCALAR >(mn) {
     // assign a MN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
-      MarkovNetInference< GUM_SCALAR >:: _setMarkovNetDuringConstruction_(mn);
+      MarkovNetInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
     }
 
     // sets all the nodes as targets
     if (mn != nullptr) {
-       _targeted_mode_ = false;
-       _targets_       = mn->graph().asNodeSet();
+      _targeted_mode_ = false;
+      _targets_       = mn->graph().asNodeSet();
     }
 
     GUM_CONSTRUCTOR(MarginalTargetedMNInference);
@@ -58,10 +58,9 @@ namespace gum {
 
   // fired when a new MN is assigned to the inference engine
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::onModelChanged_(
-     const GraphicalModel* mn) {
-     _targeted_mode_ = true;
-     _setAllMarginalTargets_();
+  void MarginalTargetedMNInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
+    _targeted_mode_ = true;
+    _setAllMarginalTargets_();
   }
 
 
@@ -71,8 +70,7 @@ namespace gum {
 
   // return true if variable is a target
   template < typename GUM_SCALAR >
-  INLINE bool
-     MarginalTargetedMNInference< GUM_SCALAR >::isTarget(NodeId node) const {
+  INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the mn
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -82,13 +80,13 @@ namespace gum {
       GUM_ERROR(UndefinedElement, node << " is not a NodeId in the Markov network")
     }
 
-    return  _targets_.contains(node);
+    return _targets_.contains(node);
   }
 
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
-  INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTarget(
-     const std::string& nodeName) const {
+  INLINE bool
+     MarginalTargetedMNInference< GUM_SCALAR >::isTarget(const std::string& nodeName) const {
     return isTarget(this->MN().idFromName(nodeName));
   }
 
@@ -98,11 +96,10 @@ namespace gum {
   INLINE void MarginalTargetedMNInference< GUM_SCALAR >::eraseAllTargets() {
     onAllMarginalTargetsErased_();
 
-     _targets_.clear();
+    _targets_.clear();
     setTargetedMode_();   // does nothing if already in targeted mode
 
-    this->setState_(
-       MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+    this->setState_(MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
 
@@ -116,17 +113,15 @@ namespace gum {
                 "inference algorithm");
 
     if (!this->MN().graph().exists(target)) {
-      GUM_ERROR(UndefinedElement,
-                target << " is not a NodeId in the Markov network")
+      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov network")
     }
 
     setTargetedMode_();   // does nothing if already in targeted mode
     // add the new target
-    if (! _targets_.contains(target)) {
-       _targets_.insert(target);
+    if (!_targets_.contains(target)) {
+      _targets_.insert(target);
       onMarginalTargetAdded_(target);
-      this->setState_(
-         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      this->setState_(MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
@@ -143,11 +138,10 @@ namespace gum {
 
     setTargetedMode_();   // does nothing if already in targeted mode
     for (const auto target: this->MN().graph()) {
-      if (! _targets_.contains(target)) {
-         _targets_.insert(target);
+      if (!_targets_.contains(target)) {
+        _targets_.insert(target);
         onMarginalTargetAdded_(target);
-        this->setState_(
-           MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+        this->setState_(MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
       }
     }
   }
@@ -155,8 +149,7 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::addTarget(
-     const std::string& nodeName) {
+  void MarginalTargetedMNInference< GUM_SCALAR >::addTarget(const std::string& nodeName) {
     // check if the node belongs to the Markov network
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -177,26 +170,23 @@ namespace gum {
                 "inference algorithm");
 
     if (!this->MN().graph().exists(target)) {
-      GUM_ERROR(UndefinedElement,
-                target << " is not a NodeId in the Markov network")
+      GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov network")
     }
 
 
-    if ( _targets_.contains(target)) {
-       _targeted_mode_ = true;   // we do not use setTargetedMode_ because we do not
+    if (_targets_.contains(target)) {
+      _targeted_mode_ = true;   // we do not use setTargetedMode_ because we do not
                                 // want to clear the targets
       onMarginalTargetErased_(target);
-       _targets_.erase(target);
-      this->setState_(
-         MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
+      _targets_.erase(target);
+      this->setState_(MarkovNetInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
     }
   }
 
 
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >::eraseTarget(
-     const std::string& nodeName) {
+  void MarginalTargetedMNInference< GUM_SCALAR >::eraseTarget(const std::string& nodeName) {
     // check if the node belongs to the Markov network
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -209,25 +199,23 @@ namespace gum {
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
-  INLINE const NodeSet&
-     MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
-    return  _targets_;
+  INLINE const NodeSet& MarginalTargetedMNInference< GUM_SCALAR >::targets() const noexcept {
+    return _targets_;
   }
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
-  INLINE const Size
-     MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
-    return  _targets_.size();
+  INLINE const Size MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
+    return _targets_.size();
   }
 
 
   /// sets all the nodes of the Markov net as targets
   template < typename GUM_SCALAR >
-  void MarginalTargetedMNInference< GUM_SCALAR >:: _setAllMarginalTargets_() {
-     _targets_.clear();
+  void MarginalTargetedMNInference< GUM_SCALAR >::_setAllMarginalTargets_() {
+    _targets_.clear();
     if (!this->hasNoModel_()) {
-       _targets_ = this->MN().graph().asNodeSet();
+      _targets_ = this->MN().graph().asNodeSet();
       onAllMarginalTargetsAdded_();
     }
   }
@@ -239,11 +227,8 @@ namespace gum {
 
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
-     MarginalTargetedMNInference< GUM_SCALAR >::posterior(NodeId node) {
-    if (this->hardEvidenceNodes().contains(node)) {
-      return *(this->evidence()[node]);
-    }
+  const Potential< GUM_SCALAR >& MarginalTargetedMNInference< GUM_SCALAR >::posterior(NodeId node) {
+    if (this->hardEvidenceNodes().contains(node)) { return *(this->evidence()[node]); }
 
     if (!isTarget(node)) {
       // throws UndefinedElement if var is not a target
@@ -258,8 +243,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     MarginalTargetedMNInference< GUM_SCALAR >::posterior(
-        const std::string& nodeName) {
+     MarginalTargetedMNInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->MN().idFromName(nodeName));
   }
 
@@ -275,23 +259,20 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     MarginalTargetedMNInference< GUM_SCALAR >::H(const std::string& nodeName) {
+  INLINE GUM_SCALAR MarginalTargetedMNInference< GUM_SCALAR >::H(const std::string& nodeName) {
     return H(this->MN().idFromName(nodeName));
   }
 
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
-        NodeId         target,
-        const NodeSet& evs) {
+     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
     const auto& vtarget = this->MN().variable(target);
 
     if (evs.contains(target)) {
       GUM_ERROR(InvalidArgument,
-                "Target <" << vtarget.name() << "> (" << target
-                           << ") can not be in evs (" << evs << ").");
+                "Target <" << vtarget.name() << "> (" << target << ") can not be in evs (" << evs
+                           << ").");
     }
     auto condset = this->MN().minimalCondSet(target, evs);
 
@@ -323,10 +304,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
-     MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
-        const std::string&                target,
-        const std::vector< std::string >& evs) {
+  Potential< GUM_SCALAR > MarginalTargetedMNInference< GUM_SCALAR >::evidenceImpact(
+     const std::string&                target,
+     const std::vector< std::string >& evs) {
     const auto& mn = this->MN();
     return evidenceImpact(mn.idFromName(target), mn.nodeset(evs));
   }
@@ -334,13 +314,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedMNInference< GUM_SCALAR >::isTargetedMode_() const {
-    return  _targeted_mode_;
+    return _targeted_mode_;
   }
   template < typename GUM_SCALAR >
   INLINE void MarginalTargetedMNInference< GUM_SCALAR >::setTargetedMode_() {
-    if (! _targeted_mode_) {
-       _targets_.clear();
-       _targeted_mode_ = true;
+    if (!_targeted_mode_) {
+      _targets_.clear();
+      _targeted_mode_ = true;
     }
   }
 } /* namespace gum */

@@ -49,8 +49,7 @@ namespace gum_tests {
       gum::BayesNet< double >   net;
       gum::BIFReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader
-                                   = new gum::BIFReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
@@ -77,8 +76,8 @@ namespace gum_tests {
     }
 
     void testRead_file2_float() {
-      std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
       gum::BIFReader< double > reader(net, file);
 
@@ -133,8 +132,8 @@ namespace gum_tests {
     }
 
     void testRead_file2_double() {
-      std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
+      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       gum::Size nbrErr = gum::Size(0);
@@ -201,8 +200,8 @@ namespace gum_tests {
     }
 
     void testRead_file3() {
-      std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file3.bif");
-      auto        net  = new gum::BayesNet< double >();
+      std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file3.bif");
+      auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       gum::Size nbrErr = gum::Size(0);
@@ -628,8 +627,7 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HRBP"));
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
-        const gum::DiscreteVariable& errlowoutput
-           = net->variable(idMap["ERRLOWOUTPUT"]);
+        const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
 
         TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
 
@@ -639,8 +637,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
 
-        const gum::Potential< double >& errlowoutputCPT
-           = net->cpt(idMap["ERRLOWOUTPUT"]);
+        const gum::Potential< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
 
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
 
@@ -665,13 +662,10 @@ namespace gum_tests {
 
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
-      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
-          && idMap.exists("LVFAILURE")) {
-        const gum::DiscreteVariable& lvedvolume
-           = net->variable(idMap["LVEDVOLUME"]);
+      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") && idMap.exists("LVFAILURE")) {
+        const gum::DiscreteVariable& lvedvolume = net->variable(idMap["LVEDVOLUME"]);
 
-        const gum::DiscreteVariable& hypovolemia
-           = net->variable(idMap["HYPOVOLEMIA"]);
+        const gum::DiscreteVariable& hypovolemia = net->variable(idMap["HYPOVOLEMIA"]);
 
         const gum::DiscreteVariable& lvfailure = net->variable(idMap["LVFAILURE"]);
 
@@ -908,9 +902,7 @@ namespace gum_tests {
       }
       {
         gum::BayesNet< double >  net;
-        gum::BIFReader< double > reader(
-           &net,
-           std::string(GET_RESSOURCES_PATH("bif/dBN.bif")));
+        gum::BIFReader< double > reader(&net, std::string(GET_RESSOURCES_PATH("bif/dBN.bif")));
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)2);
         TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
       }

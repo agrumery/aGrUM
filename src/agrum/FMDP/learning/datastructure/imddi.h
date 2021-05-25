@@ -96,8 +96,7 @@ namespace gum {
     void addObservation(const Observation*);
 
     protected:
-    void updateNodeWithObservation_(const Observation* newObs,
-                                    NodeId             currentNodeId);
+    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId);
 
     public:
     // ==========================================================================
@@ -115,8 +114,8 @@ namespace gum {
     void removeNode_(NodeId removedNodeId);
 
     private:
-    void  _addLeaf_(NodeId);
-    void  _removeLeaf_(NodeId);
+    void _addLeaf_(NodeId);
+    void _removeLeaf_(NodeId);
 
     /// @}
 
@@ -129,16 +128,15 @@ namespace gum {
     // ==========================================================================
     /// Computes the score of the given variables for the given node
     // ==========================================================================
-    void  _updateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
-    void  _downdateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void _updateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void _downdateScore_(const DiscreteVariable*, NodeId, VariableSelector& vs);
 
     // ==========================================================================
     /// For each node in the given set, this methods checks whether or not
     /// we should installed the given variable as a test.
     /// If so, the node is updated
     // ==========================================================================
-    void
-        _updateNodeSet_(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
+    void _updateNodeSet_(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -148,33 +146,32 @@ namespace gum {
     void updateFunctionGraph();
 
     private:
-    void    _rebuildFunctionGraph_();
-    NodeId  _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< true >);
-    NodeId  _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< false >);
+    void   _rebuildFunctionGraph_();
+    NodeId _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< true >);
+    NodeId _insertLeafInFunctionGraph_(AbstractLeaf*, Int2Type< false >);
 
     /// @}
     ///
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
-      for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           =  _varOrder_.beginSafe();
-           varIter !=  _varOrder_.endSafe();
+      for (SequenceIteratorSafe< const DiscreteVariable* > varIter = _varOrder_.beginSafe();
+           varIter != _varOrder_.endSafe();
            ++varIter)
         ret->add(**varIter);
     }
 
     private:
-    Sequence< const DiscreteVariable* >  _varOrder_;
+    Sequence< const DiscreteVariable* > _varOrder_;
 
-    LeafAggregator  _lg_;
+    LeafAggregator _lg_;
 
-    HashTable< NodeId, AbstractLeaf* >  _leafMap_;
+    HashTable< NodeId, AbstractLeaf* > _leafMap_;
 
     /// The total number of observation added to this tree
-    Idx  _nbTotalObservation_;
+    Idx _nbTotalObservation_;
 
     /// The threshold above which we consider variables to be dependant
-    double  _attributeSelectionThreshold_;
+    double _attributeSelectionThreshold_;
 
     /// The threshold above which two leaves does not share the same probability
     /// distribution

@@ -86,16 +86,13 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBDeu(
-         const DBRowGeneratorParser< ALLOC >& parser,
-         const Apriori< ALLOC >&              apriori,
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >&
-            ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-            nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      ScoreBDeu(const DBRowGeneratorParser< ALLOC >&                                 parser,
+                const Apriori< ALLOC >&                                              apriori,
+                const std::vector< std::pair< std::size_t, std::size_t >,
+                                   ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
+                = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -113,10 +110,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBDeu(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori< ALLOC >&              apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                   nodeId2columns
+      ScoreBDeu(const DBRowGeneratorParser< ALLOC >&                          parser,
+                const Apriori< ALLOC >&                                       apriori,
+                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
                 = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                 const allocator_type& alloc = allocator_type());
 
@@ -198,8 +194,7 @@ namespace gum {
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns a non empty string if the apriori is compatible with the score.
        */
-      static std::string isAprioriCompatible(const std::string& apriori_type,
-                                             double             weight = 1.0f);
+      static std::string isAprioriCompatible(const std::string& apriori_type, double weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
@@ -218,10 +213,10 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriBDeu< ALLOC >  _internal_apriori_;
+      AprioriBDeu< ALLOC > _internal_apriori_;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
-      GammaLog2  _gammalog2_;
+      GammaLog2 _gammalog2_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -35,8 +35,7 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
-    DAG LocalSearchWithTabuList::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                                                DAG                     dag) {
+    DAG LocalSearchWithTabuList::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG dag) {
       selector.setGraph(dag);
 
       unsigned int nb_changes_applied                 = 0;
@@ -65,16 +64,14 @@ namespace gum {
         for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;
 
-          if (!selector.empty(i)
-              && (!nb_changes_applied || (selector.bestScore(i) > 0))) {
+          if (!selector.empty(i) && (!nb_changes_applied || (selector.bestScore(i) > 0))) {
             // pick up the best change
             const GraphChange& change = selector.bestChange(i);
 
             // perform the change
             switch (change.type()) {
               case GraphChangeType::ARC_ADDITION:
-                if (!impacted_queues[change.node2()]
-                    && selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
@@ -98,8 +95,7 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_DELETION:
-                if (!impacted_queues[change.node2()]
-                    && selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
@@ -123,8 +119,7 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_REVERSAL:
-                if ((!impacted_queues[change.node1()])
-                    && (!impacted_queues[change.node2()])
+                if ((!impacted_queues[change.node1()]) && (!impacted_queues[change.node2()])
                     && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
@@ -163,8 +158,7 @@ namespace gum {
         selector.updateScoresAfterAppliedChanges();
 
         // reset the impacted queue and applied changes structures
-        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end();
-             ++iter) {
+        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end(); ++iter) {
           *iter = false;
         }
 
@@ -179,8 +173,7 @@ namespace gum {
         }
 
         // std::cout << "current N = " << current_N << std::endl;
-      } while ((current_N <=  _MaxNbDecreasing_)
-               && continueApproximationScheme(delta_score));
+      } while ((current_N <= _MaxNbDecreasing_) && continueApproximationScheme(delta_score));
 
       stopApproximationScheme();   // just to be sure of the
                                    // approximationScheme has
@@ -194,16 +187,12 @@ namespace gum {
     }
 
     /// learns the structure and the parameters of a BN
-    template < typename GUM_SCALAR,
-               typename GRAPH_CHANGES_SELECTOR,
-               typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR >
-       LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                        PARAM_ESTIMATOR&        estimator,
-                                        DAG                     initial_dag) {
-      return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-         estimator,
-         learnStructure(selector, initial_dag));
+    template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
+    BayesNet< GUM_SCALAR > LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                                            PARAM_ESTIMATOR&        estimator,
+                                                            DAG                     initial_dag) {
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(estimator,
+                                                     learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

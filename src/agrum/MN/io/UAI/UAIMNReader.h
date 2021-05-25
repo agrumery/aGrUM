@@ -38,8 +38,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#  undef  _COCO_PARSER_H_
-#  undef  _COCO_SCANNER_H_
+#  undef _COCO_PARSER_H_
+#  undef _COCO_SCANNER_H_
 #  include <agrum/MN/io/UAI/cocoR/Parser.h>
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -91,8 +91,7 @@ namespace gum {
     /// @throws IOError if file not exists
     Size proceed() final;
 
-    void buildFromQuartets(
-       std::vector< std::tuple< float, int, int, int > > quartets);
+    void buildFromQuartets(std::vector< std::tuple< float, int, int, int > > quartets);
 
     /// @{
     /// publishing Errors API
@@ -125,23 +124,22 @@ namespace gum {
     /// @}
 
     protected:
-    MarkovNet< GUM_SCALAR >*  _mn_;
-    UAIMN::Scanner*           _scanner_;
-    UAIMN::Parser*            _parser_;
+    MarkovNet< GUM_SCALAR >* _mn_;
+    UAIMN::Scanner*          _scanner_;
+    UAIMN::Parser*           _parser_;
 
-    std::string  _streamName_;
-    bool         _traceScanning_;
-    bool         _parseDone_;
+    std::string _streamName_;
+    bool        _traceScanning_;
+    bool        _parseDone_;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
-    bool  _ioerror_;
+    bool _ioerror_;
 
-    void  _addFatalError_(Idx                lig,
-                         Idx                col,
+    void _addFatalError_(Idx lig, Idx col,
                          const std::string& s);   // throw an exception
-    void  _addError_(Idx lig, Idx col, const std::string& s);
-    void  _addWarning_(Idx lig, Idx col, const std::string& s);
+    void _addError_(Idx lig, Idx col, const std::string& s);
+    void _addWarning_(Idx lig, Idx col, const std::string& s);
   };
 
 

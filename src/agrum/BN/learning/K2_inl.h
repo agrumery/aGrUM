@@ -38,14 +38,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE K2::K2(const K2& from) :
-        GreedyHillClimbing(from),  _order_(from. _order_) {
+    INLINE K2::K2(const K2& from) : GreedyHillClimbing(from), _order_(from._order_) {
       GUM_CONS_CPY(K2);
     }
 
     /// move constructor
     INLINE K2::K2(K2&& from) :
-        GreedyHillClimbing(std::move(from)),  _order_(std::move(from. _order_)) {
+        GreedyHillClimbing(std::move(from)), _order_(std::move(from._order_)) {
       GUM_CONS_MOV(K2);
     }
 
@@ -59,7 +58,7 @@ namespace gum {
     INLINE K2& K2::operator=(const K2& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(from);
-         _order_                     = from. _order_;
+        _order_                     = from._order_;
       }
       return *this;
     }
@@ -68,36 +67,36 @@ namespace gum {
     INLINE K2& K2::operator=(K2&& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(std::move(from));
-         _order_                     = std::move(from. _order_);
+        _order_                     = std::move(from._order_);
       }
       return *this;
     }
 
     /// sets the order on the variables
-    INLINE void K2::setOrder(const Sequence< NodeId >& order) {  _order_ = order; }
+    INLINE void K2::setOrder(const Sequence< NodeId >& order) { _order_ = order; }
 
     /// sets the order on the variables
     INLINE void K2::setOrder(const std::vector< NodeId >& order) {
-       _order_.clear();
+      _order_.clear();
       for (const auto node: order) {
-         _order_.insert(node);
+        _order_.insert(node);
       }
     }
 
     /// returns the current order
-    INLINE const Sequence< NodeId >& K2::order() const noexcept { return  _order_; }
+    INLINE const Sequence< NodeId >& K2::order() const noexcept { return _order_; }
 
     /** @brief checks that the order passed to K2 is coherent with the variables
      * as specified by their modalities */
-    INLINE void K2:: _checkOrder_(const std::vector< Size >& modal) {
-      if (modal.size() !=  _order_.size()) {
+    INLINE void K2::_checkOrder_(const std::vector< Size >& modal) {
+      if (modal.size() != _order_.size()) {
         GUM_ERROR(InvalidArgument,
                   "the number of elements in the order given "
                   "to K2 is not the same as the number of nodes");
       }
       bool order_ok = true;
-      for (const auto node:  _order_) {
-        if (node >=  _order_.size()) {
+      for (const auto node: _order_) {
+        if (node >= _order_.size()) {
           order_ok = false;
           break;
         }

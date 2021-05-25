@@ -76,10 +76,8 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) {
-      return SmallObjectAllocator::instance().allocate(s);
-    }
-    void operator delete(void* p) {
+    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void  operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));
     }
 
@@ -97,12 +95,8 @@ namespace gum {
      * @throws NotFound if variable is not in this observation
      */
     // ###################################################################
-    INLINE Idx modality(const DiscreteVariable* var) const {
-      return  _varInst_[var];
-    }
-    INLINE Idx rModality(const DiscreteVariable* var) const {
-      return  _rInst_[var];
-    }
+    INLINE Idx modality(const DiscreteVariable* var) const { return _varInst_[var]; }
+    INLINE Idx rModality(const DiscreteVariable* var) const { return _rInst_[var]; }
 
     // ###################################################################
     /**
@@ -113,21 +107,21 @@ namespace gum {
      */
     // ###################################################################
     INLINE void setModality(const DiscreteVariable* var, Idx modality) {
-       _varInst_.insert(var, modality);
+      _varInst_.insert(var, modality);
     }
     INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
-       _rInst_.insert(var, modality);
+      _rInst_.insert(var, modality);
     }
 
     // ###################################################################
     // Returns the reward obtained during this observation
     // ###################################################################
-    double reward() const { return  _reward_; }
+    double reward() const { return _reward_; }
 
     // ###################################################################
     // Sets the reward obtained during this observation
     // ###################################################################
-    void setReward(double reward) {  _reward_ = reward; }
+    void setReward(double reward) { _reward_ = reward; }
 
     /// @}
     ///
@@ -142,29 +136,27 @@ namespace gum {
     /// Returns an const safe iterator on the beginning of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-       cbeginVariablesSafe() const {
-      return  _varInst_.cbeginSafe();
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cbeginVariablesSafe() const {
+      return _varInst_.cbeginSafe();
     }
 
     // ###################################################################
     /// Returns an const safe iterator on the end of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-       cendVariablesSafe() const {
-      return  _varInst_.cendSafe();
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cendVariablesSafe() const {
+      return _varInst_.cendSafe();
     }
 
     /// @}
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable< const DiscreteVariable*, Idx >  _varInst_;
-    HashTable< const DiscreteVariable*, Idx >  _rInst_;
+    HashTable< const DiscreteVariable*, Idx > _varInst_;
+    HashTable< const DiscreteVariable*, Idx > _rInst_;
 
     /// The reward associated to this transition
-    double  _reward_;
+    double _reward_;
   };
 
 } /* namespace gum */

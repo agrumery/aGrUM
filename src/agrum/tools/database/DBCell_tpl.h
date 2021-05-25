@@ -33,9 +33,9 @@ namespace gum {
 
     // checks whether a string correspond to a missing value
     template < template < typename > class ALLOC >
-    INLINE bool DBCell::isMissing(
-       const std::string&                                      str,
-       const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+    INLINE bool
+       DBCell::isMissing(const std::string&                                      str,
+                         const std::vector< std::string, ALLOC< std::string > >& missingVals) {
       for (auto missing: missingVals) {
         if (str == missing) return true;
       }
@@ -44,9 +44,9 @@ namespace gum {
 
     // returns the best type to store a given element encoded as a string
     template < template < typename > class ALLOC >
-    INLINE DBCell::EltType DBCell::bestType(
-       const std::string&                                      str,
-       const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+    INLINE DBCell::EltType
+           DBCell::bestType(const std::string&                                      str,
+                        const std::vector< std::string, ALLOC< std::string > >& missingVals) {
       if (isMissing(str, missingVals)) return EltType::MISSING;
       if (isInteger(str)) return EltType::INTEGER;
       if (isReal(str)) return EltType::REAL;
@@ -56,9 +56,9 @@ namespace gum {
 
     // returns the DBCell with the best type for an element encoded as a string
     template < template < typename > class ALLOC >
-    INLINE DBCell DBCell::bestDBCell(
-       const std::string&                                      str,
-       const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+    INLINE DBCell
+       DBCell::bestDBCell(const std::string&                                      str,
+                          const std::vector< std::string, ALLOC< std::string > >& missingVals) {
       if (isMissing(str, missingVals)) return DBCell();
       if (isInteger(str)) return DBCell(std::stoi(str));
       if (isReal(str)) return DBCell(std::stof(str));
@@ -69,20 +69,20 @@ namespace gum {
 
     /// returns the content of the DBCell as a string, whatever its type
     template < template < typename > class ALLOC >
-    std::string DBCell::toString(
-       const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
-      switch ( _type_) {
+    std::string
+       DBCell::toString(const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
+      switch (_type_) {
         case EltType::STRING:
-          return  _strings_().first( _val_index_);
+          return _strings_().first(_val_index_);
 
         case EltType::REAL: {
           char buffer[100];
-          sprintf(buffer, "%g",  _val_real_);
+          sprintf(buffer, "%g", _val_real_);
           return std::string(buffer);
         }
 
         case EltType::INTEGER:
-          return std::to_string( _val_integer_);
+          return std::to_string(_val_integer_);
 
         case EltType::MISSING:
           if (missingVals.size())

@@ -130,9 +130,7 @@ namespace gum {
       treatedNodes.insert(node);
     }
 
-    output << nodeStream.str() << std::endl
-           << edgeStream.str() << std::endl
-           << "}" << std::endl;
+    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
 
     return output.str();
   }
@@ -145,8 +143,7 @@ namespace gum {
       partialGraph.addNodeWithId(node);
 
       for (const auto nei: neighbours(node))
-        if (nodes.contains(nei) && partialGraph.existsNode(nei))
-          partialGraph.addEdge(node, nei);
+        if (nodes.contains(nei) && partialGraph.existsNode(nei)) partialGraph.addEdge(node, nei);
     }
 
     return partialGraph;

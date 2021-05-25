@@ -170,8 +170,7 @@ namespace gum {
     EliminationSequenceStrategy();
 
     /// constructor for an a priori non empty graph
-    EliminationSequenceStrategy(UndiGraph*                  graph,
-                                const NodeProperty< Size >* domain_sizes);
+    EliminationSequenceStrategy(UndiGraph* graph, const NodeProperty< Size >* domain_sizes);
 
     /// copy constructor
     EliminationSequenceStrategy(const EliminationSequenceStrategy& from);
@@ -183,7 +182,7 @@ namespace gum {
 
     private:
     /// an empty fill-ins set used by default
-    static const EdgeSet&  _empty_fill_ins_();
+    static const EdgeSet& _empty_fill_ins_();
   };
 
 

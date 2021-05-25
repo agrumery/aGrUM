@@ -34,8 +34,7 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
-    DAG GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                                           DAG                     dag) {
+    DAG GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG dag) {
       selector.setGraph(dag);
 
       unsigned int nb_changes_applied = 1;
@@ -64,8 +63,7 @@ namespace gum {
             // perform the change
             switch (change.type()) {
               case GraphChangeType::ARC_ADDITION:
-                if (!impacted_queues[change.node2()]
-                    && selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.addArc(change.node1(), change.node2());
                   impacted_queues[change.node2()] = true;
@@ -76,8 +74,7 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_DELETION:
-                if (!impacted_queues[change.node2()]
-                    && selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.eraseArc(Arc(change.node1(), change.node2()));
                   impacted_queues[change.node2()] = true;
@@ -88,8 +85,7 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_REVERSAL:
-                if ((!impacted_queues[change.node1()])
-                    && (!impacted_queues[change.node2()])
+                if ((!impacted_queues[change.node1()]) && (!impacted_queues[change.node2()])
                     && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.eraseArc(Arc(change.node1(), change.node2()));
@@ -112,8 +108,7 @@ namespace gum {
         selector.updateScoresAfterAppliedChanges();
 
         // reset the impacted queue and applied changes structures
-        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end();
-             ++iter) {
+        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end(); ++iter) {
           *iter = false;
         }
 
@@ -129,16 +124,12 @@ namespace gum {
     }
 
     /// learns the structure and the parameters of a BN
-    template < typename GUM_SCALAR,
-               typename GRAPH_CHANGES_SELECTOR,
-               typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR >
-       GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                   PARAM_ESTIMATOR&        estimator,
-                                   DAG                     initial_dag) {
-      return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-         estimator,
-         learnStructure(selector, initial_dag));
+    template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
+    BayesNet< GUM_SCALAR > GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                                       PARAM_ESTIMATOR&        estimator,
+                                                       DAG                     initial_dag) {
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(estimator,
+                                                     learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

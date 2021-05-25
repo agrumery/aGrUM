@@ -31,9 +31,7 @@
 namespace gum {
 
   // Return true if \a directory is a valid directory, false otherwise.
-  bool Directory::isDir(const std::string& directory) {
-    return Directory(directory).isValid();
-  }
+  bool Directory::isDir(const std::string& directory) { return Directory(directory).isValid(); }
 
   // Contructor
   Directory::Directory() : m_dirPtr(nullptr) {
@@ -106,8 +104,8 @@ namespace gum {
     if (getcwd(absPath, 254) != nullptr) result = std::string(absPath) + '/';
 
     if (chdir(oldWD) != 0)
-      std::cerr << "Warning : Could not go to previous working directory. ("
-                <<   __FILE__ << ":" <<   __LINE__ << ")" << std::endl;
+      std::cerr << "Warning : Could not go to previous working directory. (" << __FILE__ << ":"
+                << __LINE__ << ")" << std::endl;
 
     return result;
   }

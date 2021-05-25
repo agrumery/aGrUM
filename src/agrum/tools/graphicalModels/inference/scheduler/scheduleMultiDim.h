@@ -138,8 +138,7 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleMultiDim< GUM_SCALAR >&
-       operator=(const ScheduleMultiDim< GUM_SCALAR >&);
+    ScheduleMultiDim< GUM_SCALAR >& operator=(const ScheduleMultiDim< GUM_SCALAR >&);
 
     /// checks whether two ScheduleMultiDim are related to the same table
     bool operator==(const ScheduleMultiDim< GUM_SCALAR >&) const;
@@ -202,30 +201,27 @@ namespace gum {
     friend class ScheduleDeleteMultiDim< GUM_SCALAR >;
 
     /// the unique Id of the ScheduleMultiDim
-    Idx  _id_;
+    Idx _id_;
 
     /// returns a new distinct ID for each abtract scheduleMultiDim
-    static Idx  _newId_();
+    static Idx _newId_();
 
     /// returns a mapping from id to multidimImplementations
-    static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >&
-        _id2multidim_();
+    static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >& _id2multidim_();
 
     /// returns the id corresponding to a given multidim
     /** useful to assign the same id every time a given MultiDimImplementation
      * is wrapped into a ScheduleMultiDim */
-    static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >&
-        _multidim2id_();
+    static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >& _multidim2id_();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
-    static HashTable< Idx, Idx >&  _id2refs_();
+    static HashTable< Idx, Idx >& _id2refs_();
 
     /// returns a table with the variables of the table corresponding to id
-    static HashTable< Idx, const Sequence< const DiscreteVariable* >* >&
-        _id2vars_();
+    static HashTable< Idx, const Sequence< const DiscreteVariable* >* >& _id2vars_();
 
     /// returns a table with the domain size of the table corresponding to id
-    static HashTable< Idx, Size >&  _id2size_();
+    static HashTable< Idx, Size >& _id2size_();
   };
 
 } /* namespace gum */

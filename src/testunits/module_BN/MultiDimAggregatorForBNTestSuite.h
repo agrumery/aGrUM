@@ -89,8 +89,7 @@ namespace gum_tests {
               if (res > i.val(j)) res = i.val(j);
             }
 
-            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i],
-                             (res == i.val((gum::Idx)0)) ? 1.0f : 0.0f);
+            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i], (res == i.val((gum::Idx)0)) ? 1.0f : 0.0f);
           }
         }
       }
@@ -107,9 +106,9 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
                            (gum::Potential< double >() << bn.variable(idList[0]))
                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
-          TS_ASSERT_EQUALS(inf.posterior(idList[1]),
-                           (gum::Potential< double >() << bn.variable(idList[1]))
-                              .fillWith({0.1, 0.1, 0.1, 0.7}))
+          TS_ASSERT_EQUALS(
+             inf.posterior(idList[1]),
+             (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (gum::Exception e) { TS_ASSERT(false); }
       }
 
@@ -125,9 +124,9 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
                            (gum::Potential< double >() << bn.variable(idList[0]))
                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
-          TS_ASSERT_EQUALS(inf.posterior(idList[1]),
-                           (gum::Potential< double >() << bn.variable(idList[1]))
-                              .fillWith({0.1, 0.1, 0.1, 0.7}))
+          TS_ASSERT_EQUALS(
+             inf.posterior(idList[1]),
+             (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (gum::Exception) { TS_ASSERT(false); }
       }
     }
@@ -155,8 +154,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
-                       gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
@@ -239,8 +237,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
-                       gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -318,8 +315,7 @@ namespace gum_tests {
       gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
-      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f),
-                       gum::InvalidArgument);
+      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), gum::InvalidArgument);
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
@@ -329,8 +325,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
-                       gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -394,7 +389,7 @@ namespace gum_tests {
     }
 
     void testBNwithMinNoParents() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+      auto                   bn = gum::BayesNet< double >::fastPrototype("A->B->C");
       gum::LabelizedVariable var("min", "min", 4);
       bn.add(var, new gum::aggregator::Min< double >());
       {

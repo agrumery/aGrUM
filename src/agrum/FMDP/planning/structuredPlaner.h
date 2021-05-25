@@ -76,29 +76,25 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    static StructuredPlaner< GUM_SCALAR >*
-       spumddInstance(GUM_SCALAR discountFactor = 0.9,
-                      GUM_SCALAR epsilon        = 0.00001,
-                      bool       verbose        = true) {
-      return new StructuredPlaner< GUM_SCALAR >(
-         new MDDOperatorStrategy< GUM_SCALAR >(),
-         discountFactor,
-         epsilon,
-         verbose);
+    static StructuredPlaner< GUM_SCALAR >* spumddInstance(GUM_SCALAR discountFactor = 0.9,
+                                                          GUM_SCALAR epsilon        = 0.00001,
+                                                          bool       verbose        = true) {
+      return new StructuredPlaner< GUM_SCALAR >(new MDDOperatorStrategy< GUM_SCALAR >(),
+                                                discountFactor,
+                                                epsilon,
+                                                verbose);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    static StructuredPlaner< GUM_SCALAR >*
-       sviInstance(GUM_SCALAR discountFactor = 0.9,
-                   GUM_SCALAR epsilon        = 0.00001,
-                   bool       verbose        = true) {
-      return new StructuredPlaner< GUM_SCALAR >(
-         new TreeOperatorStrategy< GUM_SCALAR >(),
-         discountFactor,
-         epsilon,
-         verbose);
+    static StructuredPlaner< GUM_SCALAR >* sviInstance(GUM_SCALAR discountFactor = 0.9,
+                                                       GUM_SCALAR epsilon        = 0.00001,
+                                                       bool       verbose        = true) {
+      return new StructuredPlaner< GUM_SCALAR >(new TreeOperatorStrategy< GUM_SCALAR >(),
+                                                discountFactor,
+                                                epsilon,
+                                                verbose);
     }
 
     /// @}
@@ -139,22 +135,17 @@ namespace gum {
     // ==========================================================================
     /// Returns a const ptr on the value function computed so far
     // ==========================================================================
-    INLINE const MultiDimFunctionGraph< GUM_SCALAR >* vFunction() {
-      return vFunction_;
-    }
+    INLINE const MultiDimFunctionGraph< GUM_SCALAR >* vFunction() { return vFunction_; }
 
     // ==========================================================================
     /// Returns vFunction computed so far current size
     // ==========================================================================
-    virtual Size vFunctionSize() {
-      return vFunction_ != nullptr ? vFunction_->realSize() : 0;
-    }
+    virtual Size vFunctionSize() { return vFunction_ != nullptr ? vFunction_->realSize() : 0; }
 
     // ==========================================================================
     /// Returns the best policy obtained so far
     // ==========================================================================
-    INLINE const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-                 optimalPolicy() {
+    INLINE const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() {
       return optimalPolicy_;
     }
 
@@ -276,30 +267,27 @@ namespace gum {
      */
     // ==========================================================================
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction,
-                   Idx                                        actionId);
+       makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction, Idx actionId);
 
     private:
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
-    NodeId  _recurArgMaxCopy_(NodeId,
-                             Idx,
-                             const MultiDimFunctionGraph< GUM_SCALAR >*,
-                             MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                                    SetTerminalNodePolicy >*,
-                             HashTable< NodeId, NodeId >&);
+    NodeId _recurArgMaxCopy_(
+       NodeId,
+       Idx,
+       const MultiDimFunctionGraph< GUM_SCALAR >*,
+       MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
+       HashTable< NodeId, NodeId >&);
 
     protected:
     // ==========================================================================
     /// Performs argmax_a Q(s,a)
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
-    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                   SetTerminalNodePolicy >*
-       argmaximiseQactions_(
-          std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                              SetTerminalNodePolicy >* >&);
+    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+       argmaximiseQactions_(std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                                                SetTerminalNodePolicy >* >&);
 
     // ==========================================================================
     /// From V(s)* = argmax_a Q*(s,a), this function extract pi*(s)
@@ -308,23 +296,22 @@ namespace gum {
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
     void extractOptimalPolicy_(
-       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                    SetTerminalNodePolicy >* optimalValueFunction);
+       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+          optimalValueFunction);
 
     private:
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
-    NodeId  _recurExtractOptPol_(
+    NodeId _recurExtractOptPol_(
        NodeId,
-       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                    SetTerminalNodePolicy >*,
+       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
        HashTable< NodeId, NodeId >&);
 
     // ==========================================================================
     /// Extract from an ArgMaxSet the associated ActionSet
     // ==========================================================================
-    void  _transferActionIds_(const ArgMaxSet< GUM_SCALAR, Idx >&, ActionSet&);
+    void _transferActionIds_(const ArgMaxSet< GUM_SCALAR, Idx >&, ActionSet&);
 
 
     /// @}
@@ -376,8 +363,8 @@ namespace gum {
     /// The threshold value
     /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
     // ==========================================================================
-    GUM_SCALAR  _threshold_;
-    bool        _firstTime_;
+    GUM_SCALAR _threshold_;
+    bool       _firstTime_;
   };
 
 } /* namespace gum */

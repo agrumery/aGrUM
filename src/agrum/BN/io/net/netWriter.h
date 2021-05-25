@@ -92,18 +92,17 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) final;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns the header of the BN file.
-    std::string  _header_(const IBayesNet< GUM_SCALAR >& bn);
+    std::string _header_(const IBayesNet< GUM_SCALAR >& bn);
 
     // Returns a bloc defining a variable in the BN format.
-    std::string  _variableBloc_(const DiscreteVariable& var);
+    std::string _variableBloc_(const DiscreteVariable& var);
 
     // Returns a bloc defining a variable's CPT in the BN format.
-    std::string  _variableCPT_(const Potential< GUM_SCALAR >& cpt);
+    std::string _variableCPT_(const Potential< GUM_SCALAR >& cpt);
 
     // Returns the modalities labels of the variables in varsSeq
   };

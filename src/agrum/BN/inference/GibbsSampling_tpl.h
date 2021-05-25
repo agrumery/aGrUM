@@ -41,11 +41,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn),
-      GibbsOperator< GUM_SCALAR >(
-         *bn,
-         &this->hardEvidence(),
-         1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
-         GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
+      GibbsOperator< GUM_SCALAR >(*bn,
+                                  &this->hardEvidence(),
+                                  1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
+                                  GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsSampling);
 
     this->setEpsilon(GIBBS_SAMPLING_DEFAULT_EPSILON);
@@ -82,8 +81,7 @@ namespace gum {
   /// draws next sample for gibbs sampling
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::draw_(GUM_SCALAR*   w,
-                                                   Instantiation prev) {
+  Instantiation GibbsSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }

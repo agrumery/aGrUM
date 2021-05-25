@@ -58,9 +58,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-      return x >= y ? x : y;
-    }
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const { return x >= y ? x : y; }
 
     /// @}
 
@@ -83,9 +81,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-      return x <= y ? x : y;
-    }
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const { return x <= y ? x : y; }
 
     /// @}
 

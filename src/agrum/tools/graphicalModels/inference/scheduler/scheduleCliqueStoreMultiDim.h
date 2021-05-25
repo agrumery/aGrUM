@@ -51,10 +51,9 @@ namespace gum {
 
     /// default constructor
     ScheduleCliqueStoreMultiDim(
-       const ScheduleMultiDim< GUM_SCALAR >& table,
-       NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
-              clique_tables,
-       NodeId clique);
+       const ScheduleMultiDim< GUM_SCALAR >&                               table,
+       NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >& clique_tables,
+       NodeId                                                              clique);
 
     /// copy constructor
     ScheduleCliqueStoreMultiDim(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >&);
@@ -115,8 +114,7 @@ namespace gum {
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-       multiDimResults() const;
+    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -125,16 +123,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim< GUM_SCALAR >  _table_;
+    ScheduleMultiDim< GUM_SCALAR > _table_;
 
     // a mapping assigning to each clique a set of tables
-    NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >*  _tableSet_;
+    NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* _tableSet_;
 
     // the clique into which the table will be stored
-    NodeId  _clique_;
+    NodeId _clique_;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >*  _args_;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* _args_;
   };
 
 } /* namespace gum */

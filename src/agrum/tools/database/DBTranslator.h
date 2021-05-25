@@ -140,12 +140,11 @@ namespace gum {
        * fields of the DBTranslator
        */
       template < template < typename > class XALLOC >
-      DBTranslator(
-         DBTranslatedValueType                                    val_type,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool  editable_dictionary = true,
-         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc  = allocator_type());
+      DBTranslator(DBTranslatedValueType                                    val_type,
+                   const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+                   const bool  editable_dictionary = true,
+                   std::size_t max_dico_entries    = std::numeric_limits< std::size_t >::max(),
+                   const allocator_type& alloc     = allocator_type());
 
       /// default constructor without missing symbols
       /** @param val_type indicates whether the DBTranslator deals with discrete
@@ -162,9 +161,8 @@ namespace gum {
        */
       DBTranslator(DBTranslatedValueType val_type,
                    const bool            editable_dictionary = true,
-                   std::size_t           max_dico_entries
-                   = std::numeric_limits< std::size_t >::max(),
-                   const allocator_type& alloc = allocator_type());
+                   std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+                   const allocator_type& alloc  = allocator_type());
 
       /// copy constructor
       DBTranslator(const DBTranslator< ALLOC >& from);
@@ -263,8 +261,7 @@ namespace gum {
        * translated_val).
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
-      virtual std::string
-         translateBack(const DBTranslatedValue translated_val) const = 0;
+      virtual std::string translateBack(const DBTranslatedValue translated_val) const = 0;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Assume that the translator has been fed with the observed values of
@@ -318,9 +315,7 @@ namespace gum {
        * reordered, those for continuous random variables are identity mappings.
        * @warning If there is no reordering to perform, the method returns
        * an empty hashtable. */
-      virtual HashTable< std::size_t,
-                         std::size_t,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >
+      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
          reorder() = 0;
 
       /// returns the set of missing symbols taken into account by the translator
@@ -389,9 +384,7 @@ namespace gum {
        * for continuous variables are actually identity mappings.
        * @warning only the values of the random variable are stored into this
        * bijection. Missing values are not considered here. */
-      mutable Bijection< std::size_t,
-                         std::string,
-                         ALLOC< std::pair< float, std::string > > >
+      mutable Bijection< std::size_t, std::string, ALLOC< std::pair< float, std::string > > >
          back_dico_;
 
       /// the type of the values translated by the translator

@@ -151,18 +151,16 @@ namespace gum {
         void setGndEngine(const SetGndEngineCommand* command);
 
         std::string findSystemName(std::string& s);
-        std::string findInstanceName(std::string&                         s,
-                                     const gum::prm::PRMSystem< double >& sys);
-        std::string
-                                   findAttributeName(const std::string&                     s,
-                                                     const gum::prm::PRMInstance< double >& instance);
+        std::string findInstanceName(std::string& s, const gum::prm::PRMSystem< double >& sys);
+        std::string findAttributeName(const std::string&                     s,
+                                      const gum::prm::PRMInstance< double >& instance);
         const PRMSystem< double >& system(std::string& ident);
-        void generateInfEngine(const gum::prm::PRMSystem< double >& sys);
+        void                       generateInfEngine(const gum::prm::PRMSystem< double >& sys);
 
         void addError(std::string msg);
         void addWarning(std::string msg);
 
-        std::string  _readFile_(const std::string& file);
+        std::string _readFile_(const std::string& file);
 
         O3prmrContext< double >*                m_context;
         gum::prm::o3prm::O3prmReader< double >* m_reader;
@@ -172,13 +170,13 @@ namespace gum {
         gum::prm::PRMInference< double >*                                m_inf;
         HashTable< const PRMSystem< double >*, PRMInference< double >* > m_inf_map;
         std::string                                                      m_engine;
-        std::string                m_bn_engine;
-        std::vector< QueryResult > m_results;
-        gum::ErrorsContainer       m_errors;
-        bool                       m_syntax_flag;
-        bool                       m_verbose;
-        std::ostream&              m_log;
-        int                        m_current_line;
+        std::string                                                      m_bn_engine;
+        std::vector< QueryResult >                                       m_results;
+        gum::ErrorsContainer                                             m_errors;
+        bool                                                             m_syntax_flag;
+        bool                                                             m_verbose;
+        std::ostream&                                                    m_log;
+        int                                                              m_current_line;
 
         //// We need this when using grounded inference
         // gum::BayesNetInference<gum::prm::prm_float>* bn;

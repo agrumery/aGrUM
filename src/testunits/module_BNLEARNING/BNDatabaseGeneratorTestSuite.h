@@ -38,20 +38,18 @@ namespace gum_tests {
 
   class ASimpleDBGeneratorListener: public gum::ProgressListener {
     private:
-    gum::Size    _nbr_;
-    std::string  _mess_;
+    gum::Size   _nbr_;
+    std::string _mess_;
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif),  _nbr_(0),  _mess_(""){};
+        gum::ProgressListener(notif), _nbr_(0), _mess_(""){};
 
-    void whenProgress(const void* buffer, const gum::Size a, const double c) {
-       _nbr_ += a;
-    }
-    void whenStop(const void* buffer, const std::string& s) {  _mess_ = s; }
+    void whenProgress(const void* buffer, const gum::Size a, const double c) { _nbr_ += a; }
+    void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
 
-    gum::Size   getNbr() { return  _nbr_; }
-    std::string getMess() { return  _mess_; }
+    gum::Size   getNbr() { return _nbr_; }
+    std::string getMess() { return _mess_; }
   };
 
 
@@ -74,8 +72,7 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       auto varOrder = dbgen->varOrder();
       TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6);
@@ -99,8 +96,7 @@ namespace gum_tests {
 
     void testSetVarOrder() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
       std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
@@ -161,8 +157,7 @@ namespace gum_tests {
       gum::Size nbSamples = 100;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
@@ -214,25 +209,21 @@ namespace gum_tests {
       double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
       TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1));
       TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
       TS_GUM_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
 
       // log2likehood must proportional to number of samples
-      TS_ASSERT_LESS_THAN(
-         std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
-         tolerance);
-      TS_ASSERT_LESS_THAN(
-         std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
-         tolerance);
+      TS_ASSERT_LESS_THAN(std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
+                          tolerance);
+      TS_ASSERT_LESS_THAN(std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
+                          tolerance);
 
       // log2likelihood must be aprox nbSamples * entropy (theorical result)
-      double entropy = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3)
-                        * bn->cpt(4) * bn->cpt(5))
-                          .entropy();
+      double entropy
+         = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3) * bn->cpt(4) * bn->cpt(5)).entropy();
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
@@ -251,8 +242,7 @@ namespace gum_tests {
       std::vector< std::string > domT = {"car", "train", "other"};
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
@@ -262,9 +252,8 @@ namespace gum_tests {
       std::string csvSeparator  = " ";
       bool        checkOnAppend = true;
 
-      TS_ASSERT_THROWS(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-         gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                       gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -274,11 +263,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       append = true;
-      TS_ASSERT_THROWS(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-         gum::OperationNotAllowed);
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+      TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                       gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
       TS_GUM_ASSERT_THROWS_NOTHING(
          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
@@ -326,8 +313,7 @@ namespace gum_tests {
       gum::Size domSizeT = 3;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
@@ -337,9 +323,8 @@ namespace gum_tests {
       std::string csvSeparator  = " ";
       bool        checkOnAppend = true;
 
-      TS_ASSERT_THROWS(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-         gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                       gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -349,11 +334,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       append = true;
-      TS_ASSERT_THROWS(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-         gum::OperationNotAllowed);
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+      TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                       gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
       TS_GUM_ASSERT_THROWS_NOTHING(
          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
@@ -408,8 +391,7 @@ namespace gum_tests {
       std::vector< std::string > domT = {"car", "train", "other"};
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
       TS_ASSERT_THROWS(dbgen->toDatabaseTable(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       gum::learning::DatabaseTable<> db;
@@ -419,30 +401,24 @@ namespace gum_tests {
       auto handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        TS_ASSERT_DIFFERS(std::find(domA.begin(),
-                                    domA.end(),
-                                    db.translator(0).translateBack(row[0])),
-                          domA.end());
-        TS_ASSERT_DIFFERS(std::find(domS.begin(),
-                                    domS.end(),
-                                    db.translator(1).translateBack(row[1])),
-                          domS.end());
-        TS_ASSERT_DIFFERS(std::find(domE.begin(),
-                                    domE.end(),
-                                    db.translator(2).translateBack(row[2])),
-                          domE.end());
-        TS_ASSERT_DIFFERS(std::find(domO.begin(),
-                                    domO.end(),
-                                    db.translator(3).translateBack(row[3])),
-                          domO.end());
-        TS_ASSERT_DIFFERS(std::find(domR.begin(),
-                                    domR.end(),
-                                    db.translator(4).translateBack(row[4])),
-                          domR.end());
-        TS_ASSERT_DIFFERS(std::find(domT.begin(),
-                                    domT.end(),
-                                    db.translator(5).translateBack(row[5])),
-                          domT.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])),
+           domA.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])),
+           domS.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])),
+           domE.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])),
+           domO.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])),
+           domR.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])),
+           domT.end());
         handler.nextRow();
       }
 
@@ -470,30 +446,24 @@ namespace gum_tests {
         auto row = handler.row();
 
 
-        TS_ASSERT_DIFFERS(std::find(domS.begin(),
-                                    domS.end(),
-                                    db.translator(0).translateBack(row[0])),
-                          domS.end());
-        TS_ASSERT_DIFFERS(std::find(domE.begin(),
-                                    domE.end(),
-                                    db.translator(1).translateBack(row[1])),
-                          domE.end());
-        TS_ASSERT_DIFFERS(std::find(domT.begin(),
-                                    domT.end(),
-                                    db.translator(2).translateBack(row[2])),
-                          domT.end());
-        TS_ASSERT_DIFFERS(std::find(domR.begin(),
-                                    domR.end(),
-                                    db.translator(3).translateBack(row[3])),
-                          domR.end());
-        TS_ASSERT_DIFFERS(std::find(domA.begin(),
-                                    domA.end(),
-                                    db.translator(4).translateBack(row[4])),
-                          domA.end());
-        TS_ASSERT_DIFFERS(std::find(domO.begin(),
-                                    domO.end(),
-                                    db.translator(5).translateBack(row[5])),
-                          domO.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])),
+           domS.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])),
+           domE.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])),
+           domT.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])),
+           domR.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])),
+           domA.end());
+        TS_ASSERT_DIFFERS(
+           std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])),
+           domO.end());
 
         handler.nextRow();
       }

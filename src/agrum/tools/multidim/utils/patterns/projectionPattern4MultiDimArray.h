@@ -117,8 +117,7 @@ namespace gum {
 
     // first, compute whether we should loop over table or over the projected
     // table first to get a faster algorithm.
-    const Sequence< const DiscreteVariable* >& table_vars
-       = table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars = table->variablesSequence();
     bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
     if (!need_swapping) {
@@ -250,8 +249,7 @@ namespace gum {
           GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #  else
 #    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-          *(pres[result_offset])
-             = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
+          *(pres[result_offset]) = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    else
           pres[result_offset] = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    endif

@@ -51,21 +51,20 @@ namespace gum_tests {
 
 
   class ShaferShenoyIncrementalTestSuite: public CxxTest::TestSuite {
-    typedef std::unique_ptr< gum::Potential< double > >  __Potential;
-    typedef gum::Set< const gum::Potential< double >* >  __PotentialSet;
+    typedef std::unique_ptr< gum::Potential< double > > __Potential;
+    typedef gum::Set< const gum::Potential< double >* > __PotentialSet;
 
     public:
     // the function used to combine two tables
-    static gum::Potential< double >*
-       LPIncrmultiPotential(const gum::Potential< double >& t1,
-                            const gum::Potential< double >& t2) {
+    static gum::Potential< double >* LPIncrmultiPotential(const gum::Potential< double >& t1,
+                                                          const gum::Potential< double >& t2) {
       return new gum::Potential< double >(t1 * t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* LPIncrprojPotential(
-       const gum::Potential< double >&                 t1,
-       const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double >*
+       LPIncrprojPotential(const gum::Potential< double >&                 t1,
+                           const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(t1.margSumOut(del_vars));
     }
 
@@ -75,7 +74,7 @@ namespace gum_tests {
     std::vector< const gum::DiscreteVariable* > BN_variable;
     gum::Set< const gum::DiscreteVariable* >*   BN_variable_set;
 
-    double  __epsilon{1e-6};
+    double __epsilon{1e-6};
 
     gum::Potential< double >* joint;
 
@@ -84,25 +83,23 @@ namespace gum_tests {
 
 
     ShaferShenoyIncrementalTestSuite() {
-      combination = new gum::MultiDimCombinationDefault< double, gum::Potential >(
-         LPIncrmultiPotential);
+      combination
+         = new gum::MultiDimCombinationDefault< double, gum::Potential >(LPIncrmultiPotential);
 
-      proj = new gum::MultiDimProjection< double, gum::Potential >(
-         LPIncrprojPotential);
+      proj = new gum::MultiDimProjection< double, gum::Potential >(LPIncrprojPotential);
 
       BN_variable_set = new gum::Set< const gum::DiscreteVariable* >;
 
 
       // create the BN
-      std::vector< gum::LabelizedVariable > variables{
-         gum::LabelizedVariable("A", "", 2),
-         gum::LabelizedVariable("B", "", 3),
-         gum::LabelizedVariable("C", "", 2),
-         gum::LabelizedVariable("D", "", 3),
-         gum::LabelizedVariable("E", "", 2),
-         gum::LabelizedVariable("F", "", 3),
-         gum::LabelizedVariable("G", "", 4),
-         gum::LabelizedVariable("H", "", 3)};
+      std::vector< gum::LabelizedVariable > variables{gum::LabelizedVariable("A", "", 2),
+                                                      gum::LabelizedVariable("B", "", 3),
+                                                      gum::LabelizedVariable("C", "", 2),
+                                                      gum::LabelizedVariable("D", "", 3),
+                                                      gum::LabelizedVariable("E", "", 2),
+                                                      gum::LabelizedVariable("F", "", 3),
+                                                      gum::LabelizedVariable("G", "", 4),
+                                                      gum::LabelizedVariable("H", "", 3)};
 
       bn = new gum::BayesNet< double >;
 
@@ -136,8 +133,7 @@ namespace gum_tests {
                                           0.6, 0.4});   // 12
       bn->cpt(BN_node_index[3]).fillWith({0.3, 0.2, 0.5, 0.7, 0.1, 0.2});
       bn->cpt(BN_node_index[4]).fillWith({0.4, 0.6, 0.9, 0.1});
-      bn->cpt(BN_node_index[5])
-         .fillWith({0.2, 0.4, 0.4, 0.4, 0.1, 0.5, 0.7, 0.2, 0.1});
+      bn->cpt(BN_node_index[5]).fillWith({0.2, 0.4, 0.4, 0.4, 0.1, 0.5, 0.7, 0.2, 0.1});
       bn->cpt(BN_node_index[6]).fillWith({0.1, 0.4, 0.2, 0.3});
       bn->cpt(BN_node_index[7])
          .fillWith({0.4, 0.3, 0.3, 0.1, 0.8, 0.1, 0.3, 0.4, 0.3, 0.7, 0.1, 0.2});
@@ -189,7 +185,7 @@ namespace gum_tests {
 
     // ============================================================================
     gum::Potential< double >* get_marginal(const gum::Potential< double >* joint,
-                                           const gum::NodeId target_id) {
+                                           const gum::NodeId               target_id) {
       // get the set of variables to erase
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
       myset.erase(BN_variable[target_id]);
@@ -201,7 +197,7 @@ namespace gum_tests {
 
     // ============================================================================
     gum::Potential< double >* get_joint(const gum::Potential< double >* joint,
-                                        const gum::NodeSet& target_ids) {
+                                        const gum::NodeSet&             target_ids) {
       // get the set of variables to erase
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
       for (auto target_id: target_ids)
@@ -211,17 +207,16 @@ namespace gum_tests {
 
 
     // ============================================================================
-    bool equalPotentials(const gum::Potential< double >& p1,
-                         const gum::Potential< double >& p2) {
+    bool equalPotentials(const gum::Potential< double >& p1, const gum::Potential< double >& p2) {
       gum::Instantiation i1(p1);
       gum::Instantiation i2(p2);
 
       for (i1.setFirst(), i2.setFirst(); !i1.end(); i1.inc(), i2.inc()) {
-        if ((p1[i1] == 0) && (std::fabs(p2[i2]) >  __epsilon)) return false;
+        if ((p1[i1] == 0) && (std::fabs(p2[i2]) > __epsilon)) return false;
         if (p1[i1] > p2[i2]) {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) >  __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > __epsilon) return false;
         } else {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) >  __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > __epsilon) return false;
         }
       }
 
@@ -236,10 +231,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
       // get the marginals of A, C, D, H
-      std::unique_ptr< gum::Potential< double > > pa(
-         get_marginal(joint, BN_node_index[0])),
-         pc(get_marginal(joint, BN_node_index[2])),
-         pd(get_marginal(joint, BN_node_index[3])),
+      std::unique_ptr< gum::Potential< double > > pa(get_marginal(joint, BN_node_index[0])),
+         pc(get_marginal(joint, BN_node_index[2])), pd(get_marginal(joint, BN_node_index[3])),
          ph(get_marginal(joint, BN_node_index[7]));
 
       TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
@@ -259,8 +252,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
       // get the marginals of A, C, D
-       __Potential pa(get_marginal(joint, BN_node_index[0]));
-       __Potential pc(get_marginal(joint, BN_node_index[2]));
+      __Potential pa(get_marginal(joint, BN_node_index[0]));
+      __Potential pc(get_marginal(joint, BN_node_index[2]));
 
       TS_ASSERT_THROWS(inf.posterior(BN_node_index[3]), gum::UndefinedElement);
       TS_ASSERT_THROWS(inf.posterior(BN_node_index[1]), gum::UndefinedElement);
@@ -278,15 +271,15 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(5);   // F
 
-       __Potential ev1(create_evidence(1, {0, 0, 1}));
+      __Potential ev1(create_evidence(1, {0, 0, 1}));
       inf.addEvidence(1, 2);
-       __Potential ev3(create_evidence(3, {0.2, 0.6, 0.6}));
+      __Potential ev3(create_evidence(3, {0.2, 0.6, 0.6}));
       inf.addEvidence(*ev3);
 
-       __PotentialSet evset;
+      __PotentialSet evset;
       evset.insert(ev1.get());
       evset.insert(ev3.get());
-       __Potential posterior(posterior_joint(joint, evset));
+      __Potential posterior(posterior_joint(joint, evset));
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -308,18 +301,18 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(3);   // D
 
-       __Potential ev0(create_evidence(0, {0.3, 0.7}));
+      __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
-       __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
+      __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
       inf.addEvidence(*ev1);
-       __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
+      __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
       inf.addEvidence(*ev7);
 
-       __PotentialSet evset;
+      __PotentialSet evset;
       evset.insert(ev0.get());
       evset.insert(ev1.get());
       evset.insert(ev7.get());
-       __Potential posterior(posterior_joint(joint, evset));
+      __Potential posterior(posterior_joint(joint, evset));
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -341,21 +334,21 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(3);   // D
 
-       __Potential ev0(create_evidence(0, {0.3, 0.7}));
+      __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
-       __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
+      __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
       inf.addEvidence(*ev1);
-       __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
+      __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
       inf.addEvidence(*ev7);
 
 
-       __PotentialSet evset;
+      __PotentialSet evset;
       evset.insert(ev0.get());
       evset.insert(ev1.get());
       evset.insert(ev7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -369,11 +362,11 @@ namespace gum_tests {
       }
 
 
-       __Potential evp0(create_evidence(0, {1, 0}));
+      __Potential evp0(create_evidence(0, {1, 0}));
       inf.chgEvidence(0, 0);
-       __Potential evp1(create_evidence(1, {0.8, 0.4, 0.1}));
+      __Potential evp1(create_evidence(1, {0.8, 0.4, 0.1}));
       inf.chgEvidence(1, std::vector< double >{0.8, 0.4, 0.1});
-       __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
+      __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
       inf.chgEvidence(*evp7);
 
       evset.clear();
@@ -382,7 +375,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -396,7 +389,7 @@ namespace gum_tests {
       }
 
 
-       __Potential evpp7(create_evidence(7, {0.9, 0.1, 0.3}));
+      __Potential evpp7(create_evidence(7, {0.9, 0.1, 0.3}));
       inf.chgEvidence(*evpp7);
 
       evset.clear();
@@ -405,7 +398,7 @@ namespace gum_tests {
       evset.insert(evpp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -427,7 +420,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -446,7 +439,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -465,7 +458,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -488,21 +481,21 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(3);   // D
 
-       __Potential ev0(create_evidence(0, {0.3, 0.7}));
+      __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
-       __Potential ev1(create_evidence(1, {0, 1, 0}));
+      __Potential ev1(create_evidence(1, {0, 1, 0}));
       inf.addEvidence(*ev1);
-       __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
+      __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
       inf.addEvidence(*ev7);
 
 
-       __PotentialSet evset;
+      __PotentialSet evset;
       evset.insert(ev0.get());
       evset.insert(ev1.get());
       evset.insert(ev7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -516,9 +509,9 @@ namespace gum_tests {
       }
 
 
-       __Potential evp0(create_evidence(0, {1, 0}));
+      __Potential evp0(create_evidence(0, {1, 0}));
       inf.chgEvidence(0, 0);
-       __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
+      __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
       inf.chgEvidence(*evp7);
 
       evset.clear();
@@ -527,7 +520,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -541,7 +534,7 @@ namespace gum_tests {
       }
 
 
-       __Potential evpp0(create_evidence(0, {0, 1}));
+      __Potential evpp0(create_evidence(0, {0, 1}));
       inf.chgEvidence(*evpp0);
 
       evset.clear();
@@ -550,7 +543,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -572,7 +565,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -591,7 +584,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -610,7 +603,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -633,20 +626,20 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(3);   // D
 
-       __Potential ev0(create_evidence(0, {0.3, 1.7}));
+      __Potential ev0(create_evidence(0, {0.3, 1.7}));
       inf.addEvidence(*ev0);
-       __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
+      __Potential ev1(create_evidence(1, {0.3, 0.1, 0.8}));
       inf.addEvidence(*ev1);
-       __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
+      __Potential ev7(create_evidence(7, {0.4, 0.2, 0.3}));
       inf.addEvidence(*ev7);
 
-       __PotentialSet evset;
+      __PotentialSet evset;
       evset.insert(ev0.get());
       evset.insert(ev1.get());
       evset.insert(ev7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -660,8 +653,8 @@ namespace gum_tests {
       }
 
 
-       __Potential ev4(create_evidence(4, {1, 0}));
-       __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
+      __Potential ev4(create_evidence(4, {1, 0}));
+      __Potential evp7(create_evidence(7, {0.2, 0.3, 0.6}));
       inf.eraseEvidence(0);
       inf.addEvidence(*ev4);
       inf.chgEvidence(*evp7);
@@ -671,7 +664,7 @@ namespace gum_tests {
       evset.insert(evp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -684,9 +677,9 @@ namespace gum_tests {
         TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
       }
 
-       __Potential evp0(create_evidence(0, {1, 0}));
-       __Potential evpp4(create_evidence(4, {0.7, 0.7}));
-       __Potential evpp7(create_evidence(7, {0, 1, 0}));
+      __Potential evp0(create_evidence(0, {1, 0}));
+      __Potential evpp4(create_evidence(4, {0.7, 0.7}));
+      __Potential evpp7(create_evidence(7, {0, 1, 0}));
       inf.addEvidence(0, 0);
       inf.chgEvidence(*evpp4);
       inf.chgEvidence(*evpp7);
@@ -697,7 +690,7 @@ namespace gum_tests {
       evset.insert(evpp7.get());
 
       {
-         __Potential posterior(posterior_joint(joint, evset));
+        __Potential posterior(posterior_joint(joint, evset));
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 

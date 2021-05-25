@@ -49,16 +49,14 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream& output,
+  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                                const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.")
-    }
+    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
 
-    output <<  _preambule_(bn) << std::endl;
+    output << _preambule_(bn) << std::endl;
 
     for (auto node: bn.nodes())
-      output <<  _cptBloc_(bn, node) << std::endl;
+      output << _cptBloc_(bn, node) << std::endl;
 
     output << std::endl;
 
@@ -77,7 +75,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIBNWriter< GUM_SCALAR >::write(const std::string& filePath,
+  INLINE void UAIBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
                                                const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
@@ -89,8 +87,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string
-     UAIBNWriter< GUM_SCALAR >:: _preambule_(const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE std::string UAIBNWriter< GUM_SCALAR >::_preambule_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -125,9 +122,8 @@ namespace gum {
     return str.str();
   }
   template < typename GUM_SCALAR >
-  INLINE std::string
-         UAIBNWriter< GUM_SCALAR >:: _cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
-                                          NodeId                         node) {
+  INLINE std::string UAIBNWriter< GUM_SCALAR >::_cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
+                                                          NodeId                         node) {
     std::stringstream str;
 
     const auto& p = bn.cpt(node);

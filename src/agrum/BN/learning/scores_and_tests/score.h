@@ -80,13 +80,11 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score(const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori< ALLOC >&              external_apriori,
+      Score(const DBRowGeneratorParser< ALLOC >&                                 parser,
+            const Apriori< ALLOC >&                                              external_apriori,
             const std::vector< std::pair< std::size_t, std::size_t >,
-                               ALLOC< std::pair< std::size_t, std::size_t > > >&
-               ranges,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns
+                               ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
             = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
             const allocator_type& alloc = allocator_type());
 
@@ -107,10 +105,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score(const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori< ALLOC >&              external_apriori,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns
+      Score(const DBRowGeneratorParser< ALLOC >&                          parser,
+            const Apriori< ALLOC >&                                       external_apriori,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
             = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
             const allocator_type& alloc = allocator_type());
 
@@ -161,8 +158,7 @@ namespace gum {
       template < template < typename > class XALLOC >
       void setRanges(
          const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >&
-            new_ranges);
+                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
@@ -179,8 +175,7 @@ namespace gum {
       /** @param var the variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      double score(const NodeId                                  var,
-                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
+      double score(const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
 
       /// clears all the data structures from memory, including the cache
       void clear();
@@ -198,8 +193,7 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-         nodeId2Columns() const;
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
 
       /// return the database used by the score
       const DatabaseTable< ALLOC >& database() const;
@@ -283,8 +277,7 @@ namespace gum {
        * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
        */
       std::vector< double, ALLOC< double > >
-         marginalize_(const NodeId                                  X_id,
-                      const std::vector< double, ALLOC< double > >& N_xyz) const;
+         marginalize_(const NodeId X_id, const std::vector< double, ALLOC< double > >& N_xyz) const;
     };
 
   } /* namespace learning */

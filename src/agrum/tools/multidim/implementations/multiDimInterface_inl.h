@@ -32,13 +32,10 @@
 namespace gum {
   // Swap two variables in this multidim.
   INLINE
-  void MultiDimInterface::replace(const DiscreteVariable& x,
-                                  const DiscreteVariable& y) {
+  void MultiDimInterface::replace(const DiscreteVariable& x, const DiscreteVariable& y) {
     if (!contains(x)) { GUM_ERROR(NotFound, "could not find the variable") }
 
-    if (contains(y)) {
-      GUM_ERROR(DuplicateElement, "variable " << y << " already in MultiDim")
-    }
+    if (contains(y)) { GUM_ERROR(DuplicateElement, "variable " << y << " already in MultiDim") }
 
     if (x.domainSize() != y.domainSize()) {
       GUM_ERROR(OperationNotAllowed, "incompatible variables")

@@ -52,8 +52,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   class MultiDimBijArray: public MultiDimWithOffset< GUM_SCALAR > {
     public:
-    using VarBijection
-       = Bijection< const DiscreteVariable*, const DiscreteVariable* >;
+    using VarBijection = Bijection< const DiscreteVariable*, const DiscreteVariable* >;
 
     // =========================================================================
     /// @name Constructors / Destructors
@@ -67,8 +66,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray(const VarBijection&                bijection,
-                     const MultiDimArray< GUM_SCALAR >& array);
+    MultiDimBijArray(const VarBijection& bijection, const MultiDimArray< GUM_SCALAR >& array);
 
     /**
      * @brief Class constructor.
@@ -77,8 +75,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimBijArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray(const VarBijection&                   bijection,
-                     const MultiDimBijArray< GUM_SCALAR >& array);
+    MultiDimBijArray(const VarBijection& bijection, const MultiDimBijArray< GUM_SCALAR >& array);
 
     /**
      * @brief Copy constructor.
@@ -105,8 +102,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised since you can't change a readonly
      * structure.
      */
-    MultiDimBijArray< GUM_SCALAR >&
-       operator=(const MultiDimBijArray< GUM_SCALAR >& from);
+    MultiDimBijArray< GUM_SCALAR >& operator=(const MultiDimBijArray< GUM_SCALAR >& from);
 
     /**
      * @warning This will raise an exception: read only structure.
@@ -179,10 +175,10 @@ namespace gum {
 
     private:
     /// The true data.
-    const MultiDimArray< GUM_SCALAR >&  _array_;
+    const MultiDimArray< GUM_SCALAR >& _array_;
 
     /// The class name.
-    std::string  _name_;
+    std::string _name_;
   };
 
 

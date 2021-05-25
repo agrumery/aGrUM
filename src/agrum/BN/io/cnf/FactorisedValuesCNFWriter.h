@@ -55,10 +55,8 @@ namespace gum {
    * for information on this format.
    *
    */
-  template < typename GUM_SCALAR,
-             template < typename > class IApproximationPolicy = ExactPolicy >
-  class FactorisedValuesCNFWriter:
-      public CNFWriter< GUM_SCALAR, IApproximationPolicy > {
+  template < typename GUM_SCALAR, template < typename > class IApproximationPolicy = ExactPolicy >
+  class FactorisedValuesCNFWriter: public CNFWriter< GUM_SCALAR, IApproximationPolicy > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -94,8 +92,7 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string&             filePath,
-               const IBayesNet< GUM_SCALAR >& bn) final;
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
   };
 
 

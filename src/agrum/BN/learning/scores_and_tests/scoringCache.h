@@ -157,10 +157,8 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable< IdCondSet< ALLOC >,
-                 double,
-                 ALLOC< std::pair< IdCondSet< ALLOC >, double > > >
-          _scores_;
+      HashTable< IdCondSet< ALLOC >, double, ALLOC< std::pair< IdCondSet< ALLOC >, double > > >
+         _scores_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

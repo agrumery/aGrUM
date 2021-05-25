@@ -91,8 +91,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename STRUCT_CONSTRAINT >
-    class GraphChangesGeneratorOnSubDiGraph:
-        public IGraphChangesGenerator4DiGraph {
+    class GraphChangesGeneratorOnSubDiGraph: public IGraphChangesGenerator4DiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;
@@ -127,8 +126,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& operator=(
-         const GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& from);
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&
+         operator=(const GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&
@@ -223,9 +222,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size  _max_threads_number_{getMaxNumberOfThreads()};
+      Size _max_threads_number_{getMaxNumberOfThreads()};
 #else
-      Size  _max_threads_number_{1};
+      Size _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

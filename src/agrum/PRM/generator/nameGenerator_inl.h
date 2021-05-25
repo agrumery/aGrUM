@@ -30,12 +30,10 @@
 namespace gum {
   namespace prm {
     INLINE
-    NameGenerator::NameGenerator() :  _counters_(3, 1) {
-      GUM_CONSTRUCTOR(NameGenerator);
-    }
+    NameGenerator::NameGenerator() : _counters_(3, 1) { GUM_CONSTRUCTOR(NameGenerator); }
 
     INLINE NameGenerator::NameGenerator(const NameGenerator& source) :
-         _counters_(source. _counters_) {
+        _counters_(source._counters_) {
       GUM_CONS_CPY(NameGenerator);
     }
 
@@ -46,7 +44,7 @@ namespace gum {
 
     INLINE
     NameGenerator& NameGenerator::operator=(const NameGenerator& source) {
-       _counters_ = source. _counters_;
+      _counters_ = source._counters_;
       return *this;
     }
 
@@ -57,32 +55,32 @@ namespace gum {
       switch (type) {
         case PRMObject::prm_type::ALL:
         case PRMObject::prm_type::CLASS: {
-          s << "class_" << ++( _counters_[0]);
+          s << "class_" << ++(_counters_[0]);
           break;
         }
 
         case PRMObject::prm_type::PRM_INTERFACE: {
-          s << "iface_" << ++( _counters_[0]);
+          s << "iface_" << ++(_counters_[0]);
           break;
         }
 
         case PRMObject::prm_type::SYSTEM: {
-          s << "sys_" << ++( _counters_[0]);
+          s << "sys_" << ++(_counters_[0]);
           break;
         }
 
         case PRMObject::prm_type::TYPE: {
-          s << "type_" << ++( _counters_[0]);
+          s << "type_" << ++(_counters_[0]);
           break;
         }
 
         case PRMObject::prm_type::CLASS_ELT: {
-          s << "elt_" << ++( _counters_[1]);
+          s << "elt_" << ++(_counters_[1]);
           break;
         }
 
         case PRMObject::prm_type::INSTANCE: {
-          s << "inst_" << ++( _counters_[2]);
+          s << "inst_" << ++(_counters_[2]);
           break;
         }
 

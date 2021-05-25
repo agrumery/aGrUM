@@ -123,16 +123,14 @@ namespace gum {
     /// @{
 
     const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return  _primeMap_.second(mainVar);
+      return _primeMap_.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return  _taxiVars_.beginSafe();
+      return _taxiVars_.beginSafe();
     }
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return  _taxiVars_.endSafe();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() { return _taxiVars_.endSafe(); }
 
     /// @}
 
@@ -141,25 +139,23 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return * _actionMap_[actionId]; }
+    const std::string& actionName(Idx actionId) { return *_actionMap_[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() {
-      return  _taxiActions_.beginSafe();
-    }
-    SequenceIteratorSafe< Idx > endActions() { return  _taxiActions_.endSafe(); }
+    SequenceIteratorSafe< Idx > beginActions() { return _taxiActions_.beginSafe(); }
+    SequenceIteratorSafe< Idx > endActions() { return _taxiActions_.endSafe(); }
 
 
     void perform(Idx);
 
     private:
-    void  _performGoNorth_();
-    void  _performGoEast_();
-    void  _performGoSouth_();
-    void  _performGoWest_();
-    void  _performPickUp_();
-    void  _performPutDown_();
-    void  _performFillUp_();
+    void _performGoNorth_();
+    void _performGoEast_();
+    void _performGoSouth_();
+    void _performGoWest_();
+    void _performPickUp_();
+    void _performPutDown_();
+    void _performFillUp_();
 
     /// @}
 
@@ -171,33 +167,33 @@ namespace gum {
     double reward();
 
     private:
-    void  _evalReward_();
-    bool  _isAtDestination_(TaxiSimulationLandmark  passDest,
+    void _evalReward_();
+    bool _isAtDestination_(TaxiSimulationLandmark  passDest,
                            TaxiSimulationLandmarkX xCurPos,
                            TaxiSimulationLandmarkY yCurPos);
-    bool  _isAtMeetPoint_(TaxiSimulationLandmark  passpos,
+    bool _isAtMeetPoint_(TaxiSimulationLandmark  passpos,
                          TaxiSimulationLandmarkX xCurPos,
                          TaxiSimulationLandmarkY yCurPos);
 
     /// @}
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* >                            _taxiVars_;
-    Bijection< const DiscreteVariable*, const DiscreteVariable* >  _primeMap_;
-    LabelizedVariable*                                             _xPos_;
-    LabelizedVariable*                                             _yPos_;
-    LabelizedVariable*                                             _passengerPos_;
-    LabelizedVariable*                                             _passengerDest_;
-    LabelizedVariable*                                             _fuelLevel_;
+    Sequence< const DiscreteVariable* >                           _taxiVars_;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > _primeMap_;
+    LabelizedVariable*                                            _xPos_;
+    LabelizedVariable*                                            _yPos_;
+    LabelizedVariable*                                            _passengerPos_;
+    LabelizedVariable*                                            _passengerDest_;
+    LabelizedVariable*                                            _fuelLevel_;
 
     /// Actions
-    Sequence< Idx >                 _taxiActions_;
-    HashTable< Idx, std::string* >  _actionMap_;   // __actionMap.insert ( actionId,
+    Sequence< Idx >                _taxiActions_;
+    HashTable< Idx, std::string* > _actionMap_;   // __actionMap.insert ( actionId,
     // new std::string ( action ) );
-    TaxiSimulationAction  _lastAction_;
+    TaxiSimulationAction _lastAction_;
 
     /// Reward
-    double  _reward_;
+    double _reward_;
   };
 
 } /* namespace gum */

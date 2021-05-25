@@ -177,9 +177,7 @@ namespace gum {
     virtual void startTransitionDeclaration() = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
-    virtual void addTransition(const std::string&        var,
-                               const MultiDimAdressable* transition)
-       = 0;
+    virtual void addTransition(const std::string& var, const MultiDimAdressable* transition) = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
@@ -271,15 +269,15 @@ namespace gum {
      * @name verbosity control
      * @{
      */
-    void setVerbose() {  _verbose_ = true; }
+    void setVerbose() { _verbose_ = true; }
 
-    void resetVerbose() {  _verbose_ = false; }
+    void resetVerbose() { _verbose_ = false; }
 
-    bool isVerbose() { return  _verbose_; }
+    bool isVerbose() { return _verbose_; }
     /// @}
 
     private:
-    bool  _verbose_;
+    bool _verbose_;
   };
 } /* namespace gum */
 

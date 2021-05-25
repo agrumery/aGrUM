@@ -132,23 +132,23 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void  _parsingVariables_(ticpp::Element* parentNetwork);
+    void _parsingVariables_(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void  _fillingBN_(ticpp::Element* parentNetwork);
+    void _fillingBN_(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the bayes net in which will be load the content of the xml
      * filePath
      */
-    BayesNet< GUM_SCALAR >*  _bn_;
+    BayesNet< GUM_SCALAR >* _bn_;
 
     /**
      * the path to the xml filePath
      */
-    std::string  _filePath_;
+    std::string _filePath_;
   };
 
 

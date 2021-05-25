@@ -42,32 +42,29 @@ namespace gum {
 
   // erase all the labels
 
-  INLINE void LabelizedVariable::eraseLabels() {  _labels_.clear(); }
+  INLINE void LabelizedVariable::eraseLabels() { _labels_.clear(); }
 
   // copies the content of aLDRV
 
   INLINE void LabelizedVariable::copy_(const LabelizedVariable& aLDRV) {
     DiscreteVariable::copy_(aLDRV);
-     _labels_.clear();
-     _labels_ = aLDRV. _labels_;
+    _labels_.clear();
+    _labels_ = aLDRV._labels_;
   }
 
   // add a label with a new index (we assume that we will NEVER remove a label)
-  INLINE LabelizedVariable&
-         LabelizedVariable::addLabel(const std::string& aLabel) {
-     _labels_.insert(aLabel);
+  INLINE LabelizedVariable& LabelizedVariable::addLabel(const std::string& aLabel) {
+    _labels_.insert(aLabel);
 
     return *this;
   }
 
-  INLINE void LabelizedVariable::changeLabel(Idx                pos,
-                                             const std::string& aLabel) const {
-    if ( _labels_[pos] == aLabel) return;
+  INLINE void LabelizedVariable::changeLabel(Idx pos, const std::string& aLabel) const {
+    if (_labels_[pos] == aLabel) return;
 
-    if (isLabel(aLabel))
-      GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists")
+    if (isLabel(aLabel)) GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists")
 
-     _labels_.setAtPos(pos, aLabel);
+    _labels_.setAtPos(pos, aLabel);
   }
 
   // Default constructor
@@ -92,21 +89,20 @@ namespace gum {
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
-     _labels_.clear();
+    _labels_.clear();
     for (Idx i = 0; i < labels.size(); ++i)
-       _labels_.insert(labels[i]);
+      _labels_.insert(labels[i]);
   }
 
   INLINE Idx LabelizedVariable::posLabel(const std::string& label) const {
-    return  _labels_.pos(label);
+    return _labels_.pos(label);
   }
 
   // Copy constructor
 
   INLINE
   LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV) :
-      DiscreteVariable(aLDRV),
-       _labels_(aLDRV. _labels_) {   // for debugging purposes
+      DiscreteVariable(aLDRV), _labels_(aLDRV._labels_) {   // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
   }
 
@@ -118,13 +114,10 @@ namespace gum {
   }
 
   INLINE
-  LabelizedVariable* LabelizedVariable::clone() const {
-    return new LabelizedVariable(*this);
-  }
+  LabelizedVariable* LabelizedVariable::clone() const { return new LabelizedVariable(*this); }
 
   // copy operator
-  INLINE LabelizedVariable&
-     LabelizedVariable::operator=(const LabelizedVariable& aLDRV) {
+  INLINE LabelizedVariable& LabelizedVariable::operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
     if (&aLDRV != this) { copy_(aLDRV); }
 
@@ -133,31 +126,26 @@ namespace gum {
 
   // indicates whether the variable already has the label passed in argument
   INLINE bool LabelizedVariable::isLabel(const std::string& aLabel) const {
-    return  _labels_.exists(aLabel);
+    return _labels_.exists(aLabel);
   }
 
   // returns the ith label
-  INLINE std::string LabelizedVariable::label(Idx i) const {
-    return  _labels_.atPos(i);
-  }
+  INLINE std::string LabelizedVariable::label(Idx i) const { return _labels_.atPos(i); }
 
   // get a numerical representation of the indice-th value.
-  INLINE double LabelizedVariable::numerical(Idx indice) const {
-    return double(indice);
-  }
+  INLINE double LabelizedVariable::numerical(Idx indice) const { return double(indice); }
 
 
   INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {
-      return  _labels_.pos(aLabel);
+      return _labels_.pos(aLabel);
     } catch (...) {
-      GUM_ERROR(OutOfBounds,
-                "label '" << aLabel << "' is unknown in " << this->toString())
+      GUM_ERROR(OutOfBounds, "label '" << aLabel << "' is unknown in " << this->toString())
     }
   }
 
   // returns the size of the random discrete variable domain
-  INLINE Size LabelizedVariable::domainSize() const { return  _labels_.size(); }
+  INLINE Size LabelizedVariable::domainSize() const { return _labels_.size(); }
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
 

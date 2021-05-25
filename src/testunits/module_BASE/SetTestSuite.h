@@ -460,15 +460,13 @@ namespace gum_tests {
       obtained.clear();
       obtained2.clear();
 
-      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend();
-           ++iter) {
+      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend(); ++iter) {
         obtained.insert(*iter);
       }
 
       TS_ASSERT(t1 == obtained);
 
-      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend();
-           ++iter) {
+      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend(); ++iter) {
         obtained2.insert(*iter);
       }
 
@@ -522,8 +520,7 @@ namespace gum_tests {
 
       obtained.clear();
 
-      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend();
-           ++iter) {
+      for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend(); ++iter) {
         obtained.insert(*iter);
       }
 
@@ -640,9 +637,7 @@ namespace gum_tests {
       return unionSet;
     }
 
-    static std::string mappingTestFunc_1(const std::string& s) {
-      return s + ".foo";
-    }
+    static std::string mappingTestFunc_1(const std::string& s) { return s + ".foo"; }
 
     static std::string mappingTestFunc_2(std::string& s) { return s + ".bar"; }
 

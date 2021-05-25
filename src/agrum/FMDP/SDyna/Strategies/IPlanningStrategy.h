@@ -92,9 +92,7 @@ namespace gum {
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
-    virtual const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-       optimalPolicy()
-       = 0;
+    virtual const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() = 0;
 
     /// @}
 

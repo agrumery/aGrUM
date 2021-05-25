@@ -71,13 +71,13 @@ namespace gum {
      * @brief The safe iterator used by everyone.
      * @return Returns the safe iterator used by everyone.
      */
-    static const SetIteratorSafe< int >*  _SetIterEndSafe_;
+    static const SetIteratorSafe< int >* _SetIterEndSafe_;
 
     /**
      * @brief The unsafe iterator used by everyone.
      * @return Returns the unsafe iterator used by everyone.
      */
-    static const SetIterator< int >*  _SetIterEnd_;
+    static const SetIterator< int >* _SetIterEnd_;
 
     /**
      * @brief Creates (if needed) and returns the iterator  _SetIterEndSafe_.
@@ -196,8 +196,7 @@ namespace gum {
      * automatically when its number of elements is sufficiently high that it
      * induces slow retrievals of elements.
      */
-    explicit Set(Size capacity      = HashTableConst::default_size,
-                 bool resize_policy = true);
+    explicit Set(Size capacity = HashTableConst::default_size, bool resize_policy = true);
 
     /**
      * @brief Initializer list constructor.
@@ -726,10 +725,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template < typename NewKey,
-               typename NewAlloc
-               = typename Alloc::template rebind< NewKey >::other >
-    HashTable< Key, NewKey, NewAlloc > hashMap(NewKey (*f)(const Key&),
-                                               Size capacity = 0) const;
+               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
+    HashTable< Key, NewKey, NewAlloc > hashMap(NewKey (*f)(const Key&), Size capacity = 0) const;
 
     /**
      * @brief Creates a hash table of NewKey from the set.
@@ -745,10 +742,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template < typename NewKey,
-               typename NewAlloc
-               = typename Alloc::template rebind< NewKey >::other >
-    HashTable< Key, NewKey, NewAlloc > hashMap(const NewKey& val,
-                                               Size          size = 0) const;
+               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
+    HashTable< Key, NewKey, NewAlloc > hashMap(const NewKey& val, Size size = 0) const;
 
     /**
      * @brief A method to create a List of NewKey from the set.
@@ -759,8 +754,7 @@ namespace gum {
      * @param f A function that maps a Key into a NewKey
      */
     template < typename NewKey,
-               typename NewAlloc
-               = typename Alloc::template rebind< NewKey >::other >
+               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
     List< NewKey, NewAlloc > listMap(NewKey (*f)(const Key&)) const;
 
     /// @}
@@ -775,7 +769,7 @@ namespace gum {
     /// @}
 
     /// A set of X's is actually a hash table whose keys are the X's.
-    HashTable< Key, bool, Alloc >  _inside_;
+    HashTable< Key, bool, Alloc > _inside_;
 
     /// Convert a hash table into a set of keys.
     Set(const HashTable< Key, bool, Alloc >& h);
@@ -993,7 +987,7 @@ namespace gum {
     friend class Set;
 
     /// The underlying iterator for the set's hash table containing the data.
-    HashTableConstIteratorSafe< Key, bool >  _ht_iter_;
+    HashTableConstIteratorSafe< Key, bool > _ht_iter_;
   };
 
   // ===========================================================================
@@ -1199,7 +1193,7 @@ namespace gum {
     friend class SetIteratorSafe< Key >;
 
     /// The underlying iterator for the set's hash table containing the data.
-    HashTableConstIterator< Key, bool >  _ht_iter_;
+    HashTableConstIterator< Key, bool > _ht_iter_;
   };
 
 

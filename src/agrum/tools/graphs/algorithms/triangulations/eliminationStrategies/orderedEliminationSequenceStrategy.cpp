@@ -49,8 +49,7 @@ namespace gum {
      const std::vector< NodeId >* order) :
       EliminationSequenceStrategy(graph, dom_sizes) {
     // check that the user passed appropriate graphs and orders
-    if (((graph == nullptr) && (order != nullptr))
-        || ((graph != nullptr) && (order == nullptr))) {
+    if (((graph == nullptr) && (order != nullptr)) || ((graph != nullptr) && (order == nullptr))) {
       GUM_ERROR(GraphError,
                 "OrderedEliminationSequenceStrategy needs either both nullptrs "
                 "or both non-nullptrs on graph and elimination ordering");
@@ -65,8 +64,8 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
      const OrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
-       _order_(from. _order_),  _order_index_(from. _order_index_),
-       _order_needed_(from. _order_needed_) {
+      _order_(from._order_), _order_index_(from._order_index_),
+      _order_needed_(from._order_needed_) {
     GUM_CONS_CPY(OrderedEliminationSequenceStrategy);
   }
 
@@ -74,8 +73,8 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
      OrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
-       _order_(from. _order_),  _order_index_(from. _order_index_),
-       _order_needed_(from. _order_needed_) {
+      _order_(from._order_), _order_index_(from._order_index_),
+      _order_needed_(from._order_needed_) {
     GUM_CONS_MOV(OrderedEliminationSequenceStrategy);
   }
 
@@ -86,23 +85,20 @@ namespace gum {
 
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
-  OrderedEliminationSequenceStrategy*
-     OrderedEliminationSequenceStrategy::newFactory() const {
+  OrderedEliminationSequenceStrategy* OrderedEliminationSequenceStrategy::newFactory() const {
     return new OrderedEliminationSequenceStrategy();
   }
 
   /// virtual copy constructor
-  OrderedEliminationSequenceStrategy*
-     OrderedEliminationSequenceStrategy::copyFactory() const {
+  OrderedEliminationSequenceStrategy* OrderedEliminationSequenceStrategy::copyFactory() const {
     return new OrderedEliminationSequenceStrategy(*this);
   }
 
   /// sets a new graph to be triangulated
-  bool OrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* domain_sizes) {
+  bool OrderedEliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
+                                                    const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
-      setOrder( _order_);
+      setOrder(_order_);
       return true;
     }
 
@@ -110,8 +106,8 @@ namespace gum {
   }
 
   /// indicates whether an order is compatible with the current graph
-  bool OrderedEliminationSequenceStrategy:: _isOrderNeeded_(
-     const std::vector< NodeId >* order) const {
+  bool
+     OrderedEliminationSequenceStrategy::_isOrderNeeded_(const std::vector< NodeId >* order) const {
     if ((graph_ == nullptr) || (order == nullptr)) return true;
 
     // determine the set of nodes in the order that belong to the graph
@@ -125,21 +121,20 @@ namespace gum {
   }
 
   /// sets a new complete order
-  bool OrderedEliminationSequenceStrategy::setOrder(
-     const std::vector< NodeId >* order) {
+  bool OrderedEliminationSequenceStrategy::setOrder(const std::vector< NodeId >* order) {
     // check that the order contains all the nodes of the graph
-     _order_needed_ =  _isOrderNeeded_(order);
+    _order_needed_ = _isOrderNeeded_(order);
 
-    if (! _order_needed_) {
-       _order_ = order;
+    if (!_order_needed_) {
+      _order_ = order;
 
       // determine the first element in order that belong to the graph
       // here, note that we have the guarantee that  _order_index_ will be
       // lower than the size of  _order_ since all the nodes in the graph
       // belong to vector  _order_
-       _order_index_ = 0;
-      while (!graph_->existsNode((* _order_)[ _order_index_]))
-        ++ _order_index_;
+      _order_index_ = 0;
+      while (!graph_->existsNode((*_order_)[_order_index_]))
+        ++_order_index_;
 
       return true;
     }
@@ -150,18 +145,18 @@ namespace gum {
   /// clears the order (to prepare, for instance, a new elimination sequence)
   void OrderedEliminationSequenceStrategy::clear() {
     EliminationSequenceStrategy::clear();
-     _order_needed_ = true;
-     _order_index_  = std::size_t(0);
+    _order_needed_ = true;
+    _order_index_  = std::size_t(0);
   }
 
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId OrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // check that we can return a nodeId
-    if ( _order_needed_ || ( _order_->size() <=  _order_index_)) {
+    if (_order_needed_ || (_order_->size() <= _order_index_)) {
       GUM_ERROR(NotFound, "no node id can be returned")
     }
 
-    return (* _order_)[ _order_index_];
+    return (*_order_)[_order_index_];
   }
 
   /** @brief if the elimination sequence is able to compute fill-ins, we
@@ -173,35 +168,28 @@ namespace gum {
   /** @brief indicates whether the fill-ins generated by the eliminated
    * nodes, if needed, will be computed by the elimination sequence, or need be
    * computed by the triangulation itself. */
-  bool OrderedEliminationSequenceStrategy::providesFillIns() const {
-    return false;
-  }
+  bool OrderedEliminationSequenceStrategy::providesFillIns() const { return false; }
 
   /** @brief indicates whether the elimination sequence updates by itself the
    * graph after a node has been eliminated */
-  bool OrderedEliminationSequenceStrategy::providesGraphUpdate() const {
-    return false;
-  }
+  bool OrderedEliminationSequenceStrategy::providesGraphUpdate() const { return false; }
 
   /// performs all the graph/fill-ins updates provided (if any)
   void OrderedEliminationSequenceStrategy::eliminationUpdate(const NodeId node) {
     // check whether there is something to update
-    if (! _order_needed_) {
+    if (!_order_needed_) {
       // check that node corresponds to the current index
-      if (( _order_index_ >=  _order_->size())
-          || ((* _order_)[ _order_index_] != node)) {
+      if ((_order_index_ >= _order_->size()) || ((*_order_)[_order_index_] != node)) {
         GUM_ERROR(OutOfBounds,
                   "update impossible because node "
-                     << node
-                     << " does not correspond to the current elimination index");
+                     << node << " does not correspond to the current elimination index");
       }
 
       // now perform the update: goto the next node that belongs to graph_
-      ++ _order_index_;
-      std::size_t size =  _order_->size();
-      while (( _order_index_ < size)
-             && !graph_->existsNode((* _order_)[ _order_index_]))
-        ++ _order_index_;
+      ++_order_index_;
+      std::size_t size = _order_->size();
+      while ((_order_index_ < size) && !graph_->existsNode((*_order_)[_order_index_]))
+        ++_order_index_;
     }
   }
 

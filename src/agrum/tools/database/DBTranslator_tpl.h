@@ -58,8 +58,8 @@ namespace gum {
        std::size_t                                              max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type&    alloc) :
         DBTranslator< ALLOC >::allocator_type(alloc),
-        is_dictionary_dynamic_(dynamic_dictionary),
-        max_dico_entries_(max_dico_entries), val_type_(val_type) {
+        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
+        val_type_(val_type) {
       const std::size_t size = missing_symbols.size();
 
       if (size) {
@@ -82,8 +82,8 @@ namespace gum {
        std::size_t                                           max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >::allocator_type(alloc),
-        is_dictionary_dynamic_(dynamic_dictionary),
-        max_dico_entries_(max_dico_entries), val_type_(val_type) {
+        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
+        val_type_(val_type) {
       GUM_CONSTRUCTOR(DBTranslator);
     }
 
@@ -95,9 +95,8 @@ namespace gum {
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >::allocator_type(alloc),
         is_dictionary_dynamic_(from.is_dictionary_dynamic_),
-        max_dico_entries_(from.max_dico_entries_),
-        missing_symbols_(from.missing_symbols_), back_dico_(from.back_dico_),
-        val_type_(from.val_type_) {
+        max_dico_entries_(from.max_dico_entries_), missing_symbols_(from.missing_symbols_),
+        back_dico_(from.back_dico_), val_type_(from.val_type_) {
       GUM_CONS_CPY(DBTranslator);
     }
 
@@ -116,8 +115,8 @@ namespace gum {
         DBTranslator< ALLOC >::allocator_type(alloc),
         is_dictionary_dynamic_(from.is_dictionary_dynamic_),
         max_dico_entries_(from.max_dico_entries_),
-        missing_symbols_(std::move(from.missing_symbols_)),
-        back_dico_(std::move(from.back_dico_)), val_type_(from.val_type_) {
+        missing_symbols_(std::move(from.missing_symbols_)), back_dico_(std::move(from.back_dico_)),
+        val_type_(from.val_type_) {
       GUM_CONS_MOV(DBTranslator);
     }
 
@@ -152,8 +151,7 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE DBTranslator< ALLOC >&
-       DBTranslator< ALLOC >::operator=(DBTranslator< ALLOC >&& from) {
+    INLINE DBTranslator< ALLOC >& DBTranslator< ALLOC >::operator=(DBTranslator< ALLOC >&& from) {
       is_dictionary_dynamic_ = from.is_dictionary_dynamic_;
       max_dico_entries_      = from.max_dico_entries_;
       missing_symbols_       = std::move(from.missing_symbols_);
@@ -166,16 +164,14 @@ namespace gum {
 
     /// alias for method translate
     template < template < typename > class ALLOC >
-    INLINE DBTranslatedValue
-       DBTranslator< ALLOC >::operator<<(const std::string& str) {
+    INLINE DBTranslatedValue DBTranslator< ALLOC >::operator<<(const std::string& str) {
       return translate(str);
     }
 
 
     /// alias for method translateBack
     template < template < typename > class ALLOC >
-    INLINE std::string
-       DBTranslator< ALLOC >::operator>>(const DBTranslatedValue translated_val) {
+    INLINE std::string DBTranslator< ALLOC >::operator>>(const DBTranslatedValue translated_val) {
       return translateBack(translated_val);
     }
 
@@ -204,32 +200,28 @@ namespace gum {
 
     /// indicates whether a string corresponds to a missing symbol
     template < template < typename > class ALLOC >
-    INLINE bool
-       DBTranslator< ALLOC >::isMissingSymbol(const std::string& str) const {
+    INLINE bool DBTranslator< ALLOC >::isMissingSymbol(const std::string& str) const {
       return missing_symbols_.exists(str);
     }
 
 
     /// sets the name of the variable stored into the translator
     template < template < typename > class ALLOC >
-    INLINE void
-       DBTranslator< ALLOC >::setVariableName(const std::string& str) const {
+    INLINE void DBTranslator< ALLOC >::setVariableName(const std::string& str) const {
       const_cast< Variable* >(this->variable())->setName(str);
     }
 
 
     /// sets the name of the variable stored into the translator
     template < template < typename > class ALLOC >
-    INLINE void DBTranslator< ALLOC >::setVariableDescription(
-       const std::string& str) const {
+    INLINE void DBTranslator< ALLOC >::setVariableDescription(const std::string& str) const {
       const_cast< Variable* >(this->variable())->setDescription(str);
     }
 
 
     /// indicates whether a translated value corresponds to a missing value
     template < template < typename > class ALLOC >
-    INLINE bool DBTranslator< ALLOC >::isMissingValue(
-       const DBTranslatedValue& value) const {
+    INLINE bool DBTranslator< ALLOC >::isMissingValue(const DBTranslatedValue& value) const {
       switch (val_type_) {
         case DBTranslatedValueType::DISCRETE:
           return value.discr_val == std::numeric_limits< std::size_t >::max();

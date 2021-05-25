@@ -42,7 +42,7 @@ namespace gum_tests {
 
   class MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
     private:
-    void  _fillFactory_(gum::MultiDimFunctionGraph< double >* factory,
+    void _fillFactory_(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {
       try {
         factory->add(*Cprimevar);
@@ -116,8 +116,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable *Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar,
-       *BOvar, *Cprimevar;
+    gum::LabelizedVariable *Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar, *BOvar, *Cprimevar;
 
     void setUp() {
       try {
@@ -160,15 +159,14 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph = NULL;
 
         TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph
-           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
+           functionGraph = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
 
         // *********************************************************************
         // Testing the insertion of nodes and arcs in the graph
         // The insertion are done so that no error should be rised
         // *********************************************************************
         gum::List< gum::NodeId > idList;
-        TS_GUM_ASSERT_THROWS_NOTHING( _fillFactory_(functionGraph, &idList));
+        TS_GUM_ASSERT_THROWS_NOTHING(_fillFactory_(functionGraph, &idList));
 
         // *********************************************************************
         // Destruction of the multidim
@@ -191,13 +189,12 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
         // *********************************************************************
         // Tests
         // *********************************************************************
-        gum::LabelizedVariable* Banditovar
-           = new gum::LabelizedVariable("Bandito", "Desperado", 2);
+        gum::LabelizedVariable* Banditovar = new gum::LabelizedVariable("Bandito", "Desperado", 2);
 
         // Test isTerminalNode
         TS_ASSERT_EQUALS(functionGraph->isTerminalNode(16), true);
@@ -225,8 +222,7 @@ namespace gum_tests {
 
         // Test var node List
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar));
-        TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar),
-                         gum::InvalidArgument);
+        TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar), gum::InvalidArgument);
 
         // *********************************************************************
         // Cleaning
@@ -250,15 +246,13 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
         // For comparison with what readers will return
         std::string   dotfile = GET_RESSOURCES_PATH("outputs/FunctionGraph.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
-        if (!output.good()) {
-          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
-        }
+        if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
 
         output << functionGraph->toDot();
 
@@ -266,9 +260,7 @@ namespace gum_tests {
 
         output.close();
 
-        if (output.fail()) {
-          GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
-        }
+        if (output.fail()) { GUM_ERROR(gum::IOError, "Writting in the ostream failed.") }
 
         delete functionGraph;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
@@ -288,7 +280,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -298,24 +290,19 @@ namespace gum_tests {
         // Inserting a new terminal node with same value as an already inserted
         // one
         // (returned id must be the one of the already inserted)
-        TS_ASSERT_EQUALS(functionGraph->manager()->addTerminalNode(10),
-                         idList[16]);
+        TS_ASSERT_EQUALS(functionGraph->manager()->addTerminalNode(10), idList[16]);
 
         // Testing terminal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph->manager()->eraseNode(idList[15]));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]));
 
         // Testing terminal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]),
-                         gum::NotFound);
+        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]), gum::NotFound);
 
         // Testing internal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph->manager()->eraseNode(idList[12]));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]));
 
         // Testing internal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]),
-                         gum::NotFound);
+        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]), gum::NotFound);
 
 
         // *********************************************************************
@@ -325,30 +312,23 @@ namespace gum_tests {
         // Testing arc modification where starting node does not exist
         // (must raise gum::NotFound)
         // (node 15 has been erased before)
-        TS_ASSERT_THROWS(
-           functionGraph->manager()->setSon(idList[15], 2, idList[1]),
-           gum::NotFound);
-        TS_ASSERT_THROWS(
-           functionGraph->manager()->setSon(idList[1], 2, idList[15]),
-           gum::NotFound);
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]), gum::NotFound);
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]), gum::NotFound);
 
         // Testing node modification where starting node is a terminal node
         // (must raise gum::InvalidNode
         // as terminal nodes are ... terminal)
-        TS_ASSERT_THROWS(
-           functionGraph->manager()->setSon(idList[16], 3, idList[1]),
-           gum::InvalidNode);
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[16], 3, idList[1]),
+                         gum::InvalidNode);
 
         // Testing arc modification where variable modality is higher than its
         // domain size
-        TS_ASSERT_THROWS(
-           functionGraph->manager()->setSon(idList[8], 4, idList[18]),
-           gum::InvalidArgument);
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 4, idList[18]),
+                         gum::InvalidArgument);
 
         // Testing arc modification that violates order constraint
-        TS_ASSERT_THROWS(
-           functionGraph->manager()->setSon(idList[10], 0, idList[1]),
-           gum::OperationNotAllowed);
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[10], 0, idList[1]),
+                         gum::OperationNotAllowed);
         // NB : idList 8 and 1 are bound to the same variable
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 0, idList[1]),
                          gum::OperationNotAllowed);
@@ -371,7 +351,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -418,8 +398,7 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS(functionGraph->populate(v), gum::OperationNotAllowed);
 
-        TS_ASSERT_THROWS(functionGraph->populate({1, 2, 3}),
-                         gum::OperationNotAllowed);
+        TS_ASSERT_THROWS(functionGraph->populate({1, 2, 3}), gum::OperationNotAllowed);
 
 
         // *********************************************************************
@@ -534,10 +513,8 @@ namespace gum_tests {
         // *********************************************************************
         // Testing replace()
         // *********************************************************************
-        gum::LabelizedVariable* lv
-           = new gum::LabelizedVariable("Test", "Cornichon", 2);
-        TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv),
-                         gum::OperationNotAllowed);
+        gum::LabelizedVariable* lv = new gum::LabelizedVariable("Test", "Cornichon", 2);
+        TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), gum::OperationNotAllowed);
         delete lv;
 
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
@@ -558,9 +535,8 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
-        gum::LabelizedVariable* lv
-           = new gum::LabelizedVariable("Test", "Cornichon", 2);
+        _fillFactory_(functionGraph, &idList);
+        gum::LabelizedVariable* lv = new gum::LabelizedVariable("Test", "Cornichon", 2);
 
         // *********************************************************************
         // Test nbrDim(), domainSize(), realSize()
@@ -614,7 +590,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
 
         // *********************************************************************
@@ -629,16 +605,14 @@ namespace gum_tests {
         gum::MultiDimArray< double >* array = new gum::MultiDimArray< double >();
 
         TS_ASSERT_THROWS(functionGraph2->copy(*array), gum::OperationNotAllowed)
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*array),
-                         gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph2->copyFrom(*array), gum::OperationNotAllowed)
 
         delete array;
 
         // *********************************************************************
         // Testing MultiDimFunctionGraph Duplication
         // *********************************************************************
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*functionGraph),
-                         gum::OperationNotAllowed);
+        TS_ASSERT_THROWS(functionGraph2->copyFrom(*functionGraph), gum::OperationNotAllowed);
 
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copy(*functionGraph);)
 
@@ -647,23 +621,18 @@ namespace gum_tests {
         // *********************************************************************
         // Testing CopyAndReassign method
         // *********************************************************************
-        gum::LabelizedVariable *Bijouvar, *Caillouvar, *Chouvar, *Genouvar,
-           *Hibouvar, *Joujouvar, *Pouvar, *Bijouprimevar;
-        Bijouvar = new gum::LabelizedVariable("Bijou", "Un bijou, des bijoux", 2);
-        Caillouvar
-           = new gum::LabelizedVariable("Caillou", "Un caillou, des cailloux", 2);
-        Chouvar  = new gum::LabelizedVariable("Chouvar", "Un chou, des choux", 2);
-        Genouvar = new gum::LabelizedVariable("Genou", "Un genou, des genoux", 2);
-        Hibouvar = new gum::LabelizedVariable("Hibou", "Un hibou, des hiboux", 2);
-        Joujouvar
-           = new gum::LabelizedVariable("Joujou", "Un joujou, des joujoux", 2);
-        Pouvar = new gum::LabelizedVariable("Pouvar", "Un pou, des poux", 2);
-        Bijouprimevar
-           = new gum::LabelizedVariable("Bijou'", "Un bijou', des bijou'x", 2);
+        gum::LabelizedVariable *Bijouvar, *Caillouvar, *Chouvar, *Genouvar, *Hibouvar, *Joujouvar,
+           *Pouvar, *Bijouprimevar;
+        Bijouvar      = new gum::LabelizedVariable("Bijou", "Un bijou, des bijoux", 2);
+        Caillouvar    = new gum::LabelizedVariable("Caillou", "Un caillou, des cailloux", 2);
+        Chouvar       = new gum::LabelizedVariable("Chouvar", "Un chou, des choux", 2);
+        Genouvar      = new gum::LabelizedVariable("Genou", "Un genou, des genoux", 2);
+        Hibouvar      = new gum::LabelizedVariable("Hibou", "Un hibou, des hiboux", 2);
+        Joujouvar     = new gum::LabelizedVariable("Joujou", "Un joujou, des joujoux", 2);
+        Pouvar        = new gum::LabelizedVariable("Pouvar", "Un pou, des poux", 2);
+        Bijouprimevar = new gum::LabelizedVariable("Bijou'", "Un bijou', des bijou'x", 2);
 
-        gum::Bijection< const gum::DiscreteVariable*,
-                        const gum::DiscreteVariable* >
-           map;
+        gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* > map;
         map.insert(Cvar, Bijouvar);
         map.insert(Cprimevar, Bijouprimevar);
         map.insert(PLvar, Caillouvar);
@@ -673,8 +642,7 @@ namespace gum_tests {
         map.insert(BDRvar, Joujouvar);
         map.insert(BOvar, Pouvar);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph2->copyAndReassign(*functionGraph, map););
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndReassign(*functionGraph, map););
 
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
 
@@ -700,11 +668,9 @@ namespace gum_tests {
         // *********************************************************************
         // Testing copyAndMultiplyByScalar method
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph2->copyAndMultiplyByScalar(*functionGraph, 2);)
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndMultiplyByScalar(*functionGraph, 2);)
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           functionGraph2->copyAndMultiplyByScalar(*functionGraph, 0);)
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndMultiplyByScalar(*functionGraph, 0);)
 
 
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
@@ -731,9 +697,9 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* dg3
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(dg1, &idList);
-         _fillFactory_(dg2, &idList);
-         _fillFactory_(dg3, &idList);
+        _fillFactory_(dg1, &idList);
+        _fillFactory_(dg2, &idList);
+        _fillFactory_(dg3, &idList);
 
         dg3->manager()->setSon(3, 0, 16);
 
@@ -777,37 +743,30 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* functionGraph
            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
         gum::List< gum::NodeId > idList;
-         _fillFactory_(functionGraph, &idList);
+        _fillFactory_(functionGraph, &idList);
 
         // *********************************************************************
         // Testing moveTo function
         // *********************************************************************
         // TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
         //  Cprimevar, functionGraph->variablesSequence().pos(BOvar)));
-        functionGraph->manager()->moveTo(
-           Cprimevar,
-           functionGraph->variablesSequence().pos(BOvar));
+        functionGraph->manager()->moveTo(Cprimevar, functionGraph->variablesSequence().pos(BOvar));
 
         // For comparison with what readers will return
-        std::string dotfile
-           = GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
+        std::string   dotfile = GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
-        if (!output.good()) {
-          GUM_ERROR(gum::IOError, "Stream states flags are not all unset.")
-        }
+        if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
         output << functionGraph->toDot(true);
         output.flush();
         output.close();
-        if (output.fail()) {
-          GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
-        }
+        if (output.fail()) { GUM_ERROR(gum::IOError, "Writting in the ostream failed.") }
 
         gum::LabelizedVariable* phantomvar
            = new gum::LabelizedVariable("Phantom", "Not here, nor there", 2);
         functionGraph->add(*phantomvar);
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
-           Cprimevar,
-           functionGraph->variablesSequence().pos(phantomvar)));
+        TS_GUM_ASSERT_THROWS_NOTHING(
+           functionGraph->manager()->moveTo(Cprimevar,
+                                            functionGraph->variablesSequence().pos(phantomvar)));
 
         delete functionGraph;
         delete phantomvar;
@@ -823,8 +782,7 @@ namespace gum_tests {
           for (int j = 0; j < 10; j++) {
             std::stringstream varName;
             varName << "var" << j;
-            varList->insert(
-               new gum::LabelizedVariable(varName.str(), "", 2 + rand() % 4));
+            varList->insert(new gum::LabelizedVariable(varName.str(), "", 2 + rand() % 4));
           }
 
           gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
@@ -832,8 +790,8 @@ namespace gum_tests {
           gum::MultiDimFunctionGraph< double >* dg1 = nullptr;
           TS_GUM_ASSERT_THROWS_NOTHING(dg1 = gene.generate());
 
-          gum::MultiDimFunctionGraph< double >* dg2 = gum::MultiDimFunctionGraph<
-             double >::getReducedAndOrderedInstance();
+          gum::MultiDimFunctionGraph< double >* dg2
+             = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
           TS_GUM_ASSERT_THROWS_NOTHING(dg2->copy(*dg1));
           TS_GUM_ASSERT_THROWS_NOTHING(dg2->manager()->reduce());
@@ -852,8 +810,7 @@ namespace gum_tests {
           delete dg1;
           delete dg2;
 
-          for (gum::SequenceIterator< const gum::DiscreteVariable* > ite
-               = varList->begin();
+          for (gum::SequenceIterator< const gum::DiscreteVariable* > ite = varList->begin();
                ite != varList->end();
                ++ite)
             delete *ite;

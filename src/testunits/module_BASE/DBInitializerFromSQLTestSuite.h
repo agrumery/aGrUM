@@ -62,10 +62,7 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<> initializer(dataSource,
-                                                          login,
-                                                          password,
-                                                          query);
+        gum::learning::DBInitializerFromSQL<> initializer(dataSource, login, password, query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars   = var_names.size();
@@ -134,10 +131,9 @@ namespace gum_tests {
         TS_ASSERT(row2[2].discr_val == std::size_t(0));
 
 
-        gum::learning::DBInitializerFromSQL<> initializer3(
-           initializer,
-           std::allocator< std::string >());
-        gum::learning::DatabaseTable<> database3;
+        gum::learning::DBInitializerFromSQL<> initializer3(initializer,
+                                                           std::allocator< std::string >());
+        gum::learning::DatabaseTable<>        database3;
         database3.ignoreColumn(0);
         database3.ignoreColumn(2);
         database3.ignoreColumn(5);
@@ -181,10 +177,9 @@ namespace gum_tests {
         TS_ASSERT(row31[3].discr_val == std::size_t(0));
         TS_ASSERT(row31[4].cont_val == 2.45f);
 
-        gum::learning::DBInitializerFromSQL<> initializer4(
-           std::move(initializer),
-           std::allocator< std::string >());
-        gum::learning::DatabaseTable<> database4;
+        gum::learning::DBInitializerFromSQL<> initializer4(std::move(initializer),
+                                                           std::allocator< std::string >());
+        gum::learning::DatabaseTable<>        database4;
         database4.insertTranslator(translator_lab, std::size_t(1));
         database4.insertTranslator(translator_lab, std::size_t(3));
         database4.insertTranslator(translator_lab, std::size_t(4));
@@ -263,9 +258,8 @@ namespace gum_tests {
 #  endif   // WIN32_
 
       try {
-        const std::string connection_string
-           = "Driver=" + driver_name
-           + ";Database=" + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
+        const std::string connection_string = "Driver=" + driver_name + ";Database="
+                                            + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
         const std::string query = "select * from asia";
 
         // the database contains the following rows:
@@ -281,8 +275,7 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<> initializer(connection_string,
-                                                          query);
+        gum::learning::DBInitializerFromSQL<> initializer(connection_string, query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars   = var_names.size();

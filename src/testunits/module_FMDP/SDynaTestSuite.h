@@ -46,13 +46,11 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(sdyna = gum::SDYNA::spimddiInstance());
 
       // Enregistrement des actions possibles auprès de SDyna
-      for (auto actionIter = sim.beginActions(); actionIter != sim.endActions();
-           ++actionIter) {
+      for (auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter) {
         sdyna->addAction(*actionIter, sim.actionName(*actionIter));
       }
       // Enregistrement des variables caractérisant les états auprès de SDyna
-      for (auto varIter = sim.beginVariables(); varIter != sim.endVariables();
-           ++varIter) {
+      for (auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter) {
         sdyna->addVariable(*varIter);
       }
       TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
@@ -72,8 +70,7 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING(sim.perform(actionChosenId));
           nbDec++;
 
-          TS_GUM_ASSERT_THROWS_NOTHING(
-             sdyna->feedback(sim.currentState(), sim.reward()););
+          TS_GUM_ASSERT_THROWS_NOTHING(sdyna->feedback(sim.currentState(), sim.reward()););
         }
         TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
       }
@@ -92,8 +89,7 @@ namespace gum_tests {
       // **************************************************************
       // Définition of final states
       gum::Instantiation theEnd;
-      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter
-           = sim.beginVariables();
+      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter = sim.beginVariables();
            varIter != sim.endVariables();
            ++varIter) {
         if ((*varIter)->name().compare("huc")) {

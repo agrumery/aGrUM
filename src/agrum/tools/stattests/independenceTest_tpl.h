@@ -41,13 +41,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
+       const DBRowGeneratorParser< ALLOC >&                                 parser,
+       const Apriori< ALLOC >&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t >,
                           ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                 nodeId2columns,
-       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns,
+       const typename IndependenceTest< ALLOC >::allocator_type&            alloc) :
         apriori_(apriori.clone(alloc)),
         counter_(parser, ranges, nodeId2columns, alloc), cache_(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -57,11 +56,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-       const DBRowGeneratorParser< ALLOC >& parser,
-       const Apriori< ALLOC >&              apriori,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                                                                 nodeId2columns,
-       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >&                          parser,
+       const Apriori< ALLOC >&                                       apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+       const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
         apriori_(apriori.clone(alloc)),
         counter_(parser, nodeId2columns, alloc), cache_(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -74,16 +72,14 @@ namespace gum {
        const IndependenceTest< ALLOC >&                          from,
        const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         apriori_(from.apriori_->clone(alloc)),
-        counter_(from.counter_, alloc), cache_(from.cache_, alloc),
-        use_cache_(from.use_cache_) {
+        counter_(from.counter_, alloc), cache_(from.cache_, alloc), use_cache_(from.use_cache_) {
       GUM_CONS_CPY(IndependenceTest);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest< ALLOC >::IndependenceTest(
-       const IndependenceTest< ALLOC >& from) :
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(const IndependenceTest< ALLOC >& from) :
         IndependenceTest(from, from.getAllocator()) {}
 
 
@@ -93,8 +89,8 @@ namespace gum {
        IndependenceTest< ALLOC >&&                               from,
        const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         apriori_(from.apriori_),
-        counter_(std::move(from.counter_), alloc),
-        cache_(std::move(from.cache_), alloc), use_cache_(from.use_cache_) {
+        counter_(std::move(from.counter_), alloc), cache_(std::move(from.cache_), alloc),
+        use_cache_(from.use_cache_) {
       from.apriori_ = nullptr;
       GUM_CONS_MOV(IndependenceTest);
     }
@@ -102,8 +98,7 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest< ALLOC >::IndependenceTest(
-       IndependenceTest< ALLOC >&& from) :
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(IndependenceTest< ALLOC >&& from) :
         IndependenceTest(std::move(from), from.getAllocator()) {}
 
 
@@ -121,8 +116,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::operator=(
-       const IndependenceTest< ALLOC >& from) {
+    IndependenceTest< ALLOC >&
+       IndependenceTest< ALLOC >::operator=(const IndependenceTest< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from.apriori_->clone();
         RecordCounter< ALLOC > new_counter = from.counter_;
@@ -176,8 +171,7 @@ namespace gum {
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < template < typename > class ALLOC >
-    INLINE void IndependenceTest< ALLOC >::setMinNbRowsPerThread(
-       const std::size_t nb) const {
+    INLINE void IndependenceTest< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       counter_.setMinNbRowsPerThread(nb);
     }
 
@@ -200,8 +194,7 @@ namespace gum {
     template < template < typename > class XALLOC >
     void IndependenceTest< ALLOC >::setRanges(
        const std::vector< std::pair< std::size_t, std::size_t >,
-                          XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges) {
+                          XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          old_ranges = ranges();
@@ -232,14 +225,8 @@ namespace gum {
 
     /// returns the score of a pair of nodes
     template < template < typename > class ALLOC >
-    INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
-                                                   const NodeId var2) {
-      IdCondSet< ALLOC > idset(var1,
-                               var2,
-                               empty_ids_,
-                               false,
-                               true,
-                               this->getAllocator());
+    INLINE double IndependenceTest< ALLOC >::score(const NodeId var1, const NodeId var2) {
+      IdCondSet< ALLOC > idset(var1, var2, empty_ids_, false, true, this->getAllocator());
       if (use_cache_) {
         try {
           return cache_.score(idset);
@@ -255,16 +242,11 @@ namespace gum {
 
     /// returns the score of a pair of nodes given some other nodes
     template < template < typename > class ALLOC >
-    INLINE double IndependenceTest< ALLOC >::score(
-       const NodeId                                  var1,
-       const NodeId                                  var2,
-       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdCondSet< ALLOC > idset(var1,
-                               var2,
-                               rhs_ids,
-                               false,
-                               false,
-                               this->getAllocator());
+    INLINE double
+       IndependenceTest< ALLOC >::score(const NodeId                                  var1,
+                                        const NodeId                                  var2,
+                                        const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      IdCondSet< ALLOC > idset(var1, var2, rhs_ids, false, false, this->getAllocator());
       if (use_cache_) {
         try {
           return cache_.score(idset);
@@ -310,8 +292,7 @@ namespace gum {
 
     /// return the database used by the score
     template < template < typename > class ALLOC >
-    INLINE const DatabaseTable< ALLOC >&
-                 IndependenceTest< ALLOC >::database() const {
+    INLINE const DatabaseTable< ALLOC >& IndependenceTest< ALLOC >::database() const {
       return counter_.database();
     }
 
@@ -341,37 +322,31 @@ namespace gum {
 
       // fill the vector:
       if (node_2_marginalize == std::size_t(0)) {   // marginalize X
-        for (std::size_t yz = std::size_t(0), xyz = std::size_t(0); yz < out_size;
-             ++yz) {
+        for (std::size_t yz = std::size_t(0), xyz = std::size_t(0); yz < out_size; ++yz) {
           for (std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
             res[yz] += N_xyz[xyz];
           }
         }
       } else if (node_2_marginalize == std::size_t(1)) {   // marginalize Y
-        for (std::size_t z      = std::size_t(0),
-                         xyz    = std::size_t(0),
-                         beg_xz = std::size_t(0);
+        for (std::size_t z = std::size_t(0), xyz = std::size_t(0), beg_xz = std::size_t(0);
              z < Z_size;
              ++z, beg_xz += X_size) {
           for (std::size_t y = std::size_t(0); y < Y_size; ++y) {
-            for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size;
-                 ++x, ++xz, ++xyz) {
+            for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size; ++x, ++xz, ++xyz) {
               res[xz] += N_xyz[xyz];
             }
           }
         }
       } else if (node_2_marginalize == std::size_t(2)) {   // marginalize X and Y
         const std::size_t XY_size = X_size * Y_size;
-        for (std::size_t z = std::size_t(0), xyz = std::size_t(0); z < out_size;
-             ++z) {
+        for (std::size_t z = std::size_t(0), xyz = std::size_t(0); z < out_size; ++z) {
           for (std::size_t xy = std::size_t(0); xy < XY_size; ++xy, ++xyz) {
             res[z] += N_xyz[xyz];
           }
         }
       } else {
         GUM_ERROR(NotImplementedYet,
-                  "_marginalize not implemented for nodeset "
-                     << node_2_marginalize);
+                  "_marginalize not implemented for nodeset " << node_2_marginalize);
       }
 
       return res;

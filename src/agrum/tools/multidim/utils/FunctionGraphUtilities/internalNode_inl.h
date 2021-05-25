@@ -37,13 +37,10 @@ namespace gum {
 
 
   INLINE
-  Parent::Parent(const Parent& src) :
-      parentId(src.parentId), modality(src.modality) {}
+  Parent::Parent(const Parent& src) : parentId(src.parentId), modality(src.modality) {}
 
   INLINE
-  void* Parent::operator new(size_t s) {
-    return SmallObjectAllocator::instance().allocate(s);
-  }
+  void* Parent::operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
 
   INLINE
   void Parent::operator delete(void* p) {
@@ -52,8 +49,7 @@ namespace gum {
 
   INLINE
   bool Parent::operator==(const Parent& comp) const {
-    if ((comp.parentId == this->parentId) && (comp.modality == this->modality))
-      return true;
+    if ((comp.parentId == this->parentId) && (comp.modality == this->modality)) return true;
     return false;
   }
 
@@ -78,24 +74,20 @@ namespace gum {
   }
 
   INLINE
-  const DiscreteVariable* InternalNode::nodeVar() const { return  _nodeVar_; }
+  const DiscreteVariable* InternalNode::nodeVar() const { return _nodeVar_; }
 
   INLINE
-  void InternalNode::setSon(Idx modality, NodeId son) {
-     _nodeSons_[modality] = son;
-  }
+  void InternalNode::setSon(Idx modality, NodeId son) { _nodeSons_[modality] = son; }
 
   INLINE
-  NodeId InternalNode::son(Idx modality) const { return  _nodeSons_[modality]; }
+  NodeId InternalNode::son(Idx modality) const { return _nodeSons_[modality]; }
 
   INLINE
-  Idx InternalNode::nbSons() const { return  _nodeVar_->domainSize(); }
+  Idx InternalNode::nbSons() const { return _nodeVar_->domainSize(); }
 
   INLINE
-  Link< Parent >* InternalNode::parents() { return  _nodeParents_.list(); }
+  Link< Parent >* InternalNode::parents() { return _nodeParents_.list(); }
 
   INLINE
-  const Link< Parent >* InternalNode::parents() const {
-    return  _nodeParents_.list();
-  }
+  const Link< Parent >* InternalNode::parents() const { return _nodeParents_.list(); }
 }   // namespace gum

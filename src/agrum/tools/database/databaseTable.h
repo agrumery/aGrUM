@@ -195,8 +195,7 @@ namespace gum {
 
       /// the type for the matrices stored into the database
       template < typename TX_DATA >
-      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >,
-                                  ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
 
       template < template < typename > class XALLOC >
       using MissingValType = std::vector< std::string, XALLOC< std::string > >;
@@ -205,11 +204,9 @@ namespace gum {
       using Handler = typename IDatabaseTable< DBTranslatedValue, ALLOC >::Handler;
 
       /// the safe handler type
-      using HandlerSafe =
-         typename IDatabaseTable< DBTranslatedValue, ALLOC >::HandlerSafe;
+      using HandlerSafe = typename IDatabaseTable< DBTranslatedValue, ALLOC >::HandlerSafe;
 
-      using IsMissing =
-         typename IDatabaseTable< DBTranslatedValue, ALLOC >::IsMissing;
+      using IsMissing = typename IDatabaseTable< DBTranslatedValue, ALLOC >::IsMissing;
 
       /// Types for STL compliance.
       /// @{
@@ -234,21 +231,18 @@ namespace gum {
       /// default constructor
       template < template < typename > class XALLOC >
       DatabaseTable(const MissingValType< XALLOC >& missing_symbols,
-                    const DBTranslatorSet< ALLOC >& translators
-                    = DBTranslatorSet< ALLOC >(),
-                    const allocator_type& alloc = allocator_type());
+                    const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
+                    const allocator_type&           alloc       = allocator_type());
 
       /// default constructor
-      DatabaseTable(const DBTranslatorSet< ALLOC >& translators
-                    = DBTranslatorSet< ALLOC >(),
-                    const allocator_type& alloc = allocator_type());
+      DatabaseTable(const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
+                    const allocator_type&           alloc       = allocator_type());
 
       /// copy constructor
       DatabaseTable(const DatabaseTable< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DatabaseTable(const DatabaseTable< ALLOC >& from,
-                    const allocator_type&         alloc);
+      DatabaseTable(const DatabaseTable< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       DatabaseTable(DatabaseTable< ALLOC >&& from);
@@ -260,8 +254,7 @@ namespace gum {
       virtual DatabaseTable< ALLOC >* clone() const final;
 
       /// virtual copy constructor with a given allocator
-      virtual DatabaseTable< ALLOC >*
-         clone(const allocator_type& alloc) const final;
+      virtual DatabaseTable< ALLOC >* clone(const allocator_type& alloc) const final;
 
       /// destructor
       virtual ~DatabaseTable();
@@ -304,7 +297,7 @@ namespace gum {
        */
       std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
                                    const std::size_t            input_column,
-                                   const bool unique_column = true);
+                                   const bool                   unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
@@ -349,11 +342,11 @@ namespace gum {
        * filled with missing values.
        */
       template < template < typename > class XALLOC >
-      std::size_t insertTranslator(
-         const Variable&                                   var,
-         const std::size_t                                 input_column,
-         std::vector< std::string, XALLOC< std::string > > missing_symbols,
-         const bool                                        unique_column = true);
+      std::size_t
+         insertTranslator(const Variable&                                   var,
+                          const std::size_t                                 input_column,
+                          std::vector< std::string, XALLOC< std::string > > missing_symbols,
+                          const bool                                        unique_column = true);
 
       /** @brief erases either the kth translator or all those parsing the kth
        * column of the input dataset
@@ -369,8 +362,7 @@ namespace gum {
        * input database.
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
-      void eraseTranslators(const std::size_t k,
-                            const bool        k_is_input_col = false);
+      void eraseTranslators(const std::size_t k, const bool k_is_input_col = false);
 
       /// returns the set of translators
       const DBTranslatorSet< ALLOC >& translatorSet() const;
@@ -388,8 +380,8 @@ namespace gum {
        * is the first one that parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
-      const DBTranslator< ALLOC >&
-         translator(const std::size_t k, const bool k_is_input_col = false) const;
+      const DBTranslator< ALLOC >& translator(const std::size_t k,
+                                              const bool        k_is_input_col = false) const;
 
       /** @brief returns either the kth variable of the database table or the
        * first one corresponding to the kth column of the input database
@@ -404,8 +396,7 @@ namespace gum {
        * of the translator that parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
-      const Variable& variable(const std::size_t k,
-                               const bool        k_is_input_col = false) const;
+      const Variable& variable(const std::size_t k, const bool k_is_input_col = false) const;
 
       /// sets the names of the variables
       using IDatabaseTable< DBTranslatedValue, ALLOC >::setVariableNames;
@@ -436,9 +427,8 @@ namespace gum {
        * @throw SizeError is raised if the names passed in arguments cannot be
        * assigned to the columns of the DatabaseTable because the size of their
        * vector is inadequate. */
-      virtual void setVariableNames(
-         const std::vector< std::string, ALLOC< std::string > >& names,
-         const bool from_external_object = true) final;
+      virtual void setVariableNames(const std::vector< std::string, ALLOC< std::string > >& names,
+                                    const bool from_external_object = true) final;
 
       /** @brief makes the database table ignore from now on the kth column of
        * the input dataset or the column parsed by the kth translator
@@ -472,8 +462,7 @@ namespace gum {
        * column of the DatabaseTable (false).
        * @throw UndefinedElement is raised if k refers to the position of a
        * translator that does not exist (k >= number of translators). */
-      virtual void ignoreColumn(const std::size_t k,
-                                const bool from_external_object = true) final;
+      virtual void ignoreColumn(const std::size_t k, const bool from_external_object = true) final;
 
       /// returns  the set of columns of the original dataset that are ignored
       /** In this vector, all the column indices greater than or equal to its
@@ -498,8 +487,7 @@ namespace gum {
        * of the translator that parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
-      std::size_t domainSize(const std::size_t k,
-                             const bool        k_is_input_col = false) const;
+      std::size_t domainSize(const std::size_t k, const bool k_is_input_col = false) const;
 
       /// returns the domain sizes of all the variables in the database table
       DBVector< std::size_t > domainSizes() const;
@@ -536,8 +524,7 @@ namespace gum {
        * reordered is that which parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
-      bool needsReordering(const std::size_t k,
-                           const bool        k_is_input_col = false) const;
+      bool needsReordering(const std::size_t k, const bool k_is_input_col = false) const;
 
       /** @brief performs a reordering of the kth translator or
        * of the first translator parsing the kth column of the input database
@@ -594,8 +581,7 @@ namespace gum {
        * dictionary fails due to str being impossible to be converted into an
        * appropriate type.
        */
-      virtual void insertRow(
-         const std::vector< std::string, ALLOC< std::string > >& new_row) final;
+      virtual void insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row) final;
 
       /// insert a new DBRow at the end of the database
       /** Unlike methods insertRow for data whose type is different from
@@ -608,7 +594,7 @@ namespace gum {
        * not belong to the domain of its corresponding translator.
        */
       virtual void insertRow(Row< DBTranslatedValue >&& new_row,
-                             const IsMissing contains_missing_data) final;
+                             const IsMissing            contains_missing_data) final;
 
       /// insert a new row at the end of the database
       /** Unlike methods insertRow for data whose type is different from
@@ -621,7 +607,7 @@ namespace gum {
        * not belong to the domain of its corresponding translator.
        */
       virtual void insertRow(const Row< DBTranslatedValue >& new_row,
-                             const IsMissing contains_missing_data) final;
+                             const IsMissing                 contains_missing_data) final;
 
       /// insert a new DBRow of DBCells at the end of the database
       /** The new_row passed in argument is supposed to come from an external
@@ -651,9 +637,8 @@ namespace gum {
        * @InvalidArgument is raised if at least one element of new_row does
        * not belong to the domain of its corresponding translator.
        */
-      virtual void
-         insertRows(Matrix< DBTranslatedValue >&& new_rows,
-                    const DBVector< IsMissing >&  rows_have_missing_vals) final;
+      virtual void insertRows(Matrix< DBTranslatedValue >&& new_rows,
+                              const DBVector< IsMissing >&  rows_have_missing_vals) final;
 
       /// insert a set of new DBRows at the end of the database
       /** Unlike methods insertRows for data whose type is different from
@@ -664,9 +649,8 @@ namespace gum {
        * is not equal to the number of translators in the DatabaseTable
        * @InvalidArgument is raised if at least one element of new_row does
        * not belong to the domain of its corresponding translator.*/
-      virtual void
-         insertRows(const Matrix< DBTranslatedValue >& new_rows,
-                    const DBVector< IsMissing >& rows_have_missing_vals) final;
+      virtual void insertRows(const Matrix< DBTranslatedValue >& new_rows,
+                              const DBVector< IsMissing >&       rows_have_missing_vals) final;
 
       /// insert a set of new DBRows at the end of the database
       /** The new rows passed in argument are supposed to come from an external
@@ -706,29 +690,27 @@ namespace gum {
 
       private:
       /// the set of translators used to convert the strings into floats
-      DBTranslatorSet< ALLOC >  _translators_;
+      DBTranslatorSet< ALLOC > _translators_;
 
       /// the set of ignored columns asked by the user
-      Set< std::size_t, ALLOC< std::size_t > >  _ignored_cols_;
+      Set< std::size_t, ALLOC< std::size_t > > _ignored_cols_;
 
       /** @brief check that a row's values are compatible with those of the
        * translators' variables */
-      bool  _isRowCompatible_(const Row< DBTranslatedValue >& row) const;
+      bool _isRowCompatible_(const Row< DBTranslatedValue >& row) const;
 
       /** @brief returns the index corresponding either to the kth translator or
        * to the first one that parses the kth column of the input dataset
        *
        * @warning if the translator does not exists, the function returns an
        * index which is greater than the number of translators */
-      std::size_t  _getKthIndex_(const std::size_t k,
-                                const bool        k_is_input_col) const;
+      std::size_t _getKthIndex_(const std::size_t k, const bool k_is_input_col) const;
 
       /** @brief returns the indices corresponding either to the kth translator
        * or to all those that parse the kth column of the input dataset
        *
        * @warning the indices are sorted by deacreasing order */
-      DBVector< std::size_t >  _getKthIndices_(const std::size_t k,
-                                              const bool k_is_input_col) const;
+      DBVector< std::size_t > _getKthIndices_(const std::size_t k, const bool k_is_input_col) const;
 
       /// a method to process the rows of the database in multithreading
       /** The function tries to execute function/functor exec_func using one
@@ -750,7 +732,7 @@ namespace gum {
        * calling undo_func, they should have restored this state.
        */
       template < typename Functor1, typename Functor2 >
-      void  _threadProcessDatabase_(Functor1& exec_func, Functor2& undo_func);
+      void _threadProcessDatabase_(Functor1& exec_func, Functor2& undo_func);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

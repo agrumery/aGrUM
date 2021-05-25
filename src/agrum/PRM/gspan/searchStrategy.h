@@ -86,8 +86,7 @@ namespace gum {
         virtual ~SearchStrategy< GUM_SCALAR >();
 
         /// Copy operator.
-        SearchStrategy< GUM_SCALAR >&
-           operator=(const SearchStrategy< GUM_SCALAR >& from);
+        SearchStrategy< GUM_SCALAR >& operator=(const SearchStrategy< GUM_SCALAR >& from);
 
         /// @}
         // =========================================================================
@@ -159,7 +158,7 @@ namespace gum {
         /// @}
 
         private:
-        Size  _freq_;
+        Size _freq_;
       };
 
       /**
@@ -209,11 +208,11 @@ namespace gum {
         /// @}
 
         private:
-        Size    _freq_;
-        double  _inner_cost_(const Pattern* p);
-        double  _outer_cost_(const Pattern* p);
-        void    _compute_costs_(const Pattern* p);
-        HashTable< const Pattern*, std::pair< double, double > >  _map_;
+        Size                                                     _freq_;
+        double                                                   _inner_cost_(const Pattern* p);
+        double                                                   _outer_cost_(const Pattern* p);
+        void                                                     _compute_costs_(const Pattern* p);
+        HashTable< const Pattern*, std::pair< double, double > > _map_;
         /// Private structure to represent data about a pattern.
         struct PData {
           /// A yet to be triangulated undigraph
@@ -234,20 +233,18 @@ namespace gum {
           /// Returns the set of outputs nodes given all the matches of pattern
           NodeSet outputs;
         };
-        std::string  _dot_;
-        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
+        std::string _dot_;
+        std::string _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMAttribute< GUM_SCALAR >* a) const;
-        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
+        std::string _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMAttribute< GUM_SCALAR >& a) const;
-        std::string  _str_(const PRMInstance< GUM_SCALAR >*  i,
+        std::string _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMSlotChain< GUM_SCALAR >& a) const;
-        void         _buildPatternGraph_(
-                  typename StrictSearch< GUM_SCALAR >::PData&   data,
-                  Set< Potential< GUM_SCALAR >* >&              pool,
-                  const Sequence< PRMInstance< GUM_SCALAR >* >& match);
-        std::pair< Size, Size >
-            _elimination_cost_(typename StrictSearch< GUM_SCALAR >::PData& data,
-                              Set< Potential< GUM_SCALAR >* >&            pool);
+        void        _buildPatternGraph_(typename StrictSearch< GUM_SCALAR >::PData&   data,
+                                        Set< Potential< GUM_SCALAR >* >&              pool,
+                                        const Sequence< PRMInstance< GUM_SCALAR >* >& match);
+        std::pair< Size, Size > _elimination_cost_(typename StrictSearch< GUM_SCALAR >::PData& data,
+                                                   Set< Potential< GUM_SCALAR >* >& pool);
       };
 
       /**
@@ -298,7 +295,7 @@ namespace gum {
         /// @}
 
         private:
-        HashTable< const Pattern*, double >  _map_;
+        HashTable< const Pattern*, double > _map_;
       };
 
 

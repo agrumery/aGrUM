@@ -80,8 +80,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintDiGraph&
-         operator=(const StructuralConstraintDiGraph& from);
+      StructuralConstraintDiGraph& operator=(const StructuralConstraintDiGraph& from);
 
       /// move operator
       StructuralConstraintDiGraph& operator=(StructuralConstraintDiGraph&& from);
@@ -190,7 +189,7 @@ namespace gum {
 
       protected:
       /// the DiGraph on which we perform checks
-      DiGraph  _DiGraph_graph_;
+      DiGraph _DiGraph_graph_;
     };
 
   } /* namespace learning */

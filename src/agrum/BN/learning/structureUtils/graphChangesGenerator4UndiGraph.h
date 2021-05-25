@@ -107,8 +107,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename STRUCT_CONSTRAINT >
-    class GraphChangesGenerator4UndiGraph:
-        public IGraphChangesGenerator4UndiGraph {
+    class GraphChangesGenerator4UndiGraph: public IGraphChangesGenerator4UndiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;
@@ -129,8 +128,7 @@ namespace gum {
          const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
-      GraphChangesGenerator4UndiGraph(
-         GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from);
+      GraphChangesGenerator4UndiGraph(GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4UndiGraph();
@@ -143,8 +141,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& operator=(
-         const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from);
+      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
+         operator=(const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
@@ -212,9 +210,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size  _max_threads_number_{getMaxNumberOfThreads()};
+      Size _max_threads_number_{getMaxNumberOfThreads()};
 #else
-      Size  _max_threads_number_{1};
+      Size _max_threads_number_{1};
 #endif /* GUM_DEBUG_MODE */
     };
 

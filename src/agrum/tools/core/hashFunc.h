@@ -54,7 +54,7 @@ namespace gum {
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
    */
-  unsigned int  _hashTableLog2_(const Size nb);
+  unsigned int _hashTableLog2_(const Size nb);
 
   /**
    * @class HashFuncConst
@@ -296,8 +296,7 @@ namespace gum {
      * An additional mask to ensure that keys with fewer bits than Size
      * are cast correctly.
      */
-    static constexpr Size small_key_mask_{(Size(1) << (8 * sizeof(Key)))
-                                          - Size(1)};
+    static constexpr Size small_key_mask_{(Size(1) << (8 * sizeof(Key))) - Size(1)};
   };
 
 
@@ -386,12 +385,12 @@ namespace gum {
        typename std::conditional<
           sizeof(Key) < sizeof(Size),
           HashFuncSmallCastKey< Key >,
-          typename std::conditional<
-             sizeof(Key) == sizeof(Size),
-             HashFuncMediumCastKey< Key >,
-             typename std::conditional< sizeof(Key) == 2 * sizeof(Size),
-                                        HashFuncLargeCastKey< Key >,
-                                        void >::type >::type >::type >::type;
+          typename std::conditional< sizeof(Key) == sizeof(Size),
+                                     HashFuncMediumCastKey< Key >,
+                                     typename std::conditional< sizeof(Key) == 2 * sizeof(Size),
+                                                                HashFuncLargeCastKey< Key >,
+                                                                void >::type >::type >::type >::
+       type;
   };
 
 
@@ -416,9 +415,8 @@ namespace gum {
   // base of the recursive type to select the appropriate hash function
   template < typename KEY_TYPE, typename TYPE >
   struct HashFuncConditionalType< KEY_TYPE, TYPE > {
-    using type = typename std::conditional< std::is_same< KEY_TYPE, TYPE >::value,
-                                            dummyHash< KEY_TYPE >,
-                                            KEY_TYPE >::type;
+    using type = typename std::
+       conditional< std::is_same< KEY_TYPE, TYPE >::value, dummyHash< KEY_TYPE >, KEY_TYPE >::type;
   };
 
   /**
@@ -478,8 +476,7 @@ namespace gum {
    * @tparam Key2 The type hashed of the second element in the pair.
    */
   template < typename Key1, typename Key2 >
-  class HashFunc< std::pair< Key1, Key2 > >:
-      public HashFuncBase< std::pair< Key1, Key2 > > {
+  class HashFunc< std::pair< Key1, Key2 > >: public HashFuncBase< std::pair< Key1, Key2 > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -493,8 +490,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size
-       operator()(const std::pair< Key1, Key2 >& key) const override final;
+    virtual Size operator()(const std::pair< Key1, Key2 >& key) const override final;
   };
 
 
@@ -548,12 +544,9 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< typename HashFuncConditionalType< std::size_t,
-                                                    unsigned long,
-                                                    unsigned int,
-                                                    long,
-                                                    int >::type >:
-      public HashFuncCastKey< std::size_t >::type {};
+  class HashFunc<
+     typename HashFuncConditionalType< std::size_t, unsigned long, unsigned int, long, int >::
+        type >: public HashFuncCastKey< std::size_t >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>

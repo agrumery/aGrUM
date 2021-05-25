@@ -31,9 +31,7 @@ namespace gum {
     ;
   }
 
-  UGmodel::UGmodel(const UGmodel& from) : graph_(from.graph_) {
-    GUM_CONS_CPY(UGmodel);
-  }
+  UGmodel::UGmodel(const UGmodel& from) : graph_(from.graph_) { GUM_CONS_CPY(UGmodel); }
 
   UGmodel::~UGmodel() {
     GUM_DESTRUCTOR(UGmodel);
@@ -63,9 +61,8 @@ namespace gum {
     }
 
     for (const auto& edge: edges()) {
-      if (!other.edges().exists(
-             Edge(other.idFromName(variable(edge.first()).name()),
-                  other.idFromName(variable(edge.second()).name()))))
+      if (!other.edges().exists(Edge(other.idFromName(variable(edge.first()).name()),
+                                     other.idFromName(variable(edge.second()).name()))))
         return false;
     }
 

@@ -34,8 +34,7 @@ namespace gum_tests {
   class DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCreation() {
-      TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::DiscretizedVariable< int > v("var", "a var"));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"));
     }
 
     void testDiscreteVariableProperties() {
@@ -55,9 +54,7 @@ namespace gum_tests {
     }
 
     void testConstructorWithTicks() {
-      gum::DiscretizedVariable< double > d("d",
-                                           "Discretized variable",
-                                           {3.1, 2.0, 4.0});
+      gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfLowerBound);
@@ -148,18 +145,11 @@ namespace gum_tests {
             for (int l = 1; l < 7; l++)
               for (int m = 1; m < 7; m++)
                 for (int n = 1; n < 7; n++) {
-                  if ((i + j + k + l + m + n == 21)
-                      && (i * j * k * l * m * n == 720)) {
+                  if ((i + j + k + l + m + n == 21) && (i * j * k * l * m * n == 720)) {
                     gum::DiscretizedVariable< int > d("d", "Discretized variable");
-                    d.addTick(i)
-                       .addTick(j)
-                       .addTick(k)
-                       .addTick(l)
-                       .addTick(m)
-                       .addTick(n);
+                    d.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n);
                     TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5);
-                    TS_ASSERT_EQUALS(d.toString(),
-                                     "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");
+                    TS_ASSERT_EQUALS(d.toString(), "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");
                     int s = 1;
                     for (auto tick: d.ticks()) {
                       TS_ASSERT_EQUALS(tick, s++);

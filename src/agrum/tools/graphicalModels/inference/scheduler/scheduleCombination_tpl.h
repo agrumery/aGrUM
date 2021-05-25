@@ -77,9 +77,9 @@ namespace gum {
   // adds to a given schedule the operations necessary to perform a combination
   template < typename GUM_SCALAR >
   template < template < typename > class TABLE >
-  ScheduleMultiDim< GUM_SCALAR > ScheduleCombination< GUM_SCALAR >::combine(
-     const Set< const TABLE< GUM_SCALAR >* >& set,
-     Schedule< GUM_SCALAR >&                  schedule) {
+  ScheduleMultiDim< GUM_SCALAR >
+     ScheduleCombination< GUM_SCALAR >::combine(const Set< const TABLE< GUM_SCALAR >* >& set,
+                                                Schedule< GUM_SCALAR >&                  schedule) {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
@@ -122,9 +122,9 @@ namespace gum {
    * performed to compute the combination */
   template < typename GUM_SCALAR >
   template < template < typename > class TABLE >
-  float ScheduleCombination< GUM_SCALAR >::nbOperations(
-     const Set< const TABLE< GUM_SCALAR >* >& set,
-     const Schedule< GUM_SCALAR >&            schedule) {
+  float
+     ScheduleCombination< GUM_SCALAR >::nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+                                                     const Schedule< GUM_SCALAR >& schedule) {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
@@ -166,9 +166,9 @@ namespace gum {
    * performed to compute the combination */
   template < typename GUM_SCALAR >
   template < template < typename > class TABLE >
-  std::pair< long, long > ScheduleCombination< GUM_SCALAR >::memoryUsage(
-     const Set< const TABLE< GUM_SCALAR >* >& set,
-     const Schedule< GUM_SCALAR >&            schedule) {
+  std::pair< long, long >
+     ScheduleCombination< GUM_SCALAR >::memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set,
+                                                    const Schedule< GUM_SCALAR >& schedule) {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 

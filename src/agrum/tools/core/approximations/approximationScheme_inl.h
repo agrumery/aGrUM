@@ -57,9 +57,7 @@ namespace gum {
 
   // @return true if stopping criterion on epsilon is enabled, false
   // otherwise
-  INLINE bool ApproximationScheme::isEnabledEpsilon() const {
-    return enabled_eps_;
-  }
+  INLINE bool ApproximationScheme::isEnabledEpsilon() const { return enabled_eps_; }
 
   // Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
   INLINE void ApproximationScheme::setMinEpsilonRate(double rate) {
@@ -70,25 +68,17 @@ namespace gum {
   }
 
   // Get the value of the minimal epsilon rate
-  INLINE double ApproximationScheme::minEpsilonRate() const {
-    return min_rate_eps_;
-  }
+  INLINE double ApproximationScheme::minEpsilonRate() const { return min_rate_eps_; }
 
   // Disable stopping criterion on epsilon rate
-  INLINE void ApproximationScheme::disableMinEpsilonRate() {
-    enabled_min_rate_eps_ = false;
-  }
+  INLINE void ApproximationScheme::disableMinEpsilonRate() { enabled_min_rate_eps_ = false; }
 
   // Enable stopping criterion on epsilon rate
-  INLINE void ApproximationScheme::enableMinEpsilonRate() {
-    enabled_min_rate_eps_ = true;
-  }
+  INLINE void ApproximationScheme::enableMinEpsilonRate() { enabled_min_rate_eps_ = true; }
 
   // @return true if stopping criterion on epsilon rate is enabled, false
   // otherwise
-  INLINE bool ApproximationScheme::isEnabledMinEpsilonRate() const {
-    return enabled_min_rate_eps_;
-  }
+  INLINE bool ApproximationScheme::isEnabledMinEpsilonRate() const { return enabled_min_rate_eps_; }
 
   // stopping criterion on number of iterations
   INLINE void ApproximationScheme::setMaxIter(Size max) {
@@ -108,9 +98,7 @@ namespace gum {
 
   // @return true if stopping criterion on max iterations is enabled, false
   // otherwise
-  INLINE bool ApproximationScheme::isEnabledMaxIter() const {
-    return enabled_max_iter_;
-  }
+  INLINE bool ApproximationScheme::isEnabledMaxIter() const { return enabled_max_iter_; }
 
   // stopping criterion on timeout (in seconds)
   // If the criterion was disabled it will be enabled
@@ -134,9 +122,7 @@ namespace gum {
 
   // @return true if stopping criterion on timeout is enabled, false
   // otherwise
-  INLINE bool ApproximationScheme::isEnabledMaxTime() const {
-    return enabled_max_time_;
-  }
+  INLINE bool ApproximationScheme::isEnabledMaxTime() const { return enabled_max_time_; }
 
   // how many samples between 2 stopping isEnableds
   INLINE void ApproximationScheme::setPeriodSize(Size p) {
@@ -161,8 +147,7 @@ namespace gum {
   // @throw OperationNotAllowed if scheme not performed
   INLINE Size ApproximationScheme::nbrIterations() const {
     if (stateApproximationScheme() == ApproximationSchemeSTATE::Undefined) {
-      GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is undefined")
+      GUM_ERROR(OperationNotAllowed, "state of the approximation scheme is undefined")
     }
 
     return current_step_;
@@ -171,13 +156,10 @@ namespace gum {
   // @throw OperationNotAllowed if scheme not performed or verbosity=false
   INLINE const std::vector< double >& ApproximationScheme::history() const {
     if (stateApproximationScheme() == ApproximationSchemeSTATE::Undefined) {
-      GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is udefined")
+      GUM_ERROR(OperationNotAllowed, "state of the approximation scheme is udefined")
     }
 
-    if (verbosity() == false) {
-      GUM_ERROR(OperationNotAllowed, "No history when verbosity=false")
-    }
+    if (verbosity() == false) { GUM_ERROR(OperationNotAllowed, "No history when verbosity=false") }
 
     return history_;
   }
@@ -267,8 +249,7 @@ namespace gum {
       if (current_epsilon_ > .0) {
         // ! current_epsilon_ can be 0. AND epsilon
         // isEnabled can be disabled !
-        current_rate_
-           = std::fabs((current_epsilon_ - last_epsilon_) / current_epsilon_);
+        current_rate_ = std::fabs((current_epsilon_ - last_epsilon_) / current_epsilon_);
       }
       // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
       // infinity the else means a return false if we isEnabled the rate below,
@@ -296,8 +277,7 @@ namespace gum {
     }
   }
 
-  INLINE void
-     ApproximationScheme::stopScheme_(ApproximationSchemeSTATE new_state) {
+  INLINE void ApproximationScheme::stopScheme_(ApproximationSchemeSTATE new_state) {
     if (new_state == ApproximationSchemeSTATE::Continue) { return; }
 
     if (new_state == ApproximationSchemeSTATE::Undefined) { return; }

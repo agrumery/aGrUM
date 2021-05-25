@@ -32,13 +32,11 @@
 
 namespace gum {
 
-  INLINE Size
-     HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
+  INLINE Size HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
     return Size(key.id());
   }
 
-  INLINE Size HashFunc< credal::lp::LpCol >::operator()(
-     const credal::lp::LpCol& key) const {
+  INLINE Size HashFunc< credal::lp::LpCol >::operator()(const credal::lp::LpCol& key) const {
     return (castToSize(key) * gum::HashFuncConst::gold) & this->hash_mask_;
   }
 
@@ -49,22 +47,16 @@ namespace gum {
        * class LpCol
        */
 
-      INLINE unsigned int LpCol::id() const { return  _id_; }
+      INLINE unsigned int LpCol::id() const { return _id_; }
 
-      INLINE bool LpCol::operator<(const LpCol& col) const {
-        return ( _id_ < col.id());
-      }
+      INLINE bool LpCol::operator<(const LpCol& col) const { return (_id_ < col.id()); }
 
-      INLINE bool LpCol::operator==(const LpCol& col) const {
-        return ( _id_ == col.id());
-      }
+      INLINE bool LpCol::operator==(const LpCol& col) const { return (_id_ == col.id()); }
 
-      INLINE bool LpCol::operator!=(const LpCol& col) const {
-        return ( _id_ != col.id());
-      }
+      INLINE bool LpCol::operator!=(const LpCol& col) const { return (_id_ != col.id()); }
 
       INLINE LpCol& LpCol::operator=(const LpCol& col) {
-         _id_ = col. _id_;
+        _id_ = col._id_;
 
         return *this;
       }
@@ -74,13 +66,10 @@ namespace gum {
         return out;
       }
 
-      INLINE std::string LpCol::toString() const {
-        return "V" + std::to_string( _id_);
-      }
+      INLINE std::string LpCol::toString() const { return "V" + std::to_string(_id_); }
 
 
-      INLINE void swap(HashTable< LpCol, double >*& a,
-                       HashTable< LpCol, double >*& b) {
+      INLINE void swap(HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b) {
         HashTable< LpCol, double >* tmp(a);
         a = b;
         b = tmp;

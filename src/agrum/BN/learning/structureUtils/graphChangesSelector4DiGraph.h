@@ -66,16 +66,14 @@ namespace gum {
                                    GRAPH_CHANGES_GENERATOR& changes_generator);
 
       /// copy constructor
-      GraphChangesSelector4DiGraph(
-         const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                             GRAPH_CHANGES_GENERATOR,
-                                             ALLOC >& from);
+      GraphChangesSelector4DiGraph(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                                       GRAPH_CHANGES_GENERATOR,
+                                                                       ALLOC >& from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
-         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                       GRAPH_CHANGES_GENERATOR,
-                                       ALLOC >&& from);
+         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
+            from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -88,20 +86,16 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                    GRAPH_CHANGES_GENERATOR,
-                                    ALLOC >&
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
          operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                                        GRAPH_CHANGES_GENERATOR,
                                                        ALLOC >& from);
 
       /// move operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                    GRAPH_CHANGES_GENERATOR,
-                                    ALLOC >&
-         operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                 GRAPH_CHANGES_GENERATOR,
-                                                 ALLOC >&& from);
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
+         operator=(
+            GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
+               from);
 
       /// @}
 
@@ -180,66 +174,65 @@ namespace gum {
 
       private:
       /// the scoring function
-      Score< ALLOC >*  _score_;
+      Score< ALLOC >* _score_;
 
       /// the set of constraints used to determine valid changes
-      STRUCTURAL_CONSTRAINT*  _constraint_;
+      STRUCTURAL_CONSTRAINT* _constraint_;
 
       /// the generator that returns the set of possible changes
-      GRAPH_CHANGES_GENERATOR*  _changes_generator_;
+      GRAPH_CHANGES_GENERATOR* _changes_generator_;
 
       /// a sequence containing all the possible changes
-      Sequence< GraphChange >  _changes_;
+      Sequence< GraphChange > _changes_;
 
       /// the scores for the head and tail of all the changes
       /** the scores are indexed by their index in sequence  _changes_ */
-      std::vector< std::pair< double, double > >  _change_scores_;
+      std::vector< std::pair< double, double > > _change_scores_;
 
       /// for each node, a priority queue sorting GraphChanges by decreasing score
       /** within each queue, the changes are determined by their index in
        * sequence  _changes_. */
       NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-          _change_queue_per_node_;
+         _change_queue_per_node_;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue< NodeId, double, std::greater< double > >  _node_queue_;
+      PriorityQueue< NodeId, double, std::greater< double > > _node_queue_;
 
       /// the set of changes known to be currently illegal (due to the constraints)
       /** within each queue, the changes are determined by their index in
        * sequence  _changes_. */
-      Set< std::size_t >  _illegal_changes_;
+      Set< std::size_t > _illegal_changes_;
 
       /// the current score of each node
-      NodeProperty< double >  _node_current_scores_;
+      NodeProperty< double > _node_current_scores_;
 
       /// the set of parents of each node (speeds-up score computations)
-      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > >  _parents_;
+      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > _parents_;
 
       /// indicates whether we need to recompute whether the queue is empty or not
-      bool  _queues_valid_{false};
+      bool _queues_valid_{false};
 
       /// the set of queues to update when applying several changes
-      Set< NodeId >  _queues_to_update_;
+      Set< NodeId > _queues_to_update_;
 
       /// indicates whether a given change is valid or not
-      bool  _isChangeValid_(const std::size_t index) const;
+      bool _isChangeValid_(const std::size_t index) const;
 
       /// put a change into the illegal set
-      void  _invalidateChange_(const std::size_t change_index);
+      void _invalidateChange_(const std::size_t change_index);
 
       /// remove the now legal changes from the illegal set
-      void  _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute);
+      void _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute);
 
       /// finds the changes that are affected by a given node modification
-      void
-          _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
-                                         const NodeId        target_node);
+      void _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
+                                           const NodeId        target_node);
 
       /// perform the necessary updates of the scores
-      void  _updateScores_(const Set< std::size_t >& changes_to_recompute);
+      void _updateScores_(const Set< std::size_t >& changes_to_recompute);
 
       /// get from the graph change generator a new set of changes
-      void  _getNewChanges_();
+      void _getNewChanges_();
     };
 
   } /* namespace learning */

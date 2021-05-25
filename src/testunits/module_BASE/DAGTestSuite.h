@@ -38,9 +38,7 @@ namespace gum_tests {
 
   class DAGTestSuite: public CxxTest::TestSuite {
     private:
-    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
-      return aNodeId * 2;
-    }
+    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 
     static gum::Size simpleArcMapFunction(const gum::Arc& anArc) {
       return anArc.tail() + anArc.head();
@@ -300,8 +298,7 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap
-                                = graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -317,8 +314,7 @@ namespace gum_tests {
       for (auto iter = list.begin(); iter != list.end(); ++iter)
         s += *iter;
 
-      TS_ASSERT_EQUALS(s,
-                       (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      TS_ASSERT_EQUALS(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapArcs() {

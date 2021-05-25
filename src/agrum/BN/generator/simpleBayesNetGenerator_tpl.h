@@ -38,11 +38,10 @@ namespace gum {
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE
-     SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
-        Size nbrNodes,
-        Size maxArcs,
-        Size maxModality) :
+  INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
+     Size nbrNodes,
+     Size maxArcs,
+     Size maxModality) :
       IBNG(nbrNodes, maxArcs, maxModality) {
     GUM_CONSTRUCTOR(SimpleBayesNetGenerator);
   }
@@ -61,8 +60,7 @@ namespace gum {
 
   // Destructor.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE SimpleBayesNetGenerator< GUM_SCALAR,
-                                  ICPTGenerator >::~SimpleBayesNetGenerator() {
+  INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::~SimpleBayesNetGenerator() {
     GUM_DESTRUCTOR(SimpleBayesNetGenerator);
   }
 
@@ -80,17 +78,13 @@ namespace gum {
 
     for (Size i = 0; this->nbrNodes_ > i; ++i) {
       strBuff << "n" << i;
-      Size nb_mod
-         = (this->maxModality_ == 2) ? 2 : 2 + randomValue(this->maxModality_ - 1);
-      map.insert(
-         i,
-         this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
+      Size nb_mod = (this->maxModality_ == 2) ? 2 : 2 + randomValue(this->maxModality_ - 1);
+      map.insert(i, this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
       strBuff.str("");
     }
 
     // We add arcs
-    float density = (float)(this->maxArcs_ * 2)
-                  / (float)(this->nbrNodes_ * (this->nbrNodes_ - 1));
+    float density = (float)(this->maxArcs_ * 2) / (float)(this->nbrNodes_ * (this->nbrNodes_ - 1));
 
     for (Size i = 0; i < this->nbrNodes_; ++i)
       for (Size j = i + 1; j < this->nbrNodes_; ++j)

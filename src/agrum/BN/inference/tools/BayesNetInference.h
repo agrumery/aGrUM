@@ -230,7 +230,7 @@ namespace gum {
 
     private:
     /// assigns a BN during the inference engine construction
-    void  _setBayesNetDuringConstruction_(const IBayesNet< GUM_SCALAR >* bn);
+    void _setBayesNetDuringConstruction_(const IBayesNet< GUM_SCALAR >* bn);
 
 
     /// allow JointInference to access the single targets and inference states

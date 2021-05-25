@@ -36,8 +36,7 @@ namespace gum_tests {
   class MultiDimLogitTestSuite: public CxxTest::TestSuite {
     public:
     void testCreationLogit() {
-      gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
-         d("d", "", 2);
+      gum::LabelizedVariable       a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
       gum::MultiDimLogit< double > p(0.2f);
 
       // trying to change weight for a non cause
@@ -62,8 +61,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       TS_GUM_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
-      TS_ASSERT_EQUALS(q.toString(),
-                       "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)");
+      TS_ASSERT_EQUALS(q.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)");
     }
 
     void testComputationInLogit() {
@@ -83,14 +81,11 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
 
-      std::string witness_age[]
-         = {"50", "49", "46", "49", "62", "35", "67", "65", "47"};
-      std::string witness_taux[]
-         = {"126", "126", "144", "139", "154", "156", "160", "140", "143"};
+      std::string witness_age[]  = {"50", "49", "46", "49", "62", "35", "67", "65", "47"};
+      std::string witness_taux[] = {"126", "126", "144", "139", "154", "156", "160", "140", "143"};
       std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
-      std::string witness_coeur[]
-         = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
-      float witness_proba[] = {0.8786f,
+      std::string witness_coeur[] = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
+      float       witness_proba[] = {0.8786f,
                                0.5807f,
                                0.3912f,
                                0.3773f,
@@ -99,7 +94,7 @@ namespace gum_tests {
                                1 - 0.0163f,
                                1 - 0.0710f,
                                1 - 0.3765f};
-      int   nbr             = 9;
+      int         nbr             = 9;
 
       for (int l = 0; l < nbr; l++) {
         try {
@@ -127,8 +122,7 @@ namespace gum_tests {
       gum::LabelizedVariable unemployment("unemployment", "", 2);
 
       gum::MultiDimLogit< double > p(1 - 0.0001f);
-      p << unemployment << competition << requirement << motivation << degree
-        << lazy;
+      p << unemployment << competition << requirement << motivation << degree << lazy;
       p.causalWeight(lazy, 0.8f);
       p.causalWeight(degree, 0.7f);
       p.causalWeight(motivation, 0.9f);

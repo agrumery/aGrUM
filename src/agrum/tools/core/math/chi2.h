@@ -67,7 +67,7 @@ namespace gum {
      * @param confidence_proba The confidence probability.
      */
     Chi2(const std::vector< std::size_t >& var_modalities,
-         double confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
+         double                            confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
 
     /**
      * @brief Class destructor.
@@ -148,16 +148,16 @@ namespace gum {
 
     private:
     /// The modalities of the random variables.
-    const std::vector< std::size_t >&  _modalities_;
+    const std::vector< std::size_t >& _modalities_;
 
     /// The confidence probability used for critical values.
-    double  _confidence_proba_;
+    double _confidence_proba_;
 
     /// The domain size of the conditioning nodes.
-    Size  _conditioning_size_;
+    Size _conditioning_size_;
 
     /// A set of already computed critical values.
-    HashTable< Idx, double >  _critical_values_;
+    HashTable< Idx, double > _critical_values_;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the
@@ -169,7 +169,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return Returns the critical value of a given chi2 test.
      */
-    static double  _criticalValue_(double proba, Size df);
+    static double _criticalValue_(double proba, Size df);
 
 
     /**
@@ -187,7 +187,7 @@ namespace gum {
      * @param z A value.
      * @return The probability of z.
      */
-    static double  _probaZValue_(double z);
+    static double _probaZValue_(double z);
 
     /// Forbid use of the copy constructor.
     Chi2(const Chi2&) = delete;

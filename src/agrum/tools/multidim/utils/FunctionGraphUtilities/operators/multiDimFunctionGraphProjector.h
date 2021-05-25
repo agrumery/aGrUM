@@ -50,8 +50,7 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename >
              class FUNCTOR,
-             template < typename > class TerminalNodePolicy
-             = ExactTerminalNodePolicy >
+             template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class MultiDimFunctionGraphProjector {
     public:
     // ============================================================================
@@ -88,19 +87,19 @@ namespace gum {
 
     private:
     /// One of the two function graphs used for the Projection
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _src_;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _src_;
 
     /// The list of variables on which the projection is performed
-    const Set< const DiscreteVariable* >&  _delVars_;
+    const Set< const DiscreteVariable* >& _delVars_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*  _rd_;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
 
     /// The function to be performed on the leaves
-    const FUNCTOR< GUM_SCALAR >  _function_;
+    const FUNCTOR< GUM_SCALAR > _function_;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR  _neutral_;
+    const GUM_SCALAR _neutral_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

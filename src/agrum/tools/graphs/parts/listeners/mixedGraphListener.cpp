@@ -44,34 +44,17 @@ namespace gum {
   }
 
   MixedGraphListener::MixedGraphListener(MixedGraph* g) {
-    if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to")
-    }
+    if (!g) { GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to") }
 
     GUM_CONSTRUCTOR(MixedGraphListener);
     graph_ = g;
 
-    GUM_CONNECT((*graph_),
-                onNodeAdded,
-                (*this),
-                MixedGraphListener::whenNodeAdded);
-    GUM_CONNECT((*graph_),
-                onNodeDeleted,
-                (*this),
-                MixedGraphListener::whenNodeDeleted);
+    GUM_CONNECT((*graph_), onNodeAdded, (*this), MixedGraphListener::whenNodeAdded);
+    GUM_CONNECT((*graph_), onNodeDeleted, (*this), MixedGraphListener::whenNodeDeleted);
     GUM_CONNECT((*graph_), onArcAdded, (*this), MixedGraphListener::whenArcAdded);
-    GUM_CONNECT((*graph_),
-                onArcDeleted,
-                (*this),
-                MixedGraphListener::whenArcDeleted);
-    GUM_CONNECT((*graph_),
-                onEdgeAdded,
-                (*this),
-                MixedGraphListener::whenEdgeAdded);
-    GUM_CONNECT((*graph_),
-                onEdgeDeleted,
-                (*this),
-                MixedGraphListener::whenEdgeDeleted);
+    GUM_CONNECT((*graph_), onArcDeleted, (*this), MixedGraphListener::whenArcDeleted);
+    GUM_CONNECT((*graph_), onEdgeAdded, (*this), MixedGraphListener::whenEdgeAdded);
+    GUM_CONNECT((*graph_), onEdgeDeleted, (*this), MixedGraphListener::whenEdgeDeleted);
   }
 
   MixedGraphListener::~MixedGraphListener() {

@@ -86,7 +86,7 @@ namespace gum {
         nodes_to_visit.popFront();
 
         const bool is_hard_evidence = hardEvidence.exists(node);
-        const bool is_evidence = is_hard_evidence || softEvidence.exists(node);
+        const bool is_evidence      = is_hard_evidence || softEvidence.exists(node);
 
         if (is_evidence && !marks[node].first) {
           marks[node].first = true;

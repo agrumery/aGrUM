@@ -139,9 +139,7 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      PRMAggregate(const std::string& name,
-                   AggregateType      aggType,
-                   const PRMType&     rvType);
+      PRMAggregate(const std::string& name, AggregateType aggType, const PRMType& rvType);
 
       /**
        * Default constructor.
@@ -166,8 +164,7 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
 
       /// Returns the aggregate of *this.
       AggregateType agg_type() const;
@@ -256,8 +253,7 @@ namespace gum {
       PRMAggregate< GUM_SCALAR >(const PRMAggregate< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMAggregate< GUM_SCALAR >&
-         operator=(const PRMAggregate< GUM_SCALAR >& source);
+      PRMAggregate< GUM_SCALAR >& operator=(const PRMAggregate< GUM_SCALAR >& source);
 
       /// @}
       // ========================================================================
@@ -266,18 +262,18 @@ namespace gum {
       /// @{
 
       /// The AggregateType of this aggregate.
-      AggregateType  _agg_type_;
+      AggregateType _agg_type_;
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      PRMType*  _type_;
+      PRMType* _type_;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      std::shared_ptr< Idx >  _label_;
+      std::shared_ptr< Idx > _label_;
       // Idx*  _label_;
-      std::string  _label_value_;
+      std::string _label_value_;
 
       /// @}
     };

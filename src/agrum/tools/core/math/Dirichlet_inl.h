@@ -29,21 +29,20 @@ namespace gum {
 
   // default constructor
   INLINE Dirichlet::Dirichlet(const param_type& params, unsigned int seed) :
-       _generator_(gum::getRandomGenerator(seed)),  _params_(params) {
+      _generator_(gum::getRandomGenerator(seed)), _params_(params) {
     GUM_CONSTRUCTOR(Dirichlet);
   }
 
   // copy constructor
   INLINE Dirichlet::Dirichlet(const Dirichlet& from) :
-       _generator_(from. _generator_),  _gamma_(from. _gamma_),
-       _params_(from. _params_) {
+      _generator_(from._generator_), _gamma_(from._gamma_), _params_(from._params_) {
     GUM_CONS_CPY(Dirichlet);
   }
 
   // move constructor
   INLINE Dirichlet::Dirichlet(Dirichlet&& from) :
-       _generator_(std::move(from. _generator_)),  _gamma_(std::move(from. _gamma_)),
-       _params_(std::move(from. _params_)) {
+      _generator_(std::move(from._generator_)), _gamma_(std::move(from._gamma_)),
+      _params_(std::move(from._params_)) {
     GUM_CONS_MOV(Dirichlet);
   }
 
@@ -56,9 +55,9 @@ namespace gum {
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {
     if (&from != this) {
-       _generator_ = from. _generator_;
-       _gamma_     = from. _gamma_;
-       _params_    = from. _params_;
+      _generator_ = from._generator_;
+      _gamma_     = from._gamma_;
+      _params_    = from._params_;
     }
     return *this;
   }
@@ -66,23 +65,22 @@ namespace gum {
   // move operator
   INLINE Dirichlet& Dirichlet::operator=(Dirichlet&& from) {
     if (&from != this) {
-       _generator_ = std::move(from. _generator_);
-       _gamma_     = std::move(from. _gamma_);
-       _params_    = std::move(from. _params_);
+      _generator_ = std::move(from._generator_);
+      _gamma_     = std::move(from._gamma_);
+      _params_    = std::move(from._params_);
     }
     return *this;
   }
 
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
-    Size        size = Size( _params_.size());
+    Size        size = Size(_params_.size());
     result_type res(size);
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-         _gamma_.param(
-           std::gamma_distribution< float >::param_type( _params_[i], 1));
-        res[i] =  _gamma_( _generator_);
+        _gamma_.param(std::gamma_distribution< float >::param_type(_params_[i], 1));
+        res[i] = _gamma_(_generator_);
         sum += res[i];
       }
     }
@@ -93,15 +91,14 @@ namespace gum {
   }
 
   // returns a sample from the Dirichlet distribution
-  INLINE Dirichlet::result_type
-     Dirichlet::operator()(const Dirichlet::param_type& parm) {
+  INLINE Dirichlet::result_type Dirichlet::operator()(const Dirichlet::param_type& parm) {
     Size        size = Size(parm.size());
     result_type res(size);
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-         _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));
-        res[i] =  _gamma_( _generator_);
+        _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));
+        res[i] = _gamma_(_generator_);
         sum += res[i];
       }
     }
@@ -112,14 +109,10 @@ namespace gum {
   }
 
   // returns the parameters of the distribution
-  INLINE const Dirichlet::param_type& Dirichlet::param() const noexcept {
-    return  _params_;
-  }
+  INLINE const Dirichlet::param_type& Dirichlet::param() const noexcept { return _params_; }
 
   // sets the parameters of the distribution
-  INLINE void Dirichlet::param(const Dirichlet::param_type& parm) {
-     _params_ = parm;
-  }
+  INLINE void Dirichlet::param(const Dirichlet::param_type& parm) { _params_ = parm; }
 
   // Returns the greatest lower bound of the range of values possibly returned
   INLINE float Dirichlet::min() const noexcept { return 0.0f; }

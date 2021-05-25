@@ -45,77 +45,67 @@ namespace gum_tests {
     void testCreationDeletionFloat() {
       gum::MaxInducedWidthMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MaxInducedWidthMCBayesNetGenerator<
-                                      double >(30, 100, 3, 4, 30, 40, 50));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         gen = new gum::MaxInducedWidthMCBayesNetGenerator< double >(30, 100, 3, 4, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionFloatCPT() {
       gum::MaxInducedWidthMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MaxInducedWidthMCBayesNetGenerator<
-                                      double >(30, 150, 4, 4, 30, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         gen = new gum::MaxInducedWidthMCBayesNetGenerator< double >(30, 150, 4, 4, 30, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionDouble() {
       gum::MaxInducedWidthMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MaxInducedWidthMCBayesNetGenerator<
-                                      double >(30, 100, 4, 4, 30, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         gen = new gum::MaxInducedWidthMCBayesNetGenerator< double >(30, 100, 4, 4, 30, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testCreationDeletionDoubleCPT() {
       gum::MaxInducedWidthMCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MaxInducedWidthMCBayesNetGenerator<
-                                      double >(30, 100, 4, 4, 30, 10, 30));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         gen = new gum::MaxInducedWidthMCBayesNetGenerator< double >(30, 100, 4, 4, 30, 10, 30));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
     void testGenerationBNFloat() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(30, 100, 10, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 10, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
 
       if (bn != 0) delete bn;
     }
 
     void testGenerationBNDouble() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(30, 100, 5, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 5, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
 
       if (bn != 0) delete bn;
     }
 
     void testGenerationfromBNFloat() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(30, 100, 10, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 10, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::MaxInducedWidthMCBayesNetGenerator< double >
-            gen2(*bn, 4, 30, 40, 50));
+         gum::MaxInducedWidthMCBayesNetGenerator< double > gen2(*bn, 4, 30, 40, 50));
 
       if (bn != 0) delete bn;
     }
 
     void testGenerationfromBNDouble() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(30, 100, 5, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 5, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::MaxInducedWidthMCBayesNetGenerator< double >
-            gen2(*bn, 4, 30, 40, 50));
+         gum::MaxInducedWidthMCBayesNetGenerator< double > gen2(*bn, 4, 30, 40, 50));
 
       if (bn != 0) delete bn;
     }
@@ -124,12 +114,7 @@ namespace gum_tests {
       int nbrtests = 0;
       while (true) {
         try {
-          gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30,
-                                                                100,
-                                                                8,
-                                                                30,
-                                                                40,
-                                                                50);
+          gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 8, 30, 40, 50);
           gum::BayesNet< double >                           bn;
           gen.generateBN(bn);
           gen.disturbBN(bn);
@@ -147,9 +132,8 @@ namespace gum_tests {
     }
 
     void testGenerationBNDoubleCPT() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(50, 100, 8, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(50, 100, 8, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
       TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(*bn));
 
@@ -157,9 +141,8 @@ namespace gum_tests {
     }
 
     void testInferenceFloat() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(50, 100, 8, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(50, 100, 8, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(bn);
@@ -169,9 +152,8 @@ namespace gum_tests {
     }
 
     void testInferenceDouble() {
-      gum::MaxInducedWidthMCBayesNetGenerator< double >
-                               gen(50, 100, 8, 4, 30, 40, 50);
-      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::MaxInducedWidthMCBayesNetGenerator< double > gen(50, 100, 8, 4, 30, 40, 50);
+      gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(bn);

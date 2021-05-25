@@ -143,9 +143,9 @@ namespace gum {
      */
     explicit MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                            Size                   maxParents = 2,
-                                           Idx                    iteration = 5000,
-                                           Idx                    p         = 30,
-                                           Idx                    q         = 40);
+                                           Idx                    iteration  = 5000,
+                                           Idx                    p          = 30,
+                                           Idx                    q          = 40);
 
     /**
      * Destructor.
@@ -184,7 +184,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    bool  _checkConditions_() final;
+    bool _checkConditions_() final;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

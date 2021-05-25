@@ -46,26 +46,23 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class L2UListener: public gum::ApproximationSchemeListener {
     private:
-    int          __nbr;
-    std::string  __msg;
+    int         __nbr;
+    std::string __msg;
 
     protected:
     public:
     explicit L2UListener(gum::ApproximationScheme& aS) :
-        gum::ApproximationSchemeListener(aS),  __nbr(0),  __msg(""){};
+        gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
 
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-       __nbr++;
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+      __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string s) {  __msg = s; }
+    void whenStop(const void* buffer, const std::string s) { __msg = s; }
 
-    int nbr() { return  __nbr; }
+    int nbr() { return __nbr; }
 
-    std::string& msg() { return  __msg; }
+    std::string& msg() { return __msg; }
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
@@ -81,13 +78,11 @@ namespace gum_tests {
       gum::setNumberOfThreads(1);
 #endif
       gum::BayesNet< double >  monBNa;
-      gum::BIFReader< double > readera(&monBNa,
-                                       GET_RESSOURCES_PATH("cn/2Umin.bif"));
+      gum::BIFReader< double > readera(&monBNa, GET_RESSOURCES_PATH("cn/2Umin.bif"));
       readera.proceed();
 
       gum::BayesNet< double >  monBNb;
-      gum::BIFReader< double > readerb(&monBNb,
-                                       GET_RESSOURCES_PATH("cn/2Umax.bif"));
+      gum::BIFReader< double > readerb(&monBNb, GET_RESSOURCES_PATH("cn/2Umax.bif"));
       readerb.proceed();
 
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
@@ -102,13 +97,11 @@ namespace gum_tests {
       gum::setNumberOfThreads(1);
 #endif
       gum::BayesNet< double >  monBNa;
-      gum::BIFReader< double > readera(&monBNa,
-                                       GET_RESSOURCES_PATH("cn/dbn_bin_min.bif"));
+      gum::BIFReader< double > readera(&monBNa, GET_RESSOURCES_PATH("cn/dbn_bin_min.bif"));
       readera.proceed();
 
       gum::BayesNet< double >  monBNb;
-      gum::BIFReader< double > readerb(&monBNb,
-                                       GET_RESSOURCES_PATH("cn/dbn_bin_max.bif"));
+      gum::BIFReader< double > readerb(&monBNb, GET_RESSOURCES_PATH("cn/dbn_bin_max.bif"));
       readerb.proceed();
 
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
@@ -123,8 +116,7 @@ namespace gum_tests {
     void testL2UInference() {
       initCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp
-         = gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
@@ -194,8 +186,7 @@ namespace gum_tests {
     void testL2UInferenceD() {
       initDCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp
-         = gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
       //////////////////////////////////////////////////////
       // strong independence
@@ -256,8 +247,7 @@ namespace gum_tests {
     // with dynamic network
     void testL2UListener() {
       initDCNet();
-      gum::credal::CNLoopyPropagation< double > lp
-         = gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
@@ -285,8 +275,7 @@ namespace gum_tests {
     void testL2UInferenceFromBug() {
       initCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp
-         = gum::credal::CNLoopyPropagation< double >(*cn);
+      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       lp.eraseAllEvidence();

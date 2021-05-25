@@ -41,19 +41,17 @@ namespace gum {
      MultiDimFunctionGraphOperator(
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2) :
-       _DG1_(DG1),
-       _DG2_(DG2),  _function_(),
-       _DG1InstantiationNeeded_(DG1->realSize(), true, false),
-       _DG2InstantiationNeeded_(DG2->realSize(), true, false) {
+      _DG1_(DG1),
+      _DG2_(DG2), _function_(), _DG1InstantiationNeeded_(DG1->realSize(), true, false),
+      _DG2InstantiationNeeded_(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphOperator);
-     _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::
-       getReducedAndOrderedInstance();
-     _nbVar_   = 0;
-     _default_ = nullptr;
+    _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getReducedAndOrderedInstance();
+    _nbVar_   = 0;
+    _default_ = nullptr;
 
-     _nbCall_       = 0;
-     _nbVar_        = 0;
-     _sizeVarRetro_ = 1;
+    _nbCall_       = 0;
+    _nbVar_        = 0;
+    _sizeVarRetro_ = 1;
   }
 
   template < typename GUM_SCALAR,
@@ -66,17 +64,17 @@ namespace gum {
     GUM_DESTRUCTOR(MultiDimFunctionGraphOperator);
 
 
-    for (auto instIter =  _DG1InstantiationNeeded_.beginSafe();
-         instIter !=  _DG1InstantiationNeeded_.endSafe();
+    for (auto instIter = _DG1InstantiationNeeded_.beginSafe();
+         instIter != _DG1InstantiationNeeded_.endSafe();
          ++instIter)
-      SOA_DEALLOCATE(instIter.val(), sizeof(short int) *  _nbVar_);
+      SOA_DEALLOCATE(instIter.val(), sizeof(short int) * _nbVar_);
 
-    for (auto instIter =  _DG2InstantiationNeeded_.beginSafe();
-         instIter !=  _DG2InstantiationNeeded_.endSafe();
+    for (auto instIter = _DG2InstantiationNeeded_.beginSafe();
+         instIter != _DG2InstantiationNeeded_.endSafe();
          ++instIter)
-      SOA_DEALLOCATE(instIter.val(), sizeof(short int) *  _nbVar_);
+      SOA_DEALLOCATE(instIter.val(), sizeof(short int) * _nbVar_);
 
-    if ( _nbVar_ != 0) SOA_DEALLOCATE( _default_, sizeof(short int) *  _nbVar_);
+    if (_nbVar_ != 0) SOA_DEALLOCATE(_default_, sizeof(short int) * _nbVar_);
   }
 
 
@@ -88,29 +86,28 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-        compute() {
-     _establishVarOrder_();
-     _findRetrogradeVariables_( _DG1_,  _DG1InstantiationNeeded_);
-     _findRetrogradeVariables_( _DG2_,  _DG2InstantiationNeeded_);
+     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::compute() {
+    _establishVarOrder_();
+    _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
+    _findRetrogradeVariables_(_DG2_, _DG2InstantiationNeeded_);
 
     Idx* varInst = nullptr;
-    if ( _nbVar_ != 0) {
-      varInst = static_cast< Idx* >(SOA_ALLOCATE(sizeof(Idx) *  _nbVar_));
-      for (Idx i = 0; i <  _nbVar_; i++)
+    if (_nbVar_ != 0) {
+      varInst = static_cast< Idx* >(SOA_ALLOCATE(sizeof(Idx) * _nbVar_));
+      for (Idx i = 0; i < _nbVar_; i++)
         varInst[i] = (Idx)0;
     }
 
-    O4DGContext conti(varInst,  _nbVar_);
-    conti.setDG1Node( _DG1_->root());
-    conti.setDG2Node( _DG2_->root());
+    O4DGContext conti(varInst, _nbVar_);
+    conti.setDG1Node(_DG1_->root());
+    conti.setDG2Node(_DG2_->root());
 
-    NodeId root =  _compute_(conti, (Idx)0 - 1);
-     _rd_->manager()->setRootNode(root);
+    NodeId root = _compute_(conti, (Idx)0 - 1);
+    _rd_->manager()->setRootNode(root);
 
-    if ( _nbVar_ != 0) SOA_DEALLOCATE(varInst, sizeof(Idx) *  _nbVar_);
+    if (_nbVar_ != 0) SOA_DEALLOCATE(varInst, sizeof(Idx) * _nbVar_);
 
-    return  _rd_;
+    return _rd_;
   }
 
   // This function computes an efficient order for the final decision diagrams.
@@ -121,40 +118,38 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   void MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-      _establishVarOrder_() {
-    SequenceIteratorSafe< const DiscreteVariable* > fite
-       =  _DG1_->variablesSequence().beginSafe();
-    SequenceIteratorSafe< const DiscreteVariable* > site
-       =  _DG2_->variablesSequence().beginSafe();
+     _establishVarOrder_() {
+    SequenceIteratorSafe< const DiscreteVariable* > fite = _DG1_->variablesSequence().beginSafe();
+    SequenceIteratorSafe< const DiscreteVariable* > site = _DG2_->variablesSequence().beginSafe();
 
-    while (fite !=  _DG1_->variablesSequence().endSafe()
-           && site !=  _DG2_->variablesSequence().endSafe()) {
+    while (fite != _DG1_->variablesSequence().endSafe()
+           && site != _DG2_->variablesSequence().endSafe()) {
       // Test : if var from first order is already in final order
       // we move onto the next one
-      if ( _rd_->variablesSequence().exists(*fite)) {
+      if (_rd_->variablesSequence().exists(*fite)) {
         ++fite;
         continue;
       }
 
       // Test : if var from second order is already in final order
       // we move onto the next one
-      if ( _rd_->variablesSequence().exists(*site)) {
+      if (_rd_->variablesSequence().exists(*site)) {
         ++site;
         continue;
       }
 
       // Test : is current var of the first order present in the second order.
       // if not we add it to final order
-      if (! _DG2_->variablesSequence().exists(*fite)) {
-         _rd_->add(**fite);
+      if (!_DG2_->variablesSequence().exists(*fite)) {
+        _rd_->add(**fite);
         ++fite;
         continue;
       }
 
       // Test : is current var of the second order present in the first order.
       // if not we add it to final order
-      if (! _DG1_->variablesSequence().exists(*site)) {
-         _rd_->add(**site);
+      if (!_DG1_->variablesSequence().exists(*site)) {
+        _rd_->add(**site);
         ++site;
         continue;
       }
@@ -162,7 +157,7 @@ namespace gum {
       // Test : is current var of the second order present in the first order.
       // if not we add it to final order
       if (*fite == *site) {
-         _rd_->add(**fite);
+        _rd_->add(**fite);
         ++fite;
         ++site;
         continue;
@@ -172,15 +167,15 @@ namespace gum {
       // are detected.
       // Chosen solution here is to find compute domainSize in between
       // and chose the one with the smallest
-       _nbVarRetro_++;
-      if ( _distance_( _DG1_, *fite, *site) <  _distance_( _DG2_, *site, *fite)) {
-         _rd_->add(**fite);
-         _sizeVarRetro_ *= (*fite)->domainSize();
+      _nbVarRetro_++;
+      if (_distance_(_DG1_, *fite, *site) < _distance_(_DG2_, *site, *fite)) {
+        _rd_->add(**fite);
+        _sizeVarRetro_ *= (*fite)->domainSize();
         ++fite;
         continue;
       } else {
-         _rd_->add(**site);
-         _sizeVarRetro_ *= (*site)->domainSize();
+        _rd_->add(**site);
+        _sizeVarRetro_ *= (*site)->domainSize();
         ++site;
         continue;
       }
@@ -190,23 +185,22 @@ namespace gum {
     // the other may still be in the middle of its one.
     // Hence, this part ensures that any variables remaining
     // will be added to the final sequence if needed.
-    if (fite ==  _DG1_->variablesSequence().endSafe()) {
-      for (; site !=  _DG2_->variablesSequence().endSafe(); ++site)
-        if (! _rd_->variablesSequence().exists(*site))  _rd_->add(**site);
+    if (fite == _DG1_->variablesSequence().endSafe()) {
+      for (; site != _DG2_->variablesSequence().endSafe(); ++site)
+        if (!_rd_->variablesSequence().exists(*site)) _rd_->add(**site);
     } else {
-      for (; fite !=  _DG1_->variablesSequence().endSafe(); ++fite)
-        if (! _rd_->variablesSequence().exists(*fite))  _rd_->add(**fite);
+      for (; fite != _DG1_->variablesSequence().endSafe(); ++fite)
+        if (!_rd_->variablesSequence().exists(*fite)) _rd_->add(**fite);
     }
 
 
     // Various initialization needed now that we have a bigger picture
-     _nbVar_ =  _rd_->variablesSequence().size();
+    _nbVar_ = _rd_->variablesSequence().size();
 
-    if ( _nbVar_ != 0) {
-       _default_
-         = static_cast< short int* >(SOA_ALLOCATE(sizeof(short int) *  _nbVar_));
-      for (Idx i = 0; i <  _nbVar_; i++)
-         _default_[i] = (short int)0;
+    if (_nbVar_ != 0) {
+      _default_ = static_cast< short int* >(SOA_ALLOCATE(sizeof(short int) * _nbVar_));
+      for (Idx i = 0; i < _nbVar_; i++)
+        _default_[i] = (short int)0;
     }
   }
 
@@ -217,12 +211,10 @@ namespace gum {
              class FUNCTOR,
              template < typename >
              class TerminalNodePolicy >
-  INLINE Idx
-     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-         _distance_(
-           const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* d,
-           const DiscreteVariable*                                        from,
-           const DiscreteVariable*                                        to) {
+  INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::_distance_(
+     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* d,
+     const DiscreteVariable*                                        from,
+     const DiscreteVariable*                                        to) {
     Idx posi = d->variablesSequence().pos(from);
     Idx dist = 1;
 
@@ -242,39 +234,34 @@ namespace gum {
              class FUNCTOR,
              template < typename >
              class TerminalNodePolicy >
-  INLINE void
-     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-         _findRetrogradeVariables_(
-           const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-           HashTable< NodeId, short int* >& dgInstNeed) {
+  INLINE void MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+     _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+                               HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
-    Size                            tableSize = Size( _nbVar_ * sizeof(short int));
+    Size                            tableSize = Size(_nbVar_ * sizeof(short int));
 
     for (auto varIter = dg->variablesSequence().rbeginSafe();
          varIter != dg->variablesSequence().rendSafe();
          --varIter) {
-      Idx                   varPos   =  _rd_->variablesSequence().pos(*varIter);
+      Idx                   varPos   = _rd_->variablesSequence().pos(*varIter);
       const Link< NodeId >* nodeIter = dg->varNodeListe(*varIter)->list();
       while (nodeIter != nullptr) {
-        short int* instantiationNeeded
-           = static_cast< short int* >(SOA_ALLOCATE(tableSize));
+        short int* instantiationNeeded = static_cast< short int* >(SOA_ALLOCATE(tableSize));
         dgInstNeed.insert(nodeIter->element(), instantiationNeeded);
 
-        short int* varDescendant
-           = static_cast< short int* >(SOA_ALLOCATE(tableSize));
+        short int* varDescendant = static_cast< short int* >(SOA_ALLOCATE(tableSize));
         nodesVarDescendant.insert(nodeIter->element(), varDescendant);
-        for (Idx j = 0; j <  _nbVar_; j++) {
+        for (Idx j = 0; j < _nbVar_; j++) {
           instantiationNeeded[j] = (short int)0;
           varDescendant[j]       = (short int)0;
         }
 
         varDescendant[varPos] = (short int)1;
-        for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons();
-             ++modality) {
+        for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality) {
           if (!dg->isTerminalNode(dg->node(nodeIter->element())->son(modality))) {
             short int* sonVarDescendant
                = nodesVarDescendant[dg->node(nodeIter->element())->son(modality)];
-            for (Idx varIdx = 0; varIdx <  _nbVar_; varIdx++) {
+            for (Idx varIdx = 0; varIdx < _nbVar_; varIdx++) {
               varDescendant[varIdx] += sonVarDescendant[varIdx];
               if (varDescendant[varIdx] && varIdx < varPos)
                 instantiationNeeded[varIdx] = (short int)1;
@@ -290,13 +277,11 @@ namespace gum {
          ++varIter) {
       const Link< NodeId >* nodeIter = dg->varNodeListe(*varIter)->list();
       while (nodeIter != nullptr) {
-        for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons();
-             ++modality) {
+        for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality) {
           NodeId sonId = dg->node(nodeIter->element())->son(modality);
           if (!dg->isTerminalNode(sonId)) {
-            for (Idx varIdx = 0; varIdx <  _nbVar_; ++varIdx) {
-              if (dgInstNeed[nodeIter->element()][varIdx]
-                  && nodesVarDescendant[sonId][varIdx]) {
+            for (Idx varIdx = 0; varIdx < _nbVar_; ++varIdx) {
+              if (dgInstNeed[nodeIter->element()][varIdx] && nodesVarDescendant[sonId][varIdx]) {
                 dgInstNeed[sonId][varIdx] = (short int)1;
               }
             }
@@ -341,22 +326,23 @@ namespace gum {
              class FUNCTOR,
              template < typename >
              class TerminalNodePolicy >
-  NodeId MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-      _compute_(O4DGContext& currentSituation, Idx lastInstVarPos) {
-     _nbCall_ += 1;
+  NodeId MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::_compute_(
+     O4DGContext& currentSituation,
+     Idx          lastInstVarPos) {
+    _nbCall_ += 1;
 
     NodeId newNode = 0;
 
 
     // If both current nodes are terminal,
     // we only have to compute the resulting value
-    if ( _DG1_->isTerminalNode(currentSituation.DG1Node())
-        &&  _DG2_->isTerminalNode(currentSituation.DG2Node())) {
+    if (_DG1_->isTerminalNode(currentSituation.DG1Node())
+        && _DG2_->isTerminalNode(currentSituation.DG2Node())) {
       // We have to compute new valueand we insert a new node in diagram with
       // this value, ...
-      return  _rd_->manager()->addTerminalNode(
-          _function_( _DG1_->terminalNodeValue(currentSituation.DG1Node()),
-                     _DG2_->terminalNodeValue(currentSituation.DG2Node())));
+      return _rd_->manager()->addTerminalNode(
+         _function_(_DG1_->terminalNodeValue(currentSituation.DG1Node()),
+                    _DG2_->terminalNodeValue(currentSituation.DG2Node())));
     }
 
     // If not,
@@ -365,83 +351,76 @@ namespace gum {
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
 
-    short int* dg1NeededVar
-       =  _DG1InstantiationNeeded_.exists(currentSituation.DG1Node())
-          ?  _DG1InstantiationNeeded_[currentSituation.DG1Node()]
-          :  _default_;
-    Idx        dg1CurrentVarPos =  _DG1_->isTerminalNode(currentSituation.DG1Node())
-                                   ?  _nbVar_
-                                   :  _rd_->variablesSequence().pos(
-                                _DG1_->node(currentSituation.DG1Node())->nodeVar());
-    short int* dg2NeededVar
-       =  _DG2InstantiationNeeded_.exists(currentSituation.DG2Node())
-          ?  _DG2InstantiationNeeded_[currentSituation.DG2Node()]
-          :  _default_;
-    Idx dg2CurrentVarPos =  _DG2_->isTerminalNode(currentSituation.DG2Node())
-                            ?  _nbVar_
-                            :  _rd_->variablesSequence().pos(
-                                _DG2_->node(currentSituation.DG2Node())->nodeVar());
+    short int* dg1NeededVar = _DG1InstantiationNeeded_.exists(currentSituation.DG1Node())
+                               ? _DG1InstantiationNeeded_[currentSituation.DG1Node()]
+                               : _default_;
+    Idx        dg1CurrentVarPos
+       = _DG1_->isTerminalNode(currentSituation.DG1Node())
+          ? _nbVar_
+          : _rd_->variablesSequence().pos(_DG1_->node(currentSituation.DG1Node())->nodeVar());
+    short int* dg2NeededVar = _DG2InstantiationNeeded_.exists(currentSituation.DG2Node())
+                               ? _DG2InstantiationNeeded_[currentSituation.DG2Node()]
+                               : _default_;
+    Idx        dg2CurrentVarPos
+       = _DG2_->isTerminalNode(currentSituation.DG2Node())
+          ? _nbVar_
+          : _rd_->variablesSequence().pos(_DG2_->node(currentSituation.DG2Node())->nodeVar());
 
-    short int* instNeeded
-       = static_cast< short int* >(SOA_ALLOCATE(sizeof(short int) *  _nbVar_));
-    for (Idx i = 0; i <  _nbVar_; i++)
+    short int* instNeeded = static_cast< short int* >(SOA_ALLOCATE(sizeof(short int) * _nbVar_));
+    for (Idx i = 0; i < _nbVar_; i++)
       instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
 
     double curSitKey = currentSituation.key(instNeeded);
 
-    if ( _explorationTable_.exists(curSitKey)) {
-      SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
-      return  _explorationTable_[curSitKey];
+    if (_explorationTable_.exists(curSitKey)) {
+      SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
+      return _explorationTable_[curSitKey];
     }
 
     // ====================================================
 
-    NodeId origDG1 = currentSituation.DG1Node(),
-           origDG2 = currentSituation.DG2Node();
+    NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg
-       = nullptr;
-    NodeId leadNodeId = 0;
-    Idx    leadVarPos =  _rd_->variablesSequence().size();
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg     = nullptr;
+    NodeId                                                         leadNodeId = 0;
+    Idx leadVarPos = _rd_->variablesSequence().size();
     typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
     SetNodeFunction leadFunction = nullptr;
 
     bool sameVar = false;
 
-    if (! _DG1_->isTerminalNode(currentSituation.DG1Node())) {
+    if (!_DG1_->isTerminalNode(currentSituation.DG1Node())) {
       if (currentSituation.varModality(dg1CurrentVarPos) != 0) {
-        currentSituation.setDG1Node(
-            _DG1_->node(currentSituation.DG1Node())
-              ->son(currentSituation.varModality(dg1CurrentVarPos) - 1));
+        currentSituation.setDG1Node(_DG1_->node(currentSituation.DG1Node())
+                                       ->son(currentSituation.varModality(dg1CurrentVarPos) - 1));
 
-        newNode =  _compute_(currentSituation, lastInstVarPos);
-         _explorationTable_.insert(curSitKey, newNode);
+        newNode = _compute_(currentSituation, lastInstVarPos);
+        _explorationTable_.insert(curSitKey, newNode);
         currentSituation.setDG1Node(origDG1);
         currentSituation.setDG2Node(origDG2);
 
-        SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
+        SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
 
         return newNode;
       }
 
-      leaddg       =  _DG1_;
+      leaddg       = _DG1_;
       leadNodeId   = currentSituation.DG1Node();
       leadVarPos   = dg1CurrentVarPos;
       leadFunction = &O4DGContext::setDG1Node;
     }
 
-    if (! _DG2_->isTerminalNode(currentSituation.DG2Node())) {
+    if (!_DG2_->isTerminalNode(currentSituation.DG2Node())) {
       if (currentSituation.varModality(dg2CurrentVarPos) != 0) {
-        currentSituation.setDG2Node(
-            _DG2_->node(currentSituation.DG2Node())
-              ->son(currentSituation.varModality(dg2CurrentVarPos) - 1));
+        currentSituation.setDG2Node(_DG2_->node(currentSituation.DG2Node())
+                                       ->son(currentSituation.varModality(dg2CurrentVarPos) - 1));
 
-        newNode =  _compute_(currentSituation, lastInstVarPos);
-         _explorationTable_.insert(curSitKey, newNode);
+        newNode = _compute_(currentSituation, lastInstVarPos);
+        _explorationTable_.insert(curSitKey, newNode);
         currentSituation.setDG1Node(origDG1);
         currentSituation.setDG2Node(origDG2);
 
-        SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
+        SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
 
         return newNode;
       }
@@ -449,7 +428,7 @@ namespace gum {
       if (leadVarPos == dg2CurrentVarPos) { sameVar = true; }
 
       if (leadVarPos > dg2CurrentVarPos) {
-        leaddg       =  _DG2_;
+        leaddg       = _DG2_;
         leadNodeId   = currentSituation.DG2Node();
         leadVarPos   = dg2CurrentVarPos;
         leadFunction = &O4DGContext::setDG2Node;
@@ -462,24 +441,24 @@ namespace gum {
     // exploration is done
     for (Idx varPos = lastInstVarPos + 1; varPos < leadVarPos; ++varPos) {
       if (instNeeded[varPos]) {
-        const DiscreteVariable* curVar  =  _rd_->variablesSequence().atPos(varPos);
-        NodeId*                 sonsIds = static_cast< NodeId* >(
-           SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+        const DiscreteVariable* curVar = _rd_->variablesSequence().atPos(varPos);
+        NodeId*                 sonsIds
+           = static_cast< NodeId* >(SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
         for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
           currentSituation.chgVarModality(varPos, modality + 1);
 
-          sonsIds[modality] =  _compute_(currentSituation, varPos);
+          sonsIds[modality] = _compute_(currentSituation, varPos);
         }
 
-        newNode =  _rd_->manager()->addInternalNode(curVar, sonsIds);
+        newNode = _rd_->manager()->addInternalNode(curVar, sonsIds);
 
-         _explorationTable_.insert(curSitKey, newNode);
+        _explorationTable_.insert(curSitKey, newNode);
         currentSituation.chgVarModality(varPos, 0);
         currentSituation.setDG1Node(origDG1);
         currentSituation.setDG2Node(origDG2);
 
-        SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
+        SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
 
         return newNode;
       }
@@ -492,31 +471,30 @@ namespace gum {
     if (sameVar) {
       // If so - meaning it's the same variable - we have to go
       // down on both
-      const InternalNode* dg1Node =  _DG1_->node(origDG1);
-      const InternalNode* dg2Node =  _DG2_->node(origDG2);
+      const InternalNode* dg1Node = _DG1_->node(origDG1);
+      const InternalNode* dg2Node = _DG2_->node(origDG2);
 
       const DiscreteVariable* curVar = dg1Node->nodeVar();
-      Idx                     varPos =  _rd_->variablesSequence().pos(curVar);
+      Idx                     varPos = _rd_->variablesSequence().pos(curVar);
 
-      NodeId* sonsIds = static_cast< NodeId* >(
-         SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+      NodeId* sonsIds = static_cast< NodeId* >(SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
       for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
         currentSituation.chgVarModality(varPos, modality + 1);
         currentSituation.setDG1Node(dg1Node->son(modality));
         currentSituation.setDG2Node(dg2Node->son(modality));
 
-        sonsIds[modality] =  _compute_(currentSituation, varPos);
+        sonsIds[modality] = _compute_(currentSituation, varPos);
       }
 
-      newNode =  _rd_->manager()->addInternalNode(curVar, sonsIds);
+      newNode = _rd_->manager()->addInternalNode(curVar, sonsIds);
 
-       _explorationTable_.insert(curSitKey, newNode);
+      _explorationTable_.insert(curSitKey, newNode);
       currentSituation.chgVarModality(varPos, 0);
       currentSituation.setDG1Node(origDG1);
       currentSituation.setDG2Node(origDG2);
 
-      SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
+      SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
 
       return newNode;
     }
@@ -524,25 +502,24 @@ namespace gum {
     else {
       const InternalNode* leaddgNode = leaddg->node(leadNodeId);
 
-      const DiscreteVariable* curVar  = leaddgNode->nodeVar();
-      NodeId*                 sonsIds = static_cast< NodeId* >(
-         SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
+      const DiscreteVariable* curVar = leaddgNode->nodeVar();
+      NodeId* sonsIds = static_cast< NodeId* >(SOA_ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
       for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
         currentSituation.chgVarModality(leadVarPos, modality + 1);
         (currentSituation.*leadFunction)(leaddgNode->son(modality));
 
-        sonsIds[modality] =  _compute_(currentSituation, leadVarPos);
+        sonsIds[modality] = _compute_(currentSituation, leadVarPos);
       }
 
-      newNode =  _rd_->manager()->addInternalNode(curVar, sonsIds);
+      newNode = _rd_->manager()->addInternalNode(curVar, sonsIds);
 
-       _explorationTable_.insert(curSitKey, newNode);
+      _explorationTable_.insert(curSitKey, newNode);
       currentSituation.chgVarModality(leadVarPos, 0);
       currentSituation.setDG1Node(origDG1);
       currentSituation.setDG2Node(origDG2);
 
-      SOA_DEALLOCATE(instNeeded, sizeof(short int) *  _nbVar_);
+      SOA_DEALLOCATE(instNeeded, sizeof(short int) * _nbVar_);
 
       return newNode;
     }
@@ -553,21 +530,8 @@ namespace gum {
              class FUNCTOR,
              template < typename >
              class TerminalNodePolicy >
-  INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR,
-                                            FUNCTOR,
-                                            TerminalNodePolicy >::nbCall() {
-    return  _nbCall_;
-  }
-
-  template < typename GUM_SCALAR,
-             template < typename >
-             class FUNCTOR,
-             template < typename >
-             class TerminalNodePolicy >
-  INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR,
-                                            FUNCTOR,
-                                            TerminalNodePolicy >::nbVarRetro() {
-    return  _nbVarRetro_;
+  INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::nbCall() {
+    return _nbCall_;
   }
 
   template < typename GUM_SCALAR,
@@ -576,9 +540,18 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE Idx
-     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-        sizeVarRetroDomain() {
-    return  _sizeVarRetro_;
+     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::nbVarRetro() {
+    return _nbVarRetro_;
+  }
+
+  template < typename GUM_SCALAR,
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
+  INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+     sizeVarRetroDomain() {
+    return _sizeVarRetro_;
   }
 
 }   // namespace gum

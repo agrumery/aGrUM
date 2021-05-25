@@ -32,10 +32,8 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
-     const MultiDimBijArray< GUM_SCALAR >& from) :
-      MultiDimWithOffset< GUM_SCALAR >(),
-       _array_(from. _array_),  _name_(from. _name_) {
+  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(const MultiDimBijArray< GUM_SCALAR >& from) :
+      MultiDimWithOffset< GUM_SCALAR >(), _array_(from._array_), _name_(from._name_) {
     GUM_CONS_CPY(MultiDimBijArray);
 
     for (auto var: from.variablesSequence()) {
@@ -44,11 +42,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
-     const VarBijection&                bijection,
-     const MultiDimArray< GUM_SCALAR >& array) :
+  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(const VarBijection&                bijection,
+                                                   const MultiDimArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-       _array_(array),  _name_("MultiDimBijArray") {
+      _array_(array), _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -57,11 +54,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(
-     const VarBijection&                   bijection,
-     const MultiDimBijArray< GUM_SCALAR >& array) :
+  MultiDimBijArray< GUM_SCALAR >::MultiDimBijArray(const VarBijection&                   bijection,
+                                                   const MultiDimBijArray< GUM_SCALAR >& array) :
       MultiDimWithOffset< GUM_SCALAR >(),
-       _array_(array. _array_),  _name_("MultiDimBijArray") {
+      _array_(array._array_), _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
     for (auto var: array.variablesSequence()) {
@@ -75,20 +71,19 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  MultiDimBijArray< GUM_SCALAR >& MultiDimBijArray< GUM_SCALAR >::operator=(
-     const MultiDimBijArray< GUM_SCALAR >& from) {
+  MultiDimBijArray< GUM_SCALAR >&
+     MultiDimBijArray< GUM_SCALAR >::operator=(const MultiDimBijArray< GUM_SCALAR >& from) {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray are readonly.")
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimBijArray< GUM_SCALAR >*
-         MultiDimBijArray< GUM_SCALAR >::newFactory() const {
+  INLINE MultiDimBijArray< GUM_SCALAR >* MultiDimBijArray< GUM_SCALAR >::newFactory() const {
     return new MultiDimBijArray< GUM_SCALAR >(*this);
   }
 
   template < typename GUM_SCALAR >
   INLINE const std::string& MultiDimBijArray< GUM_SCALAR >::name() const {
-    return  _name_;
+    return _name_;
   }
 
   template < typename GUM_SCALAR >
@@ -117,36 +112,33 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-     MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
+  INLINE GUM_SCALAR MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
     if (i.isMaster(this)) {
-      return  _array_.values_[this->offsets_[&i]];
+      return _array_.values_[this->offsets_[&i]];
     } else {
-      return  _array_.values_[this->getOffs_(i)];
+      return _array_.values_[this->getOffs_(i)];
     }
   }
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBijArray< GUM_SCALAR >::set(const Instantiation& i,
-                                                  const GUM_SCALAR& value) const {
+                                                  const GUM_SCALAR&    value) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::populate(
-     const std::vector< GUM_SCALAR >& v) const {
+  INLINE void MultiDimBijArray< GUM_SCALAR >::populate(const std::vector< GUM_SCALAR >& v) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::populate(
-     std::initializer_list< GUM_SCALAR > l) const {
+  INLINE void
+     MultiDimBijArray< GUM_SCALAR >::populate(std::initializer_list< GUM_SCALAR > l) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR&
-         MultiDimBijArray< GUM_SCALAR >::get_(const Instantiation& i) const {
+  INLINE GUM_SCALAR& MultiDimBijArray< GUM_SCALAR >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 

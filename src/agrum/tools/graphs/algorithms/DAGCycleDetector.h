@@ -99,13 +99,13 @@ namespace gum {
 
       private:
       /// the type of modification
-      ChangeType  _type_;
+      ChangeType _type_;
 
       /// the tail of the arc to be modified
-      NodeId  _tail_;
+      NodeId _tail_;
 
       /// the head of the arc to be modified
-      NodeId  _head_;
+      NodeId _head_;
     };
 
     /**
@@ -317,30 +317,30 @@ namespace gum {
 
     private:
     /// the initial dag from which modifications are applied
-    DiGraph  _dag_;
+    DiGraph _dag_;
 
     /// the set of ancestors of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty< NodeProperty< Size > >  _ancestors_;
+    NodeProperty< NodeProperty< Size > > _ancestors_;
 
     /// the set of descendants of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty< NodeProperty< Size > >  _descendants_;
+    NodeProperty< NodeProperty< Size > > _descendants_;
 
     /// adds a weighted nodeset to another (weights are added)
-    void  _addWeightedSet_(NodeProperty< Size >&       nodeset,
+    void _addWeightedSet_(NodeProperty< Size >&       nodeset,
                           const NodeProperty< Size >& set_to_add,
                           Size                        multiplier) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
-    void  _delWeightedSet_(NodeProperty< Size >&       nodeset,
+    void _delWeightedSet_(NodeProperty< Size >&       nodeset,
                           const NodeProperty< Size >& set_to_del,
                           Size                        multiplier) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
-    void  _restrictWeightedSet_(NodeProperty< Size >&       result_set,
+    void _restrictWeightedSet_(NodeProperty< Size >&       result_set,
                                const NodeProperty< Size >& set_to_restrict,
                                const NodeSet&              extrmities) const;
   };

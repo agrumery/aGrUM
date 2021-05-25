@@ -29,9 +29,7 @@
 #include <agrum/tools/core/utils_misc.h>
 
 namespace std {
-  std::ostream& operator<<(std::ostream& os, const std::tuple<>&) {
-    return os << "()";
-  }
+  std::ostream& operator<<(std::ostream& os, const std::tuple<>&) { return os << "()"; }
 }   // namespace std
 
 namespace gum {
@@ -46,9 +44,9 @@ namespace gum {
     return true;
   }
 
-  void  _atexit_() {
+  void _atexit_() {
 #ifdef GUM_DEBUG_MODE
-    gum:: __debug__:: _atexit_();
+    gum::__debug__::_atexit_();
 #endif
   }
 

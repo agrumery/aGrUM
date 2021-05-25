@@ -54,22 +54,22 @@ namespace gum {
     /// @{
 
     /// maximum meaningful z value
-    static constexpr double  _Z_MAX_ = 6.0;
+    static constexpr double _Z_MAX_ = 6.0;
 
     /// accuracy of critchi approximation
-    static constexpr double  _CHI_EPSILON_ = 0.000001;
+    static constexpr double _CHI_EPSILON_ = 0.000001;
 
     /// maximum chi square value
-    static constexpr double  _CHI_MAX_ = 99999.0;
+    static constexpr double _CHI_MAX_ = 99999.0;
 
     /// log (sqrt (pi))
-    static constexpr double  _LOG_SQRT_PI_ = 0.5723649429247000870717135;
+    static constexpr double _LOG_SQRT_PI_ = 0.5723649429247000870717135;
 
     /// 1 / sqrt (pi)
-    static constexpr double  _I_SQRT_PI_ = 0.5641895835477562869480795;
+    static constexpr double _I_SQRT_PI_ = 0.5641895835477562869480795;
 
     /// max value to represent exp (x)
-    static constexpr double  _BIGX_ = 20.0;
+    static constexpr double _BIGX_ = 20.0;
 
     /// @}
 
@@ -77,9 +77,9 @@ namespace gum {
     /// Required constant to compute the cdf
     /// @{
 
-    static double  _exp_(double x) { return (((x) < - _BIGX_) ? 0.0 : exp(x)); }
+    static double _exp_(double x) { return (((x) < -_BIGX_) ? 0.0 : exp(x)); }
 
-    static double  _probaZValue_(double z);
+    static double _probaZValue_(double z);
     /// @}
   };
 

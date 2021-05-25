@@ -40,39 +40,34 @@ namespace gum {
 
   namespace learning {
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(
-       const std::string&                filename,
-       const std::vector< std::string >& missing_symbols) :
+    BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
+                                       const std::vector< std::string >& missing_symbols) :
         genericBNLearner(filename, missing_symbols) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable<>& db) :
-        genericBNLearner(db) {
+    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable<>& db) : genericBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(
-       const std::string&                 filename,
-       const gum::BayesNet< GUM_SCALAR >& bn,
-       const std::vector< std::string >&  missing_symbols) :
+    BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
+                                       const gum::BayesNet< GUM_SCALAR >& bn,
+                                       const std::vector< std::string >&  missing_symbols) :
         genericBNLearner(filename, bn, missing_symbols) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// copy constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) :
-        genericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : genericBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) :
-        genericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : genericBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -99,8 +94,7 @@ namespace gum {
 
     /// move operator
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >&
-       BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
       genericBNLearner::operator=(std::move(src));
       return *this;
     }
@@ -110,24 +104,20 @@ namespace gum {
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnBN() {
       // create the score, the apriori and the estimator
       auto notification = checkScoreAprioriCompatibility();
-      if (notification != "") {
-        std::cout << "[aGrUM notification] " << notification << std::endl;
-      }
-       _createApriori_();
-       _createScore_();
+      if (notification != "") { std::cout << "[aGrUM notification] " << notification << std::endl; }
+      _createApriori_();
+      _createScore_();
 
       std::unique_ptr< ParamEstimator<> > param_estimator(
-          _createParamEstimator_( _score_database_.parser(), true));
+         _createParamEstimator_(_score_database_.parser(), true));
 
-      return  _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()),
-                                              _learnDAG_());
+      return _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), _learnDAG_());
     }
 
     /// learns a BN (its parameters) when its structure is known
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR >
-       BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
-                                                bool take_into_account_score) {
+    BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
+                                                                    bool take_into_account_score) {
       // if the dag contains no node, return an empty BN
       if (dag.size() == 0) return BayesNet< GUM_SCALAR >();
 
@@ -138,13 +128,13 @@ namespace gum {
         ids.push_back(node);
       std::sort(ids.begin(), ids.end());
 
-      if (ids.back() >=  _score_database_.names().size()) {
+      if (ids.back() >= _score_database_.names().size()) {
         std::stringstream str;
         str << "Learning parameters corresponding to the dag is impossible "
             << "because the database does not contain the following nodeID";
         std::vector< NodeId > bad_ids;
         for (const auto node: ids) {
-          if (node >=  _score_database_.names().size()) bad_ids.push_back(node);
+          if (node >= _score_database_.names().size()) bad_ids.push_back(node);
         }
         if (bad_ids.size() > 1) str << 's';
         str << ": ";
@@ -160,14 +150,14 @@ namespace gum {
       }
 
       // create the apriori
-       _createApriori_();
+      _createApriori_();
 
-      if ( _EMepsilon_ == 0.0) {
+      if (_EMepsilon_ == 0.0) {
         // check that the database does not contain any missing value
-        if ( _score_database_.databaseTable().hasMissingValues()
-            || (( _apriori_database_ != nullptr)
-                && ( _apriori_type_ == AprioriType::DIRICHLET_FROM_DATABASE)
-                &&  _apriori_database_->databaseTable().hasMissingValues())) {
+        if (_score_database_.databaseTable().hasMissingValues()
+            || ((_apriori_database_ != nullptr)
+                && (_apriori_type_ == AprioriType::DIRICHLET_FROM_DATABASE)
+                && _apriori_database_->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
                        << "missing values in databases. To learn parameters in "
@@ -176,18 +166,18 @@ namespace gum {
         }
 
         // create the usual estimator
-        DBRowGeneratorParser<> parser( _score_database_.databaseTable().handler(),
+        DBRowGeneratorParser<>              parser(_score_database_.databaseTable().handler(),
                                       DBRowGeneratorSet<>());
         std::unique_ptr< ParamEstimator<> > param_estimator(
-            _createParamEstimator_(parser, take_into_account_score));
+           _createParamEstimator_(parser, take_into_account_score));
 
-        return  _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
+        return _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
       } else {
         // EM !
-        BNLearnerListener listener(this,  _Dag2BN_);
+        BNLearnerListener listener(this, _Dag2BN_);
 
         // get the column types
-        const auto&       database =  _score_database_.databaseTable();
+        const auto&       database = _score_database_.databaseTable();
         const std::size_t nb_vars  = database.nbVariables();
         const std::vector< gum::learning::DBTranslatedValueType > col_types(
            nb_vars,
@@ -197,10 +187,9 @@ namespace gum {
         DBRowGenerator4CompleteRows<> generator_bootstrap(col_types);
         DBRowGeneratorSet<>           genset_bootstrap;
         genset_bootstrap.insertGenerator(generator_bootstrap);
-        DBRowGeneratorParser<>              parser_bootstrap(database.handler(),
-                                                genset_bootstrap);
+        DBRowGeneratorParser<>              parser_bootstrap(database.handler(), genset_bootstrap);
         std::unique_ptr< ParamEstimator<> > param_estimator_bootstrap(
-            _createParamEstimator_(parser_bootstrap, take_into_account_score));
+           _createParamEstimator_(parser_bootstrap, take_into_account_score));
 
         // create the EM estimator
         BayesNet< GUM_SCALAR >         dummy_bn;
@@ -208,12 +197,12 @@ namespace gum {
         DBRowGenerator<>&              gen_EM = generator_EM;   // fix for g++-4.8
         DBRowGeneratorSet<>            genset_EM;
         genset_EM.insertGenerator(gen_EM);
-        DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);
+        DBRowGeneratorParser<>              parser_EM(database.handler(), genset_EM);
         std::unique_ptr< ParamEstimator<> > param_estimator_EM(
-            _createParamEstimator_(parser_EM, take_into_account_score));
+           _createParamEstimator_(parser_EM, take_into_account_score));
 
-         _Dag2BN_.setEpsilon( _EMepsilon_);
-        return  _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
+        _Dag2BN_.setEpsilon(_EMepsilon_);
+        return _Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
                                                *(param_estimator_EM.get()),
                                                dag);
       }
@@ -222,15 +211,14 @@ namespace gum {
 
     /// learns a BN (its parameters) when its structure is known
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR >
-       BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
-      return learnParameters( _initial_dag_, take_into_account_score);
+    BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
+      return learnParameters(_initial_dag_, take_into_account_score);
     }
 
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
-       BNLearner< GUM_SCALAR >:: _labelsFromBN_(const std::string& filename,
+       BNLearner< GUM_SCALAR >::_labelsFromBN_(const std::string&            filename,
                                                const BayesNet< GUM_SCALAR >& src) {
       std::ifstream in(filename, std::ifstream::in);
 

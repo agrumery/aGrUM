@@ -71,12 +71,11 @@ namespace gum {
 
   Instantiation AbstractSimulator::randomState_() {
     Instantiation retState;
-    for (auto varIter = this->beginVariables(); varIter != this->endVariables();
-         ++varIter) {
+    for (auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter) {
       retState.add(**varIter);
-      retState.chgVal(*varIter,
-                      (Idx)(((double)std::rand() / (double)RAND_MAX)
-                            * (double)(*varIter)->domainSize()));
+      retState.chgVal(
+         *varIter,
+         (Idx)(((double)std::rand() / (double)RAND_MAX) * (double)(*varIter)->domainSize()));
     }
     return retState;
   }

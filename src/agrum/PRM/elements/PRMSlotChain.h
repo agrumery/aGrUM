@@ -123,8 +123,7 @@ namespace gum {
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *PRMClassElement<GUM_SCALAR>.
        */
-      PRMSlotChain(Sequence< PRMClassElement< GUM_SCALAR >* >* chain,
-                   const std::string&                          name);
+      PRMSlotChain(Sequence< PRMClassElement< GUM_SCALAR >* >* chain, const std::string& name);
 
       /**
        * Copy constructor.
@@ -143,8 +142,7 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement<GUM_SCALAR>::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-         elt_type() const;
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
       virtual PRMType& type();
@@ -206,14 +204,14 @@ namespace gum {
       /// @{
 
       /// The sequence of PRMClassElement<GUM_SCALAR> composing the slot chain
-      Sequence< PRMClassElement< GUM_SCALAR >* >*  _chain_;
+      Sequence< PRMClassElement< GUM_SCALAR >* >* _chain_;
 
       /// Flag indicating if this slot chain is multiple or not.
-      bool  _isMultiple_;
+      bool _isMultiple_;
 
       /// Copy the last element, this prevents unwanted DuplicateElement
       /// exceptions.
-      void  _copyLastElt_();
+      void _copyLastElt_();
 
       /// @}
     };

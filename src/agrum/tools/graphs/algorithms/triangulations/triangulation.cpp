@@ -41,8 +41,7 @@ namespace gum {
   }
 
   // constructor with a domain size specified
-  Triangulation::Triangulation(const NodeProperty< Size >* domsizes) :
-      domain_sizes_(domsizes) {
+  Triangulation::Triangulation(const NodeProperty< Size >* domsizes) : domain_sizes_(domsizes) {
     GUM_CONSTRUCTOR(Triangulation);
   }
 
@@ -52,14 +51,12 @@ namespace gum {
   }
 
   // copy constructor
-  Triangulation::Triangulation(const Triangulation& from) :
-      domain_sizes_(from.domain_sizes_) {
+  Triangulation::Triangulation(const Triangulation& from) : domain_sizes_(from.domain_sizes_) {
     GUM_CONS_CPY(Triangulation);
   }
 
   // move constructor
-  Triangulation::Triangulation(Triangulation&& from) :
-      domain_sizes_(from.domain_sizes_) {
+  Triangulation::Triangulation(Triangulation&& from) : domain_sizes_(from.domain_sizes_) {
     GUM_CONS_MOV(Triangulation);
   }
 

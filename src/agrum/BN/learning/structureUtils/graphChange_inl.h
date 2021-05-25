@@ -34,23 +34,20 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE GraphChange::GraphChange(GraphChangeType type,
-                                    NodeId          node1,
-                                    NodeId          node2) noexcept :
-         _type_{type},
-         _node1_{node1},  _node2_{node2} {
+    INLINE GraphChange::GraphChange(GraphChangeType type, NodeId node1, NodeId node2) noexcept :
+        _type_{type}, _node1_{node1}, _node2_{node2} {
       GUM_CONSTRUCTOR(GraphChange);
     }
 
     /// copy constructor
     INLINE GraphChange::GraphChange(const GraphChange& from) noexcept :
-         _type_{from. _type_},  _node1_{from. _node1_},  _node2_{from. _node2_} {
+        _type_{from._type_}, _node1_{from._node1_}, _node2_{from._node2_} {
       GUM_CONS_CPY(GraphChange);
     }
 
     /// move constructor
     INLINE GraphChange::GraphChange(GraphChange&& from) noexcept :
-         _type_{from. _type_},  _node1_{from. _node1_},  _node2_{from. _node2_} {
+        _type_{from._type_}, _node1_{from._node1_}, _node2_{from._node2_} {
       GUM_CONS_MOV(GraphChange);
     }
 
@@ -62,33 +59,32 @@ namespace gum {
 
     /// copy constructor
     INLINE GraphChange& GraphChange::operator=(const GraphChange& from) noexcept {
-       _type_  = from. _type_;
-       _node1_ = from. _node1_;
-       _node2_ = from. _node2_;
+      _type_  = from._type_;
+      _node1_ = from._node1_;
+      _node2_ = from._node2_;
       return *this;
     }
 
     /// move operator
     INLINE GraphChange& GraphChange::operator=(GraphChange&& from) noexcept {
-       _type_  = from. _type_;
-       _node1_ = from. _node1_;
-       _node2_ = from. _node2_;
+      _type_  = from._type_;
+      _node1_ = from._node1_;
+      _node2_ = from._node2_;
       return *this;
     }
 
     /// returns the type of the operation
-    INLINE GraphChangeType GraphChange::type() const noexcept { return  _type_; }
+    INLINE GraphChangeType GraphChange::type() const noexcept { return _type_; }
 
     /// returns the first node involved in the modification
-    INLINE NodeId GraphChange::node1() const noexcept { return  _node1_; }
+    INLINE NodeId GraphChange::node1() const noexcept { return _node1_; }
 
     /// returns the second node involved in the modification
-    INLINE NodeId GraphChange::node2() const noexcept { return  _node2_; }
+    INLINE NodeId GraphChange::node2() const noexcept { return _node2_; }
 
     /// returns whether two graph changes are identical or not
     INLINE bool GraphChange::operator==(const GraphChange& from) const noexcept {
-      return (( _node1_ == from. _node1_) && ( _node2_ == from. _node2_)
-              && ( _type_ == from. _type_));
+      return ((_node1_ == from._node1_) && (_node2_ == from._node2_) && (_type_ == from._type_));
     }
 
     /// returns whether two graph changes are different or not
@@ -106,15 +102,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcAddition::ArcAddition(const ArcAddition& from) noexcept :
-        GraphChange(from) {
+    INLINE ArcAddition::ArcAddition(const ArcAddition& from) noexcept : GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcAddition::ArcAddition(ArcAddition&& from) noexcept :
-        GraphChange(std::move(from)) {
+    INLINE ArcAddition::ArcAddition(ArcAddition&& from) noexcept : GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -157,15 +151,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcDeletion::ArcDeletion(const ArcDeletion& from) noexcept :
-        GraphChange(from) {
+    INLINE ArcDeletion::ArcDeletion(const ArcDeletion& from) noexcept : GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcDeletion::ArcDeletion(ArcDeletion&& from) noexcept :
-        GraphChange(std::move(from)) {
+    INLINE ArcDeletion::ArcDeletion(ArcDeletion&& from) noexcept : GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -208,15 +200,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcReversal::ArcReversal(const ArcReversal& from) noexcept :
-        GraphChange(from) {
+    INLINE ArcReversal::ArcReversal(const ArcReversal& from) noexcept : GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcReversal::ArcReversal(ArcReversal&& from) noexcept :
-        GraphChange(std::move(from)) {
+    INLINE ArcReversal::ArcReversal(ArcReversal&& from) noexcept : GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -259,15 +249,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeAddition::EdgeAddition(const EdgeAddition& from) noexcept :
-        GraphChange(from) {
+    INLINE EdgeAddition::EdgeAddition(const EdgeAddition& from) noexcept : GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE EdgeAddition::EdgeAddition(EdgeAddition&& from) noexcept :
-        GraphChange(std::move(from)) {
+    INLINE EdgeAddition::EdgeAddition(EdgeAddition&& from) noexcept : GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -279,8 +267,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeAddition&
-       EdgeAddition::operator=(const EdgeAddition& from) noexcept {
+    INLINE EdgeAddition& EdgeAddition::operator=(const EdgeAddition& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -312,15 +299,13 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeDeletion::EdgeDeletion(const EdgeDeletion& from) noexcept :
-        GraphChange(from) {
+    INLINE EdgeDeletion::EdgeDeletion(const EdgeDeletion& from) noexcept : GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE EdgeDeletion::EdgeDeletion(EdgeDeletion&& from) noexcept :
-        GraphChange(std::move(from)) {
+    INLINE EdgeDeletion::EdgeDeletion(EdgeDeletion&& from) noexcept : GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -332,8 +317,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeDeletion&
-       EdgeDeletion::operator=(const EdgeDeletion& from) noexcept {
+    INLINE EdgeDeletion& EdgeDeletion::operator=(const EdgeDeletion& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -362,85 +346,73 @@ namespace gum {
   // ===========================================================================
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::GraphChange >::castToSize(
-     const learning::GraphChange& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::GraphChange >::castToSize(const learning::GraphChange& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::GraphChange >::operator()(
-     const learning::GraphChange& key) const {
+  INLINE Size
+     HashFunc< learning::GraphChange >::operator()(const learning::GraphChange& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::ArcAddition >::castToSize(
-     const learning::ArcAddition& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::ArcAddition >::castToSize(const learning::ArcAddition& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcAddition >::operator()(
-     const learning::ArcAddition& key) const {
+  INLINE Size
+     HashFunc< learning::ArcAddition >::operator()(const learning::ArcAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::ArcDeletion >::castToSize(
-     const learning::ArcDeletion& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::ArcDeletion >::castToSize(const learning::ArcDeletion& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcDeletion >::operator()(
-     const learning::ArcDeletion& key) const {
+  INLINE Size
+     HashFunc< learning::ArcDeletion >::operator()(const learning::ArcDeletion& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::ArcReversal >::castToSize(
-     const learning::ArcReversal& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::ArcReversal >::castToSize(const learning::ArcReversal& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcReversal >::operator()(
-     const learning::ArcReversal& key) const {
+  INLINE Size
+     HashFunc< learning::ArcReversal >::operator()(const learning::ArcReversal& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::EdgeAddition >::castToSize(
-     const learning::EdgeAddition& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::EdgeAddition >::castToSize(const learning::EdgeAddition& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::EdgeAddition >::operator()(
-     const learning::EdgeAddition& key) const {
+  INLINE Size
+     HashFunc< learning::EdgeAddition >::operator()(const learning::EdgeAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
 
   // Returns the value of a key as a Size.
-  INLINE Size HashFunc< learning::EdgeDeletion >::castToSize(
-     const learning::EdgeDeletion& key) {
-    return Size(key.node1()) * HashFuncConst::gold
-         + Size(key.node2()) * HashFuncConst::pi;
+  INLINE Size HashFunc< learning::EdgeDeletion >::castToSize(const learning::EdgeDeletion& key) {
+    return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::EdgeDeletion >::operator()(
-     const learning::EdgeDeletion& key) const {
+  INLINE Size
+     HashFunc< learning::EdgeDeletion >::operator()(const learning::EdgeDeletion& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 

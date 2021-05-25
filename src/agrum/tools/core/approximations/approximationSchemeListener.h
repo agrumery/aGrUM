@@ -67,10 +67,8 @@ namespace gum {
      * @param error The number of errors.
      * @param time The time.
      */
-    virtual void whenProgress(const void*  src,
-                              const Size   step,
-                              const double error,
-                              const double time)
+    virtual void
+       whenProgress(const void* src, const Size step, const double error, const double time)
        = 0;
 
     /**
@@ -89,12 +87,11 @@ namespace gum {
     /**
      * Copy operator.
      */
-    ApproximationSchemeListener&
-       operator=(const ApproximationSchemeListener& other);
+    ApproximationSchemeListener& operator=(const ApproximationSchemeListener& other);
 
     private:
     /// The scheme configuration.
-    IApproximationSchemeConfiguration&  _sch_;
+    IApproximationSchemeConfiguration& _sch_;
   };
 }   // namespace gum
 
