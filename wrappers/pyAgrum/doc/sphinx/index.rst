@@ -73,6 +73,7 @@ pyAgrum contains
 
   lib.notebook
   lib.bn2graph
+  lib.explain
   lib.dBN
   pyAgrum.lib
 

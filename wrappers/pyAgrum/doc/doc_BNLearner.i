@@ -78,17 +78,17 @@ Indicate that we wish to use MIIC.
 Indicate that we wish to use 3off2.
 "
 
-%feature("docstring") gum::learning::BNLearner::useNML
+%feature("docstring") gum::learning::BNLearner::useNMLCorrection
 "
 Indicate that we wish to use the NML correction for 3off2 or MIIC
 "
 
-%feature("docstring") gum::learning::BNLearner::useMDL
+%feature("docstring") gum::learning::BNLearner::useMDLCorrection
 "
 Indicate that we wish to use the MDL correction for 3off2 or MIIC
 "
 
-%feature("docstring") gum::learning::BNLearner::useNoCorr
+%feature("docstring") gum::learning::BNLearner::useNoCorrection
 "
 Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 "

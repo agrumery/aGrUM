@@ -140,7 +140,7 @@ namespace gum {
       /// learns a BN (its parameters) when its structure is known
       /**
        * @param dag the structure of the Bayesian network
-       * @param take_into_account_score The dag passed in argument may have
+       * @param takeIntoAccountScore The dag passed in argument may have
        * been learnt from a structure learning. In this case, if the score used
        * to learn the structure has an implicit apriori (like K2 which has a
        * 1-smoothing apriori), it is important to also take into account this
@@ -149,7 +149,7 @@ namespace gum {
        * specified by methods useAprioriXXX () + the implicit apriori of the
        * score, else we just take into account the apriori specified by
        * useAprioriXXX () */
-      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool take_into_account_score = true);
+      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool takeIntoAccountScore = true);
 
       // learns a BN (its parameters) when its structure is known
       /** @param take_into_account_score The dag of the BN which was passed in

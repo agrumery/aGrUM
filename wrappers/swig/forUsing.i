@@ -289,14 +289,14 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void useMIIC() {
     self->gum::learning::genericBNLearner::useMIIC();
   }
-  void useNML(){
-    self->gum::learning::genericBNLearner::useNML();
+  void useNMLCorrection(){
+    self->gum::learning::genericBNLearner::useNMLCorrection();
   }
-  void useMDL(){
-    self->gum::learning::genericBNLearner::useMDL();
+  void useMDLCorrection(){
+    self->gum::learning::genericBNLearner::useMDLCorrection();
   }
-  void useNoCorr(){
-    self->gum::learning::genericBNLearner::useNoCorr();
+  void useNoCorrection(){
+    self->gum::learning::genericBNLearner::useNoCorrection();
   }
   const std::vector<Arc> latentVariables() {
     return self->gum::learning::genericBNLearner::latentVariables();

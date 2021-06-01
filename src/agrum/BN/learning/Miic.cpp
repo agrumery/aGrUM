@@ -41,14 +41,10 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    Miic::Miic(){GUM_CONSTRUCTOR(Miic)}
+    Miic::Miic() : _maxLog_(0), _size_(0) { GUM_CONSTRUCTOR(Miic); }
 
     /// default constructor with maxLog
-    Miic::Miic(int maxLog) :
-        _maxLog_(maxLog),
-        _size_(0) {
-      GUM_CONSTRUCTOR(Miic);
-    }
+    Miic::Miic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(Miic); }
 
     /// copy constructor
     Miic::Miic(const Miic& from) : ApproximationScheme(from), _size_(from._size_) {
@@ -1012,11 +1008,7 @@ namespace gum {
           // std::endl; std::cout << "2.a Adding arc (" << y << "," << z << ")"
           // << std::endl;
           marks[{y, z}] = '>';
-          if (graph.existsArc(z, y)
-              && std::find(_latentCouples_.begin(), _latentCouples_.end(), Arc(z, y))
-                    == _latentCouples_.end()
-              && std::find(_latentCouples_.begin(), _latentCouples_.end(), Arc(y, z))
-                    == _latentCouples_.end()) {
+          if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
             _latentCouples_.emplace_back(z, y);
           }
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
@@ -1039,11 +1031,7 @@ namespace gum {
           // std::endl; std::cout << "3.a Adding arc (" << x << "," << z << ")"
           // << std::endl;
           marks[{x, z}] = '>';
-          if (graph.existsArc(z, x)
-              && std::find(_latentCouples_.begin(), _latentCouples_.end(), Arc(z, x))
-                    == _latentCouples_.end()
-              && std::find(_latentCouples_.begin(), _latentCouples_.end(), Arc(x, z))
-                    == _latentCouples_.end()) {
+          if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
             _latentCouples_.emplace_back(z, x);
           }
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);

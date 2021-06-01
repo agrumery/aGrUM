@@ -126,163 +126,143 @@ namespace gum {
 
     // returns the node id corresponding to a variable name
     INLINE NodeId genericBNLearner::idFromName(const std::string& var_name) const {
-      return _score_database_.idFromName(var_name);
+      return scoreDatabase_.idFromName(var_name);
     }
 
     // returns the variable name corresponding to a given node id
     INLINE const std::string& genericBNLearner::nameFromId(NodeId id) const {
-      return _score_database_.nameFromId(id);
+      return scoreDatabase_.nameFromId(id);
     }
 
     /// assign new weight to the rows of the learning database
     INLINE void genericBNLearner::setDatabaseWeight(const double new_weight) {
-      _score_database_.setDatabaseWeight(new_weight);
+      scoreDatabase_.setDatabaseWeight(new_weight);
     }
 
     /// assign new weight to the ith row of the learning database
     INLINE void genericBNLearner::setRecordWeight(const std::size_t i, const double new_weight) {
-      _score_database_.setWeight(i, new_weight);
+      scoreDatabase_.setWeight(i, new_weight);
     }
 
     /// returns the weight of the ith record
     INLINE double genericBNLearner::recordWeight(const std::size_t i) const {
-      return _score_database_.weight(i);
+      return scoreDatabase_.weight(i);
     }
 
     /// returns the weight of the whole database
-    INLINE double genericBNLearner::databaseWeight() const { return _score_database_.weight(); }
+    INLINE double genericBNLearner::databaseWeight() const { return scoreDatabase_.weight(); }
 
     // sets an initial DAG structure
-    INLINE void genericBNLearner::setInitialDAG(const DAG& dag) { _initial_dag_ = dag; }
+    INLINE void genericBNLearner::setInitialDAG(const DAG& dag) { initialDag_ = dag; }
 
     // indicate that we wish to use an AIC score
     INLINE void genericBNLearner::useScoreAIC() {
-      _score_type_ = ScoreType::AIC;
+      scoreType_ = ScoreType::AIC;
       checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BD score
     INLINE void genericBNLearner::useScoreBD() {
-      _score_type_ = ScoreType::BD;
+      scoreType_ = ScoreType::BD;
       checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BDeu score
     INLINE void genericBNLearner::useScoreBDeu() {
-      _score_type_ = ScoreType::BDeu;
+      scoreType_ = ScoreType::BDeu;
       checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BIC score
     INLINE void genericBNLearner::useScoreBIC() {
-      _score_type_ = ScoreType::BIC;
+      scoreType_ = ScoreType::BIC;
       checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a K2 score
     INLINE void genericBNLearner::useScoreK2() {
-      _score_type_ = ScoreType::K2;
+      scoreType_ = ScoreType::K2;
       checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a Log2Likelihood score
     INLINE void genericBNLearner::useScoreLog2Likelihood() {
-      _score_type_ = ScoreType::LOG2LIKELIHOOD;
+      scoreType_ = ScoreType::LOG2LIKELIHOOD;
       checkScoreAprioriCompatibility();
     }
 
     // sets the max indegree
     INLINE void genericBNLearner::setMaxIndegree(Size max_indegree) {
-      _constraint_Indegree_.setMaxIndegree(max_indegree);
+      constraintIndegree_.setMaxIndegree(max_indegree);
     }
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::use3off2() {
-      _selected_algo_ = AlgoType::MIIC_THREE_OFF_TWO;
-      _miic_3off2_.set3of2Behaviour();
+      selectedAlgo_ = AlgoType::MIIC_THREE_OFF_TWO;
+      algoMiic3off2_.set3of2Behaviour();
     }
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::useMIIC() {
-      _selected_algo_ = AlgoType::MIIC_THREE_OFF_TWO;
-      _miic_3off2_.setMiicBehaviour();
+      selectedAlgo_ = AlgoType::MIIC_THREE_OFF_TWO;
+      algoMiic3off2_.setMiicBehaviour();
     }
 
     /// indicate that we wish to use the NML correction for 3off2
-    INLINE void genericBNLearner::useNML() {
-      if (_selected_algo_ != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting "
-                     << "the NML score");
-      }
-      _kmode_3off2_ = CorrectedMutualInformation<>::KModeTypes::NML;
+    INLINE void genericBNLearner::useNMLCorrection() {
+      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::NML;
     }
 
     /// indicate that we wish to use the MDL correction for 3off2
-    INLINE void genericBNLearner::useMDL() {
-      if (_selected_algo_ != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting "
-                     << "the MDL score");
-      }
-      _kmode_3off2_ = CorrectedMutualInformation<>::KModeTypes::MDL;
+    INLINE void genericBNLearner::useMDLCorrection() {
+      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::MDL;
     }
 
     /// indicate that we wish to use the NoCorr correction for 3off2
-    INLINE void genericBNLearner::useNoCorr() {
-      if (_selected_algo_ != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting "
-                     << "the NoCorr score");
-      }
-      _kmode_3off2_ = CorrectedMutualInformation<>::KModeTypes::NoCorr;
+    INLINE void genericBNLearner::useNoCorrection() {
+      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::NoCorr;
     }
 
     /// get the list of arcs hiding latent variables
     INLINE const std::vector< Arc > genericBNLearner::latentVariables() const {
-      if (_selected_algo_ != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting "
-                     << "the latentVariables method");
-      }
-      return _miic_3off2_.latentVariables();
+      return algoMiic3off2_.latentVariables();
     }
 
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) {
-      _selected_algo_ = AlgoType::K2;
-      _K2_.setOrder(order);
+      selectedAlgo_ = AlgoType::K2;
+      algoK2_.setOrder(order);
     }
 
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const std::vector< NodeId >& order) {
-      _selected_algo_ = AlgoType::K2;
-      _K2_.setOrder(order);
+      selectedAlgo_ = AlgoType::K2;
+      algoK2_.setOrder(order);
     }
 
     // indicate that we wish to use a greedy hill climbing algorithm
     INLINE void genericBNLearner::useGreedyHillClimbing() {
-      _selected_algo_ = AlgoType::GREEDY_HILL_CLIMBING;
+      selectedAlgo_ = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
     // indicate that we wish to use a local search with tabu list
     INLINE void genericBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
-      _selected_algo_ = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
-      _constraint_TabuList_.setTabuListSize(tabu_size);
-      _local_search_with_tabu_list_.setMaxNbDecreasingChanges(nb_decrease);
+      selectedAlgo_ = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+      constraintTabuList_.setTabuListSize(tabu_size);
+      localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);
     }
 
     /// use The EM algorithm to learn paramters
-    INLINE void genericBNLearner::useEM(const double epsilon) { _EMepsilon_ = epsilon; }
+    INLINE void genericBNLearner::useEM(const double epsilon) { epsilonEM_ = epsilon; }
 
 
     INLINE bool genericBNLearner::hasMissingValues() const {
-      return _score_database_.databaseTable().hasMissingValues();
+      return scoreDatabase_.databaseTable().hasMissingValues();
     }
 
     // assign a set of forbidden edges
     INLINE void genericBNLearner::setPossibleEdges(const EdgeSet& set) {
-      _constraint_PossibleEdges_.setEdges(set);
+      constraintPossibleEdges_.setEdges(set);
     }
     // assign a set of forbidden edges from an UndiGraph
     INLINE void genericBNLearner::setPossibleSkeleton(const gum::UndiGraph& g) {
@@ -291,12 +271,12 @@ namespace gum {
 
     // assign a new possible edge
     INLINE void genericBNLearner::addPossibleEdge(const Edge& edge) {
-      _constraint_PossibleEdges_.addEdge(edge);
+      constraintPossibleEdges_.addEdge(edge);
     }
 
     // remove a forbidden edge
     INLINE void genericBNLearner::erasePossibleEdge(const Edge& edge) {
-      _constraint_PossibleEdges_.eraseEdge(edge);
+      constraintPossibleEdges_.eraseEdge(edge);
     }
 
     // assign a new forbidden edge
@@ -323,17 +303,17 @@ namespace gum {
 
     // assign a set of forbidden arcs
     INLINE void genericBNLearner::setForbiddenArcs(const ArcSet& set) {
-      _constraint_ForbiddenArcs_.setArcs(set);
+      constraintForbiddenArcs_.setArcs(set);
     }
 
     // assign a new forbidden arc
     INLINE void genericBNLearner::addForbiddenArc(const Arc& arc) {
-      _constraint_ForbiddenArcs_.addArc(arc);
+      constraintForbiddenArcs_.addArc(arc);
     }
 
     // remove a forbidden arc
     INLINE void genericBNLearner::eraseForbiddenArc(const Arc& arc) {
-      _constraint_ForbiddenArcs_.eraseArc(arc);
+      constraintForbiddenArcs_.eraseArc(arc);
     }
 
     // assign a new forbidden arc
@@ -360,17 +340,17 @@ namespace gum {
 
     // assign a set of forbidden arcs
     INLINE void genericBNLearner::setMandatoryArcs(const ArcSet& set) {
-      _constraint_MandatoryArcs_.setArcs(set);
+      constraintMandatoryArcs_.setArcs(set);
     }
 
     // assign a new forbidden arc
     INLINE void genericBNLearner::addMandatoryArc(const Arc& arc) {
-      _constraint_MandatoryArcs_.addArc(arc);
+      constraintMandatoryArcs_.addArc(arc);
     }
 
     // remove a forbidden arc
     INLINE void genericBNLearner::eraseMandatoryArc(const Arc& arc) {
-      _constraint_MandatoryArcs_.eraseArc(arc);
+      constraintMandatoryArcs_.eraseArc(arc);
     }
 
     // assign a new forbidden arc
@@ -397,7 +377,7 @@ namespace gum {
 
     // sets a partial order on the nodes
     INLINE void genericBNLearner::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
-      _constraint_SliceOrder_ = StructuralConstraintSliceOrder(slice_order);
+      constraintSliceOrder_ = StructuralConstraintSliceOrder(slice_order);
     }
 
     INLINE void
@@ -417,13 +397,13 @@ namespace gum {
     INLINE void genericBNLearner::_setAprioriWeight_(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      _apriori_weight_ = weight;
+      aprioriWeight_ = weight;
       checkScoreAprioriCompatibility();
     }
 
     // use the apriori smoothing
     INLINE void genericBNLearner::useNoApriori() {
-      _apriori_type_ = AprioriType::NO_APRIORI;
+      aprioriType_ = AprioriType::NO_APRIORI;
       checkScoreAprioriCompatibility();
     }
 
@@ -431,7 +411,7 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriSmoothing(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      _apriori_type_ = AprioriType::SMOOTHING;
+      aprioriType_ = AprioriType::SMOOTHING;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -441,8 +421,8 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriDirichlet(const std::string& filename, double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      _apriori_dbname_ = filename;
-      _apriori_type_   = AprioriType::DIRICHLET_FROM_DATABASE;
+      aprioriDbname_   = filename;
+      aprioriType_     = AprioriType::DIRICHLET_FROM_DATABASE;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -453,7 +433,7 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriBDeu(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      _apriori_type_ = AprioriType::BDEU;
+      aprioriType_ = AprioriType::BDEU;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -461,8 +441,8 @@ namespace gum {
 
 
     // returns the type (as a string) of a given apriori
-    INLINE const std::string& genericBNLearner::_getAprioriType_() const {
-      switch (_apriori_type_) {
+    INLINE const std::string& genericBNLearner::getAprioriType_() const {
+      switch (aprioriType_) {
         case AprioriType::NO_APRIORI:
           return AprioriNoApriori<>::type::type;
 
@@ -484,39 +464,39 @@ namespace gum {
 
     // returns the names of the variables in the database
     INLINE const std::vector< std::string >& genericBNLearner::names() const {
-      return _score_database_.names();
+      return scoreDatabase_.names();
     }
 
     // returns the modalities  of the variables in the database
     INLINE const std::vector< std::size_t >& genericBNLearner::domainSizes() const {
-      return _score_database_.domainSizes();
+      return scoreDatabase_.domainSizes();
     }
 
     // returns the modalities  of a variable in the database
     INLINE Size genericBNLearner::domainSize(NodeId var) const {
-      return _score_database_.domainSizes()[var];
+      return scoreDatabase_.domainSizes()[var];
     }
     // returns the modalities  of a variables in the database
     INLINE Size genericBNLearner::domainSize(const std::string& var) const {
-      return _score_database_.domainSizes()[idFromName(var)];
+      return scoreDatabase_.domainSizes()[idFromName(var)];
     }
 
     /// returns the current database rows' ranges used for learning
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  genericBNLearner::databaseRanges() const {
-      return _ranges_;
+      return ranges_;
     }
 
     /// reset the ranges to the one range corresponding to the whole database
-    INLINE void genericBNLearner::clearDatabaseRanges() { _ranges_.clear(); }
+    INLINE void genericBNLearner::clearDatabaseRanges() { ranges_.clear(); }
 
     /// returns the database used by the BNLearner
     INLINE const DatabaseTable<>& genericBNLearner::database() const {
-      return _score_database_.databaseTable();
+      return scoreDatabase_.databaseTable();
     }
 
-    INLINE Size genericBNLearner::nbCols() const { return _score_database_.domainSizes().size(); }
+    INLINE Size genericBNLearner::nbCols() const { return scoreDatabase_.domainSizes().size(); }
 
-    INLINE Size genericBNLearner::nbRows() const { return _score_database_.databaseTable().size(); }
+    INLINE Size genericBNLearner::nbRows() const { return scoreDatabase_.databaseTable().size(); }
   } /* namespace learning */
 } /* namespace gum */

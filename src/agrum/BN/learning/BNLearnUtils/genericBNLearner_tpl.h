@@ -32,7 +32,7 @@ namespace gum {
                                          const BayesNet< GUM_SCALAR >&     bn,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      genericBNLearner::_checkFileName_(filename);
+      genericBNLearner::checkFileName_(filename);
       DBInitializerFromCSV<>                initializer(filename);
       const auto&                           xvar_names = initializer.variableNames();
       std::size_t                           nb_vars    = xvar_names.size();
@@ -86,8 +86,8 @@ namespace gum {
     genericBNLearner::genericBNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
-        _score_database_(filename, bn, missing_symbols) {
-      _no_apriori_ = new AprioriNoApriori<>(_score_database_.databaseTable());
+        scoreDatabase_(filename, bn, missing_symbols) {
+      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
@@ -98,9 +98,9 @@ namespace gum {
        const std::vector< std::pair< std::size_t, std::size_t >,
                           XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) {
       // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood<> score(_score_database_.parser(), *_no_apriori_);
+      ScoreLog2Likelihood<> score(scoreDatabase_.parser(), *noApriori_);
       score.setRanges(new_ranges);
-      _ranges_ = score.ranges();
+      ranges_ = score.ranges();
     }
   }   // namespace learning
 }   // namespace gum

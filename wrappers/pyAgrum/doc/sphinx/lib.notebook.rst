@@ -26,8 +26,6 @@ Visualization of graphical models
 .. autofunction:: pyAgrum.lib.notebook.getInference
 .. autofunction:: pyAgrum.lib.notebook.showJunctionTree
 .. autofunction:: pyAgrum.lib.notebook.getJunctionTree
-.. autofunction:: pyAgrum.lib.notebook.showInformation
-.. autofunction:: pyAgrum.lib.notebook.getInformation
 
 Visualization of Potentials
 ---------------------------

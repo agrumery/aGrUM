@@ -19,7 +19,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-tools for BN analysis in jupyter notebook
+tools for BN in jupyter notebook
 """
 from __future__ import print_function
 
@@ -37,7 +37,6 @@ import base64
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 from matplotlib_inline.backend_inline import set_matplotlib_formats as set_matplotlib_formats
 
 import numpy as np
@@ -153,17 +152,6 @@ class FlowLayout(object):
 
 
 flow = FlowLayout()
-
-_cdict = {
-  'red': ((0.0, 0.1, 0.3),
-          (1.0, 0.6, 1.0)),
-  'green': ((0.0, 0.0, 0.0),
-            (1.0, 0.6, 0.8)),
-  'blue': ((0.0, 0.0, 0.0),
-           (1.0, 1, 0.8))
-}
-_INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
-
 
 def configuration():
   """
@@ -365,6 +353,10 @@ def showBNDiff(bn1, bn2, size=None):
   cmp = GraphicalBNComparator(bn1, bn2)
   showGraph(cmp.dotDiff(), size)
 
+def showInformation(*args,**kwargs):
+  print("[pyAgrum] pyAgrum.lib.notebook.showInformation is deprecated since 0.20.2. Please use pyAgrum.lib.explain.showInfomation instead.")
+  import pyAgrum.lib.explain as explain
+  explain.showInformation(*args,**kwargs)
 
 def showJunctionTree(bn, withNames=True, size=None):
   """
@@ -731,122 +723,6 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
     cmapArc = cmap
 
   return getGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
-
-
-def _normalizeVals(vals, hilightExtrema=False):
-  """
-  normalisation if vals is not a proba (max>1)
-  """
-  ma = float(max(vals.values()))
-  mi = float(min(vals.values()))
-  if ma == mi:
-    return None
-  else:
-    if not hilightExtrema:
-      vmi = 0.01
-      vma = 0.99
-    else:
-      vmi = 0
-      vma = 1
-
-    try:
-      items = vals.items()
-    except AttributeError:
-      items = vals.iteritems()
-
-    return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in items}
-
-
-def _reprInformation(bn, evs, size, cmap, asString):
-  """
-  repr a bn annoted with results from inference : Information and mutual informations
-
-  :param bn: the BN
-  :param evs: map of evidence
-  :param size:  size of the graph
-  :param cmap: colour map used
-  :return: the HTML string
-  """
-  ie = gum.LazyPropagation(bn)
-  ie.setEvidence(evs)
-  ie.makeInference()
-
-  idEvs = {bn.idFromName(name) for name in evs}
-  nodevals = {bn.variable(n).name(): ie.H(n)
-              for n in bn.nodes() if not n in idEvs}
-  arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
-  gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
-              cmapArc=cmap,
-              showMsg=nodevals)
-
-  mi = min(nodevals.values())
-  ma = max(nodevals.values())
-
-  fig = mpl.figure.Figure(figsize=(8, 3))
-  canvas = fc(fig)
-  ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
-  norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
-  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
-                                  norm=norm,
-                                  orientation='horizontal')
-  cb1.set_label('Entropy')
-  png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
-  png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
-    'ascii')
-
-  gsvg = IPython.display.SVG(gr.create_svg())
-
-  sss = "<div align='center'>" + gsvg.data + "</div>"
-  sss += "<div align='center'>"
-  sss += "<font color='" + \
-         gum._proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
-  sss += png_legend
-  sss += "<font color='" + \
-         gum._proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
-  sss += "</div>"
-
-  if asString:
-    return sss
-  else:
-    return IPython.display.display(IPython.display.HTML(sss))
-
-
-def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
-  """
-  get a HTML string for a bn annoted with results from inference : entropy and mutual informations
-
-  :param bn: the BN
-  :param evs: map of evidence
-  :param size:  size of the graph
-  :param cmap: colour map used
-  :return: the HTML string
-  """
-  if size is None:
-    size = gum.config["notebook", "default_graph_size"]
-
-  if evs is None:
-    evs = {}
-
-  return _reprInformation(bn, evs, size, cmap, asString=True)
-
-
-def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
-  """
-  show a bn annoted with results from inference : entropy and mutual informations
-
-  :param bn: the BN
-  :param evs: map of evidence
-  :param size:  size of the graph
-  :param cmap: colour map used
-  :return: the graph
-  """
-  if evs is None:
-    evs = {}
-
-  if size is None:
-    size = gum.config["notebook", "default_graph_size"]
-  return _reprInformation(bn, evs, size, cmap, asString=False)
-
 
 def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
                        nodeColor=None, factorColor=None, arcWidth=None,
