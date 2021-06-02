@@ -153,12 +153,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
   def test3off2(self):
     learner = gum.BNLearner(self.agrumSrcDir(
         'src/testunits/ressources/asia.csv'))
-    learner.useGreedyHillClimbing()
-    with self.assertRaises(gum.OperationNotAllowed):
-      learner.useNML()
-
     learner.use3off2()
-    learner.useNML()
+    learner.useNMLCorrection()
     learner.addForbiddenArc(4, 1)
     learner.addMandatoryArc(7, 5)
 

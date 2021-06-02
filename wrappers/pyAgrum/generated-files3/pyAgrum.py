@@ -26144,7 +26144,7 @@ class BNLearner(object):
 
     def learnParameters(self, *args) -> "gum::BayesNet< double >":
         r"""
-        learnParameters(BNLearner self, DAG dag, bool take_into_account_score=True) -> BayesNet
+        learnParameters(BNLearner self, DAG dag, bool takeIntoAccountScore=True) -> BayesNet
         learnParameters(BNLearner self, bool take_into_account_score=True) -> BayesNet
 
         learns a BN (its parameters) when its structure is known.
@@ -26947,32 +26947,32 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_useMIIC(self)
 
-    def useNML(self) -> "void":
+    def useNMLCorrection(self) -> "void":
         r"""
-        useNML(BNLearner self)
+        useNMLCorrection(BNLearner self)
 
         Indicate that we wish to use the NML correction for 3off2 or MIIC
 
         """
-        return _pyAgrum.BNLearner_useNML(self)
+        return _pyAgrum.BNLearner_useNMLCorrection(self)
 
-    def useMDL(self) -> "void":
+    def useMDLCorrection(self) -> "void":
         r"""
-        useMDL(BNLearner self)
+        useMDLCorrection(BNLearner self)
 
         Indicate that we wish to use the MDL correction for 3off2 or MIIC
 
         """
-        return _pyAgrum.BNLearner_useMDL(self)
+        return _pyAgrum.BNLearner_useMDLCorrection(self)
 
-    def useNoCorr(self) -> "void":
+    def useNoCorrection(self) -> "void":
         r"""
-        useNoCorr(BNLearner self)
+        useNoCorrection(BNLearner self)
 
         Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 
         """
-        return _pyAgrum.BNLearner_useNoCorr(self)
+        return _pyAgrum.BNLearner_useNoCorrection(self)
 
     def latentVariables(self, *args) -> "std::vector< gum::Arc,std::allocator< gum::Arc > > const":
         r"""
