@@ -41,7 +41,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    Miic::Miic() : _maxLog_(0), _size_(0) { GUM_CONSTRUCTOR(Miic); }
+    Miic::Miic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(Miic); }
 
     /// default constructor with maxLog
     Miic::Miic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(Miic); }
