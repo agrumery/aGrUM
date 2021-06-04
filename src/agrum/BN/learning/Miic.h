@@ -307,9 +307,9 @@ namespace gum {
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs
        *@param node node on which neighbours to propagate th orientation
-       *@todo : avoid exception driven programmation in circle detection
+       *@param force : true if an orientation has always to be found.
        */
-      void propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj);
+      bool propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj,bool force=false);
 
       protected:
       bool isForbidenArc_(NodeId x, NodeId y) const;

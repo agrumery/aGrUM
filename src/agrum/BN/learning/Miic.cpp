@@ -793,15 +793,14 @@ namespace gum {
       // first, propagate existing orientations
       for (NodeId x: order) {
         if (!essentialGraph.parents(x).empty()) {
-          propagatesRemainingUndirectedEdges_(essentialGraph, x); }
+          propagatesRemainingUndirectedEdges_(essentialGraph, x);
+        }
       }
-      // std::cout << "Le mixed graph après une première propagation mesdames et
-      // messieurs: "
-      //<< essentialGraph.toDot() << std::endl;
       // then decide the orientation by the topological order and propagate them
       for (NodeId x: order) {
         if (!essentialGraph.neighbours(x).empty()) {
-          propagatesRemainingUndirectedEdges_(essentialGraph, x); }
+          propagatesRemainingUndirectedEdges_(essentialGraph, x,true);
+        }
       }
 
       // std::cout << "Le mixed graph après une deuxième propagation mesdames et
@@ -823,25 +822,31 @@ namespace gum {
       return dag;
     }
 
-    bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi,NodeId xj) const {
-      //R1
-      if (!(graph.parents(xi)-graph.adjacents(xj)).empty()) {
-        GUM_TRACE("R1("<<xi<"-"<<xij)
+    bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
+      // no cycle
+      if (_existsDirectedPath_(xj, xi)) {
+        GUM_TRACE("cycle(" << xi < "-" << xij)
+        return false;
+      }
+
+      // R1
+      if (!(graph.parents(xi) - graph.adjacents(xj)).empty()) {
+        GUM_TRACE("R1(" << xi < "-" << xij)
         return true;
       }
 
-      //R2
-      if (_existsDirectedPath_(xi,xj)) {
-        GUM_TRACE("R2("<<xi<"-"<<xij)
+      // R2
+      if (_existsDirectedPath_(xi, xj)) {
+        GUM_TRACE("R2(" << xi < "-" << xij)
         return true;
       }
 
-      //R3
-      int nbr=0;
-      for(const auto p : graph.parents(xj)) {
-        if (! graph.mixedOrientedPath(xi,p).empty()) {
-          nbr+=1;
-          if (nbr==2) {
+      // R3
+      int nbr = 0;
+      for (const auto p: graph.parents(xj)) {
+        if (!graph.mixedOrientedPath(xi, p).empty()) {
+          nbr += 1;
+          if (nbr == 2) {
             GUM_TRACE("R3(" << xi < "-" << xij)
             return true;
           }
@@ -850,32 +855,37 @@ namespace gum {
       return false;
     }
     /// Propagates the orientation from a node to its neighbours
-    void Miic::propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj) {
+    bool Miic::propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj,bool force) {
+      bool       res        = false;
       const auto neighbours = graph.neighbours(xj);
       for (auto& xi: neighbours) {
-        bool i_j = isOrientable_(graph,xi,xj);
-        bool j_i = isOrientable_(graph,xj,xi);
+        bool i_j = isOrientable_(graph, xi, xj);
+        bool j_i = isOrientable_(graph, xj, xi);
         if (i_j || j_i) {
           GUM_TRACE(" + Removing edge (" << xi << "," << xj << ")")
           graph.eraseEdge(Edge(xi, xj));
+          res = true;
         }
         if (i_j) {
           GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           graph.addArc(xi, xj);
+          propagatesRemainingUndirectedEdges_(graph, xj);
         }
         if (j_i) {
           GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           graph.addArc(xj, xi);
+          propagatesRemainingUndirectedEdges_(graph, xi);
         }
-        if (i_j && j_i) _latentCouples_.emplace_back(i, j);
-        if (i_j) propagatesRemainingUndirectedEdges_(graph,xi);
-        if (j_i) propagatesRemainingUndirectedEdges_(graph,xi);
-
-        
-          graph.eraseEdge(Edge(neighbour, xj));
-          GUM_TRACE("5. Removing edge (" << neighbour << "," << xj << ")")
+        if (i_j && j_i) {
+          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          _latentCouples_.emplace_back(xi, xj);
+        }
+        if (!i_j && !j_i) {
+          i
         }
       }
+
+      return res;
     }
 
     /// get the list of arcs hiding latent variables
