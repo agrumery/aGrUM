@@ -309,8 +309,11 @@ namespace gum {
        *@param node node on which neighbours to propagate th orientation
        *@todo : avoid exception driven programmation in circle detection
        */
-      void propagatesHead_(MixedGraph& graph, NodeId node);
+      void propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj);
 
+      protected:
+      bool isForbidenArc_(NodeId x, NodeId y) const;
+      bool isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const;
 
       private:
       /// Fixes the maximum log that we accept in exponential computations

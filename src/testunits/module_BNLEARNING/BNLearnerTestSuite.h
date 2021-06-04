@@ -220,10 +220,9 @@ namespace gum_tests {
       aSimpleBNLeanerListener listen(learner);
 
       learner.useGreedyHillClimbing();
-      TS_ASSERT_THROWS(learner.useNML(), gum::OperationNotAllowed);
 
       learner.use3off2();
-      learner.useNML();
+      learner.useNMLCorrection();
       learner.addForbiddenArc(gum::Arc(4, 1));
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
@@ -260,7 +259,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void test_asia_db() {
+    // void /*test*/_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -1287,7 +1286,7 @@ namespace gum_tests {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/sample_asia.csv"));
         learner.use3off2();
-        learner.useNML();
+        learner.useNMLCorrection();
         auto ge3off2 = learner.learnMixedStructure();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -1521,5 +1520,28 @@ namespace gum_tests {
 #endif
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-  };
+
+    void test_misorientation_MIIC() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
+
+      learner.useMIIC();
+      learner.useNMLCorrection();
+      GUM_TRACE_VAR(learner.names())
+
+      auto bn            = learner.learnBN();
+      auto expected_arcs = std::vector< std::pair< std::string, std::string > >(
+         {{"coupon", "loyalty"},
+          {"coupon", "recent visit"},
+          {"loyalty", "renewal"},
+          {"loyalty", "recent visit"},
+          {"corporate customer", "loyalty"},
+          {"corporate customer", "yearly consumption"},
+          {"yearly consumption", "loyalty"},
+          {"yearly consumption", "coupon"}});
+      for (auto a: expected_arcs) {
+        GUM_TRACE(a.first << " -> " << a.second)
+        GUM_TRACE_VAR(bn.existsArc(a.first, a.second))
+      }
+    }
+  };   // class BNLearnerTestSuite
 } /* namespace gum_tests */
