@@ -196,21 +196,19 @@ namespace gum {
      * arc/edge set
      *
      * This function returns, if any, a path from node1 to node2, using edges
-     * and/or arcs (following the direction of th arcs)
+     * and/or arcs (wrt the direction of th arcs)
      * @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    const std::vector< NodeId > mixedOrientedPath(const NodeId node1, const NodeId node2) const;
+     * if no path can be found between the two nodes, the returned vector is empty*/
+    std::vector< NodeId > mixedOrientedPath(NodeId node1, NodeId node2) const;
 
     /// returns a mixed/directed path from node1 to node2 in the arc/edge set
     /** This function returns, if any, a path from node1 to node2, using edges
      * and/or arcs (not necessarily following the direction of th arcs)
      * @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    const std::vector< NodeId > mixedUnorientedPath(const NodeId node1, const NodeId node2) const;
+     * if no path can be found between the two nodes, the returned vector is empty. */
+    std::vector< NodeId > mixedUnorientedPath(NodeId node1, NodeId node2) const;
 
     /// to friendly display mixed graph in DOT format
     virtual std::string toDot() const;
@@ -218,6 +216,10 @@ namespace gum {
     /// to friendly display the content of the MixedGraph
     virtual std::string toString() const;
 
+    /// returns the set of node adjacent to a given node
+    /** Note that the set of node returned may be empty.
+     * @param id the node to which the edges are adjacent */
+    NodeSet adjacents(const NodeId id) const;
     /// @}
   };
 

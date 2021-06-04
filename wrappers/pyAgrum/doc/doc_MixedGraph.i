@@ -46,12 +46,7 @@ node2 : int
 Returns
 -------
 List
-	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
-
-Raises
-------
-gum.NotFound
-	If no path can be found between the two nodes
+	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
 "
 
 %feature("docstring") gum::MixedGraph::mixedUnorientedPath
@@ -66,12 +61,8 @@ node2 : int
 Returns
 -------
 List
-	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
+	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
 
-Raises
-------
-gum.NotFound
-	If no path can be found between the two nodes
 "
 
 

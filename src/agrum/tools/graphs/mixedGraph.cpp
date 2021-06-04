@@ -74,21 +74,20 @@ namespace gum {
     return s;
   }
 
-  const std::vector< NodeId > MixedGraph::mixedOrientedPath(const NodeId n1,
-                                                            const NodeId n2) const {
+  std::vector< NodeId > MixedGraph::mixedOrientedPath(NodeId n1, NodeId n2) const {
+    std::vector< NodeId > v;
     // not recursive version => use a FIFO for simulating the recursion
-    List< NodeId > nodeFIFO;
-    nodeFIFO.pushBack(n2);
+    List< NodeId > node_fifo;
+    node_fifo.pushBack(n2);
 
     // mark[node] = successor if visited, else mark[node] does not exist
     NodeProperty< NodeId > mark;
     mark.insert(n2, n2);
 
     NodeId current;
-
-    while (!nodeFIFO.empty()) {
-      current = nodeFIFO.front();
-      nodeFIFO.popFront();
+    while (!node_fifo.empty()) {
+      current = node_fifo.front();
+      node_fifo.popFront();
 
       // check the neighbours
       for (const auto new_one: neighbours(current)) {
@@ -98,17 +97,13 @@ namespace gum {
         mark.insert(new_one, current);
 
         if (new_one == n1) {
-          std::vector< NodeId > v;
-
           for (current = n1; current != n2; current = mark[current])
             v.push_back(current);
-
           v.push_back(n2);
-
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        node_fifo.pushBack(new_one);
       }
 
       // check the parents
@@ -119,28 +114,24 @@ namespace gum {
         mark.insert(new_one, current);
 
         if (new_one == n1) {
-          std::vector< NodeId > v;
-
           for (current = n1; current != n2; current = mark[current])
             v.push_back(current);
-
           v.push_back(n2);
-
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        node_fifo.pushBack(new_one);
       }
     }
 
-    GUM_ERROR(NotFound, "no path found")
+    return v;
   }
 
-  const std::vector< NodeId > MixedGraph::mixedUnorientedPath(const NodeId n1,
-                                                              const NodeId n2) const {
+  std::vector< NodeId > MixedGraph::mixedUnorientedPath(NodeId n1, NodeId n2) const {
+    std::vector< NodeId > v;
     // not recursive version => use a FIFO for simulating the recursion
-    List< NodeId > nodeFIFO;
-    nodeFIFO.pushBack(n2);
+    List< NodeId > node_fifo;
+    node_fifo.pushBack(n2);
 
     // mark[node] = successor if visited, else mark[node] does not exist
     NodeProperty< NodeId > mark;
@@ -148,9 +139,9 @@ namespace gum {
 
     NodeId current;
 
-    while (!nodeFIFO.empty()) {
-      current = nodeFIFO.front();
-      nodeFIFO.popFront();
+    while (!node_fifo.empty()) {
+      current = node_fifo.front();
+      node_fifo.popFront();
 
       // check the neighbours
       for (const auto new_one: neighbours(current)) {
@@ -160,17 +151,13 @@ namespace gum {
         mark.insert(new_one, current);
 
         if (new_one == n1) {
-          std::vector< NodeId > v;
-
           for (current = n1; current != n2; current = mark[current])
             v.push_back(current);
-
           v.push_back(n2);
-
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        node_fifo.pushBack(new_one);
       }
 
       // check the parents
@@ -179,19 +166,13 @@ namespace gum {
           continue;
 
         mark.insert(new_one, current);
-
         if (new_one == n1) {
-          std::vector< NodeId > v;
-
           for (current = n1; current != n2; current = mark[current])
             v.push_back(current);
-
           v.push_back(n2);
-
           return v;
         }
-
-        nodeFIFO.pushBack(new_one);
+        node_fifo.pushBack(new_one);
       }
 
       // check the children
@@ -202,20 +183,17 @@ namespace gum {
         mark.insert(new_one, current);
 
         if (new_one == n1) {
-          std::vector< NodeId > v;
-
           for (current = n1; current != n2; current = mark[current])
             v.push_back(current);
-
           v.push_back(n2);
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        node_fifo.pushBack(new_one);
       }
     }
 
-    GUM_ERROR(NotFound, "no path found")
+    return v;
   }
 
   std::string MixedGraph::toDot() const {
@@ -246,10 +224,15 @@ namespace gum {
     return output.str();
   }
 
+  NodeSet MixedGraph::adjacents(const NodeId id) const {
+    return neighbours(id) + parents(id) + children(id);
+  }
+
   /// for friendly displaying the content of directed graphs
   std::ostream& operator<<(std::ostream& stream, const MixedGraph& g) {
     stream << g.toString();
     return stream;
   }
+
 
 } /* namespace gum */

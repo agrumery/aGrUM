@@ -160,8 +160,8 @@ namespace gum {
     /// returns the set of edges stored within the EdgeGraphPart
     const EdgeSet& edges() const;
 
-    /// returns the set of edges adjacent to a given node
-    /** Note that the set of edges returned may be empty if no edge within the
+    /// returns the set of node neighbours to a given node
+    /** Note that the set of nodes returned may be empty if no edge within the
      * EdgeGraphPart is adjacent the given node.
      * @param id the node to which the edges are adjacent */
     const NodeSet& neighbours(const NodeId id) const;
