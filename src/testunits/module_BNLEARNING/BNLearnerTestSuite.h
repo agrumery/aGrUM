@@ -259,7 +259,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void /*test*/_asia_db() {
+    // void test_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -1526,7 +1526,6 @@ namespace gum_tests {
 
       learner.useMIIC();
       learner.useNMLCorrection();
-      GUM_TRACE_VAR(learner.names())
 
       auto bn            = learner.learnBN();
       auto expected_arcs = std::vector< std::pair< std::string, std::string > >(
@@ -1539,8 +1538,7 @@ namespace gum_tests {
           {"yearly consumption", "loyalty"},
           {"yearly consumption", "coupon"}});
       for (auto a: expected_arcs) {
-        GUM_TRACE(a.first << " -> " << a.second)
-        GUM_TRACE_VAR(bn.existsArc(a.first, a.second))
+        TS_ASSERT(bn.existsArc(a.first, a.second))
       }
     }
   };   // class BNLearnerTestSuite

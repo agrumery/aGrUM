@@ -24,7 +24,7 @@ bugprone-no-escape
 bugprone-not-null-terminated-result
 bugprone-parent-virtual-call
 bugprone-posix-return
--bugprone-reserved-identifier
+bugprone-reserved-identifier
 bugprone-sizeof-container
 bugprone-sizeof-expression
 bugprone-spuriously-wake-up-functions

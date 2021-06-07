@@ -309,7 +309,10 @@ namespace gum {
        *@param node node on which neighbours to propagate th orientation
        *@param force : true if an orientation has always to be found.
        */
-      bool propagatesRemainingUndirectedEdges_(MixedGraph& graph, NodeId xj,bool force=false);
+      bool propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj);
+
+      /// heuristic for remaining edges when everything else has been tried
+      void propagatesOrientationInChainOfRemainingEdges_(MixedGraph& graph);
 
       protected:
       bool isForbidenArc_(NodeId x, NodeId y) const;
