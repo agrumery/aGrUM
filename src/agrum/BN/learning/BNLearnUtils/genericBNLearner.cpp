@@ -266,27 +266,27 @@ namespace gum {
           mutualInfo_ = nullptr;
         }
 
-        scoreType_                    = from.scoreType_;
-        paramEstimatorType_           = from.paramEstimatorType_;
-        epsilonEM_                    = from.epsilonEM_;
-        aprioriType_                  = from.aprioriType_;
-        aprioriWeight_                = from.aprioriWeight_;
-        constraintSliceOrder_         = from.constraintSliceOrder_;
-        constraintIndegree_           = from.constraintIndegree_;
-        constraintTabuList_           = from.constraintTabuList_;
-        constraintForbiddenArcs_      = from.constraintForbiddenArcs_;
-        constraintMandatoryArcs_      = from.constraintMandatoryArcs_;
-        selectedAlgo_                 = from.selectedAlgo_;
-        algoK2_                       = from.algoK2_;
-        algoMiic3off2_                = from.algoMiic3off2_;
-        kmode3Off2_                   = from.kmode3Off2_;
-        greedyHillClimbing_           = from.greedyHillClimbing_;
-        localSearchWithTabuList_      = from.localSearchWithTabuList_;
-        scoreDatabase_                = from.scoreDatabase_;
-        ranges_                       = from.ranges_;
-        aprioriDbname_                = from.aprioriDbname_;
-        initialDag_                   = from.initialDag_;
-        currentAlgorithm_             = nullptr;
+        scoreType_               = from.scoreType_;
+        paramEstimatorType_      = from.paramEstimatorType_;
+        epsilonEM_               = from.epsilonEM_;
+        aprioriType_             = from.aprioriType_;
+        aprioriWeight_           = from.aprioriWeight_;
+        constraintSliceOrder_    = from.constraintSliceOrder_;
+        constraintIndegree_      = from.constraintIndegree_;
+        constraintTabuList_      = from.constraintTabuList_;
+        constraintForbiddenArcs_ = from.constraintForbiddenArcs_;
+        constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
+        selectedAlgo_            = from.selectedAlgo_;
+        algoK2_                  = from.algoK2_;
+        algoMiic3off2_           = from.algoMiic3off2_;
+        kmode3Off2_              = from.kmode3Off2_;
+        greedyHillClimbing_      = from.greedyHillClimbing_;
+        localSearchWithTabuList_ = from.localSearchWithTabuList_;
+        scoreDatabase_           = from.scoreDatabase_;
+        ranges_                  = from.ranges_;
+        aprioriDbname_           = from.aprioriDbname_;
+        initialDag_              = from.initialDag_;
+        currentAlgorithm_        = nullptr;
       }
 
       return *this;
@@ -314,27 +314,27 @@ namespace gum {
           mutualInfo_ = nullptr;
         }
 
-        scoreType_                    = from.scoreType_;
-        paramEstimatorType_           = from.paramEstimatorType_;
-        epsilonEM_                    = from.epsilonEM_;
-        aprioriType_                  = from.aprioriType_;
-        aprioriWeight_                = from.aprioriWeight_;
-        constraintSliceOrder_         = std::move(from.constraintSliceOrder_);
-        constraintIndegree_           = std::move(from.constraintIndegree_);
-        constraintTabuList_           = std::move(from.constraintTabuList_);
-        constraintForbiddenArcs_      = std::move(from.constraintForbiddenArcs_);
-        constraintMandatoryArcs_      = std::move(from.constraintMandatoryArcs_);
-        selectedAlgo_                 = from.selectedAlgo_;
-        algoK2_                       = from.algoK2_;
-        algoMiic3off2_                = std::move(from.algoMiic3off2_);
-        kmode3Off2_                   = from.kmode3Off2_;
-        greedyHillClimbing_           = std::move(from.greedyHillClimbing_);
-        localSearchWithTabuList_      = std::move(from.localSearchWithTabuList_);
-        scoreDatabase_                = std::move(from.scoreDatabase_);
-        ranges_                       = std::move(from.ranges_);
-        aprioriDbname_                = std::move(from.aprioriDbname_);
-        initialDag_                   = std::move(from.initialDag_);
-        currentAlgorithm_             = nullptr;
+        scoreType_               = from.scoreType_;
+        paramEstimatorType_      = from.paramEstimatorType_;
+        epsilonEM_               = from.epsilonEM_;
+        aprioriType_             = from.aprioriType_;
+        aprioriWeight_           = from.aprioriWeight_;
+        constraintSliceOrder_    = std::move(from.constraintSliceOrder_);
+        constraintIndegree_      = std::move(from.constraintIndegree_);
+        constraintTabuList_      = std::move(from.constraintTabuList_);
+        constraintForbiddenArcs_ = std::move(from.constraintForbiddenArcs_);
+        constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
+        selectedAlgo_            = from.selectedAlgo_;
+        algoK2_                  = from.algoK2_;
+        algoMiic3off2_           = std::move(from.algoMiic3off2_);
+        kmode3Off2_              = from.kmode3Off2_;
+        greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
+        localSearchWithTabuList_ = std::move(from.localSearchWithTabuList_);
+        scoreDatabase_           = std::move(from.scoreDatabase_);
+        ranges_                  = std::move(from.ranges_);
+        aprioriDbname_           = std::move(from.aprioriDbname_);
+        initialDag_              = std::move(from.initialDag_);
+        currentAlgorithm_        = nullptr;
       }
 
       return *this;
@@ -399,9 +399,8 @@ namespace gum {
     }
 
 
-    DatabaseTable<>
-       genericBNLearner::readFile_(const std::string&                filename,
-                                    const std::vector< std::string >& missing_symbols) {
+    DatabaseTable<> genericBNLearner::readFile_(const std::string&                filename,
+                                                const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       checkFileName_(filename);
 
@@ -457,7 +456,8 @@ namespace gum {
           break;
 
         case AprioriType::BDEU:
-          apriori_ = new AprioriBDeu<>(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          apriori_
+             = new AprioriBDeu<>(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         default:
@@ -479,42 +479,42 @@ namespace gum {
       switch (scoreType_) {
         case ScoreType::AIC:
           score_ = new ScoreAIC<>(scoreDatabase_.parser(),
-                                   *apriori_,
+                                  *apriori_,
                                   ranges_,
                                   scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BD:
           score_ = new ScoreBD<>(scoreDatabase_.parser(),
-                                  *apriori_,
+                                 *apriori_,
                                  ranges_,
                                  scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
           score_ = new ScoreBDeu<>(scoreDatabase_.parser(),
-                                    *apriori_,
+                                   *apriori_,
                                    ranges_,
                                    scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
           score_ = new ScoreBIC<>(scoreDatabase_.parser(),
-                                   *apriori_,
+                                  *apriori_,
                                   ranges_,
                                   scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::K2:
           score_ = new ScoreK2<>(scoreDatabase_.parser(),
-                                  *apriori_,
+                                 *apriori_,
                                  ranges_,
                                  scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
           score_ = new ScoreLog2Likelihood<>(scoreDatabase_.parser(),
-                                              *apriori_,
+                                             *apriori_,
                                              ranges_,
                                              scoreDatabase_.nodeId2Columns());
           break;
@@ -528,7 +528,7 @@ namespace gum {
     }
 
     ParamEstimator<>* genericBNLearner::createParamEstimator_(DBRowGeneratorParser<>& parser,
-                                                               bool take_into_account_score) {
+                                                              bool take_into_account_score) {
       ParamEstimator<>* param_estimator = nullptr;
 
       // create the new estimator
@@ -623,7 +623,7 @@ namespace gum {
       if (mutualInfo_ != nullptr) delete mutualInfo_;
 
       mutualInfo_ = new CorrectedMutualInformation<>(scoreDatabase_.parser(),
-                                                       *noApriori_,
+                                                     *noApriori_,
                                                      ranges_,
                                                      scoreDatabase_.nodeId2Columns());
       switch (kmode3Off2_) {

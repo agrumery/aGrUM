@@ -421,8 +421,8 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriDirichlet(const std::string& filename, double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      aprioriDbname_   = filename;
-      aprioriType_     = AprioriType::DIRICHLET_FROM_DATABASE;
+      aprioriDbname_ = filename;
+      aprioriType_   = AprioriType::DIRICHLET_FROM_DATABASE;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();

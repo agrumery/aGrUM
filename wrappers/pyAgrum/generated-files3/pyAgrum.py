@@ -4788,9 +4788,9 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_clear(self)
 
-    def mixedOrientedPath(self, node1: "gum::NodeId const", node2: "gum::NodeId const") -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
+    def mixedOrientedPath(self, node1: "gum::NodeId", node2: "gum::NodeId") -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
         r"""
-        mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedOrientedPath(MixedGraph self, gum::NodeId node1, gum::NodeId node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >
 
         Parameters
         ----------
@@ -4802,19 +4802,14 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
-
-        Raises
-        ------
-        gum.NotFound
-        	If no path can be found between the two nodes
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
 
         """
         return _pyAgrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: "gum::NodeId const", node2: "gum::NodeId const") -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
+    def mixedUnorientedPath(self, node1: "gum::NodeId", node2: "gum::NodeId") -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
         r"""
-        mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedUnorientedPath(MixedGraph self, gum::NodeId node1, gum::NodeId node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >
 
         Parameters
         ----------
@@ -4826,12 +4821,8 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
 
-        Raises
-        ------
-        gum.NotFound
-        	If no path can be found between the two nodes
 
         """
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
@@ -4847,6 +4838,10 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_toDot(self)
+
+    def adjacents(self, id: "gum::NodeId const") -> "gum::NodeSet":
+        r"""adjacents(MixedGraph self, gum::NodeId const id) -> gum::NodeSet"""
+        return _pyAgrum.MixedGraph_adjacents(self, id)
 
     def __repr__(self) -> "std::string":
         r"""__repr__(MixedGraph self) -> std::string"""

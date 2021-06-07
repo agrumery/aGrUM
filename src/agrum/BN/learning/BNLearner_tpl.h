@@ -203,8 +203,8 @@ namespace gum {
 
         Dag2BN_.setEpsilon(epsilonEM_);
         return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
-                                               *(param_estimator_EM.get()),
-                                               dag);
+                                              *(param_estimator_EM.get()),
+                                              dag);
       }
     }
 

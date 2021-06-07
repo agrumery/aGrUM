@@ -830,7 +830,7 @@ namespace gum {
 
       /// reads a file and returns a databaseVectInRam
       static DatabaseTable<> readFile_(const std::string&                filename,
-                                        const std::vector< std::string >& missing_symbols);
+                                       const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
       static void checkFileName_(const std::string& filename);
@@ -843,7 +843,7 @@ namespace gum {
 
       /// create the parameter estimator used for learning
       ParamEstimator<>* createParamEstimator_(DBRowGeneratorParser<>& parser,
-                                               bool take_into_account_score = true);
+                                              bool take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG learnDag_();
