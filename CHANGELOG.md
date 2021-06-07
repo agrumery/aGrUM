@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 0.20.3
+
+* aGrUM
+  * Refactoring/fixing MIIC and better heuristic for orientations for constraint-based learning algorithms.    
+  * Updating guidelines and new convention for `private` methods/attributes.
+  * Changing behaviour of `gum::MixedGraph::mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
+  
+* pyAgrum
+  * Refactoring MIIC and better heuristic for orientations for constraint-based learning algorithms.
+  * Changing behaviour of `pyAgrum.MixedGraph.mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
+  * Updating new `pyAgrum.Potential`'s methods and documentation.
+  * New tool for layout in notebooks : `pyAgrum.notebook.flow`.
+  * New gum.config options for background colors in CPT : `potential_color_0` and `potential_color_1`.
+  * New module `pyAgrum.lib.explain`.
+  
+  
 ## Changelog for 0.20.2
 
 * aGrUM
