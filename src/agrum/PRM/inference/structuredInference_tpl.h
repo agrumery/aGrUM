@@ -792,7 +792,7 @@ namespace gum {
       if (!_real_order_) {
         _real_order_ = new List< NodeSet >();
 
-        for (const auto set: _partial_order_)
+        for (const auto & set: _partial_order_)
           if (set.size() > 0) _real_order_->insert(set);
       }
 

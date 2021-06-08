@@ -48,7 +48,7 @@ namespace gum {
               }
 
           for (auto vec = inst->beginInvRef(); vec != inst->endInvRef(); ++vec)
-            for (const auto inverse: *vec.val())
+            for (const auto & inverse: *vec.val())
               if (!seq.exists(inverse.first)) {
                 cost += std::log(inst->get(vec.key()).type().variable().domainSize());
                 break;
