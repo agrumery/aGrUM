@@ -45,8 +45,8 @@ linux_pyagrum_2:
       - build/
   stage: build
   script:
-    - python act clean
-    - python act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
+    - python2 act clean
+    - python2 act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
 
 ################################################################################
 # Linux / gcc merge requests
