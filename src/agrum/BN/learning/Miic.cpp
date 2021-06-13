@@ -121,10 +121,6 @@ namespace gum {
 
       iteration_(mutualInformation, graph, sep_set, rank);
 
-      // std::cout << "Le graphe contient: " << graph.sizeEdges() << " edges." <<
-      // std::endl; std::cout << "En voici la liste: " << graph.edges() <<
-      // std::endl;
-
       if (_useMiic_) {
         orientationMiic_(mutualInformation, graph, sep_set);
       } else {
@@ -242,7 +238,7 @@ namespace gum {
       }
 
       NodeId i = 0;
-      // list of elements that we shouldnt read again, ie elements that are
+      // list of elements that we shouldn't read again, ie elements that are
       // eligible to
       // rule 0 after the first time they are tested, and elements on which rule 1
       // has been applied
@@ -367,7 +363,7 @@ namespace gum {
       }
     }
 
-    /// varient trying to propagate both orientations in a bidirected arc
+    /// variant trying to propagate both orientations in a bidirected arc
     void Miic::orientationLatents_(
        CorrectedMutualInformation<>&                                          mutualInformation,
        MixedGraph&                                                            graph,
@@ -593,7 +589,7 @@ namespace gum {
           // Computing Pnv
           const double Ixyz_ui    = mutualInformation.score(x, y, z, ui);
           double       calc_expo1 = -Ixyz_ui * M_LN2;
-          // if exponentials are too high or to low, crop them at | __maxLog|
+          // if exponential are too high or to low, crop them at _maxLog_
           if (calc_expo1 > _maxLog_) {
             Pnv = 0.0;
           } else if (calc_expo1 < -_maxLog_) {
@@ -609,7 +605,7 @@ namespace gum {
           calc_expo1        = -(Ixz_ui - Ixy_ui) * M_LN2;
           double calc_expo2 = -(Iyz_ui - Ixy_ui) * M_LN2;
 
-          // if exponentials are too high or to low, crop them at  _maxLog_
+          // if exponential are too high or to low, crop them at  _maxLog_
           if (calc_expo1 > _maxLog_ || calc_expo2 > _maxLog_) {
             Pb = 0.0;
           } else if (calc_expo1 < -_maxLog_ && calc_expo2 < -_maxLog_) {
@@ -739,7 +735,7 @@ namespace gum {
         if (Ixyz <= 0) {
           const double expo = std::exp(Ixyz);
           const double P0   = (1 + expo) / (1 + 3 * expo);
-          // distinguish betweeen the initialization and the update process
+          // distinguish between the initialization and the update process
           if (Pxz == Pyz && Pyz == 0.5) {
             std::get< 2 >(triple) = P0;
             std::get< 3 >(triple) = P0;
@@ -813,14 +809,6 @@ namespace gum {
             essentialGraph.eraseArc(Arc(y, x));
           }
 
-      // std::cout << "Le mixed graph après une deuxième propagation mesdames et
-      // messieurs: "
-      //<< essentialGraph.toDot() << std::endl;
-      // std::cout << "Le graphe contient maintenant : " <<
-      // essentialGraph.sizeArcs() << " arcs."
-      //<< std::endl;
-      // std::cout << "Que voici: " << essentialGraph.arcs() << std::endl;
-      // turn the mixed graph into a dag
       DAG dag;
       for (auto node: essentialGraph) {
         dag.addNodeWithId(node);
