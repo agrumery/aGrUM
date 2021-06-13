@@ -298,7 +298,7 @@ namespace gum_tests {
     void testkey() {
       gum::HashTable< int, std::string > table;
       fill(table);
-      int val;
+      int val = -1;
 
       TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(1));
       TS_ASSERT_EQUALS(val, 1);

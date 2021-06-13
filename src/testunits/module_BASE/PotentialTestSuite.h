@@ -883,7 +883,7 @@ namespace gum_tests {
       s.add(w);
       s.fillWith({0.0f, 1.0f, 0.2f, 0.8f});
 
-      double res;
+      double res = -1.0f;
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(p));
       TS_ASSERT_EQUALS(res, 0.0f);

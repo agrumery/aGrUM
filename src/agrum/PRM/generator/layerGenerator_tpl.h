@@ -169,14 +169,14 @@ namespace gum {
       NodeId                id = 0;
 
       if (lvl) {
-        for (const auto agg: l[lvl].g) {
+        for (const auto& agg: l[lvl].g) {
           id = dag.addNode();
           names.insert(agg, id);
           nodes.push_back(id);
         }
       }
 
-      for (const auto attr: l[lvl].a) {
+      for (const auto& attr: l[lvl].a) {
         id = dag.addNode();
         names.insert(attr, id);
 

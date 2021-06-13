@@ -652,7 +652,7 @@ namespace gum_tests {
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
       int       i              = 0;
 
-      for (const auto nodeset: partialTemporalOrder) {
+      for (const auto& nodeset: partialTemporalOrder) {
         int j = 0;
 
         for (const auto node: nodeset) {

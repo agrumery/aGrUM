@@ -370,8 +370,10 @@ namespace gum_tests {
 
       int n = 0;
 
-      for (const auto str: seq)
+      for (const auto& str: seq) {
+        str.size();
         n++;
+      }
 
       TS_ASSERT_EQUALS(n, 0);
 
@@ -407,8 +409,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(n, 0);
       n = 0;
 
-      for (const auto i: seq)
+      for (const auto& i: seq) {
+        i.size();
         n++;
+      }
 
       TS_ASSERT_EQUALS(n, 0);
 

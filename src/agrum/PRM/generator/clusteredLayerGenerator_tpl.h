@@ -319,7 +319,7 @@ namespace gum {
 
       // Adding aggregates
       if (lvl) {
-        for (const auto agg: l[lvl].g) {
+        for (const auto& agg: l[lvl].g) {
           std::stringstream s;
           s << l[lvl].r << "." << l[lvl - 1].a[std::rand() % l[lvl - 1].a.size()];
           std::vector< std::string > chain(1, s.str()), param(1, "1");
@@ -328,7 +328,7 @@ namespace gum {
       }
 
       // Adding attributes
-      for (const auto attr: l[lvl].a) {
+      for (const auto& attr: l[lvl].a) {
         f.startAttribute(type, attr, true);
         size = getDomainSize();
 

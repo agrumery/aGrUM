@@ -613,7 +613,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 4);
 
       int nb_col1 = 0, nb_col2 = 0;
-      for (const auto row: database) {
+      for (const auto& row: database) {
         const auto& r = row.row();
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
@@ -660,7 +660,7 @@ namespace gum_tests {
 
       nb_col1 = 0;
       nb_col2 = 0;
-      for (const auto row: database) {
+      for (const auto& row: database) {
         const auto& r = row.row();
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
