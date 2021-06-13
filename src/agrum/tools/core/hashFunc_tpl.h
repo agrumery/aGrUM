@@ -29,6 +29,8 @@
 // to help IDE parser
 #include <agrum/tools/core/hashFunc.h>
 
+#include <cstring>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -90,7 +92,9 @@ namespace gum {
   // Returns the value of a key as a Size
   template < typename Key >
   INLINE Size HashFuncSmallCastKey< Key >::castToSize(const Key& key) {
-    return *((Size*)(&key)) & HashFuncSmallCastKey< Key >::small_key_mask_;
+    Size result = 0;
+    memcpy(&result, &key, sizeof(Key));
+    return result;
   }
 
   // Returns the hashed value of a key.
