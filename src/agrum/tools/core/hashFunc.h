@@ -290,6 +290,13 @@ namespace gum {
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const Key& key) const override final;
+
+    protected:
+    /**
+     * An additional mask to ensure that keys with fewer bits than Size
+     * are cast correctly.
+     */
+    static constexpr Size small_key_mask_{(Size(1) << (8 * sizeof(Key))) - Size(1)};
   };
 
 
