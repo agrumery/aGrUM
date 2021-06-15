@@ -2,6 +2,7 @@
 # generated : do not change it !
 ################################
 matplotlib
+matplotlib_inline
 pydotplus
 numpy
 configparser

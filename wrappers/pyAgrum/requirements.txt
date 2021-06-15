@@ -1,4 +1,5 @@
 matplotlib
+matplotlib_inline
 pydotplus
 numpy
 configparser
