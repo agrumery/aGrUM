@@ -15,3 +15,12 @@ Dealing with mutual information and entropy
 
 .. autofunction:: pyAgrum.lib.explain.getInformation
 .. autofunction:: pyAgrum.lib.explain.showInformation
+
+Dealing with ShapValues
+-----------------------
+
+.. autoclass:: pyAgrum.lib.explain.ShapValues
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :noindex:

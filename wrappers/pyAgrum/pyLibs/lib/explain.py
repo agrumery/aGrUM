@@ -430,6 +430,19 @@ class ShapValues:
     return df
 
   def conditional(self, train, plot=False, plot_importance=False, percentage=False):
+    """
+
+    Parameters
+    ----------
+    train
+    plot
+    plot_importance
+    percentage
+
+    Returns
+    -------
+
+    """
     results = self._conditional(train)
     n_feats = len(self.feats_names)
     res = {}
@@ -478,6 +491,19 @@ class ShapValues:
     return df
 
   def conditionalMarkovBlanket(self, train, plot=False, plot_importance=False, percentage=False):
+    """
+
+    Parameters
+    ----------
+    train
+    plot
+    plot_importance
+    percentage
+
+    Returns
+    -------
+
+    """
     results = self._conditionalMarkovBlanket(train)
     n_feats = len(self.feats_names)
     res = {}
@@ -524,6 +550,20 @@ class ShapValues:
     return df
 
   def marginal(self, train, sample_size=200, plot=False, plot_importance=False, percentage=False):
+    """
+
+    Parameters
+    ----------
+    train
+    sample_size
+    plot
+    plot_importance
+    percentage
+
+    Returns
+    -------
+
+    """
     results = self._marginal(train, sample_size)
     n_feats = len(self.feats_names)
     res = {}
@@ -582,6 +622,19 @@ class ShapValues:
     return df
 
   def causal(self, train, plot=False, plot_importance=False, percentage=False):
+    """
+
+    Parameters
+    ----------
+    train
+    plot
+    plot_importance
+    percentage
+
+    Returns
+    -------
+
+    """
     results = self._causal(train)
     n_feats = len(self.feats_names)
     res = {}
@@ -643,6 +696,17 @@ class ShapValues:
     plt.show()
 
   def showShapValues(self, results, cmap='plasma'):
+    """
+
+    Parameters
+    ----------
+    results
+    cmap
+
+    Returns
+    -------
+
+    """
     norm_color = {}
     raw = list(results.values())
     norm = [float(i) / sum(raw) for i in raw]
