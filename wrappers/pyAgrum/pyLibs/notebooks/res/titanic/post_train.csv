@@ -60,7 +60,6 @@ False,3,Male,adult,False,False,C
 True,2,Female,toddler,True,True,S
 False,3,Male,kid,True,True,S
 False,3,Male,adult,False,False,C
-True,1,Female,adult,False,False,
 False,1,Male,adult,True,False,S
 False,3,Male,toddler,True,True,S
 False,1,Male,old,False,False,C
@@ -828,7 +827,6 @@ False,3,Male,old,False,False,Q
 False,3,Male,old,False,False,S
 True,2,Male,toddler,False,True,C
 True,3,Male,old,False,False,Q
-True,1,Female,adult,False,False,
 True,3,Female,teen,True,False,C
 True,2,Male,baby,True,True,S
 False,3,Male,old,False,False,C
