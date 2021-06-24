@@ -32,6 +32,7 @@
 %ignore gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
+%ignore gum::learning::BNLearner::state() const;
 
 %extend gum::learning::BNLearner< double > {
   PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
@@ -102,6 +103,18 @@
 
   PyObject* latentVariables() {
     return PyAgrumHelper::PyListFromArcVect(self->latentVariables());
+  }
+
+  PyObject* state() {
+    PyObject* res=PyDict_New();
+    for(const auto& tuple: self->state()) {
+      PyDict_SetItemString(res,
+                           std::get<0>(tuple).c_str(),
+                           Py_BuildValue("(ss)",std::get<1>(tuple).c_str(),std::get<2>(tuple).c_str())
+                          );
+    }
+
+    return res;
   }
 
 %pythoncode {
