@@ -995,7 +995,7 @@ namespace gum {
            }
          };
     _roots_.clear();
-    for (const auto & xclique: possible_roots) {
+    for (const auto& xclique: possible_roots) {
       NodeId clique = xclique.first;
       if (!marked[clique]) {
         _roots_.insert(clique);
@@ -1160,7 +1160,7 @@ namespace gum {
     // assign to each potential with barren nodes its set of barren variables
     HashTable< const Potential< GUM_SCALAR >*, Set< const DiscreteVariable* > > pot2barren_var;
     Set< const DiscreteVariable* >                                              empty_var_set;
-    for (const auto & elt: var2pots) {
+    for (const auto& elt: var2pots) {
       if (elt.second.size() == 1) {   // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) { pot2barren_var.insert(pot, empty_var_set); }
@@ -1173,7 +1173,7 @@ namespace gum {
     // set of potentials, else just project the potential
     MultiDimProjection< GUM_SCALAR, Potential > projector(LPNewprojPotential);
     _PotentialSet_                              projected_pots;
-    for (const auto & elt: pot2barren_var) {
+    for (const auto& elt: pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change
       // it
       const Potential< GUM_SCALAR >* pot = elt.first;
@@ -1336,7 +1336,7 @@ namespace gum {
     // by parsing   _joint_target_to_clique_, we ensure that the cliques that
     // are referenced belong to the join tree (even if some of the nodes in
     // their associated joint_target do not belong to  _graph_)
-    for (const auto & set: _joint_target_to_clique_)
+    for (const auto& set: _joint_target_to_clique_)
       _collectMessage_(set.second, set.second);
   }
 

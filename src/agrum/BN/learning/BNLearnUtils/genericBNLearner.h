@@ -120,7 +120,9 @@ namespace gum {
       /// an enumeration to select the type of parameter estimation we shall
       /// apply
       enum class ParamEstimatorType
-      { ML };
+      {
+        ML
+      };
 
       /// an enumeration to select the apriori
       enum class AprioriType
@@ -833,7 +835,7 @@ namespace gum {
       // size of the tabu list
       Size nbDecreasingChanges_{2};
 
-      //order for K2 algorithm
+      // order for K2 algorithm
       Sequence< NodeId > orderK2_;
 
       // the current algorithm as an approximationScheme

@@ -231,7 +231,7 @@ namespace gum {
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) {
       selectedAlgo_ = AlgoType::K2;
-      orderK2_=order;
+      orderK2_      = order;
       algoK2_.setOrder(order);
     }
 
@@ -248,8 +248,8 @@ namespace gum {
 
     // indicate that we wish to use a local search with tabu list
     INLINE void genericBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
-      selectedAlgo_ = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
-      nbDecreasingChanges_=nb_decrease;
+      selectedAlgo_        = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+      nbDecreasingChanges_ = nb_decrease;
       constraintTabuList_.setTabuListSize(tabu_size);
       localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);
     }

@@ -571,7 +571,7 @@ namespace gum {
                                                            PsiArcProperty&  psi,
                                                            NodeId           decisionNode) {
     const auto& infdiag = this->influenceDiagram();
-    
+
     auto& decision = strategies_.getWithDefault(decisionNode, Potential< GUM_SCALAR >());
 
     if (this->hasHardEvidence(decisionNode)) {

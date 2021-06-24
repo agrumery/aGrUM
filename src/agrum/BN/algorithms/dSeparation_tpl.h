@@ -162,7 +162,7 @@ namespace gum {
 
     // here, all the potentials that belong to  _node2potentials_ are d-separated
     // from the query
-    for (const auto & elt: node2potentials) {
+    for (const auto& elt: node2potentials) {
       for (const auto pot: elt.second) {
         potentials.erase(pot);
       }

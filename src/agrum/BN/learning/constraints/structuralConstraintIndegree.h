@@ -191,8 +191,8 @@ namespace gum {
        * constraint of x. */
       bool checkModificationAlone(const GraphChange& change) const;
 
-      Size maxIndegree() const {return _Indegree_max_indegree_;};
-      /// @}
+      Size maxIndegree() const { return _Indegree_max_indegree_; };
+        /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to

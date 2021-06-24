@@ -302,9 +302,9 @@ namespace gum {
   // returns the current combination function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const TABLE< GUM_SCALAR >&) {
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR,
+                                        TABLE >::combineFunction())(const TABLE< GUM_SCALAR >&,
+                                                                    const TABLE< GUM_SCALAR >&) {
     return _combination_->combineFunction();
   }
 
@@ -326,10 +326,9 @@ namespace gum {
 
   // returns the current projection function
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const Set< const DiscreteVariable* >&) {
+  INLINE TABLE< GUM_SCALAR >* (*MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::
+                                  projectFunction())(const TABLE< GUM_SCALAR >&,
+                                                     const Set< const DiscreteVariable* >&) {
     return _projection_->projectFunction();
   }
 

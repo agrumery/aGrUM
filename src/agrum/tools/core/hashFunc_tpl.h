@@ -95,13 +95,13 @@ namespace gum {
     // the code for MVSC differs from the code of the other compilers for
     // speed-up reasons: according to godbolt.org, the first code
     // should be twice faster than the second one
-#ifdef _MSC_VER
+#  ifdef _MSC_VER
     return *((Size*)(&key)) & HashFuncSmallCastKey< Key >::small_key_mask_;
-#else
+#  else
     Size result = 0;
     memcpy(&result, &key, sizeof(Key));
     return result;
-#endif /* _MSC_VER */
+#  endif /* _MSC_VER */
   }
 
   // Returns the hashed value of a key.

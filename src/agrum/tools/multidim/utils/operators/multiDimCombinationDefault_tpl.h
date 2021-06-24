@@ -79,9 +79,10 @@ namespace gum {
 
   // returns the combination function currently used by the combinator
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (*MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combineFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const TABLE< GUM_SCALAR >&) {
+  INLINE TABLE< GUM_SCALAR >* (
+     *MultiDimCombinationDefault< GUM_SCALAR,
+                                  TABLE >::combineFunction())(const TABLE< GUM_SCALAR >&,
+                                                              const TABLE< GUM_SCALAR >&) {
     return combine_;
   }
 

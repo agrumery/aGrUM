@@ -94,9 +94,10 @@ namespace gum {
 
   // returns the projection function currently used by the projector
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (*MultiDimProjection< GUM_SCALAR, TABLE >::projectFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const Set< const DiscreteVariable* >&) {
+  INLINE TABLE< GUM_SCALAR >* (
+     *MultiDimProjection< GUM_SCALAR,
+                          TABLE >::projectFunction())(const TABLE< GUM_SCALAR >&,
+                                                      const Set< const DiscreteVariable* >&) {
     return proj_;
   }
 

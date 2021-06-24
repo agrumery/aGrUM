@@ -933,7 +933,7 @@ namespace gum {
            }
          };
     _roots_.clear();
-    for (const auto & xclique: possible_roots) {
+    for (const auto& xclique: possible_roots) {
       NodeId clique = xclique.first;
       if (!marked[clique]) {
         _roots_.insert(clique);
@@ -1103,7 +1103,7 @@ namespace gum {
     // by parsing   _joint_target_to_clique_, we ensure that the cliques that
     // are referenced belong to the join tree (even if some of the nodes in
     // their associated joint_target do not belong to  _reduced_graph_)
-    for (const auto & set: _joint_target_to_clique_)
+    for (const auto& set: _joint_target_to_clique_)
       _collectMessage_(set.second, set.second);
   }
 

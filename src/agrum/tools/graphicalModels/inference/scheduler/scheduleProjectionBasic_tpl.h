@@ -112,9 +112,9 @@ namespace gum {
   /// returns the projection function currently used by the projector
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >* (
-     *ScheduleProjectionBasic< GUM_SCALAR >::projectFunction())(
-     const MultiDimImplementation< GUM_SCALAR >&,
-     const Set< const DiscreteVariable* >&) {
+     *ScheduleProjectionBasic<
+        GUM_SCALAR >::projectFunction())(const MultiDimImplementation< GUM_SCALAR >&,
+                                         const Set< const DiscreteVariable* >&) {
     return proj_;
   }
 

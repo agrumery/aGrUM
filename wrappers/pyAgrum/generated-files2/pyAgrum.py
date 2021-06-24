@@ -26110,7 +26110,6 @@ class BNLearner(object):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         r"""
@@ -26166,6 +26165,14 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_learnParameters(self, *args)
 
+    def __repr__(self):
+        r"""__repr__(BNLearner self) -> std::string"""
+        return _pyAgrum.BNLearner___repr__(self)
+
+    def __str__(self):
+        r"""__str__(BNLearner self) -> std::string"""
+        return _pyAgrum.BNLearner___str__(self)
+
     def chi2(self, *args):
         r"""
         chi2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw={}) -> PyObject
@@ -26217,6 +26224,10 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_G2(self, *args)
+
+    def state(self):
+        r"""state(BNLearner self) -> PyObject *"""
+        return _pyAgrum.BNLearner_state(self)
 
     def pseudoCount(self,vars):
         """ access to pseudo-count (priors taken into account)

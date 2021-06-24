@@ -82,9 +82,9 @@ namespace gum {
   /// returns the combination function currently used by the combinator
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >* (
-     *ScheduleCombinationBasic< GUM_SCALAR >::combineFunction())(
-     const MultiDimImplementation< GUM_SCALAR >&,
-     const MultiDimImplementation< GUM_SCALAR >&) {
+     *ScheduleCombinationBasic<
+        GUM_SCALAR >::combineFunction())(const MultiDimImplementation< GUM_SCALAR >&,
+                                         const MultiDimImplementation< GUM_SCALAR >&) {
     return combine_;
   }
 
