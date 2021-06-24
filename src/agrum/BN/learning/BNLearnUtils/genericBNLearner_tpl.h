@@ -32,7 +32,7 @@ namespace gum {
                                          const BayesNet< GUM_SCALAR >&     bn,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      genericBNLearner::checkFileName_(filename);
+      genericBNLearner::isCSVFileName_(filename);
       DBInitializerFromCSV<>                initializer(filename);
       const auto&                           xvar_names = initializer.variableNames();
       std::size_t                           nb_vars    = xvar_names.size();

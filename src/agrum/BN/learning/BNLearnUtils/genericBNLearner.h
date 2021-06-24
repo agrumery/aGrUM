@@ -137,7 +137,8 @@ namespace gum {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST,
-        MIIC_THREE_OFF_TWO
+        MIIC,
+        THREE_OFF_TWO
       };
 
 
@@ -785,7 +786,7 @@ namespace gum {
       /// the constraint on possible Edges
       StructuralConstraintPossibleEdges constraintPossibleEdges_;
 
-      /// the constraint on forbidden arcs
+      /// the constraint on mandatory arcs
       StructuralConstraintMandatoryArcs constraintMandatoryArcs_;
 
       /// the selected learning algorithm
@@ -822,8 +823,18 @@ namespace gum {
       /// the filename for the Dirichlet a priori, if any
       std::string aprioriDbname_;
 
+
       /// an initial DAG given to learners
       DAG initialDag_;
+
+      /// the filename database
+      std::string filename_;
+
+      // size of the tabu list
+      Size nbDecreasingChanges_{2};
+
+      //order for K2 algorithm
+      Sequence< NodeId > orderK2_;
 
       // the current algorithm as an approximationScheme
       const ApproximationScheme* currentAlgorithm_{nullptr};
@@ -833,7 +844,7 @@ namespace gum {
                                        const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
-      static void checkFileName_(const std::string& filename);
+      static void isCSVFileName_(const std::string& filename);
 
       /// create the apriori used for learning
       void createApriori_();
@@ -860,7 +871,7 @@ namespace gum {
 
       public:
       // ##########################################################################
-      /// @name redistribute signals AND implemenation of interface
+      /// @name redistribute signals AND implementation of interface
       /// IApproximationSchemeConfiguration
       // ##########################################################################
       // in order to not pollute the proper code of genericBNLearner, we

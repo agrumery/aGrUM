@@ -247,6 +247,216 @@ namespace gum {
       return modals;
     }
 
+
+    template < typename GUM_SCALAR >
+    std::string BNLearner< GUM_SCALAR >::toString() const {
+      const auto st = state();
+
+      Size maxkey = 0;
+      for (const auto& tuple: st)
+        if (std::get< 0 >(tuple).length() > maxkey) maxkey = std::get< 0 >(tuple).length();
+
+      std::stringstream s;
+      for (const auto& tuple: st) {
+        s << std::setiosflags(std::ios::left) << std::setw(maxkey) << std::get< 0 >(tuple) << " : "
+          << std::get< 1 >(tuple);
+        if (std::get< 2 >(tuple) != "") s << "  (" << std::get< 2 >(tuple) << ")";
+        s << std::endl;
+      }
+      return s.str();
+    }
+
+    template < typename GUM_SCALAR >
+    std::vector< std::tuple< std::string, std::string, std::string > >
+       BNLearner< GUM_SCALAR >::state() const {
+      std::vector< std::tuple< std::string, std::string, std::string > > vals;
+
+      std::string key;
+      std::string comment;
+      const auto& db = database();
+
+      vals.emplace_back("Filename", filename_, "");
+      vals.emplace_back("Size",
+                        "(" + std::to_string(nbCols()) + "," + std::to_string(nbRows()) + ")",
+                        "");
+
+      std::string vars = "";
+      for (NodeId i = 0; i < db.nbVariables(); i++) {
+        if (i > 0) vars += ", ";
+        vars += nameFromId(i) + "[" + std::to_string(db.domainSize(i)) + "]";
+      }
+      vals.emplace_back("Variables", vars, "");
+      vals.emplace_back("Missing values", hasMissingValues() ? "True" : "False", "");
+
+      key = "Algorithm";
+      switch (selectedAlgo_) {
+        case AlgoType::GREEDY_HILL_CLIMBING:
+          vals.emplace_back(key, "Greedy Hill Climbing", "");
+          break;
+        case AlgoType::K2:
+          vals.emplace_back(key, "K2", "");
+          vals.emplace_back("K2 order", orderK2_.toString(), "");
+          break;
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
+          vals.emplace_back(key, "Local Search with Tabu List", "");
+          vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
+          break;
+        case AlgoType::THREE_OFF_TWO:
+          vals.emplace_back(key, "3off2", "");
+          break;
+        case AlgoType::MIIC:
+          vals.emplace_back(key, "MIIC", "");
+          break;
+        default:
+          vals.emplace_back(key, "(unknown)", "?");
+          break;
+      }
+
+      if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
+        key = "Score";
+        switch (scoreType_) {
+          case ScoreType::K2:
+            vals.emplace_back(key, "K2", "");
+            break;
+          case ScoreType::AIC:
+            vals.emplace_back(key, "AIC", "");
+            break;
+          case ScoreType::BIC:
+            vals.emplace_back(key, "BIC", "");
+            break;
+          case ScoreType::BD:
+            vals.emplace_back(key, "BD", "");
+            break;
+          case ScoreType::BDeu:
+            vals.emplace_back(key, "BDeu", "");
+            break;
+          case ScoreType::LOG2LIKELIHOOD:
+            vals.emplace_back(key, "Log2Likelihood", "");
+            break;
+          default:
+            vals.emplace_back(key, "(unknown)", "?");
+            break;
+        }
+      } else {
+        key = "Correction";
+        switch (kmode3Off2_) {
+          case CorrectedMutualInformation<>::KModeTypes::MDL:
+            vals.emplace_back(key, "MDL", "");
+            break;
+          case CorrectedMutualInformation<>::KModeTypes::NML:
+            vals.emplace_back(key, "NML", "");
+            break;
+          case CorrectedMutualInformation<>::KModeTypes::NoCorr:
+            vals.emplace_back(key, "No correction", "");
+            break;
+          default:
+            vals.emplace_back(key, "(unknown)", "?");
+            break;
+        }
+      }
+
+      key = "Prior";
+      switch (aprioriType_) {
+        case AprioriType::NO_APRIORI:
+          vals.emplace_back(key, "-", "");
+          break;
+        case AprioriType::DIRICHLET_FROM_DATABASE:
+          vals.emplace_back(key, "Dirichlet", "");
+          vals.emplace_back("Dirichlet database", aprioriDbname_, "");
+          break;
+        case AprioriType::BDEU:
+          vals.emplace_back(key, "BDEU", "");
+          break;
+        case AprioriType::SMOOTHING:
+          vals.emplace_back(key, "Smoothing", "");
+          break;
+        default:
+          vals.emplace_back(key, "(unknown)", "?");
+          break;
+      }
+
+      if (aprioriType_ != AprioriType::NO_APRIORI)
+        vals.emplace_back("Prior weight", std::to_string(aprioriWeight_), "");
+
+      if (epsilonEM_ > 0.0) {
+        comment = "";
+        if (!hasMissingValues()) comment = "But no missing values in this database";
+        vals.emplace_back("EM", "True", "");
+        vals.emplace_back("EM epsilon", std::to_string(epsilonEM_), comment);
+      }
+
+      std::string res;
+      bool        nofirst;
+      if (constraintIndegree_.maxIndegree() < std::numeric_limits< Size >::max()) {
+        vals.emplace_back("Constraint Max InDegree",
+                          std::to_string(constraintIndegree_.maxIndegree()),
+                          "Used only for score-based algorithms.");
+      }
+      if (!constraintForbiddenArcs_.arcs().empty()) {
+        res     = "{";
+        nofirst = false;
+        for (const auto& arc: constraintForbiddenArcs_.arcs()) {
+          if (nofirst)
+            res += ", ";
+          else
+            nofirst = true;
+          res += nameFromId(arc.tail()) + "->" + nameFromId(arc.head());
+        }
+        res += "}";
+        vals.emplace_back("Constraint Forbidden Arcs", res, "");
+      }
+      if (!constraintMandatoryArcs_.arcs().empty()) {
+        res     = "{";
+        nofirst = false;
+        for (const auto& arc: constraintMandatoryArcs_.arcs()) {
+          if (nofirst)
+            res += ", ";
+          else
+            nofirst = true;
+          res += nameFromId(arc.tail()) + "->" + nameFromId(arc.head());
+        }
+        res += "}";
+        vals.emplace_back("Constraint Mandatory Arcs", res, "");
+      }
+      if (!constraintPossibleEdges_.edges().empty()) {
+        res     = "{";
+        nofirst = false;
+        for (const auto& edge: constraintPossibleEdges_.edges()) {
+          if (nofirst)
+            res += ", ";
+          else
+            nofirst = true;
+          res += nameFromId(edge.first()) + "--" + nameFromId(edge.second());
+        }
+        res += "}";
+        vals.emplace_back("Constraint Possible Edges",
+                          res,
+                          "Used only for score-based algorithms.");
+      }
+      if (!constraintSliceOrder_.sliceOrder().empty()) {
+        res               = "{";
+        nofirst           = false;
+        const auto& order = constraintSliceOrder_.sliceOrder();
+        for (const auto& p: order) {
+          if (nofirst)
+            res += ", ";
+          else
+            nofirst = true;
+          res += nameFromId(p.first) + ":" + std::to_string(p.second);
+        }
+        res += "}";
+        vals.emplace_back("Constraint Slice Order", res, "Used only for score-based algorithms.");
+      }
+
+      return vals;
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {
+      output << learner.toString();
+      return output;
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

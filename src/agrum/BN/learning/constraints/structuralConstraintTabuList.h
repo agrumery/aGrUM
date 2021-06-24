@@ -55,12 +55,9 @@ namespace gum {
      *
      * By default, the size of the tabu list is 2, but it can be changed by the
      * user using method setTabuSize (). Each time you modify the graph you
-     *learn,
-     * the inverse change is put into the tabu list. For instance, if the
-     *learning
-     * algorithm adds an arc (X, Y), then the "Deletion of Arc (X,Y)" operation
-     *is
-     * inserted into the tabu list. If the operation performed is an arc (X,Y)
+     * learn, the inverse change is put into the tabu list. For instance, if the
+     * learning algorithm adds an arc (X, Y), then the "Deletion of Arc (X,Y)" operation
+     * is inserted into the tabu list. If the operation performed is an arc (X,Y)
      * reversal, then the "Reversal of Arc (Y,X)" operation is added to the tabu
      * list.
      * @ingroup learning_group

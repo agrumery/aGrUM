@@ -198,13 +198,13 @@ namespace gum {
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::use3off2() {
-      selectedAlgo_ = AlgoType::MIIC_THREE_OFF_TWO;
+      selectedAlgo_ = AlgoType::THREE_OFF_TWO;
       algoMiic3off2_.set3of2Behaviour();
     }
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::useMIIC() {
-      selectedAlgo_ = AlgoType::MIIC_THREE_OFF_TWO;
+      selectedAlgo_ = AlgoType::MIIC;
       algoMiic3off2_.setMiicBehaviour();
     }
 
@@ -231,6 +231,7 @@ namespace gum {
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) {
       selectedAlgo_ = AlgoType::K2;
+      orderK2_=order;
       algoK2_.setOrder(order);
     }
 
@@ -248,6 +249,7 @@ namespace gum {
     // indicate that we wish to use a local search with tabu list
     INLINE void genericBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
       selectedAlgo_ = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+      nbDecreasingChanges_=nb_decrease;
       constraintTabuList_.setTabuListSize(tabu_size);
       localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);
     }

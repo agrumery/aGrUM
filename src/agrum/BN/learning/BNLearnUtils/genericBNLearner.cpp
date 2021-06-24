@@ -73,7 +73,7 @@ namespace gum {
                                          Database&                         score_database,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the CSV file its column
-      genericBNLearner::checkFileName_(CSV_filename);
+      genericBNLearner::isCSVFileName_(CSV_filename);
       DBInitializerFromCSV<>                initializer(CSV_filename);
       const auto&                           apriori_names   = initializer.variableNames();
       std::size_t                           apriori_nb_vars = apriori_names.size();
@@ -179,6 +179,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(const std::string&                filename,
                                        const std::vector< std::string >& missing_symbols) :
         scoreDatabase_(filename, missing_symbols) {
+      filename_  = filename;
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONSTRUCTOR(genericBNLearner);
@@ -186,6 +187,7 @@ namespace gum {
 
 
     genericBNLearner::genericBNLearner(const DatabaseTable<>& db) : scoreDatabase_(db) {
+      filename_  = "-";
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONSTRUCTOR(genericBNLearner);
@@ -204,7 +206,9 @@ namespace gum {
         greedyHillClimbing_(from.greedyHillClimbing_),
         localSearchWithTabuList_(from.localSearchWithTabuList_),
         scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
-        aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_) {
+        aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_),
+        filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_),
+        orderK2_(from.orderK2_) {
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(genericBNLearner);
@@ -224,7 +228,10 @@ namespace gum {
         greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
         localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
         scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
-        aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)) {
+        aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
+        filename_(std::move(from.filename_)),
+        nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)),
+        orderK2_(std::move(from.orderK2_)) {
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(genericBNLearner)
@@ -286,6 +293,9 @@ namespace gum {
         ranges_                  = from.ranges_;
         aprioriDbname_           = from.aprioriDbname_;
         initialDag_              = from.initialDag_;
+        filename_                = from.filename_;
+        nbDecreasingChanges_     = from.nbDecreasingChanges_;
+        orderK2_                 = from.orderK2_;
         currentAlgorithm_        = nullptr;
       }
 
@@ -333,7 +343,10 @@ namespace gum {
         scoreDatabase_           = std::move(from.scoreDatabase_);
         ranges_                  = std::move(from.ranges_);
         aprioriDbname_           = std::move(from.aprioriDbname_);
+        filename_                = std::move(from.filename_);
         initialDag_              = std::move(from.initialDag_);
+        nbDecreasingChanges_     = std::move(from.nbDecreasingChanges_);
+        orderK2_                 = std::move(from.orderK2_);
         currentAlgorithm_        = nullptr;
       }
 
@@ -379,7 +392,7 @@ namespace gum {
     }
 
 
-    void genericBNLearner::checkFileName_(const std::string& filename) {
+    void genericBNLearner::isCSVFileName_(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -402,7 +415,7 @@ namespace gum {
     DatabaseTable<> genericBNLearner::readFile_(const std::string&                filename,
                                                 const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
-      checkFileName_(filename);
+      isCSVFileName_(filename);
 
       DBInitializerFromCSV<> initializer(filename);
 
@@ -594,7 +607,7 @@ namespace gum {
     }
 
     MixedGraph genericBNLearner::learnMixedStructure() {
-      if (selectedAlgo_ != AlgoType::MIIC_THREE_OFF_TWO) {
+      if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
       }
       // check that the database does not contain any missing value
@@ -678,7 +691,8 @@ namespace gum {
 
       switch (selectedAlgo_) {
         // ========================================================================
-        case AlgoType::MIIC_THREE_OFF_TWO: {
+        case AlgoType::MIIC:
+        case AlgoType::THREE_OFF_TWO: {
           BNLearnerListener listener(this, algoMiic3off2_);
           // create the mixedGraph and the corrected mutual information
           MixedGraph mgraph = this->prepareMiic3Off2_();

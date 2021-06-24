@@ -169,12 +169,21 @@ namespace gum {
        */
       BayesNet< GUM_SCALAR > learnParameters(bool take_into_account_score = true);
 
+      /// @return Returns a string representation of this BNLearner's current features.
+      std::string toString() const;
+
+      /// @return a representation of the state of the learner in the form vector<key,value,comment>
+      std::vector< std::tuple< std::string, std::string, std::string > > state() const;
+
       private:
       /// read the first line of a file to find column names
       NodeProperty< Sequence< std::string > > _labelsFromBN_(const std::string&            filename,
                                                              const BayesNet< GUM_SCALAR >& src);
     };
 
+    /// Prints BNLearner's current features
+    template < typename GUM_SCALAR >
+    std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner);
   } /* namespace learning */
 
 } /* namespace gum */
