@@ -250,6 +250,29 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
 
 
 class ShapValues:
+  """
+  The ShapValue class implements the calculation of Shap values in Bayesian networks. The main implementation is based
+  on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In
+  addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
+
+  Parameters
+  ----------
+  bn : gum.BayesNet
+    The Bayesian network
+
+  target : str
+    the name of the target node
+
+
+.. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th
+      Conference on Neural Information Processing Systems. Vancouver, Canada.
+
+.. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality
+      problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
+
+.. [3] Lundberg, S. M., & Su-In, L. (2017). A Unified Approach to Interpreting Model. 31st Conference on Neural
+      Information Processing Systems. Long Beach, CA, USA.
+  """
   @staticmethod
   def _logit(p):
     return np.log(p / (1 - p))
@@ -391,11 +414,17 @@ class ShapValues:
   ################################## Function to Compute CONDITIONNAL SHAP Value ##################################
   def _conditional(self, train: pd.DataFrame) -> Dict[str, float]:
     """
-        return the conditional ShapValues for each variable
+    Compute the conditional Shap Values for each variables.
 
-        :param train: using this dataframe
-        :return: a dictionary (name of variable,shapvalue)
-        """
+    Parameters
+    ----------
+    train :pandas.DataFrame
+      the database
+
+    Returns
+    -------
+      a dictionary Dict{str,float}
+    """
     markov_blanket = self._get_markov_blanket()
 
     ie = self._init_Inference()
@@ -431,17 +460,22 @@ class ShapValues:
 
   def conditional(self, train, plot=False, plot_importance=False, percentage=False):
     """
+    Compute the conditional Shap Values for each variables.
 
     Parameters
     ----------
-    train
-    plot
-    plot_importance
-    percentage
+    train :pandas.DataFrame
+      the database
+    plot: bool
+      if True, plot the violin graph of the shap values
+    plot_importance: bool
+      if True, plot the importance plot
+    percentage: bool
+      if True, the importance plot is shown in percent.
 
     Returns
     -------
-
+      a dictionary Dict{str,float}
     """
     results = self._conditional(train)
     n_feats = len(self.feats_names)
@@ -491,18 +525,24 @@ class ShapValues:
     return df
 
   def conditionalMarkovBlanket(self, train, plot=False, plot_importance=False, percentage=False):
+
     """
+    Compute the conditional Shap Values for each variables in the Markov Blanket.
 
     Parameters
     ----------
-    train
-    plot
-    plot_importance
-    percentage
+    train :pandas.DataFrame
+      the database
+    plot: bool
+      if True, plot the violin graph of the shap values
+    plot_importance: bool
+      if True, plot the importance plot
+    percentage: bool
+      if True, the importance plot is shown in percent.
 
     Returns
     -------
-
+      a dictionary Dict{str,float}
     """
     results = self._conditionalMarkovBlanket(train)
     n_feats = len(self.feats_names)
@@ -551,18 +591,24 @@ class ShapValues:
 
   def marginal(self, train, sample_size=200, plot=False, plot_importance=False, percentage=False):
     """
+    Compute the marginal Shap Values for each variables.
 
     Parameters
     ----------
-    train
-    sample_size
-    plot
-    plot_importance
-    percentage
+    train :pandas.DataFrame
+      the database
+    sample_size : int
+      The computation of marginal ShapValue is very slow. The parameter allow to compute only on a fragment of the database.
+    plot: bool
+      if True, plot the violin graph of the shap values
+    plot_importance: bool
+      if True, plot the importance plot
+    percentage: bool
+      if True, the importance plot is shown in percent.
 
     Returns
     -------
-
+      a dictionary Dict{str,float}
     """
     results = self._marginal(train, sample_size)
     n_feats = len(self.feats_names)
@@ -623,17 +669,22 @@ class ShapValues:
 
   def causal(self, train, plot=False, plot_importance=False, percentage=False):
     """
+    Compute the causal Shap Values for each variables.
 
     Parameters
     ----------
-    train
-    plot
-    plot_importance
-    percentage
+    train :pandas.DataFrame
+      the database
+    plot: bool
+      if True, plot the violin graph of the shap values
+    plot_importance: bool
+      if True, plot the importance plot
+    percentage: bool
+      if True, the importance plot is shown in percent.
 
     Returns
     -------
-
+      a dictionary Dict{str,float}
     """
     results = self._causal(train)
     n_feats = len(self.feats_names)
