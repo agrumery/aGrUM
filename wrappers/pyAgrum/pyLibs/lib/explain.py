@@ -178,7 +178,8 @@ def _reprInformation(bn, evs, size, cmap, asString):
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
   gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
               cmapArc=cmap,
-              showMsg=nodevals)
+              showMsg=nodevals
+              )
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
@@ -189,11 +190,13 @@ def _reprInformation(bn, evs, size, cmap, asString):
   norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
   cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                   norm=norm,
-                                  orientation='horizontal')
+                                  orientation='horizontal'
+                                  )
   cb1.set_label('Entropy')
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
-    'ascii')
+    'ascii'
+  )
 
   gsvg = IPython.display.SVG(gr.create_svg())
 
@@ -251,9 +254,9 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
 
 class ShapValues:
   """
-  The ShapValue class implements the calculation of Shap values in Bayesian networks. The main implementation is based
-  on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In
-  addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
+  The ShapValue class implements the calculation of Shap values in Bayesian networks.
+
+  The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
 
   Parameters
   ----------
@@ -264,15 +267,13 @@ class ShapValues:
     the name of the target node
 
 
-.. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th
-      Conference on Neural Information Processing Systems. Vancouver, Canada.
+.. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th Conference on Neural Information Processing Systems. Vancouver, Canada.
 
-.. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality
-      problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
+.. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
 
-.. [3] Lundberg, S. M., & Su-In, L. (2017). A Unified Approach to Interpreting Model. 31st Conference on Neural
-      Information Processing Systems. Long Beach, CA, USA.
+.. [3] Lundberg, S. M., & Su-In, L. (2017). A Unified Approach to Interpreting Model. 31st Conference on Neural Information Processing Systems. Long Beach, CA, USA.
   """
+
   @staticmethod
   def _logit(p):
     return np.log(p / (1 - p))
@@ -482,10 +483,9 @@ class ShapValues:
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
-    if plot:
-      self._plot_violin(results)
-    if plot_importance:
-      self._plot_importance(results, percentage)
+
+    self._plotResults(results,plot,plot_importance,percentage)
+
     return res
 
   ########################## Markov ###########################
@@ -549,10 +549,9 @@ class ShapValues:
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
-    if plot:
-      self._plot_violin(results)
-    if plot_importance:
-      self._plot_importance(results, percentage)
+
+    self._plotResults(results, plot, plot_importance, percentage)
+
     return res
 
   ################################## Function to Compute MARGINAL SHAP Value ##################################
@@ -586,8 +585,20 @@ class ShapValues:
         somme = somme + self._compute_SHAP_i(S_U_i, S, v, size_S)
 
       df[feat] = somme
+
     self.results = df
     return df
+
+  def _plotResults(self, results, plot=False, plot_importance=False, percentage=False):
+    ax1 = ax2 = None
+    if plot and plot_importance:
+      fig = plt.figure(figsize=(15, 0.5*len(results.columns)))
+      ax1 = fig.add_subplot(1, 2, 1)
+      ax2 = fig.add_subplot(1, 2, 2)
+    if plot:
+      self._plot_violin(results, ax=ax1)
+    if plot_importance:
+      self._plot_importance(results, percentage, ax=ax2)
 
   def marginal(self, train, sample_size=200, plot=False, plot_importance=False, percentage=False):
     """
@@ -615,10 +626,9 @@ class ShapValues:
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
-    if plot:
-      self._plot_violin(results)
-    if plot_importance:
-      self._plot_importance(results, percentage)
+
+    self._plotResults(results,plot,plot_importance,percentage)
+
     return res
 
     ################################## MUTILATION ######################################
@@ -691,20 +701,20 @@ class ShapValues:
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
-    if plot:
-      self._plot_violin(results)
-    if plot_importance:
-      self._plot_importance(results, percentage)
+
+    self._plotResults(results, plot, plot_importance, percentage)
+
     return res
 
     ################################## PLOT SHAP Value ##################################
 
-  def _plot_importance(self, results, percentage=False):
+  def _plot_importance(self, results, percentage=False, ax=None):
     n_feats = len(self.feats_names)
     series = pd.DataFrame(abs(results).mean(), columns=['value'])
     series['feat'] = series.index
 
-    fig, ax = plt.subplots()
+    if ax is None:
+      fig, ax = plt.subplots()
 
     if percentage == True:
       series['value'] = series['value'].div(series['value'].sum(axis=0)).multiply(100)
@@ -719,19 +729,22 @@ class ShapValues:
       ax.set_xlabel('Mean(|SHAP value|)')
       ax.set_title('Feature Importance')
 
-    plt.show()
+    return ax.get_figure()
 
-  def _plot_scatter(self, results):
+  def _plot_scatter(self, results, ax=None):
+    if ax is None:
+      fig, ax = plt.subplots()
+
     res = {}
     for col in results.columns:
       res[col] = results[col].to_numpy()
     names = list(res.keys())
     values = list(res.values())
     for xe, ye in zip(names, values):
-      plt.scatter(ye, [xe] * len(ye))
-    plt.show()
+      ax.scatter(ye, [xe] * len(ye))
+    return ax.get_figure()
 
-  def _plot_violin(self, results):
+  def _plot_violin(self, results, ax=None):
     data = []
     pos = []
     label = []
@@ -739,12 +752,12 @@ class ShapValues:
       data.append(results[col].to_numpy())
       pos.append(i)
       label.append(col)
-    plt.figure()
-    ax = plt.subplot()
-    plt.violinplot(data, pos, vert=False)
+    if ax is None:
+      fig, ax = plt.subplots()
+    ax.violinplot(data, pos, vert=False)
     ax.set_yticks(pos)
     ax.set_yticklabels(label)
-    plt.show()
+    return ax.get_figure()
 
   def showShapValues(self, results, cmap='plasma'):
     """
@@ -766,5 +779,6 @@ class ShapValues:
     cm = plt.get_cmap(cmap)
     g = BN2dot(self.bn,
                nodeColor=norm_color,
-               cmapNode=cm)
+               cmapNode=cm
+               )
     return g
