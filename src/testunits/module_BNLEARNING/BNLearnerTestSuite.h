@@ -1635,6 +1635,17 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Constraint Slice Order")
         TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "{corporate customer:1, renewal:0, loyalty:0, recent visit:1}")
       }
+
+      gum::DAG dag;
+      dag.addNodes(learner.nbCols());
+      dag.addArc(0,1);
+      learner.setInitialDAG(dag);
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 10);
+        TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Initial DAG")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[9]), "True")
+      }
     }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

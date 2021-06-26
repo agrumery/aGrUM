@@ -155,6 +155,8 @@ namespace gum {
     // sets an initial DAG structure
     INLINE void genericBNLearner::setInitialDAG(const DAG& dag) { initialDag_ = dag; }
 
+    INLINE DAG genericBNLearner::initialDAG() { return initialDag_; }
+
     // indicate that we wish to use an AIC score
     INLINE void genericBNLearner::useScoreAIC() {
       scoreType_ = ScoreType::AIC;

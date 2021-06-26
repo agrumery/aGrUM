@@ -447,6 +447,9 @@ namespace gum {
         res += "}";
         vals.emplace_back("Constraint Slice Order", res, "Used only for score-based algorithms.");
       }
+      if (initialDag_.size()!=0) {
+        vals.emplace_back("Initial DAG", "True", initialDag_.toDot());
+      }
 
       return vals;
     }

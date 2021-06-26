@@ -382,6 +382,9 @@ namespace gum {
       /// sets an initial DAG structure
       void setInitialDAG(const DAG&);
 
+      /// returns the initial DAG structure
+      DAG initialDAG();
+
       /// returns the names of the variables in the database
       const std::vector< std::string >& names() const;
 
