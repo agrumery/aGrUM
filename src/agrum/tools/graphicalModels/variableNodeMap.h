@@ -109,6 +109,9 @@ namespace gum {
     /// removes all the associations
     void clear();
 
+    /// give the size
+    Size size() const;
+
     /// friendly displays the content of the VariableNodeMap
     std::string toString() const;
 

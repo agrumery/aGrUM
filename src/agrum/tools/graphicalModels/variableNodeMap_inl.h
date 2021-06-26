@@ -56,6 +56,10 @@ namespace gum {
     return _nodes2vars_.existsSecond(&var);
   }
 
+  // Return the size of the map
+  INLINE
+  gum::Size VariableNodeMap::size() const { return _nodes2vars_.size(); }
+
   // Returns a node id given it's variable.
   // @throws NotFound Raised if no nodes matches var.
   INLINE

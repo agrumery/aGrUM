@@ -1544,15 +1544,97 @@ namespace gum_tests {
 
     void testState() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
-      GUM_TRACE("\n\n" << learner);
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 7)
+        TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[1]), "Size")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[1]), "(50000,6)")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[2]), "Variables")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[2]),
+                         "loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
+                         "coupon[2], recent visit[2]")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[3]), "Missing values")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[3]), "False")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[4]), "Algorithm")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[4]), "Greedy Hill Climbing")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "Score")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[5]), "BDeu")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Prior")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "-")
+      }
 
       learner.useMIIC();
       learner.useNMLCorrection();
-      GUM_TRACE("\n\n" << learner);
+
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 7);
+        TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[1]), "Size")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[1]), "(50000,6)")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[2]), "Variables")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[2]),
+                         "loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
+                         "coupon[2], recent visit[2]")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[3]), "Missing values")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[3]), "False")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[4]), "Algorithm")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[4]), "MIIC")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "Correction")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[5]), "NML")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Prior")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "-")
+      }
 
       learner.addPossibleEdge("loyalty", "renewal");
       learner.setSliceOrder({{"loyalty", "renewal"}, {"recent visit", "corporate customer"}});
-      GUM_TRACE("\n\n" << learner);
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 9);
+        TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[1]), "Size")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[1]), "(50000,6)")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[2]), "Variables")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[2]),
+                         "loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
+                         "coupon[2], recent visit[2]")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[3]), "Missing values")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[3]), "False")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[4]), "Algorithm")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[4]), "MIIC")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "Correction")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[5]), "NML")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Prior")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "-")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Constraint Possible Edges")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "{loyalty--renewal}")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Constraint Slice Order")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "{corporate customer:1, renewal:0, loyalty:0, recent visit:1}")
+      }
     }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

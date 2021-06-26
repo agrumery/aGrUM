@@ -645,13 +645,10 @@ namespace gum_tests {
       frag.installNode("B");
       frag.installNode("C");
 
-      GUM_TRACE_VAR(frag.children("B"))
-      GUM_TRACE_VAR(frag.variableNodeMap())
+      TS_ASSERT_EQUALS(frag.children("B"),gum::NodeSet({2}))
+      TS_ASSERT_EQUALS(frag.variableNodeMap().size(),gum::Size(6)) // the size of bn.size() ...
 
-      for (const auto& n: frag.nodes())
-        GUM_TRACE_VAR(n)
-
-      GUM_TRACE_VAR(frag.names(std::vector< gum::NodeId >({0, 1, 2, 3})))
+      TS_ASSERT_EQUALS(frag.nodes().asNodeSet(),gum::NodeSet({0,1,2}))
     }
   };
 }   // namespace gum_tests

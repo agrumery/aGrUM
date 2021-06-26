@@ -277,7 +277,7 @@ namespace gum {
 
       vals.emplace_back("Filename", filename_, "");
       vals.emplace_back("Size",
-                        "(" + std::to_string(nbCols()) + "," + std::to_string(nbRows()) + ")",
+                        "(" + std::to_string(nbRows()) + "," + std::to_string(nbCols()) + ")",
                         "");
 
       std::string vars = "";
