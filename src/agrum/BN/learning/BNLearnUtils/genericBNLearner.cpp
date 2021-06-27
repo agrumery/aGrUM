@@ -207,8 +207,7 @@ namespace gum {
         localSearchWithTabuList_(from.localSearchWithTabuList_),
         scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
         aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_),
-        filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_),
-        orderK2_(from.orderK2_) {
+        filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(genericBNLearner);
@@ -230,8 +229,7 @@ namespace gum {
         scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
         aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
         filename_(std::move(from.filename_)),
-        nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)),
-        orderK2_(std::move(from.orderK2_)) {
+        nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)){
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(genericBNLearner)
@@ -295,7 +293,6 @@ namespace gum {
         initialDag_              = from.initialDag_;
         filename_                = from.filename_;
         nbDecreasingChanges_     = from.nbDecreasingChanges_;
-        orderK2_                 = from.orderK2_;
         currentAlgorithm_        = nullptr;
       }
 
@@ -346,7 +343,6 @@ namespace gum {
         filename_                = std::move(from.filename_);
         initialDag_              = std::move(from.initialDag_);
         nbDecreasingChanges_     = std::move(from.nbDecreasingChanges_);
-        orderK2_                 = std::move(from.orderK2_);
         currentAlgorithm_        = nullptr;
       }
 

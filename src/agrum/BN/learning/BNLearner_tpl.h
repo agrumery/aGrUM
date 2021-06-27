@@ -293,10 +293,16 @@ namespace gum {
         case AlgoType::GREEDY_HILL_CLIMBING:
           vals.emplace_back(key, "Greedy Hill Climbing", "");
           break;
-        case AlgoType::K2:
+        case AlgoType::K2: {
           vals.emplace_back(key, "K2", "");
-          vals.emplace_back("K2 order", orderK2_.toString(), "");
-          break;
+          const auto& k2order = algoK2_.order();
+          vars                = "";
+          for (NodeId i = 0; i < k2order.size(); i++) {
+            if (i > 0) vars += ", ";
+            vars += nameFromId(k2order.atPos(i));
+          }
+          vals.emplace_back("K2 order", vars, "");
+        } break;
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
           vals.emplace_back(key, "Local Search with Tabu List", "");
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
@@ -447,7 +453,7 @@ namespace gum {
         res += "}";
         vals.emplace_back("Constraint Slice Order", res, "Used only for score-based algorithms.");
       }
-      if (initialDag_.size()!=0) {
+      if (initialDag_.size() != 0) {
         vals.emplace_back("Initial DAG", "True", initialDag_.toDot());
       }
 

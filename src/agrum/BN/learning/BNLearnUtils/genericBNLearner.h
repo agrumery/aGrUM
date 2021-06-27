@@ -838,9 +838,6 @@ namespace gum {
       // size of the tabu list
       Size nbDecreasingChanges_{2};
 
-      // order for K2 algorithm
-      Sequence< NodeId > orderK2_;
-
       // the current algorithm as an approximationScheme
       const ApproximationScheme* currentAlgorithm_{nullptr};
 

@@ -233,7 +233,6 @@ namespace gum {
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) {
       selectedAlgo_ = AlgoType::K2;
-      orderK2_      = order;
       algoK2_.setOrder(order);
     }
 

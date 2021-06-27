@@ -259,7 +259,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void /*test*/_asia_db() {
+    // void test_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -1646,6 +1646,12 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Initial DAG")
         TS_ASSERT_EQUALS(std::get< 1 >(state[9]), "True")
       }
+    }
+
+    void testStateContinued() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
+      learner.useK2(std::vector< gum::NodeId >{ 5, 4, 3, 2, 1, 0});
+      GUM_TRACE_VAR(learner)
     }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */
