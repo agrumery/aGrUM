@@ -251,7 +251,7 @@ namespace gum {
        const std::size_t                                        column,
        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
        const bool                                               unique_column) {
-      // create the translatator, depending on the type of the variable
+      // create the translator, depending on the type of the variable
       switch (var.varType()) {
         case VarType::Labelized: {
           const LabelizedVariable& xvar = static_cast< const LabelizedVariable& >(var);

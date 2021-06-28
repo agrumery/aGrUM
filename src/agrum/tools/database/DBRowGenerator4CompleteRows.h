@@ -141,7 +141,7 @@ namespace gum {
 
       /// @{
 
-      /// generates one ouput DBRow for each DBRow passed to method setInputRow
+      /// generates one output DBRow for each DBRow passed to method setInputRow
       /** @warning if this method is applied while the row it should return is
        * incomplete w.r.t. the nodes of interest, its behavior is uncertain
        * and will certainly result in a segmentation fault */
