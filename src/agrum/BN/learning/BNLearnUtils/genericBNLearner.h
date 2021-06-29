@@ -618,7 +618,7 @@ namespace gum {
       /// checks whether the current score and apriori are compatible
       /** @returns a non empty string if the apriori is somehow compatible with the
        * score.*/
-      std::string checkScoreAprioriCompatibility();
+      std::string checkScoreAprioriCompatibility() const;
       /// @}
 
       // ##########################################################################

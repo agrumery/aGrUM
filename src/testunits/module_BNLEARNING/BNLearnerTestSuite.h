@@ -1633,12 +1633,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "{loyalty--renewal}")
 
         TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Constraint Slice Order")
-        TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "{corporate customer:1, renewal:0, loyalty:0, recent visit:1}")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[8]),
+                         "{corporate customer:1, renewal:0, loyalty:0, recent visit:1}")
       }
 
       gum::DAG dag;
       dag.addNodes(learner.nbCols());
-      dag.addArc(0,1);
+      dag.addArc(0, 1);
       learner.setInitialDAG(dag);
       {
         auto state = learner.state();
@@ -1650,8 +1651,27 @@ namespace gum_tests {
 
     void testStateContinued() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
-      learner.useK2(std::vector< gum::NodeId >{ 5, 4, 3, 2, 1, 0});
-      GUM_TRACE_VAR(learner)
+      learner.setDatabaseWeight(1000);
+      learner.useK2(std::vector< gum::NodeId >{5, 4, 3, 2, 1, 0});
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 9);
+        TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "K2 order")
+        TS_ASSERT_EQUALS(
+           std::get< 1 >(state[5]),
+           "recent visit, coupon, corporate customer, yearly consumption, renewal, loyalty")
+
+        TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Database weight")
+        TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "1000.000000")
+      }
+      learner.useScoreAIC();
+      learner.useAprioriBDeu();
+      {
+        auto state = learner.state();
+        TS_ASSERT_EQUALS(state.size(), 10);
+        TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Prior")
+        TS_ASSERT_DIFFERS(std::get< 2 >(state[7]), "")   // there is a comment about AIC versus BDeu
+      }
     }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

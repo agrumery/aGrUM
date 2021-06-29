@@ -823,7 +823,7 @@ namespace gum {
       }
     }
 
-    std::string genericBNLearner::checkScoreAprioriCompatibility() {
+    std::string genericBNLearner::checkScoreAprioriCompatibility() const{
       const std::string& apriori = getAprioriType_();
 
       switch (scoreType_) {

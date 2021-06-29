@@ -166,8 +166,7 @@ namespace gum {
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
-          << "' is not yet supported by method isAprioriCompatible of "
-          << "Score Log2Likelihood";
+          << "' is not yet compatible with the score 'Log2Likelihood'.";
       return msg.str();
     }
 

@@ -361,20 +361,22 @@ namespace gum {
         }
       }
 
-      key = "Prior";
+
+      key     = "Prior";
+      comment = checkScoreAprioriCompatibility();
       switch (aprioriType_) {
         case AprioriType::NO_APRIORI:
-          vals.emplace_back(key, "-", "");
+          vals.emplace_back(key, "-", comment);
           break;
         case AprioriType::DIRICHLET_FROM_DATABASE:
-          vals.emplace_back(key, "Dirichlet", "");
+          vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet database", aprioriDbname_, "");
           break;
         case AprioriType::BDEU:
-          vals.emplace_back(key, "BDEU", "");
+          vals.emplace_back(key, "BDEU", comment);
           break;
         case AprioriType::SMOOTHING:
-          vals.emplace_back(key, "Smoothing", "");
+          vals.emplace_back(key, "Smoothing", comment);
           break;
         default:
           vals.emplace_back(key, "(unknown)", "?");
@@ -383,6 +385,10 @@ namespace gum {
 
       if (aprioriType_ != AprioriType::NO_APRIORI)
         vals.emplace_back("Prior weight", std::to_string(aprioriWeight_), "");
+
+      if (databaseWeight() != double(nbRows())) {
+        vals.emplace_back("Database weight", std::to_string(databaseWeight()), "");
+      }
 
       if (epsilonEM_ > 0.0) {
         comment = "";
