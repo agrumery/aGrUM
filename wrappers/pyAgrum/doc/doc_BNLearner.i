@@ -397,7 +397,7 @@ max_indegree : int
 
 %feature("docstring") gum::learning::genericBNLearner::setDatabaseWeight
 "
-Set the database weight.
+Set the database weight which is given as an equivalent sample size.
 
 Parameters
 ----------
