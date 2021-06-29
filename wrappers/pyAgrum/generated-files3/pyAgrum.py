@@ -26573,7 +26573,7 @@ class BNLearner(object):
         r"""
         setDatabaseWeight(BNLearner self, double const new_weight)
 
-        Set the database weight.
+        Set the database weight which is given as an equivalent sample size.
 
         Parameters
         ----------

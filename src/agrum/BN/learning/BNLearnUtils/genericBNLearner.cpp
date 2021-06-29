@@ -229,7 +229,7 @@ namespace gum {
         scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
         aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
         filename_(std::move(from.filename_)),
-        nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)){
+        nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
       noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(genericBNLearner)
@@ -823,7 +823,7 @@ namespace gum {
       }
     }
 
-    std::string genericBNLearner::checkScoreAprioriCompatibility() const{
+    std::string genericBNLearner::checkScoreAprioriCompatibility() const {
       const std::string& apriori = getAprioriType_();
 
       switch (scoreType_) {

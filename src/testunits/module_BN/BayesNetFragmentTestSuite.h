@@ -645,10 +645,10 @@ namespace gum_tests {
       frag.installNode("B");
       frag.installNode("C");
 
-      TS_ASSERT_EQUALS(frag.children("B"),gum::NodeSet({2}))
-      TS_ASSERT_EQUALS(frag.variableNodeMap().size(),gum::Size(6)) // the size of bn.size() ...
+      TS_ASSERT_EQUALS(frag.children("B"), gum::NodeSet({2}))
+      TS_ASSERT_EQUALS(frag.variableNodeMap().size(), gum::Size(6))   // the size of bn.size() ...
 
-      TS_ASSERT_EQUALS(frag.nodes().asNodeSet(),gum::NodeSet({0,1,2}))
+      TS_ASSERT_EQUALS(frag.nodes().asNodeSet(), gum::NodeSet({0, 1, 2}))
     }
   };
 }   // namespace gum_tests
