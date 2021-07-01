@@ -424,7 +424,7 @@ class ShapValues:
 
     Returns
     -------
-      a dictionary Dict{str,float}
+      a dictionary Dict[str,float]
     """
     markov_blanket = self._get_markov_blanket()
 
@@ -476,7 +476,7 @@ class ShapValues:
 
     Returns
     -------
-      a dictionary Dict{str,float}
+      a dictionary Dict[str,float]
     """
     results = self._conditional(train)
     n_feats = len(self.feats_names)
@@ -488,74 +488,7 @@ class ShapValues:
 
     return res
 
-  ########################## Markov ###########################
-  def _conditionalMarkovBlanket(self, train):
-    markov_blanket = self._get_markov_blanket()
-
-    ie = self._init_Inference()
-
-    v = train.groupby(self.feats_names).agg(freq=(self.feats_names[0], 'count')).reset_index()
-
-    convert = self._get_list_names_order()
-    df = pd.DataFrame()
-
-    for i in range(len(v)):
-      v['Baseline'] = self._pred_markov_blanket(train, ie, markov_blanket)
-      for coal in self._get_all_coal_compress():
-        S = list(coal)
-        condi = {}
-        for var in S:
-          condi[var] = v.loc[i, var]
-        col_arr_name = self._coal_encoding(convert, coal)
-        v.loc[i, f'{col_arr_name}'] = self._pred_markov_blanket(self._filtrage(train, condi), ie, markov_blanket)
-
-    for feat in self.feats_names:
-      list_i_last = self.feats_names.copy()
-      index_i = list_i_last.index(feat)
-      list_i_last[len(list_i_last) - 1], list_i_last[index_i] = list_i_last[index_i], list_i_last[len(list_i_last) - 1]
-
-      somme = 0
-      for coal1, coal2 in self._gen_coalitions2(list_i_last):
-        S_U_i = self._coal_encoding(convert, list(coal1))
-        S = self._coal_encoding(convert, list(coal2))
-        size_S = sum(S)
-        somme = somme + self._compute_SHAP_i(S_U_i, S, v, size_S)
-      df[feat] = somme
-    self.results = df
-    return df
-
-  def conditionalMarkovBlanket(self, train, plot=False, plot_importance=False, percentage=False):
-
-    """
-    Compute the conditional Shap Values for each variables in the Markov Blanket.
-
-    Parameters
-    ----------
-    train :pandas.DataFrame
-      the database
-    plot: bool
-      if True, plot the violin graph of the shap values
-    plot_importance: bool
-      if True, plot the importance plot
-    percentage: bool
-      if True, the importance plot is shown in percent.
-
-    Returns
-    -------
-      a dictionary Dict{str,float}
-    """
-    results = self._conditionalMarkovBlanket(train)
-    n_feats = len(self.feats_names)
-    res = {}
-    for col in results.columns:
-      res[col] = abs(results[col]).mean()
-
-    self._plotResults(results, plot, plot_importance, percentage)
-
-    return res
-
   ################################## Function to Compute MARGINAL SHAP Value ##################################
-
   def _marginal(self, df, size_sample_df):
 
     ie = self._init_Inference()
@@ -619,7 +552,7 @@ class ShapValues:
 
     Returns
     -------
-      a dictionary Dict{str,float}
+      a dictionary Dict[str,float]
     """
     results = self._marginal(train, sample_size)
     n_feats = len(self.feats_names)
@@ -694,7 +627,7 @@ class ShapValues:
 
     Returns
     -------
-      a dictionary Dict{str,float}
+      a dictionary Dict[str,float]
     """
     results = self._causal(train)
     n_feats = len(self.feats_names)
@@ -764,12 +697,14 @@ class ShapValues:
 
     Parameters
     ----------
-    results
-    cmap
+    results: dict[str,float]
+      The (Shap) values associates to each variable 
+    cmap: Matplotlib.ColorMap
+      The colormap used for colouring the nodes
 
     Returns
     -------
-
+      a pydotplus.graph
     """
     norm_color = {}
     raw = list(results.values())
