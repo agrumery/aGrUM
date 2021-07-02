@@ -141,6 +141,7 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       DBTranslator(DBTranslatedValueType                                    val_type,
+                   const bool                                               is_lossless,
                    const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
                    const bool  editable_dictionary = true,
                    std::size_t max_dico_entries    = std::numeric_limits< std::size_t >::max(),
@@ -160,6 +161,7 @@ namespace gum {
        * fields of the DBTranslator
        */
       DBTranslator(DBTranslatedValueType val_type,
+                   const bool            is_lossless,
                    const bool            editable_dictionary = true,
                    std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
                    const allocator_type& alloc  = allocator_type());
@@ -281,6 +283,11 @@ namespace gum {
       /// sets/unset the editable dictionary mode
       virtual void setEditableDictionaryMode(bool new_mode);
 
+      /// returns the translation from database indices to input strings
+      virtual const Bijection< std::size_t, std::string,
+                               ALLOC< std::pair< std::size_t, std::string > > >&
+         getDictionary () const;
+
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted
        *
@@ -341,6 +348,15 @@ namespace gum {
        * either using their discr_val field or their cont_val field. */
       DBTranslatedValueType getValType() const;
 
+      /// returns a Boolean indicating whether the translation is lossless or not
+      /** Some translations can lose some information. For instance, a translator for a
+       * discretized variable will translate all the values of a discretization interval as
+       * the same value (the index of the interval). As such it looses some information
+       * because, knowing this index, it is impossible to get back to the original value that
+       * was translated. Method isLossless() indicates whether the translation never loses
+       * any information or not. */
+      bool isLossless() const;
+
       /// returns the allocator used by the translator
       allocator_type getAllocator() const;
 
@@ -368,6 +384,8 @@ namespace gum {
 
       /// @}
 
+      /// indicates whether the translation is lossless (e.g., ranges) or not
+      bool is_lossless_;
 
       /// indicates whether the dictionary can be updated or not
       bool is_dictionary_dynamic_;
@@ -384,7 +402,7 @@ namespace gum {
        * for continuous variables are actually identity mappings.
        * @warning only the values of the random variable are stored into this
        * bijection. Missing values are not considered here. */
-      mutable Bijection< std::size_t, std::string, ALLOC< std::pair< float, std::string > > >
+      mutable Bijection< std::size_t, std::string, ALLOC< std::pair< std::size_t, std::string > > >
          back_dico_;
 
       /// the type of the values translated by the translator

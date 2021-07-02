@@ -46,6 +46,7 @@ namespace gum {
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              true,
                               missing_symbols,
                               fit_range,
                               1,
@@ -86,7 +87,7 @@ namespace gum {
     DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, true, fit_range, 1, alloc),
         _variable_("var", ""), _fit_range_(fit_range) {
       // if fit_range is true, we shall be able to update the ranges of
       // the continuous variable. To indicate that we did not encountered any
@@ -109,6 +110,7 @@ namespace gum {
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              true,
                               missing_symbols,
                               fit_range,
                               1,
@@ -151,7 +153,7 @@ namespace gum {
        const ContinuousVariable< GUM_SCALAR >&                                  var,
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, true, fit_range, 1, alloc),
         _variable_(var.name(), var.description()), _fit_range_(fit_range) {
       // get the bounds of the range variable
       const float lower_bound = float(var.lowerBound());
@@ -175,6 +177,7 @@ namespace gum {
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS,
+                              true,
                               missing_symbols,
                               fit_range,
                               1,
@@ -216,7 +219,7 @@ namespace gum {
        const IContinuousVariable&                                               var,
        const bool                                                               fit_range,
        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::CONTINUOUS, true, fit_range, 1, alloc),
         _variable_(var.name(), var.description()), _fit_range_(fit_range) {
       // get the bounds of the range variable
       const float lower_bound = var.lowerBoundAsDouble();

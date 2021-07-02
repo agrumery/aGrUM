@@ -548,6 +548,102 @@ namespace gum {
     }
 
 
+    /// change the translator of a database column
+    template < template < typename > class ALLOC >
+    void DatabaseTable< ALLOC >::changeTranslator(const DBTranslator< ALLOC >& new_translator,
+                                                  const std::size_t            k,
+                                                  const bool                   k_is_input_col) {
+      // get the index of the column in the database. If it is not found, return without any error
+      const auto db_k = _getKthIndices_(k, k_is_input_col);
+      if (db_k >= _translators_.size()) return;
+
+      /*
+      // now, we should compute the mapping from the values and missing symbols of the old
+      // translator to those of the new one
+      const DBTranslator< ALLOC >& old_translator = _translators_[db_k];
+
+      // when the database already contains some data, we must ensure that we will be able to
+      // substitute the old translator by the new one without loosing information. Possible
+      // loss of information may occur in the following cases:
+      // 1/ if the set of missing symbols of the old translator is neither included into that of
+      //    the new translator nor is a singleton (because the CSV input may contain some
+      //    old missing symbols that we don't know how to translate into proper values with the
+      //    new translator.
+      // 2/ if the set of (non-missing) values of the old translator is not a subset of that
+      //    of the new translator
+      // If one of these cases occur, before performing the translation, we must get the set of
+      // missing and observed values and check that none of them cannot be unambiguously translated
+      bool need_checking = false;
+      const auto old_missing_symbols = old_translator.missingSymbols();
+      const auto new_missing_symbols = new_translator.missingSymbols();
+      const auto old_translation = old_translator.getDictionary();
+      const auto new_translation = new_translator.getDictionary();
+
+      if (!this->rows_.empty()) {
+        if ((old_missing_symbols.size() > 1) &&
+            !old_missing_symbols.template isSubsetOrEqual(new_missing_symbols)) {
+          need_checking = true;
+        }
+        else {
+          for (const auto& trans: old_translator) {
+            if (!new_translator.existsSecond(trans.second)) {
+              need_checking = true;
+              break;
+            }
+          }
+        }
+      }
+
+      if (need_checking) {
+        // here, the idea is to parse all the data and get all the observed values and all
+        // the missing values. Then we will see, based on these observations, if it is actually
+        // possible to perform the translation
+        auto get_lambda = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
+            for (std::size_t i = begin; i < end; ++i) {
+              auto& row = this->rows_[i].row();
+              if (this->_translators_.isMissingValue(row[kk], kk)) {
+                bool has_missing_val = false;
+                for (std::size_t j = std::size_t(0); j < nb_trans; ++j) {
+                  if ((j != kk) && this->_translators_.isMissingValue(row[j], j)) {
+                    has_missing_val = true;
+                    break;
+                  }
+                }
+                if (!has_missing_val) this->has_row_missing_val_[i] = IsMissing::False;
+              }
+              row.erase(row.begin() + kk);
+            }
+          };
+
+          auto undo_erase_lambda = [](std::size_t begin, std::size_t end) -> void {
+          };
+
+          // launch the threads executing the lambdas
+          this->_threadProcessDatabase_(erase_lambda, undo_erase_lambda);
+        }
+      }
+       */
+
+    }
+
+
+    /// change the translator of a database column
+    template < template < typename > class ALLOC >
+    void DatabaseTable< ALLOC >::changeTranslator(const Variable&   var,
+                                                  const std::size_t k,
+                                                  const bool        k_is_input_col) {
+
+    }
+
+
+
+
+
+
+
+
+
+
     /// returns the set of translators
     template < template < typename > class ALLOC >
     INLINE const DBTranslatorSet< ALLOC >& DatabaseTable< ALLOC >::translatorSet() const {

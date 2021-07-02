@@ -41,6 +41,7 @@ namespace gum {
   {
     Discretized,
     Labelized,
+    Integer,
     Range,
     Continuous
   };
@@ -114,25 +115,20 @@ namespace gum {
 
     /// sets the name of the variable
     /** @param theValue */
-
     void setName(const std::string& theValue);
 
     /// returns the name of the variable
-
     const std::string& name() const;
 
     /// sets the description of the variable
     /// @warning since  _description_ is mutable, setDescription() is const
     /** @param theValue */
-
     void setDescription(const std::string& theValue) const;
 
     /// returns the description of the variable
-
     const std::string& description() const;
 
     /// returns the type of variable
-
     virtual VarType varType() const = 0;
 
     /// string represent the domain of the variable
@@ -144,23 +140,19 @@ namespace gum {
     /// (protected) Default constructor
     Variable() {
       GUM_CONSTRUCTOR(Variable);
-      ;
     }
 
     /// protected copy
     /** @param aRV to be copied */
-
     void copy_(const Variable& aRV);
 
     /// constructor
     /** @param aName name of the variable
      * @param aDesc description of the variable */
-
     Variable(const std::string& aName, const std::string& aDesc);
 
     /// copy constructor
     /** @param aRV the variable we copy */
-
     Variable(const Variable& aRV);
 
     private:

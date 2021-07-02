@@ -153,8 +153,8 @@ namespace gum {
     /// return the pos from label
     Idx posLabel(const std::string& label) const;
 
-    /// get a numerical representation of he indice-the value.
-    virtual double numerical(Idx indice) const;
+    /// get a numerical representation of the index-the value.
+    virtual double numerical(Idx index) const;
 
     /// returns the size of the random discrete variable domain
     virtual Size domainSize() const;

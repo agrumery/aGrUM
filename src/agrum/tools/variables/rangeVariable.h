@@ -95,14 +95,14 @@ namespace gum {
 
     ///
     /**
-     * Get the indice-th label.
-     * @param indice the index of the label we wish to return
+     * Get the index-th label.
+     * @param index the index of the label we wish to return
      * @throw OutOfBound
      */
-    virtual std::string label(Idx indice) const;
+    virtual std::string label(Idx index) const;
 
-    /// get a numerical representation of he indice-the value.
-    virtual double numerical(Idx indice) const;
+    /// get a numerical representation of the index-the value.
+    virtual double numerical(Idx index) const;
 
     /**
      * Returns the lower bound.

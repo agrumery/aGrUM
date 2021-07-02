@@ -38,6 +38,8 @@
 
 #include <agrum/tools/graphs/diGraph.h>
 
+#include <agrum/tools/variables/integerVariable.h>
+
 #include <agrum/BN/BayesNetFactory.h>
 
 #include <agrum/PRM/elements/PRMObject.h>

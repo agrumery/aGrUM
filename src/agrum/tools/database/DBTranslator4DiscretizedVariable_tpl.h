@@ -48,6 +48,7 @@ namespace gum {
        std::size_t                                                               max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
                               missing_symbols,
                               false,
                               max_dico_entries,
@@ -110,6 +111,7 @@ namespace gum {
        std::size_t                                                               max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
                               missing_symbols,
                               false,
                               max_dico_entries,
@@ -170,7 +172,11 @@ namespace gum {
        const DiscretizedVariable< GUM_SCALAR >&                                  var,
        std::size_t                                                               max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
+                              false,
+                              max_dico_entries,
+                              alloc),
         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {
@@ -203,7 +209,11 @@ namespace gum {
        const IDiscretizedVariable&                                               var,
        std::size_t                                                               max_dico_entries,
        const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              false,
+                              false,
+                              max_dico_entries,
+                              alloc),
         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
       if (var.domainSize() > max_dico_entries) {

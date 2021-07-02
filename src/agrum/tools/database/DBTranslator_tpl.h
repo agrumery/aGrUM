@@ -48,16 +48,24 @@ namespace gum {
     }
 
 
+    /// returns a Boolean indicating whether the translation is lossless or not
+    template < template < typename > class ALLOC >
+    INLINE bool DBTranslator< ALLOC >::isLossless() const {
+      return is_lossless_;
+    }
+
+
     /// default constructor
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     INLINE DBTranslator< ALLOC >::DBTranslator(
        DBTranslatedValueType                                    val_type,
+       const bool                                               is_lossless,
        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
        const bool                                               dynamic_dictionary,
        std::size_t                                              max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type&    alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc),
+        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(is_lossless),
         is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
         val_type_(val_type) {
       const std::size_t size = missing_symbols.size();
@@ -78,10 +86,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator< ALLOC >::DBTranslator(
        DBTranslatedValueType                                 val_type,
+       const bool                                            is_lossless,
        const bool                                            dynamic_dictionary,
        std::size_t                                           max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc),
+        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(is_lossless),
         is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
         val_type_(val_type) {
       GUM_CONSTRUCTOR(DBTranslator);
@@ -93,7 +102,7 @@ namespace gum {
     INLINE DBTranslator< ALLOC >::DBTranslator(
        const DBTranslator< ALLOC >&                          from,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc),
+        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(from.is_lossless_),
         is_dictionary_dynamic_(from.is_dictionary_dynamic_),
         max_dico_entries_(from.max_dico_entries_), missing_symbols_(from.missing_symbols_),
         back_dico_(from.back_dico_), val_type_(from.val_type_) {
@@ -112,7 +121,7 @@ namespace gum {
     INLINE DBTranslator< ALLOC >::DBTranslator(
        DBTranslator< ALLOC >&&                               from,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc),
+        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(from.is_lossless_),
         is_dictionary_dynamic_(from.is_dictionary_dynamic_),
         max_dico_entries_(from.max_dico_entries_),
         missing_symbols_(std::move(from.missing_symbols_)), back_dico_(std::move(from.back_dico_)),
@@ -139,6 +148,7 @@ namespace gum {
     INLINE DBTranslator< ALLOC >&
        DBTranslator< ALLOC >::operator=(const DBTranslator< ALLOC >& from) {
       if (this != &from) {
+        is_lossless_           = from.is_lossless_;
         is_dictionary_dynamic_ = from.is_dictionary_dynamic_;
         max_dico_entries_      = from.max_dico_entries_;
         missing_symbols_       = from.missing_symbols_;
@@ -152,6 +162,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE DBTranslator< ALLOC >& DBTranslator< ALLOC >::operator=(DBTranslator< ALLOC >&& from) {
+      is_lossless_           = from.is_lossless_;
       is_dictionary_dynamic_ = from.is_dictionary_dynamic_;
       max_dico_entries_      = from.max_dico_entries_;
       missing_symbols_       = std::move(from.missing_symbols_);
@@ -187,6 +198,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE void DBTranslator< ALLOC >::setEditableDictionaryMode(bool new_mode) {
       is_dictionary_dynamic_ = new_mode;
+    }
+
+
+    /// returns the translation from database indices to input strings
+    template < template < typename > class ALLOC >
+    INLINE const Bijection< std::size_t, std::string,
+                            ALLOC< std::pair< std::size_t, std::string > > >&
+         DBTranslator< ALLOC >::getDictionary () const {
+      return back_dico_;
     }
 
 

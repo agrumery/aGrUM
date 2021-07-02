@@ -48,6 +48,7 @@ namespace gum {
        std::size_t                                                         max_dico_entries,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              true,
                               missing_symbols,
                               true,
                               max_dico_entries,
@@ -76,7 +77,7 @@ namespace gum {
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
        std::size_t                                                         max_dico_entries,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE, true, true, max_dico_entries, alloc),
         _variable_("var", "", 1, 0) {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
@@ -92,6 +93,7 @@ namespace gum {
        std::size_t                                                         max_dico_entries,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              true,
                               missing_symbols,
                               editable_dictionary,
                               max_dico_entries,
@@ -157,6 +159,7 @@ namespace gum {
        std::size_t                                                         max_dico_entries,
        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              true,
                               editable_dictionary,
                               max_dico_entries,
                               alloc),

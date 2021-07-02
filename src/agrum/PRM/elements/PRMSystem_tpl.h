@@ -156,6 +156,13 @@ namespace gum {
           }
           break;
         }
+        case VarType::Integer: {
+          const auto l = static_cast< const IntegerVariable& >(agg_var);
+          for (Idx i = 0; i < l.domainSize(); ++i) {
+            factory.addModality(l.label(i));
+          }
+          break;
+        }
         case VarType::Discretized: {
           const auto d = static_cast< const DiscretizedVariable< GUM_SCALAR >& >(agg_var);
           for (Idx i = 0; i < d.domainSize(); ++i) {
@@ -169,8 +176,9 @@ namespace gum {
           factory.addMax(r.maxVal());
           break;
         }
-        case VarType::Continuous:
-          // Todo Error
+        default:
+          GUM_ERROR(NotImplementedYet,
+                    "PRM aggregator grounding does not support yet continuous variables");
           break;
       }
 

@@ -364,6 +364,36 @@ namespace gum {
        * particular, no exception is raised. */
       void eraseTranslators(const std::size_t k, const bool k_is_input_col = false);
 
+      /// change the translator of a database column
+      /**
+       * When changing the translator for a column, we update the content of the database.
+       * @param new_translator the new translator to use
+       * @param k either the column in the DatabaseTable (if k_is_input_col = false, the
+       * default) or the first column in the DatabaseTable which corresponds to the kth
+       * column of the input CSV (if k_is_input_col = true)
+       * @param k_is_input_col see Parameter k
+       * @warning if the translator does not exists, nothing is done. In
+       * particular, no exception is raised.
+       */
+      void changeTranslator(const DBTranslator< ALLOC >& new_translator,
+                            const std::size_t            k,
+                            const bool                   k_is_input_col = false);
+
+      /// change the translator of a database column
+      /**
+       * When changing the translator for a column, we update the content of the database.
+       * @param new_var The variable corresponding to the new translator
+       * @param k k either the column in the DatabaseTable (if k_is_input_col = false, the
+       * default) or the first column in the DatabaseTable which corresponds to the kth
+       * column of the input CSV (if k_is_input_col = true)
+       * @param k_is_input_col see Parameter k
+       * @warning if the translator does not exists, nothing is done. In
+       * particular, no exception is raised.
+       */
+      void changeTranslator(const Variable&   var,
+                            const std::size_t k,
+                            const bool        k_is_input_col = false);
+
       /// returns the set of translators
       const DBTranslatorSet< ALLOC >& translatorSet() const;
 
