@@ -131,7 +131,7 @@ namespace gum_tests {
       TS_ASSERT(!net.empty());
       TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
 
-      net = gum::MarkovNet< double >::fastPrototype("A-B");
+      net = gum::MarkovNet< double >::fastPrototype("A--B");
       gum::UAIMNReader< double > reader2(&net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());

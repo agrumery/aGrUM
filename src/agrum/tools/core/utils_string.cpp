@@ -65,7 +65,7 @@ namespace gum {
   }
 
   /** not usable for gcc 4.8
-std::vector<std::string> split( const std::string& orig,
+  std::vector<std::string> split( const std::string& orig,
                                 const std::string& delimiter ) {
 
   std::regex rgx( delimiter );
@@ -85,6 +85,15 @@ std::vector<std::string> split( const std::string& orig,
       pos    = retVal.find(val);
     }
     return retVal;
+  }
+
+  bool isInteger(const std::string& val) {
+    if (val.empty()) return false;
+    std::size_t pos=0;
+    if ((val[0]=='+') || (val[0]=='-')) {
+      pos=1;
+    }
+    return (val.find_first_not_of( "0123456789",pos ) == std::string::npos);
   }
 
 } /* namespace gum */

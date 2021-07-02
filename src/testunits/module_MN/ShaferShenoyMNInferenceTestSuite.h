@@ -39,12 +39,12 @@ namespace gum_tests {
   class ShaferShenoyMNTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;C-E-F");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;C--E--F");
       gum::ShaferShenoyMNInference< double > ie(&mn);
     }
 
     void testSimpleInference() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;C-E-F");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;C--E--F");
       gum::ShaferShenoyMNInference< double > ie(&mn);
       ie.makeInference();
     }
@@ -162,7 +162,7 @@ namespace gum_tests {
     }
 
     void testClassicalInference() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
@@ -173,7 +173,7 @@ namespace gum_tests {
     }
 
     void testSeparationInInference() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("A", 0);
       iemn.addEvidence("D", 1);
@@ -218,7 +218,7 @@ namespace gum_tests {
     }
 
     void testIncrementalInference() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
 
       {
         gum::ShaferShenoyMNInference< double > ie(&mn);
@@ -266,7 +266,7 @@ namespace gum_tests {
 
 
     void testIncrementalInferenceWithSoftEvidence() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
 
       {
         gum::ShaferShenoyMNInference< double > ie(&mn);
@@ -294,20 +294,20 @@ namespace gum_tests {
     void testJointTargetFromExistingJoint() {
       // explicit jointtarget
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
         TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), gum::UndefinedElement);
       }
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
       }
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.addJointTarget({0, 2});
         auto p = ie.jointPosterior({0, 2});
@@ -315,13 +315,13 @@ namespace gum_tests {
 
       // implicit jointtarget as factor
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
       }
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.addJointTarget({0, 1});
         ie.makeInference();
@@ -330,13 +330,13 @@ namespace gum_tests {
 
       // implicit jointtarget as subset of clique in junction tree
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C;A-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C;A--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
       }
       {
-        auto mn = gum::MarkovNet< double >::fastPrototype("A-B;B-C;A-C");
+        auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C;A--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.addJointTarget({0, 2});
         ie.makeInference();

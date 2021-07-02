@@ -234,7 +234,7 @@ namespace gum_tests {
     }
 
     void testToDot() {
-      gum::MarkovNet< double > mn = gum::MarkovNet< double >::fastPrototype("A-B-C;B-D;C-E;D-E-F");
+      gum::MarkovNet< double > mn = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
       const auto               s1 = mn.toDot();
       const auto               s2 = mn.toDotAsFactorGraph();
       GUM_UNUSED(s1);
@@ -279,7 +279,7 @@ namespace gum_tests {
     }
 
     void testExistsEdge() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G");
 
       TS_ASSERT(mn.existsEdge(0, 1));
       TS_ASSERT(mn.existsEdge("A", "B"));
@@ -292,7 +292,7 @@ namespace gum_tests {
     }
 
     void testMinimalCondSet() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E");
 
       TS_ASSERT_EQUALS(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), gum::NodeSet({1, 2}));
       TS_ASSERT_EQUALS(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), gum::NodeSet({1, 2, 4, 5}));
@@ -300,12 +300,20 @@ namespace gum_tests {
     }
 
     void testIndependence() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E;D-G;X");
+      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
       TS_ASSERT(mn.isIndependent("D", "X", {}));
       TS_ASSERT(!mn.isIndependent("D", "A", {"C"}));
       TS_ASSERT(mn.isIndependent("D", "A", {"C", "G"}));
       TS_ASSERT(!mn.isIndependent("G", "A", {"C", "F"}));
       TS_ASSERT(mn.isIndependent("G", "A", {"D", "E"}));
+    }
+
+
+    void testFastPrototypeVarType() {
+      auto mn = gum::MarkovNet< float >::fastPrototype("a{1|4|6}--b{1|-4|6}--c{1|toto|6}");
+      TS_ASSERT_EQUALS(mn.variable("a").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(mn.variable("b").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(mn.variable("c").varType(),gum::VarType::Labelized)
     }
   };
 

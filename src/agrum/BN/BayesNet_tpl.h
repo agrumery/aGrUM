@@ -28,11 +28,13 @@
 
 #include <limits>
 #include <set>
+#include <algorithm>
 
 #include <agrum/BN/BayesNet.h>
 
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 
 #include <agrum/tools/multidim/aggregators/amplitude.h>
@@ -112,12 +114,22 @@ namespace gum {
                 "Only one value for variable " << name << " (2 at least are needed).")
     }
 
+    std::vector< int > values;
+    if (!labels.empty()) {
+      if (std::all_of(labels.begin(), labels.end(), isInteger)) {
+        for (const auto& label: labels)
+          values.push_back(std::stoi(label));
+      }
+    }
+
     // now we add the node in the BN
     NodeId idVar;
     try {
       idVar = bn.idFromName(name);
     } catch (gum::NotFound&) {
-      if (!labels.empty()) {
+      if (!values.empty()) {
+        idVar = bn.add(IntegerVariable(name, name, values));
+      } else if (!labels.empty()) {
         idVar = bn.add(LabelizedVariable(name, name, labels));
       } else if (!ticks.empty()) {
         idVar = bn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));

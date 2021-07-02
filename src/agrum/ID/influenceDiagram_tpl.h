@@ -29,9 +29,11 @@
 
 #include <cstdio>
 #include <iostream>
+#include <algorithm>
 
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 
 #include <agrum/ID/influenceDiagram.h>
@@ -111,13 +113,23 @@ namespace gum {
                 "Only one value for variable " << name << " (2 at least are needed).")
     }
 
-    // now we add the node in the BN
+    std::vector< int > values;
+    if (!labels.empty()) {
+      if (std::all_of(labels.begin(), labels.end(), isInteger)) {
+        for (const auto& label: labels)
+          values.push_back(std::stoi(label));
+      }
+    }
+
+    // now we add the node in the Influence Diagram
     NodeId idVar;
     try {
       idVar = infdiag.idFromName(name);
     } catch (gum::NotFound&) {
       if (isChanc) {
-        if (!labels.empty()) {
+        if (!values.empty()) {
+          idVar = infdiag.addChanceNode(IntegerVariable(name, name, values));
+        } else if (!labels.empty()) {
           idVar = infdiag.addChanceNode(LabelizedVariable(name, name, labels));
         } else if (!ticks.empty()) {
           idVar = infdiag.addChanceNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
@@ -125,7 +137,9 @@ namespace gum {
           idVar = infdiag.addChanceNode(RangeVariable(name, name, range_min, range_max));
         }
       } else if (isDeci) {
-        if (!labels.empty()) {
+        if (!values.empty()) {
+          idVar = infdiag.addDecisionNode(IntegerVariable(name, name, values));
+        } else if (!labels.empty()) {
           idVar = infdiag.addDecisionNode(LabelizedVariable(name, name, labels));
         } else if (!ticks.empty()) {
           idVar = infdiag.addDecisionNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));

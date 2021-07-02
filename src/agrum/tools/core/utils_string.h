@@ -79,6 +79,13 @@ namespace gum {
    */
   std::string replace(const std::string& s, const std::string& val, const std::string& new_val);
 
+  /**
+   * @brief return true is a string contains an integer value
+   * @param s A string
+   * @return true if s exactly contains an int (s can start with "-" or "+")
+   */
+   bool isInteger(const std::string& val);
+
   /// @}
 } /* namespace gum */
 
