@@ -394,7 +394,7 @@ Create a Markov network with a modified dot-like syntax which specifies:
 Examples
 --------
 >>> import pyAgrum as gum
->>> bn=gum.fastMN('A-B[1,3]-C{yes|No};C-D[2,4]-E[1,2.5,3.9]',6)
+>>> bn=gum.fastMN('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
 Parameters
 ----------

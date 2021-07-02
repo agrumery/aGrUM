@@ -221,10 +221,12 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       Raises
       ------
       gum.InvalidArgument
-        If the first variable is Labelized or if the len of the noise is not odd.
+        If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
       if self.variable(0).varType()==VarType_Labelized:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
+      if self.variable(0).varType()==VarType_Integer:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is neither Range nor Discretized variable.")
 
       if noise==None:
         mid=0

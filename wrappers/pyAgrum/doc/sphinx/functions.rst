@@ -24,6 +24,7 @@ The type of the random variables can be specifiy with different syntaxes:
       - with ``a[3,7]``, the variable is a :class:`pyAgrum.RangeVariable` using a domainSize from 3 to 7
       - with ``a[1,3.14,5,6.2]``, the variable is a :class:`pyAgrum.DiscretizedVariable` using the given ticks (at least 3 values)
       - with ``a{top|middle|bottom}``, the variable is a :class:`pyAgrum.LabelizedVariable` using the given labels (here : 'top', 'middle' and 'bottom').
+      - with ``a{-1|5|0|3}``, the variable is a :class:`pyAgrum.IntegerVariable` using the sorted given values.
 
 .. note::
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
