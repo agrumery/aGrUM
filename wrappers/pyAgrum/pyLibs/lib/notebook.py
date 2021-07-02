@@ -25,6 +25,7 @@ from __future__ import print_function
 
 import time
 import re
+import sys
 
 # fix DeprecationWarning of base64.encodestring()
 try:
@@ -37,7 +38,15 @@ import base64
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib_inline.backend_inline import set_matplotlib_formats as set_matplotlib_formats
+
+try:
+  from matplotlib_inline.backend_inline import set_matplotlib_formats as set_matplotlib_formats
+except ImportError: # because of python 2.7, matplotlib-inline cannot be part of requirements.txt
+  def set_matplotlib_formats(*args,**kwargs):
+    # dummy version when no matplotlib_inline package
+    if sys.version[0]=="3":
+      print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
+    pass
 
 import numpy as np
 import pydotplus as dot
