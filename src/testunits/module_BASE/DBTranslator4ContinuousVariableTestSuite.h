@@ -35,6 +35,7 @@ namespace gum_tests {
     public:
     void test_trans1() {
       gum::learning::DBTranslator4ContinuousVariable<> translator;
+      TS_ASSERT(translator.isLossless());
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));
       TS_ASSERT(translator.translate("3").cont_val == 3);
       TS_ASSERT(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f})) == 3);

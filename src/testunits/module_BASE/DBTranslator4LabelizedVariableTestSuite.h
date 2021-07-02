@@ -34,6 +34,7 @@ namespace gum_tests {
     public:
     void test_trans1() {
       gum::learning::DBTranslator4LabelizedVariable<> translator;
+      TS_ASSERT(translator.isLossless());
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"));
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("toto").discr_val == 0);

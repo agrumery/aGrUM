@@ -39,6 +39,7 @@ namespace gum_tests {
       var.addTick(10);
 
       gum::learning::DBTranslator4DiscretizedVariable< MyAlloc > translator(var);
+      TS_ASSERT(!translator.isLossless());
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("1.3"));
       TS_ASSERT(translator.translate("1.2").discr_val == 0);
       TS_ASSERT(translator.translate("1").discr_val == 0);

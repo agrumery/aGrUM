@@ -178,7 +178,7 @@ namespace gum {
         }
         default:
           GUM_ERROR(NotImplementedYet,
-                    "PRM aggregator grounding does not support yet continuous variables");
+                    "PRM aggregator grounding does not support yet such variables");
           break;
       }
 

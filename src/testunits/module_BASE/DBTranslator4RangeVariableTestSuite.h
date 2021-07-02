@@ -34,6 +34,7 @@ namespace gum_tests {
     public:
     void test_trans1() {
       gum::learning::DBTranslator4RangeVariable<> translator;
+      TS_ASSERT(translator.isLossless());
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));
       TS_ASSERT(translator.translate("3").discr_val == 0);
       TS_ASSERT(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "3");
