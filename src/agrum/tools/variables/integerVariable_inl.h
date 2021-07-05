@@ -131,6 +131,8 @@ namespace gum {
 
   /// returns the ith label
   INLINE std::string IntegerVariable::label(Idx i) const {
+    // note that if i is outside the domain, Sequence _domain_ will raise
+    // an exception
     return std::to_string(_domain_[i]);
   }
 

@@ -749,10 +749,12 @@ namespace gum {
        * did, and the exception is rethrown.
        *
        * @param exec_func this should be a function/functor/lambda that
-       * takes 2 arguments: the first one is an std::size_t containing the
+       * takes 3 arguments: the first one is an std::size_t containing the
        * index of the first row that it should process, the second argument is
-       * an std::size_t equal to 1 + the index of the last row processed (so
-       * the processing is performed on [first,last). The return type of exec_func
+       * an std::size_t equal to 1 + the index of the last row processed, so that
+       * the processing is performed on [first,last). The last argument is an index of
+       * identifying the thread in which exec_func is performed (the first one has index 0,
+       * the second one Index 1, and so on. The return type of exec_func
        * is a void. If a thread executing exec_func raises an exception, then
        * before exiting, it should undo what it did.
        * @param undo_func a Function/functor/lambda with the same

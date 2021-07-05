@@ -44,6 +44,7 @@
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
+#include <agrum/tools/database/DBTranslator4IntegerVariable.h>
 #include <agrum/tools/database/DBTranslator4RangeVariable.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 
@@ -233,6 +234,18 @@ namespace gum {
       std::size_t insertTranslator(const Variable&   var,
                                    const std::size_t column,
                                    const bool        unique_column = true);
+
+      /// substitute a translator by another one
+      /**
+       *
+       * @param new_translator the new translator, copied at index pos of the
+       * TranslatorSet
+       * @param pos the position where the new translator should replace the
+       * old one.
+       */
+      template < template < template < typename > class > class Translator >
+      void substituteTranslator(const Translator< ALLOC >& new_translator,
+                                const std::size_t          pos);
 
       /** @brief erases either the kth translator or those parsing the kth
        * column of the input database

@@ -177,25 +177,19 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < typename Functor1, typename Functor2 >
     void DatabaseTable< ALLOC >::_threadProcessDatabase_(Functor1& exec_func, Functor2& undo_func) {
-      // compute the number of threads to execute the code, the number N of
-      // rows that each thread should process and the number of rows that
-      // would remain after each thread has processed its N rows. For instance,
-      // if the database has 105 rows and there are 10 threads, each thread
-      // should process 10 rows and there would remain 5 rows
-      const std::size_t db_size    = this->rows_.size();
-      std::size_t       nb_threads = db_size / this->min_nb_rows_per_thread_;
-      if (nb_threads < 1)
-        nb_threads = 1;
-      else if (nb_threads > this->max_nb_threads_)
-        nb_threads = this->max_nb_threads_;
-      std::size_t nb_rows_par_thread = db_size / nb_threads;
-      std::size_t rest_rows          = db_size - nb_rows_par_thread * nb_threads;
+      // compute the number of threads to execute the code
+      const std::size_t nb_threads = this->nbProcessingThreads_();
 
       // if there is just one thread, let it process all the rows
       if (nb_threads == 1) {
-        exec_func(std::size_t(0), db_size);
+        const std::size_t db_size = this->nbRows();
+        exec_func(std::size_t(0), db_size, 0);
         return;
       }
+
+      // if there are multiple threads, compute the ranges of rows they should process
+      const std::vector< std::pair< std::size_t, std::size_t > > ranges =
+         this->rangesProcessingThreads_(nb_threads);
 
       // here, we shall create the threads, but also one std::exception_ptr
       // for each thread. This will allow us to catch the exception raised
@@ -206,25 +200,22 @@ namespace gum {
 
       // create a lambda that will execute exec_func while catching its exceptions
       auto real_exec_func
-         = [&exec_func](std::size_t begin, std::size_t end, std::exception_ptr& exc) -> void {
+         = [&exec_func](std::size_t begin,
+                        std::size_t end,
+                        std::size_t index,
+                        std::exception_ptr& exc) -> void {
         try {
-          exec_func(begin, end);
+          exec_func(begin, end, index);
         } catch (...) { exc = std::current_exception(); }
       };
 
       // launch the threads
-      std::size_t begin_index = std::size_t(0);
       for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
-        std::size_t end_index = begin_index + nb_rows_par_thread;
-        if (rest_rows != std::size_t(0)) {
-          ++end_index;
-          --rest_rows;
-        }
         threads.push_back(std::thread(std::ref(real_exec_func),
-                                      begin_index,
-                                      end_index,
+                                      ranges[i].first,
+                                      ranges[i].second,
+                                      i,
                                       std::ref(func_exceptions[i])));
-        begin_index = end_index;
       }
 
       // wait for the threads to complete their executions
@@ -243,29 +234,26 @@ namespace gum {
         // create a lambda that will execute undo_func while catching
         // its exceptions
         auto real_undo_func
-           = [&undo_func](std::size_t begin, std::size_t end, std::exception_ptr& exc) -> void {
+           = [&undo_func](std::size_t begin,
+                          std::size_t end,
+                          std::size_t index,
+                          std::exception_ptr& exc) -> void {
           try {
-            undo_func(begin, end);
+            undo_func(begin, end, index);
           } catch (...) { exc = std::current_exception(); }
         };
 
         // launch the repair threads
         threads.clear();
-        begin_index = std::size_t(0);
         std::vector< std::exception_ptr > undo_func_exceptions(nb_threads, nullptr);
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
-          std::size_t end_index = begin_index + nb_rows_par_thread;
-          if (rest_rows != std::size_t(0)) {
-            ++end_index;
-            --rest_rows;
-          }
           // we just need to repair the threads that did not raise exceptions
           if (func_exceptions[i] == nullptr)
             threads.push_back(std::thread(std::ref(real_undo_func),
-                                          begin_index,
-                                          end_index,
+                                          ranges[i].first,
+                                          ranges[i].second,
+                                          i,
                                           std::ref(undo_func_exceptions[i])));
-          begin_index = end_index;
         }
 
         // wait for the threads to complete their executions
@@ -296,12 +284,16 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin,
+                                             std::size_t end,
+                                             std::size_t index) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      auto undo_reserve_lambda = [](std::size_t begin,
+                                    std::size_t end,
+                                    std::size_t index) -> void {
       };
 
       // launch the threads executing the lambdas
@@ -325,7 +317,9 @@ namespace gum {
         const DBTranslatedValue missing = _translators_[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda = [this, missing](std::size_t begin, std::size_t end) -> void {
+        auto fill_lambda = [this, missing](std::size_t begin,
+                                           std::size_t end,
+                                           std::size_t index) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -339,7 +333,9 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda = [this](std::size_t begin, std::size_t end) -> void {
+        auto undo_fill_lambda = [this](std::size_t begin,
+                                       std::size_t end,
+                                       std::size_t index) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
@@ -380,12 +376,16 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin,
+                                             std::size_t end,
+                                             std::size_t index) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      auto undo_reserve_lambda = [](std::size_t begin,
+                                    std::size_t end,
+                                    std::size_t index) -> void {
       };
 
       // launch the threads executing the lambdas
@@ -426,12 +426,16 @@ namespace gum {
       // create the lambda for reserving some memory for the new column
       // and the one that undoes what it performed if some thread executing
       // it raised an exception
-      auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end) -> void {
+      auto reserve_lambda = [this, new_size](std::size_t begin,
+                                             std::size_t end,
+                                             std::size_t index) -> void {
         for (std::size_t i = begin; i < end; ++i)
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end) -> void {
+      auto undo_reserve_lambda = [](std::size_t begin,
+                                    std::size_t end,
+                                    std::size_t index) -> void {
       };
 
       // launch the threads executing the lambdas
@@ -455,7 +459,9 @@ namespace gum {
         const DBTranslatedValue missing = _translators_[pos].missingValue();
 
         // create the lambda for adding a new column filled wih a missing value
-        auto fill_lambda = [this, missing](std::size_t begin, std::size_t end) -> void {
+        auto fill_lambda = [this, missing](std::size_t begin,
+                                           std::size_t end,
+                                           std::size_t index) -> void {
           std::size_t i = begin;
           try {
             for (; i < end; ++i) {
@@ -469,7 +475,9 @@ namespace gum {
           }
         };
 
-        auto undo_fill_lambda = [this](std::size_t begin, std::size_t end) -> void {
+        auto undo_fill_lambda = [this](std::size_t begin,
+                                       std::size_t end,
+                                       std::size_t index) -> void {
           for (std::size_t i = begin; i < end; ++i)
             this->rows_[i].row().pop_back();
         };
@@ -520,7 +528,9 @@ namespace gum {
         } else {
           const std::size_t nb_trans = _translators_.size();
 
-          auto erase_lambda = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
+          auto erase_lambda = [this, nb_trans, kk](std::size_t begin,
+                                                   std::size_t end,
+                                                   std::size_t index) -> void {
             for (std::size_t i = begin; i < end; ++i) {
               auto& row = this->rows_[i].row();
               if (this->_translators_.isMissingValue(row[kk], kk)) {
@@ -537,7 +547,9 @@ namespace gum {
             }
           };
 
-          auto undo_erase_lambda = [](std::size_t begin, std::size_t end) -> void {
+          auto undo_erase_lambda = [](std::size_t begin,
+                                      std::size_t end,
+                                      std::size_t index) -> void {
           };
 
           // launch the threads executing the lambdas
@@ -553,78 +565,222 @@ namespace gum {
     void DatabaseTable< ALLOC >::changeTranslator(const DBTranslator< ALLOC >& new_translator,
                                                   const std::size_t            k,
                                                   const bool                   k_is_input_col) {
-      // get the index of the column in the database. If it is not found, return without any error
+      // get the index of the column in the database. If it is not found, indicate that
+      // the substitution is impossible
       const auto db_k = _getKthIndices_(k, k_is_input_col);
-      if (db_k >= _translators_.size()) return;
+      if (db_k >= _translators_.size()) {
+        GUM_ERROR(OutOfBounds,
+                  "the translator at position " << k << '/' << db_k <<
+                  "cannot be found.");
+      }
 
-      /*
-      // now, we should compute the mapping from the values and missing symbols of the old
-      // translator to those of the new one
+      // if the dataset does not contain any data, we can safely substitute the old translator
+      // by the new one
+      if (this->empty()) {
+        // keep into account the name of the new translator
+        this->variable_names_[db_k] = new_translator.variable()->name();
+
+        // substitute int the stransltor's set the old translator by the new one
+        _translators_.substituteTranslator(new_translator, db_k);
+
+        return;
+      }
+
+      // get the translator and check that it is not lossy: as, here, there are some data,
+      // we cannot always ensure that there won't be some loss of information substituting
+      // one translator by another
       const DBTranslator< ALLOC >& old_translator = _translators_[db_k];
+      if (!old_translator.isLossless()) {
+        // for the moment, we consider that it is impossible to substitute lossy translators
+        // because we may have already lost information that are necessary for the new
+        // translator
+        GUM_ERROR(OperationNotAllowed,
+                  "Lossy translators cannot yet be substituted by other translators");
+      }
 
-      // when the database already contains some data, we must ensure that we will be able to
-      // substitute the old translator by the new one without loosing information. Possible
+      const std::size_t  nb_threads = this->nbProcessingThreads_();
+
+      // how missing values will be translated
+      std::pair<DBTranslatedValue, DBTranslatedValue>
+         miss_mapping(old_translator.missingValue(), new_translator.missingValue());
+
+      // Now, we should compute the mapping from the values and missing symbols of the old
+      // translator to those of the new one.
+
+      // When the database already contains some data, we must ensure that we will be able to
+      // substitute the old translator by the new one without loosing any information. Possible
       // loss of information may occur in the following cases:
-      // 1/ if the set of missing symbols of the old translator is neither included into that of
-      //    the new translator nor is a singleton (because the CSV input may contain some
-      //    old missing symbols that we don't know how to translate into proper values with the
-      //    new translator.
-      // 2/ if the set of (non-missing) values of the old translator is not a subset of that
+      // 1/ if the set of missing symbols of the old translator is not a singleton and some of its
+      //    missing symbols do not belong to the set of missing symbols of the new translator.
+      //    In this case, the translation of this symbol by the new translator should either raise
+      //    an exception because the new translator does not know how to handle it, or should
+      //    produce a DBTranslatedValue if the new translator thinks this is an observed value.
+      //    Now, the problem is that when observing a missing symbol in the database, we have no
+      //    way to determine to which above case this should correspond. Hence the substitution
+      //    cannot be made unambiguously.
+      // 2/ if the set of (non-missing) values of the old translator is not included in the one
       //    of the new translator
-      // If one of these cases occur, before performing the translation, we must get the set of
-      // missing and observed values and check that none of them cannot be unambiguously translated
-      bool need_checking = false;
-      const auto old_missing_symbols = old_translator.missingSymbols();
-      const auto new_missing_symbols = new_translator.missingSymbols();
-      const auto old_translation = old_translator.getDictionary();
-      const auto new_translation = new_translator.getDictionary();
+      // If one of these cases occur, before performing the translation, we must parse the content
+      // of the database: if case 1/ obtains and if the database contains some missing symbols,
+      // then we cannot unambiguously substitute the old translator by the new one, hence an error.
+      // If case 2/ obtains, we must check that all the observed values currently stored into the
+      // database also belong to the set of values the new translator is capable of translating.
+      if (!this->empty()) {
+        // to test case 1, we first determine whether the dataset contains some
+        // missing values
+        bool has_missing_value = false;
+        {
+          std::vector< int > missing_values(nb_threads, 0);
 
-      if (!this->rows_.empty()) {
-        if ((old_missing_symbols.size() > 1) &&
-            !old_missing_symbols.template isSubsetOrEqual(new_missing_symbols)) {
-          need_checking = true;
-        }
-        else {
-          for (const auto& trans: old_translator) {
-            if (!new_translator.existsSecond(trans.second)) {
-              need_checking = true;
+          // a lambda to parse all the translated values for missing symbols
+          auto get_lambda = [this, db_k, &missing_values](std::size_t begin,
+                                                          std::size_t end,
+                                                          std::size_t index) -> void {
+            for (std::size_t i = begin; i < end; ++i) {
+              auto& row = this->rows_[i].row();
+              if (this->_translators_.isMissingValue(row[db_k], db_k)) {
+                missing_values[index] = 1;
+                return;
+              }
+            }
+          };
+
+          auto undo_get_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
+          };
+
+          // launch the threads executing the lambdas
+          this->_threadProcessDatabase_(get_lambda, undo_get_lambda);
+
+          // if has_missing_values has at least one value 1, there are missing values
+          for (const auto x: missing_values) {
+            if (x) {
+              has_missing_value = true;
               break;
             }
           }
         }
-      }
 
-      if (need_checking) {
-        // here, the idea is to parse all the data and get all the observed values and all
-        // the missing values. Then we will see, based on these observations, if it is actually
-        // possible to perform the translation
-        auto get_lambda = [this, nb_trans, kk](std::size_t begin, std::size_t end) -> void {
-            for (std::size_t i = begin; i < end; ++i) {
-              auto& row = this->rows_[i].row();
-              if (this->_translators_.isMissingValue(row[kk], kk)) {
-                bool has_missing_val = false;
-                for (std::size_t j = std::size_t(0); j < nb_trans; ++j) {
-                  if ((j != kk) && this->_translators_.isMissingValue(row[j], j)) {
-                    has_missing_val = true;
-                    break;
-                  }
-                }
-                if (!has_missing_val) this->has_row_missing_val_[i] = IsMissing::False;
+        // test for case 1/
+        const auto old_missing_symbols      = old_translator.missingSymbols();
+        const auto new_missing_symbols      = new_translator.missingSymbols();
+        const bool multiple_missing_symbols = old_missing_symbols.size() > 1;
+        const bool old_miss_included        = old_missing_symbols.isSubsetOrEqual(new_missing_symbols);
+        if (has_missing_value && multiple_missing_symbols && !old_miss_included) {
+          // here, we know that the the database contains missing values
+          // and we cannot unambiguously perform the translator's substitution
+          GUM_ERROR(OperationNotAllowed,
+                    "it is impossible to substitute the translator because "
+                    "the database contains some missing values that cannot be "
+                    "substituted unambiguously");
+        }
+
+        // if the database contains some missing values, two cases can obtain:
+        // a/ old_miss_included is true, in which case all the old missing values
+        //    will be translated as missing values in the new translator.
+        //    In this case, there is no translation problem.
+        // b/ old_miss_included is false. In this case, we know that there is only
+        //    one old missing symbol, which is not inluded in the set of missing
+        //    symbols of the new translator. If we can translate its symbol as a
+        //    "proper" value in the new translator, that's ok, otherwise we cannot
+        //    perform the substitution.
+        if (has_missing_value && !old_miss_included) {
+          try {
+            new_translator.translate(*(old_translator.missingSymbols().begin()));
+          }
+          catch (Exception&) {
+            GUM_ERROR(OperationNotAllowed,
+                      "it is impossible to substitute the translator because "
+                      "the database contains some missing values that cannot be "
+                      "substituted");
+          }
+        }
+
+        // compute the mapping of the missing symbol if this one does not corresponds
+        // to a missing value in the new translator
+        if (has_missing_value && !old_miss_included) {
+            miss_mapping.second =
+             new_translator.translate(*(old_translator.missingSymbols().begin()));
+        }
+
+        // test for case 2/ (if the set of (non-missing) values of the old translator is
+        // not included in the one of the new translator)
+
+        // now, parse the database and check that all the values contained in the
+        // database can be translated
+        std::vector< int > unmapped(nb_threads, 0);
+
+        // a lambda to parse all the translated values
+        auto check_lambda = [this, db_k, old_translator, new_translator,
+                             &unmapped](std::size_t begin,
+                                        std::size_t end, std::size_t index) -> void {
+          const DBTranslatedValue old_miss = old_translator.missingValue();
+          for (std::size_t i = begin; i < end; ++i) {
+            auto& row = this->rows_[i].row();
+            if (row[db_k] != old_miss) {
+              try {
+                new_translator.translate(old_translator.translateBack(row[db_k]));
+              } catch (Exception&) {
+                // ok, here, the translation is impossible
+                unmapped[index] = 1;
+                return;
               }
-              row.erase(row.begin() + kk);
             }
-          };
+          }
+        };
 
-          auto undo_erase_lambda = [](std::size_t begin, std::size_t end) -> void {
-          };
+        auto undo_check_lambda = [](std::size_t begin,
+                                    std::size_t end,
+                                    std::size_t index) -> void {};
 
-          // launch the threads executing the lambdas
-          this->_threadProcessDatabase_(erase_lambda, undo_erase_lambda);
+        // launch the threads executing the lambdas
+        this->_threadProcessDatabase_(check_lambda, undo_check_lambda);
+
+        // if unmapped has at least one value 1, there are values that we don't know how to translate
+        for (const auto x: unmapped) {
+          if (x) {
+            GUM_ERROR(OperationNotAllowed,
+                      "The database contains some values that cannot be translated "
+                      "using the new translator");
+          }
         }
       }
-       */
 
+      // here, we know that we can perform the translator's substitution, so
+      // let's do it
+      auto change_lambda = [this, db_k, old_translator, new_translator,
+                            miss_mapping](std::size_t begin,
+                                          std::size_t end,
+                                          std::size_t index) -> void {
+        const DBTranslatedValue old_miss = old_translator.missingValue();
+        for (std::size_t i = begin; i < end; ++i) {
+          auto& row = this->rows_[i].row();
+          if (row[db_k] == old_miss) {
+            row[db_k] = miss_mapping.second;
+          } else {
+            new_translator.translate(old_translator.translateBack(row[db_k]));
+          }
+        }
+      };
+
+      auto undo_change_lambda = [](std::size_t begin,
+                                   std::size_t end,
+                                   std::size_t index) -> void {};
+
+      // launch the threads executing the lambdas
+      this->_threadProcessDatabase_(change_lambda, undo_change_lambda);
+
+      // keep into account the name of the new translator
+      this->variable_names_[db_k] = new_translator.variable()->name();
+
+      // substitute int the stransltor's set the old translator by the new one
+      _translators_.substituteTranslator(new_translator, db_k);
     }
+
+
+
+
+
+
 
 
     /// change the translator of a database column
@@ -948,14 +1104,18 @@ namespace gum {
       }
 
       // apply the translations
-      auto newtrans_lambda = [this, kk, &new_values](std::size_t begin, std::size_t end) -> void {
+      auto newtrans_lambda = [this, kk, &new_values](std::size_t begin,
+                                                     std::size_t end,
+                                                     std::size_t index) -> void {
         for (std::size_t i = begin; i < end; ++i) {
           auto& elt = this->rows_[i][kk].discr_val;
           if (elt != std::numeric_limits< std::size_t >::max()) elt = new_values[elt];
         }
       };
 
-      auto undo_newtrans_lambda = [](std::size_t begin, std::size_t end) -> void {
+      auto undo_newtrans_lambda = [](std::size_t begin,
+                                     std::size_t end,
+                                     std::size_t index) -> void {
       };
 
       // launch the threads executing the lambdas

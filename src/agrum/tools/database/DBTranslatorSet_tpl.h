@@ -259,6 +259,12 @@ namespace gum {
           return insertTranslator(translator, column, unique_column);
         }
 
+       case VarType::Integer: {
+          const IntegerVariable& xvar = static_cast< const IntegerVariable& >(var);
+          DBTranslator4IntegerVariable< ALLOC > translator(xvar, missing_symbols);
+          return insertTranslator(translator, column, unique_column);
+        }
+
         case VarType::Discretized: {
           const IDiscretizedVariable& xvar = static_cast< const IDiscretizedVariable& >(var);
           DBTranslator4DiscretizedVariable< ALLOC > translator(xvar, missing_symbols);
@@ -284,6 +290,32 @@ namespace gum {
                        << " is impossible because a translator "
                           "for such variable is not implemented yet")
       }
+    }
+
+
+    /// substitute a translator by another one
+    template < template < typename > class ALLOC >
+    template < template < template < typename > class > class Translator >
+    void DBTranslatorSet< ALLOC >::substituteTranslator(const Translator< ALLOC >& new_translator,
+                                                        const std::size_t          pos) {
+      // check that the translator to be substituted exsts
+      if (_translators_.size() < pos) {
+        GUM_ERROR(OutOfBounds,
+                  "The translatorSet contains only " << _translators_.size()
+                  << " translators. It is therefore impossible to substitute "
+                  << "the translator at index " << pos);
+      }
+
+      // copy the new translator
+      ALLOC< DBTranslator< ALLOC > > alloc(this->getAllocator());
+      DBTranslator< ALLOC >*         translator = new_translator.clone(alloc);
+
+      // remove the old translator
+      _translators_[pos]->~DBTranslator< ALLOC >();
+      alloc.deallocate(_translators_[pos], 1);
+
+      // insert the copy
+      _translators_[pos] = translator;
     }
 
 

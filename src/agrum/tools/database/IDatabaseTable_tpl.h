@@ -1195,18 +1195,27 @@ namespace gum {
     }
 
 
-    /// assign a given weight to all the rows of the database
+    /// returns the number of threads used to process the current database content
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setAllRowsWeight(const double new_weight) {
-      // determine the number of threads to use and the number of rows
-      // they should process
-      std::vector< std::pair< std::size_t, std::size_t > > ranges;
-      const std::size_t                                    db_size = nbRows();
-      std::size_t nb_threads = db_size / min_nb_rows_per_thread_;
+    std::size_t IDatabaseTable< T_DATA, ALLOC >::nbProcessingThreads_() const {
+      const std::size_t db_size    = nbRows();
+      std::size_t       nb_threads = db_size / min_nb_rows_per_thread_;
       if (nb_threads < 1)
         nb_threads = 1;
       else if (nb_threads > max_nb_threads_)
         nb_threads = max_nb_threads_;
+
+      return nb_threads;
+    }
+
+
+    /// returns the ranges that threads should process
+    template < typename T_DATA, template < typename > class ALLOC >
+    std::vector< std::pair< std::size_t, std::size_t > >
+       IDatabaseTable< T_DATA, ALLOC >::rangesProcessingThreads_(
+          const std::size_t nb_threads) const {
+      std::vector< std::pair< std::size_t, std::size_t > > ranges;
+      const std::size_t                                    db_size = nbRows();
       std::size_t nb_rows_per_thread = db_size / nb_threads;
       std::size_t rest_rows          = db_size - nb_rows_per_thread * nb_threads;
 
@@ -1222,6 +1231,18 @@ namespace gum {
         ranges.push_back(std::pair< std::size_t, std::size_t >(begin_index, end_index));
         begin_index = end_index;
       }
+
+      return ranges;
+    }
+
+
+    /// assign a given weight to all the rows of the database
+    template < typename T_DATA, template < typename > class ALLOC >
+    void IDatabaseTable< T_DATA, ALLOC >::setAllRowsWeight(const double new_weight) {
+      // determine the number of threads to use and the rows they should process
+      const std::size_t nb_threads = nbProcessingThreads_();
+      const std::vector< std::pair< std::size_t, std::size_t > > ranges =
+         rangesProcessingThreads_(nb_threads);
 
       // perform the assignment:
       // launch the threads

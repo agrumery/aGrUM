@@ -88,20 +88,20 @@ namespace gum_tests {
       TS_ASSERT(var3 == var6);
 
       TS_ASSERT(var3.varType() == gum::VarType::Integer);
-      TS_ASSERT_THROWS(var3.label("0"), gum::NotFound);
-      TS_GUM_ASSERT_THROWS_NOTHING(var3.label("-1"));
-      TS_ASSERT(var3.label("-2") == gum::Idx(0));
-      TS_ASSERT(var3.label("-1") == gum::Idx(1));
-      TS_ASSERT(var3.label("4") == gum::Idx(2));
-      TS_ASSERT(var3.label("8") == gum::Idx(3));
-      TS_ASSERT(var3.label("  8  ") == gum::Idx(3));
-      TS_ASSERT(var3.label("  8 7") == gum::Idx(3));
+      TS_ASSERT_THROWS(var3.index("0"), gum::NotFound);
+      TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"));
+      TS_ASSERT(var3.index("-2") == gum::Idx(0));
+      TS_ASSERT(var3.index("-1") == gum::Idx(1));
+      TS_ASSERT(var3.index("4") == gum::Idx(2));
+      TS_ASSERT(var3.index("8") == gum::Idx(3));
+      TS_ASSERT(var3.index("  8  ") == gum::Idx(3));
+      TS_ASSERT(var3.index("  8 7") == gum::Idx(3));
 
-      TS_ASSERT(var3.index(0) == "-2");
-      TS_ASSERT(var3.index(1) == "-1");
-      TS_ASSERT(var3.index(2) == "4");
-      TS_ASSERT(var3.index(3) == "8");
-      TS_ASSERT_THROWS(var3.index(4), gum::NotFound);
+      TS_ASSERT(var3.label(0) == "-2");
+      TS_ASSERT(var3.label(1) == "-1");
+      TS_ASSERT(var3.label(2) == "4");
+      TS_ASSERT(var3.label(3) == "8");
+      TS_ASSERT_THROWS(var3.label(4), gum::NotFound);
 
       TS_ASSERT(var3.numerical(0) == -2.0);
       TS_ASSERT(var3.numerical(1) == -1.0);

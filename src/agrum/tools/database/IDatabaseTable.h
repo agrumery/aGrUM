@@ -1153,6 +1153,13 @@ namespace gum {
        * of the database */
       bool isRowSizeOK_(const std::size_t size) const;
 
+      /// returns the number of threads used to process the current database content
+      std::size_t nbProcessingThreads_() const;
+
+      /// returns the ranges that threads should process
+      std::vector< std::pair< std::size_t, std::size_t > > rangesProcessingThreads_(
+         const std::size_t nb_threads) const;
+
       /// copy operator
       IDatabaseTable< T_DATA, ALLOC >& operator=(const IDatabaseTable< T_DATA, ALLOC >& from);
 
