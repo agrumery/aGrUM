@@ -61,6 +61,7 @@ namespace gum {
   /// move constructor
   INLINE IntegerVariable::IntegerVariable(IntegerVariable&& from) :
       DiscreteVariable(std::move(from)), _domain_(std::move(from._domain_)) {
+    from._domain_.clear();
     // for debugging purposes
     GUM_CONSTRUCTOR(IntegerVariable);
   }
@@ -82,6 +83,7 @@ namespace gum {
   INLINE IntegerVariable& IntegerVariable::operator=(const IntegerVariable& from) {
     // avoid self assignment
     if (&from != this) {
+      DiscreteVariable::operator=(from);
       _domain_ = from._domain_;
     }
 
@@ -93,6 +95,7 @@ namespace gum {
   INLINE IntegerVariable& IntegerVariable::operator=(IntegerVariable&& from) {
     // avoid self assignment
     if (&from != this) {
+      DiscreteVariable::operator=(std::move(from));
       _domain_ = std::move(from._domain_);
       from._domain_.clear();
     }
@@ -124,7 +127,7 @@ namespace gum {
     try {
       return _domain_.pos(std::stoi(aLabel));
     } catch (...) {
-      GUM_ERROR(OutOfBounds, "label '" << aLabel << "' is unknown in " << this->toString());
+      GUM_ERROR(NotFound, "label '" << aLabel << "' is unknown in " << this->toString());
     }
   }
 

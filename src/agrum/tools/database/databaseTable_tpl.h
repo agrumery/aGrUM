@@ -777,12 +777,6 @@ namespace gum {
     }
 
 
-
-
-
-
-
-
     /// change the translator of a database column
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::changeTranslator(const Variable&   var,

@@ -243,6 +243,10 @@ namespace gum {
     }
 
 
+    /// returns a new translator corresponding to a variable and some missing symbols
+    //template < template < typename > class ALLOC >
+
+
     /// inserts a new translator for a given variable in the translator set
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
@@ -293,6 +297,16 @@ namespace gum {
     }
 
 
+    /// inserts a new translator for a given variable in the translator set
+    template < template < typename > class ALLOC >
+    INLINE std::size_t DBTranslatorSet< ALLOC >::insertTranslator(const Variable&   var,
+                                                                  const std::size_t column,
+                                                                  const bool        unique_column) {
+      const std::vector< std::string, ALLOC< std::string > > missing;
+      return this->insertTranslator(var, column, missing, unique_column);
+    }
+
+
     /// substitute a translator by another one
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Translator >
@@ -316,16 +330,6 @@ namespace gum {
 
       // insert the copy
       _translators_[pos] = translator;
-    }
-
-
-    /// inserts a new translator for a given variable in the translator set
-    template < template < typename > class ALLOC >
-    INLINE std::size_t DBTranslatorSet< ALLOC >::insertTranslator(const Variable&   var,
-                                                                  const std::size_t column,
-                                                                  const bool        unique_column) {
-      const std::vector< std::string, ALLOC< std::string > > missing;
-      return this->insertTranslator(var, column, missing, unique_column);
     }
 
 

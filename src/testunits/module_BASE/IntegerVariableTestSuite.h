@@ -37,6 +37,8 @@ namespace gum_tests {
       gum::IntegerVariable var2("var2", "this is var2", {1,9,7});
 
       TS_ASSERT(var1.domainSize() == gum::Size(0));
+      const gum::Sequence<int>& vect1 = var1.integerDomain();
+      TS_ASSERT(vect1.size() == gum::Size(0));
       TS_ASSERT(var2.domainSize() == gum::Size(3));
       const gum::Sequence<int>& vect2 = var2.integerDomain();
       TS_ASSERT(vect2[0] == 1);
@@ -75,18 +77,18 @@ namespace gum_tests {
       TS_ASSERT(vect7[0] == -2);
       TS_ASSERT(vect7[1] == -1);
       TS_ASSERT(vect7[2] == 4);
-      TS_ASSERT(vect7[2] == 8);
+      TS_ASSERT(vect7[3] == 8);
 
       var3 = std::move(var7);
       TS_ASSERT(vect3[0] == -2);
       TS_ASSERT(vect3[1] == -1);
       TS_ASSERT(vect3[2] == 4);
-      TS_ASSERT(vect3[2] == 8);
+      TS_ASSERT(vect3[3] == 8);
       TS_ASSERT(var7.domainSize() == gum::Size(0));
 
       TS_ASSERT(var7 != var6);
       TS_ASSERT(var3 == var6);
-
+      
       TS_ASSERT(var3.varType() == gum::VarType::Integer);
       TS_ASSERT_THROWS(var3.index("0"), gum::NotFound);
       TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"));
@@ -177,7 +179,7 @@ namespace gum_tests {
       TS_ASSERT(vect1[2] == 10);
       TS_ASSERT(vect1[3] == 12);
 
-      TS_ASSERT_THROWS_NOTHING(ar1.changeValue(22,10));
+      TS_ASSERT_THROWS_NOTHING(var1.changeValue(22,10));
 
       var1.eraseValue(8);
       TS_ASSERT(vect1.size() == 3);
@@ -197,6 +199,8 @@ namespace gum_tests {
       TS_ASSERT(var6.domainSize() == gum::Size(4));
       var6.eraseValues();
       TS_ASSERT(var6.domainSize() == gum::Size(0));
+
+      delete var5;
     }
 
   };
