@@ -45,7 +45,7 @@ _cdict = {
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
 
 
-def independenceListForPairs(bn):
+def _independenceListForPairs(bn, target=None):
   """
     returns a list of triples `(i,j,k)` for each non arc `(i,j)` such that `i` is independent of `j` given `k`.
 
@@ -53,6 +53,9 @@ def independenceListForPairs(bn):
     ----------
     bn: gum.BayesNet
       the Bayesian Network
+
+    target: (optional) str or int
+      the name or id of the target variable
 
     Returns
     -------
@@ -69,20 +72,28 @@ def independenceListForPairs(bn):
   # testing every d-separation
   l = []
   nams = sorted(bn.names())
-  for i in sorted(bn.names()):
+  if target is None:
+    firstnams = nams.copy()
+  else:
+    if type(target) == str:
+      firstnams = [target]
+    else:
+      firstnams = [bn.variable(target).name()]
+
+  for i in firstnams:
     nams.remove(i)
     for j in nams:
       if not (bn.existsArc(i, j) or bn.existsArc(j, i)):
         for k in powerset(sorted(bn.names() - {i, j})):
           if bn.isIndependent(i, j, k):
-            l.append((i, j, k))
+            l.append((i, j, tuple(k)))
             break
   return l
 
 
-def plotIndependenceListForPairs(bn, filename, alphabetic=False):
+def independenceListForPairs(bn, filename, target=None,plot=True, alphabetic=False):
   """
-    plot the p-value of the chi2 test of a (as simple as possible) independence proposition for every non arc.
+    get the p-values of the chi2 test of a (as simple as possible) independence proposition for every non arc.
 
     Parameters
     ----------
@@ -95,33 +106,46 @@ def plotIndependenceListForPairs(bn, filename, alphabetic=False):
     alphabetic : bool
       if True, the list is alphabetically sorted else it is sorted by the p-value
 
+    target: (optional) str or int
+      the name or id of the target variable
+
+    plot : bool
+      if True, plot the result
+
     Returns
     -------
-      matplotlib.Figure
+      the list
     """
-  import pylab
 
   learner = gum.BNLearner(filename, bn)
   vals = {}
-  for indep in independenceListForPairs(bn):
-    key = "$" + indep[0] + " \\perp " + indep[1]
-    if len(indep[2]) > 0:
-      key += " \\mid " + ",".join(indep[2])
-    key += "$"
-    vals[key] = learner.chi2(*indep)[1]
+  for indep in _independenceListForPairs(bn, target):
+    vals[indep] = learner.chi2(*indep)[1]
 
-  if not alphabetic:
-    sortedkeys = sorted(vals, key=vals.__getitem__, reverse=False)
-  else:
-    sortedkeys = list(vals.keys())
+  if plot:
+    import pylab
+    plotvals=dict()
+    for indep in vals:
+      key = "$" + indep[0] + " \\perp " + indep[1]
+      if len(indep[2]) > 0:
+        key += " \\mid " + ",".join(indep[2])
+      key += "$"
+      plotvals[key]=vals[indep]
 
-  fig = pylab.figure(figsize=(10, 0.25 * len(vals)))
-  ax = fig.add_subplot(1, 1, 1)
-  ax.plot([vals[k] for k in sortedkeys], sortedkeys, "o")
-  ax.grid(True)
-  ax.vlines(x=0.05, ymin=0, ymax=len(vals) - 1, colors='purple')
-  ax.add_patch(mpl.patches.Rectangle((0, 0), 0.05, len(vals) - 1, color="yellow"))
-  return fig
+    if not alphabetic:
+      sortedkeys = sorted(plotvals, key=plotvals.__getitem__, reverse=False)
+    else:
+      sortedkeys = list(plotvals.keys())
+
+
+    fig = pylab.figure(figsize=(10, 1+0.25 * len(plotvals)))
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot([plotvals[k] for k in sortedkeys], sortedkeys, "o")
+    ax.grid(True)
+    ax.vlines(x=0.05, ymin=-0.5, ymax=len(vals)-0.5 , colors='purple')
+    ax.add_patch(mpl.patches.Rectangle((0, -0.5), 0.05, len(vals), color="yellow"))
+
+  return vals
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -234,12 +258,13 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
+def showInformation(bn, evs=None, target=None, size=None, cmap=_INFOcmap):
   """
     show a bn annotated with results from inference : entropy and mutual information
 
     :param bn: the BN
     :param evs: map of evidence
+    :param target: (optional)  the name or id of the target variable
     :param size:  size of the graph
     :param cmap: colour map used
     :return: the graph
@@ -484,7 +509,7 @@ class ShapValues:
     for col in results.columns:
       res[col] = abs(results[col]).mean()
 
-    self._plotResults(results,plot,plot_importance,percentage)
+    self._plotResults(results, plot, plot_importance, percentage)
 
     return res
 
@@ -525,7 +550,7 @@ class ShapValues:
   def _plotResults(self, results, plot=False, plot_importance=False, percentage=False):
     ax1 = ax2 = None
     if plot and plot_importance:
-      fig = plt.figure(figsize=(15, 0.5*len(results.columns)))
+      fig = plt.figure(figsize=(15, 0.5 * len(results.columns)))
       ax1 = fig.add_subplot(1, 2, 1)
       ax2 = fig.add_subplot(1, 2, 2)
     if plot:
@@ -560,7 +585,7 @@ class ShapValues:
     for col in results.columns:
       res[col] = abs(results[col]).mean()
 
-    self._plotResults(results,plot,plot_importance,percentage)
+    self._plotResults(results, plot, plot_importance, percentage)
 
     return res
 

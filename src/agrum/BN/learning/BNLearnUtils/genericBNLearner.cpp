@@ -357,7 +357,8 @@ namespace gum {
       if (filename_size < 4) {
         GUM_ERROR(FormatNotFound,
                   "genericBNLearner could not determine the "
-                  "file type of the database");
+                  "file type of the database '"
+                     << filename << "'");
       }
 
       std::string extension = filename.substr(filename.size() - 4);
@@ -365,8 +366,9 @@ namespace gum {
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
-                  "genericBNLearner does not support yet this type "
-                  "of database file");
+                  "genericBNLearner does not support yet this type ('" << extension
+                                                                       << "')"
+                                                                          "of database file");
       }
 
       DBInitializerFromCSV<> initializer(filename);
