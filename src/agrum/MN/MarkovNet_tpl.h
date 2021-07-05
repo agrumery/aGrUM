@@ -28,11 +28,13 @@
 
 #include <limits>
 #include <set>
+#include <algorithm>
 
 #include <agrum/MN/MarkovNet.h>
 
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 
 #include <agrum/tools/multidim/aggregators/amplitude.h>
@@ -111,12 +113,22 @@ namespace gum {
                 "Only one value for variable " << name << " (2 at least are needed).");
     }
 
+    std::vector< int > values;
+    if (!labels.empty()) {
+      if (std::all_of(labels.begin(), labels.end(), isInteger)) {
+        for (const auto& label: labels)
+          values.push_back(std::stoi(label));
+      }
+    }
+
     // now we add the node in the BN
     NodeId idVar;
     try {
       idVar = mn.idFromName(name);
     } catch (NotFound&) {
-      if (!labels.empty()) {
+      if (!values.empty()) {
+        idVar = mn.add(IntegerVariable(name, name, values));
+      } else if (!labels.empty()) {
         idVar = mn.add(LabelizedVariable(name, name, labels));
       } else if (!ticks.empty()) {
         idVar = mn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
@@ -136,7 +148,7 @@ namespace gum {
 
     for (const auto& clikchain: split(dotlike, ";")) {
       NodeSet cliq;
-      for (const auto& node: split(clikchain, "-")) {
+      for (const auto& node: split(clikchain, "--")) {
         auto idVar = build_node_for_MN(mn, node, domainSize);
         cliq.insert(idVar);
       }
@@ -282,7 +294,7 @@ namespace gum {
     this->graph_.clearEdges();
 
     for (const auto& kv: _factors_) {
-      const Potential< double >& c = *kv.second;
+      auto& c = *kv.second;
       for (Idx i = 0; i < c.nbrDim(); i++)
         for (Idx j = i + 1; j < c.nbrDim(); j++)
           this->graph_.addEdge(_varMap_.get(c.variable(i)), _varMap_.get(c.variable(j)));

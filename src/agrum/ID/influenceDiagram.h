@@ -182,6 +182,9 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     const DiscreteVariable& variable(NodeId id) const final;
+    const DiscreteVariable& variable(const std::string& name) const {
+      return variable(idFromName(name));
+    };
 
     /**
      * Return id node from discrete var pointer.

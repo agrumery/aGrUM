@@ -521,6 +521,7 @@ Create a Bayesian network with a dot-like syntax which specifies:
       - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
       - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
       - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+      - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
 
 Note 
 ----

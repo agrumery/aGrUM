@@ -675,13 +675,17 @@ class ShapValues:
     values = list(res.values())
     for xe, ye in zip(names, values):
       ax.scatter(ye, [xe] * len(ye))
+    ax.set_title('Shapley value (impact on model output)')
     return ax.get_figure()
 
   def _plot_violin(self, results, ax=None):
     data = []
     pos = []
     label = []
-    for i, col in enumerate(results.columns):
+    series = pd.DataFrame(abs(results).mean(), columns=['value'])
+    series = series.sort_values('value', ascending=True)
+    series['feat'] = series.index
+    for i, col in enumerate(series.feat):
       data.append(results[col].to_numpy())
       pos.append(i)
       label.append(col)
@@ -690,6 +694,7 @@ class ShapValues:
     ax.violinplot(data, pos, vert=False)
     ax.set_yticks(pos)
     ax.set_yticklabels(label)
+    ax.set_title('Shapley value (impact on model output)')
     return ax.get_figure()
 
   def showShapValues(self, results, cmap='plasma'):

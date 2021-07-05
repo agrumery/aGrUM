@@ -172,7 +172,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
                       "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testToDot(self):
-    mn = gum.fastMN("A-B-C;B-D;C-E;D-E-F")
+    mn = gum.fastMN("A--B--C;B--D;C--E;D--E--F")
     s1 = mn.toDot()
     s2 = mn.toDotAsFactorGraph()
 
@@ -200,7 +200,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.graph(), bn.moralGraph())
 
   def testExistsEdge(self):
-    mn = gum.fastMN("A-B-C;C-D;E-F-G")
+    mn = gum.fastMN("A--B--C;C--D;E--F--G")
 
     self.assertTrue(mn.existsEdge(0, 1))
     self.assertTrue(mn.existsEdge("A", "B"))
@@ -212,7 +212,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertFalse(mn.existsEdge("C", "G"))
 
   def testMinimalCondSet(self):
-    mn = gum.fastMN("A-B-C;C-D;E-F-G;B-E")
+    mn = gum.fastMN("A--B--C;C--D;E--F--G;B--E")
 
     self.assertEqual(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), {1, 2})
     self.assertEqual(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), {1, 2, 4, 5})
@@ -227,7 +227,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
 
 
   def testIndependence(self) :
-    mn = gum.fastMN("A-B-C;C-D;E-F-G;B-E;D-G;X")
+    mn = gum.fastMN("A--B--C;C--D;E--F--G;B--E;D--G;X")
     
     self.assertTrue(mn.isIndependent("D", "X", {}))
     self.assertFalse(mn.isIndependent("D", "A", {"C"}))

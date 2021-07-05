@@ -19,6 +19,10 @@ Dealing with mutual information and entropy
 Dealing with ShapValues
 -----------------------
 
+.. figure:: _static/ShapValue.png
+    :align: center
+    :alt: Shap-Values in pyAgrum
+
 .. autoclass:: pyAgrum.lib.explain.ShapValues
     :members:
     :undoc-members:

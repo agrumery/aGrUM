@@ -993,6 +993,11 @@ namespace gum_tests {
 
       bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
       TS_ASSERT_EQUALS(bn.variable("a").toString(), "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>");
+
+      bn = gum::BayesNet< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
+      TS_ASSERT_EQUALS(bn.variable("a").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(bn.variable("b").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(bn.variable("c").varType(),gum::VarType::Labelized)
     }
 
     void testNonRegressionCPTinReverseArc() {

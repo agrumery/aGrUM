@@ -807,5 +807,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(infdiag.decisionNodeSize(), gum::Size(1))
       TS_ASSERT_EQUALS(infdiag.sizeArcs(), gum::Size(4))
     }
+
+
+    void testFastPrototypeVarType() {
+      auto infdiag = gum::InfluenceDiagram< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
+      TS_ASSERT_EQUALS(infdiag.variable("a").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(infdiag.variable("b").varType(),gum::VarType::Integer)
+      TS_ASSERT_EQUALS(infdiag.variable("c").varType(),gum::VarType::Labelized)
+    }
   };
 }   // namespace gum_tests
