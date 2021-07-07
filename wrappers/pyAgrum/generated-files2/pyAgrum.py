@@ -2762,6 +2762,8 @@ VarType_Discretized = _pyAgrum.VarType_Discretized
 
 VarType_Labelized = _pyAgrum.VarType_Labelized
 
+VarType_Integer = _pyAgrum.VarType_Integer
+
 VarType_Range = _pyAgrum.VarType_Range
 
 VarType_Continuous = _pyAgrum.VarType_Continuous
@@ -3291,9 +3293,9 @@ class LabelizedVariable(DiscreteVariable):
         r"""posLabel(LabelizedVariable self, std::string const & label) -> gum::Idx"""
         return _pyAgrum.LabelizedVariable_posLabel(self, label)
 
-    def numerical(self, indice):
+    def numerical(self, index):
         r"""
-        numerical(LabelizedVariable self, gum::Idx indice) -> double
+        numerical(LabelizedVariable self, gum::Idx index) -> double
 
         Parameters
         ----------
@@ -3306,7 +3308,7 @@ class LabelizedVariable(DiscreteVariable):
         	the numerical representation of the indice-th value
 
         """
-        return _pyAgrum.LabelizedVariable_numerical(self, indice)
+        return _pyAgrum.LabelizedVariable_numerical(self, index)
 
     def domainSize(self):
         r"""
@@ -3452,9 +3454,9 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyAgrum.RangeVariable_varType(self)
 
-    def label(self, indice):
+    def label(self, index):
         r"""
-        label(RangeVariable self, gum::Idx indice) -> std::string
+        label(RangeVariable self, gum::Idx index) -> std::string
 
         Parameters
         ----------
@@ -3472,11 +3474,11 @@ class RangeVariable(DiscreteVariable):
           If the variable does not contain the label
 
         """
-        return _pyAgrum.RangeVariable_label(self, indice)
+        return _pyAgrum.RangeVariable_label(self, index)
 
-    def numerical(self, indice):
+    def numerical(self, index):
         r"""
-        numerical(RangeVariable self, gum::Idx indice) -> double
+        numerical(RangeVariable self, gum::Idx index) -> double
 
         Parameters
         ----------
@@ -3489,7 +3491,7 @@ class RangeVariable(DiscreteVariable):
         	the numerical representation of the indice-th value
 
         """
-        return _pyAgrum.RangeVariable_numerical(self, indice)
+        return _pyAgrum.RangeVariable_numerical(self, index)
 
     def minVal(self):
         r"""
@@ -8746,10 +8748,12 @@ class Potential(object):
       Raises
       ------
       gum.InvalidArgument
-        If the first variable is Labelized or if the len of the noise is not odd.
+        If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
       if self.variable(0).varType()==VarType_Labelized:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
+      if self.variable(0).varType()==VarType_Integer:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is neither Range nor Discretized variable.")
 
       if noise==None:
         mid=0
@@ -9638,6 +9642,7 @@ class BayesNet(IBayesNet):
               - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
               - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
               - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+              - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
 
         Note 
         ----
@@ -10971,6 +10976,7 @@ def BayesNet_fastPrototype(dotlike, domainSize=2):
           - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
           - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
           - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+          - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
 
     Note 
     ----
@@ -11789,7 +11795,7 @@ class MarkovNet(IMarkovNet):
         Examples
         --------
         >>> import pyAgrum as gum
-        >>> bn=gum.MarkovNet.fastPrototype('A-B[1,3]-C{yes|No}-D[2,4]-E[1,2.5,3.9]',6)
+        >>> bn=gum.MarkovNet.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
         Parameters
         ----------
@@ -12243,7 +12249,7 @@ def MarkovNet_fastPrototype(dotlike, domainSize=2):
     Examples
     --------
     >>> import pyAgrum as gum
-    >>> bn=gum.MarkovNet.fastPrototype('A-B[1,3]-C{yes|No}-D[2,4]-E[1,2.5,3.9]',6)
+    >>> bn=gum.MarkovNet.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
     Parameters
     ----------
@@ -25024,6 +25030,7 @@ class InfluenceDiagram(DAGmodel):
               - with `'a[3,7]'`, the variable is a gum.RangeVariable using a domainSize from 3 to 7
               - with `'a[1,3.14,5,6.2]'`, the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
               - with `'a{top|middle|bottom}'`, the variable is a gum.LabelizedVariable using the given labels.
+              - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
 
         Note 
         ----
@@ -25213,9 +25220,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_decisionNodeSize(self)
 
-    def variable(self, id):
+    def variable(self, *args):
         r"""
         variable(InfluenceDiagram self, gum::NodeId id) -> DiscreteVariable
+        variable(InfluenceDiagram self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -25233,7 +25241,7 @@ class InfluenceDiagram(DAGmodel):
         	If no variable's id matches the parameter 
 
         """
-        return _pyAgrum.InfluenceDiagram_variable(self, id)
+        return _pyAgrum.InfluenceDiagram_variable(self, *args)
 
     def nodeId(self, var):
         r"""
@@ -25761,6 +25769,7 @@ def InfluenceDiagram_fastPrototype(dotlike, domainSize=2):
           - with `'a[3,7]'`, the variable is a gum.RangeVariable using a domainSize from 3 to 7
           - with `'a[1,3.14,5,6.2]'`, the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
           - with `'a{top|middle|bottom}'`, the variable is a gum.LabelizedVariable using the given labels.
+          - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
 
     Note 
     ----
