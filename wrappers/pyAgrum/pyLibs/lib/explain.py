@@ -55,12 +55,12 @@ def _independenceListForPairs(bn, target=None):
       the Bayesian Network
 
     target: (optional) str or int
-      the name or id of the target variable
+      the name or id of the target variable. If a target is given, only the independence given a subset of the markov blanket of the target are tested.
 
     Returns
     -------
     List[(str,str,List[str])]
-      the list of independence found in the structure of BN.
+      A list of independence found in the structure of BN.
     """
   import itertools
 
@@ -74,7 +74,9 @@ def _independenceListForPairs(bn, target=None):
   nams = sorted(bn.names())
   if target is None:
     firstnams = nams.copy()
+    indepnodes=bn.names()
   else:
+    indepnodes={bn.variable(i).name() for i in gum.MarkovBlanket(bn,target).nodes()}
     if type(target) == str:
       firstnams = [target]
     else:
@@ -84,7 +86,7 @@ def _independenceListForPairs(bn, target=None):
     nams.remove(i)
     for j in nams:
       if not (bn.existsArc(i, j) or bn.existsArc(j, i)):
-        for k in powerset(sorted(bn.names() - {i, j})):
+        for k in powerset(sorted(indepnodes - {i, j})):
           if bn.isIndependent(i, j, k):
             l.append((i, j, tuple(k)))
             break
