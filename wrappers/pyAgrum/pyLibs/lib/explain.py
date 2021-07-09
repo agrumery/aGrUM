@@ -380,13 +380,13 @@ class ShapValues:
   ##### Prediction fonctions ####
 
   def _pred_markov_blanket(self, df, ie, markov_blanket):
-    unique = df.groupby(markov_blanket).agg(freq=('Y', 'count')).reset_index()
+    unique = df.groupby(markov_blanket).agg(freq=(self.target, 'count')).reset_index()
     result = 0
     for i in range(len(unique)):
       for name in markov_blanket:
         ie.chgEvidence(name, str(unique[name].iloc[i]))
       ie.makeInference()
-      predicted = ie.posterior('Y').toarray()[1]
+      predicted = ie.posterior(self.target).toarray()[1]
       result = result + self._logit(predicted) * unique['freq'].iloc[i] / len(df)
     return result
 
@@ -397,7 +397,7 @@ class ShapValues:
       for name in markov_blanket:
         ie.chgEvidence(name, str(unique[name].iloc[i]))
       ie.makeInference()
-      predicted = ie.posterior('Y').toarray()[1]
+      predicted = ie.posterior(self.target).toarray()[1]
       result = result + predicted * unique['freq'].iloc[i] / len(df)
     return self._logit(result)
 
@@ -406,7 +406,7 @@ class ShapValues:
     for key in condi.keys():
       ie.addEvidence(key, str(condi[key]))
     ie.makeInference()
-    return self._logit(ie.posterior('Y').toarray()[1])
+    return self._logit(ie.posterior(self.target).toarray()[1])
 
   ############################## MARGINAL#########################################
 
@@ -416,7 +416,7 @@ class ShapValues:
       for name in self.feats_names:
         ie.chgEvidence(name, str(df[name].iloc[i]))
       ie.makeInference()
-      result.append(ie.posterior('Y').toarray()[1])
+      result.append(ie.posterior(self.target).toarray()[1])
     return np.array(result)
 
   ################################## COMPUTE SHAP ##################################
