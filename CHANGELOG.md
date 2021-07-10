@@ -4,9 +4,9 @@
 
 Contrary to what was said in the 21.0.0 changelog, we decided to remove support for python 2.7 before the 1.0 release. 
 
-This version 0.21.0 is the last version that supports python 2.7. We are already working and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
+This tag (0.21.0) is the last version that supports python 2.7. We are already working and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
 
-This 0.22.0 tag will be the (new) last minor version before the release of agrum/pyAgrum 1.0.0 (fingers crossed ;-) ).
+The next tag (0.22.0) will be the (new) last minor version before the release of agrum/pyAgrum 1.0.0 (:fist: :smirk: ).
 
 * aGrUM
   * New type for discrete variable (`gum::IntegerVariable`) which represents a set of non-consecutive integers.
