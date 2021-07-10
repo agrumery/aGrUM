@@ -1,5 +1,36 @@
 # aGrUM Changelog
 
+## Changelog for 0.21.0
+
+Contrary to what was said in the 21.0.0 changelog, we decided to remove support for python 2.7 before the 1.0 release. 
+
+This version 0.21.0 is the last version that supports python 2.7. We are already working and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
+
+This 0.22.0 tag will be the (new) last minor version before the release of agrum/pyAgrum 1.0.0 (fingers crossed ;-) ).
+
+* aGrUM
+  * New type for discrete variable (`gum::IntegerVariable`) which represents a set of non-consecutive integers.
+  * New syntax for `gum::IntegerVariable` in `gum::*::fastPrototype` : `a{-3|0|3}`.
+  * Change in syntax for `gum::MarkovNetwork::fastPrototype` : the link are represented by `--` instead of `-`.
+  * New behavior for implicit recognition of variables with `gum::BNLearner` (MORE).
+  * New `gum::BNLearner::state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
+  * New `gum::BNLearner::toString()` which gives a string representation of `gum::BNLearner::state()`.
+  * Add a new CI for last gcc (g++11 for now).
+  * Code optimizations for hash function for small-sized values.
+
+* pyAgrum
+  * New type for discrete variable (`pyAgrum.IntegerVariable`) which represents a set of non-consecutive integers.
+  * New syntax for `pyAgrum.IntegerVariable` in `pyAgrum.fast*` : `a{-3|0|3}`.
+  * Change in syntax for `pyAgrum.fastMN` : the links are represented by `--` instead of `-`.
+  * New behavior for implicit recognition of variables with `gum::BNLearner` (MORE).
+  * New `pyAgrum.BNLearner.state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
+  * New `pyAgrum.BNLearner.__str__()` which gives a string representation of `gum::BNLearner::state()`.
+  * Documentations and notebooks updated w.r.t. this new features.
+  * Adding ShapValues for BN in `pyAgrum.lib.explain` (see notebook)
+  * Adding `pyAgrum.lib.explain.independenceListForPairs()` 
+  * Other improvements in `pyAgrum.lib.explain` and the corresponding notebook and documentations.
+  * Updating notebooks for classifiers
+
 ## Changelog for 0.20.3
 
 * aGrUM
