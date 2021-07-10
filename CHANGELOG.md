@@ -2,7 +2,7 @@
 
 ## Changelog for 0.21.0
 
-Contrary to what was said in the 21.0.0 changelog, we decided to remove support for python 2.7 before the 1.0 release. 
+Contrary to what was said in the 0.20.0 changelog, we decided to remove support for python 2.7 before the 1.0 release. 
 
 This tag (0.21.0) is the last version that supports python 2.7. We are already working and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
 
