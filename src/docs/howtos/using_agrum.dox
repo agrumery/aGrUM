@@ -14,11 +14,11 @@ cmake_minimum_required(VERSION 2.8)
 # classical options 
 # -DCMAKE_BUILD_TYPE=Debug|Release 
 # -G "MinGW Makefiles" 
-
-# cmake -DCMAKE_BUILD_TYPE=Debug
+# -G "Visual Studio 16 2019" -A x64
+#
+# cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64
 # or
-# cmake -DCMAKE_BUILD_TYPE=Release
-#     Release is the default option (thanks to the next lines)
+# cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64
 
 set (CMAKE_CXX_STANDARD 14)
 
