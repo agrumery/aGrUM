@@ -60,7 +60,7 @@
  *
  * \code{.cpp}
  * // Variables are added by copy to the BayesNet, so you can use a single
- * // gum::LabelizedVariable to add all varaibles with the same domain
+ * // gum::LabelizedVariable to add all variables with the same domain
  * auto var = gum::LabelizedVariable(
  *     "template", "A variable of the Asia Bayesian network", 0 );
  * var.addLabel( "True" );
@@ -84,9 +84,6 @@
  * auto dyspnea = bn.add( var );
  * \endcode
  *
- * You can also use the gum::BayesNet::idFromName( const std::string& ) method to retrieve
- * variable's id from its name.
- *
  * Use the gum::BayesNet::addArc( gum::NodeId, gum::NodeId ) to add arcs between node in the Bayesian
  * Network.
  *
@@ -100,14 +97,27 @@
  * bn.addArc( tubOrCancer, dyspnea );
  * bn.addArc( hasBronchitis, dyspnea );
  * \endcode
+  *
+ * You can also use the gum::BayesNet::idFromName( const std::string& ) method to retrieve
+ * variable's id from its name. Many methods have a version with names instead of node id.
+ * The next 3 lines are then equivalent :
  *
- * Finally, use the gumm:BayesNet::cpt( gum::NodeId ) to access a variable's
+ * \code{.cpp}
+ * bn.addArc( visitToAsia, hasTuberculosis ); // using NodeIds from above
+ * bn.addArc( bn.idFromName("Visit to Asia"), bn.idFromName("Has Tuberculosis")); // explicitly get the NodeId from the name
+ * bn.addArc( "Visit to Asia","Has Tuberculosis"); // directly using the names
+ * \endcode
+ *
+ * Finally, use the gum::BayesNet::cpt( gum::NodeId ) to access a variable's
  * conditional probability table. See \ref using_multidims to learn how to fill
  * gum::Potential. Here we use the gum::Potential::fillwith( const std::vector&
  * ) method.
  *
  * \code{.cpp}
  * bn.cpt( visitToAsia ).fillWith( { 0.1f, 0.9f } );
+ * // you can also directly use the name
+ * bn.cpt( "Visit to Asia" ).fillWith( { 0.1f, 0.9f } );
+ * //
  * bn.cpt( smoker ).fillWith( { 0.7f, 0.3f } );
  * bn.cpt( hasTuberculosis ).fillWith( {
  * // True | False  == hasTuberculosis
@@ -140,11 +150,67 @@
  * } );
  * \endcode
  *
- * Filling conditionnal probability tables can be hard and you should use the
+ * Filling conditional probability tables can be hard and you should use the
  * commenting trick as above to help you with large tables. It is important to
- * remember that the std::vector is used to fill a multidimensionnal table
+ * remember that the std::vector is used to fill a multi-dimensional table
  * where each line should sum to 1, i.e. each line stores \f$P(X_i |
  * \pi(X_i)\f$.
+ *
+ *
+ * \section bn_inf Probabilistic Inference
+ *
+ * All inference algorithms implement the gum::BayesNetInference class. The main
+ * methods for inference are:
+ *  - gum::BayesNetInference::makeInference().
+ *  - gum::BayesNetInference::addHardEvidence(const NodeId, const Idx).
+ *  - gum::BayesNetInference::posterior(NodeId).
+ *  - gum::BayesNetInference::eraseAllEvidence().
+ *
+ * \code{.cpp}
+ * auto asia = gum::BayesNet<double>( "Asia" );
+ * // Constructing the BayesNet...
+ *
+ * // Choose one among available inference algorithms
+ * gum::LazyPropagation<double> ie(&bn);
+ *
+ * ie.makeInference();
+ * for (const auto& idn : bn.nodes()) {
+ *   const auto name = bn.variable(idn).name();
+ *   std::cout << name << " : " << ie.posterior(name) << std::endl;
+ * }
+ *
+ * // We can add some evidence
+ * // Index 0 is False, 1 True
+ * ie.addEvidence("B", "middle");
+ * ie.makeInference();
+ * for (const auto& idn : bn.nodes()) {
+ *   const auto name = bn.variable(idn).name();
+ *   std::cout << name << " : " << ie.posterior(name) << std::endl;
+ * }
+ *
+ * auto updated_marginal = ie.posterior("A");
+ * std::cout << updated_marginal << std::endl;
+ * \endcode
+ *
+ * More advance methods can be used for special use case:
+ *  - gum::BayesNetInference::insertEvidence( const List<const Potential<GUM_SCALAR>*>&).
+ *  - gum::BayesNetInference::eraseEvidence( const Potential<GUM_SCALAR>* ).
+ *
+ * \subsection bn_inf_algo Inference Algorithms
+ * Here is a list of exact inference algorithms:
+ *  - gum::ShaferShenoyInference.
+ *  - gum::JunctionTreeInference.
+ *  - gum::LazyPropagation.
+ *  - gum::VariableElimination.
+ *  - gum::VEWithBB.
+ *
+ * And this is the list of approximate inference algorithms:
+ *  - gum::GibbsInference.
+ *
+ * Finally, a list of utility algorithms used by some inference algorithms:
+ *  - gum::BarrenNodesFinder.
+ *  - gum::BayesBall.
+ *  - gum::dSeparation.
  *
  * \section bn_factory Using the gum::BayesNetFactory class
  * The gum::ByesNetFactory class is usefull when writing serializers and
@@ -400,51 +466,6 @@
  * "the multidim hierarchy" and require specific multidimensional arrays, like
  * gum::MultiDimNoisyORCompound, gum::aggregator::Count, etc.
  *
- * \section bn_inf Probabilistic Inference
- *
- * All inference algorithms implement the gum::BayesNetInference class. The main
- * methods for inference are:
- *  - gum::BayesNetInference::makeInference().
- *  - gum::BayesNetInference::addHardEvidence(const NodeId, const Idx).
- *  - gum::BayesNetInference::posterior(NodeId).
- *  - gum::BayesNetInference::eraseAllEvidence().
- *
- * \code{.cpp}
- * auto asia = gum::BayesNet<double>( "Asia" );
- * // Constructing the BayesNet...
- *
- * // Choose one among available inference algorithms
- * auto inference = gum::ShaferShenoyInference<double>( asia );
- * auto id = asia.idFromName( "Has Lung Cancer" );
- * auto marginal = inference.posterior( id );
- *
- * // We can add some evidence
- * // Index 0 is False, 1 True
- * inference.addHardEvidence( bn.idFromName( "Visit to Asia"), 0 );
- * inference.addHardEvidence( bn.idFromName( "Dyspnea"), 0 );
- *
- * auto updated_marginal = inference.posterior( id );
- * \endcode
- *
- * More advance methods can be used for special use case:
- *  - gum::BayesNetInference::insertEvidence( const List<const Potential<GUM_SCALAR>*>&).
- *  - gum::BayesNetInference::eraseEvidence( const Potential<GUM_SCALAR>* ).
- *
- * \subsection bn_inf_algo Inference Algorithms
- * Here is a list of exact inference algorithms:
- *  - gum::ShaferShenoyInference.
- *  - gum::JunctionTreeInference.
- *  - gum::LazyPropagation.
- *  - gum::VariableElimination.
- *  - gum::VEWithBB.
- *
- * And this is the list of approximate inference algorithms:
- *  - gum::GibbsInference.
- *
- * Finally, a list of utility algorithms used by some inference algorithms:
- *  - gum::BarrenNodesFinder.
- *  - gum::BayesBall.
- *  - gum::dSeparation.
  *
  * \section bn_io Serialization
  * There are several file format currently supported for gum::BayesNet
