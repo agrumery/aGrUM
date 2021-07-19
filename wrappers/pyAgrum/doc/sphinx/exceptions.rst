@@ -69,3 +69,5 @@ All the classes inherit GumException's functions errorType, errorCallStack and e
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.UnknownLabelInDatabase
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
+.. autoexception:: pyAgrum.DatabaseError
+	:exclude-members: errorCallStack, errorContent, errorType, with_traceback

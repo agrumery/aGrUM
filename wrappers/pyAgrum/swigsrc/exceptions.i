@@ -46,6 +46,7 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(InvalidDirectedCycle)
   PYGUM_CATCH(InvalidEdge)
   PYGUM_CATCH(InvalidNode)
+  PYGUM_CATCH(DatabaseError)
   PYGUM_CATCH(MissingValueInDatabase)
   PYGUM_CATCH(MissingVariableInDatabase)
   PYGUM_CATCH(NoChild)

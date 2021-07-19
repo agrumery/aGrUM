@@ -63,8 +63,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
             aPriori: str
                 A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
-                Dirichlet and None.
+                Dirichlet and NoPrior .
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
+                By default (when aPriori is None) : a smoothing(0.01) is applied.
 
             scoringType: str
                 A string designating the type of scoring we want to use. Since scoring is used while constructing the
@@ -142,7 +143,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
             aPriori: str
                 A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
-                Dirichlet and None.
+                Dirichlet and NoPrior.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
             scoringType: str

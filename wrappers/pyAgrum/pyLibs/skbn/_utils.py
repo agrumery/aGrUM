@@ -104,7 +104,7 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
   parameters:
       aPriori: str
           A string designating the type of a priori smoothing we want to use.
-          Possible values are Laplace, BDeu , Dirichlet and None.
+          Possible values are Laplace, BDeu , Dirichlet and NoPrior.
           Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
       learner:
           learner object from pyAgrum to apply the score
@@ -127,10 +127,12 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
     learner.useAprioriDirichlet(DirichletCsv, aPrioriWeight)
   elif aPriori == 'BDeu':
     learner.useAprioriBDeu(aPrioriWeight)
-  elif aPriori == 'None' or aPriori is None:  # default
+  elif aPriori == 'NoPrior':
     learner.useNoApriori()
+  elif aPriori is None:  # default : (small) Laplace's adjustment
+    learner.useAprioriSmoothing(0.01)
   else:
-    raise ValueError("Invalid aPriori! Possible values are : Laplace , Dirichlet , BDeu and None")
+    raise ValueError("Invalid aPriori! Possible values are : Laplace , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints, learner):

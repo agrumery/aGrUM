@@ -109,8 +109,8 @@ class BNDiscretizer():
             the name of the variable you want to set the discretization paramaters of. Set to None to set the new
             default for this BNClassifier.
         methode: str
-            The method of discretization used for this variable. Type "None" if you do not want to discretize this
-            variable. Possible values are: 'None', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
+            The method of discretization used for this variable. Type "NoDiscretization" if you do not want to discretize this
+            variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
         numberOfBins:
             sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also
             be set to the string 'elbowMethod' so that the best number of bins is found automatically.
@@ -132,10 +132,10 @@ class BNDiscretizer():
       methode = oldMethod
 
     if numberOfBins is None:
-      if methode != 'None':
+      if methode != 'NoDiscretization':
         numberOfBins = oldNbBins
 
-    if methode not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'None'}:
+    if methode not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization'}:
       raise ValueError(
         "This discretization method is not recognized! Possible values are keans, uniform, quantile, NML, "
         "CAIM and MDLP. You have entered " + str(
@@ -145,7 +145,7 @@ class BNDiscretizer():
       if methode == "NML":
         raise ValueError(
           "The elbow Method cannot be used as the number of bins for the algorithm NML. Please an integer value")
-    elif methode != 'None':
+    elif methode != 'NoDiscretization':
       try:
         numberOfBins = int(numberOfBins)
       except:
@@ -214,7 +214,7 @@ class BNDiscretizer():
         isNumeric = False
       if variable in self.discretizationParametersDictionary.keys():
         auditDict[variable] = self.discretizationParametersDictionary[variable]
-        if self.discretizationParametersDictionary[variable]['methode'] != "None" and not isNumeric:
+        if self.discretizationParametersDictionary[variable]['methode'] != "NoDiscretization" and not isNumeric:
           raise ValueError("The variable " + variable + " is not numeric and cannot be discretized!")
 
       else:
@@ -222,9 +222,9 @@ class BNDiscretizer():
           auditDict[variable]['k'] = self.defaultNbBins
           auditDict[variable]['methode'] = self.defaultMethod
         else:
-          auditDict[variable]['methode'] = 'None'
+          auditDict[variable]['methode'] = 'NoDiscretization'
           auditDict[variable]['k'] = None
-      if auditDict[variable]['methode'] == "None":
+      if auditDict[variable]['methode'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
         auditDict[variable]['type'] = 'Continuous'
@@ -678,14 +678,14 @@ class BNDiscretizer():
         self.discretizationParametersDictionary[variableName]['k'] = self.defaultNbBins
       else:
         self.discretizationParametersDictionary[variableName] = dict()
-        self.discretizationParametersDictionary[variableName]['methode'] = "None"
+        self.discretizationParametersDictionary[variableName]['methode'] = "NoDiscretization"
       usingDefaultParameters = True
     else:
       usingDefaultParameters = False
-      if self.discretizationParametersDictionary[variableName]['methode'] != "None" and not isNumeric:
+      if self.discretizationParametersDictionary[variableName]['methode'] != "NoDiscretization" and not isNumeric:
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
 
-    if self.discretizationParametersDictionary[variableName]["methode"] == "None":
+    if self.discretizationParametersDictionary[variableName]["methode"] == "NoDiscretization":
       var = gum.LabelizedVariable(variableName, variableName, 0)
       for value in possibleValuesX:
         var.addLabel(str(value))

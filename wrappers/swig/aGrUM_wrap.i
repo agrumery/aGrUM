@@ -201,6 +201,7 @@ namespace std {
 %exceptionclass gum::InvalidDirectedCycle;
 %exceptionclass gum::InvalidEdge;
 %exceptionclass gum::InvalidNode;
+%exceptionclass gum::DatabaseError;
 %exceptionclass gum::MissingValueInDatabase;
 %exceptionclass gum::MissingVariableInDatabase;
 %exceptionclass gum::NoChild;

@@ -54,5 +54,11 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     self.assertGreater(classif2.MarkovBlanket.size(), 0)
 
+    # some instantiation of parents are missing : No prior should lead to division by 0
+    classif3 = bnc.BNClassifier(aPriori="NoPrior")
+    with self.assertRaises(gum.DatabaseError):
+      classif3.fit(x_train_asia, y_train_asia)
+
+
 ts = unittest.TestSuite()
 addTests(ts, BNCLassifierTestCase)
