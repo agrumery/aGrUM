@@ -863,7 +863,7 @@ namespace gum_tests {
       bn.cpt("C").fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
       bn.cpt("D").fillWith({0.8, 0.2});
 
-      // bugfix for parallel exceution of VariableElimination
+      // bugfix for parallel execution of VariableElimination
       const gum::DAG& dag = bn.dag();
       for (const auto node: dag) {
         dag.parents(node);
@@ -906,6 +906,46 @@ namespace gum_tests {
       for (std::size_t i = std::size_t(0); i < std::size_t(4); ++i) {
         TS_ASSERT_DELTA(counts[i], xcounts[i], 0.001);
       }
+    }
+
+    void testZeroInPseudoCounts() {
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        // create the translator set
+        gum::LabelizedVariable var("X1", "", 0);
+        var.addLabel("0");
+        var.addLabel("1");
+        var.addLabel("2");
+
+        const std::vector< std::string >                miss;
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+        std::vector< std::string >                      names{"A", "B"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator(translator, i);
+        }
+      }
+
+      // create the database
+      gum::learning::DatabaseTable<> database(trans_set);
+      database.insertRow({"0", "1"});
+      database.insertRow({"1", "0"});
+      database.insertRow({"1", "1"});
+      database.insertRow({"0", "1"});
+      database.insertRow({"0", "0"});
+
+      // create the parser
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>     extern_apriori(database);
+      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+
+      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(0)))
+      TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(1)))
+      TS_ASSERT_THROWS(param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)}),gum::DatabaseError)
     }
   };
 

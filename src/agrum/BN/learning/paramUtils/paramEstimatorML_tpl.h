@@ -26,11 +26,6 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-// if this define is active, the estimator will not accept to assess numbers for a
-// distribution with no case at all (N_ij=0). if this define is not active, the
-// estimator will use an uniform distribution for this case.
-//#  define GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
-
 namespace gum {
 
   namespace learning {
@@ -190,7 +185,6 @@ namespace gum {
         const std::size_t conditioning_domsize = N_ij.size();
         const std::size_t target_domsize       = N_ijk.size() / conditioning_domsize;
 
-#  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         // check that all conditioning nodes have strictly positive counts
         for (std::size_t j = std::size_t(0); j < conditioning_domsize; ++j) {
           if (N_ij[j] == 0) {
@@ -229,7 +223,7 @@ namespace gum {
             // create the error message
             std::stringstream str;
             str << "The conditioning set <";
-            bool deja = true;
+            bool deja = false;
             for (i = std::size_t(0); i < cond_nb; ++i) {
               if (deja)
                 str << ", ";
@@ -250,20 +244,11 @@ namespace gum {
             GUM_ERROR(DatabaseError, str.str())
           }
         }
-#  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
 
         // normalize the counts
         for (std::size_t j = std::size_t(0), k = std::size_t(0); j < conditioning_domsize; ++j) {
           for (std::size_t i = std::size_t(0); i < target_domsize; ++i, ++k) {
-#  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
             N_ijk[k] /= N_ij[j];
-#  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
-            if (N_ij[j] != 0) {
-              N_ijk[k] /= N_ij[j];
-            } else {
-              N_ijk[k] = 1.0 / target_domsize;
-            }
-#  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           }
         }
       } else {
@@ -278,7 +263,6 @@ namespace gum {
           for (double& n_ijk: N_ijk)
             n_ijk /= sum;
         } else {
-#  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
           std::stringstream str;
 
           const auto& node2cols  = this->counter_.nodeId2Columns();
@@ -289,10 +273,6 @@ namespace gum {
               << ". It is impossible to estimate the parameters by maximum "
                  "likelihood";
           GUM_ERROR(DatabaseError, str.str())
-#  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
-          for (double& n_ijk: N_ijk)
-            n_ijk = 1.0 / N_ijk.size();
-#  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         }
       }
 

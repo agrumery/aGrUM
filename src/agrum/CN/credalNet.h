@@ -108,9 +108,9 @@ namespace gum {
 
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet
-       * file path. One can also provide a single BayesNet in order to perturb it's
+       * file path. One can also provide a single BayesNet to perturb it's
        * probability distributions into credal sets according to another BayesNet
-       * containing the number of cases, for each node, of each parent
+       * containing the amount cases, for each node, of each parent
        * instantiation met during learning, i.e. \f$ p(X = 0 \mid pa(X) = j) =
        * N_{pa(X) = j} \f$.
        *
@@ -171,8 +171,7 @@ namespace gum {
        *parents )
        *
        * @warning : Does not change the \c BayesNet (s) associated to this
-       *credal net
-       *!
+       *credal net !
        *
        * First dimension is instantiation position ( from 0 to K - 1 ).
        * Second is the credal set vertice index
