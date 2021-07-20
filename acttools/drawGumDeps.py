@@ -66,12 +66,12 @@ def _gumScan(file: Path):
 
 def drawGumDeps():
   colors = {
-    "tools/core": "#e3670b",
-    "tools/database": "#e07839",
+    "tools/core": "sandybrown",
+    "tools/database": "#b5610e",
     "tools/variables": "#dd9282",
     "tools/graphicalModels": "#e08254",
     "tools/graphs": "darksalmon",
-    "tools/multidim": "sandybrown",
+    "tools/multidim": "#e3670b",
     "tools/stattests": "#b7410e",
 
     "BN": "#EA80E6",
@@ -97,9 +97,9 @@ def drawGumDeps():
     nod = pdp.Node(name)
 
     nod.set("fontname", "Arial")
-    nod.set("fontsize", 9)
+    nod.set("fontsize", 6)
     nod.set("shape", "box")
-    nod.set("margin", 0.05)
+    nod.set("margin", 0.03)
     nod.set("width", 0)
     nod.set("height", 0)
     nod.set("style", "filled")
@@ -166,7 +166,7 @@ def drawGumDeps():
   print("# aGrUM headers map")
   print(f"#  + Nbr of nodes : {nodsiz}")
   print(f"#  + Nbr of arcs : {arcsiz}")
-  print(agru.to_string())
+  #print(agru.to_string())
   agru.write_pdf("agrum-map.pdf", prog="fdp")
 
 
