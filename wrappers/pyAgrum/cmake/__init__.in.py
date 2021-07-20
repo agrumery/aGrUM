@@ -500,19 +500,15 @@ def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_
 
   genere = BNDatabaseGenerator(bn)
   if show_progress:
-    from pyAgrum.lib._utils.progress_bar import ProgressBar
-    prog = ProgressBar(name_out + ' : ', 0, 100, 77, mode='static', char='#')
-    prog.display()
+    from tqdm import tqdm
+    pbar = tqdm(total=100,desc=name_out,bar_format='{desc}: {percentage:3.0f}%|{bar}|',ncols=60)
     listen = PythonDatabaseGeneratorListener(genere)
 
     def whenStep(x, y):
-      prog.increment_amount()
-      prog.display()
+      pbar.update(1)
 
     def whenStop(msg):
-      prog.update_amount(100)
-      prog.display()
-      print()
+      pbar.close()
 
     listen.setWhenProgress(whenStep)
     listen.setWhenStop(whenStop)

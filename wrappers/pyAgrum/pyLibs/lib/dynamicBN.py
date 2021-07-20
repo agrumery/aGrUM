@@ -328,35 +328,3 @@ def plotFollow(lovars, twoTdbn, T, evs):
   """
   plotFollowUnrolled(lovars, unroll2TBN(twoTdbn, T), T, evs)
 
-
-if __name__ == '__main__':
-  pyAgrum_header("2015-17")
-
-  dbn = gum.BayesNet()
-  a0, b0, c0, d0, at, bt, ct, dt = [dbn.add(gum.LabelizedVariable(s, s, 5)) for s in
-                                    ["a0", "b0", "c0", "d0", "at", "bt", "ct", "dt"]]
-
-  dbn.addArc(a0, b0)
-  dbn.addArc(c0, d0)
-  dbn.addArc(at, bt)
-
-  dbn.addArc(a0, bt)
-  dbn.addArc(b0, ct)
-  dbn.addArc(c0, dt)
-  dbn.addArc(d0, at)
-
-  # needed from within spyder, do not understand why
-  import time
-
-  gum.initRandom(int(str(time.time()).split('.')[1]))
-  # should not be necessary
-  dbn.generateCPTs()
-
-  showTimeSlices(dbn)
-
-  # T=5
-  # bn=unroll2TBN(dbn,T)
-  # showTimeSlices(bn)
-
-  plotFollow(["a", "b", "c", "d"], dbn, T=51, evs={
-             'a15': 2, 'a30': 0, 'c14': 0, 'b40': 0})

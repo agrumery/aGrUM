@@ -305,12 +305,3 @@ def pdfize(aBN, name):
   """
   dotize(aBN, name, 'pdf')
 
-
-if __name__ == "__main__":
-  pyAgrum_header("2011-19")
-  if len(sys.argv) < 2:
-    print(os.path.basename(sys.argv[0]),
-          "file.{" + gum.availableBNExts() + "}")
-  else:
-    base, ext = os.path.splitext(sys.argv[1])
-    pdfize(sys.argv[1], base)

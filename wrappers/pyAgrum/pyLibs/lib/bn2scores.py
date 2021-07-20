@@ -30,9 +30,6 @@ import sys
 
 import pyAgrum as gum
 
-from ._utils.progress_bar import ProgressBar
-from ._utils.pyAgrum_header import pyAgrum_header
-
 
 def lines_count(filename):
   """ count lines in a file
@@ -90,8 +87,8 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
   inst = bn.completeInstantiation()
 
   if visible:
-    prog = ProgressBar(csv_name + ' : ', 0, nbr_lines, 77, mode='static', char='#')
-    prog.display()
+    from tqdm import tqdm
+    pbar = tqdm(total=nbr_lines,desc=csv_name,bar_format='{desc}: {percentage:3.0f}%|{bar}|')
 
   nbr_insignificant = 0
   num_ligne = 0
@@ -112,11 +109,10 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
     else:
       likelihood += math.log(p, 2)
     if visible:
-      prog.increment_amount()
-      prog.display()
+      pbar.update()
 
   if visible:
-    print
+    pbar.close()
 
   nbr_arcs = 1.0 * bn.sizeArcs()
   dim = 1.0 * bn.dim()
@@ -152,25 +148,10 @@ def stringify(s):
   return '"' + s + '"'
 
 
-if __name__ == "__main__":
-  pyAgrum_header("2011-19")
-
-  if len(sys.argv) < 2:
-    # module_help()
-    bn_name = "../resources/alarm.dsl"
-    csv_name = "alarm.csv"
-  else:
-    bn_name = sys.argv[1]
-
-    if len(sys.argv) < 3:
-      base, ext = os.path.splitext(bn_name)
-      csv_name = base + '.csv'
-    else:
-      csv_name = sys.argv[2]
-      base, ext = os.path.splitext(csv_name)
-
+"""
   print('"{0}" vs "{1}"'.format(bn_name, csv_name))
   print()
   (nbr, LL) = computeScores(bn_name, csv_name, visible=True)
   print()
   print('{0}% of base is significant.\nscores : {1}'.format(nbr, LL))
+"""

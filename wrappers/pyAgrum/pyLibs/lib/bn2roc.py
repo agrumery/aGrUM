@@ -31,16 +31,6 @@ import matplotlib.pylab as pylab
 
 import pyAgrum as gum
 
-try:
-  from ._utils.progress_bar import ProgressBar
-except ModuleNotFoundError:
-  from _utils.progress_bar import ProgressBar
-
-try:
-  from ._utils.pyAgrum_header import pyAgrum_header
-except ModuleNotFoundError:
-  from _utils.pyAgrum_header import pyAgrum_header
-
 
 def _lines_count(filename):
   """
@@ -159,9 +149,8 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
 
   if show_progress:
     nbr_lines = _lines_count(csv_name) - 1
-    prog = ProgressBar(csv_name + ' : ', 0, nbr_lines,
-                       77, mode='static', char='#')
-    prog.display()
+    from tqdm import tqdm
+    pbar = tqdm(total=_lines_count(csv_name) - 1,desc=csv_name,bar_format='{desc}: {percentage:3.0f}%|{bar}|')
 
   Classifier.fromTrainedModel(bn, target, label)
   X, y = Classifier.XYfromCSV(csv_name, with_labels=with_labels, target=target)
@@ -175,11 +164,10 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
     res.append((px, y[i]))
 
     if show_progress:
-      prog.increment_amount()
-      prog.display()
+      pbar.update()
 
   if show_progress:
-    print
+    pbar.close()
 
   if with_labels:
     return (res, totalP, totalN, True)
@@ -658,44 +646,3 @@ def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_
   return showROC_PR(bn, csv_name, target, label, show_progress, show_fig, save_fig, with_labels, False, True,
                     significant_digits)
 
-
-def _checkROCargs():
-  pyAgrum_header("2011-13")
-
-  bn_name = sys.argv[1] if len(sys.argv) > 1 else ""
-  csv_name = sys.argv[2] if len(sys.argv) > 2 else ""
-  variable = sys.argv[3] if len(sys.argv) > 3 else ""
-  label = sys.argv[4] if len(sys.argv) > 4 else ""
-
-  if bn_name.__eq__(""):
-    module_help()
-
-  bn = gum.loadBN(bn_name)
-
-  if csv_name.__eq__(""):
-    module_help()
-
-  if variable.__eq__(""):
-    module_help(message=" Variables : " + str(bn.names()))
-  else:
-    if variable not in bn.names():
-      module_help(message=" Variable '" + variable +
-                          "'not found.\n Variables : " + str(bn.names()))
-
-    if label.__eq__(""):
-      module_help(message=" Labels : " + str(bn.variableFromName(variable)))
-    else:
-      try:
-        bn.variableFromName(variable)[label]
-      except gum.OutOfBounds:
-        module_help(message=" Label '" + label +
-                            "' not found.\n Labels : " + str(bn.variableFromName(variable)))
-
-  return (bn, csv_name, variable, label)
-
-
-if __name__ == "__main__":
-  pyAgrum_header("2011-19")
-
-  (bn, csv_name, variable, label) = _checkROCargs()
-  showROC(bn, csv_name, variable, label, True, False)

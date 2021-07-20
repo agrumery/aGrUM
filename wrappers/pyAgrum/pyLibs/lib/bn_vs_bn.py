@@ -30,8 +30,6 @@ import math
 import pyAgrum as gum
 from itertools import product, combinations
 
-from ._utils.pyAgrum_header import pyAgrum_header
-
 
 class GraphicalBNComparator:
   """
@@ -460,12 +458,3 @@ def module_help(exit_value=1):
         "_bn1.{" + gum.availableBNExts() + "} self._bn2.{" + gum.availableBNExts() + "}")
   sys.exit(exit_value)
 
-
-if __name__ == "__main__":
-  pyAgrum_header("2011-19")
-
-  if len(sys.argv) != 3:
-    module_help()
-
-  cmp = GraphicalBNComparator(sys.argv[1], sys.argv[2])
-  print(cmp.equivalentBNs())
