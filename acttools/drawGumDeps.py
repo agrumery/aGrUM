@@ -26,24 +26,17 @@ import pydotplus as pdp
 
 
 def _filter(tab):
-  if tab[-1] == "agrum.h":
-    return False
-
-  if tab[-1] == "config.h":
-    return False
-
-  if len(tab) > 4:
-    if tab[3] == "external":
-      return False
-  else:
-    if tab[0] == "external":
-      return False
-
   if len(tab[-1]) > 5:
     if tab[-1][-6:] == "_tpl.h":
       return False
     if tab[-1][-6:] == "_inl.h":
       return False
+
+  if tab[-1] == "agrum.h":
+    return False
+
+  if tab[-1] == "config.h":
+    return False  
 
   return True
 
@@ -77,6 +70,7 @@ def drawGumDeps():
     "BN": "#EA80E6",
     "PRM": "#cc41ff",
     "CN": "yellowgreen",
+    "learning": "lightskyblue",
     "learning": "lightskyblue",
     "FMDP": "#006447",
     "ID": "aquamarine",
@@ -151,9 +145,13 @@ def drawGumDeps():
 
   for k in deps.keys():
     parts = k.split("/")
-    theme = parts[0]
-    if theme == "tools":
-      theme+="/"+parts[1]
+    if len(parts)>1 and parts[1]=="learning":
+      theme="learning"
+    else:
+      theme = parts[0]
+      if theme == "tools":
+        theme+="/"+parts[1]
+
     nod = _getNode(k, parts[-1][:-2], theme)
     agru.add_node(nod)
     nodsiz += 1
