@@ -14,6 +14,7 @@ jupyter
 scipy
 scikit-learn
 pandas
+tqdm
 ################################
 ### Specific requirements for tests
 
