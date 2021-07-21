@@ -104,7 +104,7 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
   parameters:
       aPriori: str
           A string designating the type of a priori smoothing we want to use.
-          Possible values are Laplace, BDeu , Dirichlet and NoPrior.
+          Possible values are Smoothing, BDeu , Dirichlet and NoPrior.
           Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
       learner:
           learner object from pyAgrum to apply the score
@@ -118,7 +118,7 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
 
   Tells the Bayesian network which prior to use
   """
-  if (aPriori == 'Laplace'):
+  if (aPriori == 'Smoothing'):
     learner.useAprioriSmoothing(aPrioriWeight)
   elif aPriori == 'Dirichlet':
     if DirichletCsv == None:
@@ -132,7 +132,7 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
   elif aPriori is None:  # default : (small) Laplace's adjustment
     learner.useAprioriSmoothing(0.01)
   else:
-    raise ValueError("Invalid aPriori! Possible values are : Laplace , Dirichlet , BDeu and NoPrior")
+    raise ValueError("Invalid aPriori! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints, learner):

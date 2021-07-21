@@ -62,8 +62,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Tabu designated Tabu list searching
 
             aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
-                Dirichlet and NoPrior .
+                A string designating the type of a priori smoothing we want to use. Possible values are Smoothing,
+                BDeu, Dirichlet and NoPrior .
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
                 By default (when aPriori is None) : a smoothing(0.01) is applied.
 
@@ -142,7 +142,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Tabu designated Tabu list searching
 
             aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Laplace, BDeu ,
+                A string designating the type of a priori smoothing we want to use. Possible values are Smoothing, BDeu ,
                 Dirichlet and NoPrior.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
