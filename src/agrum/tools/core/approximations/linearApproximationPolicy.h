@@ -134,8 +134,8 @@ namespace gum {
      * This method is slower than @ref fromExact since it verifies the
      * bounds.
      *
-     * @throw OutOfLowerBound Raised if value is out of bounds.
-     * @throw OutOfUpperBound Raised if value is out of bounds.
+     * @throw OutOfBounds Raised if value is out of bounds.
+     * @throw OutOfBounds Raised if value is out of bounds.
      */
     GUM_SCALAR safeFromExact(const GUM_SCALAR& value);
 
@@ -143,8 +143,8 @@ namespace gum {
      * @brief Encode a given value into its approximation representation.
      * @param value The to encode.
      * @return Returns the encoded value.
-     * @throw OutOfLowerBound Raised if value is out of bounds.
-     * @throw OutOfUpperBound Raised if value is out of bounds.
+     * @throw OutOfBounds Raised if value is out of bounds.
+     * @throw OutOfBounds Raised if value is out of bounds.
      */
     Idx encode(const GUM_SCALAR& value) const;
 
@@ -173,7 +173,7 @@ namespace gum {
     /**
      * @brief Sets lowest possible value.
      * @param newLowLimit New lower bound.
-     * @throw OutOfUpperBound Raised if out of bound.
+     * @throw OutOfBounds Raised if out of bound.
      */
     virtual void setLowLimit(const GUM_SCALAR& newLowLimit);
 
@@ -186,7 +186,7 @@ namespace gum {
     /**
      * @brief Sets Highest possible value.
      * @param newHighLimit New higher bound.
-     * @throw OutOfLowerBound Raised if out of bound.
+     * @throw OutOfBounds Raised if out of bound.
      */
     virtual void setHighLimit(const GUM_SCALAR& newHighLimit);
 

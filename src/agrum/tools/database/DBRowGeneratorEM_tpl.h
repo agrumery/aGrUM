@@ -416,7 +416,7 @@ namespace gum {
         for (auto iter = this->nodeId2columns_.begin(); iter != this->nodeId2columns_.end();
              ++iter) {
           if (!dag.existsNode(iter.first())) {
-            GUM_ERROR(IdError,
+            GUM_ERROR(InvalidNode,
                       "Column " << iter.second() << " of the database is associated to Node ID "
                                 << iter.first()
                                 << ", which does not belong to the Bayesian network");

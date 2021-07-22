@@ -9,10 +9,6 @@ All the classes inherit GumException's functions errorType, errorCallStack and e
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.DuplicateLabel
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.EmptyBSTree
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.EmptySet
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.GumException
 	:exclude-members: with_traceback
 .. autoexception:: pyAgrum.FatalError
@@ -22,8 +18,6 @@ All the classes inherit GumException's functions errorType, errorCallStack and e
 .. autoexception:: pyAgrum.GraphError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.IOError
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.IdError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.InvalidArc
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
@@ -51,11 +45,7 @@ All the classes inherit GumException's functions errorType, errorCallStack and e
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.OutOfBounds
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.OutOfLowerBound
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.OutOfUpperBound
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
-.. autoexception:: pyAgrum.ReferenceError
+.. autoexception:: pyAgrum.ArgumentError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.SizeError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
@@ -70,4 +60,6 @@ All the classes inherit GumException's functions errorType, errorCallStack and e
 .. autoexception:: pyAgrum.UnknownLabelInDatabase
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.DatabaseError
+	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
+.. autoexception:: pyAgrum.CPTError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback

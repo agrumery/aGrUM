@@ -101,7 +101,7 @@ namespace gum {
     /**
      * @brief Number of burn in for one iteration.
      * @param b The number of burn in.
-     * @throw OutOfLowerBound Raised if b < 1.
+     * @throw OutOfBounds Raised if b < 1.
      */
     void setBurnIn(Size b);
 

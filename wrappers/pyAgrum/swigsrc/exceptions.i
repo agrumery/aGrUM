@@ -35,11 +35,8 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(DefaultInLabel)
   PYGUM_CATCH(DuplicateElement)
   PYGUM_CATCH(DuplicateLabel)
-  PYGUM_CATCH(EmptyBSTree)
-  PYGUM_CATCH(EmptySet)
   PYGUM_CATCH(FatalError)
   PYGUM_CATCH(FormatNotFound)
-  PYGUM_CATCH(IdError)
   PYGUM_CATCH(InvalidArc)
   PYGUM_CATCH(InvalidArgument)
   PYGUM_CATCH(InvalidArgumentsNumber)
@@ -56,10 +53,8 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(NotFound)
   PYGUM_CATCH(NullElement)
   PYGUM_CATCH(OperationNotAllowed)
-  PYGUM_CATCH(OutOfLowerBound)
-  PYGUM_CATCH(OutOfUpperBound)
   PYGUM_CATCH(OutOfBounds)
-  PYGUM_CATCH(ReferenceError)
+  PYGUM_CATCH(ArgumentError)
   PYGUM_CATCH(SizeError)
   PYGUM_CATCH(SyntaxError)
   PYGUM_CATCH(IOError)
@@ -67,6 +62,7 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(UndefinedIteratorKey)
   PYGUM_CATCH(UndefinedIteratorValue)
   PYGUM_CATCH(UnknownLabelInDatabase)
+  PYGUM_CATCH(CPTError)
   catch ( gum::Exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.what().c_str() );
   }

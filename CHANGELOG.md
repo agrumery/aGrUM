@@ -17,6 +17,8 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * New `gum::BNLearner::toString()` which gives a string representation of `gum::BNLearner::state()`.
   * Add a new CI for last gcc (g++11 for now).
   * Code optimizations for hash function for small-sized values.
+  * Better hierarchy for exceptions.
+  * MLEstimator should lead to an error when dividing by 0.
 
 * pyAgrum
   * New type for discrete variable (`pyAgrum.IntegerVariable`) which represents a set of non-consecutive integers.
@@ -26,11 +28,15 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * New `pyAgrum.BNLearner.state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
   * New `pyAgrum.BNLearner.__str__()` which gives a string representation of `gum::BNLearner::state()`.
   * Documentations and notebooks updated w.r.t. this new features.
-  * Adding ShapValues for BN in `pyAgrum.lib.explain` (see notebook)
-  * Adding `pyAgrum.lib.explain.independenceListForPairs()` 
+  * Adding ShapValues for BN in `pyAgrum.lib.explain` (see notebook).
+  * Adding `pyAgrum.lib.explain.independenceListForPairs()`.
   * Other improvements in `pyAgrum.lib.explain` and the corresponding notebook and documentations.
-  * Updating notebooks for classifiers
-
+  * Updating notebooks for classifiers.
+  * Better hierarchy for exceptions.
+  * Removing unnecessary and obsolete codes by deleting `pyAgrum.lib._utils`.
+  * 'Terminology clash' between 'Laplace's adjustment' and 'Smoothing' : use more generic 'Smoothing' everywhere now.
+  * MLEstimator should lead to an error when dividing by 0.
+ 
 ## Changelog for 0.20.3
 
 * aGrUM

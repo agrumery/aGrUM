@@ -63,9 +63,9 @@ namespace gum {
   INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
     if (_ticks_size_ < 2) { GUM_ERROR(OutOfBounds, "not enough ticks") }
 
-    if (target < _ticks_[0]) { GUM_ERROR(OutOfLowerBound, "less than first range") }
+    if (target < _ticks_[0]) { GUM_ERROR(OutOfBounds, "less than first range") }
 
-    if (target > _ticks_[_ticks_size_ - 1]) { GUM_ERROR(OutOfUpperBound, "more than last range") }
+    if (target > _ticks_[_ticks_size_ - 1]) { GUM_ERROR(OutOfBounds, "more than last range") }
 
     if (target == _ticks_[_ticks_size_ - 1])   // special case for upper limit
       // (which belongs to class  _ticks_size_-2
@@ -156,7 +156,15 @@ namespace gum {
         _ticks_[0] = aTick;
       }
     } else {
-      try {
+      if (aTick>_ticks_[_ticks_size_-1]) // new upper bound
+        _ticks_[_ticks_size_] = aTick;
+      else if (aTick<_ticks_[0]){   // new lower bound
+        for (Idx i = _ticks_size_; i >= 1; --i) {
+          _ticks_[i] = _ticks_[i - 1];
+        }
+
+        _ticks_[0] = aTick;
+      } else {
         Idx zeIdx = pos_(aTick);   // aTick is in [  _ticks_[zeIdx], __ticks[zeIdx+1] [
 
         for (Idx i = _ticks_size_ - 1; i > zeIdx; --i) {
@@ -164,14 +172,6 @@ namespace gum {
         }
 
         _ticks_[zeIdx + 1] = aTick;
-      } catch (OutOfUpperBound&) {   // new upper bound
-        _ticks_[_ticks_size_] = aTick;
-      } catch (OutOfLowerBound&) {   // new lower bound
-        for (Idx i = _ticks_size_; i >= 1; --i) {
-          _ticks_[i] = _ticks_[i - 1];
-        }
-
-        _ticks_[0] = aTick;
       }
     }
 

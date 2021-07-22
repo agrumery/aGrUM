@@ -174,7 +174,7 @@ namespace gum {
           if (_referenceMap_.exists(id)
               && (!static_cast< PRMReferenceSlot< GUM_SCALAR >& >(type().get(id)).isArray())
               && (_referenceMap_[id]->size() == 1)) {
-            GUM_ERROR(OutOfUpperBound, "ReferenceSlot<GUM_SCALAR> size limit reached")
+            GUM_ERROR(OutOfBounds, "ReferenceSlot<GUM_SCALAR> size limit reached")
           }
 
           break;
@@ -196,7 +196,7 @@ namespace gum {
           if (_referenceMap_.exists(id)
               && (!static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id)).isMultiple())
               && (_referenceMap_[id]->size() == 1)) {
-            GUM_ERROR(OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached")
+            GUM_ERROR(OutOfBounds, "SlotChain<GUM_SCALAR> size limit reached")
           }
 
           break;

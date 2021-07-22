@@ -105,7 +105,7 @@ namespace gum {
      * If the criterion was disabled it will be enabled.
      *
      * @param eps The new epsilon value.
-     * @throw OutOfLowerBound Raised if eps < 0.
+     * @throw OutOfBounds Raised if eps < 0.
      */
     virtual void setEpsilon(double eps) = 0;
 
@@ -140,7 +140,7 @@ namespace gum {
      * If the criterion was disabled it will be enabled
      *
      * @param rate The minimal epsilon rate.
-     * @throw OutOfLowerBound if rate<0
+     * @throw OutOfBounds if rate<0
      */
     virtual void setMinEpsilonRate(double rate) = 0;
 
@@ -174,7 +174,7 @@ namespace gum {
      * If the criterion was disabled it will be enabled.
      *
      * @param max The maximum number of iterations.
-     * @throw OutOfLowerBound Raised if max <= 1.
+     * @throw OutOfBounds Raised if max <= 1.
      */
     virtual void setMaxIter(Size max) = 0;
 
@@ -208,7 +208,7 @@ namespace gum {
      * If the criterion was disabled it will be enabled.
      *
      * @param timeout The timeout value in seconds.
-     * @throw OutOfLowerBound Raised if timeout <= 0.0.
+     * @throw OutOfBounds Raised if timeout <= 0.0.
      */
     virtual void setMaxTime(double timeout) = 0;
 
@@ -246,7 +246,7 @@ namespace gum {
     /**
      * @brief How many samples between two stopping is enable.
      * @param p The new period value.
-     * @throw OutOfLowerBound Raised if p < 1.
+     * @throw OutOfBounds Raised if p < 1.
      */
     virtual void setPeriodSize(Size p) = 0;
 

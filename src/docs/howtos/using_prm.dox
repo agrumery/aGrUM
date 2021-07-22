@@ -104,9 +104,9 @@
  *    parent of a gum::prm::ReferenceSlot in a gum::prm::Class will raise a
  *    gum::WrongClassElement.
  *
- *    - gum::OutOfUpperBound: raised if a bound is not respected.  For example
+ *    - gum::OutOfBounds: raised if a bound is not respected.  For example
  *    if more than one gum::prm::Instance is assigned to a
- *    gum::prm::ReferenceSlot which is not an array a gum::OutOfUpperBound will
+ *    gum::prm::ReferenceSlot which is not an array a gum::OutOfBounds will
  *    be raised.
 */
 

@@ -106,7 +106,7 @@ namespace gum {
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes
-       * @throws OutOfUpperBound exception is thrown if the indegree constraint
+       * @throws OutOfBounds exception is thrown if the indegree constraint
        * is violated by the arc addition. */
       void modifyGraphAlone(const ArcAddition& change);
 
@@ -120,7 +120,7 @@ namespace gum {
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes
-       * @throws OutOfUpperBound exception is thrown if the indegree constraint
+       * @throws OutOfBounds exception is thrown if the indegree constraint
        * is violated by the arc reversal. */
       void modifyGraphAlone(const ArcReversal& change);
 
@@ -129,7 +129,7 @@ namespace gum {
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes
-       * @throws OutOfUpperBound exception is thrown if the indegree constraint
+       * @throws OutOfBounds exception is thrown if the indegree constraint
        * is violated by an arc addition or reversal. */
       void modifyGraphAlone(const GraphChange& change);
 

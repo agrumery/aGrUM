@@ -96,7 +96,7 @@ namespace gum {
           }
 
           if (std::fabs(sum - 1) > 1e-6)
-            GUM_ERROR(CPTNoSumTo1,
+            GUM_ERROR(CPTError,
                       "setCPTs : a vertex coordinates does not "
                       "sum to one for node id : "
                          << id << " with vertex " << vertex);
@@ -138,7 +138,7 @@ namespace gum {
         }
 
         if (std::fabs(sum - 1) > 1e-6)
-          GUM_ERROR(CPTNoSumTo1,
+          GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                        << id << " at entry " << entry << " with vertex " << vertex);
       }
@@ -227,7 +227,7 @@ namespace gum {
         }
 
         if (std::fabs(sum - 1) > 1e-6)
-          GUM_ERROR(CPTNoSumTo1,
+          GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                        << id << " at entry " << entry << " with vertex " << vertex);
       }
@@ -485,8 +485,8 @@ namespace gum {
             }
 
             if (std::fabs(1. - sum) > _epsRedund_) {
-              GUM_ERROR(CPTNoSumTo1,
-                        _src_bn_.variable(node).name() << "(" << _epsRedund_ << ")"
+              GUM_ERROR(CPTError,
+                        _src_bn_.variable(node).name() << "(" << _epsRedund_ << ")  does not sum to one for"
                                                        << " " << entry << std::endl
                                                        << vertex << std::endl
                                                        << ins << std::endl);
@@ -722,8 +722,8 @@ namespace gum {
               total += vertex[i];
 
             if (std::fabs(total - 1.) > 1e-6)
-              GUM_ERROR(CPTNoSumTo1,
-                        _src_bn_.variable(node).name() << " " << entry << std::endl
+              GUM_ERROR(CPTError,
+                        _src_bn_.variable(node).name() << "  does not sum to one for " << entry << std::endl
                                                        << vertex << std::endl);
 
             vertices.push_back(vertex);
@@ -743,8 +743,8 @@ namespace gum {
               total += vertex[i];
 
             if (std::fabs(total - 1.) > 1e-6)
-              GUM_ERROR(CPTNoSumTo1,
-                        _src_bn_.variable(node).name() << " " << entry << std::endl
+              GUM_ERROR(CPTError,
+                        _src_bn_.variable(node).name() << "  does not sum to one for " << entry << std::endl
                                                        << vertex << std::endl);
 
             vertices.push_back(vertex);

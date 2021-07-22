@@ -142,12 +142,6 @@ namespace gum {
     std::string errorCallStack() const { return callstack_; }
   };
 
-  /**
-   * @class gum::IdError agrum/tools/core/exceptions.h
-   * @extends gum::Exception
-   * Exception : there is a problem with an ID
-   */
-  class IdError;
 
   /**
    * @class gum::FatalError agrum/tools/core/exceptions.h
@@ -155,6 +149,13 @@ namespace gum {
    * Exception : fatal (unknown ?) error
    */
   class FatalError;
+
+  /**
+   * @class gum::UndefinedIteratorValue agrum/tools/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : generic error on iterator
+   */
+  class IteratorError;
 
   /**
    * @class gum::UndefinedIteratorValue agrum/tools/core/exceptions.h
@@ -191,12 +192,6 @@ namespace gum {
    */
   class SizeError;
 
-  /**
-   * @class gum::EmptySet agrum/tools/core/exceptions.h
-   * @extends gum::Exception
-   * Exception: an empty set is found, where it should not be
-   */
-  class EmptySet;
 
   /**
    * @class gum::InvalidArgumentsNumber agrum/tools/core/exceptions.h
@@ -243,43 +238,29 @@ namespace gum {
   class NotFound;
 
   /**
-   * @class gum::ReferenceError agrum/tools/core/exceptions.h
+   * @class gum::ArgumentError agrum/tools/core/exceptions.h
    * @extends gum::Exception
-   * Exception base for reference error
+   * Exception base for argument error
    */
-  class ReferenceError;
+  class ArgumentError;
 
   /**
    * @class gum::OutOfBounds agrum/tools/core/exceptions.h
-   * @extends gum::ReferenceError
+   * @extends gum::ArgumentError
    * Exception : out of bound
    */
   class OutOfBounds;
 
   /**
-   * @class gum::OutOfLowerBound agrum/tools/core/exceptions.h
-   * @extends OutOfBounds
-   * Exception : out of lower bound
-   */
-  class OutOfLowerBound;
-
-  /**
-   * @class gum::OutOfUpperBound agrum/tools/core/exceptions.h
-   * @extends OutOfBounds
-   * Exception : out of upper bound
-   */
-  class OutOfUpperBound;
-
-  /**
    * @class gum::DuplicateElement agrum/tools/core/exceptions.h
-   * @extends gum::ReferenceError
+   * @extends gum::ArgumentError
    * Exception : a similar element already exists
    */
   class DuplicateElement;
 
   /**
    * @class gum::DuplicateLabel agrum/tools/core/exceptions.h
-   * @extends gum::ReferenceError
+   * @extends gum::ArgumentError
    * Exception : a similar label already exists
    */
   class DuplicateLabel;
@@ -335,13 +316,6 @@ namespace gum {
   class InvalidNode;
 
   /**
-   * @class gum::EmptyBSTree agrum/tools/core/exceptions.h
-   * @extends gum::GraphError
-   * Exception : the binary search tree is empty
-   */
-  class EmptyBSTree;
-
-  /**
    * @class gum::DefaultInLabel agrum/tools/core/exceptions.h
    * @extends gum::GraphError
    * Exception : default in label
@@ -363,12 +337,6 @@ namespace gum {
    */
   class CPTError;
 
-  /**
-   * @class gum::CPTNoSumTo1 agrum/tools/core/exceptions.h
-   * @extends gum::CPTError
-   * Exception : the CPT does not sum to 1
-   */
-  class CPTNoSumTo1;
 
   /**
    * @class gum::IncompatibleEvidence agrum/tools/core/exceptions.h
@@ -483,27 +451,24 @@ namespace gum {
                                 const std::string& function,
                                 int                line,
                                 const std::string& msg);
-  GUM_MAKE_ERROR(IdError, Exception, "ID error")
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
   GUM_MAKE_ERROR(NotImplementedYet, Exception, "Not implemented yet")
-  GUM_MAKE_ERROR(UndefinedIteratorValue, Exception, "Undefined iterator")
-  GUM_MAKE_ERROR(UndefinedIteratorKey, Exception, "Undefined iterator's key")
+  GUM_MAKE_ERROR(IteratorError, Exception, "Error in iterator")
+  GUM_MAKE_ERROR(UndefinedIteratorValue, IteratorError, "Undefined iterator")
+  GUM_MAKE_ERROR(UndefinedIteratorKey, IteratorError, "Undefined iterator's key")
   GUM_MAKE_ERROR(NullElement, Exception, "Null element")
   GUM_MAKE_ERROR(UndefinedElement, Exception, "Undefined element")
   GUM_MAKE_ERROR(SizeError, Exception, "incorrect size")
-  GUM_MAKE_ERROR(EmptySet, Exception, "Empty set")
-  GUM_MAKE_ERROR(InvalidArgumentsNumber, Exception, "Invalid argument number")
-  GUM_MAKE_ERROR(InvalidArgument, Exception, "Invalid argument")
+  GUM_MAKE_ERROR(ArgumentError, Exception, "Argument error")
+  GUM_MAKE_ERROR(InvalidArgumentsNumber, ArgumentError, "Invalid argument number")
+  GUM_MAKE_ERROR(InvalidArgument, ArgumentError, "Invalid argument")
   GUM_MAKE_ERROR(IOError, Exception, "I/O Error")
   GUM_MAKE_ERROR(FormatNotFound, IOError, "Format not found")
   GUM_MAKE_ERROR(OperationNotAllowed, Exception, "Operation not allowed")
   GUM_MAKE_ERROR(NotFound, Exception, "Object not found")
-  GUM_MAKE_ERROR(ReferenceError, Exception, "Reference error")
-  GUM_MAKE_ERROR(OutOfBounds, ReferenceError, "Out of bound error")
-  GUM_MAKE_ERROR(OutOfLowerBound, OutOfBounds, "Out of lower bound error")
-  GUM_MAKE_ERROR(OutOfUpperBound, OutOfBounds, "Out of upper bound error")
-  GUM_MAKE_ERROR(DuplicateElement, ReferenceError, "Duplicate element")
-  GUM_MAKE_ERROR(DuplicateLabel, ReferenceError, "Duplicate label")
+  GUM_MAKE_ERROR(OutOfBounds, ArgumentError, "Out of bound error")
+  GUM_MAKE_ERROR(DuplicateElement, ArgumentError, "Duplicate element")
+  GUM_MAKE_ERROR(DuplicateLabel, ArgumentError, "Duplicate label")
   GUM_MAKE_ERROR(GraphError, Exception, "Graph error")
   GUM_MAKE_ERROR(NoNeighbour, GraphError, "No neighbour found")
   GUM_MAKE_ERROR(NoParent, GraphError, "No parent found")
@@ -511,11 +476,9 @@ namespace gum {
   GUM_MAKE_ERROR(InvalidEdge, GraphError, "Invalid edge")
   GUM_MAKE_ERROR(InvalidArc, GraphError, "Invalid arc")
   GUM_MAKE_ERROR(InvalidNode, GraphError, "Invalid node")
-  GUM_MAKE_ERROR(EmptyBSTree, GraphError, "Empty binary search tree")
   GUM_MAKE_ERROR(DefaultInLabel, GraphError, "Error on label")
   GUM_MAKE_ERROR(InvalidDirectedCycle, GraphError, "Directed cycle detected")
   GUM_MAKE_ERROR(CPTError, Exception, "CPT error")
-  GUM_MAKE_ERROR(CPTNoSumTo1, CPTError, "CPT does not sum to 1")
   GUM_MAKE_ERROR(IncompatibleEvidence,
                  Exception,
                  "Several evidence/CPT are incompatible together (proba=0)")

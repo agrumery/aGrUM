@@ -246,11 +246,11 @@ namespace gum {
   INLINE GUM_SCALAR
      LinearApproximationPolicy< GUM_SCALAR >::safeFromExact(const GUM_SCALAR& value) {
     if (value > this->highLimit_) {
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than high limit")
+      GUM_ERROR(OutOfBounds, "Value asked is higher than high limit")
     }
 
     if (value < this->lowLimit_) {
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
+      GUM_ERROR(OutOfBounds, "Value asked is lower than low limit")
     }
 
     return fromExact(value);
@@ -262,13 +262,13 @@ namespace gum {
 // we keep the bounds checked in debug mode
 #ifdef GUM_DEBUG_MODE
     if (value > this->highLimit_) {
-      GUM_ERROR(OutOfUpperBound,
+      GUM_ERROR(OutOfBounds,
                 "Value asked is higher than High limit :  not in (" << this->lowLimit_ << "-"
                                                                     << this->highLimit_ << ")")
     }
 
     if (value < this->lowLimit_) {
-      GUM_ERROR(OutOfLowerBound,
+      GUM_ERROR(OutOfBounds,
                 "Value asked is lower than low limit :  not in (" << this->lowLimit_ << "-"
                                                                   << this->highLimit_ << ")")
     }
@@ -281,7 +281,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >::decode(Idx representation) const {
     if (representation > nbInterval_) {
-      GUM_ERROR(OutOfUpperBound, "Interval Number asked is higher than total number of interval")
+      GUM_ERROR(OutOfBounds, "Interval Number asked is higher than total number of interval")
     }
 
     return _decode_(GUM_SCALAR(representation));
@@ -311,7 +311,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void LinearApproximationPolicy< GUM_SCALAR >::setLowLimit(const GUM_SCALAR& newLowLimit) {
     if (newLowLimit > this->highLimit_) {
-      GUM_ERROR(OutOfUpperBound, "Value asked is higher than High limit")
+      GUM_ERROR(OutOfBounds, "Value asked is higher than High limit")
     }
 
     lowLimit_ = newLowLimit;
@@ -330,7 +330,7 @@ namespace gum {
   INLINE void
      LinearApproximationPolicy< GUM_SCALAR >::setHighLimit(const GUM_SCALAR& newHighLimit) {
     if (newHighLimit < this->lowLimit_) {
-      GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit")
+      GUM_ERROR(OutOfBounds, "Value asked is lower than low limit")
     }
 
     highLimit_ = newHighLimit;

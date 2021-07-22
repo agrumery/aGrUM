@@ -185,16 +185,14 @@ namespace std {
 
 %exceptionclass gum::Exception;
 
+%exceptionclass gum::CPTError;
 %exceptionclass gum::DefaultInLabel;
 %exceptionclass gum::DuplicateElement;
 %exceptionclass gum::DuplicateLabel;
-%exceptionclass gum::EmptyBSTree;
-%exceptionclass gum::EmptySet;
 %exceptionclass gum::FatalError;
 %exceptionclass gum::FormatNotFound;
 %exceptionclass gum::GraphError;
 %exceptionclass gum::IOError;
-%exceptionclass gum::IdError;
 %exceptionclass gum::InvalidArc;
 %exceptionclass gum::InvalidArgument;
 %exceptionclass gum::InvalidArgumentsNumber;
@@ -211,9 +209,7 @@ namespace std {
 %exceptionclass gum::NullElement;
 %exceptionclass gum::OperationNotAllowed;
 %exceptionclass gum::OutOfBounds;
-%exceptionclass gum::OutOfLowerBound;
-%exceptionclass gum::OutOfUpperBound;
-%exceptionclass gum::ReferenceError;
+%exceptionclass gum::ArgumentError;
 %exceptionclass gum::SizeError;
 %exceptionclass gum::SyntaxError;
 %exceptionclass gum::UndefinedElement;

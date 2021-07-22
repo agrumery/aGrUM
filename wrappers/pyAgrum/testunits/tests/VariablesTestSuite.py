@@ -145,7 +145,7 @@ class TestDiscretizedVariable(VariablesTestCase):
     var.addTick(2.1).addTick(2.5).addTick(2.3).addTick(2.7)
     self.assertEqual(str(var), "var<[2.1;2.3[,[2.3;2.5[,[2.5;2.7]>")
 
-    with self.assertRaises(gum.OutOfLowerBound):
+    with self.assertRaises(gum.OutOfBounds):
       x = var.index("0")
     self.assertEqual(var.index("2.1"), 0)
     self.assertEqual(var.index("2.2"), 0)
@@ -154,7 +154,7 @@ class TestDiscretizedVariable(VariablesTestCase):
     self.assertEqual(var.index("2.5"), 2)
     self.assertEqual(var.index("2.6"), 2)
     self.assertEqual(var.index("2.7"), 2)
-    with self.assertRaises(gum.OutOfUpperBound):
+    with self.assertRaises(gum.OutOfBounds):
       x = var.index("8")
 
   def testOrderTicks(self):

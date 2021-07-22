@@ -84,7 +84,7 @@ int
 
 Raises
 ------
-gum.OutOfLowerBound
+gum.OutOfBounds
 	If p<1
 "
 
@@ -105,7 +105,7 @@ eps : double
 
 Raises
 ------
-gum.OutOfLowerBound
+gum.OutOfBounds
 	If eps<0
 "
 
@@ -119,7 +119,7 @@ max : int
 
 Raises
 ------
-gum.OutOfLowerBound
+gum.OutOfBounds
 	If max <= 1
 "
 
@@ -132,7 +132,7 @@ tiemout : double
 
 Raises
 ------
-gum.OutOfLowerBound
+gum.OutOfBounds
 	If timeout<=0.0
 "
 
@@ -153,7 +153,7 @@ p : int
 
 Raises
 ------
-gum.OutOfLowerBound
+gum.OutOfBounds
 	If p<1
 "
 
