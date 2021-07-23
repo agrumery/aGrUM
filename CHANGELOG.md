@@ -12,7 +12,6 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * New type for discrete variable (`gum::IntegerVariable`) which represents a set of non-consecutive integers.
   * New syntax for `gum::IntegerVariable` in `gum::*::fastPrototype` : `a{-3|0|3}`.
   * Change in syntax for `gum::MarkovNetwork::fastPrototype` : the link are represented by `--` instead of `-`.
-  * New behavior for implicit recognition of variables with `gum::BNLearner` (MORE).
   * New `gum::BNLearner::state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
   * New `gum::BNLearner::toString()` which gives a string representation of `gum::BNLearner::state()`.
   * Add a new CI for last gcc (g++11 for now).
