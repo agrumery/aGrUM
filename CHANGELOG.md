@@ -23,7 +23,6 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * New type for discrete variable (`pyAgrum.IntegerVariable`) which represents a set of non-consecutive integers.
   * New syntax for `pyAgrum.IntegerVariable` in `pyAgrum.fast*` : `a{-3|0|3}`.
   * Change in syntax for `pyAgrum.fastMN` : the links are represented by `--` instead of `-`.
-  * New behavior for implicit recognition of variables with `gum::BNLearner` (MORE).
   * New `pyAgrum.BNLearner.state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
   * New `pyAgrum.BNLearner.__str__()` which gives a string representation of `gum::BNLearner::state()`.
   * Documentations and notebooks updated w.r.t. this new features.
