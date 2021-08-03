@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * Basically wrapper for a string name and description.
  * This class is used as an interface. So the constructor/destructor is
  *protected.
- * @author Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_VARIABLE_H
 #define GUM_VARIABLE_H
@@ -138,9 +138,7 @@ namespace gum {
 
     protected:
     /// (protected) Default constructor
-    Variable() {
-      GUM_CONSTRUCTOR(Variable);
-    }
+    Variable() { GUM_CONSTRUCTOR(Variable); }
 
     /// protected copy
     /** @param aRV to be copied */

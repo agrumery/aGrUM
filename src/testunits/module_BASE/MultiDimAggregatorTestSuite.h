@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -246,7 +246,8 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Min< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=min(b[0,3],c[0,3],d[0,3])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Range([0,3])=min(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
@@ -259,7 +260,8 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Max< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=max(b[0,3],c[0,3],d[0,3])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Range([0,3])=max(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
@@ -272,7 +274,8 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Count< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=count[2](b[0,3],c[0,3],d[0,3])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Range([0,3])=count[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
@@ -285,7 +288,8 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Forall< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=forall[2](b[0,3],c[0,3],d[0,3])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Range([0,3])=forall[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
@@ -298,7 +302,8 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Exists< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=exists[2](b[0,3],c[0,3],d[0,3])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Range([0,3])=exists[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
@@ -311,7 +316,9 @@ namespace gum_tests {
       gum::LabelizedVariable        a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::Or< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=or(b<0,1,2,3>,c<0,1>,d<0,1>)");
+      TS_ASSERT_EQUALS(
+         p.toString(),
+         "a:Labelized(<0,1>)=or(b:Labelized(<0,1,2,3>),c:Labelized(<0,1>),d:Labelized(<0,1>))");
 
       gum::Instantiation i(p);
 
@@ -324,7 +331,9 @@ namespace gum_tests {
       gum::LabelizedVariable         a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::And< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=and(b<0,1,2,3>,c<0,1>,d<0,1>)");
+      TS_ASSERT_EQUALS(
+         p.toString(),
+         "a:Labelized(<0,1>)=and(b:Labelized(<0,1,2,3>),c:Labelized(<0,1>),d:Labelized(<0,1>))");
 
       gum::Instantiation i(p);
 
@@ -337,7 +346,9 @@ namespace gum_tests {
       gum::LabelizedVariable            a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4);
       gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>)");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Labelized(<0,1,2,3>)=median(b:Labelized(<0,1,2,3>),c:Labelized(<0,1,2,3>)"
+                       ",d:Labelized(<0,1,2,3>))");
 
       gum::Instantiation i(p);
 
@@ -352,7 +363,8 @@ namespace gum_tests {
       gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(p.toString(),
-                       "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)");
+                       "a:Labelized(<0,1,2,3>)=median(b:Labelized(<0,1,2,3>),c:Labelized(<0,1,2,3>)"
+                       ",d:Labelized(<0,1,2,3>),e:Labelized(<0,1,2,3>))");
 
       gum::Instantiation i(p);
 
@@ -367,7 +379,8 @@ namespace gum_tests {
       gum::aggregator::Amplitude< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(p.toString(),
-                       "a<0,1,2,3>=amplitude(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)");
+                       "a:Labelized(<0,1,2,3>)=amplitude(b:Labelized(<0,1,2,3>),c:Labelized(<0,1,2,"
+                       "3>),d:Labelized(<0,1,2,3>),e:Labelized(<0,1,2,3>))");
 
       gum::Instantiation i(p);
 
@@ -403,7 +416,8 @@ namespace gum_tests {
         gum::RangeVariable a("a", "", 0, 8), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
         gum::aggregator::Sum< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-        TS_ASSERT_EQUALS(p.toString(), "a[0,8]=sum(b[0,3],c[0,3],d[0,3])");
+        TS_ASSERT_EQUALS(p.toString(),
+                         "a:Range([0,8])=sum(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
         gum::Instantiation i(p);
 

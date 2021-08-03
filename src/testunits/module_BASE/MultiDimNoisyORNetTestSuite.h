@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -51,11 +51,15 @@ namespace gum_tests {
       p.causalWeight(b, 0.4f);
       p.causalWeight(d, 0.7f);
 
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a:Labelized(<0,1>)=noisyORNet([0.2],b:Labelized(<0,1>)[0.4]c:Labelized(<0,"
+                       "1>)[1]d:Labelized(<0,1>)[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       gum::MultiDimNoisyORNet< double > q(p);
-      TS_ASSERT_EQUALS(q.toString(), "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(q.toString(),
+                       "a:Labelized(<0,1>)=noisyORNet([0.2],b:Labelized(<0,1>)[0.4]c:Labelized(<0,"
+                       "1>)[1]d:Labelized(<0,1>)[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
     }
 

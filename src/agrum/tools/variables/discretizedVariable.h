@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ namespace gum {
    * @warning If a variable contains less than 3 ticks, it is considered as
    * empty(). A variable with 3 ticks is binary and contains 2 ranges :
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
-   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+   * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
    */
   template < typename T_TICKS >
   class DiscretizedVariable: public IDiscretizedVariable {
@@ -170,6 +170,9 @@ namespace gum {
      */
     virtual Size              domainSize() const;
     virtual const std::string domain() const;
+
+    /// string represent the type of the variable
+    virtual const std::string stype() const { return "Discretized"; };
 
     /// from the index to the tick.
     /// @throws NotFound

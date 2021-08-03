@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -97,8 +97,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-        TS_ASSERT(bn.dag().arcs().size() == 8);
-        TS_ASSERT(bn2.dag().arcs().size() == 8);
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)8);
+        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), (gum::Size)8);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 

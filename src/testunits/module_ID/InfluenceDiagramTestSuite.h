@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -801,19 +801,20 @@ namespace gum_tests {
 
     void testFastPrototype() {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->*B<-C;E<-B->$D");
-      TS_ASSERT_EQUALS(infdiag.size(), gum::Size(5))
-      TS_ASSERT_EQUALS(infdiag.chanceNodeSize(), gum::Size(3))
-      TS_ASSERT_EQUALS(infdiag.utilityNodeSize(), gum::Size(1))
-      TS_ASSERT_EQUALS(infdiag.decisionNodeSize(), gum::Size(1))
-      TS_ASSERT_EQUALS(infdiag.sizeArcs(), gum::Size(4))
+      TS_ASSERT_EQUALS(infdiag.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(infdiag.chanceNodeSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(infdiag.utilityNodeSize(), (gum::Size)1)
+      TS_ASSERT_EQUALS(infdiag.decisionNodeSize(), (gum::Size)1)
+      TS_ASSERT_EQUALS(infdiag.sizeArcs(), (gum::Size)4)
     }
 
 
     void testFastPrototypeVarType() {
-      auto infdiag = gum::InfluenceDiagram< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
-      TS_ASSERT_EQUALS(infdiag.variable("a").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(infdiag.variable("b").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(infdiag.variable("c").varType(),gum::VarType::Labelized)
+      auto infdiag
+         = gum::InfluenceDiagram< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
+      TS_ASSERT_EQUALS(infdiag.variable("a").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(infdiag.variable("b").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(infdiag.variable("c").varType(), gum::VarType::Labelized)
     }
   };
 }   // namespace gum_tests

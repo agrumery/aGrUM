@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * feature as compared to Sets: we can search very quickly T2's elements when
  * knowing T1 and T1's elements when knowing T2.
  *
- * @author Christophe GONZALES(@AMU) and Jean-Philippe DUBUS
+ * @author Christophe GONZALES(_at_AMU) and Jean-Philippe DUBUS
  */
 #ifndef GUM_BIJECTION_H
 #define GUM_BIJECTION_H

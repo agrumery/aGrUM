@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -317,9 +317,9 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = gum::Size(0);
+      gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node: bn.dag()) {
@@ -353,9 +353,9 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = gum::Size(0);
+      gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       gum::VariableElimination< double > inf1(&bn);
@@ -433,9 +433,9 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = gum::Size(0);
+      gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node: bn.dag()) {
@@ -489,9 +489,9 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = gum::Size(0);
+      gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node: bn.dag()) {
@@ -547,9 +547,9 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = gum::Size(0);
+      gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node: bn.dag()) {
@@ -620,9 +620,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
 
@@ -655,9 +655,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
 
@@ -691,9 +691,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       gum::VariableElimination< double > ie_all(&bn);
@@ -702,7 +702,7 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
       ie_0.addTarget(0);        // visit_to_asia
@@ -729,9 +729,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
 
@@ -744,7 +744,7 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
       ie_0.addTarget(0);        // visit_to_asia
@@ -781,7 +781,7 @@ namespace gum_tests {
       gum::VariableElimination< double > ie(&bn);
       gum::Potential< double >           res;
       TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
+      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
     }
     void testJointWithHardEvidence() {
       /*

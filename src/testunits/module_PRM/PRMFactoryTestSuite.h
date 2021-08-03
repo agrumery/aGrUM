@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -44,12 +44,12 @@ namespace gum_tests {
         f.endClass();
 
         const auto& c = prm->getClass("MyClass");
-        TS_ASSERT(1 == c.parameters().size());
+        TS_ASSERT_EQUALS((gum::Size)1, c.parameters().size());
         const auto& elt = c.get("lambda");
         TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        TS_ASSERT(lambda.valueType() == gum::prm::PRMParameter< double >::REAL);
-        TS_ASSERT(lambda.value() == 0.001);
+        TS_ASSERT_EQUALS(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
+        TS_ASSERT_EQUALS(lambda.value(), 0.001);
 
         delete prm;
 
@@ -71,25 +71,25 @@ namespace gum_tests {
         f.addParameter("real", "lambda", 0.001);
         f.endClass();
 
-        TS_ASSERT(prm->classes().size() == 1);
+        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)1);
 
         f.startSystem("MySystem");
         f.addInstance("MyClass", "i");
         f.endSystem();
 
-        TS_ASSERT(prm->classes().size() == 2);
+        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)2);
 
         const auto& super_c = prm->getClass("MyClass");
         const auto& c       = prm->getClass("MyClass<lambda=0.001>");
 
         TS_ASSERT(c.isSubTypeOf(super_c));
 
-        TS_ASSERT(1 == c.parameters().size());
+        TS_ASSERT_EQUALS((gum::Size)1, c.parameters().size());
         const auto& elt = c.get("lambda");
         TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        TS_ASSERT(lambda.valueType() == gum::prm::PRMParameter< double >::REAL);
-        TS_ASSERT(lambda.value() == 0.001);
+        TS_ASSERT_EQUALS(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
+        TS_ASSERT_EQUALS(lambda.value(), 0.001);
 
         delete prm;
 
@@ -151,7 +151,7 @@ namespace gum_tests {
         f.addInstance("MyClass", "j");
         f.addInstance("MyClass", "k", params);
 
-        TS_ASSERT(prm->classes().size() == 3);
+        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)3);
 
         f.endSystem();
         const auto& s = prm->getSystem("MySystem");

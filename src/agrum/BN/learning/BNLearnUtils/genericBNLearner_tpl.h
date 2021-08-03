@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -87,8 +87,9 @@ namespace gum {
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
-      filename_  = filename;
-      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      filename_     = filename;
+      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      inducedTypes_ = false;
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -277,17 +277,17 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(2));
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(0));
-      TS_ASSERT_EQUALS(frag.size(), gum::Size(2));
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)0);
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)2);
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
       TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(3));
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(2));
-      TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)3);
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
@@ -322,7 +322,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(count, frag.sizeArcs());
 
       const auto& order = frag.topologicalOrder();
-      TS_ASSERT_EQUALS(order.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(order.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1");
       TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3");
       TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6");
@@ -340,17 +340,17 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(2));
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(0));
-      TS_ASSERT_EQUALS(frag.size(), gum::Size(2));
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)0);
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)2);
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
       TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(3));
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(2));
-      TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)3);
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR);
 
@@ -384,7 +384,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(count, frag.sizeArcs());
 
       const auto& order = frag.topologicalOrder();
-      TS_ASSERT_EQUALS(order.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(order.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1");
       TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3");
       TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6");
@@ -646,7 +646,7 @@ namespace gum_tests {
       frag.installNode("C");
 
       TS_ASSERT_EQUALS(frag.children("B"), gum::NodeSet({2}))
-      TS_ASSERT_EQUALS(frag.variableNodeMap().size(), gum::Size(6))   // the size of bn.size() ...
+      TS_ASSERT_EQUALS(frag.variableNodeMap().size(), (gum::Size)6)   // the size of bn.size() ...
 
       TS_ASSERT_EQUALS(frag.nodes().asNodeSet(), gum::NodeSet({0, 1, 2}))
     }

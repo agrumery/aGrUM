@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -32,27 +32,27 @@ namespace gum_tests {
       gum::BinTreeNode< int >* node = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33));
-      TS_ASSERT(node->value() == 33);
-      TS_ASSERT(**node == 33);
+      TS_ASSERT_EQUALS(node->value(), 33);
+      TS_ASSERT_EQUALS(**node, 33);
       TS_GUM_ASSERT_THROWS_NOTHING(delete node);
 
       gum::BinTreeNode< int > node2(33);
       gum::BinTreeNode< int > node3 = node2;
-      TS_ASSERT(*node2 == *node3);
+      TS_ASSERT_EQUALS(*node2, *node3);
 
       gum::BinTreeNode< int > node4(1);
       node4 = node2;
-      TS_ASSERT(*node2 == *node4);
+      TS_ASSERT_EQUALS(*node2, *node4);
     }
 
     void testInsertChildren() {
       gum::BinTreeNode< int > node(0);
 
-      TS_ASSERT(node.parent() == 0);
-      TS_ASSERT(node.leftChild() == 0);
-      TS_ASSERT(node.rightChild() == 0);
-      TS_ASSERT(node.child(gum::BinTreeDir::LEFT_CHILD) == 0);
-      TS_ASSERT(node.child(gum::BinTreeDir::RIGHT_CHILD) == 0);
+      TS_ASSERT_EQUALS(node.parent(), nullptr);
+      TS_ASSERT_EQUALS(node.leftChild(), nullptr);
+      TS_ASSERT_EQUALS(node.rightChild(), nullptr);
+      TS_ASSERT_EQUALS(node.child(gum::BinTreeDir::LEFT_CHILD), nullptr);
+      TS_ASSERT_EQUALS(node.child(gum::BinTreeDir::RIGHT_CHILD), nullptr);
 
       gum::BinTreeNode< int > node2(1);
       gum::BinTreeNode< int > node3(2);
@@ -60,29 +60,29 @@ namespace gum_tests {
       node.insertLeftChild(node2);
       TS_ASSERT_THROWS_ANYTHING(node.insertLeftChild(node3));
       node.insertRightChild(node3);
-      TS_ASSERT(node.leftChild() == &node2);
-      TS_ASSERT(node.rightChild() == &node3);
-      TS_ASSERT(node2.parent() == &node);
-      TS_ASSERT(node3.parent() == &node);
-      TS_ASSERT(node3.parentDir() == gum::BinTreeDir::RIGHT_CHILD);
+      TS_ASSERT_EQUALS(node.leftChild(), &node2);
+      TS_ASSERT_EQUALS(node.rightChild(), &node3);
+      TS_ASSERT_EQUALS(node2.parent(), &node);
+      TS_ASSERT_EQUALS(node3.parent(), &node);
+      TS_ASSERT_EQUALS(node3.parentDir(), gum::BinTreeDir::RIGHT_CHILD);
 
       node2.insertLeftChild(4);
       node2.insertRightChild(6);
-      TS_ASSERT(node.leftChild()->leftChild()->value() == 4);
-      TS_ASSERT(node.leftChild()->rightChild()->value() == 6);
+      TS_ASSERT_EQUALS(node.leftChild()->leftChild()->value(), 4);
+      TS_ASSERT_EQUALS(node.leftChild()->rightChild()->value(), 6);
 
       delete node2.leftChild();
       delete node2.rightChild();
 
-      TS_ASSERT(node.leftChild()->leftChild() == 0);
-      TS_ASSERT(node.leftChild()->rightChild() == 0);
+      TS_ASSERT_EQUALS(node.leftChild()->leftChild(), nullptr);
+      TS_ASSERT_EQUALS(node.leftChild()->rightChild(), nullptr);
 
       gum::BinTreeNode< int >* node4 = node2.insertLeftChild(3);
       gum::BinTreeNode< int >* node5 = node2.insertRightChild(5);
-      TS_ASSERT(node2.leftChild() == node4);
-      TS_ASSERT(node2.rightChild() == node5);
-      TS_ASSERT(node4->parent() == &node2);
-      TS_ASSERT(node5->parent() == &node2);
+      TS_ASSERT_EQUALS(node2.leftChild(), node4);
+      TS_ASSERT_EQUALS(node2.rightChild(), node5);
+      TS_ASSERT_EQUALS(node4->parent(), &node2);
+      TS_ASSERT_EQUALS(node5->parent(), &node2);
 
       gum::BinTreeNode< int >* node6 = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
       gum::BinTreeNode< int >* node7 = new gum::BinTreeNode< int >(8);
@@ -101,16 +101,16 @@ namespace gum_tests {
       node1.insertLeftChild(node2);
       node1.insertRightChild(node3);
 
-      TS_ASSERT(node1.leftChild() == &node2);
-      TS_ASSERT(node1.rightChild() == &node3);
+      TS_ASSERT_EQUALS(node1.leftChild(), &node2);
+      TS_ASSERT_EQUALS(node1.rightChild(), &node3);
 
       node1.eraseLeftLink();
       node1.eraseRightLink();
 
-      TS_ASSERT(node1.leftChild() == 0);
-      TS_ASSERT(node1.rightChild() == 0);
-      TS_ASSERT(node2.parent() == 0);
-      TS_ASSERT(node3.parent() == 0);
+      TS_ASSERT_EQUALS(node1.leftChild(), nullptr);
+      TS_ASSERT_EQUALS(node1.rightChild(), nullptr);
+      TS_ASSERT_EQUALS(node2.parent(), nullptr);
+      TS_ASSERT_EQUALS(node3.parent(), nullptr);
 
       node1.insertLeftChild(node2);
       node1.insertRightChild(node3);

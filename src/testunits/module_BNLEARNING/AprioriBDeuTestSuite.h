@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -65,11 +65,11 @@ namespace gum_tests {
 
 
       gum::learning::AprioriBDeu<> apriori(database);
-      TS_ASSERT(apriori.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 1.0);
       apriori.setWeight(4.0);
-      TS_ASSERT(apriori.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 4.0);
 
-      TS_ASSERT(apriori.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori.getType(), "BDeu");
       TS_ASSERT(apriori.isOfType("BDeu"));
       TS_ASSERT(!apriori.isOfType("NoApriori"));
 
@@ -91,7 +91,7 @@ namespace gum_tests {
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 3));
       }
       vect.clear();
       apriori.addConditioningApriori(idset1, vect);
@@ -100,7 +100,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 12));
       }
       vect.clear();
       apriori.addConditioningApriori(idset2, vect);
@@ -109,23 +109,23 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576));
       }
 
       vect.clear();
       vect.resize(48, 1.0);
       apriori.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 48));
       }
 
 
       gum::learning::AprioriBDeu<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori2.weight(), 4.0);
       apriori2.setWeight(2.0);
-      TS_ASSERT(apriori2.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori2.weight(), 2.0);
 
-      TS_ASSERT(apriori2.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori2.getType(), "BDeu");
       TS_ASSERT(apriori2.isOfType("BDeu"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
@@ -133,7 +133,7 @@ namespace gum_tests {
       vect.resize(3, 1.0);
       apriori2.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3));
       }
       vect.clear();
       apriori2.addConditioningApriori(idset1, vect);
@@ -142,7 +142,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori2.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12));
       }
       vect.clear();
       apriori2.addConditioningApriori(idset2, vect);
@@ -151,22 +151,22 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori2.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48));
       }
 
 
       gum::learning::AprioriBDeu<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori3.weight(), 2.0);
       apriori3.setWeight(4.0);
-      TS_ASSERT(apriori3.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori3.weight(), 4.0);
 
-      TS_ASSERT(apriori3.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori3.getType(), "BDeu");
       TS_ASSERT(apriori3.isOfType("BDeu"));
       TS_ASSERT(!apriori3.isOfType("NoApriori"));
 
@@ -174,7 +174,7 @@ namespace gum_tests {
       vect.resize(3, 1.0);
       apriori3.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 3));
       }
       vect.clear();
       apriori3.addConditioningApriori(idset1, vect);
@@ -183,7 +183,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori3.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 12));
       }
       vect.clear();
       apriori3.addConditioningApriori(idset2, vect);
@@ -192,22 +192,22 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori3.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 48));
       }
 
 
       gum::learning::AprioriBDeu<>* apriori4 = apriori.clone();
-      TS_ASSERT(apriori4->weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori4->weight(), 4.0);
       apriori4->setWeight(2.0);
-      TS_ASSERT(apriori4->weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0);
 
-      TS_ASSERT(apriori4->getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori4->getType(), "BDeu");
       TS_ASSERT(apriori4->isOfType("BDeu"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
@@ -215,7 +215,7 @@ namespace gum_tests {
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3));
       }
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -224,7 +224,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori4->addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12));
       }
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -233,13 +233,13 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori4->addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48));
       }
 
       delete apriori4;
@@ -248,11 +248,11 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database2;
       gum::learning::AprioriBDeu<>   apriori5(database2);
       apriori5 = apriori;
-      TS_ASSERT(apriori5.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 4.0);
       apriori5.setWeight(2.0);
-      TS_ASSERT(apriori5.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 2.0);
 
-      TS_ASSERT(apriori5.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu");
       TS_ASSERT(apriori5.isOfType("BDeu"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
@@ -260,7 +260,7 @@ namespace gum_tests {
       vect.resize(3, 1.0);
       apriori5.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset1, vect);
@@ -269,7 +269,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori5.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset2, vect);
@@ -278,21 +278,21 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48));
       }
 
       apriori5 = std::move(apriori);
-      TS_ASSERT(apriori5.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 4.0);
       apriori5.setWeight(1.0);
-      TS_ASSERT(apriori5.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 1.0);
 
-      TS_ASSERT(apriori5.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu");
       TS_ASSERT(apriori5.isOfType("BDeu"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
@@ -300,7 +300,7 @@ namespace gum_tests {
       vect.resize(3, 1.0);
       apriori5.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 3));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 3));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset1, vect);
@@ -309,7 +309,7 @@ namespace gum_tests {
       vect.resize(12, 1.0);
       apriori5.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 12));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 12));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset2, vect);
@@ -318,13 +318,13 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 48));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 48));
       }
     }
 
@@ -377,11 +377,11 @@ namespace gum_tests {
 
 
       gum::learning::AprioriBDeu<> apriori(database, nodeId2columns);
-      TS_ASSERT(apriori.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 1.0);
       apriori.setWeight(4.0);
-      TS_ASSERT(apriori.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 4.0);
 
-      TS_ASSERT(apriori.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori.getType(), "BDeu");
       TS_ASSERT(apriori.isOfType("BDeu"));
       TS_ASSERT(!apriori.isOfType("NoApriori"));
 
@@ -397,7 +397,7 @@ namespace gum_tests {
       std::vector< double > vect(4, 1.0);
       apriori.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 4));
       }
       vect.clear();
       apriori.addConditioningApriori(idset1, vect);
@@ -406,7 +406,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 16));
       }
       vect.clear();
       apriori.addConditioningApriori(idset2, vect);
@@ -415,22 +415,22 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 36));
       }
 
 
       gum::learning::AprioriBDeu<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori2.weight(), 4.0);
       apriori2.setWeight(2.0);
-      TS_ASSERT(apriori2.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori2.weight(), 2.0);
 
-      TS_ASSERT(apriori2.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori2.getType(), "BDeu");
       TS_ASSERT(apriori2.isOfType("BDeu"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
@@ -438,7 +438,7 @@ namespace gum_tests {
       vect.resize(4, 1.0);
       apriori2.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4));
       }
       vect.clear();
       apriori2.addConditioningApriori(idset1, vect);
@@ -447,7 +447,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori2.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16));
       }
       vect.clear();
       apriori2.addConditioningApriori(idset2, vect);
@@ -456,21 +456,21 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori2.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36));
       }
 
       gum::learning::AprioriBDeu<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori3.weight(), 2.0);
       apriori3.setWeight(4.0);
-      TS_ASSERT(apriori3.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori3.weight(), 4.0);
 
-      TS_ASSERT(apriori3.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori3.getType(), "BDeu");
       TS_ASSERT(apriori3.isOfType("BDeu"));
       TS_ASSERT(!apriori3.isOfType("NoApriori"));
 
@@ -478,7 +478,7 @@ namespace gum_tests {
       vect.resize(4, 1.0);
       apriori3.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 4));
       }
       vect.clear();
       apriori3.addConditioningApriori(idset1, vect);
@@ -487,7 +487,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori3.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 16));
       }
       vect.clear();
       apriori3.addConditioningApriori(idset2, vect);
@@ -496,22 +496,22 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori3.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 4.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 36));
       }
 
 
       gum::learning::AprioriBDeu<>* apriori4 = apriori.clone();
-      TS_ASSERT(apriori4->weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori4->weight(), 4.0);
       apriori4->setWeight(2.0);
-      TS_ASSERT(apriori4->weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0);
 
-      TS_ASSERT(apriori4->getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori4->getType(), "BDeu");
       TS_ASSERT(apriori4->isOfType("BDeu"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
@@ -519,7 +519,7 @@ namespace gum_tests {
       vect.resize(4, 1.0);
       apriori4->addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4));
       }
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -528,7 +528,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori4->addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16));
       }
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -537,13 +537,13 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori4->addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36));
       }
 
       delete apriori4;
@@ -551,11 +551,11 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database2;
       gum::learning::AprioriBDeu<>   apriori5(database2);
       apriori5 = apriori;
-      TS_ASSERT(apriori5.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 4.0);
       apriori5.setWeight(2.0);
-      TS_ASSERT(apriori5.weight() == 2.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 2.0);
 
-      TS_ASSERT(apriori5.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu");
       TS_ASSERT(apriori5.isOfType("BDeu"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
@@ -563,7 +563,7 @@ namespace gum_tests {
       vect.resize(4, 1.0);
       apriori5.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset1, vect);
@@ -572,7 +572,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori5.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset2, vect);
@@ -581,22 +581,22 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 2.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36));
       }
 
 
       apriori5 = std::move(apriori);
-      TS_ASSERT(apriori5.weight() == 4.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 4.0);
       apriori5.setWeight(1.0);
-      TS_ASSERT(apriori5.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori5.weight(), 1.0);
 
-      TS_ASSERT(apriori5.getType() == "BDeu");
+      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu");
       TS_ASSERT(apriori5.isOfType("BDeu"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
@@ -604,7 +604,7 @@ namespace gum_tests {
       vect.resize(4, 1.0);
       apriori5.addAllApriori(idset1, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 4));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 4));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset1, vect);
@@ -613,7 +613,7 @@ namespace gum_tests {
       vect.resize(16, 1.0);
       apriori5.addAllApriori(idset2, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 16));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 16));
       }
       vect.clear();
       apriori5.addConditioningApriori(idset2, vect);
@@ -622,13 +622,13 @@ namespace gum_tests {
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 576));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
-        TS_ASSERT(val == (1.0 + 1.0 / 36));
+        TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 36));
       }
     }
   };

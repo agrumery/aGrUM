@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ namespace gum_tests {
       std::string               file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovNet< double >* net  = new gum::MarkovNet< double >();
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       gum::UAIMNReader< double > reader(net, file);
       reader.proceed();
@@ -72,9 +72,9 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT(!net->empty());
@@ -126,7 +126,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
       TS_ASSERT(!net.empty());
       TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
@@ -135,7 +135,7 @@ namespace gum_tests {
       gum::UAIMNReader< double > reader2(&net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
       TS_ASSERT(!net.empty());
       TS_ASSERT_EQUALS(net.size(), (gum::Size)3);

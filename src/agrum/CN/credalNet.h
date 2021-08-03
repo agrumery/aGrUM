@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 /**
  * @file
  * @brief Class representing Credal Networks
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #include <agrum/agrum.h>
@@ -82,7 +82,7 @@ namespace gum {
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, GUM_SCALAR, long GUM_SCALAR
      * ... ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < typename GUM_SCALAR >
     class CredalNet {

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
  * @brief The class computing n times the corrected mutual information,
  * as used in the 3off2 algorithm
  *
- * @author Quentin FALCAND, Christophe GONZALES(@AMU) and Pierre-Henri
- * WUILLEMIN(@LIP6).
+ * @author Quentin FALCAND, Christophe GONZALES(_at_AMU) and Pierre-Henri
+ * WUILLEMIN(_at_LIP6).
  */
 #ifndef GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
 #define GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  */
 
 
-#include <ressources/include/myalloc.h>
+#include <ressources/include/countedAlloc.h>
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
@@ -55,9 +55,9 @@ namespace gum_tests {
       liste3                  = std::move(liste2);
       liste2                  = std::move(liste1);
 
-      TS_ASSERT(liste2.size() == 4);
-      TS_ASSERT(liste2.front() == 1);
-      TS_ASSERT(liste2.back() == 4);
+      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(liste2.front(), 1);
+      TS_ASSERT_EQUALS(liste2.back(), 4);
     }
 
     void testPush() {
@@ -120,11 +120,11 @@ namespace gum_tests {
 
       gum::List< int > liste2(std::move(liste1));
       gum::List< int > liste3;
-      TS_ASSERT_EQUALS(liste2.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(liste1.size(), gum::Size(0));
+      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)0);
       liste3 = std::move(liste2);
-      TS_ASSERT_EQUALS(liste3.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(liste2.size(), gum::Size(0));
+      TS_ASSERT_EQUALS(liste3.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)0);
       TS_ASSERT_EQUALS(liste3.front(), 5);
     }
 
@@ -433,16 +433,16 @@ namespace gum_tests {
     }
 
     void testAllocator() {
-      { gum::List< int, MyAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8}; }
+      { gum::List< int, DebugCountedAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8}; }
 
-      TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);
+      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false);
 
-      gum::List< int, MyAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8};
-      gum::ListIterator< int >         iter = xlist.begin();
-      gum::ListIterator< int >         iter1(xlist);
-      gum::ListConstIterator< int >    iter2(xlist);
-      gum::ListIterator< int >         iter3(xlist);
-      gum::ListConstIterator< int >    iter4(xlist);
+      gum::List< int, DebugCountedAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8};
+      gum::ListIterator< int >                   iter = xlist.begin();
+      gum::ListIterator< int >                   iter1(xlist);
+      gum::ListConstIterator< int >              iter2(xlist);
+      gum::ListIterator< int >                   iter3(xlist);
+      gum::ListConstIterator< int >              iter4(xlist);
 
       gum::Size i;
 

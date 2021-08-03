@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -47,21 +47,27 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
       // doing the right stuff :)
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=logit(0.2)");
+      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2)");
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1>)");
+      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>))");
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
-      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> +0.7*d<0,1>)");
+      TS_ASSERT_EQUALS(
+         p.toString(),
+         "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>) +0.7*d:Labelized(<0,1>))");
 
       TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4);
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       gum::MultiDimLogit< double > q(p);
-      TS_ASSERT_EQUALS(q.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> +0.7*d<0,1>)");
+      TS_ASSERT_EQUALS(
+         q.toString(),
+         "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>) +0.7*d:Labelized(<0,1>))");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       TS_GUM_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
-      TS_ASSERT_EQUALS(q.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)");
+      TS_ASSERT_EQUALS(q.toString(),
+                       "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>) "
+                       "-1.3*c:Labelized(<0,1>) +0.7*d:Labelized(<0,1>))");
     }
 
     void testComputationInLogit() {

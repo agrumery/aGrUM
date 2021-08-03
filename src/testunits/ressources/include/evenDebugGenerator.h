@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005-2020 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
+ *   Copyright (c) 2005-2020 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,12 +19,13 @@
  ***************************************************************************/
 /** @file
  * @brief A DBRowGenerator class that returns exactly k times the rows it gets
- * in input
+ * in input when there has been an even number of times method setInputDBRow
+ * has been called, else it returns 0 output row
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_MY_GENERATOR_H
-#define GUM_LEARNING_MY_GENERATOR_H
+#ifndef GUM_LEARNING_EVENDEBUGGENERATOR_H
+#define GUM_LEARNING_EVENDEBUGGENERATOR_H
 
 #include <agrum/agrum.h>
 #include <agrum/tools/database/DBRowGenerator.h>
@@ -34,7 +35,7 @@ namespace gum {
   namespace learning {
 
     template <template<typename> class ALLOC = std::allocator>
-    class MyGenerator : public DBRowGenerator<ALLOC> {
+    class EvenDebugGenerator : public DBRowGenerator<ALLOC> {
     public:
 
       /// type for the allocators passed in arguments of methods
@@ -45,48 +46,50 @@ namespace gum {
       // ##########################################################################
 
       /// default constructor
-      MyGenerator( const std::vector<DBTranslatedValueType,
+      EvenDebugGenerator( const std::vector<DBTranslatedValueType,
                                      ALLOC<DBTranslatedValueType>> column_types,
                    const std::size_t nb_duplicates,
                    const allocator_type& alloc  = allocator_type () )
         : DBRowGenerator<ALLOC> ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc )
         ,  _nb_duplicates_ ( nb_duplicates ) {
-        GUM_CONSTRUCTOR( MyGenerator );
+        GUM_CONSTRUCTOR( EvenDebugGenerator );
       }
 
       /// copy constructor with a given allocator
-      MyGenerator( const MyGenerator<ALLOC>& from,
+      EvenDebugGenerator( const EvenDebugGenerator<ALLOC>& from,
                    const allocator_type& alloc )
         : DBRowGenerator<ALLOC>( from, alloc )
         ,  _input_row_( from. _input_row_ )
-        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
-        GUM_CONS_CPY( MyGenerator );
+        ,  _nb_duplicates_ ( from. _nb_duplicates_ )
+        ,  _even_setInputRow_ ( from. _even_setInputRow_ ) {
+        GUM_CONS_CPY( EvenDebugGenerator );
       }
 
       /// copy constructor
-      MyGenerator( const MyGenerator<ALLOC>& from )
-         : MyGenerator<ALLOC> ( from, from.getAllocator () ) {}
+      EvenDebugGenerator( const EvenDebugGenerator<ALLOC>& from )
+         : EvenDebugGenerator<ALLOC> ( from, from.getAllocator () ) {}
         
 
       /// move constructor with a given allocator
-      MyGenerator( MyGenerator<ALLOC>&& from,
+      EvenDebugGenerator( EvenDebugGenerator<ALLOC>&& from,
                    const allocator_type& alloc )
         : DBRowGenerator<ALLOC> ( std::move( from ), alloc )
         ,  _input_row_( from. _input_row_ )
-        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
-        GUM_CONS_MOV( MyGenerator );
+        ,  _nb_duplicates_ ( from. _nb_duplicates_ )
+        ,  _even_setInputRow_ ( from. _even_setInputRow_ ) {
+        GUM_CONS_MOV( EvenDebugGenerator );
       }
 
 
       /// move constructor
-      MyGenerator( MyGenerator<ALLOC>&& from )
-        : MyGenerator<ALLOC> ( std::move( from ), from.getAllocator () ) {}
+      EvenDebugGenerator( EvenDebugGenerator<ALLOC>&& from )
+        : EvenDebugGenerator<ALLOC> ( std::move( from ), from.getAllocator () ) {}
 
       
       /// virtual copy constructor with a given allocator
-      virtual MyGenerator<ALLOC>* clone ( const allocator_type& alloc ) const {
-        ALLOC<MyGenerator<ALLOC>> allocator ( alloc );
-        MyGenerator<ALLOC>* generator = allocator.allocate(1);
+      virtual EvenDebugGenerator<ALLOC>* clone ( const allocator_type& alloc ) const {
+        ALLOC<EvenDebugGenerator<ALLOC>> allocator ( alloc );
+        EvenDebugGenerator<ALLOC>* generator = allocator.allocate(1);
         try {
           allocator.construct ( generator, *this, alloc );
         }
@@ -99,14 +102,14 @@ namespace gum {
 
       
       /// virtual copy constructor
-      virtual MyGenerator<ALLOC>* clone () const {
+      virtual EvenDebugGenerator<ALLOC>* clone () const {
         return clone ( this->getAllocator () );
       }
 
 
       /// destructor
-      ~MyGenerator() {
-        GUM_DESTRUCTOR( MyGenerator );
+      ~EvenDebugGenerator() {
+        GUM_DESTRUCTOR( EvenDebugGenerator );
       }
       
 
@@ -117,19 +120,21 @@ namespace gum {
       /// @{
 
       /// copy operator
-      MyGenerator<ALLOC>& operator=( const MyGenerator<ALLOC>& from ) {
+      EvenDebugGenerator<ALLOC>& operator=( const EvenDebugGenerator<ALLOC>& from ) {
         DBRowGenerator<ALLOC>::operator=( from );
          _input_row_ = from. _input_row_;
          _nb_duplicates_ = from. _nb_duplicates_;
+         _even_setInputRow_ = from. _even_setInputRow_;
         return *this;
       }
     
 
       /// move operator
-      MyGenerator<ALLOC>& operator=( MyGenerator<ALLOC>&& from ) {
+      EvenDebugGenerator<ALLOC>& operator=( EvenDebugGenerator<ALLOC>&& from ) {
         DBRowGenerator<ALLOC>::operator=( std::move( from ) );
          _input_row_ = from. _input_row_;
          _nb_duplicates_ = from. _nb_duplicates_;
+         _even_setInputRow_ = from. _even_setInputRow_;
         return *this;
       }
     
@@ -150,8 +155,14 @@ namespace gum {
       /// computes the rows it will provide in output
       virtual std::size_t
       computeRows_( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
-         _input_row_ = &row;
-        return  _nb_duplicates_;
+         _even_setInputRow_ = !  _even_setInputRow_;
+        if (  _even_setInputRow_ ) {
+           _input_row_ = &row;
+          return  _nb_duplicates_;
+        }
+        else {
+          return std::size_t(0);
+        }
       }
 
 
@@ -162,6 +173,10 @@ namespace gum {
 
       /// the number of times we return each input row
       std::size_t  _nb_duplicates_ { std::size_t(1) };
+
+      // indicates whether there has been an even number of times method
+      // setInputDBRow has been called
+      bool  _even_setInputRow_ { false };
       
     };
 
@@ -170,4 +185,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_MY_GENERATOR_H */
+#endif /* GUM_LEARNING_EVENDEBUGGENERATOR_H */

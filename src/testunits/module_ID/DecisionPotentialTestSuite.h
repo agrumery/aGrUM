@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -37,8 +37,8 @@ namespace gum_tests {
     public:
     void testConstruction() {
       gum::DecisionPotential< double > d1, d2;
-      TS_ASSERT(d1 == d2);
-      TS_ASSERT(d1 == d1 * d2);
+      TS_ASSERT_EQUALS(d1, d2);
+      TS_ASSERT_EQUALS(d1, d1 * d2);
 
       gum::DecisionPotential< double > d3(std::move(d2));
 
@@ -50,22 +50,22 @@ namespace gum_tests {
 
       gum::DecisionPotential< double > d4(P1, U1);
       gum::DecisionPotential< double > d5(d4);
-      TS_ASSERT(d4 == d5);
+      TS_ASSERT_EQUALS(d4, d5);
 
       gum::DecisionPotential< double > d6 = d5;
-      TS_ASSERT(d6 == d4);
+      TS_ASSERT_EQUALS(d6, d4);
 
       gum::DecisionPotential< double > d7(std::move(d4));
-      TS_ASSERT(d7 == d6);
+      TS_ASSERT_EQUALS(d7, d6);
 
       d1 = std::move(d7);
-      TS_ASSERT(d1 == d6);
+      TS_ASSERT_EQUALS(d1, d6);
 
       d5 = d1;
-      TS_ASSERT(d1 == d5);
+      TS_ASSERT_EQUALS(d1, d5);
 
       d4 = d1;
-      TS_ASSERT(d1 == d4);
+      TS_ASSERT_EQUALS(d1, d4);
     }
 
     void testConstruction2() {

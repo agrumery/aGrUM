@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Utilities for manipulating strings.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
 #include <iterator>
@@ -89,11 +89,9 @@ namespace gum {
 
   bool isInteger(const std::string& val) {
     if (val.empty()) return false;
-    std::size_t pos=0;
-    if ((val[0]=='+') || (val[0]=='-')) {
-      pos=1;
-    }
-    return (val.find_first_not_of( "0123456789",pos ) == std::string::npos);
+    std::size_t pos = 0;
+    if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
+    return (val.find_first_not_of("0123456789", pos) == std::string::npos);
   }
 
 } /* namespace gum */

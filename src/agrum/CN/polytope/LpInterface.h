@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * @file
  * @brief Class representing a polytope ( credal set ) by a set of linear
  * constraints
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #include <iostream>
@@ -55,7 +55,7 @@ namespace gum {
        * i.e. a
        * dimension of the problem.
        * @ingroup cn_group
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
       class LpCol {
         public:
@@ -203,7 +203,7 @@ namespace gum {
        * @class LpExpr
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a linear expression.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
       class LpExpr {
         friend class LpRow;
@@ -494,7 +494,7 @@ namespace gum {
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a row of the linear program, i.e. an
        * inequality.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
       class LpRow {
         template < typename GUM_SCALAR >
@@ -595,7 +595,7 @@ namespace gum {
        * @class LpInterface
        * @headerfile LpInterface.h <agrum/CN/LpInterface.h>
        * @brief Class representing a linear program.
-       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
       template < typename GUM_SCALAR >
       class LpInterface {

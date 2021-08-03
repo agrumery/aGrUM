@@ -1,7 +1,7 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * (@AMU) info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * (_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -665,12 +665,12 @@ namespace gum_tests {
       gum::BayesNet< double > bn_cpy_1 = *bn_1;
       gum::BayesNet< double > bn_cpy_2 = *bn_2;
 
-      TS_ASSERT(bn_cpy_1 == bn_cpy_1);
-      TS_ASSERT(bn_cpy_1 == (*bn_1));
-      TS_ASSERT(bn_cpy_2 == bn_cpy_2);
-      TS_ASSERT(bn_cpy_2 == (*bn_2));
-      TS_ASSERT((*bn_1) != (*bn_2));
-      TS_ASSERT(bn_cpy_1 != bn_cpy_2);
+      TS_ASSERT_EQUALS(bn_cpy_1, bn_cpy_1);
+      TS_ASSERT_EQUALS(bn_cpy_1, (*bn_1));
+      TS_ASSERT_EQUALS(bn_cpy_2, bn_cpy_2);
+      TS_ASSERT_EQUALS(bn_cpy_2, (*bn_2));
+      TS_ASSERT_DIFFERS((*bn_1), (*bn_2));
+      TS_ASSERT_DIFFERS(bn_cpy_1, bn_cpy_2);
 
       TS_ASSERT_EQUALS(bn_cpy_1, bn_cpy_1);
       TS_ASSERT_EQUALS(bn_cpy_1, (*bn_1));
@@ -680,24 +680,24 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(bn_cpy_1, bn_cpy_2);
 
       gum::BayesNet< double > cpy = *bn_1;
-      TS_ASSERT(cpy == (*bn_1));
-      TS_ASSERT(cpy != (*bn_2));
+      TS_ASSERT_EQUALS(cpy, (*bn_1));
+      TS_ASSERT_DIFFERS(cpy, (*bn_2));
 
       TS_GUM_ASSERT_THROWS_NOTHING(cpy = *bn_2);
 
       TS_ASSERT_EQUALS(cpy, (*bn_2));
 
-      TS_ASSERT(cpy == (*bn_2));
+      TS_ASSERT_EQUALS(cpy, (*bn_2));
       TS_ASSERT_DIFFERS(cpy, (*bn_1));
-      TS_ASSERT(cpy != (*bn_1));
+      TS_ASSERT_DIFFERS(cpy, (*bn_1));
 
       TS_ASSERT_THROWS_NOTHING(cpy = cpy;);
 
       TS_ASSERT_EQUALS(cpy, (*bn_2));
 
-      TS_ASSERT(cpy == (*bn_2));
+      TS_ASSERT_EQUALS(cpy, (*bn_2));
       TS_ASSERT_DIFFERS(cpy, (*bn_1));
-      TS_ASSERT(cpy != (*bn_1));
+      TS_ASSERT_DIFFERS(cpy, (*bn_1));
 
       std::string s1 = cpy.toString();
       delete bn_2;
@@ -788,10 +788,10 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
 
-      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1<0,1>");
+      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized(<0,1>)");
       TS_ASSERT_THROWS_NOTHING(
          dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
-      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1<x,1>");
+      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized(<x,1>)");
     }
 
     void testShortCutAddLabelized() {
@@ -902,31 +902,31 @@ namespace gum_tests {
     void testFastPrototype() {
       try {
         auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c", 3);
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b[5]->c;a->c");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c;a[1000]->c");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
         TS_ASSERT_THROWS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
                          gum::InvalidDirectedCycle);
 
         bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
 
         TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
@@ -935,69 +935,70 @@ namespace gum_tests {
                          gum::InvalidArgument);
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
 
         bn = gum::BayesNet< float >::fastPrototype("a<-b<-c<-d<-e<-f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
 
         bn = gum::BayesNet< float >::fastPrototype("a<-b->c<-d->e<-f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d<-e->f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c;c->d<-e->f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d;d<-e->f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
-        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.size(), (gum::Size)6);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5);
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testFastPrototypeVarType() {
       auto bn = gum::BayesNet< float >::fastPrototype("a");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,1]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,1])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[0,1]");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,1]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,1])");
 
       TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[0,0]"), gum::InvalidArgument);
       TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,0]"), gum::InvalidArgument);
       TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,1]"), gum::InvalidArgument);
 
       bn = gum::BayesNet< float >::fastPrototype("a[5]");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,4]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,4])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[2,5]");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[2,5]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([2,5])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[-2,2]");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[-2,2]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([-2,2])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
-      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(),
+                       "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)");
 
       bn = gum::BayesNet< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
-      TS_ASSERT_EQUALS(bn.variable("a").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(bn.variable("b").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(bn.variable("c").varType(),gum::VarType::Labelized)
+      TS_ASSERT_EQUALS(bn.variable("a").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(bn.variable("b").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(bn.variable("c").varType(), gum::VarType::Labelized)
     }
 
     void testNonRegressionCPTinReverseArc() {

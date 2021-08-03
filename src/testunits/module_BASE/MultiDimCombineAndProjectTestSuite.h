@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -79,11 +79,11 @@ namespace gum_tests {
 
         std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT(yyy.first == 244);
-        TS_ASSERT(yyy.second == 228);
+        TS_ASSERT_EQUALS(yyy.first, 244);
+        TS_ASSERT_EQUALS(yyy.second, 228);
 
-        TS_ASSERT(nb_ops == 416);
-        TS_ASSERT(res.size() == 3);
+        TS_ASSERT_EQUALS(nb_ops, 416);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
 
         gum::Set< const gum::Potential< double >* >::const_iterator iter = res.begin();
         const gum::Potential< double >*                             res1 = *iter;
@@ -183,11 +183,11 @@ namespace gum_tests {
 
         std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT(yyy.first == 244);
-        TS_ASSERT(yyy.second == 228);
+        TS_ASSERT_EQUALS(yyy.first, 244);
+        TS_ASSERT_EQUALS(yyy.second, 228);
 
-        TS_ASSERT(nb_ops == 416);
-        TS_ASSERT(res.size() == 3);
+        TS_ASSERT_EQUALS(nb_ops, 416);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
 
         gum::Set< const gum::Potential< float >* >::const_iterator iter = res.begin();
         const gum::Potential< float >*                             res1 = *iter;
@@ -276,7 +276,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT(res.size() == 3);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -288,7 +288,7 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT(nb_empty == 2);
+        TS_ASSERT_EQUALS(nb_empty, 2);
         TS_ASSERT(prod = 15.0);
       }
 
@@ -296,7 +296,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT(res.size() == 3);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -308,7 +308,7 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT(nb_empty == 3);
+        TS_ASSERT_EQUALS(nb_empty, 3);
         TS_ASSERT_DELTA(prod, 15.0, 1e-6);
       }
 
@@ -318,7 +318,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT(res.size() == 2);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)2);
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -330,7 +330,7 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT(nb_empty == 2);
+        TS_ASSERT_EQUALS(nb_empty, 2);
         TS_ASSERT_DELTA(prod, 15.0, 1e-6);
       }
     }

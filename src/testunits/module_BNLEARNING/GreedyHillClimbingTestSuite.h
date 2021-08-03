@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -245,7 +245,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT(dag.arcs().size() == 11);
+      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)11);
 
       // gum::BayesNet<double> bn =
       // search.learnBN<double> ( selector, estimator,
@@ -314,7 +314,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT(dag.arcs().size() == 11);
+      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)11);
 
       gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
@@ -322,8 +322,8 @@ namespace gum_tests {
       const std::string s1 = "1";
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT(var.label(0) == s0);
-        TS_ASSERT(var.label(1) == s1);
+        TS_ASSERT_EQUALS(var.label(0), s0);
+        TS_ASSERT_EQUALS(var.label(1), s1);
       }
     }
 
@@ -394,9 +394,9 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT(var.label(0) == s0);
-        TS_ASSERT(var.label(1) == s1);
-        if (seq.exists(i)) { TS_ASSERT(var.label(2) == s2); }
+        TS_ASSERT_EQUALS(var.label(0), s0);
+        TS_ASSERT_EQUALS(var.label(1), s1);
+        if (seq.exists(i)) { TS_ASSERT_EQUALS(var.label(2), s2); }
       }
     }
 
@@ -469,9 +469,9 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (auto i: seq) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT(var.label(0) == s0);
-        TS_ASSERT(var.label(1) == s1);
-        TS_ASSERT(var.label(2) == s2);
+        TS_ASSERT_EQUALS(var.label(0), s0);
+        TS_ASSERT_EQUALS(var.label(1), s1);
+        TS_ASSERT_EQUALS(var.label(2), s2);
       }
     }
 
@@ -553,7 +553,7 @@ namespace gum_tests {
 
         while (_applyNextChange_(score, scores, xdag)) {}
 
-        TS_ASSERT(xdag == dag);
+        TS_ASSERT_EQUALS(xdag, dag);
       }
     }
 

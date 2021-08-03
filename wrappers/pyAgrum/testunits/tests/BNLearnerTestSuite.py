@@ -225,10 +225,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.size(), 5)
 
   def test_EM(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), ["#"])
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), True,["#"])
     self.assertFalse(learner.hasMissingValues())
 
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), ["?"])
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), True,["?"])
     self.assertTrue(learner.hasMissingValues())
 
     dag = gum.DAG()

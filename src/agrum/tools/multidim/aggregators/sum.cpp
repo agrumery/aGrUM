@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright 2005-2019 Pierre-Henri WUILLEMIN & Christophe GONZALES(@AMU)
+ *   Copyright 2005-2019 Pierre-Henri WUILLEMIN & Christophe GONZALES(_at_AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify

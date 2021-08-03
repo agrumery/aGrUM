@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/myalloc.h>
+#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/sequence.h>
 #include <string>
@@ -50,24 +50,24 @@ namespace gum_tests {
       TS_ASSERT(!seq.empty());
 
       gum::Sequence< int > seq2{1, 2, 3};
-      TS_ASSERT(seq2.size() == 3);
+      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3);
 
       gum::Sequence< int > seq3(seq2);
-      TS_ASSERT(seq3 == seq2);
+      TS_ASSERT_EQUALS(seq3, seq2);
 
       gum::Sequence< int > seq4(std::move(seq2));
-      TS_ASSERT(seq4.size() == 3);
+      TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3);
 
-      gum::Sequence< int, MyAlloc< int > > seq5{2, 4};
-      gum::Sequence< int >                 seq6(seq5);
-      TS_ASSERT(seq5 == seq6);
+      gum::Sequence< int, DebugCountedAlloc< int > > seq5{2, 4};
+      gum::Sequence< int >                           seq6(seq5);
+      TS_ASSERT_EQUALS(seq5, seq6);
 
       seq5 = seq;
-      TS_ASSERT(seq5.size() == 5);
+      TS_ASSERT_EQUALS(seq5.size(), (gum::Size)5);
       seq6 = seq;
-      TS_ASSERT(seq6.size() == 5);
+      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)5);
       seq6 = std::move(seq3);
-      TS_ASSERT(seq6.size() == 3);
+      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)3);
     }
 
     void testConstructor2() {
@@ -95,24 +95,24 @@ namespace gum_tests {
       TS_ASSERT(!seq.empty());
 
       gum::Sequence< std::string > seq2{p[0], p[1], p[2]};
-      TS_ASSERT(seq2.size() == 3);
+      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3);
 
       gum::Sequence< std::string > seq3(seq2);
-      TS_ASSERT(seq3 == seq2);
+      TS_ASSERT_EQUALS(seq3, seq2);
 
       gum::Sequence< std::string > seq4(std::move(seq2));
-      TS_ASSERT(seq4.size() == 3);
+      TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3);
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq5{p[1], p[3]};
-      gum::Sequence< std::string >                         seq6(seq5);
-      TS_ASSERT(seq5 == seq6);
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq5{p[1], p[3]};
+      gum::Sequence< std::string >                                   seq6(seq5);
+      TS_ASSERT_EQUALS(seq5, seq6);
 
       seq5 = seq;
-      TS_ASSERT(seq5.size() == 5);
+      TS_ASSERT_EQUALS(seq5.size(), (gum::Size)5);
       seq6 = seq;
-      TS_ASSERT(seq6.size() == 5);
+      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)5);
       seq6 = std::move(seq3);
-      TS_ASSERT(seq6.size() == 3);
+      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)3);
     }
 
     void testMoves() {
@@ -124,8 +124,8 @@ namespace gum_tests {
       seq3                      = std::move(seq2);
       seq2                      = std::move(seq1);
 
-      TS_ASSERT(seq2.size() == 3);
-      TS_ASSERT(seq2.atPos(1) == 2);
+      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(seq2.atPos(1), 2);
     }
 
     void testCopy() {
@@ -159,18 +159,18 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(seq1, seq2);
 
       gum::Sequence< int > seq3;
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
       seq3 << 1;
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
       seq3 << 2 << 3 << 4 << 5;
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
 
-      gum::Sequence< int, MyAlloc< int > > seq4;
-      TS_ASSERT(seq1 != seq4);
+      gum::Sequence< int, DebugCountedAlloc< int > > seq4;
+      TS_ASSERT_DIFFERS(seq1, seq4);
       seq4 << 1;
-      TS_ASSERT(seq1 != seq4);
+      TS_ASSERT_DIFFERS(seq1, seq4);
       seq4 << 2 << 3 << 4 << 5;
-      TS_ASSERT(seq1 != seq4);
+      TS_ASSERT_DIFFERS(seq1, seq4);
     }
 
     void testEquality2() {
@@ -187,18 +187,18 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(seq1, seq2);
 
       gum::Sequence< std::string > seq3;
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
       seq3 << p[0];
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
       seq3 << p[1] << p[2] << p[3] << p[4];
-      TS_ASSERT(seq1 != seq3);
+      TS_ASSERT_DIFFERS(seq1, seq3);
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq4;
-      TS_ASSERT(seq1 != seq4);
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq4;
+      TS_ASSERT_DIFFERS(seq1, seq4);
       seq4 << p[0] << p[1];
-      TS_ASSERT(seq1 == seq4);
+      TS_ASSERT_EQUALS(seq1, seq4);
       seq4 << p[2] << p[3] << p[4];
-      TS_ASSERT(seq1 != seq4);
+      TS_ASSERT_DIFFERS(seq1, seq4);
     }
 
     void testGettersAndSetters() {
@@ -366,12 +366,12 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq;
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
 
       int n = 0;
 
       for (const auto& str: seq) {
-        str.size();
+        GUM_UNUSED(str.size());
         n++;
       }
 
@@ -410,7 +410,7 @@ namespace gum_tests {
       n = 0;
 
       for (const auto& i: seq) {
-        i.size();
+        GUM_UNUSED(i.size());
         n++;
       }
 
@@ -424,7 +424,7 @@ namespace gum_tests {
       for (const auto& s: seq)
         str += s;
 
-      TS_ASSERT(str == "bbddffccee");
+      TS_ASSERT_EQUALS(str, "bbddffccee");
 
       str = "";
 
@@ -432,7 +432,7 @@ namespace gum_tests {
         str += *it;
       }
 
-      TS_ASSERT(str == "eeccffddbb");
+      TS_ASSERT_EQUALS(str, "eeccffddbb");
     }
 
     void testIterators4() {
@@ -444,7 +444,7 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq;
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
 
       int n = 0;
 
@@ -468,102 +468,102 @@ namespace gum_tests {
         str += *it;
       }
 
-      TS_ASSERT(str == "bbddffccee");
+      TS_ASSERT_EQUALS(str, "bbddffccee");
       str = "";
 
       for (gum::Sequence< std::string >::iterator it = seq.rbegin(); it != seq.rend(); --it) {
         str += *it;
       }
 
-      TS_ASSERT(str == "eeccffddbb");
+      TS_ASSERT_EQUALS(str, "eeccffddbb");
     }
 
     void testInsert1() {
-      gum::Sequence< int, MyAlloc< int > > seq;
+      gum::Sequence< int, DebugCountedAlloc< int > > seq;
 
       seq.insert(1);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       int x = 2;
       seq.insert(x);
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.clear();
       seq << 1;
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq << x;
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.erase(1);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT(seq.size() == 0);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0);
     }
 
     void testInsert2() {
-      gum::Sequence< std::string, MyAlloc< std::string > > seq;
-      std::string                                          x = "1";
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
+      std::string                                                    x = "1";
 
       seq.insert(x);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.insert("2");
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.clear();
       seq << x;
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq << "2";
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.erase(x);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT(seq.size() == 0);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0);
     }
 
     void testEmplace1() {
-      gum::Sequence< std::pair< int, int >, MyAlloc< std::pair< int, int > > > seq;
-      std::pair< int, int >                                                    x(2, 3);
+      gum::Sequence< std::pair< int, int >, DebugCountedAlloc< std::pair< int, int > > > seq;
+      std::pair< int, int >                                                              x(2, 3);
 
       seq.emplace(2, 3);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.emplace(5, 7);
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.erase(x);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT(seq.size() == 0);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0);
     }
 
     void testEmplace2() {
-      gum::Sequence< int, MyAlloc< int > > seq;
-      int                                  x = 2;
+      gum::Sequence< int, DebugCountedAlloc< int > > seq;
+      int                                            x = 2;
 
       seq.emplace(2);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.emplace(5);
-      TS_ASSERT(seq.size() == 2);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2);
 
       seq.erase(x);
-      TS_ASSERT(seq.size() == 1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT(seq.size() == 0);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0);
     }
 
     void testNewIterOp1() {
-      gum::Sequence< int, MyAlloc< int > > seq;
+      gum::Sequence< int, DebugCountedAlloc< int > > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIteratorSafe< int > iter = seq.begin();
-      TS_ASSERT(*iter == 1);
+      TS_ASSERT_EQUALS(*iter, 1);
       ++iter;
-      TS_ASSERT(*iter == 2);
+      TS_ASSERT_EQUALS(*iter, 2);
       iter += 2;
-      TS_ASSERT(*iter == 4);
+      TS_ASSERT_EQUALS(*iter, 4);
       iter -= 3;
-      TS_ASSERT(*iter == 1);
+      TS_ASSERT_EQUALS(*iter, 1);
       iter += 3;
-      TS_ASSERT(*(iter - 2) == 2);
-      TS_ASSERT(*(iter + 1) == 5);
+      TS_ASSERT_EQUALS(*(iter - 2), 2);
+      TS_ASSERT_EQUALS(*(iter + 1), 5);
     }
 
     void testNewIterOp2() {
@@ -575,35 +575,35 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq;
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIteratorSafe< std::string > iter = seq.begin();
-      TS_ASSERT(*iter == p[1]);
+      TS_ASSERT_EQUALS(*iter, p[1]);
       ++iter;
-      TS_ASSERT(*iter == p[2]);
+      TS_ASSERT_EQUALS(*iter, p[2]);
       iter += 2;
-      TS_ASSERT(*iter == p[4]);
+      TS_ASSERT_EQUALS(*iter, p[4]);
       iter -= 3;
-      TS_ASSERT(*iter == p[1]);
+      TS_ASSERT_EQUALS(*iter, p[1]);
       iter += 3;
-      TS_ASSERT(*(iter - 2) == p[2]);
-      TS_ASSERT(*(iter + 1) == p[5]);
+      TS_ASSERT_EQUALS(*(iter - 2), p[2]);
+      TS_ASSERT_EQUALS(*(iter + 1), p[5]);
     }
 
     void testNewIterOp3() {
-      gum::Sequence< int, MyAlloc< int > > seq;
+      gum::Sequence< int, DebugCountedAlloc< int > > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIterator< int > iter = seq.begin();
-      TS_ASSERT(*iter == 1);
+      TS_ASSERT_EQUALS(*iter, 1);
       ++iter;
-      TS_ASSERT(*iter == 2);
+      TS_ASSERT_EQUALS(*iter, 2);
       iter += 2;
-      TS_ASSERT(*iter == 4);
+      TS_ASSERT_EQUALS(*iter, 4);
       iter -= 3;
-      TS_ASSERT(*iter == 1);
+      TS_ASSERT_EQUALS(*iter, 1);
       iter += 3;
-      TS_ASSERT(*(iter - 2) == 2);
-      TS_ASSERT(*(iter + 1) == 5);
+      TS_ASSERT_EQUALS(*(iter - 2), 2);
+      TS_ASSERT_EQUALS(*(iter + 1), 5);
     }
 
     void testNewIterOp4() {
@@ -615,19 +615,19 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, MyAlloc< std::string > > seq;
+      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIterator< std::string > iter = seq.begin();
-      TS_ASSERT(*iter == p[1]);
+      TS_ASSERT_EQUALS(*iter, p[1]);
       ++iter;
-      TS_ASSERT(*iter == p[2]);
+      TS_ASSERT_EQUALS(*iter, p[2]);
       iter += 2;
-      TS_ASSERT(*iter == p[4]);
+      TS_ASSERT_EQUALS(*iter, p[4]);
       iter -= 3;
-      TS_ASSERT(*iter == p[1]);
+      TS_ASSERT_EQUALS(*iter, p[1]);
       iter += 3;
-      TS_ASSERT(*(iter - 2) == p[2]);
-      TS_ASSERT(*(iter + 1) == p[5]);
+      TS_ASSERT_EQUALS(*(iter - 2), p[2]);
+      TS_ASSERT_EQUALS(*(iter + 1), p[5]);
     }
 
     void testIdxSeq() {

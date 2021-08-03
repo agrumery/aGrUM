@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief The set of translators stored into a row filter
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -244,7 +244,7 @@ namespace gum {
 
 
     /// returns a new translator corresponding to a variable and some missing symbols
-    //template < template < typename > class ALLOC >
+    // template < template < typename > class ALLOC >
 
 
     /// inserts a new translator for a given variable in the translator set
@@ -256,44 +256,16 @@ namespace gum {
        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
        const bool                                               unique_column) {
       // create the translator, depending on the type of the variable
-      switch (var.varType()) {
-        case VarType::Labelized: {
-          const LabelizedVariable& xvar = static_cast< const LabelizedVariable& >(var);
-          DBTranslator4LabelizedVariable< ALLOC > translator(xvar, missing_symbols);
-          return insertTranslator(translator, column, unique_column);
-        }
+      DBTranslator< ALLOC >* translator = DBTranslators::create< ALLOC >(var, missing_symbols);
 
-       case VarType::Integer: {
-          const IntegerVariable& xvar = static_cast< const IntegerVariable& >(var);
-          DBTranslator4IntegerVariable< ALLOC > translator(xvar, missing_symbols);
-          return insertTranslator(translator, column, unique_column);
-        }
+      const std::size_t index = insertTranslator(*translator, column, unique_column);
 
-        case VarType::Discretized: {
-          const IDiscretizedVariable& xvar = static_cast< const IDiscretizedVariable& >(var);
-          DBTranslator4DiscretizedVariable< ALLOC > translator(xvar, missing_symbols);
-          return insertTranslator(translator, column, unique_column);
-        }
+      // deallocate the translator
+      ALLOC< DBTranslator< ALLOC > > alloc = translator->getAllocator();
+      translator->~DBTranslator< ALLOC >();
+      alloc.deallocate(translator, 1);
 
-        case VarType::Range: {
-          const RangeVariable&                xvar = static_cast< const RangeVariable& >(var);
-          DBTranslator4RangeVariable< ALLOC > translator(xvar, missing_symbols);
-          return insertTranslator(translator, column, unique_column);
-        }
-
-        case VarType::Continuous: {
-          const IContinuousVariable& xvar = static_cast< const IContinuousVariable& >(var);
-          DBTranslator4ContinuousVariable< ALLOC > translator(xvar, missing_symbols);
-          return insertTranslator(translator, column, unique_column);
-        }
-
-        default:
-          GUM_ERROR(NotImplementedYet,
-                    "The insertion of the translator for Variable "
-                       << var.name()
-                       << " is impossible because a translator "
-                          "for such variable is not implemented yet")
-      }
+      return index;
     }
 
 
@@ -310,14 +282,15 @@ namespace gum {
     /// substitute a translator by another one
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Translator >
-    void DBTranslatorSet< ALLOC >::substituteTranslator(const Translator< ALLOC >& new_translator,
-                                                        const std::size_t          pos) {
+    void DBTranslatorSet< ALLOC >::changeTranslator(const Translator< ALLOC >& new_translator,
+                                                    const std::size_t          pos) {
       // check that the translator to be substituted exsts
       if (_translators_.size() < pos) {
         GUM_ERROR(OutOfBounds,
-                  "The translatorSet contains only " << _translators_.size()
-                  << " translators. It is therefore impossible to substitute "
-                  << "the translator at index " << pos);
+                  "The translatorSet contains only "
+                     << _translators_.size()
+                     << " translators. It is therefore impossible to substitute "
+                     << "the translator at index " << pos);
       }
 
       // copy the new translator

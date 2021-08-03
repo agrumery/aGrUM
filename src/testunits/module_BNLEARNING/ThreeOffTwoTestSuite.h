@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ namespace gum_tests {
         }
       }
       graph = search.learnMixedStructure(I, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(0))
+      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)0)
     }
 
     void test_3off2_asia_MDLcorr() {
@@ -123,8 +123,8 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5))
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3))
+      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
     }
 
     void test_3off2_asia_NMLcorr() {
@@ -167,10 +167,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(8))
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(1))
+      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)8)
+      TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)1)
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(2))
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)2)
     }
 
     void test_3off2_asia_dag() {
@@ -214,9 +214,9 @@ namespace gum_tests {
 
       gum::DAG                dag     = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size(9))
+      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)9)
 
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(2))
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)2)
     }
 
     void xtest_tonda() {
@@ -254,13 +254,13 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(g.arcs().size(), gum::Size(0))
-      TS_ASSERT_EQUALS(g.edges().size(), gum::Size(9))
+      TS_ASSERT_EQUALS(g.arcs().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g.edges().size(), (gum::Size)9)
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size(9))
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(0))
+      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)9)
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
       */
     }
 
@@ -310,12 +310,12 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(4))
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(5))
+      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)5)
       TS_ASSERT(graph.existsEdge(5, 7))
       TS_ASSERT(graph.existsArc(4, 3))
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(3))
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)3)
     }
 
     void test_MIIC_asia_NMLcorr() {
@@ -360,10 +360,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      // TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5))
-      // TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3))
+      // TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)5)
+      // TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(0))
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
@@ -416,10 +416,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5))
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3))
+      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), gum::Size(0))
+      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
       TS_ASSERT(graph.existsArc(4, 3))
       TS_ASSERT(graph.existsEdge(5, 7))
     }

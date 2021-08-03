@@ -2954,6 +2954,10 @@ class DiscreteVariable(Variable):
         """
         return _pyAgrum.DiscreteVariable_domain(self)
 
+    def stype(self):
+        r"""stype(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_stype(self)
+
     def __repr__(self):
         r"""__repr__(DiscreteVariable self) -> std::string"""
         return _pyAgrum.DiscreteVariable___repr__(self)
@@ -2999,6 +3003,10 @@ class DiscreteVariable(Variable):
 
         """
         return _pyAgrum.DiscreteVariable_toRangeVar(self)
+
+    def toIntegerVar(self):
+        r"""toIntegerVar(DiscreteVariable self) -> IntegerVariable"""
+        return _pyAgrum.DiscreteVariable_toIntegerVar(self)
 
     def toDiscretizedVar(self):
         r"""
@@ -3263,6 +3271,10 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyAgrum.LabelizedVariable_domain(self)
 
+    def stype(self):
+        r"""stype(LabelizedVariable self) -> std::string const"""
+        return _pyAgrum.LabelizedVariable_stype(self)
+
     def __repr__(self):
         r"""__repr__(LabelizedVariable self) -> std::string"""
         return _pyAgrum.LabelizedVariable___repr__(self)
@@ -3514,6 +3526,10 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyAgrum.RangeVariable_domain(self)
 
+    def stype(self):
+        r"""stype(RangeVariable self) -> std::string const"""
+        return _pyAgrum.RangeVariable_stype(self)
+
     def __repr__(self):
         r"""__repr__(RangeVariable self) -> std::string"""
         return _pyAgrum.RangeVariable___repr__(self)
@@ -3524,6 +3540,163 @@ class RangeVariable(DiscreteVariable):
 
 # Register RangeVariable in _pyAgrum:
 _pyAgrum.RangeVariable_swigregister(RangeVariable)
+
+class IntegerVariable(DiscreteVariable):
+    r"""Proxy of C++ gum::IntegerVariable class."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        __init__(IntegerVariable self, std::string const & aName, std::string const & aDesc="") -> IntegerVariable
+        __init__(IntegerVariable self, std::string const & aName, std::string const & aDesc, std::vector< int,std::allocator< int > > const & domain) -> IntegerVariable
+        __init__(IntegerVariable self, IntegerVariable _from) -> IntegerVariable
+        __init__(IntegerVariable self, IntegerVariable _from) -> IntegerVariable
+        """
+        _pyAgrum.IntegerVariable_swiginit(self, _pyAgrum.new_IntegerVariable(*args))
+
+    def clone(self):
+        r"""
+        clone(IntegerVariable self) -> IntegerVariable
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	a copy of the DiscreteVariable
+
+        """
+        return _pyAgrum.IntegerVariable_clone(self)
+    __swig_destroy__ = _pyAgrum.delete_IntegerVariable
+
+    def __eq__(self, var):
+        r"""__eq__(IntegerVariable self, Variable var) -> bool"""
+        return _pyAgrum.IntegerVariable___eq__(self, var)
+
+    def __ne__(self, var):
+        r"""__ne__(IntegerVariable self, Variable var) -> bool"""
+        return _pyAgrum.IntegerVariable___ne__(self, var)
+
+    def domainSize(self):
+        r"""
+        domainSize(IntegerVariable self) -> gum::Size
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
+        return _pyAgrum.IntegerVariable_domainSize(self)
+
+    def varType(self):
+        r"""
+        varType(IntegerVariable self) -> gum::VarType
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+
+        """
+        return _pyAgrum.IntegerVariable_varType(self)
+
+    def index(self, label):
+        r"""
+        index(IntegerVariable self, std::string const & label) -> gum::Idx
+
+        Parameters
+        ----------
+        label : str
+        	a label
+
+        Returns
+        -------
+        int
+        	the indice of the label
+
+        """
+        return _pyAgrum.IntegerVariable_index(self, label)
+
+    def label(self, index):
+        r"""
+        label(IntegerVariable self, gum::Idx index) -> std::string
+
+        Parameters
+        ----------
+        i : int
+        	the index of the label we wish to return
+
+        Returns
+        -------
+        str
+        	the indice-th label
+
+        Raises
+        ------
+        gum.OutOfBound
+        	If the variable does not contain the label
+
+        """
+        return _pyAgrum.IntegerVariable_label(self, index)
+
+    def numerical(self, index):
+        r"""
+        numerical(IntegerVariable self, gum::Idx index) -> double
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
+        return _pyAgrum.IntegerVariable_numerical(self, index)
+
+    def domain(self):
+        r"""
+        domain(IntegerVariable self) -> std::string const
+
+        Returns
+        -------
+        str
+        	the domain of the variable
+
+        """
+        return _pyAgrum.IntegerVariable_domain(self)
+
+    def stype(self):
+        r"""stype(IntegerVariable self) -> std::string const"""
+        return _pyAgrum.IntegerVariable_stype(self)
+
+    def integerDomain(self):
+        r"""integerDomain(IntegerVariable self) -> gum::Sequence< int > const &"""
+        return _pyAgrum.IntegerVariable_integerDomain(self)
+
+    def addValue(self, value):
+        r"""addValue(IntegerVariable self, int value) -> IntegerVariable"""
+        return _pyAgrum.IntegerVariable_addValue(self, value)
+
+    def changeValue(self, old_value, new_value):
+        r"""changeValue(IntegerVariable self, int old_value, int new_value)"""
+        return _pyAgrum.IntegerVariable_changeValue(self, old_value, new_value)
+
+    def eraseValue(self, value):
+        r"""eraseValue(IntegerVariable self, int value)"""
+        return _pyAgrum.IntegerVariable_eraseValue(self, value)
+
+    def eraseValues(self):
+        r"""eraseValues(IntegerVariable self)"""
+        return _pyAgrum.IntegerVariable_eraseValues(self)
+
+# Register IntegerVariable in _pyAgrum:
+_pyAgrum.IntegerVariable_swigregister(IntegerVariable)
 
 class IDiscretizedVariable(DiscreteVariable):
     r"""Proxy of C++ gum::IDiscretizedVariable class."""
@@ -7694,6 +7867,10 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         """
         return _pyAgrum.DiscretizedVariable_domain(self)
+
+    def stype(self):
+        r"""stype(DiscretizedVariable self) -> std::string const"""
+        return _pyAgrum.DiscretizedVariable_stype(self)
 
     def tick(self, i):
         r"""
@@ -26017,15 +26194,15 @@ class BNLearner(object):
 
 
 
-    BNLearner(filename) -> BNLearner
+    BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
             * **filename** (*str*) -- the file to learn from
+            * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
-    BNLearner(filename,src,parse_database=False) -> BNLearner
+    BNLearner(filename,src) -> BNLearner
         Parameters:
             * **filename** (*str*) -- the file to learn from
             * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
-            * **parse_database** (*bool*) -- if True, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 
     BNLearner(learner) -> BNLearner
         Parameters:
@@ -26037,7 +26214,7 @@ class BNLearner(object):
 
     def __init__(self, *args):
         r"""
-        __init__(BNLearner self, std::string const & filename, Vector_string missing_symbols={"?"}) -> BNLearner
+        __init__(BNLearner self, std::string const & filename, bool const induceTypes=True, Vector_string missingSymbols={"?"}) -> BNLearner
         __init__(BNLearner self, gum::learning::DatabaseTable< > const & db) -> BNLearner
         __init__(BNLearner self, std::string const & filename, BayesNet src, Vector_string missing_symbols={"?"}) -> BNLearner
         __init__(BNLearner self, BNLearner arg2) -> BNLearner

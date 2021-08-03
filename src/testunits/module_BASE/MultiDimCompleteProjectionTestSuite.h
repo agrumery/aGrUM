@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -244,14 +244,14 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(tt1, inst);
 
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst2);
       TS_ASSERT(local_equal(inst2, inst));
 
       t2 = projectMaxMultiDimImplementation(&t1);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst3(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst3);
@@ -281,13 +281,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      TS_ASSERT(*t2 == *t3);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(*t2, *t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       TS_ASSERT(local_equal(inst2, inst));
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       pointerDelete(t1);
 
@@ -316,13 +316,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*tt1, inst);
 
-      TS_ASSERT(*t2 == *t3);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(*t2, *t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(*t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       TS_ASSERT(local_equal(inst2, inst));
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       pointerDelete(tt1);
 
@@ -353,11 +353,11 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = projectMax(t1);
       double             t3 = local_projmax(t1, inst);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(t1, &inst2);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
       TS_ASSERT(local_equal(inst2, inst));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -383,7 +383,7 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = t1.max();
       double             t3 = local_projmax(t1, inst);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -413,13 +413,13 @@ namespace gum_tests {
       double*            t2 = projectMax(*t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      TS_ASSERT(*t2 == *t3);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(*t2, *t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(*t1, &inst2);
       TS_ASSERT(local_equal(inst2, inst));
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       pointerDelete(t1);
 
@@ -451,15 +451,15 @@ namespace gum_tests {
       double             t2 = Proj.project(t1);
       double             t3 = local_projmax(t1, inst);
 
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = Proj.project(t1, &inst2);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       Proj.setProjectFunction(myMax);
       t2 = Proj.project(t1);
-      TS_ASSERT(t2 == t3);
+      TS_ASSERT_EQUALS(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * IDatabases are not intended to be created as is but should be created through
  * the RawDatabaseTable and DatabaseTable classes.
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_IDATABASE_TABLE_H
 #define GUM_IDATABASE_TABLE_H
@@ -1157,8 +1157,8 @@ namespace gum {
       std::size_t nbProcessingThreads_() const;
 
       /// returns the ranges that threads should process
-      std::vector< std::pair< std::size_t, std::size_t > > rangesProcessingThreads_(
-         const std::size_t nb_threads) const;
+      std::vector< std::pair< std::size_t, std::size_t > >
+         rangesProcessingThreads_(const std::size_t nb_threads) const;
 
       /// copy operator
       IDatabaseTable< T_DATA, ALLOC >& operator=(const IDatabaseTable< T_DATA, ALLOC >& from);

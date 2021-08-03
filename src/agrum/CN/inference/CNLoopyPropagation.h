@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Class implementing loopy-propagation with binary networks - L2U
  * algorithm.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #ifndef __CN_LOOPY_PROPAGATION__H__
@@ -51,7 +51,7 @@ namespace gum {
      * @brief Class implementing loopy-propagation with binary networks - L2U
      * algorithm.
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < typename GUM_SCALAR >
     class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {

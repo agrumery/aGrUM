@@ -1,14 +1,14 @@
 %feature("docstring") gum::learning::BNLearner
 "
-BNLearner(filename) -> BNLearner
+BNLearner(filename,inducedTypes=True) -> BNLearner
     Parameters:
         * **filename** (*str*) -- the file to learn from
+        * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
-BNLearner(filename,src,parse_database=False) -> BNLearner
+BNLearner(filename,src) -> BNLearner
     Parameters:
         * **filename** (*str*) -- the file to learn from
         * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
-        * **parse_database** (*bool*) -- if True, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 
 BNLearner(learner) -> BNLearner
     Parameters:

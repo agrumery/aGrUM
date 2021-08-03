@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief The base class for all the tabular databases' cell translators
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <agrum/tools/database/DBTranslator.h>
 
@@ -65,9 +65,9 @@ namespace gum {
        const bool                                               dynamic_dictionary,
        std::size_t                                              max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type&    alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(is_lossless),
-        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
-        val_type_(val_type) {
+        DBTranslator< ALLOC >::allocator_type(alloc),
+        is_lossless_(is_lossless), is_dictionary_dynamic_(dynamic_dictionary),
+        max_dico_entries_(max_dico_entries), val_type_(val_type) {
       const std::size_t size = missing_symbols.size();
 
       if (size) {
@@ -90,9 +90,9 @@ namespace gum {
        const bool                                            dynamic_dictionary,
        std::size_t                                           max_dico_entries,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(is_lossless),
-        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
-        val_type_(val_type) {
+        DBTranslator< ALLOC >::allocator_type(alloc),
+        is_lossless_(is_lossless), is_dictionary_dynamic_(dynamic_dictionary),
+        max_dico_entries_(max_dico_entries), val_type_(val_type) {
       GUM_CONSTRUCTOR(DBTranslator);
     }
 
@@ -102,8 +102,8 @@ namespace gum {
     INLINE DBTranslator< ALLOC >::DBTranslator(
        const DBTranslator< ALLOC >&                          from,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(from.is_lossless_),
-        is_dictionary_dynamic_(from.is_dictionary_dynamic_),
+        DBTranslator< ALLOC >::allocator_type(alloc),
+        is_lossless_(from.is_lossless_), is_dictionary_dynamic_(from.is_dictionary_dynamic_),
         max_dico_entries_(from.max_dico_entries_), missing_symbols_(from.missing_symbols_),
         back_dico_(from.back_dico_), val_type_(from.val_type_) {
       GUM_CONS_CPY(DBTranslator);
@@ -121,8 +121,8 @@ namespace gum {
     INLINE DBTranslator< ALLOC >::DBTranslator(
        DBTranslator< ALLOC >&&                               from,
        const typename DBTranslator< ALLOC >::allocator_type& alloc) :
-        DBTranslator< ALLOC >::allocator_type(alloc), is_lossless_(from.is_lossless_),
-        is_dictionary_dynamic_(from.is_dictionary_dynamic_),
+        DBTranslator< ALLOC >::allocator_type(alloc),
+        is_lossless_(from.is_lossless_), is_dictionary_dynamic_(from.is_dictionary_dynamic_),
         max_dico_entries_(from.max_dico_entries_),
         missing_symbols_(std::move(from.missing_symbols_)), back_dico_(std::move(from.back_dico_)),
         val_type_(from.val_type_) {
@@ -203,9 +203,9 @@ namespace gum {
 
     /// returns the translation from database indices to input strings
     template < template < typename > class ALLOC >
-    INLINE const Bijection< std::size_t, std::string,
-                            ALLOC< std::pair< std::size_t, std::string > > >&
-         DBTranslator< ALLOC >::getDictionary () const {
+    INLINE const
+       Bijection< std::size_t, std::string, ALLOC< std::pair< std::size_t, std::string > > >&
+       DBTranslator< ALLOC >::getDictionary() const {
       return back_dico_;
     }
 

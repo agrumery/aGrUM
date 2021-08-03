@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -73,8 +73,8 @@ namespace gum_tests {
 
       std::stringstream s;
       s << v;
-      TS_ASSERT_EQUALS(s.str(), "var1[3,9]");
-      TS_ASSERT_EQUALS(v.toString(), "var1[3,9]");
+      TS_ASSERT_EQUALS(s.str(), "var1:Range([3,9])");
+      TS_ASSERT_EQUALS(v.toString(), "var1:Range([3,9])");
     }
 
     void testNumerical() {

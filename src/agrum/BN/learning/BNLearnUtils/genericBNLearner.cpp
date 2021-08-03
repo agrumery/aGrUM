@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
  *LocalSearchWithTabuList
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #include <algorithm>
@@ -65,8 +65,20 @@ namespace gum {
 
 
     genericBNLearner::Database::Database(const std::string&                filename,
-                                         const std::vector< std::string >& missing_symbols) :
-        Database(genericBNLearner::readFile_(filename, missing_symbols)) {}
+                                         const std::vector< std::string >& missing_symbols,
+                                         const bool                        induceTypes) :
+        Database(genericBNLearner::readFile_(filename, missing_symbols)) {
+      // if the usr wants the best translators to be inferred, just do it
+      if (induceTypes) {
+        for (const auto& new_trans: _database_.betterTranslators()) {
+          // change the translator
+          _database_.changeTranslator(*new_trans.second, new_trans.first);
+
+          // recompute the domain size
+          _domain_sizes_[new_trans.first] = new_trans.second->domainSize();
+        }
+      }
+    }
 
 
     genericBNLearner::Database::Database(const std::string&                CSV_filename,
@@ -177,27 +189,31 @@ namespace gum {
     // ===========================================================================
 
     genericBNLearner::genericBNLearner(const std::string&                filename,
-                                       const std::vector< std::string >& missing_symbols) :
-        scoreDatabase_(filename, missing_symbols) {
-      filename_  = filename;
-      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+                                       const std::vector< std::string >& missing_symbols,
+                                       const bool                        induceTypes) :
+        scoreDatabase_(filename, missing_symbols, induceTypes) {
+      filename_     = filename;
+      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      inducedTypes_ = induceTypes;
 
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
     genericBNLearner::genericBNLearner(const DatabaseTable<>& db) : scoreDatabase_(db) {
-      filename_  = "-";
-      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      filename_     = "-";
+      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      inducedTypes_ = false;
 
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
-        scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-        epsilonEM_(from.epsilonEM_), aprioriType_(from.aprioriType_),
-        aprioriWeight_(from.aprioriWeight_), constraintSliceOrder_(from.constraintSliceOrder_),
+        inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
+        paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
+        aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
+        constraintSliceOrder_(from.constraintSliceOrder_),
         constraintIndegree_(from.constraintIndegree_),
         constraintTabuList_(from.constraintTabuList_),
         constraintForbiddenArcs_(from.constraintForbiddenArcs_),
@@ -214,9 +230,9 @@ namespace gum {
     }
 
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
-        scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-        epsilonEM_(from.epsilonEM_), aprioriType_(from.aprioriType_),
-        aprioriWeight_(from.aprioriWeight_),
+        inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
+        paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
+        aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
         constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
         constraintIndegree_(std::move(from.constraintIndegree_)),
         constraintTabuList_(std::move(from.constraintTabuList_)),

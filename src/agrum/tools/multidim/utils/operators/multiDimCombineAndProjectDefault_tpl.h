@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief An efficient class for combining and projecting MultiDim tables
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -302,9 +302,9 @@ namespace gum {
   // returns the current combination function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR,
-                                        TABLE >::combineFunction())(const TABLE< GUM_SCALAR >&,
-                                                                    const TABLE< GUM_SCALAR >&) {
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
+     const TABLE< GUM_SCALAR >&,
+     const TABLE< GUM_SCALAR >&) {
     return _combination_->combineFunction();
   }
 
@@ -326,9 +326,10 @@ namespace gum {
 
   // returns the current projection function
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (*MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::
-                                  projectFunction())(const TABLE< GUM_SCALAR >&,
-                                                     const Set< const DiscreteVariable* >&) {
+  INLINE TABLE< GUM_SCALAR >* (
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
+     const TABLE< GUM_SCALAR >&,
+     const Set< const DiscreteVariable* >&) {
     return _projection_->projectFunction();
   }
 

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -46,10 +46,10 @@ namespace gum_tests {
       gum::FMDPDatReader< double > reader(&fmdp, file);
 
       reader.trace(false);
-      auto nbrErr = gum::Size(0);
+      auto nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
       reader.showElegantErrorsAndWarnings();

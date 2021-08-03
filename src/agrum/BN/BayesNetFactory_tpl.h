@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Implementation of the BayesNetFactory class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
 
  */
 
@@ -213,6 +213,9 @@ namespace gum {
         case VarType::Range:
           _stringBag_[2] = "R";
           break;
+        case VarType::Integer:
+          _stringBag_[2] = "I";
+          break;
         case VarType::Continuous:
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + _stringBag_[0]
@@ -323,6 +326,16 @@ namespace gum {
 
         var = l;
         // if the current variable is a RangeVariable
+      } else if (_stringBag_[2] == "I") {
+        // try to create the domain of the variable
+        std::vector< int > domain;
+        for (size_t i = 3; i < _stringBag_.size(); ++i) {
+          domain.push_back(std::stoi(_stringBag_[i]));
+        }
+
+        IntegerVariable* v
+           = new IntegerVariable(_stringBag_[0], (_bar_flag_) ? _stringBag_[1] : "", domain);
+        var = v;
       } else if (_stringBag_[2] == "R") {
         RangeVariable* r = new RangeVariable(_stringBag_[0],
                                              (_bar_flag_) ? _stringBag_[1] : "",

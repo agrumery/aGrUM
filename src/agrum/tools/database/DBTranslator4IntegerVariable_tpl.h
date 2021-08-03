@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief The databases' cell translators for integer variables
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #include <utility>
@@ -43,9 +43,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DBTranslator4IntegerVariable< ALLOC >::DBTranslator4IntegerVariable(
-       const IntegerVariable&                                  var,
-       const std::vector< std::string, XALLOC< std::string > >&                  missing_symbols,
-       std::size_t                                                               max_dico_entries,
+       const IntegerVariable&                                                var,
+       const std::vector< std::string, XALLOC< std::string > >&              missing_symbols,
+       std::size_t                                                           max_dico_entries,
        const typename DBTranslator4IntegerVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               true,
@@ -92,8 +92,8 @@ namespace gum {
     /// default constructor with an integer variable as translator but no missing value
     template < template < typename > class ALLOC >
     DBTranslator4IntegerVariable< ALLOC >::DBTranslator4IntegerVariable(
-       const IntegerVariable&                                  var,
-       std::size_t                                                               max_dico_entries,
+       const IntegerVariable&                                                var,
+       std::size_t                                                           max_dico_entries,
        const typename DBTranslator4IntegerVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               true,

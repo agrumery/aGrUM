@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (c) 2012  Pierre-Henri WUILLEMIN(@LIP6)
+    Copyright (c) 2012  Pierre-Henri WUILLEMIN(_at_LIP6)
    <pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@
  * @brief A listener that allows BNLearner to be used as a proxy for its inner
  * algorithms
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #ifndef BNLEARNERLISTENER_H
 #define BNLEARNERLISTENER_H

@@ -159,11 +159,11 @@ class TestFeatures(BayesNetTestCase):
 
     res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
 
-    self.assertEqual(str(bn.variable(0)), "HISTORY<TRUE,FALSE>")
+    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized(<TRUE,FALSE>)")
     bn.variable(0).toLabelizedVar().changeLabel(0, "toto")
-    self.assertNotEqual(str(bn.variable(0)), "HISTORY<toto,FALSE>")
+    self.assertNotEqual(str(bn.variable(0)), "HISTORY:Labelized(<toto,FALSE>)")
     bn.changeVariableLabel(0, "TRUE", "toto")
-    self.assertEqual(str(bn.variable(0)), "HISTORY<toto,FALSE>")
+    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized(<toto,FALSE>)")
 
   def testStringAccessors(self):
     bn = gum.BayesNet()
@@ -315,10 +315,10 @@ class TestFeatures(BayesNetTestCase):
 
   def testFastPrototypeVarType(self):
     bn = gum.fastBN("a")
-    self.assertEqual(bn.variable("a").__str__(), "a[0,1]")
+    self.assertEqual(bn.variable("a").__str__(), "a:Range([0,1])")
 
     bn = gum.fastBN("a[0,1]")
-    self.assertEqual(bn.variable("a").__str__(), "a[0,1]")
+    self.assertEqual(bn.variable("a").__str__(), "a:Range([0,1])")
 
     with self.assertRaises(gum.InvalidArgument):
       bn = gum.fastBN("a[0,0]")
@@ -328,17 +328,23 @@ class TestFeatures(BayesNetTestCase):
       bn = gum.fastBN("a[1,1]")
 
     bn = gum.fastBN("a[5]")
-    self.assertEqual(bn.variable("a").__str__(), "a[0,4]")
+    self.assertEqual(bn.variable("a").__str__(), "a:Range([0,4])")
 
     bn = gum.fastBN("a[2,5]")
-    self.assertEqual(bn.variable("a").__str__(), "a[2,5]")
+    self.assertEqual(bn.variable("a").__str__(), "a:Range([2,5])")
 
     bn = gum.fastBN("a[-2,2]")
-    self.assertEqual(bn.variable("a").__str__(), "a[-2,2]")
+    self.assertEqual(bn.variable("a").__str__(), "a:Range([-2,2])")
 
     bn = gum.fastBN("a[-0.4,0.1,0.5,3.14,10]")
     self.assertEqual(bn.variable("a").__str__(),
-                     "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
+                     "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)")
+
+    bn=gum.fastBN("a{-3|0|3}")
+    self.assertEqual(bn.variable("a").__str__(),"a:Integer(<-3,0,3>)")
+
+    bn=gum.fastBN("a{X|Y|Z}")
+    self.assertEqual(bn.variable("a").__str__(),"a:Labelized(<X,Y,Z>)")
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")

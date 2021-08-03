@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -888,7 +888,7 @@ namespace gum_tests {
       TS_ASSERT(_equal_(xxscore_2, score2.score(node0, cond2)));
       TS_ASSERT(_equal_(xxscore_3, score2.score(node0, cond3)));
 
-      TS_ASSERT(score2.ranges() == ranges);
+      TS_ASSERT_EQUALS(score2.ranges(), ranges);
 
       score2.clearRanges();
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)));

@@ -1,5 +1,5 @@
 /**************************************************************************
-*   Copyright (c) 2017 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)  *
+*   Copyright (c) 2017 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)  *
 *   info_at_agrum_dot_org                                               *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *

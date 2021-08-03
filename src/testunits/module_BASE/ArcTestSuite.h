@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -48,11 +48,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(copy, arc1);
       TS_ASSERT_EQUALS(arc1, copy);
 
-      TS_ASSERT(arc1 != arc3);
-      TS_ASSERT(arc3 != arc1);
-      TS_ASSERT(copy != arc3);
-      TS_ASSERT(arc2 != arc3);
-      TS_ASSERT(arc1 != arc2);
+      TS_ASSERT_DIFFERS(arc1, arc3);
+      TS_ASSERT_DIFFERS(arc3, arc1);
+      TS_ASSERT_DIFFERS(copy, arc3);
+      TS_ASSERT_DIFFERS(arc2, arc3);
+      TS_ASSERT_DIFFERS(arc1, arc2);
     }
 
     void testGetters1() {
@@ -100,7 +100,7 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Arc arc(x, y);
-          TS_ASSERT(hash[arc] == (x + y));
+          TS_ASSERT_EQUALS(hash[arc], (x + y));
         }
       }
     }

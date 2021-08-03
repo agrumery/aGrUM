@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Inline implementation of PRMSystem.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  *
  */
 #include <agrum/PRM/elements/PRMSystem.h>
@@ -176,10 +176,10 @@ namespace gum {
           factory.addMax(r.maxVal());
           break;
         }
-        default:
+        case VarType::Continuous: {
           GUM_ERROR(NotImplementedYet,
-                    "PRM aggregator grounding does not support yet such variables");
-          break;
+                    "PRM aggregator grounding does not support yet continuous variables");
+        }
       }
 
       const PRMAggregate< GUM_SCALAR >& agg = static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);

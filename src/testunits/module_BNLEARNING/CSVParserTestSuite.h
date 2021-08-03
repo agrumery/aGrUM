@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005-2020 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)   *
+ *   Copyright (c) 2005-2020 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)   *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <iostream>
 #include <string>
-#include <ressources/include/myalloc.h>
+#include <ressources/include/countedAlloc.h>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
@@ -268,13 +268,13 @@ namespace gum_tests {
       {
         std::string csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
         std::istringstream in1 ( csvstring1 );
-        gum::learning::CSVParser<MyAlloc> parser( in1 );
+        gum::learning::CSVParser<DebugCountedAlloc> parser( in1 );
 
         TS_ASSERT_THROWS( parser.current(), gum::NullElement );
         TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement );
 
         parser.next();
-        const std::vector<std::string,MyAlloc<std::string>>& v1 =
+        const std::vector<std::string,DebugCountedAlloc<std::string>>& v1 =
           parser.current ();
         TS_ASSERT_EQUALS( v1[0], "1" );
         TS_ASSERT_EQUALS( v1[2], "3" );
@@ -287,13 +287,13 @@ namespace gum_tests {
         TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement );
 
         parser.next();
-        const std::vector<std::string,MyAlloc<std::string>>&
+        const std::vector<std::string,DebugCountedAlloc<std::string>>&
           v2 = parser.current ();
         TS_ASSERT_EQUALS( v2[0], "a" );
         TS_ASSERT_EQUALS( v2[2], "c" );
       }
 
-      TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);
+      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak() , false);
 
     }
   };

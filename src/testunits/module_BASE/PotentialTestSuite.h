@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -181,10 +181,10 @@ namespace gum_tests {
       u << b << a;   // same dims, same data, different order
       u.fillWith({1, 4, 7, 2, 5, 8, 3, 6, 9});
 
-      TS_ASSERT(p != q);
-      TS_ASSERT(p == r);
-      TS_ASSERT(p != t);
-      TS_ASSERT(p == u);
+      TS_ASSERT_DIFFERS(p, q);
+      TS_ASSERT_EQUALS(p, r);
+      TS_ASSERT_DIFFERS(p, t);
+      TS_ASSERT_EQUALS(p, u);
     }
 
     void testMinMax() {
@@ -284,21 +284,21 @@ namespace gum_tests {
         q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
         q.normalize();
 
-        TS_ASSERT(p != q);
+        TS_ASSERT_DIFFERS(p, q);
 
         gum::Potential< double > r;
         r << c << d;
         r.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-        TS_ASSERT(q != r);
+        TS_ASSERT_DIFFERS(q, r);
         r.normalize();
-        TS_ASSERT(q == r);
+        TS_ASSERT_EQUALS(q, r);
 
         auto joint = p * q;
 
         auto margAB = joint.margSumOut({&c, &d});
-        TS_ASSERT((p == margAB));
+        TS_ASSERT_EQUALS(p, margAB);
         auto margCD = joint.margSumOut({&b, &a});
-        TS_ASSERT((q == margCD));
+        TS_ASSERT_EQUALS(q, margCD);
 
         p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
         TS_ASSERT_EQUALS(p.margProdOut({&a}),
@@ -330,14 +330,14 @@ namespace gum_tests {
 
       auto joint = p * q;
 
-      TS_ASSERT((joint.margSumOut({&c, &d}) == joint.margSumIn({&a, &b})));
-      TS_ASSERT((joint.margSumOut({&c, &d}) == joint.margSumIn({&b, &a})));
+      TS_ASSERT_EQUALS(joint.margSumOut({&c, &d}), joint.margSumIn({&a, &b}));
+      TS_ASSERT_EQUALS(joint.margSumOut({&c, &d}), joint.margSumIn({&b, &a}));
 
-      TS_ASSERT((joint.margProdOut({&c, &d}) == joint.margProdIn({&a, &b})));
+      TS_ASSERT_EQUALS(joint.margProdOut({&c, &d}), joint.margProdIn({&a, &b}));
 
-      TS_ASSERT((joint.margMinOut({&c, &d}) == joint.margMinIn({&a, &b})));
+      TS_ASSERT_EQUALS(joint.margMinOut({&c, &d}), joint.margMinIn({&a, &b}));
 
-      TS_ASSERT((joint.margMaxOut({&c, &d}) == joint.margMaxIn({&a, &b})));
+      TS_ASSERT_EQUALS(joint.margMaxOut({&c, &d}), joint.margMaxIn({&a, &b}));
     }
 
     void testAbsPotential() {
@@ -502,12 +502,12 @@ namespace gum_tests {
       gum::Instantiation I;
       I << c;
       I.chgVal(c, 0);
-      TS_ASSERT(pot.extract(I) == p);
+      TS_ASSERT_EQUALS(pot.extract(I), p);
       I.chgVal(c, 2);
       gum::Potential< double > r;
       r << a << b;
       r.fillWith({3, 6, 9, 12, 15, 18, 21, 24, 27});
-      TS_ASSERT(pot.reorganize({&b, &c, &a}).extract(I) == r);
+      TS_ASSERT_EQUALS(pot.reorganize({&b, &c, &a}).extract(I), r);
     }
 
     void testOperatorEqual() {
@@ -563,7 +563,7 @@ namespace gum_tests {
       p3.fillWith({3, 6, 9});
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0));
-      TS_ASSERT(p == p3);
+      TS_ASSERT_EQUALS(p, p3);
       TS_ASSERT_EQUALS(p, p3);
 
       p.fillWith({1, 2, 3});
@@ -572,7 +572,7 @@ namespace gum_tests {
       p2.fillWith({2, 3, 4});
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.translate(1.0));
-      TS_ASSERT(p == p2);
+      TS_ASSERT_EQUALS(p, p2);
       TS_ASSERT_EQUALS(p, p2);
 
 
@@ -582,7 +582,7 @@ namespace gum_tests {
       p1.fillWith({4, 7, 10});
       p.scale(3.0).translate(1.0);
       // TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
-      TS_ASSERT(p == p1);
+      TS_ASSERT_EQUALS(p, p1);
       TS_ASSERT_EQUALS(p, p1);
     }
 
@@ -847,7 +847,7 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, gum::Size(1));
+      TS_ASSERT_EQUALS(cpt, (gum::Size)1);
       TS_ASSERT_EQUALS(total, 3);
 
       cpt   = 0;
@@ -856,7 +856,7 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, gum::Size(1));
+      TS_ASSERT_EQUALS(cpt, (gum::Size)1);
       TS_ASSERT_EQUALS(total, 3);
     }
 
@@ -968,8 +968,8 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
-      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(p.domainSize(), (gum::Size)6);
+      TS_ASSERT(pp.domainSize() == (gum::Size)6);
 
       p.fillWith({1, 2, 3, 4, 5, 6});
       pp.fillWith(p);
@@ -1019,8 +1019,8 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
-      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(p.domainSize(), (gum::Size)6);
+      TS_ASSERT_EQUALS(pp.domainSize(), (gum::Size)6);
 
       p.fillWith({1, 2, 3, 4, 5, 6});
       TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}));
@@ -1065,16 +1065,16 @@ namespace gum_tests {
         gum::LabelizedVariable v("v", "v", 0);
 
         gum::Potential< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0);
         TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
 
         v.addLabel("first");
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Potential< double >();
         v.addLabel("second");
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
       }
 
@@ -1083,36 +1083,36 @@ namespace gum_tests {
         v.setMinVal(1);
         v.setMaxVal(0);
         gum::Potential< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0);
         TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
 
         v.setMaxVal(1);
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Potential< double >();
         v.setMaxVal(2);
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
       }
 
       {
         gum::DiscretizedVariable< int > v("v", "v");
         gum::Potential< double >        p;
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0);
         TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
 
         v.addTick(1);
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0);
         TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
 
         v.addTick(2);
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Potential< double >();
         v.addTick(3);
-        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2);
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
       }
     }

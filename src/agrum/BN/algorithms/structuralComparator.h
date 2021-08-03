@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * Classifies corresponding arcs, edges and nothing in a graph given a reference
  * graph to then return values of recall, precision and Fscore.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H

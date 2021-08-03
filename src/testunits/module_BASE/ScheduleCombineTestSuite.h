@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -66,14 +66,14 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb1(f1, f2, myadd);
       const gum::ScheduleMultiDim< double >& result1 = comb1.result();
 
-      TS_ASSERT(comb1.nbOperations() == 32);
+      TS_ASSERT_EQUALS(comb1.nbOperations(), 32);
       std::pair< long, long > xxx = comb1.memoryUsage();
-      TS_ASSERT(xxx.first == 32);
+      TS_ASSERT_EQUALS(xxx.first, 32);
 
       std::stringstream s1;
       s1 << result1.toString() << " = combine ( " << f1.toString() << " , " << f2.toString()
          << " )";
-      TS_ASSERT(s1.str() == comb1.toString());
+      TS_ASSERT_EQUALS(s1.str(), comb1.toString());
 
       gum::ScheduleCombine< double >         comb2(result1, f3, myadd);
       const gum::ScheduleMultiDim< double >& result2 = comb2.result();
@@ -87,31 +87,31 @@ namespace gum_tests {
       gum::Potential< double > pot4(pot1 + pot2);
       gum::Potential< double > pot5(pot4 + pot3);
 
-      TS_ASSERT(result1.multiDim() == *pot4.content());
-      TS_ASSERT(result2.multiDim() == *pot5.content());
+      TS_GUM_ASSERT_EQUALS(result1.multiDim(), *pot4.content());
+      TS_GUM_ASSERT_EQUALS(result2.multiDim(), *pot5.content());
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = comb2.multiDimArgs();
       gum::SequenceIteratorSafe< const gum::ScheduleMultiDim< double >* > iter = seq.begin();
-      TS_ASSERT(**iter == result1);
+      TS_GUM_ASSERT_EQUALS(**iter, result1);
       ++iter;
-      TS_ASSERT(**iter == f3);
+      TS_GUM_ASSERT_EQUALS(**iter, f3);
 
       gum::ScheduleCombine< double > comb3(comb2);
-      TS_ASSERT(comb3 == comb2);
-      TS_ASSERT(comb3 != comb1);
+      TS_GUM_ASSERT_EQUALS(comb3, comb2);
+      TS_ASSERT_DIFFERS(comb3, comb1);
 
       comb3 = comb1;
-      TS_ASSERT(comb3 == comb1);
-      TS_ASSERT(comb3 != comb2);
+      TS_GUM_ASSERT_EQUALS(comb3, comb1);
+      TS_ASSERT_DIFFERS(comb3, comb2);
 
       delete &(comb2.result().multiDim());
 
       comb3.execute();
-      TS_ASSERT(comb3.result().multiDim() == *pot4.content());
+      TS_GUM_ASSERT_EQUALS(comb3.result().multiDim(), *pot4.content());
       delete &(comb3.result().multiDim());
 
       gum::ScheduleCombine< double >* comb4 = comb3.newFactory();
-      TS_ASSERT(*comb4 == comb3);
+      TS_GUM_ASSERT_EQUALS(*comb4, comb3);
       delete comb4;
 
       for (unsigned int i = 0; i < vars.size(); ++i)

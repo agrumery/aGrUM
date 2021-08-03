@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -59,24 +59,24 @@ namespace gum_tests {
 
       std::stringstream s;
       s << var1;
-      TS_ASSERT_EQUALS(s.str(), "var1<4,3,2,1>");
+      TS_ASSERT_EQUALS(s.str(), "var1:Labelized(<4,3,2,1>)");
 
-      TS_ASSERT_EQUALS(var1.toString(), "var1<4,3,2,1>");
+      TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized(<4,3,2,1>)");
     }
 
     void testChangeLabel() {
       gum::LabelizedVariable var1("var1", "this is var1", 0);
       var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
 
-      TS_ASSERT_EQUALS(var1.toString(), "var1<4,3,2,1>");
+      TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized(<4,3,2,1>)");
 
       var1.changeLabel(1, "x");
-      TS_ASSERT_EQUALS(var1.toString(), "var1<4,x,2,1>");
+      TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized(<4,x,2,1>)");
 
       const gum::LabelizedVariable& var2 = var1;
-      TS_ASSERT_EQUALS(var2.toString(), "var1<4,x,2,1>");
+      TS_ASSERT_EQUALS(var2.toString(), "var1:Labelized(<4,x,2,1>)");
       var2.changeLabel(1, "y");
-      TS_ASSERT_EQUALS(var2.toString(), "var1<4,y,2,1>");
+      TS_ASSERT_EQUALS(var2.toString(), "var1:Labelized(<4,y,2,1>)");
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
@@ -97,7 +97,7 @@ namespace gum_tests {
 
     void testAndConstructorWithLabels() {
       gum::LabelizedVariable var1("var1", "this is var1", {"rouge", "vert", "bleu"});
-      TS_ASSERT_EQUALS(var1.toString(), "var1<rouge,vert,bleu>");
+      TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized(<rouge,vert,bleu>)");
       TS_ASSERT_EQUALS(var1.posLabel("vert"), gum::Idx(1));
     }
   };

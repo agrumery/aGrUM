@@ -1,7 +1,7 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * (@AMU) info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * (_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -88,9 +88,9 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
-      TS_ASSERT(*bn == net);
+      TS_ASSERT_EQUALS(*bn, net);
     }
 
     private:

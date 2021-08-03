@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  * computer's random access memory (RAM) its content as a vector of DBRows
  * of DBTranslatedValue instances.
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_DATABASE_TABLE_H
 #define GUM_DATABASE_TABLE_H
@@ -36,6 +36,7 @@
 #include <functional>
 #include <exception>
 #include <vector>
+#include <memory>
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
@@ -46,7 +47,6 @@
 #include <agrum/tools/database/DBTranslatedValue.h>
 #include <agrum/tools/database/IDatabaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 
 namespace gum {
 
@@ -375,9 +375,9 @@ namespace gum {
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised.
        */
-      void changeTranslator(const DBTranslator< ALLOC >& new_translator,
-                            const std::size_t            k,
-                            const bool                   k_is_input_col = false);
+      void changeTranslator(DBTranslator< ALLOC >& new_translator,
+                            const std::size_t      k,
+                            const bool             k_is_input_col = false);
 
       /// change the translator of a database column
       /**
@@ -387,12 +387,29 @@ namespace gum {
        * default) or the first column in the DatabaseTable which corresponds to the kth
        * column of the input CSV (if k_is_input_col = true)
        * @param k_is_input_col see Parameter k
+       * @param missing_symbols if set, this corresponds to the set of missing symbols
+       * used by the translator, otherwise (or if it is empty, this is the set of missing
+       * symbols of the translator currently translating the kth column
+       * @param editable_dictionary For those translators that can
+       * enable/disable the update of their dictionary during the reading of
+       * databases (e.g., DBTranslator4LabelizedVariable), this indicates whether
+       * we allow or not such updates. For DBTranslator4ContinuousVariable, this
+       * corresponds to the fit_range constructor's parameter.
+       * @param max_dico_entries For translators that store explicitly their
+       * dictionary in memory, this parameter specifies the max number of entries
+       * in this dictionary
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised.
        */
+      template < template < typename > class XALLOC = ALLOC >
       void changeTranslator(const Variable&   var,
                             const std::size_t k,
-                            const bool        k_is_input_col = false);
+                            const bool        k_is_input_col = false,
+                            const std::vector< std::string, XALLOC< std::string > >& missing_symbols
+                            = std::vector< std::string, XALLOC< std::string > >(),
+                            const bool        editable_dictionary = false,
+                            const std::size_t max_dico_entries
+                            = std::numeric_limits< std::size_t >::max());
 
       /// returns the set of translators
       const DBTranslatorSet< ALLOC >& translatorSet() const;
@@ -412,6 +429,15 @@ namespace gum {
        * corresponding to k. */
       const DBTranslator< ALLOC >& translator(const std::size_t k,
                                               const bool        k_is_input_col = false) const;
+
+      /// propose a set with translators better suited for the content of the database
+      /**
+       * @return A vector indicating for each column of the database in which a
+       * better translator than the current one can be used, this better
+       * translator.
+       */
+      std::vector< std::pair< Idx, std::shared_ptr< DBTranslator< ALLOC > > > >
+         betterTranslators() const;
 
       /** @brief returns either the kth variable of the database table or the
        * first one corresponding to the kth column of the input database

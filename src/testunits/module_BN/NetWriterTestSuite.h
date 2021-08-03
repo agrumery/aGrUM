@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -101,12 +101,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       reader.showElegantErrors();
 
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT(!net->empty());

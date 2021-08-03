@@ -1,11 +1,11 @@
-#ifndef GUM_TEST_MYALLOC_H
-#define GUM_TEST_MYALLOC_H
+#ifndef GUM_TEST_COUNTEDALLOC_H
+#define GUM_TEST_COUNTEDALLOC_H
 
 #include <vector>
 
 namespace gum_tests {
 
-  struct MyAllocCount {
+  struct CountedAlloc {
     static std::size_t allocs;
     static std::size_t deallocs;
 
@@ -13,40 +13,40 @@ namespace gum_tests {
 
     static std::size_t nbDeallocations() noexcept { return deallocs; }
 
-    static bool hasMeroryLeak() noexcept {
-      return allocs != MyAllocCount::deallocs;
+    static bool hasMemoryLeak() noexcept {
+      return allocs != CountedAlloc::deallocs;
     }
   };
 
-  std::size_t MyAllocCount::allocs{0};
-  std::size_t MyAllocCount::deallocs{0};
+  std::size_t CountedAlloc::allocs{0};
+  std::size_t CountedAlloc::deallocs{0};
 
   template <typename T>
-  class MyAlloc : public MyAllocCount {
+  class DebugCountedAlloc : public CountedAlloc {
     public:
     using value_type = T;
 
     template <typename _Tp1>
     struct rebind {
-      typedef MyAlloc<_Tp1> other;
+      typedef DebugCountedAlloc<_Tp1> other;
     };
 
-    MyAlloc() noexcept {}
+    DebugCountedAlloc() noexcept {}
 
     template <typename U>
-    MyAlloc( const MyAlloc<U>& ) noexcept {}
+    DebugCountedAlloc( const DebugCountedAlloc<U>& ) noexcept {}
 
-    bool operator== ( const MyAlloc<T>& ) const { return true; }
+    bool operator== ( const DebugCountedAlloc<T>& ) const { return true; }
 
-    bool operator!= ( const MyAlloc<T>& ) const { return false; }
+    bool operator!= ( const DebugCountedAlloc<T>& ) const { return false; }
 
     T* allocate( std::size_t num ) {
-      MyAllocCount::allocs += num;
+      CountedAlloc::allocs += num;
       return static_cast<T*>(::operator new( num * sizeof( T ) ) );
     }
 
     void deallocate( T* p, std::size_t num ) {
-      MyAllocCount::deallocs += num;
+      CountedAlloc::deallocs += num;
       ::operator delete( p );
     }
 
@@ -60,4 +60,4 @@ namespace gum_tests {
 
 } /* namespace gum_tests */
 
-#endif /* GUM_TEST_MYALLOC_H */
+#endif /* GUM_TEST_COUNTEDALLOC_H */

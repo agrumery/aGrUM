@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief Base class for integer discrete random variables
  *
- * @author Christophe GONZALES(@AMU) & Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_INTEGER_DISCRETE_VARIABLE_H
 #define GUM_INTEGER_DISCRETE_VARIABLE_H
@@ -37,7 +37,7 @@
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
-  
+
   /** class IntegerVariable
    * @brief The class representing discrete integer random variables
    * @ingroup multidim_group
@@ -55,15 +55,14 @@ namespace gum {
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      */
-    IntegerVariable(const std::string& aName,
-                    const std::string& aDesc = "");
+    IntegerVariable(const std::string& aName, const std::string& aDesc = "");
 
     /** @brief constructor assigning a domain to the variable
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      * @param domain the domain (set of values) of the variable
      */
-    IntegerVariable(const std::string&          aName,
+    IntegerVariable(const std::string&        aName,
                     const std::string&        aDesc,
                     const std::vector< int >& domain);
 
@@ -132,6 +131,9 @@ namespace gum {
 
     /// Returns the domain as a string
     virtual const std::string domain() const;
+
+    /// string represent the type of the variable
+    virtual const std::string stype() const { return "Integer"; };
 
     /// returns the domain as a sequence of values
     const Sequence< int >& integerDomain() const;

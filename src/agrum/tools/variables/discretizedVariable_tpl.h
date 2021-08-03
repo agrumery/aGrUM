@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -156,9 +156,9 @@ namespace gum {
         _ticks_[0] = aTick;
       }
     } else {
-      if (aTick>_ticks_[_ticks_size_-1]) // new upper bound
+      if (aTick > _ticks_[_ticks_size_ - 1])   // new upper bound
         _ticks_[_ticks_size_] = aTick;
-      else if (aTick<_ticks_[0]){   // new lower bound
+      else if (aTick < _ticks_[0]) {   // new lower bound
         for (Idx i = _ticks_size_; i >= 1; --i) {
           _ticks_[i] = _ticks_[i - 1];
         }

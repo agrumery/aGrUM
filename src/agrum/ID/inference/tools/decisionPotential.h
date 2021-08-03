@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @brief This file contains abstract class definitions influence diagrams
  *        inference classes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Christophe Gonzalez(@
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe Gonzalez(@
  */
 #ifndef AGRUM_DECISIONPOTENTIAL_H
 #define AGRUM_DECISIONPOTENTIAL_H

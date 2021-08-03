@@ -1,7 +1,7 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe
- * GONZALES(@AMU) info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe
+ * GONZALES(_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@
  * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
  * from 3off2, with a diffferent ranking method and different propagation rules.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(@LIP6) and Maria Virginia
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
  * RUIZ CUEVAS
  */
 #ifndef GUM_LEARNING_3_OFF_2_H

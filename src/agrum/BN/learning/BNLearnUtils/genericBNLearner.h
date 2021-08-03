@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
  * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
  * LocalSearchWithTabuList
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_GENERIC_BN_LEARNER_H
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
@@ -155,13 +155,22 @@ namespace gum {
         /// default constructor
         /** @param file the name of the CSV file containing the data
          * @param missing_symbols the set of symbols in the CSV file that
-         * correspond to missing data */
+         * correspond to missing data
+         * @param induceTypes By default, all the values in the dataset are
+         * interpreted as "labels", i.e., as categorical values. But if some
+         * columns of the dataset have only numerical values, it would certainly
+         * be better totag them as corresponding to integer, range or continuous
+         * variables. By setting induceTypes to true, this is precisely what the
+         * BNLearner will do.
+         */
         explicit Database(const std::string&                file,
-                          const std::vector< std::string >& missing_symbols);
+                          const std::vector< std::string >& missing_symbols,
+                          const bool                        induceTypes = false);
 
         /// default constructor
         /** @param db an already initialized database table that is used to
-         * fill the Database */
+         * fill the Database
+         */
         explicit Database(const DatabaseTable<>& db);
 
         /// constructor for the aprioris
@@ -310,34 +319,41 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// default constructor
       /**
        * read the database file for the score / parameter estimation and var
        * names
+       * @param filename the name of a CSV file containing the dataset
+       * @param missing_symbols the set of symbols in the CSV that should
+       * be interpreted as missing values
+       * @param induceTypes when some  columns of the dataset have only numerical
+       * values, it is certainly be better to tag them as corresponding to integer,
+       * range or continuous variables. By setting induceTypes to true (default), this is
+       * precisely what the BNLearner will do. If inducedTypes is false, all the values in
+       * the dataset are interpreted as "labels", i.e., as categorical values.
        */
       genericBNLearner(const std::string&                filename,
-                       const std::vector< std::string >& missing_symbols);
+                       const std::vector< std::string >& missingSymbols,
+                       bool                              induceTypes = true);
+
       genericBNLearner(const DatabaseTable<>& db);
 
       /**
        * read the database file for the score / parameter estimation and var
        * names
        * @param filename The file to learn from.
-       * @param modalities indicate for some nodes (not necessarily all the
+       * @param src indicate for some nodes (not necessarily all the
        * nodes of the BN) which modalities they should have and in which order
        * these modalities should be stored into the nodes. For instance, if
        * modalities = { 1 -> {True, False, Big} }, then the node of id 1 in the
        * BN will have 3 modalities, the first one being True, the second one
        * being False, and the third bein Big.
-       * @param parse_database if true, the modalities specified by the user
-       * will be considered as a superset of the modalities of the variables. A
-       * parsing of the database will allow to determine which ones are really
-       * necessary and will keep them in the order specified by the user
-       * (NodeProperty modalities). If parse_database is set to false (the
-       * default), then the modalities specified by the user will be considered
+       * The modalities specified by the user will be considered
        * as being exactly those of the variables of the BN (as a consequence,
        * if we find other values in the database, an exception will be raised
-       * during learning). */
+       * during learning).
+       * @param missing_symbols the set of symbols in the CSV that should
+       * be interpreted as missing values
+       */
       template < typename GUM_SCALAR >
       genericBNLearner(const std::string&                 filename,
                        const gum::BayesNet< GUM_SCALAR >& src,
@@ -750,6 +766,9 @@ namespace gum {
       ///@}
 
       protected:
+      /// the policy for typing variables
+      bool inducedTypes_;
+
       /// the score selected for learning
       ScoreType scoreType_{ScoreType::BDeu};
 

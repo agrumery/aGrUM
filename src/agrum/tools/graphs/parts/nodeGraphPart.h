@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief Base node set class for graphs
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #ifndef GUM_NODE_GRAPH_PART_H
 #define GUM_NODE_GRAPH_PART_H
@@ -209,7 +209,7 @@ namespace gum {
    * The set of NodeId is 0 ... ( _bound_-1) minus the NodeIds in
    *  _holes_.
    *
-   * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+   * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
    *
    *
    * @par Usage example:

@@ -22,8 +22,8 @@
 #include <gumtest/testsuite_utils.h>
 #include <iostream>
 #include <vector>
-#include <ressources/include/mygenerator.h>
-#include <ressources/include/mygenerator2.h>
+#include <ressources/include/simpleDebugGenerator.h>
+#include <ressources/include/evenDebugGenerator.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
@@ -100,8 +100,8 @@ namespace gum_tests {
                     gum::learning::DBTranslatedValueType::CONTINUOUS,
                     gum::learning::DBTranslatedValueType::DISCRETE };
 
-      gum::learning::MyGenerator<>  generator1 ( col_types, 6 );
-      gum::learning::MyGenerator2<> generator2 ( col_types, 4 );
+      gum::learning::SimpleDebugGenerator<>  generator1 ( col_types, 6 );
+      gum::learning::EvenDebugGenerator<> generator2 ( col_types, 4 );
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator ( generator1 );
       genset.insertGenerator ( generator2 );
@@ -281,7 +281,7 @@ namespace gum_tests {
       }
       TS_ASSERT ( nb_rows == std::size_t( 4 ) );
       const auto& tgenset = parser8.generatorSet ();
-      TS_ASSERT( tgenset.size() == std::size_t(0) );
+      TS_ASSERT_EQUALS( tgenset.size() , std::size_t(0) );
 
       gum::learning::DBRowGeneratorParser<> parser9 ( parser8 ); 
       parser9.reset ();
@@ -295,7 +295,7 @@ namespace gum_tests {
         ++nb_rows;
       }
       TS_ASSERT ( nb_rows == std::size_t( 4 ) );
-      TS_ASSERT( parser9.generatorSet().size() == std::size_t(0) );
+      TS_ASSERT_EQUALS( parser9.generatorSet().size() , std::size_t(0) );
 
       parser8 = parser2;
       parser8.reset ();
@@ -328,7 +328,7 @@ namespace gum_tests {
         ++nb_rows;
       }
       TS_ASSERT ( nb_rows == std::size_t( 4 ) );
-      TS_ASSERT( parser2.generatorSet().size() == std::size_t(0) );
+      TS_ASSERT_EQUALS( parser2.generatorSet().size() , std::size_t(0) );
 
     }
 

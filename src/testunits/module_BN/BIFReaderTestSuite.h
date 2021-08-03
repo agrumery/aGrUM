@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -63,13 +63,13 @@ namespace gum_tests {
       gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)2);
       // 2 warnings : properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT(net != 0);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
-      if (net != 0) {
+      if (net != nullptr) {
         TS_ASSERT(net->empty());
         delete net;
       }
@@ -81,14 +81,14 @@ namespace gum_tests {
 
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)2);
       // 2 warnings
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
@@ -136,13 +136,13 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)2);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
@@ -204,14 +204,14 @@ namespace gum_tests {
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)3);
       // 3 warnings
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -367,11 +367,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT(proba_4[inst_4] == 1);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 1);
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT(proba_4[inst_4] == 0);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 0);
 
         const gum::DiscreteVariable& var_5 = net->variable(idMap["n5"]);
 
@@ -457,7 +457,7 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT(proba_5[inst_5] == 0);
+        TS_ASSERT_EQUALS(proba_5[inst_5], 0);
 
         const gum::DiscreteVariable& var_6 = net->variable(idMap["n6"]);
 
@@ -529,15 +529,15 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT(proba_6[inst_6] == 1);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 1);
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT(proba_6[inst_6] == 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT(proba_6[inst_6] == 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
 
         delete net;
       }
@@ -550,11 +550,11 @@ namespace gum_tests {
 
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
 
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
@@ -761,10 +761,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr > gum::Size(0));
+      TS_ASSERT(nbrErr > (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)96);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)107);
 
@@ -776,10 +776,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)361);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -791,10 +791,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)826);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -806,10 +806,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -821,14 +821,14 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
-      if (net) delete net;
+      if (net != nullptr) delete net;
     }
 
     void testLink() {
@@ -836,10 +836,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)724);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -851,10 +851,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)70);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -866,10 +866,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)372);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -881,10 +881,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)441);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 
@@ -913,10 +913,10 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
-      gum::Size nbrErr = gum::Size(0);
+      gum::Size nbrErr = (gum::Size)0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == gum::Size(0));
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)64);
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
 

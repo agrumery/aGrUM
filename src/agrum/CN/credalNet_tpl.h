@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -486,10 +486,11 @@ namespace gum {
 
             if (std::fabs(1. - sum) > _epsRedund_) {
               GUM_ERROR(CPTError,
-                        _src_bn_.variable(node).name() << "(" << _epsRedund_ << ")  does not sum to one for"
-                                                       << " " << entry << std::endl
-                                                       << vertex << std::endl
-                                                       << ins << std::endl);
+                        _src_bn_.variable(node).name()
+                           << "(" << _epsRedund_ << ")  does not sum to one for"
+                           << " " << entry << std::endl
+                           << vertex << std::endl
+                           << ins << std::endl);
             }
           }
 
@@ -723,8 +724,9 @@ namespace gum {
 
             if (std::fabs(total - 1.) > 1e-6)
               GUM_ERROR(CPTError,
-                        _src_bn_.variable(node).name() << "  does not sum to one for " << entry << std::endl
-                                                       << vertex << std::endl);
+                        _src_bn_.variable(node).name()
+                           << "  does not sum to one for " << entry << std::endl
+                           << vertex << std::endl);
 
             vertices.push_back(vertex);
           }
@@ -744,8 +746,9 @@ namespace gum {
 
             if (std::fabs(total - 1.) > 1e-6)
               GUM_ERROR(CPTError,
-                        _src_bn_.variable(node).name() << "  does not sum to one for " << entry << std::endl
-                                                       << vertex << std::endl);
+                        _src_bn_.variable(node).name()
+                           << "  does not sum to one for " << entry << std::endl
+                           << vertex << std::endl);
 
             vertices.push_back(vertex);
           }

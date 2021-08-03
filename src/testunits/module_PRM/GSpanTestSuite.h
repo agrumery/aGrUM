@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ namespace gum_tests {
     void testInit() {
       gum::prm::o3prm::O3prmReader< double > driver;
       driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
-      TS_ASSERT(driver.prm() != nullptr);
+      TS_ASSERT_DIFFERS(driver.prm(), nullptr);
 
       if (driver.prm() != nullptr) delete driver.prm();
     }
@@ -79,7 +79,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
          gspan
          = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
-      TS_ASSERT(gspan != nullptr);
+      TS_ASSERT_DIFFERS(gspan, nullptr);
 
       if (gspan != nullptr) {
         TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());

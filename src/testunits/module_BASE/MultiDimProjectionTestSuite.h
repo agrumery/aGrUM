@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -923,13 +923,13 @@ namespace gum_tests {
       {
         auto t2 = t1.margMaxOut(del_vars);
         auto t3 = Proj.project(t1, del_vars);
-        TS_ASSERT(t2 == *t3);
+        TS_ASSERT_EQUALS(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.margMaxOut(proj_set);
         auto t3 = Proj.project(t1, proj_set);
-        TS_ASSERT(t2 == *t3);
+        TS_ASSERT_EQUALS(t2, *t3);
         delete (t3);
       }
 
@@ -939,11 +939,11 @@ namespace gum_tests {
       gum::Potential< double >* t5 = Proj.project(t1, proj_set);
       delete t5;
 
-      TS_ASSERT(Proj.nbOperations(t1, proj_set) == 59049);
-      TS_ASSERT(Proj.nbOperations(t1.variablesSequence(), proj_set) == 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT(yyy.first == 2187);
+      TS_ASSERT_EQUALS(yyy.first, 2187);
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -988,13 +988,13 @@ namespace gum_tests {
       {
         auto t2 = t1.margSumOut(del_vars);
         auto t3 = Proj.project(t1, del_vars);
-        TS_ASSERT(t2 == *t3);
+        TS_ASSERT_EQUALS(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.margSumOut(proj_set);
         auto t3 = Proj.project(t1, proj_set);
-        TS_ASSERT(t2 == *t3);
+        TS_ASSERT_EQUALS(t2, *t3);
         delete (t3);
       }
 
@@ -1004,18 +1004,18 @@ namespace gum_tests {
       gum::Potential< double >* t5 = Proj.project(t1, proj_set);
       {
         auto t2 = t1.margSumOut(proj_set);
-        TS_ASSERT(t2 == *t5);
+        TS_ASSERT_EQUALS(t2, *t5);
 
         gum::Instantiation I5(*t5);
-        TS_ASSERT(1.0 == (*t5)[I5]);
+        TS_ASSERT_EQUALS(1.0, (*t5)[I5]);
       }
       delete t5;
 
-      TS_ASSERT(Proj.nbOperations(t1, proj_set) == 59049);
-      TS_ASSERT(Proj.nbOperations(t1.variablesSequence(), proj_set) == 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT(yyy.first == 2187);
+      TS_ASSERT_EQUALS(yyy.first, 2187);
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

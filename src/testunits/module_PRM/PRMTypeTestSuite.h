@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -178,14 +178,14 @@ namespace gum_tests {
       PRMType b{*_boolean_};
       PRMType c{*_state_};
       // Act & Assert
-      TS_ASSERT(a == a);
-      TS_ASSERT(a == b);
-      TS_ASSERT(b == a);
+      TS_ASSERT_EQUALS(a, a);
+      TS_ASSERT_EQUALS(a, b);
+      TS_ASSERT_EQUALS(b, a);
 
-      TS_ASSERT(!(c == a));
-      TS_ASSERT(!(a == c));
-      TS_ASSERT(!(c == b));
-      TS_ASSERT(!(b == c));
+      TS_ASSERT_DIFFERS(c, a);
+      TS_ASSERT_DIFFERS(a, c);
+      TS_ASSERT_DIFFERS(c, b);
+      TS_ASSERT_DIFFERS(b, c);
     }
 
     void testInequalityOperator() {
@@ -195,14 +195,14 @@ namespace gum_tests {
       PRMType c{*_state_};
 
       // Act & Assert
-      TS_ASSERT(!(a != a));
-      TS_ASSERT(!(a != b));
-      TS_ASSERT(!(b != a));
+      TS_ASSERT_EQUALS(a, a);
+      TS_ASSERT_EQUALS(a, b);
+      TS_ASSERT_EQUALS(b, a);
 
-      TS_ASSERT(c != a);
-      TS_ASSERT(a != c);
-      TS_ASSERT(c != b);
-      TS_ASSERT(b != c);
+      TS_ASSERT_DIFFERS(c, a);
+      TS_ASSERT_DIFFERS(a, c);
+      TS_ASSERT_DIFFERS(c, b);
+      TS_ASSERT_DIFFERS(b, c);
     }
 
     void testObjType() {

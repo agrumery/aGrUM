@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -76,7 +76,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT(comb.nbOperations(set, schedule) == 120);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 120);
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -102,7 +102,7 @@ namespace gum_tests {
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
-      TS_ASSERT(result14.multiDim() == result.multiDim());
+      TS_GUM_ASSERT_EQUALS(result14.multiDim(), result.multiDim());
 
       gum::ScheduleDeleteMultiDim< double > del4(result);
       gum::ScheduleDeleteMultiDim< double > del11(result11);
@@ -151,7 +151,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT(comb.nbOperations(set, schedule) == 112);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112);
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -168,7 +168,7 @@ namespace gum_tests {
          schedule_comb_myadd);
       gum::MultiDimImplementation< double >* res11 = comb11.combine(set);
 
-      TS_ASSERT(*res11 == result.multiDim());
+      TS_GUM_ASSERT_EQUALS(*res11, result.multiDim());
 
       gum::ScheduleDeleteMultiDim< double > del4(result);
       del4.execute();
@@ -210,7 +210,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT(comb.nbOperations(set, schedule) == 112);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112);
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -229,7 +229,7 @@ namespace gum_tests {
       set2 << pot1.content() << pot2.content() << pot3.content() << pot4.content();
       gum::MultiDimImplementation< double >* res11 = comb11.combine(set2);
 
-      TS_ASSERT(*res11 == result.multiDim());
+      TS_GUM_ASSERT_EQUALS(*res11, result.multiDim());
 
       gum::ScheduleDeleteMultiDim< double > del4(result);
       del4.execute();
@@ -266,13 +266,13 @@ namespace gum_tests {
 
       gum::Schedule< double > schedule;
 
-      TS_ASSERT(comb.nbOperations(set, schedule) == 16640);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 16640);
       std::pair< long, long > yyy = comb.memoryUsage(set, schedule);
-      TS_ASSERT(yyy.first == 16640);
-      TS_ASSERT(yyy.second == 16384);
+      TS_ASSERT_EQUALS(yyy.first, 16640);
+      TS_ASSERT_EQUALS(yyy.second, 16384);
       std::pair< long, long > zzz = comb.memoryUsage(set2, schedule);
-      TS_ASSERT(zzz.first == 16640);
-      TS_ASSERT(zzz.second == 16384);
+      TS_ASSERT_EQUALS(zzz.first, 16640);
+      TS_ASSERT_EQUALS(zzz.second, 16384);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

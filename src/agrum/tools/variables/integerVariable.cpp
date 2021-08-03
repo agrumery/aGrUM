@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ namespace gum {
 
     // store the sorted values into a sequence
     _domain_.resize(dom.size());
-    for (const int val : dom) {
+    for (const int val: dom) {
       _domain_ << val;
     }
 
@@ -50,11 +50,9 @@ namespace gum {
   /// equality operator
   bool IntegerVariable::operator==(const Variable& var) const {
     try {
-      const IntegerVariable& xvar = dynamic_cast<const IntegerVariable&>(var);
-      return Variable::operator==(var) && (xvar._domain_ == _domain_);
-    } catch (std::bad_cast&) {
-      return false;
-    }
+      const IntegerVariable& xvar = dynamic_cast< const IntegerVariable& >(var);
+      return Variable::      operator==(var) && (xvar._domain_ == _domain_);
+    } catch (std::bad_cast&) { return false; }
   }
 
 

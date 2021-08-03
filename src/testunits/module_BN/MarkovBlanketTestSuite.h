@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -111,9 +111,9 @@ namespace gum_tests {
       const auto bn
          = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
       TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), gum::InvalidArgument);
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), gum::Size(5));
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), gum::Size(11));
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), gum::Size(13));
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), (gum::Size)11);
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), (gum::Size)13);
     }
   };
 

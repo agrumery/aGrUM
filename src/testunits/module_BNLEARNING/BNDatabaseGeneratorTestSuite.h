@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -489,17 +489,17 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
-      TS_ASSERT_EQUALS(gener.getNbr(), gum::Size(0));
+      TS_ASSERT_EQUALS(gener.getNbr(), (gum::Size)0);
       TS_ASSERT_EQUALS(gener.getMess(), "");
       dbgen.drawSamples(100);
-      TS_ASSERT_EQUALS(gener.getNbr(), gum::Size(4950));
+      TS_ASSERT_EQUALS(gener.getNbr(), (gum::Size)4950);
       TS_ASSERT_DIFFERS(gener.getMess(), "");
 
       ASimpleDBGeneratorListener gener2(dbgen);
-      TS_ASSERT_EQUALS(gener2.getNbr(), gum::Size(0));
+      TS_ASSERT_EQUALS(gener2.getNbr(), (gum::Size)0);
       TS_ASSERT_EQUALS(gener2.getMess(), "");
       dbgen.drawSamples(1000);
-      TS_ASSERT_EQUALS(gener2.getNbr(), gum::Size(4950));
+      TS_ASSERT_EQUALS(gener2.getNbr(), (gum::Size)4950);
       TS_ASSERT_DIFFERS(gener2.getMess(), "");
     }
   };

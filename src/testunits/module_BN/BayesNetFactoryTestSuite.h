@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -319,6 +319,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
       TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous), gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("7"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("3"));
     }
 
     void testDefiningWithCPT() {
@@ -367,9 +371,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("0"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
 
       // Defining CPT

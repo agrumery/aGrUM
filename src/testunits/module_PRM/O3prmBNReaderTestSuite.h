@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -156,7 +156,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(res, (gum::Size)0);
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
         for (auto n: bn.nodes()) {
-          TS_ASSERT(bn.variable(n).name().find(".") == std::string::npos);
+          TS_ASSERT_EQUALS(bn.variable(n).name().find("."), std::string::npos);
         }
       }
       {
@@ -170,7 +170,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(res, (gum::Size)0);
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
         for (auto n: bn.nodes()) {
-          TS_ASSERT(bn.variable(n).name().find(".") != std::string::npos);
+          TS_ASSERT_DIFFERS(bn.variable(n).name().find("."), std::string::npos);
         }
       }
     }

@@ -137,13 +137,13 @@ class TestDiscretizedVariable(VariablesTestCase):
     self.assertEqual(var.domainSize(), 2)
 
     self.assertRaises(gum.DefaultInLabel, var.addTick, 2)
-    self.assertEqual(str(var), "var<[0.2;2[,[2;3]>")
+    self.assertEqual(str(var), "var:Discretized(<[0.2;2[,[2;3]>)")
 
   def testNormalLimits(self):
     var = gum.DiscretizedVariable("var", "test var")
 
     var.addTick(2.1).addTick(2.5).addTick(2.3).addTick(2.7)
-    self.assertEqual(str(var), "var<[2.1;2.3[,[2.3;2.5[,[2.5;2.7]>")
+    self.assertEqual(str(var), "var:Discretized(<[2.1;2.3[,[2.3;2.5[,[2.5;2.7]>)")
 
     with self.assertRaises(gum.OutOfBounds):
       x = var.index("0")
@@ -163,7 +163,7 @@ class TestDiscretizedVariable(VariablesTestCase):
       var = gum.DiscretizedVariable("var", "test var")
       var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
       self.assertEqual(var.domainSize(), 5)
-      self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
+      self.assertEqual(str(var), "var:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
 
     for i in range(1, 7):
       for j in range(1, 7):

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Utilities for manipulating strings.
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  *
  */
 #ifndef GUM_UTILS_STRING_H
@@ -84,7 +84,7 @@ namespace gum {
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-   bool isInteger(const std::string& val);
+  bool isInteger(const std::string& val);
 
   /// @}
 } /* namespace gum */

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Class used to compute response times for benchmark purposes.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Jean-Philippe Dubus
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Jean-Philippe Dubus
  */
 #ifndef GUM_TIMER_H
 #define GUM_TIMER_H

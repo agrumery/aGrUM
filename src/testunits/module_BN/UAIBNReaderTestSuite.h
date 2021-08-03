@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       gum::UAIBNReader< double > reader(net, file);
       reader.proceed();
@@ -72,9 +72,9 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT(!net->empty());
@@ -122,9 +122,9 @@ namespace gum_tests {
 
       gum::Size nbErr = false;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
 
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)5);
@@ -144,8 +144,8 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
-      TS_ASSERT(net != nullptr);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -301,11 +301,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT(proba_4[inst_4] == 1);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 1);
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT(proba_4[inst_4] == 0);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 0);
 
         const gum::DiscreteVariable& var_5 = net->variable(idMap["1"]);
 
@@ -391,7 +391,7 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT(proba_5[inst_5] == 0);
+        TS_ASSERT_EQUALS(proba_5[inst_5], 0);
 
         const gum::DiscreteVariable& var_6 = net->variable(idMap["5"]);
 
@@ -463,15 +463,15 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT(proba_6[inst_6] == 1);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 1);
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT(proba_6[inst_6] == 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT(proba_6[inst_6] == 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
 
         delete net;
       }
@@ -484,7 +484,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
     }
     void testAsiaRead() {
       std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
@@ -493,7 +493,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
     }
   };
 }   // namespace gum_tests

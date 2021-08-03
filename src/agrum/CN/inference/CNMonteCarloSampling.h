@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal
  * networks.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #ifndef __CN_MC_SAMPLING__H__
@@ -48,7 +48,7 @@ namespace gum {
      * @tparam BNInferenceEngine A IBayesNet inference engine such as
      *LazyPropagation
      *( recommanded ).
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(@LIP6)
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      *
      * @warning p(e) must be available ( by a call to
      *my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if

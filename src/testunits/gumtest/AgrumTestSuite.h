@@ -46,4 +46,7 @@
 #define TS_GUM_SMALL_ERROR      (1e-5)
 #define TS_GUM_VERY_SMALL_ERROR (1e-10)
 
+// ASSERT_{EQUALS|DIFFERS} without copy
+#define TS_GUM_ASSERT_EQUALS(x, y)  TS_ASSERT((x) == (y))
+#define TS_GUM_ASSERT_DIFFERS(x, y) TS_ASSERT((x) != (y))
 #endif   // AGRUM_TEST_SUITE_H

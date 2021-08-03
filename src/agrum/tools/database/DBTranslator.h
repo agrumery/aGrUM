@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  * This file contains the basis for interacting with a tabular database as
  * a translator. Every translator should derive from this class.
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_H
 #define GUM_LEARNING_DB_TRANSLATOR_H
@@ -284,9 +284,10 @@ namespace gum {
       virtual void setEditableDictionaryMode(bool new_mode);
 
       /// returns the translation from database indices to input strings
-      virtual const Bijection< std::size_t, std::string,
+      virtual const Bijection< std::size_t,
+                               std::string,
                                ALLOC< std::pair< std::size_t, std::string > > >&
-         getDictionary () const;
+         getDictionary() const;
 
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted

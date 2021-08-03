@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief Base class for Integer discrete random variables
  *
- * @author Christophe GONZALES(@AMU) & Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <ostream>
 #include <sstream>
@@ -42,8 +42,7 @@
 namespace gum {
 
   /// Default constructor
-  INLINE IntegerVariable::IntegerVariable(const std::string& aName,
-                                          const std::string& aDesc) :
+  INLINE IntegerVariable::IntegerVariable(const std::string& aName, const std::string& aDesc) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IntegerVariable);
@@ -68,15 +67,11 @@ namespace gum {
 
 
   /// virtual copy constructor
-  INLINE IntegerVariable* IntegerVariable::clone() const {
-    return new IntegerVariable(*this);
-  }
+  INLINE IntegerVariable* IntegerVariable::clone() const { return new IntegerVariable(*this); }
 
 
   /// destructor
-  INLINE IntegerVariable::~IntegerVariable() {
-    GUM_DESTRUCTOR(IntegerVariable);
-  }
+  INLINE IntegerVariable::~IntegerVariable() { GUM_DESTRUCTOR(IntegerVariable); }
 
 
   /// copy operator
@@ -84,7 +79,7 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(from);
-      _domain_ = from._domain_;
+      _domain_                  = from._domain_;
     }
 
     return *this;
@@ -96,7 +91,7 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(std::move(from));
-      _domain_ = std::move(from._domain_);
+      _domain_                  = std::move(from._domain_);
       from._domain_.clear();
     }
 
@@ -105,21 +100,15 @@ namespace gum {
 
 
   /// inequality operator
-  INLINE bool IntegerVariable::operator!=(const Variable& var) const {
-    return !operator==(var);
-  }
+  INLINE bool IntegerVariable::operator!=(const Variable& var) const { return !operator==(var); }
 
 
   /// returns the domain size of the discrete random variable
-  INLINE Size IntegerVariable::domainSize() const {
-    return _domain_.size();
-  }
+  INLINE Size IntegerVariable::domainSize() const { return _domain_.size(); }
 
 
   /// returns the type of variable
-  INLINE VarType IntegerVariable::varType() const {
-    return VarType::Integer;
-  }
+  INLINE VarType IntegerVariable::varType() const { return VarType::Integer; }
 
 
   /// returns the index of a given label
@@ -141,20 +130,16 @@ namespace gum {
 
 
   /// get a numerical representation of the indice-th value.
-  INLINE double IntegerVariable::numerical(Idx i) const {
-    return double(_domain_[i]);
-  }
+  INLINE double IntegerVariable::numerical(Idx i) const { return double(_domain_[i]); }
 
 
   /// returns the domain as a sequence of values
-  INLINE const Sequence< int >& IntegerVariable::integerDomain() const {
-     return _domain_;
-  }
+  INLINE const Sequence< int >& IntegerVariable::integerDomain() const { return _domain_; }
 
 
   /// substitute a value by another one
   INLINE void IntegerVariable::changeValue(int old_value, int new_value) {
-    if (! _domain_.exists(old_value)) return;
+    if (!_domain_.exists(old_value)) return;
     if (_domain_.exists(new_value)) {
       GUM_ERROR(DuplicateElement,
                 "Value" << new_value << " already belongs to the domain of the variable");
@@ -166,15 +151,11 @@ namespace gum {
 
 
   /// erase a value from the domain of the variable
-  INLINE void IntegerVariable::eraseValue(int value) {
-    _domain_.erase(value);
-  }
+  INLINE void IntegerVariable::eraseValue(int value) { _domain_.erase(value); }
 
 
   /// clear the domain of the variable
-  INLINE void IntegerVariable::eraseValues() {
-    _domain_.clear();
-  }
+  INLINE void IntegerVariable::eraseValues() { _domain_.clear(); }
 
 
 } /* namespace gum */

@@ -11,23 +11,23 @@
 
 namespace gum_tests {
 
-  class MyPoolAlloc {
+  class DebugPoolAlloc {
   public:
-    MyPoolAlloc ( const std::size_t size )
+    DebugPoolAlloc ( const std::size_t size )
       :  _mempool_ ( new int[size / sizeof(int) + 1 ] )
       ,  _size_ ( size / sizeof(int) + 1 ) {
       //std::cout << "create a new pool alloc " <<  _mempool_ << std::endl;
     }
     
-    MyPoolAlloc ( const MyPoolAlloc& ) = delete;
-    MyPoolAlloc ( MyPoolAlloc&& ) = delete;
+    DebugPoolAlloc ( const DebugPoolAlloc& ) = delete;
+    DebugPoolAlloc ( DebugPoolAlloc&& ) = delete;
 
-    ~MyPoolAlloc () {
+    ~DebugPoolAlloc () {
       delete[]  _mempool_;
     }
 
-    MyPoolAlloc& operator= ( const MyPoolAlloc& ) = delete;
-    MyPoolAlloc& operator= ( MyPoolAlloc&& ) = delete;
+    DebugPoolAlloc& operator= ( const DebugPoolAlloc& ) = delete;
+    DebugPoolAlloc& operator= ( DebugPoolAlloc&& ) = delete;
 
     int* allocate ( const std::size_t nb_bytes ) {
       std::size_t nb_int = nb_bytes / sizeof(int);
@@ -106,7 +106,7 @@ namespace gum_tests {
     };
 
     LearningAlloc ( const std::size_t size = 1000 )
-      :  _mempool_ ( new MyPoolAlloc ( size ) ) {}
+      :  _mempool_ ( new DebugPoolAlloc ( size ) ) {}
 
     LearningAlloc ( const LearningAlloc<T>& from )
       :  _mempool_ ( from. _mempool_ ) {}
@@ -169,7 +169,7 @@ namespace gum_tests {
     }
 
   private:
-    std::shared_ptr<MyPoolAlloc>  _mempool_;
+    std::shared_ptr<DebugPoolAlloc>  _mempool_;
 
     template <typename U>
     friend class LearningAlloc;

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -39,26 +39,26 @@ namespace gum_tests {
       heap1.insert(10);
       heap1.insert(10);
 
-      TS_ASSERT(heap1.top() == 2);
+      TS_ASSERT_EQUALS(heap1.top(), 2);
       heap1.pop();
-      TS_ASSERT(heap1.top() == 8);
+      TS_ASSERT_EQUALS(heap1.top(), 8);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT_EQUALS(heap1.top(), 10);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT_EQUALS(heap1.top(), 10);
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(8) == false);
-      TS_ASSERT(heap1.contains(23) == true);
-      TS_ASSERT(heap1.contains(10) == true);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(heap1.empty(), false);
+      TS_ASSERT_EQUALS(heap1.contains(8), false);
+      TS_ASSERT_EQUALS(heap1.contains(23), true);
+      TS_ASSERT_EQUALS(heap1.contains(10), true);
 
       heap1.erase(10);
-      TS_ASSERT(heap1.size() == 3);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
 
       heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 23);
+      TS_ASSERT_EQUALS(heap1.top(), 23);
     }
 
     void testConstructor2() {
@@ -72,26 +72,26 @@ namespace gum_tests {
       heap1.insert(10);
       heap1.insert(10);
 
-      TS_ASSERT(heap1.top() == 24);
+      TS_ASSERT_EQUALS(heap1.top(), 24);
       heap1.pop();
-      TS_ASSERT(heap1.top() == 23);
+      TS_ASSERT_EQUALS(heap1.top(), 23);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT_EQUALS(heap1.top(), 10);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT_EQUALS(heap1.top(), 10);
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(23) == false);
-      TS_ASSERT(heap1.contains(2) == true);
-      TS_ASSERT(heap1.contains(8) == true);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(heap1.empty(), false);
+      TS_ASSERT_EQUALS(heap1.contains(23), false);
+      TS_ASSERT_EQUALS(heap1.contains(2), true);
+      TS_ASSERT_EQUALS(heap1.contains(8), true);
 
       heap1.erase(10);
-      TS_ASSERT(heap1.size() == 3);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
 
       heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 8);
+      TS_ASSERT_EQUALS(heap1.top(), 8);
     }
 
     void testMoves() {
@@ -102,8 +102,8 @@ namespace gum_tests {
       gum::Heap< int, std::greater< int > > heap4 = std::move(heap3);
       heap3                                       = std::move(heap2);
       heap2                                       = std::move(heap1);
-      TS_ASSERT(heap2.size() == 4);
-      TS_ASSERT(heap2.top() == 5);
+      TS_ASSERT_EQUALS(heap2.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(heap2.top(), 5);
     }
 
     void testCopy() {
@@ -122,10 +122,10 @@ namespace gum_tests {
       heap2.insert(20);
 
       heap2 = heap1;
-      TS_ASSERT(heap2.size() == heap1.size());
+      TS_ASSERT_EQUALS(heap2.size(), (gum::Size)heap1.size());
 
       gum::Heap< int > heap3(heap1);
-      TS_ASSERT(heap3.size() == heap1.size());
+      TS_ASSERT_EQUALS(heap3.size(), (gum::Size)heap1.size());
     }
 
     void testErase() {
@@ -140,14 +140,14 @@ namespace gum_tests {
       heap1.insert(10);
 
       heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 8);
+      TS_ASSERT_EQUALS(heap1.top(), 8);
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150));
-      TS_ASSERT(heap1.size() == 6);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)6);
       heap1.eraseByPos(4);
-      TS_ASSERT(heap1.size() == 5);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)5);
       heap1.eraseByPos(4);
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.contains(24) == false);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(heap1.contains(24), false);
     }
 
     class SetCmp {
@@ -185,27 +185,27 @@ namespace gum_tests {
       heap1.insert(s2);
       heap1.insert(s5);
 
-      TS_ASSERT(heap1.top() == s1);
+      TS_ASSERT_EQUALS(heap1.top(), s1);
       heap1.pop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT_EQUALS(heap1.top(), s2);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT_EQUALS(heap1.top(), s2);
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT_EQUALS(heap1.top(), s2);
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(s1) == false);
-      TS_ASSERT(heap1.contains(s4) == true);
-      TS_ASSERT(heap1.contains(s5) == true);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(heap1.empty(), false);
+      TS_ASSERT_EQUALS(heap1.contains(s1), false);
+      TS_ASSERT_EQUALS(heap1.contains(s4), true);
+      TS_ASSERT_EQUALS(heap1.contains(s5), true);
 
       gum::Set< int > s6;
       heap1.erase(s2);
-      TS_ASSERT(heap1.size() == 3);
+      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(s6));
 
       heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == s4);
+      TS_ASSERT_EQUALS(heap1.top(), s4);
     }
   };
 

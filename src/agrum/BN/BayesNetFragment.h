@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @file
  * @brief Class representing Fragment of Bayesian networks
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
 #ifndef GUM_BAYES_NET_FRAGMENT_H
@@ -43,7 +43,7 @@ namespace gum {
    * @brief Portion of a BN identified by the list of nodes and a BayesNet.
    * @ingroup bn_group
    *
-   * @author Pierre-Henri WUILLEMIN(@LIP6)
+   * @author Pierre-Henri WUILLEMIN(_at_LIP6)
    *
    * This class is a decorator of a BayesNet implementing the IBayesNet
    * interface. CPTs can be shared with the BN or can be specific to the

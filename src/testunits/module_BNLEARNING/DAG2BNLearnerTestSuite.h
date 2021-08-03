@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -126,11 +126,11 @@ namespace gum_tests {
 
       auto                  v2  = _getProba_(bn1, 2);
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      TS_ASSERT(v2 == xv2);
+      TS_ASSERT_EQUALS(v2, xv2);
 
       auto                  v02  = _getProba_(bn1, 0);
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      TS_ASSERT(v02 == xv02);
+      TS_ASSERT_EQUALS(v02, xv02);
     }
 
 

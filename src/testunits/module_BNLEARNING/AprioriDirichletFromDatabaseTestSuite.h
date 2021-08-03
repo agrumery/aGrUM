@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -76,11 +76,11 @@ namespace gum_tests {
 
       gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser);
 
-      TS_ASSERT(apriori.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 1.0);
       apriori.setWeight(2.0 * db_size);
-      TS_ASSERT(apriori.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori.weight(), 2.0 * db_size);
 
-      TS_ASSERT(apriori.getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori.getType(), "Dirichlet");
       TS_ASSERT(apriori.isOfType("Dirichlet"));
       TS_ASSERT(!apriori.isOfType("NoApriori"));
 
@@ -97,9 +97,9 @@ namespace gum_tests {
 
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 2401.0);
-      TS_ASSERT(vect[1] == 251.0);
-      TS_ASSERT(vect[2] == 151.0);
+      TS_ASSERT_EQUALS(vect[0], 2401.0);
+      TS_ASSERT_EQUALS(vect[1], 251.0);
+      TS_ASSERT_EQUALS(vect[2], 151.0);
 
       vect.clear();
       apriori.addConditioningApriori(idset1, vect);
@@ -107,15 +107,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 401.0);    // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 2001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 101.0);    // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 401.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 2001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 101.0);    // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori.addConditioningApriori(idset2, vect);
@@ -123,39 +123,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 401.0);    // 0,1
-      TS_ASSERT(vect[4] == 101.0);    // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 2001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 401.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 101.0);    // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 2001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 151.0);
-      TS_ASSERT(vect[1] == 651.0);
-      TS_ASSERT(vect[2] == 2001.0);
+      TS_ASSERT_EQUALS(vect[0], 151.0);
+      TS_ASSERT_EQUALS(vect[1], 651.0);
+      TS_ASSERT_EQUALS(vect[2], 2001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size);
       apriori2.setWeight(1.0 * db_size);
-      TS_ASSERT(apriori2.weight() == db_size);
+      TS_ASSERT_EQUALS(apriori2.weight(), db_size);
 
-      TS_ASSERT(apriori2.getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori2.getType(), "Dirichlet");
       TS_ASSERT(apriori2.isOfType("Dirichlet"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori2.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori2.addConditioningApriori(idset1, vect);
@@ -163,15 +163,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori2.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori2.addConditioningApriori(idset2, vect);
@@ -179,35 +179,35 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori2.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == db_size);
+      TS_ASSERT_EQUALS(apriori3.weight(), db_size);
       apriori3.setWeight(2.0 * db_size);
-      TS_ASSERT(apriori3.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size);
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori3.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 2401.0);
-      TS_ASSERT(vect[1] == 251.0);
-      TS_ASSERT(vect[2] == 151.0);
+      TS_ASSERT_EQUALS(vect[0], 2401.0);
+      TS_ASSERT_EQUALS(vect[1], 251.0);
+      TS_ASSERT_EQUALS(vect[2], 151.0);
 
       vect.clear();
       apriori3.addConditioningApriori(idset1, vect);
@@ -215,15 +215,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori3.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 401.0);    // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 2001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 101.0);    // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 401.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 2001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 101.0);    // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori3.addConditioningApriori(idset2, vect);
@@ -231,39 +231,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori3.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 401.0);    // 0,1
-      TS_ASSERT(vect[4] == 101.0);    // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 2001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 401.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 101.0);    // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 2001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 151.0);
-      TS_ASSERT(vect[1] == 651.0);
-      TS_ASSERT(vect[2] == 2001.0);
+      TS_ASSERT_EQUALS(vect[0], 151.0);
+      TS_ASSERT_EQUALS(vect[1], 651.0);
+      TS_ASSERT_EQUALS(vect[2], 2001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -271,15 +271,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -287,39 +287,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       apriori4->operator=(apriori);
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -327,15 +327,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -343,39 +343,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       apriori4->operator=(std::move(apriori));
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -384,15 +384,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -400,22 +400,22 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
       delete apriori4;
     }
@@ -480,11 +480,11 @@ namespace gum_tests {
 
       gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser, nodeId2columns);
 
-      TS_ASSERT(apriori.weight() == 1.0);
+      TS_ASSERT_EQUALS(apriori.weight(), 1.0);
       apriori.setWeight(2.0 * db_size);
-      TS_ASSERT(apriori.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori.weight(), 2.0 * db_size);
 
-      TS_ASSERT(apriori.getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori.getType(), "Dirichlet");
       TS_ASSERT(apriori.isOfType("Dirichlet"));
       TS_ASSERT(!apriori.isOfType("NoApriori"));
 
@@ -498,9 +498,9 @@ namespace gum_tests {
 
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 2401.0);
-      TS_ASSERT(vect[1] == 251.0);
-      TS_ASSERT(vect[2] == 151.0);
+      TS_ASSERT_EQUALS(vect[0], 2401.0);
+      TS_ASSERT_EQUALS(vect[1], 251.0);
+      TS_ASSERT_EQUALS(vect[2], 151.0);
 
       vect.clear();
       apriori.addConditioningApriori(idset1, vect);
@@ -508,15 +508,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 401.0);    // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 2001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 101.0);    // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 401.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 2001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 101.0);    // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori.addConditioningApriori(idset2, vect);
@@ -524,39 +524,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 401.0);    // 0,1
-      TS_ASSERT(vect[4] == 101.0);    // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 2001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 401.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 101.0);    // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 2001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 151.0);
-      TS_ASSERT(vect[1] == 651.0);
-      TS_ASSERT(vect[2] == 2001.0);
+      TS_ASSERT_EQUALS(vect[0], 151.0);
+      TS_ASSERT_EQUALS(vect[1], 651.0);
+      TS_ASSERT_EQUALS(vect[2], 2001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size);
       apriori2.setWeight(1.0 * db_size);
-      TS_ASSERT(apriori2.weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori2.weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori2.getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori2.getType(), "Dirichlet");
       TS_ASSERT(apriori2.isOfType("Dirichlet"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori2.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori2.addConditioningApriori(idset1, vect);
@@ -564,15 +564,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori2.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori2.addConditioningApriori(idset2, vect);
@@ -580,52 +580,52 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori2.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori3.weight(), 1.0 * db_size);
       apriori3.setWeight(2.0 * db_size);
-      TS_ASSERT(apriori3.weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size);
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori3.addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 2401.0);
-      TS_ASSERT(vect[1] == 251.0);
-      TS_ASSERT(vect[2] == 151.0);
+      TS_ASSERT_EQUALS(vect[0], 2401.0);
+      TS_ASSERT_EQUALS(vect[1], 251.0);
+      TS_ASSERT_EQUALS(vect[2], 151.0);
 
       vect.clear();
       apriori3.addConditioningApriori(idset1, vect);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      TS_ASSERT_EQUALS(vect.size(), std::size_t(0));
 
       vect.clear();
       vect.resize(9, 1.0);
       apriori3.addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 401.0);    // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 2001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 101.0);    // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 401.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 2001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 101.0);    // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori3.addConditioningApriori(idset2, vect);
@@ -633,39 +633,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori3.addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 151.0);    // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 401.0);    // 0,1
-      TS_ASSERT(vect[4] == 101.0);    // 1,1
-      TS_ASSERT(vect[5] == 151.0);    // 2,1
-      TS_ASSERT(vect[6] == 2001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 151.0);    // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 401.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 101.0);    // 1,1
+      TS_ASSERT_EQUALS(vect[5], 151.0);    // 2,1
+      TS_ASSERT_EQUALS(vect[6], 2001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 151.0);
-      TS_ASSERT(vect[1] == 651.0);
-      TS_ASSERT(vect[2] == 2001.0);
+      TS_ASSERT_EQUALS(vect[0], 151.0);
+      TS_ASSERT_EQUALS(vect[1], 651.0);
+      TS_ASSERT_EQUALS(vect[2], 2001.0);
 
 
       gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -673,15 +673,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -689,39 +689,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       apriori4->operator=(apriori);
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -729,15 +729,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -745,39 +745,39 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
 
       apriori4->operator=(std::move(apriori));
-      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size);
       apriori4->setWeight(1.0 * db_size);
-      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
+      TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size);
 
-      TS_ASSERT(apriori4->getType() == "Dirichlet");
+      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      TS_ASSERT(vect[0] == 1201.0);
-      TS_ASSERT(vect[1] == 126.0);
-      TS_ASSERT(vect[2] == 76.0);
+      TS_ASSERT_EQUALS(vect[0], 1201.0);
+      TS_ASSERT_EQUALS(vect[1], 126.0);
+      TS_ASSERT_EQUALS(vect[2], 76.0);
 
       vect.clear();
       apriori4->addConditioningApriori(idset1, vect);
@@ -785,15 +785,15 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      TS_ASSERT(vect[0] == 201.0);    // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 1001.0);   // 0,1
-      TS_ASSERT(vect[4] == 1.0);      // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1.0);      // 0,2
-      TS_ASSERT(vect[7] == 51.0);     // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 201.0);    // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 1001.0);   // 0,1
+      TS_ASSERT_EQUALS(vect[4], 1.0);      // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1.0);      // 0,2
+      TS_ASSERT_EQUALS(vect[7], 51.0);     // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       apriori4->addConditioningApriori(idset2, vect);
@@ -801,22 +801,22 @@ namespace gum_tests {
       vect.clear();
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 1.0);      // 0,0
-      TS_ASSERT(vect[1] == 76.0);     // 1,0
-      TS_ASSERT(vect[2] == 1.0);      // 2,0
-      TS_ASSERT(vect[3] == 201.0);    // 0,1
-      TS_ASSERT(vect[4] == 51.0);     // 1,1
-      TS_ASSERT(vect[5] == 76.0);     // 2,1
-      TS_ASSERT(vect[6] == 1001.0);   // 0,2
-      TS_ASSERT(vect[7] == 1.0);      // 1,2
-      TS_ASSERT(vect[8] == 1.0);      // 2,2
+      TS_ASSERT_EQUALS(vect[0], 1.0);      // 0,0
+      TS_ASSERT_EQUALS(vect[1], 76.0);     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0);      // 2,0
+      TS_ASSERT_EQUALS(vect[3], 201.0);    // 0,1
+      TS_ASSERT_EQUALS(vect[4], 51.0);     // 1,1
+      TS_ASSERT_EQUALS(vect[5], 76.0);     // 2,1
+      TS_ASSERT_EQUALS(vect[6], 1001.0);   // 0,2
+      TS_ASSERT_EQUALS(vect[7], 1.0);      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0);      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      TS_ASSERT(vect[0] == 76.0);
-      TS_ASSERT(vect[1] == 326.0);
-      TS_ASSERT(vect[2] == 1001.0);
+      TS_ASSERT_EQUALS(vect[0], 76.0);
+      TS_ASSERT_EQUALS(vect[1], 326.0);
+      TS_ASSERT_EQUALS(vect[2], 1001.0);
 
       delete apriori4;
     }

@@ -75,6 +75,7 @@
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
 #include <agrum/tools/variables/IDiscretizedVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/graphs/graphElements.h>
@@ -173,6 +174,14 @@ namespace std {
     return gum::RangeVariable(* dynamic_cast<gum::RangeVariable*>(self ));
   }
 
+  gum::IntegerVariable toIntegerVar() {
+    return gum::IntegerVariable(* dynamic_cast<gum::IntegerVariable*>(self ));
+  }
+
+  gum::DiscretizedVariable<double> toDiscretizedVar() {
+    return gum::DiscretizedVariable<double>(* dynamic_cast<gum::DiscretizedVariable<double> *> (self ));
+  }
+
   gum::DiscretizedVariable<double> toDiscretizedVar() {
     return gum::DiscretizedVariable<double>(* dynamic_cast<gum::DiscretizedVariable<double> *> (self ));
   }
@@ -235,6 +244,7 @@ namespace std {
 %include <agrum/tools/variables/discreteVariable.h>
 %include <agrum/tools/variables/labelizedVariable.h>
 %include <agrum/tools/variables/rangeVariable.h>
+%include <agrum/tools/variables/integerVariable.h>
 %include <agrum/tools/variables/IDiscretizedVariable.h>
 %include <agrum/tools/variables/discretizedVariable.h>
 

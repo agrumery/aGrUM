@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -88,7 +88,7 @@ namespace gum_tests {
       ngp2.addNodeWithId(gum::NodeId(2));
       ngp2.addNodeWithId(gum::NodeId(3));
 
-      TS_ASSERT(ngp == ngp2);
+      TS_ASSERT_EQUALS(ngp, ngp2);
     }
 
     void testCopy() {
@@ -121,42 +121,42 @@ namespace gum_tests {
       ngp.addNodeWithId(c);
       TS_ASSERT(ngp._inHoles_(a));
       TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(3)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(a);
       TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(2)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(f);
       TS_ASSERT(ngp._inHoles_(b));
       TS_ASSERT(ngp._inHoles_(d));
       TS_ASSERT(ngp._inHoles_(e));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(4)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)4));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(e);
       TS_ASSERT(ngp._inHoles_(b));
       TS_ASSERT(ngp._inHoles_(d));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(3)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(b);
       TS_ASSERT(ngp._inHoles_(d));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(2)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(d);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(1)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(g);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(1)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
       ngp.addNodeWithId(gum::NodeId(0));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
       TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement);
@@ -167,15 +167,15 @@ namespace gum_tests {
       gum::NodeId        node = 6;
 
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(0)));
-      TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
+      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0));
       ngp.addNodeWithId(node);
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
       TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(node)));
       TS_ASSERT(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(0)));
-      TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
+      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0));
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
 
       // do we fill all the holes?
@@ -187,13 +187,13 @@ namespace gum_tests {
         TS_ASSERT(ngp2.addNode() < node);
       }
 
-      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), gum::Size(1));
+      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)1);
 
       TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node - 1));
 
       ngp2.addNode();
 
-      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), gum::Size(0));
+      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)0);
       TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node + 1));
     }
 
@@ -282,7 +282,7 @@ namespace gum_tests {
 
       nodeset.addNodes(5);
 
-      TS_ASSERT_EQUALS(nodeset.size(), gum::Size(100));
+      TS_ASSERT_EQUALS(nodeset.size(), (gum::Size)100);
 
       gum::NodeId i = 0;
       for (auto n: nodeset.nodes())

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief Base class for labelized discrete random variables
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #ifndef GUM_LABELIZED_DISCRETE_VARIABLE_H
 #define GUM_LABELIZED_DISCRETE_VARIABLE_H
@@ -164,6 +164,9 @@ namespace gum {
 
     /// Returns the domain
     virtual const std::string domain() const;
+
+    /// string represent the type of the variable
+    virtual const std::string stype() const { return "Labelized"; };
 
     /// @}
 

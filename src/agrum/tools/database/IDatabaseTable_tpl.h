@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 /** @file
  * @brief The implementation of the common class for tabular databases
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <agrum/tools/database/IDatabaseTable.h>
 
@@ -1216,8 +1216,8 @@ namespace gum {
           const std::size_t nb_threads) const {
       std::vector< std::pair< std::size_t, std::size_t > > ranges;
       const std::size_t                                    db_size = nbRows();
-      std::size_t nb_rows_per_thread = db_size / nb_threads;
-      std::size_t rest_rows          = db_size - nb_rows_per_thread * nb_threads;
+      std::size_t nb_rows_per_thread                               = db_size / nb_threads;
+      std::size_t rest_rows = db_size - nb_rows_per_thread * nb_threads;
 
       // assign to threads the ranges over which they should change the
       // rows weights
@@ -1241,8 +1241,8 @@ namespace gum {
     void IDatabaseTable< T_DATA, ALLOC >::setAllRowsWeight(const double new_weight) {
       // determine the number of threads to use and the rows they should process
       const std::size_t nb_threads = nbProcessingThreads_();
-      const std::vector< std::pair< std::size_t, std::size_t > > ranges =
-         rangesProcessingThreads_(nb_threads);
+      const std::vector< std::pair< std::size_t, std::size_t > > ranges
+         = rangesProcessingThreads_(nb_threads);
 
       // perform the assignment:
       // launch the threads

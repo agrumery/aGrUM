@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@
  *
  * @endcode
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #ifndef GUM_SCHEDULE_PROJECTION_H
@@ -127,9 +127,9 @@ namespace gum {
        = 0;
 
     /// returns the projection function currently used by the projector
-    virtual MultiDimImplementation< GUM_SCALAR >* (
-       *projectFunction())(const MultiDimImplementation< GUM_SCALAR >&,
-                           const Set< const DiscreteVariable* >&)
+    virtual MultiDimImplementation< GUM_SCALAR >* (*projectFunction())(
+       const MultiDimImplementation< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&)
        = 0;
 
     /** @brief returns a rough estimate of the number of operations that will be

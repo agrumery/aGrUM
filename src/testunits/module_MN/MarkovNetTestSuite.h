@@ -1,7 +1,7 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * (@AMU) info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * (_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.idFromName("31"), gum::NodeId(2));
       TS_ASSERT_EQUALS(mn.variableFromName("41").name(), "41");
 
-      TS_ASSERT_EQUALS(mn.maxVarDomainSize(), gum::Size(7));
+      TS_ASSERT_EQUALS(mn.maxVarDomainSize(), (gum::Size)7);
       TS_ASSERT_EQUALS(mn.minParam(), 0.0);
       TS_ASSERT_EQUALS(mn.minNonZeroParam(), 0.03);
       TS_ASSERT_EQUALS(mn.maxParam(), 1.0);
@@ -117,11 +117,11 @@ namespace gum_tests {
       gum::MarkovNet< double > mn1;
       _fill(mn1);
       gum::MarkovNet< double > mn2;
-      TS_ASSERT(mn1 != mn2);
+      TS_ASSERT_DIFFERS(mn1, mn2);
       _fill(mn2);
-      TS_ASSERT(mn1 == mn2);
+      TS_ASSERT_EQUALS(mn1, mn2);
       mn2.generateFactors();
-      TS_ASSERT(mn1 != mn2);
+      TS_ASSERT_DIFFERS(mn1, mn2);
     }
 
     void testInsertion() {
@@ -234,9 +234,10 @@ namespace gum_tests {
     }
 
     void testToDot() {
-      gum::MarkovNet< double > mn = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
-      const auto               s1 = mn.toDot();
-      const auto               s2 = mn.toDotAsFactorGraph();
+      gum::MarkovNet< double > mn
+         = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
+      const auto s1 = mn.toDot();
+      const auto s2 = mn.toDotAsFactorGraph();
       GUM_UNUSED(s1);
       GUM_UNUSED(s2);
     }
@@ -311,9 +312,9 @@ namespace gum_tests {
 
     void testFastPrototypeVarType() {
       auto mn = gum::MarkovNet< float >::fastPrototype("a{1|4|6}--b{1|-4|6}--c{1|toto|6}");
-      TS_ASSERT_EQUALS(mn.variable("a").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(mn.variable("b").varType(),gum::VarType::Integer)
-      TS_ASSERT_EQUALS(mn.variable("c").varType(),gum::VarType::Labelized)
+      TS_ASSERT_EQUALS(mn.variable("a").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(mn.variable("b").varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(mn.variable("c").varType(), gum::VarType::Labelized)
     }
   };
 

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/myalloc.h>
+#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/core/set.h>
@@ -40,29 +40,29 @@ namespace gum_tests {
 
       gum::Set< int > set2{1, 2, 3};
       set = new gum::Set< int >(set2);
-      TS_ASSERT(*set == set2);
+      TS_ASSERT_EQUALS(*set, set2);
       delete set;
 
-      gum::Set< int, MyAlloc< int > > set3{1, 2, 3};
+      gum::Set< int, DebugCountedAlloc< int > > set3{1, 2, 3};
       set = new gum::Set< int >(set3);
-      TS_ASSERT(*set == set3);
+      TS_ASSERT_EQUALS(*set, set3);
       delete set;
 
       set = new gum::Set< int >{1, 2, 3};
       gum::Set< int > set4(std::move(*set));
       delete set;
-      TS_ASSERT(set4.size() == 3);
+      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3);
 
       set4.clear();
       set4 = set2;
-      TS_ASSERT(set4.size() == 3);
+      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3);
       set4.clear();
-      TS_ASSERT(set4.size() == 0);
+      TS_ASSERT_EQUALS(set4.size(), (gum::Size)0);
       set4 = set3;
-      TS_ASSERT(set4 == set3);
+      TS_ASSERT_EQUALS(set4, set3);
       set4.clear();
       set4 = std::move(set2);
-      TS_ASSERT(set4.size() == 3);
+      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3);
     }
 
     void testMoves() {
@@ -76,7 +76,7 @@ namespace gum_tests {
       set3                 = std::move(set2);
       set2                 = std::move(set1);
 
-      TS_ASSERT(set2.size() == 3);
+      TS_ASSERT_EQUALS(set2.size(), (gum::Size)3);
     }
 
     void testInsert() {
@@ -108,16 +108,16 @@ namespace gum_tests {
       fill(t2);
       fill(t3);
 
-      TS_ASSERT(t1 == t1);
-      TS_ASSERT(t2 == t2);
-      TS_ASSERT(t3 == t3);
+      TS_ASSERT_EQUALS(t1, t1);
+      TS_ASSERT_EQUALS(t2, t2);
+      TS_ASSERT_EQUALS(t3, t3);
 
-      TS_ASSERT(t1 == t2);
-      TS_ASSERT(t2 == t1);
-      TS_ASSERT(t1 == t3);
-      TS_ASSERT(t3 == t1);
-      TS_ASSERT(t2 == t3);
-      TS_ASSERT(t3 == t2);
+      TS_ASSERT_EQUALS(t1, t2);
+      TS_ASSERT_EQUALS(t2, t1);
+      TS_ASSERT_EQUALS(t1, t3);
+      TS_ASSERT_EQUALS(t3, t1);
+      TS_ASSERT_EQUALS(t2, t3);
+      TS_ASSERT_EQUALS(t3, t2);
 
       t2.erase(1);
       t2.erase(3);
@@ -127,19 +127,19 @@ namespace gum_tests {
       t3.erase(4);
       t3.erase(6);
 
-      TS_ASSERT(t1 != t2);
-      TS_ASSERT(t2 != t1);
-      TS_ASSERT(t1 != t3);
-      TS_ASSERT(t3 != t1);
-      TS_ASSERT(t2 != t3);
-      TS_ASSERT(t3 != t2);
+      TS_ASSERT_DIFFERS(t1, t2);
+      TS_ASSERT_DIFFERS(t2, t1);
+      TS_ASSERT_DIFFERS(t1, t3);
+      TS_ASSERT_DIFFERS(t3, t1);
+      TS_ASSERT_DIFFERS(t2, t3);
+      TS_ASSERT_DIFFERS(t3, t2);
 
-      gum::Set< int, MyAlloc< int > > t4, t5;
+      gum::Set< int, DebugCountedAlloc< int > > t4, t5;
       fill(t4);
-      TS_ASSERT(t1 == t4);
-      TS_ASSERT(t2 != t4);
-      TS_ASSERT(t4 == t1);
-      TS_ASSERT(t5 != t4);
+      TS_ASSERT_EQUALS(t1, t4);
+      TS_ASSERT_DIFFERS(t2, t4);
+      TS_ASSERT_EQUALS(t4, t1);
+      TS_ASSERT_DIFFERS(t5, t4);
     }
 
     void testSize() {
@@ -172,42 +172,42 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)1);
 
-      gum::Set< int, MyAlloc< int > > set2;
+      gum::Set< int, DebugCountedAlloc< int > > set2;
       fill(set2);
       TS_GUM_ASSERT_THROWS_NOTHING(set2 >> 4);
     }
 
     void testIterator() {
-      gum::Set< int, MyAlloc< int > > set;
+      gum::Set< int, DebugCountedAlloc< int > > set;
       fill(set);
 
-      gum::Set< int, MyAlloc< int > >::iterator iter1 = set.begin();
-      gum::SetIterator< int >                   iter2 = set.begin();
-      TS_ASSERT(iter1 == iter2);
-      TS_ASSERT(*iter1 == 3);
-      TS_ASSERT(iter1 != set.end());
-      TS_ASSERT(iter2 != set.end());
+      gum::Set< int, DebugCountedAlloc< int > >::iterator iter1 = set.begin();
+      gum::SetIterator< int >                             iter2 = set.begin();
+      TS_ASSERT_EQUALS(iter1, iter2);
+      TS_ASSERT_EQUALS(*iter1, 3);
+      TS_ASSERT_DIFFERS(iter1, set.end());
+      TS_ASSERT_DIFFERS(iter2, set.end());
 
-      gum::Set< int, MyAlloc< int > >::iterator iter3 = set.begin();
-      gum::SetIterator< int >                   iter4 = set.begin();
-      TS_ASSERT(iter3 == iter4);
-      TS_ASSERT(*iter3 == 3);
-      TS_ASSERT(iter3 != set.end());
-      TS_ASSERT(iter4 != set.end());
+      gum::Set< int, DebugCountedAlloc< int > >::iterator iter3 = set.begin();
+      gum::SetIterator< int >                             iter4 = set.begin();
+      TS_ASSERT_EQUALS(iter3, iter4);
+      TS_ASSERT_EQUALS(*iter3, 3);
+      TS_ASSERT_DIFFERS(iter3, set.end());
+      TS_ASSERT_DIFFERS(iter4, set.end());
 
-      gum::Set< int, MyAlloc< int > >::const_iterator iter5 = set.cbegin();
-      gum::SetConstIterator< int >                    iter6 = set.cbegin();
-      TS_ASSERT(iter5 == iter6);
-      TS_ASSERT(*iter5 == 3);
-      TS_ASSERT(iter5 != set.end());
-      TS_ASSERT(iter6 != set.end());
+      gum::Set< int, DebugCountedAlloc< int > >::const_iterator iter5 = set.cbegin();
+      gum::SetConstIterator< int >                              iter6 = set.cbegin();
+      TS_ASSERT_EQUALS(iter5, iter6);
+      TS_ASSERT_EQUALS(*iter5, 3);
+      TS_ASSERT_DIFFERS(iter5, set.end());
+      TS_ASSERT_DIFFERS(iter6, set.end());
 
-      gum::Set< int, MyAlloc< int > >::const_iterator iter7 = set.cbegin();
-      gum::SetConstIterator< int >                    iter8 = set.cbegin();
-      TS_ASSERT(iter7 == iter8);
-      TS_ASSERT(*iter8 == 3);
-      TS_ASSERT(iter7 != set.cend());
-      TS_ASSERT(iter8 != set.cend());
+      gum::Set< int, DebugCountedAlloc< int > >::const_iterator iter7 = set.cbegin();
+      gum::SetConstIterator< int >                              iter8 = set.cbegin();
+      TS_ASSERT_EQUALS(iter7, iter8);
+      TS_ASSERT_EQUALS(*iter8, 3);
+      TS_ASSERT_DIFFERS(iter7, set.cend());
+      TS_ASSERT_DIFFERS(iter8, set.cend());
     }
 
     void testEraseIterator() {
@@ -232,12 +232,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
       TS_ASSERT_EQUALS(set.size(), (gum::Size)3);
 
-      gum::Set< int, MyAlloc< int > > set2;
+      gum::Set< int, DebugCountedAlloc< int > > set2;
       fill(set2);
-      TS_ASSERT(set2.size() == 6);
+      TS_ASSERT_EQUALS(set2.size(), (gum::Size)6);
       iter = set2.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter));
-      TS_ASSERT(set2.size() == 5);
+      TS_ASSERT_EQUALS(set2.size(), (gum::Size)5);
     }
 
     void testClear() {
@@ -447,7 +447,7 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained);
+      TS_ASSERT_EQUALS(t1, obtained);
 
       gum::Set< int > obtained2;
 
@@ -455,7 +455,7 @@ namespace gum_tests {
         obtained2.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained2);
+      TS_ASSERT_EQUALS(t1, obtained2);
 
       obtained.clear();
       obtained2.clear();
@@ -464,31 +464,31 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained);
+      TS_ASSERT_EQUALS(t1, obtained);
 
       for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend(); ++iter) {
         obtained2.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained2);
+      TS_ASSERT_EQUALS(t1, obtained2);
 
       gum::Set< int >::iterator       iter1;
       gum::Set< int >::iterator       iter2(t1);
       gum::Set< int >::const_iterator iter3(iter1);
       gum::Set< int >::const_iterator iter4(iter2);
-      TS_ASSERT(iter4 == iter2);
+      TS_ASSERT_EQUALS(iter4, iter2);
       gum::Set< int >::const_iterator iter5 = t1.begin();
       gum::Set< int >::const_iterator iter6(iter5);
-      TS_ASSERT(*iter5 == *iter6);
+      TS_ASSERT_EQUALS(*iter5, *iter6);
       gum::Set< int >::const_iterator iter7(std::move(iter6));
-      TS_ASSERT(*iter7 == *(t1.begin()));
+      TS_ASSERT_EQUALS(*iter7, *(t1.begin()));
 
       iter7 = iter5;
-      TS_ASSERT(*iter7 == *iter5);
+      TS_ASSERT_EQUALS(*iter7, *iter5);
       iter7 = std::move(iter4);
-      TS_ASSERT(*iter7 == *iter2);
+      TS_ASSERT_EQUALS(*iter7, *iter2);
       iter7 = iter3;
-      TS_ASSERT(iter7 == iter3);
+      TS_ASSERT_EQUALS(iter7, iter3);
 
       iter7 = t1.begin();
       iter1 = t1.begin();
@@ -496,8 +496,8 @@ namespace gum_tests {
       ++iter1;
       ++iter1;
       ++iter1;
-      TS_ASSERT(*iter7 == *iter1);
-      TS_ASSERT(iter7 == t1.begin() + 3);
+      TS_ASSERT_EQUALS(*iter7, *iter1);
+      TS_ASSERT_EQUALS(iter7, t1.begin() + 3);
     }
 
     void testIterator_2() {
@@ -509,14 +509,14 @@ namespace gum_tests {
       for (const auto i: t1)
         obtained.insert(i);
 
-      TS_ASSERT(t1 == obtained);
+      TS_ASSERT_EQUALS(t1, obtained);
       obtained.clear();
 
       for (gum::Set< int >::iterator iter = t1.begin(); iter != t1.end(); ++iter) {
         obtained.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained);
+      TS_ASSERT_EQUALS(t1, obtained);
 
       obtained.clear();
 
@@ -524,25 +524,25 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      TS_ASSERT(t1 == obtained);
+      TS_ASSERT_EQUALS(t1, obtained);
 
       gum::Set< int >::iterator       iter1;
       gum::Set< int >::iterator       iter2(t1);
       gum::Set< int >::const_iterator iter3(iter1);
       gum::Set< int >::const_iterator iter4(iter2);
-      TS_ASSERT(iter4 == iter2);
+      TS_ASSERT_EQUALS(iter4, iter2);
       gum::Set< int >::const_iterator iter5 = t1.begin();
       gum::Set< int >::const_iterator iter6(iter5);
-      TS_ASSERT(*iter5 == *iter6);
+      TS_ASSERT_EQUALS(*iter5, *iter6);
       gum::Set< int >::const_iterator iter7(std::move(iter6));
-      TS_ASSERT(*iter7 == *(t1.begin()));
+      TS_ASSERT_EQUALS(*iter7, *(t1.begin()));
 
       iter7 = iter5;
-      TS_ASSERT(*iter7 == *iter5);
+      TS_ASSERT_EQUALS(*iter7, *iter5);
       iter7 = std::move(iter4);
-      TS_ASSERT(*iter7 == *iter2);
+      TS_ASSERT_EQUALS(*iter7, *iter2);
       iter7 = iter3;
-      TS_ASSERT(iter7 == iter3);
+      TS_ASSERT_EQUALS(iter7, iter3);
 
       iter7 = t1.begin();
       iter1 = t1.begin();
@@ -550,8 +550,8 @@ namespace gum_tests {
       ++iter1;
       ++iter1;
       ++iter1;
-      TS_ASSERT(*iter7 == *iter1);
-      TS_ASSERT(iter7 == t1.begin() + 3);
+      TS_ASSERT_EQUALS(*iter7, *iter1);
+      TS_ASSERT_EQUALS(iter7, t1.begin() + 3);
     }
 
     void testInitializerList() {

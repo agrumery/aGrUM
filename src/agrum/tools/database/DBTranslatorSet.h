@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@
  * of the dataset easier, all the DBTranslator instances used are gathered
  * into a single DBRowTranslatorSet.
  *
- * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_DB_TRANSLATOR_SET_H
 #define GUM_LEARNING_DB_TRANSLATOR_SET_H
@@ -41,13 +41,7 @@
 #include <type_traits>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBTranslator.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
-#include <agrum/tools/database/DBTranslator4IntegerVariable.h>
-#include <agrum/tools/database/DBTranslator4RangeVariable.h>
-#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
-
+#include <agrum/tools/database/DBTranslatorUtils.h>
 
 namespace gum {
 
@@ -237,15 +231,13 @@ namespace gum {
 
       /// substitute a translator by another one
       /**
-       *
        * @param new_translator the new translator, copied at index pos of the
        * TranslatorSet
        * @param pos the position where the new translator should replace the
        * old one.
        */
       template < template < template < typename > class > class Translator >
-      void substituteTranslator(const Translator< ALLOC >& new_translator,
-                                const std::size_t          pos);
+      void changeTranslator(const Translator< ALLOC >& new_translator, const std::size_t pos);
 
       /** @brief erases either the kth translator or those parsing the kth
        * column of the input database

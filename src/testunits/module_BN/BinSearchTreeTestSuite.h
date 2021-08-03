@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ namespace gum_tests {
       gum::BinSearchTree< int >* tree = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >);
-      TS_ASSERT(tree->size() == 0);
+      TS_ASSERT_EQUALS(tree->size(), (gum::Size)0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree));
       gum::BinSearchTree< int > tree3;
@@ -42,9 +42,9 @@ namespace gum_tests {
       tree->insert(3);
       tree->insert(4);
 
-      TS_ASSERT(tree->size() == 2);
+      TS_ASSERT_EQUALS(tree->size(), (gum::Size)2);
       tree3 = *tree;
-      TS_ASSERT(tree3.size() == 2);
+      TS_ASSERT_EQUALS(tree3.size(), (gum::Size)2);
 
       tree->insert(1);
       tree->insert(4);
@@ -64,23 +64,23 @@ namespace gum_tests {
       tree.insert(6);
       tree.insert(8);
 
-      TS_ASSERT(tree.minValue() == 1);
-      TS_ASSERT(tree.maxValue() == 8);
-      TS_ASSERT(tree.rootValue() == 5);
+      TS_ASSERT_EQUALS(tree.minValue(), 1);
+      TS_ASSERT_EQUALS(tree.maxValue(), 8);
+      TS_ASSERT_EQUALS(tree.rootValue(), 5);
 
       tree.erase(5);
 
-      TS_ASSERT(tree.rootValue() == 6);
-      TS_ASSERT(tree.contains(4) == true);
-      TS_ASSERT(tree.empty() == false);
+      TS_ASSERT_EQUALS(tree.rootValue(), 6);
+      TS_ASSERT_EQUALS(tree.contains(4), true);
+      TS_ASSERT_EQUALS(tree.empty(), false);
 
       tree.clear();
 
       TS_ASSERT_THROWS_ANYTHING(tree.rootValue(););
       TS_ASSERT_THROWS_ANYTHING(tree.minValue(););
       TS_ASSERT_THROWS_ANYTHING(tree.maxValue(););
-      TS_ASSERT(tree.size() == 0);
-      TS_ASSERT(tree.empty() == true);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(tree.empty(), true);
     }
 
     void testErase() {
@@ -93,26 +93,26 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT(tree.size() == 7);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)7);
 
       tree.erase(5);
       tree.erase(5);
       tree.erase(5);
 
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
       TS_ASSERT_THROWS(tree.erase(5), gum::NotFound);
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
       TS_ASSERT_THROWS(tree.erase(9), gum::NotFound);
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
       tree.erase(1);
-      TS_ASSERT(tree.size() == 3);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)3);
       tree.erase(7);
-      TS_ASSERT(tree.size() == 2);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)2);
       tree.erase(4);
-      TS_ASSERT(tree.size() == 1);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)1);
       tree.erase(3);
-      TS_ASSERT(tree.size() == 0);
-      TS_ASSERT(tree.empty() == true);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(tree.empty(), true);
     }
 
     void testUniqueness() {
@@ -123,10 +123,10 @@ namespace gum_tests {
       tree.insert(4);
       tree.insert(7);
 
-      TS_ASSERT(tree.uniquenessPolicy() == false);
+      TS_ASSERT_EQUALS(tree.uniquenessPolicy(), false);
 
       tree.insert(5);
-      TS_ASSERT(tree.size() == 6);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)6);
 
       tree.setUniquenessPolicy(true);
       TS_ASSERT_THROWS_ANYTHING(tree.insert(5););
@@ -147,27 +147,27 @@ namespace gum_tests {
            ++iter, ++i) {
         switch (i) {
           case 0:
-            TS_ASSERT(*iter == 1);
+            TS_ASSERT_EQUALS(*iter, 1);
             break;
 
           case 1:
-            TS_ASSERT(*iter == 3);
+            TS_ASSERT_EQUALS(*iter, 3);
             break;
 
           case 2:
-            TS_ASSERT(*iter == 4);
+            TS_ASSERT_EQUALS(*iter, 4);
             break;
 
           case 3:
-            TS_ASSERT(*iter == 5);
+            TS_ASSERT_EQUALS(*iter, 5);
             break;
 
           case 4:
-            TS_ASSERT(*iter == 5);
+            TS_ASSERT_EQUALS(*iter, 5);
             break;
 
           case 5:
-            TS_ASSERT(*iter == 7);
+            TS_ASSERT_EQUALS(*iter, 7);
             break;
         }
       }
@@ -178,34 +178,34 @@ namespace gum_tests {
            --iter, --i) {
         switch (i) {
           case 0:
-            TS_ASSERT(*iter == 1);
+            TS_ASSERT_EQUALS(*iter, 1);
             break;
 
           case 1:
-            TS_ASSERT(*iter == 3);
+            TS_ASSERT_EQUALS(*iter, 3);
             break;
 
           case 2:
-            TS_ASSERT(*iter == 4);
+            TS_ASSERT_EQUALS(*iter, 4);
             break;
 
           case 3:
-            TS_ASSERT(*iter == 5);
+            TS_ASSERT_EQUALS(*iter, 5);
             break;
 
           case 4:
-            TS_ASSERT(*iter == 5);
+            TS_ASSERT_EQUALS(*iter, 5);
             break;
 
           case 5:
-            TS_ASSERT(*iter == 7);
+            TS_ASSERT_EQUALS(*iter, 7);
             break;
         }
       }
 
       gum::BinSearchTree< int >::iterator iter = tree.root();
 
-      TS_ASSERT(*iter == 5);
+      TS_ASSERT_EQUALS(*iter, 5);
     }
 
     void testEraseIterator() {
@@ -218,30 +218,30 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT(tree.size() == 7);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)7);
 
       gum::BinSearchTree< int >::iterator iter = tree.begin();
 
       tree.erase(iter);
-      TS_ASSERT(tree.size() == 6);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)6);
 
       iter = tree.rbegin();
       tree.erase(iter);
-      TS_ASSERT(tree.size() == 5);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)5);
 
       iter = tree.begin();
       ++iter;
       ++iter;
       tree.erase(iter);
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
 
       iter = tree.end();
       tree.erase(iter);
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
 
       iter = tree.rend();
       tree.erase(iter);
-      TS_ASSERT(tree.size() == 4);
+      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4);
     }
   };
 }   // namespace gum_tests

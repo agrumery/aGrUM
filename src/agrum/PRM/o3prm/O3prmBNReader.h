@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  *
  * this class generates the groundedBN from a class or an instance name.
  *
- * @author Pierre-Henri WUILLEMIN(@LIP6) and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  */
 #ifndef GUM_PRM_O3PRM_BNREADER_H
 #define GUM_PRM_O3PRM_BNREADER_H

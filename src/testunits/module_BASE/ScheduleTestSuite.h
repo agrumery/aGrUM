@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -88,20 +88,20 @@ namespace gum_tests {
       gum::Schedule< double > schedule;
 
       schedule.insert(comb4);
-      TS_ASSERT(schedule.availableOperations().size() == 0);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)0);
 
       schedule.insert(comb2);
-      TS_ASSERT(schedule.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1);
 
       schedule.insert(comb3);
-      TS_ASSERT(schedule.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1);
 
       schedule.insert(comb1);
-      TS_ASSERT(schedule.availableOperations().size() == 2);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)2);
 
-      TS_ASSERT(schedule.scheduling_dag().sizeArcs() == 3);
-      TS_ASSERT(comb1 == schedule.operation(3));
-      TS_ASSERT(3 == schedule.nodeId(comb1));
+      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)(gum::Size)3);
+      TS_GUM_ASSERT_EQUALS(comb1, schedule.operation(3));
+      TS_ASSERT_EQUALS((gum::Size)3, schedule.nodeId(comb1));
 
       const gum::NodeSet& ops1    = schedule.operationsInvolving(result1);
       gum::NodeId         del1_id = schedule.insert(del1);
@@ -124,7 +124,7 @@ namespace gum_tests {
 
       schedule.execute(comb1);
       gum::Schedule< double > schedule2 = schedule;
-      TS_ASSERT(schedule2.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1);
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -150,7 +150,7 @@ namespace gum_tests {
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
-      TS_ASSERT(result14.multiDim() == result4.multiDim());
+      TS_GUM_ASSERT_EQUALS(result14.multiDim(), result4.multiDim());
 
       gum::ScheduleDeleteMultiDim< double > del11(result11);
       gum::ScheduleDeleteMultiDim< double > del12(result12);
@@ -216,26 +216,26 @@ namespace gum_tests {
       gum::Schedule< double > schedule;
 
       gum::NodeId id = schedule.insert(comb4);
-      TS_ASSERT(schedule.availableOperations().size() == 0);
-      TS_ASSERT(schedule.nbOperations(id) == 64);
-      TS_ASSERT(schedule.memoryUsage(id).first == 64);
-      TS_ASSERT(schedule.memoryUsage(id).second == 64);
-      TS_ASSERT(schedule.nbOperations(comb4) == 64);
-      TS_ASSERT(schedule.memoryUsage(comb4).first == 64);
-      TS_ASSERT(schedule.memoryUsage(comb4).second == 64);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(schedule.nbOperations(id), 64);
+      TS_ASSERT_EQUALS(schedule.memoryUsage(id).first, 64);
+      TS_ASSERT_EQUALS(schedule.memoryUsage(id).second, 64);
+      TS_ASSERT_EQUALS(schedule.nbOperations(comb4), 64);
+      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).first, 64);
+      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).second, 64);
 
       schedule.insert(comb2);
-      TS_ASSERT(schedule.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1);
 
       schedule.insert(comb3);
-      TS_ASSERT(schedule.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1);
 
       schedule.insert(comb1);
-      TS_ASSERT(schedule.availableOperations().size() == 2);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)2);
 
-      TS_ASSERT(schedule.scheduling_dag().sizeArcs() == 3);
-      TS_ASSERT(comb1 == schedule.operation(3));
-      TS_ASSERT(3 == schedule.nodeId(comb1));
+      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)3);
+      TS_GUM_ASSERT_EQUALS(comb1, schedule.operation(3));
+      TS_GUM_ASSERT_EQUALS(3, schedule.nodeId(comb1));
 
       gum::NodeId del1_id = schedule.insert(del1);
       schedule.forceBefore(schedule.nodeId(comb4), del1_id);
@@ -248,7 +248,7 @@ namespace gum_tests {
 
       schedule.execute(comb1);
       gum::Schedule< double > schedule2 = schedule;
-      TS_ASSERT(schedule2.availableOperations().size() == 1);
+      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1);
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -274,7 +274,7 @@ namespace gum_tests {
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
-      TS_ASSERT(result14.multiDim() == result4.multiDim());
+      TS_GUM_ASSERT_EQUALS(result14.multiDim(), result4.multiDim());
 
       gum::ScheduleDeleteMultiDim< double > del11(result11);
       gum::ScheduleDeleteMultiDim< double > del12(result12);

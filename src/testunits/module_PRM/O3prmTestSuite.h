@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -978,7 +978,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), gum::Size(0));
+        TS_ASSERT_EQUALS(set.size(), (gum::Size)0);
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }
@@ -1001,7 +1001,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), gum::Size(0));
+        TS_ASSERT_EQUALS(set.size(), (gum::Size)0);
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }
@@ -1025,7 +1025,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), gum::Size(0));
+        TS_ASSERT_EQUALS(set.size(), (gum::Size)0);
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }

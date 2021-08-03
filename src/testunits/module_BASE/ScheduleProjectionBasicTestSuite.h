@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -91,11 +91,11 @@ namespace gum_tests {
         }
       }
 
-      TS_ASSERT(tt2.multiDim() == *t2);
+      TS_GUM_ASSERT_EQUALS(tt2.multiDim(), *t2);
       gum::ScheduleDeleteMultiDim< double > del2(tt2);
       del2.execute();
       auto dom = t1.domainSize();
-      TS_ASSERT(myproj.nbOperations(t1, del_vars, schedule) == dom);
+      TS_ASSERT_EQUALS(myproj.nbOperations(t1, del_vars, schedule), dom);
       delete t2;
 
       mymultiproj.setProjectFunction(schedule_proj_mymin);
@@ -113,8 +113,8 @@ namespace gum_tests {
         }
       }
 
-      TS_ASSERT(tt2.multiDim() == *t2);
-      TS_ASSERT(myproj.nbOperations(t3, del_vars, schedule) == dom);
+      TS_GUM_ASSERT_EQUALS(tt2.multiDim(), *t2);
+      TS_ASSERT_EQUALS(myproj.nbOperations(t3, del_vars, schedule), dom);
       gum::ScheduleDeleteMultiDim< double > del3(tt2);
       del3.execute();
 
@@ -129,8 +129,8 @@ namespace gum_tests {
         }
       }
 
-      TS_ASSERT(tt2.multiDim() == *t2);
-      TS_ASSERT(myproj.nbOperations(*(t1.content()), del_vars, schedule) == dom);
+      TS_GUM_ASSERT_EQUALS(tt2.multiDim(), *t2);
+      TS_ASSERT_EQUALS(myproj.nbOperations(*(t1.content()), del_vars, schedule), dom);
       gum::ScheduleDeleteMultiDim< double > del4(tt2);
       del4.execute();
 
@@ -146,8 +146,8 @@ namespace gum_tests {
         }
       }
 
-      TS_ASSERT(tt2.multiDim() == *t2);
-      TS_ASSERT(xxx.nbOperations(t3, del_vars, schedule) == dom);
+      TS_GUM_ASSERT_EQUALS(tt2.multiDim(), *t2);
+      TS_ASSERT_EQUALS(xxx.nbOperations(t3, del_vars, schedule), dom);
       gum::ScheduleDeleteMultiDim< double > del5(tt2);
       del5.execute();
 
@@ -163,8 +163,8 @@ namespace gum_tests {
         }
       }
 
-      TS_ASSERT(tt2.multiDim() == *t2);
-      TS_ASSERT(yyy->nbOperations(t3, del_vars, schedule) == dom);
+      TS_GUM_ASSERT_EQUALS(tt2.multiDim(), *t2);
+      TS_ASSERT_EQUALS(yyy->nbOperations(t3, del_vars, schedule), dom);
       gum::ScheduleDeleteMultiDim< double > del6(tt2);
       del6.execute();
 
@@ -205,12 +205,12 @@ namespace gum_tests {
       gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
       gum::Schedule< double >                schedule;
       std::pair< long, long >                xxx = myproj.memoryUsage(t1, del_vars, schedule);
-      TS_ASSERT(xxx.first == 16384);
-      TS_ASSERT(xxx.second == 16384);
+      TS_ASSERT_EQUALS(xxx.first, 16384);
+      TS_ASSERT_EQUALS(xxx.second, 16384);
 
       xxx = myproj.memoryUsage(*(t1.content()), del_vars, schedule);
-      TS_ASSERT(xxx.first == 16384);
-      TS_ASSERT(xxx.second == 16384);
+      TS_ASSERT_EQUALS(xxx.first, 16384);
+      TS_ASSERT_EQUALS(xxx.second, 16384);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

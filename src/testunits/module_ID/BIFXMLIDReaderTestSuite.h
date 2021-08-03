@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -88,7 +88,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT(net != 0);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
       // For comparison with what have wrote Writer
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
@@ -100,9 +100,9 @@ namespace gum_tests {
       output.flush();
       output.close();
 
-      if (output.fail()) { GUM_ERROR(gum::IOError, "Writting in the ostream failed.") }
+      if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
 
-      if (net != 0) { TS_ASSERT(!net->empty()); }
+      if (net != nullptr) { TS_ASSERT(!net->empty()); }
 
       delete net;
     }
@@ -116,9 +116,9 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT(net != 0);
+      TS_ASSERT_DIFFERS(net, nullptr);
 
-      if (net != 0) {
+      if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
 
         for (const auto node: net->nodes())

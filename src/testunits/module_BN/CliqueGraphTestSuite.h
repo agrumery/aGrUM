@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -555,7 +555,7 @@ namespace gum_tests {
       clique << 2 << 3 << 4 << 5;
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.setClique(2, clique));
-      TS_ASSERT_EQUALS(graph.clique(2).size(), gum::Size(4));
+      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4);
       TS_ASSERT(graph.hasRunningIntersection());
     }
 
@@ -579,7 +579,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5));
       // check a new separator ??
-      TS_ASSERT_EQUALS(graph.clique(2).size(), gum::Size(4));
+      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4);
 
       TS_ASSERT(graph.hasRunningIntersection());
     }
@@ -593,7 +593,7 @@ namespace gum_tests {
       gum::NodeSet result;
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5));
-      TS_ASSERT_EQUALS(graph.clique(2).size(), gum::Size(4));
+      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4);
 
       TS_ASSERT(graph.hasRunningIntersection());
     }
@@ -720,7 +720,7 @@ namespace gum_tests {
       g.addEdge(4, 5);
       g.addEdge(5, 1);
 
-      TS_ASSERT(g.hasRunningIntersection() == true);
+      TS_ASSERT_EQUALS(g.hasRunningIntersection(), true);
     }
   };
 }   // namespace gum_tests

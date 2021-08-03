@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -158,7 +158,7 @@ namespace gum_tests {
 
       gum::MixedGraph* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::MixedGraph(graph)));
-      TS_ASSERT(graph == *copy);
+      TS_ASSERT_EQUALS(graph, *copy);
       delete (copy);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy2 = graph);
