@@ -22,6 +22,7 @@ import os
 import sys
 from subprocess import PIPE, Popen
 
+from .configuration import cfg
 from .utils import notif, critic
 
 
@@ -35,7 +36,7 @@ def cmdline(command):
 
 
 #################################################################################################
-# find make, python2, python3
+# find make, python3
 def is_tool(prog, longpath=False):
   progw = prog + ".exe"
   for dir in os.environ['PATH'].split(os.pathsep):
@@ -47,36 +48,17 @@ def is_tool(prog, longpath=False):
 
 
 def check_tools(options):
-  exe_py = None
-  if options.python == "running":
-    exe_py = sys.executable
-  elif options.python == "3":
-    exe_py = is_tool('python3', True)
-  elif options.python == "2":
-    exe_py = is_tool('python2', True)
-  if exe_py is None:
-    exe_py = is_tool('python', True)
-    if exe_py is None:
-      exe_py = sys.executable
-      if exe_py is None:
-        critic("No python has been found")
-
+  exe_py = sys.executable
+  
   version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
+  subversion = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[2:])"')[0]
 
   if version == "2":
-    if options.python == "3":
-      notif('python3 not found. Using [python2] instead')
-      options.python = "2"
-  elif version == "3":
-    if options.python == "2":
-      notif('python2 not found. Using [python3] instead')
-      options.python = "3"
+    critic('python2 is not supported anymore. Please use pyAgrum 0.21.x.')
   else:
-    critic("No version found for python. Found version : [{}]".format(version))
-
-  if options.python == "running":
-    notif("Python's running version : [python{}]²".format(version))
-    options.python = version
+    if int(subversion)<7:
+      critic('python<3.7 is not supported anymore. Please use pyAgrum 0.21.x.')
+  cfg.python_version=f"{version}.{subversion}"
 
   exe_cmake = is_tool("cmake")
   if exe_cmake is None:
@@ -94,9 +76,9 @@ def check_tools(options):
   if is_tool("clang-format"):
     exe_clangformat = "clang-format"
   if exe_clangformat is None:
-    for version in ['11.0', '10.0', '9.0', '8.0']:
-      if is_tool("clang-format-{}".format(version)):
-        exe_clangformat = "clang-format-{}".format(version)
+    for version in ['', '-13.0', '-12.0', '-11.0']:
+      if is_tool(f"clang-format{version}"):
+        exe_clangformat = f"clang-format{version}"
         break
 
   exe_msbuild = is_tool("msbuild")

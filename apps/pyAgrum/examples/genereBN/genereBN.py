@@ -21,13 +21,13 @@ bn=generator.generate(NBRNOEUDS,NBRARCS,MODMAX)
 
 CLASSE=bn.topologicalOrder()[-1]
 
-print("(*) forcing node {0} to have at least {1} parents".format(CLASSE,NBRPARENTSMIN))
+print(f"(*) forcing node {CLASSE} to have at least {NBRPARENTSMIN} parents")
 while (len(bn.parents(CLASSE))<NBRPARENTSMIN):
   nvparent=int(gum.randomProba()*bn.size())
   try:
     bn.addArc(nvparent,CLASSE)
   except gum.Exception:
-    print("  Failed in {0} with {1}".format(str(bn.parents(0)),nvparent))
+    print(f"  Failed in {bn.parents(0)} with {nvparent}")
 
 print("(*) re-generating CPTs")
 bn.generateCPTs()

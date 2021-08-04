@@ -67,12 +67,11 @@ def specialActions(current):
     nbrError = guideline(current, current['correction'])
     if nbrError > 0:
       if not current['correction']:
-        critic(("{} Guideline error(s) found.\n" +
-                "Please consider using [act guideline --correction] in order to correct those errors.").format(
-          nbrError),
-          None, nbrError)
+        critic(f"{nbrError} Guideline error(s) found.\n" +
+               "Please consider using [act guideline --correction] in order to correct those errors.",
+               None, nbrError)
       else:
-        critic(("{} Guideline error(s) found.").format(nbrError), None, nbrError)
+        critic(f"{nbrError} Guideline error(s) found.", None, nbrError)
     else:
       notif("No guideline error found.")
 
@@ -116,7 +115,7 @@ def cleanAll():
 
 def showAct2Config(current):
   def aff(k):
-    notif("[{0}] => {1}".format(k, current[k]))
+    notif(f"[{k}] => {current[k]}")
 
   for k in cfg.mains:
     aff(k)

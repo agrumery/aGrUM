@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+"""
+The purpose of this module is to provide tools for comaring different BNs.
+"""
 
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
@@ -21,22 +23,17 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-from __future__ import print_function
 
-import sys
 import os
 import math
+from itertools import product, combinations
 
 import pyAgrum as gum
-from itertools import product, combinations
 
 
 class GraphicalBNComparator:
   """
-  BNGraphicalComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables are the same in the 2 BNs.
-  But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the
-  same role :
-  _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model
+  BNGraphicalComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables are the same in the 2 BNs. But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the  same role : _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model.
 
   Parameters
   ----------
@@ -76,7 +73,7 @@ class GraphicalBNComparator:
     -------
     str
       'OK' if the BNs have composed of the same variables, indicates problematic variables otherwise
-  
+
     """
     # it is assumed (checked by the constructor) that _bn1 and _bn2 share the same set of variable names
     for i in self._bn1.nodes():
@@ -86,6 +83,10 @@ class GraphicalBNComparator:
         return v1.name() + " has not the same domain size in the two bns"
 
     return "OK"
+
+  @staticmethod
+  def _parents_name(bn, n):
+    return {bn.variable(p).name() for p in bn.parents(n)}
 
   def _compareBNParents(self):
     """
@@ -98,8 +99,8 @@ class GraphicalBNComparator:
     for id1 in self._bn1.nodes():
       id2 = self._bn2.idFromName(self._bn1.variable(id1).name())
 
-      p1 = _parents_name(self._bn1, id1)
-      p2 = _parents_name(self._bn2, id2)
+      p1 = self._parents_name(self._bn1, id1)
+      p2 = self._parents_name(self._bn2, id2)
       if p1 != p2:
         return self._bn1.variable(id1).name() + " has different parents in the two bns whose names are in " + str(
           p1.symmetric_difference(p2))
@@ -157,8 +158,8 @@ class GraphicalBNComparator:
 
     * same variables
     * same graphical structure
-    * same parmaeters 
-    
+    * same parameters
+
     Returns
     -------
     str
@@ -195,6 +196,8 @@ class GraphicalBNComparator:
     """
 
     try:
+      # pydotplus is optional
+      # pylint: disable=import-outside-toplevel
       import pydotplus as dot
     except ImportError:
       return False
@@ -206,7 +209,7 @@ class GraphicalBNComparator:
       node = dot.Node('"' + n + '"', style="filled",
                       bgcol="#444444",
                       fgcol="#FFFFFF",
-                      tooltip='"({0}) {1}{2}"'.format(self._bn1.idFromName(n), n, ""))
+                      tooltip=f'"({self._bn1.idFromName(n)}) {n}"')
       graph.add_node(node)
 
     # Arcs
@@ -225,11 +228,17 @@ class GraphicalBNComparator:
           elif self._bn2.dag().existsArc(id2in2, id1in2):
             # If inversed in _bn2
             edge = dot.Edge('"' + n2 + '"', '"' + n1 + '"')
+
+            # dynamic member makes pylink unhappy
+            # pylint: disable=no-member
             edge.set_color("red")
             graph.add_edge(edge)
           else:
             # If removed from _bn2
             edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
+
+            # dynamic member makes pylink unhappy
+            # pylint: disable=no-member
             edge.set_color("red")
             graph.add_edge(edge)
         else:
@@ -257,30 +266,29 @@ class GraphicalBNComparator:
     """
     # t: True, f: False, p: Positive, n: Negative
     count = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
-    
+
     # We look at all combination
     listVariables = self._bn1.names()
-    
+
     # Loop on pairs of variables
     for head, tail in combinations(listVariables, 2):
-      
+
       idHead_1 = self._bn1.idFromName(head)
       idTail_1 = self._bn1.idFromName(tail)
 
       idHead_2 = self._bn2.idFromName(head)
       idTail_2 = self._bn2.idFromName(tail)
 
-      
       if (self._bn1.dag().existsArc(idHead_1, idTail_1) or
-              self._bn1.dag().existsArc(idTail_1, idHead_1)):  # Check edge node1-node2
-        if (self._bn2.dag().existsArc(idHead_2, idTail_2) or 
-                self._bn2.dag().existsArc(idTail_2, idHead_2)):  # if edge:
+         self._bn1.dag().existsArc(idTail_1, idHead_1)):  # Check edge node1-node2
+        if (self._bn2.dag().existsArc(idHead_2, idTail_2) or
+           self._bn2.dag().existsArc(idTail_2, idHead_2)):  # if edge:
           count["tp"] += 1
         else:  # If no edge:
           count["fn"] += 1
       else:  # Check if no edge
         if (self._bn2.dag().existsArc(idHead_2, idTail_2) or
-                self._bn2.dag().existsArc(idTail_2, idHead_2)):  # If edge
+           self._bn2.dag().existsArc(idTail_2, idHead_2)):  # If edge
           count["fp"] += 1
         else:  # If no arc
           count["tn"] += 1
@@ -340,7 +348,7 @@ class GraphicalBNComparator:
         idTail_2 = self._bn2.idFromName(tail)
 
         if self._bn1.dag().existsArc(idHead_1, idTail_1):  # Check arcs head->tail
-          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: 
+          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc:
             count["tp"] += 1
           else:  # If no arc:
             count["fn"] += 1
@@ -416,8 +424,8 @@ class GraphicalBNComparator:
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsEdge(idTail_2, idHead_2):
           hamming_dico["structural hamming"] += 1
         elif not cpdag2.existsArc(idTail_2, idHead_2) and \
-            not cpdag2.existsArc(idHead_2, idTail_2) and \
-            not cpdag2.existsEdge(idTail_2, idHead_2):
+           not cpdag2.existsArc(idHead_2, idTail_2) and \
+           not cpdag2.existsEdge(idTail_2, idHead_2):
           hamming_dico["structural hamming"] += 1
           hamming_dico["hamming"] += 1
 
@@ -425,36 +433,16 @@ class GraphicalBNComparator:
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsArc(idTail_2, idHead_2):
           hamming_dico["structural hamming"] += 1
         elif not cpdag2.existsArc(idTail_2, idHead_2) and \
-            not cpdag2.existsArc(idHead_2, idTail_2) and \
-            not cpdag2.existsEdge(idTail_2, idHead_2):
+           not cpdag2.existsArc(idHead_2, idTail_2) and \
+           not cpdag2.existsEdge(idTail_2, idHead_2):
           hamming_dico["structural hamming"] += 1
           hamming_dico["hamming"] += 1
           # check no edge or arc on the ref graph, and yes on the other graph
 
       elif cpdag2.existsArc(idHead_2, idTail_2) or \
-          cpdag2.existsEdge(idHead_2, idTail_2) or \
-          cpdag2.existsArc(idTail_2, idHead_2):
+         cpdag2.existsEdge(idHead_2, idTail_2) or \
+         cpdag2.existsArc(idTail_2, idHead_2):
         hamming_dico["structural hamming"] += 1
         hamming_dico["hamming"] += 1
-    return (hamming_dico)
 
-
-def _nodeId(bn, n):
-  if type(n) == str:
-    return bn.idFromName(n)
-  else:
-    return n
-
-
-def _parents_name(bn, n):
-  return {bn.variable(n).name() for n in bn.parents(_nodeId(bn, n))}
-
-
-def module_help(exit_value=1):
-  """
-  defines help viewed if args are not OK on command line, and exit with exit_value
-  """
-  print(os.path.basename(sys.argv[0]),
-        "_bn1.{" + gum.availableBNExts() + "} self._bn2.{" + gum.availableBNExts() + "}")
-  sys.exit(exit_value)
-
+    return hamming_dico

@@ -27,9 +27,9 @@ from .utils import notif, warn
 
 
 def checkAgrumMemoryLeak(x, percent):
-  cmd = sys.executable + ' act test debug -t {0} -m all'.format(x)
+  cmd = f'{sys.executable} act test debug -t {x} -m all'
 
-  first = (cfg.C_VALUE + "[{:5.1f}%] ").format(percent)
+  first = cfg.C_VALUE + f"[{percent:5.1f}%] "
   second = cfg.C_WARNING + x + cfg.C_END + " : "
   flag = 0
 
@@ -63,5 +63,5 @@ def checkAgrumMemoryLeaks(current):
     if not testOK:
       res.append(msg)
 
-  print("\n" + cfg.C_WARNING + "Test(s) with problem(s) :\n -{0}\n".format(
-    "\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none") + cfg.C_END)
+  sres="\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none"
+  print("\n" + cfg.C_WARNING + f"Test(s) with problem(s) :\n -{sres}\n" + cfg.C_END)

@@ -41,10 +41,10 @@ from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
 from tests import BayesNetFragmentTestSuite
 
-if sys.version_info >= (3, 6) and pandasFound and sklearnFound:
+if sys.version_info >= (3, 7) and pandasFound and sklearnFound:
   from tests import BNClassifierTestSuite
 else:
-  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs python>=3.6, pandas and scikit-learn")
+  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs python>=3.7, pandas and scikit-learn")
 
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite

@@ -40,11 +40,6 @@ log.propagate = False
 log.info("Mode detected : " + mod)
 log.info("Testing notebooks : " + str(testNotebooks))
 
-if sys.version_info < (3, 0):
-  if testNotebooks:
-    log.warning("+ No notebook tests in python2")
-    testNotebooks = False
-
 if mod != "standAlone":
   if mod == "debug":
     libagrum = os.path.abspath("../../../build/debug/wrappers")

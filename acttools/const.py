@@ -20,15 +20,25 @@
 # ***************************************************************************
 
 # a way of creating constants in python
+import sys
+from typing import Dict, Any, List
+
+
 class _const:
-  class ConstError(TypeError): pass
+  class ConstError(TypeError):
+    pass
 
   def __setattr__(self, name, value):
     if name in self.__dict__:
       raise self.ConstError("Can't rebind const(%s)" % name)
     self.__dict__[name] = value
 
-
-import sys
+  def __str__(self) -> str:
+    # we do not show the colors
+    d: dict[str, Any] = self.__dict__
+    l: list[str] = [
+      f"{self.C_MSG}{k}{self.C_END} : {self.C_VALUE}{d[k] if k[:2] != 'C_' else '(escape sequence)'}{self.C_END}" for
+      k in sorted(d.keys())]
+    return "\n".join(l)
 
 sys.modules[__name__] = _const()

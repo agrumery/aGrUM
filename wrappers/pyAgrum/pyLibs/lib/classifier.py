@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+"""
+Deprecated. Please see pyAgrum.skbn
+"""
+
 
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
@@ -22,16 +25,9 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 # @authors Clara CHARON and Pierre-henri WUILLEMIN
-import os
-import numpy as np
-import pandas as pd
-import logging
 
-import pyAgrum as gum
-import pyAgrum.skbn as skbn
-from pyAgrum.lib.bn2roc import _computepoints, _computeROC
-from sklearn.metrics import accuracy_score
-
+# pylint: disable=unused-import
+from pyAgrum.skbn import BNClassifier
 
 print("** pyAgrum.lib.classifier is deprecated in pyAgrum>0.18.1.")
 print("** Please use pyAgrum.skbn.BNClassifier instead.")

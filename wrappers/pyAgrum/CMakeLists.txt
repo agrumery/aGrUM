@@ -12,9 +12,7 @@ find_package (PythonLibs   ${PYTHON_VERSION_STRING} EXACT  REQUIRED)
 # for linux wheels only 
 #set(PYTHON_INCLUDE_DIR "@PYTHON_INCLUDE_PATH@")
 
-if (PYTHON_VERSION_MAJOR VERSION_GREATER 2)
-  list (APPEND CMAKE_SWIG_FLAGS "-py3")
-endif ()
+list (APPEND CMAKE_SWIG_FLAGS "-py3")
 add_definitions ("-DSWIG_TYPE_TABLE=pyproba")
 
 # PYTHON_INSTALL
@@ -26,7 +24,7 @@ if (NOT DEFINED PYTHON_INSTALL)
   )
 endif ()
 
-set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION_MAJOR}")
+set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files")
 
 
 message(STATUS "================================")

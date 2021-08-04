@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -21,23 +18,18 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
-
-from __future__ import print_function
-
-import time
 import math
-import hashlib
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pyAgrum as gum
 
 
-def _stats(p):
+def _stats(pot):
   mu = 0.0
   mu2 = 0.0
-  v = p.variable(0)
-  for i, p in enumerate(p.tolist()):
+  v = pot.variable(0)
+  for i, p in enumerate(pot.tolist()):
     x = v.numerical(i)
     mu += p * x
     mu2 += p * x * x
@@ -46,11 +38,11 @@ def _stats(p):
 
 def _getTitleHisto(p, showMuSigma=True):
   var = p.variable(0)
-  if var.varType() == 1 or not (showMuSigma):  # Labelized
-    return "{}".format(var.name())
+  if var.varType() == 1 or not showMuSigma:  # Labelized
+    return var.name()
 
   (mu, std) = _stats(p)
-  return "${}$\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(), mu, std)
+  return f"${var.name()}$\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
 
 
 def __limits(p):
@@ -168,8 +160,8 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     if util is not None:
       lu = util.toarray()
       coef = -1 if gum.config["influenceDiagram", "utility_show_loss"] == "True" else 1
-      fmt = "{} [{:." + gum.config["influenceDiagram", "utility_visible_digits"] + "f}]"
-      lv = [fmt.format(var.label(int(i)), coef * lu[i])
+      fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
+      lv = [f"{var.label(int(i))} [{coef * lu[i]:{fmt}}]"
             for i in np.arange(var.domainSize())]
     else:
       lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
@@ -187,10 +179,10 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
                 color=gum.config['notebook', 'histogram_color'])
   ma = p.max()
 
-  for bar in bars:
-    if bar.get_height() != 0:
-      txt = txt = f"{bar.get_height():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
-      ax.text(bar.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
+  for b in bars:
+    if b.get_height() != 0:
+      txt = txt = f"{b.get_height():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+      ax.text(b.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
@@ -229,13 +221,14 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   if util is not None:
     lu = util.toarray()
-    fmt = "{} [{:." + gum.config["influenceDiagram", "utility_visible_digits"] + "f}]"
+    fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
+
     if gum.config["influenceDiagram", "utility_show_loss"] == "True":
-      vx = [fmt.format(var.label(int(i)), -lu[i] if lu[i] != 0 else 0) for i in ra_reverse]
+      vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}" for i in ra_reverse]
     else:
-      vx = [fmt.format(var.label(int(i)), lu[i]) for i in ra_reverse]
+      vx = [f"{var.label(int(i))} [{lu[i]:{fmt}}" for i in ra_reverse]
   else:
-    vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
+    vx = [var.label(int(i)) for i in ra_reverse]
 
   fig = plt.figure()
   fig.set_figheight(scale * var.domainSize() / 4.0)
@@ -250,10 +243,10 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
                  align='center',
                  color=gum.config['notebook', 'histogram_color'])
 
-  for bar in bars:
-    if bar.get_width() != 0:
-      txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
-      ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
+  for b in bars:
+    if b.get_width() != 0:
+      txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+      ax.text(1, b.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -345,7 +338,7 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   ra = np.arange(var.domainSize())
 
   ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
+  vx = [var.label(int(i)) for i in ra_reverse]
 
   fig = plt.figure()
   fig.set_figheight(scale * var.domainSize() / 4.0)
@@ -365,12 +358,12 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
                     align='center',
                     color=gum.config['notebook', 'histogram_color'])
 
-  for bar in barsmax:
-    txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
-    ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
-  for bar in barsmin:
-    txt = f"{bar.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
-    ax.text(0, bar.get_y(), txt, ha='left', va='bottom')
+  for b in barsmax:
+    txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+    ax.text(1, b.get_y(), txt, ha='right', va='bottom')
+  for b in barsmin:
+    txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+    ax.text(0, b.get_y(), txt, ha='left', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))

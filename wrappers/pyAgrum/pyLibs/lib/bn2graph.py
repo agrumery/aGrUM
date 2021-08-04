@@ -1,5 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
+The purpose of this module is to provide tools for mapping Bayesian Network (and inference) in dot language in order to
+be displayed/saved as image.
+"""
 
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
@@ -22,19 +24,17 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-from __future__ import print_function
 
 import time
-import math
 import hashlib
 
+from tempfile import mkdtemp
 import matplotlib.pyplot as plt
-import numpy as np
 import pyAgrum as gum
 import pydotplus as dot
-import shutil
 
-from .proba_histogram import proba2histo, saveFigProba
+from pyAgrum.lib import proba_histogram
+import pyAgrum.lib._colors as gumcols
 
 
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
@@ -57,8 +57,6 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
       color map to show the vals of Nodes
     cmapArc: ColorMap
       color map to show the vals of Arcs
-    dag : pyAgrum.DAG
-      only shows nodes that have their id in the dag (and not in the whole BN)
     showMsg: dict
       a nodeMap of values to be shown as tooltip
 
@@ -72,11 +70,15 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
   if cmapArc is None:
     cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
 
+  # default
+  maxarcs = 100
+  minarcs = 0
+
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
     maxarcs = max(arcWidth.values())
 
-  graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
+  dotobj = dot.Dot(graph_type='digraph', bgcolor="transparent")
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
@@ -84,16 +86,16 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
       fgcol = gum.config["notebook", "default_node_fgcolor"]
       res = ""
     else:
-      bgcol = gum._proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = gum._proba2fgcolor(nodeColor[n], cmapNode)
-      res = " : {0:2.5f}".format(
-        nodeColor[n] if showMsg is None else showMsg[n])
+      bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
+      fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
+      res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
 
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
                     fontcolor=fgcol,
-                    tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n), n, res))
-    graph.add_node(node)
+                    tooltip=f'"({bn.idFromName(n)}) {n}{res}"'
+                    )
+    dotobj.add_node(node)
 
   for a in bn.arcs():
     if arcWidth is None:
@@ -110,26 +112,32 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
         pw = 1
         av = 1
     if arcColor is None:
-      col = gum.getBlackInTheme()
+      col = gumcols.getBlackInTheme()
     else:
       if a in arcColor:
-        col = gum._proba2color(arcColor[a], cmapArc)
+        col = gumcols.proba2color(arcColor[a], cmapArc)
       else:
-        col = gum.getBlackInTheme()
+        col = gumcols.getBlackInTheme()
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     penwidth=pw, color=col,
-                    tooltip="{} : {}".format(a, av))
-    graph.add_edge(edge)
+                    tooltip=f"{a} : {av}"
+                    )
+    dotobj.add_edge(edge)
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  graph.set_size(size)
-  return graph
+
+  # dynamic member makes pylink unhappy
+  # pylint: disable=no-member
+  dotobj.set_size(size)
+
+  return dotobj
 
 
-def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None,
-                    cmapNode=None, cmapArc=None, dag=None):
+def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None,
+                    cmapNode=None, cmapArc=None, dag=None
+                    ):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -162,11 +170,19 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   -------
     the desired representation of the inference
   """
+  if evs is None:
+    evs = {}
+  if targets is None:
+    targets = {}
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
   if cmapArc is None:
     cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
+
+  # defaukt
+  maxarcs = 100
+  minarcs = 0
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
@@ -181,19 +197,18 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   ie.makeInference()
   stopTime = time.time()
 
-  from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
-           gum.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
   if gum.config["notebook", "show_inference_time"]:
-    dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
+    dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
 
   dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \
             '", style=filled,color="' + \
             gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
-  dotstr += '  edge [color="' + gum.getBlackInTheme() + '"];' + "\n"
+  dotstr += '  edge [color="' + gumcols.getBlackInTheme() + '"];' + "\n"
 
   showdag = bn.dag() if dag is None else dag
   for nid in showdag.nodes():
@@ -207,25 +222,23 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
 
     if nodeColor is not None:
       if name in nodeColor or nid in nodeColor:
-        bgcol = gum._proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = gum._proba2fgcolor(nodeColor[name], cmapNode)
+        bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
+        fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
-    colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
-      bgcol, fgcol)
+    colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
-      dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
-        name, filename, colorattribute)
+      proba_histogram.saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
-      dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
+      dotstr += f' "{name}" [{colorattribute}]'
 
   for a in showdag.arcs():
     (n, j) = a
@@ -244,15 +257,15 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
         av = ""
 
     if arcColor is None:
-      col = gum.getBlackInTheme()
+      col = gumcols.getBlackInTheme()
     else:
       if a in arcColor:
-        col = gum._proba2color(arcColor[a], cmapArc)
+        col = gumcols.proba2color(arcColor[a], cmapArc)
       else:
-        col = gum.getBlackInTheme()
+        col = gumcols.getBlackInTheme()
 
-    dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(
-      bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)
+    dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{a}:{av}",color="{col}"];'
+
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
@@ -263,45 +276,3 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   g.temp_dir = temp_dir
 
   return g
-
-
-def dotize(aBN, name, format='pdf'):
-  """
-  From a bn, creates an image of the BN
-
-  :param pyAgrum.BayesNet bn: the bayes net to show
-  :param string name: the filename (without extension) for the image
-  :param string format: format in ['pdf','png','fig','jpg','svg']
-  """
-  if format not in ['pdf', 'png', 'fig', 'jpg', 'svg']:
-    raise Exception(
-      "<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
-
-  if isinstance(aBN, str):
-    bn = gum.loadBN(aBN)
-  else:
-    bn = aBN
-
-  imgfile = name + '.' + format
-  BN2dot(bn).write(imgfile, format=format)
-
-
-def pngize(aBN, name):
-  """
-  From a bn, creates a png of the BN
-
-  :param pyAgrum.BayesNet bn: the bayes net to show
-  :param string name: the filename (without extension) for the image
-  """
-  dotize(aBN, name, 'png')
-
-
-def pdfize(aBN, name):
-  """
-  From a bn, creates a pdf of the BN
-
-  :param pyAgrum.BayesNet bn: the bayes net to show
-  :param string name: the filename (without extension) for the image
-  """
-  dotize(aBN, name, 'pdf')
-

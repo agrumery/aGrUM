@@ -153,8 +153,8 @@ class ASTBinaryOp(ASTtree):
     :param prefix: a prefix for each line of the string representation
     :return:  the string version of the tree
     """
-    return "{}{}\n{}\n{}".format(prefix, self.type, self.op1.__str__(prefix + self._continueNextLine),
-                                 self.op2.__str__(prefix + self._continueNextLine))
+    return f"""{prefix}{self.type}\n{self.op1.__str__(prefix + self._continueNextLine)}
+{self.op2.__str__(prefix + self._continueNextLine)}"""
 
 
 class ASTplus(ASTBinaryOp):
@@ -182,7 +182,7 @@ class ASTplus(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return "\\left(" + self._toLatex(nameOccur) + "\\right)"
+    return f"\\left({self._toLatex(nameOccur)}\\right)"
 
   def _toLatex(self, nameOccur: Dict[str, int]) -> str:
     """
@@ -397,7 +397,7 @@ class ASTposteriorProba(ASTtree):
       s += "|"
       s += ','.join(sorted(self.knw))
     s += ")"
-    return "{}{}".format(prefix, s)
+    return f"{prefix}{s}"
 
   def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
@@ -491,7 +491,7 @@ class ASTjointProba(ASTtree):
     s = "P("
     s += ",".join(sorted(self._varNames))
     s += ")"
-    return "{}joint {}".format(prefix, s)
+    return f"{prefix}joint {s}"
 
   def copy(self) -> "ASTtree":
     """
@@ -572,7 +572,8 @@ class ASTsum(ASTtree):
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return "{}sum on {} for \n{}".format(prefix, ",".join(sorted(l)), a.__str__(prefix + self._continueNextLine))
+    return f"""{prefix}sum on {",".join(sorted(l))} for 
+{a.__str__(prefix + self._continueNextLine)}"""
 
   def copy(self) -> "ASTtree":
     """

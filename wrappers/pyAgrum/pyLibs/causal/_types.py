@@ -22,8 +22,6 @@
 """
 This file defines the types for the causal package
 """
-from __future__ import annotations
-
 from typing import TypeVar, NewType
 from typing import Union, Optional, Iterable
 from typing import Set, List, Tuple, Dict

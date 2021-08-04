@@ -31,13 +31,6 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://agrum.org'
 
-# for python2's compatibility
-try:
-    FileNotFoundError
-except NameError:
-    FileNotFoundError = IOError
-## end for python2's compatibility
-
 import numpy as np
 from .deprecated import *
 
@@ -133,8 +126,8 @@ def about():
   about() for pyAgrum
 
   """
-  print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
-  print("(c) 2015-2020 Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
+  print("pyAgrum @PYAGRUM_VERSION@")
+  print("(c) 2015-2021 Pierre-Henri Wuillemin, Christophe Gonzales")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
@@ -520,7 +513,7 @@ def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_
   genere.toCSV(name_out, with_labels)
 
   if show_progress:
-    print("Log2-Likelihood : {}".format(ll))
+    print(f"Log2-Likelihood : {ll}")
 
   return ll
 
@@ -534,59 +527,7 @@ def log2(p):
 
   Returns
   -------
-    a gpyAgrumum.Potential
+    a pyAgrum.Potential
   """
   return Potential(p).log2()
 
-
-def forDarkTheme():
-  """ change the color for arcs and text in graphs to be more visible in dark theme
-  """
-  config["notebook", "default_arc_color"] = "#AAAAAA"
-
-
-def forLightTheme():
-  """ change the color for arcs and text in graphs to be more visible in light theme
-  """
-  config["notebook", "default_arc_color"] = "#202020"
-
-
-def getBlackInTheme():
-  """ return the color used for arc and text in graphs
-  """
-  return config["notebook", "default_arc_color"]
-
-
-####################
-# Private functions
-####################
-def _proba2rgb(p, cmap, withSpecialColor):
-  (r, g, b, _) = cmap(p)
-  r = "%02x" % int(r * 256)
-  g = "%02x" % int(g * 256)
-  b = "%02x" % int(b * 256)
-
-  if withSpecialColor:  # add special color for p=0 or p=1
-    if p == 0.0:
-      r, g, b = "FF", "33", "33"
-    elif p == 1.0:
-      r, g, b = "AA", "FF", "FF"
-
-  return r, g, b
-
-
-def _proba2color(p, cmap):
-  r, g, b = _proba2rgb(p, cmap, withSpecialColor=False)
-  return "#" + r + g + b
-
-
-def _proba2bgcolor(p, cmap):
-  r, g, b = _proba2rgb(p, cmap, withSpecialColor=True)
-  return "#" + r + g + b
-
-
-def _proba2fgcolor(p, cmap):
-  if max([eval("0x" + s[0]) for s in _proba2rgb(p, cmap, withSpecialColor=True)]) <= 12:
-    return "#FFFFFF"
-  else:
-    return "#000000"

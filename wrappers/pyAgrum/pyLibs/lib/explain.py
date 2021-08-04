@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
 # Permission to use, copy, modify, and distribute this
@@ -24,15 +23,24 @@ tools for BN qualitative analysis
 
 import math
 from typing import Dict
+import itertools
+from base64 import encodebytes
 
 import numpy as np
 import pandas as pd
-from itertools import compress, product
+
+import pylab
+
+import IPython.display
+import IPython.core.pylabtools
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot
+import pyAgrum.lib._colors as gumcols
 
 _cdict = {
   'red': ((0.0, 0.1, 0.3),
@@ -62,7 +70,6 @@ def _independenceListForPairs(bn, target=None):
     List[(str,str,List[str])]
       A list of independence found in the structure of BN.
     """
-  import itertools
 
   def powerset(iterable):
     xs = list(iterable)
@@ -74,10 +81,10 @@ def _independenceListForPairs(bn, target=None):
   nams = sorted(bn.names())
   if target is None:
     firstnams = nams.copy()
-    indepnodes=bn.names()
+    indepnodes = bn.names()
   else:
-    indepnodes={bn.variable(i).name() for i in gum.MarkovBlanket(bn,target).nodes()}
-    if type(target) == str:
+    indepnodes = {bn.variable(i).name() for i in gum.MarkovBlanket(bn, target).nodes()}
+    if isinstance(target, str):
       firstnams = [target]
     else:
       firstnams = [bn.variable(target).name()]
@@ -93,7 +100,7 @@ def _independenceListForPairs(bn, target=None):
   return l
 
 
-def independenceListForPairs(bn, filename, target=None,plot=True, alphabetic=False):
+def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=False):
   """
     get the p-values of the chi2 test of a (as simple as possible) independence proposition for every non arc.
 
@@ -125,26 +132,24 @@ def independenceListForPairs(bn, filename, target=None,plot=True, alphabetic=Fal
     vals[indep] = learner.chi2(*indep)[1]
 
   if plot:
-    import pylab
-    plotvals=dict()
+    plotvals = dict()
     for indep in vals:
       key = "$" + indep[0] + " \\perp " + indep[1]
       if len(indep[2]) > 0:
         key += " \\mid " + ",".join(indep[2])
       key += "$"
-      plotvals[key]=vals[indep]
+      plotvals[key] = vals[indep]
 
     if not alphabetic:
       sortedkeys = sorted(plotvals, key=plotvals.__getitem__, reverse=False)
     else:
       sortedkeys = list(plotvals.keys())
 
-
-    fig = pylab.figure(figsize=(10, 1+0.25 * len(plotvals)))
+    fig = pylab.figure(figsize=(10, 1 + 0.25 * len(plotvals)))
     ax = fig.add_subplot(1, 1, 1)
     ax.plot([plotvals[k] for k in sortedkeys], sortedkeys, "o")
     ax.grid(True)
-    ax.vlines(x=0.05, ymin=-0.5, ymax=len(vals)-0.5 , colors='purple')
+    ax.vlines(x=0.05, ymin=-0.5, ymax=len(vals) - 0.5, colors='purple')
     ax.add_patch(mpl.patches.Rectangle((0, -0.5), 0.05, len(vals), color="yellow"))
 
   return vals
@@ -158,20 +163,15 @@ def _normalizeVals(vals, hilightExtrema=False):
   mi = float(min(vals.values()))
   if ma == mi:
     return None
+
+  if not hilightExtrema:
+    vmi = 0.01
+    vma = 0.99
   else:
-    if not hilightExtrema:
-      vmi = 0.01
-      vma = 0.99
-    else:
-      vmi = 0
-      vma = 1
+    vmi = 0
+    vma = 1
 
-    try:
-      items = vals.items()
-    except AttributeError:
-      items = vals.iteritems()
-
-    return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in items}
+  return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
 
 
 def _reprInformation(bn, evs, size, cmap, asString):
@@ -184,15 +184,6 @@ def _reprInformation(bn, evs, size, cmap, asString):
     :param cmap: colour map used
     :return: the HTML string
     """
-  # fix DeprecationWarning of base64.encodestring()
-  try:
-    from base64 import encodebytes
-  except ImportError:  # 3+
-    from base64 import encodestring as encodebytes
-
-  import IPython.display
-  import IPython.core.pylabtools
-  from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
   ie = gum.LazyPropagation(bn)
   ie.setEvidence(evs)
@@ -220,25 +211,25 @@ def _reprInformation(bn, evs, size, cmap, asString):
                                   )
   cb1.set_label('Entropy')
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
-  png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % encodebytes(png).decode(
-    'ascii'
-  )
+  png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
+  # dynamic member makes pylink unhappy
+  # pylint: disable=no-member
   gsvg = IPython.display.SVG(gr.create_svg())
 
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
   sss += "<font color='" + \
-         gum._proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
+         gumcols.proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
   sss += png_legend
   sss += "<font color='" + \
-         gum._proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
+         gumcols.proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
   sss += "</div>"
 
   if asString:
     return sss
-  else:
-    return IPython.display.display(IPython.display.HTML(sss))
+
+  return IPython.display.display(IPython.display.HTML(sss))
 
 
 def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
@@ -321,7 +312,8 @@ class ShapValues:
 
   ################################## VARIABLES ##################################
 
-  def _get_feats_name(self, bn, target):
+  @staticmethod
+  def _get_feats_name(bn, target):
     list_feats_name = list(bn.names())
     list_feats_name.remove(target)
     return list_feats_name
@@ -333,7 +325,8 @@ class ShapValues:
       list_node_names[self.bn.idFromName(name)] = name
     return list_node_names
 
-  def _coal_encoding(self, convert, coal):
+  @staticmethod
+  def _coal_encoding(convert, coal):
     ### Convert a list of nodes : ['X', 'Z'] to an array of 0 and 1.
     ### ['X', 'Z'] -> [1,0,1,0]
     temp = np.zeros(len(convert), dtype=int)
@@ -354,8 +347,8 @@ class ShapValues:
 
   def _get_all_coal_compress(self):
     ### Return : all coalitions with the feature
-    return (list(compress(self.feats_names, mask)) for mask in product(*[[0, 1]] * (len(self.feats_names))))
-    ### Yield ( set(compress(self.feats_names, mask)) for mask in product(*[[0,1]]*(len(self.feats_names))) )
+    return (list(itertools.compress(self.feats_names, mask)) for mask in
+            itertools.product(*[[0, 1]] * (len(self.feats_names))))
 
   ################################## PREDICTION ##################################
   def _filtrage(self, df, conditions):
@@ -364,11 +357,11 @@ class ShapValues:
     ### Example : {'X1':0, 'X2':1}
     if conditions == {}:
       return df
-    else:
-      first = next(iter(conditions))
-      new_df = df[df[first] == conditions[first]]
-      conditions.pop(first)
-      return self._filtrage(new_df, conditions)
+
+    first = next(iter(conditions))
+    new_df = df[df[first] == conditions[first]]
+    conditions.pop(first)
+    return self._filtrage(new_df, conditions)
 
   def _init_Inference(self):
     ie = gum.LazyPropagation(self.bn)
@@ -431,12 +424,13 @@ class ShapValues:
 
   ################################## Get the two coalitions to substract S_U_i and S #################################
 
-  def _gen_coalitions2(self, list_feats):
+  @staticmethod
+  def _gen_coalitions2(list_feats):
     ### !!!! THE FEATURE i HAVE TO BE THE LAST IN THE LIST OF FEATURES !!!
     ### Return : all coalitions with the feature
-    for mask in product(*[[0, 1]] * (len(list_feats) - 1)):
-      S_U_i = compress(list_feats, mask + (1,))
-      S = compress(list_feats, mask + (0,))
+    for mask in itertools.product(*[[0, 1]] * (len(list_feats) - 1)):
+      S_U_i = itertools.compress(list_feats, mask + (1,))
+      S = itertools.compress(list_feats, mask + (0,))
       yield S_U_i, S
 
   ################################## Function to Compute CONDITIONNAL SHAP Value ##################################
@@ -453,7 +447,6 @@ class ShapValues:
     -------
       a dictionary Dict[str,float]
     """
-    markov_blanket = self._get_markov_blanket()
 
     ie = self._init_Inference()
 
@@ -506,7 +499,6 @@ class ShapValues:
       a dictionary Dict[str,float]
     """
     results = self._conditional(train)
-    n_feats = len(self.feats_names)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
@@ -582,7 +574,6 @@ class ShapValues:
       a dictionary Dict[str,float]
     """
     results = self._marginal(train, sample_size)
-    n_feats = len(self.feats_names)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
@@ -593,7 +584,8 @@ class ShapValues:
 
     ################################## MUTILATION ######################################
 
-  def _mutilation_Inference(self, bn, feats_name, target):
+  @staticmethod
+  def _mutilation_Inference(bn, feats_name, target):
     ie = gum.LazyPropagation(bn)
     ie.addTarget(target)
     for name in feats_name:
@@ -657,7 +649,6 @@ class ShapValues:
       a dictionary Dict[str,float]
     """
     results = self._causal(train)
-    n_feats = len(self.feats_names)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
@@ -668,21 +659,20 @@ class ShapValues:
 
     ################################## PLOT SHAP Value ##################################
 
-  def _plot_importance(self, results, percentage=False, ax=None):
-    n_feats = len(self.feats_names)
+  @staticmethod
+  def _plot_importance(results, percentage=False, ax=None):
     series = pd.DataFrame(abs(results).mean(), columns=['value'])
     series['feat'] = series.index
 
     if ax is None:
-      fig, ax = plt.subplots()
+      _, ax = plt.subplots()
 
-    if percentage == True:
+    if percentage:
       series['value'] = series['value'].div(series['value'].sum(axis=0)).multiply(100)
       series = series.sort_values('value', ascending=True)
       ax.barh(series.feat, series.value, align='center')
       ax.set_xlabel('Mean(|SHAP value|)')
       ax.set_title('Feature Importance in %')
-
     else:
       series = series.sort_values('value', ascending=True)
       ax.barh(series.feat, series.value, align='center')
@@ -691,9 +681,10 @@ class ShapValues:
 
     return ax.get_figure()
 
-  def _plot_scatter(self, results, ax=None):
+  @staticmethod
+  def _plot_scatter(results, ax=None):
     if ax is None:
-      fig, ax = plt.subplots()
+      _, ax = plt.subplots()
 
     res = {}
     for col in results.columns:
@@ -705,7 +696,8 @@ class ShapValues:
     ax.set_title('Shapley value (impact on model output)')
     return ax.get_figure()
 
-  def _plot_violin(self, results, ax=None):
+  @staticmethod
+  def _plot_violin(results, ax=None):
     data = []
     pos = []
     label = []
@@ -717,7 +709,7 @@ class ShapValues:
       pos.append(i)
       label.append(col)
     if ax is None:
-      fig, ax = plt.subplots()
+      _, ax = plt.subplots()
     ax.violinplot(data, pos, vert=False)
     ax.set_yticks(pos)
     ax.set_yticklabels(label)
@@ -730,7 +722,7 @@ class ShapValues:
     Parameters
     ----------
     results: dict[str,float]
-      The (Shap) values associates to each variable 
+      The (Shap) values associates to each variable
     cmap: Matplotlib.ColorMap
       The colormap used for colouring the nodes
 

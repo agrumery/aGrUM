@@ -73,7 +73,7 @@ def checkCurrent(current, options, args):
   # fixing options
   for opt, value in options.__dict__.items():
     if opt not in current:
-      error("Options not known : {0} in {1}".format(opt, current.keys()))
+      error(f"Options not known : {opt} in {current.keys()}")
 
     update(current, opt, value, current[opt] != value)
 
@@ -87,21 +87,21 @@ def checkCurrent(current, options, args):
     arg = "+".join(t)
     if update(current, 'targets', t, t.issubset(cfg.targets)):
       if bT:
-        error("Targets overwritten by [{0}]".format("+".join(t)))
+        error(f"Targets overwritten by [{'+'.join(t)}]")
       bT = True
       continue
     if update(current, 'action', arg, arg in cfg.actions):
       if bA:
-        error("Action overwritten by [{0}]".format(arg))
+        error(f"Action overwritten by [{arg}]")
       bA = True
       continue
     if update(current, 'mode', arg, arg in cfg.modes):
       if bM:
-        error("Mode overwritten by [{0}]".format(arg))
+        error(f"Mode overwritten by [{arg}]")
       bM = True
       continue
 
-    critic("arg [{0}] unknown".format(arg))
+    critic(f"arg [{arg}] unknown")
 
   checkConsistency(current)
 
@@ -118,13 +118,12 @@ def checkConsistency(current):
   # helper
   def check_aGrumTest(option, current):
     if current[option]:
-      prefix = "Option [{0}] acts only".format(option)
+      prefix = f"Option [{option}] acts only"
       if current['targets'] != set(['aGrUM']):
         has_notif = True
         notif(prefix + " on target [aGrUM].")
       if current['action'] != 'test':
-        critic(
-            prefix + " on action [test] (not on [{0}]).".format(current['action']))
+        critic(f"{prefix} on action [test] (not on [{current['action']}]).")
 
   # end of helper
 
@@ -132,7 +131,7 @@ def checkConsistency(current):
   if current['action'] == 'test':
     if len(current['targets']) > 1:
       first = "aGrUM" if "aGrUM" in current['targets'] else list(current['targets'])[
-          0]
+        0]
       has_notif = True
       notif("Action [test] on only one target : selecting [" + first + "]")
       current['targets'] = [first]

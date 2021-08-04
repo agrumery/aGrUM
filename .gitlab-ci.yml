@@ -18,7 +18,7 @@ linux_agrum_11:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
+    - python3 act --no-fun test release aGrUM -j halfexcept1
 
 linux_pyagrum:
   image: agrumery/ubuntu
@@ -33,21 +33,7 @@ linux_pyagrum:
   script:
     - python3 act clean
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
-
-linux_pyagrum_2:
-  image: agrumery/ubuntu
-  tags:
-    - docker
-    - linux
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python2 act clean
-    - python2 act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
+    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
 ################################################################################
 # Linux / gcc merge requests
@@ -66,7 +52,7 @@ linux_agrum_merge_requests:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
+    - python3 act --no-fun test release aGrUM -j halfexcept1
 
 linux_agrum_merge_requests_11:
   image: agrumery/ubuntu-11
@@ -82,7 +68,7 @@ linux_agrum_merge_requests_11:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
+    - python3 act --no-fun test release aGrUM -j halfexcept1
 
 linux_pyagrum_merge_requests:
   only:
@@ -99,23 +85,7 @@ linux_pyagrum_merge_requests:
   script:
     - python3 act clean
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
-
-linux_pyagrum_merge_requests_2:
-  only:
-    - merge_requests
-  image: agrumery/ubuntu
-  tags:
-    - docker
-    - linux
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python2 act clean
-    - python2 act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
+    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
 ################################################################################
 # MacOS / clang
@@ -140,7 +110,7 @@ macos_agrum:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
     - python act clean
-    - python act --no-fun test release aGrUM --python=3 -j halfexcept1
+    - python act --no-fun test release aGrUM -j halfexcept1
     - conda deactivate
 
 macos_pyagrum:
@@ -163,7 +133,7 @@ macos_pyagrum:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
     - python act clean
-    - python act --no-fun test release pyAgrum --python=3 -t quick -j halfexcept1
+    - python act --no-fun test release pyAgrum -t quick -j halfexcept1
     - conda deactivate
 
 ################################################################################

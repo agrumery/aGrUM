@@ -52,11 +52,11 @@ class TestImport(pyAgrumTestCase):
         self.log.warning(
             "matplotlib is needed for modules lib.ipython and lib.notebook")
 
-      if sklearnFound and sys.version_info >= (3,6):
+      if sklearnFound and sys.version_info >= (3,7):
         import pyAgrum.lib.classifier
       else:
         self.log.warning(
-            "python>=3.6 and sklearn is needed for modules lib.classifier")
+            "python>=3.7 and sklearn is needed for modules lib.classifier")
 
     except Exception as e:
       self.assertFalse(False,"Import error : "+str(e))

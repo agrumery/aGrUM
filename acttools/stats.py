@@ -66,7 +66,7 @@ def profileAgrum(current):
 
   po, rc = getPost(dic, target)
 
-  notif("[{0} runs] (please be patient) ...".format(cfg.nbr_tests_for_stats))
+  notif(f"[{cfg.nbr_tests_for_stats} runs] (please be patient) ...")
   sdt = 0
   sdt2 = 0
   print("--   n :     duration   mean      stdev   final time")
@@ -82,8 +82,7 @@ def profileAgrum(current):
     sdt += dt
     sdt2 += dt * dt
     mean, stdev = simple_stats(i + 1, sdt, sdt2)
-    notif(" {0:2} : [{1:10.3f}] [{2:10.3f}] [{3:10.3f}]   {4}:{5}".format(i, dt, mean, stdev, localtime().tm_hour,
-                                                                          localtime().tm_min))  # sdt/(i+1),sdt2/(i+1)))
+    notif(f" {i:2} : [{dt:10.3f}] [{mean:10.3f}] [{stdev:10.3f}]   {localtime().tm_hour}:{localtime().tm_min}")
 
   safe_cd(current, "..")
   safe_cd(current, "..")

@@ -40,9 +40,16 @@ except:
     cfg.withColour = True
     pass
 
-cfg.__version_major = "2"
-cfg.__version_minor = "3"
-cfg.__version = cfg.__version_major + "." + cfg.__version_minor
+cfg.act_version_major = "2"
+cfg.act_version_minor = "4"
+cfg.act_version = cfg.act_version_major + "." + cfg.act_version_minor
+
+with open("VERSION.txt","r") as versionfile:
+   cfg.gum_version_major=versionfile.readline().split('"')[1]
+   cfg.gum_version_minor = versionfile.readline().split('"')[1]
+   cfg.gum_version_patch = versionfile.readline().split('"')[1]
+cfg.gum_version=f"{cfg.gum_version_major}.{cfg.gum_version_minor}.{cfg.gum_version_patch}"
+
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.configFile = ".options.act2.pickle"  #
@@ -74,9 +81,7 @@ def initParams():
   cfg.default['tests'] = 'all'
   cfg.default['python'] = "3"
   cfg.default['python3lib'] = ""
-  cfg.default['python2lib'] = ""
   cfg.default['python3include'] = ""
-  cfg.default['python2include'] = ""
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
@@ -112,7 +117,7 @@ def configureOptions(current):
   us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
       cfg.targets) + "]"
   cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
-                            version="%prog v" + cfg.__version)
+                            version="%prog v" + cfg.act_version)
   cfg.parser.add_option("", "--no-fun",
                         help="no fancy output parser.",
                         action="store_true",
@@ -179,27 +184,11 @@ def configureOptions(current):
                         action="store_true",
                         dest="static_lib",
                         default=False)
-  cfg.parser.add_option("", "--python",
-                        help="defines against wich version of python to build: {2|3}.",
-                        type="choice",
-                        choices=["2", "3", "running"],
-                        dest="python",
-                        default="3")
-  cfg.parser.add_option("", "--python2lib",
-                        help="root folder for lib python2.",
-                        metavar="FOLDER",
-                        dest="python2lib",
-                        default=current['python2lib'])
   cfg.parser.add_option("", "--python3lib",
                         help="root folder for lib python3.",
                         metavar="FOLDER",
                         dest="python3lib",
                         default=current['python3lib'])
-  cfg.parser.add_option("", "--python2include",
-                        help="root folder for include python2.",
-                        metavar="FOLDER",
-                        dest="python2include",
-                        default=current['python2include'])
   cfg.parser.add_option("", "--python3include",
                         help="root folder for include python3.",
                         metavar="FOLDER",

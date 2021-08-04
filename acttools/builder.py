@@ -74,22 +74,12 @@ def getCmake(current, target):
   else:
     line += " -DBUILD_PYTHON=ON"
 
-  line += " -DPYAGRUM_REQUIRED_PYTHON_VERSION=" + current["python"]
 
-  line += " -DPYTHON_TARGET=" + cfg.python
+  if current["python3lib"] != "":
+    line += " -DPYTHON_LIBRARY=" + current["python3lib"]
 
-  if current['python'] == '2':
-    if current["python2lib"] != "":
-      line += " -DPYTHON_LIBRARY=" + current["python2lib"]
-
-    if current["python2lib"] != "":
-      line += " -DPYTHON_INCLUDE_DIR=" + current["python2include"]
-  else:
-    if current["python3lib"] != "":
-      line += " -DPYTHON_LIBRARY=" + current["python3lib"]
-
-    if current["python3include"] != "":
-      line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
+  if current["python3include"] != "":
+    line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
 
   if platform.system() == "Windows":
     if current["windows"] == "mvsc19":
@@ -163,12 +153,14 @@ def getForMsBuildSystem(current, target):
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line = cfg.msbuild + ' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:pyAgrum /p:Configuration="Release"'
       else:  # if target!= "pyAgrum":
         critic(
             "Action '" + current[
-                "action"] + "' not treated for target '" + target + "' for now in windows weird world.")
+                "action"] + "' not treated for target '" + target + "' for now in windows strange world.")
     elif current["action"] == "install":
+      line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
+    elif current["action"] == "lib":
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
       critic("Action '" + current["action"] +
@@ -254,4 +246,4 @@ def execFromLine(current, line, checkRC=True):
     rc = execCde(line, current)
     if checkRC:
       if rc > 0:
-        critic("Received error {0}".format(rc), rc=rc)
+        critic(f"Received error {rc}", rc=rc)

@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+"""
+The purpose of this module is to provide basic tools for dealing with dynamic Bayesian Network (and inference) : modeling, visualisation, inference.
+"""
 
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 #   (pierre-henri.wuillemin@lip6.fr)
@@ -21,9 +23,6 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-"""
-Basic implementation for dynamic Bayesian networks in pyAgrum
-"""
 import numpy as np
 import pydotplus as dot
 
@@ -81,7 +80,7 @@ def realNameFrom2TBNname(name, ts):
   """
   @return dynamic name from static name and timeslice (no check)
   """
-  return "{0}{1}".format(name[:-1], ts) if not _isInNoTimeSlice(name) else name
+  return f"{name[:-1]}{ts}" if not _isInNoTimeSlice(name) else name
 
 
 def getTimeSlicesRange(dbn):
@@ -109,8 +108,14 @@ def getTimeSlicesRange(dbn):
 
 
 def is2TBN(bn):
+  """
+  Check if bn is a 2 TimeSlice Bayesian network
+
+  :param bn: the Bayesian network
+  :return: True if the BN is syntaxically correct to be a 2TBN
+  """
   ts = getTimeSlicesRange(bn)
-  if not (set(ts.keys()) <= set([noTimeCluster, "0", "t"])):
+  if not set(ts.keys()) <= {noTimeCluster, "0", "t"}:
     return False, "Some variables are not correctly suffixed."
 
   domainSizes = dict()
@@ -121,12 +126,12 @@ def is2TBN(bn):
   for name, radical in ts['0']:
     if radical in domainSizes:
       if domainSizes[radical] != bn.variable(name).domainSize():
-        res = "\n - for variables {}/{}t".format(name, radical)
+        res = f"\n - for variables {name}/{radical}t"
 
   if res != "":
     return False, "Domain size mismatch : " + res
-  else:
-    return True, ""
+
+  return True, ""
 
 
 def _TimeSlicesToDot(dbn):
@@ -135,34 +140,41 @@ def _TimeSlicesToDot(dbn):
   """
   timeslices = getTimeSlicesRange(dbn)
 
+  # dynamic member makes pylink unhappy
+  # pylint: disable=no-member
   g = dot.Dot(graph_type='digraph')
   g.set_rankdir("TD")
   g.set_splines("ortho")
 
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
     if k != noTimeCluster:
-      cluster = dot.Cluster(k, label="Time slice {}".format(
-          k), bgcolor="#DDDDDD", rankdir="TD")
+      cluster = dot.Cluster(k, label=f"Time slice {k}", bgcolor="#DDDDDD", rankdir="TD")
       g.add_subgraph(cluster)
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
     for (n, label) in sorted(timeslices[k]):
-      cluster.add_node(dot.Node('"'+n+'"', label='"'+label+'"', style='filled',
-                                color='#000000', fillcolor='white'))
+      cluster.add_node(dot.Node('"' + n + '"', label='"' + label + '"', style='filled',
+                                color='#000000', fillcolor='white'
+                                )
+                       )
 
   for tail, head in dbn.arcs():
-    g.add_edge(dot.Edge('"'+dbn.variable(tail).name()+'"',
-                        '"'+dbn.variable(head).name()+'"',
-                        constraint=False, color="blue"))
+    g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"',
+                        '"' + dbn.variable(head).name() + '"',
+                        constraint=False, color="blue"
+                        )
+               )
 
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
     if k != noTimeCluster:
       prec = None
       for (n, label) in sorted(timeslices[k]):
         if prec is not None:
-          g.add_edge(dot.Edge('"'+prec+'"',
-                              '"'+n+'"',
-                              style="invis"))
+          g.add_edge(dot.Edge('"' + prec + '"',
+                              '"' + n + '"',
+                              style="invis"
+                              )
+                     )
         prec = n
 
   return g
@@ -173,9 +185,11 @@ def showTimeSlices(dbn, size=None):
   Try to correctly display dBN and 2TBN
 
   :param dbn: the dynamic BN
-  :param size: size of the figue
-  :param format: png/svg
+  :param size: size of the fig
   """
+
+  # jupyter notebooks is optional
+  # pylint: disable=import-outside-toplevel
   from pyAgrum.lib.notebook import showGraph
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
@@ -188,9 +202,10 @@ def getTimeSlices(dbn, size=None):
   Try to correctly represent dBN and 2TBN as an HTML string
 
   :param dbn: the dynamic BN
-  :param size: size of the figue
-  :param format: png/svg
+  :param size: size of the fig
   """
+  # jupyter notebooks is optional
+  # pylint: disable=import-outside-toplevel
   from pyAgrum.lib.notebook import getGraph
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
@@ -208,8 +223,7 @@ def unroll2TBN(dbn, nbr):
   :return: unrolled BN from a 2TBN and the nbr of timeslices
   """
   ts = getTimeSlicesRange(dbn)
-  if not (set([noTimeCluster, "0", "t"]).issuperset(ts.keys())
-          and set(["0", "t"]).issubset(ts.keys())):
+  if not {noTimeCluster, "0", "t"}.issuperset(ts.keys()) and {"0", "t"}.issubset(ts.keys()):
     raise TypeError("unroll2TBN needs a 2-TimeSlice BN")
 
   bn = gum.BayesNet()
@@ -227,40 +241,36 @@ def unroll2TBN(dbn, nbr):
         # create a clone of the variable in the new bn
         nid = bn.add(dbn.variable(dbn_id))
         bn.changeVariableName(nid, realNameFrom2TBNname(
-            name, ts))  # create the true name
+          name, ts
+        )
+                              )  # create the true name
 
   # add parents
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
   for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     # right order for parents
-    l = dbn.cpt(dbn_id).var_names
-    l.pop()
-    l.reverse()
+    lvarnames = dbn.cpt(dbn_id).var_names
+    lvarnames.pop()
+    lvarnames.reverse()
 
-    for name_parent in l:
+    for name_parent in lvarnames:
       if not _isInSecondTimeSlice(name):
         if not _isInSecondTimeSlice(name_parent):
           bn.addArc(bn.idFromName(name_parent), bn.idFromName(name))
         else:
           if _isInFirstTimeSlice(name):
-            raise TypeError(
-                "An arc from timeslice t to timeslice is impossible in dBN")
-          else:
-            for ts in range(1, nbr):
-              new_name_parent = realNameFrom2TBNname(
-                  name_parent, ts)  # current TimeSlice
-              bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(name))
+            raise TypeError("An arc from timeslice t to timeslice is impossible in dBN")
+          for ts in range(1, nbr):
+            new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
+            bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(name))
       else:
         for ts in range(1, nbr):
           if _isInFirstTimeSlice(name_parent):
-            new_name_parent = realNameFrom2TBNname(
-                name_parent, ts - 1)  # last TimeSlice
+            new_name_parent = realNameFrom2TBNname(name_parent, ts - 1)  # last TimeSlice
           else:
-            new_name_parent = realNameFrom2TBNname(
-                name_parent, ts)  # current TimeSlice
-          new_name = realNameFrom2TBNname(
-              name, ts)  # necessary current TimeSlice
+            new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
+          new_name = realNameFrom2TBNname(name, ts)  # necessary current TimeSlice
           bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(new_name))
 
   # potential creation
@@ -270,8 +280,7 @@ def unroll2TBN(dbn, nbr):
       bn.cpt(bn.idFromName(name))[:] = dbn.cpt(dbn_id)[:]
     else:
       for ts in range(1, nbr):
-        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ts)))[
-            :] = dbn.cpt(dbn_id)[:]
+        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ts)))[:] = dbn.cpt(dbn_id)[:]
 
   return bn
 
@@ -293,26 +302,27 @@ def plotFollowUnrolled(lovars, dbn, T, evs):
 
   for var in lovars:
     v0 = dbn.variableFromName(var + "0")
-    l = []
+    lpots = []
     for i in range(v0.domainSize()):
       serie = []
       for t in range(T):
         serie.append(ie.posterior(dbn.idFromName(var + str(t)))[i])
-      l.append(serie)
+      lpots.append(serie)
 
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
     plt.ylim(top=1, bottom=0)
     ax.xaxis.grid()
-    plt.title("Following variable {0}".format(var), fontsize=20)
+    plt.title(f"Following variable {var}", fontsize=20)
     plt.xlabel('time')
 
-    stack = ax.stackplot(x, l)
+    stack = ax.stackplot(x, lpots)
 
     proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0])
                    for pc in stack]
     labels = [v0.label(i) for i in range(v0.domainSize())]
     plt.legend(proxy_rects, labels, loc='center left',
-               bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
+               bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True
+               )
 
     plt.show()
 
@@ -327,4 +337,3 @@ def plotFollow(lovars, twoTdbn, T, evs):
   :param evs: observations
   """
   plotFollowUnrolled(lovars, unroll2TBN(twoTdbn, T), T, evs)
-

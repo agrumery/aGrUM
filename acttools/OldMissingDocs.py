@@ -24,7 +24,7 @@ import sys
 
 from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
 
-pathtopyAgrum = "./wrappers/pyAgrum/generated-files3/pyAgrum.py"
+pathtopyAgrum = "./wrappers/pyAgrum/generated-files/pyAgrum.py"
 
 classesToSkip = ['Vector_int', 'Vector_double', 'Vector_string', 'SwigPyIterator', 'GumException', 'SyntaxError'
   , 'MultiDimContainer_double', 'Potential_double', 'BayesNetInference_double']

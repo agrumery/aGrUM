@@ -29,7 +29,9 @@ from .configuration import cfg
 
 def about():
   print(
-    cfg.C_END + cfg.C_WARNING + "aGrUM" + cfg.C_END + " compilation tool " + cfg.C_VALUE + cfg.__version + cfg.C_END)
+    cfg.C_END + cfg.C_WARNING + "aGrUM" + cfg.C_END + " compilation tool " + cfg.C_VALUE + cfg.act_version + cfg.C_END +
+    " for " + cfg.C_WARNING + "aGrUM/pyAgrum " + cfg.C_VALUE + cfg.gum_version + cfg.C_END
+  )
   print("(c) 2010-21 " + cfg.C_MSG + "aGrUM Team" + cfg.C_END)
   print("")
 
@@ -63,7 +65,9 @@ def notif_oneline(s, pref=None):
   if pref is None:
     pref = cfg.prefixe_line
 
-  print(pref + colFormat("** act Notification : " + s , cfg.C_MSG) + cfg.C_END,end="                                       \r")
+  print(pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END,
+        end="                                       \r")
+
 
 def notif(s, pref=None):
   if pref is None:

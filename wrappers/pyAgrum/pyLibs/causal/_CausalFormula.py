@@ -20,11 +20,8 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-This file defines a represenatation of a causal query in a causal model
+This file defines a representation of a causal query in a causal model
 """
-
-from __future__ import annotations
-
 
 from collections import defaultdict
 
@@ -44,7 +41,7 @@ class CausalFormula:
   :param knowing: the observation variables
   """
 
-  def __init__(self, cm: "CausalModel", root: ASTtree, on: Union(str, NameSet), doing: Union(str, NameSet),
+  def __init__(self, cm: "CausalModel", root: ASTtree, on: Union[str, NameSet], doing: Union[str, NameSet],
                knowing: Optional[NameSet] = None):
     self._cm = cm
     self._root = root

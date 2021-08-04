@@ -43,10 +43,10 @@ Listeners could also be added when structural modification are made in a pyAgrum
 >>> bn=gum.BayesNet()
 >>>
 >>> ## adding structural listeners
->>> bn.addStructureListener(whenNodeAdded=lambda n,s:print('adding {}:{}'.format(n,s)),
->>>                         whenArcAdded=lambda i,j: print('adding {}->{}'.format(i,j)),
->>>                         whenNodeDeleted=lambda n:print('deleting {}'.format(n)),
->>>                         whenArcDeleted=lambda i,j: print('deleting {}->{}'.format(i,j)))
+>>> bn.addStructureListener(whenNodeAdded=lambda n,s:print(f'adding {n}:{s}'),
+>>>                         whenArcAdded=lambda i,j: print(f'adding {i}->{j}'),
+>>>                         whenNodeDeleted=lambda n:print(f'deleting {n}'),
+>>>                         whenArcDeleted=lambda i,j: print(f'deleting {i}->{j}'))
 >>>
 >>> ## adding another listener for when a node is deleted
 >>> bn.addStructureListener(whenNodeDeleted=lambda n: print('yes, really deleting '+str(n)))

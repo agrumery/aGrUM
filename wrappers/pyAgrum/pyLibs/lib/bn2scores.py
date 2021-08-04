@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
-
+"""
+The purpose of this module is to provide tools for computing different scores from a BN.
+"""
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -21,12 +22,8 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-from __future__ import print_function
-
 import csv
 import math
-import os
-import sys
 
 import pyAgrum as gum
 
@@ -34,34 +31,43 @@ import pyAgrum as gum
 def lines_count(filename):
   """ count lines in a file
   """
-  numlines = 0
-  for line in open(filename): numlines += 1
+  with open(filename) as f:
+    count = sum(1 for _ in f)
 
-  return numlines
+  return count
 
 
 def checkCompatibility(bn, fields, csv_name):
-  """check if variables of the bn are in the fields
+  """
+  check if the variables of the bn are in the fields
 
-  if not : return None
-  if compatibilty : return a list of position for variables in fields
+  :param bn: gum.BayesNet
+  :param fields: Dict of name,position in the file
+  :param csv_name: name of the csv file
+
+  @throw gum.DatabaseError if a BN variable is not in fields
+
+  :return:
+    return a dictionary of position for BN variables in fields
   """
   res = {}
-  isOK = True
   for field in bn.names():
     if not field in fields:
-      print("** field '{0}' is missing in {1}".format(field, csv_name))
-      isOK = False
-    else:
-      res[bn.idFromName(field)] = fields[field]
-
-  if not isOK:
-    res = None
+      raise gum.DatabaseError(f"** At least, field '{field}' is missing in {csv_name}")
+    res[bn.idFromName(field)] = fields[field]
 
   return res
 
 
-def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
+def computeScores(bn_name, csv_name, visible=False, transforme_label=False):
+  """
+  Compute scores from a bn w.r.t to a csv
+  :param bn_name: a gum.BayesianNetwork or a filename for a BN
+  :param csv_name: a filename for the CSV database
+  :param visible: do we show the progress
+  :param transforme_label: do we adapt from labels to id
+  :return: percentDatabaseUsed,scores
+  """
   if isinstance(bn_name, str):
     bn = gum.loadBN(bn_name)
   else:
@@ -69,26 +75,26 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
 
   nbr_lines = lines_count(csv_name) - 1
 
-  csvfile = open(csv_name, "r")
-  dialect = csv.Sniffer().sniff(csvfile.read(1024))
-  csvfile.seek(0)
+  with open(csv_name, "r") as csvfile:
+    dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
-  batchReader = csv.reader(open(csv_name, 'r'), dialect)
+  with open(csv_name, 'r') as csvfile:
+    batchReader = csv.reader(csvfile, dialect)
 
-  titre = next(batchReader)
-  fields = {}
-  for i, nom in enumerate(titre):
-    fields[nom] = i
+    titre = next(batchReader)
+    fields = {}
+    for i, nom in enumerate(titre):
+      fields[nom] = i
 
   positions = checkCompatibility(bn, fields, csv_name)
-  if positions is None:
-    sys.exit(1)
 
   inst = bn.completeInstantiation()
 
   if visible:
+    # tqdm is optional
+    # pylint: disable=import-outside-toplevel
     from tqdm import tqdm
-    pbar = tqdm(total=nbr_lines,desc=csv_name,bar_format='{desc}: {percentage:3.0f}%|{bar}|')
+    pbar = tqdm(total=nbr_lines, desc=csv_name, bar_format='{desc}: {percentage:3.0f}%|{bar}|')
 
   nbr_insignificant = 0
   num_ligne = 0
@@ -98,7 +104,7 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
 
     for i in range(inst.nbrDim()):
       try:
-        inst.chgVal(i, getNumLabel(inst, i, data[positions[i]], transforme_label))
+        inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]], transforme_label))
       except gum.OutOfBounds:
         print("out of bounds", i, positions[i], data[positions[i]], inst.variable(i))
 
@@ -126,32 +132,21 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
           {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
 
 
-def module_help(exit_value=1):
+def _getIdLabel(inst, i, label, transforme_label):
   """
-  defines help viewed if args are not OK on command line, and exit with exit_value
+  Return the idLabel w.r.t. transforme_label
+
+  :param inst: the instantiation
+  :param i: the id of the variable in the instantiation
+  :param label: the label or idLabel
+  :param transforme_label: is label a label or an idLabel
+
+  :return: the idLabel
   """
-  print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} [data[.csv]]")
-  sys.exit(exit_value)
-
-
-def getNumLabel(inst, i, label, transforme_label):
-  if transforme_label is not None:
+  if not transforme_label:
     label = transforme_label(label)
 
   if label.isdigit():  # an indice
     return int(label)
-  else:
-    return inst.variable(i)[label]
 
-
-def stringify(s):
-  return '"' + s + '"'
-
-
-"""
-  print('"{0}" vs "{1}"'.format(bn_name, csv_name))
-  print()
-  (nbr, LL) = computeScores(bn_name, csv_name, visible=True)
-  print()
-  print('{0}% of base is significant.\nscores : {1}'.format(nbr, LL))
-"""
+  return inst.variable(i)[label]

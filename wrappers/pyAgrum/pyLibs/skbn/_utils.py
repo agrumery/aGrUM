@@ -52,11 +52,11 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
   target = bn.variableFromName(targetName)
 
   if usePR:
-    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], showROC=False,
-                                           showPR=False, significant_digits=significant_digits, show_progress=False)
+    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], show_ROC=False,
+                                           show_PR=False, significant_digits=significant_digits, show_progress=False)
   else:
-    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], showROC=False,
-                                           showPR=False, significant_digits=significant_digits, show_progress=False)
+    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], show_ROC=False,
+                                           show_PR=False, significant_digits=significant_digits, show_progress=False)
 
   return threshold
 

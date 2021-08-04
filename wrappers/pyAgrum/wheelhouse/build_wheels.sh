@@ -45,7 +45,7 @@ cp ${PYAGRUM_DIR}/wheelhouse/files/* ${WHEELHOUSE_DIR}/pyAgrum/
 
 # Removing unecessary files from the wheelhouse
 rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/cmake
-rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/generated-files*
+rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/generated-files
 rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/wheelhouse
 rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/sphinx
 rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/testunits

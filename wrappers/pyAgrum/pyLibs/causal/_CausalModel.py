@@ -22,7 +22,6 @@
 """
 This file defines a representation for causal model
 """
-from __future__ import annotations
 
 import itertools as it
 import pyAgrum as gum
@@ -103,24 +102,22 @@ class CausalModel:
       shap = "ellipse"
     else:
       shap = "point"
-    res += '''
-    node [fillcolor="{}",
-          fontcolor="{}",
-          style=filled,shape={}];
-      ''' .format(gum.config['causal', "default_node_bgcolor"],
-                  gum.config['causal', "default_node_fgcolor"], shap)
+    res += f'''
+    node [fillcolor="{gum.config['causal', 'default_node_bgcolor']}",
+          fontcolor="{gum.config['causal', 'default_node_fgcolor']}",
+          style=filled,shape={shap}];
+      '''
     res += "\n"
 
     for n in self.nodes():
       if n in self.latentVariablesIds():
         res += '   "' + self.names()[n] + '";' + "\n"
     # not latent variables
-    res += '''
-    node [fillcolor="{}",
-          fontcolor="{}",
+    res += f'''
+    node [fillcolor="{gum.config['causal', 'default_node_bgcolor']}",
+          fontcolor="{gum.config['causal', 'default_node_fgcolor']}",
           style=filled,shape="ellipse"];
-      ''' .format(gum.config['causal', "default_node_bgcolor"],
-                  gum.config['causal', "default_node_fgcolor"])
+      '''
     res += "\n"
 
     for n in self.nodes():

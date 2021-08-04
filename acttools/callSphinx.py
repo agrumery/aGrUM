@@ -30,7 +30,7 @@ from .utils import notif, safe_cd
 
 def callSphinx(current):
   if current['build'] != 'doc-only':
-    cmd = '{0} act lib pyAgrum release --no-fun'.format(cfg.python)
+    cmd = f'{cfg.python} act lib pyAgrum release --no-fun'
     notif("Compiling pyAgrum")
     if not current['dry_run']:
       proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)

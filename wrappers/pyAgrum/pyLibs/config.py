@@ -21,16 +21,8 @@
 """
 configuration tool for pyAgrum
 """
-# for python2's compatibility
-# for metaclass both in python2 and 3
-from __future__ import print_function
-from six import with_metaclass
 
-try:
-  FileNotFoundError
-except NameError:
-  FileNotFoundError = IOError
-## end for python2's compatibility
+FileNotFoundError
 
 from configparser import ConfigParser
 import os
@@ -45,7 +37,7 @@ class GumSingleton(type):
     return cls._instances[cls]
 
 
-class PyAgrumConfiguration(with_metaclass(GumSingleton)):
+class PyAgrumConfiguration(metaclass=GumSingleton):
   """ PyAgrumConfiguration is a the pyAgrum configuration singleton.  The configuration is build
   as a classical ConfigParser with read-only structure. Then a value is adressable using a double key: ``[section,key]``.
 
@@ -128,7 +120,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     c.read_string(self.__defaults)
 
     def aff_sec(section): return "[" + section + "]\n" + "\n".join(
-      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if
+      [f"  {key} = {mine[section][key]}" for key in mine[section].keys() if
        mine.get(section, key) != c.get(section, key)])
 
     return "\n".join([sec for sec in [aff_sec(section) for section in mine.sections()] if "=" in sec])
@@ -157,12 +149,12 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
       c.read("pyagrum.ini")
       for section in c.sections():
         if section not in self.__parser.sections():
-          print("[pyagrum.ini] Section '{}' does not exist.".format(section))
+          print(f"[pyagrum.ini] Section '{section}' does not exist.")
         for option in c[section]:
           try:
             self.set(section, option, c[section][option],no_hooks=True)
           except SyntaxError:
-            print("[pyagrum.ini] Option '{}.{}' does not exist.".format(section, option))
+            print(f"[pyagrum.ini] Option '{section}.{option}' does not exist.")
         self.run_hooks()
     else:
       raise FileNotFoundError("No file 'pyagrum.ini' in current directory.")
@@ -177,7 +169,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     lowsearch = search.lower()
 
     def aff_sec(section, all): return "[" + section + "]\n" + "\n".join(
-      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if all or lowsearch in key])
+      [f"  {key} = {mine[section][key]}" for key in mine[section].keys() if all or lowsearch in key])
 
     print("\n".join([sec for sec in [aff_sec(section, lowsearch in section)
                                      for section in mine.sections()] if "=" in sec]))
@@ -191,7 +183,7 @@ class PyAgrumConfiguration(with_metaclass(GumSingleton)):
     mine = self.__parser
 
     def aff_sec(section): return "[" + section + "]\n" + "\n".join(
-      ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys()])
+      [f"  {key} = {mine[section][key]}" for key in mine[section].keys()])
 
     return "\n".join([aff_sec(section) for section in mine.sections()])
 

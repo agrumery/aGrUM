@@ -107,8 +107,7 @@ if __name__ == "__main__":
   try:
     tc, tm, tp = main()
     if tc + tm + tp != 0:
-      notif("Time spent in cmake : [{0:0.3f}]s , make : [{1:0.3f}]s and post : [{2:0.3f}]s ".format(
-          tc, tm, tp))
+      notif(f"Time spent in cmake : [{tc:0.3f}]s , make : [{tm:0.3f}]s and post : [{tp:0.3f}]s ")
   except KeyboardInterrupt:
     print("\n Shutdown requested...exiting \n")
     sys.exit(1)
