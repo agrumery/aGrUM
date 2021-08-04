@@ -153,7 +153,7 @@ def getForMsBuildSystem(current, target):
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line = cfg.msbuild + ' agrum.sln /t:pyAgrum /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
       else:  # if target!= "pyAgrum":
         critic(
             "Action '" + current[
