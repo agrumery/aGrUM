@@ -224,9 +224,9 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
     fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
 
     if gum.config["influenceDiagram", "utility_show_loss"] == "True":
-      vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}" for i in ra_reverse]
+      vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}]" for i in ra_reverse]
     else:
-      vx = [f"{var.label(int(i))} [{lu[i]:{fmt}}" for i in ra_reverse]
+      vx = [f"{var.label(int(i))} [{lu[i]:{fmt}}]" for i in ra_reverse]
   else:
     vx = [var.label(int(i)) for i in ra_reverse]
 

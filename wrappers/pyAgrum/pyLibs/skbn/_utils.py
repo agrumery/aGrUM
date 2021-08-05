@@ -52,11 +52,11 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
   target = bn.variableFromName(targetName)
 
   if usePR:
-    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], show_ROC=False,
-                                           show_PR=False, significant_digits=significant_digits, show_progress=False)
+    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
+    )[1], show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
   else:
-    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels()[1], show_ROC=False,
-                                           show_PR=False, significant_digits=significant_digits, show_progress=False)
+    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
+    )[1], show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
 
   return threshold
 
@@ -132,7 +132,8 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
   elif aPriori is None:  # default : (small) Laplace's adjustment
     learner.useAprioriSmoothing(0.01)
   else:
-    raise ValueError("Invalid aPriori! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
+    raise ValueError(
+        "Invalid aPriori! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints, learner):
@@ -157,7 +158,8 @@ def _ImplementConstraints(constraints, learner):
   if constraints is None:  # default
     return
   if type(constraints) != dict:
-    raise ValueError("Invalid syntax for constraints. Constraints should be passed as a dictionary")
+    raise ValueError(
+        "Invalid syntax for constraints. Constraints should be passed as a dictionary")
     return
   for key in constraints:
     if key == 'MandatoryArcs':
@@ -237,7 +239,8 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
   # verifies if the shape of
   X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
   y = pd.DataFrame(y, columns=[target])
-  variableList = [k for k, v in sorted(variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
+  variableList = [k for k, v in sorted(
+      variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
   X = pd.DataFrame(X, columns=variableList)
 
   # We construct the list of variable names.

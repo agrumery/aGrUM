@@ -19,15 +19,16 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-import pyAgrum as gum
-
-import sklearn
 
 import pandas
 import numpy
 import os
 import tempfile
 import warnings
+
+import sklearn
+
+import pyAgrum as gum
 
 from .discretizer import BNDiscretizer
 from ._utils import _ImplementPrior as IPrior

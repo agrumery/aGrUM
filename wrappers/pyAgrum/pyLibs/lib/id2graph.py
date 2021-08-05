@@ -131,7 +131,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   else:
     titut = f'MEU {meu["mean"]:{fmt}}'
   if gum.config["influenceDiagram", "utility_show_stdev"] == "True":
-    titut += f' (stdev={math.sqrt(meu["variance"]):{fmt}}'
+    titut += f' (stdev={math.sqrt(meu["variance"]):{fmt}})'
 
   slabel = f'label="{titut}'
 
