@@ -1,6 +1,25 @@
 # aGrUM Changelog
 
-## Changelog for 0.21.0
+## Changelog for 0.22.0
+
+As planned, 0.22.0 is the first version of pyAgrum that does not support python>3.6 (including 2.7). 
+
+* aGrUM
+  * fix issue #27
+  * (act) remove (hopefully) all the codes to support both python. In particular, there is no more options for act to choose the targeted version of python.
+  * (ci/deploy) removing 2.7 tests and deploy (thanks to @Aspard)
+  * better and customized type induction when learning Bayesian networks from CSV.
+  * new constructor for `gum::learning::BNLearner` to activate/deactivate the type induction when reading a csv file. (thanks to @gonzalesc)
+
+* pyAgrum
+  * remove a large part of the codes dedicated to python2 in the wrapper (`wrapper/python/generated-files2`) and in `pyAgrum.lib`. To be cont'd.
+  * many improvements due to linter (pylint especially) in `pyAgrum.lib`.
+  * graphical improvement in `pyAgrum.lib.bn2roc` thanks to Clara Charon.
+  * new constructor for `gum.BNLearner` to activate/deactivate the type induction when reading a csv file.
+
+
+
+  ## Changelog for 0.21.0
 
 Contrary to what was said in the 0.20.0 changelog, we decided to remove support for python 2.7 before the 1.0 release. 
 
