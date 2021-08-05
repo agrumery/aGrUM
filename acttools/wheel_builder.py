@@ -125,6 +125,29 @@ def install_pyAgrum(current, tmp, nightly=False):
   out = proc.stdout.readlines()
   return get_python_version(out)
 
+def get_python_version(out):
+  """Retrieves the Python version from act's output when building pyAgrum."""
+  version = None
+  for line in out:
+    m = ""
+    encoding = sys.stdout.encoding if sys.stdout.encoding else 'utf-8'
+    try:
+      m = re.match(
+          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode(encoding))
+    except UnicodeDecodeError:
+      # Windows may use latin-1 without saying it
+      m = re.match(
+          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode('latin-1'))
+    if m:
+      version = m.group(1)
+  if version == None:
+    major = sys.version_info[0]
+    minor = sys.version_info[1]
+    micro = sys.version_info[2]
+    version = "{0}.{1}.{2}".format(major, minor, micro)
+    notif("Could not find Python version, opting for current Python version: {0})".format(
+        version))
+  return version
 
 def build_wheel(tmp, nightly=False):
   """Update the WHEEL file with the proper Python version, remove unnecessary
