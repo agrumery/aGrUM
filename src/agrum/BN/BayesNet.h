@@ -122,7 +122,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    virtual ~BayesNet() final;
+    virtual ~BayesNet();
 
     /**
      * @brief Copy constructor.
