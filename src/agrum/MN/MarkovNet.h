@@ -122,7 +122,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    virtual ~MarkovNet() final;
+    virtual ~MarkovNet();
 
     /**
      * @brief Copy constructor.

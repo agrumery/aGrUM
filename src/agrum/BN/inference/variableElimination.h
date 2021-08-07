@@ -65,7 +65,7 @@ namespace gum {
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class VariableElimination: public JointTargetedInference< GUM_SCALAR > {
+  class VariableElimination : public JointTargetedInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -85,7 +85,7 @@ namespace gum {
     VariableElimination< GUM_SCALAR >& operator=(const VariableElimination< GUM_SCALAR >&) = delete;
 
     /// destructor
-    ~VariableElimination() final;
+    ~VariableElimination();
 
     /// @}
 

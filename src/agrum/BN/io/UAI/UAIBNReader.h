@@ -60,7 +60,7 @@ namespace gum {
    * or a file must be a subclass of UAIBNReader.
    */
   template < typename GUM_SCALAR >
-  class UAIBNReader: public BNReader< GUM_SCALAR > {
+  class UAIBNReader : public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
@@ -76,7 +76,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~UAIBNReader() final;
+    ~UAIBNReader();
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

@@ -56,7 +56,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class BIFWriter: public BNWriter< GUM_SCALAR > {
+  class BIFWriter : public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -71,7 +71,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~BIFWriter() final;
+    ~BIFWriter();
 
     /// @}
 

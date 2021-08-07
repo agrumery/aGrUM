@@ -48,7 +48,7 @@ namespace gum {
    * or a file must be a subclass of DSLReader.
    */
   template < typename GUM_SCALAR >
-  class DSLReader: public BNReader< GUM_SCALAR > {
+  class DSLReader : public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
@@ -64,7 +64,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~DSLReader() final;
+    ~DSLReader();
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

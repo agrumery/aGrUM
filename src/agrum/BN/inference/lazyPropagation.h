@@ -66,7 +66,7 @@ namespace gum {
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class LazyPropagation:
+  class LazyPropagation :
       public JointTargetedInference< GUM_SCALAR >,
       public EvidenceInference< GUM_SCALAR > {
     public:
@@ -89,7 +89,7 @@ namespace gum {
     LazyPropagation< GUM_SCALAR >& operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
-    ~LazyPropagation() final;
+    ~LazyPropagation();
 
     /// @}
 
