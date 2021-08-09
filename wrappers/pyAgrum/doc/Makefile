@@ -8,5 +8,5 @@ DESTDIR=${SRCDIR}/build/release
 # please run this command if this Makefile fails : `act lib pyAgrum --python3`
 run:
 	cd ${DESTDIR} && make pyAgrum_swig_compilation
-	cp ${SRCDIR}/wrappers/pyAgrum/generated-files3/pyAgrum.py ${DESTDIR}/wrappers/pyAgrum/.
+	cp ${SRCDIR}/wrappers/pyAgrum/generated-files/pyAgrum.py ${DESTDIR}/wrappers/pyAgrum/.
 	cd sphinx && make html
