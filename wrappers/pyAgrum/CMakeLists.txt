@@ -126,6 +126,7 @@ set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE
 target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
 
 # for additionnal rule such test pyAgrum
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py" "${CMAKE_SWIG_OUTDIR}/pyAgrum.py")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
