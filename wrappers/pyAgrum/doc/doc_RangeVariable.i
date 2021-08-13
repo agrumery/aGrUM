@@ -24,7 +24,7 @@ Examples
 --------
 >>> import pyAgrum as gum
 >>>
->>> vI=gum.gum.RangeVariable('I','I in [4,10]',4,10)
+>>> vI=pyAgrum.pyAgrum.RangeVariable('I','I in [4,10]',4,10)
 >>> print(vI)
 >>> ## I[4-10]
 >>> 
@@ -134,6 +134,6 @@ str
 
 Raises
 ------
-gum.OutOfBound
+pyAgrum.OutOfBound
   If the variable does not contain the label
 "

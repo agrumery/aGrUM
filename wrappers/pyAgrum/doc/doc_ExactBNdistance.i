@@ -16,6 +16,6 @@ ExactBNdistance(ebnd) -> ExactBNdistance
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If the 2BNs have not the same domain size of compatible node sets
 "

@@ -29,11 +29,11 @@ head : int
 
 Raises
 ------
-gum.InvalidDirectedCircle
+pyAgrum.InvalidDirectedCircle
 	If any (directed) cycle is created by this arc
-gum.InvalidNode
+pyAgrum.InvalidNode
 	If head or tail does not belong to the graph nodes
-gum.DuplicateElement
+pyAgrum.DuplicateElement
 	If one of the arc already exists
 "
 
@@ -55,7 +55,7 @@ int
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
 	If a node with the label already exists.
 "
 

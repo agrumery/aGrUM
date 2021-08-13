@@ -54,15 +54,23 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("std::vector< std::string >::value_type", "str"),
 
   ("std::vector< double,std::allocator< double > >", "List[float]"),  # containers
-  ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", "List[object]"),
+  ("std::vector< int,std::allocator< int > >", "List[int]"),
+  ("std::vector< unsigned int,std::allocator< unsigned int > >", "List[int]"),
+  ("std::vector< std::string,std::allocator< std::string > >", "List[str]"),
+  ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["PyAgrum.PythonLoadListener"]'),
+  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >","List[int]"),
+  ("std::vector< gum::Arc,std::allocator< gum::Arc > >",'List[Tuple[int,int]]'),
   ("gum::NodeProperty< gum::NodeId >", "Dict[int,int]"),
-  ("gum::Sequence< gum::DiscreteVariable const \\* >", "List[object]"),
   ("gum::NodeSet", "List[int]"),
   ("gum::Set< gum::Instantiation >","List[Dict[str,int]]"),
-  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >","List[int]"),
+  ("gum::Sequence< gum::DiscreteVariable const \\* >", "List[object]"),
+  ("gum::Sequence< int >","List[int]"),
+  ("gum::Sequence< gum::NodeId >","List[int]"),
+  ("gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > >","object"),
 
   ("gum::Potential< double >", '"pyAgrum.Potential"'),  # removing templates and correct namespace for pyAgrum's classes
   ("gum::BayesNet< double >", '"pyAgrum.BayesNet"'),
+  ("gum::MarkovNet< double >", '"pyAgrum.MarkovNet"'),
   ("gum::InfluenceDiagram< double >", '"pyAgrum.InfluenceDiagram"'),
   ("gum::DiscreteVariable", '"pyAgrum.DiscreteVariable"'),
   ("gum::Instantiation", '"pyAgrum.Instantiation"'),
@@ -76,6 +84,11 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("gum::credal::CNLoopyPropagation< double >::InferenceType", 'int'),
   ("gum::credal::CNLoopyPropagation< double >", '"pyAgrum.CNLoopyPropagation"'),
   ("gum::DAG",'"pyAgrum.DAG"'),
+  ("gum::UndiGraph",'"pyAgrum.UndiGraph"'),
+  ("gum::MixedGraph",'"pyAgrum.MixedGraph"'),
+  ("gum::JoinTree",'"pyAgrum.CliqueGraph"'),
+  ("gum::IBayesNet< double >",'"pyAgrum.BayesNet"'),
+  ('gum::VariableNodeMap','"pyAgrum.VariableNodeMap"'),
 
   ("gum::IApproximationSchemeConfiguration","object"), # not wrapped object
 
@@ -84,11 +97,15 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ('"UndiGraph"', '"pyAgrum.UndiGraph"'),
   ('"DiscreteVariable"', '"pyAgrum.DiscreteVariable"'),
   ('"DiscretizedVariable"', '"pyAgrum.DiscretizedVariable"'),
+  ('"Variable"','"pyAgrum.Variable"'),
+  ('"BayesNet"','"pyAgrum.BayesNet"'),
+  ('"VariableNodeMap"','"pyAgrum.VariableNodeMap"'),
 
   ("gum::VarType", "int"),  # type simplifications
   ("gum::NodeId", "int"),
   ("gum::Idx", "int"),
   ("gum::Size", "int"),
+  ("object::ApproximationSchemeSTATE", "int"),
   ("PyObject", "object"),
   ("void const", "object"),
   ("void", "None"),
@@ -97,6 +114,7 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("\\bbool\\b", "bool"),  # to be treated as complete word : \b
   ("\\bsize_t\\b", "int"),
   ("\\bint\\b", "int"),
+  ("\\bunsigned int\\b", "int"),
   ("\\blong\\b", "int"),
   ("\\bdouble\\b", "float"),
 
@@ -134,7 +152,9 @@ with open(target, "r") as src:
       print(line, file=dst)
       if not typing_added:
         if line.strip()[:30] == 'raise RuntimeError("Python 2.7':  # we add annotation module
-          print("from typing import List,Dict # added by passForType (pyAgrum)", file=dst)
+          print("## added by passForType (pyAgrum)", file=dst)
+          print("from typing import List,Dict,Tuple", file=dst)
+          print("## end of added by passForType (pyAgrum)", file=dst)
           typing_added = True
 
 sum = 0

@@ -1,15 +1,6 @@
 %feature("docstring") gum::DiscreteVariable
 "
-DiscreteVariable is the base class for discrete random variables.
-
-DiscreteVariable(aName, aDesc='') -> DiscreteVariable
-    Parameters:
-        * **aName** (*str*) -- the name of the variable
-        * **aDesc** (*str*) -- the (optional) description of the variable
-              
-DiscreteVariable(aDRV) -> DiscreteVariable
-    Parameters:
-        * **aDRV** (*pyAgrum.DiscreteVariable*) -- the pyAgrum.DiscreteVariable that will be copied
+DiscreteVariable is the (abstract) base class for discrete random variables.
 "
 
 %feature("docstring") gum::DiscreteVariable::clone
@@ -71,7 +62,7 @@ str
 
 Raises
 ------
-gum.OutOfBound
+pyAgrum.OutOfBound
 	If the variable does not contain the label
 "
 
@@ -105,7 +96,7 @@ pyAgrum.DiscretizedVariable
 
 Raises
 ------
-gum.RuntimeError 
+pyAgrum.RuntimeError
 	If the variable is not a DiscretizedVariable
 "
 
@@ -118,7 +109,7 @@ pyAgrum.LabelizedVariable
 
 Raises
 ------
-gum.RuntimeError
+pyAgrum.RuntimeError
 	If the variable is not a LabelizedVariable
 "
 
@@ -131,7 +122,7 @@ pyAgrum.RangeVariable
 
 Raises
 ------
-gum.RuntimeError
+pyAgrum.RuntimeError
 	If the variable is not a RangeVariable
 "
 

@@ -75,7 +75,7 @@ List
 
 Raises
 ------
-gum.InvalidDirectedCycle
+pyAgrum.InvalidDirectedCycle
 	If this graph contains cycles
 "
 
@@ -142,7 +142,7 @@ int :
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If name does not match a variable in the graph
 "
 
@@ -160,7 +160,7 @@ pyAgrum.DiscreteVariable
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the graph does not contain the variable
 "
 
@@ -179,7 +179,7 @@ int
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the graph does not contain the variable
 "
 
@@ -207,7 +207,7 @@ pyAgrum.DiscreteVariable
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the graph does not contain the variable
 "
 

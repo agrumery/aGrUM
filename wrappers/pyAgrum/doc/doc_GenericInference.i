@@ -8,7 +8,7 @@ pyAgrum.IBayesNet
 
 Raises
 ------
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If no Bayes net has been assigned to the inference.
 "
 
@@ -80,15 +80,15 @@ vals : list
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If the node already has an evidence
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If val is not a value for the node
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If the size of vals is different from the domain side of the node
-gum.FatalError
+pyAgrum.FatalError
   If vals is a vector of 0s
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If the node does not belong to the Bayesian network
 "
 
@@ -103,7 +103,7 @@ list
 
 Raises
 ------
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If some node(s) do not belong to the Bayesian network
 "
 
@@ -120,7 +120,7 @@ nodeName : str
 
 Raises
 ------
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If target is not a NodeId in the Bayes net
 "
 
@@ -143,15 +143,15 @@ vals : list
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If the node does not already have an evidence
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If val is not a value for the node
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If the size of vals is different from the domain side of the node
-gum.FatalError
+pyAgrum.FatalError
   If vals is a vector of 0s
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If the node does not belong to the Bayesian network
 "
 
@@ -190,7 +190,7 @@ nodeName : int
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
 "
 
@@ -205,9 +205,9 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If one of the node does not belong to the Bayesian network
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If node Id is not in the Bayesian network
 "
 
@@ -224,9 +224,9 @@ nodeName : int
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If one of the node does not belong to the Bayesian network
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If node Id is not in the Bayesian network
 "
 
@@ -271,7 +271,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.Exception
+pyAgrum.Exception
   If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 "
 
@@ -307,7 +307,7 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
 "
 
@@ -327,7 +327,7 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
 "
 
@@ -347,7 +347,7 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
 "
 
@@ -365,9 +365,9 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If node Id is not in the Bayesian network
 "
 
@@ -387,9 +387,9 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
   If the node does not belong to the Bayesian network
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If node Id is not in the Bayesian network
 "
 
@@ -422,7 +422,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If an element of nodes is not in targets
 "
 
@@ -508,7 +508,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.UndefinedElement
+pyAgrum.UndefinedElement
   If an element of nodes is not in targets
 "
 
@@ -624,7 +624,7 @@ type : int
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If type is not implemented
 "
 
@@ -644,7 +644,7 @@ type : int
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If type is not implemented
 "
 

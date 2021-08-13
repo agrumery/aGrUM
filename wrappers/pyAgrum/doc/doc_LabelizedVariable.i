@@ -17,7 +17,7 @@ Examples
 >>> import pyAgrum as gum
 >>>
 >>> # creating a variable with 3 labels : '0', '1' and '2'
->>> va=gum.LabelizedVariable('a','a labelized variable',3)
+>>> va=pyAgrum.LabelizedVariable('a','a labelized variable',3)
 >>> print(va)
 >>> ## a<0,1,2>
 >>>
@@ -29,7 +29,7 @@ Examples
 >>> print(va)
 >>> a<0,bar,2,foo>
 >>>
->>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
+>>> vb=pyAgrum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
 >>> print(vb)
 >>> ## b<A,B,C>
 >>> 
@@ -56,9 +56,9 @@ aLabel : str
 
 Raises
 ------
-gum.DuplicatedElement
+pyAgrum.DuplicatedElement
   If the variable already contains the new label
-gum.OutOfBounds
+pyAgrum.OutOfBounds
   If the index is greater than the size of the variable
 "
 

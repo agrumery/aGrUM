@@ -9,7 +9,7 @@ Arc(tail, head) -> Arc
 
 Arc(src) -> Arc
     Parameters:
-        * **src** (*Arc*) -- the gum.Arc to copy
+        * **src** (*Arc*) -- the pyAgrum.Arc to copy
 "
 
 %feature("docstring") gum::Arc::tail

@@ -79,7 +79,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the node does not belong to the Credal network
 "
 
@@ -101,7 +101,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the node does not belong to the Credal network
 "
 

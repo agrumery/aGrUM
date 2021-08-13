@@ -43,9 +43,9 @@ pyAgrum.BayesNet
 
 Raises
 ------
-gum.MissingVariableInDatabase
+pyAgrum.MissingVariableInDatabase
 	If a variable of the BN is not found in the database
-gum.UnknownLabelInDatabase
+pyAgrum.UnknownLabelInDatabase
 	If a label is found in the database that do not correspond to the variable
 "
 
@@ -249,7 +249,7 @@ int
 
 Raises
 ------
-gum.MissingVariableInDatabase
+pyAgrum.MissingVariableInDatabase
 	If a variable of the BN is not found in the database.
 "
 
@@ -352,7 +352,7 @@ tail :
 
 Raises
 ------
-gum.InvalidDirectedCycle
+pyAgrum.InvalidDirectedCycle
 	If the added arc creates a directed cycle in the DAG
 "
 
@@ -491,4 +491,3 @@ Returns
 int
 	the number of columns in the database
 "
-

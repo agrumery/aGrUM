@@ -48,7 +48,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If no variable's id matches varId. 
 "
 

@@ -33,11 +33,11 @@ int
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
     If variable.name() is already used in this pyAgrum.MarkovNet.
-gum.NotAllowed
+pyAgrum.NotAllowed
     If nbrmod is less than 2
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used.
 "
 
@@ -58,9 +58,9 @@ name : str
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
     If new_name is already used in this MarkovNet.
-gum.NotFound
+pyAgrum.NotFound
     If no variable matches id.
 "
 
@@ -81,7 +81,7 @@ new_label : str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
     if id/name is not a variable or if old_label does not exist.
 "
 
@@ -147,7 +147,7 @@ Create a Markov network with a modified dot-like syntax which specifies:
 Examples
 --------
 >>> import pyAgrum as gum
->>> bn=gum.MarkovNet.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+>>> bn=pyAgrum.MarkovNet.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -192,9 +192,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -226,6 +226,6 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
     If no variable's id matches varId.
 "

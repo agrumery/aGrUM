@@ -24,7 +24,7 @@ boolean
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -39,7 +39,7 @@ n : int, str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -56,7 +56,7 @@ pot : Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -73,7 +73,7 @@ pot : Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -90,7 +90,7 @@ n : int, str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -115,7 +115,7 @@ n : int, str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -130,7 +130,7 @@ n : int, str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -140,6 +140,6 @@ Create a BayesNet from a fragment.
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
   if the fragment is not consistent.
 "

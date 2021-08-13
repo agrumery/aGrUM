@@ -15,7 +15,7 @@ Examples
 --------
 >>> import pyAgrum as gum
 >>>
->>> vX=gum.DiscretizedVariable('X','X has been discretized')
+>>> vX=pyAgrum.DiscretizedVariable('X','X has been discretized')
 >>> vX.addTick(1).addTick(2).addTick(3).addTick(3.1415) #doctest: +ELLIPSIS
 >>> ## <pyAgrum.pyAgrum.DiscretizedVariable;...>
 >>> print(vX)
@@ -62,7 +62,7 @@ pyAgrum.DiscretizedVariable
 
 Raises
 ------
-gum.DefaultInLabel
+pyAgrum.DefaultInLabel
 	If the Tick is already defined
 "
 
@@ -100,7 +100,7 @@ aTick : double
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If the index is greater than the number of Ticks
 "
 

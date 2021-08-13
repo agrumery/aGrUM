@@ -17,6 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from __future__ import annotations
 
 # General information about the project.
 project = 'pyAgrum'
@@ -31,16 +32,16 @@ import os
 import sys
 #sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
 
-import pyAgrum as gum
+import pyAgrum
 
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 
-print("** "+gum.__file__)
-print("** AGRUM VERSION =" + gum.__version__)
+print("** "+pyAgrum.__file__)
+print("** AGRUM VERSION =" + pyAgrum.__version__)
 # The short X.Y version.
-v = gum.__version__.split(".")
+v = pyAgrum.__version__.split(".")
 version = ".".join(v[0:3])
 if len(v) > 3:
   version += " [dev+]"
@@ -64,8 +65,8 @@ extensions = [
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
-  'sphinx.ext.napoleon'
-  #'sphinx_autodoc_typehints'
+  'sphinx.ext.napoleon',
+  'sphinx_autodoc_typehints',
   # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
@@ -81,6 +82,8 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+always_document_param_types=True
 
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
@@ -173,7 +176,7 @@ html_theme_options = {
     'analytics_id': 'UA-97418814-1',  #  Provided by Google in your dashboard
     'logo_only': True,
     'display_version': True,
-    'prev_next_buttons_location': 'bottom',
+    'prev_next_buttons_location': 'top',
     'style_external_links': False,
  #   'vcs_pageview_mode': '',
     #'style_nav_header_background': '#8888CC',

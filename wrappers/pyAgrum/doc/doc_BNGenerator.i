@@ -26,8 +26,8 @@ pyAgrum.BayesNet
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If n_modmax < 2
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If n_arcs is incompatible with n_nodes (not enough arcs)
 "
