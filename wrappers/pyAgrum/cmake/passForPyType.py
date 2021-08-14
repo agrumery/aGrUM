@@ -45,7 +45,28 @@ else:
   debugmode = True
 
 list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a type in python)
-  ("std::vector< double >::size_type", "int"),  # complicated std types
+# not wrapped
+  (
+    "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > >",
+    '"PyAgrum.YetUnWrapped"'),
+  (
+    "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > >",
+    '"PyAgrum.YetUnWrapped"'),
+  (
+  "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >",
+  '"PyAgrum.YetUnWrapped"'),
+  (
+  "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >",
+  '"PyAgrum.YetUnWrapped"'),
+  ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
+  ("gum::IApproximationSchemeConfiguration", '"PyAgrum.YetUnWrapped"'),
+  ("gum::learning::DatabaseTable< >",'"PyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", '"PyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::Idx,std::allocator< gum::Idx > >", '"PyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"PyAgrum.YetUnWrapped"'),
+
+# complicated std types
+  ("std::vector< double >::size_type", "int"),
   ("std::vector< unsigned int >::size_type", "int"),
   ("std::vector< double >::difference_type", "int"),
   ("std::vector< unsigned int >::difference_type", "int"),
@@ -53,22 +74,22 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("std::vector< unsigned int >::value_type", "int"),
   ("std::vector< std::string >::value_type", "str"),
 
-  ("std::vector< double,std::allocator< double > >", "List[float]"),  # containers
+# containers
+  ("std::vector< double,std::allocator< double > >", "List[float]"),
   ("std::vector< int,std::allocator< int > >", "List[int]"),
   ("std::vector< unsigned int,std::allocator< unsigned int > >", "List[int]"),
   ("std::vector< std::string,std::allocator< std::string > >", "List[str]"),
   ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["PyAgrum.PythonLoadListener"]'),
-  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >","List[int]"),
-  ("std::vector< gum::Arc,std::allocator< gum::Arc > >",'List[Tuple[int,int]]'),
+  ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'List[Tuple[int,int]]'),
   ("gum::NodeProperty< gum::NodeId >", "Dict[int,int]"),
   ("gum::NodeSet", "List[int]"),
-  ("gum::Set< gum::Instantiation >","List[Dict[str,int]]"),
+  ("gum::Set< gum::Instantiation >", "List[Dict[str,int]]"),
   ("gum::Sequence< gum::DiscreteVariable const \\* >", "List[object]"),
-  ("gum::Sequence< int >","List[int]"),
-  ("gum::Sequence< gum::NodeId >","List[int]"),
-  ("gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > >","object"),
+  ("gum::Sequence< int >", "List[int]"),
+  ("gum::Sequence< gum::NodeId >", "List[int]"),
 
-  ("gum::Potential< double >", '"pyAgrum.Potential"'),  # removing templates and correct namespace for pyAgrum's classes
+# removing templates and correct namespace for pyAgrum's classes
+  ("gum::Potential< double >", '"pyAgrum.Potential"'),
   ("gum::BayesNet< double >", '"pyAgrum.BayesNet"'),
   ("gum::MarkovNet< double >", '"pyAgrum.MarkovNet"'),
   ("gum::InfluenceDiagram< double >", '"pyAgrum.InfluenceDiagram"'),
@@ -83,42 +104,46 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("gum::credal::CredalNet< double >", '"pyAgrum.CredalNet"'),
   ("gum::credal::CNLoopyPropagation< double >::InferenceType", 'int'),
   ("gum::credal::CNLoopyPropagation< double >", '"pyAgrum.CNLoopyPropagation"'),
-  ("gum::DAG",'"pyAgrum.DAG"'),
-  ("gum::UndiGraph",'"pyAgrum.UndiGraph"'),
-  ("gum::MixedGraph",'"pyAgrum.MixedGraph"'),
-  ("gum::JoinTree",'"pyAgrum.CliqueGraph"'),
-  ("gum::IBayesNet< double >",'"pyAgrum.BayesNet"'),
-  ('gum::VariableNodeMap','"pyAgrum.VariableNodeMap"'),
+  ("gum::DAG", '"pyAgrum.DAG"'),
+  ("gum::UndiGraph", '"pyAgrum.UndiGraph"'),
+  ("gum::MixedGraph", '"pyAgrum.MixedGraph"'),
+  ("gum::JoinTree", '"pyAgrum.CliqueGraph"'),
+  ("gum::IBayesNet< double >", '"pyAgrum.IBayesNet"'),
+  ("gum::IMarkovNet< double >", '"pyAgrum.IMarkovNet"'),
+  ('gum::VariableNodeMap', '"pyAgrum.VariableNodeMap"'),
+  ('gum::FactorTable< double >', 'List[Set[int]]'),
 
-  ("gum::IApproximationSchemeConfiguration","object"), # not wrapped object
-
-  ('"Arc"', '"pyAgrum.Arc"'),  # weird shortcuts from time to time
+# weird shortcuts from time to time
+  ('"Arc"', '"pyAgrum.Arc"'),
   ('"Edge"', '"pyAgrum.Edge"'),
   ('"UndiGraph"', '"pyAgrum.UndiGraph"'),
   ('"DiscreteVariable"', '"pyAgrum.DiscreteVariable"'),
   ('"DiscretizedVariable"', '"pyAgrum.DiscretizedVariable"'),
-  ('"Variable"','"pyAgrum.Variable"'),
-  ('"BayesNet"','"pyAgrum.BayesNet"'),
-  ('"VariableNodeMap"','"pyAgrum.VariableNodeMap"'),
+  ('"Variable"', '"pyAgrum.Variable"'),
+  ('"BayesNet"', '"pyAgrum.BayesNet"'),
+  ('"VariableNodeMap"', '"pyAgrum.VariableNodeMap"'),
 
-  ("gum::VarType", "int"),  # type simplifications
+# type simplifications
+  ("gum::VarType", "int"),
   ("gum::NodeId", "int"),
   ("gum::Idx", "int"),
   ("gum::Size", "int"),
-  ("object::ApproximationSchemeSTATE", "int"),
   ("PyObject", "object"),
   ("void const", "object"),
   ("void", "None"),
   ("std::string", "str"),
+  ("std::size_t", "int"),
 
-  ("\\bbool\\b", "bool"),  # to be treated as complete word : \b
+# remove type decorators (const, &, etc.) ... to be treated as complete word : \b
+  ("\\bbool\\b", "bool"),
   ("\\bsize_t\\b", "int"),
   ("\\bint\\b", "int"),
   ("\\bunsigned int\\b", "int"),
   ("\\blong\\b", "int"),
   ("\\bdouble\\b", "float"),
 
-  ("< float >", "< double >"),  # comment with template
+# keep correct comment with template
+  ("< float >", "< double >"),
 ]
 
 rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}
@@ -153,7 +178,7 @@ with open(target, "r") as src:
       if not typing_added:
         if line.strip()[:30] == 'raise RuntimeError("Python 2.7':  # we add annotation module
           print("## added by passForType (pyAgrum)", file=dst)
-          print("from typing import List,Dict,Tuple", file=dst)
+          print("from typing import List,Set,Dict,Tuple", file=dst)
           print("## end of added by passForType (pyAgrum)", file=dst)
           typing_added = True
 

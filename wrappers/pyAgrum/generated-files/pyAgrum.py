@@ -10,10 +10,7 @@ from sys import version_info as _swig_python_version_info
 if _swig_python_version_info < (2, 7, 0):
     raise RuntimeError("Python 2.7 or later required")
 ## added by passForType (pyAgrum)
-from typing import List,Dict,Tuple
-## end of added by passForType (pyAgrum)
-## added by passForType (pyAgrum)
-from typing import List,Dict,Tuple
+from typing import List,Set,Dict,Tuple
 ## end of added by passForType (pyAgrum)
 
 # Import the low-level C/C++ module
@@ -4115,7 +4112,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_clear(self)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> List[int]:
+    def mixedOrientedPath(self, node1: int, node2: int) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Parameters
@@ -4133,7 +4130,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> List[int]:
+    def mixedUnorientedPath(self, node1: int, node2: int) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Parameters
@@ -4640,7 +4637,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyAgrum.CliqueGraph_eraseFromClique(self, clique_id, node_id)
 
-    def containerPath(self, node1: int, node2: int) -> List[int]:
+    def containerPath(self, node1: int, node2: int) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Parameters
@@ -5473,7 +5470,7 @@ class GraphicalModel(object):
     def names(self, *args) -> List[str]:
         return _pyAgrum.GraphicalModel_names(self, *args)
 
-    def ids(self, names: "Vector_string") -> List[int]:
+    def ids(self, names: "Vector_string") -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.GraphicalModel_ids(self, names)
 
     def nodeset(self, names: "Vector_string") -> List[int]:
@@ -10270,7 +10267,7 @@ class IMarkovNet(UGmodel):
     def smallestFactorFromNode(self, *args) -> List[int]:
         return _pyAgrum.IMarkovNet_smallestFactorFromNode(self, *args)
 
-    def factors(self) -> "gum::FactorTable< double >":
+    def factors(self) -> List[Set[int]]:
         return _pyAgrum.IMarkovNet_factors(self)
 
     def variableNodeMap(self) -> "pyAgrum.VariableNodeMap":
@@ -10450,7 +10447,7 @@ class MarkovNet(IMarkovNet):
     def smallestFactorFromNode(self, node: int) -> List[int]:
         return _pyAgrum.MarkovNet_smallestFactorFromNode(self, node)
 
-    def factors(self) -> "gum::FactorTable< double >":
+    def factors(self) -> List[Set[int]]:
         return _pyAgrum.MarkovNet_factors(self)
 
     def variableNodeMap(self) -> "pyAgrum.VariableNodeMap":
@@ -11461,7 +11458,7 @@ class ShaferShenoyMNInference(object):
         """
         return _pyAgrum.ShaferShenoyMNInference_H(self, *args)
 
-    def MN(self) -> "gum::IMarkovNet< double >":
+    def MN(self) -> "pyAgrum.IMarkovNet":
         return _pyAgrum.ShaferShenoyMNInference_MN(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
@@ -12260,7 +12257,7 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -13047,7 +13044,7 @@ class ShaferShenoyInference(object):
         """
         return _pyAgrum.ShaferShenoyInference_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -13889,7 +13886,7 @@ class VariableElimination(object):
         """
         return _pyAgrum.VariableElimination_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -14298,7 +14295,7 @@ class GibbsSampling(object):
         """
         return _pyAgrum.GibbsSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.GibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -14649,7 +14646,7 @@ class GibbsSampling(object):
         """
         return _pyAgrum.GibbsSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -15105,7 +15102,7 @@ class ImportanceSampling(object):
         """
         return _pyAgrum.ImportanceSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.ImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -15456,7 +15453,7 @@ class ImportanceSampling(object):
         """
         return _pyAgrum.ImportanceSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -15868,7 +15865,7 @@ class WeightedSampling(object):
         """
         return _pyAgrum.WeightedSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.WeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -16219,7 +16216,7 @@ class WeightedSampling(object):
         """
         return _pyAgrum.WeightedSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -16631,7 +16628,7 @@ class MonteCarloSampling(object):
         """
         return _pyAgrum.MonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.MonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -16982,7 +16979,7 @@ class MonteCarloSampling(object):
         """
         return _pyAgrum.MonteCarloSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -17408,7 +17405,7 @@ class LoopyImportanceSampling(object):
         """
         return _pyAgrum.LoopyImportanceSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.LoopyImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -17759,7 +17756,7 @@ class LoopyImportanceSampling(object):
         """
         return _pyAgrum.LoopyImportanceSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -18185,7 +18182,7 @@ class LoopyWeightedSampling(object):
         """
         return _pyAgrum.LoopyWeightedSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.LoopyWeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -18536,7 +18533,7 @@ class LoopyWeightedSampling(object):
         """
         return _pyAgrum.LoopyWeightedSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -18962,7 +18959,7 @@ class LoopyGibbsSampling(object):
         """
         return _pyAgrum.LoopyGibbsSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.LoopyGibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -19313,7 +19310,7 @@ class LoopyGibbsSampling(object):
         """
         return _pyAgrum.LoopyGibbsSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -19805,7 +19802,7 @@ class LoopyMonteCarloSampling(object):
         """
         return _pyAgrum.LoopyMonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.LoopyMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -20156,7 +20153,7 @@ class LoopyMonteCarloSampling(object):
         """
         return _pyAgrum.LoopyMonteCarloSampling_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -20568,7 +20565,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyAgrum.LoopyBeliefPropagation_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.LoopyBeliefPropagation__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -20919,7 +20916,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyAgrum.LoopyBeliefPropagation_H(self, *args)
 
-    def BN(self) -> "pyAgrum.BayesNet":
+    def BN(self) -> "pyAgrum.IBayesNet":
         r"""
 
         Returns
@@ -21251,7 +21248,7 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyAgrum.GibbsBNdistance_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.GibbsBNdistance__asIApproximationSchemeConfiguration(self)
 
     def nbrDrawnVar(self) -> int:
@@ -21373,7 +21370,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_addArc(self, tail, head)
 
-    def setCPTs(self, id: int, cpt: "std::vector< std::vector< List[float],std::allocator< List[float] > >,std::allocator< std::vector< List[float],std::allocator< List[float] > > > > const &") -> None:
+    def setCPTs(self, id: int, cpt: "PyAgrum.YetUnWrapped") -> None:
         r"""
 
         Warnings
@@ -21642,7 +21639,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_current_bn(self)
 
-    def credalNet_currentCpt(self) -> "gum::NodeProperty< std::vector< std::vector< List[float],std::allocator< List[float] > >,std::allocator< std::vector< List[float],std::allocator< List[float] > > > > > const &":
+    def credalNet_currentCpt(self) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Warnings
@@ -21657,7 +21654,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_credalNet_currentCpt(self)
 
-    def credalNet_srcCpt(self) -> "gum::NodeProperty< std::vector< std::vector< List[float],std::allocator< List[float] > >,std::allocator< std::vector< List[float],std::allocator< List[float] > > > > > const &":
+    def credalNet_srcCpt(self) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Warnings
@@ -21751,7 +21748,7 @@ class CredalNet(object):
     def hasComputedBinaryCPTMinMax(self) -> bool:
         return _pyAgrum.CredalNet_hasComputedBinaryCPTMinMax(self)
 
-    def get_binaryCPT_min(self) -> "std::vector< List[float],std::allocator< List[float] > > const &":
+    def get_binaryCPT_min(self) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Warnings
@@ -21766,7 +21763,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_get_binaryCPT_min(self)
 
-    def get_binaryCPT_max(self) -> "std::vector< List[float],std::allocator< List[float] > > const &":
+    def get_binaryCPT_max(self) -> "PyAgrum.YetUnWrapped":
         r"""
 
         Warnings
@@ -22040,7 +22037,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyAgrum.CNMonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
@@ -22446,7 +22443,7 @@ class CNLoopyPropagation(object):
         """
         return _pyAgrum.CNLoopyPropagation_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
@@ -23083,7 +23080,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_getDecisionGraph(self)
 
-    def decisionOrder(self) -> List[int]:
+    def decisionOrder(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.InfluenceDiagram_decisionOrder(self)
 
     def existsPathBetween(self, *args) -> bool:
@@ -23352,7 +23349,7 @@ class ShaferShenoyLIMIDInference(object):
     def reducedGraph(self) -> "pyAgrum.DAG":
         return _pyAgrum.ShaferShenoyLIMIDInference_reducedGraph(self)
 
-    def reversePartialOrder(self) -> "std::vector< List[int],std::allocator< List[int] > >":
+    def reversePartialOrder(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
     def reducedLIMID(self) -> "pyAgrum.InfluenceDiagram":
@@ -23895,7 +23892,7 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> object:
+    def _asIApproximationSchemeConfiguration(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.BNLearner__asIApproximationSchemeConfiguration(self)
 
     def learnDAG(self) -> "pyAgrum.DAG":
@@ -23990,13 +23987,13 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
 
-    def setRecordWeight(self, i: "std::int", weight: float) -> None:
+    def setRecordWeight(self, i: int, weight: float) -> None:
         return _pyAgrum.BNLearner_setRecordWeight(self, i, weight)
 
     def databaseWeight(self) -> float:
         return _pyAgrum.BNLearner_databaseWeight(self)
 
-    def recordWeight(self, i: "std::int") -> float:
+    def recordWeight(self, i: int) -> float:
         return _pyAgrum.BNLearner_recordWeight(self, i)
 
     def useNoApriori(self) -> None:
@@ -24396,10 +24393,10 @@ class BNDatabaseGenerator(object):
     def toCSV(self, *args) -> None:
         return _pyAgrum.BNDatabaseGenerator_toCSV(self, *args)
 
-    def toDatabaseTable(self, useLabels: bool=True) -> "gum::learning::DatabaseTable< >":
+    def toDatabaseTable(self, useLabels: bool=True) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.BNDatabaseGenerator_toDatabaseTable(self, useLabels)
 
-    def database(self) -> "std::vector< List[int],std::allocator< List[int] > >":
+    def database(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.BNDatabaseGenerator_database(self)
 
     def setVarOrder(self, *args) -> None:
@@ -24417,7 +24414,7 @@ class BNDatabaseGenerator(object):
     def setRandomVarOrder(self) -> None:
         return _pyAgrum.BNDatabaseGenerator_setRandomVarOrder(self)
 
-    def varOrder(self) -> List[int]:
+    def varOrder(self) -> "PyAgrum.YetUnWrapped":
         return _pyAgrum.BNDatabaseGenerator_varOrder(self)
 
     def varOrderNames(self) -> List[str]:
