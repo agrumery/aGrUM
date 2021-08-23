@@ -73,40 +73,40 @@ using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
-O3PRM* prm__;
-std::string prefix__;
+O3PRM* _prm_;
+std::string _prefix_;
 
-bool ok__ (Size n) { return errors().error_count == n; }
+bool _ok_ (Size n) { return errors().error_count == n; }
 
-void addO3Type__( O3Type t ) {
+void _addO3Type_( O3Type t ) {
   get_prm()->types().emplace_back( new O3Type(std::move( t )) );
 }
 
-void addO3IntType__( O3IntType t ) {
+void _addO3IntType_( O3IntType t ) {
   get_prm()->int_types().emplace_back( new O3IntType(std::move( t )) );
 }
 
-void addO3RealType__( O3RealType t ) {
+void _addO3RealType_( O3RealType t ) {
   get_prm()->real_types().emplace_back( new O3RealType(std::move( t )) );
 }
 
-void addO3Interface__( O3Interface i ) {
+void _addO3Interface_( O3Interface i ) {
   get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
 }
 
-void addO3Class__( O3Class c ) {
+void _addO3Class_( O3Class c ) {
   get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
 }
 
-void addO3System__( O3System s ) {
+void _addO3System_( O3System s ) {
   get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
 }
 
-void addO3Import__( O3Import i ) {
+void _addO3Import_( O3Import i ) {
   get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
 }
 
-void split__( const O3Label& value, O3Label& left, O3Label& right) {
+void _split_( const O3Label& value, O3Label& left, O3Label& right) {
   auto idx = value.label().find_first_of('.');
   if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
@@ -120,7 +120,7 @@ void split__( const O3Label& value, O3Label& left, O3Label& right) {
   }
 }
 
-O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
+O3Label _setAnonTypeName_(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   for (const auto& l: t.labels()) {
@@ -132,7 +132,7 @@ O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3Type& t)
   return t.name();
 }
 
-O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
+O3Label _setAnonTypeName_(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   ss << "_" << t.start().value() << '_' << t.end().value();
@@ -142,7 +142,7 @@ O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3IntType&
   return t.name();
 }
 
-O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
+O3Label _setAnonTypeName_(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
   for (const auto& v: t.values()) {
@@ -157,18 +157,18 @@ O3Label setAnonTypeName__(O3Class& c, O3Label& name, O3Position& pos, O3RealType
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
-  prm__ = prm;
+  _prm_ = prm;
 }
 
 O3PRM* get_prm() {
-  return prm__;
+  return _prm_;
 }
 
 // Set the prefix for types, interfaces, classes and systems parsed
 void set_prefix( const std::string& prefix ) {
-  prefix__ = prefix;
-  if ( prefix__.size() > 0 && prefix__[prefix__.size() - 1] != '.' ) {
-    prefix__.append( "." );
+  _prefix_ = prefix;
+  if ( _prefix_.size() > 0 && _prefix_[_prefix_.size() - 1] != '.' ) {
+    _prefix_.append( "." );
   }
 }
 
@@ -254,7 +254,7 @@ CLASS_UNIT =
   (. auto n = errors().error_count; .)
   (. auto c = O3Class(); .)
   CLASS_DECLARATION<c>
-  (. if (ok__(n)) { addO3Class__( std::move(c) ); } .)
+  (. if (_ok_(n)) { _addO3Class_( std::move(c) ); } .)
   .
 
 //________________________
@@ -319,20 +319,20 @@ CLASS_ANON_TYPE_ATTR<O3Class& c> =
       (. auto t = O3Type(); .)
       (. t.position() = pos; .)
       labels '(' TYPE_VALUE_LIST<t.labels()> ')' LABEL_OR_INT<name>
-      (. type = setAnonTypeName__(c, name, pos, t); .)
-      (. if ( ok__( n ) ) { addO3Type__( std::move(t) ); } .)
+      (. type = _setAnonTypeName_(c, name, pos, t); .)
+      (. if ( _ok_( n ) ) { _addO3Type_( std::move(t) ); } .)
     |
       (. auto t = O3IntType(); .)
       (. t.position() = pos; .)
       INT_TYPE_DECLARATION<t.start(), t.end()> LABEL_OR_INT<name>
-      (. type = setAnonTypeName__(c, name, pos, t); .)
-      (. if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } .)
+      (. type = _setAnonTypeName_(c, name, pos, t); .)
+      (. if ( _ok_( n ) ) { _addO3IntType_( std::move(t) ); } .)
     |
       (. auto t = O3RealType(); .)
       (. t.position() = pos; .)
       REAL_TYPE_DECLARATION<t.values()> LABEL_OR_INT<name>
-      (. type = setAnonTypeName__(c, name, pos, t); .)
-      (. if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } .)
+      (. type = _setAnonTypeName_(c, name, pos, t); .)
+      (. if ( _ok_( n ) ) { _addO3RealType_( std::move(t) ); } .)
   )
 
   ATTRIBUTE<type, name, c>
@@ -469,7 +469,7 @@ INTERFACE_UNIT =
   (. auto n = errors().error_count; .)
   (. auto i = O3Interface(); .)
   INTERFACE_DECLARATION<i.position(), i.name(), i.superLabel(), i.elements() >
-  (. if (ok__(n)) { addO3Interface__( std::move( i ) ); } .)
+  (. if (_ok_(n)) { _addO3Interface_( std::move( i ) ); } .)
   .
 
 //________________________
@@ -538,17 +538,17 @@ TYPE_DECLARATION =
     |
       EXTENDED_TYPE_DECLARATION<t.deprecated(), t.superLabel(), t.labels()>
     )
-    (. if ( ok__( n ) ) { addO3Type__( std::move(t) ); } .)
+    (. if ( _ok_( n ) ) { _addO3Type_( std::move(t) ); } .)
   |
     (. auto t = O3IntType(); .)
     (. t.name() = name; t.position() = pos; .)
     INT_TYPE_DECLARATION<t.start(), t.end()>
-    (. if ( ok__( n ) ) { addO3IntType__( std::move(t) ); } .)
+    (. if ( _ok_( n ) ) { _addO3IntType_( std::move(t) ); } .)
   |
     (. auto t = O3RealType(); .)
     (. t.name() = name; t.position() = pos; .)
     REAL_TYPE_DECLARATION<t.values()>
-    (. if ( ok__( n ) ) { addO3RealType__( std::move(t) ); } .)
+    (. if ( _ok_( n ) ) { _addO3RealType_( std::move(t) ); } .)
   )
   ';'
   .
@@ -601,7 +601,7 @@ DEPRECATED_INT_DECLARATION =
   (. auto t = O3IntType(); .)
   (. t.deprecated() = true; .)
   INT<t.position()> '(' INTEGER<t.start()> ',' INTEGER<t.end()> ')' LABEL<t.name()> ';'
-  (. if ( ok__( n ) ) { addO3IntType__( std::move( t ) ); } .)
+  (. if ( _ok_( n ) ) { _addO3IntType_( std::move( t ) ); } .)
   .
 
 //________________________
@@ -618,7 +618,7 @@ DEPRECATED_REAL_DECLARATION =
   (. auto t= O3RealType(); .)
   (. t.deprecated() = true; .)
   REAL<t.position()> '(' FLOAT_LIST<t.values()> ')' LABEL<t.name()> ';'
-  (. if ( ok__( n ) ) { addO3RealType__( std::move( t ) ); } .)
+  (. if ( _ok_( n ) ) { _addO3RealType_( std::move( t ) ); } .)
   .
 
 //________________________
@@ -699,7 +699,7 @@ SYSTEM_UNIT =
   (. auto n = errors().error_count; .)
   (. auto s = O3System(); .)
   SYSTEM_DECLARATION<s>
-  (. if (ok__(n)) { addO3System__( std::move(s) ); } .)
+  (. if (_ok_(n)) { _addO3System_( std::move(s) ); } .)
   .
 
 //________________________
@@ -872,7 +872,7 @@ IMPORT_UNIT=
 IMPORT_BODY=
   (. auto i = O3Import(); .)
   IMPORT_DECLARATION<i>
-  (. addO3Import__( std::move( i ) ); .)
+  (. _addO3Import_( std::move( i ) ); .)
   .
 
 //________________________
@@ -953,7 +953,7 @@ PREFIXED_LABEL<O3Label& l> =
   label
   (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. auto label = narrow( t->val ); .)
-  (. if (prefix__ != "") { label = prefix__ + label; } .)
+  (. if (_prefix_ != "") { label = _prefix_ + label; } .)
   (. l = O3Label( pos, label ); .)
   .
 
