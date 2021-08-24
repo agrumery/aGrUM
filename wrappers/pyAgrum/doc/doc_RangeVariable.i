@@ -23,23 +23,18 @@ RangeVariable(aRV) -> RangeVariable
 Examples
 --------
 >>> import pyAgrum as gum
->>>
->>> vI=pyAgrum.pyAgrum.RangeVariable('I','I in [4,10]',4,10)
+>>> vI=gum.RangeVariable('I','I in [4,10]',4,10)
 >>> print(vI)
->>> ## I[4-10]
->>> 
->>> vX.maxVal()
->>> ## 10
->>> 
->>> vX.belongs(1)
->>> ## False
->>> 
+I:Range([4,10])
+>>> vI.maxVal()
+10
+>>> vI.belongs(1)
+False
 >>> # where is the value 5 ?
->>> vX.index('5')
->>> ## 1
->>> 
->>> vi.labels()
->>> ## ('4', '5', '6', '7', '8', '9', '10')
+>>> vI.index('5')
+1
+>>> vI.labels()
+('4', '5', '6', '7', '8', '9', '10')
 "
 
 %feature("docstring") gum::RangeVariable::clone

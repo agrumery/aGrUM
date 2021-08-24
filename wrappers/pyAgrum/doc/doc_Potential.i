@@ -96,8 +96,8 @@ Parameters
 ----------
 inst : pyAgrum.instantiation
   a partial instantiation
-dict : dict
-  a dictionnary containing discrete variables (?)
+dict : Dict[str,str|int]
+  a dictionnary containing values for some discrete variables.
 
 Returns
 -------

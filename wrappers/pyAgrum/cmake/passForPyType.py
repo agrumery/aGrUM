@@ -48,22 +48,22 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
 # not wrapped
   (
     "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > >",
-    '"PyAgrum.YetUnWrapped"'),
+    '"pyAgrum.YetUnWrapped"'),
   (
     "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > >",
-    '"PyAgrum.YetUnWrapped"'),
+    '"pyAgrum.YetUnWrapped"'),
   (
   "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >",
-  '"PyAgrum.YetUnWrapped"'),
+  '"pyAgrum.YetUnWrapped"'),
   (
   "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >",
-  '"PyAgrum.YetUnWrapped"'),
+  '"pyAgrum.YetUnWrapped"'),
   ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
-  ("gum::IApproximationSchemeConfiguration", '"PyAgrum.YetUnWrapped"'),
-  ("gum::learning::DatabaseTable< >",'"PyAgrum.YetUnWrapped"'),
-  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", '"PyAgrum.YetUnWrapped"'),
-  ("std::vector< gum::Idx,std::allocator< gum::Idx > >", '"PyAgrum.YetUnWrapped"'),
-  ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"PyAgrum.YetUnWrapped"'),
+  ("gum::IApproximationSchemeConfiguration", '"pyAgrum.YetUnWrapped"'),
+  ("gum::learning::DatabaseTable< >",'"pyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", '"pyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::Idx,std::allocator< gum::Idx > >", '"pyAgrum.YetUnWrapped"'),
+  ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"pyAgrum.YetUnWrapped"'),
 
 # complicated std types
   ("std::vector< double >::size_type", "int"),
@@ -79,7 +79,7 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("std::vector< int,std::allocator< int > >", "List[int]"),
   ("std::vector< unsigned int,std::allocator< unsigned int > >", "List[int]"),
   ("std::vector< std::string,std::allocator< std::string > >", "List[str]"),
-  ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["PyAgrum.PythonLoadListener"]'),
+  ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["pyAgrum.PythonLoadListener"]'),
   ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'List[Tuple[int,int]]'),
   ("gum::NodeProperty< gum::NodeId >", "Dict[int,int]"),
   ("gum::NodeSet", "List[int]"),

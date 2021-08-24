@@ -10,7 +10,11 @@ from sys import platform as os_platform
 import logging
 
 if __name__ == "__main__":
-  print("Please use 'act test -t quick|all pyAgrum release'.")
+  print("[pyAgrum] Please use 'act test -t quick|all pyAgrum release'.")
+  sys.exit(0)
+
+if sys.version_info < (3, 7):
+  print("[pyAgrum] python>=3.7 needed.")
   sys.exit(0)
 
 if len(sys.argv) > 1:
@@ -41,10 +45,10 @@ from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
 from tests import BayesNetFragmentTestSuite
 
-if sys.version_info >= (3, 7) and pandasFound and sklearnFound:
+if pandasFound and sklearnFound:
   from tests import BNClassifierTestSuite
 else:
-  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs python>=3.7, pandas and scikit-learn")
+  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
 
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
@@ -67,13 +71,10 @@ from tests import PRMexplorerTestSuite
 from tests import SamplingTestSuite
 from tests import VariablesTestSuite
 
-if sys.version_info >= (3, 7):
-  from tests import CausalASTTestSuite
-  from tests import CausalDSepTestSuite
-  from tests import CausalModelTestSuite
-  from tests import CausalNonRegressionTestSuite
-else:
-  logging.warning("[pyAgrum] Causality needs python>=3.7")
+from tests import CausalASTTestSuite
+from tests import CausalDSepTestSuite
+from tests import CausalModelTestSuite
+from tests import CausalNonRegressionTestSuite
 
 import time
 
@@ -83,7 +84,7 @@ tl.append(AllIncrementalInferenceTestSuite.ts)
 tl.append(BayesNetTestSuite.ts)
 tl.append(BayesNetFragmentTestSuite.ts)
 
-if sys.version_info >= (3, 6) and pandasFound and sklearnFound:
+if pandasFound and sklearnFound:
   tl.append(BNClassifierTestSuite.ts)
 
 tl.append(BNDatabaseGeneratorTestSuite.ts)
@@ -106,11 +107,10 @@ tl.append(PotentialTestSuite.ts)
 tl.append(PRMexplorerTestSuite.ts)
 tl.append(SamplingTestSuite.ts)
 tl.append(VariablesTestSuite.ts)
-if sys.version_info >= (3, 7):
-  tl.append(CausalASTTestSuite.ts)
-  tl.append(CausalDSepTestSuite.ts)
-  tl.append(CausalModelTestSuite.ts)
-  tl.append(CausalNonRegressionTestSuite.ts)
+tl.append(CausalASTTestSuite.ts)
+tl.append(CausalDSepTestSuite.ts)
+tl.append(CausalModelTestSuite.ts)
+tl.append(CausalNonRegressionTestSuite.ts)
 
 tests = unittest.TestSuite(tl)
 

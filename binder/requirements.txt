@@ -2,11 +2,12 @@
 # generated : do not change it !
 ################################
 matplotlib
-#matplotlib-inline
+matplotlib-inline
 pydotplus
 numpy
 configparser
 six
+
 #### optional requirements #####
 nbformat
 nbconvert

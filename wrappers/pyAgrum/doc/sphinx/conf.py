@@ -62,6 +62,7 @@ needs_sphinx = '1.8.4'
 
 
 extensions = [
+  #'sphinx.ext.autosummary',
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
@@ -71,7 +72,10 @@ extensions = [
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
-]  # Napoleon settings
+]
+#autosummary_generate = True  # Turn on sphinx.ext.autosummary
+
+# Napoleon settings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_private_with_doc = False
@@ -186,7 +190,7 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
-    'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
+    #'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme

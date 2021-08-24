@@ -44,40 +44,39 @@
 %rename ( pop_back ) gum::List::popBack();
 
 
-%define ADD_REPR_STR_API(classname)
-%extend classname {
+%define ADD_REPR_STR_API(ns,classname)
+%extend ns::classname {
   // adding __repr__ and __str__ calling toString
   std::string __repr__() const {
    std::stringstream s;
-   s<<"(classname@"<<std::hex<<self<<") "<<self->toString();
+   s<<"(pyAgrum.classname@"<<std::hex<<self<<") "<<self->toString();
    return s.str();
   }
   std::string __str__() const { return self->toString();};
 }
-%ignore classname::toString;
+%ignore ns::classname::toString;
 %enddef
 
-ADD_REPR_STR_API(gum::Potential<double>)
-ADD_REPR_STR_API(gum::Instantiation)
+ADD_REPR_STR_API(gum,Potential<double>)
+ADD_REPR_STR_API(gum,Instantiation)
 
-ADD_REPR_STR_API(gum::DiscreteVariable)
-ADD_REPR_STR_API(gum::RangeVariable)
-ADD_REPR_STR_API(gum::LabelizedVariable)
-ADD_REPR_STR_API(gum::IntegerVariable)
-ADD_REPR_STR_API(gum::DiscretizedVariable<double>)
+ADD_REPR_STR_API(gum,DiscreteVariable)
+ADD_REPR_STR_API(gum,RangeVariable)
+ADD_REPR_STR_API(gum,LabelizedVariable)
+ADD_REPR_STR_API(gum,IntegerVariable)
+ADD_REPR_STR_API(gum,DiscretizedVariable<double>)
 
-ADD_REPR_STR_API(gum::UndiGraph)
-ADD_REPR_STR_API(gum::DiGraph)
-ADD_REPR_STR_API(gum::MixedGraph)
+ADD_REPR_STR_API(gum,UndiGraph)
+ADD_REPR_STR_API(gum,DiGraph)
+ADD_REPR_STR_API(gum,MixedGraph)
 
-ADD_REPR_STR_API(gum::IBayesNet<double>)
-ADD_REPR_STR_API(gum::BayesNet<double>)
-ADD_REPR_STR_API(gum::InfluenceDiagram<double>)
+ADD_REPR_STR_API(gum,IBayesNet<double>)
+ADD_REPR_STR_API(gum,BayesNet<double>)
+ADD_REPR_STR_API(gum,InfluenceDiagram<double>)
 
-ADD_REPR_STR_API(gum::credal::CredalNet<double>)
+ADD_REPR_STR_API(gum::credal,CredalNet<double>)
 
-ADD_REPR_STR_API(gum::IMarkovNet<double>)
-ADD_REPR_STR_API(gum::MarkovNet<double>)
-ADD_REPR_STR_API(gum::MarkovNet<double>)
+ADD_REPR_STR_API(gum,IMarkovNet<double>)
+ADD_REPR_STR_API(gum,MarkovNet<double>)
 
-ADD_REPR_STR_API(gum::learning::BNLearner<double>)
+ADD_REPR_STR_API(gum::learning,BNLearner<double>)
