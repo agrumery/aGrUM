@@ -20,7 +20,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -38,7 +38,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -56,7 +56,7 @@ tuple
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -87,7 +87,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -105,7 +105,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -123,7 +123,7 @@ list
 
 Raises
 ------
-gum.IndexError 
+pyAgrum.IndexError
 	if the class is not in the PRM
 "
 
@@ -152,11 +152,11 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
-gum.IndexError
+pyAgrum.IndexError
 	If the attribute in parameters does not exist 
 "
 
@@ -174,7 +174,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -192,7 +192,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the interface is not in the PRM
 "
 
@@ -210,7 +210,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -228,7 +228,7 @@ str
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the interface is not in the PRM
 "
 
@@ -246,7 +246,7 @@ dict
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -264,7 +264,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -282,7 +282,7 @@ str
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -300,7 +300,7 @@ str
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the interface is not in the PRM
 "
 
@@ -318,7 +318,7 @@ str
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -347,7 +347,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -365,7 +365,7 @@ list
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the type is not in the PRM
 "
 
@@ -393,9 +393,9 @@ bool
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the class is not in the PRM
-gum.IndexError
+pyAgrum.IndexError
 	If att_name is not an element of class_name
 "
 
@@ -451,7 +451,7 @@ classpath : str
 
 Raises
 ------
-gum.FatalError
+pyAgrum.FatalError
 	If file not found
 "
 

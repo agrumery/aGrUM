@@ -15,32 +15,27 @@ LabelizedVariable(aLDRV) -> LabelizedVariable
 Examples
 --------
 >>> import pyAgrum as gum
->>>
 >>> # creating a variable with 3 labels : '0', '1' and '2'
 >>> va=gum.LabelizedVariable('a','a labelized variable',3)
 >>> print(va)
->>> ## a<0,1,2>
->>>
+a:Labelized(<0,1,2>)
 >>> va.addLabel('foo')
+(gum::LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
+>>> va.changeLabel(1,'bar')
 >>> print(va)
->>> ## a<0,1,2,foo>
->>>
->>> va.chgLabel(1,'bar')
->>> print(va)
->>> a<0,bar,2,foo>
->>>
+a:Labelized(<0,bar,2,foo>)
 >>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
 >>> print(vb)
->>> ## b<A,B,C>
->>> 
+b:Labelized(<A,B,C>)
 >>> vb.labels()
->>> ## ('A', 'B', 'C')
->>> 
+('A', 'B', 'C')
 >>> vb.isLabel('E')
->>> ## False
->>> 
+False
 >>> vb.label(2)
->>> ## 'B'
+'C'
+>>> vc=gum.LabelizedVariable('b','b',['one','two','three'])
+>>> vc
+(gum::LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
 "
 
 %feature("docstring") gum::LabelizedVariable::changeLabel
@@ -56,9 +51,9 @@ aLabel : str
 
 Raises
 ------
-gum.DuplicatedElement
+pyAgrum.DuplicatedElement
   If the variable already contains the new label
-gum.OutOfBounds
+pyAgrum.OutOfBounds
   If the index is greater than the size of the variable
 "
 

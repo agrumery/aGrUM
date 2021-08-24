@@ -23,8 +23,8 @@ head : int
 
 Raises
 ------
-gum.InvalidDirectedCircle
+pyAgrum.InvalidDirectedCircle
 	If any (directed) cycle is created by this arc
-gum.InvalidNode
+pyAgrum.InvalidNode
 	If head or tail does not belong to the graph nodes
 "

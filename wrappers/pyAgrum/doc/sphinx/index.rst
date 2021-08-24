@@ -3,7 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-
 Introduction to pyAgrum
 =======================
 
@@ -28,10 +27,10 @@ user friendly.
 pyAgrum aims to allow to easily use (as well as to prototype new algorithms on) 
 Bayesian network and other graphical models.
 
-pyAgrum contains
-  * a `comprehensive API documentation <https://pyagrum.readthedocs.io>`_,
-  * `tutorials as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_,
-  * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_,
+pyAgrum contains :
+  * a `comprehensive API documentation <https://pyagrum.readthedocs.io>`_.
+  * `tutorials as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_.
+  * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
 .. toctree::
@@ -47,10 +46,10 @@ pyAgrum contains
   :maxdepth: 2
 
   bayesianNetwork
-  markovNetwork
   influenceDiagram
-  PRM
   credalNetwork
+  markovNetwork
+  PRM
 
 .. toctree::
   :caption: Causality
@@ -94,6 +93,6 @@ pyAgrum contains
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`

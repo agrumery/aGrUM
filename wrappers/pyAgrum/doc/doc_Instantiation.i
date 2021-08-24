@@ -450,7 +450,7 @@ List
 
 %feature("docstring") gum::Instantiation::todict
 "
-Create a dict (variable_name:value) from an instantiation
+Create a dictionary `{variable_name:value}` from an instantiation
 
 Parameters
 ----------
@@ -459,13 +459,13 @@ withLabels : boolean
 
 Returns
 -------
-Dict
+Dict[str,int]
     The dictionary
 "
 
 %feature("docstring") gum::Instantiation::fromdict
 "
-Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
+Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
 
 If a variable_name does not occur in the instantiation, nothing is done.
 

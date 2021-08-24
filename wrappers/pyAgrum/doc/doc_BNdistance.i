@@ -2,6 +2,6 @@
 "
 Returns
 -------
-dict
+Dict[str,float]
 	a dictionnary containing the different values after the computation.
 "

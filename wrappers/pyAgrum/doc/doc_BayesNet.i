@@ -33,11 +33,11 @@ int
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
     If variable.name() is already used in this pyAgrum.BayesNet.
-gum.NotAllowed
+pyAgrum.NotAllowed
     If nbrmod is less than 2
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used.
 "
 
@@ -74,7 +74,7 @@ int
 
 Raises
 ------
-gum.SizeError
+pyAgrum.SizeError
     If variable.domainSize()>2
 "
 
@@ -95,9 +95,9 @@ tail :
 
 Raises
 ------
-gum.InvalidEdge
+pyAgrum.InvalidEdge
     If arc.tail and/or arc.head are not in the BN.
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If the arc already exists.
 "
 
@@ -167,7 +167,7 @@ int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used
 "
 
@@ -253,7 +253,7 @@ int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used
 "
 
@@ -281,7 +281,7 @@ int
 
 Raises
 --------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used
 "
 
@@ -309,7 +309,7 @@ int
 
 Raises
 --------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
     If id is already used
 "
 
@@ -358,7 +358,7 @@ int
 
 Raises
 ------
-gum.SizeError
+pyAgrum.SizeError
     If variable.domainSize()>2
 "
 
@@ -381,9 +381,9 @@ causalWeight : double
 
 Raises
 ------
-gum.InvalidArc
+pyAgrum.InvalidArc
     If arc.tail and/or arc.head are not in the BN.
-gum.InvalidArc
+pyAgrum.InvalidArc
     If variable in arc.head is not a NoisyOR variable.
 "
 
@@ -409,7 +409,7 @@ name : str
 
 Raises
 ------
-gum.NotAllowed
+pyAgrum.NotAllowed
     If newPot has not the same signature as __probaMap[NodeId]
 "
 
@@ -430,9 +430,9 @@ name : str
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
     If new_name is already used in this BayesNet.
-gum.NotFound
+pyAgrum.NotFound
     If no variable matches id.
 "
 
@@ -453,7 +453,7 @@ new_label : str
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
     if id/name is not a variable or if old_label does not exist.
 "
 
@@ -516,12 +516,12 @@ Create a Bayesian network with a dot-like syntax which specifies:
     - the structure 'a->b->c;b->d<-e;'.
     - the type of the variables with different syntax:
 
-      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-      - with 'a[10]', the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
-      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
-      - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
+      - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
+      - with 'a[10]', the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
+      - with 'a[3,7]', the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
+      - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
+      - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
+      - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
 Note 
 ----
@@ -532,7 +532,7 @@ Note
 Examples
 --------
 >>> import pyAgrum as gum
->>> bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+>>> bn=pyAgrum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -577,9 +577,9 @@ l : list
 
 Raises
 --------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -596,9 +596,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -615,9 +615,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -634,9 +634,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -661,9 +661,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -680,9 +680,9 @@ l : list
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
     If file not found
-gum.FatalError
+pyAgrum.FatalError
     If file is not valid
 "
 
@@ -705,7 +705,7 @@ arc : pyAgrum.Arc
 
 Raises
 ------
-gum.InvalidArc
+pyAgrum.InvalidArc
     If the arc does not exsit or if its reversal would induce a directed cycle.
 "
 
@@ -791,6 +791,6 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
     If no variable's id matches varId.
 "

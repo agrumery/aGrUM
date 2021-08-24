@@ -21,7 +21,7 @@ evidence : pyAgrum.Potential
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the evidence does not belong to the influence diagram
 "
 
@@ -36,9 +36,9 @@ decisionId : int,str
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If no inference have yet been made
-gum.InvalidNode
+pyAgrum.InvalidNode
 	If node given in parmaeter is not a decision node 
 "
 
@@ -48,7 +48,7 @@ Returns maximum expected utility obtained from inference.
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If no inference have yet been made 
 "
 
@@ -77,7 +77,7 @@ If an evidence already w.r.t. a given node and a new evidence w.r.t. this node i
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If an evidence is over more than one variable
 "
 

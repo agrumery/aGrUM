@@ -23,9 +23,9 @@ node_id : int
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If clique_id does not exist
-gum.DuplicateElement
+pyAgrum.DuplicateElement
   If clique_id set already contains the ndoe
 "
 
@@ -48,7 +48,7 @@ Set
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If the clique does not belong to the clique graph
 "
 
@@ -68,7 +68,7 @@ gum.NotFound
 
         Raises
         ------
-        gum.NotFound
+        pyAgrum.NotFound
           If the edge does not belong to the clique graph
 "
 
@@ -86,7 +86,7 @@ int
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If no clique contains idNode  
 "
 
@@ -106,7 +106,7 @@ List
 
 Raises
 ------
-gum.NotFound 
+pyAgrum.NotFound
   If such path cannot be found
 "
 
@@ -123,7 +123,7 @@ node_id : int
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If clique_id does not exist
 "
 
@@ -161,7 +161,7 @@ Set
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If the edge does not belong to the clique graph
 "
 
@@ -178,6 +178,6 @@ new_clique : Set
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If idClique is not a clique of the graph
 "

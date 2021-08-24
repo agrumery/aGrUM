@@ -31,7 +31,7 @@ tuple
 
 Raises
 ------
-gum.OperationNotAllowed
+pyAgrum.OperationNotAllowed
 	If the scheme did not performed or if verbosity is set to false
 "
 
@@ -84,7 +84,7 @@ int
 
 Raises
 ------
-gum.OutOfBounds
+pyAgrum.OutOfBounds
 	If p<1
 "
 
@@ -105,7 +105,7 @@ eps : double
 
 Raises
 ------
-gum.OutOfBounds
+pyAgrum.OutOfBounds
 	If eps<0
 "
 
@@ -119,7 +119,7 @@ max : int
 
 Raises
 ------
-gum.OutOfBounds
+pyAgrum.OutOfBounds
 	If max <= 1
 "
 
@@ -132,7 +132,7 @@ tiemout : double
 
 Raises
 ------
-gum.OutOfBounds
+pyAgrum.OutOfBounds
 	If timeout<=0.0
 "
 
@@ -153,7 +153,7 @@ p : int
 
 Raises
 ------
-gum.OutOfBounds
+pyAgrum.OutOfBounds
 	If p<1
 "
 

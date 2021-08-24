@@ -14,22 +14,16 @@ DiscretizedVariable(aDDRV) -> DiscretizedVariable
 Examples
 --------
 >>> import pyAgrum as gum
->>>
->>> vX=gum.DiscretizedVariable('X','X has been discretized')
->>> vX.addTick(1).addTick(2).addTick(3).addTick(3.1415) #doctest: +ELLIPSIS
->>> ## <pyAgrum.pyAgrum.DiscretizedVariable;...>
+>>> vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
 >>> print(vX)
->>> ## X<[1;2[,[2;3[,[3;3.1415]>
->>>
+X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
 >>> vX.isTick(4)
->>> ## False
->>>
+False
 >>> vX.labels()
->>> ## ('[1;2[', '[2;3[', '[3;3.1415]')
->>>
+('[1;2[', '[2;3[', '[3;3.1415]')
 >>> # where is the real value 2.5 ?
 >>> vX.index('2.5')
->>> ## 1
+1
 "
 
 %feature("docstring") gum::DiscretizedVariable::domain
@@ -62,7 +56,7 @@ pyAgrum.DiscretizedVariable
 
 Raises
 ------
-gum.DefaultInLabel
+pyAgrum.DefaultInLabel
 	If the Tick is already defined
 "
 
@@ -100,7 +94,7 @@ aTick : double
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If the index is greater than the number of Ticks
 "
 

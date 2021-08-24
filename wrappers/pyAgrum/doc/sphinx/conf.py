@@ -17,6 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from __future__ import annotations
 
 # General information about the project.
 project = 'pyAgrum'
@@ -31,16 +32,16 @@ import os
 import sys
 #sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
 
-import pyAgrum as gum
+import pyAgrum
 
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 
-print("** "+gum.__file__)
-print("** AGRUM VERSION =" + gum.__version__)
+print("** "+pyAgrum.__file__)
+print("** AGRUM VERSION =" + pyAgrum.__version__)
 # The short X.Y version.
-v = gum.__version__.split(".")
+v = pyAgrum.__version__.split(".")
 version = ".".join(v[0:3])
 if len(v) > 3:
   version += " [dev+]"
@@ -61,16 +62,20 @@ needs_sphinx = '1.8.4'
 
 
 extensions = [
+  #'sphinx.ext.autosummary',
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
-  'sphinx.ext.napoleon'
-  #'sphinx_autodoc_typehints'
+  'sphinx.ext.napoleon',
+  'sphinx_autodoc_typehints',
   # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
-]  # Napoleon settings
+]
+#autosummary_generate = True  # Turn on sphinx.ext.autosummary
+
+# Napoleon settings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_private_with_doc = False
@@ -81,6 +86,8 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+always_document_param_types=True
 
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
@@ -151,7 +158,7 @@ pygments_style = 'sphinx'
 # keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -173,7 +180,7 @@ html_theme_options = {
     'analytics_id': 'UA-97418814-1',  #  Provided by Google in your dashboard
     'logo_only': True,
     'display_version': True,
-    'prev_next_buttons_location': 'bottom',
+    'prev_next_buttons_location': 'top',
     'style_external_links': False,
  #   'vcs_pageview_mode': '',
     #'style_nav_header_background': '#8888CC',
@@ -183,7 +190,7 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
-#    'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
+    #'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -230,12 +237,12 @@ html_static_path = ['_static']
 # bottom, using the given strftime format.
 # The empty string is equivalent to '%b %d, %Y'.
 #
-# html_last_updated_fmt = None
+html_last_updated_fmt =  '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
 #
-# html_use_smartypants = True
+html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
 #
@@ -252,7 +259,7 @@ html_static_path = ['_static']
 
 # If false, no index is generated.
 #
-# html_use_index = True
+html_use_index = True
 
 # If true, the index is split into individual pages for each letter.
 #
@@ -530,31 +537,31 @@ dico = {re.escape(x): y for x, y in gumReplaceList}
 pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
 
 def substitution4swigautodoc(l):
-  if l is None:
-    return None
-  l1 = l
-  l2 = ""
-  while l1 != l2:
-    l2 = l1
-    l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
-  return l1
+  #if l is None:
+  #  return None
+  #l1 = l
+  #l2 = ""
+  #while l1 != l2:
+  #  l2 = l1
+  #  l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
+  return l
 
 
-def process_docstring(app, what, name, obj, options, lines):
+#def process_docstring(app, what, name, obj, options, lines):
   # loop through each line in the docstring and replace |class| with
   # the classname
-  for i in range(len(lines)):
-    lines[i] = substitution4swigautodoc(lines[i])
+  #for i in range(len(lines)):
+  #  lines[i] = substitution4swigautodoc(lines[i])
 
 
-def process_signature(app, what, name, obj, options, signature, return_annotation):
-  signature = substitution4swigautodoc(signature)
+#def process_signature(app, what, name, obj, options, signature, return_annotation):
+  #signature = substitution4swigautodoc(signature)
 
-  if signature is not None and "std::string" in signature:
-    print(f"== {signature}")
+  #if signature is not None and "std::string" in signature:
+  #  print(f"== {signature}")
   #return_annotation = substitution4swigautodoc(return_annotation)
-  return_annotation = None
-  return signature, return_annotation
+  #return_annotation = None
+  #return signature, return_annotation
 
 
 def skip(app, what, name, obj, skip, options):
@@ -574,7 +581,7 @@ def skip(app, what, name, obj, skip, options):
 
 
 autodoc_default_options = {'members' : None,
-                          #'undoc-members', 
+                          'undoc-members':None,
                           # 'private-members', 
                           # 'special-members', 
                           'inherited-members':None, 
@@ -614,8 +621,8 @@ def check_config(app):
 googleanalytics_id = 'UA-97418814-1'
 
 def setup(app):
-  app.connect('autodoc-process-docstring', process_docstring)
-  app.connect('autodoc-process-signature', process_signature)
+  #app.connect('autodoc-process-docstring', process_docstring)
+  #app.connect('autodoc-process-signature', process_signature)
   app.connect("autodoc-skip-member", skip)
   app.add_config_value('googleanalytics_id', '', 'html')
   app.add_config_value('googleanalytics_enabled', True, 'html')

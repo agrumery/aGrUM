@@ -23,7 +23,7 @@ head : int
 
 Raises
 ------
-gum.InvalidNode
+pyAgrum.InvalidNode
   If head or tail does not belong to the graph nodes.
 "
 
@@ -61,7 +61,7 @@ id : int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
   If the given id is already used
 "
 
@@ -244,7 +244,7 @@ List
 
 Raises
 ------
-gum.InvalidDirectedCycle
+pyAgrum.InvalidDirectedCycle
   If this graph contains cycles
 "
 

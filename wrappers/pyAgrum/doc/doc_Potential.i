@@ -26,9 +26,9 @@ float
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If p is not compatible with the potential (dimension, variables)
-gum.FatalError
+pyAgrum.FatalError
   If a zero is found in p or the potential and not in the other. 
 "
 
@@ -96,8 +96,8 @@ Parameters
 ----------
 inst : pyAgrum.instantiation
   a partial instantiation
-dict : dict
-  a dictionnary containing discrete variables (?)
+dict : Dict[str,str|int]
+  a dictionnary containing values for some discrete variables.
 
 Returns
 -------
@@ -125,7 +125,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.SizeError
+pyAgrum.SizeError
   If v size's does not matches the domain size. 
 "
 
@@ -150,7 +150,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.SizeError
+pyAgrum.SizeError
   If v size's does not matches the domain size. 
 "
 
@@ -158,7 +158,7 @@ gum.SizeError
 "
 Raises:
 --------
-gum.SizeError 
+pyAgrum.SizeError
   if v size's does not matches the domain size.
 "
 
@@ -214,7 +214,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
@@ -283,7 +283,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
@@ -318,7 +318,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.InvalidArgument 
+pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
@@ -339,7 +339,7 @@ double
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If all value == 1.0
 "
 
@@ -360,7 +360,7 @@ double
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If all value == 0.0
 "
 
@@ -403,7 +403,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.FatalError
+pyAgrum.FatalError
   If some distribution sums to 0
 "
 
@@ -420,7 +420,7 @@ Returns
 
 Raises
 ------
-gum.NotFound 
+pyAgrum.NotFound
   If v is not in this multidimensional matrix. 
 "
 
@@ -446,7 +446,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
   If the var is not in the potential 
 "
 
@@ -557,7 +557,7 @@ Returns
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
   If i does not reference a variable in this multidimensional matrix. 
 "
 

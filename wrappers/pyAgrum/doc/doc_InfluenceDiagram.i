@@ -34,7 +34,7 @@ int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
 	If id(<>0) is already used 
 "
 
@@ -51,9 +51,9 @@ head : int
 
 Raises
 ------
-gum.InvalidEdge
+pyAgrum.InvalidEdge
 	If arc.tail and/or arc.head are not in the ID.
-gum.InvalidEdge
+pyAgrum.InvalidEdge
 	If tail is a utility node 
 "
 
@@ -81,7 +81,7 @@ int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
 	If id(<>0) is already used 
 "
 
@@ -109,7 +109,7 @@ int
 
 Raises
 ------
-gum.DuplicateElement
+pyAgrum.DuplicateElement
 	If id(<>0) is already used 
 "
 
@@ -137,9 +137,9 @@ int
 
 Raises
 ------
-gum.InvalidArgument
+pyAgrum.InvalidArgument
 	If variable has more than one label
-gum.DuplicateElement
+pyAgrum.DuplicateElement
 	If id(<>0) is already used 
 "
 
@@ -170,9 +170,9 @@ new_name : str
 
 Raises
 ------
-gum.DuplicateLabel
+pyAgrum.DuplicateLabel
 	If this name already exists
-gum.NotFound
+pyAgrum.NotFound
 	If no nodes matches id. 
 "
 
@@ -205,7 +205,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If no variable's id matches varId. 
 "
 
@@ -300,7 +300,7 @@ int
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If no such name exists in the graph. 
 "
 
@@ -368,9 +368,9 @@ name : str
 
 Raises
 ------
-gum.IOError
+pyAgrum.IOError
 	If file not found
-gum.FatalError
+pyAgrum.FatalError
 	If file is not valid
 "
 
@@ -397,7 +397,7 @@ int
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the InfluenceDiagram does not contain the variable
 "
 
@@ -446,7 +446,7 @@ pyAgrum.Potential
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the InfluenceDiagram does not contain the variable
 "
 
@@ -472,7 +472,7 @@ pyAgrum.DiscreteVariable
 
 Raises
 ------
-gum.NotFound
+pyAgrum.NotFound
 	If no variable's id matches the parameter 
 "
 
@@ -490,7 +490,7 @@ pyAgrum.DiscreteVariable
 
 Raises
 ------
-gum.IndexError
+pyAgrum.IndexError
 	If the InfluenceDiagram does not contain the variable
 "
 
@@ -511,12 +511,12 @@ Create an Influence Diagram with a dot-like syntax which specifies:
 
     - the type of the variables with different syntax as postfix:
 
-      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
-      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with `'a[3,7]'`, the variable is a gum.RangeVariable using a domainSize from 3 to 7
-      - with `'a[1,3.14,5,6.2]'`, the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with `'a{top|middle|bottom}'`, the variable is a gum.LabelizedVariable using the given labels.
-      - with 'a{-1|5|0|3}', the variable is a gum.IntegerVariable using the sorted given values.
+      - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
+      - with `'a[10]'`, the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
+      - with `'a[3,7]'`, the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
+      - with `'a[1,3.14,5,6.2]'`, the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
+      - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
+      - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
 Note 
 ----
@@ -527,7 +527,7 @@ Note
 Examples
 --------
 >>> import pyAgrum as gum
->>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+>>> bn=pyAgrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
 
 Parameters
 ----------
