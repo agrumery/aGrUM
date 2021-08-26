@@ -63,7 +63,7 @@ namespace gum {
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyInference:
+  class ShaferShenoyInference :
       public JointTargetedInference< GUM_SCALAR >,
       public EvidenceInference< GUM_SCALAR > {
     public:
@@ -79,7 +79,7 @@ namespace gum {
                                    bool use_binary_join_tree = true);
 
     /// destructor
-    ~ShaferShenoyInference() final;
+    ~ShaferShenoyInference();
 
     /// @}
 

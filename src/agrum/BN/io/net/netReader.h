@@ -49,7 +49,7 @@ namespace gum {
    * or a file must be a subclass of NetReader.
    */
   template < typename GUM_SCALAR >
-  class NetReader: public BNReader< GUM_SCALAR > {
+  class NetReader : public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
@@ -65,7 +65,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~NetReader() final;
+    ~NetReader() ;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

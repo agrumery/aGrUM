@@ -122,11 +122,11 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN(_at_LIP6)
    */
   template < typename GUM_SCALAR >
-  class BIFReader: public BNReader< GUM_SCALAR > {
+  class BIFReader : public BNReader< GUM_SCALAR > {
     public:
     BIFReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
-    ~BIFReader() final;
+    ~BIFReader();
 
     /// Direct access to BIF scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

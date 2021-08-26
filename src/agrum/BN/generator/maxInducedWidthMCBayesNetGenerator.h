@@ -136,7 +136,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~MaxInducedWidthMCBayesNetGenerator() final;
+    ~MaxInducedWidthMCBayesNetGenerator();
 
     /// @}
 

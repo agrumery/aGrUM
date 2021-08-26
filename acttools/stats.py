@@ -71,13 +71,18 @@ def profileAgrum(current):
   sdt2 = 0
   notif("  n :     duration   mean      stdev   final time")
   for i in range(cfg.nbr_tests_for_stats):
-    proc = Popen(po, shell=True, stdout=PIPE, stderr=STDOUT)
+    dt=0
+    while dt==0:
+      proc = Popen(po, shell=True, stdout=PIPE, stderr=STDOUT)
 
-    out = proc.stdout.readlines()
-    dt = 0
-    for line in out:
-      if b"Profiling" in line:
-        dt = float(line.split(b" ")[3]) / 1000.0
+      out = proc.stdout.readlines()
+      for line in out:
+        if b"Profiling" in line:
+          t=line.split(b" ")
+          v=t[4] if len(t[3])==0 else t[3]
+          dt = float(v) / 1000.0
+      if dt==0:
+        notif("[error]")
 
     sdt += dt
     sdt2 += dt * dt

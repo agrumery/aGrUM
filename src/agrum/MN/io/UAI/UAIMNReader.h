@@ -57,7 +57,7 @@ namespace gum {
    * or a file must be a subclass of UAIMNReader.
    */
   template < typename GUM_SCALAR >
-  class UAIMNReader: public MNReader< GUM_SCALAR > {
+  class UAIMNReader : public MNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
@@ -73,7 +73,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~UAIMNReader() final;
+    ~UAIMNReader() ;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

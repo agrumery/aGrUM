@@ -99,7 +99,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class BIFXMLBNReader: BNReader< GUM_SCALAR > {
+  class BIFXMLBNReader : BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
@@ -111,7 +111,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~BIFXMLBNReader() final;
+    ~BIFXMLBNReader() ;
 
     /**
      * Reads the bayes net from the file referenced by filePath  given at the

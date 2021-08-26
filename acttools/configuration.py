@@ -55,7 +55,7 @@ cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.configFile = ".options.act2.pickle"  #
 cfg.fixedSeedValue = "10"
 
-cfg.nbr_tests_for_stats = 20
+cfg.nbr_tests_for_stats = 50
 
 # for message
 cfg.prefixe_line = "-- "
