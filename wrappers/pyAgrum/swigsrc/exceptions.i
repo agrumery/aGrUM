@@ -33,7 +33,8 @@ static void SetPythonizeAgrumException() {
     PyErr_SetString ( PyExc_RuntimeError, "C++ Bad Cast" );
   }
   catch (gum::SyntaxError & e) {
-     PyErr_SetString ( PyExc_SyntaxError, e.what().c_str());
+    PyErr_SetString ( PyExc_SyntaxError, e.errorContent().c_str());
+    PyErr_SyntaxLocationEx(e.filename().c_str(), e.line(), e.col());
   }
   PYGUM_CATCH(DefaultInLabel)
   PYGUM_CATCH(DuplicateElement)

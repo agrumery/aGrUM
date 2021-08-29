@@ -34,7 +34,7 @@ namespace gum_tests {
 
     std::size_t testParseString( std::string csvstring, std::string& res ) {
       std::istringstream       in( csvstring );
-      gum::learning::CSVParser<> parser( in );
+      gum::learning::CSVParser<> parser( in ,"(stream)");
 
       // no data parser for now
       TS_ASSERT_THROWS( parser.current(), gum::NullElement );
@@ -240,7 +240,7 @@ namespace gum_tests {
     void testUseNewStream () {
       std::string csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
       std::istringstream in1 ( csvstring1 );
-      gum::learning::CSVParser<> parser( in1 );
+      gum::learning::CSVParser<> parser( in1,"(stream)" );
 
       TS_ASSERT_THROWS( parser.current(), gum::NullElement );
       TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement );
@@ -268,7 +268,7 @@ namespace gum_tests {
       {
         std::string csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
         std::istringstream in1 ( csvstring1 );
-        gum::learning::CSVParser<DebugCountedAlloc> parser( in1 );
+        gum::learning::CSVParser<DebugCountedAlloc> parser( in1,"(stream)" );
 
         TS_ASSERT_THROWS( parser.current(), gum::NullElement );
         TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement );

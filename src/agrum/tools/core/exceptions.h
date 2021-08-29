@@ -74,21 +74,18 @@
   };
 
 #ifdef GUM_FOR_SWIG
-#  define GUM_SYNTAX_ERROR(msg, line, column)                       \
-    {                                                               \
-      std::ostringstream error_stream;                              \
-      error_stream << "Position (" << line << "," << column << "), " << msg; \
-      throw(gum::SyntaxError(error_stream.str(), line, column));    \
+#  define GUM_SYNTAX_ERROR(msg, filename, line, column)                    \
+    {                                                                      \
+      std::ostringstream error_stream;                                     \
+      error_stream << msg;                                                 \
+      throw(gum::SyntaxError(error_stream.str(), filename, line, column)); \
     }
 #else   // GUM_FOR_SWIG
-#  define GUM_SYNTAX_ERROR(msg, line, column)                                                     \
-    {                                                                                             \
-      std::ostringstream error_stream;                                                            \
-      error_stream << "(" << line << ":" << column << "): " << msg;                               \
-      throw(                                                                                      \
-         gum::SyntaxError(error_stream.str(), \
-                          line,                                                                   \
-                          column));                                                               \
+#  define GUM_SYNTAX_ERROR(msg, filename, line, column)                    \
+    {                                                                      \
+      std::ostringstream error_stream;                                     \
+      error_stream << "(" << line << ":" << column << "): " << msg;        \
+      throw(gum::SyntaxError(error_stream.str(), filename, line, column)); \
     }
 #endif   // GUM_FOR_SWIG
 
@@ -497,22 +494,25 @@ namespace gum {
 
   class SyntaxError: public IOError {
     protected:
-    Size noLine_;
-    Size noCol_;
+    Size        noLine_;
+    Size        noCol_;
+    std::string filename_;
 
     public:
     SyntaxError(const std::string& aMsg,
+                const std::string& aFilename,
                 Size               nol,
                 Size               noc,
                 const std::string& aType = "Syntax Error") :
         IOError(aMsg, aType),
-        noLine_(nol), noCol_(noc){};
+        noLine_(nol), noCol_(noc), filename_(aFilename){};
 
-    Size col() const { return noCol_; };
-    Size line() const { return noLine_; };
+    Size        col() const { return noCol_; };
+    Size        line() const { return noLine_; };
+    std::string filename() const { return filename_; };
 
 #  ifdef GUM_FOR_SWIG
-    std::string what() const { return "[pyAgrum] " + type_ + " : " + msg_; }
+    std::string what() const { return "[pyAgrum] " + msg_; }
 #  else    // GUM_FOR_SWIG
     std::string what() const { return type_ + " : " + msg_; }
 #  endif   // GUM_FOR_SWIG

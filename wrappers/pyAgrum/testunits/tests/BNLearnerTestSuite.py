@@ -108,16 +108,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
   def testDBNTonda(self):
     dbn = gum.BayesNet()
     l = [dbn.add(gum.LabelizedVariable(name, name, nbr)) for (name, nbr) in [
-      ("bf_0", 4),
-      ("bf_t", 4),
-      ("c_0", 5),
-      ("c_t", 5),
-      ("h_0", 5),
-      ("h_t", 5),
-      ("tf_0", 5),
-      ("tf_t", 5),
-      ("wl_0", 4),
-      ("wl_t", 4)
+        ("bf_0", 4),
+        ("bf_t", 4),
+        ("c_0", 5),
+        ("c_t", 5),
+        ("h_0", 5),
+        ("h_t", 5),
+        ("tf_0", 5),
+        ("tf_t", 5),
+        ("wl_0", 4),
+        ("wl_t", 4)
     ]]
     for node in ["c_t", "h_t", "wl_t"]:
       dbn.addArc(dbn.idFromName("tf_0"), dbn.idFromName(node))
@@ -216,7 +216,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     bn2 = gum.fastBN("A->B->C->D->E")
     gum.generateCSV(bn2, "resources/database.csv", 2000, with_labels=True)
 
-    learner = gum.BNLearner("resources/database.csv", bn)  # bn is used to give the variables and their domains
+    # bn is used to give the variables and their domains
+    learner = gum.BNLearner("resources/database.csv", bn)
     learner.useAprioriDirichlet("resources/dirichlet.csv", 10)
     learner.useScoreAIC()  # or another score with no included prior such as BDeu
 
@@ -225,10 +226,12 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.size(), 5)
 
   def test_EM(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), True,["#"])
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/EM.csv'), True, ["#"])
     self.assertFalse(learner.hasMissingValues())
 
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), True,["?"])
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/EM.csv'), True, ["?"])
     self.assertTrue(learner.hasMissingValues())
 
     dag = gum.DAG()
@@ -247,7 +250,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.learnParameters(dag, False)
 
   def test_chi2(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
 
     stat, pvalue = learner.chi2("smoking?", "lung_cancer?")
     self.assertAlmostEqual(stat, 36.2256, delta=1e-4)
@@ -261,11 +265,13 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(stat, 0.6297, delta=1e-4)
     self.assertAlmostEqual(pvalue, 0.4274, delta=1e-4)
 
-    stat, pvalue = learner.chi2("lung_cancer?", "tuberculosis?", ["tuberculos_or_cancer?"])
+    stat, pvalue = learner.chi2("lung_cancer?", "tuberculosis?", [
+                                "tuberculos_or_cancer?"])
     self.assertAlmostEqual(stat, 58.0, delta=1e-4)
     self.assertAlmostEqual(pvalue, 0.0, delta=1e-4)
 
-    learner2 = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+    learner2 = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/chi2.csv'))
 
     stat, pvalue = learner2.chi2("A", "C")
     self.assertAlmostEqual(stat, 0.0007, delta=1e-3)
@@ -288,7 +294,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
 
   def test_loglikelihood(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/chi2.csv'))
     self.assertEqual(learner.nbRows(), 500)
     self.assertEqual(learner.nbCols(), 4)
 
@@ -314,54 +321,58 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def testPossibleEdge(self):
     # possible edges are not relevant
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 0)
 
     # possible edges are relevant
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
-    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
 
-    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
-    forbiddenarcs = {(bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    forbiddenarcs = {(bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
-    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()));
+    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()))
 
     # mixed with a mandatory arc
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
 
-    testedarcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                  (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"),bn.idFromName("bronchitis?")),
-                  (bn.idFromName("visit_to_Asia?"),bn.idFromName("bronchitis?"))}
+    testedarcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                  (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+                  (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
@@ -369,7 +380,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def testPossibleEdgeWithTabuList(self):
     # possible edges are not relevant
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
@@ -378,69 +390,74 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.sizeArcs(), 0)
 
     # possible edges are relevant
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
-    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
 
-    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
-    forbiddenarcs = {(bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+    forbiddenarcs = {(bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
-    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()));
+    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()))
 
     # mixed with a mandatory arc
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
 
-    testedarcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?")),
-                    (bn.idFromName("visit_to_Asia?"),bn.idFromName("bronchitis?"))}
+    testedarcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+                  (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+                  (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
   def testHybridLearning(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/data1.csv'))
     learner.useMIIC()
     eg = learner.learnMixedStructure()
     skel = eg.skeleton()
 
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/data1.csv'))
     learner.setPossibleSkeleton(skel)
     bn = learner.learnBN()
 
     self.assertEqual(bn.sizeArcs(), 4)
     self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
-    self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {
+                     bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
-
 
   def test_RecordWeight(self):
     filename = self.agrumSrcDir('src/testunits/ressources/dataW.csv')
@@ -503,8 +520,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setRecordWeight(2, 4.0)
 
     bn2 = learner.learnParameters(bn.dag())
-    self.assertTrue(np.array_equal(bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
-    self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
+    self.assertTrue(np.array_equal(
+        bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
+    self.assertTrue(np.array_equal(
+        bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
 
   def testPseudoCount(self):
     filename = self.agrumSrcDir('src/testunits/ressources/dataW.csv')
@@ -522,29 +541,36 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(learner.nbRows(), 7)
     self.assertEqual(learner.nbCols(), 3)
 
-    self.assertEqual(learner.rawPseudoCount(["X"]),(5,2))
-    self.assertEqual(learner.rawPseudoCount(["X","Z"]),(1,0,2,1,2,1))
-    self.assertEqual(learner.rawPseudoCount(["Y","Z"]),(0,1,0,3,2,1))
+    self.assertEqual(learner.rawPseudoCount(["X"]), (5, 2))
+    self.assertEqual(learner.rawPseudoCount(["X", "Z"]), (1, 0, 2, 1, 2, 1))
+    self.assertEqual(learner.rawPseudoCount(["Y", "Z"]), (0, 1, 0, 3, 2, 1))
 
     learner.useAprioriSmoothing(0.1)
 
-    self.assertEqual(learner.rawPseudoCount(["X"]),(5.1,2.1))
-    self.assertEqual(learner.rawPseudoCount(["X","Z"]),(1.1,0.1,2.1,1.1,2.1,1.1))
-    self.assertEqual(learner.rawPseudoCount(["Y","Z"]),(0.1,1.1,0.1,3.1,2.1,1.1))
-
+    self.assertEqual(learner.rawPseudoCount(["X"]), (5.1, 2.1))
+    self.assertEqual(learner.rawPseudoCount(
+        ["X", "Z"]), (1.1, 0.1, 2.1, 1.1, 2.1, 1.1))
+    self.assertEqual(learner.rawPseudoCount(
+        ["Y", "Z"]), (0.1, 1.1, 0.1, 3.1, 2.1, 1.1))
 
     learner = gum.BNLearner(filename)
-    self.assertEqual(learner.pseudoCount(["X"]).tolist(),[5,2])
-    self.assertEqual(learner.pseudoCount(["X","Z"]).tolist(),[[1,0],[2,1],[2,1]])
-    self.assertEqual(learner.pseudoCount(["Y","Z"]).tolist(),[[0,1],[0,3],[2,1]])
-    self.assertEqual(learner.pseudoCount(["Z","Y"]).tolist(),[[0,0,2],[1,3,1]])
+    self.assertEqual(learner.pseudoCount(["X"]).tolist(), [5, 2])
+    self.assertEqual(learner.pseudoCount(
+        ["X", "Z"]).tolist(), [[1, 0], [2, 1], [2, 1]])
+    self.assertEqual(learner.pseudoCount(
+        ["Y", "Z"]).tolist(), [[0, 1], [0, 3], [2, 1]])
+    self.assertEqual(learner.pseudoCount(
+        ["Z", "Y"]).tolist(), [[0, 0, 2], [1, 3, 1]])
 
     learner.useAprioriSmoothing(0.1)
 
-    self.assertEqual(learner.pseudoCount(["X"]).tolist(),[5.1,2.1])
-    self.assertEqual(learner.pseudoCount(["X","Z"]).tolist(),[[1.1,0.1],[2.1,1.1],[2.1,1.1]])
-    self.assertEqual(learner.pseudoCount(["Y","Z"]).tolist(),[[0.1,1.1],[0.1,3.1],[2.1,1.1]])
-    self.assertEqual(learner.pseudoCount(["Z","Y"]).tolist(),[[0.1,0.1,2.1],[1.1,3.1,1.1]])
+    self.assertEqual(learner.pseudoCount(["X"]).tolist(), [5.1, 2.1])
+    self.assertEqual(learner.pseudoCount(["X", "Z"]).tolist(), [
+                     [1.1, 0.1], [2.1, 1.1], [2.1, 1.1]])
+    self.assertEqual(learner.pseudoCount(["Y", "Z"]).tolist(), [
+                     [0.1, 1.1], [0.1, 3.1], [2.1, 1.1]])
+    self.assertEqual(learner.pseudoCount(["Z", "Y"]).tolist(), [
+                     [0.1, 0.1, 2.1], [1.1, 3.1, 1.1]])
 
   def test_dbWithGuil(self):
     filename = self.agrumSrcDir('src/testunits/ressources/csv_quoted.csv')
@@ -564,6 +590,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.useScoreBIC()
       learner.useGreedyHillClimbing()
       bn = learner.learnBN()
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

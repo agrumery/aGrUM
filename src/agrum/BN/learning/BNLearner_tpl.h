@@ -227,7 +227,7 @@ namespace gum {
         GUM_ERROR(gum::IOError, "File " << filename << " not found")
       }
 
-      CSVParser<> parser(in);
+      CSVParser<> parser(in,filename);
       parser.next();
       auto names = parser.current();
 
@@ -241,7 +241,7 @@ namespace gum {
           for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
             modals[col].insert(src.variable(graphId).label(i));
         } catch (const gum::NotFound&) {
-          // no problem : a column which is not in the BN...
+          // no problem : a column not in the BN...
         }
       }
 

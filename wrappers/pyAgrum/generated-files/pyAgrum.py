@@ -15,6 +15,12 @@ from typing import List,Set,Dict,Tuple
 ## added by passForType (pyAgrum)
 from typing import List,Set,Dict,Tuple
 ## end of added by passForType (pyAgrum)
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
 
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
@@ -1947,6 +1953,9 @@ class SyntaxError(IOError):
 
         """
         return _pyAgrum.SyntaxError_line(self)
+
+    def filename(self) -> str:
+        return _pyAgrum.SyntaxError_filename(self)
 
     def what(self) -> str:
         return _pyAgrum.SyntaxError_what(self)

@@ -45,7 +45,7 @@ namespace gum {
         _filename_(filename), _delimiter_(delimiter), _comment_marker_(commentmarker),
         _quote_marker_(quoteMarker), _first_row_has_names_(fileContainsNames),
         _input_stream_(_filename_, std::ifstream::in),
-        _parser_(_input_stream_, delimiter, commentmarker, quoteMarker), _var_names_(alloc) {
+        _parser_(_input_stream_, filename, delimiter, commentmarker, quoteMarker), _var_names_(alloc) {
       // check that the input file was opened correctly
       if ((_input_stream_.rdstate() & std::ifstream::failbit) != 0) {
         GUM_ERROR(IOError, "File " << filename << " not found")

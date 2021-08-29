@@ -74,14 +74,13 @@ namespace gum {
      * in.close();
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
+    template < template < typename > class ALLOC = std::allocator >
     class CSVParser {
       public:
-      
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<std::string>;
+      using allocator_type = ALLOC< std::string >;
 
-        
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -96,18 +95,19 @@ namespace gum {
        * in the CSV
        * @param alloc the allocator used by all the methods
        */
-      CSVParser( std::istream&      in,
-                 const std::string& delimiter = ",",
-                 const char         commentmarker = '#',
-                 const char         quoteMarker = '"',
-                 const allocator_type& alloc = allocator_type () );
+      CSVParser(std::istream&         in,
+                const std::string&    filename,
+                const std::string&    delimiter     = ",",
+                const char            commentmarker = '#',
+                const char            quoteMarker   = '"',
+                const allocator_type& alloc         = allocator_type());
 
       /// destructor
       virtual ~CSVParser();
 
       /// @}
 
-      
+
       // ########################################################################
       /// @name Accessors / Modifiers
       // ########################################################################
@@ -121,55 +121,54 @@ namespace gum {
       /// returns the current parsed line
       /** @throw NullElement is raised if there is no data
        */
-      const std::vector<std::string,ALLOC<std::string>>& current() const;
+      const std::vector< std::string, ALLOC< std::string > >& current() const;
 
       /// returns the current line number within the stream
       const std::size_t nbLine() const;
 
       /// reopens a new input stream to parse
-      void useNewStream ( std::istream&      in,
-                          const std::string& delimiter = ",",
-                          const char         commentmarker = '#',
-                          const char         quoteMarker = '"' );
+      void useNewStream(std::istream&      in,
+                        const std::string& delimiter     = ",",
+                        const char         commentmarker = '#',
+                        const char         quoteMarker   = '"');
 
       /// @}
-      
-     
+
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-      
-    private:
-      void  _getNextTriplet_( const std::string& str,
-                             std::size_t&       first_letter_token,
-                             std::size_t&       next_token,
-                             std::size_t&       last_letter_token,
-                             std::size_t        from ) const;
-      
-      void  _tokenize_( const std::string& str );
 
-      std::size_t  _correspondingQuoteMarker_( const std::string& str,
-                                              std::size_t pos ) const;
+      private:
+      void _getNextTriplet_(const std::string& str,
+                            std::size_t&       first_letter_token,
+                            std::size_t&       next_token,
+                            std::size_t&       last_letter_token,
+                            std::size_t        from) const;
 
-      
-      std::string               _line_;
-      std::string               _delimiter_;
-      std::string               _spaces_;
-      std::string               _delimiterPlusSpaces_;
-      std::size_t               _nbLine_;
-      char                      _commentMarker_;
-      char                      _quoteMarker_;
-      bool                      _emptyData_;
+      void _tokenize_(const std::string& str);
 
-      std::istream*             _instream_;
-      std::vector<std::string,ALLOC<std::string>>  _data_;
-      
+      std::size_t _correspondingQuoteMarker_(const std::string& str, std::size_t pos) const;
+
+
+      std::string _line_;
+      std::string _delimiter_;
+      std::string _spaces_;
+      std::string _delimiterPlusSpaces_;
+      std::size_t _nbLine_;
+      char        _commentMarker_;
+      char        _quoteMarker_;
+      bool        _emptyData_;
+
+      std::istream*                                    _instream_;
+      std::vector< std::string, ALLOC< std::string > > _data_;
+      const std::string                                _filename_;
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
     };
 
-  }  // namespace learning
+  }   // namespace learning
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/tools/database/CSVParser_tpl.h>
 
-#endif  // GUM_CSV_PARSER_H
+#endif   // GUM_CSV_PARSER_H
