@@ -12,6 +12,9 @@ if _swig_python_version_info < (2, 7, 0):
 ## added by passForType (pyAgrum)
 from typing import List,Set,Dict,Tuple
 ## end of added by passForType (pyAgrum)
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
 
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
@@ -860,7 +863,7 @@ class PRMexplorer(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
+        	If the class element doesn't have any pyAgrum.Potential (like a gum::PRMReferenceSlot). 
         pyAgrum.IndexError
         	If the class is not in the PRM
         pyAgrum.IndexError
@@ -1944,6 +1947,9 @@ class SyntaxError(IOError):
 
         """
         return _pyAgrum.SyntaxError_line(self)
+
+    def what(self) -> str:
+        return _pyAgrum.SyntaxError_what(self)
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
 
 # Register SyntaxError in _pyAgrum:
@@ -2137,7 +2143,7 @@ class Variable(object):
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_Variable
 
-    def clone(self) -> "gum::Variable *":
+    def clone(self) -> "pyAgrum.Variable":
         r"""
 
         Copy factory
@@ -3042,7 +3048,7 @@ class IDiscretizedVariable(DiscreteVariable):
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_IDiscretizedVariable
 
-    def clone(self) -> "gum::IDiscretizedVariable *":
+    def clone(self) -> "pyAgrum.DiscretizedVariable":
         r"""
 
         Returns
@@ -5466,7 +5472,7 @@ class GraphicalModel(object):
     def nodeset(self, names: "Vector_string") -> List[int]:
         return _pyAgrum.GraphicalModel_nodeset(self, names)
 
-    def nodes(self) -> "gum::NodeGraphPart const &":
+    def nodes(self) -> Set[int]:
         return _pyAgrum.GraphicalModel_nodes(self)
 
     def completeInstantiation(self) -> "pyAgrum.Instantiation":
@@ -5549,7 +5555,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_sizeArcs(self)
 
-    def nodes(self) -> "gum::NodeGraphPart const &":
+    def nodes(self) -> Set[int]:
         r"""
 
         Returns
@@ -5563,7 +5569,7 @@ class DAGmodel(GraphicalModel):
     def exists(self, node: int) -> bool:
         return _pyAgrum.DAGmodel_exists(self, node)
 
-    def arcs(self) -> "gum::ArcSet const &":
+    def arcs(self) -> Set[Tuple[int,int]]:
         r"""
 
         Returns
@@ -5627,7 +5633,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_topologicalOrder(self, clear)
 
-    def hasSameStructure(self, other: "DAGmodel") -> bool:
+    def hasSameStructure(self, other: "pyAgrum.DAGmodel") -> bool:
         r"""
 
         Parameters
@@ -5663,13 +5669,13 @@ class UGmodel(GraphicalModel):
     def sizeEdges(self) -> int:
         return _pyAgrum.UGmodel_sizeEdges(self)
 
-    def nodes(self) -> "gum::NodeGraphPart const &":
+    def nodes(self) -> Set[int]:
         return _pyAgrum.UGmodel_nodes(self)
 
     def exists(self, node: int) -> bool:
         return _pyAgrum.UGmodel_exists(self, node)
 
-    def edges(self) -> "gum::EdgeSet const &":
+    def edges(self) -> Set[Tuple[int,int]]:
         return _pyAgrum.UGmodel_edges(self)
 
     def existsEdge(self, *args) -> bool:
@@ -5681,7 +5687,7 @@ class UGmodel(GraphicalModel):
     def isIndependent(self, *args) -> bool:
         return _pyAgrum.UGmodel_isIndependent(self, *args)
 
-    def hasSameStructure(self, other: "UGmodel") -> bool:
+    def hasSameStructure(self, other: "pyAgrum.UGmodel") -> bool:
         return _pyAgrum.UGmodel_hasSameStructure(self, other)
 
 # Register UGmodel in _pyAgrum:
@@ -5949,7 +5955,7 @@ class MarkovBlanket(object):
         """
         return _pyAgrum.MarkovBlanket_size(self)
 
-    def hasSameStructure(self, other: "DAGmodel") -> bool:
+    def hasSameStructure(self, other: "pyAgrum.DAGmodel") -> bool:
         r"""
 
         Parameters
@@ -6834,28 +6840,28 @@ class MultiDimContainer(object):
     def copyFrom(self, *args) -> None:
         return _pyAgrum.MultiDimContainer_copyFrom(self, *args)
 
-    def extractFrom(self, src: "MultiDimContainer", mask: "Instantiation") -> None:
+    def extractFrom(self, src: "pyAgrum.Potential", mask: "Instantiation") -> None:
         return _pyAgrum.MultiDimContainer_extractFrom(self, src, mask)
 
-    def content(self, *args) -> "gum::MultiDimImplementation< double >":
+    def content(self, *args) -> "pyAgrum.Potential":
         return _pyAgrum.MultiDimContainer_content(self, *args)
 
-    def getMasterRef(self, *args) -> "gum::MultiDimAdressable const &":
+    def getMasterRef(self, *args) -> "pyAgrum.Potential":
         return _pyAgrum.MultiDimContainer_getMasterRef(self, *args)
 
-    def copy(self, src: "MultiDimContainer") -> None:
+    def copy(self, src: "pyAgrum.Potential") -> None:
         return _pyAgrum.MultiDimContainer_copy(self, src)
 
-    def newFactory(self) -> "gum::MultiDimContainer< double >":
+    def newFactory(self) -> "pyAgrum.Potential":
         return _pyAgrum.MultiDimContainer_newFactory(self)
 
     def toString(self, *args) -> str:
         return _pyAgrum.MultiDimContainer_toString(self, *args)
 
-    def __eq__(self, p: "MultiDimContainer") -> bool:
+    def __eq__(self, p: "pyAgrum.Potential") -> bool:
         return _pyAgrum.MultiDimContainer___eq__(self, p)
 
-    def __ne__(self, p: "MultiDimContainer") -> bool:
+    def __ne__(self, p: "pyAgrum.Potential") -> bool:
         return _pyAgrum.MultiDimContainer___ne__(self, p)
 
     def apply(self, f: "std::function< float (float) >") -> None:
@@ -8556,9 +8562,9 @@ class BayesNet(IBayesNet):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the gum::BayesNet.
+        Remove a variable from the pyAgrum.BayesNet.
 
-        Removes the corresponding variable from the gum::BayesNet and from all of it's children gum::Potential.
+        Removes the corresponding variable from the pyAgrum.BayesNet and from all of it's children pyAgrum.Potential.
 
         If no variable matches the given id, then nothing is done.
 
@@ -8600,9 +8606,9 @@ class BayesNet(IBayesNet):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the gum::BayesNet.
+        Changes a variable's name in the pyAgrum.BayesNet.
 
-        This will change the "pyAgrum.DiscreteVariable" names in the gum::BayesNet.
+        This will change the "pyAgrum.DiscreteVariable" names in the pyAgrum.BayesNet.
 
         Parameters
         ----------
@@ -10481,9 +10487,9 @@ class MarkovNet(IMarkovNet):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the gum::MarkovNet.
+        Remove a variable from the pyAgrum.MarkovNet.
 
-        Removes the corresponding variable from the gum::MarkovNet and from all of it's children gum::Potential.
+        Removes the corresponding variable from the pyAgrum.MarkovNet and from all of it's children pyAgrum.Potential.
 
         If no variable matches the given id, then nothing is done.
 
@@ -10505,9 +10511,9 @@ class MarkovNet(IMarkovNet):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the gum::MarkovNet.
+        Changes a variable's name in the pyAgrum.MarkovNet.
 
-        This will change the "pyAgrum.DiscreteVariable" names in the gum::MarkovNet.
+        This will change the "pyAgrum.DiscreteVariable" names in the pyAgrum.MarkovNet.
 
         Parameters
         ----------
@@ -10835,7 +10841,7 @@ class ShaferShenoyMNInference(object):
 
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyMNInference
 
-    def setTriangulation(self, new_triangulation: "Triangulation") -> None:
+    def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _pyAgrum.ShaferShenoyMNInference_setTriangulation(self, new_triangulation)
 
     def joinTree(self) -> "pyAgrum.CliqueGraph":
@@ -11586,10 +11592,10 @@ class LazyPropagation(object):
 
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation
 
-    def setTriangulation(self, new_triangulation: "Triangulation") -> None:
+    def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _pyAgrum.LazyPropagation_setTriangulation(self, new_triangulation)
 
-    def setRelevantPotentialsFinderType(self, type: "gum::RelevantPotentialsFinderType") -> None:
+    def setRelevantPotentialsFinderType(self, type: int) -> None:
         r"""
 
         sets how we determine the relevant potentials to combine
@@ -11614,7 +11620,7 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_setRelevantPotentialsFinderType(self, type)
 
-    def setFindBarrenNodesType(self, type: "gum::FindBarrenNodesType") -> None:
+    def setFindBarrenNodesType(self, type: int) -> None:
         r"""
 
         sets how we determine barren nodes
@@ -12398,10 +12404,10 @@ class ShaferShenoyInference(object):
 
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference
 
-    def setTriangulation(self, new_triangulation: "Triangulation") -> None:
+    def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _pyAgrum.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
-    def setFindBarrenNodesType(self, type: "gum::FindBarrenNodesType") -> None:
+    def setFindBarrenNodesType(self, type: int) -> None:
         r"""
 
         sets how we determine barren nodes
@@ -13185,10 +13191,10 @@ class VariableElimination(object):
 
     __swig_destroy__ = _pyAgrum.delete_VariableElimination
 
-    def setTriangulation(self, new_triangulation: "Triangulation") -> None:
+    def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _pyAgrum.VariableElimination_setTriangulation(self, new_triangulation)
 
-    def setRelevantPotentialsFinderType(self, type: "gum::RelevantPotentialsFinderType") -> None:
+    def setRelevantPotentialsFinderType(self, type: int) -> None:
         r"""
 
         sets how we determine the relevant potentials to combine
@@ -13213,7 +13219,7 @@ class VariableElimination(object):
         """
         return _pyAgrum.VariableElimination_setRelevantPotentialsFinderType(self, type)
 
-    def setFindBarrenNodesType(self, type: "gum::FindBarrenNodesType") -> None:
+    def setFindBarrenNodesType(self, type: int) -> None:
         r"""
 
         sets how we determine barren nodes

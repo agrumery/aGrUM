@@ -87,6 +87,9 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("gum::Sequence< gum::DiscreteVariable const \\* >", "List[object]"),
   ("gum::Sequence< int >", "List[int]"),
   ("gum::Sequence< gum::NodeId >", "List[int]"),
+  ("gum::NodeGraphPart", "Set[int]"),
+  ("gum::EdgeSet", "Set[Tuple[int,int]]"),
+  ("gum::ArcSet", "Set[Tuple[int,int]]"),
 
 # removing templates and correct namespace for pyAgrum's classes
   ("gum::Potential< double >", '"pyAgrum.Potential"'),
@@ -112,6 +115,16 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ("gum::IMarkovNet< double >", '"pyAgrum.IMarkovNet"'),
   ('gum::VariableNodeMap', '"pyAgrum.VariableNodeMap"'),
   ('gum::FactorTable< double >', 'List[Set[int]]'),
+  ('gum::MultiDimContainer< double >', '"pyAgrum.Potential"'),
+  ('gum::MultiDimAdressable', '"pyAgrum.Potential"'),
+  ('gum::MultiDimImplementation< double >', '"pyAgrum.Potential"'),
+  ('gum::Variable','"pyAgrum.Variable"'),
+  ('gum::IDiscretizedVariable','"pyAgrum.DiscretizedVariable"'),
+  ('gum::DAG','"pyAgrum.DAG"'),
+
+  # enum
+  ('gum::RelevantPotentialsFinderType',"int"),
+  ('gum::FindBarrenNodesType',"int"),
 
 # weird shortcuts from time to time
   ('"Arc"', '"pyAgrum.Arc"'),
@@ -122,6 +135,10 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
   ('"Variable"', '"pyAgrum.Variable"'),
   ('"BayesNet"', '"pyAgrum.BayesNet"'),
   ('"VariableNodeMap"', '"pyAgrum.VariableNodeMap"'),
+  ('"UGmodel"', '"pyAgrum.UGmodel"'),
+  ('"MultiDimContainer"', '"pyAgrum.Potential"'),
+  ('"Triangulation"', '"pyAgrum.Triangulation"'),
+  ('"DAGmodel"', '"pyAgrum.DAGmodel"'),
 
 # type simplifications
   ("gum::VarType", "int"),
@@ -144,6 +161,9 @@ list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a 
 
 # keep correct comment with template
   ("< float >", "< double >"),
+  ("gum::BayesNet","pyAgrum.BayesNet"),
+  ("gum::Potential","pyAgrum.Potential"),
+  ("gum::MarkovNet","pyAgrum.MarkovNet"),
 ]
 
 rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}
@@ -151,7 +171,7 @@ rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}
 compiled = {k: re.compile(fr'("?)(?:const\s*)?{rules[k][0]}(?:\s*const)?(?:\s*[\*|&])?(?:\s*const)?\1') for k in rules}
 triggered = {k: 0 for k in rules}
 
-notif(f"Pythonizing types for {target}")
+notif(f"Pythonizing types for {target} via {resultat}, backup in {backup}")
 if debugmode:
   notif("  (debug mode)")
 
@@ -198,7 +218,9 @@ notif(f"     | total : {sum}")
 if debugmode:
   notif("No move here (debug mode).")
 else:
-  os.rename(target, target + "old.py")
   notif(f"backup in {backup}.")
-  os.rename(resultat, target)
+  if os.path.exists(backup):
+    os.remove(backup) # file exits, delete it
+  os.rename(target, backup)
   notif(f"{target} updated.")
+  os.rename(resultat, target)
