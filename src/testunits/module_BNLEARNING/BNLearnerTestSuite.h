@@ -65,10 +65,10 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBD());
-      TS_ASSERT_DIFFERS("", learner.checkScoreAprioriCompatibility());
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
-      TS_ASSERT_EQUALS("", learner.checkScoreAprioriCompatibility());
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBD())
+      TS_ASSERT_DIFFERS("", learner.checkScoreAprioriCompatibility())
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
+      TS_ASSERT_EQUALS("", learner.checkScoreAprioriCompatibility())
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -208,6 +208,13 @@ namespace gum_tests {
     }
 
 
+    void test_guill() {
+      try {
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv"));
+        TS_FAIL("asia3_withguill.csv contains syntax error (with \").");
+      } catch (gum::SyntaxError& e) { };
+    }
+
     void test_ranges() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
@@ -338,7 +345,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    // WARNING: this test is commented on purpouse: you need a running database
+    // WARNING: this test is commented on purpose: you need a running database
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
@@ -1190,7 +1197,7 @@ namespace gum_tests {
       // create the score and the apriori
       gum::learning::DBRowGeneratorSet<>            dirichlet_genset;
       gum::learning::DBRowGeneratorParser<>         dirichlet_parser(dirichlet_database.handler(),
-                                                             dirichlet_genset);
+                                                                     dirichlet_genset);
       gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet<>    genset;

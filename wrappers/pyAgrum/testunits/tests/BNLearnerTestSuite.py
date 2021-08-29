@@ -546,5 +546,24 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(learner.pseudoCount(["Y","Z"]).tolist(),[[0.1,1.1],[0.1,3.1],[2.1,1.1]])
     self.assertEqual(learner.pseudoCount(["Z","Y"]).tolist(),[[0.1,0.1,2.1],[1.1,3.1,1.1]])
 
+  def test_dbWithGuil(self):
+    filename = self.agrumSrcDir('src/testunits/ressources/csv_quoted.csv')
+    with open(filename, "w") as src:
+      src.write("""X,Y,Z
+0,1,2
+0,1",0
+0,0,2
+1,"0,2
+0,"1",1
+1,1,1
+0,1,1
+""")
+
+    with self.assertRaises(SyntaxError):
+      learner = gum.BNLearner(filename)
+      learner.useScoreBIC()
+      learner.useGreedyHillClimbing()
+      bn = learner.learnBN()
+
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

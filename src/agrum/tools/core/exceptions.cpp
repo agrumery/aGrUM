@@ -42,16 +42,16 @@ namespace gum {
                                 const int          line,
                                 const std::string& msg) {
     std::stringstream stream;
-#  ifdef SWIG
+#  ifdef GUM_FOR_SWIG
     stream << std::endl << msg << std::endl;
-#  else
+#  else    // GUM_FOR_SWIG
     stream << std::endl
-           << "<" << filename << "> " << function << "() #" << std::setw(6) << std::dec << line
-           << " :" << std::endl
+           << filename << ":" << line << " in " << function << "()"
+           << std::endl
            << "--------------" << std::endl
            << "! " << msg << std::endl
            << "--------------" << std::endl;
-#  endif   // SWIG
+#  endif   // GUM_FOR_SWIG
     return stream.str();
   }
   Exception::Exception(const Exception& e) : msg_(e.msg_), type_(e.type_) {}

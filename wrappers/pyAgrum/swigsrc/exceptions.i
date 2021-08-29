@@ -32,6 +32,9 @@ static void SetPythonizeAgrumException() {
   catch ( std::bad_cast& ) {
     PyErr_SetString ( PyExc_RuntimeError, "C++ Bad Cast" );
   }
+  catch (gum::SyntaxError & e) {
+     PyErr_SetString ( PyExc_SyntaxError, e.what().c_str());
+  }
   PYGUM_CATCH(DefaultInLabel)
   PYGUM_CATCH(DuplicateElement)
   PYGUM_CATCH(DuplicateLabel)
@@ -56,7 +59,6 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(OutOfBounds)
   PYGUM_CATCH(ArgumentError)
   PYGUM_CATCH(SizeError)
-  PYGUM_CATCH(SyntaxError)
   PYGUM_CATCH(IOError)
   PYGUM_CATCH(UndefinedElement)
   PYGUM_CATCH(UndefinedIteratorKey)
@@ -80,4 +82,3 @@ static void SetPythonizeAgrumException() {
     SWIG_fail;
   }
 }
-

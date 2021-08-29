@@ -193,7 +193,7 @@ namespace gum_tests {
         count = testParseString(
             "1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
             res );
-        TS_FAIL( "gum::FatalError should have been thrown" );
+        TS_FAIL( "gum::SyntaxError should have been thrown" );
       } catch ( gum::SyntaxError& f ) {
         TS_ASSERT_DIFFERS( f.errorContent().find( "String quote missing", 0 ),
                            std::string::npos );

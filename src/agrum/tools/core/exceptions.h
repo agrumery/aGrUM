@@ -45,37 +45,23 @@
       throw(type(error_stream.str())); \
     }
 #  define GUM_SHOWERROR(e) \
-    { std::cout << std::endl << (e).errorType() << " : " << (e).errorContent() << std::endl; }
-#else
-#  ifndef GUM_DEBUG_MODE
-#    define GUM_ERROR(type, msg)                                    \
-      {                                                             \
-        std::ostringstream error_stream;                            \
-        error_stream << __FILE__ << ":" << __LINE__ << ": " << msg; \
-        throw(type(error_stream.str()));                            \
+    { std::cout << std::endl << (e).what() << std::endl; }
+#else   // GUM_FOR_SWIG
+#  define GUM_ERROR(type, msg)                                                             \
+    {                                                                                      \
+      std::ostringstream error_stream;                                                     \
+      error_stream << msg;                                                                 \
+      throw(type(gum::_createMsg_(__FILE__, __FUNCTION__, __LINE__, error_stream.str()))); \
+    }
+#  ifdef GUM_DEBUG_MODE
+#    define GUM_SHOWERROR(e)                                                                     \
+      {                                                                                          \
+        std::cout << std::endl << __FILE__ << ":" << __LINE__ << " " << (e).what() << std::endl; \
+        std::cout << (e).errorCallStack() << std::endl;                                          \
       }
-#    define GUM_SHOWERROR(e)                                                           \
-      {                                                                                \
-        std::cout << std::endl                                                         \
-                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() << " from " \
-                  << std::endl                                                         \
-                  << (e).errorContent() << std::endl;                                  \
-      }
-#  else   // GUM_FOR_SWIG
-#    define GUM_ERROR(type, msg)                                                             \
-      {                                                                                      \
-        std::ostringstream error_stream;                                                     \
-        error_stream << msg;                                                                 \
-        throw(type(gum::_createMsg_(__FILE__, __FUNCTION__, __LINE__, error_stream.str()))); \
-      }
-#    define GUM_SHOWERROR(e)                                                           \
-      {                                                                                \
-        std::cout << std::endl                                                         \
-                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() << " from " \
-                  << std::endl                                                         \
-                  << (e).errorContent() << std::endl;                                  \
-        std::cout << (e).errorCallStack() << std::endl;                                \
-      }
+#  else   // GUM_DEBUG_MODE
+#    define GUM_SHOWERROR(e) \
+      { std::cout << std::endl << __FILE__ << ":" << __LINE__ << " " << (e).what() << std::endl; }
 #  endif   // GUM_DEBUG_MODE
 #endif     //  GUM_FOR_SWIG
 
@@ -87,12 +73,24 @@
     TYPE(const TYPE& src) : SUPERCLASS(src){};                               \
   };
 
-#define GUM_SYNTAX_ERROR(msg, line, column)                    \
-  {                                                            \
-    std::ostringstream error_stream;                           \
-    error_stream << msg;                                       \
-    throw(gum::SyntaxError(error_stream.str(), line, column)); \
-  }
+#ifdef GUM_FOR_SWIG
+#  define GUM_SYNTAX_ERROR(msg, line, column)                       \
+    {                                                               \
+      std::ostringstream error_stream;                              \
+      error_stream << "Position (" << line << "," << column << "), " << msg; \
+      throw(gum::SyntaxError(error_stream.str(), line, column));    \
+    }
+#else   // GUM_FOR_SWIG
+#  define GUM_SYNTAX_ERROR(msg, line, column)                                                     \
+    {                                                                                             \
+      std::ostringstream error_stream;                                                            \
+      error_stream << "(" << line << ":" << column << "): " << msg;                               \
+      throw(                                                                                      \
+         gum::SyntaxError(error_stream.str(), \
+                          line,                                                                   \
+                          column));                                                               \
+    }
+#endif   // GUM_FOR_SWIG
 
 namespace gum {
 
@@ -508,12 +506,16 @@ namespace gum {
                 Size               noc,
                 const std::string& aType = "Syntax Error") :
         IOError(aMsg, aType),
-        noLine_(nol), noCol_(noc){
-
-                      };
+        noLine_(nol), noCol_(noc){};
 
     Size col() const { return noCol_; };
     Size line() const { return noLine_; };
+
+#  ifdef GUM_FOR_SWIG
+    std::string what() const { return "[pyAgrum] " + type_ + " : " + msg_; }
+#  else    // GUM_FOR_SWIG
+    std::string what() const { return type_ + " : " + msg_; }
+#  endif   // GUM_FOR_SWIG
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */
