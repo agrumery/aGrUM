@@ -78,7 +78,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4));
 
-      TS_ASSERT(id->decisionOrderExists());
+      TS_ASSERT(id->decisionOrderExists())
 
       if (id != 0) delete id;
     }
@@ -93,7 +93,7 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
+        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound)
       }
 
       if (id != 0) delete id;
@@ -105,7 +105,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4));
 
-      TS_ASSERT(id->decisionOrderExists());
+      TS_ASSERT(id->decisionOrderExists())
 
       if (id != 0) delete id;
     }
@@ -120,7 +120,7 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
+        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound)
       }
 
       if (id != 0) delete id;

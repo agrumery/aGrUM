@@ -126,11 +126,11 @@ namespace gum_tests {
 
       auto                  v2  = _getProba_(bn1, 2);
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      TS_ASSERT_EQUALS(v2, xv2);
+      TS_ASSERT_EQUALS(v2, xv2)
 
       auto                  v02  = _getProba_(bn1, 0);
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      TS_ASSERT_EQUALS(v02, xv02);
+      TS_ASSERT_EQUALS(v02, xv02)
     }
 
 
@@ -229,7 +229,7 @@ namespace gum_tests {
           break;
         ok = false;
       }
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
     }
   };
 

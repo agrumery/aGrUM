@@ -65,27 +65,27 @@ namespace gum_tests {
 
       //        TS_ASSERT_THROWS(factory->startVariableDeclaration(),
       //        gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->variableDescription("bar"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->addModality("plop"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endVariableDeclaration(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->variableDescription("bar"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->addModality("plop"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endVariableDeclaration(), gum::OperationNotAllowed)
       //        TS_ASSERT_THROWS(factory->startParentsDeclaration("foo"),
       //        gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->addParent("foo"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endParentsDeclaration(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->addParent("foo"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endParentsDeclaration(), gum::OperationNotAllowed)
       //        TS_ASSERT_THROWS(factory->startRawProbabilityDeclaration("foo"),
       //        gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->rawConditionalTable(aSequence), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endRawProbabilityDeclaration(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->rawConditionalTable(aSequence), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endRawProbabilityDeclaration(), gum::OperationNotAllowed)
       //        TS_ASSERT_THROWS(factory->startFactorizedProbabilityDeclaration("foo"),
       //        gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->startFactorizedEntry(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endFactorizedEntry(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->startFactorizedEntry(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endFactorizedEntry(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed)
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
@@ -94,16 +94,16 @@ namespace gum_tests {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
 
-      TS_ASSERT_THROWS(__bn_d->property("name"), gum::NotFound);
-      TS_ASSERT_THROWS(__bn_d->property("author"), gum::NotFound);
+      TS_ASSERT_THROWS(__bn_d->property("name"), gum::NotFound)
+      TS_ASSERT_THROWS(__bn_d->property("author"), gum::NotFound)
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
-      TS_ASSERT_EQUALS(__bn_d->property("name"), "TestSuite BayesNet");
-      TS_ASSERT_EQUALS(__bn_d->property("author"), "Lionel");
+      TS_ASSERT_EQUALS(__bn_d->property("name"), "TestSuite BayesNet")
+      TS_ASSERT_EQUALS(__bn_d->property("author"), "Lionel")
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
@@ -117,21 +117,21 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
 
-      TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->variableDescription("bar"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->addModality("plop"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endVariableDeclaration(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->addParent("foo"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endParentsDeclaration(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->rawConditionalTable(aSequence), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endRawProbabilityDeclaration(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->startFactorizedEntry(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endFactorizedEntry(), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->variableDescription("bar"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->addModality("plop"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endVariableDeclaration(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->addParent("foo"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endParentsDeclaration(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->rawConditionalTable(aSequence), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endRawProbabilityDeclaration(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->startFactorizedEntry(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endFactorizedEntry(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed)
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
@@ -318,7 +318,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("7"));

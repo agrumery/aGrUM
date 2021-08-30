@@ -81,18 +81,18 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
          bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       gum::Size elts = c.attributes().size() + c.aggregates().size();
-      TS_ASSERT_EQUALS(bn->size(), elts);
+      TS_ASSERT_EQUALS(bn->size(), elts)
 
       for (const auto attr: c.attributes()) {
         gum::NodeId id = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(attr->cpf());
         TS_GUM_ASSERT_THROWS_NOTHING(id = bn->idFromName(attr->safeName()));
         TS_GUM_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        TS_ASSERT_EQUALS(attr->cpf().nbrDim(), bn->cpt(id).nbrDim());
-        TS_ASSERT_EQUALS(attr->cpf().domainSize(), bn->cpt(id).domainSize());
+        TS_ASSERT_EQUALS(attr->cpf().nbrDim(), bn->cpt(id).nbrDim())
+        TS_ASSERT_EQUALS(attr->cpf().domainSize(), bn->cpt(id).domainSize())
       }
 
-      TS_ASSERT(bn->modalities().size() > 0);
+      TS_ASSERT(bn->modalities().size() > 0)
       TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
     }
 
@@ -100,18 +100,18 @@ namespace gum_tests {
       gum::prm::InstanceBayesNet< double >* bn = 0;
       gum::prm::PRMInstance< double >&      i  = prm->getSystem("aSys").get("c1");
       TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::prm::InstanceBayesNet< double >(i));
-      TS_ASSERT_EQUALS(bn->size(), i.size());
+      TS_ASSERT_EQUALS(bn->size(), i.size())
 
       for (auto attr = i.begin(); attr != i.end(); ++attr) {
         gum::NodeId id = 0;
         TS_GUM_ASSERT_THROWS_NOTHING((*(attr.val())).cpf());
         TS_GUM_ASSERT_THROWS_NOTHING(id = bn->idFromName((*(attr.val())).safeName()));
         TS_GUM_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        TS_ASSERT_EQUALS((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        TS_ASSERT_EQUALS((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
+        TS_ASSERT_EQUALS((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim())
+        TS_ASSERT_EQUALS((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize())
       }
 
-      TS_ASSERT(bn->modalities().size() > 0);
+      TS_ASSERT(bn->modalities().size() > 0)
       TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
     }
 
@@ -136,14 +136,14 @@ namespace gum_tests {
         size_t                            pos      = var.find_first_of('.');
         gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
         gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
-        TS_ASSERT_DIFFERS(bn.cpt(node).nbrDim(), (gum::Size)0);
+        TS_ASSERT_DIFFERS(bn.cpt(node).nbrDim(), (gum::Size)0)
 
         if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
-          TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), (gum::Size)1);
+          TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), (gum::Size)1)
         }
       }
 
-      TS_ASSERT_EQUALS(count, wount);
+      TS_ASSERT_EQUALS(count, wount)
 
       for (const auto node: bn.nodes()) {
         const gum::DiscreteVariable* var = &(bn.variable(node));
@@ -170,7 +170,7 @@ namespace gum_tests {
               f += (*(jter.val())).cpf().get(i);
             }
 
-            TS_ASSERT_DELTA(f, 1.0, 1e-7);
+            TS_ASSERT_DELTA(f, 1.0, 1e-7)
             i.unsetOverflow();
           }
         }
@@ -194,7 +194,7 @@ namespace gum_tests {
           for (i.setFirstIn(j); !i.end(); i.incIn(j))
             sum += cpt.get(i);
 
-          TS_ASSERT_DELTA(sum, 1.0, 1e-7);
+          TS_ASSERT_DELTA(sum, 1.0, 1e-7)
           i.unsetOverflow();
         }
       }

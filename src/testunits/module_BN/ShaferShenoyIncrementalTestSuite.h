@@ -228,17 +228,17 @@ namespace gum_tests {
     // ============================================================================
     void test_prior() {
       gum::ShaferShenoyInference< double > inf(bn);
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
       // get the marginals of A, C, D, H
       std::unique_ptr< gum::Potential< double > > pa(get_marginal(joint, BN_node_index[0])),
          pc(get_marginal(joint, BN_node_index[2])), pd(get_marginal(joint, BN_node_index[3])),
          ph(get_marginal(joint, BN_node_index[7]));
 
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[2]), *pc));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[7]), *ph));
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[2]), *pc))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[7]), *ph))
     }
 
     // ============================================================================
@@ -249,17 +249,17 @@ namespace gum_tests {
       inf.addTarget(0);   // A
       inf.addTarget(2);   // C
 
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
       // get the marginals of A, C, D
       __Potential pa(get_marginal(joint, BN_node_index[0]));
       __Potential pc(get_marginal(joint, BN_node_index[2]));
 
-      TS_ASSERT_THROWS(inf.posterior(BN_node_index[3]), gum::UndefinedElement);
-      TS_ASSERT_THROWS(inf.posterior(BN_node_index[1]), gum::UndefinedElement);
+      TS_ASSERT_THROWS(inf.posterior(BN_node_index[3]), gum::UndefinedElement)
+      TS_ASSERT_THROWS(inf.posterior(BN_node_index[1]), gum::UndefinedElement)
 
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[2]), *pc));
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[2]), *pc))
     }
 
 
@@ -281,15 +281,15 @@ namespace gum_tests {
       evset.insert(ev3.get());
       __Potential posterior(posterior_joint(joint, evset));
 
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
       // get the marginals of A, F
       std::unique_ptr< gum::Potential< double > > pa(
          get_marginal(posterior.get(), BN_node_index[0])),
          pf(get_marginal(posterior.get(), BN_node_index[5]));
 
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[5]), *pf));
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[5]), *pf))
     }
 
 
@@ -314,15 +314,15 @@ namespace gum_tests {
       evset.insert(ev7.get());
       __Potential posterior(posterior_joint(joint, evset));
 
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
       // get the marginals of A, D
       std::unique_ptr< gum::Potential< double > > pa(
          get_marginal(posterior.get(), BN_node_index[0])),
          pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+      TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
     }
 
 
@@ -350,15 +350,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -377,15 +377,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -400,15 +400,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -422,15 +422,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
       inf.eraseEvidence(0);
@@ -441,34 +441,34 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
       inf.addEvidence(*evp0);
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
       inf.eraseEvidence(0);
 
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
     }
 
@@ -497,15 +497,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -522,15 +522,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -545,15 +545,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -567,15 +567,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
       inf.eraseEvidence(0);
@@ -586,34 +586,34 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
       inf.addEvidence(*evp0);
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
       inf.eraseEvidence(0);
 
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
     }
 
@@ -641,15 +641,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
 
@@ -666,15 +666,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
 
       __Potential evp0(create_evidence(0, {1, 0}));
@@ -692,15 +692,15 @@ namespace gum_tests {
       {
         __Potential posterior(posterior_joint(joint, evset));
 
-        TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+        TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         // get the marginals of A, D
         std::unique_ptr< gum::Potential< double > > pa(
            get_marginal(posterior.get(), BN_node_index[0])),
            pd(get_marginal(posterior.get(), BN_node_index[3]));
 
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa));
-        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd));
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
+        TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[3]), *pd))
       }
     }
 

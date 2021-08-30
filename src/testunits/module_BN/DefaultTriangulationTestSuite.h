@@ -112,7 +112,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(triangle->junctionTree());
 
       // TODO : problem here !!
-      TS_ASSERT(triangle->junctionTree().hasRunningIntersection());
+      TS_ASSERT(triangle->junctionTree().hasRunningIntersection())
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     };
@@ -191,9 +191,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U);
+      TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U)
 
-      TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U);
+      TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U)
 
       triang.clear();
 
@@ -201,9 +201,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U);
+      TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U)
 
-      TS_ASSERT_EQUALS(gr3.sizeEdges(), 14U);
+      TS_ASSERT_EQUALS(gr3.sizeEdges(), 14U)
 
       graph.eraseEdge(gum::Edge(2, 5));
 
@@ -211,15 +211,15 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U);
+      TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U)
 
-      TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U);
+      TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U)
 
       const gum::EdgeSet& edges = triang.fillIns();
 
-      TS_ASSERT_EQUALS(edges.size(), 1U);
+      TS_ASSERT_EQUALS(edges.size(), 1U)
 
-      TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(2, 5));
+      TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(2, 5))
     }
 
     void testTriangulatedGraph2() {
@@ -244,21 +244,21 @@ namespace gum_tests {
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 
-      TS_ASSERT_EQUALS(elim.sizeNodes(), 8U);
+      TS_ASSERT_EQUALS(elim.sizeNodes(), 8U)
 
-      TS_ASSERT_EQUALS(elim.sizeEdges(), 7U);
+      TS_ASSERT_EQUALS(elim.sizeEdges(), 7U)
 
       const gum::CliqueGraph& JT = triang.junctionTree();
 
-      TS_ASSERT_EQUALS(JT.sizeNodes(), 6U);
+      TS_ASSERT_EQUALS(JT.sizeNodes(), 6U)
 
-      TS_ASSERT_EQUALS(JT.sizeEdges(), 5U);
+      TS_ASSERT_EQUALS(JT.sizeEdges(), 5U)
 
       const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr.sizeNodes(), 8U);
+      TS_ASSERT_EQUALS(gr.sizeNodes(), 8U)
 
-      TS_ASSERT_EQUALS(gr.sizeEdges(), 13U);
+      TS_ASSERT_EQUALS(gr.sizeEdges(), 13U)
     }
 
     private:

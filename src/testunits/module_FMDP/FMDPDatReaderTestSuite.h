@@ -49,9 +49,9 @@ namespace gum_tests {
       auto nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
       reader.showElegantErrorsAndWarnings();
 
 

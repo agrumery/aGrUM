@@ -109,17 +109,17 @@ namespace gum_tests {
       schedule.forceAfter(del3_id, ops3);
 
       gum::SchedulerBasic< double > scheduler;
-      TS_ASSERT_EQUALS(scheduler.nbOperations(schedule), 195);
-      TS_ASSERT_EQUALS(scheduler.nbOperations(schedule, 3), 128);
+      TS_ASSERT_EQUALS(scheduler.nbOperations(schedule), 195)
+      TS_ASSERT_EQUALS(scheduler.nbOperations(schedule, 3), 128)
       std::pair< long, long > xxx = scheduler.memoryUsage(schedule);
-      TS_ASSERT_EQUALS(xxx.first, 160);
-      TS_ASSERT_EQUALS(xxx.second, 64);
+      TS_ASSERT_EQUALS(xxx.first, 160)
+      TS_ASSERT_EQUALS(xxx.second, 64)
       xxx = scheduler.memoryUsage(schedule, 4);
-      TS_ASSERT_EQUALS(xxx.first, 128);
-      TS_ASSERT_EQUALS(xxx.second, 96);
+      TS_ASSERT_EQUALS(xxx.first, 128)
+      TS_ASSERT_EQUALS(xxx.second, 96)
 
       bool ok = scheduler.execute(schedule);
-      TS_ASSERT_EQUALS(ok, true);
+      TS_ASSERT_EQUALS(ok, true)
 
       gum::ScheduleCombine< double > comb11(f1, f2, schedule_sched_myadd);
       comb11.execute();
@@ -225,7 +225,7 @@ namespace gum_tests {
       bool ok = scheduler2->execute(schedule);
       delete scheduler2;
 
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
 
       gum::ScheduleCombine< double > comb11(f1, f2, schedule_sched_myadd);
       comb11.execute();
@@ -330,7 +330,7 @@ namespace gum_tests {
 
       bool ok = scheduler3.execute(schedule);
 
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
 
       gum::ScheduleCombine< double > comb11(f1, f2, schedule_sched_myadd);
       comb11.execute();
@@ -423,24 +423,24 @@ namespace gum_tests {
       gum::SchedulerBasic< double > scheduler;
 
       bool ok = scheduler.execute(schedule, 1);
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
       gum::ScheduleCombine< double > comb11(f1, f2, schedule_sched_myadd);
       comb11.execute();
       const gum::ScheduleMultiDim< double >& result11 = comb11.result();
       TS_GUM_ASSERT_EQUALS(result1.multiDim(), result11.multiDim());
-      TS_ASSERT(result2.isAbstract());
-      TS_ASSERT(result3.isAbstract());
+      TS_ASSERT(result2.isAbstract())
+      TS_ASSERT(result3.isAbstract())
 
       ok = scheduler.execute(schedule, 1);
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
       gum::ScheduleCombine< double > comb12(result11, f3, schedule_sched_myadd);
       comb12.execute();
       const gum::ScheduleMultiDim< double >& result12 = comb12.result();
       TS_GUM_ASSERT_EQUALS(result2.multiDim(), result12.multiDim());
-      TS_ASSERT(result3.isAbstract());
+      TS_ASSERT(result3.isAbstract())
 
       ok = scheduler.execute(schedule, 1);
-      TS_ASSERT(ok);
+      TS_ASSERT(ok)
       gum::ScheduleCombine< double > comb13(result12, f4, schedule_sched_myadd);
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();

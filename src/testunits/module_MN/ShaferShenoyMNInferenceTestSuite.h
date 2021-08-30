@@ -66,7 +66,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7);
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
     }
 
@@ -87,7 +87,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7);
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
     }
 
@@ -111,7 +111,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7);
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
     }
 
@@ -134,7 +134,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8);
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
     }
 
@@ -157,7 +157,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8);
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
     }
 
@@ -168,7 +168,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8);
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
       }
     }
 
@@ -197,13 +197,13 @@ namespace gum_tests {
       gum::Potential< double > Cwith_evB1(iemn.posterior("C"));
       gum::Potential< double > Ewith_evB1(iemn.posterior("E"));
 
-      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8);
-      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8);
-      TS_ASSERT_LESS_THAN(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8);
+      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8)
+      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8)
+      TS_ASSERT_LESS_THAN(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8)
 
-      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8);
-      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
-      TS_ASSERT_LESS_THAN((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
+      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8)
+      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8)
+      TS_ASSERT_LESS_THAN((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8)
     }
 
     void testIndependencyInference() {
@@ -213,7 +213,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8);
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
       }
     }
 
@@ -238,7 +238,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
         }
       }
 
@@ -259,7 +259,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
         }
       }
     }
@@ -286,7 +286,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
         }
       }
     }
@@ -297,7 +297,7 @@ namespace gum_tests {
         auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
-        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), gum::UndefinedElement);
+        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), gum::UndefinedElement)
       }
       {
         auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");

@@ -86,7 +86,7 @@ namespace gum_tests {
       e.set(inst, (double)1.0);
       gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-      TS_ASSERT(g_ve->hasEvidence(chain));
+      TS_ASSERT(g_ve->hasEvidence(chain))
       delete g_ve;
     }
 
@@ -110,9 +110,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
@@ -122,9 +122,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
@@ -134,9 +134,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6)
       }
       delete g_ve;
     }
@@ -162,11 +162,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve.posterior(chain, n));
         gum::Instantiation i(m), j(n);
         i.setFirst(), j.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
-        TS_ASSERT_DELTA(m.get(i), n.get(j), 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6)
+        TS_ASSERT_DELTA(m.get(i), n.get(j), 1e-6)
         i.inc(), j.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
-        TS_ASSERT_DELTA(m.get(i), n.get(j), 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6)
+        TS_ASSERT_DELTA(m.get(i), n.get(j), 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
@@ -176,9 +176,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
@@ -188,9 +188,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6)
       }
       delete sve;
     }
@@ -207,9 +207,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
@@ -219,9 +219,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
@@ -231,9 +231,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6)
       }
       delete sved;
     }
@@ -250,9 +250,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
@@ -262,9 +262,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6)
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
@@ -274,9 +274,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
-        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6)
         i.inc();
-        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6);
+        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6)
       }
       delete inf;
     }
@@ -324,18 +324,18 @@ namespace gum_tests {
 
           for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
                inst.inc(), jnst.inc()) {
-            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
-            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim());
-            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sved.nbrDim());
-            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_struct.nbrDim());
-            TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
-            TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
-            TS_ASSERT_EQUALS(m_ve.domainSize(), m_sved.domainSize());
-            TS_ASSERT_EQUALS(m_ve.domainSize(), m_struct.domainSize());
-            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
-            TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3);
-            TS_ASSERT_DELTA(m_sved.get(jnst), m_sve.get(jnst), 1.0e-3);
-            TS_ASSERT_DELTA(m_sved.get(jnst), m_struct.get(jnst), 1.0e-3);
+            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim())
+            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim())
+            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sved.nbrDim())
+            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_struct.nbrDim())
+            TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize())
+            TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize())
+            TS_ASSERT_EQUALS(m_ve.domainSize(), m_sved.domainSize())
+            TS_ASSERT_EQUALS(m_ve.domainSize(), m_struct.domainSize())
+            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3)
+            TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3)
+            TS_ASSERT_DELTA(m_sved.get(jnst), m_sve.get(jnst), 1.0e-3)
+            TS_ASSERT_DELTA(m_sved.get(jnst), m_struct.get(jnst), 1.0e-3)
           }
 
         } catch (gum::Exception& e) {
@@ -385,8 +385,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
@@ -399,8 +399,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       // making a first inference with evidence
       {
@@ -411,9 +411,9 @@ namespace gum_tests {
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6)
       }
       // Removing evidences
       {
@@ -438,9 +438,9 @@ namespace gum_tests {
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
       }
       delete g_ve;
     }
@@ -462,8 +462,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
@@ -476,8 +476,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       // making a first inference with evidence
       {
@@ -486,12 +486,12 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
         gum::Potential< double >                m;
         g_ve->posterior(q_chain, m);
-        TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1);
+        TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1)
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6)
       }
       // Removing evidences
       {
@@ -516,9 +516,9 @@ namespace gum_tests {
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
       }
       delete g_ve;
     }
@@ -556,8 +556,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
@@ -570,8 +570,8 @@ namespace gum_tests {
         e.set(inst, (double)1.0);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-        TS_ASSERT(g_ve->hasEvidence(chain));
-        TS_ASSERT(g_ve->hasEvidence(chain.first));
+        TS_ASSERT(g_ve->hasEvidence(chain))
+        TS_ASSERT(g_ve->hasEvidence(chain.first))
       }
       // making a first inference with evidence
       {
@@ -582,9 +582,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(q_chain, m));
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.0, 1e-6)
       }
       // Removing evidences
       {
@@ -609,9 +609,9 @@ namespace gum_tests {
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
         inst.inc();
-        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
+        TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6)
       }
     }
   };

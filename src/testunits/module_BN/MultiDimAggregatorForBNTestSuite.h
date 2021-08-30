@@ -89,7 +89,7 @@ namespace gum_tests {
               if (res > i.val(j)) res = i.val(j);
             }
 
-            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i], (res == i.val((gum::Idx)0)) ? 1.0f : 0.0f);
+            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i], (res == i.val((gum::Idx)0)) ? 1.0f : 0.0f)
           }
         }
       }
@@ -154,7 +154,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
@@ -206,7 +206,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -237,7 +237,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -292,7 +292,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -315,7 +315,7 @@ namespace gum_tests {
       gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
-      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), gum::InvalidArgument);
+      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), gum::InvalidArgument)
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
@@ -325,7 +325,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -380,7 +380,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -399,7 +399,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
       }
       {
         gum::ShaferShenoyInference< double > ie(&bn);
@@ -408,7 +408,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
       }
       {
         gum::VariableElimination< double > ie(&bn);
@@ -417,7 +417,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
       }
       {
         gum::LoopyBeliefPropagation< double > ie(&bn);
@@ -426,7 +426,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
       }
       // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
     }

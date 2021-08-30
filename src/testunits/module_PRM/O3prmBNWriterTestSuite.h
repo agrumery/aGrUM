@@ -93,10 +93,10 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      TS_ASSERT_EQUALS(res, (gum::Size)0);
+      TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)7);   // no system
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)37);
-      TS_ASSERT_EQUALS(bn.property("name"), "alarm");
+      TS_ASSERT_EQUALS(bn.size(), (gum::Size)37)
+      TS_ASSERT_EQUALS(bn.property("name"), "alarm")
 
 
       gum::O3prmBNWriter< double > writer;
@@ -108,20 +108,20 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
       gum::Size                    res2 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      TS_ASSERT_EQUALS(res2, (gum::Size)0);
+      TS_ASSERT_EQUALS(res2, (gum::Size)0)
       TS_ASSERT_EQUALS(reader2.warnings(), (gum::Size)7);   // no system
-      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)37);
+      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)37)
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString());
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
         const gum::Potential< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR)
       }
     }
 
@@ -139,19 +139,19 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile);
       gum::Size                    res2 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      TS_ASSERT_EQUALS(res2, (gum::Size)0);
-      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8);
+      TS_ASSERT_EQUALS(res2, (gum::Size)0)
+      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8)
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString());
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
         const gum::Potential< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR)
       }
     }
 

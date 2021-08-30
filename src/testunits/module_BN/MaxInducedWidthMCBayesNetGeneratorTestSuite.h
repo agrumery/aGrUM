@@ -124,7 +124,7 @@ namespace gum_tests {
           GUM_UNUSED(e);
           nbrtests++;
           if (nbrtests > 10) {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
             return;
           }
         }

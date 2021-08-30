@@ -58,26 +58,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays(&t1, &t2);
       t5 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = add2MultiDimArrays(&t3, &t2);
       t5 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = add2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       t4 = subtract2MultiDimArrays(&t1, &t2);
       t5 = sub_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = subtract2MultiDimArrays(&t2, &t1);
       t7 = sub_test_arrays(&t2, &t1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -85,26 +85,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays(&t1, &t2);
       t5 = mult_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = multiply2MultiDimArrays(&t3, &t2);
       t5 = mult_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = multiply2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       t4 = divide2MultiDimArrays(&t1, &t2);
       t5 = div_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = divide2MultiDimArrays(&t2, &t1);
       t7 = div_test_arrays(&t2, &t1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -139,27 +139,27 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays(&t1, &t2);
       t5 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = add2MultiDimArrays(&t3, &t2);
       t5 = add_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = add2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       // TS_ASSERT_{EQUALS|DIFFERS} can not be used here.
       t4 = subtract2MultiDimArrays(&t1, &t2);
       t5 = sub_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = subtract2MultiDimArrays(&t2, &t1);
       t7 = sub_test_arrays(&tt2, &tt1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -167,26 +167,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays(&t1, &t2);
       t5 = mult_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = multiply2MultiDimArrays(&t3, &t2);
       t5 = mult_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = multiply2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       t4 = divide2MultiDimArrays(&t1, &t2);
       t5 = div_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = divide2MultiDimArrays(&t2, &t1);
       t7 = div_test_arrays(&tt2, &tt1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -223,15 +223,15 @@ namespace gum_tests {
 
       t4 = t1 + t2;
       t5 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = t3 + t2;
       t5 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = t2 + t3;
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
@@ -264,26 +264,26 @@ namespace gum_tests {
 
       t4 = new gum::Potential< double >(t1 + t2);
       t5 = add_test_potentials(t1, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = new gum::Potential< double >(t3 + t2);
       t5 = add_test_potentials(t3, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = new gum::Potential< double >(t2 + t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       t4 = new gum::Potential< double >(t1 - t2);
       t5 = sub_test_potentials(t1, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = new gum::Potential< double >(t2 - t1);
       t7 = sub_test_potentials(t2, t1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -291,26 +291,26 @@ namespace gum_tests {
 
       t4 = new gum::Potential< double >(t1 * t2);
       t5 = mult_test_potentials(t1, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
       t4 = new gum::Potential< double >(t3 * t2);
       t5 = mult_test_potentials(t3, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       t4 = new gum::Potential< double >(t2 * t3);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
       t4 = new gum::Potential< double >(t1 / t2);
       t5 = div_test_potentials(t1, t2);
-      TS_ASSERT(*t4 == *t5);
+      TS_ASSERT(*t4 == *t5)
       t6 = new gum::Potential< double >(t2 / t1);
       t7 = div_test_potentials(t2, t1);
-      TS_ASSERT(*t6 == *t7);
-      TS_ASSERT(*t5 != *t7);
-      TS_ASSERT(*t6 != *t4);
+      TS_ASSERT(*t6 == *t7)
+      TS_ASSERT(*t5 != *t7)
+      TS_ASSERT(*t6 != *t4)
       delete t4;
       delete t5;
       delete t6;
@@ -341,26 +341,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays4Pointers(&t1, &t2);
       t5 = add_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
       t4 = add2MultiDimArrays4Pointers(&t3, &t2);
       t5 = add_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
 
       t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
       t5 = sub_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
       t7 = sub_test_arrays4Pointers(&t2, &t1);
-      TS_ASSERT(equal(*t6, *t7));
-      TS_ASSERT(!equal(*t5, *t7));
-      TS_ASSERT(!equal(*t6, *t4));
+      TS_ASSERT(equal(*t6, *t7))
+      TS_ASSERT(!equal(*t5, *t7))
+      TS_ASSERT(!equal(*t6, *t4))
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -368,26 +368,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
       t5 = mult_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
       t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
       t5 = mult_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
 
       t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
       t5 = div_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
       t7 = div_test_arrays4Pointers(&t2, &t1);
-      TS_ASSERT(equal(*t6, *t7));
-      TS_ASSERT(!equal(*t5, *t7));
-      TS_ASSERT(!equal(*t6, *t4));
+      TS_ASSERT(equal(*t6, *t7))
+      TS_ASSERT(!equal(*t5, *t7))
+      TS_ASSERT(!equal(*t6, *t4))
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -422,26 +422,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays4Pointers(&t1, &t2);
       t5 = add_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
       t4 = add2MultiDimArrays4Pointers(&t3, &t2);
       t5 = add_test_arrays4Pointers(&tt3, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
 
       t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
       t5 = sub_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
       t7 = sub_test_arrays4Pointers(&tt2, &tt1);
-      TS_ASSERT(equal(*t6, *t7));
-      TS_ASSERT(!equal(*t5, *t7));
-      TS_ASSERT(!equal(*t6, *t4));
+      TS_ASSERT(equal(*t6, *t7))
+      TS_ASSERT(!equal(*t5, *t7))
+      TS_ASSERT(!equal(*t6, *t4))
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -449,26 +449,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
       t5 = mult_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
       t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
       t5 = mult_test_arrays4Pointers(&tt3, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
 
       t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
       t5 = div_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
       t7 = div_test_arrays4Pointers(&tt2, &tt1);
-      TS_ASSERT(equal(*t6, *t7));
-      TS_ASSERT(!equal(*t5, *t7));
-      TS_ASSERT(!equal(*t6, *t4));
+      TS_ASSERT(equal(*t6, *t7))
+      TS_ASSERT(!equal(*t5, *t7))
+      TS_ASSERT(!equal(*t6, *t4))
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -505,15 +505,15 @@ namespace gum_tests {
 
       t4 = t1 + t2;
       t5 = add_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
       t4 = t3 + t2;
       t5 = add_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       t4 = t2 + t3;
-      TS_ASSERT(equal(*t4, *t5));
+      TS_ASSERT(equal(*t4, *t5))
       mydelete(t4);
       mydelete(t5);
 
@@ -543,25 +543,25 @@ namespace gum_tests {
       randomInit(&t4);
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t4);
       t6 = add_test_arrays(&t3, &t4);
-      TS_ASSERT(*t6 == *t5);
+      TS_ASSERT(*t6 == *t5)
       delete t6;
       t6 = add2MultiDimArrays(&t4, &t3);
-      TS_ASSERT(*t6 == *t5);
+      TS_ASSERT(*t6 == *t5)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t2);
       t6 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
@@ -575,34 +575,34 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t7, &t8);
       t6 = add_test_arrays(&t7, &t8);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t8, &t7);
       t6 = add_test_arrays(&t8, &t7);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t7, &t9);
       t6 = add_test_arrays(&t7, &t9);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t7);
       t6 = add_test_arrays(&t9, &t7);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t8, &t9);
       t6 = add_test_arrays(&t8, &t9);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t8);
       t6 = add_test_arrays(&t9, &t8);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
@@ -616,17 +616,17 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t10, &t11);
       t6 = add_test_arrays(&t10, &t11);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t10, &t12);
       t6 = add_test_arrays(&t10, &t12);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t11, &t12);
       t6 = add_test_arrays(&t11, &t12);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
@@ -662,25 +662,25 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t4);
       t6 = add_test_arrays(&tt3, &tt4);
-      TS_ASSERT(*t6 == *t5);
+      TS_ASSERT(*t6 == *t5)
       delete t6;
       t6 = add2MultiDimArrays(&t4, &t3);
-      TS_ASSERT(*t6 == *t5);
+      TS_ASSERT(*t6 == *t5)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t2);
       t6 = add_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
@@ -697,34 +697,34 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t7, &t8);
       t6 = add_test_arrays(&tt7, &tt8);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t8, &t7);
       t6 = add_test_arrays(&tt8, &tt7);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t7, &t9);
       t6 = add_test_arrays(&tt7, &tt9);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t7);
       t6 = add_test_arrays(&tt9, &tt7);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t8, &t9);
       t6 = add_test_arrays(&tt8, &tt9);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t8);
       t6 = add_test_arrays(&tt9, &tt8);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 
@@ -741,17 +741,17 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t10, &t11);
       t6 = add_test_arrays(&tt10, &tt11);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t10, &t12);
       t6 = add_test_arrays(&tt10, &tt12);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t11, &t12);
       t6 = add_test_arrays(&tt11, &tt12);
-      TS_ASSERT(*t5 == *t6);
+      TS_ASSERT(*t5 == *t6)
       delete t6;
       delete t5;
 

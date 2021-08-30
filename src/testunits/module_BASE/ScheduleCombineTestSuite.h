@@ -66,23 +66,23 @@ namespace gum_tests {
       gum::ScheduleCombine< double >         comb1(f1, f2, myadd);
       const gum::ScheduleMultiDim< double >& result1 = comb1.result();
 
-      TS_ASSERT_EQUALS(comb1.nbOperations(), 32);
+      TS_ASSERT_EQUALS(comb1.nbOperations(), 32)
       std::pair< long, long > xxx = comb1.memoryUsage();
-      TS_ASSERT_EQUALS(xxx.first, 32);
+      TS_ASSERT_EQUALS(xxx.first, 32)
 
       std::stringstream s1;
       s1 << result1.toString() << " = combine ( " << f1.toString() << " , " << f2.toString()
          << " )";
-      TS_ASSERT_EQUALS(s1.str(), comb1.toString());
+      TS_ASSERT_EQUALS(s1.str(), comb1.toString())
 
       gum::ScheduleCombine< double >         comb2(result1, f3, myadd);
       const gum::ScheduleMultiDim< double >& result2 = comb2.result();
 
-      TS_ASSERT(result1.isAbstract());
+      TS_ASSERT(result1.isAbstract())
       comb1.execute();
-      TS_ASSERT(!result1.isAbstract());
+      TS_ASSERT(!result1.isAbstract())
       comb2.execute();
-      TS_ASSERT(!result2.isAbstract());
+      TS_ASSERT(!result2.isAbstract())
 
       gum::Potential< double > pot4(pot1 + pot2);
       gum::Potential< double > pot5(pot4 + pot3);
@@ -98,11 +98,11 @@ namespace gum_tests {
 
       gum::ScheduleCombine< double > comb3(comb2);
       TS_GUM_ASSERT_EQUALS(comb3, comb2);
-      TS_ASSERT_DIFFERS(comb3, comb1);
+      TS_ASSERT_DIFFERS(comb3, comb1)
 
       comb3 = comb1;
       TS_GUM_ASSERT_EQUALS(comb3, comb1);
-      TS_ASSERT_DIFFERS(comb3, comb2);
+      TS_ASSERT_DIFFERS(comb3, comb2)
 
       delete &(comb2.result().multiDim());
 

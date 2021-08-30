@@ -150,11 +150,11 @@ namespace gum_tests {
       double             sum = (float)0;
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1F)[inst] >= (float)0) && ((*rootPot1F)[inst] <= (float)1));
+        TS_ASSERT(((*rootPot1F)[inst] >= (float)0) && ((*rootPot1F)[inst] <= (float)1))
         sum += (*rootPot1F)[inst];
       }
 
-      TS_ASSERT_DELTA(sum, (float)1, 0.0001);
+      TS_ASSERT_DELTA(sum, (float)1, 0.0001)
     }
 
     void testRootVariablesDouble() {
@@ -165,11 +165,11 @@ namespace gum_tests {
       double             sum = (double)0;
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1D)[inst] >= (double)0) && ((*rootPot1D)[inst] <= (double)1));
+        TS_ASSERT(((*rootPot1D)[inst] >= (double)0) && ((*rootPot1D)[inst] <= (double)1))
         sum += (*rootPot1D)[inst];
       }
 
-      TS_ASSERT_DELTA(sum, (double)1, 0.0001);
+      TS_ASSERT_DELTA(sum, (double)1, 0.0001)
     }
 
     // Testing with one parent - float version
@@ -190,11 +190,11 @@ namespace gum_tests {
         double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot1F)[inst] >= (float)0) && ((*pot1F)[inst] <= (float)1));
+          TS_ASSERT(((*pot1F)[inst] >= (float)0) && ((*pot1F)[inst] <= (float)1))
           sum += (*pot1F)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
 
         inst.unsetEnd();
       }
@@ -218,11 +218,11 @@ namespace gum_tests {
         double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot2F)[inst] >= (float)0) && ((*pot2F)[inst] <= (float)1));
+          TS_ASSERT(((*pot2F)[inst] >= (float)0) && ((*pot2F)[inst] <= (float)1))
           sum += (*pot2F)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
 
         inst.unsetEnd();
       }
@@ -241,11 +241,11 @@ namespace gum_tests {
         double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot1D)[inst] >= 0) && ((*pot1D)[inst] <= 1));
+          TS_ASSERT(((*pot1D)[inst] >= 0) && ((*pot1D)[inst] <= 1))
           sum += (*pot1D)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
 
         inst.unsetEnd();
       }
@@ -264,11 +264,11 @@ namespace gum_tests {
         double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot2D)[inst] >= 0) && ((*pot2D)[inst] <= 1));
+          TS_ASSERT(((*pot2D)[inst] >= 0) && ((*pot2D)[inst] <= 1))
           sum += (*pot2D)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
 
         inst.unsetEnd();
       }
@@ -291,7 +291,7 @@ namespace gum_tests {
           sum += aPot[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
       }
     }
 
@@ -310,7 +310,7 @@ namespace gum_tests {
           sum += (*pot3F)[inst];
         }
 
-        TS_ASSERT_DELTA((double)1, sum, 0.0001);
+        TS_ASSERT_DELTA((double)1, sum, 0.0001)
 
         inst.unsetEnd();
       }
@@ -333,7 +333,7 @@ namespace gum_tests {
           sum += aPot[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001);
+        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
       }
     }
 
@@ -353,7 +353,7 @@ namespace gum_tests {
           sum += (*pot3D)[inst];
         }
 
-        TS_ASSERT_DELTA((double)1, sum, 0.0001);
+        TS_ASSERT_DELTA((double)1, sum, 0.0001)
 
         inst.unsetEnd();
       }

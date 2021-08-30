@@ -36,26 +36,26 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u);
+      TS_ASSERT_EQUALS(eg.size(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
     }
 
     void testVstructure() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 2u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u);
+      TS_ASSERT_EQUALS(eg.size(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 2u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
     }
     void testCaseD() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 4u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u);
+      TS_ASSERT_EQUALS(eg.size(), 4u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
     }
 
     void testNotebook1() {
@@ -63,60 +63,60 @@ namespace gum_tests {
          "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 13u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 8u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u);
+      TS_ASSERT_EQUALS(eg.size(), 13u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 8u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
     }
     void testNotebook2() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 4u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u);
+      TS_ASSERT_EQUALS(eg.size(), 4u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
     }
     void testNotebook3() {
       auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 5u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u);
+      TS_ASSERT_EQUALS(eg.size(), 5u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
     }
     void testSkeleton() {
       auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 5u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u);
+      TS_ASSERT_EQUALS(skel.size(), 5u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
     }
     void testNonRegression1() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 3u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u);
+      TS_ASSERT_EQUALS(skel.size(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 3u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
     }
     void testNonRegression2() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 4u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u);
+      TS_ASSERT_EQUALS(skel.size(), 4u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u)
     }
     void testNonRegression3() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
-      TS_ASSERT_EQUALS(skel.size(), 6u);
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u);
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u);
+      TS_ASSERT_EQUALS(skel.size(), 6u)
+      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
+      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u)
     }
   };
 

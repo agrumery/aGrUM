@@ -57,26 +57,26 @@ namespace gum_tests {
         gum::learning::AprioriNoApriori<> apriori(database);
         gum::learning::PseudoCount<>      counts(parser, apriori);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}));
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}));
+        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}))
+        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}))
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}))
       }
       {
         gum::learning::AprioriSmoothing<> apriori(database);
         gum::learning::PseudoCount<>      counts(parser, apriori);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}));
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}));
+        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}))
+        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}))
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}))
       }
       {
         gum::learning::AprioriSmoothing<> apriori(database);
         apriori.setWeight(0.1);
         gum::learning::PseudoCount<> counts(parser, apriori);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4.1, 3.1}));
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}));
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
+        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4.1, 3.1}))
+        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}))
+        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}))
       }
     }
   };

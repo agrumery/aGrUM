@@ -56,31 +56,31 @@ namespace gum_tests {
       gum::ScheduleDeleteMultiDim< double > del1(f1);
       gum::ScheduleDeleteMultiDim< double > del2(res);
       gum::ScheduleDeleteMultiDim< double > del3(del2);
-      TS_ASSERT_DIFFERS(del1, del2);
-      TS_ASSERT_THROWS(del2.execute(), gum::NotFound);
+      TS_ASSERT_DIFFERS(del1, del2)
+      TS_ASSERT_THROWS(del2.execute(), gum::NotFound)
       myproj.execute();
       TS_GUM_ASSERT_THROWS_NOTHING(del2.execute());
-      TS_ASSERT_THROWS(del3.execute(), gum::NotFound);
+      TS_ASSERT_THROWS(del3.execute(), gum::NotFound)
 
-      TS_ASSERT_EQUALS(del1.nbOperations(), 1);
+      TS_ASSERT_EQUALS(del1.nbOperations(), 1)
       std::pair< long, long > xxx = del1.memoryUsage();
-      TS_ASSERT_EQUALS(xxx.first, -16);
-      TS_ASSERT_EQUALS(xxx.second, -16);
+      TS_ASSERT_EQUALS(xxx.first, -16)
+      TS_ASSERT_EQUALS(xxx.second, -16)
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = del2.multiDimArgs();
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(*(seq.atPos(0)), res);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(*(seq.atPos(0)), res)
 
       del3 = del1;
-      TS_ASSERT_EQUALS(del1, del3);
-      TS_ASSERT_DIFFERS(del3, del2);
+      TS_ASSERT_EQUALS(del1, del3)
+      TS_ASSERT_DIFFERS(del3, del2)
 
       std::stringstream s;
       s << "delete ( " << f1.toString() << " )";
-      TS_ASSERT_EQUALS(s.str(), del1.toString());
+      TS_ASSERT_EQUALS(s.str(), del1.toString())
 
       gum::ScheduleDeleteMultiDim< double >* del4 = del3.newFactory();
-      TS_ASSERT_EQUALS(*del4, del3);
+      TS_ASSERT_EQUALS(*del4, del3)
       delete del4;
 
       for (unsigned int i = 0; i < vars.size(); ++i)

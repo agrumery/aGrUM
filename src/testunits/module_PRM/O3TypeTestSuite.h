@@ -48,13 +48,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("t_state"))
       auto state = prm.type("t_state");
-      TS_ASSERT_EQUALS(state.variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(state.variable().label(0), "OK");
-      TS_ASSERT_EQUALS(state.variable().label(1), "NOK");
+      TS_ASSERT_EQUALS(state.variable().domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(state.variable().label(0), "OK")
+      TS_ASSERT_EQUALS(state.variable().label(1), "NOK")
     }
 
     void testSimpleTypeError1() {
@@ -69,9 +69,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError2() {
@@ -86,9 +86,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 29| Error : semicolon expected" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError3() {
@@ -103,10 +103,10 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|2 col 1| Error : semicolon expected" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
-      TS_ASSERT(!prm.isType("t_ink"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
+      TS_ASSERT(!prm.isType("t_ink"))
     }
 
     void testSimpleTypeError4() {
@@ -121,9 +121,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 23| Error : comma expected" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError5() {
@@ -138,9 +138,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 24| Error : invalid declaration" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError6() {
@@ -155,9 +155,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError7() {
@@ -172,9 +172,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 21| Error : invalid declaration" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError8() {
@@ -189,9 +189,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 25| Error : invalid declaration" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testSimpleTypeError9() {
@@ -206,9 +206,9 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|2 col 6| Error : Type t_state exists already" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), msg.str())
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
     }
 
     void testExtendedType() {
@@ -223,16 +223,16 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("t_state"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("t_state"))
       const auto& boolean = prm.type("boolean");
       const auto& state   = prm.type("t_state");
-      TS_ASSERT(state.isSubTypeOf(boolean));
+      TS_ASSERT(state.isSubTypeOf(boolean))
       const auto& map = state.label_map();
-      TS_ASSERT_EQUALS(map.size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(map[0], (gum::Size)1);
-      TS_ASSERT_EQUALS(map[1], (gum::Size)0);
+      TS_ASSERT_EQUALS(map.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(map[0], (gum::Size)1)
+      TS_ASSERT_EQUALS(map[1], (gum::Size)0)
     }
 
     void testExtendedTypeError1() {
@@ -247,13 +247,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 21| Error : comma expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testExtendedTypeError2() {
@@ -268,11 +268,11 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
       std::stringstream msg;
       msg << "|1 col 22| Error : Unknown type foobar" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
+      TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
     void testExtendedTypeError3() {
@@ -287,11 +287,11 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_state"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_state"))
       std::stringstream msg;
       msg << "|2 col 5| Error : Unknown label vrue in boolean" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
+      TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
     void testOrderDoesNotMatter() {
@@ -310,10 +310,10 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3);
-      TS_ASSERT(prm.isType("t_state"));
-      TS_ASSERT(prm.isType("t_degraded"));
-      TS_ASSERT_EQUALS(output.str(), "");
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
+      TS_ASSERT(prm.isType("t_state"))
+      TS_ASSERT(prm.isType("t_degraded"))
+      TS_ASSERT_EQUALS(output.str(), "")
     }
 
     void testIntType() {
@@ -326,21 +326,21 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("t_power"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("t_power"))
       auto power = prm.type("t_power");
-      TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)10);
-      TS_ASSERT_EQUALS(power.variable().label(0), "0");
-      TS_ASSERT_EQUALS(power.variable().label(1), "1");
-      TS_ASSERT_EQUALS(power.variable().label(2), "2");
-      TS_ASSERT_EQUALS(power.variable().label(3), "3");
-      TS_ASSERT_EQUALS(power.variable().label(4), "4");
-      TS_ASSERT_EQUALS(power.variable().label(5), "5");
-      TS_ASSERT_EQUALS(power.variable().label(6), "6");
-      TS_ASSERT_EQUALS(power.variable().label(7), "7");
-      TS_ASSERT_EQUALS(power.variable().label(8), "8");
-      TS_ASSERT_EQUALS(power.variable().label(9), "9");
+      TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)10)
+      TS_ASSERT_EQUALS(power.variable().label(0), "0")
+      TS_ASSERT_EQUALS(power.variable().label(1), "1")
+      TS_ASSERT_EQUALS(power.variable().label(2), "2")
+      TS_ASSERT_EQUALS(power.variable().label(3), "3")
+      TS_ASSERT_EQUALS(power.variable().label(4), "4")
+      TS_ASSERT_EQUALS(power.variable().label(5), "5")
+      TS_ASSERT_EQUALS(power.variable().label(6), "6")
+      TS_ASSERT_EQUALS(power.variable().label(7), "7")
+      TS_ASSERT_EQUALS(power.variable().label(8), "8")
+      TS_ASSERT_EQUALS(power.variable().label(9), "9")
     }
 
     void testIntTypeWithNegatives() {
@@ -354,29 +354,29 @@ namespace gum_tests {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
         // Assert
-        TS_ASSERT_EQUALS(output.str(), "");
-        TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-        TS_ASSERT(prm.isType("t_power"));
+        TS_ASSERT_EQUALS(output.str(), "")
+        TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+        TS_ASSERT(prm.isType("t_power"))
         auto power = prm.type("t_power");
-        TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)19);
-        TS_ASSERT_EQUALS(power.variable().label(0), "-9");
-        TS_ASSERT_EQUALS(power.variable().label(1), "-8");
-        TS_ASSERT_EQUALS(power.variable().label(2), "-7");
-        TS_ASSERT_EQUALS(power.variable().label(3), "-6");
-        TS_ASSERT_EQUALS(power.variable().label(4), "-5");
-        TS_ASSERT_EQUALS(power.variable().label(5), "-4");
-        TS_ASSERT_EQUALS(power.variable().label(6), "-3");
-        TS_ASSERT_EQUALS(power.variable().label(7), "-2");
-        TS_ASSERT_EQUALS(power.variable().label(8), "-1");
-        TS_ASSERT_EQUALS(power.variable().label(9), "0");
-        TS_ASSERT_EQUALS(power.variable().label(10), "1");
-        TS_ASSERT_EQUALS(power.variable().label(11), "2");
-        TS_ASSERT_EQUALS(power.variable().label(12), "3");
-        TS_ASSERT_EQUALS(power.variable().label(13), "4");
-        TS_ASSERT_EQUALS(power.variable().label(14), "5");
-        TS_ASSERT_EQUALS(power.variable().label(15), "6");
-        TS_ASSERT_EQUALS(power.variable().label(16), "7");
-        TS_ASSERT_EQUALS(power.variable().label(17), "8");
+        TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)19)
+        TS_ASSERT_EQUALS(power.variable().label(0), "-9")
+        TS_ASSERT_EQUALS(power.variable().label(1), "-8")
+        TS_ASSERT_EQUALS(power.variable().label(2), "-7")
+        TS_ASSERT_EQUALS(power.variable().label(3), "-6")
+        TS_ASSERT_EQUALS(power.variable().label(4), "-5")
+        TS_ASSERT_EQUALS(power.variable().label(5), "-4")
+        TS_ASSERT_EQUALS(power.variable().label(6), "-3")
+        TS_ASSERT_EQUALS(power.variable().label(7), "-2")
+        TS_ASSERT_EQUALS(power.variable().label(8), "-1")
+        TS_ASSERT_EQUALS(power.variable().label(9), "0")
+        TS_ASSERT_EQUALS(power.variable().label(10), "1")
+        TS_ASSERT_EQUALS(power.variable().label(11), "2")
+        TS_ASSERT_EQUALS(power.variable().label(12), "3")
+        TS_ASSERT_EQUALS(power.variable().label(13), "4")
+        TS_ASSERT_EQUALS(power.variable().label(14), "5")
+        TS_ASSERT_EQUALS(power.variable().label(15), "6")
+        TS_ASSERT_EQUALS(power.variable().label(16), "7")
+        TS_ASSERT_EQUALS(power.variable().label(17), "8")
       } catch (gum::OutOfBounds& e) { GUM_SHOWERROR(e); }
     }
 
@@ -390,13 +390,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : comma expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError2() {
@@ -409,13 +409,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 18| Error : \"(\" expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError3() {
@@ -428,13 +428,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 21| Error : comma expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError4() {
@@ -447,13 +447,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError5() {
@@ -466,13 +466,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : integer expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError6() {
@@ -485,13 +485,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 23| Error : \")\" expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError7() {
@@ -504,13 +504,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : integer expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError8() {
@@ -523,13 +523,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 24| Error : semicolon expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError9() {
@@ -542,13 +542,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 25| Error : semicolon expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testIntTypeError10() {
@@ -561,13 +561,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1);
-      TS_ASSERT(!prm.isType("t_power"));
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 24| Error : semicolon expected";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testTypeInModule1() {
@@ -580,10 +580,10 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(!prm.isType("t_state"));
-      TS_ASSERT(prm.isType("fr.agrum.t_state"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(!prm.isType("t_state"))
+      TS_ASSERT(prm.isType("fr.agrum.t_state"))
     }
 
     void testTypeInModule2() {
@@ -602,12 +602,12 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3);
-      TS_ASSERT(!prm.isType("t_state"));
-      TS_ASSERT(prm.isType("fr.agrum.t_state"));
-      TS_ASSERT(!prm.isType("t_degraded"));
-      TS_ASSERT(prm.isType("fr.agrum.t_degraded"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
+      TS_ASSERT(!prm.isType("t_state"))
+      TS_ASSERT(prm.isType("fr.agrum.t_state"))
+      TS_ASSERT(!prm.isType("t_degraded"))
+      TS_ASSERT(prm.isType("fr.agrum.t_degraded"))
     }
 
     void testRangeType() {
@@ -620,16 +620,16 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("range"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("range"))
       const auto& range = prm.type("range");
-      TS_ASSERT_EQUALS(range.variable().labels().size(), (gum::Size)10);
-      TS_ASSERT_EQUALS(range.variable().varType(), gum::VarType::Range);
-      TS_ASSERT_EQUALS(range.variable().labels().at(0), "1");
-      TS_ASSERT_EQUALS(range.variable().labels().at(1), "2");
-      TS_ASSERT_EQUALS(range.variable().labels().at(2), "3");
-      TS_ASSERT_EQUALS(range.variable().labels().at(9), "10");
+      TS_ASSERT_EQUALS(range.variable().labels().size(), (gum::Size)10)
+      TS_ASSERT_EQUALS(range.variable().varType(), gum::VarType::Range)
+      TS_ASSERT_EQUALS(range.variable().labels().at(0), "1")
+      TS_ASSERT_EQUALS(range.variable().labels().at(1), "2")
+      TS_ASSERT_EQUALS(range.variable().labels().at(2), "3")
+      TS_ASSERT_EQUALS(range.variable().labels().at(9), "10")
     }
 
     void testRealType1() {
@@ -642,14 +642,14 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("angle"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("angle"))
       const auto& angle = prm.type("angle");
-      TS_ASSERT_EQUALS(angle.variable().varType(), gum::VarType::Discretized);
-      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[");
-      TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180]");
+      TS_ASSERT_EQUALS(angle.variable().varType(), gum::VarType::Discretized)
+      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[")
+      TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180]")
     }
 
     void testRealType2() {
@@ -662,14 +662,14 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
-      TS_ASSERT(prm.isType("angle"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT(prm.isType("angle"))
       const auto& angle = prm.type("angle");
-      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[");
-      TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180[");
-      TS_ASSERT_EQUALS(angle.variable().labels().at(2), "[180;360]");
+      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[")
+      TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180[")
+      TS_ASSERT_EQUALS(angle.variable().labels().at(2), "[180;360]")
     }
 
     void testRealTypeError1() {
@@ -684,7 +684,7 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 2 values in range expected at least 3" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
+      TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
     void testRealTypeError2() {
@@ -699,7 +699,7 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 1 values in range expected at least 3" << std::endl;
-      TS_ASSERT_EQUALS(output.str(), msg.str());
+      TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
     void testRealTypeError3() {
@@ -716,7 +716,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 20| Error : invalid declaration";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
   };
 }   // namespace gum_tests

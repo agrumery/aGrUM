@@ -97,8 +97,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)8);
-        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), (gum::Size)8);
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)8)
+        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), (gum::Size)8)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 

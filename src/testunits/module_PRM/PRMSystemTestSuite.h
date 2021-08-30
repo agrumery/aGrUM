@@ -161,11 +161,11 @@ namespace gum_tests {
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sys.add(inst));
+      TS_ASSERT_THROWS_NOTHING(sys.add(inst))
       // Assert
-      TS_ASSERT(sys.exists("asia"));
-      TS_ASSERT(sys.isInstantiated(*_asia_));
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1);
+      TS_ASSERT(sys.exists("asia"))
+      TS_ASSERT(sys.isInstantiated(*_asia_))
+      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
     }
 
     void testInstantiate() {
@@ -174,11 +174,11 @@ namespace gum_tests {
       auto      inst = new PRMInstance("asia", *_asia_);
       sys.add(inst);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sys.instantiate());
+      TS_ASSERT_THROWS_NOTHING(sys.instantiate())
       // Assert
-      TS_ASSERT(sys.exists("asia"));
-      TS_ASSERT(sys.isInstantiated(*_asia_));
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1);
+      TS_ASSERT(sys.exists("asia"))
+      TS_ASSERT(sys.isInstantiated(*_asia_))
+      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
     }
 
     void testGroundBN() {
@@ -192,17 +192,17 @@ namespace gum_tests {
         sys.instantiate();
         gum::BayesNetFactory< double > factory(bn);
         // Act
-        TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));
+        TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
         x0 = bn->cpt(0).toString();
         y0 = bn->cpt(1).toString();
       }
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8);
-      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
+      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
+      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
       x1 = bn->cpt(0).toString();
       y1 = bn->cpt(1).toString();
-      TS_ASSERT_EQUALS(x0, x1);
-      TS_ASSERT_EQUALS(y0, y1);
+      TS_ASSERT_EQUALS(x0, x1)
+      TS_ASSERT_EQUALS(y0, y1)
       delete bn;
     }
 
@@ -216,10 +216,10 @@ namespace gum_tests {
       gum::BayesNetFactory< double > factory(bn);
       sys->groundedBN(factory);
       // Act
-      TS_ASSERT_THROWS_NOTHING(delete sys);
+      TS_ASSERT_THROWS_NOTHING(delete sys)
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8);
-      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
+      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
+      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
       for (auto node: bn->dag()) {
         const gum::Potential< double >* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
@@ -241,7 +241,7 @@ namespace gum_tests {
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
       // Act
-      TS_ASSERT_THROWS_NOTHING(bn->idFromName("asia.(boolean)visitToAsia"));
+      TS_ASSERT_THROWS_NOTHING(bn->idFromName("asia.(boolean)visitToAsia"))
       // Assert
       delete bn;
     }
@@ -260,12 +260,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("visitToAsia").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -284,12 +284,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("tuberculosis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -308,12 +308,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("smoking").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -332,12 +332,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("lungCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -356,12 +356,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("bronchitis").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -380,12 +380,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("tubOrCancer").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -404,12 +404,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("positiveXRay").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }
@@ -428,12 +428,12 @@ namespace gum_tests {
       const auto&                     cpf = _asia_->get("dyspnea").cpf();
       gum::Potential< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)));
+      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j));
+        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
       }
       delete bn;
     }

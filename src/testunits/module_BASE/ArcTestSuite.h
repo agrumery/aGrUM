@@ -44,15 +44,15 @@ namespace gum_tests {
       gum::Arc copy(arc1);
       gum::Arc arc3(6, 7);
 
-      TS_ASSERT_EQUALS(arc1, arc1);
-      TS_ASSERT_EQUALS(copy, arc1);
-      TS_ASSERT_EQUALS(arc1, copy);
+      TS_ASSERT_EQUALS(arc1, arc1)
+      TS_ASSERT_EQUALS(copy, arc1)
+      TS_ASSERT_EQUALS(arc1, copy)
 
-      TS_ASSERT_DIFFERS(arc1, arc3);
-      TS_ASSERT_DIFFERS(arc3, arc1);
-      TS_ASSERT_DIFFERS(copy, arc3);
-      TS_ASSERT_DIFFERS(arc2, arc3);
-      TS_ASSERT_DIFFERS(arc1, arc2);
+      TS_ASSERT_DIFFERS(arc1, arc3)
+      TS_ASSERT_DIFFERS(arc3, arc1)
+      TS_ASSERT_DIFFERS(copy, arc3)
+      TS_ASSERT_DIFFERS(arc2, arc3)
+      TS_ASSERT_DIFFERS(arc1, arc2)
     }
 
     void testGetters1() {
@@ -68,23 +68,23 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(copy.first());
       TS_GUM_ASSERT_THROWS_NOTHING(copy.second());
 
-      TS_ASSERT_EQUALS(arc2.first(), (gum::NodeId)2);
-      TS_ASSERT_EQUALS(arc2.second(), (gum::NodeId)1);
+      TS_ASSERT_EQUALS(arc2.first(), (gum::NodeId)2)
+      TS_ASSERT_EQUALS(arc2.second(), (gum::NodeId)1)
 
       TS_GUM_ASSERT_THROWS_NOTHING(arc3.other((gum::NodeId)3));
       TS_GUM_ASSERT_THROWS_NOTHING(arc3.other((gum::NodeId)4));
 
-      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)3), (gum::NodeId)4);
-      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)4), (gum::NodeId)3);
+      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)3), (gum::NodeId)4)
+      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)4), (gum::NodeId)3)
 
-      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42));
+      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42))
     }
 
     void testGetters2() {
       gum::Arc arc1(1, 2);
 
-      TS_ASSERT_EQUALS(arc1.tail(), (gum::NodeId)1);
-      TS_ASSERT_EQUALS(arc1.head(), (gum::NodeId)2);
+      TS_ASSERT_EQUALS(arc1.tail(), (gum::NodeId)1)
+      TS_ASSERT_EQUALS(arc1.head(), (gum::NodeId)2)
     }
 
     void testHash() {
@@ -100,7 +100,7 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Arc arc(x, y);
-          TS_ASSERT_EQUALS(hash[arc], (x + y));
+          TS_ASSERT_EQUALS(hash[arc], (x + y))
         }
       }
     }

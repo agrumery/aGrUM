@@ -42,13 +42,13 @@ namespace gum_tests {
 
         gum::Timer* t4 = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1));
-        TS_ASSERT_DELTA(t4->step(), t1.step(), 1e-3);
+        TS_ASSERT_DELTA(t4->step(), t1.step(), 1e-3)
 
         gum::Timer t3(*t2);
-        TS_ASSERT_DELTA(t2->step(), t3.step(), 1e-3);
+        TS_ASSERT_DELTA(t2->step(), t3.step(), 1e-3)
 
         gum::Timer t5 = t3;
-        TS_ASSERT_DELTA(t5.step(), t3.step(), 1e-3);
+        TS_ASSERT_DELTA(t5.step(), t3.step(), 1e-3)
 
         delete t2;
         delete t4;
@@ -82,11 +82,11 @@ namespace gum_tests {
         double t6 = tt.step();
         end_test_waiting();
 
-        // TS_ASSERT_DELTA( t6 - t5, 3.0, 1e-3 );
+        // TS_ASSERT_DELTA( t6 - t5, 3.0, 1e-3 )
         test_pass = std::abs(std::abs(t6 - t5) - 3.0) <= 1e-3;
-        // TS_ASSERT_DELTA( t4 - t1, 2.0, 1e-3 );
+        // TS_ASSERT_DELTA( t4 - t1, 2.0, 1e-3 )
         test_pass = test_pass && std::abs(std::abs(t4 - t1) - 2.0) <= 1e-3;
-        // TS_ASSERT_DELTA( t3 - t2, 0.0, 1e-3 );
+        // TS_ASSERT_DELTA( t3 - t2, 0.0, 1e-3 )
         test_pass = test_pass && std::abs(std::abs(t3 - t2) - 0.0) <= 1e-3;
       }
       GUM_ASSERT(test_pass);

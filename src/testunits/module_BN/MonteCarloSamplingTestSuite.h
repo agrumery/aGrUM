@@ -79,7 +79,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -98,7 +98,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -121,7 +121,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -145,7 +145,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -169,7 +169,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -196,7 +196,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -224,7 +224,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -246,7 +246,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       try {
@@ -264,7 +264,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       try {
@@ -282,7 +282,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -305,7 +305,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       try {
@@ -323,7 +323,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       try {
@@ -341,7 +341,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -350,7 +350,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -365,7 +365,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -375,7 +375,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -390,7 +390,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -400,7 +400,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       gum::MonteCarloSampling< double > inf(&bn);
       aSimpleMCListener                 agsl(inf);
@@ -414,11 +414,11 @@ namespace gum_tests {
 
       } catch (gum::Exception e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
+      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
+      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
 
     void testConstructor() {
@@ -426,13 +426,13 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       try {
         gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
       } catch (gum::Exception e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -454,7 +454,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
   };

@@ -68,7 +68,7 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1));
-      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3));
     }
 
@@ -81,7 +81,7 @@ namespace gum_tests {
       }
 
       gum::ExactBNdistance< double > kl(net2, net2);
-      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct);
+      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
 
       gum::BayesNet< double > net;
       {
@@ -91,7 +91,7 @@ namespace gum_tests {
       }
 
       gum::BNdistance< double > kl2(net, net);
-      TS_ASSERT_EQUALS(kl2.difficulty(), gum::Complexity::Heavy);
+      TS_ASSERT_EQUALS(kl2.difficulty(), gum::Complexity::Heavy)
     }
 
     void testKLComputation() {
@@ -106,9 +106,9 @@ namespace gum_tests {
 
       gum::ExactBNdistance< double > stupid_bfkl(net3, net3);
       TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ());
-      TS_ASSERT_EQUALS(vkl, 0.0);
+      TS_ASSERT_EQUALS(vkl, 0.0)
       TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP());
-      TS_ASSERT_EQUALS(vkl, 0.0);
+      TS_ASSERT_EQUALS(vkl, 0.0)
 
       gum::BayesNet< double > net4;
       {
@@ -118,28 +118,28 @@ namespace gum_tests {
       }
 
       gum::BNdistance< double > kl(net3, net4);
-      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct);
+      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
 
       {
         gum::ExactBNdistance< double > bfkl(kl);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = bfkl.klPQ());
-        TS_ASSERT_DIFFERS(vkl, (float)0.0);
+        TS_ASSERT_DIFFERS(vkl, (float)0.0)
       }
 
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
-        TS_ASSERT_DIFFERS(vkl, (float)0.0);
-        TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed);
+        TS_ASSERT_DIFFERS(vkl, (float)0.0)
+        TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed)
       }
 
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
-        TS_ASSERT_DIFFERS(vkl, (float)0.0);
-        TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed);
+        TS_ASSERT_DIFFERS(vkl, (float)0.0)
+        TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed)
       }
     }
 
@@ -160,13 +160,13 @@ namespace gum_tests {
 
       gum::ExactBNdistance< double > kl(netP, netQ);
       TS_GUM_ASSERT_THROWS_NOTHING(kl.klPQ());
-      TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-7);
-      TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-7);
-      TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
-      TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
-      TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-7);
-      TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-7);
-      TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7);
+      TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-7)
+      TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-7)
+      TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0)
+      TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0)
+      TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-7)
+      TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-7)
+      TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7)
     }
 
     void testGibbsValues() {

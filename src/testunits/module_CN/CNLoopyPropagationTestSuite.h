@@ -158,7 +158,7 @@ namespace gum_tests {
       /*try {
         lp.insertModals( modals );
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false );
+        TS_ASSERT ( false )
       }*/
 
       try {
@@ -201,7 +201,7 @@ namespace gum_tests {
       /*try {
         lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false );
+        TS_ASSERT ( false )
       }*/
 
       try {
@@ -221,7 +221,7 @@ namespace gum_tests {
       try {
         lp.dynamicExpectations();
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false );
+        TS_ASSERT ( false )
       }*/
       /*
               try {
@@ -234,7 +234,7 @@ namespace gum_tests {
                 //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
          );
               } catch ( gum::Exception & ) {
-                TS_ASSERT ( false );
+                TS_ASSERT ( false )
               }*/
 
       try {
@@ -261,8 +261,8 @@ namespace gum_tests {
         lp.makeInference();
       } catch (gum::Exception&) { TS_ASSERT(false); }
 
-      TS_ASSERT_EQUALS(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
-      TS_ASSERT_DIFFERS(mcl.msg(), std::string(""));
+      TS_ASSERT_EQUALS(mcl.nbr() * lp.periodSize(), lp.nbrIterations())
+      TS_ASSERT_DIFFERS(mcl.msg(), std::string(""))
 
       try {
         lp.eraseAllEvidence();

@@ -345,7 +345,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -356,7 +356,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimArray(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -367,7 +367,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimArray(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -403,7 +403,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -414,7 +414,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimImplementation(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -425,7 +425,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimImplementation(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -460,7 +460,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -471,7 +471,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -482,7 +482,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -518,7 +518,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -529,7 +529,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -540,7 +540,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -576,7 +576,7 @@ namespace gum_tests {
       gum::MultiDimImplementation< double >* t2 = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double >*          t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -587,7 +587,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -598,7 +598,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -634,7 +634,7 @@ namespace gum_tests {
       gum::MultiDimImplementation< double* >* t2 = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double* >*          t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -645,7 +645,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -656,7 +656,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -691,7 +691,7 @@ namespace gum_tests {
          = new gum::Potential< double >(partialInstantiation(t1, inst_set));
       gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -702,7 +702,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = new gum::Potential< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -713,7 +713,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = new gum::Potential< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -748,7 +748,7 @@ namespace gum_tests {
          = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
       gum::Potential< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -759,7 +759,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -770,7 +770,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -806,7 +806,7 @@ namespace gum_tests {
       gum::Potential< double >* t2 = MDPI.instantiate(t1, inst_set);
       gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -817,7 +817,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = MDPI.instantiate(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 
@@ -828,7 +828,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = MDPI.instantiate(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
       delete t2;
       delete t3;
 

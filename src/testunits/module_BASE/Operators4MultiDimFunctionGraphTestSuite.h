@@ -290,19 +290,19 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end() && hasNoError; ++inst) {
           switch (operationId) {
             case 1:   // Test addition
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) + a2->get(inst), delta);
+              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) + a2->get(inst), delta)
               if (a3->get(inst) != a1->get(inst) + a2->get(inst)) hasNoError = false;
               break;
 
             case 2:   // Test Substraction
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) - a2->get(inst), delta);
+              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) - a2->get(inst), delta)
 
               if (a3->get(inst) != a1->get(inst) - a2->get(inst)) hasNoError = false;
 
               break;
 
             case 3:   // Test Multiplication
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) * a2->get(inst), delta);
+              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) * a2->get(inst), delta)
 
               if (a3->get(inst) != a1->get(inst) * a2->get(inst)) hasNoError = false;
 

@@ -88,20 +88,20 @@ namespace gum_tests {
       gum::Schedule< double > schedule;
 
       schedule.insert(comb4);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)0);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)0)
 
       schedule.insert(comb2);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1)
 
       schedule.insert(comb3);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)1)
 
       schedule.insert(comb1);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)2);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)(gum::Size)2)
 
-      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)(gum::Size)3);
+      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)(gum::Size)3)
       TS_GUM_ASSERT_EQUALS(comb1, schedule.operation(3));
-      TS_ASSERT_EQUALS((gum::Size)3, schedule.nodeId(comb1));
+      TS_ASSERT_EQUALS((gum::Size)3, schedule.nodeId(comb1))
 
       const gum::NodeSet& ops1    = schedule.operationsInvolving(result1);
       gum::NodeId         del1_id = schedule.insert(del1);
@@ -124,7 +124,7 @@ namespace gum_tests {
 
       schedule.execute(comb1);
       gum::Schedule< double > schedule2 = schedule;
-      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1)
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -216,24 +216,24 @@ namespace gum_tests {
       gum::Schedule< double > schedule;
 
       gum::NodeId id = schedule.insert(comb4);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(schedule.nbOperations(id), 64);
-      TS_ASSERT_EQUALS(schedule.memoryUsage(id).first, 64);
-      TS_ASSERT_EQUALS(schedule.memoryUsage(id).second, 64);
-      TS_ASSERT_EQUALS(schedule.nbOperations(comb4), 64);
-      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).first, 64);
-      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).second, 64);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(schedule.nbOperations(id), 64)
+      TS_ASSERT_EQUALS(schedule.memoryUsage(id).first, 64)
+      TS_ASSERT_EQUALS(schedule.memoryUsage(id).second, 64)
+      TS_ASSERT_EQUALS(schedule.nbOperations(comb4), 64)
+      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).first, 64)
+      TS_ASSERT_EQUALS(schedule.memoryUsage(comb4).second, 64)
 
       schedule.insert(comb2);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1)
 
       schedule.insert(comb3);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)1)
 
       schedule.insert(comb1);
-      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(schedule.availableOperations().size(), (gum::Size)2)
 
-      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)3);
+      TS_ASSERT_EQUALS(schedule.scheduling_dag().sizeArcs(), (gum::Size)3)
       TS_GUM_ASSERT_EQUALS(comb1, schedule.operation(3));
       TS_GUM_ASSERT_EQUALS(3, schedule.nodeId(comb1));
 
@@ -248,7 +248,7 @@ namespace gum_tests {
 
       schedule.execute(comb1);
       gum::Schedule< double > schedule2 = schedule;
-      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(schedule2.availableOperations().size(), (gum::Size)1)
 
       const gum::NodeSet& available = schedule.availableOperations();
 

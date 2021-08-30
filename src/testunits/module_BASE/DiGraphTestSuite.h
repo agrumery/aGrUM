@@ -98,7 +98,7 @@ namespace gum_tests {
 
       gum::DiGraph* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::DiGraph(graph)));
-      TS_ASSERT_EQUALS(graph, *copy);
+      TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy2 = graph);
@@ -115,71 +115,71 @@ namespace gum_tests {
 
       g2 = g3 = graph;
 
-      TS_ASSERT_EQUALS(g2, graph);
-      TS_ASSERT_EQUALS(g3, graph);
+      TS_ASSERT_EQUALS(g2, graph)
+      TS_ASSERT_EQUALS(g3, graph)
 
       g2.clear();
       g3.clearArcs();
 
-      TS_ASSERT_DIFFERS(g2, graph);
-      TS_ASSERT_DIFFERS(g3, graph);
+      TS_ASSERT_DIFFERS(g2, graph)
+      TS_ASSERT_DIFFERS(g3, graph)
     }
 
     void testEmptyNodes() {
       gum::DiGraph graph;
 
-      TS_ASSERT(graph.empty());
+      TS_ASSERT(graph.empty())
       graph = buildGraph();
-      TS_ASSERT(!graph.empty());
+      TS_ASSERT(!graph.empty())
     }
 
     void testEmptyArcs() {
       gum::DiGraph graph;
-      TS_ASSERT(graph.emptyArcs());
+      TS_ASSERT(graph.emptyArcs())
       graph = buildGraph();
-      TS_ASSERT(!graph.emptyArcs());
+      TS_ASSERT(!graph.emptyArcs())
     }
 
     void testClearNodes() {
       gum::DiGraph graph = buildGraph();
-      TS_ASSERT(!graph.empty());
+      TS_ASSERT(!graph.empty())
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clear());
-      TS_ASSERT(graph.empty() && graph.emptyArcs());
+      TS_ASSERT(graph.empty() && graph.emptyArcs())
     }
 
     void testClearArcs() {
       gum::DiGraph graph = buildGraph();
-      TS_ASSERT(!graph.emptyArcs());
+      TS_ASSERT(!graph.emptyArcs())
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs());
-      TS_ASSERT(graph.emptyArcs());
-      TS_ASSERT(!graph.empty());
+      TS_ASSERT(graph.emptyArcs())
+      TS_ASSERT(!graph.empty())
     }
 
     void testAddDelNodes_2() {
       gum::DiGraph graph = buildGraph();
 
-      TS_ASSERT(graph.exists(id1));
-      TS_ASSERT(graph.exists(id2));
-      TS_ASSERT(graph.exists(id3));
-      TS_ASSERT(graph.exists(id4));
-      TS_ASSERT(graph.exists(id5));
-      TS_ASSERT(!graph.exists(id5 + id4 + id3 + id2 + id1));
+      TS_ASSERT(graph.exists(id1))
+      TS_ASSERT(graph.exists(id2))
+      TS_ASSERT(graph.exists(id3))
+      TS_ASSERT(graph.exists(id4))
+      TS_ASSERT(graph.exists(id5))
+      TS_ASSERT(!graph.exists(id5 + id4 + id3 + id2 + id1))
 
-      TS_ASSERT(graph.existsArc(id3, id5));
-      TS_ASSERT(!graph.existsArc(id5, id3));
-      TS_ASSERT(!graph.existsArc(id1, id1));
+      TS_ASSERT(graph.existsArc(id3, id5))
+      TS_ASSERT(!graph.existsArc(id5, id3))
+      TS_ASSERT(!graph.existsArc(id1, id1))
 
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1);
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 2);
+      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
+      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 2)
 
-      TS_ASSERT(!graph.exists(id2));
-      TS_ASSERT(!graph.existsArc(id2, id4));
-      TS_ASSERT(!graph.existsArc(id5, id2));
+      TS_ASSERT(!graph.exists(id2))
+      TS_ASSERT(!graph.existsArc(id2, id4))
+      TS_ASSERT(!graph.existsArc(id5, id2))
     }
 
     void testRemoveNodes_1() {
@@ -188,75 +188,75 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_ASSERT_EQUALS(nodeCount, (gum::Size)5);
-      TS_ASSERT_EQUALS(arcCount, (gum::Size)6);
+      TS_ASSERT_EQUALS(nodeCount, (gum::Size)5)
+      TS_ASSERT_EQUALS(arcCount, (gum::Size)6)
 
       for (int i = 0; i < 10; i++) {
         TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
       }
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1);
+      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
 
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 3);
+      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 3)
 
-      TS_ASSERT(!graph.existsArc(id3, id5));
-      TS_ASSERT(!graph.existsArc(id4, id5));
-      TS_ASSERT(!graph.existsArc(id5, id2));
+      TS_ASSERT(!graph.existsArc(id3, id5))
+      TS_ASSERT(!graph.existsArc(id4, id5))
+      TS_ASSERT(!graph.existsArc(id5, id2))
     }
 
     void testAddDelArcs_2() {
       gum::DiGraph graph = buildGraph();
 
-      TS_ASSERT(graph.existsArc(id1, id4));
-      TS_ASSERT(graph.existsArc(id4, id5));
-      TS_ASSERT(graph.existsArc(id5, id2));
+      TS_ASSERT(graph.existsArc(id1, id4))
+      TS_ASSERT(graph.existsArc(id4, id5))
+      TS_ASSERT(graph.existsArc(id5, id2))
 
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size());
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1);
+      TS_ASSERT_EQUALS(nodeCount, graph.size())
+      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1)
 
-      TS_ASSERT(!graph.existsArc(id5, id2));
+      TS_ASSERT(!graph.existsArc(id5, id2))
     }
 
     void testGetNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeSet nodelist = graph.asNodeSet();
-      TS_ASSERT_EQUALS(nodelist.size(), graph.size());
+      TS_ASSERT_EQUALS(nodelist.size(), graph.size())
       gum::Size nodeCount = graph.size();
 
       for (const auto node: nodelist)
         graph.eraseNode(node);
 
-      TS_ASSERT(graph.empty());
+      TS_ASSERT(graph.empty())
 
-      TS_ASSERT_EQUALS(nodeCount, nodelist.size());
+      TS_ASSERT_EQUALS(nodeCount, nodelist.size())
     }
 
     void testGetArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::ArcSet arclist = graph.arcs();
-      TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs());
+      TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs())
       gum::Size arcCount = graph.sizeArcs();
 
       for (const auto& arc: arclist)
         graph.eraseArc(arc);
 
-      TS_ASSERT(graph.emptyArcs());
+      TS_ASSERT(graph.emptyArcs())
 
-      TS_ASSERT_EQUALS(arcCount, arclist.size());
+      TS_ASSERT_EQUALS(arcCount, arclist.size())
     }
 
     void testNodeListMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
-      TS_ASSERT_EQUALS(list.size(), graph.size());
+      TS_ASSERT_EQUALS(list.size(), graph.size())
 
       gum::Size s = 0;
 
@@ -264,23 +264,23 @@ namespace gum_tests {
         s += *iter;
       }
 
-      TS_ASSERT_EQUALS(s, (gum::Size)(2 * (id1 + id2 + id3 + id4 + id5)));
+      TS_ASSERT_EQUALS(s, (gum::Size)(2 * (id1 + id2 + id3 + id4 + id5)))
     }
 
     void testTwistedNodeListMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::List< gum::Size > list;
-      TS_ASSERT_THROWS_ANYTHING(list = graph.listMapNodes(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(list = graph.listMapNodes(&twistedMapFunction))
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(list.size(), (gum::Size)0)
     }
 
     void testHashMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap = graph.nodesProperty(&simpleDoubleFunction);
-      TS_ASSERT_EQUALS(hashmap.size(), graph.size());
+      TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -290,23 +290,23 @@ namespace gum_tests {
         sv += elt.second;
       }
 
-      TS_ASSERT_EQUALS(sk * 2, sv);
+      TS_ASSERT_EQUALS(sk * 2, sv)
     }
 
     void testTwistedHashMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction))
 
-      TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0)
     }
 
     void testListMapArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapArcs(&simpleArcMapFunction);
-      TS_ASSERT_EQUALS(list.size(), graph.sizeArcs());
+      TS_ASSERT_EQUALS(list.size(), graph.sizeArcs())
 
       gum::Size s = 0;
 
@@ -314,14 +314,14 @@ namespace gum_tests {
         s += *iter;
       }
 
-      TS_ASSERT_EQUALS(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      TS_ASSERT_EQUALS(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1))
     }
 
     void testHashMapArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::ArcProperty< gum::Size > hashmap = graph.arcsProperty(&simpleArcMapFunction);
-      TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs());
+      TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs())
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -331,7 +331,7 @@ namespace gum_tests {
         sk += elt.first.head() + elt.first.tail();
       }
 
-      TS_ASSERT_EQUALS(sk, sv);
+      TS_ASSERT_EQUALS(sk, sv)
     }
 
     // this test should be in NodeGraphPartTestSuite.h which does not exist for
@@ -342,31 +342,31 @@ namespace gum_tests {
 
       gum::NodeId id  = graph.nextNodeId();
       gum::NodeId id2 = graph.addNode();
-      TS_ASSERT_EQUALS(id, id2);
+      TS_ASSERT_EQUALS(id, id2)
     }
 
     void testDirectedPaths() {
       gum::DiGraph graph = buildGraph();
 
       std::vector< gum::NodeId > path = graph.directedPath(0, 1);
-      TS_ASSERT_EQUALS(path.size(), 4U);
-      TS_ASSERT_EQUALS(path[0], 0U);
-      TS_ASSERT_EQUALS(path[1], 3U);
-      TS_ASSERT_EQUALS(path[2], 4U);
-      TS_ASSERT_EQUALS(path[3], 1U);
+      TS_ASSERT_EQUALS(path.size(), 4U)
+      TS_ASSERT_EQUALS(path[0], 0U)
+      TS_ASSERT_EQUALS(path[1], 3U)
+      TS_ASSERT_EQUALS(path[2], 4U)
+      TS_ASSERT_EQUALS(path[3], 1U)
 
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 1), true);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 0), false);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true);
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 1), true)
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 0), false)
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true)
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true)
 
-      TS_ASSERT_THROWS(graph.directedPath(1, 2), gum::NotFound);
+      TS_ASSERT_THROWS(graph.directedPath(1, 2), gum::NotFound)
 
       std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
-      TS_ASSERT_EQUALS(path2.size(), 3U);
-      TS_ASSERT_EQUALS(path2[0], 1U);
-      TS_ASSERT_EQUALS(path2[1], 4U);
-      TS_ASSERT_EQUALS(path2[2], 2U);
+      TS_ASSERT_EQUALS(path2.size(), 3U)
+      TS_ASSERT_EQUALS(path2[0], 1U)
+      TS_ASSERT_EQUALS(path2[1], 4U)
+      TS_ASSERT_EQUALS(path2[2], 2U)
     }
 
     // void testToDot() {

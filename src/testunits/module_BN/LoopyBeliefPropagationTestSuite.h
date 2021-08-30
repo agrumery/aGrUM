@@ -82,7 +82,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -105,7 +105,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
 
@@ -124,7 +124,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -147,7 +147,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -165,7 +165,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -188,7 +188,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -206,7 +206,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -232,7 +232,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -254,7 +254,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -279,7 +279,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -301,7 +301,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -320,7 +320,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -338,7 +338,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -356,7 +356,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -374,7 +374,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -392,7 +392,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -413,7 +413,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -433,7 +433,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -453,7 +453,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -473,7 +473,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -493,7 +493,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -503,7 +503,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -516,7 +516,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -526,7 +526,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -541,7 +541,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf, 2.5e-1)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false);
+          TS_ASSERT(false)
         }
       }
     }
@@ -551,7 +551,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       gum::LoopyBeliefPropagation< double > inf(&bn);
       aSimpleLBPListener                    agsl(inf);
@@ -561,8 +561,8 @@ namespace gum_tests {
         // Testing the inference
         inf.makeInference();
       } catch (gum::Exception e) { TS_ASSERT(false); }
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
+      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
+      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
 
 
@@ -603,7 +603,7 @@ namespace gum_tests {
       bn.addWeightedArc("Flu", "Fever", 0.8f);
       bn.addWeightedArc("Cold", "Fever", 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), gum::InvalidArc)
 
       bn.addArc("Y", "X");
       bn.addArc("Fever", "X");

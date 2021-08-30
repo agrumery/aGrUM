@@ -75,8 +75,8 @@ available at <a href="http://cxxtest.sourceforge.net/guide.pdf">http://cxxtest.s
           public:
              void testAddition( void )
              {
-                TS_ASSERT( 1 + 1 > 1 );
-                TS_ASSERT_EQUALS( 1 + 1, 2 );
+                TS_ASSERT( 1 + 1 > 1 )
+                TS_ASSERT_EQUALS( 1 + 1, 2 )
              }
           };
           </pre>
@@ -136,13 +136,13 @@ We will add a failing test to the previous example:
      public:
         void testAddition( void )
         {
-           TS_ASSERT( 1 + 1 > 1 );
-           TS_ASSERT_EQUALS( 1 + 1, 2 );
+           TS_ASSERT( 1 + 1 > 1 )
+           TS_ASSERT_EQUALS( 1 + 1, 2 )
         }
 
         void testMultiplication( void )
         {
-           TS_ASSERT_EQUALS( 2 * 2, 5 );
+           TS_ASSERT_EQUALS( 2 * 2, 5 )
         }
      };
      </pre>
@@ -280,7 +280,7 @@ For example:
      <pre class="verbatim">
      void testSomething( void )
      {
-        TS_FAIL( "I don't know how to test this!" );
+        TS_FAIL( "I don't know how to test this!" )
      }
      </pre>
      </pre>
@@ -298,7 +298,7 @@ use!)  An example:
      void testSquare( void )
      {
         MyFileLibrary::createEmptyFile( "test.bin" );
-        TS_ASSERT( access( "test.bin", 0 ) == 0 );
+        TS_ASSERT( access( "test.bin", 0 ) == 0 )
      }
      </pre>
      </pre>
@@ -314,7 +314,7 @@ As the name hints, it is used to test if two values are equal.
      <pre class="verbatim">
      void testSquare( void )
      {
-        TS_ASSERT_EQUALS( square(-5), 25 );
+        TS_ASSERT_EQUALS( square(-5), 25 )
      }
      </pre>
      </pre>
@@ -335,7 +335,7 @@ values.
      {
         char input[77], output[77];
         myCopyMemory( output, input, 77 );
-        TS_ASSERT_SAME_DATA( input, output, 77 );
+        TS_ASSERT_SAME_DATA( input, output, 77 )
      }
      </pre>
      </pre>
@@ -352,7 +352,7 @@ This is basically used for floating-point values.
      <pre class="verbatim">
      void testSquareRoot( void )
      {
-        TS_ASSERT_DELTA( squareRoot(4.0), 2.0, 0.00001 );
+        TS_ASSERT_DELTA( squareRoot(4.0), 2.0, 0.00001 )
      }
      </pre>
      </pre>
@@ -370,7 +370,7 @@ that two values are not equal.
      {
         int first = generateNumber();
         int second = generateNumber();
-        TS_ASSERT_DIFFERS( first, second );
+        TS_ASSERT_DIFFERS( first, second )
      }
      </pre>
      </pre>
@@ -385,7 +385,7 @@ that two values are not equal.
      <pre class="verbatim">
      void testFindLargerNumber( void )
      {
-        TS_ASSERT_LESS_THAN( 23, findLargerNumber(23) );
+        TS_ASSERT_LESS_THAN( 23, findLargerNumber(23) )
      }
      </pre>
      </pre>
@@ -401,7 +401,7 @@ Not surprisingly, this macro asserts that the first operand is less than or equa
      <pre class="verbatim">
      void testBufferSize( void )
      {
-        TS_ASSERT_LESS_THAN_EQUALS( bufferSize(), MAX_BUFFER_SIZE );
+        TS_ASSERT_LESS_THAN_EQUALS( bufferSize(), MAX_BUFFER_SIZE )
      }
      </pre>
      </pre>
@@ -429,7 +429,7 @@ similar to an STL <code>unary_function</code>, and evaluates
 
      void testPrimeGenerator( void )
      {
-        TS_ASSERT_PREDICATE( IsPrime, generatePrime() );
+        TS_ASSERT_PREDICATE( IsPrime, generatePrime() )
      }
      </pre>
      </pre>
@@ -453,7 +453,7 @@ which are not covered by the builtin macros.
      <pre class="verbatim">
      void testGreater( void )
      {
-        TS_ASSERT_RELATION( std::greater&lt;int>, ticketsSold(), 1000 );
+        TS_ASSERT_RELATION( std::greater&lt;int>, ticketsSold(), 1000 )
      }
      </pre>
      </pre>
@@ -481,14 +481,14 @@ example.
      <pre class="verbatim">
      void testFunctionsWhichThrowExceptions( void )
      {
-        TS_ASSERT_THROWS_NOTHING( checkInput(1) );
-        TS_ASSERT_THROWS( checkInput(-11), std::runtime_error );
-        TS_ASSERT_THROWS_ANYTHING( thirdPartyFunction() );
+        TS_ASSERT_THROWS_NOTHING( checkInput(1) )
+        TS_ASSERT_THROWS( checkInput(-11), std::runtime_error )
+        TS_ASSERT_THROWS_ANYTHING( thirdPartyFunction() )
 
         TS_ASSERT_THROWS_EQUALS( validate(), const std::exception &amp;e,
                                  e.what(), "Invalid value" );
         TS_ASSERT_THROWS_ASSERT( validate(), const Error &amp;e,
-                                 TS_ASSERT_DIFFERS( e.code(), SUCCESS ) );
+                                 TS_ASSERT_DIFFERS( e.code(), SUCCESS ) )
      }
      </pre>
      </pre>
@@ -532,7 +532,7 @@ use the <code>ETS_</code> versions of the macros.
      void testInterestingThrower()
      {
         // Normal way: if an exception is caught we can't examine it
-        TS_ASSERT_EQUALS( foo(2), 4 );
+        TS_ASSERT_EQUALS( foo(2), 4 )
 
         // More elaborate way:
         try { ETS_ASSERT_EQUALS( foo(2), 4 ); }
@@ -618,7 +618,7 @@ after each test.
         {
            FileCreator fc( "playground" );
            fc.createFile( "test.bin" );
-           TS_ASSERT_EQUALS( access( "playground/test.bin", 0 ), 0 );
+           TS_ASSERT_EQUALS( access( "playground/test.bin", 0 ), 0 )
         }
      };
      </pre>
@@ -806,7 +806,7 @@ Consider the following code:
      void test_memset()
      {
         char *buffer = new char[1024];
-        TS_ASSERT( buffer );
+        TS_ASSERT( buffer )
         memset( buffer, 0, 1024 ); // But what if buffer == 0?
      }
      </pre>
@@ -944,7 +944,7 @@ The default ValueTraits class for unknown types dumps up to 8 bytes of the value
            Data x, y;
            memset( x.data, 0x12, sizeof(x.data) );
            memset( y.data, 0xF6, sizeof(y.data) );
-           TS_ASSERT_EQUALS( x, y );
+           TS_ASSERT_EQUALS( x, y )
         }
      };
      </pre>
@@ -1235,7 +1235,7 @@ mock, and the tested code will magically call it:
               void test_Random()
               {
                   TheTimeIsOne t;
-                  TS_ASSERT_EQUALS( generateRandomNumber(), 3 );
+                  TS_ASSERT_EQUALS( generateRandomNumber(), 3 )
               }
           };
           </pre>

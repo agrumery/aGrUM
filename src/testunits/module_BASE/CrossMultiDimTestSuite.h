@@ -51,22 +51,22 @@ namespace gum_tests {
       }
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(sparse[i], agg[i]);
-        TS_ASSERT_EQUALS(full[i], agg[i]);
+        TS_ASSERT_EQUALS(sparse[i], agg[i])
+        TS_ASSERT_EQUALS(full[i], agg[i])
       }
 
       gum::Instantiation j(sparse);
 
       for (j.setFirst(); !j.end(); ++j) {
-        TS_ASSERT_EQUALS(agg[j], sparse[j]);
-        TS_ASSERT_EQUALS(full[j], sparse[j]);
+        TS_ASSERT_EQUALS(agg[j], sparse[j])
+        TS_ASSERT_EQUALS(full[j], sparse[j])
       }
 
       gum::Instantiation k(full);
 
       for (k.setFirst(); !k.end(); ++k) {
-        TS_ASSERT_EQUALS(agg[k], full[k]);
-        TS_ASSERT_EQUALS(sparse[k], full[k]);
+        TS_ASSERT_EQUALS(agg[k], full[k])
+        TS_ASSERT_EQUALS(sparse[k], full[k])
       }
 
       TS_ASSERT_EQUALS(agg.compressionRate(), (float)1.0);   // 100% de compression

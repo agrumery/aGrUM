@@ -45,49 +45,49 @@ namespace gum_tests {
       seq << vars[0] << vars[2] << vars[4];
 
       gum::ScheduleMultiDim< double > f1(seq);
-      TS_ASSERT(f1.isAbstract());
-      TS_ASSERT_THROWS(f1.multiDim(), gum::NotFound);
+      TS_ASSERT(f1.isAbstract())
+      TS_ASSERT_THROWS(f1.multiDim(), gum::NotFound)
 
       std::string       s1 = f1.toString();
       std::stringstream s2;
       s2 << "<" << f1.id() << ">";
-      TS_ASSERT_EQUALS(s2.str(), s1);
+      TS_ASSERT_EQUALS(s2.str(), s1)
 
       gum::ScheduleMultiDim< double > f2(f1);
-      TS_ASSERT(f2.isAbstract());
-      TS_ASSERT_THROWS(f2.multiDim(), gum::NotFound);
-      TS_ASSERT_EQUALS(f1, f2);
-      TS_ASSERT_EQUALS(f1.id(), f2.id());
-      TS_ASSERT_EQUALS(f1.variablesSequence(), f2.variablesSequence());
+      TS_ASSERT(f2.isAbstract())
+      TS_ASSERT_THROWS(f2.multiDim(), gum::NotFound)
+      TS_ASSERT_EQUALS(f1, f2)
+      TS_ASSERT_EQUALS(f1.id(), f2.id())
+      TS_ASSERT_EQUALS(f1.variablesSequence(), f2.variablesSequence())
 
       gum::ScheduleMultiDim< double > f3(seq);
-      TS_ASSERT_DIFFERS(f1, f3);
-      TS_ASSERT_DIFFERS(f1.id(), f3.id());
-      TS_ASSERT_EQUALS(f1.variablesSequence(), f3.variablesSequence());
+      TS_ASSERT_DIFFERS(f1, f3)
+      TS_ASSERT_DIFFERS(f1.id(), f3.id())
+      TS_ASSERT_EQUALS(f1.variablesSequence(), f3.variablesSequence())
 
       gum::Potential< double > pot;
       pot << *(vars[0]) << *(vars[2]) << *(vars[4]);
       gum::ScheduleMultiDim< double > f4(pot);
-      TS_ASSERT(!f4.isAbstract());
-      TS_ASSERT_DIFFERS(f1, f4);
+      TS_ASSERT(!f4.isAbstract())
+      TS_ASSERT_DIFFERS(f1, f4)
 
       gum::ScheduleMultiDim< double > f5(f4);
-      TS_ASSERT(!f5.isAbstract());
-      TS_ASSERT_EQUALS(f5, f4);
-      TS_ASSERT_EQUALS(f4.id(), f5.id());
+      TS_ASSERT(!f5.isAbstract())
+      TS_ASSERT_EQUALS(f5, f4)
+      TS_ASSERT_EQUALS(f4.id(), f5.id())
       TS_GUM_ASSERT_EQUALS(f4.multiDim(), pot);
 
       std::string       s5 = f5.toString();
       std::stringstream s6;
       s6 << "<" << pot.content() << ">";
-      TS_ASSERT_EQUALS(s6.str(), s5);
+      TS_ASSERT_EQUALS(s6.str(), s5)
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
       f4.setMultiDim(pot2);
       gum::ScheduleMultiDim< double > f6(f4);
       TS_GUM_ASSERT_EQUALS(f5.multiDim(), *pot2.content());
-      TS_ASSERT_THROWS(f3.setMultiDim(*pot2.content()), gum::DuplicateElement);
+      TS_ASSERT_THROWS(f3.setMultiDim(*pot2.content()), gum::DuplicateElement)
       TS_GUM_ASSERT_EQUALS(f6.multiDim(), *pot2.content());
       TS_GUM_ASSERT_EQUALS(f6.multiDim(), *pot2.content());
 

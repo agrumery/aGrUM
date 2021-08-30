@@ -103,7 +103,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)10);
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)10)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 

@@ -173,32 +173,32 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *_booleanChain_));
-      TS_ASSERT_THROWS_NOTHING(delete slot);
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *_booleanChain_))
+      TS_ASSERT_THROWS_NOTHING(delete slot)
     }
 
     void testSecondConstructorSimple() {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(_booleanChain_, "slot"));
-      TS_ASSERT_THROWS_NOTHING(delete slot);
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(_booleanChain_, "slot"))
+      TS_ASSERT_THROWS_NOTHING(delete slot)
     }
 
     void testConstructorComplex() {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *_stateChain_));
-      TS_ASSERT_THROWS_NOTHING(delete slot);
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain("slot", *_stateChain_))
+      TS_ASSERT_THROWS_NOTHING(delete slot)
     }
 
     void testSecondConstructorComplex() {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(_stateChain_, "slot"));
-      TS_ASSERT_THROWS_NOTHING(delete slot);
+      TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(_stateChain_, "slot"))
+      TS_ASSERT_THROWS_NOTHING(delete slot)
     }
     /// @}
 
@@ -209,8 +209,8 @@ namespace gum_tests {
       PRMSlotChain simple("simple", *_booleanChain_);
       PRMSlotChain multiple("multiple", *_stateChain_);
       // Act & Assert
-      TS_ASSERT(!simple.isMultiple());
-      TS_ASSERT(multiple.isMultiple());
+      TS_ASSERT(!simple.isMultiple())
+      TS_ASSERT(multiple.isMultiple())
     }
 
     void testLastEltSimple() {
@@ -218,9 +218,9 @@ namespace gum_tests {
       PRMSlotChain                         simple("simple", *_booleanChain_);
       gum::prm::PRMClassElement< double >* elt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(elt = &(simple.lastElt()));
+      TS_ASSERT_THROWS_NOTHING(elt = &(simple.lastElt()))
       // Assert
-      TS_ASSERT_EQUALS(_boolAttr_->safeName(), elt->safeName());
+      TS_ASSERT_EQUALS(_boolAttr_->safeName(), elt->safeName())
     }
 
     void testLastEltSimpleConst() {
@@ -229,9 +229,9 @@ namespace gum_tests {
       const auto&                                const_simple = simple;
       gum::prm::PRMClassElement< double > const* elt          = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(elt = &(const_simple.lastElt()));
+      TS_ASSERT_THROWS_NOTHING(elt = &(const_simple.lastElt()))
       // Assert
-      TS_ASSERT_EQUALS(_boolAttr_->safeName(), elt->safeName());
+      TS_ASSERT_EQUALS(_boolAttr_->safeName(), elt->safeName())
     }
 
     void testChain() {
@@ -239,12 +239,12 @@ namespace gum_tests {
       PRMSlotChain simple("simple", *_booleanChain_);
       gum::Sequence< gum::prm::PRMClassElement< double >* > const* chain = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(chain = &(simple.chain()));
+      TS_ASSERT_THROWS_NOTHING(chain = &(simple.chain()))
       // ASSERT
-      TS_ASSERT_EQUALS(chain->size(), _booleanChain_->size());
-      TS_ASSERT_EQUALS(chain->atPos(0), _booleanChain_->atPos(0));
-      TS_ASSERT_EQUALS(chain->atPos(1), _booleanChain_->atPos(1));
-      TS_ASSERT_DIFFERS(chain->atPos(2), _booleanChain_->atPos(2));
+      TS_ASSERT_EQUALS(chain->size(), _booleanChain_->size())
+      TS_ASSERT_EQUALS(chain->atPos(0), _booleanChain_->atPos(0))
+      TS_ASSERT_EQUALS(chain->atPos(1), _booleanChain_->atPos(1))
+      TS_ASSERT_DIFFERS(chain->atPos(2), _booleanChain_->atPos(2))
     }
 
     void testCpf() {
@@ -258,10 +258,10 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(expected[i], actual[j]);
+        TS_ASSERT_EQUALS(expected[i], actual[j])
       }
-      TS_ASSERT(i.end());
-      TS_ASSERT(j.end());
+      TS_ASSERT(i.end())
+      TS_ASSERT(j.end())
     }
 
     void testCpfConst() {
@@ -276,10 +276,10 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(expected[i], actual[j]);
+        TS_ASSERT_EQUALS(expected[i], actual[j])
       }
-      TS_ASSERT(i.end());
-      TS_ASSERT(j.end());
+      TS_ASSERT(i.end())
+      TS_ASSERT(j.end())
     }
 
     /// @}
@@ -292,11 +292,11 @@ namespace gum_tests {
       PRMSlotChain                           child("child", *_booleanChain_);
       auto                                   before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
+      TS_ASSERT_THROWS_NOTHING(child.addParent(parent))
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
-      TS_ASSERT(!child.cpf().contains(parent.type().variable()));
+      TS_ASSERT_EQUALS(before, after)
+      TS_ASSERT(!child.cpf().contains(parent.type().variable()))
     }
 
     void testAddParentDupplicateError() {
@@ -306,11 +306,11 @@ namespace gum_tests {
       child.addParent(parent);
       auto before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
+      TS_ASSERT_THROWS_NOTHING(child.addParent(parent))
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
-      TS_ASSERT(!child.cpf().contains(parent.type().variable()));
+      TS_ASSERT_EQUALS(before, after)
+      TS_ASSERT(!child.cpf().contains(parent.type().variable()))
     }
 
     void testAddChild() {
@@ -319,11 +319,11 @@ namespace gum_tests {
       gum::prm::PRMScalarAttribute< double > child("attr", *_boolean_);
       auto                                   before = parent.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(parent.addChild(child));
+      TS_ASSERT_THROWS_NOTHING(parent.addChild(child))
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
-      TS_ASSERT(!parent.cpf().contains(child.type().variable()));
+      TS_ASSERT_EQUALS(before, after)
+      TS_ASSERT(!parent.cpf().contains(child.type().variable()))
     }
     /// @}
   };

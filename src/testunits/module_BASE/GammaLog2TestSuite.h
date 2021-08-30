@@ -40,10 +40,10 @@ namespace gum_tests {
         for (auto j = 0; j < 100; ++j) {
           if (i + j > 0) {
             double index = i + j / 100.0;
-            TS_ASSERT_DELTA(f(index), g(index), 0.1);
+            TS_ASSERT_DELTA(f(index), g(index), 0.1)
 
             double findex = i + j / 100.0;
-            TS_ASSERT_DELTA(f(findex), g(findex), 0.1);
+            TS_ASSERT_DELTA(f(findex), g(findex), 0.1)
           }
         }
       }

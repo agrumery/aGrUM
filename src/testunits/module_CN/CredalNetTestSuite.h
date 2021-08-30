@@ -113,9 +113,9 @@ namespace gum_tests {
       ids.push_back(cn->addVariable("B", 3));   // id 1
       ids.push_back(cn->addVariable("C", 3));   // id 2
 
-      TS_ASSERT_EQUALS(ids[0], 0U);
-      TS_ASSERT_EQUALS(ids[1], 1U);
-      TS_ASSERT_EQUALS(ids[2], 2U);
+      TS_ASSERT_EQUALS(ids[0], 0U)
+      TS_ASSERT_EQUALS(ids[1], 1U)
+      TS_ASSERT_EQUALS(ids[2], 2U)
 
       cn->addArc(ids[0], ids[2]);
       cn->addArc(ids[1], ids[2]);
@@ -262,7 +262,7 @@ namespace gum_tests {
              lps[id][entry].solve());   // we solve the lp
 
           gum::Size sols_size = gum::Size(lps_sols[id][entry].size());
-          TS_ASSERT_EQUALS(vertices.size(), sols_size);
+          TS_ASSERT_EQUALS(vertices.size(), sols_size)
 
           std::vector< bool > checked(sols_size, false);
 
@@ -278,7 +278,7 @@ namespace gum_tests {
               }
 
               if (eq) {
-                TS_ASSERT(!checked[sol]);
+                TS_ASSERT(!checked[sol])
                 checked[sol] = true;
                 break;
               }
@@ -291,7 +291,7 @@ namespace gum_tests {
             r = r && b;
           }
 
-          TS_ASSERT(r);
+          TS_ASSERT(r)
 
           cn->setCPT(id, ins, vertices);
 
@@ -352,7 +352,7 @@ namespace gum_tests {
       readerb.proceed();
 
       gum::credal::CredalNet< double > cn(monBNa, monBNb);
-      TS_ASSERT_THROWS(cn.intervalToCredal(), gum::CPTError);
+      TS_ASSERT_THROWS(cn.intervalToCredal(), gum::CPTError)
     }
   };   // end of class CredalNetTestSuite
 

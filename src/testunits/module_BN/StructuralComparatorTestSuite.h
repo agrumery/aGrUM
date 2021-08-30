@@ -42,17 +42,17 @@ namespace gum_tests {
       dig1.addNodeWithId(0);
       undig1.addNodeWithId(0);
 
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::OperationNotAllowed);
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::OperationNotAllowed)
 
       dig2.addNodeWithId(2);
       undig2.addNodeWithId(2);
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::InvalidNode);
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::InvalidNode);
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::InvalidNode);
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::InvalidNode);
+      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::InvalidNode)
+      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::InvalidNode)
+      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::InvalidNode)
+      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::InvalidNode)
 
       dig1.addNodeWithId(1);
       dig1.addNodeWithId(2);
@@ -65,9 +65,9 @@ namespace gum_tests {
       dig2.addArc(1, 2);
 
       comp.compare(dig1, dig2);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3);
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3);
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
 
       undig1.addNodeWithId(1);
       undig1.addNodeWithId(2);
@@ -80,9 +80,9 @@ namespace gum_tests {
       undig2.addEdge(2, 1);
 
       comp.compare(undig1, undig2);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3);
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3);
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -108,20 +108,20 @@ namespace gum_tests {
 
       gum::MixedGraph g;
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(comp.compare(asia, g), gum::OperationNotAllowed)
 
       for (gum::Size i = 0; i < 16; i += 2) {
         g.addNodeWithId(i);
       }
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), gum::InvalidNode);
+      TS_ASSERT_THROWS(comp.compare(asia, g), gum::InvalidNode)
       TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(asia, graph));
 
       comp.compare(asia, graph);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.2857, 1e-3);
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.4444, 1e-3);
-      TS_ASSERT_DELTA(comp.precision(), 0, 1e-3);
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.2857, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.4444, 1e-3)
+      TS_ASSERT_DELTA(comp.precision(), 0, 1e-3)
     }
 
     void test_bn() {
@@ -132,12 +132,12 @@ namespace gum_tests {
       bn2 = bn2.fastPrototype("0->1->2;0->2");
 
       TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(bn1, bn2));
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3);
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3);
-      TS_ASSERT_DELTA(comp.precision(), 0.666, 1e-3);
-      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score(), 0.8, 1e-3);
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
+      TS_ASSERT_DELTA(comp.precision(), 0.666, 1e-3)
+      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score(), 0.8, 1e-3)
 
       // creating asia
       gum::BayesNet< double > asia;
@@ -162,12 +162,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(mg, asia));
 
       comp.compare(asia, mg);
-      TS_ASSERT_DELTA(comp.precision(), 0.4444, 1e-3);
-      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score(), 0.615385, 1e-3);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.8888, 1e-3);
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.9412, 1e-3);
+      TS_ASSERT_DELTA(comp.precision(), 0.4444, 1e-3)
+      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score(), 0.615385, 1e-3)
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.8888, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.9412, 1e-3)
     }
   };
 

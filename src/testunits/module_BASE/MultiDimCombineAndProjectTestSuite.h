@@ -79,11 +79,11 @@ namespace gum_tests {
 
         std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(yyy.first, 244);
-        TS_ASSERT_EQUALS(yyy.second, 228);
+        TS_ASSERT_EQUALS(yyy.first, 244)
+        TS_ASSERT_EQUALS(yyy.second, 228)
 
-        TS_ASSERT_EQUALS(nb_ops, 416);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(nb_ops, 416)
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         gum::Set< const gum::Potential< double >* >::const_iterator iter = res.begin();
         const gum::Potential< double >*                             res1 = *iter;
@@ -102,7 +102,7 @@ namespace gum_tests {
         gum::Potential< double >* tt1 = comb.combine(comb_set);
         gum::Potential< double >* tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
         delete tt2;
         comb_set.clear();
@@ -112,13 +112,13 @@ namespace gum_tests {
         tt1 = comb.combine(comb_set);
         tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
         delete tt2;
         del_vars2.clear();
         del_vars2 << vars[9] << vars[10];
         tt2 = proj.project(t6, del_vars2);
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2 = projcomb;
@@ -138,7 +138,7 @@ namespace gum_tests {
 
       } catch (gum::NotFound& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -183,11 +183,11 @@ namespace gum_tests {
 
         std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(yyy.first, 244);
-        TS_ASSERT_EQUALS(yyy.second, 228);
+        TS_ASSERT_EQUALS(yyy.first, 244)
+        TS_ASSERT_EQUALS(yyy.second, 228)
 
-        TS_ASSERT_EQUALS(nb_ops, 416);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(nb_ops, 416)
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         gum::Set< const gum::Potential< float >* >::const_iterator iter = res.begin();
         const gum::Potential< float >*                             res1 = *iter;
@@ -206,7 +206,7 @@ namespace gum_tests {
         gum::Potential< float >* tt1 = comb.combine(comb_set);
         gum::Potential< float >* tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
         delete tt2;
         comb_set.clear();
@@ -217,13 +217,13 @@ namespace gum_tests {
         tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
 
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
         delete tt2;
         del_vars2.clear();
         del_vars2 << vars[9] << vars[10];
         tt2 = proj.project(t6, del_vars2);
-        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3));
+        TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2 = projcomb;
@@ -243,7 +243,7 @@ namespace gum_tests {
 
       } catch (gum::NotFound& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -276,7 +276,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -288,15 +288,15 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT_EQUALS(nb_empty, 2);
-        TS_ASSERT(prod = 15.0);
+        TS_ASSERT_EQUALS(nb_empty, 2)
+        TS_ASSERT(prod = 15.0)
       }
 
       del_vars << vars[1];
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -308,8 +308,8 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT_EQUALS(nb_empty, 3);
-        TS_ASSERT_DELTA(prod, 15.0, 1e-6);
+        TS_ASSERT_EQUALS(nb_empty, 3)
+        TS_ASSERT_DELTA(prod, 15.0, 1e-6)
       }
 
 
@@ -318,7 +318,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.combineAndProject(to_comb, del_vars);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)2);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)2)
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -330,8 +330,8 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT_EQUALS(nb_empty, 2);
-        TS_ASSERT_DELTA(prod, 15.0, 1e-6);
+        TS_ASSERT_EQUALS(nb_empty, 2)
+        TS_ASSERT_DELTA(prod, 15.0, 1e-6)
       }
     }
 

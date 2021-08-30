@@ -32,26 +32,26 @@ namespace gum_tests {
 
     void testInsertion() {
       gum::NodeGraphPart ngp;
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0);
-      TS_ASSERT(ngp.empty());
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0)
+      TS_ASSERT(ngp.empty())
 
       gum::NodeId firstId = ngp.addNode();
-      TS_ASSERT(!ngp.empty());
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(firstId, (gum::NodeId)0);
+      TS_ASSERT(!ngp.empty())
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(firstId, (gum::NodeId)0)
 
       ngp.addNode();
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)2)
 
       ngp.addNode();
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3)
 
       gum::NodeId next  = ngp.nextNodeId();
       gum::NodeId next2 = ngp.addNode();
-      TS_ASSERT_EQUALS(next, next2);
+      TS_ASSERT_EQUALS(next, next2)
 
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1));
-      TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), gum::DuplicateElement);
+      TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), gum::DuplicateElement)
     }
 
     void testSuppression() {
@@ -63,24 +63,24 @@ namespace gum_tests {
 
       ngp.eraseNode(id3);
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.eraseNode(id3));
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3)
 
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3));
-      TS_ASSERT_THROWS(ngp.addNodeWithId(id3), gum::DuplicateElement);
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)4);
+      TS_ASSERT_THROWS(ngp.addNodeWithId(id3), gum::DuplicateElement)
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)4)
 
       ngp.clear();
-      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0)
     }
 
     void testAdd2() {
       gum::NodeGraphPart ngp;
       ngp.addNodeWithId(gum::NodeId(3));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)3);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)3)
       ngp.addNodeWithId(gum::NodeId(2));
       ngp.addNodeWithId(gum::NodeId(1));
       ngp.addNodeWithId(gum::NodeId(0));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)0);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)0)
 
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(gum::NodeId(0));
@@ -88,7 +88,7 @@ namespace gum_tests {
       ngp2.addNodeWithId(gum::NodeId(2));
       ngp2.addNodeWithId(gum::NodeId(3));
 
-      TS_ASSERT_EQUALS(ngp, ngp2);
+      TS_ASSERT_EQUALS(ngp, ngp2)
     }
 
     void testCopy() {
@@ -96,12 +96,12 @@ namespace gum_tests {
       ngp.addNode();
       ngp.addNode();
       _ForTestCopy_(ngp);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)0);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)0)
       gum::NodeId id3 = ngp.addNode();
       gum::NodeId id4 = ngp.addNode();
       ngp.eraseNode(id3);
       _ForTestCopy_(ngp);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)1);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)1)
       ngp.eraseNode(id4);
       _ForTestCopy_(ngp);
       TS_ASSERT_EQUALS(ngp._sizeHoles_(),
@@ -119,82 +119,82 @@ namespace gum_tests {
       gum::NodeId        g = 7;
 
       ngp.addNodeWithId(c);
-      TS_ASSERT(ngp._inHoles_(a));
-      TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3));
-      TS_ASSERT_EQUALS(ngp.bound(), c + 1);
+      TS_ASSERT(ngp._inHoles_(a))
+      TS_ASSERT(ngp._inHoles_(b))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3))
+      TS_ASSERT_EQUALS(ngp.bound(), c + 1)
 
       ngp.addNodeWithId(a);
-      TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2));
-      TS_ASSERT_EQUALS(ngp.bound(), c + 1);
+      TS_ASSERT(ngp._inHoles_(b))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2))
+      TS_ASSERT_EQUALS(ngp.bound(), c + 1)
 
       ngp.addNodeWithId(f);
-      TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT(ngp._inHoles_(d));
-      TS_ASSERT(ngp._inHoles_(e));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)4));
-      TS_ASSERT_EQUALS(ngp.bound(), f + 1);
+      TS_ASSERT(ngp._inHoles_(b))
+      TS_ASSERT(ngp._inHoles_(d))
+      TS_ASSERT(ngp._inHoles_(e))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)4))
+      TS_ASSERT_EQUALS(ngp.bound(), f + 1)
 
       ngp.addNodeWithId(e);
-      TS_ASSERT(ngp._inHoles_(b));
-      TS_ASSERT(ngp._inHoles_(d));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3));
-      TS_ASSERT_EQUALS(ngp.bound(), f + 1);
+      TS_ASSERT(ngp._inHoles_(b))
+      TS_ASSERT(ngp._inHoles_(d))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)3))
+      TS_ASSERT_EQUALS(ngp.bound(), f + 1)
 
       ngp.addNodeWithId(b);
-      TS_ASSERT(ngp._inHoles_(d));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2));
-      TS_ASSERT_EQUALS(ngp.bound(), f + 1);
+      TS_ASSERT(ngp._inHoles_(d))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)2))
+      TS_ASSERT_EQUALS(ngp.bound(), f + 1)
 
       ngp.addNodeWithId(d);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1));
-      TS_ASSERT_EQUALS(ngp.bound(), f + 1);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1))
+      TS_ASSERT_EQUALS(ngp.bound(), f + 1)
 
       ngp.addNodeWithId(g);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1));
-      TS_ASSERT_EQUALS(ngp.bound(), g + 1);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)1))
+      TS_ASSERT_EQUALS(ngp.bound(), g + 1)
 
       ngp.addNodeWithId(gum::NodeId(0));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
-      TS_ASSERT_EQUALS(ngp.bound(), g + 1);
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0))
+      TS_ASSERT_EQUALS(ngp.bound(), g + 1)
 
-      TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement);
+      TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement)
     }
 
     void testGarbageCollecting() {
       gum::NodeGraphPart ngp;
       gum::NodeId        node = 6;
 
-      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
-      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0));
+      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0))
+      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0))
       ngp.addNodeWithId(node);
-      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(node)));
+      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1))
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size(node)))
       TS_ASSERT(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
-      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0));
-      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0));
-      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
+      TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0))
+      TS_ASSERT_EQUALS(ngp.nextNodeId(), ((gum::Size)0))
+      TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0))
 
       // do we fill all the holes?
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(node);
 
       for (gum::Size i = 1; i < node; i++) {
-        TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size(node) + 1 - i));
-        TS_ASSERT(ngp2.addNode() < node);
+        TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size(node) + 1 - i))
+        TS_ASSERT(ngp2.addNode() < node)
       }
 
-      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)1);
+      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)1)
 
-      TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node - 1));
+      TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node - 1))
 
       ngp2.addNode();
 
-      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)0);
-      TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node + 1));
+      TS_ASSERT_EQUALS(ngp2._sizeHoles_(), (gum::Size)0)
+      TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node + 1))
     }
 
     void testUnsafeIterator() {
@@ -211,7 +211,7 @@ namespace gum_tests {
       gum::NodeGraphPartIteratorSafe safe_iter = ngp.beginSafe();   // safe iterator needed here
 
       for (gum::NodeGraphPartIterator iter = ngp.begin(); iter != ngp.end(); ++iter, ++safe_iter) {
-        TS_ASSERT_EQUALS(*iter, *safe_iter);
+        TS_ASSERT_EQUALS(*iter, *safe_iter)
       }
 
       gum::Size nb = 0, nb2 = 0;
@@ -221,7 +221,7 @@ namespace gum_tests {
         nb2 += x;
       }
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)13);
+      TS_ASSERT_EQUALS(nb, (gum::Size)13)
     }
 
     void testBigNodeGraphPart() { TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_()); }
@@ -239,7 +239,7 @@ namespace gum_tests {
           cpt++;
         } else {
           // If false : infinite loop spotted
-          TS_ASSERT(false);
+          TS_ASSERT(false)
           break;
         }
       }
@@ -262,12 +262,12 @@ namespace gum_tests {
 
         if (cpt > max_cpt) {
           // If false : infinite loop spotted
-          TS_ASSERT(false);
+          TS_ASSERT(false)
           break;
         }
       }
 
-      TS_ASSERT_EQUALS(cpt, max_cpt);
+      TS_ASSERT_EQUALS(cpt, max_cpt)
     }
 
     void testIteratorAddNodes() {
@@ -282,11 +282,11 @@ namespace gum_tests {
 
       nodeset.addNodes(5);
 
-      TS_ASSERT_EQUALS(nodeset.size(), (gum::Size)100);
+      TS_ASSERT_EQUALS(nodeset.size(), (gum::Size)100)
 
       gum::NodeId i = 0;
       for (auto n: nodeset.nodes())
-        TS_ASSERT_EQUALS(n, i++);
+        TS_ASSERT_EQUALS(n, i++)
 
       gum::NodeGraphPart nodeset2;
       nodeset2.addNodes(10);
@@ -305,7 +305,7 @@ namespace gum_tests {
       for (auto n: v2) {
         TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n));
       }
-      TS_ASSERT(futureIds.empty());
+      TS_ASSERT(futureIds.empty())
     }
 
     private:
@@ -368,15 +368,15 @@ namespace gum_tests {
 
     void _ForTestCopy_(gum::NodeGraphPart& ngp) {
       gum::NodeGraphPart ngp2(ngp);
-      TS_ASSERT_EQUALS(ngp.toString(), ngp2.toString());
+      TS_ASSERT_EQUALS(ngp.toString(), ngp2.toString())
 
       gum::NodeGraphPart ngp3 = ngp;
-      TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString());
+      TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString())
 
       gum::NodeGraphPart ngp4;
-      TS_ASSERT(ngp4.empty());
+      TS_ASSERT(ngp4.empty())
       ngp4 = ngp;
-      TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString());
+      TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString())
     }
   };
 }   // namespace gum_tests

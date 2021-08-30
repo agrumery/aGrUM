@@ -46,7 +46,7 @@ namespace gum_tests {
         res[j] /= sum;
       }
 
-      TS_ASSERT(fabs(res[0] - res[1]) < 0.03);
+      TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
 
       std::default_random_engine gen;
 
@@ -64,7 +64,7 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(1 - res[0] < 0.01);
+      TS_ASSERT(1 - res[0] < 0.01)
 
       sum    = 0;
       res[0] = res[1] = 0;
@@ -78,7 +78,7 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(1 - res[0] < 0.01);
+      TS_ASSERT(1 - res[0] < 0.01)
 
       sum    = 0;
       res[0] = res[1] = 0;
@@ -92,7 +92,7 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(fabs(res[0] - res[1]) < 0.03);
+      TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
     }
   };
 

@@ -47,7 +47,7 @@ namespace gum_tests {
       // Change working directory
       if (chdir(XGET_RESSOURCES_PATH(dir)) != 0) {
         GUM_TRACE("Error : Can not go to " << XGET_RESSOURCES_PATH(dir));
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -55,31 +55,31 @@ namespace gum_tests {
       // Return to previous working directory
       if (oldWorkingDir.empty() || chdir(oldWorkingDir.c_str()) != 0) {
         GUM_TRACE("Warning : Can not go to previous working directory.");
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
     void testValid() {
-      TS_ASSERT(gum::Directory("./").isValid());
-      TS_ASSERT(gum::Directory("../").isValid());
-      TS_ASSERT(gum::Directory("../dir/").isValid());
-      TS_ASSERT(!gum::Directory("./undossierauhasard/").isValid());
-      TS_ASSERT(!gum::Directory("/undossierauhasard/").isValid());
-      TS_ASSERT(!gum::Directory("undossierauhasard/").isValid());
-      TS_ASSERT(!gum::Directory("../dir1/").isValid());
+      TS_ASSERT(gum::Directory("./").isValid())
+      TS_ASSERT(gum::Directory("../").isValid())
+      TS_ASSERT(gum::Directory("../dir/").isValid())
+      TS_ASSERT(!gum::Directory("./undossierauhasard/").isValid())
+      TS_ASSERT(!gum::Directory("/undossierauhasard/").isValid())
+      TS_ASSERT(!gum::Directory("undossierauhasard/").isValid())
+      TS_ASSERT(!gum::Directory("../dir1/").isValid())
     }
 
     void testPath() {
-      TS_ASSERT_EQUALS(gum::Directory("./").path(), "./");
-      TS_ASSERT_EQUALS(gum::Directory("../").path(), "../");
-      TS_ASSERT_EQUALS(gum::Directory("../dir/").path(), "../dir/");
-      TS_ASSERT_EQUALS(gum::Directory("/usr/").path(), "/usr/");
-      TS_ASSERT_EQUALS(gum::Directory("/usr/../usr/").path(), "/usr/../usr/");
-      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").path(), "./undossierauhasard/");
+      TS_ASSERT_EQUALS(gum::Directory("./").path(), "./")
+      TS_ASSERT_EQUALS(gum::Directory("../").path(), "../")
+      TS_ASSERT_EQUALS(gum::Directory("../dir/").path(), "../dir/")
+      TS_ASSERT_EQUALS(gum::Directory("/usr/").path(), "/usr/")
+      TS_ASSERT_EQUALS(gum::Directory("/usr/../usr/").path(), "/usr/../usr/")
+      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").path(), "./undossierauhasard/")
     }
 
     void testAbsolutePath() {
-      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").absolutePath(), "");
+      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").absolutePath(), "")
       TS_ASSERT_EQUALS(gum::Directory("./").absolutePath(),
                        gum::Directory("../dir/").absolutePath());
       TS_ASSERT(gum::Directory("/usr/").absolutePath()
@@ -97,62 +97,62 @@ namespace gum_tests {
 
       gum::Directory d0("../undossierauhasard/");
       entries = d0.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)0)
 
       gum::Directory d1("./");
       entries = d1.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end())
 
       gum::Directory d2("../dir/");
       entries = d2.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end())
 
       gum::Directory d3("./dir1/../");
       entries = d3.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir1"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir2"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "dir3"), entries.end())
 
       gum::Directory d4("./dir1/");
       entries = d4.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)3);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)3)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end())
 
       gum::Directory d5("../dir/dir2/");
       entries = d5.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)4);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file2.txt"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)4)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file2.txt"), entries.end())
 
       gum::Directory d6("./dir1/../dir3/");
       entries = d6.entries();
-      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5);
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file2.txt"), entries.end());
-      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file3.txt"), entries.end());
+      TS_ASSERT_EQUALS(entries.size(), (gum::Size)5)
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), ".."), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file1.txt"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file2.txt"), entries.end())
+      TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file3.txt"), entries.end())
     }
 
     void testParent() {
-      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").parent().path(), "");
+      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").parent().path(), "")
       TS_ASSERT(gum::Directory("./").parent().absolutePath()
                 == gum::Directory("../dir/").parent().absolutePath());
       TS_ASSERT(gum::Directory("./").parent().absolutePath()

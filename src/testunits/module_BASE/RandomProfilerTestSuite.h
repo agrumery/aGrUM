@@ -30,12 +30,12 @@ namespace gum_tests {
   class RandomProfilerTestSuite: public CxxTest::TestSuite {
     public:
     void testRandomSeed() {
-      TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10));
+      TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
 
       if (GUM_RANDOMSEED == 0) {
-        TS_ASSERT(!matchedRandomValues());
+        TS_ASSERT(!matchedRandomValues())
       } else {   // GUM_RANDOMSEED==10
-        TS_ASSERT(matchedRandomValues());
+        TS_ASSERT(matchedRandomValues())
       }
     }
 

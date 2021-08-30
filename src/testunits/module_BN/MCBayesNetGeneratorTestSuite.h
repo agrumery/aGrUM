@@ -89,7 +89,7 @@ namespace gum_tests {
           GUM_SHOWERROR(e);
           nbrtests++;
           if (nbrtests > 3) {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
             return;
           }
         }
@@ -111,7 +111,7 @@ namespace gum_tests {
           GUM_SHOWERROR(e);
           nbrtests++;
           if (nbrtests > 3) {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
             return;
           }
         }

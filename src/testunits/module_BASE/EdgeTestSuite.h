@@ -44,16 +44,16 @@ namespace gum_tests {
       gum::Edge copy(edge1);
       gum::Edge edge3(6, 7);
 
-      TS_ASSERT_EQUALS(edge1, edge1);
-      TS_ASSERT_EQUALS(edge1, edge2);
-      TS_ASSERT_EQUALS(edge2, edge1);
-      TS_ASSERT_EQUALS(copy, edge1);
-      TS_ASSERT_EQUALS(edge2, copy);
+      TS_ASSERT_EQUALS(edge1, edge1)
+      TS_ASSERT_EQUALS(edge1, edge2)
+      TS_ASSERT_EQUALS(edge2, edge1)
+      TS_ASSERT_EQUALS(copy, edge1)
+      TS_ASSERT_EQUALS(edge2, copy)
 
-      TS_ASSERT_DIFFERS(edge1, edge3);
-      TS_ASSERT_DIFFERS(edge3, edge1);
-      TS_ASSERT_DIFFERS(copy, edge3);
-      TS_ASSERT_DIFFERS(edge2, edge3);
+      TS_ASSERT_DIFFERS(edge1, edge3)
+      TS_ASSERT_DIFFERS(edge3, edge1)
+      TS_ASSERT_DIFFERS(copy, edge3)
+      TS_ASSERT_DIFFERS(edge2, edge3)
     }
 
     void testGetters() {
@@ -69,16 +69,16 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(copy.first());
       TS_GUM_ASSERT_THROWS_NOTHING(copy.second());
 
-      TS_ASSERT_EQUALS(edge2.first(), (gum::NodeId)1);
-      TS_ASSERT_EQUALS(edge2.second(), (gum::NodeId)2);
+      TS_ASSERT_EQUALS(edge2.first(), (gum::NodeId)1)
+      TS_ASSERT_EQUALS(edge2.second(), (gum::NodeId)2)
 
       TS_GUM_ASSERT_THROWS_NOTHING(edge3.other((gum::NodeId)3));
       TS_GUM_ASSERT_THROWS_NOTHING(edge3.other((gum::NodeId)4));
 
-      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)3), (gum::NodeId)4);
-      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)4), (gum::NodeId)3);
+      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)3), (gum::NodeId)4)
+      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)4), (gum::NodeId)3)
 
-      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42));
+      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42))
     }
 
     void testHash() {
@@ -94,7 +94,7 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Edge edge(x, y);
-          TS_ASSERT_EQUALS(hash[edge], (x + y));
+          TS_ASSERT_EQUALS(hash[edge], (x + y))
         }
       }
     }

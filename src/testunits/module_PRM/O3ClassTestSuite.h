@@ -49,13 +49,13 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testEmptyClassError1() {
@@ -72,9 +72,9 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
-      TS_ASSERT(!prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
+      TS_ASSERT(!prm.isClass("Bar"))
     }
 
     void testEmptyClassError2() {
@@ -91,9 +91,9 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
-      TS_ASSERT(!prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
+      TS_ASSERT(!prm.isClass("Bar"))
     }
 
     void testEmptyClassError3() {
@@ -110,9 +110,9 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
-      TS_ASSERT(!prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
+      TS_ASSERT(!prm.isClass("Bar"))
     }
 
     void testSimpleClass1() {
@@ -125,22 +125,22 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
       const auto& cpf = state.cpf();
       auto        i   = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleClass2() {
@@ -154,22 +154,22 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
       const auto& cpf = state.cpf();
       auto        i   = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleClass3() {
@@ -189,31 +189,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleClassError1() {
@@ -239,8 +239,8 @@ namespace gum_tests {
       msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to "
              "1, "
              "found 0.4";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleClassError2() {
@@ -264,8 +264,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 29| Error : Parent stat not found";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleClassError3() {
@@ -291,8 +291,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|4 col 9| Error : Illegal CPT size, expected 4 found 6 for "
              "attribute Bar.isWorking";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleRules1() {
@@ -312,31 +312,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleRules2() {
@@ -356,31 +356,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleRules3() {
@@ -400,31 +400,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleRules4() {
@@ -444,31 +444,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.1, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.9, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleRulesError1() {
@@ -493,8 +493,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|5 col 15| Error : Illegal CPT value \"110/100\" in attribute "
              "Bar.isWorking, formula resolve to 1.1";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleRulesError2() {
@@ -518,8 +518,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|5 col 1| Error : Expected 1 value(s), found 2";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleRulesError3() {
@@ -544,8 +544,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 6| Error : Illegal CPT value \"FOO\" in attribute "
              "Bar.isWorking, could not resolve the following formula: \"FOO\"";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleRulesError4() {
@@ -568,11 +568,11 @@ namespace gum_tests {
       std::string line;
       std::getline(output, line);
       std::string msg = "|5 col 1| Error : Label BAR is not part of state domain";
-      TS_ASSERT_EQUALS(line, msg);
+      TS_ASSERT_EQUALS(line, msg)
       std::getline(output, line);
       msg = "|6 col 1| Error : Label FOO is not part of state domain";
-      TS_ASSERT_EQUALS(line, msg);
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg)
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testSimpleParameter1() {
@@ -591,23 +591,23 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
       const auto& cpf = state.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)2);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)2)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testSimpleParameter2() {
@@ -629,30 +629,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testClassWithReference1() {
@@ -666,25 +666,25 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoo"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoo"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo));
-      TS_ASSERT(!myFoo.isArray());
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo))
+      TS_ASSERT(!myFoo.isArray())
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testClassWithReference2() {
@@ -698,25 +698,25 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoo"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoo"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo));
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo))
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testClassWithReference3() {
@@ -739,43 +739,43 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoo"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoo"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(!myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(!myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(!cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT(bar.exists("myFoo.state"));
+      TS_ASSERT(!cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT(bar.exists("myFoo.state"))
       const auto& chain = bar.get("myFoo.state");
-      TS_ASSERT(cpf.variablesSequence().exists(&(chain.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(chain.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testClassWithReference4() {
@@ -800,43 +800,43 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2);
-      TS_ASSERT(prm.isClass("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2)
+      TS_ASSERT(prm.isClass("Foo"))
       const auto& foo = prm.getClass("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoo"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoo"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(!myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(!myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(!cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT(bar.exists("myFoo.state"));
+      TS_ASSERT(!cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT(bar.exists("myFoo.state"))
       const auto& chain = bar.get("myFoo.state");
-      TS_ASSERT(cpf.variablesSequence().exists(&(chain.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(chain.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testClassWithReferenceError1() {
@@ -864,8 +864,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|9 col 29| Error : Link myfoo in chain myfoo.state "
              "not found";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testClassWithReferenceError2() {
@@ -893,8 +893,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|9 col 29| Error : Link stat in chain myFoo.stat not "
              "found";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testClassWithReferenceError3() {
@@ -921,8 +921,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|8 col 29| Error : Link myFoo in chain myFoo.state "
              "not found";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
     void testClassWithReferenceError4() {
@@ -952,8 +952,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
-      TS_ASSERT_EQUALS(line, msg.str());
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(line, msg.str())
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2)
     }
 
     void testClassWithReferenceError6() {
@@ -984,7 +984,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|7 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testOrAggregate() {
@@ -1001,30 +1001,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR)
     }
 
     void testOrAggregateArray() {
@@ -1042,30 +1042,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR)
     }
 
     void testAndAggregate() {
@@ -1082,30 +1082,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND)
     }
 
     void testAndAggregateArray() {
@@ -1123,30 +1123,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND)
     }
 
     void testForAllAggregate() {
@@ -1164,30 +1164,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL)
     }
 
     void testForAllAggregateArray() {
@@ -1206,30 +1206,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL)
     }
 
     void testExistsAggregate() {
@@ -1247,30 +1247,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS)
     }
 
     void testExistsAggregateArray() {
@@ -1289,30 +1289,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS)
     }
 
     void testMinAggregate() {
@@ -1330,30 +1330,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN)
     }
 
     void testMinAggregateArray() {
@@ -1372,30 +1372,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN)
     }
 
     void testMaxAggregate() {
@@ -1413,30 +1413,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX)
     }
 
     void testMaxAggregateArray() {
@@ -1455,30 +1455,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX)
     }
 
     void testMedianAggregate() {
@@ -1496,30 +1496,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN)
     }
 
     void testMedianAggregateArray() {
@@ -1538,30 +1538,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN)
     }
 
     void testAmplitudeAggregate() {
@@ -1579,30 +1579,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE)
     }
 
     void testAmplitudeAggregateArray() {
@@ -1621,30 +1621,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE)
     }
 
     void testCountAggregate() {
@@ -1662,30 +1662,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT)
     }
 
     void testCountAggregateArray() {
@@ -1704,30 +1704,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT)
     }
 
     void testSumAggregate() {
@@ -1745,30 +1745,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM)
     }
 
     void testSumAggregateArray() {
@@ -1787,30 +1787,30 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
       const auto& state = foo.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("myFoos"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.aggregates().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("myFoos"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")))
       const auto& myFoo
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo);
-      TS_ASSERT(myFoo.isArray());
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT_EQUALS(&(myFoo.slotType()), &foo)
+      TS_ASSERT(myFoo.isArray())
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAggregate(isWorking))
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
+      TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM)
     }
 
 
@@ -1833,7 +1833,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 24| Error : Link myBoos in chain myBoos.state "
              "not found";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testOrAggregateWithErrors2() {
@@ -1855,7 +1855,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 24| Error : Link st in chain myFoos.st not "
              "found";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testOrAggregateWithErrors3() {
@@ -1876,7 +1876,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|6 col 24| Error : invalid declaration";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testOrAggregateWithErrors4() {
@@ -1901,7 +1901,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|11 col 39| Error : Expected type boolean for parent "
              "myBoos.state, found state";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testCountAggregateWithErrors5() {
@@ -1924,7 +1924,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|7 col 39| Error : Parameter foobar in aggregate "
              "isWorking does not match any expected values";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testInheritance1() {
@@ -1940,19 +1940,19 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS("", output.str())
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT(prm.isClass("Bar"));
-      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
+      TS_ASSERT(prm.isClass("Bar"))
+      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT(foo.isSuperTypeOf(bar));
-      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)));
-      TS_ASSERT_EQUALS(bar.parameters().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.slotChains().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
+      TS_ASSERT(foo.isSuperTypeOf(bar))
+      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)))
+      TS_ASSERT_EQUALS(bar.parameters().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.slotChains().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
     }
 
     void testInheritance2() {
@@ -1968,19 +1968,19 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
-      TS_ASSERT(prm.isInterface("Foo"));
+      TS_ASSERT_EQUALS("", output.str())
+      TS_ASSERT(prm.isInterface("Foo"))
       const auto& foo = prm.getInterface("Foo");
-      TS_ASSERT(prm.isClass("Bar"));
-      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
+      TS_ASSERT(prm.isClass("Bar"))
+      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT(foo.isSuperTypeOf(bar));
-      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)));
-      TS_ASSERT_EQUALS(bar.parameters().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.slotChains().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1);
+      TS_ASSERT(foo.isSuperTypeOf(bar))
+      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)))
+      TS_ASSERT_EQUALS(bar.parameters().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.slotChains().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
     }
 
     void testInheritance3() {
@@ -2003,20 +2003,20 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
-      TS_ASSERT(prm.isInterface("iFoo"));
+      TS_ASSERT_EQUALS("", output.str())
+      TS_ASSERT(prm.isInterface("iFoo"))
       const auto& ifoo = prm.getInterface("iFoo");
-      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Foo"));
+      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Foo"))
       const auto& foo = prm.getClass("Foo");
-      TS_ASSERT(ifoo.isSuperTypeOf(foo));
-      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(foo))
+      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT(ifoo.isSuperTypeOf(bar));
-      TS_ASSERT(foo.isSuperTypeOf(bar));
-      TS_ASSERT_EQUALS(&(bar.super()), &(foo));
-      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(bar))
+      TS_ASSERT(foo.isSuperTypeOf(bar))
+      TS_ASSERT_EQUALS(&(bar.super()), &(foo))
+      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
     void testInheritanceError1() {
@@ -2038,7 +2038,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 22| Error : Interface Bar not found";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testInheritanceError2() {
@@ -2061,7 +2061,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|4 col 7| Error : Class Foo does not implement all of "
              "interface iFoo attributes";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testInheritanceError3() {
@@ -2085,7 +2085,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 7| Error : Class Foo attribute state does not "
              "respect interface iFoo";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testInheritanceError4() {
@@ -2107,7 +2107,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 19| Error : Unknown class oo";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testInheritanceError5() {
@@ -2131,7 +2131,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 7| Error : Illegal overload of element state from "
              "class Foo";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testOrderDoesNotMatter1() {
@@ -2154,20 +2154,20 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
-      TS_ASSERT(prm.isInterface("iFoo"));
+      TS_ASSERT_EQUALS("", output.str())
+      TS_ASSERT(prm.isInterface("iFoo"))
       const auto& ifoo = prm.getInterface("iFoo");
-      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Foo"));
+      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Foo"))
       const auto& foo = prm.getClass("Foo");
-      TS_ASSERT(ifoo.isSuperTypeOf(foo));
-      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(foo))
+      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT(ifoo.isSuperTypeOf(bar));
-      TS_ASSERT(foo.isSuperTypeOf(bar));
-      TS_ASSERT_EQUALS(&(bar.super()), &(foo));
-      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(bar))
+      TS_ASSERT(foo.isSuperTypeOf(bar))
+      TS_ASSERT_EQUALS(&(bar.super()), &(foo))
+      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
     void testOrderDoesNotMatter2() {
@@ -2190,20 +2190,20 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
-      TS_ASSERT(prm.isInterface("iFoo"));
+      TS_ASSERT_EQUALS("", output.str())
+      TS_ASSERT(prm.isInterface("iFoo"))
       const auto& ifoo = prm.getInterface("iFoo");
-      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Foo"));
+      TS_ASSERT_EQUALS(ifoo.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(ifoo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Foo"))
       const auto& foo = prm.getClass("Foo");
-      TS_ASSERT(ifoo.isSuperTypeOf(foo));
-      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(foo))
+      TS_ASSERT(foo.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT(ifoo.isSuperTypeOf(bar));
-      TS_ASSERT(foo.isSuperTypeOf(bar));
-      TS_ASSERT_EQUALS(&(bar.super()), &(foo));
-      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
+      TS_ASSERT(ifoo.isSuperTypeOf(bar))
+      TS_ASSERT(foo.isSuperTypeOf(bar))
+      TS_ASSERT_EQUALS(&(bar.super()), &(foo))
+      TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
     void testPrinters() {
@@ -2216,7 +2216,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS("", output.str());
+      TS_ASSERT_EQUALS("", output.str())
     }
 
     void testClassWithOverloading() {
@@ -2248,53 +2248,53 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2);
-      TS_ASSERT(prm.isInterface("Plop"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2)
+      TS_ASSERT(prm.isInterface("Plop"))
       const auto& plop = prm.getInterface("Plop");
-      TS_ASSERT_EQUALS(plop.attributes().size(), (gum::Size)1);
-      TS_ASSERT(plop.exists("state"));
-      TS_ASSERT(plop.exists("(boolean)state"));
+      TS_ASSERT_EQUALS(plop.attributes().size(), (gum::Size)1)
+      TS_ASSERT(plop.exists("state"))
+      TS_ASSERT(plop.exists("(boolean)state"))
 
-      TS_ASSERT(prm.isInterface("SubPlop"));
+      TS_ASSERT(prm.isInterface("SubPlop"))
       const auto& sub_plop = prm.getInterface("SubPlop");
-      TS_ASSERT_EQUALS(sub_plop.attributes().size(), (gum::Size)2);
-      TS_ASSERT(sub_plop.exists("state"));
-      TS_ASSERT(sub_plop.exists("(boolean)state"));
-      TS_ASSERT(sub_plop.exists("(state)state"));
+      TS_ASSERT_EQUALS(sub_plop.attributes().size(), (gum::Size)2)
+      TS_ASSERT(sub_plop.exists("state"))
+      TS_ASSERT(sub_plop.exists("(boolean)state"))
+      TS_ASSERT(sub_plop.exists("(state)state"))
 
-      TS_ASSERT(prm.isClass("Foo"));
+      TS_ASSERT(prm.isClass("Foo"))
       const auto& foo = prm.getClass("Foo");
-      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("state"));
-      TS_ASSERT(foo.exists("(boolean)state"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(foo.get("state")));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(foo.get("(boolean)state")));
-      TS_ASSERT_EQUALS(&(foo.get("state")), &(foo.get("(boolean)state")));
-      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(foo.exists("plop"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(foo.get("plop")));
+      TS_ASSERT_EQUALS(foo.attributes().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("state"))
+      TS_ASSERT(foo.exists("(boolean)state"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(foo.get("state")))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(foo.get("(boolean)state")))
+      TS_ASSERT_EQUALS(&(foo.get("state")), &(foo.get("(boolean)state")))
+      TS_ASSERT_EQUALS(foo.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(foo.exists("plop"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(foo.get("plop")))
       const auto& ref_plop
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(foo.get("plop"));
-      TS_ASSERT_EQUALS(&(ref_plop.slotType()), &plop);
+      TS_ASSERT_EQUALS(&(ref_plop.slotType()), &plop)
 
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
-      TS_ASSERT(bar.exists("(boolean)state"));
-      TS_ASSERT(bar.exists("(state)state"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("state")));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(boolean)state")));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(state)state")));
-      TS_ASSERT_EQUALS(&(bar.get("state")), &(bar.get("(state)state")));
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT(bar.exists("plop"));
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("plop")));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
+      TS_ASSERT(bar.exists("(boolean)state"))
+      TS_ASSERT(bar.exists("(state)state"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("state")))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(boolean)state")))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(state)state")))
+      TS_ASSERT_EQUALS(&(bar.get("state")), &(bar.get("(state)state")))
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT(bar.exists("plop"))
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("plop")))
       const auto& ref_subplop
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("plop"));
-      TS_ASSERT_EQUALS(&(ref_subplop.slotType()), &sub_plop);
+      TS_ASSERT_EQUALS(&(ref_subplop.slotType()), &sub_plop)
     }
 
     void testClassWithOverloadingError1() {
@@ -2331,7 +2331,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|5 col 33| Error : Illegal overload of element plop from class "
              "Bar";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testAggregateWithError() {
@@ -2354,7 +2354,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|8 col 26| Error : Illegal parent myFoos";
-      TS_ASSERT_EQUALS(line, msg.str());
+      TS_ASSERT_EQUALS(line, msg.str())
     }
 
     void testAnonymousType1() {
@@ -2373,31 +2373,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testAnonymousType2() {
@@ -2416,31 +2416,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testAnonymousType3() {
@@ -2459,31 +2459,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testAnonymousType4() {
@@ -2502,31 +2502,31 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
-      TS_ASSERT(prm.isClass("Bar"));
+      TS_ASSERT_EQUALS(output.str(), "")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
+      TS_ASSERT(prm.isClass("Bar"))
       const auto& bar = prm.getClass("Bar");
-      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2);
-      TS_ASSERT(bar.exists("state"));
+      TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)2)
+      TS_ASSERT(bar.exists("state"))
       const auto& state = bar.get("state");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state));
-      TS_ASSERT(bar.exists("isWorking"));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(state))
+      TS_ASSERT(bar.exists("isWorking"))
       const auto& isWorking = bar.get("isWorking");
-      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
+      TS_ASSERT(gum::prm::PRMClassElement< double >::isAttribute(isWorking))
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())));
-      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4);
+      TS_ASSERT(cpf.variablesSequence().exists(&(state.type().variable())))
+      TS_ASSERT_EQUALS(cpf.domainSize(), (gum::Size)4)
       auto i = gum::Instantiation(cpf);
       i.setFirst();
-      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6);
+      TS_ASSERT_DELTA(cpf[i], 0.4, 1e-6)
       i.inc();
-      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6);
-      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound);
+      TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
+      TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
     }
 
     void testAnonymousTypeError1() {
@@ -2545,8 +2545,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 6| Error : invalid declaration\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 6| Error : invalid declaration\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
     void testAnonymousTypeError2() {
@@ -2565,8 +2565,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 8| Error : invalid declaration\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 8| Error : invalid declaration\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
     void testAnonymousTypeError3() {
@@ -2585,8 +2585,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 3| Error : invalid declaration\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 3| Error : invalid declaration\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
     void testAnonymousTypeError4() {
@@ -2605,8 +2605,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 5| Error : integer expected\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 5| Error : integer expected\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
     void testAnonymousTypeError5() {
@@ -2625,8 +2625,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 4| Error : invalid declaration\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 4| Error : invalid declaration\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
     void testAnonymousTypeError6() {
@@ -2645,8 +2645,8 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      TS_ASSERT_EQUALS(output.str(), "|2 col 6| Error : invalid declaration\n");
-      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(output.str(), "|2 col 6| Error : invalid declaration\n")
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
   };
 

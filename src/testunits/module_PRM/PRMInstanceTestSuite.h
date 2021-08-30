@@ -91,8 +91,8 @@ namespace gum_tests {
       // Arrange
       PRMInstance* i = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(i = new PRMInstance("i", *_classA_));
-      TS_ASSERT_THROWS_NOTHING(delete i);
+      TS_ASSERT_THROWS_NOTHING(i = new PRMInstance("i", *_classA_))
+      TS_ASSERT_THROWS_NOTHING(delete i)
     }
     /// @}
 
@@ -105,7 +105,7 @@ namespace gum_tests {
       // Act
       auto actual = i.obj_type();
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testType() {
@@ -115,7 +115,7 @@ namespace gum_tests {
       // Act
       auto actual = &(i.type());
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testTypeConst() {
@@ -126,7 +126,7 @@ namespace gum_tests {
       // Act
       const auto actual = &(const_i.type());
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testExistsById() {
@@ -137,7 +137,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists(id);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testNotExistsById() {
@@ -147,7 +147,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists(666);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testExistsByName() {
@@ -157,7 +157,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists("a");
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testNotExistsByName() {
@@ -167,7 +167,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists("aazeazeaze");
       // Assert
-      TS_ASSERT_EQUALS(actual, expected);
+      TS_ASSERT_EQUALS(actual, expected)
     }
 
     void testGetByName() {
@@ -176,12 +176,12 @@ namespace gum_tests {
       gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(i.get("a")));
+      TS_ASSERT_THROWS_NOTHING(attr = &(i.get("a")))
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a");
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()));
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      TS_ASSERT_EQUALS(attr->name(), "a")
+      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
+      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
+      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
     void testGetByNameConst() {
@@ -191,19 +191,19 @@ namespace gum_tests {
       gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get("a")));
+      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get("a")))
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a");
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()));
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      TS_ASSERT_EQUALS(attr->name(), "a")
+      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
+      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
+      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
     void testGetByNameNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get("azeaze"), gum::NotFound);
+      TS_ASSERT_THROWS(i.get("azeaze"), gum::NotFound)
     }
 
     void testGetByNameConstNotFound() {
@@ -211,7 +211,7 @@ namespace gum_tests {
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get("azeaze"), gum::NotFound);
+      TS_ASSERT_THROWS(const_i.get("azeaze"), gum::NotFound)
     }
 
     void testGetById() {
@@ -220,12 +220,12 @@ namespace gum_tests {
       gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(i.get(class_attr.id())));
+      TS_ASSERT_THROWS_NOTHING(attr = &(i.get(class_attr.id())))
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a");
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()));
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      TS_ASSERT_EQUALS(attr->name(), "a")
+      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
+      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
+      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
     void testGetByIdConst() {
@@ -235,19 +235,19 @@ namespace gum_tests {
       gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get(class_attr.id())));
+      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get(class_attr.id())))
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a");
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()));
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      TS_ASSERT_EQUALS(attr->name(), "a")
+      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
+      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
+      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
     void testGetByIdNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get(666), gum::NotFound);
+      TS_ASSERT_THROWS(i.get(666), gum::NotFound)
     }
 
     void testGetByIdConstNotFound() {
@@ -255,7 +255,7 @@ namespace gum_tests {
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get(666), gum::NotFound);
+      TS_ASSERT_THROWS(const_i.get(666), gum::NotFound)
     }
 
     void testSize() {
@@ -265,7 +265,7 @@ namespace gum_tests {
       // Act
       auto actual = i.size();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual);
+      TS_ASSERT_EQUALS(expected, actual)
     }
     /// @}
 
@@ -275,7 +275,7 @@ namespace gum_tests {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act && Assert
-      TS_ASSERT_THROWS_NOTHING(i.instantiate());
+      TS_ASSERT_THROWS_NOTHING(i.instantiate())
     }
 
     void testBijection() {
@@ -287,12 +287,12 @@ namespace gum_tests {
       auto             i_a   = &(i.get("a").type().variable());
       auto             i_b   = &(i.get("b").type().variable());
       // Act
-      TS_ASSERT_THROWS_NOTHING(bij = &(i.bijection()));
+      TS_ASSERT_THROWS_NOTHING(bij = &(i.bijection()))
       // Assert
-      TS_ASSERT_EQUALS(bij->second(var_a), i_a);
-      TS_ASSERT_EQUALS(bij->second(var_b), i_b);
-      TS_ASSERT_EQUALS(bij->first(i_a), var_a);
-      TS_ASSERT_EQUALS(bij->first(i_b), var_b);
+      TS_ASSERT_EQUALS(bij->second(var_a), i_a)
+      TS_ASSERT_EQUALS(bij->second(var_b), i_b)
+      TS_ASSERT_EQUALS(bij->first(i_a), var_a)
+      TS_ASSERT_EQUALS(bij->first(i_b), var_b)
     }
     /// @}
 

@@ -33,55 +33,55 @@ namespace gum_tests {
     public:
     void test_db1() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       database.setVariableNames({"v1", "v2", "v3"});
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.variableNames()[0], "v1");
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.variableNames()[0], "v1")
       TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, false));
       TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, true));
       database.setVariableNames({"x1", "x2", "x3"}, false);
-      TS_ASSERT_EQUALS(database.variableNames()[0], "x1");
+      TS_ASSERT_EQUALS(database.variableNames()[0], "x1")
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1);
-      TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, false), gum::SizeError);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
+      TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, false), gum::SizeError)
 
       gum::learning::RawDatabaseTable<> db(database);
-      TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable<> db2(db,
                                             std::allocator< gum::learning::DBTranslatedValue >());
-      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable<> db3(std::move(db2));
-      TS_ASSERT_EQUALS(db3.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db3.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db3.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db3.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db3.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db3.content().size(), (gum::Size)1)
 
       database.insertRow(row, xmiss);
       gum::learning::RawDatabaseTable<> db4(std::move(database),
                                             std::allocator< gum::learning::DBTranslatedValue >());
-      TS_ASSERT_EQUALS(db4.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db4.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db4.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db4.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db4.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db4.content().size(), (gum::Size)2)
 
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1)
       db = db4;
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)2)
 
       db2 = db4;
-      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2)
     }
 
 
@@ -89,72 +89,72 @@ namespace gum_tests {
       const std::vector< std::string >                     empty_miss;
       std::vector< std::string >                           vnames{"v1", "v2", "v3"};
       gum::learning::RawDatabaseTable< DebugCountedAlloc > database(empty_miss, vnames);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable< DebugCountedAlloc >::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell, DebugCountedAlloc > row(3,
                                                                            gum::learning::DBCell(2),
                                                                            1.0f);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable< DebugCountedAlloc > db(database);
-      TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable< DebugCountedAlloc > db2(
          db,
          DebugCountedAlloc< gum::learning::DBTranslatedValue >());
-      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable< DebugCountedAlloc > db3(std::move(db2));
-      TS_ASSERT_EQUALS(db3.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db3.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db3.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db3.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db3.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db3.content().size(), (gum::Size)1)
 
       database.insertRow(row, xmiss);
       gum::learning::RawDatabaseTable< DebugCountedAlloc > db4(
          std::move(database),
          DebugCountedAlloc< gum::learning::DBTranslatedValue >());
-      TS_ASSERT_EQUALS(db4.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db4.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db4.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db4.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db4.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db4.content().size(), (gum::Size)2)
 
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)1)
       db = db4;
-      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db.content().size(), (gum::Size)2)
 
       db2 = db4;
-      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3);
-      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(db2.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3)
+      TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2)
     }
 
 
     void test_db2() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect1{"v1", "v2"};
       database.setVariableNames(vect1);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)2);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)2)
       std::vector< std::string > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
       std::vector< std::string > badvect{"v1", "v2", "v3", "v4"};
-      TS_ASSERT_THROWS(database.setVariableNames(badvect), gum::SizeError);
+      TS_ASSERT_THROWS(database.setVariableNames(badvect), gum::SizeError)
 
       typename gum::learning::RawDatabaseTable<>::HandlerSafe handler(database);
       typename gum::learning::RawDatabaseTable<>::Handler     uhandler(database);
@@ -163,180 +163,180 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(std::move(row), xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)6)
 
-      TS_ASSERT_EQUALS(handler.range().second, (std::size_t)6);
-      TS_ASSERT_EQUALS(handler.size(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6);
+      TS_ASSERT_EQUALS(handler.range().second, (std::size_t)6)
+      TS_ASSERT_EQUALS(handler.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6)
       handler.setRange(1, 4);
-      TS_ASSERT_EQUALS(handler.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(handler.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)0)
       uhandler.setRange(1, 4);
-      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler.numRow(), (std::size_t)0)
       handler.nextRow();
-      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)1)
 
       auto handler2(handler);
-      TS_ASSERT_EQUALS(handler2.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(handler2.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(handler2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(handler2.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)1)
       handler2.nextRow();
-      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)2);
+      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)2)
 
       auto uhandler2(uhandler);
-      TS_ASSERT_EQUALS(uhandler2.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uhandler2.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler2.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(uhandler2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uhandler2.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler2.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)0)
       uhandler2.nextRow();
-      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)1)
 
       auto handler3(std::move(handler2));
-      TS_ASSERT_EQUALS(handler3.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(handler3.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler3.range().first, (std::size_t)1);
-      TS_ASSERT_EQUALS(handler3.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(handler3.numRow(), (std::size_t)2);
+      TS_ASSERT_EQUALS(handler3.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(handler3.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler3.range().first, (std::size_t)1)
+      TS_ASSERT_EQUALS(handler3.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(handler3.numRow(), (std::size_t)2)
 
       auto uhandler3(std::move(uhandler2));
-      TS_ASSERT_EQUALS(uhandler3.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uhandler3.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler3.range().first, (std::size_t)1);
-      TS_ASSERT_EQUALS(uhandler3.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(uhandler3.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(uhandler3.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uhandler3.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler3.range().first, (std::size_t)1)
+      TS_ASSERT_EQUALS(uhandler3.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(uhandler3.numRow(), (std::size_t)1)
 
       handler2 = handler;
-      TS_ASSERT_EQUALS(handler.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(handler.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(handler.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(handler.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(handler.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler.numRow(), (std::size_t)1)
 
       uhandler2 = uhandler;
-      TS_ASSERT_EQUALS(uhandler.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(uhandler.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(uhandler.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uhandler.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler.numRow(), (std::size_t)0)
 
       handler2 = std::move(handler3);
-      TS_ASSERT_EQUALS(handler2.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(handler2.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)2);
+      TS_ASSERT_EQUALS(handler2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(handler2.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)2)
 
       uhandler2 = std::move(uhandler3);
-      TS_ASSERT_EQUALS(uhandler2.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uhandler2.DBSize(), (gum::Size)6);
-      TS_ASSERT_EQUALS(uhandler2.range().second, (std::size_t)4);
-      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)1);
+      TS_ASSERT_EQUALS(uhandler2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uhandler2.DBSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(uhandler2.range().second, (std::size_t)4)
+      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)1)
 
       auto&                                       row2 = handler2.rowSafe();
       const std::vector< gum::learning::DBCell >& xrow = row2.row();
-      TS_ASSERT_EQUALS(xrow.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(xrow[1], 2);
+      TS_ASSERT_EQUALS(xrow.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(xrow[1], 2)
 
-      TS_ASSERT_EQUALS(handler2.hasRows(), true);
+      TS_ASSERT_EQUALS(handler2.hasRows(), true)
       handler2.nextRow();
-      TS_ASSERT_EQUALS(handler2.hasRows(), false);
+      TS_ASSERT_EQUALS(handler2.hasRows(), false)
       handler2.reset();
-      TS_ASSERT_EQUALS(handler2.hasRows(), true);
-      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(handler2.hasRows(), true)
+      TS_ASSERT_EQUALS(handler2.numRow(), (std::size_t)0)
 
       const auto& vars = handler2.variableNames();
-      TS_ASSERT_EQUALS(vars[1], "v2");
-      TS_ASSERT_EQUALS(handler2.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(vars[1], "v2")
+      TS_ASSERT_EQUALS(handler2.nbVariables(), (gum::Size)3)
 
       uhandler2.nextRow();
       auto&       urow2 = uhandler2.rowSafe();
       const auto& uxrow = urow2.row();
-      TS_ASSERT_EQUALS(uxrow.size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(uxrow[1], 2);
+      TS_ASSERT_EQUALS(uxrow.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(uxrow[1], 2)
 
-      TS_ASSERT_EQUALS(uhandler2.hasRows(), true);
+      TS_ASSERT_EQUALS(uhandler2.hasRows(), true)
       uhandler2.nextRow();
-      TS_ASSERT_EQUALS(uhandler2.hasRows(), false);
+      TS_ASSERT_EQUALS(uhandler2.hasRows(), false)
       uhandler2.reset();
-      TS_ASSERT_EQUALS(uhandler2.hasRows(), true);
-      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)0);
+      TS_ASSERT_EQUALS(uhandler2.hasRows(), true)
+      TS_ASSERT_EQUALS(uhandler2.numRow(), (std::size_t)0)
 
       const auto& uvars = uhandler2.variableNames();
-      TS_ASSERT_EQUALS(uvars[1], "v2");
-      TS_ASSERT_EQUALS(uhandler2.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(uvars[1], "v2")
+      TS_ASSERT_EQUALS(uhandler2.nbVariables(), (gum::Size)3)
 
       // check that we cannot convert an unsafe handler into a safe one
-      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast&);
+      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast&)
       gum::learning::RawDatabaseTable<>::Handler& uxhandler2 = handler2;
-      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&);
+      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&)
     }
 
 
     void test_db3() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
 
       gum::learning::DBRow< gum::learning::DBCell > row2(3, gum::learning::DBCell(5), 1.0f);
       database.insertRow(row2, xmiss);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(3), 1.0f);
       database.insertRow(std::move(row3), xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)3)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          4,
          gum::learning::RawDatabaseTable<>::IsMissing::False);
       database.insertRows(std::vector< gum::learning::DBRow< gum::learning::DBCell > >(4, row),
                           is_miss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7)
       std::vector< gum::learning::DBRow< gum::learning::DBCell > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)11);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)11)
       is_miss.resize(2);
       std::vector< gum::learning::DBRow< gum::learning::DBCell > > vecty(2, row);
       database.insertRows(vecty, is_miss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)13);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)13)
 
       database.eraseRow(12);
       database.eraseRow(5);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)11);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)11)
       database.eraseFirstRow();
       database.eraseLastRow();
       database.eraseFirstRows(2);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7)
       database.eraseLastRows(1);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)6)
       database.eraseRows(2, 4);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
       database.eraseAllRows();
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
       database.clear();
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
     }
 
 
     void test_db4() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
@@ -344,15 +344,15 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       gum::learning::RawDatabaseTable<> database2 = database;
-      TS_ASSERT_EQUALS(database2.content().size(), (gum::Size)4);
-      TS_ASSERT_EQUALS(database2.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database2.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database2.content().size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(database2.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database2.nbVariables(), (gum::Size)3)
 
       gum::learning::DBRow< gum::learning::DBCell > row2(4, gum::learning::DBCell(2), 1.0f);
-      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError);
+      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          2,
@@ -364,54 +364,54 @@ namespace gum_tests {
       typename gum::learning::RawDatabaseTable<>::HandlerSafe handler3(database2);
       handler2.setRange(4, 6);
       handler3.setRange(5, 6);
-      TS_ASSERT_EQUALS(handler2.row()[0], 4);
-      TS_ASSERT_EQUALS(handler3.row()[0], 5);
+      TS_ASSERT_EQUALS(handler2.row()[0], 4)
+      TS_ASSERT_EQUALS(handler3.row()[0], 5)
       database2.eraseLastRow();
-      TS_ASSERT_EQUALS(handler2.row()[0], 4);
-      TS_ASSERT_THROWS(handler3.rowSafe()[0], gum::OutOfBounds);
+      TS_ASSERT_EQUALS(handler2.row()[0], 4)
+      TS_ASSERT_THROWS(handler3.rowSafe()[0], gum::OutOfBounds)
       database2.insertRow(row4, xmiss);
 
       typename gum::learning::RawDatabaseTable<>::Handler uhandler2(database2);
       typename gum::learning::RawDatabaseTable<>::Handler uhandler3(database2);
       uhandler2.setRange(4, 6);
       uhandler3.setRange(5, 6);
-      TS_ASSERT_EQUALS(uhandler2.row()[0], 4);
-      TS_ASSERT_EQUALS(uhandler3.row()[0], 5);
+      TS_ASSERT_EQUALS(uhandler2.row()[0], 4)
+      TS_ASSERT_EQUALS(uhandler3.row()[0], 5)
       database2.eraseLastRow();
-      TS_ASSERT_EQUALS(uhandler2.row()[0], 4);
-      TS_ASSERT_EQUALS(uhandler3.size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(uhandler2.row()[0], 4)
+      TS_ASSERT_EQUALS(uhandler3.size(), (gum::Size)1)
 
       gum::learning::RawDatabaseTable<> database3(std::move(database2));
       database2 = std::move(database);
-      TS_ASSERT_EQUALS(database2.content().size(), (gum::Size)4);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database2.content().size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
       database = std::move(database3);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)5)
 
       handler2 = database.handlerSafe();
-      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)5);
+      TS_ASSERT_EQUALS(handler2.range().second, (std::size_t)5)
       handler2.nextRow();
       handler2.nextRow();
       handler2.nextRow();
       handler3 = std::move(handler2);
-      TS_ASSERT_EQUALS(handler3.range().second, (std::size_t)5);
-      TS_ASSERT(handler3.hasRows());
+      TS_ASSERT_EQUALS(handler3.range().second, (std::size_t)5)
+      TS_ASSERT(handler3.hasRows())
       handler3.nextRow();
-      TS_ASSERT(handler3.hasRows());
+      TS_ASSERT(handler3.hasRows())
       handler3.nextRow();
-      TS_ASSERT_EQUALS(handler3.hasRows(), false);
+      TS_ASSERT_EQUALS(handler3.hasRows(), false)
     }
 
 
     void test_db5() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
@@ -419,7 +419,7 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          2,
@@ -432,44 +432,44 @@ namespace gum_tests {
       int x = 0;
       for (const auto& row: handler) {
         x++;
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
       }
-      TS_ASSERT_EQUALS(x, 6);
+      TS_ASSERT_EQUALS(x, 6)
 
       handler.setRange(1, 3);
       x = 0;
       for (const auto& row: handler) {
         x++;
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
       }
-      TS_ASSERT_EQUALS(x, 2);
+      TS_ASSERT_EQUALS(x, 2)
     }
 
 
     void test_db6() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       database.setVariableNames({"v1", "v2", "v3"});
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       std::vector< std::string > row(3, "2");
       database.insertRow(row);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
       for (const auto& xrow: database) {
         for (const auto& xxx: xrow.row()) {
-          TS_ASSERT_EQUALS(xxx, gum::learning::DBCell(2));
+          TS_ASSERT_EQUALS(xxx, gum::learning::DBCell(2))
         }
       }
 
       std::vector< std::string, DebugCountedAlloc< std::string > > row2(3, "2");
       database.insertRow(row2);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)2)
       for (const auto& xrow: database) {
         for (const auto& xxx: xrow.row()) {
-          TS_ASSERT_EQUALS(xxx, gum::learning::DBCell(2));
+          TS_ASSERT_EQUALS(xxx, gum::learning::DBCell(2))
         }
       }
 
@@ -492,13 +492,13 @@ namespace gum_tests {
 
     void test_db_parallel() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
@@ -506,7 +506,7 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          2,
@@ -539,20 +539,20 @@ namespace gum_tests {
       }
 
       for (unsigned int i = 0; i < num_threads; ++i) {
-        TS_ASSERT_EQUALS(nb[i], 6);
+        TS_ASSERT_EQUALS(nb[i], 6)
       }
     }
 
 
     void test_db_parallel2() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
@@ -560,7 +560,7 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          2,
@@ -593,20 +593,20 @@ namespace gum_tests {
       }
 
       for (unsigned int i = 0; i < num_threads; ++i) {
-        TS_ASSERT_EQUALS(nb[i], 6);
+        TS_ASSERT_EQUALS(nb[i], 6)
       }
     }
 
 
     void test_iterators() {
       gum::learning::RawDatabaseTable<> database;
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string, DebugCountedAlloc< std::string > > vect{"v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
 
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
@@ -614,7 +614,7 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       int nb_col1 = 0, nb_col2 = 0;
       for (const auto& row: database) {
@@ -622,8 +622,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 8);
-      TS_ASSERT_EQUALS(nb_col2, 8);
+      TS_ASSERT_EQUALS(nb_col1, 8)
+      TS_ASSERT_EQUALS(nb_col2, 8)
 
       nb_col1 = 0;
       nb_col2 = 0;
@@ -632,8 +632,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 8);
-      TS_ASSERT_EQUALS(nb_col2, 8);
+      TS_ASSERT_EQUALS(nb_col1, 8)
+      TS_ASSERT_EQUALS(nb_col2, 8)
 
       nb_col1 = 0;
       nb_col2 = 0;
@@ -642,8 +642,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 8);
-      TS_ASSERT_EQUALS(nb_col2, 8);
+      TS_ASSERT_EQUALS(nb_col1, 8)
+      TS_ASSERT_EQUALS(nb_col2, 8)
 
       nb_col1 = 0;
       nb_col2 = 0;
@@ -652,8 +652,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 8);
-      TS_ASSERT_EQUALS(nb_col2, 8);
+      TS_ASSERT_EQUALS(nb_col1, 8)
+      TS_ASSERT_EQUALS(nb_col2, 8)
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
          2,
@@ -669,8 +669,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 17);
-      TS_ASSERT_EQUALS(nb_col2, 17);
+      TS_ASSERT_EQUALS(nb_col1, 17)
+      TS_ASSERT_EQUALS(nb_col2, 17)
 
       nb_col1 = 0;
       nb_col2 = 0;
@@ -679,8 +679,8 @@ namespace gum_tests {
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
       }
-      TS_ASSERT_EQUALS(nb_col1, 17);
-      TS_ASSERT_EQUALS(nb_col2, 17);
+      TS_ASSERT_EQUALS(nb_col1, 17)
+      TS_ASSERT_EQUALS(nb_col2, 17)
     }
 
     void test_ignored_colums() {
@@ -689,10 +689,10 @@ namespace gum_tests {
       gum::learning::RawDatabaseTable<> database(empty_miss, names);
       const auto&                       dbnames = database.variableNames();
       const auto&                       content = database.content();
-      TS_ASSERT_EQUALS(dbnames[0], "v0");
-      TS_ASSERT_EQUALS(dbnames[1], "v1");
-      TS_ASSERT_EQUALS(dbnames[2], "v2");
-      TS_ASSERT_EQUALS(dbnames[3], "v3");
+      TS_ASSERT_EQUALS(dbnames[0], "v0")
+      TS_ASSERT_EQUALS(dbnames[1], "v1")
+      TS_ASSERT_EQUALS(dbnames[2], "v2")
+      TS_ASSERT_EQUALS(dbnames[3], "v3")
 
       gum::learning::DBRow< gum::learning::DBCell > row(6);
       for (std::size_t i = std::size_t(0); i < 6; ++i) {
@@ -702,115 +702,115 @@ namespace gum_tests {
       const auto xmiss = gum::learning::RawDatabaseTable<>::IsMissing::False;
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2));
-      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(0)));
-      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(2)));
-      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(3)));
-      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(0)));
-      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(2)));
-      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(3)));
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2))
+      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(0)))
+      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(2)))
+      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(3)))
+      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(0)))
+      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(2)))
+      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(3)))
 
       database.ignoreColumn(0, true);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(5));
-      TS_ASSERT_EQUALS(dbnames[0], "v1");
-      TS_ASSERT_EQUALS(dbnames[1], "v2");
-      TS_ASSERT_EQUALS(dbnames[2], "v3");
-      TS_ASSERT_EQUALS(dbnames[3], "v4");
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2));
-      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(5));
-      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(2)));
-      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(3)));
-      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(2)));
-      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(3)));
-      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(4)));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(5))
+      TS_ASSERT_EQUALS(dbnames[0], "v1")
+      TS_ASSERT_EQUALS(dbnames[1], "v2")
+      TS_ASSERT_EQUALS(dbnames[2], "v3")
+      TS_ASSERT_EQUALS(dbnames[3], "v4")
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2))
+      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(5))
+      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(2)))
+      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(3)))
+      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(2)))
+      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(3)))
+      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(4)))
 
       database.ignoreColumn(1, false);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(4));
-      TS_ASSERT_EQUALS(dbnames[0], "v1");
-      TS_ASSERT_EQUALS(dbnames[1], "v3");
-      TS_ASSERT_EQUALS(dbnames[2], "v4");
-      TS_ASSERT_EQUALS(dbnames[3], "v5");
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2));
-      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(4));
-      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(3)));
-      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(5)));
-      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(3)));
-      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(5)));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(4))
+      TS_ASSERT_EQUALS(dbnames[0], "v1")
+      TS_ASSERT_EQUALS(dbnames[1], "v3")
+      TS_ASSERT_EQUALS(dbnames[2], "v4")
+      TS_ASSERT_EQUALS(dbnames[3], "v5")
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2))
+      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(4))
+      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(3)))
+      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[0][3], gum::learning::DBCell(int(5)))
+      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(3)))
+      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[1][3], gum::learning::DBCell(int(5)))
 
       {
         const auto ignored_vect = database.ignoredColumns();
-        TS_ASSERT_EQUALS(ignored_vect[0], std::size_t(0));
-        TS_ASSERT_EQUALS(ignored_vect[1], std::size_t(2));
+        TS_ASSERT_EQUALS(ignored_vect[0], std::size_t(0))
+        TS_ASSERT_EQUALS(ignored_vect[1], std::size_t(2))
 
         const auto cols = database.inputColumns();
-        TS_ASSERT_EQUALS(cols[0], std::size_t(1));
-        TS_ASSERT_EQUALS(cols[1], std::size_t(3));
-        TS_ASSERT_EQUALS(cols[2], std::size_t(4));
-        TS_ASSERT_EQUALS(cols[3], std::size_t(5));
+        TS_ASSERT_EQUALS(cols[0], std::size_t(1))
+        TS_ASSERT_EQUALS(cols[1], std::size_t(3))
+        TS_ASSERT_EQUALS(cols[2], std::size_t(4))
+        TS_ASSERT_EQUALS(cols[3], std::size_t(5))
       }
 
       database.ignoreColumn(12, true);
       database.ignoreColumn(10, true);
       {
         const auto ignored_vect = database.ignoredColumns();
-        TS_ASSERT_EQUALS(ignored_vect[0], std::size_t(0));
-        TS_ASSERT_EQUALS(ignored_vect[1], std::size_t(2));
-        TS_ASSERT_EQUALS(ignored_vect[2], std::size_t(10));
-        TS_ASSERT_EQUALS(ignored_vect[3], std::size_t(12));
+        TS_ASSERT_EQUALS(ignored_vect[0], std::size_t(0))
+        TS_ASSERT_EQUALS(ignored_vect[1], std::size_t(2))
+        TS_ASSERT_EQUALS(ignored_vect[2], std::size_t(10))
+        TS_ASSERT_EQUALS(ignored_vect[3], std::size_t(12))
 
         const auto cols = database.inputColumns();
-        TS_ASSERT_EQUALS(cols[0], std::size_t(1));
-        TS_ASSERT_EQUALS(cols[1], std::size_t(3));
-        TS_ASSERT_EQUALS(cols[2], std::size_t(4));
-        TS_ASSERT_EQUALS(cols[3], std::size_t(5));
+        TS_ASSERT_EQUALS(cols[0], std::size_t(1))
+        TS_ASSERT_EQUALS(cols[1], std::size_t(3))
+        TS_ASSERT_EQUALS(cols[2], std::size_t(4))
+        TS_ASSERT_EQUALS(cols[3], std::size_t(5))
       }
 
 
       database.ignoreColumn(3, true);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(3));
-      TS_ASSERT_EQUALS(dbnames[0], "v1");
-      TS_ASSERT_EQUALS(dbnames[1], "v4");
-      TS_ASSERT_EQUALS(dbnames[2], "v5");
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2));
-      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(3));
-      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(5)));
-      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)));
-      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(5)));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(3))
+      TS_ASSERT_EQUALS(dbnames[0], "v1")
+      TS_ASSERT_EQUALS(dbnames[1], "v4")
+      TS_ASSERT_EQUALS(dbnames[2], "v5")
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(2))
+      TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)std::size_t(3))
+      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[0][1], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[0][2], gum::learning::DBCell(int(5)))
+      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(1)))
+      TS_ASSERT_EQUALS(content[1][1], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[1][2], gum::learning::DBCell(int(5)))
 
       database.ignoreColumn(5, true);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(2));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(2))
       database.ignoreColumn(1, true);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(1));
-      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(4)));
-      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(4)));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(1))
+      TS_ASSERT_EQUALS(content[0][0], gum::learning::DBCell(int(4)))
+      TS_ASSERT_EQUALS(content[1][0], gum::learning::DBCell(int(4)))
       database.ignoreColumn(4, true);
-      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(0));
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(0));
+      TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(0))
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(0))
     }
 
 
     void test_missing_vals() {
       std::vector< std::string >        missing{"?", "N/A", "???"};
       gum::learning::RawDatabaseTable<> database(missing);
-      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)0)
 
       std::vector< std::string > vect{"v0", "v1", "v2", "v3"};
       database.setVariableNames(vect);
-      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)4);
-      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)4);
+      TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)4)
 
       std::vector< std::string > row{"L0", "L1", "L2", "L0"};
       database.insertRow(row);
@@ -833,44 +833,44 @@ namespace gum_tests {
       row[2] = "L0";
       database.insertRow(row);
 
-      TS_ASSERT(database.hasMissingValues());
+      TS_ASSERT(database.hasMissingValues())
 
-      TS_ASSERT_EQUALS(database.hasMissingValues(0), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(1), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(2), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(3), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(4), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(5), false);
+      TS_ASSERT_EQUALS(database.hasMissingValues(0), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(1), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(2), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(3), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(4), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(5), false)
 
       database.ignoreColumn(1);
-      TS_ASSERT(database.hasMissingValues());
-      TS_ASSERT_EQUALS(database.hasMissingValues(0), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(1), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(2), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(3), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(4), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(5), false);
+      TS_ASSERT(database.hasMissingValues())
+      TS_ASSERT_EQUALS(database.hasMissingValues(0), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(1), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(2), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(3), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(4), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(5), false)
 
       database.ignoreColumn(2);
-      TS_ASSERT(database.hasMissingValues());
-      TS_ASSERT_EQUALS(database.hasMissingValues(0), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(1), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(2), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(3), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(4), true);
-      TS_ASSERT_EQUALS(database.hasMissingValues(5), false);
+      TS_ASSERT(database.hasMissingValues())
+      TS_ASSERT_EQUALS(database.hasMissingValues(0), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(1), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(2), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(3), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(4), true)
+      TS_ASSERT_EQUALS(database.hasMissingValues(5), false)
 
       database.ignoreColumn(0);
-      TS_ASSERT_EQUALS(database.hasMissingValues(), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(0), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(1), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(2), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(3), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(4), false);
-      TS_ASSERT_EQUALS(database.hasMissingValues(5), false);
+      TS_ASSERT_EQUALS(database.hasMissingValues(), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(0), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(1), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(2), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(3), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(4), false)
+      TS_ASSERT_EQUALS(database.hasMissingValues(5), false)
 
       database.ignoreColumn(3);
-      TS_ASSERT_EQUALS(database.hasMissingValues(), false);
+      TS_ASSERT_EQUALS(database.hasMissingValues(), false)
     }
 
 
@@ -882,7 +882,7 @@ namespace gum_tests {
 
       int x = 0;
       for (const auto& row: **handler) {
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
         x++;
       }
 
@@ -896,7 +896,7 @@ namespace gum_tests {
 
       int x = 0;
       for (const auto& row: **handler) {
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3);
+        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
         x++;
       }
 

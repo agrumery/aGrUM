@@ -397,7 +397,7 @@ namespace gum_tests {
            "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
         auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res  = ieid.reversePartialOrder();
-        TS_ASSERT_EQUALS(res.size(), 4U);
+        TS_ASSERT_EQUALS(res.size(), 4U)
         TS_ASSERT_EQUALS(res[0], gum::NodeSet({infdiag.idFromName("D4"), infdiag.idFromName("D7")}))
         TS_ASSERT_EQUALS(res[1], gum::NodeSet({infdiag.idFromName("D3"), infdiag.idFromName("D5")}))
         TS_ASSERT_EQUALS(res[2], gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")}))
@@ -409,7 +409,7 @@ namespace gum_tests {
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
-        TS_ASSERT(ieid.isSolvable());
+        TS_ASSERT(ieid.isSolvable())
       }
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y<-*D3");
@@ -490,8 +490,8 @@ namespace gum_tests {
       const auto revord2 = ieid.reversePartialOrder();
       TS_ASSERT_EQUALS(revord2.size(), (gum::Size)4)
       for (gum::Idx i = 0; i < (gum::Size)4; i++) {
-        TS_ASSERT_EQUALS(revord2[i].size(), (gum::Size)1);
-        TS_ASSERT_EQUALS(limids.variable(*(revord2[i].begin())).name(), order[3 - i]);
+        TS_ASSERT_EQUALS(revord2[i].size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(limids.variable(*(revord2[i].begin())).name(), order[3 - i])
       }
       auto noForgetting = ieid.reducedLIMID();
 
@@ -513,7 +513,7 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
 
       auto jt = ieid.junctionTree();
-      TS_ASSERT_EQUALS(jt->size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(jt->size(), (gum::Size)5)
       ieid.makeInference();
     }
 
@@ -596,7 +596,7 @@ namespace gum_tests {
               TS_ASSERT_EQUALS(ie.optimalDecision("d"),
                                (gum::Potential< double >() <<
          net.variableFromName("d")) .fillWith({0, 1}))
-              TS_ASSERT_EQUALS(ie.MEU().first, 200);
+              TS_ASSERT_EQUALS(ie.MEU().first, 200)
               TS_ASSERT_EQUALS(ie.posterior("c1"),
                                (gum::Potential< double >() <<
          net.variableFromName("c1")) .fillWith({0, 1})) TS_GUM_POTENTIAL_DELTA(
@@ -615,7 +615,7 @@ namespace gum_tests {
                  (gum::Potential< double >() << net.variableFromName("d"))
                     .fillWith({0, 1}),
                  TS_GUM_SMALL_ERROR)
-              TS_ASSERT_EQUALS(ie.MEU().first, 110.5);
+              TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
               TS_ASSERT_EQUALS(ie.posterior("c1"),
                                (gum::Potential< double >() <<
          net.variableFromName("c1")) .fillWith({0.5, 0.5})) TS_GUM_POTENTIAL_DELTA(
@@ -630,8 +630,8 @@ namespace gum_tests {
         ie.makeInference();
         TS_ASSERT_EQUALS(ie.optimalDecision("d"),
                          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}))
-        TS_ASSERT_EQUALS(ie.MEU().first, 56.8);
-        TS_ASSERT_DELTA(ie.MEU().second, 5126.56, TS_GUM_SMALL_ERROR);
+        TS_ASSERT_EQUALS(ie.MEU().first, 56.8)
+        TS_ASSERT_DELTA(ie.MEU().second, 5126.56, TS_GUM_SMALL_ERROR)
         TS_GUM_POTENTIAL_DELTA(
            ie.posterior("c"),
            (gum::Potential< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}),

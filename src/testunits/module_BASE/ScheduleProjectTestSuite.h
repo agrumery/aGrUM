@@ -51,35 +51,35 @@ namespace gum_tests {
 
       gum::ScheduleProject< double >         myproj(f1, del_vars, gum::projectMax);
       const gum::ScheduleMultiDim< double >& res = myproj.result();
-      TS_ASSERT(res.isAbstract());
+      TS_ASSERT(res.isAbstract())
 
-      TS_ASSERT_EQUALS(myproj.nbOperations(), 16);
+      TS_ASSERT_EQUALS(myproj.nbOperations(), 16)
       std::pair< long, long > xxx = myproj.memoryUsage();
-      TS_ASSERT_EQUALS(xxx.first, 4);
+      TS_ASSERT_EQUALS(xxx.first, 4)
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims = myproj.multiDimArgs();
-      TS_ASSERT_EQUALS(multidims.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(*(multidims.atPos(0)), f1);
+      TS_ASSERT_EQUALS(multidims.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(*(multidims.atPos(0)), f1)
 
       std::stringstream s1;
       s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
          << " )";
-      TS_ASSERT_EQUALS(s1.str(), myproj.toString());
+      TS_ASSERT_EQUALS(s1.str(), myproj.toString())
 
       gum::ScheduleProject< double > myproj2 = myproj;
-      TS_ASSERT(myproj2.result().isAbstract());
-      TS_ASSERT_EQUALS(myproj2, myproj);
+      TS_ASSERT(myproj2.result().isAbstract())
+      TS_ASSERT_EQUALS(myproj2, myproj)
 
       myproj.execute();
-      TS_ASSERT(!res.isAbstract());
-      TS_ASSERT(!myproj2.result().isAbstract());
+      TS_ASSERT(!res.isAbstract())
+      TS_ASSERT(!myproj2.result().isAbstract())
       gum::Potential< double >* res2 = proj(pot1, del_vars, 0);
       TS_GUM_ASSERT_EQUALS(*(res2->content()), res.multiDim());
 
       gum::ScheduleProject< double > myproj3(f1, del_vars, gum::projectMin);
-      TS_ASSERT_DIFFERS(myproj3, myproj);
+      TS_ASSERT_DIFFERS(myproj3, myproj)
       const gum::ScheduleMultiDim< double >& res3 = myproj3.result();
-      TS_ASSERT(res3.isAbstract());
+      TS_ASSERT(res3.isAbstract())
       myproj3 = myproj;
       myproj3.execute();
       TS_GUM_ASSERT_EQUALS(res3.multiDim(), res.multiDim());

@@ -321,9 +321,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
           }
 
           inf.eraseAllEvidence();
@@ -333,9 +333,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
           }
         }
 
@@ -345,9 +345,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
           }
 
           inf.eraseAllEvidence();
@@ -357,9 +357,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
           }
         }
 
@@ -369,9 +369,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
           }
 
           inf.eraseAllEvidence();
@@ -381,9 +381,9 @@ namespace gum_tests {
           {
             const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR);
+            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
           }
         }
       } catch (gum::Exception& e) {
@@ -410,11 +410,11 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }
@@ -440,11 +440,11 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }
@@ -479,13 +479,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }
@@ -506,13 +506,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }
@@ -539,13 +539,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }
@@ -580,13 +580,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize());
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize());
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
+      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6);
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6);
+        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
+        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
       }
     }
   }

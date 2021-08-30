@@ -185,7 +185,7 @@ namespace gum_tests {
       } catch (...) {   // TS_ASSERT_THROWS_NOTHING does not work
         TS_FAIL("Exception raised.");
       }
-      TS_ASSERT_THROWS_NOTHING(delete attr);
+      TS_ASSERT_THROWS_NOTHING(delete attr)
     }
     /// }
 
@@ -198,8 +198,8 @@ namespace gum_tests {
       // Act
       auto& actual = attr.type();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual);
-      TS_ASSERT_DIFFERS(&expected, &actual);
+      TS_ASSERT_EQUALS(expected, actual)
+      TS_ASSERT_DIFFERS(&expected, &actual)
     }
 
     void testTypeConst() {
@@ -210,8 +210,8 @@ namespace gum_tests {
       // Act
       const auto& actual = attr_const.type();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual);
-      TS_ASSERT_DIFFERS(&expected, &actual);
+      TS_ASSERT_EQUALS(expected, actual)
+      TS_ASSERT_DIFFERS(&expected, &actual)
     }
 
     void testCpf() {
@@ -225,10 +225,10 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(expected[i], actual[j]);
+        TS_ASSERT_EQUALS(expected[i], actual[j])
       }
-      TS_ASSERT(i.end());
-      TS_ASSERT(j.end());
+      TS_ASSERT(i.end())
+      TS_ASSERT(j.end())
     }
 
     void testCpfConst() {
@@ -243,10 +243,10 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(expected[i], actual[j]);
+        TS_ASSERT_EQUALS(expected[i], actual[j])
       }
-      TS_ASSERT(i.end());
-      TS_ASSERT(j.end());
+      TS_ASSERT(i.end())
+      TS_ASSERT(j.end())
     }
 
     /// @}
@@ -259,11 +259,11 @@ namespace gum_tests {
       PRMAttribute child(*_class_, "attr", *_boolean_);
       auto         before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
+      TS_ASSERT_THROWS_NOTHING(child.addParent(parent))
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before + 1, after);
-      TS_ASSERT(child.cpf().contains(parent.type().variable()));
+      TS_ASSERT_EQUALS(before + 1, after)
+      TS_ASSERT(child.cpf().contains(parent.type().variable()))
     }
 
     void testAddParentDupplicateError() {
@@ -273,11 +273,11 @@ namespace gum_tests {
       child.addParent(parent);
       auto before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(child.addParent(parent), gum::DuplicateElement);
+      TS_ASSERT_THROWS(child.addParent(parent), gum::DuplicateElement)
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
-      TS_ASSERT(child.cpf().contains(parent.type().variable()));
+      TS_ASSERT_EQUALS(before, after)
+      TS_ASSERT(child.cpf().contains(parent.type().variable()))
     }
 
     void testAddChild() {
@@ -286,11 +286,11 @@ namespace gum_tests {
       PRMAttribute child(*_class_, "attr", *_boolean_);
       auto         before = parent.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(parent.addChild(child));
+      TS_ASSERT_THROWS_NOTHING(parent.addChild(child))
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
-      TS_ASSERT(!parent.cpf().contains(child.type().variable()));
+      TS_ASSERT_EQUALS(before, after)
+      TS_ASSERT(!parent.cpf().contains(child.type().variable()))
     }
     /// @}
 
@@ -302,19 +302,19 @@ namespace gum_tests {
         PRMAttribute                      state(*_class_, "state", *_state_);
         gum::prm::PRMAttribute< double >* cast = nullptr;
         // Act
-        TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant());
+        TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant())
         // Assert
-        TS_ASSERT_DIFFERS(cast, nullptr);
+        TS_ASSERT_DIFFERS(cast, nullptr)
         if (cast != nullptr) {
-          TS_ASSERT_EQUALS(cast->type(), *_boolean_);
-          TS_ASSERT_DIFFERS(&(cast->type().variable()), &(_boolean_->variable()));
-          TS_ASSERT(cast->cpf().contains(cast->type().variable()));
-          TS_ASSERT(cast->cpf().contains(state.type().variable()));
-          TS_ASSERT_THROWS_NOTHING(delete cast);
+          TS_ASSERT_EQUALS(cast->type(), *_boolean_)
+          TS_ASSERT_DIFFERS(&(cast->type().variable()), &(_boolean_->variable()))
+          TS_ASSERT(cast->cpf().contains(cast->type().variable()))
+          TS_ASSERT(cast->cpf().contains(state.type().variable()))
+          TS_ASSERT_THROWS_NOTHING(delete cast)
         }
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT_THROWS_NOTHING(throw e);
+        TS_ASSERT_THROWS_NOTHING(throw e)
       }
     }
 
@@ -324,10 +324,10 @@ namespace gum_tests {
       PRMAttribute state(*_class_, "state", *_state_);
       auto         before = boolean.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(state.setAsCastDescendant(&boolean));
+      TS_ASSERT_THROWS_NOTHING(state.setAsCastDescendant(&boolean))
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before + 1, after);
+      TS_ASSERT_EQUALS(before + 1, after)
     }
 
     void testSetAsCastDescendantOperationNotAllowed() {
@@ -336,10 +336,10 @@ namespace gum_tests {
       PRMAttribute boolean_bis(*_class_, "boolean", *_boolean_);
       auto         before = boolean.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean), gum::OperationNotAllowed)
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT_EQUALS(before, after)
     }
 
     void testSetAsCastDescendantTypeError() {
@@ -349,10 +349,10 @@ namespace gum_tests {
       PRMAttribute           state(*_class_, "state", *_state_);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::TypeError);
+      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::TypeError)
       // Assert
       auto after = foo.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT_EQUALS(before, after)
     }
 
     /// @}

@@ -101,15 +101,15 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
 
         delete net;
       }

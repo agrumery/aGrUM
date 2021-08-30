@@ -316,16 +316,16 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
 
       gum::MultiDimArray< double >* t2 = projectSumMultiDimArray(&t1, del_vars);
-      TS_ASSERT(t2->variablesSequence().exists(vars[2]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[3]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[6]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[7]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[4]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[5]));
-      TS_ASSERT(t2->variablesSequence().exists(vars[8]));
-      TS_ASSERT(!t2->variablesSequence().exists(vars[0]));
-      TS_ASSERT(!t2->variablesSequence().exists(vars[9]));
-      TS_ASSERT(!t2->variablesSequence().exists(vars[1]));
+      TS_ASSERT(t2->variablesSequence().exists(vars[2]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[3]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[6]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[7]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[4]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[5]))
+      TS_ASSERT(t2->variablesSequence().exists(vars[8]))
+      TS_ASSERT(!t2->variablesSequence().exists(vars[0]))
+      TS_ASSERT(!t2->variablesSequence().exists(vars[9]))
+      TS_ASSERT(!t2->variablesSequence().exists(vars[1]))
       delete t2;
 
       t2 = projectMinMultiDimArray(&t1, proj_set);
@@ -371,14 +371,14 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t2 = projectMaxMultiDimArray(&t1, del_vars);
       gum::MultiDimArray< double >* t3 = proj(t1, del_vars, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
       t2 = projectMaxMultiDimArray(&t1, proj_set);
       t3 = proj(t1, proj_set, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
@@ -423,14 +423,14 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t2 = projectMaxMultiDimArray(&t1, del_vars);
       gum::MultiDimArray< double >* t3 = proj(t1, del_vars, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
       t2 = projectMaxMultiDimArray(&t1, proj_set);
       t3 = proj(t1, proj_set, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
@@ -475,14 +475,14 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t2 = projectMaxMultiDimArray(&t1, del_vars);
       gum::MultiDimArray< double >* t3 = proj(t1, del_vars, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
       t2 = projectMaxMultiDimArray(&t1, proj_set);
       t3 = proj(t1, proj_set, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
@@ -529,14 +529,14 @@ namespace gum_tests {
 
       gum::MultiDimImplementation< double >* t4 = projectMaxMultiDimArray(&t1, del_vars);
       gum::MultiDimArray< double >*          t3 = proj(tt1, del_vars, 0.0f);
-      TS_ASSERT(*t4 == *t3);
+      TS_ASSERT(*t4 == *t3)
 
       delete t3;
       delete t4;
 
       t4 = projectMaxMultiDimArray(&t1, proj_set);
       t3 = proj(tt1, proj_set, 0.0f);
-      TS_ASSERT(*t4 == *t3);
+      TS_ASSERT(*t4 == *t3)
 
       delete t4;
       delete t3;
@@ -582,14 +582,14 @@ namespace gum_tests {
       gum::MultiDimArray< double* >* t2 = projectMaxMultiDimArray4Pointers(t1, del_vars);
       gum::MultiDimArray< double* >* t3 = proj(*t1, del_vars, 0.0f);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
       t2 = projectMaxMultiDimArray4Pointers(t1, proj_set);
       t3 = proj(*t1, proj_set, 0.0f);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
@@ -638,14 +638,14 @@ namespace gum_tests {
       gum::MultiDimImplementation< double* >* t2 = projectMaxMultiDimArray4Pointers(t1, del_vars);
       gum::MultiDimArray< double* >*          t3 = proj(*tt1, del_vars, 0.0f);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
       t2 = projectMaxMultiDimArray4Pointers(t1, proj_set);
       t3 = proj(*tt1, proj_set, 0.0f);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
@@ -697,14 +697,14 @@ namespace gum_tests {
 
       gum::MultiDimImplementation< double >* t2 = projectMax(t1, del_vars);
       gum::MultiDimArray< double >*          t3 = proj(t1, del_vars, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
       t2 = projectMax(t1, proj_set);
       t3 = proj(t1, proj_set, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
@@ -749,14 +749,14 @@ namespace gum_tests {
 
       gum::Potential< double >* t2 = new gum::Potential< double >(t1.margMaxOut(del_vars));
       gum::Potential< double >* t3 = proj(t1, del_vars, 0.0f);
-      TS_ASSERT(*t2 == *t3);
+      TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
       gum::Potential< double >* t4 = new gum::Potential< double >(t1.margMaxOut(proj_set));
       t3                           = proj(t1, proj_set, 0.0f);
-      TS_ASSERT(*t4 == *t3);
+      TS_ASSERT(*t4 == *t3)
 
       delete t4;
       delete t3;
@@ -807,14 +807,14 @@ namespace gum_tests {
       gum::MultiDimImplementation< double* >* t2 = projectMax(*t1, del_vars);
       gum::MultiDimArray< double* >*          t3 = proj(*t1, del_vars, 0.0f);
 
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
       t2 = projectMax(*t1, proj_set);
       t3 = proj(*t1, proj_set, 0.0f);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
@@ -861,14 +861,14 @@ namespace gum_tests {
 
       gum::Potential< double* >* t2 = new gum::Potential< double* >(t1->margMaxOut(del_vars));
       gum::Potential< double* >* t3 = proj(*t1, del_vars, 0.0f);
-      TS_ASSERT(equal(*t2, *t3));
+      TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
       gum::Potential< double* >* t4 = new gum::Potential< double* >(t1->margMaxOut(proj_set));
       t3                            = proj(*t1, proj_set, 0.0f);
-      TS_ASSERT(equal(*t4, *t3));
+      TS_ASSERT(equal(*t4, *t3))
 
       pointerDelete(t4);
       pointerDelete(t3);
@@ -923,13 +923,13 @@ namespace gum_tests {
       {
         auto t2 = t1.margMaxOut(del_vars);
         auto t3 = Proj.project(t1, del_vars);
-        TS_ASSERT_EQUALS(t2, *t3);
+        TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
         auto t2 = t1.margMaxOut(proj_set);
         auto t3 = Proj.project(t1, proj_set);
-        TS_ASSERT_EQUALS(t2, *t3);
+        TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
 
@@ -939,11 +939,11 @@ namespace gum_tests {
       gum::Potential< double >* t5 = Proj.project(t1, proj_set);
       delete t5;
 
-      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049);
-      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187);
+      TS_ASSERT_EQUALS(yyy.first, 2187)
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -988,13 +988,13 @@ namespace gum_tests {
       {
         auto t2 = t1.margSumOut(del_vars);
         auto t3 = Proj.project(t1, del_vars);
-        TS_ASSERT_EQUALS(t2, *t3);
+        TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
         auto t2 = t1.margSumOut(proj_set);
         auto t3 = Proj.project(t1, proj_set);
-        TS_ASSERT_EQUALS(t2, *t3);
+        TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
 
@@ -1004,18 +1004,18 @@ namespace gum_tests {
       gum::Potential< double >* t5 = Proj.project(t1, proj_set);
       {
         auto t2 = t1.margSumOut(proj_set);
-        TS_ASSERT_EQUALS(t2, *t5);
+        TS_ASSERT_EQUALS(t2, *t5)
 
         gum::Instantiation I5(*t5);
-        TS_ASSERT_EQUALS(1.0, (*t5)[I5]);
+        TS_ASSERT_EQUALS(1.0, (*t5)[I5])
       }
       delete t5;
 
-      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049);
-      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
+      TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187);
+      TS_ASSERT_EQUALS(yyy.first, 2187)
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

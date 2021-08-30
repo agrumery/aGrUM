@@ -146,27 +146,27 @@ namespace gum_tests {
                       _I_(parser, 1, 6, std::vector< gum::NodeId >{0}),
                       0.001);
 
-      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}), _I_(parser, 2, 6), 0.001);
-      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6), 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7), _I_(parser, 4, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}), _I_(parser, 2, 6), 0.001)
+      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6), 0.001)
+      TS_ASSERT_DELTA(score.score(4, 7), _I_(parser, 4, 7), 0.001)
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), _I_(parser, 6, 2), 0.001);
-      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(6, 2), _I_(parser, 6, 2), 0.001)
+      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6), 0.001)
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), _I_(parser, 0, 1, 5), 0.01);
+      TS_ASSERT_DELTA(score.score(0, 1, 5), _I_(parser, 0, 1, 5), 0.01)
       TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
                       _I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}),
                       0.001);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), _I_(parser, 4, 5, 7), 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), _I_(parser, 4, 7, 5), 0.001);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), _I_(parser, 5, 4, 7), 0.001);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), _I_(parser, 5, 7, 4), 0.001);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), _I_(parser, 7, 5, 4), 0.001);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), _I_(parser, 7, 4, 5), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 5, 7), _I_(parser, 4, 5, 7), 0.001)
+      TS_ASSERT_DELTA(score.score(4, 7, 5), _I_(parser, 4, 7, 5), 0.001)
+      TS_ASSERT_DELTA(score.score(5, 4, 7), _I_(parser, 5, 4, 7), 0.001)
+      TS_ASSERT_DELTA(score.score(5, 7, 4), _I_(parser, 5, 7, 4), 0.001)
+      TS_ASSERT_DELTA(score.score(7, 5, 4), _I_(parser, 7, 5, 4), 0.001)
+      TS_ASSERT_DELTA(score.score(7, 4, 5), _I_(parser, 7, 4, 5), 0.001)
 
       score.clear();
       TS_ASSERT_DELTA(score.score(0, 6, 5, std::vector< gum::NodeId >{1, 4}),
@@ -204,8 +204,8 @@ namespace gum_tests {
 
       const double cst = 0.5 * std::log2(10000);
 
-      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 6, 2) - cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(4, 7), _I_(parser, 4, 7) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 6, 2) - cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(4, 7), _I_(parser, 4, 7) - cst, 1e-4)
       TS_ASSERT_DELTA(score.score(4, 7, std::vector< gum::NodeId >{5}),
                       _I_(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst,
                       TS_GUM_SMALL_ERROR);
@@ -217,23 +217,23 @@ namespace gum_tests {
                       1e-4);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), _I_(parser, 6, 2) - cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(6, 2), _I_(parser, 6, 2) - cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(2, 6), _I_(parser, 2, 6) - cst, 1e-4)
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), _I_(parser, 0, 1, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(0, 1, 5), _I_(parser, 0, 1, 5) + cst, 1e-4)
       TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
                       _I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}) + 2 * cst,
                       1e-4);
 
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), _I_(parser, 4, 5, 7) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), _I_(parser, 4, 7, 5) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), _I_(parser, 5, 4, 7) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), _I_(parser, 5, 7, 4) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), _I_(parser, 7, 5, 4) + cst, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), _I_(parser, 7, 4, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 5, 7), _I_(parser, 4, 5, 7) + cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(4, 7, 5), _I_(parser, 4, 7, 5) + cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(5, 4, 7), _I_(parser, 5, 4, 7) + cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(5, 7, 4), _I_(parser, 5, 7, 4) + cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(7, 5, 4), _I_(parser, 7, 5, 4) + cst, 1e-4)
+      TS_ASSERT_DELTA(score.score(7, 4, 5), _I_(parser, 7, 4, 5) + cst, 1e-4)
     }
   };
 

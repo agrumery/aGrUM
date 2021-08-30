@@ -42,9 +42,9 @@ namespace gum_tests {
     void test_Fixed_Allocator_CONST_AND_DEST() {
       gum::FixedAllocator* fa = nullptr;
       // Test constructor
-      TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50));
+      TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50))
       // Test destructor
-      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa);
+      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa)
     }
 
     // ==============================================================================
@@ -53,9 +53,9 @@ namespace gum_tests {
     void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
       gum::FixedAllocator* fa    = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       void*                pVoid = nullptr;
-      TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate());
-      TS_ASSERT_THROWS_NOTHING(fa->deallocate(pVoid));
-      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa);
+      TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate())
+      TS_ASSERT_THROWS_NOTHING(fa->deallocate(pVoid))
+      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa)
     }
 
     // ==============================================================================
@@ -66,13 +66,13 @@ namespace gum_tests {
       std::vector< void* > vVoid;
       // Alocation des 50 premiers éléments
       for (int i = 0; i < 50; ++i)
-        TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()));
+        TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()))
       // Demande du 51ème élément
-      TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()));
+      TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()))
       // Désallocation de tous les éléments.
       for (std::vector< void* >::iterator vite = vVoid.begin(); vite != vVoid.end(); ++vite)
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
-      TS_ASSERT_THROWS_NOTHING(delete fa);
+        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
+      TS_ASSERT_THROWS_NOTHING(delete fa)
     }
 
     // ==============================================================================
@@ -87,30 +87,30 @@ namespace gum_tests {
 
       // Alocation de 250 premiers éléments
       for (int i = 0; i < 250; ++i)
-        TS_ASSERT_THROWS_NOTHING(vvVoid[i / 50]->push_back(fa->allocate()));
+        TS_ASSERT_THROWS_NOTHING(vvVoid[i / 50]->push_back(fa->allocate()))
 
       // Désallocation d'éléments.
       for (int i = 0; i < 50; ++i) {
         //              std::cout << "Destruction du " << i << "ème élément de
         //              la table " << i%5 << std::endl;
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(vvVoid[i % 5]->at(i)));
+        TS_ASSERT_THROWS_NOTHING(fa->deallocate(vvVoid[i % 5]->at(i)))
       }
 
       // Réallocation et forçage diagonal
       std::vector< void* > v6;
       for (int i = 0; i < 125; ++i)
-        TS_ASSERT_THROWS_NOTHING(v6.push_back(fa->allocate()));
+        TS_ASSERT_THROWS_NOTHING(v6.push_back(fa->allocate()))
 
       // Nettoyage
       for (int i = 0; i < 7; ++i) {
         for (std::vector< void* >::iterator vite = vvVoid[i]->begin(); vite != vvVoid[i]->end();
              ++vite)
-          TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
+          TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
         delete vvVoid[i];
       }
       for (std::vector< void* >::iterator vite = v6.begin(); vite != v6.end(); ++vite)
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite));
-      TS_ASSERT_THROWS_NOTHING(delete fa);
+        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
+      TS_ASSERT_THROWS_NOTHING(delete fa)
     }
 
     // ==============================================================================
@@ -118,10 +118,10 @@ namespace gum_tests {
     // ==============================================================================
     void test_Small_Object_Allocator_CONST_AND_DEST() {
       // Test constructor
-      TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance());
+      TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance())
 
       // Test destructor
-      // TS_ASSERT_THROWS_NOTHING( delete soa );
+      // TS_ASSERT_THROWS_NOTHING( delete soa )
     }
 
     // ==============================================================================
@@ -181,7 +181,7 @@ namespace gum_tests {
     //            ) );
     //      double soaT = timy.pause();
     //      std::cout << "Temps Alloc/Dealloc SOA: " << soaT << std::endl;
-    //      TS_ASSERT_THROWS_NOTHING( delete soa );
+    //      TS_ASSERT_THROWS_NOTHING( delete soa )
 
     //      std::vector<std::vector<gum::Idx>*> vVector;
     //      timy.resume();
@@ -189,7 +189,7 @@ namespace gum_tests {
     //        TS_ASSERT_THROWS_NOTHING( vVector.push_back(
     //            new std::vector<gum::Idx>( vectorSize[i], 0 ) ) );
     //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-    //        TS_ASSERT_THROWS_NOTHING( delete vVector[i] );
+    //        TS_ASSERT_THROWS_NOTHING( delete vVector[i] )
     //      double vT = timy.pause();
     //      std::cout << "Temps Alloc/Dealloc SOA: " << vT - soaT << std::endl;
     //    }

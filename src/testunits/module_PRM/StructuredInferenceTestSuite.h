@@ -131,7 +131,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }
@@ -160,7 +160,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }
@@ -189,7 +189,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false); }
     }
@@ -225,10 +225,10 @@ namespace gum_tests {
     //    for( inst.setFirst(); not inst.end(); inst.inc() )
     //      sum += m.get( inst );
 
-    //    TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
+    //    TS_ASSERT_DELTA( sum, 1.0, 1e-6 )
     //    delete prm;
     //  } catch (gum::Exception&) {
-    //    TS_ASSERT(false);
+    //    TS_ASSERT(false)
     //  }
     //}
   };

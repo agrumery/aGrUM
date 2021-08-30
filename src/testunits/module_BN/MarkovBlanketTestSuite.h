@@ -37,40 +37,40 @@ namespace gum_tests {
       {
         auto mb = gum::MarkovBlanket(bn, "a");
 
-        TS_ASSERT_EQUALS(mb.size(), 2u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u);
+        TS_ASSERT_EQUALS(mb.size(), 2u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
       }
       {
         auto mb = gum::MarkovBlanket(bn, 0);
 
-        TS_ASSERT_EQUALS(mb.size(), 2u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u);
+        TS_ASSERT_EQUALS(mb.size(), 2u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "b");
 
-        TS_ASSERT_EQUALS(mb.size(), 3u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u);
+        TS_ASSERT_EQUALS(mb.size(), 3u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u)
       }
       {
         auto mb = gum::MarkovBlanket(bn, 1);
 
-        TS_ASSERT_EQUALS(mb.size(), 3u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u);
+        TS_ASSERT_EQUALS(mb.size(), 3u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u)
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "c");
 
-        TS_ASSERT_EQUALS(mb.size(), 2u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u);
+        TS_ASSERT_EQUALS(mb.size(), 2u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
       }
       {
         auto mb = gum::MarkovBlanket(bn, 2);
 
-        TS_ASSERT_EQUALS(mb.size(), 2u);
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u);
+        TS_ASSERT_EQUALS(mb.size(), 2u)
+        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
       }
     }
 
@@ -104,16 +104,16 @@ namespace gum_tests {
          "aa->bb->cc->dd->ee;ff->dd->gg;hh->ii->gg;ff->ii;ff->gg");
       const auto mb
          = gum::BayesNet< float >::fastPrototype("cc->dd->ee;ff->dd->gg;ff->gg;ff->ii->gg");
-      TS_ASSERT(gum::MarkovBlanket(bn, "dd").hasSameStructure(mb));
+      TS_ASSERT(gum::MarkovBlanket(bn, "dd").hasSameStructure(mb))
     }
 
     void testMarkovBlanketMultiLevel() {
       const auto bn
          = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
-      TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), gum::InvalidArgument);
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), (gum::Size)5);
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), (gum::Size)13);
+      TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), gum::InvalidArgument)
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), (gum::Size)13)
     }
   };
 

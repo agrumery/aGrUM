@@ -76,7 +76,7 @@ namespace gum_tests {
       const gum::DAG&            dag = bn->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
+        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound)
       }
 
       if (bn != 0) delete bn;
@@ -144,7 +144,7 @@ namespace gum_tests {
       const gum::DAG&            dag = bn->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
+        TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound)
       }
 
       if (bn != 0) delete bn;

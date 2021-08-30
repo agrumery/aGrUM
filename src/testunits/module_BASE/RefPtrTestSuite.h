@@ -31,17 +31,17 @@ namespace gum_tests {
     void testConstructors() {
       gum::RefPtr< int > ptr1(new int(4));
 
-      TS_ASSERT(ptr1);
+      TS_ASSERT(ptr1)
 
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
 
-      TS_ASSERT_EQUALS(ptr1, ptr2);
+      TS_ASSERT_EQUALS(ptr1, ptr2)
 
-      TS_ASSERT_DIFFERS(ptr1, ptr3);
+      TS_ASSERT_DIFFERS(ptr1, ptr3)
 
       ptr3 = ptr1;
 
-      TS_ASSERT_EQUALS(ptr1, ptr3);
+      TS_ASSERT_EQUALS(ptr1, ptr3)
     }
 
     void testModify() {
@@ -49,23 +49,23 @@ namespace gum_tests {
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
       ptr3                    = ptr1;
 
-      TS_ASSERT_EQUALS(ptr1, ptr2);
+      TS_ASSERT_EQUALS(ptr1, ptr2)
 
       ptr2.clear();
 
-      TS_ASSERT_DIFFERS(ptr1, ptr2);
+      TS_ASSERT_DIFFERS(ptr1, ptr2)
 
       *ptr1 = 5;
 
-      TS_ASSERT_EQUALS(*ptr1, 5);
+      TS_ASSERT_EQUALS(*ptr1, 5)
 
       ptr1 = 0;
 
-      TS_ASSERT_EQUALS(ptr1.refCount(), 0U);
+      TS_ASSERT_EQUALS(ptr1.refCount(), 0U)
 
       ptr2 = ptr1;
 
-      TS_ASSERT_EQUALS(ptr2.refCount(), 0U);
+      TS_ASSERT_EQUALS(ptr2.refCount(), 0U)
     }
 
     struct toto {
@@ -85,11 +85,11 @@ namespace gum_tests {
     void testDowncast() {
       gum::RefPtr< titi > ptr1(new titi);
 
-      TS_ASSERT_EQUALS(ptr1->getY(), 3);
+      TS_ASSERT_EQUALS(ptr1->getY(), 3)
 
       gum::RefPtr< toto > ptr2(ptr1);
 
-      TS_ASSERT_DIFFERS(ptr1->getY(), ptr2->getY());
+      TS_ASSERT_DIFFERS(ptr1->getY(), ptr2->getY())
     }
   };
 }   // namespace gum_tests

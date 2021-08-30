@@ -88,9 +88,9 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT_EQUALS(*bn, net);
+      TS_ASSERT_EQUALS(*bn, net)
     }
 
     private:

@@ -37,8 +37,8 @@ namespace gum_tests {
     public:
     void testConstruction() {
       gum::DecisionPotential< double > d1, d2;
-      TS_ASSERT_EQUALS(d1, d2);
-      TS_ASSERT_EQUALS(d1, d1 * d2);
+      TS_ASSERT_EQUALS(d1, d2)
+      TS_ASSERT_EQUALS(d1, d1 * d2)
 
       gum::DecisionPotential< double > d3(std::move(d2));
 
@@ -50,22 +50,22 @@ namespace gum_tests {
 
       gum::DecisionPotential< double > d4(P1, U1);
       gum::DecisionPotential< double > d5(d4);
-      TS_ASSERT_EQUALS(d4, d5);
+      TS_ASSERT_EQUALS(d4, d5)
 
       gum::DecisionPotential< double > d6 = d5;
-      TS_ASSERT_EQUALS(d6, d4);
+      TS_ASSERT_EQUALS(d6, d4)
 
       gum::DecisionPotential< double > d7(std::move(d4));
-      TS_ASSERT_EQUALS(d7, d6);
+      TS_ASSERT_EQUALS(d7, d6)
 
       d1 = std::move(d7);
-      TS_ASSERT_EQUALS(d1, d6);
+      TS_ASSERT_EQUALS(d1, d6)
 
       d5 = d1;
-      TS_ASSERT_EQUALS(d1, d5);
+      TS_ASSERT_EQUALS(d1, d5)
 
       d4 = d1;
-      TS_ASSERT_EQUALS(d1, d4);
+      TS_ASSERT_EQUALS(d1, d4)
     }
 
     void testConstruction2() {
@@ -77,7 +77,7 @@ namespace gum_tests {
       d1.insertUtility(infdiag.utility("B"));
 
       auto res = d1 ^ std::vector< std::string >({"C"});
-      TS_ASSERT_EQUALS(res.probPot, gum::Potential< double >().fillWith(1));
+      TS_ASSERT_EQUALS(res.probPot, gum::Potential< double >().fillWith(1))
       TS_ASSERT_EQUALS(
          res.utilPot,
          (gum::Potential< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
@@ -96,8 +96,8 @@ namespace gum_tests {
       d2.insertProba(infdiag.cpt("A"));
       d2.insertUtility(infdiag.utility("B"));
 
-      TS_ASSERT_EQUALS(d1.probPot, d2.probPot);
-      TS_ASSERT_DIFFERS(d1.utilPot, d2.utilPot);
+      TS_ASSERT_EQUALS(d1.probPot, d2.probPot)
+      TS_ASSERT_DIFFERS(d1.utilPot, d2.utilPot)
       TS_ASSERT_EQUALS(d1, d2);   // d1 and d2 differ for utility with proba is 0
     }
 
@@ -118,7 +118,7 @@ namespace gum_tests {
       vars.insert(&infdiag.variableFromName("D"));
       auto res2 = d1 ^ vars;
 
-      TS_ASSERT_EQUALS(res1, res2);
+      TS_ASSERT_EQUALS(res1, res2)
     }
   };
 }   // namespace gum_tests

@@ -164,26 +164,26 @@ namespace gum_tests {
       gum::DAG graph;
       selector.setGraph(graph);
 
-      TS_ASSERT(!selector.empty());
+      TS_ASSERT(!selector.empty())
       for (const auto node: graph) {
-        TS_ASSERT(!selector.empty(node));
+        TS_ASSERT(!selector.empty(node))
       }
 
       selector.setGraph(graph);
 
-      TS_ASSERT(!selector.empty());
+      TS_ASSERT(!selector.empty())
       for (const auto node: graph) {
-        TS_ASSERT(!selector.empty(node));
+        TS_ASSERT(!selector.empty(node))
       }
 
       gum::learning::GraphChange change(gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
-      TS_ASSERT(!selector.isChangeValid(change));
+      TS_ASSERT(!selector.isChangeValid(change))
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
-        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
+        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION)
       }
-      TS_ASSERT_EQUALS(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION);
+      TS_ASSERT_EQUALS(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION)
 
       std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
       std::vector< gum::NodeId >           best_nodes(6);
@@ -192,11 +192,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
-        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
+        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION)
         if (change.node1() == node) {
-          TS_ASSERT_EQUALS(change.node2(), best_nodes[node]);
+          TS_ASSERT_EQUALS(change.node2(), best_nodes[node])
         } else {
-          TS_ASSERT_EQUALS(change.node1(), best_nodes[node]);
+          TS_ASSERT_EQUALS(change.node1(), best_nodes[node])
         }
       }
 
@@ -205,10 +205,10 @@ namespace gum_tests {
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         scores.insert(node, sc);
-        TS_ASSERT(sc <= best_score);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]]);
+        TS_ASSERT(sc <= best_score)
+        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
       }
-      TS_ASSERT_EQUALS(best_score, all_scores[best_node][best_nodes[best_node]]);
+      TS_ASSERT_EQUALS(best_score, all_scores[best_node][best_nodes[best_node]])
 
       gum::learning::GraphChange change2(gum::learning::GraphChangeType::ARC_ADDITION, 3, 1);
       graph.addArc(change2.node1(), change2.node2());
@@ -219,11 +219,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]]);
+        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
         if (node != 1) {
-          TS_ASSERT_EQUALS(sc, scores[node]);
+          TS_ASSERT_EQUALS(sc, scores[node])
         } else {
-          TS_ASSERT_DIFFERS(sc, scores[node]);
+          TS_ASSERT_DIFFERS(sc, scores[node])
         }
       }
 
@@ -237,11 +237,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]]);
+        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
         if ((node != 2)) {
-          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node]);
+          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node])
         } else {
-          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node]);
+          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node])
         }
       }
 
@@ -255,22 +255,22 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]]);
+        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
         if ((node != 1)) {
-          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node]);
+          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node])
         } else {
-          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node]);
+          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node])
         }
       }
 
 
       const auto xnodes = selector.nodesSortedByBestScore();
-      TS_ASSERT_EQUALS(xnodes.size(), std::size_t(6));
+      TS_ASSERT_EQUALS(xnodes.size(), std::size_t(6))
 
       std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
       _order_nodes_(all_scores, best_nodes, sorted_nodes);
       for (std::size_t i = 0; i < 6; ++i) {
-        TS_ASSERT_EQUALS(xnodes[i], sorted_nodes[i]);
+        TS_ASSERT_EQUALS(xnodes[i], sorted_nodes[i])
       }
     }
   };

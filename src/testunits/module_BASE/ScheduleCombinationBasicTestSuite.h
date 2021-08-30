@@ -76,7 +76,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 120);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 120)
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -151,7 +151,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112)
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -210,7 +210,7 @@ namespace gum_tests {
       gum::Schedule< double >               schedule;
       const gum::ScheduleMultiDim< double > result = comb.combine(set, schedule);
 
-      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 112)
 
       const gum::NodeSet& available = schedule.availableOperations();
 
@@ -266,13 +266,13 @@ namespace gum_tests {
 
       gum::Schedule< double > schedule;
 
-      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 16640);
+      TS_ASSERT_EQUALS(comb.nbOperations(set, schedule), 16640)
       std::pair< long, long > yyy = comb.memoryUsage(set, schedule);
-      TS_ASSERT_EQUALS(yyy.first, 16640);
-      TS_ASSERT_EQUALS(yyy.second, 16384);
+      TS_ASSERT_EQUALS(yyy.first, 16640)
+      TS_ASSERT_EQUALS(yyy.second, 16384)
       std::pair< long, long > zzz = comb.memoryUsage(set2, schedule);
-      TS_ASSERT_EQUALS(zzz.first, 16640);
-      TS_ASSERT_EQUALS(zzz.second, 16384);
+      TS_ASSERT_EQUALS(zzz.first, 16640)
+      TS_ASSERT_EQUALS(zzz.second, 16384)
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

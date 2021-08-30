@@ -322,7 +322,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inference(&asia);
         auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior("Has Lung Cancer");
-        TS_ASSERT_EQUALS(marginal.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(marginal.domainSize(), (gum::Size)2)
 
 
         // We can add some evidence
@@ -332,7 +332,7 @@ namespace gum_tests {
         const auto& updated_marginal = inference.posterior(id);
 
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS(updated_marginal.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(updated_marginal.domainSize(), (gum::Size)2)
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
@@ -402,7 +402,7 @@ namespace gum_tests {
           writer.write(buff, asia);
         } catch (gum::IOError& e) {
           TS_FAIL(e.errorContent());
-          // A gum::IOError will be raised if an error occured
+          // A gum::IOError will be raised if an error occurred
         }
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }

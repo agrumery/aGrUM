@@ -38,43 +38,43 @@ namespace gum_tests {
       gum::IncrementalTriangulation triang(tr);
 
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addNode(10, 10);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addNode(30, 10);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addNode(20, 10);
       triang.addNode(40, 10);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       const gum::CliqueGraph& JT1 = triang.junctionTree();
-      TS_ASSERT_EQUALS(JT1.size(), 4U);
+      TS_ASSERT_EQUALS(JT1.size(), 4U)
 
       triang.addEdge(10, 20);
       triang.addEdge(10, 30);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       const gum::CliqueGraph& JT2 = triang.junctionTree();
-      TS_ASSERT_EQUALS(JT2.size(), 3U);
-      TS_ASSERT_EQUALS(JT2.sizeEdges(), 1U);
+      TS_ASSERT_EQUALS(JT2.size(), 3U)
+      TS_ASSERT_EQUALS(JT2.sizeEdges(), 1U)
 
       triang.eraseEdge(gum::Edge(10, 20));
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       triang.eraseEdge(gum::Edge(10, 30));
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       gum::NodeSet c1;
       c1 << 10 << 20 << 30 << 40;
       createClique(triang, c1);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.eraseEdge(gum::Edge(10, 30));
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       triang.eraseEdge(gum::Edge(10, 20));
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addEdge(10, 20);
       triang.addEdge(10, 30);
@@ -91,19 +91,19 @@ namespace gum_tests {
 
       createClique(triang, c4);
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       createClique(triang, c3);
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       createClique(triang, c2);
       createClique(triang, c5);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.eraseNode(40);
       triang.updateTriangulation();
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addNode(40, 10);
       createClique(triang, c1);
@@ -113,7 +113,7 @@ namespace gum_tests {
       createClique(triang, c5);
       triang.updateTriangulation();
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
     }
 
     void testPaperError() {
@@ -186,7 +186,7 @@ namespace gum_tests {
 
           if (nb <= 3) {
             triang.updateTriangulation();
-            TS_ASSERT_EQUALS(triang._check_(), true);
+            TS_ASSERT_EQUALS(triang._check_(), true)
           }
         }
 
@@ -205,34 +205,34 @@ namespace gum_tests {
       triang.addNode(40, 10);
 
       const std::vector< gum::NodeId >& elim1 = triang.eliminationOrder();
-      TS_ASSERT_EQUALS(elim1.size(), 4U);
-      TS_ASSERT_EQUALS(elim1[0], 10U);
-      TS_ASSERT_EQUALS(elim1[1], 30U);
-      TS_ASSERT_EQUALS(elim1[2], 20U);
-      TS_ASSERT_EQUALS(elim1[3], 40U);
+      TS_ASSERT_EQUALS(elim1.size(), 4U)
+      TS_ASSERT_EQUALS(elim1[0], 10U)
+      TS_ASSERT_EQUALS(elim1[1], 30U)
+      TS_ASSERT_EQUALS(elim1[2], 20U)
+      TS_ASSERT_EQUALS(elim1[3], 40U)
 
       const gum::CliqueGraph& JT1 = triang.junctionTree();
-      TS_ASSERT_EQUALS(JT1.size(), 4U);
+      TS_ASSERT_EQUALS(JT1.size(), 4U)
 
       triang.addEdge(10, 20);
       triang.addEdge(10, 30);
       triang.eraseEdge(gum::Edge(10, 20));
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.eraseEdge(gum::Edge(10, 30));
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       gum::NodeSet c1;
       c1 << 10 << 20 << 30 << 40;
       createClique(triang, c1);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.eraseEdge(gum::Edge(10, 30));
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
       triang.eraseEdge(gum::Edge(10, 20));
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       triang.addEdge(10, 20);
       triang.addEdge(10, 30);
@@ -253,33 +253,33 @@ namespace gum_tests {
       triang.updateTriangulation();
       createClique(triang, c2);
       createClique(triang, c5);
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       const std::vector< gum::NodeId >& elim2 = triang.eliminationOrder();
-      TS_ASSERT_EQUALS(elim2.size(), 8U);
-      TS_ASSERT_EQUALS(elim2[0], 60U);
-      TS_ASSERT_EQUALS(elim2[1], 80U);
-      TS_ASSERT_EQUALS(elim2[2], 30U);
-      TS_ASSERT_EQUALS(elim2[3], 10U);
-      TS_ASSERT_EQUALS(elim2[4], 40U);
-      TS_ASSERT_EQUALS(elim2[5], 50U);
-      TS_ASSERT_EQUALS(elim2[6], 70U);
-      TS_ASSERT_EQUALS(elim2[7], 20U);
+      TS_ASSERT_EQUALS(elim2.size(), 8U)
+      TS_ASSERT_EQUALS(elim2[0], 60U)
+      TS_ASSERT_EQUALS(elim2[1], 80U)
+      TS_ASSERT_EQUALS(elim2[2], 30U)
+      TS_ASSERT_EQUALS(elim2[3], 10U)
+      TS_ASSERT_EQUALS(elim2[4], 40U)
+      TS_ASSERT_EQUALS(elim2[5], 50U)
+      TS_ASSERT_EQUALS(elim2[6], 70U)
+      TS_ASSERT_EQUALS(elim2[7], 20U)
 
       triang.eraseNode(40);
       triang.updateTriangulation();
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       const std::vector< gum::NodeId >& elim3 = triang.eliminationOrder();
-      TS_ASSERT_EQUALS(elim3.size(), 7U);
-      TS_ASSERT_EQUALS(elim3[0], 60U);
-      TS_ASSERT_EQUALS(elim3[1], 50U);
-      TS_ASSERT_EQUALS(elim3[2], 70U);
-      TS_ASSERT_EQUALS(elim3[3], 80U);
-      TS_ASSERT_EQUALS(elim3[4], 30U);
-      TS_ASSERT_EQUALS(elim3[5], 20U);
-      TS_ASSERT_EQUALS(elim3[6], 10U);
+      TS_ASSERT_EQUALS(elim3.size(), 7U)
+      TS_ASSERT_EQUALS(elim3[0], 60U)
+      TS_ASSERT_EQUALS(elim3[1], 50U)
+      TS_ASSERT_EQUALS(elim3[2], 70U)
+      TS_ASSERT_EQUALS(elim3[3], 80U)
+      TS_ASSERT_EQUALS(elim3[4], 30U)
+      TS_ASSERT_EQUALS(elim3[5], 20U)
+      TS_ASSERT_EQUALS(elim3[6], 10U)
 
       triang.addNode(40, 10);
       createClique(triang, c1);
@@ -289,37 +289,37 @@ namespace gum_tests {
       createClique(triang, c5);
       triang.updateTriangulation();
       triang.updateTriangulation();
-      TS_ASSERT_EQUALS(triang._check_(), true);
+      TS_ASSERT_EQUALS(triang._check_(), true)
 
       const std::vector< gum::NodeId >& elim4 = triang.eliminationOrder();
-      TS_ASSERT_EQUALS(elim4.size(), 8U);
-      TS_ASSERT_EQUALS(elim4[0], 60U);
-      TS_ASSERT((elim4[1] == 80U) || (elim4[1] == 70U));
-      TS_ASSERT((elim4[2] == 30U) || (elim4[2] == 80U));
-      TS_ASSERT((elim4[3] == 10U) || (elim4[3] == 30U));
-      TS_ASSERT((elim4[4] == 70U) || (elim4[4] == 10U));
-      TS_ASSERT_EQUALS(elim4[5], 50U);
-      TS_ASSERT_EQUALS(elim4[6], 40U);
-      TS_ASSERT_EQUALS(elim4[7], 20U);
+      TS_ASSERT_EQUALS(elim4.size(), 8U)
+      TS_ASSERT_EQUALS(elim4[0], 60U)
+      TS_ASSERT((elim4[1] == 80U) || (elim4[1] == 70U))
+      TS_ASSERT((elim4[2] == 30U) || (elim4[2] == 80U))
+      TS_ASSERT((elim4[3] == 10U) || (elim4[3] == 30U))
+      TS_ASSERT((elim4[4] == 70U) || (elim4[4] == 10U))
+      TS_ASSERT_EQUALS(elim4[5], 50U)
+      TS_ASSERT_EQUALS(elim4[6], 40U)
+      TS_ASSERT_EQUALS(elim4[7], 20U)
 
-      TS_ASSERT_EQUALS(triang.eliminationOrder(60U), 0U);
-      TS_ASSERT((triang.eliminationOrder(80U) == 1U) || (triang.eliminationOrder(80U) == 2U));
-      TS_ASSERT((triang.eliminationOrder(30U) == 2U) || (triang.eliminationOrder(30U) == 3U));
-      TS_ASSERT((triang.eliminationOrder(10U) == 3U) || (triang.eliminationOrder(10U) == 4U));
-      TS_ASSERT((triang.eliminationOrder(70U) == 4U) || (triang.eliminationOrder(70U) == 1U));
-      TS_ASSERT_EQUALS(triang.eliminationOrder(50U), 5U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(40U), 6U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(20U), 7U);
+      TS_ASSERT_EQUALS(triang.eliminationOrder(60U), 0U)
+      TS_ASSERT((triang.eliminationOrder(80U) == 1U) || (triang.eliminationOrder(80U) == 2U))
+      TS_ASSERT((triang.eliminationOrder(30U) == 2U) || (triang.eliminationOrder(30U) == 3U))
+      TS_ASSERT((triang.eliminationOrder(10U) == 3U) || (triang.eliminationOrder(10U) == 4U))
+      TS_ASSERT((triang.eliminationOrder(70U) == 4U) || (triang.eliminationOrder(70U) == 1U))
+      TS_ASSERT_EQUALS(triang.eliminationOrder(50U), 5U)
+      TS_ASSERT_EQUALS(triang.eliminationOrder(40U), 6U)
+      TS_ASSERT_EQUALS(triang.eliminationOrder(20U), 7U)
 
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeCliques().size(), 8U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(10), 2U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(20), 8U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(30), 2U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(40), 8U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(50), 8U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(60), 9U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(70), 5U);
-      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(80), 6U);
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeCliques().size(), 8U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(10), 2U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(20), 8U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(30), 2U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(40), 8U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(50), 8U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(60), 9U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(70), 5U)
+      TS_ASSERT_EQUALS(triang.createdJunctionTreeClique(80), 6U)
     }
 
     private:

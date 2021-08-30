@@ -272,7 +272,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 sum += a1->get(instEleminatedVar);
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), sum, delta);
+              TS_ASSERT_DELTA(a3->get(instRemainingVar), sum, delta)
 
               if (std::abs(a3->get(instRemainingVar) - sum) >= delta) {
                 std::cout << a3->get(instRemainingVar) << " - " << sum << " - "
@@ -314,7 +314,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 min = min >= a1->get(instEleminatedVar) ? a1->get(instEleminatedVar) : min;
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), min, delta);
+              TS_ASSERT_DELTA(a3->get(instRemainingVar), min, delta)
 
               if (std::abs(a3->get(instRemainingVar) - min) >= delta) hasNoError = false;
             }
@@ -328,7 +328,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 max = max >= a1->get(instEleminatedVar) ? max : a1->get(instEleminatedVar);
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), max, delta);
+              TS_ASSERT_DELTA(a3->get(instRemainingVar), max, delta)
 
               if (std::abs(a3->get(instRemainingVar) - max) >= delta) hasNoError = false;
             }

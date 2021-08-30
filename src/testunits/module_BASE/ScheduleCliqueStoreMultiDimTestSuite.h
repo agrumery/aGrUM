@@ -51,43 +51,43 @@ namespace gum_tests {
       gum::ScheduleMultiDim< double > f2(pot2);
 
       gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< double >* > > set;
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
       gum::ScheduleCliqueStoreMultiDim< double > store1(f1, set, 3);
       gum::ScheduleCliqueStoreMultiDim< double > store2(f2, set, 3);
       gum::ScheduleCliqueStoreMultiDim< double > store3(f2, set, 2);
-      TS_ASSERT_DIFFERS(store1, store2);
-      TS_ASSERT_DIFFERS(store2, store3);
-      TS_ASSERT_DIFFERS(store2, store3);
+      TS_ASSERT_DIFFERS(store1, store2)
+      TS_ASSERT_DIFFERS(store2, store3)
+      TS_ASSERT_DIFFERS(store2, store3)
 
-      TS_ASSERT_EQUALS(store1.nbOperations(), 1);
+      TS_ASSERT_EQUALS(store1.nbOperations(), 1)
       std::pair< long, long > xxx = store1.memoryUsage();
-      TS_ASSERT_EQUALS(xxx.first, 0);
+      TS_ASSERT_EQUALS(xxx.first, 0)
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq = store1.multiDimArgs();
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(*(seq.atPos(0)), f1);
+      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(*(seq.atPos(0)), f1)
 
       store1.execute();
-      TS_ASSERT_THROWS_NOTHING(store1.execute());
+      TS_ASSERT_THROWS_NOTHING(store1.execute())
       store2.execute();
       store3.execute();
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(set.size(), (gum::Size)2)
 
       std::stringstream s;
       s << "store ( " << f1.toString() << ", clique " << 3 << " )";
-      TS_ASSERT_EQUALS(store1.toString(), s.str());
+      TS_ASSERT_EQUALS(store1.toString(), s.str())
 
       gum::ScheduleCliqueStoreMultiDim< double > store4(store3);
-      TS_ASSERT_EQUALS(store4, store3);
-      TS_ASSERT_DIFFERS(store4, store1);
+      TS_ASSERT_EQUALS(store4, store3)
+      TS_ASSERT_DIFFERS(store4, store1)
       store4 = store1;
-      TS_ASSERT_EQUALS(store4, store1);
+      TS_ASSERT_EQUALS(store4, store1)
 
       TS_ASSERT_EQUALS(store4.type(),
                        gum::ScheduleOperation< double >::Type::CLIQUE_STORE_MULTIDIM);
 
       gum::ScheduleCliqueStoreMultiDim< double >* store5 = store4.newFactory();
-      TS_ASSERT_EQUALS(*store5, store4);
+      TS_ASSERT_EQUALS(*store5, store4)
       delete store5;
 
       for (unsigned int i = 0; i < vars.size(); ++i)

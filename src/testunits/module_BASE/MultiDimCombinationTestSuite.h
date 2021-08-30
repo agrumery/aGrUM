@@ -88,24 +88,24 @@ namespace gum_tests {
 
         gum::MultiDimCombinationDefault< double, gum::Potential > xxx(addPotential);
         t6 = xxx.combine(set);
-        TS_ASSERT(t6);
-        TS_ASSERT_EQUALS(*t6, *t5);
+        TS_ASSERT(t6)
+        TS_ASSERT_EQUALS(*t6, *t5)
 
         delete t4;
         delete t5;
         delete t6;
 
-        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16640);
+        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16640)
         std::pair< long, long > yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640);
-        TS_ASSERT_EQUALS(yyy.second, 16384);
+        TS_ASSERT_EQUALS(yyy.first, 16640)
+        TS_ASSERT_EQUALS(yyy.second, 16384)
 
         t4 = new gum::Potential< double >(t1 * t2);
         t5 = new gum::Potential< double >(t3 * (*t4));
         xxx.setCombineFunction(multPotential);
         t6 = xxx.combine(set);
-        TS_ASSERT(t6);
-        TS_ASSERT_EQUALS(*t6, *t5);
+        TS_ASSERT(t6)
+        TS_ASSERT_EQUALS(*t6, *t5)
 
         delete t4;
         delete t5;
@@ -130,7 +130,7 @@ namespace gum_tests {
       gum::Potential< double >* t3 = xxx.combine(set);
       {
         gum::Instantiation inst3(t3);
-        TS_ASSERT_EQUALS((*t3)[inst3], 12.0);
+        TS_ASSERT_EQUALS((*t3)[inst3], 12.0)
       }
       delete t3;
 
@@ -157,7 +157,7 @@ namespace gum_tests {
         double             x = 0;
         for (inst3.setFirst(); !inst3.end(); ++inst3)
           x += (*t3)[inst3];
-        TS_ASSERT_DELTA(x, 3.0, 0.001);
+        TS_ASSERT_DELTA(x, 3.0, 0.001)
       }
       delete t3;
 

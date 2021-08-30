@@ -70,8 +70,8 @@ namespace gum_tests {
       // Arrange
       PRMClass* c = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(c = new PRMClass("class"));
-      TS_ASSERT_THROWS_NOTHING(delete c);
+      TS_ASSERT_THROWS_NOTHING(c = new PRMClass("class"))
+      TS_ASSERT_THROWS_NOTHING(delete c)
     }
 
     void testConstructorInheritance() {
@@ -94,15 +94,15 @@ namespace gum_tests {
       super.addArc("rho.a", "c");
       PRMClass* subclass = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", super));
+      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", super))
       // Assert
-      TS_ASSERT(subclass->exists("b"));
-      TS_ASSERT_EQUALS(subclass->get(b_id).name(), "b");
-      TS_ASSERT(subclass->exists("c"));
-      TS_ASSERT_EQUALS(subclass->get(c_id).name(), "c");
-      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)1);
+      TS_ASSERT(subclass->exists("b"))
+      TS_ASSERT_EQUALS(subclass->get(b_id).name(), "b")
+      TS_ASSERT(subclass->exists("c"))
+      TS_ASSERT_EQUALS(subclass->get(c_id).name(), "c")
+      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)1)
       delete subclass;
     }
 
@@ -122,11 +122,11 @@ namespace gum_tests {
       gum::Set< PRMInterface* > set;
       set << &i;
       // Act
-      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", set));
+      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", set))
       // Assert
-      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)0)
       delete subclass;
     }
     /// @}
@@ -139,9 +139,9 @@ namespace gum_tests {
       c.add(attr);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(*attr));
+      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(*attr))
       // Assert
-      TS_ASSERT(actual);
+      TS_ASSERT(actual)
     }
 
     void testBelongsToNot() {
@@ -150,9 +150,9 @@ namespace gum_tests {
       PRMAttribute attr("attr", *_boolean_);
       bool         actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(attr));
+      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(attr))
       // Assert
-      TS_ASSERT(!actual);
+      TS_ASSERT(!actual)
     }
 
     void testExists() {
@@ -162,9 +162,9 @@ namespace gum_tests {
       c.add(attr);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"));
+      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"))
       // Assert
-      TS_ASSERT(actual);
+      TS_ASSERT(actual)
     }
 
     void testExistsNot() {
@@ -172,9 +172,9 @@ namespace gum_tests {
       PRMClass c("class");
       bool     actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"));
+      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"))
       // Assert
-      TS_ASSERT(!actual);
+      TS_ASSERT(!actual)
     }
 
     void testGet() {
@@ -185,7 +185,7 @@ namespace gum_tests {
       // Act
       auto& actual = c.get(attr->name());
       // Assert
-      TS_ASSERT_EQUALS(&actual, attr);
+      TS_ASSERT_EQUALS(&actual, attr)
     }
 
     void testGetConst() {
@@ -197,7 +197,7 @@ namespace gum_tests {
       // Act
       const auto& actual = const_c.get(attr->name());
       // Assert
-      TS_ASSERT_EQUALS(&actual, attr);
+      TS_ASSERT_EQUALS(&actual, attr)
     }
 
     void testGetNotFound() {
@@ -206,7 +206,7 @@ namespace gum_tests {
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       // Act & Assert
-      TS_ASSERT_THROWS(c.get("foo"), gum::NotFound);
+      TS_ASSERT_THROWS(c.get("foo"), gum::NotFound)
     }
 
     void testGetConstNotFound() {
@@ -216,7 +216,7 @@ namespace gum_tests {
       c.add(attr);
       const auto& const_c = c;
       // Act & Assert
-      TS_ASSERT_THROWS(const_c.get("foo"), gum::NotFound);
+      TS_ASSERT_THROWS(const_c.get("foo"), gum::NotFound)
     }
 
     void testAdd() {
@@ -225,11 +225,11 @@ namespace gum_tests {
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       gum::NodeId   id   = 100;   // Id generation starts at 0
       // Act & assert
-      TS_ASSERT_THROWS_NOTHING(id = c.add(attr));
-      TS_ASSERT(c.exists(attr->name()));
-      TS_ASSERT_EQUALS(&(c.get(attr->name())), attr);
-      TS_ASSERT_EQUALS(id, attr->id());
-      TS_ASSERT_DIFFERS(id, (gum::NodeId)100);
+      TS_ASSERT_THROWS_NOTHING(id = c.add(attr))
+      TS_ASSERT(c.exists(attr->name()))
+      TS_ASSERT_EQUALS(&(c.get(attr->name())), attr)
+      TS_ASSERT_EQUALS(id, attr->id())
+      TS_ASSERT_DIFFERS(id, (gum::NodeId)100)
     }
 
     void testAddDuplicate() {
@@ -237,9 +237,9 @@ namespace gum_tests {
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
-      TS_ASSERT_THROWS_NOTHING(c.add(attr));
-      TS_ASSERT_THROWS(c.add(attr), gum::DuplicateElement);
-      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1);
+      TS_ASSERT_THROWS_NOTHING(c.add(attr))
+      TS_ASSERT_THROWS(c.add(attr), gum::DuplicateElement)
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1)
     }
 
     /// @}
@@ -251,7 +251,7 @@ namespace gum_tests {
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
-      TS_ASSERT_THROWS(c.overload(attr), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(c.overload(attr), gum::OperationNotAllowed)
       // Cleanup
       delete attr;
     }
@@ -264,7 +264,7 @@ namespace gum_tests {
       PRMClass   sub_c("sub c", c);
       Reference* ref = new Reference("attr", c);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(ref), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(sub_c.overload(ref), gum::OperationNotAllowed)
       // Cleanup
       delete ref;
     }
@@ -279,7 +279,7 @@ namespace gum_tests {
       gum::prm::PRMType      type(var);
       PRMAttribute*          bttr = new PRMAttribute("attr", type);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed)
       // Cleanup
       delete bttr;
     }
@@ -292,13 +292,13 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* sub_attr = new PRMAttribute("attr", *_boolean_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(sub_attr));
+      TS_ASSERT_THROWS_NOTHING(sub_c.overload(sub_attr))
       // Assert
-      TS_ASSERT(sub_c.exists(sub_attr->safeName()));
-      TS_ASSERT(sub_c.exists(attr->safeName()));
+      TS_ASSERT(sub_c.exists(sub_attr->safeName()))
+      TS_ASSERT(sub_c.exists(attr->safeName()))
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(sub_attr->safeName());
-      TS_ASSERT_EQUALS(b.type(), s.type());
+      TS_ASSERT_EQUALS(b.type(), s.type())
     }
 
     void testOverloadAttributeWithSubtype() {
@@ -309,13 +309,13 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* state = new PRMAttribute("attr", *_state_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state));
+      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state))
       // Assert
-      TS_ASSERT(sub_c.exists(state->safeName()));
-      TS_ASSERT(sub_c.exists(attr->safeName()));
+      TS_ASSERT(sub_c.exists(state->safeName()))
+      TS_ASSERT(sub_c.exists(attr->safeName()))
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(state->safeName());
-      TS_ASSERT_DIFFERS(b.type(), s.type());
+      TS_ASSERT_DIFFERS(b.type(), s.type())
     }
 
     void testOverloadAttributeWithSeveralCastDescendants() {
@@ -341,17 +341,17 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* state = new PRMAttribute("attr", *(types[size - 1]));
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state));
+      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state))
       // Assert
       for (int i = 0; i < size; i++) {
         std::string i_name = "(" + types[i]->name() + ")attr";
-        TS_ASSERT(sub_c.exists(i_name));
+        TS_ASSERT(sub_c.exists(i_name))
 
         for (int j = i + 1; j < size; j++) {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          TS_ASSERT_DIFFERS(i_attr, j_attr);
+          TS_ASSERT_DIFFERS(i_attr, j_attr)
         }
       }
       // Cleanup
@@ -370,12 +370,12 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement);
+      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement)
       // Assert
       auto after = sub_c.attributes().size();
-      TS_ASSERT(sub_c.exists(attr->safeName()));
-      TS_ASSERT(sub_c.exists(state->safeName()));
-      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT(sub_c.exists(attr->safeName()))
+      TS_ASSERT(sub_c.exists(state->safeName()))
+      TS_ASSERT_EQUALS(before, after)
     }
 
     void testOverloadAttributeWithSeveralCastDescendantsDuplicate() {
@@ -403,21 +403,21 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement);
+      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement)
       // Assert
       auto after = sub_c.attributes().size();
       for (int i = 0; i < size; i++) {
         std::string i_name = "(" + types[i]->name() + ")attr";
-        TS_ASSERT(sub_c.exists(i_name));
+        TS_ASSERT(sub_c.exists(i_name))
 
         for (int j = i + 1; j < size; j++) {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          TS_ASSERT_DIFFERS(i_attr, j_attr);
+          TS_ASSERT_DIFFERS(i_attr, j_attr)
         }
       }
-      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT_EQUALS(before, after)
       // Cleanup
       for (int i = 1; i < size; ++i) {
         delete types[i];
@@ -434,12 +434,12 @@ namespace gum_tests {
       PRMClass   c_4("c_4", c_3);
       Reference* sub_ref = new Reference("ref", c_2, false);
       // Act
-      TS_ASSERT_THROWS_NOTHING(c_4.overload(sub_ref));
+      TS_ASSERT_THROWS_NOTHING(c_4.overload(sub_ref))
       // Assert
-      TS_ASSERT(!c_4.exists(ref->safeName()));
-      TS_ASSERT(c_4.exists(sub_ref->name()));
-      TS_ASSERT(c_4.exists(sub_ref->safeName()));
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT(!c_4.exists(ref->safeName()))
+      TS_ASSERT(c_4.exists(sub_ref->name()))
+      TS_ASSERT(c_4.exists(sub_ref->safeName()))
+      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1)
     }
 
     void testOverloadReferenceIllegal() {
@@ -452,12 +452,12 @@ namespace gum_tests {
       PRMClass   c_4("c_4", c_3);
       Reference* sub_ref = new Reference("ref", c_3);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(sub_ref), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(c_4.overload(sub_ref), gum::OperationNotAllowed)
       // Assert
-      TS_ASSERT(c_4.exists(ref->safeName()));
-      TS_ASSERT(c_4.exists(ref->name()));
-      TS_ASSERT(!c_4.exists(sub_ref->safeName()));
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT(c_4.exists(ref->safeName()))
+      TS_ASSERT(c_4.exists(ref->name()))
+      TS_ASSERT(!c_4.exists(sub_ref->safeName()))
+      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1)
       delete sub_ref;
     }
 
@@ -481,11 +481,11 @@ namespace gum_tests {
       PRMClass      c_4("c_4", c_1);
       PRMSlotChain* chain_copy = new PRMSlotChain("ref_1.ref_2.attr", seq);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(chain_copy), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(c_4.overload(chain_copy), gum::OperationNotAllowed)
       // Assert
-      TS_ASSERT(c_4.exists(chain->safeName()));
-      TS_ASSERT(c_4.exists(chain->name()));
-      TS_ASSERT_EQUALS(c_4.slotChains().size(), (gum::Size)1);
+      TS_ASSERT(c_4.exists(chain->safeName()))
+      TS_ASSERT(c_4.exists(chain->name()))
+      TS_ASSERT_EQUALS(c_4.slotChains().size(), (gum::Size)1)
       delete chain_copy;
     }
 
@@ -500,9 +500,9 @@ namespace gum_tests {
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isInputNode(*a));
+      TS_ASSERT_THROWS_NOTHING(actual = c.isInputNode(*a))
       // Assert
-      TS_ASSERT(!actual);
+      TS_ASSERT(!actual)
     }
 
     void testSetInputNode() {
@@ -513,11 +513,11 @@ namespace gum_tests {
       bool before = c.isInputNode(*a);
       bool after  = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true));
+      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true))
       // Assert
-      TS_ASSERT(after = c.isInputNode(*a));
-      TS_ASSERT_DIFFERS(before, after);
-      TS_ASSERT(after);
+      TS_ASSERT(after = c.isInputNode(*a))
+      TS_ASSERT_DIFFERS(before, after)
+      TS_ASSERT(after)
     }
 
     void testIsOutputNode() {
@@ -527,9 +527,9 @@ namespace gum_tests {
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isOutputNode(*a));
+      TS_ASSERT_THROWS_NOTHING(actual = c.isOutputNode(*a))
       // Assert
-      TS_ASSERT(!actual);
+      TS_ASSERT(!actual)
     }
 
     void testSetOutputNode() {
@@ -540,11 +540,11 @@ namespace gum_tests {
       bool before = c.isOutputNode(*a);
       bool after  = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true));
+      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true))
       // Assert
-      TS_ASSERT(after = c.isOutputNode(*a));
-      TS_ASSERT_DIFFERS(before, after);
-      TS_ASSERT(after);
+      TS_ASSERT(after = c.isOutputNode(*a))
+      TS_ASSERT_DIFFERS(before, after)
+      TS_ASSERT(after)
     }
 
     void testIsInnerNode() {
@@ -554,9 +554,9 @@ namespace gum_tests {
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isInnerNode(*a));
+      TS_ASSERT_THROWS_NOTHING(actual = c.isInnerNode(*a))
       // Assert
-      TS_ASSERT(actual);
+      TS_ASSERT(actual)
     }
 
     void testInnerNodeConsistency() {
@@ -565,22 +565,22 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
       c.add(a);
       // Act & Assert
-      TS_ASSERT(c.isInnerNode(*a));
-      TS_ASSERT(!c.isInputNode(*a));
-      TS_ASSERT(!c.isOutputNode(*a));
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true));
-      TS_ASSERT(!c.isInnerNode(*a));
-      TS_ASSERT(c.isInputNode(*a));
-      TS_ASSERT(!c.isOutputNode(*a));
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true));
-      TS_ASSERT(!c.isInnerNode(*a));
-      TS_ASSERT(c.isInputNode(*a));
-      TS_ASSERT(c.isOutputNode(*a));
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, false));
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, false));
-      TS_ASSERT(c.isInnerNode(*a));
-      TS_ASSERT(!c.isInputNode(*a));
-      TS_ASSERT(!c.isOutputNode(*a));
+      TS_ASSERT(c.isInnerNode(*a))
+      TS_ASSERT(!c.isInputNode(*a))
+      TS_ASSERT(!c.isOutputNode(*a))
+      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true))
+      TS_ASSERT(!c.isInnerNode(*a))
+      TS_ASSERT(c.isInputNode(*a))
+      TS_ASSERT(!c.isOutputNode(*a))
+      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true))
+      TS_ASSERT(!c.isInnerNode(*a))
+      TS_ASSERT(c.isInputNode(*a))
+      TS_ASSERT(c.isOutputNode(*a))
+      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, false))
+      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, false))
+      TS_ASSERT(c.isInnerNode(*a))
+      TS_ASSERT(!c.isInputNode(*a))
+      TS_ASSERT(!c.isOutputNode(*a))
     }
 
     void testIONodesInheritance() {
@@ -643,7 +643,7 @@ namespace gum_tests {
         knGate.addArc("K", "state");
         knGate.addArc("Nb_true", "state");
         // Assert
-        TS_ASSERT(knGate.isOutputNode(knGate.get("state")));
+        TS_ASSERT(knGate.isOutputNode(knGate.get("state")))
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
     /// @}

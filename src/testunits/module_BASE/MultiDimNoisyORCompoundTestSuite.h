@@ -38,14 +38,14 @@ namespace gum_tests {
       gum::MultiDimNoisyORCompound< double > p(0.2f);
 
       // trying to change weight for a non cause
-      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument)
+      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument)
 
       // adding causes
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
       // trying to set 0 for causal weight
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::OutOfBounds);
+      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::OutOfBounds)
 
       // doing the right stuff :)
       p.causalWeight(b, 0.4f);
@@ -53,13 +53,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Labelized(<0,1>)=noisyORCompound([0.2],b:Labelized(<0,1>)[0.4]c:"
                        "Labelized(<0,1>)[1]d:Labelized(<0,1>)[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       gum::MultiDimNoisyORCompound< double > q(p);
       TS_ASSERT_EQUALS(q.toString(),
                        "a:Labelized(<0,1>)=noisyORCompound([0.2],b:Labelized(<0,1>)[0.4]c:"
                        "Labelized(<0,1>)[1]d:Labelized(<0,1>)[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
     }
 
     void testCompatibleWithHardOR() {
@@ -95,7 +95,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
     }
 
@@ -132,7 +132,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::MultiDimNoisyORCompound< double > q(p);
@@ -140,7 +140,7 @@ namespace gum_tests {
       j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(q[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(q[i], witness[j], 1e-6)
       }
     }
 
@@ -174,7 +174,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::MultiDimNoisyORCompound< double > q(p);
@@ -182,7 +182,7 @@ namespace gum_tests {
       j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(q[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(q[i], witness[j], 1e-6)
       }
     }
   };

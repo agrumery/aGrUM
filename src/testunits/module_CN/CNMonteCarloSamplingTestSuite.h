@@ -159,7 +159,7 @@ namespace gum_tests {
           modals[cn->current_bn().variable(node).name()] = binaryModal;
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
 
@@ -168,7 +168,7 @@ namespace gum_tests {
         mcs.makeInference();
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
 
@@ -181,7 +181,7 @@ namespace gum_tests {
         }
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
 
@@ -225,7 +225,7 @@ namespace gum_tests {
         }
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
@@ -239,7 +239,7 @@ namespace gum_tests {
         exp etemp_sup(mcs.dynamicExpMax("temp"));
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
@@ -279,7 +279,7 @@ namespace gum_tests {
         }
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
@@ -293,7 +293,7 @@ namespace gum_tests {
         exp etemp_sup(mcs.dynamicExpMax("temp"));
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
@@ -322,8 +322,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
       /// time out criterion during burn in test
-      TS_ASSERT_EQUALS(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations());
-      TS_ASSERT_DIFFERS(mcl.msg(), std::string(""));
+      TS_ASSERT_EQUALS(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations())
+      TS_ASSERT_DIFFERS(mcl.msg(), std::string(""))
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 

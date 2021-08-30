@@ -210,24 +210,24 @@ namespace gum_tests {
       detector.setDAG(g);
 
       std::vector< gum::DAGCycleDetector::Change > changes;
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false);
+      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
 
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true);
+      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true)
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false);
+      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false);
+      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
     }
 
     void testG1() {
@@ -258,7 +258,7 @@ namespace gum_tests {
       changes.push_back(gum::DAGCycleDetector::ArcReverse(3, 0));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(4, 3));
 
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true);
+      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true)
     }
 
     void testRandom() {
@@ -273,7 +273,7 @@ namespace gum_tests {
         detector.setDAG(g);
 
         changes.clear();
-        TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false);
+        TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
 
         for (gum::Idx j = 0; j < 20; ++j) {
           gum::Size length = distrib_length(generator);
@@ -308,7 +308,7 @@ namespace gum_tests {
             } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
           }
 
-          TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), hasCycle);
+          TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), hasCycle)
         }
       }
     }
@@ -323,11 +323,11 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        TS_ASSERT_EQUALS(detector1, detector2);
+        TS_ASSERT_EQUALS(detector1, detector2)
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1);
+          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1)
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
             continue;
@@ -357,7 +357,7 @@ namespace gum_tests {
             detector2.setDAG(g);
           }
 
-          TS_ASSERT_EQUALS(detector1, detector2);
+          TS_ASSERT_EQUALS(detector1, detector2)
         }
       }
     }
@@ -372,11 +372,11 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        TS_ASSERT_EQUALS(detector1, detector2);
+        TS_ASSERT_EQUALS(detector1, detector2)
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1);
+          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1)
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {

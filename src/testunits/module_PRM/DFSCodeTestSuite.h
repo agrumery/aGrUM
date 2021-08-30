@@ -100,34 +100,34 @@ namespace gum_tests {
     }
 
     void testLesserThan() {
-      TS_ASSERT((*gamma) < (*alpha));
-      TS_ASSERT((*gamma) < (*beta));
-      TS_ASSERT((*alpha) < (*beta));
-      TS_ASSERT(!((*alpha) < (*alpha)));
-      TS_ASSERT(!((*beta) < (*beta)));
-      TS_ASSERT(!((*gamma) < (*gamma)));
-      TS_ASSERT(!((*alpha) < (*gamma)));
-      TS_ASSERT(!((*beta) < (*gamma)));
-      TS_ASSERT(!((*beta) < (*alpha)));
+      TS_ASSERT((*gamma) < (*alpha))
+      TS_ASSERT((*gamma) < (*beta))
+      TS_ASSERT((*alpha) < (*beta))
+      TS_ASSERT(!((*alpha) < (*alpha)))
+      TS_ASSERT(!((*beta) < (*beta)))
+      TS_ASSERT(!((*gamma) < (*gamma)))
+      TS_ASSERT(!((*alpha) < (*gamma)))
+      TS_ASSERT(!((*beta) < (*gamma)))
+      TS_ASSERT(!((*beta) < (*alpha)))
     }
 
     void testLesserOrEqualThan() {
-      TS_ASSERT((*gamma) <= (*alpha));
-      TS_ASSERT((*gamma) <= (*beta));
-      TS_ASSERT((*alpha) <= (*beta));
-      TS_ASSERT((*alpha) <= (*alpha));
-      TS_ASSERT((*beta) <= (*beta));
-      TS_ASSERT((*gamma) <= (*gamma));
-      TS_ASSERT(!((*alpha) <= (*gamma)));
-      TS_ASSERT(!((*beta) <= (*gamma)));
-      TS_ASSERT(!((*beta) <= (*alpha)));
+      TS_ASSERT((*gamma) <= (*alpha))
+      TS_ASSERT((*gamma) <= (*beta))
+      TS_ASSERT((*alpha) <= (*beta))
+      TS_ASSERT((*alpha) <= (*alpha))
+      TS_ASSERT((*beta) <= (*beta))
+      TS_ASSERT((*gamma) <= (*gamma))
+      TS_ASSERT(!((*alpha) <= (*gamma)))
+      TS_ASSERT(!((*beta) <= (*gamma)))
+      TS_ASSERT(!((*beta) <= (*alpha)))
     }
 
     void testAlphaNeighbors() {
       for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
            iter != alpha->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
       }
     }
 
@@ -135,7 +135,7 @@ namespace gum_tests {
       for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
            iter != beta->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
       }
     }
 
@@ -143,7 +143,7 @@ namespace gum_tests {
       for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
            iter != gamma->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
       }
     }
 

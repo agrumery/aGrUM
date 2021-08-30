@@ -42,7 +42,7 @@ namespace gum_tests {
         _ig_ = new gum::prm::gspan::InterfaceGraph< double >(_driver_->prm()->getSystem("m"));
       } else {
         _driver_->showElegantErrorsAndWarnings();
-        TS_ASSERT(false);
+        TS_ASSERT(false)
       }
     }
 
@@ -58,7 +58,7 @@ namespace gum_tests {
     void testInit() {
       gum::prm::o3prm::O3prmReader< double > driver;
       driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
-      TS_ASSERT_DIFFERS(driver.prm(), nullptr);
+      TS_ASSERT_DIFFERS(driver.prm(), nullptr)
 
       if (driver.prm() != nullptr) delete driver.prm();
     }
@@ -66,7 +66,7 @@ namespace gum_tests {
     void testInterfaceGraph() {
       try {
         _local_setUp();
-        TS_ASSERT_EQUALS(_ig_->graph().size(), (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4);
+        TS_ASSERT_EQUALS(_ig_->graph().size(), (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4)
         TS_ASSERT_EQUALS(_ig_->graph().sizeEdges(),
                          (gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2);
         _local_tearDown();
@@ -79,7 +79,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
          gspan
          = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
-      TS_ASSERT_DIFFERS(gspan, nullptr);
+      TS_ASSERT_DIFFERS(gspan, nullptr)
 
       if (gspan != nullptr) {
         TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());

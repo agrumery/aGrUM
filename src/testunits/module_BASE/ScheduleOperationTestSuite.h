@@ -54,22 +54,22 @@ namespace gum_tests {
       gum::ScheduleOperation< double >&      myproj = real_myproj;
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims = myproj.multiDimArgs();
-      TS_ASSERT_EQUALS(multidims.size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(*(multidims.atPos(0)), f1);
+      TS_ASSERT_EQUALS(multidims.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(*(multidims.atPos(0)), f1)
 
       std::stringstream s1;
       s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
          << " )";
-      TS_ASSERT_EQUALS(s1.str(), myproj.toString());
+      TS_ASSERT_EQUALS(s1.str(), myproj.toString())
 
       gum::ScheduleProject< double >    real_myproj2 = real_myproj;
       gum::ScheduleOperation< double >& myproj2      = real_myproj2;
-      TS_ASSERT(real_myproj2.result().isAbstract());
+      TS_ASSERT(real_myproj2.result().isAbstract())
       TS_GUM_ASSERT_EQUALS(myproj2, myproj);
 
       myproj.execute();
-      TS_ASSERT(!res.isAbstract());
-      TS_ASSERT(!real_myproj2.result().isAbstract());
+      TS_ASSERT(!res.isAbstract())
+      TS_ASSERT(!real_myproj2.result().isAbstract())
       gum::Potential< double >* res2 = proj(pot1, del_vars, 0);
       TS_GUM_ASSERT_EQUALS(*(res2->content()), res.multiDim());
 

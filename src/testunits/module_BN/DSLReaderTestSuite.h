@@ -56,14 +56,14 @@ namespace gum_tests {
 
       gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(net->empty());
+        TS_ASSERT(net->empty())
         delete net;
       }
     }
@@ -73,15 +73,15 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
+        TS_ASSERT_EQUALS(net->size(), (gum::Size)2)
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -92,26 +92,26 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        TS_ASSERT_EQUALS(var_1.name(), "n1");
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_1.name(), "n1")
+        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
         const gum::Potential< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f);
+        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f)
         inst_1.setLast();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8f)) < 0.001f);
+        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8f)) < 0.001f)
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        TS_ASSERT_EQUALS(var_2.name(), "n2");
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_2.name(), "n2")
+        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
         const gum::Potential< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f);
+        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f)
         inst_2.setLast();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7f)) < 0.001f);
+        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7f)) < 0.001f)
 
         delete net;
       }
@@ -123,14 +123,14 @@ namespace gum_tests {
 
       gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
+        TS_ASSERT_EQUALS(net->size(), (gum::Size)2)
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -141,26 +141,26 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        TS_ASSERT_EQUALS(var_1.name(), "n1");
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_1.name(), "n1")
+        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
         const gum::Potential< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2)) < 0.001);
+        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2)) < 0.001)
         inst_1.setLast();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8)) < 0.001);
+        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8)) < 0.001)
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        TS_ASSERT_EQUALS(var_2.name(), "n2");
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_2.name(), "n2")
+        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
         const gum::Potential< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3)) < 0.001);
+        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3)) < 0.001)
         inst_2.setLast();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7)) < 0.001);
+        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7)) < 0.001)
 
         delete net;
       }
@@ -171,12 +171,12 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT_EQUALS(net->size(), (gum::Size)6);
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(net->size(), (gum::Size)6)
+      TS_ASSERT_DIFFERS(net, nullptr)
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
@@ -190,12 +190,12 @@ namespace gum_tests {
       gum::Size                nbrErr = (gum::Size)0;
       reader.trace(true);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT_EQUALS(net->size(), (gum::Size)13);
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(net->size(), (gum::Size)13)
+      TS_ASSERT_DIFFERS(net, nullptr)
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
@@ -209,9 +209,9 @@ namespace gum_tests {
 
       gum::Size nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
@@ -219,78 +219,78 @@ namespace gum_tests {
         idMap.insert(net->variable(node).name(), node);
 
       // The node wich we'll test
-      TS_ASSERT(idMap.exists("HISTORY"));
+      TS_ASSERT(idMap.exists("HISTORY"))
       // It's parent
-      TS_ASSERT(idMap.exists("LVFAILURE"));
+      TS_ASSERT(idMap.exists("LVFAILURE"))
 
       if (idMap.exists("HISTORY") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
-        TS_ASSERT_EQUALS(history.domainSize(), (gum::Size)2);
-        TS_ASSERT_EQUALS(history.label(0), "TRUE");
-        TS_ASSERT_EQUALS(history.label(1), "FALSE");
-        TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]));
+        TS_ASSERT_EQUALS(history.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(history.label(0), "TRUE")
+        TS_ASSERT_EQUALS(history.label(1), "FALSE")
+        TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]))
         const gum::Potential< double >& historyCPT = net->cpt(idMap["HISTORY"]);
-        TS_ASSERT_EQUALS(historyCPT.domainSize(), (gum::Size)4);
-        TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])));
-        TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])));
+        TS_ASSERT_EQUALS(historyCPT.domainSize(), (gum::Size)4)
+        TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])))
+        TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])))
         gum::Instantiation historyInst(historyCPT);
         // (TRUE | TRUE)
         historyInst.chgVal(history, 0);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.9f) < 0.0001f);
+        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.9f) < 0.0001f)
         // (FALSE | TRUE)
         historyInst.chgVal(history, 1);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.1f) < 0.0001f);
+        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.1f) < 0.0001f)
         // (TRUE | FALSE)
         historyInst.chgVal(history, 0);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.01f) < 0.0001f);
+        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.01f) < 0.0001f)
         // (FALSE | FALSE)
         historyInst.chgVal(history, 1);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.99f) < 0.0001f);
+        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.99f) < 0.0001f)
       }
 
       // The node wich we'll test
-      TS_ASSERT(idMap.exists("ERRLOWOUTPUT"));
+      TS_ASSERT(idMap.exists("ERRLOWOUTPUT"))
       // It's Children
-      TS_ASSERT(idMap.exists("HRBP"));
+      TS_ASSERT(idMap.exists("HRBP"))
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
-        TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
-        TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE");
-        TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE");
-        TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
+        TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE")
+        TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE")
+        TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]))
         const gum::Potential< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
-        TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
-        TS_ASSERT(errlowoutputCPT.contains(errlowoutput));
+        TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2)
+        TS_ASSERT(errlowoutputCPT.contains(errlowoutput))
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
         errlowoutputInst.chgVal(errlowoutput, 0);
-        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.05f) < 0.001f);
+        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.05f) < 0.001f)
         errlowoutputInst.chgVal(errlowoutput, 1);
-        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.95f) < 0.001f);
+        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.95f) < 0.001f)
       }
 
       // The nide wich we'll test
-      TS_ASSERT(idMap.exists("LVEDVOLUME"));
+      TS_ASSERT(idMap.exists("LVEDVOLUME"))
       // It's parents
-      TS_ASSERT(idMap.exists("HYPOVOLEMIA"));
-      TS_ASSERT(idMap.exists("LVFAILURE"));
+      TS_ASSERT(idMap.exists("HYPOVOLEMIA"))
+      TS_ASSERT(idMap.exists("LVFAILURE"))
 
       if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume  = net->variable(idMap["LVEDVOLUME"]);
         const gum::DiscreteVariable& hypovolemia = net->variable(idMap["HYPOVOLEMIA"]);
         const gum::DiscreteVariable& lvfailure   = net->variable(idMap["LVFAILURE"]);
         // checking label order
-        TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW");
-        TS_ASSERT_EQUALS(lvedvolume.label(1), "NORMAL");
-        TS_ASSERT_EQUALS(lvedvolume.label(2), "HIGH");
-        TS_ASSERT_EQUALS(hypovolemia.label(0), "TRUE");
-        TS_ASSERT_EQUALS(hypovolemia.label(1), "FALSE");
-        TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE");
-        TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE");
+        TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW")
+        TS_ASSERT_EQUALS(lvedvolume.label(1), "NORMAL")
+        TS_ASSERT_EQUALS(lvedvolume.label(2), "HIGH")
+        TS_ASSERT_EQUALS(hypovolemia.label(0), "TRUE")
+        TS_ASSERT_EQUALS(hypovolemia.label(1), "FALSE")
+        TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE")
+        TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE")
         const gum::Potential< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
         gum::Instantiation              inst(cpt);
         gum::Instantiation              var_inst;
@@ -301,7 +301,7 @@ namespace gum_tests {
         size_t i         = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001f);
+          TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001f)
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -310,7 +310,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001f);
+          TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001f)
         }
 
         inst.chgVal(hypovolemia, 0);
@@ -319,7 +319,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001f);
+          TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001f)
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -328,7 +328,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001f);
+          TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001f)
         }
       }
 
@@ -339,7 +339,7 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DSLReader< double > reader(net, file));
       gum::DSLReader< double > reader(net, file);
-      TS_ASSERT_THROWS(reader.proceed(), gum::IOError);
+      TS_ASSERT_THROWS(reader.proceed(), gum::IOError)
 
       if (net) delete net;
     }
@@ -349,9 +349,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -361,9 +361,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -373,9 +373,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -385,9 +385,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -397,9 +397,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -409,9 +409,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -424,9 +424,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -436,9 +436,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -448,9 +448,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }
@@ -460,9 +460,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = (gum::Size)0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
     }

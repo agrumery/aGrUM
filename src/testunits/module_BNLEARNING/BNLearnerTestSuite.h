@@ -91,20 +91,20 @@ namespace gum_tests {
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
-      TS_ASSERT(!names.empty());
+      TS_ASSERT(!names.empty())
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)9);
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)9)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       learner.setDatabaseWeight(10.0);
       const auto&  db     = learner.database();
       const double weight = 10.0 / double(db.nbRows());
       for (const auto& row: db) {
-        TS_ASSERT_EQUALS(row.weight(), weight);
+        TS_ASSERT_EQUALS(row.weight(), weight)
       }
-      TS_ASSERT_DELTA(learner.databaseWeight(), 10.0, 1e-4);
+      TS_ASSERT_DELTA(learner.databaseWeight(), 10.0, 1e-4)
 
       const std::size_t nbr = db.nbRows();
       for (std::size_t i = std::size_t(0); i < nbr; ++i) {
@@ -114,11 +114,11 @@ namespace gum_tests {
       std::size_t index = std::size_t(0);
       for (const auto& row: db) {
         if (index % 2) {
-          TS_ASSERT_EQUALS(row.weight(), 2.0);
-          TS_ASSERT_EQUALS(learner.recordWeight(index), 2.0);
+          TS_ASSERT_EQUALS(row.weight(), 2.0)
+          TS_ASSERT_EQUALS(learner.recordWeight(index), 2.0)
         } else {
-          TS_ASSERT_EQUALS(row.weight(), 10.0);
-          TS_ASSERT_EQUALS(learner.recordWeight(index), 10.0);
+          TS_ASSERT_EQUALS(row.weight(), 10.0)
+          TS_ASSERT_EQUALS(learner.recordWeight(index), 10.0)
         }
         ++index;
       }
@@ -144,7 +144,7 @@ namespace gum_tests {
         learner2.useNoApriori();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag());
+        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
       }
 
       {
@@ -167,7 +167,7 @@ namespace gum_tests {
         learner2.useNoApriori();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag());
+        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
       }
 
       {
@@ -203,7 +203,7 @@ namespace gum_tests {
         learner2.useScoreAIC();
         gum::BayesNet< double > xbn2 = learner2.learnBN();
 
-        TS_ASSERT_EQUALS(xbn1.dag(), xbn2.dag());
+        TS_ASSERT_EQUALS(xbn1.dag(), xbn2.dag())
       }
     }
 
@@ -260,13 +260,13 @@ namespace gum_tests {
         }
 
         learner.useDatabaseRanges(ranges);
-        TS_ASSERT_EQUALS(learner.databaseRanges(), ranges);
+        TS_ASSERT_EQUALS(learner.databaseRanges(), ranges)
 
         learner.clearDatabaseRanges();
-        TS_ASSERT_DIFFERS(learner.databaseRanges(), ranges);
+        TS_ASSERT_DIFFERS(learner.databaseRanges(), ranges)
 
         learner.useCrossValidationFold(fold, k);
-        TS_ASSERT_EQUALS(learner.databaseRanges(), ranges);
+        TS_ASSERT_EQUALS(learner.databaseRanges(), ranges)
 
         gum::BayesNet< double > bn1 = learner.learnBN();
 
@@ -277,7 +277,7 @@ namespace gum_tests {
                                 selector(score, struct_constraint, op_set);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
-        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag());
+        TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
 
         gum::Instantiation I1, I2;
 
@@ -300,7 +300,7 @@ namespace gum_tests {
           LL2 += bn2.log2JointProbability(I2) * row.weight();
         }
 
-        TS_ASSERT_EQUALS(LL1, LL2);
+        TS_ASSERT_EQUALS(LL1, LL2)
       }
     }
 
@@ -327,22 +327,22 @@ namespace gum_tests {
       // learner.addMandatoryArc( "bronchitis", "lung_cancer" );
 
       const std::vector< std::string >& names = learner.names();
-      TS_ASSERT(!names.empty());
+      TS_ASSERT(!names.empty())
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)9);
-        // TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)86);
-        TS_ASSERT(!bn.dag().existsArc(4, 1));
-        TS_ASSERT(bn.dag().existsArc(7, 5));
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)9)
+        // TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)86)
+        TS_ASSERT(!bn.dag().existsArc(4, 1))
+        TS_ASSERT(bn.dag().existsArc(7, 5))
 
         gum::MixedGraph mg = learner.learnMixedStructure();
-        TS_ASSERT_EQUALS(mg.arcs().size(), (gum::Size)8);
-        TS_ASSERT_EQUALS(mg.edges().size(), (gum::Size)1);
-        TS_ASSERT(!mg.existsArc(4, 1));
-        TS_ASSERT(mg.existsArc(7, 5));
+        TS_ASSERT_EQUALS(mg.arcs().size(), (gum::Size)8)
+        TS_ASSERT_EQUALS(mg.edges().size(), (gum::Size)1)
+        TS_ASSERT(!mg.existsArc(4, 1))
+        TS_ASSERT(mg.existsArc(7, 5))
         std::vector< gum::Arc > latents = learner.latentVariables();
-        TS_ASSERT_EQUALS(latents.size(), (gum::Size)2);
+        TS_ASSERT_EQUALS(latents.size(), (gum::Size)2)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -380,11 +380,11 @@ namespace gum_tests {
     //         std::make_pair( gum::NodeId( 1 ), 0 )};
 
     //     const std::vector<std::string>& names = learner.names();
-    //     TS_ASSERT( !names.empty() );
+    //     TS_ASSERT( !names.empty() )
 
     //     try {
     //       gum::BayesNet<double> bn = learner.learnBN();
-    //       TS_ASSERT_EQUALS( bn.dag().arcs().size() , 9 );
+    //       TS_ASSERT_EQUALS( bn.dag().arcs().size() , 9 )
     //     } catch ( gum::Exception& e ) {
     //       GUM_SHOWERROR( e );
     //     }
@@ -412,7 +412,7 @@ namespace gum_tests {
 
       gum::BayesNet< double > bn2 = learner.learnBN();
       for (auto& name: database.variableNames()) {
-        TS_ASSERT_EQUALS(bn2.variableFromName(name).domainSize(), (gum::Size)3);
+        TS_ASSERT_EQUALS(bn2.variableFromName(name).domainSize(), (gum::Size)3)
       }
     }
 
@@ -437,7 +437,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori);
+      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
       learner.useScoreLog2Likelihood();
 
@@ -461,14 +461,14 @@ namespace gum_tests {
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
-      TS_ASSERT(!names.empty());
+      TS_ASSERT(!names.empty())
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.variable(0).domainSize(), (gum::Size)2);
-        TS_ASSERT_EQUALS(bn.variable(2).domainSize(), (gum::Size)2);
-        TS_ASSERT_EQUALS(bn.variable(0).label(0), "false");
-        TS_ASSERT_EQUALS(bn.variable(0).label(1), "true");
+        TS_ASSERT_EQUALS(bn.variable(0).domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(bn.variable(2).domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(bn.variable(0).label(0), "false")
+        TS_ASSERT_EQUALS(bn.variable(0).label(1), "true")
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -494,7 +494,7 @@ namespace gum_tests {
         learner.useAprioriSmoothing();
       } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
-      TS_ASSERT(except);
+      TS_ASSERT(except)
     }
 
     void xtest_asia_with_user_modalities_numbers() {
@@ -517,7 +517,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori);
+      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
       learner.useScoreLog2Likelihood();
 
@@ -537,15 +537,15 @@ namespace gum_tests {
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
-      TS_ASSERT(!names.empty());
+      TS_ASSERT(!names.empty())
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.variable(0).domainSize(), (gum::Size)3);
-        TS_ASSERT_EQUALS(bn.variable(2).domainSize(), (gum::Size)5);
-        TS_ASSERT_EQUALS(bn.variable(0).label(0), "0");
-        TS_ASSERT_EQUALS(bn.variable(0).label(1), "1");
-        TS_ASSERT_EQUALS(bn.variable(0).label(2), "big");
+        TS_ASSERT_EQUALS(bn.variable(0).domainSize(), (gum::Size)3)
+        TS_ASSERT_EQUALS(bn.variable(2).domainSize(), (gum::Size)5)
+        TS_ASSERT_EQUALS(bn.variable(0).label(0), "0")
+        TS_ASSERT_EQUALS(bn.variable(0).label(1), "1")
+        TS_ASSERT_EQUALS(bn.variable(0).label(2), "big")
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -571,7 +571,7 @@ namespace gum_tests {
         learner.useAprioriSmoothing();
       } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
-      TS_ASSERT(except);
+      TS_ASSERT(except)
     }
 
     void test_asia_param() {
@@ -596,7 +596,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
-        TS_ASSERT_EQUALS(bn.dim(), (gum::Size)25);
+        TS_ASSERT_EQUALS(bn.dim(), (gum::Size)25)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -608,7 +608,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), bn.dag().arcs().size())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -635,7 +635,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
-        TS_ASSERT_EQUALS(bn.dim(), (gum::Size)25);
+        TS_ASSERT_EQUALS(bn.dim(), (gum::Size)25)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -647,7 +647,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), bn.dag().arcs().size())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -690,11 +690,11 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        TS_ASSERT_EQUALS(bn2.dim(), bn.dim());
+        TS_ASSERT_EQUALS(bn2.dim(), bn.dim())
 
         for (gum::NodeId node: bn.nodes()) {
           gum::NodeId node2 = bn2.idFromName(bn.variable(node).name());
-          TS_ASSERT_EQUALS(bn.variable(node).toString(), bn2.variable(node2).toString());
+          TS_ASSERT_EQUALS(bn.variable(node).toString(), bn2.variable(node2).toString())
         }
 
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
@@ -803,9 +803,9 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)2);
-        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
-        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request");
+        TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)2)
+        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request")
+        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request")
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia2.csv"));
@@ -818,9 +818,9 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)3);
-        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
-        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request");
+        TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)3)
+        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request")
+        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request")
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -834,8 +834,8 @@ namespace gum_tests {
         // std::cout << bn.dag () << std::endl;
 
         TS_ASSERT_DELTA(listen.getNbr(), (gum::Size)15, 1);   // 75
-        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
-        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request");
+        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request")
+        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request")
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -848,8 +848,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = learner.learnBN();
 
         TS_ASSERT_DELTA(listen.getNbr(), (gum::Size)3, 1);   // 2?
-        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
-        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request");
+        TS_ASSERT_EQUALS(listen.getMess(), "stopped on request")
+        TS_ASSERT_EQUALS(learner.messageApproximationScheme(), "stopped on request")
       }
     }
 
@@ -915,9 +915,9 @@ namespace gum_tests {
         learn3 = learner.learnParameters(dbn.dag());
       }
 
-      TS_ASSERT_EQUALS(learn1.variable(learn1.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
-      TS_ASSERT_EQUALS(learn2.variable(learn2.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
-      TS_ASSERT_EQUALS(learn2.variable(learn3.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
+      TS_ASSERT_EQUALS(learn1.variable(learn1.idFromName("wl_0")).toString(), "wl_0:Range([0,3])")
+      TS_ASSERT_EQUALS(learn2.variable(learn2.idFromName("wl_0")).toString(), "wl_0:Range([0,3])")
+      TS_ASSERT_EQUALS(learn2.variable(learn3.idFromName("wl_0")).toString(), "wl_0:Range([0,3])")
 
       auto&              p1 = learn1.cpt(learn1.idFromName("c_0"));
       auto&              p2 = learn2.cpt(learn2.idFromName("c_0"));
@@ -954,7 +954,7 @@ namespace gum_tests {
         learner.learnBN();
       } catch (gum::MissingValueInDatabase&) { nb = 1; }
 
-      TS_ASSERT_EQUALS(nb, 1);
+      TS_ASSERT_EQUALS(nb, 1)
     }
 
     void test_BugDoumenc() {
@@ -1108,12 +1108,12 @@ namespace gum_tests {
       try {
         const gum::DiscretizedVariable< int >& xvar_discr
            = dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
-        TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)9);
-        TS_ASSERT_EQUALS(xvar_discr.label(0), "[60;65[");
-        TS_ASSERT_EQUALS(xvar_discr.label(1), "[65;70[");
-        TS_ASSERT_EQUALS(xvar_discr.label(8), "[100;105]");
+        TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)9)
+        TS_ASSERT_EQUALS(xvar_discr.label(0), "[60;65[")
+        TS_ASSERT_EQUALS(xvar_discr.label(1), "[65;70[")
+        TS_ASSERT_EQUALS(xvar_discr.label(8), "[100;105]")
       } catch (std::bad_cast&) { good = 0; }
-      TS_ASSERT_EQUALS(good, 1);
+      TS_ASSERT_EQUALS(good, 1)
     }
 
     void test_setSliceOrderWithNames() {
@@ -1236,7 +1236,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > xbn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(xbn.moralGraph(), bn.moralGraph());
+        TS_ASSERT_EQUALS(xbn.moralGraph(), bn.moralGraph())
       }
     }
 
@@ -1245,7 +1245,7 @@ namespace gum_tests {
                                                  true,
                                                  std::vector< std::string >{"?"});
 
-      TS_ASSERT(learner.hasMissingValues());
+      TS_ASSERT(learner.hasMissingValues())
 
       gum::DAG dag;
       for (std::size_t i = std::size_t(0); i < learner.database().nbVariables(); ++i) {
@@ -1255,7 +1255,7 @@ namespace gum_tests {
       dag.addArc(gum::NodeId(2), gum::NodeId(1));
       dag.addArc(gum::NodeId(3), gum::NodeId(2));
 
-      TS_ASSERT_THROWS(learner.learnParameters(dag), gum::MissingValueInDatabase);
+      TS_ASSERT_THROWS(learner.learnParameters(dag), gum::MissingValueInDatabase)
 
       learner.useEM(1e-3);
       learner.useAprioriSmoothing();
@@ -1268,122 +1268,122 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       auto reschi2 = learner.chi2("smoking", "lung_cancer");
-      TS_ASSERT_DELTA(reschi2.first, 36.2256, 1e-4);
-      TS_ASSERT_DELTA(reschi2.second, 0, 1e-4);
+      TS_ASSERT_DELTA(reschi2.first, 36.2256, 1e-4)
+      TS_ASSERT_DELTA(reschi2.second, 0, 1e-4)
 
       reschi2 = learner.chi2("smoking", "visit_to_Asia");
-      TS_ASSERT_DELTA(reschi2.first, 1.1257, 1e-4);
-      TS_ASSERT_DELTA(reschi2.second, 0.2886, 1e-4);
+      TS_ASSERT_DELTA(reschi2.first, 1.1257, 1e-4)
+      TS_ASSERT_DELTA(reschi2.second, 0.2886, 1e-4)
 
       reschi2 = learner.chi2("lung_cancer", "tuberculosis");
-      TS_ASSERT_DELTA(reschi2.first, 0.6297, 1e-4);
-      TS_ASSERT_DELTA(reschi2.second, 0.4274, 1e-4);
+      TS_ASSERT_DELTA(reschi2.first, 0.6297, 1e-4)
+      TS_ASSERT_DELTA(reschi2.second, 0.4274, 1e-4)
 
       reschi2 = learner.chi2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
-      TS_ASSERT_DELTA(reschi2.first, 58.0, 1e-4);
-      TS_ASSERT_DELTA(reschi2.second, 0.0, 1e-4);
+      TS_ASSERT_DELTA(reschi2.first, 58.0, 1e-4)
+      TS_ASSERT_DELTA(reschi2.second, 0.0, 1e-4)
 
       // see IndepTestChi2TestSuite::test_statistics
       gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/chi2.csv"));
 
       auto stat = learner2.chi2("A", "C");
-      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.978, 1e-3);
+      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.978, 1e-3)
 
       stat = learner2.chi2("A", "B");
-      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR)
 
       stat = learner2.chi2("B", "A");
-      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR)
 
       stat = learner2.chi2("B", "D");
-      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.341, 1e-3);
+      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.341, 1e-3)
 
       stat = learner2.chi2("A", "C", {"B"});
-      TS_ASSERT_DELTA(stat.first, 15.2205, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 15.2205, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4)
     }
 
     void test_G2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
       auto                               resg2 = learner.G2("smoking", "lung_cancer");
-      TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4);
-      TS_ASSERT_DELTA(resg2.second, 0, 1e-4);
+      TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4)
+      TS_ASSERT_DELTA(resg2.second, 0, 1e-4)
 
       resg2 = learner.G2("smoking", "visit_to_Asia");
-      TS_ASSERT_DELTA(resg2.first, 1.1418, 1e-4);
-      TS_ASSERT_DELTA(resg2.second, 0.2852, 1e-4);
+      TS_ASSERT_DELTA(resg2.first, 1.1418, 1e-4)
+      TS_ASSERT_DELTA(resg2.second, 0.2852, 1e-4)
 
       resg2 = learner.G2("lung_cancer", "tuberculosis");
-      TS_ASSERT_DELTA(resg2.first, 1.2201, 1e-4);
-      TS_ASSERT_DELTA(resg2.second, 0.2693, 1e-4);
+      TS_ASSERT_DELTA(resg2.first, 1.2201, 1e-4)
+      TS_ASSERT_DELTA(resg2.second, 0.2693, 1e-4)
 
       resg2 = learner.G2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
-      TS_ASSERT_DELTA(resg2.first, 59.1386, 1e-4);
-      TS_ASSERT_DELTA(resg2.second, 0.0, 1e-4);
+      TS_ASSERT_DELTA(resg2.first, 59.1386, 1e-4)
+      TS_ASSERT_DELTA(resg2.second, 0.0, 1e-4)
 
       // see IndepTestChi2TestSuite::test_statistics
       gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/chi2.csv"));
 
       auto stat = learner2.G2("A", "C");
-      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.978, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.978, 1e-4)
 
       stat = learner2.G2("A", "B");
-      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4)
 
       stat = learner2.G2("B", "A");
-      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4)
 
       stat = learner2.G2("B", "D");
-      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.342, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.342, 1e-4)
 
       stat = learner2.G2("A", "C", {"B"});
-      TS_ASSERT_DELTA(stat.first, 16.3470, 1e-3);
-      TS_ASSERT_DELTA(stat.second, 0.0002, 1e-4);
+      TS_ASSERT_DELTA(stat.first, 16.3470, 1e-3)
+      TS_ASSERT_DELTA(stat.second, 0.0002, 1e-4)
     }
 
     void test_cmpG2Chi2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       auto                               statChi2 = learner.chi2("X", "Y");
-      TS_ASSERT_DELTA(statChi2.first, 15.3389, 1e-3);
-      TS_ASSERT_DELTA(statChi2.second, 0.01777843046460533, 1e-6);
+      TS_ASSERT_DELTA(statChi2.first, 15.3389, 1e-3)
+      TS_ASSERT_DELTA(statChi2.second, 0.01777843046460533, 1e-6)
       auto statG2 = learner.G2("X", "Y");
-      TS_ASSERT_DELTA(statG2.first, 16.6066, 1e-3);
-      TS_ASSERT_DELTA(statG2.second, 0.0108433, 1e-6);
+      TS_ASSERT_DELTA(statG2.first, 16.6066, 1e-3)
+      TS_ASSERT_DELTA(statG2.second, 0.0108433, 1e-6)
     }
 
     void test_loglikelihood() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/chi2.csv"));
-      TS_ASSERT_EQUALS(learner.nbRows(), (gum::Size)500);
-      TS_ASSERT_EQUALS(learner.nbCols(), (gum::Size)4);
+      TS_ASSERT_EQUALS(learner.nbRows(), (gum::Size)500)
+      TS_ASSERT_EQUALS(learner.nbCols(), (gum::Size)4)
 
       double siz = -1.0 * learner.database().size();
       learner.useNoApriori();
 
       auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR)
 
       stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
-      TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR);
+      TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
     }
 
     void test_errorFromPyagrum() {
@@ -1405,7 +1405,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)0);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)0)
       }
 
       {
@@ -1415,9 +1415,9 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")))
       }
 
       {
@@ -1429,9 +1429,9 @@ namespace gum_tests {
         learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")))
       }
 
       {
@@ -1443,10 +1443,10 @@ namespace gum_tests {
         learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
-        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")))
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")))
       }
     }
 
@@ -1461,7 +1461,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)0);
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)0)
       }
 
       {
@@ -1472,9 +1472,9 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")))
       }
 
       {
@@ -1487,9 +1487,9 @@ namespace gum_tests {
         learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)2)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")))
       }
 
       {
@@ -1502,21 +1502,21 @@ namespace gum_tests {
         learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3);
-        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
-        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)3)
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")))
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")))
       }
     }
 
     void testPseudoCount() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/minimal.csv"));
-      TS_ASSERT_EQUALS(learner.domainSize(0), 2u);
-      TS_ASSERT_EQUALS(learner.domainSize("X"), 2u);
-      TS_ASSERT_EQUALS(learner.domainSize(1), 2u);
-      TS_ASSERT_EQUALS(learner.domainSize("Y"), 2u);
-      TS_ASSERT_EQUALS(learner.domainSize(2), 3u);
-      TS_ASSERT_EQUALS(learner.domainSize("Z"), 3u);
+      TS_ASSERT_EQUALS(learner.domainSize(0), 2u)
+      TS_ASSERT_EQUALS(learner.domainSize("X"), 2u)
+      TS_ASSERT_EQUALS(learner.domainSize(1), 2u)
+      TS_ASSERT_EQUALS(learner.domainSize("Y"), 2u)
+      TS_ASSERT_EQUALS(learner.domainSize(2), 3u)
+      TS_ASSERT_EQUALS(learner.domainSize("Z"), 3u)
       learner.useNoApriori();
 
       TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector< gum::NodeId >({0})),
@@ -1543,7 +1543,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/asia.csv"), templ12);
       auto                               bn2 = learner2.learnParameters(templ12.dag());
-      TS_ASSERT_EQUALS(bn.cpt("lung_cancer").toString(), bn2.cpt("lung_cancer").toString());
+      TS_ASSERT_EQUALS(bn.cpt("lung_cancer").toString(), bn2.cpt("lung_cancer").toString())
 
       //////////////////////////
       // with score AIC
@@ -1560,26 +1560,26 @@ namespace gum_tests {
         auto I = gum::Instantiation(p);
         auto J = gum::Instantiation(q);
 
-        TS_ASSERT_DELTA(p[I], q[J], 1e-6);
+        TS_ASSERT_DELTA(p[I], q[J], 1e-6)
         ++I;
         ++J;
-        TS_ASSERT_DELTA(p[I], q[J], 1e-6);
+        TS_ASSERT_DELTA(p[I], q[J], 1e-6)
         ++J;
-        TS_ASSERT_DELTA(0.0, q[J], 1e-6);
+        TS_ASSERT_DELTA(0.0, q[J], 1e-6)
         ++I;
         ++J;
-        TS_ASSERT_DELTA(p[I], q[J], 1e-6);
+        TS_ASSERT_DELTA(p[I], q[J], 1e-6)
         ++I;
         ++J;
-        TS_ASSERT_DELTA(p[I], q[J], 1e-6);
+        TS_ASSERT_DELTA(p[I], q[J], 1e-6)
         ++J;
-        TS_ASSERT_DELTA(0.0, q[J], 1e-6);
+        TS_ASSERT_DELTA(0.0, q[J], 1e-6)
         ++J;
-        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6);
+        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6)
         ++J;
-        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6);
+        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6)
         ++J;
-        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6);
+        TS_ASSERT_DELTA(1.0 / 3.0, q[J], 1e-6)
       }
 
       auto templ35 = gum::BayesNet< double >::fastPrototype("smoking[3]->lung_cancer[3]");
@@ -1647,7 +1647,7 @@ namespace gum_tests {
 
       {
         auto state = learner.state();
-        TS_ASSERT_EQUALS(state.size(), (gum::Size)8);
+        TS_ASSERT_EQUALS(state.size(), (gum::Size)8)
         TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
         TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
 
@@ -1680,7 +1680,7 @@ namespace gum_tests {
       learner.setSliceOrder({{"loyalty", "renewal"}, {"recent visit", "corporate customer"}});
       {
         auto state = learner.state();
-        TS_ASSERT_EQUALS(state.size(), (gum::Size)10);
+        TS_ASSERT_EQUALS(state.size(), (gum::Size)10)
         TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
         TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
 
@@ -1722,7 +1722,7 @@ namespace gum_tests {
       learner.setInitialDAG(dag);
       {
         auto state = learner.state();
-        TS_ASSERT_EQUALS(state.size(), (gum::Size)11);
+        TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
         TS_ASSERT_EQUALS(std::get< 0 >(state[10]), "Initial DAG")
         TS_ASSERT_EQUALS(std::get< 1 >(state[10]), "True")
       }
@@ -1734,7 +1734,7 @@ namespace gum_tests {
       learner.useK2(std::vector< gum::NodeId >{5, 4, 3, 2, 1, 0});
       {
         auto state = learner.state();
-        TS_ASSERT_EQUALS(state.size(), (gum::Size)10);
+        TS_ASSERT_EQUALS(state.size(), (gum::Size)10)
         TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "K2 order")
         TS_ASSERT_EQUALS(
            std::get< 1 >(state[6]),
@@ -1747,7 +1747,7 @@ namespace gum_tests {
       learner.useAprioriBDeu();
       {
         auto state = learner.state();
-        TS_ASSERT_EQUALS(state.size(), (gum::Size)11);
+        TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
         TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Prior")
         TS_ASSERT_DIFFERS(std::get< 2 >(state[8]), "")   // there is a comment about AIC versus BDeu
       }

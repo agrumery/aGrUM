@@ -61,21 +61,21 @@ namespace gum_tests {
 
       gum::NetReader< double > reader(net, file);
 
-      TS_ASSERT_THROWS(reader.trace(false), gum::IOError);
+      TS_ASSERT_THROWS(reader.trace(false), gum::IOError)
 
       gum::Size nbrErr = 0;
 
-      TS_ASSERT_THROWS(nbrErr = reader.proceed(), gum::IOError);
+      TS_ASSERT_THROWS(nbrErr = reader.proceed(), gum::IOError)
 
-      TS_ASSERT(!nbrErr);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT(!nbrErr)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(net->empty());
+        TS_ASSERT(net->empty())
 
         delete net;
       }
@@ -94,15 +94,15 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
 
         delete net;
       }
@@ -121,15 +121,15 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
 
         delete net;
       }
@@ -148,15 +148,15 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
 
         delete net;
       }
@@ -175,16 +175,16 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
       // 0 warnings : no properties
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
       reader.showElegantErrors();
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
 
         delete net;
       }

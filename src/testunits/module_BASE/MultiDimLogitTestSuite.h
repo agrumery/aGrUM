@@ -40,29 +40,29 @@ namespace gum_tests {
       gum::MultiDimLogit< double > p(0.2f);
 
       // trying to change weight for a non cause
-      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument);
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument);
+      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument)
+      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument)
 
       // adding causes
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
       // doing the right stuff :)
-      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2)");
+      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2)")
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
-      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>))");
+      TS_ASSERT_EQUALS(p.toString(), "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>))")
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
       TS_ASSERT_EQUALS(
          p.toString(),
          "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>) +0.7*d:Labelized(<0,1>))");
 
-      TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4);
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       gum::MultiDimLogit< double > q(p);
       TS_ASSERT_EQUALS(
          q.toString(),
          "a:Labelized(<0,1>)=logit(0.2 +0.4*b:Labelized(<0,1>) +0.7*d:Labelized(<0,1>))");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       TS_GUM_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
       TS_ASSERT_EQUALS(q.toString(),
@@ -108,14 +108,14 @@ namespace gum_tests {
           i.chgVal(taux, taux[witness_taux[l]]);
           i.chgVal(angine, angine[witness_angine[l]]);
           i.chgVal(coeur, coeur[witness_coeur[l]]);
-          TS_ASSERT_DELTA(witness_proba[l], p[i], 15e-3);
+          TS_ASSERT_DELTA(witness_proba[l], p[i], 15e-3)
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
 
       gum::MultiDimLogit< double > q(p);
       gum::Instantiation           j(p);
       for (i.setFirst(), j.setFirst(); !i.end(); ++i, ++j) {
-        TS_ASSERT_DELTA(q[i], p[j], 1e-6);
+        TS_ASSERT_DELTA(q[i], p[j], 1e-6)
       }
     }
 
@@ -175,7 +175,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
       }
 
       gum::MultiDimLogit< double > q(p);
@@ -183,7 +183,7 @@ namespace gum_tests {
       j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(q[i], witness[j], 1e-6);
+        TS_ASSERT_DELTA(q[i], witness[j], 1e-6)
       }
     }
   };

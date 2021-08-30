@@ -80,26 +80,26 @@ namespace gum_tests {
       gum::SpanningForestPrim prim(&g, &cost);
 
       const gum::UndiGraph& g2 = prim.spanningForest();
-      TS_ASSERT_EQUALS(g2.sizeNodes(), 12U);
-      TS_ASSERT_EQUALS(g2.sizeEdges(), 9U);
-      TS_ASSERT_EQUALS(g2.existsEdge(id1, id2), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id1, id6), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id2, id4), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id3, id4), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id5, id6), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id7, id8), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id8, id10), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id9, id10), true);
-      TS_ASSERT_EQUALS(g2.existsEdge(id10, id11), true);
+      TS_ASSERT_EQUALS(g2.sizeNodes(), 12U)
+      TS_ASSERT_EQUALS(g2.sizeEdges(), 9U)
+      TS_ASSERT_EQUALS(g2.existsEdge(id1, id2), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id1, id6), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id2, id4), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id3, id4), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id5, id6), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id7, id8), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id8, id10), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id9, id10), true)
+      TS_ASSERT_EQUALS(g2.existsEdge(id10, id11), true)
 
       gum::SpanningForestPrim prim2(&g, &cost);
-      TS_ASSERT_EQUALS(prim2.costOfSpanningForest(), 53);
+      TS_ASSERT_EQUALS(prim2.costOfSpanningForest(), 53)
       const gum::EdgeSet& edges2 = prim2.edgesInSpanningForest();
-      TS_ASSERT_EQUALS(edges2.size(), 9U);
+      TS_ASSERT_EQUALS(edges2.size(), 9U)
 
       gum::SpanningForestPrim prim3(&g, &cost);
       const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
-      TS_ASSERT_EQUALS(edges3.size(), 9U);
+      TS_ASSERT_EQUALS(edges3.size(), 9U)
     }
   };
 }   // namespace gum_tests

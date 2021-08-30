@@ -141,11 +141,11 @@ namespace gum_tests {
       gum::InfluenceDiagram< double >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >());
 
-      TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode);
+      TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode)
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology, idList));
 
-      TS_ASSERT_THROWS(topology->add(*decisionVar1), gum::DuplicateLabel);
+      TS_ASSERT_THROWS(topology->add(*decisionVar1), gum::DuplicateLabel)
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete topology);
     }
@@ -155,45 +155,45 @@ namespace gum_tests {
       gum::List< gum::NodeId >        idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(topology, idList));
 
-      TS_ASSERT(topology.isDecisionNode(idList[0]));
-      TS_ASSERT(topology.isDecisionNode(idList[1]));
-      TS_ASSERT(topology.isDecisionNode(idList[2]));
-      TS_ASSERT(topology.isDecisionNode(idList[3]));
-      TS_ASSERT(!topology.isDecisionNode(idList[4]));
-      TS_ASSERT(!topology.isDecisionNode(idList[5]));
-      TS_ASSERT(!topology.isDecisionNode(idList[6]));
-      TS_ASSERT(!topology.isDecisionNode(idList[7]));
-      TS_ASSERT(!topology.isDecisionNode(idList[8]));
-      TS_ASSERT(!topology.isDecisionNode(idList[9]));
-      TS_ASSERT(!topology.isDecisionNode(idList[10]));
+      TS_ASSERT(topology.isDecisionNode(idList[0]))
+      TS_ASSERT(topology.isDecisionNode(idList[1]))
+      TS_ASSERT(topology.isDecisionNode(idList[2]))
+      TS_ASSERT(topology.isDecisionNode(idList[3]))
+      TS_ASSERT(!topology.isDecisionNode(idList[4]))
+      TS_ASSERT(!topology.isDecisionNode(idList[5]))
+      TS_ASSERT(!topology.isDecisionNode(idList[6]))
+      TS_ASSERT(!topology.isDecisionNode(idList[7]))
+      TS_ASSERT(!topology.isDecisionNode(idList[8]))
+      TS_ASSERT(!topology.isDecisionNode(idList[9]))
+      TS_ASSERT(!topology.isDecisionNode(idList[10]))
 
-      TS_ASSERT(!topology.isChanceNode(idList[0]));
-      TS_ASSERT(!topology.isChanceNode(idList[1]));
-      TS_ASSERT(!topology.isChanceNode(idList[2]));
-      TS_ASSERT(!topology.isChanceNode(idList[3]));
-      TS_ASSERT(topology.isChanceNode(idList[4]));
-      TS_ASSERT(topology.isChanceNode(idList[5]));
-      TS_ASSERT(topology.isChanceNode(idList[6]));
-      TS_ASSERT(topology.isChanceNode(idList[7]));
-      TS_ASSERT(topology.isChanceNode(idList[8]));
-      TS_ASSERT(!topology.isChanceNode(idList[9]));
-      TS_ASSERT(!topology.isChanceNode(idList[10]));
+      TS_ASSERT(!topology.isChanceNode(idList[0]))
+      TS_ASSERT(!topology.isChanceNode(idList[1]))
+      TS_ASSERT(!topology.isChanceNode(idList[2]))
+      TS_ASSERT(!topology.isChanceNode(idList[3]))
+      TS_ASSERT(topology.isChanceNode(idList[4]))
+      TS_ASSERT(topology.isChanceNode(idList[5]))
+      TS_ASSERT(topology.isChanceNode(idList[6]))
+      TS_ASSERT(topology.isChanceNode(idList[7]))
+      TS_ASSERT(topology.isChanceNode(idList[8]))
+      TS_ASSERT(!topology.isChanceNode(idList[9]))
+      TS_ASSERT(!topology.isChanceNode(idList[10]))
 
-      TS_ASSERT(!topology.isUtilityNode(idList[0]));
-      TS_ASSERT(!topology.isUtilityNode(idList[1]));
-      TS_ASSERT(!topology.isUtilityNode(idList[2]));
-      TS_ASSERT(!topology.isUtilityNode(idList[3]));
-      TS_ASSERT(!topology.isUtilityNode(idList[4]));
-      TS_ASSERT(!topology.isUtilityNode(idList[5]));
-      TS_ASSERT(!topology.isUtilityNode(idList[6]));
-      TS_ASSERT(!topology.isUtilityNode(idList[7]));
-      TS_ASSERT(!topology.isUtilityNode(idList[8]));
-      TS_ASSERT(topology.isUtilityNode(idList[9]));
-      TS_ASSERT(topology.isUtilityNode(idList[10]));
+      TS_ASSERT(!topology.isUtilityNode(idList[0]))
+      TS_ASSERT(!topology.isUtilityNode(idList[1]))
+      TS_ASSERT(!topology.isUtilityNode(idList[2]))
+      TS_ASSERT(!topology.isUtilityNode(idList[3]))
+      TS_ASSERT(!topology.isUtilityNode(idList[4]))
+      TS_ASSERT(!topology.isUtilityNode(idList[5]))
+      TS_ASSERT(!topology.isUtilityNode(idList[6]))
+      TS_ASSERT(!topology.isUtilityNode(idList[7]))
+      TS_ASSERT(!topology.isUtilityNode(idList[8]))
+      TS_ASSERT(topology.isUtilityNode(idList[9]))
+      TS_ASSERT(topology.isUtilityNode(idList[10]))
 
-      TS_ASSERT_EQUALS(topology.chanceNodeSize(), (gum::Size)5);
-      TS_ASSERT_EQUALS(topology.decisionNodeSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(topology.utilityNodeSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(topology.chanceNodeSize(), (gum::Size)5)
+      TS_ASSERT_EQUALS(topology.decisionNodeSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(topology.utilityNodeSize(), (gum::Size)2)
     }
 
     void testToDot() {
@@ -224,24 +224,24 @@ namespace gum_tests {
       gum::InfluenceDiagram< double >* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram< double >(source));
 
-      TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size());
-      TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs());
+      TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size())
+      TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs())
 
       for (const auto node: source.dag().nodes()) {
-        TS_ASSERT(copy->dag().exists(node));
+        TS_ASSERT(copy->dag().exists(node))
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
         const gum::DiscreteVariable& cpVar  = copy->variable(node);
-        TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
+        TS_ASSERT_EQUALS(srcVar.name(), cpVar.name())
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++)
-            TS_ASSERT_EQUALS(srcVar.label(i), cpVar.label(i));
+            TS_ASSERT_EQUALS(srcVar.label(i), cpVar.label(i))
         } else
-          TS_ASSERT(false);
+          TS_ASSERT(false)
 
         for (const auto parent: source.dag().parents(node)) {
-          TS_ASSERT(copy->dag().existsArc(parent, node));
+          TS_ASSERT(copy->dag().existsArc(parent, node))
         }
 
         if (source.isChanceNode(node)) {
@@ -259,7 +259,7 @@ namespace gum_tests {
               srcInst.chgVal(source.variable(id), cpInst.val(i));
             }
 
-            TS_ASSERT_EQUALS(cpCPT[cpInst], srcCPT[srcInst]);
+            TS_ASSERT_EQUALS(cpCPT[cpInst], srcCPT[srcInst])
           }
 
         } else if (source.isUtilityNode(node)) {
@@ -275,7 +275,7 @@ namespace gum_tests {
               srcInst.chgVal(source.variable(id), cpInst.val(i));
             }
 
-            TS_ASSERT_EQUALS(cpUT[cpInst], srcUT[srcInst]);
+            TS_ASSERT_EQUALS(cpUT[cpInst], srcUT[srcInst])
           }
         }
       }
@@ -293,17 +293,17 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)));
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)));
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)5);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5)
 
       // Test for uniqueness of the ids
 
       for (gum::Idx i = 0; i < idList.size() - 1; i++) {
         for (gum::Idx j = i + 1; j < idList.size(); j++) {
           if (idList[i] != idList[j]) {
-            TS_ASSERT(true);
+            TS_ASSERT(true)
           } else {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
           }
         }
       }
@@ -311,13 +311,13 @@ namespace gum_tests {
       gum::LabelizedVariable* varPtr = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
-      TS_ASSERT_EQUALS(*varPtr, *decisionVar1);
+      TS_ASSERT_EQUALS(*varPtr, *decisionVar1)
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar5);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar1);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar1)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar3)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar3)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar5)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar1)
     }
 
     void testInsertion_2() {
@@ -330,21 +330,21 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)5);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5)
 
       gum::LabelizedVariable* varPtr = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
-      TS_ASSERT_EQUALS(*varPtr, *decisionVar2);
+      TS_ASSERT_EQUALS(*varPtr, *decisionVar2)
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar2);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar2)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar4)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar1)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar4)
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2)
 
       gum::LabelizedVariable* utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
-      TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), gum::InvalidArgument);
+      TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), gum::InvalidArgument)
       delete utilityVar3;
     }
 
@@ -365,75 +365,75 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]));
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]));
 
-      TS_ASSERT_THROWS(id.addArc(idList[4], idList[0]), gum::InvalidArc);
-      TS_ASSERT_THROWS(id.addArc(idList[4], idList[3]), gum::InvalidArc);
+      TS_ASSERT_THROWS(id.addArc(idList[4], idList[0]), gum::InvalidArc)
+      TS_ASSERT_THROWS(id.addArc(idList[4], idList[3]), gum::InvalidArc)
 
-      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)6);
+      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)6)
     }
 
     void testEraseVar() {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      TS_ASSERT(id.empty());
-      TS_ASSERT(id.dag().emptyArcs());
+      TS_ASSERT(id.empty())
+      TS_ASSERT(id.dag().emptyArcs())
 
       fill(id, idList);
 
-      TS_ASSERT(!id.empty());
-      TS_ASSERT(!id.dag().emptyArcs());
+      TS_ASSERT(!id.empty())
+      TS_ASSERT(!id.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12)
 
       id.erase(idList[0]);
 
       for (const auto node: idList)
         id.erase(node);
 
-      TS_ASSERT(id.empty());
+      TS_ASSERT(id.empty())
 
-      TS_ASSERT(id.dag().emptyArcs());
+      TS_ASSERT(id.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)0);
-      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)0);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)0)
 
-      TS_ASSERT_EQUALS(id.decisionNodeSize(), (gum::Size)0);
-      TS_ASSERT_EQUALS(id.utilityNodeSize(), (gum::Size)0);
-      TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)0);
+      TS_ASSERT_EQUALS(id.decisionNodeSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(id.utilityNodeSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)0)
 
       idList.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(fill(id, idList));
 
-      TS_ASSERT(!id.empty());
-      TS_ASSERT(!id.dag().emptyArcs());
+      TS_ASSERT(!id.empty())
+      TS_ASSERT(!id.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12)
 
-      TS_ASSERT_EQUALS(id.decisionNodeSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.utilityNodeSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)5);
+      TS_ASSERT_EQUALS(id.decisionNodeSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.utilityNodeSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)5)
     }
 
     void testEraseArc() {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      TS_ASSERT(id.empty());
-      TS_ASSERT(id.dag().emptyArcs());
+      TS_ASSERT(id.empty())
+      TS_ASSERT(id.dag().emptyArcs())
 
       fill(id, idList);
 
-      TS_ASSERT(!id.empty());
-      TS_ASSERT(!id.dag().emptyArcs());
+      TS_ASSERT(!id.empty())
+      TS_ASSERT(!id.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(id.size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11);
-      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12);
+      TS_ASSERT_EQUALS(id.size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12)
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[9])));
@@ -448,8 +448,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])));
 
-      TS_ASSERT(!id.empty());
-      TS_ASSERT(id.dag().emptyArcs());
+      TS_ASSERT(!id.empty())
+      TS_ASSERT(id.dag().emptyArcs())
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
     }
@@ -459,7 +459,7 @@ namespace gum_tests {
       gum::List< gum::NodeId >        idList;
 
       for (const auto node: id.nodes()) {
-        TS_ASSERT(idList.exists(node));
+        TS_ASSERT(idList.exists(node))
       }
     }
 
@@ -472,7 +472,7 @@ namespace gum_tests {
       gum::Sequence< gum::NodeId > topoOrder;
       TS_GUM_ASSERT_THROWS_NOTHING(topoOrder = id.topologicalOrder());
 
-      TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)11);
+      TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)11)
     }
 
     void testTable() {
@@ -480,13 +480,13 @@ namespace gum_tests {
       gum::List< gum::NodeId >        idList;
 
       fill(id, idList);
-      TS_ASSERT_EQUALS(id.cpt(idList[4]).domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.cpt(idList[5]).domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.cpt(idList[6]).domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.cpt(idList[7]).domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), (gum::Size)8);
-      TS_ASSERT_EQUALS(id.utility(idList[9]).domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(id.cpt(idList[4]).domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.cpt(idList[5]).domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.cpt(idList[6]).domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.cpt(idList[7]).domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), (gum::Size)8)
+      TS_ASSERT_EQUALS(id.utility(idList[9]).domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), (gum::Size)4)
     }
 
     void testTableCoherencyVarRemoval() {
@@ -495,60 +495,60 @@ namespace gum_tests {
 
       fill(id, idList);
 
-      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)2);
-      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
-      TS_ASSERT(id.dag().existsArc(idList[7], idList[8]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)2)
+      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
+      TS_ASSERT(id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_1
          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
-      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1);
+      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1)
 
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])));
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[7]));
 
-      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1);
-      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
-      TS_ASSERT(!id.dag().existsArc(idList[7], idList[8]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1)
+      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
+      TS_ASSERT(!id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
       dmnSize_2 *= id.variable(idList[8]).domainSize();
-      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_2);
+      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_2)
 
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      TS_ASSERT_THROWS_ANYTHING(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])));
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])))
+      TS_ASSERT_THROWS_ANYTHING(id.cpt(idList[8]).contains(id.variable(idList[7])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
       // Testing coherence on utility table
-      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)2);
-      TS_ASSERT(id.dag().existsArc(idList[3], idList[10]));
-      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)2)
+      TS_ASSERT(id.dag().existsArc(idList[3], idList[10]))
+      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
 
       gum::Size dmnSize_3
          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
-      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3);
+      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3)
 
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[3])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])));
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[3])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[3]));
 
-      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1);
-      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
-      TS_ASSERT(!id.dag().existsArc(idList[3], idList[10]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1)
+      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
+      TS_ASSERT(!id.dag().existsArc(idList[3], idList[10]))
 
       gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
       dmnSize_4 *= id.variable(idList[10]).domainSize();
-      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_4);
+      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_4)
 
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])));
-      TS_ASSERT_THROWS_ANYTHING(id.utility(idList[10]).contains(id.variable(idList[3])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])));
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
+      TS_ASSERT_THROWS_ANYTHING(id.utility(idList[10]).contains(id.variable(idList[3])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
     }
 
     void testTableCoherencyArcRemoval() {
@@ -558,60 +558,60 @@ namespace gum_tests {
       fill(id, idList);
 
       // Testing Coherence on cpt
-      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)2);
-      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
-      TS_ASSERT(id.dag().existsArc(idList[7], idList[8]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)2)
+      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
+      TS_ASSERT(id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_1
          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
-      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1);
+      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1)
 
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])));
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
 
-      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1);
-      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
-      TS_ASSERT(!id.dag().existsArc(idList[7], idList[8]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1)
+      TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
+      TS_ASSERT(!id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
       dmnSize_2 *= id.variable(idList[8]).domainSize();
-      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_2);
+      TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_2)
 
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      TS_ASSERT(!id.cpt(idList[8]).contains(id.variable(idList[7])));
-      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])));
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])))
+      TS_ASSERT(!id.cpt(idList[8]).contains(id.variable(idList[7])))
+      TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
       // Testing coherence on utility table
-      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)2);
-      TS_ASSERT(id.dag().existsArc(idList[3], idList[10]));
-      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)2)
+      TS_ASSERT(id.dag().existsArc(idList[3], idList[10]))
+      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
 
       gum::Size dmnSize_3
          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
-      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3);
+      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3)
 
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[3])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])));
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[3])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
 
-      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1);
-      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
-      TS_ASSERT(!id.dag().existsArc(idList[3], idList[10]));
+      TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1)
+      TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
+      TS_ASSERT(!id.dag().existsArc(idList[3], idList[10]))
 
       gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
       dmnSize_4 *= id.variable(idList[10]).domainSize();
-      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_4);
+      TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_4)
 
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])));
-      TS_ASSERT(!id.utility(idList[10]).contains(id.variable(idList[3])));
-      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])));
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
+      TS_ASSERT(!id.utility(idList[10]).contains(id.variable(idList[3])))
+      TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
     }
 
     void testAccessorByName() {
@@ -621,17 +621,17 @@ namespace gum_tests {
       fill(id, idList);
 
       for (const auto node: id.nodes()) {
-        TS_ASSERT_EQUALS(id.idFromName(id.variable(node).name()), node);
-        TS_ASSERT_EQUALS(&id.variableFromName(id.variable(node).name()), &id.variable(node));
+        TS_ASSERT_EQUALS(id.idFromName(id.variable(node).name()), node)
+        TS_ASSERT_EQUALS(&id.variableFromName(id.variable(node).name()), &id.variable(node))
       }
 
-      TS_ASSERT_THROWS(id.idFromName("chorizo"), gum::NotFound);
+      TS_ASSERT_THROWS(id.idFromName("chorizo"), gum::NotFound)
 
-      TS_ASSERT_THROWS(id.variableFromName("chorizo"), gum::NotFound);
+      TS_ASSERT_THROWS(id.variableFromName("chorizo"), gum::NotFound)
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"));
       id.erase(id.idFromName("decisionVar1"));
-      TS_ASSERT_THROWS(id.idFromName("decisionVar1"), gum::NotFound);
+      TS_ASSERT_THROWS(id.idFromName("decisionVar1"), gum::NotFound)
     }
 
     void testDecisionPath() {
@@ -640,13 +640,13 @@ namespace gum_tests {
 
       fill(id, idList);
 
-      TS_ASSERT(!id.decisionOrderExists());
-      TS_ASSERT_THROWS(id.decisionOrder(), gum::NotFound);
+      TS_ASSERT(!id.decisionOrderExists())
+      TS_ASSERT_THROWS(id.decisionOrder(), gum::NotFound)
       id.addArc(idList[2], idList[1]);
       id.addArc(idList[7], idList[3]);
-      TS_ASSERT(id.decisionOrderExists());
-      TS_ASSERT_THROWS_NOTHING(id.decisionOrder());
-      TS_ASSERT_THROWS_NOTHING(id.getPartialTemporalOrder());
+      TS_ASSERT(id.decisionOrderExists())
+      TS_ASSERT_THROWS_NOTHING(id.decisionOrder())
+      TS_ASSERT_THROWS_NOTHING(id.getPartialTemporalOrder())
       gum::List< gum::NodeSet > partialTemporalOrder = id.getPartialTemporalOrder();
 
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
@@ -656,7 +656,7 @@ namespace gum_tests {
         int j = 0;
 
         for (const auto node: nodeset) {
-          TS_ASSERT_EQUALS(node, resultat[i][j]);
+          TS_ASSERT_EQUALS(node, resultat[i][j])
           j += 1;
         }
 
@@ -739,7 +739,7 @@ namespace gum_tests {
       id.addArc(idList[15], idList[19]);
 
       gum::UndiGraph moralGraph;
-      TS_ASSERT_THROWS_NOTHING(moralGraph = id.moralGraph(true));
+      TS_ASSERT_THROWS_NOTHING(moralGraph = id.moralGraph(true))
 
       // For comparison with what readers will return
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");

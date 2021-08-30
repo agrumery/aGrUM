@@ -43,7 +43,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isReferenceSlot( elt );
       // Assert
-      TS_ASSERT_EQUALS( actual, expected );
+      TS_ASSERT_EQUALS( actual, expected )
     }
 
     void testIsAttribute( const ClassElt& elt, bool expected ) {
@@ -51,7 +51,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isAttribute( elt );
       // Assert
-      TS_ASSERT_EQUALS( actual, expected );
+      TS_ASSERT_EQUALS( actual, expected )
     }
 
     void testIsSlotChain( const ClassElt& elt, bool expected ) {
@@ -59,7 +59,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isSlotChain( elt );
       // Assert
-      TS_ASSERT_EQUALS( actual, expected );
+      TS_ASSERT_EQUALS( actual, expected )
     }
 
     void testSetNodeId( ClassElt& elt ) {
@@ -69,8 +69,8 @@ namespace gum_tests {
       // Act
       elt.setId( new_id );
       // Assert
-      TS_ASSERT_DIFFERS( old_id, elt.id() );
-      TS_ASSERT_EQUALS( new_id, elt.id() );
+      TS_ASSERT_DIFFERS( old_id, elt.id() )
+      TS_ASSERT_EQUALS( new_id, elt.id() )
     }
 
     void test_obj_type( const ClassElt& elt ) {
@@ -79,7 +79,7 @@ namespace gum_tests {
       // Act
       auto actual = elt.obj_type();
       // Assert
-      TS_ASSERT_EQUALS( expected, actual );
+      TS_ASSERT_EQUALS( expected, actual )
     }
 
     void testSafeName( const ClassElt& elt ) {
@@ -98,7 +98,7 @@ namespace gum_tests {
       // Act
       auto actual = elt.safeName();
       // Assert
-      TS_ASSERT_EQUALS( expected, actual );
+      TS_ASSERT_EQUALS( expected, actual )
     }
 
     void testCast_NotAllowed( const ClassElt& elt ) {
@@ -107,7 +107,7 @@ namespace gum_tests {
       gum::prm::PRMType      bar{foo};
       // Assert
       try {
-        TS_ASSERT_THROWS( elt.cast( bar ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS( elt.cast( bar ), gum::OperationNotAllowed )
       } catch ( gum::OperationNotAllowed& ) {
       }
     }
@@ -119,9 +119,9 @@ namespace gum_tests {
                         gum::prm::PRMObject::RIGHT_CAST() + elt.name();
         std::string actual;
         // Act
-        TS_ASSERT_THROWS_NOTHING( actual = elt.cast( type ) );
+        TS_ASSERT_THROWS_NOTHING( actual = elt.cast( type ) )
         // Assert
-        TS_ASSERT_EQUALS( expected, actual );
+        TS_ASSERT_EQUALS( expected, actual )
       } catch ( gum::OperationNotAllowed&  ) {
         TS_FAIL( "Exception raised" );
       }

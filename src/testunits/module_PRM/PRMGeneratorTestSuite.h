@@ -69,17 +69,17 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
+      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)
 
       for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1);
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32);
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1)
+          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32)
         } else {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0);
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30);
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0)
+          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30)
         }
 
         gum::Size                                            six  = 0;
@@ -94,11 +94,11 @@ namespace gum_tests {
           } else if ((**a).type()->domainSize() == 2) {
             ++two;
           } else {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
           }
         }
 
-        TS_ASSERT_EQUALS(six, (gum::Size)30);
+        TS_ASSERT_EQUALS(six, (gum::Size)30)
 
         if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
       }
@@ -109,19 +109,19 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);
+        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30)
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
-          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);
+          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6)
         }
       }
 
       // testing instances
       const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)100);
+      TS_ASSERT_EQUALS(sys.size(), (gum::Size)100)
 
       if (prm) delete prm;
 
@@ -141,7 +141,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10);
+      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)
 
       for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
            iter != i_set.end();
@@ -149,11 +149,11 @@ namespace gum_tests {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1);
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32);
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1)
+          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32)
         } else {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0);
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30);
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0)
+          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30)
         }
 
         gum::Size                                            six  = 0;
@@ -168,11 +168,11 @@ namespace gum_tests {
           } else if ((**a).type()->domainSize() == 2) {
             ++two;
           } else {
-            TS_ASSERT(false);
+            TS_ASSERT(false)
           }
         }
 
-        TS_ASSERT_EQUALS(six, (gum::Size)30);
+        TS_ASSERT_EQUALS(six, (gum::Size)30)
 
         if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
       }
@@ -183,19 +183,19 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30);
+        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30)
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
-          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);
+          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6)
         }
       }
 
       // testing instances
       const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      TS_ASSERT(sys.size() > (gum::Size)100);
+      TS_ASSERT(sys.size() > (gum::Size)100)
 
       if (prm) delete prm;
 

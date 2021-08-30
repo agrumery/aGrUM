@@ -54,13 +54,13 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       gum::UAIBNReader< double > reader(net, file);
       reader.proceed();
 
       if (net != nullptr) {
-        TS_ASSERT(net->empty());
+        TS_ASSERT(net->empty())
         delete net;
       }
     }
@@ -72,13 +72,13 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)5);
+        TS_ASSERT(!net->empty())
+        TS_ASSERT_EQUALS(net->size(), (gum::Size)5)
 
         gum::NodeId node_1 = 0, node_2 = 0;
         node_1 = net->idFromName("0");
@@ -86,30 +86,30 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        TS_ASSERT_EQUALS(var_1.name(), "0");
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_1.name(), "0")
+        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
 
         const gum::Potential< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.2, 0.001);
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.2, 0.001)
         inst_1.setLast();
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.8, 0.001);
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.8, 0.001)
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        TS_ASSERT_EQUALS(var_2.name(), "1");
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_2.name(), "1")
+        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
 
         const gum::Potential< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.3, 0.001);
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.3, 0.001)
         inst_2.setLast();
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.7, 0.001);
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.7, 0.001)
         delete net;
       }
     }
@@ -122,16 +122,16 @@ namespace gum_tests {
 
       gum::Size nbErr = false;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)5);
+        TS_ASSERT_EQUALS(net->size(), (gum::Size)5)
 
         const gum::Potential< double >& proba = net->cpt(net->idFromName("2"));
 
-        TS_ASSERT_EQUALS(proba.domainSize(), (gum::Size)8);
+        TS_ASSERT_EQUALS(proba.domainSize(), (gum::Size)8)
 
         delete (net);
       }
@@ -144,8 +144,8 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -155,67 +155,67 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(idMap["4"]);
 
-        TS_ASSERT_EQUALS(var_1.name(), "4");
+        TS_ASSERT_EQUALS(var_1.name(), "4")
 
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
 
-        TS_ASSERT_EQUALS(var_1.label(0), "0");
+        TS_ASSERT_EQUALS(var_1.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_1.label(1), "1");
+        TS_ASSERT_EQUALS(var_1.label(1), "1")
 
         const gum::Potential< double >& proba_1 = net->cpt(idMap["4"]);
 
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_1(proba_1);
 
         inst_1.setFirst();
 
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.2, 0.001);
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.2, 0.001)
 
         inst_1.setLast();
 
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.8, 0.001);
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.8, 0.001)
 
         const gum::DiscreteVariable& var_2 = net->variable(idMap["2"]);
 
-        TS_ASSERT_EQUALS(var_2.name(), "2");
+        TS_ASSERT_EQUALS(var_2.name(), "2")
 
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
 
-        TS_ASSERT_EQUALS(var_2.label(0), "0");
+        TS_ASSERT_EQUALS(var_2.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_2.label(1), "1");
+        TS_ASSERT_EQUALS(var_2.label(1), "1")
 
         const gum::Potential< double >& proba_2 = net->cpt(idMap["2"]);
 
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_2(proba_2);
 
         inst_2.setFirst();
 
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.3, 0.001);
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.3, 0.001)
 
         inst_2.setLast();
 
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.7, 0.001);
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.7, 0.001)
 
         const gum::DiscreteVariable& var_3 = net->variable(idMap["0"]);
 
-        TS_ASSERT_EQUALS(var_3.name(), "0");
+        TS_ASSERT_EQUALS(var_3.name(), "0")
 
-        TS_ASSERT_EQUALS(var_3.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_3.domainSize(), (gum::Size)2)
 
-        TS_ASSERT_EQUALS(var_3.label(0), "0");
+        TS_ASSERT_EQUALS(var_3.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_3.label(1), "1");
+        TS_ASSERT_EQUALS(var_3.label(1), "1")
 
-        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["0"]));
+        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["0"]))
 
         const gum::Potential< double >& proba_3 = net->cpt(idMap["0"]);
 
-        TS_ASSERT_EQUALS(proba_3.domainSize(), (gum::Size)4);
+        TS_ASSERT_EQUALS(proba_3.domainSize(), (gum::Size)4)
 
         gum::Instantiation inst_3(proba_3);
 
@@ -223,39 +223,39 @@ namespace gum_tests {
 
         inst_3.chgVal(var_3, 0);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001);
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001)
 
         inst_3.chgVal(var_3, 1);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001);
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001)
 
         inst_3.chgVal(var_1, 1);
 
         inst_3.chgVal(var_3, 0);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001);
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001)
 
         inst_3.chgVal(var_3, 1);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001);
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001)
 
         const gum::DiscreteVariable& var_4 = net->variable(idMap["3"]);
 
-        TS_ASSERT_EQUALS(var_4.name(), "3");
+        TS_ASSERT_EQUALS(var_4.name(), "3")
 
-        TS_ASSERT_EQUALS(var_4.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_4.domainSize(), (gum::Size)2)
 
-        TS_ASSERT_EQUALS(var_4.label(0), "0");
+        TS_ASSERT_EQUALS(var_4.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_4.label(1), "1");
+        TS_ASSERT_EQUALS(var_4.label(1), "1")
 
-        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["3"]));
+        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["3"]))
 
-        TS_ASSERT(net->dag().existsArc(idMap["2"], idMap["3"]));
+        TS_ASSERT(net->dag().existsArc(idMap["2"], idMap["3"]))
 
         const gum::Potential< double >& proba_4 = net->cpt(idMap["3"]);
 
-        TS_ASSERT_EQUALS(proba_4.domainSize(), (gum::Size)8);
+        TS_ASSERT_EQUALS(proba_4.domainSize(), (gum::Size)8)
 
         gum::Instantiation inst_4(proba_4);
 
@@ -265,11 +265,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.4, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.4, 0.001)
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.6, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.6, 0.001)
 
         inst_4.chgVal(var_1, 1);
 
@@ -277,11 +277,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001)
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001)
 
         inst_4.chgVal(var_1, 0);
 
@@ -289,11 +289,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001)
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001)
 
         inst_4.chgVal(var_1, 1);
 
@@ -301,31 +301,31 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_EQUALS(proba_4[inst_4], 1);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 1)
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_EQUALS(proba_4[inst_4], 0);
+        TS_ASSERT_EQUALS(proba_4[inst_4], 0)
 
         const gum::DiscreteVariable& var_5 = net->variable(idMap["1"]);
 
-        TS_ASSERT_EQUALS(var_5.name(), "1");
+        TS_ASSERT_EQUALS(var_5.name(), "1")
 
-        TS_ASSERT_EQUALS(var_5.domainSize(), (gum::Size)3);
+        TS_ASSERT_EQUALS(var_5.domainSize(), (gum::Size)3)
 
-        TS_ASSERT_EQUALS(var_5.label(0), "0");
+        TS_ASSERT_EQUALS(var_5.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_5.label(1), "1");
+        TS_ASSERT_EQUALS(var_5.label(1), "1")
 
-        TS_ASSERT_EQUALS(var_5.label(2), "2");
+        TS_ASSERT_EQUALS(var_5.label(2), "2")
 
-        TS_ASSERT(net->dag().existsArc(idMap["2"], idMap["1"]));
+        TS_ASSERT(net->dag().existsArc(idMap["2"], idMap["1"]))
 
-        TS_ASSERT(net->dag().existsArc(idMap["0"], idMap["1"]));
+        TS_ASSERT(net->dag().existsArc(idMap["0"], idMap["1"]))
 
         const gum::Potential< double >& proba_5 = net->cpt(idMap["1"]);
 
-        TS_ASSERT_EQUALS(proba_5.domainSize(), (gum::Size)12);
+        TS_ASSERT_EQUALS(proba_5.domainSize(), (gum::Size)12)
 
         gum::Instantiation inst_5(proba_5);
 
@@ -335,15 +335,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.3, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.3, 0.001)
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001)
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.1, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.1, 0.001)
 
         inst_5.chgVal(var_2, 0);
 
@@ -351,15 +351,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001)
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001)
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001)
 
         inst_5.chgVal(var_2, 1);
 
@@ -367,15 +367,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.4, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.4, 0.001)
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001)
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001)
 
         inst_5.chgVal(var_2, 1);
 
@@ -383,33 +383,33 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001)
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001)
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_EQUALS(proba_5[inst_5], 0);
+        TS_ASSERT_EQUALS(proba_5[inst_5], 0)
 
         const gum::DiscreteVariable& var_6 = net->variable(idMap["5"]);
 
-        TS_ASSERT_EQUALS(var_6.name(), "5");
+        TS_ASSERT_EQUALS(var_6.name(), "5")
 
-        TS_ASSERT_EQUALS(var_6.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_6.domainSize(), (gum::Size)2)
 
-        TS_ASSERT_EQUALS(var_6.label(0), "0");
+        TS_ASSERT_EQUALS(var_6.label(0), "0")
 
-        TS_ASSERT_EQUALS(var_6.label(1), "1");
+        TS_ASSERT_EQUALS(var_6.label(1), "1")
 
-        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["5"]));
+        TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["5"]))
 
-        TS_ASSERT(net->dag().existsArc(idMap["1"], idMap["5"]));
+        TS_ASSERT(net->dag().existsArc(idMap["1"], idMap["5"]))
 
         const gum::Potential< double >& proba_6 = net->cpt(idMap["5"]);
 
-        TS_ASSERT_EQUALS(proba_6.domainSize(), (gum::Size)12);
+        TS_ASSERT_EQUALS(proba_6.domainSize(), (gum::Size)12)
 
         gum::Instantiation inst_6(proba_6);
 
@@ -419,29 +419,29 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.1, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.1, 0.001)
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.2, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.2, 0.001)
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.3, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.3, 0.001)
 
         inst_6.chgVal(var_1, 1);
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.4, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.4, 0.001)
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.5, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.5, 0.001)
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.6, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.6, 0.001)
 
         inst_6.chgVal(var_6, 1);
 
@@ -449,29 +449,29 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.7, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.7, 0.001)
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.8, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.8, 0.001)
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.9, 0.001);
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.9, 0.001)
 
         inst_6.chgVal(var_1, 1);
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 1);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 1)
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0)
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 0);
+        TS_ASSERT_EQUALS(proba_6[inst_6], 0)
 
         delete net;
       }
@@ -484,7 +484,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
     void testAsiaRead() {
       std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
@@ -493,7 +493,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
   };
 }   // namespace gum_tests

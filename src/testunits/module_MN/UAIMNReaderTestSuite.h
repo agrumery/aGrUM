@@ -54,13 +54,13 @@ namespace gum_tests {
       std::string               file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovNet< double >* net  = new gum::MarkovNet< double >();
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       gum::UAIMNReader< double > reader(net, file);
       reader.proceed();
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
+        TS_ASSERT(!net->empty())
         delete net;
       }
     }
@@ -72,13 +72,13 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT_DIFFERS(net, nullptr);
+      TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty());
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)3);
+        TS_ASSERT(!net->empty())
+        TS_ASSERT_EQUALS(net->size(), (gum::Size)3)
 
         gum::NodeId node_0 = 0, node_1 = 0, node_2 = 0;
         node_0 = net->idFromName("0");
@@ -86,34 +86,34 @@ namespace gum_tests {
         node_2 = net->idFromName("2");
 
         const gum::DiscreteVariable& var_0 = net->variable(node_0);
-        TS_ASSERT_EQUALS(var_0.name(), "0");
-        TS_ASSERT_EQUALS(var_0.domainSize(), (gum::Size)2);
+        TS_ASSERT_EQUALS(var_0.name(), "0")
+        TS_ASSERT_EQUALS(var_0.domainSize(), (gum::Size)2)
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        TS_ASSERT_EQUALS(var_2.name(), "2");
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)3);
+        TS_ASSERT_EQUALS(var_2.name(), "2")
+        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)3)
 
-        TS_ASSERT_EQUALS(net->factors().size(), (gum::Size)2);
+        TS_ASSERT_EQUALS(net->factors().size(), (gum::Size)2)
 
         const auto& factor_01 = net->factor({node_0, node_1});
-        TS_ASSERT_EQUALS(factor_01.domainSize(), (gum::Size)4);
-        TS_ASSERT_EQUALS(factor_01.nbrDim(), (gum::Size)2);
+        TS_ASSERT_EQUALS(factor_01.domainSize(), (gum::Size)4)
+        TS_ASSERT_EQUALS(factor_01.nbrDim(), (gum::Size)2)
 
         gum::Instantiation inst_01(factor_01);
         inst_01.setFirst();
-        TS_ASSERT_DELTA(factor_01[inst_01], 0.128, 0.001);
+        TS_ASSERT_DELTA(factor_01[inst_01], 0.128, 0.001)
         inst_01.setLast();
-        TS_ASSERT_DELTA(factor_01[inst_01], 0.08, 0.001);
+        TS_ASSERT_DELTA(factor_01[inst_01], 0.08, 0.001)
 
         const auto& factor_12 = net->factor({node_2, node_1});
-        TS_ASSERT_EQUALS(factor_12.domainSize(), (gum::Size)6);
-        TS_ASSERT_EQUALS(factor_12.nbrDim(), (gum::Size)2);
+        TS_ASSERT_EQUALS(factor_12.domainSize(), (gum::Size)6)
+        TS_ASSERT_EQUALS(factor_12.nbrDim(), (gum::Size)2)
 
         gum::Instantiation inst_12(factor_12);
         inst_12.setFirst();
-        TS_ASSERT_DELTA(factor_12[inst_12], 0.21, 0.001);
+        TS_ASSERT_DELTA(factor_12[inst_12], 0.21, 0.001)
         inst_12.setLast();
-        TS_ASSERT_DELTA(factor_12[inst_12], 0.189, 0.001);
+        TS_ASSERT_DELTA(factor_12[inst_12], 0.189, 0.001)
 
         delete net;
       }
@@ -126,19 +126,19 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT(!net.empty());
-      TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
+      TS_ASSERT(!net.empty())
+      TS_ASSERT_EQUALS(net.size(), (gum::Size)3)
 
       net = gum::MarkovNet< double >::fastPrototype("A--B");
       gum::UAIMNReader< double > reader2(&net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0);
+      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
-      TS_ASSERT(!net.empty());
-      TS_ASSERT_EQUALS(net.size(), (gum::Size)3);
+      TS_ASSERT(!net.empty())
+      TS_ASSERT_EQUALS(net.size(), (gum::Size)3)
     }
   };
 }   // namespace gum_tests

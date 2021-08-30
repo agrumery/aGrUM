@@ -58,7 +58,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(
          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
 
-      TS_ASSERT(requisite.size() >= 5);
+      TS_ASSERT(requisite.size() >= 5)
     }
   };
 }   // namespace gum_tests
