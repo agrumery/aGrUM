@@ -212,7 +212,8 @@ namespace gum_tests {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv"));
         TS_FAIL("asia3_withguill.csv contains syntax error (with \").");
-      } catch (gum::SyntaxError& e) { };
+      } catch (gum::SyntaxError& e) {
+      };
     }
 
     void test_ranges() {

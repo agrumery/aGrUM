@@ -84,7 +84,7 @@
 #  define GUM_SYNTAX_ERROR(msg, filename, line, column)                    \
     {                                                                      \
       std::ostringstream error_stream;                                     \
-      error_stream << "(" << line << ":" << column << "): " << msg;        \
+      error_stream << msg;        \
       throw(gum::SyntaxError(error_stream.str(), filename, line, column)); \
     }
 #endif   // GUM_FOR_SWIG
@@ -514,7 +514,12 @@ namespace gum {
 #  ifdef GUM_FOR_SWIG
     std::string what() const { return "[pyAgrum] " + msg_; }
 #  else    // GUM_FOR_SWIG
-    std::string what() const { return type_ + " : " + msg_; }
+    std::string what() const {
+      std::ostringstream error_stream;                                                     \
+      error_stream << type_ << ":"<<std::endl;
+      error_stream << filename() <<":"<<line()<<","<<col()<<" : "<<msg_;
+      return error_stream.str();
+    }
 #  endif   // GUM_FOR_SWIG
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

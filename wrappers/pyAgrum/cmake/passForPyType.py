@@ -194,13 +194,13 @@ with open(target, "r") as src:
       if debugmode:
         if line != originalline:
           pass  # print("## "+originalline.strip(),file=dst)
-      print(line, file=dst)
       if not typing_added:
-        if line.strip()[:30] == 'raise RuntimeError("Python 2.7':  # we add annotation module
+        if line.strip() == '# Import the low-level C/C++ module':  # we add annotation module
           print("## added by passForType (pyAgrum)", file=dst)
           print("from typing import List,Set,Dict,Tuple", file=dst)
-          print("## end of added by passForType (pyAgrum)", file=dst)
+          print("## end of added by passForType (pyAgrum)\n", file=dst)
           typing_added = True
+      print(line, file=dst)
 
 sum = 0
 for k in triggered:

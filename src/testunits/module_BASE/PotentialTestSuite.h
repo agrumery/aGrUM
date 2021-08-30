@@ -622,7 +622,7 @@ namespace gum_tests {
     void testEmptyPotential() {
       gum::Potential< double > p;
       gum::Instantiation       inst(p);
-      double                   a;
+      double                   a     = 0;
       auto                     var_a = gum::LabelizedVariable("a", "afoo", 3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(a = p[inst];);
