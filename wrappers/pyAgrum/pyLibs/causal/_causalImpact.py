@@ -22,21 +22,28 @@
 """
 This file gives an API for causal inference
 """
-from ._doorCriteria import *
-from ._dSeparation import *
-from ._doAST import *
+from typing import Union, Optional, Dict, Tuple, Set
+from pyAgrum.causal._types import NameSet
+from pyAgrum.causal._dSeparation import isDSep
+from pyAgrum.causal._doAST import ASTposteriorProba
 
-from ._exceptions import *
-from ._CausalModel import CausalModel
-from ._CausalFormula import CausalFormula, _getLabelIdx
-from ._doCalculus import doCalculusWithObservation, doCalculus, getFrontDoorTree, getBackDoorTree
+from pyAgrum.causal._exceptions import HedgeException
+
+from pyAgrum.causal._CausalModel import CausalModel
+from pyAgrum.causal._CausalFormula import CausalFormula, _getLabelIdx
+from pyAgrum.causal._doCalculus import doCalculusWithObservation, doCalculus, getFrontDoorTree, getBackDoorTree
+
+# pylint: disable=unused-import
+import pyAgrum as gum
+import pyAgrum.causal  # for annotations
 
 
 def causalImpact(cm: CausalModel,
                  on: Union[str, NameSet],
                  doing: Union[str, NameSet],
                  knowing: Optional[NameSet] = None,
-                 values: Optional[Dict[str, int]] = None) -> Tuple[CausalFormula, gum.Potential, str]:
+                 values: Optional[Dict[str, int]] = None) \
+   -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
   """
   Determines the causal impact of interventions.
 
@@ -75,10 +82,10 @@ def causalImpact(cm: CausalModel,
   if values is not None:
     for k in values.keys():
       if k not in total:
-        raise (ValueError, f"{k} is not in the query arguments.")
+        raise ValueError(f"{k} is not in the query arguments.")
 
   if len(son & sdoing & sk) > 0:
-    raise (ValueError, f"The 3 parts of the query (on, doing, knowing) must not intersect.")
+    raise ValueError("The 3 parts of the query (on, doing, knowing) must not intersect.")
 
   formula, potential, explanation = _causalImpact(cm, son, sdoing, sk)
 
@@ -95,7 +102,8 @@ def causalImpact(cm: CausalModel,
 
 def _causalImpact(cm: CausalModel, on: NameSet,
                   doing: NameSet,
-                  knowing: NameSet) -> Tuple[CausalFormula, gum.Potential, str]:
+                  knowing: NameSet) \
+   -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
   """
   Determines the causal impact of interventions.
 
@@ -114,16 +122,16 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   :param knowing: variable names set
   :return: the latex representation, the computation, the explanation
   """
-  nY = [y for y in on]
+  nY = list(on)
   iY = [cm.observationalBN().idFromName(i) for i in nY]
 
-  nDo = [d for d in doing]
+  nDo = list(doing)
   iDo = [cm.observationalBN().idFromName(i) for i in nDo]
 
   if knowing is None:
-    nK = list()
+    nK = []
   else:
-    nK = [k for k in knowing]
+    nK = list(knowing)
   sK = {cm.observationalBN().idFromName(i) for i in nK}
 
   # Null causal effect (different from non identifiable causal effect)
@@ -131,7 +139,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     explain = "No causal effect of X on Y, because they are d-separated "
     explain += "(conditioning on the observed variables if any)."
     ar = CausalFormula(cm, ASTposteriorProba(
-        cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
+      cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
     return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
@@ -142,20 +150,20 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     bd = cm.backDoor(iDo[0], iY[0], withNames=False)
     if bd is not None:
       ar = CausalFormula(cm, getBackDoorTree(
-          cm, nDo[0], nY[0], bd), on, doing, knowing)
+        cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
       explain = "backdoor " + \
-          str([cm.causalBN().variable(i).name() for i in bd]) + " found."
+                str([cm.causalBN().variable(i).name() for i in bd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
     # for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     fd = cm.frontDoor(iDo[0], iY[0], withNames=False)
     if fd is not None:
       ar = CausalFormula(cm, getFrontDoorTree(
-          cm, nDo[0], nY[0], fd), on, doing, knowing)
+        cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
       explain = "frontdoor " + \
-          str([cm.causalBN().variable(i).name() for i in fd]) + " found."
+                str([cm.causalBN().variable(i).name() for i in fd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
   # Go for do-calculus
@@ -183,7 +191,8 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   return ar, adj, explain
 
 
-def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]], whatif: Union[str, Set[str]]) -> CausalModel:
+def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(None)],
+                        whatif: Union[str, Set[str]]) -> CausalModel:
   """Determines the estimation of the twin model following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
   This is done according to the following algorithm:
@@ -194,7 +203,6 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 
   :param cm: CausalModel
   :param profile: Dictionary
-  :param on: variable name or variable names set
   :param whatif: variable name or variable names set
   :param values: Dictionary
   :type cm: pyAgrum.causal.CausalModel
@@ -242,16 +250,15 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 
   # Step 2 : We replace the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 in the BN
   # Saving the original CPTs of idiosyncratic variables
-  savers = dict.fromkeys(idiosyncratic)
   for factor in idiosyncratic:
     bn.cpt(factor).fillWith(posteriors[factor])
-    # bn.cpt(factor).fillWith(
-    #    posteriors[factor].translate(0.00001).normalizeAsCPT())
 
   return twincm
 
 
-def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], whatif:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> gum.Potential:
+def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]],
+                   whatif: Union[str, Set[str]],
+                   values: Union[Dict[str, int], type(None)] = None) -> "pyAgrum.Potential":
   """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
   Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "whatif" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
@@ -273,15 +280,15 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   :type whatif: Union[str, Set[str]]
   :type values: Union[Dict[str, int], type(None)]
   :return: the computation
-  :rtype: gum.Potential
+  :rtype: "pyAgrum.Potential"
   """
   # Step 1 and 2 : create the twin causal model
-  twincm = counterfactualModel(cm, profile, on, whatif)
+  twincm = counterfactualModel(cm, profile, whatif)
 
   # Step 3 : operate the intervention in the causal model based on bn
-  formula, adj, exp = causalImpact(
-      twincm, on=on, doing=whatif, values=values)
-  #cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
+  _, adj, _ = causalImpact(
+    twincm, on=on, doing=whatif, values=values)
+  # cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
   # adj is using variables from twincm. We copy it in a Potential using variables of cm
   res = gum.Potential()

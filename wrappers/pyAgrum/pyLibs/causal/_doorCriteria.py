@@ -32,7 +32,7 @@ import pyAgrum as gum
 from ._dSeparation import isParent, dSep_reduce, descendants, isDSep_parents
 
 
-def backdoor_path(bn: gum.BayesNet, x: str, y: str, zset: NameSet = None):
+def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None):
   """
   Predicate on the existence of an open back door path from ``x`` to ``y``,
   conditioning on the set of variables ``zset``
@@ -48,7 +48,7 @@ def backdoor_path(bn: gum.BayesNet, x: str, y: str, zset: NameSet = None):
   return not isDSep_parents(bn, x, y, zset)
 
 
-def exists_unblocked_directed_path(bn: gum.BayesNet, x: str, y: str, zset: NameSet = None) -> bool:
+def exists_unblocked_directed_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None) -> bool:
   """
   Predicate on the existence of a directed path from ``x`` to ``y`` in the Bayesian network ``bn``
   not blocked by nodes of ``zset``
@@ -70,7 +70,7 @@ def exists_unblocked_directed_path(bn: gum.BayesNet, x: str, y: str, zset: NameS
   return False
 
 
-def is_frontdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
+def is_frontdoor(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet) -> bool:
   """
   Tests whether or not ``zset`` satisifies the front door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
@@ -95,7 +95,7 @@ def is_frontdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
   return True
 
 
-def is_backdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
+def is_backdoor(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet) -> bool:
   """
   Tests whether or not ``zset`` satisifies the back door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
@@ -113,7 +113,7 @@ def is_backdoor(bn: gum.BayesNet, x: str, y: str, zset: NameSet) -> bool:
   return isDSep_parents(bn, x, y, zset)
 
 
-def backdoor_reach(bn: gum.BayesNet, a: NodeId) -> NodeSet:
+def backdoor_reach(bn: "pyAgrum.BayesNet", a: NodeId) -> NodeSet:
   """
   Returns the set of nodes that can be reached through a backdoor path from ``a`` in the graph ``bn``
 
@@ -122,7 +122,7 @@ def backdoor_reach(bn: gum.BayesNet, a: NodeId) -> NodeSet:
   :return:
   """
 
-  def inner_br(bn: gum.BayesNet, x: NodeId, pht: bool, reach0: NodeSet, reach1: NodeSet):
+  def inner_br(bn: "pyAgrum.BayesNet", x: NodeId, pht: bool, reach0: NodeSet, reach1: NodeSet):
     for c in bn.children(x):
       if c not in reach0 and c not in reach1:
         reach1.add(c)
@@ -145,7 +145,7 @@ def backdoor_reach(bn: gum.BayesNet, a: NodeId) -> NodeSet:
   return s
 
 
-def nodes_on_dipath(bn: gum.BayesNet, x: NodeId, y: NodeId) -> Optional[NodeSet]:
+def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[NodeSet]:
   """
   Returns the set of nodes through which there is a directed path from ``x`` to ``y`` in the graph ``bn``
 
@@ -155,7 +155,7 @@ def nodes_on_dipath(bn: gum.BayesNet, x: NodeId, y: NodeId) -> Optional[NodeSet]
   :return:
   """
 
-  def inner_nod(g: gum.BayesNet, a: NodeId, b: NodeId) -> Optional[NodeSet]:
+  def inner_nod(g: "pyAgrum.BayesNet", a: NodeId, b: NodeId) -> Optional[NodeSet]:
     if b == a:
       return set()
 
@@ -183,7 +183,7 @@ def nodes_on_dipath(bn: gum.BayesNet, x: NodeId, y: NodeId) -> Optional[NodeSet]
   return r
 
 
-def backdoor_generator(bn: gum.BayesNet, cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[NodeList]:
+def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[NodeList]:
   """
   Generates backdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
   ``not_bd`` (optional)
@@ -236,7 +236,7 @@ def backdoor_generator(bn: gum.BayesNet, cause: NodeId, effect: NodeId, not_bd: 
         yield list(subset)
 
 
-def frontdoor_generator(bn: gum.BayesNet, x: NodeId, y: NodeId, not_fd: NodeSet = None) -> Iterator[NodeList]:
+def frontdoor_generator(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, not_fd: NodeSet = None) -> Iterator[NodeList]:
   """
   Generates frontdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
   ``not_fd`` (optional)

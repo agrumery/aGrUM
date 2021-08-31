@@ -25,14 +25,19 @@ This file defines a representation of a causal query in a causal model
 
 from collections import defaultdict
 
-from ._types import *
-from ._doAST import ASTtree
+from typing import Union,Optional,Dict
+from pyAgrum.causal._types import NameSet
+from pyAgrum.causal._doAST import ASTtree
+
+# pylint: disable=unused-import
+import pyAgrum as gum
+import pyAgrum.causal  # for annotations
 
 
 class CausalFormula:
   """
   Represents a causal query in a causal model. The query is encoded as an CausalFormula that can be evaluated in the
-  causal model : $P(on|knowing,\overhook (doing))$
+  causal model : $P(on|knowing, \\overhook (doing))$
 
   :param cm: the causal model
   :param root: the syntax tree as the root ASTtree
@@ -41,7 +46,8 @@ class CausalFormula:
   :param knowing: the observation variables
   """
 
-  def __init__(self, cm: "CausalModel", root: ASTtree, on: Union[str, NameSet], doing: Union[str, NameSet],
+  def __init__(self, cm: "pyAgrum.causal.CausalModel", root: ASTtree, on: Union[str, NameSet],
+               doing: Union[str, NameSet],
                knowing: Optional[NameSet] = None):
     self._cm = cm
     self._root = root
@@ -74,16 +80,16 @@ class CausalFormula:
     :return: the string representing the causal query for this CausalFormula
     """
     if values is None:
-      values = dict()
+      values = {}
 
     def _getVarRepresentation(v: str) -> str:
       if v not in values:
         return v
-      else:
-        bn = self.cm.observationalBN()
-        label = bn.variable(self.cm.idFromName(v)).label(
-            _getLabelIdx(bn, v, values[v]))
-        return v + "=" + label
+
+      bn = self.cm.observationalBN()
+      label = bn.variable(self.cm.idFromName(v)).label(
+        _getLabelIdx(bn, v, values[v]))
+      return v + "=" + label
 
     # adding values when necessary
     on = [_getVarRepresentation(k) for k in self._on]
@@ -96,7 +102,7 @@ class CausalFormula:
     doOpSuff = gum.config["causal", "latex_do_suffix"]
     latexDo = ""
     if len(doing) > 0:
-      latexDo = ",".join([doOpPref+d+doOpSuff for d in doing])
+      latexDo = ",".join([doOpPref + d + doOpSuff for d in doing])
 
     latexKnw = ""
     if len(knowing) > 0:
@@ -129,10 +135,10 @@ class CausalFormula:
 
     :return: the new CausalFormula
     """
-    return CausalFormula(self.cm, self.root.copy())
+    return CausalFormula(self.cm, self.root.copy(), self._on, self._doing, self._knowing)
 
   @property
-  def cm(self) -> "CausalModel":
+  def cm(self) -> "pyAgrum.causal.CausalModel":
     """
     :return: the causal model
     """
@@ -145,17 +151,16 @@ class CausalFormula:
     """
     return self._root
 
-  def eval(self) -> gum.Potential:
+  def eval(self) -> "pyAgrum.Potential":
     """
     Compute the Potential from the CausalFormula over vars using cond as value for others variables
 
-    :param bn: the BN where to infer
     :return:
     """
     return self.root.eval(self.cm.observationalBN())
 
 
-def _getLabelIdx(bn: gum.BayesNet, varname: str, val: Union[int, str]) -> int:
+def _getLabelIdx(bn: "pyAgrum.BayesNet", varname: str, val: Union[int, str]) -> int:
   """
   Find the index of a label in a discrete variable from a BN.
 
@@ -168,5 +173,5 @@ def _getLabelIdx(bn: gum.BayesNet, varname: str, val: Union[int, str]) -> int:
   """
   if not isinstance(val, str):
     return val
-  else:
-    return bn.variableFromName(varname).index(val)
+
+  return bn.variableFromName(varname).index(val)

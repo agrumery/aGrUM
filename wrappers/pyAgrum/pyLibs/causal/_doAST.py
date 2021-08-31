@@ -1,31 +1,31 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin (LIP6), 2020  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin (LIP6), 2020  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This file defines the needed class for the representation of an abstract syntax tree for causal formula
 """
 
 from collections import defaultdict
-
-from ._exceptions import *
+from typing import Union, Dict, Optional, Iterable, List
+from pyAgrum.causal._types import NameSet
 
 
 class ASTtree:
@@ -35,8 +35,8 @@ class ASTtree:
   :param type: the type of the node (will be specified in concrete children classes.
   """
 
-  def __init__(self, type: str, verbose=False):
-    self._type = type
+  def __init__(self, typ: str, verbose=False):
+    self._type = typ
     self.__continueNextLine = "| "
     self._verbose = verbose
 
@@ -68,7 +68,7 @@ class ASTtree:
     """
     raise NotImplementedError
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Internal virtual function to create a LaTeX representation of a ASTtree
 
@@ -84,9 +84,10 @@ class ASTtree:
     """
     if nameOccur is None:
       nameOccur = defaultdict(int)
-    return self._toLatex(nameOccur)
+    return self.fastToLatex(nameOccur)
 
-  def _latexCorrect(self, srcName: Union[str, Iterable[str]], nameOccur: Dict[str, int]) -> Union[str, Iterable[str]]:
+  @staticmethod
+  def _latexCorrect(srcName: Union[str, Iterable[str]], nameOccur: Dict[str, int]) -> Union[str, Iterable[str]]:
     """
     Change the latex presentation of variable w.r.t the number of occurrence of this variable : for instance,
     add primes when necessary
@@ -103,8 +104,8 @@ class ASTtree:
 
     if isinstance(srcName, str):
       return __transform(srcName)
-    else:
-      return sorted([__transform(v) for v in srcName])
+
+    return sorted([__transform(v) for v in srcName])
 
   def copy(self) -> "ASTtree":
     """
@@ -114,7 +115,12 @@ class ASTtree:
     """
     raise NotImplementedError
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+    """
+    Evaluation of a AST tree from inside a BN
+    :param contextual_bn: the BN in which will be done the computations
+    :return: the resulting Potential
+    """
     raise NotImplementedError
 
 
@@ -127,10 +133,42 @@ class ASTBinaryOp(ASTtree):
   :param op2: right operand
   """
 
-  def __init__(self, type: str, op1: ASTtree, op2: ASTtree):
-    super().__init__(type)
+  def __init__(self, typ: str, op1: ASTtree, op2: ASTtree):
+    super().__init__(typ)
     self._op1: ASTtree = op1
     self._op2: ASTtree = op2
+
+  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+    """
+    Create a protected LaTeX representation of a ASTtree
+
+    :return: the LaTeX string
+    """
+    raise NotImplementedError
+
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
+    """
+    Internal virtual function to create a LaTeX representation of a ASTtree
+
+    :return: the LaTeX string
+    """
+    raise NotImplementedError
+
+  def copy(self) -> "ASTtree":
+    """
+    Copy an CausalFormula tree
+
+    :return: the new causal tree
+    """
+    raise NotImplementedError
+
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+    """
+    Evaluation of a AST tree from inside a BN
+    :param contextual_bn: the BN in which will be done the computations
+    :return: the resulting Potential
+    """
+    raise NotImplementedError
 
   @property
   def op1(self) -> ASTtree:
@@ -182,19 +220,19 @@ class ASTplus(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return f"\\left({self._toLatex(nameOccur)}\\right)"
+    return f"\\left({self.fastToLatex(nameOccur)}\\right)"
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
     :return: the LaTeX string
     """
-    return self.op1._toLatex(nameOccur) + '+' + self.op2._toLatex(nameOccur)
+    return self.op1.fastToLatex(nameOccur) + '+' + self.op2.fastToLatex(nameOccur)
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL operation + ", flush=True)
+      print("EVAL operation + ", flush=True)
     res = self.op1.eval(contextual_bn) + self.op2.eval(contextual_bn)
 
     if self._verbose:
@@ -228,19 +266,19 @@ class ASTminus(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return "\\left(" + self._toLatex(nameOccur) + "\\right)"
+    return "\\left(" + self.fastToLatex(nameOccur) + "\\right)"
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
     :return: the LaTeX string
     """
-    return self.op1._toLatex(nameOccur) + '-' + self.op2._toLatex(nameOccur)
+    return self.op1.fastToLatex(nameOccur) + '-' + self.op2.fastToLatex(nameOccur)
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL operation", flush=True)
+      print("EVAL operation", flush=True)
     res = self.op1.eval(contextual_bn) - self.op2.eval(contextual_bn)
 
     if self._verbose:
@@ -274,17 +312,17 @@ class ASTmult(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return self._toLatex(nameOccur)
+    return self.fastToLatex(nameOccur)
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
     :return: the LaTeX string
     """
-    return self.op1._protectToLatex(nameOccur) + ' \cdot ' + self.op2._protectToLatex(nameOccur)
+    return self.op1._protectToLatex(nameOccur) + ' \\cdot ' + self.op2._protectToLatex(nameOccur)
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
       print(f"EVAL operation * in context {context}", flush=True)
     res = self.op1.eval(contextual_bn) * self.op2.eval(contextual_bn)
@@ -320,17 +358,17 @@ class ASTdiv(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return self._toLatex(nameOccur)
+    return self.fastToLatex(nameOccur)
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
     :return: the LaTeX string
     """
-    return " \\frac {" + self.op1._toLatex(nameOccur) + "}{" + self.op2._toLatex(nameOccur) + "}"
+    return " \\frac {" + self.op1.fastToLatex(nameOccur) + "}{" + self.op2.fastToLatex(nameOccur) + "}"
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
       print(f"EVAL operation / in context {context}", flush=True)
     res = self.op1.eval(contextual_bn) / self.op2.eval(contextual_bn)
@@ -346,21 +384,21 @@ class ASTposteriorProba(ASTtree):
   Represent a conditional probability :math:`P_{bn}(vars|knw)` that can be computed by an inference in a BN.
 
   :param bn: the :class:`pyAgrum:pyAgrum.BayesNet`
-  :param vars: a set of variable names (in the BN)
+  :param varset: a set of variable names (in the BN)
   :param knw: a set of variable names (in the BN)
   """
 
-  def __init__(self, bn: gum.BayesNet, vars: NameSet, knw: NameSet):
+  def __init__(self, bn: "pyAgrum.BayesNet", varset: NameSet, knw: NameSet):
     super().__init__("_posterior_")
-    if type(vars) is not set:
+    if type(varset) is not set:
       raise (ValueError, "'vars' must be a set")
     if type(knw) is not set:
       raise (ValueError, "'knw' must be a set")
 
-    self._vars = vars
+    self._vars = varset
     self._bn = bn
     minKnames = {bn.variable(i).name() for i in
-                 bn.minimalCondSet(vars, knw)}
+                 bn.minimalCondSet(varset, knw)}
     self._knw = minKnames
 
   @property
@@ -378,7 +416,7 @@ class ASTposteriorProba(ASTtree):
     return self._knw
 
   @property
-  def bn(self) -> gum.BayesNet:
+  def bn(self) -> "pyAgrum.BayesNet":
     """
     :return: bn in :math:`P_{bn}(vars|knw)`
     """
@@ -405,9 +443,9 @@ class ASTposteriorProba(ASTtree):
 
     :return: the LaTeX string
     """
-    return self._toLatex(nameOccur)
+    return self.fastToLatex(nameOccur)
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
@@ -430,9 +468,9 @@ class ASTposteriorProba(ASTtree):
     """
     return ASTposteriorProba(self.bn, self.vars, self.knw)
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL ${self._toLatex(defaultdict(int))} in context {context}", flush=True)
+      print(f"EVAL ${self.fastToLatex(defaultdict(int))} in context {context}", flush=True)
     ie = gum.LazyPropagation(contextual_bn)
     p = None
 
@@ -454,11 +492,11 @@ class ASTposteriorProba(ASTtree):
         ie.makeInference()
         p = ie.jointPosterior(self.vars | self.knw) / ie.jointPosterior(self.knw)
 
-    # 
+    #
     # res = p.extract({k: v for k, v in context.todict().items() if k in self.vars + self.knw})
 
     if self._verbose:
-      print(f"END OF EVAL ${self._toLatex(defaultdict(int))}$ : {p}", flush=True)
+      print(f"END OF EVAL ${self.fastToLatex(defaultdict(int))}$ : {p}", flush=True)
 
     return p
 
@@ -507,18 +545,18 @@ class ASTjointProba(ASTtree):
 
     :return: the LaTeX string
     """
-    return self._toLatex(nameOccur)
+    return self.fastToLatex(nameOccur)
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
     :return: the LaTeX string
     """
     return "P\\left(" + ",".join(self._latexCorrect(self.varNames, nameOccur)) + "\\right)"
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL ${self._toLatex(defaultdict(int))}$ in context {context}", flush=True)
+      print(f"EVAL ${self.fastToLatex(defaultdict(int))}$ in context {context}", flush=True)
     ie = gum.LazyPropagation(contextual_bn)
     if len(self.varNames) > 1:
       svars = {name for name in self.varNames}
@@ -532,7 +570,7 @@ class ASTjointProba(ASTtree):
       res = ie.posterior(name)
 
     if self._verbose:
-      print(f"END OF EVAL ${self._toLatex(defaultdict(int))}$ : {res}", flush=True)
+      print(f"END OF EVAL ${self.fastToLatex(defaultdict(int))}$ : {res}", flush=True)
 
     return res
 
@@ -572,8 +610,7 @@ class ASTsum(ASTtree):
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return f"""{prefix}sum on {",".join(sorted(l))} for 
-{a.__str__(prefix + self._continueNextLine)}"""
+    return f"""{prefix}sum on {",".join(sorted(l))} for {a.__str__(prefix + self._continueNextLine)}"""
 
   def copy(self) -> "ASTtree":
     """
@@ -590,9 +627,9 @@ class ASTsum(ASTtree):
 
     :return: the LaTeX string
     """
-    return "\\left(" + self._toLatex(nameOccur) + "\\right)"
+    return "\\left(" + self.fastToLatex(nameOccur) + "\\right)"
 
-  def _toLatex(self, nameOccur: Dict[str, int]) -> str:
+  def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a LaTeX representation of a ASTtree
 
@@ -605,13 +642,13 @@ class ASTsum(ASTtree):
       nameOccur[a.var] += 1
       a = a.term
 
-    res = "\\sum_{" + (",".join(self._latexCorrect(la, nameOccur))) + "}{" + a._toLatex(nameOccur) + "}"
+    res = "\\sum_{" + (",".join(self._latexCorrect(la, nameOccur))) + "}{" + a.fastToLatex(nameOccur) + "}"
     for v in la:
       nameOccur[v] -= 1
 
     return res
 
-  def eval(self, contextual_bn: gum.BayesNet) -> gum.Potential:
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     """
     Evaluation of the sum
 
@@ -619,12 +656,12 @@ class ASTsum(ASTtree):
     :return: the value of the sum
     """
     if self._verbose:
-      print(f"EVAL ${self._toLatex(defaultdict(int))}$", flush=True)
+      print(f"EVAL ${self.fastToLatex(defaultdict(int))}$", flush=True)
 
     res = self.term.eval(contextual_bn).margSumOut([self.var])
 
     if self._verbose:
-      print(f"END OF EVAL ${self._toLatex(defaultdict(int))}$ : {res}", flush=True)
+      print(f"END OF EVAL ${self.fastToLatex(defaultdict(int))}$ : {res}", flush=True)
 
     return res
 

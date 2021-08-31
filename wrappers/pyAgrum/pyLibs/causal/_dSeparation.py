@@ -27,7 +27,7 @@ from ._types import *
 import pyAgrum as gum
 
 
-def isParent(a: NodeId, b: NodeId, g: gum.BayesNet) -> bool:
+def isParent(a: NodeId, b: NodeId, g: "pyAgrum.BayesNet") -> bool:
   """
   Predicate on whether ``a`` is parent of ``b`` in the graph ``g``, the graph must be a DAG
   """
@@ -44,7 +44,7 @@ def ancester(x: NodeId, dm: DirectedModel, anc: NodeSet):
       ancester(parent, dm, anc)
 
 
-def _reduce_moralize(bn: gum.BayesNet, x: NodeSet, y: NodeSet, zset: NodeSet) -> gum.UndiGraph:
+def _reduce_moralize(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, zset: NodeSet) -> "pyAgrum.UndiGraph":
   """
   Returns the undirected graph obtained by reducing (ancestor graph) and moralizing the Bayesian network ``bn``
 
@@ -81,13 +81,13 @@ def _reduce_moralize(bn: gum.BayesNet, x: NodeSet, y: NodeSet, zset: NodeSet) ->
   return G
 
 
-def _removeZ(g_undi: gum.UndiGraph, zset: NodeSet):
+def _removeZ(g_undi: "pyAgrum.UndiGraph", zset: NodeSet):
   for node in g_undi.nodes():
     if node in zset:
       g_undi.eraseNode(node)
 
 
-def _is_path_x_y(g_undi: gum.UndiGraph, sx: NodeSet, sy: NodeSet, marked: NodeSet = None) -> bool:
+def _is_path_x_y(g_undi: "pyAgrum.UndiGraph", sx: NodeSet, sy: NodeSet, marked: NodeSet = None) -> bool:
   """
   Predicate asserting the existence of a path between ``x`` and ``y`` in the non oriented graph
   ``g_undi``, without going through the optional marking set ``mark``
@@ -99,7 +99,7 @@ def _is_path_x_y(g_undi: gum.UndiGraph, sx: NodeSet, sy: NodeSet, marked: NodeSe
   :return: True if a path has been found
   """
 
-  def inner_ec(g_und: gum.UndiGraph, a: NodeId, b: NodeSet, m: NodeSet) -> bool:
+  def inner_ec(g_und: "pyAgrum.UndiGraph", a: NodeId, b: NodeSet, m: NodeSet) -> bool:
     if a in b:
       return True
 
@@ -129,7 +129,7 @@ def _is_path_x_y(g_undi: gum.UndiGraph, sx: NodeSet, sy: NodeSet, marked: NodeSe
   return False
 
 
-def isDSep_tech2(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
+def isDSep_tech2(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """
   Test of d-separation for ``x`` and ``y``, given ``zset`` using the graph-moralization method
 
@@ -149,13 +149,13 @@ def isDSep_tech2(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: NodeSet) -> b
   return True
 
 
-def isDSep_parents(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
+def isDSep_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``sx`` and ``sy`` given ``Z``, considering only the paths with an arc coming into ``x``
   using the graph-moralization method"""
   return _isDSep_tech2_parents(bn, sx, sy, zset)
 
 
-def _isDSep_tech2_parents(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
+def _isDSep_tech2_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``sx`` and ``sy`` given ``Z``, considering only the paths with an arc coming into ``x``
   using the graph-moralization method"""
   G = gum.UndiGraph()
@@ -189,7 +189,7 @@ def _isDSep_tech2_parents(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: Node
   return True
 
 
-def _isDSep_tech2_children(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
+def _isDSep_tech2_children(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``x`` and ``y`` given ``zset``, considering only the paths with an arc coming from ``x``
   using the graph-moralization method"""
   G = gum.UndiGraph()
@@ -221,7 +221,7 @@ def _isDSep_tech2_children(bn: gum.BayesNet, sx: NodeSet, sy: NodeSet, zset: Nod
   return True
 
 
-def _is_descendant(bn: gum.BayesNet, x: NodeId, y: NodeId, marked: NodeSet = None) -> bool:
+def _is_descendant(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, marked: NodeSet = None) -> bool:
   """ Asserts whether or not ``x`` is a descendant of ``y`` in ``bn`` """
 
   if marked is None:
@@ -239,7 +239,7 @@ def _is_descendant(bn: gum.BayesNet, x: NodeId, y: NodeId, marked: NodeSet = Non
   return False
 
 
-def _is_ascendant(bn: gum.BayesNet, x: NodeId, y: NodeId, marquage: Set[int] = None) -> bool:
+def _is_ascendant(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, marquage: Set[int] = None) -> bool:
   """Predicate on whether ``x`` is an ancestor of ``y`` in the Bayesian network ``bn``"""
 
   if isParent(x, y, bn):
@@ -257,7 +257,7 @@ def _is_ascendant(bn: gum.BayesNet, x: NodeId, y: NodeId, marquage: Set[int] = N
   return False
 
 
-def descendants(bn: gum.BayesNet, x: NodeId, marked: NodeSet = None, ensdesc: NodeSet = None) -> NodeSet:
+def descendants(bn: "pyAgrum.BayesNet", x: NodeId, marked: NodeSet = None, ensdesc: NodeSet = None) -> NodeSet:
   """ Returns a set composed by all the descendents of ``x`` in ``bn`` """
   if marked is None:
     marked = set()
@@ -304,7 +304,7 @@ def _filaires(bn: DirectedModel, interest: NodeSet = None, inf: bool = True) -> 
   return s
 
 
-def _barren_nodes(bn: gum.BayesNet, interest: NodeSet = None) -> NodeSet:
+def _barren_nodes(bn: "pyAgrum.BayesNet", interest: NodeSet = None) -> NodeSet:
   """Returns the set of recursively determined barren nodes in ``bn`` relatively to the set of nodes ``interest`` (if
   ``interest`` is void, then the whole set of nodes in the graph will be returned)"""
   s = set()
@@ -327,7 +327,7 @@ def _barren_nodes(bn: gum.BayesNet, interest: NodeSet = None) -> NodeSet:
   return s
 
 
-def partialDAGFromBN(bn: gum.BayesNet, Nexcl: NodeSet = None) -> gum.DAG:
+def partialDAGFromBN(bn: "pyAgrum.BayesNet", Nexcl: NodeSet = None) -> "pyAgrum.DAG":
   """ Creates and returns a duplicate DAG of the given Bayesian network """
 
   if Nexcl is None:
@@ -345,7 +345,7 @@ def partialDAGFromBN(bn: gum.BayesNet, Nexcl: NodeSet = None) -> gum.DAG:
   return d
 
 
-def dSep_reduce(g: gum.BayesNet, interest: NodeSet = None) -> gum.DAG:
+def dSep_reduce(g: "pyAgrum.BayesNet", interest: NodeSet = None) -> "pyAgrum.DAG":
   if interest is None:
     interest = set()
 
@@ -359,7 +359,7 @@ def dSep_reduce(g: gum.BayesNet, interest: NodeSet = None) -> gum.DAG:
   return reduced_g
 
 
-def blocked(bn: gum.BayesNet, pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
+def blocked(bn: "pyAgrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
             marquage0: Set[int],
             marquage1: Set[int]) -> bool:
   if x in y:
@@ -393,7 +393,7 @@ def blocked(bn: gum.BayesNet, pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
   return True
 
 
-def _isDSep_tech1_parents(bn: gum.BayesNet, x: NodeId, sy: NodeSet, zset: NodeSet, reduced: bool = False) -> bool:
+def _isDSep_tech1_parents(bn: "pyAgrum.BayesNet", x: NodeId, sy: NodeSet, zset: NodeSet, reduced: bool = False) -> bool:
   """ Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming into ``x``
   using the usual paths method"""
 
@@ -408,7 +408,7 @@ def _isDSep_tech1_parents(bn: gum.BayesNet, x: NodeId, sy: NodeSet, zset: NodeSe
   return True
 
 
-def _isDSep_tech1_children(bn: gum.BayesNet, x: NodeId, sy: NodeSet, setz: NodeSet, reduced=False) -> bool:
+def _isDSep_tech1_children(bn: "pyAgrum.BayesNet", x: NodeId, sy: NodeSet, setz: NodeSet, reduced=False) -> bool:
   """ Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming from ``x``
   using the usual paths method"""
 
@@ -423,7 +423,7 @@ def _isDSep_tech1_children(bn: gum.BayesNet, x: NodeId, sy: NodeSet, setz: NodeS
   return True
 
 
-def isDSep_tech1(bn: gum.BayesNet, x: NodeSet, y: NodeSet, setz: NodeSet, reduced=False) -> bool:
+def isDSep_tech1(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, setz: NodeSet, reduced=False) -> bool:
   """ Test of d-separation for ``x`` and ``y``, given ``Z`` using the usual paths method """
   sy = setify(y)
   sx = setify(x)
@@ -443,5 +443,5 @@ def isDSep_tech1(bn: gum.BayesNet, x: NodeSet, y: NodeSet, setz: NodeSet, reduce
   return True
 
 
-def isDSep(bn: gum.BayesNet, x: NodeSet, y: NodeSet, setz: NodeSet) -> bool:
+def isDSep(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, setz: NodeSet) -> bool:
   return isDSep_tech2(bn, x, y, setz)

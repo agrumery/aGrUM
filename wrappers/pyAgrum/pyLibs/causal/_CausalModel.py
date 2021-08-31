@@ -24,10 +24,14 @@ This file defines a representation for causal model
 """
 
 import itertools as it
-import pyAgrum as gum
 
-from ._types import *
-from ._doorCriteria import *
+from typing import Union, Dict, Tuple
+from pyAgrum.causal._types import LatentDescriptorList, NodeSet, NodeId, ArcSet, NameSet
+from pyAgrum.causal._doorCriteria import backdoor_generator, frontdoor_generator
+
+# pylint: disable=unused-import
+import pyAgrum as gum
+import pyAgrum.causal  # for annotations
 
 
 class CausalModel:
@@ -41,7 +45,7 @@ class CausalModel:
          this can be avoided by setting ``keepArcs`` to ``True``
   """
 
-  def __init__(self, bn: gum.BayesNet,
+  def __init__(self, bn: "pyAgrum.BayesNet",
                latentVarsDescriptor: LatentDescriptorList = None,
                keepArcs: bool = False):
     self.__observationalBN = bn
@@ -69,32 +73,49 @@ class CausalModel:
       self.addLatentVariable(n, ls, keepArcs)
 
     self.__names = {nId: self.__causalBN.variable(
-        nId).name() for nId in self.__causalBN.nodes()}
+      nId).name() for nId in self.__causalBN.nodes()}
 
-  def clone(self):
+  def clone(self) -> "pyAgrum.causal.CausalModel":
+    """
+    Copy a causal model
+
+    :return: the copy
+    """
     return CausalModel(gum.BayesNet(self.__observationalBN),
                        self.__latentVarsDescriptor,
                        self.__keepArcs)
 
-  def addLatentVariable(self, name: str, ls: Tuple[str, str], keepArcs: bool):
+  def addLatentVariable(self, name: str, lchild: Tuple[str, str], keepArcs: bool = False) -> None:
+    """
+    Add a new latent variable with a name, a tuple of children and replacing (or not) correlations between children.
+
+    :param name: the name of the latent variable
+    :param lchild: the tuple of (2) children
+    :param keepArcs: do wee keep (or not) the arc between the children
+    """
     # simplest variable to add : only 2 modalities for latent variables
     id_latent = self.__causalBN.add(name, 2)
     self.__lat.add(id_latent)
 
-    for item in ls:
+    for item in lchild:
       j = self.__observationalBN.idFromName(
-          item) if isinstance(item, str) else item
+        item) if isinstance(item, str) else item
       self.addCausalArc(id_latent, j)
 
     if not keepArcs:
-      ils = {self.__observationalBN.idFromName(x) for x in ls}
+      ils = {self.__observationalBN.idFromName(x) for x in lchild}
       for ix, iy in it.combinations(ils, 2):
         if ix in self.__causalBN.parents(iy):
           self.eraseCausalArc(ix, iy)
         elif iy in self.__causalBN.parents(ix):
           self.eraseCausalArc(iy, ix)
 
-  def toDot(self):
+  def toDot(self) -> str:
+    """
+    Create a dot representation of the causal model
+
+    :return: the dot representation in a string
+    """
     res = "digraph {"
 
     # latent variables
@@ -125,18 +146,18 @@ class CausalModel:
         res += '   "' + self.names()[n] + '";' + "\n"
 
     for a, b in self.arcs():
-      res += '   "'+self.names()[a] + '"->"' + self.names()[b]+'" '
+      res += '   "' + self.names()[a] + '"->"' + self.names()[b] + '" '
       if a in self.latentVariablesIds() or b in self.latentVariablesIds():
         res += ' [style="dashed"];'
       else:
-        black_color=gum.config['notebook','default_arc_color']
-        res += ' [color="'+black_color+':'+black_color+'"];'
-      res+="\n"
-    
+        black_color = gum.config['notebook', 'default_arc_color']
+        res += ' [color="' + black_color + ':' + black_color + '"];'
+      res += "\n"
+
     res += "\n};"
     return res
 
-  def causalBN(self) -> gum.BayesNet:
+  def causalBN(self) -> "pyAgrum.BayesNet":
     """
     :return: the causal Bayesian network
 
@@ -144,7 +165,7 @@ class CausalModel:
     """
     return self.__causalBN
 
-  def observationalBN(self) -> gum.BayesNet:
+  def observationalBN(self) -> "pyAgrum.BayesNet":
     """
     :return: the observational Bayesian network
     """
@@ -162,7 +183,7 @@ class CausalModel:
   def children(self, x: Union[NodeId, str]) -> NodeSet:
     """
     :param x: the node
-    :return: 
+    :return:
     """
     return self.__causalBN.children(self.__causalBN.idFromName(x) if isinstance(x, str) else x)
 
@@ -185,51 +206,105 @@ class CausalModel:
     """
     return self.__lat
 
-  def eraseCausalArc(self, x, y):
+  def eraseCausalArc(self, x: Union[NodeId, str], y: Union[NodeId, str]) -> None:
+    """
+    Erase the arc x->y
+
+    :param x: the nodeId or the name of the first node
+    :param y: the nodeId or the name of the second node
+    """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
     self.__causalBN.eraseArc(gum.Arc(ix, iy))
 
-  def addCausalArc(self, x, y):
+  def addCausalArc(self, x: Union[NodeId, str], y: Union[NodeId, str]) -> None:
+    """
+    Add an arc x->y
+
+    :param x: the nodeId or the name of the first node
+    :param y: the nodeId or the name of the second node
+    """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
     self.__causalBN.addArc(ix, iy)
 
-  def existsArc(self, x, y) -> bool:
+  def existsArc(self, x: Union[NodeId, str], y: Union[NodeId, str]) -> bool:
+    """
+    Does the arc x->y exist ?
+
+    :param x: the nodeId or the name of the first node
+    :param y: the nodeId or the name of the second node
+
+    :return: True if the arc exists.
+    """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
     return self.__causalBN.dag().existsArc(ix, iy)
 
-  def nodes(self):
+  def nodes(self) -> NodeSet:
+    """
+    :return: the set of nodes
+    """
+
     return self.__causalBN.nodes()
 
   def arcs(self) -> ArcSet:
+    """
+    :return: the set of arcs
+    """
     return self.__causalBN.arcs()
 
-  def backDoor(self, cause, effect, withNames=True):
+  def backDoor(self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True) -> Union[
+    None, NameSet, NodeSet]:
+    """
+    Check if a backdoor exists between cause and effet
+
+    :param cause: the nodeId or the name of the cause
+    :param effect: the nodeId or the name of the effect
+    :param withNames: does the function return the set of NodeId or the set of name ?
+    :return: None if no backdoor has been found. Otherwise the set of NodeId or names of the backdoor.
+    """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
     for bd in backdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
         return [self.__observationalBN.variable(i).name() for i in bd]
-      else:
-        return bd
+
+      return bd
+
     return None
 
-  def frontDoor(self, cause, effect, withNames=True):
+  def frontDoor(self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True) -> Union[
+    None, NameSet, NodeSet]:
+    """
+    Check if a frontdoor exists between cause and effet
+
+    :param cause: the nodeId or the name of the cause
+    :param effect: the nodeId or the name of the effect
+    :param withNames: does the function return the set of NodeId or the set of name ?
+    :return: None if no frontdoor has been found. Otherwise the set of NodeId or names of the frontdoor.
+    """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
     for fd in frontdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
         return [self.__observationalBN.variable(i).name() for i in fd]
-      else:
-        return fd
+
+      return fd
+
     return None
 
 
 def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
+  """
+  Create an causal model induced by a subset of nodes.
+  :param cm:  the causal model
+  :param sns: the set of nodes
+
+  :return: the sub-causal model
+  """
   if sns is None:
     sns = cm.nodes()
   nodes = sns - cm.latentVariablesIds()
@@ -245,7 +320,7 @@ def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
         bn.addArc(x, y)
 
   names = cm.names()
-  latentVarsDescriptor = list()
+  latentVarsDescriptor = []
   lats = cm.latentVariablesIds()
   for latentVar in lats:
     inters = cm.children(latentVar) & nodes
