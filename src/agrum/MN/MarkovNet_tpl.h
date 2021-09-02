@@ -123,6 +123,7 @@ namespace gum {
 
     // now we add the node in the BN
     NodeId idVar;
+    trim(name);
     try {
       idVar = mn.idFromName(name);
     } catch (NotFound&) {
@@ -148,7 +149,8 @@ namespace gum {
 
     for (const auto& clikchain: split(dotlike, ";")) {
       NodeSet cliq;
-      for (const auto& node: split(clikchain, "--")) {
+      for (auto& node: split(clikchain, "--")) {
+        trim(node);
         auto idVar = build_node_for_MN(mn, node, domainSize);
         cliq.insert(idVar);
       }

@@ -124,6 +124,7 @@ namespace gum {
 
     // now we add the node in the BN
     NodeId idVar;
+    trim(name);
     try {
       idVar = bn.idFromName(name);
     } catch (gum::NotFound&) {
@@ -146,13 +147,13 @@ namespace gum {
                                                                Size               domainSize) {
     gum::BayesNet< GUM_SCALAR > bn;
 
-
     for (const auto& chaine: split(dotlike, ";")) {
       NodeId lastId   = 0;
       bool   notfirst = false;
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
-        for (const auto& node: split(souschaine, "<-")) {
+        for (auto& node: split(souschaine, "<-")) {
+          trim(node);
           auto idVar = build_node(bn, node, domainSize);
           if (notfirst) {
             if (forward) {
