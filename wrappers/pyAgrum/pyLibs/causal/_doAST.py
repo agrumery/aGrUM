@@ -354,7 +354,7 @@ class ASTdiv(ASTBinaryOp):
 
     :return: the new CausalFormula tree
     """
-    return ASTdiv(self.op1.copy(), self.op2.copy())
+    return ASTdiv(self.op1.copy(), self.copy(self.op2.copy()))
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
@@ -480,7 +480,8 @@ class ASTposteriorProba(ASTtree):
 
     # simple case : we just need a CPT from the BN
     if len(self.vars) == 1:
-      x = self.vars.pop()
+      for x in self.vars:
+        break  # we keep the first one and only one
       ix = contextual_bn.idFromName(x)
       if {contextual_bn.variable(i).name() for i in contextual_bn.parents(ix)} == self.knw:
         p = contextual_bn.cpt(ix)
@@ -567,7 +568,8 @@ class ASTjointProba(ASTtree):
       ie.makeInference()
       res = ie.jointPosterior(svars)
     else:
-      name = self.varNames.pop()
+      for name in self.varNames:
+        break  # take the first and only one name in varNames
       ie.makeInference()
       res = ie.posterior(name)
 
@@ -615,7 +617,8 @@ class ASTsum(ASTtree):
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return f"""{prefix}sum on {",".join(sorted(l))} for {a.__str__(prefix + self._continueNextLine)}"""
+    return f"""{prefix}sum on {",".join(sorted(l))} for 
+{a.__str__(prefix + self._continueNextLine)}"""
 
   def copy(self) -> "ASTtree":
     """
