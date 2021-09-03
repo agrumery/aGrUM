@@ -24,13 +24,14 @@ This file defines a representation for causal model
 """
 
 import itertools as it
-
 from typing import Union, Dict, Tuple
+
+import pyAgrum
+
 from pyAgrum.causal._types import LatentDescriptorList, NodeSet, NodeId, ArcSet, NameSet
 from pyAgrum.causal._doorCriteria import backdoor_generator, frontdoor_generator
 
 # pylint: disable=unused-import
-import pyAgrum as gum
 import pyAgrum.causal  # for annotations
 
 
@@ -56,7 +57,7 @@ class CausalModel:
       latentVarsDescriptor = []
 
     # we have to redefine those attributes since the __observationalBN may be augmented by latent variables
-    self.__causalBN = gum.BayesNet()
+    self.__causalBN = pyAgrum.BayesNet()
 
     # nodes of BN
     for n in bn.nodes():
@@ -81,7 +82,7 @@ class CausalModel:
 
     :return: the copy
     """
-    return CausalModel(gum.BayesNet(self.__observationalBN),
+    return CausalModel(pyAgrum.BayesNet(self.__observationalBN),
                        self.__latentVarsDescriptor,
                        self.__keepArcs)
 
@@ -119,13 +120,13 @@ class CausalModel:
     res = "digraph {"
 
     # latent variables
-    if gum.config['causal', 'show_latent_names'] == 'True':
+    if pyAgrum.config['causal', 'show_latent_names'] == 'True':
       shap = "ellipse"
     else:
       shap = "point"
     res += f'''
-    node [fillcolor="{gum.config['causal', 'default_node_bgcolor']}",
-          fontcolor="{gum.config['causal', 'default_node_fgcolor']}",
+    node [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
+          fontcolor="{pyAgrum.config['causal', 'default_node_fgcolor']}",
           style=filled,shape={shap}];
       '''
     res += "\n"
@@ -135,8 +136,8 @@ class CausalModel:
         res += '   "' + self.names()[n] + '";' + "\n"
     # not latent variables
     res += f'''
-    node [fillcolor="{gum.config['causal', 'default_node_bgcolor']}",
-          fontcolor="{gum.config['causal', 'default_node_fgcolor']}",
+    node [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
+          fontcolor="{pyAgrum.config['causal', 'default_node_fgcolor']}",
           style=filled,shape="ellipse"];
       '''
     res += "\n"
@@ -150,7 +151,7 @@ class CausalModel:
       if a in self.latentVariablesIds() or b in self.latentVariablesIds():
         res += ' [style="dashed"];'
       else:
-        black_color = gum.config['notebook', 'default_arc_color']
+        black_color = pyAgrum.config['notebook', 'default_arc_color']
         res += ' [color="' + black_color + ':' + black_color + '"];'
       res += "\n"
 
@@ -215,7 +216,7 @@ class CausalModel:
     """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
-    self.__causalBN.eraseArc(gum.Arc(ix, iy))
+    self.__causalBN.eraseArc(pyAgrum.Arc(ix, iy))
 
   def addCausalArc(self, x: Union[NodeId, str], y: Union[NodeId, str]) -> None:
     """
@@ -309,7 +310,7 @@ def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
     sns = cm.nodes()
   nodes = sns - cm.latentVariablesIds()
 
-  bn = gum.BayesNet()
+  bn = pyAgrum.BayesNet()
 
   for n in nodes:
     bn.add(cm.observationalBN().variable(n), n)

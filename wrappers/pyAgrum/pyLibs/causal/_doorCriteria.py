@@ -23,25 +23,27 @@
 This files define some routines for front and back door
 """
 
-from ._types import *
-from typing import Iterator
-
+from typing import Iterator, Optional
 import itertools as it
-import pyAgrum as gum
 
-from ._dSeparation import isParent, dSep_reduce, descendants, isDSep_parents
+import pyAgrum
 
+from pyAgrum.causal._types import NameSet, NodeId, NodeSet, NodeList
+from pyAgrum.causal._dSeparation import isParent, dSep_reduce, descendants, isDSep_parents
 
-def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None):
+# pylint: disable=unused-import
+import pyAgrum.causal  # for annotations
+
+def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None)->bool:
   """
   Predicate on the existence of an open back door path from ``x`` to ``y``,
   conditioning on the set of variables ``zset``
 
-  :param bn:
-  :param x:
-  :param y:
-  :param zset:
-  :return:
+  :param bn: the DAG model
+  :param x: name of source node
+  :param y: name of destination node
+  :param zset: names of conditioning nodes
+  :return: True if such backdoor exists
   """
   if zset is None:
     zset = set()
@@ -160,22 +162,19 @@ def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[No
       return set()
 
     inners = {a}
-
     children = g.children(a)
-
     if len(children) == 0:
       return None
+
     found = False
     for c in children:
-
       s = inner_nod(g, c, b)
       if s is not None:
         found = True
         inners |= s
     if found:
       return inners
-    else:
-      return None
+    return None
 
   r = inner_nod(bn, x, y)
   if r:
@@ -183,7 +182,8 @@ def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[No
   return r
 
 
-def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[NodeList]:
+def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[
+  NodeList]:
   """
   Generates backdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
   ``not_bd`` (optional)
@@ -208,7 +208,7 @@ def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, no
 
   # removing the non connected in G without descendants
   # GG is a trash graph just to find the disjointed nodes in G
-  GG=gum.DiGraph(G)
+  GG = pyAgrum.DiGraph(G)
   for i in descendants(bn, cause, set()):
     GG.eraseNode(i)
 

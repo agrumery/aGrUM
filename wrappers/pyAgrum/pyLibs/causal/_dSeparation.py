@@ -22,9 +22,14 @@
 """
 This file defines functions for dSeparation crtieria
 """
-from ._types import *
+from typing import Set
 
-import pyAgrum as gum
+import pyAgrum
+
+from pyAgrum.causal._types import NodeId,DirectedModel,NodeSet
+
+# pylint: disable=unused-import
+import pyAgrum.causal  # for annotations
 
 
 def isParent(a: NodeId, b: NodeId, g: "pyAgrum.BayesNet") -> bool:
@@ -54,7 +59,7 @@ def _reduce_moralize(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, zset: NodeS
   :param zset: Third NodeSet generating the ancestor graph
   :return:
   """
-  G = gum.UndiGraph()
+  G = pyAgrum.UndiGraph()
 
   Ancetre = x | y
   anc = frozenset(Ancetre)
@@ -134,7 +139,7 @@ def isDSep_tech2(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet
   Test of d-separation for ``x`` and ``y``, given ``zset`` using the graph-moralization method
 
   :param bn: the bayes net
-  :param x: 
+  :param x:
   :param y:
   :param zset:
   :return: True if ``Z`` d-separates ``x`` and ``y``
@@ -158,7 +163,7 @@ def isDSep_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeS
 def _isDSep_tech2_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``sx`` and ``sy`` given ``Z``, considering only the paths with an arc coming into ``x``
   using the graph-moralization method"""
-  G = gum.UndiGraph()
+  G = pyAgrum.UndiGraph()
   ancesters = sx | sy
   anc = frozenset(ancesters)
   for i in anc:
@@ -192,7 +197,7 @@ def _isDSep_tech2_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset
 def _isDSep_tech2_children(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``x`` and ``y`` given ``zset``, considering only the paths with an arc coming from ``x``
   using the graph-moralization method"""
-  G = gum.UndiGraph()
+  G = pyAgrum.UndiGraph()
   ancesters = sx | sy
   for i in sy:
     ancester(i, bn, ancesters)
@@ -215,7 +220,7 @@ def _isDSep_tech2_children(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zse
           G.addEdge(par, par2)
   _removeZ(G, zset)
 
-  if _is_path_x_y(G, x, y):
+  if _is_path_x_y(G, sx, sy):
     return False
 
   return True
@@ -332,7 +337,7 @@ def partialDAGFromBN(bn: "pyAgrum.BayesNet", Nexcl: NodeSet = None) -> "pyAgrum.
 
   if Nexcl is None:
     Nexcl = set()
-  d = gum.DAG()
+  d = pyAgrum.DAG()
 
   nodes = set(bn.nodes()) - (Nexcl)
   for n in nodes:
@@ -346,6 +351,14 @@ def partialDAGFromBN(bn: "pyAgrum.BayesNet", Nexcl: NodeSet = None) -> "pyAgrum.
 
 
 def dSep_reduce(g: "pyAgrum.BayesNet", interest: NodeSet = None) -> "pyAgrum.DAG":
+  """
+  Reduce a BN by removing barren nodes w.r.t a set of nodes.
+
+  :param g: the BN
+  :param interest: the nodes to check
+
+  :return: the reduced DAG
+  """
   if interest is None:
     interest = set()
 
@@ -359,9 +372,12 @@ def dSep_reduce(g: "pyAgrum.BayesNet", interest: NodeSet = None) -> "pyAgrum.DAG
   return reduced_g
 
 
-def blocked(bn: "pyAgrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
-            marquage0: Set[int],
-            marquage1: Set[int]) -> bool:
+def _blocked(bn: "pyAgrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
+             marquage0: Set[int],
+             marquage1: Set[int]) -> bool:
+  """
+  internal method to check if a path is blocked
+  """
   if x in y:
     return False
 
@@ -375,19 +391,19 @@ def blocked(bn: "pyAgrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: Nod
 
   if not isInxZ and not wasIn:
     for c in bn.children(x):
-      if c not in marquage1 and not blocked(bn, True, c, y, setz, marquage0, marquage1):
+      if c not in marquage1 and not _blocked(bn, True, c, y, setz, marquage0, marquage1):
         return False
 
   if pht:
     if isInxZ or len(setz & descendants(bn, x)) != 0:
       for p in bn.parents(x):
-        if p not in marquage0 and not blocked(bn, False, p, y, setz, marquage0, marquage1):
+        if p not in marquage0 and not _blocked(bn, False, p, y, setz, marquage0, marquage1):
           return False
 
   else:
     if not isInxZ:
       for p in bn.parents(x):
-        if p not in marquage0 and not blocked(bn, False, p, y, setz, marquage0, marquage1):
+        if p not in marquage0 and not _blocked(bn, False, p, y, setz, marquage0, marquage1):
           return False
 
   return True
@@ -403,7 +419,7 @@ def _isDSep_tech1_parents(bn: "pyAgrum.BayesNet", x: NodeId, sy: NodeSet, zset: 
     g = bn
 
   for p in g.parents(x):
-    if not blocked(g, False, p, sy, zset, {x}, {x}):
+    if not _blocked(g, False, p, sy, zset, {x}, {x}):
       return False
   return True
 
@@ -418,15 +434,13 @@ def _isDSep_tech1_children(bn: "pyAgrum.BayesNet", x: NodeId, sy: NodeSet, setz:
     g = bn
 
   for c in g.children(x):
-    if not blocked(g, True, c, sy, setz, {x}, {x}):
+    if not _blocked(g, True, c, sy, setz, {x}, {x}):
       return False
   return True
 
 
-def isDSep_tech1(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, setz: NodeSet, reduced=False) -> bool:
+def isDSep_tech1(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, setz: NodeSet, reduced=False) -> bool:
   """ Test of d-separation for ``x`` and ``y``, given ``Z`` using the usual paths method """
-  sy = setify(y)
-  sx = setify(x)
 
   if len(sx) > len(sy):
     sx, sy = sy, sx
@@ -443,5 +457,14 @@ def isDSep_tech1(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, setz: NodeSet, 
   return True
 
 
-def isDSep(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, setz: NodeSet) -> bool:
-  return isDSep_tech2(bn, x, y, setz)
+def isDSep(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, z: NodeSet) -> bool:
+  """
+  Check if x and y are d-separated by setz in the BN
+
+  :param bn: the BN
+  :param x: a set of nodes
+  :param y: a set of nodes
+  :param z: a set of nodes
+  :return: true if x and y are d-separeted by z
+  """
+  return isDSep_tech2(bn, x, y, z)

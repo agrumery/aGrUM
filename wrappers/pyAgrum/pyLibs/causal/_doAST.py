@@ -25,8 +25,12 @@ This file defines the needed class for the representation of an abstract syntax 
 
 from collections import defaultdict
 from typing import Union, Dict, Optional, Iterable, List
+
+import pyAgrum
 from pyAgrum.causal._types import NameSet
 
+# pylint: disable=unused-import
+import pyAgrum.causal  # for annotations
 
 class ASTtree:
   """
@@ -60,7 +64,7 @@ class ASTtree:
     """
     raise NotImplementedError
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -138,7 +142,7 @@ class ASTBinaryOp(ASTtree):
     self._op1: ASTtree = op1
     self._op2: ASTtree = op2
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -214,7 +218,7 @@ class ASTplus(ASTBinaryOp):
     """
     return ASTplus(self.op1.copy(), self.op2.copy())
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -260,7 +264,7 @@ class ASTminus(ASTBinaryOp):
     """
     return ASTminus(self.op1.copy(), self.op2.copy())
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -306,7 +310,7 @@ class ASTmult(ASTBinaryOp):
     """
     return ASTmult(self.op1.copy(), self.op2.copy())
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -320,11 +324,11 @@ class ASTmult(ASTBinaryOp):
 
     :return: the LaTeX string
     """
-    return self.op1._protectToLatex(nameOccur) + ' \\cdot ' + self.op2._protectToLatex(nameOccur)
+    return self.op1.protectToLatex(nameOccur) + ' \\cdot ' + self.op2.protectToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL operation * in context {context}", flush=True)
+      print("EVAL operation * in context", flush=True)
     res = self.op1.eval(contextual_bn) * self.op2.eval(contextual_bn)
 
     if self._verbose:
@@ -350,9 +354,9 @@ class ASTdiv(ASTBinaryOp):
 
     :return: the new CausalFormula tree
     """
-    return ASTdiv(self.op1.copy(), self.copy(self.op2.copy()))
+    return ASTdiv(self.op1.copy(), self.op2.copy())
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -370,7 +374,7 @@ class ASTdiv(ASTBinaryOp):
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL operation / in context {context}", flush=True)
+      print("EVAL operation / in context", flush=True)
     res = self.op1.eval(contextual_bn) / self.op2.eval(contextual_bn)
 
     if self._verbose:
@@ -390,10 +394,10 @@ class ASTposteriorProba(ASTtree):
 
   def __init__(self, bn: "pyAgrum.BayesNet", varset: NameSet, knw: NameSet):
     super().__init__("_posterior_")
-    if type(varset) is not set:
-      raise (ValueError, "'vars' must be a set")
-    if type(knw) is not set:
-      raise (ValueError, "'knw' must be a set")
+    if not isinstance(varset, set):
+      raise ValueError("'varset' must be a set")
+    if not isinstance(knw, set):
+      raise ValueError("'knw' must be a set")
 
     self._vars = varset
     self._bn = bn
@@ -437,7 +441,7 @@ class ASTposteriorProba(ASTtree):
     s += ")"
     return f"{prefix}{s}"
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -470,14 +474,13 @@ class ASTposteriorProba(ASTtree):
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL ${self.fastToLatex(defaultdict(int))} in context {context}", flush=True)
-    ie = gum.LazyPropagation(contextual_bn)
+      print(f"EVAL ${self.fastToLatex(defaultdict(int))} in context", flush=True)
+    ie = pyAgrum.LazyPropagation(contextual_bn)
     p = None
 
     # simple case : we just need a CPT from the BN
     if len(self.vars) == 1:
-      for x in self.vars:
-        break  # we keep the first one and only one
+      x = self.vars.pop()
       ix = contextual_bn.idFromName(x)
       if {contextual_bn.variable(i).name() for i in contextual_bn.parents(ix)} == self.knw:
         p = contextual_bn.cpt(ix)
@@ -539,7 +542,7 @@ class ASTjointProba(ASTtree):
     """
     return ASTjointProba(self.varNames)
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 
@@ -556,16 +559,15 @@ class ASTjointProba(ASTtree):
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     if self._verbose:
-      print(f"EVAL ${self.fastToLatex(defaultdict(int))}$ in context {context}", flush=True)
-    ie = gum.LazyPropagation(contextual_bn)
+      print(f"EVAL ${self.fastToLatex(defaultdict(int))}$ in context", flush=True)
+    ie = pyAgrum.LazyPropagation(contextual_bn)
     if len(self.varNames) > 1:
-      svars = {name for name in self.varNames}
+      svars = set(self.varNames)
       ie.addJointTarget(svars)
       ie.makeInference()
       res = ie.jointPosterior(svars)
     else:
-      for name in self.varNames:
-        break  # take the first and only one name in varNames
+      name = self.varNames.pop()
       ie.makeInference()
       res = ie.posterior(name)
 
@@ -586,7 +588,7 @@ class ASTsum(ASTtree):
   def __init__(self, var: List[str], term: ASTtree):
     super().__init__("_sum_")
 
-    va = (var if type(var) == list else [var])
+    va = var if isinstance(var, list) else [var]
     self.var = va[0]
 
     if len(va) > 1:
@@ -595,7 +597,10 @@ class ASTsum(ASTtree):
       self._term = term
 
   @property
-  def term(self):
+  def term(self) -> ASTtree:
+    """
+    :return: the ASTtree of the expression inside the sum
+    """
     return self._term
 
   def __str__(self, prefix: str = "") -> str:
@@ -621,7 +626,7 @@ class ASTsum(ASTtree):
 
     return ASTsum(self.var, self.term.copy())
 
-  def _protectToLatex(self, nameOccur: Dict[str, int]) -> str:
+  def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
     Create a protected LaTeX representation of a ASTtree
 

@@ -22,11 +22,15 @@
 """
 This file defines some helpers for handling causal concepts in notebooks
 """
-from ._types import *
-
+from typing import Union,Optional,Dict,Tuple
 import IPython
+
+import pyAgrum
 import pyAgrum.lib.notebook as gnb
 import pyAgrum.causal as csl
+
+from pyAgrum.causal._types import NameSet
+
 
 
 def getCausalModel(cm: csl.CausalModel, size=None) -> str:
@@ -49,7 +53,7 @@ def showCausalModel(cm: csl.CausalModel, size: str = "4"):
 
 def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
                     knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None) -> Tuple[
-        str, gum.Potential, str]:
+        str, "pyAgrum.Potential", str]:
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
   :param model: the causal model
@@ -58,7 +62,7 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
   :param knowing: the variable(s) of evidence
   :param values : values for certain variables
 
-  :return: a triplet (CausalFormula, gum.Potential, explanation)
+  :return: a triplet (CausalFormula representation (string), pyAgrum.Potential, explanation)
   """
   formula, impact, explanation = csl.causalImpact(
       model, on, doing, knowing, values)
@@ -85,5 +89,5 @@ def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Uni
 
 
 csl.CausalModel._repr_html_ = lambda self: gnb.getDot(
-    self.toDot(), size=gum.config['causal', 'default_graph_size'])
+    self.toDot(), size=pyAgrum.config['causal', 'default_graph_size'])
 csl.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"

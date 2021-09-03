@@ -23,6 +23,9 @@
 This file gives an API for causal inference
 """
 from typing import Union, Optional, Dict, Tuple, Set
+
+import pyAgrum
+
 from pyAgrum.causal._types import NameSet
 from pyAgrum.causal._dSeparation import isDSep
 from pyAgrum.causal._doAST import ASTposteriorProba
@@ -34,7 +37,6 @@ from pyAgrum.causal._CausalFormula import CausalFormula, _getLabelIdx
 from pyAgrum.causal._doCalculus import doCalculusWithObservation, doCalculus, getFrontDoorTree, getBackDoorTree
 
 # pylint: disable=unused-import
-import pyAgrum as gum
 import pyAgrum.causal  # for annotations
 
 
@@ -242,7 +244,7 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
   # calculate the posterior probability of each idiosyncratic factor knowing the profil in the original BN
   # posteriors will be a dict {factor : posterior probability knowing the profil}
   posteriors = dict.fromkeys(idiosyncratic)
-  ie = gum.LazyPropagation(bn)
+  ie = pyAgrum.LazyPropagation(bn)
   ie.setEvidence(profile)
   ie.makeInference()
   for factor in idiosyncratic:
@@ -291,7 +293,7 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   # cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
   # adj is using variables from twincm. We copy it in a Potential using variables of cm
-  res = gum.Potential()
+  res = pyAgrum.Potential()
   for v in adj.var_names:
     res.add(cm.observationalBN().variableFromName(v))
   res.fillWith(adj)

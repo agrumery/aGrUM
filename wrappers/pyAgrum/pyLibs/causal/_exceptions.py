@@ -23,7 +23,7 @@
 This file defines the specific exception for causal package
 """
 
-from ._types import *
+from ._types import NameSet
 
 class HedgeException(Exception):
   """
@@ -39,6 +39,7 @@ class HedgeException(Exception):
     self.type = "HedgeException"
     self.observables = observables
     self.gs = gs
+    super().__init__(self.message)
 
 
 class UnidentifiableException(Exception):
@@ -49,4 +50,4 @@ class UnidentifiableException(Exception):
   def __init__(self, msg):
     self.message = msg
     self.type = "Unidentifiable"
-
+    super().__init__(self.message)

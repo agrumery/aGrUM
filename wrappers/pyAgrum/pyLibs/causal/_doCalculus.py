@@ -23,15 +23,20 @@
 This file computes the causal impact of intervention in a causal model
 """
 import itertools as it
+from typing import List, Set, Optional, Union
 
-from ._doorCriteria import *
-from ._dSeparation import *
-from ._doAST import *
+import pyAgrum
 
-from ._exceptions import *
-from ._CausalModel import inducedCausalSubModel, CausalModel
-from ._CausalFormula import CausalFormula
+from pyAgrum.causal._types import NameSet,NodeSet
+from pyAgrum.causal._dSeparation import dSep_reduce, isDSep, ancester
+from pyAgrum.causal._doAST import ASTtree, ASTdiv, ASTjointProba, ASTsum, ASTmult, ASTposteriorProba, productOfTrees
+from pyAgrum.causal._exceptions import HedgeException
 
+from pyAgrum.causal._CausalModel import inducedCausalSubModel, CausalModel
+from pyAgrum.causal._CausalFormula import CausalFormula
+
+# pylint: disable=unused-import
+import pyAgrum.causal  # for annotations
 
 def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
                               knowing: Optional[NameSet] = None) -> CausalFormula:
@@ -49,7 +54,7 @@ def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
   if knowing is None or len(knowing) == 0:
     return doCalculus(cm, on, doing)
 
-  lOn = [i for i in on]
+  lOn = list(on)
   iDoing = {cm.idFromName(i) for i in doing}
   iOn = {cm.idFromName(i) for i in lOn}
   iKnowing = {cm.idFromName(i) for i in knowing}
@@ -72,7 +77,7 @@ def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
     if isDSep(rg, {i}, iOn, iDoing | (iKnowing - {i})):
       try:
         return doCalculusWithObservation(cm, on, doing | {cm.names()[i]}, knowing - {cm.names()[i]})
-      except HedgeException as h:
+      except HedgeException:
         pass
 
   p = doCalculus(cm, on | knowing, doing)
@@ -82,7 +87,7 @@ def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
 
 
 def _cDecomposition(cm: CausalModel) -> List[Set[int]]:
-  undi = gum.UndiGraph()
+  undi = pyAgrum.UndiGraph()
   s = set(cm.nodes()) - cm.latentVariablesIds()
   for n in s:
     undi.addNodeWithId(n)
@@ -140,8 +145,8 @@ def doCalculus(cm: CausalModel, on: Union[str, NameSet], doing: Union[str, NameS
   :param doing: the interventions
   :return: the CausalFormula for computing this causal impact
   """
-  X = doing if type(doing) == set else {doing}  # set of keys in doing
-  Y = on if type(on) == set else {on}
+  X = doing if isinstance(doing, set) else {doing}  # set of keys in doing
+  Y = on if isinstance(on, set) else {on}
 
   return CausalFormula(cm, identifyingIntervention(cm, Y, X), on, doing)
 
@@ -167,12 +172,13 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
     if P is None:
       lY = list(Y)
       return ASTjointProba(lY)
-    else:
-      vy = V - Y
-      if len(vy) != 0:
-        lvy = list(vy)
-        return ASTsum(lvy, P)
-      return P
+
+    vy = V - Y
+    if len(vy) != 0:
+      lvy = list(vy)
+      return ASTsum(lvy, P)
+
+    return P
 
   # 2 -------------------------------------------
   iAnY = set()
@@ -180,8 +186,6 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
     ancester(i, cm, iAnY)
   iAnY |= iY
   AnY = {cm.names()[i] for i in iAnY}
-  iLat = cm.latentVariablesIds()
-  nLat = {cm.names()[i] for i in iLat}
 
   if len(cm.nodes()) != len(AnY):
     ivAny = list(iV - iAnY)
@@ -222,7 +226,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
   if len(cd) > 1:
     t = identifyingIntervention(cm, cd[0], V - cd[0], P)
     for si in cd[1:]:
-      Pp = copyAST(P) if P is not None else None
+      Pp = P.copy() if P is not None else None
       t = ASTmult(identifyingIntervention(cm, si, V - si, Pp), t)
 
     vyx = V - (X | Y)
@@ -232,60 +236,61 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
       return t
     return ASTsum(lvyx, t)
 
-  else:
-    S = cd[0]
-    iS = icd[0]
-    cdg = _cDecomposition(cm)
+  S = cd[0]
+  iS = icd[0]
+  cdg = _cDecomposition(cm)
 
-    # 5-------------------------
-    if len(cdg) == 1 and len(cdg[0]) == len(V):
-      raise HedgeException(f"Hedge Error: G={V}, G[S]={S}", V, S)
+  # 5-------------------------
+  if len(cdg) == 1 and len(cdg[0]) == len(V):
+    raise HedgeException(f"Hedge Error: G={V}, G[S]={S}", V, S)
 
-    # 6--------------------------
-    gs = inducedCausalSubModel(cm, iS)
-    if (set(gs.nodes()) - gs.latentVariablesIds()) in cdg:
-      vpi = []
+  # 6--------------------------
+  gs = inducedCausalSubModel(cm, iS)
+  if set(gs.nodes()) - gs.latentVariablesIds() in cdg:
+    vpi = []
+    prb = []
+    to = _topological_sort(cm)
+    for v in S:
+      vpi = to[:to.index(cm.idFromName(v))]
+      nvpi = {cm.names()[i] for i in vpi}
+
+      if len(nvpi) == 0:
+        prb.append(ASTjointProba([v]))
+      else:
+        if P is None:
+          prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
+        else:
+          prb.append(ASTdiv(P.copy(), ASTsum(v, P.copy())))
+
+    prod = productOfTrees(prb)
+
+    if len(S - Y) == 0:
+      return prod
+
+    lsy = list(S - Y)
+    ilsy = [cm.idFromName(i) for i in lsy]
+    return ASTsum(ilsy, prod)
+
+  # 7------------------------------------------
+  for ispr in cdg:
+    if iS <= ispr:
+      spr = {cm.names()[i] for i in ispr}
       prb = []
-      to = _topological_sort(cm)
-      for v in S:
-        vpi = to[:to.index(cm.idFromName(v))]
+      top = _topological_sort(cm)
+
+      for v in spr:
+        vpi = top[:top.index(cm.idFromName(v))]
         nvpi = {cm.names()[i] for i in vpi}
 
         if len(nvpi) == 0:
           prb.append(ASTjointProba([v]))
         else:
-          if P is None:
-            prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
-          else:
-            prb.append(ASTdiv(P.copy(), ASTsum(v, P.copy())))
+          prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
 
-      prod = productOfTrees(prb)
+      P = productOfTrees(prb)
+      return identifyingIntervention(inducedCausalSubModel(cm, ispr), Y, X & spr, P)
 
-      if len(S - Y) == 0:
-        return prod
-      else:
-        lsy = list(S - Y)
-        ilsy = [cm.idFromName(i) for i in lsy]
-        return ASTsum(ilsy, prod)
-
-    # 7------------------------------------------
-    for ispr in cdg:
-      if iS <= ispr:
-        spr = {cm.names()[i] for i in ispr}
-        prb = []
-        top = _topological_sort(cm)
-
-        for v in spr:
-          vpi = top[:top.index(cm.idFromName(v))]
-          nvpi = {cm.names()[i] for i in vpi}
-
-          if len(nvpi) == 0:
-            prb.append(ASTjointProba([v]))
-          else:
-            prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
-
-        P = productOfTrees(prb)
-        return identifyingIntervention(inducedCausalSubModel(cm, ispr), Y, X & spr, P)
+  return None
 
 
 def getBackDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:

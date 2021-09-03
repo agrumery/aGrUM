@@ -24,13 +24,14 @@ This file defines a representation of a causal query in a causal model
 """
 
 from collections import defaultdict
-
 from typing import Union,Optional,Dict
+
+import pyAgrum
+
 from pyAgrum.causal._types import NameSet
 from pyAgrum.causal._doAST import ASTtree
 
 # pylint: disable=unused-import
-import pyAgrum as gum
 import pyAgrum.causal  # for annotations
 
 
@@ -98,8 +99,8 @@ class CausalFormula:
 
     latexOn = ",".join(on)
 
-    doOpPref = gum.config["causal", "latex_do_prefix"]
-    doOpSuff = gum.config["causal", "latex_do_suffix"]
+    doOpPref = pyAgrum.config["causal", "latex_do_prefix"]
+    doOpSuff = pyAgrum.config["causal", "latex_do_suffix"]
     latexDo = ""
     if len(doing) > 0:
       latexDo = ",".join([doOpPref + d + doOpSuff for d in doing])
