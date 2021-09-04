@@ -33,6 +33,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cctype>
 
 #include <agrum/agrum.h>
 
@@ -91,30 +92,27 @@ namespace gum {
    * @brief trim from start (in place)
    * @param s A string
   */
-  static inline void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-      return !std::isspace(ch);
-    }));
-  }
+  void ltrim(std::string &s);
 
   /**
    * @brief trim from end (in place)
    * @param s A string
   */
-  static inline void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-      return !std::isspace(ch);
-    }).base(), s.end());
-  }
+  void rtrim(std::string &s);
 
   /**
    * @brief trim from both ends (in place)
    * @param s A string
   */
-  static inline void trim(std::string &s) {
-    ltrim(s);
-    rtrim(s);
-  }
+  void trim(std::string &s);
+
+  /**
+   * @brief remove all newlines in a string
+   * @param s A string
+   * @return the new string with no newline
+  */
+  std::string remove_newline(const std::string &s);
+
   /// @}
 } /* namespace gum */
 

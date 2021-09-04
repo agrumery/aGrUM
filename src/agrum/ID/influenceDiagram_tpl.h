@@ -164,7 +164,7 @@ namespace gum {
      InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike, Size domainSize) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
-    for (const auto& chaine: split(dotlike, ";")) {
+    for (const auto& chaine: split(remove_newline(dotlike), ";")) {
       NodeId lastId   = 0;
       bool   notfirst = false;
       for (const auto& souschaine: split(chaine, "->")) {

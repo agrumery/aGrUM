@@ -93,7 +93,6 @@ namespace gum {
     if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
     return (val.find_first_not_of("0123456789", pos) == std::string::npos);
   }
-
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE

@@ -14,6 +14,54 @@ if _swig_python_version_info < (3, 0):
 from typing import List,Set,Dict,Tuple
 ## end of added by passForType (pyAgrum)
 
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
+## added by passForType (pyAgrum)
+from typing import List,Set,Dict,Tuple
+## end of added by passForType (pyAgrum)
+
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
     from . import _pyAgrum

@@ -147,7 +147,7 @@ namespace gum {
     MarkovNet< GUM_SCALAR > mn;
 
 
-    for (const auto& clikchain: split(dotlike, ";")) {
+    for (const auto& clikchain: split(remove_newline(dotlike), ";")) {
       NodeSet cliq;
       for (auto& node: split(clikchain, "--")) {
         trim(node);

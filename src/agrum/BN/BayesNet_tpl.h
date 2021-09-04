@@ -147,7 +147,7 @@ namespace gum {
                                                                Size               domainSize) {
     gum::BayesNet< GUM_SCALAR > bn;
 
-    for (const auto& chaine: split(dotlike, ";")) {
+    for (const auto& chaine: split(remove_newline(dotlike), ";")) {
       NodeId lastId   = 0;
       bool   notfirst = false;
       for (const auto& souschaine: split(chaine, "->")) {
