@@ -46,8 +46,7 @@ namespace gum {
     stream << std::endl << msg << std::endl;
 #  else    // GUM_FOR_SWIG
     stream << std::endl
-           << filename << ":" << line << " in " << function << "()"
-           << std::endl
+           << filename << ":" << line << " in " << function << "()" << std::endl
            << "--------------" << std::endl
            << "! " << msg << std::endl
            << "--------------" << std::endl;

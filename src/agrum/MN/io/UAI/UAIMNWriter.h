@@ -53,7 +53,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class UAIMNWriter : public MNWriter< GUM_SCALAR > {
+  class UAIMNWriter: public MNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -68,7 +68,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~UAIMNWriter() ;
+    ~UAIMNWriter();
 
     /// @}
 

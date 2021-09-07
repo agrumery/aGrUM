@@ -91,27 +91,27 @@ namespace gum {
   /**
    * @brief trim from start (in place)
    * @param s A string
-  */
-  void ltrim(std::string &s);
+   */
+  void ltrim(std::string& s);
 
   /**
    * @brief trim from end (in place)
    * @param s A string
-  */
-  void rtrim(std::string &s);
+   */
+  void rtrim(std::string& s);
 
   /**
    * @brief trim from both ends (in place)
    * @param s A string
-  */
-  void trim(std::string &s);
+   */
+  void trim(std::string& s);
 
   /**
    * @brief remove all newlines in a string
    * @param s A string
    * @return the new string with no newline
-  */
-  std::string remove_newline(const std::string &s);
+   */
+  std::string remove_newline(const std::string& s);
 
   /// @}
 } /* namespace gum */

@@ -442,8 +442,7 @@ namespace gum_tests {
 
 
       genset.setInputRow(input_row1);
-      TS_ASSERT(genset.hasRows())
-      {
+      TS_ASSERT(genset.hasRows()) {
         const auto& row = genset.generate().row();
         TS_ASSERT_EQUALS(row[0].discr_val, std::size_t(0))
         TS_ASSERT_EQUALS(row[1].discr_val, std::size_t(1))

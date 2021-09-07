@@ -402,25 +402,25 @@ namespace gum_tests {
     }
 
 
-    void testEvidenceAsTargetOnCplxBN() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-         3);
-      unsharpen(bn);
+      void testEvidenceAsTargetOnCplxBN() {
+        auto bn = gum::BayesNet< double >::fastPrototype(
+           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+           3);
+        unsharpen(bn);
 
-      try {
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"));
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
+        try {
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        } catch (gum::Exception& e) {
+          GUM_SHOWERROR(e);
+          TS_ASSERT(false)
+        }
       }
-    }
   };
 }   // namespace gum_tests

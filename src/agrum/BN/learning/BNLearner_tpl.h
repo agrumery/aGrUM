@@ -227,7 +227,7 @@ namespace gum {
         GUM_ERROR(gum::IOError, "File " << filename << " not found")
       }
 
-      CSVParser<> parser(in,filename);
+      CSVParser<> parser(in, filename);
       parser.next();
       auto names = parser.current();
 

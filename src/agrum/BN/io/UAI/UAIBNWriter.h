@@ -53,7 +53,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class UAIBNWriter : public BNWriter< GUM_SCALAR > {
+  class UAIBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

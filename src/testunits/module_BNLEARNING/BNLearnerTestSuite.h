@@ -212,8 +212,7 @@ namespace gum_tests {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv"));
         TS_FAIL("asia3_withguill.csv contains syntax error (with \").");
-      } catch (gum::SyntaxError& e) {
-      };
+      } catch (gum::SyntaxError& e) {};
     }
 
     void test_ranges() {
@@ -1198,7 +1197,7 @@ namespace gum_tests {
       // create the score and the apriori
       gum::learning::DBRowGeneratorSet<>            dirichlet_genset;
       gum::learning::DBRowGeneratorParser<>         dirichlet_parser(dirichlet_database.handler(),
-                                                                     dirichlet_genset);
+                                                             dirichlet_genset);
       gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet<>    genset;

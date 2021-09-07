@@ -39,30 +39,29 @@ namespace gum {
   }
 
   INLINE
-  void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-      return !std::isspace(ch);
-    }));
+  void ltrim(std::string& s) {
+    s.erase(s.begin(),
+            std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
   }
 
   INLINE
-  void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-      return !std::isspace(ch);
-    }).base(), s.end());
+  void rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); })
+               .base(),
+            s.end());
   }
 
   INLINE
-  void trim(std::string &s) {
+  void trim(std::string& s) {
     ltrim(s);
     rtrim(s);
   }
 
   INLINE
-  std::string remove_newline(const std::string &s) {
+  std::string remove_newline(const std::string& s) {
     std::string res{s};
-    res.erase(std::remove(res.begin(),res.end(),'\n'),res.end());
-    res.erase(std::remove(res.begin(),res.end(),'\r'),res.end());
+    res.erase(std::remove(res.begin(), res.end(), '\n'), res.end());
+    res.erase(std::remove(res.begin(), res.end(), '\r'), res.end());
     return res;
   }
 } /* namespace gum */

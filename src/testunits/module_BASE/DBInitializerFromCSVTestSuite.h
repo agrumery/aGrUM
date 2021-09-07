@@ -65,8 +65,7 @@ namespace gum_tests {
       database2.insertTranslator(translator, 3);
       database2.insertTranslator(translator, 4);
       database2.setVariableNames(initializer2.variableNames(), true);
-      TS_ASSERT_EQUALS(database2.variableNames().size(), (gum::Size)3)
-      {
+      TS_ASSERT_EQUALS(database2.variableNames().size(), (gum::Size)3) {
         const auto ignored_vect = database2.ignoredColumns();
         TS_ASSERT_EQUALS(ignored_vect.size(), (std::size_t)3)
         TS_ASSERT_EQUALS(ignored_vect[0], (std::size_t)0)
