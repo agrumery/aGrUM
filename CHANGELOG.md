@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.1
+
+* aGrUM
+  * fix issue #69 (no more final destructor),
+  * update Coco/R parsers (notations and explicit casts),
+  * better `gum::SyntaxError` (access to filename),
+  * remove many redundant ';' in testsuites,
+  * better option `--stats` for act,
+  * `gum.[model].fastPrototype` now accepts multiline specifications.
+
+* pyAgrum
+  * better `pyAgrum.SyntaxError` treated as python's SyntaxError,
+  * much better annotations for types declaration in python codes,
+  * improving documentation,
+  * update pyAgrum.causal,
+  * `gum.fast[Model]` now accepts multiline specifications.
+
 ## Changelog for 0.22.0
 
 As planned, 0.22.0 is the first version of pyAgrum that does not support python>3.6 (including 2.7). 
