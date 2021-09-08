@@ -15,7 +15,8 @@
   * much better annotations for types declaration in python codes,
   * improving documentation,
   * update pyAgrum.causal,
-  * `gum.fast[Model]` now accepts multiline specifications.
+  * `gum.fast[Model]` now accepts multiline specifications,
+  * `gum.DiscreteVariable` are now hashable.
 
 ## Changelog for 0.22.0
 

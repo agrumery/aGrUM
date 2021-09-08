@@ -2380,6 +2380,9 @@ class DiscreteVariable(Variable):
     def __str__(self) -> str:
         return _pyAgrum.DiscreteVariable___str__(self)
 
+    def __hash__(self):
+        return hash(self.name())
+
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 

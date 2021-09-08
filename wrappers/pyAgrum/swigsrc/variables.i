@@ -24,6 +24,9 @@
 
 %extend gum::DiscreteVariable {
   %pythoncode %{
+    def __hash__(self):
+        return hash(self.name())
+
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
   %}

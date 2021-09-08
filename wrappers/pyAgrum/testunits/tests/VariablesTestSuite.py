@@ -46,6 +46,16 @@ class TestDiscreteVariable(VariablesTestCase):
     v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4])
     self.assertEqual(v.labels(), ("[1;2[", "[2;4[", "[4;5]"))
 
+  def testHashableDiscreteVariable(self):
+    va = gum.LabelizedVariable("a", "a")
+    vb = gum.LabelizedVariable("b", "b", ["toto","titi","yes"])
+    vc=gum.RangeVariable("c", "c", 0, 5)
+    vd=gum.RangeVariable("d", "d", 3, 5)
+    ve=gum.DiscretizedVariable("e", "e").addTick(1).addTick(2).addTick(3).addTick(4)
+
+    s=set([va,vb,vc]+[vc,vd,ve]+[va,ve])
+    self.assertEqual(len(s),5)
+
 
 class TestLabelizedVariable(VariablesTestCase):
   def testCopyConstructor(self):
