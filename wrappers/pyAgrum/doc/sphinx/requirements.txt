@@ -23,4 +23,4 @@ sphinx
 IPython
 ipykernel
 sphinx_rtd_theme
-#sphinx-autodoc-typehints
+sphinx-autodoc-typehints
