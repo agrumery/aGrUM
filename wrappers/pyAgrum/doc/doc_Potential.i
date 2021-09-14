@@ -57,6 +57,11 @@ DuplicateElement
   If the variable is already in this Potential.
 InvalidArgument
   If the variable is empty.
+
+Returns
+-------
+pyAgrum.Potential
+    a reference to the modified potential.
 "
 
 %feature("docstring") gum::Potential::contains

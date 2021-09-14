@@ -40,8 +40,7 @@ class TestInsertions(PotentialTestCase):
     pot.add(self.var['c'])
     self.assertFalse(pot.empty())
     self.assertEqual(pot.nbrDim(), 1)
-    pot.add(self.var['s'])
-    pot.add(self.var['r'])
+    pot.add(self.var['s']).add(self.var['r'])
     self.assertEqual(pot.nbrDim(), 3)
 
     for id, var in enumerate([self.var['c'], self.var['s'],

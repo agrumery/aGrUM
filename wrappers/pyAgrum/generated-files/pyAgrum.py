@@ -7978,6 +7978,11 @@ class Potential(object):
         InvalidArgument
           If the variable is empty.
 
+        Returns
+        -------
+        pyAgrum.Potential
+            a reference to the modified potential.
+
         """
         val = _pyAgrum.Potential_add(self, v)
 
