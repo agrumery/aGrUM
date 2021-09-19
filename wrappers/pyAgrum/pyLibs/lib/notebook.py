@@ -38,13 +38,11 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 try:
-  from matplotlib_inline.backend_inline import set_matplotlib_formats as set_matplotlib_formats
+  from matplotlib_inline.backend_inline import set_matplotlib_formats
 except ImportError:  # because of python 2.7, matplotlib-inline cannot be part of requirements.txt
   def set_matplotlib_formats(*args, **kwargs):
     # dummy version when no matplotlib_inline package
-    if sys.version[0] == "3":
-      print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
-    pass
+    print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
 
 import numpy as np
 import pydotplus as dot
@@ -61,9 +59,9 @@ from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
+from pyAgrum.lib.image import prepareShowInference,prepareLinksForSVG
 
 from pyAgrum.lib._colors import setDarkTheme,setLightTheme,getBlackInTheme
-from pyAgrum.lib._colors import forDarkTheme,forLightTheme # obsolete since 0.21.0
 
 import pyAgrum.lib._colors as gumcols
 
@@ -194,46 +192,6 @@ def configuration():
   IPython.display.display(IPython.display.HTML(res))
 
 
-def __insertLinkedSVGs(mainSvg):
-  re_buggwhitespace = re.compile(r"(<image [^>]*>)")
-  re_images = re.compile(r"(<image [^>]*>)")
-  re_xlink = re.compile(r"xlink:href=\"([^\"]*)")
-  re_viewbox = re.compile(r"(viewBox=\"[^\"]*\")")
-
-  # analyze mainSvg (find the secondary svgs)
-  __fragments = {}
-  for img in re.finditer(re_images, mainSvg):
-    # print(img)
-    secondarySvg = re.findall(re_xlink, img.group(1))[0]
-    content = ""
-    with open(secondarySvg, encoding='utf8') as f:
-      inSvg = False
-      for line in f:
-        if line[0:4] == "<svg":
-          inSvg = True
-          viewBox = re.findall(re_viewbox, line)[0]
-          # print("VIEWBOX {}".format(viewBox))
-        elif inSvg:
-          content += line
-    __fragments[secondarySvg] = (viewBox, content)
-
-  if len(__fragments) > 0:
-    # replace image tags by svg tags
-    img2svg = re.sub(r"<image ([^>]*)/>", "<svg \g<1>>", mainSvg)
-
-    # insert secondaries into main
-    def ___insertSecondarySvgs(matchObj):
-      vb, code = __fragments[matchObj.group(1)]
-      return vb + matchObj.group(2) + code
-
-    mainSvg = re.sub(r'xlink:href="([^"]*)"(.*>)',
-                     ___insertSecondarySvgs, img2svg
-                     )
-
-  # remove buggy white-space (for notebooks)
-  mainSvg = mainSvg.replace("white-space:pre;", "")
-  return mainSvg
-
 
 def _reprGraph(gr, size, asString, format=None):
   """
@@ -249,7 +207,7 @@ def _reprGraph(gr, size, asString, format=None):
     format = gum.config["notebook", "graph_format"]
 
   if format == "svg":
-    gsvg = IPython.display.SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
+    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -747,60 +705,6 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   return getGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
-
-def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
-                       nodeColor=None, factorColor=None, arcWidth=None,
-                       arcColor=None, cmap=None, cmapArc=None, graph=None, view=None
-                       ):
-  if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
-
-  if evs is None:
-    evs = {}
-
-  if targets is None:
-    targets = {}
-
-  if isinstance(model, gum.BayesNet):
-    if engine is None:
-      engine = gum.LazyPropagation(model)
-    return BNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
-                           arcWidth=arcWidth,
-                           arcColor=arcColor,
-                           cmapNode=cmap, cmapArc=cmapArc
-                           )
-  elif isinstance(model, gum.MarkovNet):
-    if view is None:
-      view = gum.config["notebook", "default_markovnetwork_view"]
-      if engine is None:
-        engine = gum.ShaferShenoyMNInference(model)
-
-      if view == "graph":
-        return MNinference2UGdot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
-                                 factorColor=factorColor,
-                                 arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc
-                                 )
-      else:
-        return MNinference2FactorGraphdot(model, size=size, engine=engine, evs=evs, targets=targets,
-                                          nodeColor=nodeColor,
-                                          factorColor=factorColor, cmapNode=cmap
-                                          )
-  elif isinstance(model, gum.InfluenceDiagram):
-    if engine is None:
-      engine = gum.ShaferShenoyLIMIDInference(model)
-    return LIMIDinference2dot(model, size=size, engine=engine, evs=evs, targets=targets)
-  elif isinstance(model, gum.CredalNet):
-    if engine is None:
-      engine = gum.CNMonteCarloSampling(model)
-    return CNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
-                           arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap
-                           )
-  else:
-    raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram"
-    )
-
-
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
@@ -825,7 +729,7 @@ def showInference(model, **kwargs):
   else:
     size = gum.config["notebook", "default_graph_inference_size"]
 
-  showGraph(_get_showInference(model, **kwargs), size)
+  showGraph(prepareShowInference(model, **kwargs), size)
 
 
 def getInference(model, **kwargs):
@@ -855,7 +759,7 @@ def getInference(model, **kwargs):
   else:
     size = gum.config["notebook", "default_graph_inference_size"]
 
-  grinf = _get_showInference(model, **kwargs)
+  grinf = prepareShowInference(model, **kwargs)
   return getGraph(grinf, size)
 
 
@@ -1277,87 +1181,6 @@ def show(model, **kwargs):
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
     )
-
-
-def export(model, filename, **kwargs):
-  """
-  export the graphical representation of the model in filename (png, pdf,etc.)
-
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps'])
-  """
-  format = filename.split(".")[-1]
-  if format not in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']:
-    raise Exception(
-      f"{filename} in not a correct filename for export : extension '{format}' not in [pdf,png,fig,jpg,svg]."
-    )
-
-  if isinstance(model, gum.BayesNet):
-    fig = BN2dot(model, **kwargs)
-  elif isinstance(model, gum.MarkovNet):
-    if gum.config["notebook", "default_markovnetwork_view"] == "graph":
-      fig = MN2UGdot(model, **kwargs)
-    else:
-      fig = MN2FactorGraphdot(model, **kwargs)
-  elif isinstance(model, gum.InfluenceDiagram):
-    fig = ID2dot(model, **kwargs)
-  elif isinstance(model, gum.CredalNet):
-    fig = CN2dot(model, **kwargs)
-  elif hasattr(model, "toDot"):
-    fig = dot.graph_from_dot_data(model.toDot(), **kwargs)
-  else:
-    raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram"
-    )
-  fig.write(filename, format=format)
-
-
-def exportInference(model, filename, **kwargs):
-  """
-  the graphical representation of an inference in a notebook
-
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
-          pyAgrum.InfluenceDiagram)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'ps'])
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
-          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the color of nodes and arcs
-  :param cmapArc: color map to show the vals of Arcs.
-  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov network
-  :return: the desired representation of the inference
-  """
-  format = filename.split(".")[-1]
-  if format not in ['pdf', 'png', 'ps']:
-    raise Exception(
-      f"{filename} in not a correct filename for export : extension '{format}' not in [pdf,png,ps]."
-    )
-
-  import cairosvg
-
-  if "size" in kwargs:
-    size = kwargs['size']
-  else:
-    size = gum.config["notebook", "default_graph_inference_size"]
-
-  svgtxt = _reprGraph(
-    _get_showInference(model, **kwargs), size=size, asString=True, format="svg"
-  )
-
-  if format == "pdf":
-    cairosvg.svg2pdf(bytestring=svgtxt, write_to=filename)
-  elif format == "png":
-    cairosvg.svg2png(bytestring=svgtxt, write_to=filename)
-  else:  # format=="ps"
-    cairosvg.svg2ps(bytestring=svgtxt, write_to=filename)
-
 
 def _update_config():
   # hook to control some parameters for notebook when config changes

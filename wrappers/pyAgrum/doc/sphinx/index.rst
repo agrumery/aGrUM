@@ -71,7 +71,7 @@ pyAgrum contains :
   :titlesonly:
 
   lib.notebook
-  lib.bn2graph
+  lib.image
   lib.explain
   lib.dBN
   pyAgrum.lib
