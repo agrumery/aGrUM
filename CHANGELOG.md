@@ -1,5 +1,18 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.2
+
+* aGrUM
+  * Minor change in `CSVParser` (`BNLearner` etc.): if a token is surrounded by quote characters, those are not part of the 
+    very token anymore.
+
+* pyAgrum
+  * Updating documentations
+  * Moving export image utilities in a new `pyAgrum.lib.image`. See the notebook (![Colouring and exporting models]
+    (https://webia.lip6.fr/~phw/aGrUM/docs/last/notebooks/colouringAndExportingBNs.ipynb.html)).
+  * Minor change in `CSVParser` (`BNLearner`, etc.) : if a token is surrounded by quote characters, those are not part of 
+    the very token anymore.
+
 ## Changelog for 0.22.1
 
 * aGrUM
