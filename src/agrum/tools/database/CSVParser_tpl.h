@@ -79,6 +79,10 @@ namespace gum {
         if (next_char < next_token) {
           GUM_SYNTAX_ERROR("Delimiter missing", _filename_,(Size)nbLine(), next_char);
         }
+
+        // remove quote chars from the token
+        first_letter_token+=1;
+        last_letter_token-=1;
       } else {
         next_token = str.find_first_of(_delimiter_, first_letter_token);
 

@@ -28,32 +28,32 @@
 
 namespace gum_tests {
 
-  class CSVParserTestSuite : public CxxTest::TestSuite {
+  class CSVParserTestSuite: public CxxTest::TestSuite {
     private:
-    std::size_t  _noParsedLine_;
+    std::size_t _noParsedLine_;
 
-    std::size_t testParseString( std::string csvstring, std::string& res ) {
-      std::istringstream       in( csvstring );
-      gum::learning::CSVParser<> parser( in ,"(stream)");
+    std::size_t testParseString(std::string csvstring, std::string& res) {
+      std::istringstream         in(csvstring);
+      gum::learning::CSVParser<> parser(in, "(stream)");
 
       // no data parser for now
-      TS_ASSERT_THROWS( parser.current(), gum::NullElement )
-      TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement )
+      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
 
       std::size_t count = 0;
-      res = "";
+      res               = "";
 
-      while ( parser.next() ) {
+      while (parser.next()) {
         count++;
-        const std::vector<std::string>& v = parser.current();
+        const std::vector< std::string >& v = parser.current();
 
-        for ( std::size_t i = std::size_t(0); i < v.size(); i++ ) {
+        for (std::size_t i = std::size_t(0); i < v.size(); i++) {
           res += v[i];
-          res += ( i == v.size() - 1 ) ? '|' : ':';
+          res += (i == v.size() - 1) ? '|' : ':';
         }
       }
 
-       _noParsedLine_ = parser.nbLine();
+      _noParsedLine_ = parser.nbLine();
       return count;
     }
 
@@ -64,30 +64,30 @@ namespace gum_tests {
 
       // simpleCSV
 
-      count = testParseString( "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12", res );
+      count = testParseString("1,2,3,4 \n 5,6,7,8 \n 9,10,11,12", res);
 
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(3) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) )
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(3))
+      TS_ASSERT_EQUALS(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"))
 
-      count = testParseString( "1,2,3,4 \r\n 5,6,7,8 \r\n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(3) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) )
-
-      // simpleCSV
-
-      count = testParseString( "1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(5) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6::8|9:10:11:12|" ) )
+      count = testParseString("1,2,3,4 \r\n 5,6,7,8 \r\n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(3))
+      TS_ASSERT_EQUALS(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"))
 
       // simpleCSV
 
-      count = testParseString( ",,,, \n ,,,, \n ,,,,", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(3) )
-      TS_ASSERT_EQUALS( res, std::string( "::::|::::|::::|" ) )
+      count = testParseString("1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(5))
+      TS_ASSERT_EQUALS(res, std::string("1:2:3:4|5:6::8|9:10:11:12|"))
+
+      // simpleCSV
+
+      count = testParseString(",,,, \n ,,,, \n ,,,,", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(3))
+      TS_ASSERT_EQUALS(res, std::string("::::|::::|::::|"))
     };
 
 
@@ -97,45 +97,39 @@ namespace gum_tests {
 
       // simpleCSV with comment line
 
-      count = testParseString(
-          "1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"))
 
       // simpleCSV with comment line
 
-      count = testParseString(
-          "1,2,3,4 \n\t  # this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1,2,3,4 \n\t  # this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"))
 
       // simpleCSV with commented pa
 
-      count = testParseString(
-          "1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1|5:6:7:8|9:10:11:12|"))
 
-      count = testParseString(
-          "1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1|5:6:7:8|9:10:11:12|"))
 
-      count = testParseString(
-          "1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1:|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:|5:6:7:8|9:10:11:12|"))
 
-      count = testParseString(
-          "1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res, std::string( "1:2|5:6:7:8|9:10:11:12|" ) )
+      count = testParseString("1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:2|5:6:7:8|9:10:11:12|"))
     };
 
     void testSimpleCSVwithDoubleQuote() {
@@ -143,82 +137,69 @@ namespace gum_tests {
       std::size_t count;
 
       // simpleCSV with double quoted token
-      count = testParseString(
-          "1,\"fjkdls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
-          res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res,
-                        std::string( "1:\"fjkdls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      count
+         = testParseString("1,\"fjkdls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:fjkdls2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with separator in the double-quoted
       // token
 
-      count = testParseString(
-          "1,\"fjk,dls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
-          res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res,
-                        std::string( "1:\"fjk,dls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      count = testParseString("1,\"fjk,dls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                              res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:fjk,dls2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with # in the double-quoted token
-      count = testParseString(
-          "1,\"fjk,dl#s2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
-          res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS( res,
-                        std::string( "1:\"fjk,dl#s2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      count = testParseString("1,\"fjk,dl#s2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                              res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:fjk,dl#s2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with double quote in the
       // double-quoted
       // token
-      count = testParseString( "1,\"fjk,dl\\\"s2\",3,4 \n# this is a comment \n "
-                               "5,6,7,8 \n 9,10,11,12",
-                               res );
-      TS_ASSERT_EQUALS( count, std::size_t(3) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(4) )
-      TS_ASSERT_EQUALS(
-          res, std::string( "1:\"fjk,dl\\\"s2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      count = testParseString("1,\"fjk,dl\\\"s2\",3,4 \n# this is a comment \n "
+                              "5,6,7,8 \n 9,10,11,12",
+                              res);
+      TS_ASSERT_EQUALS(count, std::size_t(3))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
+      TS_ASSERT_EQUALS(res, std::string("1:fjk,dl\\\"s2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with not ending double quoted token
       TS_ASSERT_THROWS(
-          count = testParseString(
-              "1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
-              res ),
-          gum::SyntaxError );
+         count
+         = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res),
+         gum::SyntaxError);
 
       try {
-        count = testParseString(
-            "1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
-            res );
-        TS_FAIL( "gum::SyntaxError should have been thrown" );
-      } catch ( gum::SyntaxError& f ) {
-        TS_ASSERT_DIFFERS( f.errorContent().find( "String quote missing", 0 ),
-                           std::string::npos );
-        TS_ASSERT_EQUALS( f.col(), std::size_t(2) )
-        TS_ASSERT_EQUALS( f.line(), std::size_t(1) )
+        count = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                                res);
+        TS_FAIL("gum::SyntaxError should have been thrown");
+      } catch (gum::SyntaxError& f) {
+        TS_ASSERT_DIFFERS(f.errorContent().find("String quote missing", 0), std::string::npos);
+        TS_ASSERT_EQUALS(f.col(), std::size_t(2))
+        TS_ASSERT_EQUALS(f.line(), std::size_t(1))
       }
 
       // simpleCSV with double quoted following by something
-      TS_ASSERT_THROWS(
-          count = testParseString( "1,\"fjkdls2\" nothing should be here,3,4 \n# "
-                                   "this is a comment \n 5,6,7,8 \n 9,10,11,12",
-                                   res ),
-          gum::SyntaxError );
+      TS_ASSERT_THROWS(count = testParseString("1,\"fjkdls2\" nothing should be here,3,4 \n# "
+                                               "this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                                               res),
+                       gum::SyntaxError);
 
       try {
-        count =
-            testParseString( "1,\"fjkdls2\" nothing should be here,3,4 \n# this "
-                             "is a comment \n 5,6,7,8 \n 9,10,11,12",
-                             res );
-        TS_FAIL( "gum::FatalError should have been thrown" );
-      } catch ( gum::SyntaxError& f ) {
-        TS_ASSERT_DIFFERS( f.errorContent().find( "Delimiter missing", 0 ),
-                           std::string::npos );
-        TS_ASSERT_EQUALS( f.col(), std::size_t(12) )
-        TS_ASSERT_EQUALS( f.line(), std::size_t(1) )
+        count = testParseString("1,\"fjkdls2\" nothing should be here,3,4 \n# this "
+                                "is a comment \n 5,6,7,8 \n 9,10,11,12",
+                                res);
+        TS_FAIL("gum::FatalError should have been thrown");
+      } catch (gum::SyntaxError& f) {
+        TS_ASSERT_DIFFERS(f.errorContent().find("Delimiter missing", 0), std::string::npos);
+        TS_ASSERT_EQUALS(f.col(), std::size_t(12))
+        TS_ASSERT_EQUALS(f.line(), std::size_t(1))
       }
     };
 
@@ -227,75 +208,131 @@ namespace gum_tests {
       std::size_t count;
 
       // simpleCSV with double quoted token
-      count = testParseString(
-          "1,1a,1b\n2a,2,3c",
-          res );
-      TS_ASSERT_EQUALS( count, std::size_t(2) )
-      TS_ASSERT_EQUALS(  _noParsedLine_, std::size_t(2) )
-      TS_ASSERT_EQUALS( res,
-                        std::string( "1:1a:1b|2a:2:3c|" ) );
+      count = testParseString("1,1a,1b\n2a,2,3c", res);
+      TS_ASSERT_EQUALS(count, std::size_t(2))
+      TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(2))
+      TS_ASSERT_EQUALS(res, std::string("1:1a:1b|2a:2:3c|"));
     }
 
 
-    void testUseNewStream () {
-      std::string csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
-      std::istringstream in1 ( csvstring1 );
-      gum::learning::CSVParser<> parser( in1,"(stream)" );
+    void testUseNewStream() {
+      std::string                csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
+      std::istringstream         in1(csvstring1);
+      gum::learning::CSVParser<> parser(in1, "(stream)");
 
-      TS_ASSERT_THROWS( parser.current(), gum::NullElement )
-      TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement )
-
-      parser.next();
-      const std::vector<std::string>& v1 = parser.current ();
-      TS_ASSERT_EQUALS( v1[0], "1" )
-      TS_ASSERT_EQUALS( v1[2], "3" )
-
-      std::string csvstring2 = "a,b,c,d\ne,f,g,h\n";
-      std::istringstream in2 ( csvstring2 );
-      parser.useNewStream ( in2 );
-
-      TS_ASSERT_THROWS( parser.current(), gum::NullElement )
-      TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement )
+      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
 
       parser.next();
-      const std::vector<std::string>& v2 = parser.current ();
-      TS_ASSERT_EQUALS( v2[0], "a" )
-      TS_ASSERT_EQUALS( v2[2], "c" )
+      const std::vector< std::string >& v1 = parser.current();
+      TS_ASSERT_EQUALS(v1[0], "1")
+      TS_ASSERT_EQUALS(v1[2], "3")
+
+      std::string        csvstring2 = "a,b,c,d\ne,f,g,h\n";
+      std::istringstream in2(csvstring2);
+      parser.useNewStream(in2);
+
+      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+      parser.next();
+      const std::vector< std::string >& v2 = parser.current();
+      TS_ASSERT_EQUALS(v2[0], "a")
+      TS_ASSERT_EQUALS(v2[2], "c")
     }
 
-    
-    void testAllocator () {
+    void testGuillemet() {
       {
-        std::string csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
-        std::istringstream in1 ( csvstring1 );
-        gum::learning::CSVParser<DebugCountedAlloc> parser( in1,"(stream)" );
+        std::string                csvstring1 = "\"a\",\"b\",\"c d,e\" \n 9,10,11";
+        std::istringstream         in1(csvstring1);
+        gum::learning::CSVParser<> parser(in1, "(stream)");
 
-        TS_ASSERT_THROWS( parser.current(), gum::NullElement )
-        TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement )
-
-        parser.next();
-        const std::vector<std::string,DebugCountedAlloc<std::string>>& v1 =
-          parser.current ();
-        TS_ASSERT_EQUALS( v1[0], "1" )
-        TS_ASSERT_EQUALS( v1[2], "3" )
-        
-        std::string csvstring2 = "a,b,c,d\ne,f,g,h\n";
-        std::istringstream in2 ( csvstring2 );
-        parser.useNewStream ( in2 );
-
-        TS_ASSERT_THROWS( parser.current(), gum::NullElement )
-        TS_ASSERT_THROWS( parser.nbLine(), gum::NullElement )
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
 
         parser.next();
-        const std::vector<std::string,DebugCountedAlloc<std::string>>&
-          v2 = parser.current ();
-        TS_ASSERT_EQUALS( v2[0], "a" )
-        TS_ASSERT_EQUALS( v2[2], "c" )
+        const std::vector< std::string >& v1 = parser.current();
+        TS_ASSERT_EQUALS(v1[0], "a")
+        TS_ASSERT_EQUALS(v1[1], "b")
+        TS_ASSERT_EQUALS(v1[2], "c d,e")
+      }
+      {
+        std::string                csvstring1 = "\"\",\"\",\"c d,e\" \n 9,10,11";
+        std::istringstream         in1(csvstring1);
+        gum::learning::CSVParser<> parser(in1, "(stream)");
+
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+        parser.next();
+        const std::vector< std::string >& v1 = parser.current();
+        TS_ASSERT_EQUALS(v1[0], "")
+        TS_ASSERT_EQUALS(v1[1], "")
+        TS_ASSERT_EQUALS(v1[2], "c d,e")
+      }
+    }
+    void testApostrophe() {
+      {
+        std::string                csvstring1 = "'a','b','c d,e' \n 9,10,11";
+        std::istringstream         in1(csvstring1);
+        gum::learning::CSVParser<> parser(in1, "(stream)");
+
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+        parser.next();
+        const std::vector< std::string >& v1 = parser.current();
+        TS_ASSERT_EQUALS(v1[0], "'a'")
+        TS_ASSERT_EQUALS(v1[1], "'b'")
+        TS_ASSERT_EQUALS(v1[2], "'c d")
+        TS_ASSERT_EQUALS(v1[3], "e'")
+      }
+      {
+        std::string                csvstring1 = "'a','b','c d,e' \n 9,10,11";
+        std::istringstream         in1(csvstring1);
+        gum::learning::CSVParser<> parser(in1, "(stream)",",",'#','\'');
+
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+        parser.next();
+        const std::vector< std::string >& v1 = parser.current();
+        TS_ASSERT_EQUALS(v1[0], "a")
+        TS_ASSERT_EQUALS(v1[1], "b")
+        TS_ASSERT_EQUALS(v1[2], "c d,e")
+      }
+    }
+
+
+    void testAllocator() {
+      {
+        std::string        csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
+        std::istringstream in1(csvstring1);
+        gum::learning::CSVParser< DebugCountedAlloc > parser(in1, "(stream)");
+
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+        parser.next();
+        const std::vector< std::string, DebugCountedAlloc< std::string > >& v1 = parser.current();
+        TS_ASSERT_EQUALS(v1[0], "1")
+        TS_ASSERT_EQUALS(v1[2], "3")
+
+        std::string        csvstring2 = "a,b,c,d\ne,f,g,h\n";
+        std::istringstream in2(csvstring2);
+        parser.useNewStream(in2);
+
+        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+
+        parser.next();
+        const std::vector< std::string, DebugCountedAlloc< std::string > >& v2 = parser.current();
+        TS_ASSERT_EQUALS(v2[0], "a")
+        TS_ASSERT_EQUALS(v2[2], "c")
       }
 
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak() , false)
-
+      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
     }
   };
-  
-}
+
+}   // namespace gum_tests

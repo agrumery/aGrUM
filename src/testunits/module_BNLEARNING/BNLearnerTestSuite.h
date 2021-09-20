@@ -18,7 +18,6 @@
  *
  */
 
-
 // floating point env
 #include <cfenv>
 #include <vector>
