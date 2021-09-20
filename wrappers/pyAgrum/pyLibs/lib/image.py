@@ -38,7 +38,8 @@ def export(model, filename, **kwargs):
   :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
   :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps'])
 
-  @warning model can also just possess a methode `toDot()`or even be a simple striing in dot-syntax.
+  .. warning::
+    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
   """
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']:

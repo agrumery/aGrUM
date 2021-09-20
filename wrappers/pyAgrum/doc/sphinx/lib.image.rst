@@ -1,7 +1,9 @@
-Module pyAgrum.lib.image
-========================
+pyAgrum.lib.image
+==================
 
-A module to graphically display models and inference using `pydotplus <https://pypi.org/project/pydotplus/>`_ (and then `graphviz <https://graphviz.org/>`_).
+`pyAgrum.lib.image` aims to graphically export models and inference using `pydotplus <https://pypi.org/project/pydotplus/>`_ (and then `graphviz <https://graphviz.org/>`_).
+
+For more details, <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/colouringAndExportingBNs.ipynb.html>
 
 .. figure:: _static/bn2graph_test.png
     :align: right
