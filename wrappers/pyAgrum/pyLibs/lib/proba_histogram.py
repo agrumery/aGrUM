@@ -181,7 +181,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
   for b in bars:
     if b.get_height() != 0:
-      txt = txt = f"{b.get_height():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+      txt = f"{b.get_height():.{gum.config['notebook', 'histogram_vertical_visible_digits']}}"
       ax.text(b.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
