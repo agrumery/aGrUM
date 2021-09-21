@@ -179,10 +179,16 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
                 color=gum.config['notebook', 'histogram_color'])
   ma = p.max()
 
+  if gum.config['notebook', 'histogram_use_percent'] == "True":
+    perc = 100
+    suffix = "%"
+  else:
+    perc = 1
+    suffix = ""
   for b in bars:
     if b.get_height() != 0:
-      txt = f"{b.get_height():.{gum.config['notebook', 'histogram_vertical_visible_digits']}}"
-      ax.text(b.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
+      txt = f"{b.get_height()*perc:.{gum.config['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
+      ax.text(b.get_x()+0.5, ma, txt, ha='center', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
@@ -243,9 +249,15 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
                  align='center',
                  color=gum.config['notebook', 'histogram_color'])
 
+  if gum.config['notebook', 'histogram_use_percent'] == "True":
+    perc = 100
+    suffix = "%"
+  else:
+    perc = 1
+    suffix = ""
   for b in bars:
     if b.get_width() != 0:
-      txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+      txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       ax.text(1, b.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
@@ -358,11 +370,18 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
                     align='center',
                     color=gum.config['notebook', 'histogram_color'])
 
+  if gum.config['notebook', 'histogram_use_percent'] == "True":
+    perc = 100
+    suffix = "%"
+  else:
+    perc = 1
+    suffix = ""
+
   for b in barsmax:
-    txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+    txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(1, b.get_y(), txt, ha='right', va='bottom')
   for b in barsmin:
-    txt = f"{b.get_width():.{gum.config['notebook', 'histogram_horizontal_visible_digits']}}"
+    txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(0, b.get_y(), txt, ha='left', va='bottom')
 
   ax.set_xlim(0, 1)
