@@ -5411,6 +5411,18 @@ class Instantiation(object):
     def __getitem__(self,key):
       return self.val(self.variable(key))
 
+    def variablesSequence(self):
+      """
+      Returns
+      -------
+      list
+          a list containing the sequence of variables
+      """
+      varlist = []
+      for i in range(0, self.nbrDim()):
+          varlist.append(self.variable(i))
+      return varlist
+
     def addVarsFromModel(self,model,names):
       r"""
       From a graphical model, add all the variable whose names are in the iterable

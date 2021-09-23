@@ -88,12 +88,24 @@
     }
   }
 
-  %pythoncode {
+%pythoncode {
   def __setitem__(self,key,item):
     self.chgVal(key,item)
 
   def __getitem__(self,key):
     return self.val(self.variable(key))
+
+  def variablesSequence(self):
+    """
+    Returns
+    -------
+    list
+        a list containing the sequence of variables
+    """
+    varlist = []
+    for i in range(0, self.nbrDim()):
+        varlist.append(self.variable(i))
+    return varlist
 
   def addVarsFromModel(self,model,names):
     r"""
