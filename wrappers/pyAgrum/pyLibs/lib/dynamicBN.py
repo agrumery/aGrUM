@@ -310,6 +310,7 @@ def plotFollowUnrolled(lovars, dbn, T, evs):
       lpots.append(serie)
 
     _, ax = plt.subplots()
+    plt.xlim(left=0, right=T-1)
     plt.ylim(top=1, bottom=0)
     ax.xaxis.grid()
     plt.title(f"Following variable {var}", fontsize=20)
