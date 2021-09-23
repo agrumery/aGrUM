@@ -37,7 +37,8 @@ from ._utils import _DFNames as DFNames
 from ._utils import _createCSVfromNDArrays as CSV
 
 from ._MBCalcul import compileMarkovBlanket
-from ._MBCalcul import _calcul_proba_for_binary_class, _calcul_most_probable_for_nary_class, _calcul_proba_for_nary_class
+from ._MBCalcul import _calcul_proba_for_binary_class, _calcul_most_probable_for_nary_class, \
+  _calcul_proba_for_nary_class
 
 from ._learningMethods import _fitStandard as BN_fitStandard
 from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
@@ -248,7 +249,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
     self.discretizer = BNDiscretizer(
-        discretizationStrategy, discretizationNbBins, discretizationThreshold)
+      discretizationStrategy, discretizationNbBins, discretizationThreshold)
 
     # AJOUT FROM MODEL
 
@@ -294,21 +295,21 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if filename is None:
       if targetName is not None:
         raise ValueError(
-            "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have set "
-            "filename to None, but have entered a targetName")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have set "
+          "filename to None, but have entered a targetName")
       if X is None or y is None:
         raise ValueError(
-            "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have not "
-            "entered a csv file name and not specified the X and y matrices that should be used")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have not "
+          "entered a csv file name and not specified the X and y matrices that should be used")
     else:
       if targetName is None:
         raise ValueError(
-            "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). The name of the "
-            "target must be specified if using this function with a csv file.")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). The name of the "
+          "target must be specified if using this function with a csv file.")
       if X is not None or y is not None:
         raise ValueError(
-            "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have entered "
-            "a filename and the X and y matrices at the same time.")
+          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have entered "
+          "a filename and the X and y matrices at the same time.")
       X, y = self.XYfromCSV(filename, True, targetName)
 
     self.fromModel = False
@@ -344,10 +345,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if len(possibleValuesY) == 1:
       raise ValueError(
-          "There is only 1 possible values for Y in the data provided")
+        "There is only 1 possible values for Y in the data provided")
     if len(possibleValuesY) > 10:
-      warnings.warn(f"A classifier with too many possible values for Y (here : {possibleValuesY}) in the data provided is not meaningfull ("
-                    "please use regression methods instead).")
+      warnings.warn(
+        f"A classifier with too many possible values for Y (here : {possibleValuesY}) in the data provided is not meaningfull ("
+        "please use regression methods instead).")
 
     self.isBinaryClassifier = (len(possibleValuesY) == 2)
 
@@ -360,11 +362,12 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     for i in range(d):
       var = self.discretizer.createVariable(
-          variableNames[i], X[:, i], y, possibleValuesY)
+        variableNames[i], X[:, i], y, possibleValuesY)
       self.bn.add(var)
 
     csvfile = tempfile.NamedTemporaryFile(delete=False)
-    csvfilename = csvfile.name + ".csv"
+    tmpfilename = csvfile.name
+    csvfilename = tmpfilename + ".csv"
     csvfile.close()
 
     CSV(X, y, self.target, self.variableNameIndexDictionary, csvfilename)
@@ -375,7 +378,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if self.learningMethod == 'NaiveBayes':
       self.bn = BN_fitNaiveBayes(
-          X, y, self.bn, self.learner, variableNames, self.target, self.constraints)
+        X, y, self.bn, self.learner, variableNames, self.target, self.constraints)
     elif self.learningMethod == 'TAN':
       self.bn = BN_fitTAN(X, y, self.bn, self.learner,
                           variableNames, self.target)
@@ -392,9 +395,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if self.isBinaryClassifier:
       self.threshold = CThreshold(
-          self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
+        self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
 
     os.remove(csvfilename)
+    os.remove(tmpfilename)
 
   def fromTrainedModel(self, bn, targetAttribute, targetModality="", copy=False, threshold=0.5, variableList=None):
     """
@@ -432,7 +436,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # The target specified must be a variable in the Bayesian network
     if targetAttribute not in namesSet:
       raise ValueError(
-          "the target variable does not appear in the Bayesian network")
+        "the target variable does not appear in the Bayesian network")
 
     self.target = targetAttribute
 
@@ -453,13 +457,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
       if len(namesSet) - 1 != len(variableList):
         raise ValueError(
-            "variableList should include all variables in the Bayesian network except the target")
+          "variableList should include all variables in the Bayesian network except the target")
 
       i = 0
       for name in variableList:
         if name not in namesSet:
           raise ValueError(
-              "variableList includes a name that does not appear in the Bayesian network")
+            "variableList includes a name that does not appear in the Bayesian network")
         self.variableNameIndexDictionary[name] = i
         i = i + 1
 
@@ -480,7 +484,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       if self.bn.variableFromName(self.target).domainSize() == 2:
         self.isBinaryClassifier = True
         self.label = self.bn.variableFromName(self.target).labels()[
-            1]  # we take the label 1 as targetModality
+          1]  # we take the label 1 as targetModality
       else:
         self.isBinaryClassifier = False
 
@@ -504,7 +508,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
       if oldName not in self.variableNameIndexDictionary:
         raise ValueError(
-            "The oldName you have specified is not a name of a variable in the Bayesian network")
+          "The oldName you have specified is not a name of a variable in the Bayesian network")
       index = self.variableNameIndexDictionary.pop(oldName)
 
       self.variableNameIndexDictionary[newName] = index
@@ -570,10 +574,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     I.erase(self.target)
     for x in X:
       vals, _ = _calcul_most_probable_for_nary_class(
-          x, I, dictName, self.MarkovBlanket, self.target)
+        x, I, dictName, self.MarkovBlanket, self.target)
       if with_labels:
         returned_list.append(self.MarkovBlanket.variable(
-            self.target).label(vals[0][self.target]))
+          self.target).label(vals[0][self.target]))
       else:
         returned_list.append(vals[0][self.target])
 
@@ -665,14 +669,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if self.isBinaryClassifier:
       for x in vals:
         res = round(_calcul_proba_for_binary_class(x, label1, labels, I,
-                    dictName, self.MarkovBlanket, self.target), self.significant_digit)
+                                                   dictName, self.MarkovBlanket, self.target), self.significant_digit)
         returned_list.append([1 - res, res])
     else:
       local_inst = gum.Instantiation(I)
       local_inst.erase(self.target)
       for x in vals:
         returned_list.append(_calcul_proba_for_nary_class(
-            x, local_inst, dictName, self.MarkovBlanket, self.target).tolist())
+          x, local_inst, dictName, self.MarkovBlanket, self.target).tolist())
 
     return numpy.array(returned_list)
 
@@ -745,7 +749,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       save_fig : bool
         whether the graph soulb de saved
       show_progress : bool
-        indicates if the resulting curve must be printed        
+        indicates if the resulting curve must be printed
     """
     import pyAgrum.lib.bn2roc as bn2roc
     bn2roc.showROC_PR(self.bn, filename, self.target,
