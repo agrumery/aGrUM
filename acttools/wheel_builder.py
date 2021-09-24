@@ -232,14 +232,15 @@ def get_tags():
   except:
     arch = pep.safer_name(pep.get_platform())
   if arch == "linux_x86_64":
-    arch = 'manylinux1_x86_64'
+    arch = 'manylinux2010_x86_64'
   elif arch == "linux_i686":
-    arch = 'manylinux1_i686'
+    arch = 'manylinux2010_i686'
+  elif arch == "linux_aarch64":
+    arch = 'manylinux2014_aarch64'
   if 'macosx' in arch:
     arch = arch.replace('.', '_')
   tags = f'{impl}-{abi}-{arch}'
   return tags
-
 
 def clean_up(install_dir):
   """Remone unescessary files in isntall_dir (for now, only th egg-info
