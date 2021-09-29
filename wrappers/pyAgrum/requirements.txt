@@ -3,4 +3,3 @@ matplotlib-inline
 pydotplus
 numpy
 configparser
-six
