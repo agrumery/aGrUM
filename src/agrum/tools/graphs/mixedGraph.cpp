@@ -224,10 +224,6 @@ namespace gum {
     return output.str();
   }
 
-  NodeSet MixedGraph::adjacents(const NodeId id) const {
-    return neighbours(id) + parents(id) + children(id);
-  }
-
   /// for friendly displaying the content of directed graphs
   std::ostream& operator<<(std::ostream& stream, const MixedGraph& g) {
     stream << g.toString();

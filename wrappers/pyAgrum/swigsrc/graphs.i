@@ -17,7 +17,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 
 %define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
 %extend classname {
@@ -35,18 +35,18 @@
 %pythoncode {
   def connectedComponents(self):
     """ connected components from a graph/BN
-    
+
     Compute the connected components of a pyAgrum's graph or Bayesian Network
     (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
     The firstly visited node for each component is called a 'root' and is used as a key for the component.
     This root has been arbitrarily chosen during the algorithm.
-    
+
     Returns
     -------
     dict(int,Set[int])
       dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
-      
+
     """
     nodes=self.nodes()
     connected_components=dict()
@@ -59,19 +59,19 @@
                 if chi!=orig:
                     if chi in nodes:
                         cc|=parcours(chi,node)
-                        
+
         if hasattr(self,'parents'):
             for par in self.parents(node):
                 if par!=orig:
                     if par in nodes:
                         cc|=parcours(par,node)
-                                    
+
         if hasattr(self,'neighbours'):
             for nei in self.neighbours(node):
                 if nei!=orig:
                     if nei in nodes:
                         cc|=parcours(nei,node)
-        return cc       
+        return cc
 
     while (len(nodes)>0):
         root=nodes.pop()
@@ -148,6 +148,16 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph); // add for the sub-classes (inclu
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %ignore gum::EssentialGraph::edges const;
 %ignore gum::EssentialGraph::neighbours const;
+
+
+%define ADD_MIXED_METHOD_TO_GRAPHCLASS(classname)
+%extend classname {
+  PyObject *adjacents(gum::NodeId id) const {
+    return PyAgrumHelper::PySetFromNodeSet(self->adjacents(id));
+  };
+};
+%enddef
+ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
 
 
 %extend gum::CliqueGraph {

@@ -284,7 +284,7 @@ bool
 
 %feature("docstring") gum::MixedGraph::hasDirectedPath
 "
-Check if a directedpath exists bewteen from and to.
+Check if a directed path exists between from and to.
 
 Parameters
 ----------
@@ -305,4 +305,19 @@ Returns
 -------
 int
     the number of arcs in the graph
+"
+
+%feature("docstring") gum::MixedGraph::adjacents
+"
+adjacents nodes are neighbours (not oriented), children and parents
+
+Parameters
+----------
+id : int
+	the id of the node
+
+Returns
+-------
+set
+    the set of node ids.
 "

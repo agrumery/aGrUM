@@ -195,6 +195,15 @@ ADD_ARCGRAPHPART_API(gum::DAG);
 ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 
+%define ADD_MIXEDGRAPHPART_API(classname)
+%extend classname {
+  NodeSet adjacents(NodeId id) const {
+    return self->adjacents(id);
+  }
+}
+%enddef
+ADD_MIXEDGRAPHPART_API(gum::MixedGraph);
+
 #####################################
 %define ADD_MULTIDIMDECORATOR_API(classname)
 %extend classname {

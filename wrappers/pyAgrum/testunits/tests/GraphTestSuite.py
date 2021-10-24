@@ -29,7 +29,7 @@ class TestGraph(pyAgrumTestCase):
     ug.addEdge(0,2)
     ug.addEdge(1,2)
     ug.addEdge(2,3)
-    
+
     mixed_graph = gum.MixedGraph()
 
     mixed_graph.addNodes(4)
@@ -50,7 +50,7 @@ class TestGraph(pyAgrumTestCase):
     dg.addArc(0,2)
     dg.addArc(1,2)
     dg.addArc(2,3)
-    
+
     mixed_graph = gum.MixedGraph()
 
     mixed_graph.addNodes(4)
@@ -68,12 +68,19 @@ class TestGraph(pyAgrumTestCase):
 
     mixed_graph.addNodes(4)
 
-    mixed_graph.addEdge(0,2)
+    mixed_graph.addArc(0,2)
     mixed_graph.addEdge(1,2)
-    mixed_graph.addEdge(2,3)
+    mixed_graph.addArc(2,3)
+
+    self.assertEquals(mixed_graph.parents(2),{0})
+    self.assertEquals(mixed_graph.children(2),{3})
+    self.assertEquals(mixed_graph.neighbours(2),{1})
+    self.assertEquals(mixed_graph.adjacents(2),{0,1,3})
 
     copy = mixed_graph
+    self.assertEqual(mixed_graph, copy)
 
+    copy = gum.MixedGraph(mixed_graph)
     self.assertEqual(mixed_graph, copy)
 
   def testNonRegressionAddEdge(self):

@@ -65,4 +65,7 @@ namespace gum {
 
   INLINE bool MixedGraph::operator!=(const MixedGraph& p) const { return !operator==(p); }
 
+  INLINE NodeSet MixedGraph::adjacents(NodeId id) const {
+    return neighbours(id) + parents(id) + children(id);
+  }
 } /* namespace gum */

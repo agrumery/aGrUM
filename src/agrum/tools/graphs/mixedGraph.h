@@ -219,7 +219,7 @@ namespace gum {
     /// returns the set of node adjacent to a given node
     /** Note that the set of node returned may be empty.
      * @param id the node to which the edges are adjacent */
-    NodeSet adjacents(const NodeId id) const;
+    NodeSet adjacents(NodeId id) const;
     /// @}
   };
 
