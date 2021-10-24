@@ -6,7 +6,6 @@ matplotlib-inline
 pydotplus
 numpy
 configparser
-six
 
 #### optional requirements #####
 nbformat
