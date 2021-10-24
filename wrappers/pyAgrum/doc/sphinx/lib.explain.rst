@@ -7,7 +7,6 @@ Dealing with independence
 -------------------------
 
 .. autofunction:: pyAgrum.lib.explain.independenceListForPairs
-.. autofunction:: pyAgrum.lib.explain.plotIndependenceListForPairs
 
 
 Dealing with mutual information and entropy

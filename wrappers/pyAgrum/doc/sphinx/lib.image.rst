@@ -1,5 +1,5 @@
 pyAgrum.lib.image
-==================
+=================
 
 `pyAgrum.lib.image` aims to graphically export models and inference using `pydotplus <https://pypi.org/project/pydotplus/>`_ (and then `graphviz <https://graphviz.org/>`_).
 
@@ -32,8 +32,7 @@ For more details, <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebo
 
 
 Visualization of models and inference
-----------------------------------
+-------------------------------------
 
 .. autofunction:: pyAgrum.lib.image.export
 .. autofunction:: pyAgrum.lib.image.exportInference
-

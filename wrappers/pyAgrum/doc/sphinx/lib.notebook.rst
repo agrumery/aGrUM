@@ -36,12 +36,6 @@ Visualization of Potentials
 .. autofunction:: pyAgrum.lib.notebook.getPotential
 .. autofunction:: pyAgrum.lib.notebook.showPotential
 
-Exporting visualisations (as pdf,png)
--------------------------------------
-
-.. autofunction:: pyAgrum.lib.notebook.export
-.. autofunction:: pyAgrum.lib.notebook.exportInference
-
 Visualization of graphs
 -----------------------
 
