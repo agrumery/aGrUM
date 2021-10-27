@@ -1,5 +1,16 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.3
+
+* pyAgrum
+
+  * new option in `gum.config` for percent or just number in histograms.
+  * better wrapper for `gum.Instantiation.variablesSequence()` and `pyAgrum.MixedGraph.adjacents(id)`.
+  * refreshing all `requirements.txt`.
+  * better visualisation for `pyagrum.lib.DynamicBN`.
+  * improvements in documentations.
+  * aarch64 version for package
+
 ## Changelog for 0.22.2
 
 * aGrUM
