@@ -9,7 +9,7 @@
   * refreshing all `requirements.txt`.
   * better visualisation for `pyagrum.lib.DynamicBN`.
   * improvements in documentations.
-  * aarch64 version for package
+  * aarch64 version for linux package
 
 ## Changelog for 0.22.2
 

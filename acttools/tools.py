@@ -49,16 +49,16 @@ def is_tool(prog, longpath=False):
 
 def check_tools(options):
   exe_py = sys.executable
-  
-  version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
-  subversion = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[2:])"')[0]
+
+  version, subversion = cmdline(
+    exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version()))"').split(".")
 
   if version == "2":
     critic('python2 is not supported anymore. Please use pyAgrum 0.21.x.')
   else:
-    if int(subversion)<7:
+    if int(subversion) < 7:
       critic('python<3.7 is not supported anymore. Please use pyAgrum 0.21.x.')
-  cfg.python_version=f"{version}.{subversion}"
+  cfg.python_version = f"{version}.{subversion}"
 
   exe_cmake = is_tool("cmake")
   if exe_cmake is None:
