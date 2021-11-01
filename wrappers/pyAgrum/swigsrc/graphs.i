@@ -155,6 +155,12 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
   PyObject *adjacents(gum::NodeId id) const {
     return PyAgrumHelper::PySetFromNodeSet(self->adjacents(id));
   };
+  PyObject *mixedOrientedPath(NodeId node1, NodeId node2) const {
+    return PyAgrumHelper::PyListFromNodeVect(self->mixedOrientedPath(node1,node2));
+  };
+  PyObject* mixedUnorientedPath(NodeId node1, NodeId node2) const {
+    return PyAgrumHelper::PyListFromNodeVect(self->mixedUnorientedPath(node1,node2));
+  };
 };
 %enddef
 ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
