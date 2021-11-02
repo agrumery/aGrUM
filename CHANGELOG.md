@@ -5,7 +5,8 @@
 * pyAgrum
 
   * new option in `gum.config` for percent or just number in histograms.
-  * better wrapper for `gum.Instantiation.variablesSequence()` and `pyAgrum.MixedGraph.adjacents(id)`.
+  * better wrappers for `gum.Instantiation.variablesSequence()` and `pyAgrum.MixedGraph.adjacents(id)`.
+  * better wrappers for `pyAgrum.MixedGraph.{mixedOrientedPath|mixedUnorientedPath}`.
   * refreshing all `requirements.txt`.
   * better visualisation for `pyagrum.lib.DynamicBN`.
   * improvements in documentations.
