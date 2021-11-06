@@ -18,7 +18,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-tools for BN qualitative analysis
+tools for BN qualitative analysis and explainability
 """
 
 import math
