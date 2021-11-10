@@ -774,18 +774,18 @@ namespace gum {
           if (isForbidenArc_(x, y)) {
             essentialGraph.eraseEdge(Edge(x, y));
             if (isForbidenArc_(y, x)) {
-              GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
+              //GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
             } else {
-              GUM_TRACE("Forced orientation : " << y << "->" << x)
+              //GUM_TRACE("Forced orientation : " << y << "->" << x)
               essentialGraph.addArc(y, x);
             }
           } else if (isForbidenArc_(y, x)) {
             essentialGraph.eraseEdge(Edge(x, y));
-            GUM_TRACE("Forced orientation : " << x << "->" << y)
+            //GUM_TRACE("Forced orientation : " << x << "->" << y)
             essentialGraph.addArc(x, y);
           }
       }
-      GUM_TRACE(essentialGraph.toDot());
+      //GUM_TRACE(essentialGraph.toDot());
 
       // first, propagate existing orientations
       bool newOrientation = true;
@@ -797,15 +797,15 @@ namespace gum {
           }
         }
       }
-      GUM_TRACE(essentialGraph.toDot());
+      //GUM_TRACE(essentialGraph.toDot());
       propagatesOrientationInChainOfRemainingEdges_(essentialGraph);
-      GUM_TRACE(essentialGraph.toDot());
+      //GUM_TRACE(essentialGraph.toDot());
 
       // then decide the orientation for double arcs
       for (NodeId x: order)
         for (NodeId y: essentialGraph.parents(x))
           if (essentialGraph.parents(y).contains(x)) {
-            GUM_TRACE(" + Resolving double arcs (poorly)")
+            //GUM_TRACE(" + Resolving double arcs (poorly)")
             essentialGraph.eraseArc(Arc(y, x));
           }
 
@@ -823,19 +823,19 @@ namespace gum {
     bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
       // no cycle
       if (_existsDirectedPath_(graph, xj, xi)) {
-        GUM_TRACE("cycle(" << xi << "-" << xj << ")")
+        //GUM_TRACE("cycle(" << xi << "-" << xj << ")")
         return false;
       }
 
       // R1
       if (!(graph.parents(xi) - graph.adjacents(xj)).empty()) {
-        GUM_TRACE("R1(" << xi << "-" << xj << ")")
+        //GUM_TRACE("R1(" << xi << "-" << xj << ")")
         return true;
       }
 
       // R2
       if (_existsDirectedPath_(graph, xi, xj)) {
-        GUM_TRACE("R2(" << xi << "-" << xj << ")")
+        //GUM_TRACE("R2(" << xi << "-" << xj << ")")
         return true;
       }
 
@@ -845,7 +845,7 @@ namespace gum {
         if (!graph.mixedOrientedPath(xi, p).empty()) {
           nbr += 1;
           if (nbr == 2) {
-            GUM_TRACE("R3(" << xi << "-" << xj << ")")
+            //GUM_TRACE("R3(" << xi << "-" << xj << ")")
             return true;
           }
         }
@@ -885,7 +885,7 @@ namespace gum {
           const auto nei = essentialGraph.neighbours(next);
           for (const auto n: nei) {
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
-            GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
+            //GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
             essentialGraph.eraseEdge(Edge(n, next));
             essentialGraph.addArc(n, next);
           }
@@ -902,22 +902,22 @@ namespace gum {
         bool i_j = isOrientable_(graph, xi, xj);
         bool j_i = isOrientable_(graph, xj, xi);
         if (i_j || j_i) {
-          GUM_TRACE(" + Removing edge (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + Removing edge (" << xi << "," << xj << ")")
           graph.eraseEdge(Edge(xi, xj));
           res = true;
         }
         if (i_j) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           graph.addArc(xi, xj);
           propagatesRemainingOrientableEdges_(graph, xj);
         }
         if (j_i) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           graph.addArc(xj, xi);
           propagatesRemainingOrientableEdges_(graph, xi);
         }
         if (i_j && j_i) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           _latentCouples_.emplace_back(xi, xj);
         }
       }
@@ -1005,20 +1005,20 @@ namespace gum {
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
           graph.eraseEdge(Edge(x, z));
           graph.addArc(x, z);
-          GUM_TRACE("1.a Removing edge (" << x << "," << z << ")")
-          GUM_TRACE("1.a Adding arc (" << x << "," << z << ")")
+          //GUM_TRACE("1.a Removing edge (" << x << "," << z << ")")
+          //GUM_TRACE("1.a Adding arc (" << x << "," << z << ")")
           marks[{x, z}] = '>';
           if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
-            GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
+            //GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
             _latentCouples_.emplace_back(z, x);
           }
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
         } else {
           graph.eraseEdge(Edge(x, z));
-          GUM_TRACE("1.b Adding arc (" << x << "," << z << ")")
+          //GUM_TRACE("1.b Adding arc (" << x << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, x, z)) {
             graph.addArc(z, x);
-            GUM_TRACE("1.b Removing edge (" << x << "," << z << ")")
+            //GUM_TRACE("1.b Removing edge (" << x << "," << z << ")")
             marks[{z, x}] = '>';
           }
         }
@@ -1026,8 +1026,8 @@ namespace gum {
         if (!_existsNonTrivialDirectedPath_(graph, z, y)) {
           graph.eraseEdge(Edge(y, z));
           graph.addArc(y, z);
-          GUM_TRACE("1.c Removing edge (" << y << "," << z << ")")
-          GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
+          //GUM_TRACE("1.c Removing edge (" << y << "," << z << ")")
+          //GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
           marks[{y, z}] = '>';
           if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
             _latentCouples_.emplace_back(z, y);
@@ -1035,10 +1035,10 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
         } else {
           graph.eraseEdge(Edge(y, z));
-          GUM_TRACE("1.d Removing edge (" << y << "," << z << ")")
+          //GUM_TRACE("1.d Removing edge (" << y << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, y, z)) {
             graph.addArc(z, y);
-            GUM_TRACE("1.d Adding arc (" << z << "," << y << ")")
+            //GUM_TRACE("1.d Adding arc (" << z << "," << y << ")")
             marks[{z, y}] = '>';
           }
         }
@@ -1046,8 +1046,8 @@ namespace gum {
         if (!_existsNonTrivialDirectedPath_(graph, z, y)) {
           graph.eraseEdge(Edge(y, z));
           graph.addArc(y, z);
-          GUM_TRACE("2.a Removing edge (" << y << "," << z << ")")
-          GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
+          //GUM_TRACE("2.a Removing edge (" << y << "," << z << ")")
+          //GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
           marks[{y, z}] = '>';
           if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
             _latentCouples_.emplace_back(z, y);
@@ -1055,10 +1055,10 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
         } else {
           graph.eraseEdge(Edge(y, z));
-          GUM_TRACE("2.b Removing edge (" << y << "," << z << ")")
+          //GUM_TRACE("2.b Removing edge (" << y << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, y, z)) {
             graph.addArc(z, y);
-            GUM_TRACE("2.b Adding arc (" << y << "," << z << ")")
+            //GUM_TRACE("2.b Adding arc (" << y << "," << z << ")")
             marks[{z, y}] = '>';
           }
         }
@@ -1066,8 +1066,8 @@ namespace gum {
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
           graph.eraseEdge(Edge(x, z));
           graph.addArc(x, z);
-          GUM_TRACE("3.a Removing edge (" << x << "," << z << ")")
-          GUM_TRACE("3.a Adding arc (" << x << "," << z << ")")
+          //GUM_TRACE("3.a Removing edge (" << x << "," << z << ")")
+          //GUM_TRACE("3.a Adding arc (" << x << "," << z << ")")
           marks[{x, z}] = '>';
           if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
             _latentCouples_.emplace_back(z, x);
@@ -1075,10 +1075,10 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
         } else {
           graph.eraseEdge(Edge(x, z));
-          GUM_TRACE("3.b Removing edge (" << x << "," << z << ")")
+          //GUM_TRACE("3.b Removing edge (" << x << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, x, z)) {
             graph.addArc(z, x);
-            GUM_TRACE("3.b Adding arc (" << x << "," << z << ")")
+            //GUM_TRACE("3.b Adding arc (" << x << "," << z << ")")
             marks[{z, x}] = '>';
           }
         }
@@ -1100,26 +1100,26 @@ namespace gum {
         // std::endl;
         if (!_existsDirectedPath_(graph, y, z) && graph.parents(y).empty()) {
           graph.addArc(z, y);
-          GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
+          //GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
         } else if (!_existsDirectedPath_(graph, z, y) && graph.parents(z).empty()) {
           graph.addArc(y, z);
-          GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
+          //GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
           marks[{z, y}] = '-';
           marks[{y, z}] = '>';
           _latentCouples_.emplace_back(y, z);
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
         } else if (!_existsDirectedPath_(graph, y, z)) {
           graph.addArc(z, y);
-          GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
+          //GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
         } else if (!_existsDirectedPath_(graph, z, y)) {
           graph.addArc(y, z);
-          GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
+          //GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
           _latentCouples_.emplace_back(y, z);
           marks[{z, y}] = '-';
           marks[{y, z}] = '>';
@@ -1127,29 +1127,29 @@ namespace gum {
         }
       } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o' && marks[{z, x}] != '-') {
         graph.eraseEdge(Edge(z, x));
-        GUM_TRACE("5. Removing edge (" << z << "," << x << ")")
+        //GUM_TRACE("5. Removing edge (" << z << "," << x << ")")
         if (!_existsDirectedPath_(graph, x, z) && graph.parents(x).empty()) {
           graph.addArc(z, x);
-          GUM_TRACE("5.a Adding arc (" << z << "," << x << ")")
+          //GUM_TRACE("5.a Adding arc (" << z << "," << x << ")")
           marks[{z, x}] = '>';
           marks[{x, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
         } else if (!_existsDirectedPath_(graph, z, x) && graph.parents(z).empty()) {
           graph.addArc(x, z);
-          GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
+          //GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
           marks[{z, x}] = '-';
           marks[{x, z}] = '>';
           _latentCouples_.emplace_back(x, z);
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
         } else if (!_existsDirectedPath_(graph, x, z)) {
           graph.addArc(z, x);
-          GUM_TRACE("5.c Adding arc (" << z << "," << x << ")")
+          //GUM_TRACE("5.c Adding arc (" << z << "," << x << ")")
           marks[{z, x}] = '>';
           marks[{x, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
         } else if (!_existsDirectedPath_(graph, z, x)) {
           graph.addArc(x, z);
-          GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
+          //GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
           marks[{z, x}] = '-';
           marks[{x, z}] = '>';
           _latentCouples_.emplace_back(x, z);

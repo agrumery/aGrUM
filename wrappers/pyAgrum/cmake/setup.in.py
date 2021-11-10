@@ -57,11 +57,11 @@ setup(
     maintainer_email='info@agrum.org',
     platforms=['any'],
     license='LGPLv3',
-    packages=['pyAgrum', 'pyAgrum/lib', 'pyAgrum/lib/_utils'],
+    packages=['pyAgrum', 'pyAgrum/lib'],
     long_description=README,
     include_package_data=True,
     ext_modules=[my_ext],
-    install_requires=['numpy','six','configparser'],
+    install_requires=['numpy','matplotlib','pydotplus'],
     classifiers=[
     'Development Status :: 5 - Production/Stable', 
     'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',

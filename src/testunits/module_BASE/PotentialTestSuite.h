@@ -867,7 +867,7 @@ namespace gum_tests {
       gum::Potential< int > p;
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      TS_ASSERT_EQUALS(p.margSumOut({&a, &b}).toString(), "<> :: 45")
+      TS_ASSERT_EQUALS(p.margSumOut({&a, &b}).toString(), "[45]")
     }
 
     void testKL() {
@@ -1027,24 +1027,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), gum::InvalidArgument)
     }
 
-    private:
-    void _testval_for_set_(const gum::Potential< int >&         p,
-                           int                                  val,
-                           const gum::Set< gum::Instantiation > s,
-                           gum::Size                            expected_size) {
-      gum::Instantiation ip(p);
-
-      TS_ASSERT_EQUALS(s.size(), expected_size)
-      for (ip.setFirst(); !ip.end(); ++ip) {
-        if (s.contains(ip)) {
-          TS_ASSERT_EQUALS(p[ip], val)
-        } else {
-          TS_ASSERT_DIFFERS(p[ip], val)
-        }
-      }
-    }
-
-    public:
     void testArgMaxMinFindAll() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Potential< int >  p;
@@ -1267,16 +1249,22 @@ namespace gum_tests {
       }
     }
 
-    void testOperationWithDifferentVariablesFromMadsLindskou() {
-      gum::Potential< double > px;
-      gum::Potential< double > py;
-      auto                     a1 = gum::LabelizedVariable("a", "a", 2);
-      auto                     a2 = gum::LabelizedVariable("a", "a", 2);
-      auto                     b  = gum::LabelizedVariable("b", "b", 2);
-      auto                     c  = gum::LabelizedVariable("c", "c", 2);
-      px << a1 << b;
-      py << a2 << c;
-      TS_ASSERT_THROWS(px * py, gum::DuplicateElement)
+
+    private:
+    void _testval_for_set_(const gum::Potential< int >&         p,
+                           int                                  val,
+                           const gum::Set< gum::Instantiation > s,
+                           gum::Size                            expected_size) {
+      gum::Instantiation ip(p);
+
+      TS_ASSERT_EQUALS(s.size(), expected_size)
+      for (ip.setFirst(); !ip.end(); ++ip) {
+        if (s.contains(ip)) {
+          TS_ASSERT_EQUALS(p[ip], val)
+        } else {
+          TS_ASSERT_DIFFERS(p[ip], val)
+        }
+      }
     }
   };
 }   // namespace gum_tests

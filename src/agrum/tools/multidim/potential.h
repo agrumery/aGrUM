@@ -496,12 +496,17 @@ namespace gum {
 
     virtual std::string toString() const {
       auto table = this->content();
-      if (table->nbrDim() == 0) { return "[]"; }
+      std::stringstream ss;
+
+      if (table->nbrDim() == 0) {
+        Instantiation I(this);
+        ss<<"["<<this->get(I)<<"]";
+        return ss.str();
+      }
       const Size colwidth    = 6;
       const Size numberwidth = 9;
       const Size nbrLigMax   = 6;
 
-      std::stringstream ss;
       ss << std::left << std::fixed << std::endl;
       ss.precision(numberwidth - 5);
 

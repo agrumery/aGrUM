@@ -192,14 +192,12 @@ namespace gum {
    * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.getOffs_(i) give the
    * offset of a:0|b:1|c:2.
    */
-
+  
   template < typename GUM_SCALAR >
   INLINE Size MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
     Idx off = 0;
 
-    for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter = gaps_.beginSafe();
-         iter != gaps_.endSafe();
-         ++iter)
+    for (auto iter = gaps_.begin(); iter != gaps_.end(); ++iter)
       if (i.contains(iter.key()))
         off += iter.val() * i.valFromPtr(iter.key());
       else
@@ -207,6 +205,22 @@ namespace gum {
 
     return off;
   }
+
+  /*  template < typename GUM_SCALAR >
+    INLINE Size MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
+      Idx off = 0;
+
+      for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter = gaps_.beginSafe();
+           iter != gaps_.endSafe();
+           ++iter)
+        if (i.contains(iter.key()))
+          off += iter.val() * i.valFromPtr(iter.key());
+        else
+          GUM_ERROR(InvalidArgument, iter.key()->name() << " not present in the instantiation " <<
+    i)
+
+      return off;
+    }*/
 
   // For a given indice of a value in the vector values_, this method computes
   // the corresponding instantiation

@@ -104,9 +104,6 @@ namespace gum_tests {
         // we do not compare the comments (can contain version number of agrum
         if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0)) continue;
         if (strcmp(string1, string2) != 0) {
-          GUM_TRACE(f2 << ":" << j);
-          GUM_TRACE_VAR(string1);
-          GUM_TRACE_VAR(string2);
           return false;
         }
       }
