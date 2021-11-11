@@ -285,7 +285,7 @@ def unroll2TBN(dbn, nbr):
   return bn
 
 
-def plotFollowUnrolled(lovars, dbn, T, evs):
+def plotFollowUnrolled(lovars, dbn, T, evs, vars_title='default'):
   """
   plot the dynamic evolution of a list of vars with a dBN
 
@@ -293,6 +293,7 @@ def plotFollowUnrolled(lovars, dbn, T, evs):
   :param dbn: the unrolled dbn
   :param T: the time range
   :param evs: observations
+  :param vars_title: string for default or a dictionary with the variable name as key and the respective title as value.
   """
   ie = gum.LazyPropagation(dbn)
   ie.setEvidence(evs)
@@ -313,7 +314,13 @@ def plotFollowUnrolled(lovars, dbn, T, evs):
     plt.xlim(left=0, right=T-1)
     plt.ylim(top=1, bottom=0)
     ax.xaxis.grid()
-    plt.title(f"Following variable {var}", fontsize=20)
+
+    # Setting a customized title
+    if vars_title == 'default':
+        plt.title(f"Following variable {var}", fontsize=20)
+    elif len(vars_title) != 0:
+        plt.title(vars_title[var], fontsize=20)
+    
     plt.xlabel('time')
 
     stack = ax.stackplot(x, lpots)
