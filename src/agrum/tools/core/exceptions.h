@@ -332,6 +332,62 @@ namespace gum {
    */
   class CPTError;
 
+  ///////////////////////////////////
+  /**
+   * @class gum::ScheduleMultiDimError agrum/tools/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for ScheduleMultiDim errors
+   */
+  class ScheduleMultiDimError;
+
+  /**
+   * @class gum::AbstractScheduleMultiDim agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleMultiDimError
+   * Exception : The Schedule MultiDim Table is abstract
+   */
+  class AbstractScheduleMultiDim;
+
+  /**
+   * @class gum::UnknownScheduleMultiDim agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleMultiDimError
+   * Exception : The Schedule MultiDim Table is unknown
+   */
+  class UnknownScheduleMultiDim;
+
+  /**
+   * @class gum::DuplicateScheduleMultiDim agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleMultiDimError
+   * Exception : There exists another identical Schedule MultiDim Table
+   */
+  class DuplicateScheduleMultiDim;
+
+  /**
+   * @class gum::ScheduleOperationError agrum/tools/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for ScheduleOperation errors
+   */
+  class ScheduleOperationError;
+
+  /**
+   * @class gum::UnknownScheduleOperation agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleOperationError
+   * Exception : The Schedule Operation is unknown
+   */
+  class UnknownScheduleOperation;
+
+  /**
+   * @class gum::UnavailableScheduleOperation agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleOperationError
+   * Exception : The Schedule Operation is not available yet
+   */
+  class UnavailableScheduleOperation;
+
+  /**
+   * @class gum::UnexecutedScheduleOperation agrum/tools/core/exceptions.h
+   * @extends gum::ScheduleOperationError
+   * Exception : The Schedule Operation has not been executed yet
+   */
+  class UnexecutedScheduleOperation;
 
   /**
    * @class gum::IncompatibleEvidence agrum/tools/core/exceptions.h
@@ -474,6 +530,26 @@ namespace gum {
   GUM_MAKE_ERROR(DefaultInLabel, GraphError, "Error on label")
   GUM_MAKE_ERROR(InvalidDirectedCycle, GraphError, "Directed cycle detected")
   GUM_MAKE_ERROR(CPTError, Exception, "CPT error")
+  GUM_MAKE_ERROR(ScheduleMultiDimError, Exception, "ScheduleMultiDim error")
+  GUM_MAKE_ERROR(AbstractScheduleMultiDim,
+                 ScheduleMultiDimError,
+                 "The Schedule MultiDim Table is abstract")
+  GUM_MAKE_ERROR(UnknownScheduleMultiDim,
+                 ScheduleMultiDimError,
+                 "The Schedule MultiDim Table is unknown")
+  GUM_MAKE_ERROR(DuplicateScheduleMultiDim,
+                 ScheduleMultiDimError,
+                 "There exists another identical Schedule MultiDim Table")
+  GUM_MAKE_ERROR(ScheduleOperationError, Exception, "ScheduleOperation error")
+  GUM_MAKE_ERROR(UnknownScheduleOperation,
+                 ScheduleOperationError,
+                 "The Schedule operation is unknown")
+  GUM_MAKE_ERROR(UnavailableScheduleOperation,
+                 ScheduleOperationError,
+                 "The Schedule operation is not available yet")
+  GUM_MAKE_ERROR(UnexecutedScheduleOperation,
+                 ScheduleOperationError,
+                 "The Schedule operation has not been executed yet")
   GUM_MAKE_ERROR(IncompatibleEvidence,
                  Exception,
                  "Several evidence/CPT are incompatible together (proba=0)")
