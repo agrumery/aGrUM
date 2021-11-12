@@ -285,7 +285,7 @@ def unroll2TBN(dbn, nbr):
   return bn
 
 
-def plotFollowUnrolled(lovars, dbn, T, evs, vars_title='default'):
+def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
   """
   plot the dynamic evolution of a list of vars with a dBN
 
@@ -316,10 +316,12 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title='default'):
     ax.xaxis.grid()
 
     # Setting a customized title
-    if vars_title == 'default':
+    if vars_title is None:
         plt.title(f"Following variable {var}", fontsize=20)
     elif len(vars_title) != 0:
         plt.title(vars_title[var], fontsize=20)
+    else:
+        raise TypeError("Incorrect format of the plots title dictionary")
     
     plt.xlabel('time')
 
