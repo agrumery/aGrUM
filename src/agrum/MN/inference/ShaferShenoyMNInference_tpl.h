@@ -615,7 +615,7 @@ namespace gum {
         if (potset.size() == 1) {
           _clique_potentials_.insert(xpotset.first, *(potset.cbegin()));
         } else {
-          auto joint = fast_combination.combine(potset);
+          auto joint = fast_combination.execute(potset);
           _clique_potentials_.insert(xpotset.first, joint);
         }
       }
@@ -859,7 +859,7 @@ namespace gum {
         if (potset.size() == 1) {
           _clique_potentials_[clique] = *(potset.cbegin());
         } else {
-          auto joint                  = fast_combination.combine(potset);
+          auto joint                  = fast_combination.execute(potset);
           _clique_potentials_[clique] = joint;
         }
       }
@@ -1070,7 +1070,7 @@ namespace gum {
       } else {
         // create the message in the separator
         MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-        auto joint = fast_combination.combine(new_pot_list);
+        auto joint = fast_combination.execute(new_pot_list);
         _separator_potentials_[arc].insert(joint);
         if (!_created_messages_.exists(arc)) _created_messages_.insert(arc, _PotentialSet_());
         _created_messages_[arc].insert(joint);
@@ -1162,7 +1162,7 @@ namespace gum {
       }
     } else {
       MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-      joint = fast_combination.combine(new_pot_list);
+      joint = fast_combination.execute(new_pot_list);
     }
 
     // remove the potentials that were created in new_pot_list
@@ -1232,7 +1232,7 @@ namespace gum {
         return pot;
       } else {
         MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-        return fast_combination.combine(pot_list);
+        return fast_combination.execute(pot_list);
       }
     }
 
@@ -1334,7 +1334,7 @@ namespace gum {
         new_new_pot_list.insert(evidence[node]);
       }
       MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-      joint = fast_combination.combine(new_new_pot_list);
+      joint = fast_combination.execute(new_new_pot_list);
     }
 
     // remove the potentials that were created in new_pot_list

@@ -99,7 +99,7 @@ namespace gum_tests {
         comb_set << &t1 << &t2;
         gum::Set< const gum::DiscreteVariable* > del_vars2;
         del_vars2 << vars[1];
-        gum::Potential< double >* tt1 = comb.combine(comb_set);
+        gum::Potential< double >* tt1 = comb.execute(comb_set);
         gum::Potential< double >* tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
@@ -109,7 +109,7 @@ namespace gum_tests {
         del_vars2.clear();
         comb_set << &t3 << &t4 << &t5;
         del_vars2 << vars[4] << vars[5] << vars[6];
-        tt1 = comb.combine(comb_set);
+        tt1 = comb.execute(comb_set);
         tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
@@ -203,7 +203,7 @@ namespace gum_tests {
         comb_set << &t1 << &t2;
         gum::Set< const gum::DiscreteVariable* > del_vars2;
         del_vars2 << vars[1];
-        gum::Potential< float >* tt1 = comb.combine(comb_set);
+        gum::Potential< float >* tt1 = comb.execute(comb_set);
         gum::Potential< float >* tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
@@ -213,7 +213,7 @@ namespace gum_tests {
         del_vars2.clear();
         comb_set << &t3 << &t4 << &t5;
         del_vars2 << vars[4] << vars[5] << vars[6];
-        tt1 = comb.combine(comb_set);
+        tt1 = comb.execute(comb_set);
         tt2 = proj.project(*tt1, del_vars2);
         delete tt1;
 

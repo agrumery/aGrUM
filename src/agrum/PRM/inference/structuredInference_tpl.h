@@ -140,7 +140,7 @@ namespace gum {
             m.set(j, pot->get(i));
         } else {
           MultiDimCombinationDefault< GUM_SCALAR, Potential > Comb(multPotential);
-          Potential< GUM_SCALAR >*                            tmp = Comb.combine(pots);
+          Potential< GUM_SCALAR >*                            tmp = Comb.execute(pots);
           Instantiation                                       i(m), j(*tmp);
 
           for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())

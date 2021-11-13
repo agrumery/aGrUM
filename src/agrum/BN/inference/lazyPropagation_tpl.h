@@ -1392,7 +1392,7 @@ namespace gum {
       }
     } else {
       MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-      joint = fast_combination.combine(new_pot_list);
+      joint = fast_combination.execute(new_pot_list);
     }
 
     // remove the potentials that were created in new_pot_list
@@ -1463,7 +1463,7 @@ namespace gum {
         return pot;
       } else {
         MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-        return fast_combination.combine(pot_list);
+        return fast_combination.execute(pot_list);
       }
     }
 
@@ -1565,7 +1565,7 @@ namespace gum {
         new_new_pot_list.insert(evidence[node]);
       }
       MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
-      joint = fast_combination.combine(new_new_pot_list);
+      joint = fast_combination.execute(new_new_pot_list);
     }
 
     // remove the potentials that were created in new_pot_list

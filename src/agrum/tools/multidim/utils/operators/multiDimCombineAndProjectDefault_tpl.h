@@ -193,7 +193,7 @@ namespace gum {
         joint           = const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.begin()));
         joint_to_delete = false;
       } else {
-        joint           = _combination_->combine(tables_to_combine);
+        joint           = _combination_->execute(tables_to_combine);
         joint_to_delete = true;
       }
 
@@ -296,7 +296,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationFunction(
      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
-    _combination_->setCombineFunction(combine);
+    _combination_->setCombinationFunction(combine);
   }
 
   // returns the current combination function
@@ -305,7 +305,7 @@ namespace gum {
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combinationFunction())(
      const TABLE< GUM_SCALAR >&,
      const TABLE< GUM_SCALAR >&) {
-    return _combination_->combineFunction();
+    return _combination_->combinationFunction();
   }
 
   // changes the class that performs the combinations
