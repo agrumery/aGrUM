@@ -674,7 +674,7 @@ namespace gum {
                _combination_op_,
                SSNewprojPotential);
             _PotentialSet_ new_cpt_list
-               = combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
+               = combine_and_project.execute(marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
@@ -924,7 +924,7 @@ namespace gum {
          _combination_op_,
          SSNewprojPotential);
       _PotentialSet_ new_cpt_list
-         = combine_and_project.combineAndProject(marg_cpt_set, hard_variables);
+         = combine_and_project.execute(marg_cpt_set, hard_variables);
 
       // there should be only one potential in new_cpt_list
       if (new_cpt_list.size() != 1) {
@@ -1133,7 +1133,7 @@ namespace gum {
     // marginalization
     MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(_combination_op_,
                                                                                   _projection_op_);
-    _PotentialSet_ new_pot_list = combine_and_project.combineAndProject(pot_list, del_vars);
+    _PotentialSet_ new_pot_list = combine_and_project.execute(pot_list, del_vars);
 
     // remove all the potentials that were created due to projections of
     // barren nodes and that are not part of the new_pot_list: these

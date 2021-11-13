@@ -87,7 +87,7 @@ namespace gum {
    * Potential<float>* combined_table = Comb.combine ( set );
    *
    * // change the operator to apply
-   * Comb.setCombineFunction ( multPotential );
+   * Comb.setCombinationFunction ( multPotential );
    * Potential<float>* combined_table2 = Comb.combine ( set );
    *
    * @endcode

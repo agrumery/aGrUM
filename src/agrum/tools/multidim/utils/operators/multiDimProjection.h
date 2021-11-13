@@ -78,7 +78,7 @@ namespace gum {
    * Potential<float>* projected_table = Proj.project ( t1, set1 );
    *
    * // change the operator to apply
-   * Proj.setProjectFunction ( MaxPot );
+   * Proj.setProjectionFunction ( MaxPot );
    * Potential<float>* projected_table2 = Proj.project ( t2, set2 );
    *
    * @endcode
