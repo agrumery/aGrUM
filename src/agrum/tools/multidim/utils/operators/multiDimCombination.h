@@ -84,11 +84,11 @@ namespace gum {
    * Set<const Potential<float>*> set;
    * set << &table1 << &table2 << &table3;
    * MultiDimCombinationDefault<float,Potential> Comb ( addPotential );
-   * Potential<float>* combined_table = Comb.combine ( set );
+   * Potential<float>* combined_table = Comb.execute ( set );
    *
    * // change the operator to apply
    * Comb.setCombinationFunction ( multPotential );
-   * Potential<float>* combined_table2 = Comb.combine ( set );
+   * Potential<float>* combined_table2 = Comb.execute ( set );
    *
    * @endcode
    */
@@ -133,27 +133,27 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE< GUM_SCALAR >* combine(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
-    virtual void                 combine(TABLE< GUM_SCALAR >&                     container,
+    virtual TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+    virtual void                 execute(TABLE< GUM_SCALAR >&                     container,
                                          const Set< const TABLE< GUM_SCALAR >* >& set)
        = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                    const TABLE< GUM_SCALAR >&))
+    virtual void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                        const TABLE< GUM_SCALAR >&))
        = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
-                                                      const TABLE< GUM_SCALAR >&)
+    virtual TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                          const TABLE< GUM_SCALAR >&)
        = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual float nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
-    virtual float
+    virtual double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+    virtual double
        nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     /**
@@ -168,9 +168,9 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by the resulting table ).
      */
-    virtual std::pair< long, long >
+    virtual std::pair< double, double >
        memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
-    virtual std::pair< long, long >
+    virtual std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     private:

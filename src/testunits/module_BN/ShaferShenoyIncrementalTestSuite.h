@@ -144,7 +144,7 @@ namespace gum_tests {
         potset.insert(&(bn->cpt(i)));
       }
 
-      joint = combination->combine(potset);
+      joint = combination->execute(potset);
     }
 
     void theEnd() {
@@ -177,7 +177,7 @@ namespace gum_tests {
        posterior_joint(const gum::Potential< double >*             joint,
                        gum::Set< const gum::Potential< double >* > evidence) {
       evidence.insert(joint);
-      gum::Potential< double >* joint_pot = combination->combine(evidence);
+      gum::Potential< double >* joint_pot = combination->execute(evidence);
 
       return joint_pot;
     }

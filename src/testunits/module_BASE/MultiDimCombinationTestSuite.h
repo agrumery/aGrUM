@@ -87,7 +87,7 @@ namespace gum_tests {
         set << &t1 << &t2 << &t3;
 
         gum::MultiDimCombinationDefault< double, gum::Potential > xxx(addPotential);
-        t6 = xxx.combine(set);
+        t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
 
@@ -102,8 +102,8 @@ namespace gum_tests {
 
         t4 = new gum::Potential< double >(t1 * t2);
         t5 = new gum::Potential< double >(t3 * (*t4));
-        xxx.setCombineFunction(multPotential);
-        t6 = xxx.combine(set);
+        xxx.setCombinationFunction(multPotential);
+        t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
 
@@ -127,7 +127,7 @@ namespace gum_tests {
       gum::Set< const gum::Potential< double >* >               set;
       set << &t1 << &t2;
 
-      gum::Potential< double >* t3 = xxx.combine(set);
+      gum::Potential< double >* t3 = xxx.execute(set);
       {
         gum::Instantiation inst3(t3);
         TS_ASSERT_EQUALS((*t3)[inst3], 12.0)
@@ -151,7 +151,7 @@ namespace gum_tests {
 
       set.clear();
       set << &t1 << &t4;
-      t3 = xxx.combine(set);
+      t3 = xxx.execute(set);
       {
         gum::Instantiation inst3(t3);
         double             x = 0;
