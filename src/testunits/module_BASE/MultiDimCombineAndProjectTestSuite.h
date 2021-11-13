@@ -73,7 +73,7 @@ namespace gum_tests {
 
       try {
         gum::Set< const gum::Potential< double >* > res
-           = projcomb.combineAndProject(to_comb, del_vars);
+           = projcomb.execute(to_comb, del_vars);
 
         double nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -122,8 +122,8 @@ namespace gum_tests {
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2 = projcomb;
-        projcomb2.setCombineFunction(addPot);
-        projcomb2.setProjectFunction(myMax);
+        projcomb2.setCombinationFunction(addPot);
+        projcomb2.setProjectionFunction(myMax);
 
         gum::MultiDimCombineAndProjectDefault< double, gum::Potential >* projcomb3
            = projcomb.newFactory();
@@ -177,7 +177,7 @@ namespace gum_tests {
 
       try {
         gum::Set< const gum::Potential< float >* > res
-           = projcomb.combineAndProject(to_comb, del_vars);
+           = projcomb.execute(to_comb, del_vars);
 
         float nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -227,8 +227,8 @@ namespace gum_tests {
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2 = projcomb;
-        projcomb2.setCombineFunction(addPot);
-        projcomb2.setProjectFunction(myMax);
+        projcomb2.setCombinationFunction(addPot);
+        projcomb2.setProjectionFunction(myMax);
 
         gum::MultiDimCombineAndProjectDefault< float, gum::Potential >* projcomb3
            = projcomb.newFactory();
@@ -275,7 +275,7 @@ namespace gum_tests {
 
       {
         gum::Set< const gum::Potential< float >* > res
-           = projcomb.combineAndProject(to_comb, del_vars);
+           = projcomb.execute(to_comb, del_vars);
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;
@@ -295,7 +295,7 @@ namespace gum_tests {
       del_vars << vars[1];
       {
         gum::Set< const gum::Potential< float >* > res
-           = projcomb.combineAndProject(to_comb, del_vars);
+           = projcomb.execute(to_comb, del_vars);
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;
@@ -317,7 +317,7 @@ namespace gum_tests {
       to_comb << &t2 << &t3;
       {
         gum::Set< const gum::Potential< float >* > res
-           = projcomb.combineAndProject(to_comb, del_vars);
+           = projcomb.execute(to_comb, del_vars);
         TS_ASSERT_EQUALS(res.size(), (gum::Size)2)
 
         int   nb_empty = 0;

@@ -79,13 +79,13 @@ namespace gum {
   // combine and project
   template < typename GUM_SCALAR, template < typename > class TABLE >
   Set< const TABLE< GUM_SCALAR >* >
-     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineAndProject(
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::execute(
         Set< const TABLE< GUM_SCALAR >* > table_set,
         Set< const DiscreteVariable* >    del_vars) {
     // when we remove a variable, we need to combine all the tables containing
     // this variable in order to produce a new unique table containing this
     // variable. Removing the variable is then performed by marginalizing it
-    // out of the table. In the combineAndProject algorithm, we wish to remove
+    // out of the table. In the execute algorithm, we wish to remove
     // first variables that produce small tables. This should speed up the
     // marginalizing process
     Size nb_vars;
@@ -294,7 +294,7 @@ namespace gum {
 
   // changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
+  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationFunction(
      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
     _combination_->setCombineFunction(combine);
   }
@@ -302,7 +302,7 @@ namespace gum {
   // returns the current combination function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combinationFunction())(
      const TABLE< GUM_SCALAR >&,
      const TABLE< GUM_SCALAR >&) {
     return _combination_->combineFunction();
@@ -318,7 +318,7 @@ namespace gum {
 
   // changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
+  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionFunction(
      TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
                                   const Set< const DiscreteVariable* >&)) {
     _projection_->setProjectFunction(proj);
@@ -327,7 +327,7 @@ namespace gum {
   // returns the current projection function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectionFunction())(
      const TABLE< GUM_SCALAR >&,
      const Set< const DiscreteVariable* >&) {
     return _projection_->projectFunction();
@@ -344,7 +344,7 @@ namespace gum {
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  float MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
+  double MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
      Set< const DiscreteVariable* >                           del_vars) const {
     // when we remove a variable, we need to combine all the tables containing
@@ -437,7 +437,7 @@ namespace gum {
     }
 
     // the resulting number of operations
-    float nb_operations = 0;
+    double nb_operations = 0;
 
     // create a set of the temporary table's variables created during the
     // marginalization process (useful for deallocating temporary tables)
@@ -584,7 +584,7 @@ namespace gum {
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  float MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
+  double MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
      const Set< const TABLE< GUM_SCALAR >* >& set,
      const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
@@ -600,7 +600,7 @@ namespace gum {
   // returns the memory consumption used during the combinations and
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< long, long > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+  std::pair< double, double > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
      Set< const DiscreteVariable* >                           del_vars) const {
     // when we remove a variable, we need to combine all the tables containing
@@ -691,8 +691,8 @@ namespace gum {
     }
 
     // the resulting memory consumtions
-    long max_memory     = 0;
-    long current_memory = 0;
+    double max_memory     = 0.0;
+    double current_memory = 0.0;
 
     // create a set of the temporary table's variables created during the
     // marginalization process (useful for deallocating temporary tables)
@@ -737,11 +737,11 @@ namespace gum {
         joint_to_delete = true;
 
         // update the number of operations performed
-        std::pair< long, long > comb_memory = _combination_->memoryUsage(tables_to_combine);
+        auto comb_memory = _combination_->memoryUsage(tables_to_combine);
 
-        if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
-            || (std::numeric_limits< long >::max() - current_memory < comb_memory.second)) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
+        if ((std::numeric_limits< double >::max() - current_memory < comb_memory.first)
+            || (std::numeric_limits< double >::max() - current_memory < comb_memory.second)) {
+          GUM_ERROR(OutOfBounds, "memory usage too high")
         }
 
         if (current_memory + comb_memory.first > max_memory) {
@@ -755,11 +755,11 @@ namespace gum {
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      std::pair< long, long > comb_memory = _projection_->memoryUsage(*joint, del_one_var);
+      auto comb_memory = _projection_->memoryUsage(*joint, del_one_var);
 
-      if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
-          || (std::numeric_limits< long >::max() - current_memory < comb_memory.second)) {
-        GUM_ERROR(OutOfBounds, "memory usage out of long int range")
+      if ((std::numeric_limits< double >::max() - current_memory < comb_memory.first)
+          || (std::numeric_limits< double >::max() - current_memory < comb_memory.second)) {
+        GUM_ERROR(OutOfBounds, "memory usage too high")
       }
 
       if (current_memory + comb_memory.first > max_memory) {
@@ -864,13 +864,13 @@ namespace gum {
       delete *iter;
     }
 
-    return std::pair< long, long >(max_memory, current_memory);
+    return std::pair< double, double >(max_memory, current_memory);
   }
 
   // returns the memory consumption used during the combinations and
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< long, long > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+  std::pair< double, double > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
      const Set< const TABLE< GUM_SCALAR >* >& set,
      const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables

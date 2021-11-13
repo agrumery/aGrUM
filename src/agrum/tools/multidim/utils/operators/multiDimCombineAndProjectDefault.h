@@ -28,9 +28,7 @@
 #ifndef GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H
 #define GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H
 
-#include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombineAndProject.h>
-#include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
 namespace gum {
 
@@ -87,13 +85,13 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual Set< const TABLE< GUM_SCALAR >* >
-       combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
-                         Set< const DiscreteVariable* >    del_vars);
+    Set< const TABLE< GUM_SCALAR >* >
+       execute(Set< const TABLE< GUM_SCALAR >* > set, Set< const DiscreteVariable* >    del_vars)
+          final;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                    const TABLE< GUM_SCALAR >&));
+    void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                const TABLE< GUM_SCALAR >&)) final;
 
     /**
      * @brief changes the class that performs the combinations
@@ -109,16 +107,16 @@ namespace gum {
      * be used. Function setCombinationClass allows to change the
      * combinationClass and, thus, the way all those tables will be combined.
      */
-    virtual void setCombinationClass(const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class);
+    void setCombinationClass(const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) final;
 
     /// Returns the current combination function
-    virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
-                                                      const TABLE< GUM_SCALAR >&);
+    TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                  const TABLE< GUM_SCALAR >&) final;
 
     /// Changes the function used for projecting TABLES
-    virtual void
-       setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                                       const Set< const DiscreteVariable* >&));
+    void setProjectionFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
+                                                            const Set< const DiscreteVariable* >&))
+          final;
 
     /**
      * @brief Changes the class that performs the projections.
@@ -126,25 +124,25 @@ namespace gum {
      * As for the combination class, it is possible to change the projection
      * class, thus defining a new projection behaviour.
      */
-    virtual void setProjectionClass(const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class);
+    void setProjectionClass(const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) final;
 
     /// returns the current projection function
-    virtual TABLE< GUM_SCALAR >* (*projectFunction())(const TABLE< GUM_SCALAR >&,
-                                                      const Set< const DiscreteVariable* >&);
+    TABLE< GUM_SCALAR >* (*projectionFunction())(const TABLE< GUM_SCALAR >&,
+                                                 const Set< const DiscreteVariable* >&) final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual float nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
-                               const Set< const DiscreteVariable* >&    del_vars) const;
+    double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+                        const Set< const DiscreteVariable* >&    del_vars) const final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual float nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                               Set< const DiscreteVariable* > del_vars) const;
+    double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
+                        Set< const DiscreteVariable* > del_vars) const final;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -159,9 +157,9 @@ namespace gum {
      * performed, and the second one is the amount of memory still used at the
      * end of the function ( the memory used by the resulting tables )
      */
-    virtual std::pair< long, long >
+    std::pair< double, double >
        memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set,
-                   const Set< const DiscreteVariable* >&    del_vars) const;
+                   const Set< const DiscreteVariable* >&    del_vars) const final;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -176,9 +174,10 @@ namespace gum {
      * performed, and the second one is the amount of memory still used at the
      * end of the function ( the memory used by the resulting tables )
      */
-    virtual std::pair< long, long >
+    std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                   Set< const DiscreteVariable* >                           del_vars) const;
+                   Set< const DiscreteVariable* >                           del_vars)
+          const final;
 
     /// @}
 
