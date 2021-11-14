@@ -51,7 +51,7 @@ namespace gum {
 
     /// Default constructor
     MultiDimCombineAndProjectDefault(
-       TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
+       TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
        TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
                                        const Set< const DiscreteVariable* >&));
 
@@ -90,8 +90,8 @@ namespace gum {
           final;
 
     /// changes the function used for combining two TABLES
-    void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                const TABLE< GUM_SCALAR >&)) final;
+    void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
+                                                               const TABLE< GUM_SCALAR >&)) final;
 
     /**
      * @brief changes the class that performs the combinations
@@ -110,8 +110,8 @@ namespace gum {
     void setCombinationClass(const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) final;
 
     /// Returns the current combination function
-    TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                  const TABLE< GUM_SCALAR >&) final;
+    TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                 const TABLE< GUM_SCALAR >&) final;
 
     /// Changes the function used for projecting TABLES
     void setProjectionFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,

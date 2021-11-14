@@ -101,7 +101,7 @@ namespace gum {
 
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(Potential< GUM_SCALAR >* (
+  INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(Potential< GUM_SCALAR > (
      *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }

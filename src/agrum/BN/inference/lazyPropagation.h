@@ -44,9 +44,9 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR >* LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
-                                                             const Potential< GUM_SCALAR >& t2) {
-    return new Potential< GUM_SCALAR >(t1 * t2);
+  INLINE static Potential< GUM_SCALAR > LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
+                                                            const Potential< GUM_SCALAR >& t2) {
+    return t1 * t2;
   }
 
   // the function used to combine two tables
@@ -259,8 +259,8 @@ namespace gum {
        LPNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR >* (*_combination_op_)(const Potential< GUM_SCALAR >&,
-                                                 const Potential< GUM_SCALAR >&){
+    Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
+                                                const Potential< GUM_SCALAR >&){
        LPNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
@@ -392,8 +392,8 @@ namespace gum {
        *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
-    void _setCombinationFunction_(Potential< GUM_SCALAR >* (*comb)(const Potential< GUM_SCALAR >&,
-                                                                   const Potential< GUM_SCALAR >&));
+    void _setCombinationFunction_(Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
+                                                                  const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void _diffuseMessageInvalidations_(NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques);

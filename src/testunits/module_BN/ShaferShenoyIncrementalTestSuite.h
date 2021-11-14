@@ -56,9 +56,9 @@ namespace gum_tests {
 
     public:
     // the function used to combine two tables
-    static gum::Potential< double >* LPIncrmultiPotential(const gum::Potential< double >& t1,
-                                                          const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 * t2);
+    static gum::Potential< double > LPIncrmultiPotential(const gum::Potential< double >& t1,
+                                                         const gum::Potential< double >& t2) {
+      return t1 * t2;
     }
 
     // the function used to combine two tables

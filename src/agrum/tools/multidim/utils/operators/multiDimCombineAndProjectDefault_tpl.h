@@ -39,7 +39,7 @@ namespace gum {
   // default constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::MultiDimCombineAndProjectDefault(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
+     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
      TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
                                      const Set< const DiscreteVariable* >&)) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
@@ -295,13 +295,13 @@ namespace gum {
   // changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationFunction(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
+     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
     _combination_->setCombinationFunction(combine);
   }
 
   // returns the current combination function
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (
+  INLINE TABLE< GUM_SCALAR > (
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combinationFunction())(
      const TABLE< GUM_SCALAR >&,
      const TABLE< GUM_SCALAR >&) {

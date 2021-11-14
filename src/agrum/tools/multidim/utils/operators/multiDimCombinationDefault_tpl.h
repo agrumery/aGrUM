@@ -30,81 +30,69 @@
 
 #  include <limits>
 
-#  include <agrum/agrum.h>
+#include <agrum/agrum.h>
+#include <agrum/tools/core/priorityQueue.h>
+#include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 
-#  include <agrum/tools/core/priorityQueue.h>
-#  include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 
 namespace gum {
 
-  // constructor
+  /// constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::MultiDimCombinationDefault(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) :
+     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) :
       MultiDimCombination< GUM_SCALAR, TABLE >(),
-      combine_(combine) {
+      _combine_(combine) {
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
   }
 
-  // copy constructor
+
+  /// copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::MultiDimCombinationDefault(
      const MultiDimCombinationDefault< GUM_SCALAR, TABLE >& from) :
       MultiDimCombination< GUM_SCALAR, TABLE >(),
-      combine_(from.combine_) {
+      _combine_(from._combine_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombinationDefault);
   }
 
-  // destructor
+
+  /// destructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::~MultiDimCombinationDefault() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimCombinationDefault);
   }
 
-  // virtual constructor
+
+  /// virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >*
      MultiDimCombinationDefault< GUM_SCALAR, TABLE >::newFactory() const {
-    return new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine_);
+    return new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(_combine_);
   }
 
-  // changes the function used for combining two TABLES
+
+  /// changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void MultiDimCombinationDefault< GUM_SCALAR, TABLE >::setCombinationFunction(
-     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
-    combine_ = combine;
+     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
+    _combine_ = combine;
   }
 
-  // returns the combination function currently used by the combinator
+
+  /// returns the combination function currently used by the combinator
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (*MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combinationFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const TABLE< GUM_SCALAR >&) {
-    return combine_;
+  INLINE
+     TABLE< GUM_SCALAR > (*MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combinationFunction())(
+        const TABLE< GUM_SCALAR >&,
+        const TABLE< GUM_SCALAR >&) {
+    return _combine_;
   }
 
-  // returns the domain size of the Cartesian product of the union of all the
-  // variables in seq1 and seq2
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  double MultiDimCombinationDefault< GUM_SCALAR, TABLE >::combinedSize_(
-     const Sequence< const DiscreteVariable* >& seq1,
-     const Sequence< const DiscreteVariable* >& seq2) const {
-    if (seq1.empty() && seq2.empty()) return 0;
 
-    double size = 1;
-
-    for (const auto ptrVar: seq1)
-      size *= ptrVar->domainSize();
-
-    for (const auto ptrVar: seq2)
-      if (!seq1.exists(ptrVar)) size *= ptrVar->domainSize();
-
-    return size;
-  }
-
-  // returns the result of the combination
+  /// returns the result of the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void MultiDimCombinationDefault< GUM_SCALAR, TABLE >::execute(
      TABLE< GUM_SCALAR >&                     container,
@@ -114,7 +102,8 @@ namespace gum {
     delete (res);
   }
 
-  // returns the result of the combination
+
+  /// returns the result of the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   TABLE< GUM_SCALAR >* MultiDimCombinationDefault< GUM_SCALAR, TABLE >::execute(
      const Set< const TABLE< GUM_SCALAR >* >& set) {
@@ -125,243 +114,69 @@ namespace gum {
                 " should at least contain two elements");
     }
 
-    // create a vector with all the tables to combine
-    std::vector< const TABLE< GUM_SCALAR >* > tables(set.size());
-    const Size                                tabsize = tables.size();
+    // create a vector with all the tables stored as multidims
+    std::vector< const IScheduleMultiDim<>* > tables;
+    tables.reserve(set.size());
+    for (const auto table: set) {
+      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*table, false));
+    }
 
-    {
-      Size i = Size(0);
-      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
-        tables[i] = *iter;
+    // get the set of operations to perform and execute them
+    auto operations = _operations_(tables);
+    for (auto op: operations)
+      op->execute();
+
+    // get the schedule multidim of the last combination and save it
+    TABLE< GUM_SCALAR >* result = nullptr;
+    for (auto iter=operations.rbegin(), end=operations.rend(); iter != end; ++iter) {
+      if ((*iter)->type() == ScheduleOperationType::COMBINE_MULTIDIM) {
+         ScheduleMultiDim< TABLE< GUM_SCALAR > >& schedule_result =
+           const_cast<ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+              static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+                 *((*iter)->results()[0])));
+
+         result = new TABLE< GUM_SCALAR >(
+            std::move(schedule_result.exportMultiDim()));
+         break;
       }
     }
 
-    // create a vector indicating wether the elements in tables are freshly
-    // created TABLE<GUM_SCALAR>* due to the combination of some TABLEs or if
-    // they were added by the user into the combination container
-    std::vector< bool > is_t_new(tabsize, false);
+    // delete all the operations created as well as all the schedule tables
+    _freeData_(tables, operations);
 
-    // for each pair of tables (i,j), compute the size of the table that would
-    // result from the addition of tables i and j and store the result into a
-    // priorityQueue
-    std::pair< Size, Size >                        pair;
-    PriorityQueue< std::pair< Size, Size >, double > queue;
-
-    for (Size i = Size(0); i < tabsize; ++i) {
-      pair.first                                      = i;
-      const Sequence< const DiscreteVariable* >& seq1 = tables[i]->variablesSequence();
-
-      for (Size j = i + 1; j < tabsize; ++j) {
-        pair.second = j;
-        queue.insert(pair, combinedSize_(seq1, tables[j]->variablesSequence()));
-      }
-    }
-
-    // now parse the priority queue: the top element (i,j) gives the combination
-    // to perform. When the result R has been computed, substitute i by R,
-    // remove table j and recompute all the priorities of all the pairs (R,k)
-    // still available.
-    for (Size k = 1; k < tabsize; ++k) {
-      // get the combination to perform and do it
-      pair          = queue.pop();
-      const Size ti = pair.first;
-      const Size tj = pair.second;
-
-      TABLE< GUM_SCALAR >* result = combine_(*(tables[ti]), *(tables[tj]));
-
-      // substitute tables[pair.first] by the result
-      if (tables[ti] && is_t_new[ti]) delete tables[ti];
-      if (tables[tj] && is_t_new[tj]) delete tables[tj];
-
-      tables[ti]   = result;
-      is_t_new[ti] = true;
-
-      tables[tj] = nullptr;
-
-      // remove all the pairs involving tj in the priority queue
-      for (Size ind = 0; ind < tj; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.first = ind;
-          queue.erase(pair);
-        }
-      }
-
-      pair.first = tj;
-      for (Size ind = tj + 1; ind < tabsize; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.second = ind;
-          queue.erase(pair);
-        }
-      }
-
-      // update the "combinated" size of all the pairs involving "result"
-      {
-        const Sequence< const DiscreteVariable* >& seq1 = tables[ti]->variablesSequence();
-        pair.second                                     = ti;
-        double newsize;
-
-        for (Size ind = 0; ind < ti; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.first = ind;
-            newsize    = combinedSize_(seq1, tables[ind]->variablesSequence());
-            queue.setPriority(pair, newsize);
-          }
-        }
-
-        pair.first = ti;
-
-        for (Size ind = ti + 1; ind < tabsize; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.second = ind;
-            newsize     = combinedSize_(seq1, tables[ind]->variablesSequence());
-            queue.setPriority(pair, newsize);
-          }
-        }
-      }
-    }
-
-    // here, there remains only one nonzero pointer in tables:
-    // the result of our combination
-    Size k = 0;
-    while (tables[k] == nullptr)
-      ++k;
-
-    return const_cast< TABLE< GUM_SCALAR >* >(tables[k]);
+    return result;
   }
+
 
   // returns the result of the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   double MultiDimCombinationDefault< GUM_SCALAR, TABLE >::nbOperations(
      const Set< const Sequence< const DiscreteVariable* >* >& set) const {
     // check if the set passed in argument is empty.
-    if (set.size() < 2) return 0.0f;
+    if (set.size() < 2) return 0.0;
 
-    double result = 0.0f;
-
-    // create a vector with all the tables to combine
-    std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-    const Size                                                tabsize = tables.size();
-
-    {
-      Size i = Size(0);
-      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
-        tables[i] = *iter;
-      }
+    // create a vector with all the tables stored as multidims
+    std::vector< const IScheduleMultiDim<>* > tables;
+    tables.reserve(set.size());
+    for (const auto ptrVars: set) {
+      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*ptrVars));
     }
 
-    // create a vector indicating wether the elements in tables are freshly
-    // created Sequence<const DiscreteVariable *>* due to the combination of
-    // some TABLEs or if they were added by the user into the combination
-    // container
-    std::vector< bool > is_t_new(tabsize, false);
+    // get the set of operations to perform and compute their number of operations
+    auto operations = _operations_(tables);
 
-    // for each pair of tables (i,j), compute the size of the table that would
-    // result from the addition of tables i and j and store the result into a
-    // priorityQueue
-    std::pair< Size, Size >                        pair;
-    PriorityQueue< std::pair< Size, Size >, double > queue;
+    double nb_operations = 0.0;
 
-    for (Size i = Size(0); i < tabsize; ++i) {
-      pair.first = i;
-
-      for (Size j = i + 1; j < tabsize; ++j) {
-        pair.second = j;
-        queue.insert(pair, combinedSize_(*(tables[i]), *(tables[j])));
-      }
+    for (const auto op: operations) {
+      nb_operations += op->nbOperations();
     }
 
-    // now parse the priority queue: the top element (i,j) gives the combination
-    // to perform. When the result R has been computed, substitute i by R,
-    // remove table j and recompute all the priorities of all the pairs (R,k)
-    // still available.
-    for (Size k = 1; k < tabsize; ++k) {
-      // get the combination to perform and do it
-      pair          = queue.pop();
-      const Size ti = pair.first;
-      const Size tj = pair.second;
+    // delete all the operations created as well as all the schedule tables
+    _freeData_(tables, operations);
 
-      // compute the result
-      Sequence< const DiscreteVariable* >*       new_seq = new Sequence< const DiscreteVariable* >;
-      const Sequence< const DiscreteVariable* >& seq1    = *(tables[ti]);
-      const Sequence< const DiscreteVariable* >& seq2    = *(tables[tj]);
-
-      double new_size = 1;
-
-      for (const auto ptrVar: seq1) {
-        new_size *= ptrVar->domainSize();
-        new_seq->insert(ptrVar);
-      }
-
-      for (const auto ptrVar: seq2) {
-        if (!seq1.exists(ptrVar)) {
-          new_size *= ptrVar->domainSize();
-          new_seq->insert(ptrVar);
-        }
-      }
-
-      result += new_size;
-
-      // substitute tables[pair.first] by the result
-      if (tables[ti] && is_t_new[ti]) delete tables[ti];
-      if (tables[tj] && is_t_new[tj]) delete tables[tj];
-
-      tables[ti]   = new_seq;
-      is_t_new[ti] = true;
-
-      tables[tj] = nullptr;
-
-      // remove all the pairs involving tj in the priority queue
-      for (Size ind = 0; ind < tj; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.first = ind;
-          queue.erase(pair);
-        }
-      }
-
-      pair.first = tj;
-
-      for (Size ind = tj + 1; ind < tabsize; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.second = ind;
-          queue.erase(pair);
-        }
-      }
-
-      // update the "combined" size of all the pairs involving "new_seq"
-      {
-        pair.second = ti;
-        double newsize;
-
-        for (Size ind = 0; ind < ti; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.first = ind;
-            newsize    = combinedSize_(*new_seq, *(tables[ind]));
-            queue.setPriority(pair, newsize);
-          }
-        }
-
-        pair.first = ti;
-
-        for (Size ind = ti + 1; ind < tabsize; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.second = ind;
-            newsize     = combinedSize_(*new_seq, *(tables[ind]));
-            queue.setPriority(pair, newsize);
-          }
-        }
-      }
-    }
-
-    // here, there remains only one nonzero pointer in tables:
-    // the result of our combination
-    Size k = 0;
-    while (tables[k] == nullptr)
-      ++k;
-
-    delete tables[k];
-
-    return result;
+    return nb_operations;
   }
+
 
   // returns the result of the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
@@ -380,6 +195,7 @@ namespace gum {
     return nbOperations(var_set);
   }
 
+
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< double, double > MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
@@ -387,169 +203,31 @@ namespace gum {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return {0.0, 0.0};
 
-    double max_memory     = 0;
-    double current_memory = 0;
-
-    // create a vector with all the tables to combine
-    std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-    const Size                                                tabsize = tables.size();
-
-    std::vector< Size > table_size(set.size());
-
-    {
-      Size i = Size(0);
-
-      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
-        const Sequence< const DiscreteVariable* >* vars = *iter;
-        tables[i]                                       = vars;
-
-        Size size = Size(1);
-        for (const auto ptrVar: *vars) {
-          size *= ptrVar->domainSize();
-        }
-
-        table_size[i] = size;
-      }
+    // create a vector with all the tables stored as multidims
+    std::vector< const IScheduleMultiDim<>* > tables;
+    tables.reserve(set.size());
+    for (const auto ptrVars: set) {
+      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*ptrVars));
     }
 
-    // create a vector indicating wether the elements in tables are freshly
-    // created Sequence<const DiscreteVariable *>* due to the combination of
-    // some TABLEs or if they were added by the user into the combination
-    // container
-    std::vector< bool > is_t_new(tables.size(), false);
+    // get the set of operations to perform and compute their memory consumption
+    auto operations = _operations_(tables);
 
-    // for each pair of tables (i,j), compute the size of the table that would
-    // result from the addition of tables i and j and store the result into a
-    // priorityQueue
-    std::pair< Size, Size > pair;
+    double max_memory = 0.0;
+    double end_memory = 0.0;
 
-    PriorityQueue< std::pair< Size, Size >, double > queue;
-
-    for (Size i = Size(0); i < tabsize; ++i) {
-      pair.first = i;
-
-      for (Size j = i + 1; j < tabsize; ++j) {
-        pair.second = j;
-        queue.insert(pair, combinedSize_(*(tables[i]), *(tables[j])));
-      }
+    for (const auto op: operations) {
+      const auto usage = op->memoryUsage();
+      if (end_memory + usage.first > max_memory) max_memory = end_memory + usage.first;
+      end_memory += usage.second;
     }
 
-    // now parse the priority queue: the top element (i,j) gives the combination
-    // to perform. When the result R has been computed, substitute i by R,
-    // remove table j and recompute all the priorities of all the pairs (R,k)
-    // still available.
-    for (Size k = 1; k < tabsize; ++k) {
-      // get the combination to perform and do it
-      pair          = queue.pop();
-      const Size ti = pair.first;
-      const Size tj = pair.second;
+    // delete all the operations created as well as all the schedule tables
+    _freeData_(tables, operations);
 
-      // compute the result
-      Sequence< const DiscreteVariable* >*       new_seq = new Sequence< const DiscreteVariable* >;
-      const Sequence< const DiscreteVariable* >& seq1    = *(tables[ti]);
-      const Sequence< const DiscreteVariable* >& seq2    = *(tables[tj]);
-
-      double new_size = Size(1);
-
-      for (const auto ptrVar: seq1) {
-        if (std::numeric_limits< double >::max() / ptrVar->domainSize() < new_size) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
-        }
-
-        new_size *= ptrVar->domainSize();
-
-        new_seq->insert(ptrVar);
-      }
-
-      for (const auto ptrVar: seq2) {
-        if (!seq1.exists(ptrVar)) {
-          if (std::numeric_limits< Size >::max() / ptrVar->domainSize() < new_size) {
-            GUM_ERROR(OutOfBounds, "memory usage too high")
-          }
-
-          new_size *= ptrVar->domainSize();
-
-          new_seq->insert(ptrVar);
-        }
-      }
-
-      if (std::numeric_limits< double >::max() - current_memory < new_size) {
-        GUM_ERROR(OutOfBounds, "memory usage too high")
-      }
-
-      current_memory += new_size;
-
-      if (current_memory > max_memory) { max_memory = current_memory; }
-
-      // substitute tables[pair.first] by the result
-      if (tables[ti] && is_t_new[ti]) {
-        delete tables[ti];
-        current_memory -= table_size[ti];
-      }
-
-      if (tables[tj] && is_t_new[tj]) {
-        delete tables[tj];
-        current_memory -= table_size[tj];
-      }
-
-      tables[ti]     = new_seq;
-      table_size[ti] = new_size;
-      is_t_new[ti]   = true;
-
-      tables[tj] = nullptr;
-
-      // remove all the pairs involving tj in the priority queue
-      for (Size ind = 0; ind < tj; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.first = ind;
-          queue.erase(pair);
-        }
-      }
-
-      pair.first = tj;
-
-      for (Size ind = tj + 1; ind < tabsize; ++ind) {
-        if (tables[ind] != nullptr) {
-          pair.second = ind;
-          queue.erase(pair);
-        }
-      }
-
-      // update the "combined" size of all the pairs involving "new_seq"
-      {
-        pair.second = ti;
-        Size newsize;
-
-        for (Size ind = Size(0); ind < ti; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.first = ind;
-            newsize    = combinedSize_(*new_seq, *(tables[ind]));
-            queue.setPriority(pair, newsize);
-          }
-        }
-
-        pair.first = ti;
-
-        for (Size ind = ti + 1; ind < tabsize; ++ind) {
-          if (tables[ind] != nullptr) {
-            pair.second = ind;
-            newsize     = combinedSize_(*new_seq, *(tables[ind]));
-            queue.setPriority(pair, newsize);
-          }
-        }
-      }
-    }
-
-    // here, there remains only one nonzero pointer in tables:
-    // the result of our combination
-    Size k = Size(0);
-    while (!tables[k])
-      ++k;
-
-    delete tables[k];
-
-    return {max_memory, current_memory};
+    return {max_memory, end_memory};
   }
+
 
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
@@ -566,6 +244,151 @@ namespace gum {
     }
 
     return memoryUsage(var_set);
+  }
+
+
+  // returns the domain size of the Cartesian product of the union of all the
+  // variables in seq1 and seq2
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE double MultiDimCombinationDefault< GUM_SCALAR, TABLE >::_combinedSize_(
+     const IScheduleMultiDim<>& table1,
+     const IScheduleMultiDim<>& table2) const {
+
+    double size = table1.domainSize();
+    const auto& vars1 = table1.variablesSequence();
+    const auto& vars2 = table2.variablesSequence();
+    for (const auto ptrVar: vars2)
+      if (!vars1.exists(ptrVar)) size *= ptrVar->domainSize();
+
+    return size;
+  }
+
+
+  // returns the set of operations to perform to make the combination
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  std::vector< ScheduleOperation<>* >
+  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::_operations_(
+     const std::vector< const IScheduleMultiDim<>* >& original_tables) const {
+    // check if the set passed in argument is empty.
+    const Size tabsize = original_tables.size();
+    if (tabsize < 2) return {};
+
+    // we copy the vector of tables to be combined because we will modify
+    // it during the combination process
+    std::vector< const IScheduleMultiDim<>* > tables = original_tables;
+
+    // create the resulting set of operations to execute to perform the combination
+    std::vector< ScheduleOperation<>* > operations;
+    operations.reserve(2 * tables.size());
+
+    // create a vector indicating whether the elements in Vector tables are
+    // freshly created ScheduleMultiDim<>* resulting from the combination of
+    // some tables or if they were added by the user into the set of tables
+    // to combine
+    std::vector< bool > is_t_new(tabsize, false);
+
+    // for each pair of tables (i,j), compute the size of the table that would
+    // operations from the combination of tables i and j and store the operations into a
+    // priorityQueue
+    std::pair< Size, Size >                          pair;
+    PriorityQueue< std::pair< Size, Size >, double > queue;
+
+    for (Size i = Size(0); i < tabsize; ++i) {
+      pair.first = i;
+
+      for (Size j = i + 1; j < tabsize; ++j) {
+        pair.second = j;
+        queue.insert(pair, _combinedSize_(*tables[i], *tables[j]));
+      }
+    }
+
+
+    // now parse the priority queue: the top element (i,j) gives the combination
+    // to perform. When the operations R has been computed,substitute i by R,
+    // remove table j and recompute all the priorities of all the pairs (R,k)
+    // still available.
+    for (Size k = 1; k < tabsize; ++k) {
+      // get the combination to perform and save it
+      pair          = queue.pop();
+      const Size ti = pair.first;
+      const Size tj = pair.second;
+
+      // compute the operations and free the temporary tables
+      auto combination = new
+        ScheduleBinaryCombination< TABLE< GUM_SCALAR >, TABLE< GUM_SCALAR >,  TABLE< GUM_SCALAR > >(
+            static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*tables[ti]),
+            static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*tables[tj]),
+            _combine_);
+      operations.push_back(combination);
+      const auto result = &combination->result();
+
+      // add operations to remove the temporary tables
+      if (is_t_new[ti]) {
+        auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
+           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*tables[ti]));
+        operations.push_back(deletion);
+      }
+      if (is_t_new[tj]) {
+        auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
+           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*tables[tj]));
+        operations.push_back(deletion);
+      }
+
+      // substitute ti by result and remove tj
+      tables[ti]   = result;
+      is_t_new[ti] = true;
+      tables[tj] = nullptr;
+
+      // remove all the pairs involving tj in the priority queue
+      for (Size ind = 0; ind < tj; ++ind) {
+        if (tables[ind] != nullptr) {
+          pair.first = ind;
+          queue.erase(pair);
+        }
+      }
+
+      pair.first = tj;
+      for (Size ind = tj + 1; ind < tabsize; ++ind) {
+        if (tables[ind] != nullptr) {
+          pair.second = ind;
+          queue.erase(pair);
+        }
+      }
+
+      // update the "combined" size of all the pairs involving ti (i.e., result)
+      {
+        pair.second = ti;
+        for (Size ind = 0; ind < ti; ++ind) {
+          if (tables[ind] != nullptr) {
+            pair.first = ind;
+            queue.setPriority(pair, _combinedSize_(*result, *(tables[ind])));
+          }
+        }
+
+        pair.first = ti;
+        for (Size ind = ti + 1; ind < tabsize; ++ind) {
+          if (tables[ind] != nullptr) {
+            pair.second = ind;
+            queue.setPriority(pair, _combinedSize_(*result, *(tables[ind])));
+          }
+        }
+      }
+    }
+
+    return operations;
+  }
+
+
+  /// free scheduing memory
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE void MultiDimCombinationDefault< GUM_SCALAR, TABLE >::_freeData_(
+     std::vector< const IScheduleMultiDim<>* >& tables,
+     std::vector< ScheduleOperation<>* >& operations) const {
+    for (auto op: operations)
+      delete op;
+
+    for (auto table: tables)
+      delete table;
   }
 
 } /* namespace gum */
