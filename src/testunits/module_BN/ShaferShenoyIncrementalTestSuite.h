@@ -62,10 +62,10 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >*
+    static gum::Potential< double >
        LPIncrprojPotential(const gum::Potential< double >&                 t1,
                            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< double >(t1.margSumOut(del_vars));
+      return t1.margSumOut(del_vars);
     }
 
 
@@ -189,7 +189,8 @@ namespace gum_tests {
       // get the set of variables to erase
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
       myset.erase(BN_variable[target_id]);
-      gum::Potential< double >* res = LPIncrprojPotential(*joint, myset);
+      gum::Potential< double >* res = new gum::Potential< double >(
+         LPIncrprojPotential(*joint, myset));
       res->normalize();
       return res;
     }
@@ -202,7 +203,7 @@ namespace gum_tests {
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
       for (auto target_id: target_ids)
         myset.erase(BN_variable[target_id]);
-      return proj->project(*joint, myset);
+      return proj->execute(*joint, myset);
     }
 
 

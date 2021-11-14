@@ -100,7 +100,7 @@ namespace gum_tests {
         gum::Set< const gum::DiscreteVariable* > del_vars2;
         del_vars2 << vars[1];
         gum::Potential< double >* tt1 = comb.execute(comb_set);
-        gum::Potential< double >* tt2 = proj.project(*tt1, del_vars2);
+        gum::Potential< double >* tt2 = proj.execute(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
@@ -110,14 +110,14 @@ namespace gum_tests {
         comb_set << &t3 << &t4 << &t5;
         del_vars2 << vars[4] << vars[5] << vars[6];
         tt1 = comb.execute(comb_set);
-        tt2 = proj.project(*tt1, del_vars2);
+        tt2 = proj.execute(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
         delete tt2;
         del_vars2.clear();
         del_vars2 << vars[9] << vars[10];
-        tt2 = proj.project(t6, del_vars2);
+        tt2 = proj.execute(t6, del_vars2);
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
         delete tt2;
 
@@ -204,7 +204,7 @@ namespace gum_tests {
         gum::Set< const gum::DiscreteVariable* > del_vars2;
         del_vars2 << vars[1];
         gum::Potential< float >* tt1 = comb.execute(comb_set);
-        gum::Potential< float >* tt2 = proj.project(*tt1, del_vars2);
+        gum::Potential< float >* tt2 = proj.execute(*tt1, del_vars2);
         delete tt1;
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
 
@@ -214,7 +214,7 @@ namespace gum_tests {
         comb_set << &t3 << &t4 << &t5;
         del_vars2 << vars[4] << vars[5] << vars[6];
         tt1 = comb.execute(comb_set);
-        tt2 = proj.project(*tt1, del_vars2);
+        tt2 = proj.execute(*tt1, del_vars2);
         delete tt1;
 
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
@@ -222,7 +222,7 @@ namespace gum_tests {
         delete tt2;
         del_vars2.clear();
         del_vars2 << vars[9] << vars[10];
-        tt2 = proj.project(t6, del_vars2);
+        tt2 = proj.execute(t6, del_vars2);
         TS_ASSERT((*tt2 == *res1) || (*tt2 == *res2) || (*tt2 == *res3))
         delete tt2;
 
@@ -359,16 +359,16 @@ namespace gum_tests {
       return t1 * t2;
     }
 
-    static gum::Potential< double >*
+    static gum::Potential< double >
        mySum(const gum::Potential< double >&                 table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< double >(table.margSumOut(del_vars));
+      return table.margSumOut(del_vars);
     }
 
-    static gum::Potential< double >*
+    static gum::Potential< double >
        myMax(const gum::Potential< double >&                 table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< double >(table.margMaxOut(del_vars));
+      return table.margMaxOut(del_vars);
     }
 
     void randomInitP(gum::Potential< float >& t) {
@@ -390,16 +390,16 @@ namespace gum_tests {
       return t1 * t2;
     }
 
-    static gum::Potential< float >*
+    static gum::Potential< float >
        mySum(const gum::Potential< float >&                  table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< float >(table.margSumOut(del_vars));
+      return table.margSumOut(del_vars);
     }
 
-    static gum::Potential< float >*
+    static gum::Potential< float >
        myMax(const gum::Potential< float >&                  table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< float >(table.margMaxOut(del_vars));
+      return table.margMaxOut(del_vars);
     }
   };
 

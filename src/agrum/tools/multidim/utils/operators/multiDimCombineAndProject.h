@@ -122,13 +122,13 @@ namespace gum {
 
     /// changes the function used for projecting TABLES
     virtual void
-       setProjectionFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                                          const Set< const DiscreteVariable* >&))
+       setProjectionFunction(TABLE< GUM_SCALAR > (*proj)(const TABLE< GUM_SCALAR >&,
+                                                         const Set< const DiscreteVariable* >&))
        = 0;
 
     /// returns the current projection function
-    virtual TABLE< GUM_SCALAR >* (*projectionFunction())(const TABLE< GUM_SCALAR >&,
-                                                         const Set< const DiscreteVariable* >&)
+    virtual TABLE< GUM_SCALAR > (*projectionFunction())(const TABLE< GUM_SCALAR >&,
+                                                        const Set< const DiscreteVariable* >&)
        = 0;
 
     /**

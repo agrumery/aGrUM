@@ -126,8 +126,8 @@ namespace gum {
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_setProjectionFunction_(
-     Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
-                                      const Set< const DiscreteVariable* >&)) {
+     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
+                                     const Set< const DiscreteVariable* >&)) {
     _projection_op_ = proj;
   }
 
@@ -1106,7 +1106,7 @@ namespace gum {
       // check whether we need to add a projected new potential or not (i.e.,
       // whether there exist non-barren variables or not)
       if (pot->variablesSequence().size() != elt.second.size()) {
-        auto new_pot = projector.project(*pot, elt.second);
+        auto new_pot = projector.execute(*pot, elt.second);
         pot_list.insert(new_pot);
         projected_pots.insert(new_pot);
       }

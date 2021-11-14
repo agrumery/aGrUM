@@ -121,8 +121,8 @@ namespace gum {
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMNInference< GUM_SCALAR >::_setProjectionFunction_(
-     Potential< GUM_SCALAR >* (*proj)(const Potential< GUM_SCALAR >&,
-                                      const Set< const DiscreteVariable* >&)) {
+     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
+                                     const Set< const DiscreteVariable* >&)) {
     _projection_op_ = proj;
   }
 

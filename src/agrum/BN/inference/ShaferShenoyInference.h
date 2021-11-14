@@ -48,10 +48,10 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR >*
+  INLINE static Potential< GUM_SCALAR >
      SSNewprojPotential(const Potential< GUM_SCALAR >&        t1,
                         const Set< const DiscreteVariable* >& del_vars) {
-    return new Potential< GUM_SCALAR >(t1.margSumOut(del_vars));
+    return t1.margSumOut(del_vars);
   }
 
 
@@ -224,8 +224,8 @@ namespace gum {
     FindBarrenNodesType _barren_nodes_type_;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR >* (*_projection_op_)(const Potential< GUM_SCALAR >&,
-                                                const Set< const DiscreteVariable* >&){
+    Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
+                                               const Set< const DiscreteVariable* >&){
        SSNewprojPotential};
 
     /// the operator for performing the combinations
@@ -367,7 +367,7 @@ namespace gum {
     /// create a new junction tree as well as its related data structures
     void _createNewJT_();
     /// sets the operator for performing the projections
-    void _setProjectionFunction_(Potential< GUM_SCALAR >* (
+    void _setProjectionFunction_(Potential< GUM_SCALAR > (
        *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations

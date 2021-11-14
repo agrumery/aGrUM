@@ -34,16 +34,16 @@
 
 namespace gum {
 
-  // constructor
+  /// constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(TABLE< GUM_SCALAR >* (
+  MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(TABLE< GUM_SCALAR > (
      *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&)) :
       proj_(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimProjection);
   }
 
-  // copy constructor
+  /// copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(
      const MultiDimProjection< GUM_SCALAR, TABLE >& from) :
@@ -52,49 +52,47 @@ namespace gum {
     GUM_CONS_CPY(MultiDimProjection);
   }
 
-  // destructor
+  /// destructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >::~MultiDimProjection() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimProjection);
   }
 
-  // virtual constructor
+  /// virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >*
      MultiDimProjection< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimProjection< GUM_SCALAR, TABLE >(*this);
   }
 
-  // creates and returns the projection of the table over a subset of its vars
+  /// creates and returns the projection of the table over a subset of its vars
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::project(
+  INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) {
-    return proj_(table, del_vars);
+    return new TABLE< GUM_SCALAR >(proj_(table, del_vars));
   }
 
-  // creates and returns the projection of the table over a subset of its vars
+  /// creates and returns the projection of the table over a subset of its vars
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimProjection< GUM_SCALAR, TABLE >::project(
+  INLINE void MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      TABLE< GUM_SCALAR >&                     container,
      const TABLE< GUM_SCALAR >&               table,
      const Set< const TABLE< GUM_SCALAR >* >& del_vars) {
-    TABLE< GUM_SCALAR >* res = project(table, del_vars);
-    container                = std::move(*res);
-    delete res;
+    container = proj_(table, del_vars);
   }
 
-  // changes the function used for projecting TABLES
+  /// changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  void MultiDimProjection< GUM_SCALAR, TABLE >::setProjectFunction(TABLE< GUM_SCALAR >* (
+  void MultiDimProjection< GUM_SCALAR, TABLE >::setProjectionFunction(TABLE< GUM_SCALAR > (
      *proj)(const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&)) {
     proj_ = proj;
   }
 
-  // returns the projection function currently used by the projector
+  /// returns the projection function currently used by the projector
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (*MultiDimProjection< GUM_SCALAR, TABLE >::projectFunction())(
+  INLINE TABLE< GUM_SCALAR > (*MultiDimProjection< GUM_SCALAR, TABLE >::projectionFunction())(
      const TABLE< GUM_SCALAR >&,
      const Set< const DiscreteVariable* >&) {
     return proj_;
@@ -103,54 +101,51 @@ namespace gum {
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE float MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
+  INLINE double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    return float(table.domainSize());
+    return double(table.domainSize());
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  float MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
+  double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
-    float res = 1.0f;
+    double res = 1.0;
 
-    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter = vars.beginSafe();
-         iter != vars.endSafe();
-         ++iter) {
-      res *= (*iter)->domainSize();
+    for (const auto var: vars) {
+      res *= var->domainSize();
     }
 
     return res;
   }
 
-  // returns the memory consumption used during the projection
+  /// returns the memory consumption used during the projection
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< long, long > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
+  std::pair< double, double > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
-    long res = 1;
+    double res = 1.0;
 
-    for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter = vars.beginSafe();
-         iter != vars.endSafe();
-         ++iter) {
-      if (!del_vars.contains(*iter)) {
-        if (std::numeric_limits< long >::max() / (long)(*iter)->domainSize() < res) {
-          GUM_ERROR(OutOfBounds, "memory usage out of long int range")
+    for (const auto var: vars) {
+      if (!del_vars.contains(var)) {
+        if (std::numeric_limits< double >::max() / var->domainSize() < res) {
+          GUM_ERROR(OutOfBounds, "memory usage too high")
         }
 
-        res *= long((*iter)->domainSize());
+        res *= var->domainSize();
       }
     }
 
-    return std::pair< long, long >(res, res);
+    res *= sizeof(GUM_SCALAR);
+    return {res, res};
   }
 
-  // returns the memory consumption used during the projection
+  /// returns the memory consumption used during the projection
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE std::pair< long, long > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
+  INLINE std::pair< double, double > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
     return memoryUsage(table.variablesSequence(), del_vars);
