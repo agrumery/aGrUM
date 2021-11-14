@@ -885,10 +885,10 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static gum::Potential< double >*
+    static gum::Potential< double >
        myMax(const gum::Potential< double >&                 table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< double >(table.margMaxOut(del_vars));
+      return table.margMaxOut(del_vars);
     }
 
     void test_MultiDimProjection() {
@@ -922,13 +922,13 @@ namespace gum_tests {
 
       {
         auto t2 = t1.margMaxOut(del_vars);
-        auto t3 = Proj.project(t1, del_vars);
+        auto t3 = Proj.execute(t1, del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
         auto t2 = t1.margMaxOut(proj_set);
-        auto t3 = Proj.project(t1, proj_set);
+        auto t3 = Proj.execute(t1, proj_set);
         TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
@@ -936,14 +936,14 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = Proj.project(t1, proj_set);
+      gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
       TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
-      std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187)
+      std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -951,10 +951,10 @@ namespace gum_tests {
     }
 
 
-    static gum::Potential< double >*
+    static gum::Potential< double >
        mySum(const gum::Potential< double >&                 table,
              const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< double >(table.margSumOut(del_vars));
+      return table.margSumOut(del_vars);
     }
 
     void test_MultiDimSumProjection() {
@@ -987,13 +987,13 @@ namespace gum_tests {
       gum::MultiDimProjection< double, gum::Potential > Proj(mySum);
       {
         auto t2 = t1.margSumOut(del_vars);
-        auto t3 = Proj.project(t1, del_vars);
+        auto t3 = Proj.execute(t1, del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
         auto t2 = t1.margSumOut(proj_set);
-        auto t3 = Proj.project(t1, proj_set);
+        auto t3 = Proj.execute(t1, proj_set);
         TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
@@ -1001,7 +1001,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = Proj.project(t1, proj_set);
+      gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
       {
         auto t2 = t1.margSumOut(proj_set);
         TS_ASSERT_EQUALS(t2, *t5)
@@ -1014,8 +1014,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
-      std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187)
+      std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

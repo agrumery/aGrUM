@@ -52,8 +52,8 @@ namespace gum {
     /// Default constructor
     MultiDimCombineAndProjectDefault(
        TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
-       TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
-                                       const Set< const DiscreteVariable* >&));
+       TABLE< GUM_SCALAR > (*project)(const TABLE< GUM_SCALAR >&,
+                                      const Set< const DiscreteVariable* >&));
 
     /// Copy constructor
     MultiDimCombineAndProjectDefault(const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >&);
@@ -114,8 +114,8 @@ namespace gum {
                                                  const TABLE< GUM_SCALAR >&) final;
 
     /// Changes the function used for projecting TABLES
-    void setProjectionFunction(TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                                            const Set< const DiscreteVariable* >&))
+    void setProjectionFunction(TABLE< GUM_SCALAR > (*proj)(const TABLE< GUM_SCALAR >&,
+                                                           const Set< const DiscreteVariable* >&))
           final;
 
     /**
@@ -127,8 +127,8 @@ namespace gum {
     void setProjectionClass(const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) final;
 
     /// returns the current projection function
-    TABLE< GUM_SCALAR >* (*projectionFunction())(const TABLE< GUM_SCALAR >&,
-                                                 const Set< const DiscreteVariable* >&) final;
+    TABLE< GUM_SCALAR > (*projectionFunction())(const TABLE< GUM_SCALAR >&,
+                                                const Set< const DiscreteVariable* >&) final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be

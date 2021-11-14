@@ -40,8 +40,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::MultiDimCombineAndProjectDefault(
      TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
-     TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
-                                     const Set< const DiscreteVariable* >&)) :
+     TABLE< GUM_SCALAR > (*project)(const TABLE< GUM_SCALAR >&,
+                                    const Set< const DiscreteVariable* >&)) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
       _combination_(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
       _projection_(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
@@ -201,7 +201,7 @@ namespace gum {
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
 
-      TABLE< GUM_SCALAR >* marginal = _projection_->project(*joint, del_one_var);
+      TABLE< GUM_SCALAR >* marginal = _projection_->execute(*joint, del_one_var);
 
       // remove the temporary joint if needed
       if (joint_to_delete) delete joint;
@@ -319,18 +319,18 @@ namespace gum {
   // changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionFunction(
-     TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                  const Set< const DiscreteVariable* >&)) {
-    _projection_->setProjectFunction(proj);
+     TABLE< GUM_SCALAR > (*proj)(const TABLE< GUM_SCALAR >&,
+                                 const Set< const DiscreteVariable* >&)) {
+    _projection_->setProjectionFunction(proj);
   }
 
   // returns the current projection function
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR >* (
+  INLINE TABLE< GUM_SCALAR > (
      *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectionFunction())(
      const TABLE< GUM_SCALAR >&,
      const Set< const DiscreteVariable* >&) {
-    return _projection_->projectFunction();
+    return _projection_->projectionFunction();
   }
 
   // changes the class that performs the projections
