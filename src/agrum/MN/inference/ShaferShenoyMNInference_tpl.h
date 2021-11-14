@@ -130,8 +130,8 @@ namespace gum {
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMNInference< GUM_SCALAR >::_setCombinationFunction_(
-     Potential< GUM_SCALAR >* (*comb)(const Potential< GUM_SCALAR >&,
-                                      const Potential< GUM_SCALAR >&)) {
+     Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
+                                     const Potential< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }
 
@@ -824,7 +824,7 @@ namespace gum {
       // perform the combination of those potentials and their projection
       MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(
          _combination_op_,
-         SSNewMNprojPotential);
+         _projection_op_);
       _PotentialSet_ new_potentials_list
          = combine_and_project.execute(marg_factor_set, hard_variables);
 

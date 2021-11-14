@@ -46,15 +46,15 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* addPotential(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 + t2);
+    static gum::Potential< double > addPotential(const gum::Potential< double >& t1,
+                                                 const gum::Potential< double >& t2) {
+      return t1 + t2;
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* multPotential(const gum::Potential< double >& t1,
-                                                   const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 * t2);
+    static gum::Potential< double > multPotential(const gum::Potential< double >& t1,
+                                                  const gum::Potential< double >& t2) {
+      return t1 * t2;
     }
 
     public:
@@ -95,7 +95,7 @@ namespace gum_tests {
         delete t5;
         delete t6;
 
-        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16640)
+        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
         std::pair< long, long > yyy = xxx.memoryUsage(set);
         TS_ASSERT_EQUALS(yyy.first, 16640)
         TS_ASSERT_EQUALS(yyy.second, 16384)

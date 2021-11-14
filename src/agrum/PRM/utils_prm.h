@@ -72,8 +72,8 @@ namespace gum {
                      const Potential< GUM_SCALAR >&                                       source);
 
     template < typename GUM_SCALAR >
-    Potential< GUM_SCALAR >* multPotential(const Potential< GUM_SCALAR >& t1,
-                                           const Potential< GUM_SCALAR >& t2);
+    Potential< GUM_SCALAR > multPotential(const Potential< GUM_SCALAR >& t1,
+                                          const Potential< GUM_SCALAR >& t2);
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.

@@ -28,9 +28,14 @@
 #ifndef GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 #define GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 
+#include <vector>
+
 #include <agrum/tools/core/sequence.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombination.h>
 #include <agrum/tools/variables/discreteVariable.h>
+
 
 namespace gum {
 
@@ -72,15 +77,15 @@ namespace gum {
    *
    * @code
    * // a function used to combine two Potential<float>'s:
-   * Potential<float>* addPotential ( const Potential<float>& t1,
-   *                                  const Potential<float>& t2 ) {
-   *   return new Potential<float> (t1 + t2);
+   * Potential<float> addPotential ( const Potential<float>& t1,
+   *                                 const Potential<float>& t2 ) {
+   *   return t1 + t2;
    * }
    *
    * // another function used to combine two Potential<float>'s:
-   * Potential<float>* multPotential ( const Potential<float>& t1,
-   *                                   const Potential<float>& t2 ) {
-   *   return new Potential<float> (t1 * t2);
+   * Potential<float> multPotential ( const Potential<float>& t1,
+   *                                  const Potential<float>& t2 ) {
+   *   return t1 * t2;
    * }
    *
    *
@@ -112,8 +117,8 @@ namespace gum {
      * new table which is the result of the combination of the two tables
      * passed in argument.
      */
-    MultiDimCombinationDefault(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                               const TABLE< GUM_SCALAR >&));
+    MultiDimCombinationDefault(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
+                                                              const TABLE< GUM_SCALAR >&));
 
     /// Copy constructor
     MultiDimCombinationDefault(const MultiDimCombinationDefault< GUM_SCALAR, TABLE >&);
@@ -150,12 +155,12 @@ namespace gum {
                                          const Set< const TABLE< GUM_SCALAR >* >& set);
 
     /// Changes the function used for combining two TABLES.
-    virtual void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                    const TABLE< GUM_SCALAR >&));
+    virtual void setCombinationFunction(
+       TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /// Returns the combination function currently used by the combinator.
-    virtual TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                          const TABLE< GUM_SCALAR >&);
+    virtual TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                         const TABLE< GUM_SCALAR >&);
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
@@ -181,16 +186,25 @@ namespace gum {
 
     /// @}
 
-    protected:
+    private:
     /// The function used to combine two tables.
-    TABLE< GUM_SCALAR >* (*combine_)(const TABLE< GUM_SCALAR >& t1, const TABLE< GUM_SCALAR >& t2);
+    TABLE< GUM_SCALAR > (*_combine_)(const TABLE< GUM_SCALAR >& t1, const TABLE< GUM_SCALAR >& t2);
 
     /**
      * @brief returns the domain size of the Cartesian product of the union of
      * all the variables in seq1 and seq2.
      */
-    double combinedSize_(const Sequence< const DiscreteVariable* >& seq1,
-                         const Sequence< const DiscreteVariable* >& seq2) const;
+    double _combinedSize_(const IScheduleMultiDim<>& table1,
+                          const IScheduleMultiDim<>& table2) const;
+
+    /// returns the set of operations to perform to make the combination
+    std::vector< ScheduleOperation<>* >_operations_(
+       const std::vector< const IScheduleMultiDim<>* >& set) const;
+
+    /// free the scheduling memory
+    void _freeData_(std::vector< const IScheduleMultiDim<>* >& tables,
+                    std::vector< ScheduleOperation<>* >& operations) const;
+
   };
 
 } /* namespace gum */

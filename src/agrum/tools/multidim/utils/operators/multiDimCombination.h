@@ -139,13 +139,13 @@ namespace gum {
        = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                        const TABLE< GUM_SCALAR >&))
+    virtual void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                       const TABLE< GUM_SCALAR >&))
        = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                          const TABLE< GUM_SCALAR >&)
+    virtual TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                         const TABLE< GUM_SCALAR >&)
        = 0;
 
     /**

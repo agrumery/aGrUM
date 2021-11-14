@@ -94,8 +94,8 @@ namespace gum {
        = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombinationFunction(TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                        const TABLE< GUM_SCALAR >&))
+    virtual void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
+                                                                       const TABLE< GUM_SCALAR >&))
        = 0;
 
     /**
@@ -116,8 +116,8 @@ namespace gum {
        setCombinationClass(const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) = 0;
 
     /// returns the current combination function
-    virtual TABLE< GUM_SCALAR >* (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                          const TABLE< GUM_SCALAR >&)
+    virtual TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                         const TABLE< GUM_SCALAR >&)
        = 0;
 
     /// changes the function used for projecting TABLES

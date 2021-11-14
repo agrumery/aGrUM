@@ -348,15 +348,15 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* addPot(const gum::Potential< double >& t1,
-                                            const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 + t2);
+    static gum::Potential< double > addPot(const gum::Potential< double >& t1,
+                                           const gum::Potential< double >& t2) {
+      return t1 + t2;
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* multPot(const gum::Potential< double >& t1,
-                                             const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 * t2);
+    static gum::Potential< double > multPot(const gum::Potential< double >& t1,
+                                            const gum::Potential< double >& t2) {
+      return t1 * t2;
     }
 
     static gum::Potential< double >*
@@ -379,15 +379,15 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< float >* addPot(const gum::Potential< float >& t1,
-                                           const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 + t2);
+    static gum::Potential< float > addPot(const gum::Potential< float >& t1,
+                                          const gum::Potential< float >& t2) {
+      return t1 + t2;
     }
 
     // the function used to combine two tables
-    static gum::Potential< float >* multPot(const gum::Potential< float >& t1,
-                                            const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 * t2);
+    static gum::Potential< float > multPot(const gum::Potential< float >& t1,
+                                           const gum::Potential< float >& t2) {
+      return t1 * t2;
     }
 
     static gum::Potential< float >*
