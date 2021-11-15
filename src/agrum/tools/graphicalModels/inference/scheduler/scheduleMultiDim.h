@@ -292,6 +292,12 @@ namespace gum {
     /// returns the domain size the table would have after its creation
     Size domainSize() const final;
 
+    /// returns the sizeof of the elements stored into the ScheduleMultiDim
+    /** This method is useful for determining schedules' memory usage: this is
+     * actually equal to the number of elements times the sizeof of these
+     * elements. The goal of sizeOfContent is to return this sizeof */
+    double sizeOfContent() const final;
+
     /// assigns a new table inside the wrapper
     /** @param table the multidimensional table that we wish to be contained
      * into the ScheduleMultiDim
@@ -325,6 +331,16 @@ namespace gum {
 
     /// remove the table if it is contained in the ScheduleMultiDim
     void _removeTable_();
+
+
+    /** @brief metaprogramming to get the types of the elements stored into the
+     * ScheduleMultidims */
+     template<typename T>
+     struct ElementType { using value_type = T; };
+     template< template< typename, typename ... > class CONTAINER,
+               typename T, typename ...Args >
+     struct ElementType< CONTAINER< T, Args... > > { using value_type = T; };
+
   };
 
 } /* namespace gum */

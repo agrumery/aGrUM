@@ -460,6 +460,13 @@ namespace gum {
   }
 
 
+  /// returns the sizeof of the elements stored into the ScheduleMultiDim
+  template < typename TABLE, template < typename > class ALLOC >
+  INLINE double ScheduleMultiDim< TABLE, ALLOC >::sizeOfContent() const {
+    return double(sizeof(typename ElementType<TABLE>::value_type));
+  }
+
+
   /// sets a new table inside the wrapper
   template < typename TABLE, template < typename > class ALLOC >
   void ScheduleMultiDim< TABLE, ALLOC >::setMultiDim(const TABLE& table,

@@ -632,11 +632,12 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  std::pair< double, double >
+  INLINE std::pair< double, double >
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::memoryUsage()
         const {
-    const double domsize = double(_result_->domainSize());
-    return std::pair< double, double >(domsize, domsize);
+    const double domsize =
+       double(_result_->domainSize()) * _result_->sizeOfContent();
+    return {domsize, domsize};
   }
 
 

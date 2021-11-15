@@ -133,7 +133,7 @@ namespace gum_tests {
       TS_ASSERT(!result4.isAbstract());
       TS_ASSERT(!op4_res.isAbstract());
 
-      scheduler.setMaxMemory(2.15);
+      scheduler.setMaxMemory(2.15 * sizeof(double));
       TS_ASSERT_DELTA(scheduler.nbOperations(schedule2), 2200000.0, 10);
 
       bool fail = false;
@@ -141,11 +141,11 @@ namespace gum_tests {
       catch (std::bad_alloc&) { fail = true; }
       TS_ASSERT(!fail);
 
-      scheduler.setMaxMemory(2.5);
+      scheduler.setMaxMemory(2.5 * sizeof(double));
       TS_GUM_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
 
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first, 2100000.0, 10);
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second, 1000000.0, 10);
+      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first, 2100000.0 * sizeof(double), 10);
+      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second, 1000000.0 * sizeof(double), 10);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

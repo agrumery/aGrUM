@@ -538,8 +538,8 @@ namespace gum {
              typename... CONTAINER_PARAMS >
   INLINE std::pair< double, double >
      ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >::memoryUsage() const {
-    const double size_table = double(_arg_->domainSize());
-    return std::pair< double, double >(-size_table, -size_table);
+    const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent();
+    return {-size_table, -size_table};
   }
 
 

@@ -96,9 +96,9 @@ namespace gum_tests {
         delete t6;
 
         TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
-        std::pair< long, long > yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640)
-        TS_ASSERT_EQUALS(yyy.second, 16384)
+        auto yyy = xxx.memoryUsage(set);
+        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double))
+        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double))
 
         t4 = new gum::Potential< double >(t1 * t2);
         t5 = new gum::Potential< double >(t3 * (*t4));
