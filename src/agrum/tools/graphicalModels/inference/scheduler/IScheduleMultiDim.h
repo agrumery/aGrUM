@@ -160,6 +160,12 @@ namespace gum {
     /// returns the domain size the table would have after its creation
     virtual Size domainSize() const = 0;
 
+    /// returns the sizeof of the elements stored into the ScheduleMultiDim
+    /** This method is useful for determining schedules' memory usage: this is
+     * actually equal to the number of elements times the sizeof of these
+     * elements. The goal of sizeOfContent is to return this sizeof */
+    virtual double sizeOfContent() const = 0;
+
     /// displays the content of the ScheduleMultiDim
     virtual std::string toString() const = 0;
 

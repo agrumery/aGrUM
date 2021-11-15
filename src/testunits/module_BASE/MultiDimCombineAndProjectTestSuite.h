@@ -77,10 +77,10 @@ namespace gum_tests {
 
         double nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
-        std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
+        auto yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(yyy.first, 244)
-        TS_ASSERT_EQUALS(yyy.second, 228)
+        TS_ASSERT_EQUALS(yyy.first, 244 * sizeof(double))
+        TS_ASSERT_EQUALS(yyy.second, 228 * sizeof(double))
 
         TS_ASSERT_EQUALS(nb_ops, 416)
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
@@ -181,10 +181,10 @@ namespace gum_tests {
 
         float nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
-        std::pair< long, long > yyy = projcomb.memoryUsage(to_comb, del_vars);
+        auto yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(yyy.first, 244)
-        TS_ASSERT_EQUALS(yyy.second, 228)
+        TS_ASSERT_EQUALS(yyy.first, 244 * sizeof(float))
+        TS_ASSERT_EQUALS(yyy.second, 228 * sizeof(float))
 
         TS_ASSERT_EQUALS(nb_ops, 416)
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)

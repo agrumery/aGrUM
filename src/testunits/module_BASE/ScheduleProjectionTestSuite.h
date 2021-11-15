@@ -77,8 +77,8 @@ namespace gum_tests {
 
       TS_ASSERT(myproj.nbOperations() == 16.0);
       std::pair< double, double > xxx = myproj.memoryUsage();
-      TS_ASSERT(xxx.first == 16.0);
-      TS_ASSERT(xxx.second == 4.0);
+      TS_ASSERT(xxx.first == 16.0 * sizeof(double));
+      TS_ASSERT(xxx.second == 4.0 * sizeof(double));
 
       TS_ASSERT(myproj.arg() == f1);
 

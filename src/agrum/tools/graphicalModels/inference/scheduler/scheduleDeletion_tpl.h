@@ -337,8 +337,8 @@ namespace gum {
   template < typename TABLE, template < typename > class ALLOC >
   INLINE std::pair< double, double >
          ScheduleDeletion< TABLE, ALLOC >::memoryUsage() const {
-    const double size_table = double(_arg_->domainSize());
-    return std::pair< double, double >(-size_table, -size_table);
+    const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent();
+    return {-size_table, -size_table};
   }
 
 
