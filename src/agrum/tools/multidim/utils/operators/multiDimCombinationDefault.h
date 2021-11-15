@@ -28,13 +28,8 @@
 #ifndef GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 #define GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 
-#include <vector>
-
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
+#include <agrum/agrum.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombination.h>
-#include <agrum/tools/variables/discreteVariable.h>
 
 
 namespace gum {
@@ -150,24 +145,36 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set);
-    virtual void                 execute(TABLE< GUM_SCALAR >&                     container,
-                                         const Set< const TABLE< GUM_SCALAR >* >& set);
+    TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    void                 execute(TABLE< GUM_SCALAR >&                     container,
+                                 const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+
+    /// returns the set of operations to perform to make the combination
+    /** Executing sequentially the set of operations returned is guaranteed to
+     * produce the right result. */
+    std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+       operations(const std::vector< const IScheduleMultiDim<>* >& set) const final;
+    std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+       operations(const Set< const IScheduleMultiDim<>* >& set) const final;
+
+    /// add to a given schedule the set of operations needed to perform the combination
+    using MultiDimCombination< GUM_SCALAR, TABLE >::schedule;
 
     /// Changes the function used for combining two TABLES.
-    virtual void setCombinationFunction(
-       TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+    void setCombinationFunction(
+       TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
+          const TABLE< GUM_SCALAR >&)) final;
 
     /// Returns the combination function currently used by the combinator.
-    virtual TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                         const TABLE< GUM_SCALAR >&);
+    TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
+                                                 const TABLE< GUM_SCALAR >&) final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const;
-    virtual double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const;
+    double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const final;
 
     /**
      * @brief Returns the additional memory consumption used during the
@@ -180,9 +187,9 @@ namespace gum {
      * the combination and the second one is the amount of memory still used at
      * the end of the function ( the memory used by the resulting table ).
      */
-    virtual std::pair< double, double > memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const;
-    virtual std::pair< double, double >
-       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const;
+    std::pair< double, double > memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    std::pair< double, double >
+       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const final;
 
     /// @}
 
@@ -196,10 +203,6 @@ namespace gum {
      */
     double _combinedSize_(const IScheduleMultiDim<>& table1,
                           const IScheduleMultiDim<>& table2) const;
-
-    /// returns the set of operations to perform to make the combination
-    std::vector< ScheduleOperation<>* >_operations_(
-       const std::vector< const IScheduleMultiDim<>* >& set) const;
 
     /// free the scheduling memory
     void _freeData_(std::vector< const IScheduleMultiDim<>* >& tables,

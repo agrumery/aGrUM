@@ -96,7 +96,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void MultiDimCombinationDefault< GUM_SCALAR, TABLE >::execute(
      TABLE< GUM_SCALAR >&                     container,
-     const Set< const TABLE< GUM_SCALAR >* >& set) {
+     const Set< const TABLE< GUM_SCALAR >* >& set) const {
     TABLE< GUM_SCALAR >* res = execute(set);
     container                = std::move(*res);
     delete (res);
@@ -106,7 +106,7 @@ namespace gum {
   /// returns the result of the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   TABLE< GUM_SCALAR >* MultiDimCombinationDefault< GUM_SCALAR, TABLE >::execute(
-     const Set< const TABLE< GUM_SCALAR >* >& set) {
+     const Set< const TABLE< GUM_SCALAR >* >& set) const {
     // check if the set passed in argument is empty. If so, raise an exception
     if (set.size() < 2) {
       GUM_ERROR(InvalidArgumentsNumber,
@@ -122,27 +122,20 @@ namespace gum {
     }
 
     // get the set of operations to perform and execute them
-    auto operations = _operations_(tables);
-    for (auto op: operations)
-      op->execute();
+    auto ops_plus_res = operations(tables);
+    for (auto op: ops_plus_res.first) { op->execute(); }
 
     // get the schedule multidim of the last combination and save it
-    TABLE< GUM_SCALAR >* result = nullptr;
-    for (auto iter=operations.rbegin(), end=operations.rend(); iter != end; ++iter) {
-      if ((*iter)->type() == ScheduleOperationType::COMBINE_MULTIDIM) {
-         ScheduleMultiDim< TABLE< GUM_SCALAR > >& schedule_result =
-           const_cast<ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
-              static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
-                 *((*iter)->results()[0])));
+    ScheduleMultiDim< TABLE< GUM_SCALAR > >& schedule_result =
+       const_cast<ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+          static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+             *ops_plus_res.second));
 
-         result = new TABLE< GUM_SCALAR >(
-            std::move(schedule_result.exportMultiDim()));
-         break;
-      }
-    }
+    TABLE< GUM_SCALAR >* result = new TABLE< GUM_SCALAR >(
+       std::move(schedule_result.exportMultiDim()));
 
     // delete all the operations created as well as all the schedule tables
-    _freeData_(tables, operations);
+    _freeData_(tables, ops_plus_res.first);
 
     return result;
   }
@@ -163,16 +156,16 @@ namespace gum {
     }
 
     // get the set of operations to perform and compute their number of operations
-    auto operations = _operations_(tables);
+    auto ops_plus_res = operations(tables);
 
     double nb_operations = 0.0;
 
-    for (const auto op: operations) {
+    for (const auto op: ops_plus_res.first) {
       nb_operations += op->nbOperations();
     }
 
     // delete all the operations created as well as all the schedule tables
-    _freeData_(tables, operations);
+    _freeData_(tables, ops_plus_res.first);
 
     return nb_operations;
   }
@@ -211,19 +204,19 @@ namespace gum {
     }
 
     // get the set of operations to perform and compute their memory consumption
-    auto operations = _operations_(tables);
+    auto ops_plus_res = operations(tables);
 
     double max_memory = 0.0;
     double end_memory = 0.0;
 
-    for (const auto op: operations) {
+    for (const auto op: ops_plus_res.first) {
       const auto usage = op->memoryUsage();
       if (end_memory + usage.first > max_memory) max_memory = end_memory + usage.first;
       end_memory += usage.second;
     }
 
     // delete all the operations created as well as all the schedule tables
-    _freeData_(tables, operations);
+    _freeData_(tables, ops_plus_res.first);
 
     return {max_memory, end_memory};
   }
@@ -266,8 +259,8 @@ namespace gum {
 
   // returns the set of operations to perform to make the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::vector< ScheduleOperation<>* >
-  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::_operations_(
+  std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::operations(
      const std::vector< const IScheduleMultiDim<>* >& original_tables) const {
     // check if the set passed in argument is empty.
     const Size tabsize = original_tables.size();
@@ -302,6 +295,8 @@ namespace gum {
       }
     }
 
+    // keep track of the result of the last combination performed
+    const IScheduleMultiDim<>* resulting_table = nullptr;
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the operations R has been computed,substitute i by R,
@@ -320,7 +315,7 @@ namespace gum {
             static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*tables[tj]),
             _combine_);
       operations.push_back(combination);
-      const auto result = &combination->result();
+      resulting_table = &combination->result();
 
       // add operations to remove the temporary tables
       if (is_t_new[ti]) {
@@ -335,7 +330,7 @@ namespace gum {
       }
 
       // substitute ti by result and remove tj
-      tables[ti]   = result;
+      tables[ti]   = resulting_table;
       is_t_new[ti] = true;
       tables[tj] = nullptr;
 
@@ -361,7 +356,7 @@ namespace gum {
         for (Size ind = 0; ind < ti; ++ind) {
           if (tables[ind] != nullptr) {
             pair.first = ind;
-            queue.setPriority(pair, _combinedSize_(*result, *(tables[ind])));
+            queue.setPriority(pair, _combinedSize_(*resulting_table, *(tables[ind])));
           }
         }
 
@@ -369,13 +364,25 @@ namespace gum {
         for (Size ind = ti + 1; ind < tabsize; ++ind) {
           if (tables[ind] != nullptr) {
             pair.second = ind;
-            queue.setPriority(pair, _combinedSize_(*result, *(tables[ind])));
+            queue.setPriority(pair, _combinedSize_(*resulting_table, *(tables[ind])));
           }
         }
       }
     }
 
-    return operations;
+    return {operations, resulting_table};
+  }
+
+
+  /// returns the set of operations to perform to make the combination
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::operations(
+            const Set< const IScheduleMultiDim<>* >& set) const {
+    std::vector< const IScheduleMultiDim<>* > vect;
+    vect.reserve(set.size());
+    for (const auto elt: set) { vect.push_back(elt); }
+    return operations(vect);
   }
 
 

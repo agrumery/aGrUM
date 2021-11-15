@@ -28,8 +28,15 @@
 #ifndef GUM_MULTI_DIM_COMBINATION_H
 #define GUM_MULTI_DIM_COMBINATION_H
 
+#include <vector>
+#include <utility>
+
+#include <agrum/agrum.h>
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/set.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <utility>
 
@@ -69,15 +76,15 @@ namespace gum {
    *
    * @code
    * // a function used to combine two Potential<float>'s:
-   * Potential<float>* addPotential ( const Potential<float>& t1,
-   *                                  const Potential<float>& t2 ) {
-   *   return new Potential<float> (t1 + t2);
+   * Potential<float> addPotential ( const Potential<float>& t1,
+   *                                 const Potential<float>& t2 ) {
+   *   return t1 + t2;
    * }
    *
    * // another function used to combine two Potential<float>'s:
-   * Potential<float>* multPotential ( const Potential<float>& t1,
-   *                                   const Potential<float>& t2 ) {
-   *   return new Potential<float> (t1 * t2);
+   * Potential<float> multPotential ( const Potential<float>& t1,
+   *                                  const Potential<float>& t2 ) {
+   *   return t1 * t2;
    * }
    *
    * Potential<float> t1, t2, t3;
@@ -133,10 +140,25 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+    virtual TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set)
+       const = 0;
     virtual void                 execute(TABLE< GUM_SCALAR >&                     container,
                                          const Set< const TABLE< GUM_SCALAR >* >& set)
-       = 0;
+       const = 0;
+
+    /// returns the set of operations to perform as well as the result of the combination
+    /** Executing sequentially the set of operations returned is guaranteed to
+     * produce the right result. */
+    virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+       operations(const std::vector< const IScheduleMultiDim<>* >& set) const = 0;
+    virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+       operations(const Set< const IScheduleMultiDim<>* >& set) const = 0;
+
+    /// add to a given schedule the set of operations needed to perform the combination
+    /** @warning whenever this method is executed, it is assumed that the
+     * ScheduleMultiDim already belong to the schedule. */
+    const IScheduleMultiDim<>*
+       schedule(Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const;
 
     /// changes the function used for combining two TABLES
     virtual void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
